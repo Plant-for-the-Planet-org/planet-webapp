@@ -25,7 +25,6 @@ export default function AddProjectType(): ReactElement {
         else
             setIsPurpose(false)
     }, [router]);
-    console.log(`router`, router)
 
     React.useEffect(() => {
         async function loadUserData() {

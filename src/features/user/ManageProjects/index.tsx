@@ -3,9 +3,6 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import BasicDetails from './components/BasicDetails';
-import BasicConservationDetails from './conservationComponents/BasicDetails';
-import DetailedConservationAnalysis from './conservationComponents/DetailedAnalysis';
-import SubmitConservationForReview from './conservationComponents/SubmitForReview'
 import StepContent from '@material-ui/core/StepContent';
 import styles from './StepForm.module.scss';
 import ProjectMedia from './components/ProjectMedia';
@@ -111,7 +108,6 @@ export default function ManageProjects({ GUID, token, project, conservationProje
       if (userLang) setUserLang(userLang);
     }
   }, []);
-  console.log(`projectDetails`, projectDetails)
   function getStepContent(step: number) {
     switch (step) {
       case 0:
@@ -133,13 +129,13 @@ export default function ManageProjects({ GUID, token, project, conservationProje
   function getConservationStepContent(step: any) {
     switch (step) {
       case 0:
-        return <BasicConservationDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
+        return <BasicDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
       case 1:
-        return <DetailedConservationAnalysis userLang={userLang} handleNext={handleNext} token={token} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
+        return <DetailedAnalysis userLang={userLang} handleNext={handleNext} token={token} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
       case 2:
-        return <SubmitConservationForReview handleBack={handleBack} projectDetails={projectDetails} submitForReview={submitForReview} isUploadingData={isUploadingData} projectGUID={projectGUID} handleReset={handleReset} />;
+        return <SubmitForReview handleBack={handleBack} projectDetails={projectDetails} submitForReview={submitForReview} isUploadingData={isUploadingData} projectGUID={projectGUID} handleReset={handleReset} />;
       default:
-        return <BasicConservationDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} handleReset={handleReset} />;
+        return <BasicDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
     }
   }
 

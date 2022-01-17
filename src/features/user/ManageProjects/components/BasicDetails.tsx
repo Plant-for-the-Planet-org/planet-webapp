@@ -24,6 +24,7 @@ import {
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
+import { useRouter } from 'next/router';
 
 const { useTranslation } = i18next;
 
@@ -68,6 +69,7 @@ export default function BasicDetails({
     longitude: defaultMapCenter[1],
     zoom: defaultZoom,
   });
+  const router = useRouter();
   const useStylesAutoComplete = makeStyles({
     root: {
       color:
@@ -149,8 +151,68 @@ export default function BasicDetails({
     },
   ];
 
+  const ecosystemsType = [
+    {
+      label: ready ? t('manageProjects:tropicalMoistForest') : '',
+      value: 'tropical-moist-forests',
+    },
+    {
+      label: ready ? t('manageProjects:tropicalDryForests') : '',
+      value: 'tropical-dry-forests',
+    },
+    {
+      label: ready ? t('manageProjects:tropicalConiferousForests') : '',
+      value: 'tropical-coniferous-forests',
+    },
+    {
+      label: ready ? t('manageProjects:tropicalGrasslandsForests') : '',
+      value: 'tropical-grasslands-forests',
+    },
+    {
+      label: ready ? t('manageProjects:temperateBroadleafForests') : '',
+      value: 'temperate-broadleaf-forests',
+    },
+    {
+      label: ready ? t('manageProjects:temperateGrasslandsForests') : '',
+      value: 'temperate-grasslands-forests',
+    },
+    {
+      label: ready ? t('manageProjects:mediterraneanForests') : '',
+      value: 'mediterranean-forests',
+    },
+    {
+      label: ready ? t('manageProjects:mangroves') : '',
+      value: 'mangroves',
+    },
+    {
+      label: ready ? t('manageProjects:deserts') : '',
+      value: 'deserts',
+    },
+    {
+      label: ready ? t('manageProjects:floodedGrasslands') : '',
+      value: 'flooded-grasslands',
+    },
+    {
+      label: ready ? t('manageProjects:montaneGrasslands') : '',
+      value: 'montane-grasslands',
+    },
+    {
+      label: ready ? t('manageProjects:borealForests') : '',
+      value: 'boreal-forests',
+    },
+    {
+      label: ready ? t('manageProjects:tundra') : '',
+      value: 'tundra',
+    },
+    {
+      label: ready ? t('manageProjects:temperateConiferousForests') : '',
+      value: 'temperate-coniferous-forests',
+    },
+  ];
+
+
   // Default Form Fields
-  const defaultBasicDetails = {
+  const defaultBasicDetails = router.query.purpose == "restoration" ? {
     name: '',
     slug: '',
     classification: {
@@ -161,14 +223,38 @@ export default function BasicDetails({
     website: '',
     description: '',
     acceptDonations: false,
-    treeCost: 0,
+    unitCost: 0,
     publish: false,
     visitorAssistance: false,
     enablePlantLocations: false,
     currency: 'EUR',
     latitude: 0,
     longitude: 0,
-  };
+  } :
+    {
+      purpose: 'conservation',
+      name: '',
+      slug: '',
+      description: '',
+      acceptDonations: false,
+      unitCost: 0,
+      currency: 'EUR',
+      latitude: 0,
+      longitude: 0,
+      projetMeta: {
+        ecosystems: {
+          label: ready ? t('manageProjects:ecosystems') : '',
+          value: null,
+        },
+        impacts: {
+          benefits: '',
+          ecologicalBenefits: '',
+          socialBenefits: '',
+          coBenefits: '',
+        }
+      }
+    };
+  ;
 
   const {
     register,
@@ -186,7 +272,7 @@ export default function BasicDetails({
 
   React.useEffect(() => {
     if (projectDetails) {
-      const basicDetails = {
+      const basicDetails = router.query.purpose == "restoration" ? {
         name: projectDetails.name,
         slug: projectDetails.slug,
         classification: projectDetails.classification,
@@ -194,9 +280,9 @@ export default function BasicDetails({
         website: projectDetails.website,
         description: projectDetails.description,
         acceptDonations: projectDetails.acceptDonations,
-        treeCost: getFormattedNumber(
+        unitCost: getFormattedNumber(
           i18n.language,
-          projectDetails.treeCost || 0
+          projectDetails.unitCost || 0
         ),
         publish: projectDetails.publish,
         visitorAssistance: projectDetails.visitorAssistance,
@@ -204,7 +290,30 @@ export default function BasicDetails({
         currency: projectDetails.currency,
         latitude: projectDetails.geoLatitude,
         longitude: projectDetails.geoLongitude,
-      };
+      } :
+        {
+          purpose: projectDetails.purpose,
+          name: projectDetails.name,
+          slug: projectDetails.slug,
+          description: projectDetails.description,
+          acceptDonations: projectDetails.acceptDonations,
+          unitCost: getFormattedNumber(
+            i18n.language,
+            projectDetails.unitCost || 0
+          ),
+          currency: projectDetails.currency,
+          latitude: projectDetails.geoLatitude,
+          longitude: projectDetails.geoLongitude,
+          projectMeta: {
+            ecosystems: projectDetails.ecosystems,
+            impacts: {
+              benefits: projectDetails.benefits,
+              coBenefits: projectDetails.coBenefits,
+              ecologicalBenefits: projectDetails.ecologicalBenefits,
+              socialBenefits: projectDetails.socialbenefits
+            }
+          }
+        };
       if (projectDetails.geoLongitude && projectDetails.geoLatitude) {
         setProjectCoords([
           projectDetails.geoLongitude,
@@ -226,7 +335,7 @@ export default function BasicDetails({
 
   const onSubmit = (data: any) => {
     setIsUploadingData(true);
-    const submitData = {
+    const submitData = router.query.purpose == "restoration" ? {
       name: data.name,
       slug: data.slug,
       classification: data.classification,
@@ -241,14 +350,41 @@ export default function BasicDetails({
       website: data.website,
       description: data.description,
       acceptDonations: data.acceptDonations,
-      treeCost: data.treeCost
-        ? parseNumber(i18n.language, data.treeCost)
+      unitCost: data.unitCost
+        ? parseNumber(i18n.language, data.unitCost)
         : null,
       currency: 'EUR',
       visitorAssistance: data.visitorAssistance,
       publish: data.publish,
       enablePlantLocations: data.enablePlantLocations,
-    };
+    } :
+      {
+        purpose: 'conservation',
+        name: data.name,
+        slug: data.slug,
+        geometry: {
+          type: 'Point',
+          coordinates: [
+            parseFloat(data.longitude),
+            parseFloat(data.latitude),
+          ],
+        },
+        description: data.description,
+        acceptDonations: data.acceptDonations,
+        unitCost: data.unitCost
+          ? parseNumber(i18n.language, data.unitCost)
+          : null,
+        currency: 'EUR',
+        projectMeta: {
+          ecosystems: data.ecosystems,
+          impacts: {
+            benefits: data.benefits,
+            coBenefits: data.coBenefits,
+            ecologicalBenefits: data.ecologicalBenefits,
+            socialBenefits: data.socialBenefits
+          }
+        }
+      };
 
     // Check if GUID is set use update instead of create project
     if (projectGUID) {
@@ -304,7 +440,6 @@ export default function BasicDetails({
       );
     }
   };
-
   return ready ? (
     <div className={`${styles.stepContainer} `}>
       <form
@@ -353,88 +488,122 @@ export default function BasicDetails({
               )}
             </div>
             <div style={{ width: '20px' }}></div>
-            <div className={styles.formFieldHalf} data-test-id="classification">
-              <Controller
-                as={
-                  <MaterialTextField
-                    label={t('manageProjects:classification')}
-                    variant="outlined"
-                    select
-                  >
-                    {classifications.map((option) => (
-                      <MenuItem key={option.value} value={option.value} classes={{
-                        // option: classes.option,
-                        root: classes.root,
-                      }} >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </MaterialTextField>
-                }
-                name="classification"
-                rules={{
-                  required: t('manageProjects:classificationValidation'),
-                }}
-                control={control}
-              />
-              {errors.classification && (
-                <span className={styles.formErrors}>
-                  {errors.classification.message}
-                </span>
-              )}
-            </div>
+            {router.query.purpose == "restoration" ?
+              <div className={styles.formFieldHalf} data-test-id="classification">
+                <Controller
+                  as={
+                    <MaterialTextField
+                      label={t('manageProjects:classification')}
+                      variant="outlined"
+                      select
+                    >
+                      {classifications.map((option) => (
+                        <MenuItem key={option.value} value={option.value} classes={{
+                          // option: classes.option,
+                          root: classes.root,
+                        }} >
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </MaterialTextField>
+                  }
+                  name="classification"
+                  rules={{
+                    required: t('manageProjects:classificationValidation'),
+                  }}
+                  control={control}
+                />
+                {errors.classification && (
+                  <span className={styles.formErrors}>
+                    {errors.classification.message}
+                  </span>
+                )}
+              </div>
+              :
+              <div className={styles.formFieldHalf}>
+                <Controller
+                  as={
+                    <MaterialTextField
+                      label={t('manageProjects:ecosystems')}
+                      variant="outlined"
+                      select
+                    >
+                      {ecosystemsType.map((option) => (
+                        <MenuItem key={option.value} value={option.value} classes={{
+                          // option: classes.option,
+                          root: classes.root,
+                        }} >
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </MaterialTextField>
+                  }
+                  name="ecosystems"
+                  rules={{
+                    required: t('manageProjects:ecosystemType'),
+                  }}
+                  control={control}
+                />
+                {errors.ecosystems && (
+                  <span className={styles.formErrors}>
+                    {errors.ecosystems.message}
+                  </span>
+                )}
+              </div>
+            }
           </div>
 
-          <div className={styles.formField}>
-            <div className={styles.formFieldHalf} data-test-id="target">
-              <MaterialTextField
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: t('manageProjects:countTargetValidation'),
-                  },
-                  validate: (value) => parseInt(value, 10) > 1,
-                })}
-                onInput={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                }}
-                label={t('manageProjects:countTarget')}
-                variant="outlined"
-                name="countTarget"
-                placeholder={'0'}
-              />
-              {errors.countTarget && (
-                <span className={styles.formErrors}>
-                  {errors.countTarget.message
-                    ? errors.countTarget.message
-                    : t('manageProjects:countTargetValidation2')}
-                </span>
-              )}
-            </div>
-            <div className={styles.formFieldHalf} data-test-id="website">
-              <MaterialTextField
-                label={t('manageProjects:website')}
-                variant="outlined"
-                name="website"
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: t('manageProjects:websiteValidationRequired'),
-                  },
-                  pattern: {
-                    //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
-                    value: /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
-                    message: t('manageProjects:websiteValidationInvalid'),
-                  },
-                })}
-              />
-              {errors.website && (
-                <span className={styles.formErrors}>
-                  {errors.website.message}
-                </span>
-              )}
-            </div>
-          </div>
+          {router.query.purpose == "restoration" ?
+            <div className={styles.formField}>
+              <div className={styles.formFieldHalf} data-test-id="target">
+                <MaterialTextField
+                  inputRef={register({
+                    required: {
+                      value: true,
+                      message: t('manageProjects:countTargetValidation'),
+                    },
+                    validate: (value) => parseInt(value, 10) > 1,
+                  })}
+                  onInput={(e) => {
+                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                  }}
+                  label={t('manageProjects:countTarget')}
+                  variant="outlined"
+                  name="countTarget"
+                  placeholder={'0'}
+                />
+                {errors.countTarget && (
+                  <span className={styles.formErrors}>
+                    {errors.countTarget.message
+                      ? errors.countTarget.message
+                      : t('manageProjects:countTargetValidation2')}
+                  </span>
+                )}
+              </div>
+              <div className={styles.formFieldHalf} data-test-id="website">
+                <MaterialTextField
+                  label={t('manageProjects:website')}
+                  variant="outlined"
+                  name="website"
+                  inputRef={register({
+                    required: {
+                      value: true,
+                      message: t('manageProjects:websiteValidationRequired'),
+                    },
+                    pattern: {
+                      //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
+                      value: /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
+                      message: t('manageProjects:websiteValidationInvalid'),
+                    },
+                  })}
+                />
+                {errors.website && (
+                  <span className={styles.formErrors}>
+                    {errors.website.message}
+                  </span>
+                )}
+              </div>
+            </div> : <></>}
 
           <div className={styles.formFieldLarge} data-test-id="aboutProject">
             <MaterialTextField
@@ -509,9 +678,9 @@ export default function BasicDetails({
                       parseNumber(i18n.language, value) > 0 &&
                       parseNumber(i18n.language, value) <= 100,
                   })}
-                  label={t('manageProjects:treeCost')}
+                  label={t('manageProjects:unitCost')}
                   variant="outlined"
-                  name="treeCost"
+                  name="unitCost"
                   placeholder={'0'}
                   InputProps={{
                     startAdornment: (
@@ -522,10 +691,10 @@ export default function BasicDetails({
                     ),
                   }}
                 />
-                {errors.treeCost && (
+                {errors.unitCost && (
                   <span className={styles.formErrors}>
-                    {errors.treeCost.message
-                      ? errors.treeCost.message
+                    {errors.unitCost.message
+                      ? errors.unitCost.message
                       : t('manageProjects:treeCostValidation')}
                   </span>
                 )}
@@ -636,46 +805,50 @@ export default function BasicDetails({
             </div>
           </div>
 
-          <div className={styles.formFieldLarge} style={{ width: '320px' }}>
-            <div className={styles.formFieldRadio}>
-              <label htmlFor="visitorAssistance" style={{ cursor: 'pointer' }} data-test-id="visitorAssistance">
-                {t('manageProjects:visitorAssistanceLabel')}
-              </label>
-              <Controller
-                name="visitorAssistance"
-                control={control}
-                render={(properties) => (
-                  <ToggleSwitch
-                    id="visitorAssistance"
-                    checked={properties.value}
-                    onChange={(e) => properties.onChange(e.target.checked)}
-                    inputProps={{ 'aria-label': 'secondary checkbox' }}
+          {router.query.purpose == "restoration" ?
+            <>
+              <div className={styles.formFieldLarge} style={{ width: '320px' }}>
+                <div className={styles.formFieldRadio}>
+                  <label htmlFor="visitorAssistance" style={{ cursor: 'pointer' }} data-test-id="visitorAssistance">
+                    {t('manageProjects:visitorAssistanceLabel')}
+                  </label>
+                  <Controller
+                    name="visitorAssistance"
+                    control={control}
+                    render={(properties) => (
+                      <ToggleSwitch
+                        id="visitorAssistance"
+                        checked={properties.value}
+                        onChange={(e) => properties.onChange(e.target.checked)}
+                        inputProps={{ 'aria-label': 'secondary checkbox' }}
+                      />
+                    )}
                   />
-                )}
-              />
-            </div>
-          </div>
+                </div>
+              </div>
 
-          <div className={styles.formFieldLarge} style={{ width: '320px' }}>
-            <div className={`${styles.formFieldRadio}`}>
-              <label htmlFor={'publish'} style={{ cursor: 'pointer' }} data-test-id="publishProject">
-                {t('manageProjects:publishProject')}
-              </label>
+              <div className={styles.formFieldLarge} style={{ width: '320px' }}>
+                <div className={`${styles.formFieldRadio}`}>
+                  <label htmlFor={'publish'} style={{ cursor: 'pointer' }} data-test-id="publishProject">
+                    {t('manageProjects:publishProject')}
+                  </label>
 
-              <Controller
-                name="publish"
-                control={control}
-                render={(properties) => (
-                  <ToggleSwitch
-                    checked={properties.value}
-                    onChange={(e) => properties.onChange(e.target.checked)}
-                    id="publish"
-                    inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  <Controller
+                    name="publish"
+                    control={control}
+                    render={(properties) => (
+                      <ToggleSwitch
+                        checked={properties.value}
+                        onChange={(e) => properties.onChange(e.target.checked)}
+                        id="publish"
+                        inputProps={{ 'aria-label': 'secondary checkbox' }}
+                      />
+                    )}
                   />
-                )}
-              />
-            </div>
-          </div>
+                </div>
+              </div>
+            </>
+            : <></>}
           {/* <div className={styles.formFieldLarge} style={{ width: '320px' }}>
             <div className={`${styles.formFieldRadio}`}>
               <label htmlFor={'enablePlantLocations'}>
