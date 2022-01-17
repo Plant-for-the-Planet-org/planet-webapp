@@ -2,7 +2,6 @@ import { Modal } from '@material-ui/core';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
-import DonationsPopup from '../src/features/donations';
 import Credits from '../src/features/projects/components/maps/Credits';
 import SingleProjectDetails from '../src/features/projects/screens/SingleProjectDetails';
 import { ThemeContext } from '../src/theme/themeContext';
@@ -41,8 +40,10 @@ export default function Donate({
     setZoomLevel(2);
   }, []);
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleClose = (reason: string) => {
+    if (reason !== 'backdropClick') {
+      setOpen(false);
+    }
   };
   const handleOpen = () => {
     setOpen(true);
@@ -100,16 +101,6 @@ export default function Donate({
         project && initialized ? (
           <>
             <SingleProjectDetails {...ProjectProps} />
-            <Modal
-              className={`modalContainer ${theme}`}
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="simple-modal-title"
-              aria-describedby="simple-modal-description"
-              disableBackdropClick
-            >
-              <DonationsPopup project={project} onClose={handleClose} />
-            </Modal>
           </>
         ) : (
           <></>

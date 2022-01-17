@@ -44,12 +44,15 @@
     margin-top: 26px;
     p {
       margin: 0px;
-      margin-left: 15px;
+      // margin-left: 15px;
+      margin-right: 10px;
       color: $light;
       font-family: $primaryFontFamily;
       font-size: 12.8px;
       font-weight: bold;
-      max-width: 50px;
+    }
+    img {
+      width: 16px;
     }
   }
 }
@@ -70,9 +73,7 @@
     div {
       margin-top: 26px;
       p {
-        margin-left: 15px;
         font-size: $fontSixteen;
-        max-width: 50px;
       }
     }
   }

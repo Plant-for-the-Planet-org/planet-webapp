@@ -33,7 +33,7 @@ function FacebookCircularProgress(props: CircularProgressProps) {
   return (
     <div className={classes.root}>
       <CircularProgress
-        variant="static"
+        variant="determinate"
         // disableShrink
         className={classes.top}
         classes={{

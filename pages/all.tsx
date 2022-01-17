@@ -4,6 +4,7 @@ import LeaderBoard from '../src/tenants/planet/LeaderBoard';
 import tenantConfig from '../tenant.config';
 import { getRequest } from '../src/utils/apiRequests/api';
 import GetLeaderboardMeta from './../src/utils/getMetaTags/GetLeaderboardMeta';
+import { TENANT_ID } from '../src/utils/constants/environment';
 const config = tenantConfig();
 
 interface Props {
@@ -18,7 +19,7 @@ export default function Home({
 
   React.useEffect(() => {
     async function loadLeaderboard() {
-      const newLeaderboard = await getRequest(`/app/leaderboard/${process.env.TENANTID}`);
+      const newLeaderboard = await getRequest(`/app/leaderboard/${TENANT_ID}`);
       setLeaderboard(newLeaderboard);
     }
     loadLeaderboard();
@@ -28,12 +29,12 @@ export default function Home({
 
   React.useEffect(() => {
     async function loadTenantScore() {
-      const newTenantScore = await getRequest(`/app/tenantScore/${process.env.TENANTID}`);
+      const newTenantScore = await getRequest(`/app/tenantScore/${TENANT_ID}`);
       setTenantScore(newTenantScore);
     }
-     loadTenantScore();
+    loadTenantScore();
   }, []);
-  
+
 
   let AllPage;
   function getAllPage() {
@@ -53,10 +54,10 @@ export default function Home({
   return (
     <>
       {initialized ? (
-      <>
-        <GetLeaderboardMeta />
-        {getAllPage()}
-      </>
+        <>
+          <GetLeaderboardMeta />
+          {getAllPage()}
+        </>
       ) : null}
     </>
   );

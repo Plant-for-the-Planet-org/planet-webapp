@@ -9,7 +9,7 @@ function UNDecadeLogo() {
       viewBox="0 0 835.503 296.747"
     >
       <defs>
-        <clipPath id="clip-path">
+        <clipPath id="clipPath">
           <path
             d="M0 0H292.383V296.747H0z"
             data-name="Rectangle 1446"
@@ -20,7 +20,7 @@ function UNDecadeLogo() {
       <g data-name="Group 3324" transform="translate(-12661.49 -9150.501)">
         <g data-name="Group 3323">
           <g
-            clipPath="url(#clip-path)"
+            clipPath="url(#clipPath)"
             data-name="Group 3315"
             transform="translate(12564 9054)"
           >
@@ -31,7 +31,7 @@ function UNDecadeLogo() {
             ></path>
           </g>
           <g
-            clipPath="url(#clip-path)"
+            clipPath="url(#clipPath)"
             data-name="Group 3316"
             transform="translate(12564 9054)"
           >
@@ -42,7 +42,7 @@ function UNDecadeLogo() {
             ></path>
           </g>
           <g
-            clipPath="url(#clip-path)"
+            clipPath="url(#clipPath)"
             data-name="Group 3317"
             transform="translate(12564 9054)"
           >
@@ -53,7 +53,7 @@ function UNDecadeLogo() {
             ></path>
           </g>
           <g
-            clipPath="url(#clip-path)"
+            clipPath="url(#clipPath)"
             data-name="Group 3318"
             transform="translate(12564 9054)"
           >
@@ -64,7 +64,7 @@ function UNDecadeLogo() {
             ></path>
           </g>
           <g
-            clipPath="url(#clip-path)"
+            clipPath="url(#clipPath)"
             data-name="Group 3319"
             transform="translate(12564 9054)"
           >
@@ -75,7 +75,7 @@ function UNDecadeLogo() {
             ></path>
           </g>
           <g
-            clipPath="url(#clip-path)"
+            clipPath="url(#clipPath)"
             data-name="Group 3320"
             transform="translate(12564 9054)"
           >
@@ -86,7 +86,7 @@ function UNDecadeLogo() {
             ></path>
           </g>
           <g
-            clipPath="url(#clip-path)"
+            clipPath="url(#clipPath)"
             data-name="Group 3321"
             transform="translate(12564 9054)"
           >
@@ -97,7 +97,7 @@ function UNDecadeLogo() {
             ></path>
           </g>
           <g
-            clipPath="url(#clip-path)"
+            clipPath="url(#clipPath)"
             data-name="Group 3322"
             transform="translate(12564 9054)"
           >

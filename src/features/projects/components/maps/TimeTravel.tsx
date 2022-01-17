@@ -43,7 +43,9 @@ export default function TimeTravel({}: Props): ReactElement {
         scrollZoom:false,
       });
 
-      setBefore(before);
+      before.on('load', () => {
+        setBefore(before);
+      });
 
       const after = new mapboxgl.Map({
         container: 'after', // Container ID
@@ -54,7 +56,9 @@ export default function TimeTravel({}: Props): ReactElement {
         scrollZoom:false,
       });
 
-      setAfter(after);
+      after.on('load', () => {
+        setAfter(after);
+      });
 
       // Add zoom and rotation controls to the map.
       // before.addControl(
