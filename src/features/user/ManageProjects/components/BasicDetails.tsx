@@ -254,7 +254,7 @@ export default function BasicDetails({
         }
       }
     };
-  ;
+
 
   const {
     register,
