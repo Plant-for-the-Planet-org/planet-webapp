@@ -26,7 +26,7 @@ export default function Stats({ tenantScore }: Props): ReactElement {
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <div className={styles.statCard}>
-          <h2 className={styles.statNumber}>{localizedAbbreviatedNumber(i18n.language, Number(67263539), 2)}</h2>
+          <h2 className={styles.statNumber}>{localizedAbbreviatedNumber(i18n.language, Number(63356788), 2)}</h2>
           <h3 className={styles.statText}>{t('planet:treesDonated')}</h3>
           <button id={'donatedStats'}
             onClick={() => {

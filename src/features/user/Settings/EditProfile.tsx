@@ -50,6 +50,7 @@ export default function EditProfile({ }: Props) {
     const defaultProfileDetails = {
       firstname: user.firstname ? user.firstname : '',
       lastname: user.lastname ? user.lastname : '',
+      email: user.email ? user.email : '',
       address: user.address && user.address.address ? user.address.address : '',
       city: user.address && user.address.city ? user.address.city : '',
       zipCode: user.address && user.address.zipCode ? user.address.zipCode : '',
@@ -327,6 +328,18 @@ export default function EditProfile({ }: Props) {
                 {t('donate:lastNameRequired')}
               </span>
             )}
+          </div>
+        </div>
+
+        <div className={styles.formFieldLarge}>
+          <div style={{ width: '100%' }}>
+            <MaterialTextField
+              label={t('donate:email')}
+              variant="outlined"
+              name="email"
+              defaultValue={user.email}
+              disabled={true}
+            />
           </div>
         </div>
 
