@@ -100,7 +100,7 @@ export default function PopupProject({
         </div>
         {project.properties.allowDonations && (
           <div className={'projectCost'}>
-            {project.properties.treeCost ? (
+            {project.properties.unitCost ? (
               <>
                 <button id={`ProjPopDonate${project.id}`} ref={buttonRef} onClick={handleDonationOpen} className={'donateButton'}>
                   {t('common:donate')}
@@ -109,7 +109,7 @@ export default function PopupProject({
                   {getFormatedCurrency(
                     i18n.language,
                     project.properties.currency,
-                    project.properties.treeCost
+                    project.properties.unitCost
                   )}{' '}
                   <span>{project.properties.purpose === 'conservation' ? t('donate:perM2') : t('donate:perTree')}</span>
                 </div>

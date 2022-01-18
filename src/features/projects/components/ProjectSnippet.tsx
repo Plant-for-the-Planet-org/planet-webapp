@@ -121,7 +121,7 @@ export default function ProjectSnippet({
 
         {project.allowDonations && (
           <div className={'projectCost'}>
-            {project.treeCost ? (
+            {project.unitCost ? (
               <>
                 <button
                   id={`ProjSnippetDonate_${project.id}`}
