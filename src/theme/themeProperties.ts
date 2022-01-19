@@ -21,10 +21,12 @@ const themeProperties = {
     light: '#fff',
     dark: '#000',
     dangerColor:'#e74c3c',
+    safeColor:"#2980b9",
     backgroundColorDark: '#F2F2F7',
     unDecadeFill: '#1d1d1b',
     mapboxIcon: 'invert(0) hue-rotate(180deg)',
     backgroundBase: '#FaFaFf',
+    disabledFontColor: "#909090"
   },
   dark: {
     primaryFontColor: '#ffffff',
@@ -35,10 +37,12 @@ const themeProperties = {
     light: '#fff',
     dark: '#000',
     dangerColor:'#00ef00',
+    safeColor:"#2980b9",
     backgroundColorDark: '#101113',
     unDecadeFill: '#fff',
     mapboxIcon: 'invert(0.8) hue-rotate(180deg)',
-    backgroundBase: '#202020'
+    backgroundBase: '#202020',
+    disabledFontColor: "#686868"
   },
 };
 

@@ -1,5 +1,6 @@
 import getsessionId from './apiRequests/getSessionId';
 import countriesData from '../utils/countryCurrency/countriesData.json';
+import { TENANT_ID } from './constants/environment';
 
 export async function storeConfig() {
   let userLang;
@@ -10,7 +11,7 @@ export async function storeConfig() {
   }
   await fetch(`${process.env.API_ENDPOINT}/app/config`, {
     headers: {
-      'tenant-key': `${process.env.TENANTID}`,
+      'tenant-key': `${TENANT_ID}`,
       'X-SESSION-ID': await getsessionId(),
     },
   })
@@ -20,7 +21,8 @@ export async function storeConfig() {
       const countryCode = localStorage.getItem('countryCode');
       const found = countriesData.some(
         (arrayCountry) =>
-          arrayCountry.countryCode?.toUpperCase() === config.country.toUpperCase()
+          arrayCountry.countryCode?.toUpperCase() ===
+          config.country.toUpperCase()
       );
       if (!countryCode || !found) {
         if (found) {

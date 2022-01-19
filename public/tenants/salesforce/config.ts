@@ -51,7 +51,7 @@ const config = {
     twitterHandle: '@trilliontrees',
     locale: 'en_US',
   },
-  footerLinks: ['privacyAndTerms', 'imprint', 'contact', 'supportUs'],
+  footerLinks: ['privacy', 'terms', 'imprint', 'contact', 'supportUs'],
 };
 
 export default config;

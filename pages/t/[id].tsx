@@ -7,11 +7,12 @@ import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserP
 import Footer from '../../src/features/common/Layout/Footer';
 import Profile from '../../src/features/user/Profile';
 import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees';
+import ProjectsContainer from '../../src/features/user/Profile/ProjectsContainer';
 
 function User(): ReactElement {
   // External imports
   const router = useRouter();
-  const { user, contextLoaded,token } = React.useContext(UserPropsContext);
+  const { user, contextLoaded, token } = React.useContext(UserPropsContext);
 
   // Internal states
   const [profile, setProfile] = React.useState<null | Object>();
@@ -43,11 +44,16 @@ function User(): ReactElement {
     <>
       <GetPublicUserProfileMeta userprofile={profile} />
       <Profile userprofile={profile} authenticatedType={authenticatedType} />
-      <MyTrees
+      {profile && profile.type !== 'tpo' && (
+        <MyTrees
           authenticatedType={authenticatedType}
           profile={profile}
           token={token}
         />
+      )}
+      {profile && profile.type === 'tpo' && (
+        <ProjectsContainer profile={profile}/>
+      )}
       <Footer />
     </>
   ) : (

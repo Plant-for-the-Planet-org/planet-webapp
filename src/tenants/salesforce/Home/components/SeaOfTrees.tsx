@@ -26,8 +26,10 @@ export default function SeaOfTrees() {
   const { theme } = useContext(ThemeContext);
 
   const [open, setOpen] = useState(false);
-  const handleClose = () => {
-    setOpen(false);
+  const handleClose = (reason: string) => {
+    if (reason !== 'backdropClick') {
+      setOpen(false);
+    }
   };
   const handleOpen = () => {
     setOpen(true);
@@ -35,28 +37,29 @@ export default function SeaOfTrees() {
 
   return (
     <div>
-      {project && <Modal
+      {/* {project && <Modal
         className={`modal ${theme} modalContainer`}
         open={open}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
-        disableBackdropClick
         hideBackdrop
       >
         <DonationsPopup project={project} onClose={handleClose} />
       </Modal>
-      }
+      } */}
       <div className={`${styles.seaOfTreesContainer}`}>
         <div className={`${gridStyles.fluidContainer} ${styles.seaOfTrees}`}>
           <div className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}>
             <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
-              <h3>Sea of Trees</h3>
+              <h3>Blue Carbon Ocean Sustainability Program</h3>
               <p className={styles.contentSectionSubhead}>Where Ocean Sustainability meets Trees.</p>
               <p>Bold Ocean-Climate Action is necessary to create a just and sustainable future where everyone can thrive. We strive for Ocean Action for all, by all.</p>
               <p>The Salesforce Ocean Sustainability Program taps into the full power of Salesforce to protect, restore, and invest in mangroves, kelp, corals, salt marshes, sea grass, and oyster reefs.</p>
               <p>The improved protection and restoration of these ocean ecosystems will grow global carbon sequestration capacity, increase resilience, enhance food security, and help secure livelihoods.</p>
-              <button onClick={handleOpen}>Donate to Seas of Trees Projects</button>
+              <a href="https://trees.salesforce.com/ridge-to-reef">
+                <button onClick={handleOpen}>Donate to Blue Carbon Projects</button>
+              </a>
             </div>
           </div>
           <div className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100} ${styles.seaOfTreesImagesContainer}`}>

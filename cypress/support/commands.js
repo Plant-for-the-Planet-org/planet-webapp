@@ -30,7 +30,7 @@
 Cypress.Commands.add('BasicDonation', () => {
     cy.visit(Cypress.env('TEST_SERVER') + '/yucatan')
     cy.skipIntroVideo()
-    cy.wait(5000)
+    cy.wait(15000) // wait a little longer for tests running on 'npm run dev' instances
     cy.get('[data-test-id="donateButton"]').click()
     cy.contactForm("Peter", "Payer", "peter.payer@gmail.com", "Unbekannt 1", "Uffing am Staffelsee", "Germany{enter}", "82449")
 })
@@ -131,7 +131,7 @@ Cypress.Commands.add('skipIntroVideo', () => {
 })
 
 Cypress.Commands.add("giftRemove", () => {
-    cy.visit(Cypress.env('TEST_SERVER') + "/")
+    cy.visit(Cypress.env('TEST_SERVER'))
     cy.skipIntroVideo()
     cy.visit(Cypress.env('TEST_SERVER') + "/s/sagar-aryal").wait(10000).then(() => {
         cy.get('[data-test-id="searchIcon"]').type('yucatan restoration')
@@ -144,11 +144,12 @@ Cypress.Commands.add("giftRemove", () => {
 Cypress.Commands.add("addProjects", () => {
     cy.visit(Cypress.env('TEST_SERVER') + "/profile/projects/add-project")
     cy.get('#username').type("test-tpo@plant-for-the-planet.org{enter}")
-    cy.get('#password').type("CcCFg2enJ@C7XrV3ukqHbYYbaN-2hBW7hh6_Ye8kBorZAwczZfdM*TJnMLdgpbi{enter}")
+    cy.get('#password').type(Cypress.env('TEST_ACCOUNT_PASSWORD') + "{enter}")
 
-    cy.request(Cypress.env('TEST_MFA_URL')).then((response) => {
-        cy.get('#code').type(response.body.token + "{enter}")
-    })
+    // OTP disabled on staging by Sagar
+    //cy.request(Cypress.env('TEST_MFA_URL')).then((response) => {
+    //    cy.get('#code').type(response.body.token + "{enter}")
+    //})
     cy.wait(5000)
 })
 
@@ -194,7 +195,7 @@ Cypress.Commands.add("projectDetails", () => {
     cy.wait(5000)
     cy.get('[data-test-id="siteName"]').type(randomstring)
     cy.get('[data-test-id="siteStatus"]').click()
-    cy.contains("Planting").click()
+    cy.contains("Planted").click()
     cy.get('[data-test-id="projSitesCont"]').click()
     cy.wait(5000)
     cy.get('[data-test-id="projSpendingCont"]').click()

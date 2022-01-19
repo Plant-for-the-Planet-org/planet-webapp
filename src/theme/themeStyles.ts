@@ -11,22 +11,26 @@ const materialTheme = createTheme({
     MuiPickersBasePicker: {
       pickerView: {
         backgroundColor: 'white',
-      }
+      },
     },
     MuiDialogActions: {
       root: {
         backgroundColor: 'white',
-      }
+      },
     },
     MuiPickersCalendarHeader: {
       switchHeader: {
         // backgroundColor: lightBlue.A200,
         // color: "white",
-      }
+      },
     },
+
     MuiPickersDay: {
       daySelected: {
         backgroundColor: theme.primaryColor,
+        '&:hover': {
+          backgroundColor: theme.primaryColor,
+        },
       },
       current: {
         color: theme.primaryColor,
