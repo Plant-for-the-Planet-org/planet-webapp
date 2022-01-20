@@ -17,6 +17,7 @@ import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
 import GeocoderArcGIS from "geocoder-arcgis";
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
@@ -24,7 +25,7 @@ interface Props { }
 
 export default function EditProfile({ }: Props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-
+  const { handleError } = React.useContext(ErrorHandlingContext);
   const { user, setUser, token, contextLoaded } = React.useContext(
     UserPropsContext
   );
@@ -169,7 +170,7 @@ export default function EditProfile({ }: Props) {
             setSnackbarMessage(ready ? t('editProfile:profilePicUpdated') : '');
             handleSnackbarOpen();
 
-            putAuthenticatedRequest(`/app/profile`, bodyToSend, token)
+            putAuthenticatedRequest(`/app/profile`, bodyToSend, token, handleError)
               .then((res) => {
                 const newUserInfo = { ...user, image: res.image };
                 setUpdatingPic(false);
@@ -209,7 +210,7 @@ export default function EditProfile({ }: Props) {
     }
     if (contextLoaded && token) {
       try {
-        putAuthenticatedRequest(`/app/profile`, bodyToSend, token)
+        putAuthenticatedRequest(`/app/profile`, bodyToSend, token, handleError)
           .then((res) => {
             console.log(res);
             if (res.code !== 400) {

@@ -6,6 +6,7 @@ import BasicHome from '../src/tenants/common/Home';
 import tenantConfig from '../tenant.config';
 import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
 import { getRequest } from '../src/utils/apiRequests/api';
+import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 
 const config = tenantConfig();
 
@@ -18,10 +19,15 @@ export default function Home(initialized: Props) {
 
   const [leaderboard, setLeaderboard] = React.useState(null);
   const [tenantScore, setTenantScore] = React.useState(null);
+  const { handleError } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     async function loadTenantScore() {
-      const newTenantScore = await getRequest(`/app/tenantScore`);
+      const newTenantScore = await getRequest(
+        `/app/tenantScore`,
+        handleError,
+        '/'
+      );
       setTenantScore(newTenantScore);
     }
     loadTenantScore();
@@ -29,7 +35,11 @@ export default function Home(initialized: Props) {
 
   React.useEffect(() => {
     async function loadLeaderboard() {
-      const newLeaderBoard = await getRequest(`/app/leaderboard`);
+      const newLeaderBoard = await getRequest(
+        `/app/leaderboard`,
+        handleError,
+        '/'
+      );
       setLeaderboard(newLeaderBoard);
     }
     loadLeaderboard();

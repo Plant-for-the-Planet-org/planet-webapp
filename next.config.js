@@ -75,7 +75,7 @@ module.exports = withPlugins([[withBundleAnalyzer]], {
     // for webpack5:
     config.resolve.fallback = {
       fs: false,
-      path: require.resolve("path-browserify")
+      path: require.resolve('path-browserify'),
     };
 
     // When all the Sentry configuration env variables are available/configured
@@ -194,6 +194,18 @@ module.exports = withPlugins([[withBundleAnalyzer]], {
         permanent: true,
       },
     ];
+  },
+  async rewrites() {
+    return {
+      fallback: [
+        // These rewrites are checked after both pages/public files
+        // and dynamic routes are checked
+        {
+          source: '/profile/:slug*',
+          destination: `/profile/`,
+        },
+      ],
+    };
   },
   assetPrefix: hasAssetPrefix ? `${scheme}://${process.env.ASSET_PREFIX}` : '',
   // Asset Prefix allows to use CDN for the generated js files

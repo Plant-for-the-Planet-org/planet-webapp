@@ -8,16 +8,17 @@ import PlantLocationPage from './components/PlantLocationPage';
 import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import TopProgressBar from '../../common/ContentLoaders/TopProgressBar';
 import { useRouter } from 'next/router';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
-interface Props {}
+interface Props { }
 
 const PlantLocationMap = dynamic(() => import('./components/Map'), {
   loading: () => <p>loading</p>,
 });
 
-function TreeMapper({}: Props): ReactElement {
+function TreeMapper({ }: Props): ReactElement {
   const router = useRouter();
   const { token, contextLoaded } = React.useContext(UserPropsContext);
   const { t } = useTranslation(['treemapper']);
@@ -27,13 +28,16 @@ function TreeMapper({}: Props): ReactElement {
   const [selectedLocation, setselectedLocation] = React.useState('');
   const [location, setLocation] = React.useState(null);
   const [links, setLinks] = React.useState();
+  const { handleError } = React.useContext(ErrorHandlingContext);
 
   async function fetchTreemapperData(next = false) {
     setIsDataLoading(true);
     setProgress(70);
 
     if (next && links?.next) {
-      const response = await getAuthenticatedRequest(links.next, token);
+      const response = await getAuthenticatedRequest(links.next, token, {},
+        handleError,
+        '/profile');
       if (response) {
         const newPlantLocations = response?.items;
         for (const itr in newPlantLocations) {
@@ -62,7 +66,10 @@ function TreeMapper({}: Props): ReactElement {
     } else {
       const response = await getAuthenticatedRequest(
         '/treemapper/plantLocations?_scope=extended&limit=15',
-        token
+        token,
+        {},
+        handleError,
+        '/profile'
       );
       if (response) {
         const plantLocations = response?.items;
@@ -104,25 +111,25 @@ function TreeMapper({}: Props): ReactElement {
   }, [contextLoaded, token]);
 
   React.useEffect(() => {
-    if(router.query.l) {
-      if(plantLocations) {
-              for (const key in plantLocations) {
-                if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
-                  const plantLocation = plantLocations[key];
-                  if (plantLocation.id === router.query.l) {
-                    setselectedLocation(plantLocation);
-                    break;
-                  }
-                }
-              }
+    if (router.query.l) {
+      if (plantLocations) {
+        for (const key in plantLocations) {
+          if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
+            const plantLocation = plantLocations[key];
+            if (plantLocation.id === router.query.l) {
+              setselectedLocation(plantLocation);
+              break;
+            }
+          }
+        }
       }
     } else {
       setselectedLocation(null);
-  }
-  }, [router.query.l,plantLocations]);
+    }
+  }, [router.query.l, plantLocations]);
 
   const TreeMapperProps = {
-    location:selectedLocation,
+    location: selectedLocation,
     setLocation,
     selectedLocation,
     setselectedLocation,
@@ -139,23 +146,23 @@ function TreeMapper({}: Props): ReactElement {
           <TopProgressBar progress={progress} />
         </div>
       )}
-      
+
       <div id="pageContainer" className={styles.pageContainer}>
-      {selectedLocation ? <PlantLocationPage {...TreeMapperProps} />:
+        {selectedLocation ? <PlantLocationPage {...TreeMapperProps} /> :
           <div className={styles.listContainer}>
-           <div className={'profilePageTitle'}>{t('treemapper:treeMapper')}</div> 
-           <TreeMapperList {...TreeMapperProps} />
+            <div className={'profilePageTitle'}>{t('treemapper:treeMapper')}</div>
+            <TreeMapperList {...TreeMapperProps} />
           </div>
-          }
-          <div className={styles.mapContainer}>
-              <PlantLocationMap
-                locations={plantLocations}
-                selectedLocation={selectedLocation}
-                setselectedLocation={setselectedLocation}
-              />
-          </div>
+        }
+        <div className={styles.mapContainer}>
+          <PlantLocationMap
+            locations={plantLocations}
+            selectedLocation={selectedLocation}
+            setselectedLocation={setselectedLocation}
+          />
         </div>
       </div>
+    </div>
   );
 }
 

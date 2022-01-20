@@ -16,6 +16,7 @@ import { Calendar, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import materialTheme from '../../../theme/themeStyles';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 export const CancelModal = ({
   cancelModalOpen,
   handleCancelModalClose,
@@ -27,6 +28,7 @@ export const CancelModal = ({
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState(new Date());
   const { t, i18n, ready } = useTranslation(['me']);
+  const { handleError } = React.useContext(ErrorHandlingContext);
   const cancelDonation = () => {
     console.log(record.id, date.toISOString().split('T')[0], '{record.id');
     const bodyToSend = {
@@ -44,7 +46,8 @@ export const CancelModal = ({
     putAuthenticatedRequest(
       `/app/subscriptions/${record.id}?scope=cancel`,
       bodyToSend,
-      token
+      token,
+      handleError
     )
       .then((res) => {
         console.log(res, 'Response');
