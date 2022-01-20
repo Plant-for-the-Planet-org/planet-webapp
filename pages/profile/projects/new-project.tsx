@@ -91,7 +91,7 @@ export default function AddProjectType(): ReactElement {
                             <button
                                 id={'addProjectBut'}
                                 className={'add-projects-button'}
-                                onClick={() => router.push('/profile/projects/new-project/?purpose=restoration')}
+                                onClick={() => router.push('/profile/projects/new-project/?purpose=trees')}
                             >
                                 {t('manageProjects:restorationProject')}
                             </button>

@@ -214,7 +214,7 @@ export default function BasicDetails({
 
 
   // Default Form Fields
-  const defaultBasicDetails = purpose == "restoration" ? {
+  const defaultBasicDetails = purpose === "trees" ? {
     name: '',
     slug: '',
     classification: {
@@ -274,7 +274,7 @@ export default function BasicDetails({
 
   React.useEffect(() => {
     if (projectDetails) {
-      const basicDetails = purpose === "restoration" ? {
+      const basicDetails = purpose ==="trees" ? {
         name: projectDetails.name,
         slug: projectDetails.slug,
         classification: projectDetails.classification,
@@ -337,7 +337,7 @@ export default function BasicDetails({
 
   const onSubmit = (data: any) => {
     setIsUploadingData(true);
-    const submitData = purpose === "restoration" ? {
+    const submitData = purpose ==="trees" ? {
       name: data.name,
       slug: data.slug,
       classification: data.classification,
@@ -490,7 +490,7 @@ export default function BasicDetails({
               )}
             </div>
             <div style={{ width: '20px' }}></div>
-            {purpose === "restoration" ? 
+            {purpose ==="trees" ? 
               <div className={styles.formFieldHalf} data-test-id="classification">
                 <Controller
                   as={
@@ -555,7 +555,7 @@ export default function BasicDetails({
             }
           </div>
 
-          {purpose === "restoration" ?
+          {purpose ==="trees" ?
             <div className={styles.formField}>
               <div className={styles.formFieldHalf} data-test-id="target">
                 <MaterialTextField
@@ -807,7 +807,7 @@ export default function BasicDetails({
             </div>
           </div>
 
-          {purpose === "restoration" ?
+          {purpose ==="trees" ?
             <>
               <div className={styles.formFieldLarge} style={{ width: '320px' }}>
                 <div className={styles.formFieldRadio}>
