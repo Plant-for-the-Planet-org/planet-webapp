@@ -4,6 +4,7 @@ import i18next from '../../../../i18n/'
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
+import { useRouter } from 'next/router';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
 
@@ -25,6 +26,7 @@ export default function PopupProject({
   buttonRef,
   popupRef,
 }: Props): ReactElement {
+  const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const { token } = React.useContext(UserPropsContext);
 
@@ -79,8 +81,12 @@ export default function PopupProject({
         <div className={'projectData'}>
           <div className={'targetLocation'}>
             <div className={'target'}>
-              {localizedAbbreviatedNumber(i18n.language, Number(project.properties.countPlanted), 1)}{' '}
-              {t('common:tree', { count: Number(project.properties.countPlanted) })} •{' '}
+              {project.properties.purpose === 'trees' && (
+                <>
+                  {localizedAbbreviatedNumber(i18n.language, Number(project.properties.countPlanted), 1)}{' '}
+                  {t('common:tree', { count: Number(project.properties.countPlanted) })} •{' '}
+                </>
+              )}
               <span style={{ fontWeight: 400 }}>
                 {t('country:' + project.properties.country.toLowerCase())}
               </span>
@@ -94,19 +100,18 @@ export default function PopupProject({
         </div>
         {project.properties.allowDonations && (
           <div className={'projectCost'}>
-            {project.properties.treeCost ? (
+            {project.properties.unitCost ? (
               <>
-                <button id={`ProjPopDonate${project.id}`} ref={buttonRef} onClick={handleDonationOpen} className={'donateButton'}
-                >
+                <button id={`ProjPopDonate${project.id}`} ref={buttonRef} onClick={handleDonationOpen} className={'donateButton'}>
                   {t('common:donate')}
                 </button>
                 <div className={'perTreeCost'}>
                   {getFormatedCurrency(
                     i18n.language,
                     project.properties.currency,
-                    project.properties.treeCost
+                    project.properties.unitCost
                   )}{' '}
-                  <span>{t('donate:perTree')}</span>
+                  <span>{project.properties.purpose === 'conservation' ? t('donate:perM2') : t('donate:perTree')}</span>
                 </div>
               </>
             ) : null}
