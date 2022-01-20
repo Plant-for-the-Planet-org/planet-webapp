@@ -19,17 +19,11 @@ import i18next from '../../../../i18n';
 
 const { useTranslation } = i18next;
 
-export default function ManageProjects({ GUID, token, project, conservationProject }: any) {
+export default function ManageProjects({ GUID, token, project }: any) {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
 
   function getSteps() {
     return (
-      conservationProject === true ?
-        [
-          ready ? t('manageProjects:basicDetails') : '',
-          ready ? t('manageProjects:detailedAnalysis') : '',
-          ready ? t('manageProjects:review') : '',
-        ] :
         [
           ready ? t('manageProjects:basicDetails') : '',
           ready ? t('manageProjects:projectMedia') : '',
@@ -126,18 +120,6 @@ export default function ManageProjects({ GUID, token, project, conservationProje
         return <BasicDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
     }
   }
-  function getConservationStepContent(step: any) {
-    switch (step) {
-      case 0:
-        return <BasicDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
-      case 1:
-        return <DetailedAnalysis userLang={userLang} handleNext={handleNext} token={token} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
-      case 2:
-        return <SubmitForReview handleBack={handleBack} projectDetails={projectDetails} submitForReview={submitForReview} isUploadingData={isUploadingData} projectGUID={projectGUID} handleReset={handleReset} />;
-      default:
-        return <BasicDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
-    }
-  }
 
   return ready ? (
     <div className={styles.mainContainer} style={{ display: 'flex', flexDirection: 'column' }}>
@@ -153,7 +135,7 @@ export default function ManageProjects({ GUID, token, project, conservationProje
         
       </Stepper>
       <div>
-          {conservationProject === true ? getConservationStepContent(activeStep) : getStepContent(activeStep)}
+          {getStepContent(activeStep)}
         </div>
     </div>
   ) : null;

@@ -111,10 +111,7 @@ export default function AddProjectType(): ReactElement {
 
                 {isPurpose ?
                     (
-                        router.query.purpose == "conservation" ?
-                            (<ManageProjects token={token} conservationProject={true} />)
-                            :
-                            (<ManageProjects token={token} />)
+                        <ManageProjects token={token} />
                     )
                     :
                     null}
