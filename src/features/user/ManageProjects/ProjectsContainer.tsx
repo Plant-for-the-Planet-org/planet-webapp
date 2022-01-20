@@ -99,7 +99,7 @@ function SingleProject({ project }: any) {
         <p className={styles.projectName}>{project.name}</p>
         <p className={styles.projectClassification}>
           {project.classification} •{' '}
-          {t('country:' + project.country.toLowerCase())}
+          {/* {t('country:' + project.country.toLowerCase())} */}
         </p>
         <p>
           {localizedAbbreviatedNumber(

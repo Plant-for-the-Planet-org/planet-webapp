@@ -37,6 +37,7 @@ interface Props {
   setErrorMessage: Function;
   projectGUID: any;
   token: any;
+  purpose: String;
 }
 
 export default function BasicDetails({
@@ -48,6 +49,7 @@ export default function BasicDetails({
   setProjectGUID,
   setErrorMessage,
   projectGUID,
+  purpose
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
   const EMPTY_STYLE = {
@@ -212,7 +214,7 @@ export default function BasicDetails({
 
 
   // Default Form Fields
-  const defaultBasicDetails = router.query.purpose == "restoration" ? {
+  const defaultBasicDetails = purpose == "restoration" ? {
     name: '',
     slug: '',
     classification: {
@@ -272,7 +274,7 @@ export default function BasicDetails({
 
   React.useEffect(() => {
     if (projectDetails) {
-      const basicDetails = router.query.purpose == "restoration" ? {
+      const basicDetails = purpose === "restoration" ? {
         name: projectDetails.name,
         slug: projectDetails.slug,
         classification: projectDetails.classification,
@@ -335,7 +337,7 @@ export default function BasicDetails({
 
   const onSubmit = (data: any) => {
     setIsUploadingData(true);
-    const submitData = router.query.purpose == "restoration" ? {
+    const submitData = purpose === "restoration" ? {
       name: data.name,
       slug: data.slug,
       classification: data.classification,
@@ -488,7 +490,7 @@ export default function BasicDetails({
               )}
             </div>
             <div style={{ width: '20px' }}></div>
-            {router.query.purpose == "restoration" ?
+            {purpose === "restoration" ? 
               <div className={styles.formFieldHalf} data-test-id="classification">
                 <Controller
                   as={
@@ -553,7 +555,7 @@ export default function BasicDetails({
             }
           </div>
 
-          {router.query.purpose == "restoration" ?
+          {purpose === "restoration" ?
             <div className={styles.formField}>
               <div className={styles.formFieldHalf} data-test-id="target">
                 <MaterialTextField
@@ -805,7 +807,7 @@ export default function BasicDetails({
             </div>
           </div>
 
-          {router.query.purpose == "restoration" ?
+          {purpose === "restoration" ?
             <>
               <div className={styles.formFieldLarge} style={{ width: '320px' }}>
                 <div className={styles.formFieldRadio}>

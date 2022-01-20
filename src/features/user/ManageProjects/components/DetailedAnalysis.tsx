@@ -31,8 +31,9 @@ interface Props {
     handleReset: Function;
     token: any;
     userLang: String;
+    purpose: String;
 }
-export default function DetailedAnalysis({ handleBack, userLang, token, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
+export default function DetailedAnalysis({ handleBack, userLang, token, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset, purpose }: Props): ReactElement {
     const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
 
     const [siteOwners, setSiteOwners] = React.useState([
@@ -140,7 +141,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
             }
         }
 
-        const submitData = router.query.purpose == "restoration" ? {
+        const submitData = purpose === "restoration" ? {
             yearAbandoned: data.yearAbandoned.getFullYear() ? data.yearAbandoned.getFullYear() : null,
             firstTreePlanted: `${data.firstTreePlanted.getFullYear()}-${data.firstTreePlanted.getMonth() + 1}-${data.firstTreePlanted.getDate()}`,
             plantingDensity: data.plantingDensity,
@@ -198,7 +199,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
     React.useEffect(() => {
         if (projectDetails) {
 
-            const defaultDetailedAnalysisData = router.query.purpose == "restoration" ? {
+            const defaultDetailedAnalysisData = purpose === "restoration" ? {
                 yearAbandoned: projectDetails.yearAbandoned ? new Date(new Date().setFullYear(projectDetails.yearAbandoned)) : new Date(),
                 firstTreePlanted: projectDetails.firstTreePlanted ? new Date(projectDetails.firstTreePlanted) : new Date(),
                 plantingDensity: projectDetails.plantingDensity,
@@ -259,7 +260,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
             <form onSubmit={(e) => { e.preventDefault() }}>
                 <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
 
-                    {router.query.purpose == "restoration" ?
+                    {purpose === "restoration" ?
                         <div className={styles.formField}>
                             <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
                                 <ThemeProvider theme={materialTheme}>
@@ -352,7 +353,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                             </div>
                         </div>
                     }
-                    {router.query.purpose == "restoration" ?
+                    {purpose === "restoration" ?
                         <div className={styles.formField}>
                             <div className={styles.formFieldHalf} data-test-id="plantingDensity">
 
@@ -432,7 +433,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
 
                         <div className={styles.formFieldLarge}>
                             <div className={styles.plantingSeasons}>
-                                <p className={styles.plantingSeasonsLabel}> {router.query.purpose == "restoration" ? t('manageProjects:plantingSeasons') : t('manageProjects:activitySeasons')} </p>
+                                <p className={styles.plantingSeasonsLabel}> {purpose === "restoration" ? t('manageProjects:plantingSeasons') : t('manageProjects:activitySeasons')} </p>
                                 {plantingSeasons.map((month) => {
                                     return (
                                         <div className={styles.multiSelectInput} key={month.id} onClick={() => handleSetPlantingSeasons(month.id)}>
@@ -484,7 +485,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                         </div>
 
                         <div style={{ width: '20px' }}></div>
-                        {router.query.purpose == "restoration" ?
+                        {purpose === "restoration" ?
                             <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
                                 {/* the reason this project has been created (max. 300 characters) */}
                                 <MaterialTextField
@@ -548,7 +549,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                         <div className={styles.formFieldHalf}>
 
                             <div className={styles.plantingSeasons}>
-                                <p className={styles.plantingSeasonsLabel}> {router.query.purpose == "restoration" ? t('manageProjects:siteOwner') : t('manageProjects:landOwnershipType')} </p>
+                                <p className={styles.plantingSeasonsLabel}> {purpose === "restoration" ? t('manageProjects:siteOwner') : t('manageProjects:landOwnershipType')} </p>
                                 {siteOwners.map((owner) => {
                                     return (
                                         <div className={styles.multiSelectInput} style={{ width: 'fit-content' }} key={owner.id} onClick={() => handleSetSiteOwner(owner.id)}>
@@ -564,7 +565,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                             </div>
                         </div>
                         <div style={{ width: '20px' }}></div>
-                        {router.query.purpose == "restoration" ?
+                        {purpose === "restoration" ?
                             <div className={styles.formFieldHalf}>
                                 <MaterialTextField
                                     label={t('manageProjects:ownerName')}
@@ -608,7 +609,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                                     <Controller
                                         render={properties => (
                                             <DatePicker
-                                                label={router.query.purpose == "restoration" ? t('manageProjects:acquisitionYear') : t('manageProjects:startingProtectionYear')}
+                                                label={purpose === "restoration" ? t('manageProjects:acquisitionYear') : t('manageProjects:startingProtectionYear')}
                                                 value={properties.value}
                                                 onChange={properties.onChange}
                                                 inputVariant="outlined"
@@ -620,7 +621,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                                                 maxDate={new Date()}
                                             />)
                                         }
-                                        name={router.query.purpose == "restoration" ? "acquisitionYear" : "startingProtectionYear"}
+                                        name={purpose === "restoration" ? "acquisitionYear" : "startingProtectionYear"}
                                         control={control}
                                         defaultValue=""
 
@@ -629,7 +630,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                             </ThemeProvider>
                         </div>
                         <div style={{ width: '20px' }}></div>
-                        {router.query.purpose == "restoration" ?
+                        {purpose === "restoration" ?
                             <div className={styles.formFieldHalf}>
                                 <ThemeProvider theme={materialTheme}>
                                     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
@@ -684,7 +685,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                             </div>
                         }
                     </div>
-                    {router.query.purpose == "restoration" ? 
+                    {purpose === "restoration" ? 
                     <div className={styles.formFieldLarge} style={{ position: 'relative' }}>
                         <MaterialTextField
                             label={t('manageProjects:causeOfDegradation')}

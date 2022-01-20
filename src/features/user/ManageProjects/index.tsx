@@ -105,11 +105,11 @@ export default function ManageProjects({ GUID, token, project }: any) {
   function getStepContent(step: number) {
     switch (step) {
       case 0:
-        return <BasicDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
+        return <BasicDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} purpose={project?.purpose ? project?.purpose : router.query?.purpose}/>;
       case 1:
-        return <ProjectMedia handleNext={handleNext} token={token} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
+        return <ProjectMedia handleNext={handleNext} token={token} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset}/>;
       case 2:
-        return <DetailedAnalysis userLang={userLang} handleNext={handleNext} token={token} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} />;
+        return <DetailedAnalysis userLang={userLang} handleNext={handleNext} token={token} handleBack={handleBack} projectDetails={projectDetails} setProjectDetails={setProjectDetails} projectGUID={projectGUID} handleReset={handleReset} purpose={project?.purpose ? project?.purpose : router.query?.purpose}/>;
       case 3:
         return <ProjectSites handleNext={handleNext} token={token} handleBack={handleBack} projectGUID={projectGUID} handleReset={handleReset} />;
       case 4:
@@ -117,7 +117,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
       case 5:
         return <SubmitForReview handleBack={handleBack} projectDetails={projectDetails} submitForReview={submitForReview} isUploadingData={isUploadingData} projectGUID={projectGUID} handleReset={handleReset} />;
       default:
-        return <BasicDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} />;
+        return <BasicDetails handleNext={handleNext} token={token} projectDetails={projectDetails} setProjectDetails={setProjectDetails} errorMessage={errorMessage} setProjectGUID={setProjectGUID} projectGUID={projectGUID} setErrorMessage={setErrorMessage} purpose={project?.purpose ? project?.purpose : router.query?.purpose}/>;
     }
   }
 
