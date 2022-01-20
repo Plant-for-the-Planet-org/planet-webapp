@@ -76,7 +76,7 @@ export default function Donate({
         setInternalCurrencyCode(currency);
         setCurrencyCode(currency);
         const projects = await getRequest(
-          `/app/projects?_scope=map&tenant=${TENANT_ID}&currency=${currency}`
+          `/app/projects?filter[purpose]=trees,conservation&_scope=map&tenant=${TENANT_ID}&currency=${currency}`
         );
         setProjects(projects);
         setProject(null);

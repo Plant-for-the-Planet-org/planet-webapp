@@ -74,7 +74,7 @@ export default function Donate({
       setPlantLocations(newPlantLocations);
       setPlantLocationsLoaded(true);
     }
-    if (project) {
+    if (project && project.purpose === 'trees') {
       loadPl();
     }
   }, [project]);
