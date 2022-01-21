@@ -26,6 +26,7 @@ import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import GeocoderArcGIS from "geocoder-arcgis";
 
 const { useTranslation } = i18next;
 
@@ -268,6 +269,7 @@ export default function BasicDetails({
     reset,
     setValue,
     setError,
+    clearErrors
   } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
 
 
@@ -444,6 +446,11 @@ export default function BasicDetails({
       );
     }
   };
+  const geocoder = new GeocoderArcGIS(process.env.ESRI_CLIENT_SECRET ? {
+    client_id: process.env.ESRI_CLIENT_ID,
+    client_secret: process.env.ESRI_CLIENT_SECRET,
+  } : {});
+  
   return ready ? (
     <div className={`${styles.stepContainer} `}>
       <form
@@ -723,6 +730,23 @@ export default function BasicDetails({
                   latitude: event.lngLat[1],
                   longitude: event.lngLat[0],
                 };
+                geocoder.reverse(`${latLong.longitude}, ${latLong.latitude}`,{ // longitude,latitude
+                  maxLocations: 10,
+                  distance: 100
+                }).then((result) => {
+                  if(result?.address?.Type === "Ocean"){
+                    setError("latitude", {
+                      message: "Wrong Coordinates"
+                    })
+                  }
+                  else{
+                    clearErrors("latitude")
+                  }
+                  console.log(result);
+                }).catch((error) => {
+                  console.log(`error`, error)
+                })
+                console.log(`latLong`, latLong.latitude, latLong.longitude,)
                 setViewPort({
                   ...viewport,
                   latitude: event.lngLat[1],
