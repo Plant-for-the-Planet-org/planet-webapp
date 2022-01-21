@@ -35,7 +35,7 @@ export default function ProjectsContainer({ }: any) {
       loadProjects();
     }
   }, [contextLoaded, token]);
-console.log(`projects`, projects)
+
   return ready ? (
     <div className="profilePage">
       <div className="profilePageHeader">
@@ -99,7 +99,7 @@ function SingleProject({ project }: any) {
         <p className={styles.projectName}>{project.name}</p>
         <p className={styles.projectClassification}>
           {project.classification} •{' '}
-          {/* {t('country:' + project.country.toLowerCase())} */}
+          {project.country === null ? <></> : t('country:' + project.country.toLowerCase())}
         </p>
         <p>
           {localizedAbbreviatedNumber(
