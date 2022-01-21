@@ -19,6 +19,7 @@ import { useRouter } from 'next/router';
 import { MenuItem, makeStyles } from '@material-ui/core';
 import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
@@ -35,7 +36,7 @@ interface Props {
 }
 export default function DetailedAnalysis({ handleBack, userLang, token, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset, purpose }: Props): ReactElement {
     const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
-
+    const { handleError } = React.useContext(ErrorHandlingContext);
     const [siteOwners, setSiteOwners] = React.useState([
         { id: 1, title: ready ? t('manageProjects:siteOwnerPrivate') : '', value: 'private', isSet: false },
         { id: 2, title: ready ? t('manageProjects:siteOwnerPublic') : '', value: 'public-property', isSet: false },
@@ -173,7 +174,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
 
         }
 
-        putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, token).then((res) => {
+        putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, token, handleError).then((res) => {
             if (!res.code) {
                 setProjectDetails(res)
                 setIsUploadingData(false)

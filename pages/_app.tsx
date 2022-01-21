@@ -18,7 +18,6 @@ import Layout from '../src/features/common/Layout';
 import MapLayout from '../src/features/projects/components/ProjectsMap';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
-import VideoContainer from '../src/features/common/LandingVideo/';
 import tenantConfig from '../tenant.config';
 import { browserNotCompatible } from '../src/utils/browsercheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
@@ -28,6 +27,11 @@ import ProjectPropsProvider, {
 import UserPropsProvider from '../src/features/common/Layout/UserPropsContext';
 import PlayButton from '../src/features/common/LandingVideo/PlayButton';
 import ErrorHandlingProvider from '../src/features/common/Layout/ErrorHandlingContext';
+import dynamic from 'next/dynamic';
+
+const VideoContainer = dynamic(() => import('../src/features/common/LandingVideo'), {
+  ssr: false,
+});
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -135,16 +139,36 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
 
   const [showVideo, setshowVideo] = React.useState(true);
 
+  // if localShowVideo is undefined
+  // set localShowVideo is true and show the video
+  // if localShowVideo is true show the video
+  // if localShowVideo is false hide the video
+
+  const [localShowVideo, setLocalShowVideo] = React.useState(false);
+
   React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      if (localStorage.getItem('hidePreview')) {
-        setshowVideo(false);
+    if (router.pathname === '/') {
+      if (typeof window !== 'undefined') {
+        if (localStorage.getItem('showVideo')) {
+          if (localStorage.getItem('showVideo') === 'true') {
+            setLocalShowVideo(true);
+          } else {
+            setLocalShowVideo(false);
+          }
+        } else {
+          localStorage.setItem('showVideo', 'true');
+          setLocalShowVideo(true);
+        }
       }
-      if (router.pathname !== '/') {
-        setshowVideo(false);
-      }
+    } else {
+      setLocalShowVideo(false);
     }
   }, []);
+
+  React.useEffect(() => {
+    setshowVideo(localShowVideo)
+  }, [localShowVideo]);
+
   const { project, projects } = React.useContext(ProjectPropsContext);
 
   if (browserCompatible) {
@@ -156,7 +180,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
           <div
             style={
               showVideo &&
-              (config.tenantName === 'planet' || config.tenantName === 'ttc')
+                (config.tenantName === 'planet' || config.tenantName === 'ttc')
                 ? {}
                 : { display: 'none' }
             }
@@ -171,7 +195,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
           <div
             style={
               showVideo &&
-              (config.tenantName === 'planet' || config.tenantName === 'ttc')
+                (config.tenantName === 'planet' || config.tenantName === 'ttc')
                 ? { display: 'none' }
                 : {}
             }
@@ -200,7 +224,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
                           <div
                             style={
                               config.tenantName === 'planet' ||
-                              config.tenantName === 'ttc'
+                                config.tenantName === 'ttc'
                                 ? {}
                                 : { display: 'none' }
                             }

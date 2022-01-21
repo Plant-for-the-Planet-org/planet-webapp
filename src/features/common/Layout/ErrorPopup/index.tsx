@@ -6,7 +6,7 @@ import { ErrorHandlingContext } from '../ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 export default function ErrorPopup(): ReactElement {
-  const { t, ready } = useTranslation(['leaderboard']);
+  const { t, ready } = useTranslation(['common']);
   const { error, setError } = React.useContext(ErrorHandlingContext);
 
   //   const sendUserToLogin = () => {
@@ -40,7 +40,7 @@ export default function ErrorPopup(): ReactElement {
           >
             <CloseIcon color={getErrorColor(error.type)} />
           </button>
-          <div className={styles.errorContent}>{error.message}</div>
+          <div className={styles.errorContent}>{t(error.message)}</div>
         </div>
       ) : null}
     </>

@@ -6,6 +6,7 @@ import { UserPropsContext } from '../../src/features/common/Layout/UserPropsCont
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import Recurrency from '../../src/features/user/Account/Recurrency';
+import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
@@ -18,12 +19,17 @@ function RecurrentDonations({ }: Props): ReactElement {
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const [recurrencies, setrecurrencies] = React.useState<Payments.Subscription[]>();
 
+  const { handleError } = React.useContext(ErrorHandlingContext);
+
   async function fetchRecurrentDonations(next = false): Promise<void> {
     setIsDataLoading(true);
     setProgress(70);
     const recurrencies: Payments.Subscription[] = await getAuthenticatedRequest(
       '/app/subscriptions',
-      token
+      token,
+      {},
+      handleError,
+      '/profile'
     );
     if (recurrencies && Array.isArray(recurrencies)) {
       const activeRecurrencies = recurrencies?.filter(

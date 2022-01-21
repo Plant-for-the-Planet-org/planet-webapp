@@ -43,6 +43,7 @@ export default function ProjectSnippet({
     const url = getDonationUrl(project.slug, token);
     window.location.href = url;
   };
+
   return ready ? (
     <div className={'singleProject'} key={keyString}>
       {editMode ? (
@@ -71,6 +72,7 @@ export default function ProjectSnippet({
 
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
+
             {project.classification &&
               t(`donate:${project.classification}`)}
           </div>
@@ -90,12 +92,16 @@ export default function ProjectSnippet({
         <div className={'projectData'}>
           <div className={'targetLocation'}>
             <div className={'target'}>
-              {localizedAbbreviatedNumber(
-                i18n.language,
-                Number(project.countPlanted),
-                1
-              )}{' '}
-              {t('common:tree', { count: Number(project.countPlanted) })} •{' '}
+              {project.purpose === 'trees' ? (
+                <>
+                  {localizedAbbreviatedNumber(
+                    i18n.language,
+                    Number(project.countPlanted),
+                    1
+                  )}{' '}
+                  {t('common:tree', { count: Number(project.countPlanted) })} •{' '}
+                </>
+              ) : []}
               <span style={{ fontWeight: 400 }}>
                 {t('country:' + project.country.toLowerCase())}
               </span>
@@ -115,7 +121,7 @@ export default function ProjectSnippet({
 
         {project.allowDonations && (
           <div className={'projectCost'}>
-            {project.treeCost ? (
+            {project.unitCost ? (
               <>
                 <button
                   id={`ProjSnippetDonate_${project.id}`}
@@ -129,9 +135,9 @@ export default function ProjectSnippet({
                   {getFormatedCurrency(
                     i18n.language,
                     project.currency,
-                    project.treeCost
+                    project.unitCost
                   )}{' '}
-                  <span>{t('donate:perTree')}</span>
+                  <span>{project.purpose === 'conservation' ? t('donate:perM2') : t('donate:perTree')}</span>
                 </div>
               </>
             ) : null}

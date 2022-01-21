@@ -13,6 +13,7 @@ import EmbedModal from '../../Widget/EmbedModal';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { TENANT_ID } from '../../../../utils/constants/environment';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 export default function SettingsModal({
@@ -23,7 +24,6 @@ export default function SettingsModal({
   handleEditProfileModalOpen,
 }: any) {
   const { user, logoutUser } = React.useContext(UserPropsContext);
-
   const router = useRouter();
   const { t, ready } = useTranslation(['me', 'common', 'editProfile']);
 
@@ -163,14 +163,14 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose }: any) {
   const handleChange = (e) => {
     e.preventDefault();
   };
-
+  const { handleError } = React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
 
   const [canDeleteAccount, setcanDeleteAccount] = React.useState(false);
 
   const handleDeleteAccount = () => {
     setIsUploadingData(true);
-    deleteAuthenticatedRequest('/app/profile', token).then((res) => {
+    deleteAuthenticatedRequest('/app/profile', token, handleError).then((res) => {
       if (res !== 404) {
         logoutUser(`${process.env.NEXTAUTH_URL}/`);
       } else {

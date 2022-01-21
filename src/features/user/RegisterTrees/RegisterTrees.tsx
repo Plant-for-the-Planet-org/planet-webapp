@@ -27,6 +27,7 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './RegisterModal.module.scss';
 import SingleContribution from './RegisterTrees/SingleContribution';
 import materialTheme from '../../../theme/themeStyles';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 type overridesNameToClassKey = {
   [P in keyof MuiPickersOverrides]: keyof MuiPickersOverrides[P];
@@ -40,10 +41,10 @@ const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   loading: () => <p></p>,
 });
 
-interface Props {}
+interface Props { }
 
 const { useTranslation } = i18next;
-export default function RegisterTrees({}: Props) {
+export default function RegisterTrees({ }: Props) {
   const router = useRouter();
   const { user, token, contextLoaded } = React.useContext(UserPropsContext);
   const { t, ready } = useTranslation(['me', 'common']);
@@ -76,6 +77,7 @@ export default function RegisterTrees({}: Props) {
   const [userLocation, setUserLocation] = React.useState();
   const [registered, setRegistered] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
+  const { handleError } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
@@ -161,7 +163,7 @@ export default function RegisterTrees({}: Props) {
           plantDate: new Date(data.plantDate),
           geometry: geometry,
         };
-        postAuthenticatedRequest(`/app/contributions`, submitData, token).then(
+        postAuthenticatedRequest(`/app/contributions`, submitData, token, handleError).then(
           (res) => {
             if (!res.code) {
               setErrorMessage('');
@@ -194,11 +196,13 @@ export default function RegisterTrees({}: Props) {
   };
 
   async function loadProjects() {
-    await getAuthenticatedRequest('/app/profile/projects', token).then(
-      (projects: any) => {
-        setProjects(projects);
-      }
-    );
+    await getAuthenticatedRequest('/app/profile/projects', token, {},
+      handleError,
+      '/profile').then(
+        (projects: any) => {
+          setProjects(projects);
+        }
+      );
   }
 
   React.useEffect(() => {
@@ -223,8 +227,8 @@ export default function RegisterTrees({}: Props) {
     <div className="profilePage">
       <h2 className={'profilePageTitle'}>{t('me:registerTrees')}</h2>
       <div className={styles.registerTreesPage}>
-      {!registered ? (
-        
+        {!registered ? (
+
           <form onSubmit={handleSubmit(submitRegisterTrees)}>
             <div className={styles.note}>
               <p>{t('me:registerTreesDescription')}</p>
@@ -416,10 +420,10 @@ export default function RegisterTrees({}: Props) {
               </button>
             </div>
           </form>
-        
-      ) : (
-        <SingleContribution {...ContributionProps} />
-      )}
+
+        ) : (
+          <SingleContribution {...ContributionProps} />
+        )}
       </div>
     </div>
   ) : null;

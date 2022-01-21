@@ -6,6 +6,7 @@ import NotFound from '../../../../public/assets/images/NotFound';
 import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import getImageUrl from '../../../utils/getImageURL';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './ProjectsContainer.module.scss';
 
@@ -14,6 +15,7 @@ const { useTranslation } = i18next;
 export default function ProjectsContainer({ }: any) {
   const { t, ready } = useTranslation(['donate', 'manageProjects']);
   const [projects, setProjects] = React.useState([]);
+  const { handleError } = React.useContext(ErrorHandlingContext);
 
   const { user, contextLoaded, loginWithRedirect, token } = React.useContext(
     UserPropsContext
@@ -21,11 +23,13 @@ export default function ProjectsContainer({ }: any) {
 
   async function loadProjects() {
     if (user) {
-      await getAuthenticatedRequest('/app/profile/projects?version=1.2', token).then(
-        (projects) => {
-          setProjects(projects);
-        }
-      );
+      await getAuthenticatedRequest('/app/profile/projects?version=1.2', token, {},
+        handleError,
+        '/profile').then(
+          (projects) => {
+            setProjects(projects);
+          }
+        );
     }
   }
 

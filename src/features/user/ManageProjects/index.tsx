@@ -16,11 +16,13 @@ import {
 import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import i18next from '../../../../i18n';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
 export default function ManageProjects({ GUID, token, project }: any) {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
+  const { handleError } = React.useContext(ErrorHandlingContext);
 
   function getSteps() {
     return (
@@ -66,7 +68,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
     putAuthenticatedRequest(
       `/app/projects/${projectGUID}`,
       submitData,
-      token
+      token, handleError
     ).then((res) => {
       if (!res.code) {
         setProjectDetails(res);
@@ -89,7 +91,10 @@ export default function ManageProjects({ GUID, token, project }: any) {
     if (projectGUID && token)
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}`,
-        token
+        token,
+        {},
+        handleError,
+        '/profile'
       ).then((result) => {
         setProjectDetails(result);
       });
