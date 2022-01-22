@@ -85,5 +85,9 @@
   "partners": "Partner",
   "changeChocolate": "Die Gute Schokolade",
   "stopTalkingStartPlanting": "Stop talking. Start planting.",
-  "underMaintenance": "In Wartung"
+  "underMaintenance": "In Wartung",
+  "notFound": "Die angeforderte Seite wurde nicht gefunden.",
+  "unauthorized": "Es ist ein Fehler aufgetreten. Bitte versuche, dich abzumelden und wieder anzumelden.",
+  "forbidden": "Du bist nicht berechtigt, diese Seite zu sehen!",
+  "internalServerError": "Interner Serverfehler - Bitte versuche es später noch einmal!"
 }
