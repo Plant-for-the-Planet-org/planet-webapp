@@ -66,6 +66,7 @@ export default function BasicDetails({
   const defaultZoom = 1.4;
   const mapRef = React.useRef(null);
   const [style, setStyle] = React.useState(EMPTY_STYLE);
+  const [wrongCoordinatesMessage, setWrongCoordinatesMessage] = React.useState(false)
   const [viewport, setViewPort] = React.useState({
     width: 760,
     height: 400,
@@ -735,11 +736,13 @@ export default function BasicDetails({
                   distance: 100
                 }).then((result) => {
                   if(result?.address?.Type === "Ocean"){
+                    setWrongCoordinatesMessage(true)
                     setError("latitude", {
-                      message: t('manageProjects:wrongCoordinates')
+                      message: ''
                     })
                   }
                   else{
+                    setWrongCoordinatesMessage(false)
                     clearErrors("latitude")
                   }
                   console.log(result);
@@ -800,7 +803,7 @@ export default function BasicDetails({
                     className={styles.formErrorsAbsolute}
                     style={{ zIndex: 2, textAlign: 'center' }}
                   >
-                    {t('manageProjects:latitudeRequired')}
+                    {wrongCoordinatesMessage ? t('manageProjects:wrongCoordinates') : t('manageProjects:latitudeRequired')}
                   </span>
                 )}
               </div>
