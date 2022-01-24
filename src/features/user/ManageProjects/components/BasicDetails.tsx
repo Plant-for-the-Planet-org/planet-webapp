@@ -736,7 +736,7 @@ export default function BasicDetails({
                 }).then((result) => {
                   if(result?.address?.Type === "Ocean"){
                     setError("latitude", {
-                      message: "Wrong Coordinates"
+                      message: t('manageProjects:wrongCoordinates')
                     })
                   }
                   else{
