@@ -111,5 +111,6 @@
   "projectType": "Typ des Projektes",
   "conservation": "Schutz",
   "restoration": "Renaturierung",
-  "filters": "Filter"
+  "filters": "Filter",
+  "perM2": "pro m²"
 }

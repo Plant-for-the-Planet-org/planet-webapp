@@ -15,6 +15,7 @@ import getRandomImage from '../../../../utils/getRandomImage';
 import Image from 'next/image'
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
+import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
 
 interface Props {
   leaderboard: any;
@@ -26,7 +27,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
   const leaderboardData = leaderboard.leaderboard;
   const { t, i18n, ready } = useTranslation(['leaderboard', 'common']);
-
+  const { handleError } = React.useContext(ErrorHandlingContext);
   const [users, setUsers] = React.useState([]);
 
   const { theme } = React.useContext(ThemeContext)
@@ -66,7 +67,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const classes = useStylesAutoComplete();
 
   async function fetchUsers(query: any) {
-    postRequest('/suggest.php', { q: query }).then((res) => {
+    postRequest('/suggest.php', { q: query }, handleError).then((res) => {
       const result = res.filter(item => item.type !== 'competition');
       setUsers(result);
     })

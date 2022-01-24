@@ -8,6 +8,7 @@ import {
 import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import i18next from '../../../../../i18n';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 interface Props {
   contribution: any;
@@ -38,6 +39,7 @@ export default function UploadImages({
       };
     });
   }, []);
+  const { handleError } = React.useContext(ErrorHandlingContext);
 
   // React.useEffect(() => {
   //   // Fetch images of the project
@@ -53,7 +55,8 @@ export default function UploadImages({
     postAuthenticatedRequest(
       `/app/contributions/${contributionGUID}/images`,
       submitData,
-      token
+      token,
+      handleError
     )
       .then((res) => {
         if (!res.code) {
@@ -88,7 +91,8 @@ export default function UploadImages({
   const deleteContributionImage = (id: any) => {
     deleteAuthenticatedRequest(
       `/app/contributions/${contributionGUID}/images/${id}`,
-      token
+      token,
+      handleError
     ).then((res) => {
       if (res !== 404) {
         const uploadedImagesTemp = uploadedImages;
@@ -138,7 +142,7 @@ export default function UploadImages({
           <button
             onClick={uploadPhotos}
             className="primaryButton"
-            style={{maxWidth: "200px"}}
+            style={{ maxWidth: "200px" }}
           >
             <input {...getInputProps()} />
             {isUploadingData ? (

@@ -48,6 +48,9 @@ const MaterialTextField = withStyles({
     '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input:first-child': {
       paddingLeft: '0px',
     },
+    "& .Mui-disabled.MuiOutlinedInput-input ": {
+      color: "var(--disabled-font-color)",
+    },
   },
 })(TextField);
 

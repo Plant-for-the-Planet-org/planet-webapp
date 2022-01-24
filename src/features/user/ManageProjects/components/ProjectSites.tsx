@@ -23,6 +23,7 @@ import Modal from '@material-ui/core/Modal';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
@@ -58,6 +59,7 @@ export default function ProjectSites({
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [openModal, setOpenModal] = React.useState(false);
+  const { handleError } = React.useContext(ErrorHandlingContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -177,7 +179,8 @@ export default function ProjectSites({
       postAuthenticatedRequest(
         `/app/projects/${projectGUID}/sites`,
         submitData,
-        token
+        token,
+        handleError
       ).then((res) => {
         if (!res.code) {
           const temp = siteList;
@@ -218,7 +221,8 @@ export default function ProjectSites({
     setIsUploadingData(true);
     deleteAuthenticatedRequest(
       `/app/projects/${projectGUID}/sites/${id}`,
-      token
+      token,
+      handleError
     ).then((res) => {
       if (res !== 404) {
         const siteListTemp = siteList.filter((item) => item.id !== id);
@@ -252,7 +256,10 @@ export default function ProjectSites({
     if (projectGUID)
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}?_scope=sites`,
-        token
+        token,
+        {},
+        handleError,
+        '/profile'
       ).then((result) => {
         const geoLocation = {
           geoLatitude: result.geoLatitude,
@@ -476,7 +483,7 @@ export default function ProjectSites({
             <button
               onClick={handleSubmit(uploadProjectSiteNext)}
               className="primaryButton"
-              style={{minWidth:"240px"}}
+              style={{ minWidth: "240px" }}
               data-test-id="projSitesCont"
             >
               {isUploadingData ? (
@@ -519,6 +526,7 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
+  const { handleError } = React.useContext(ErrorHandlingContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -565,7 +573,7 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
       putAuthenticatedRequest(
         `/app/projects/${projectGUID}/sites/${siteGUID}`,
         submitData,
-        token
+        token, handleError
       ).then((res) => {
         if (!res.code) {
           const temp = siteList;
@@ -686,7 +694,7 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
               <button
                 onClick={handleSubmit(editProjectSite)}
                 className="primaryButton"
-                style={{minWidth:"240px"}}
+                style={{ minWidth: "240px" }}
               >
                 {isUploadingData ? (
                   <div className={styles.spinner}></div>

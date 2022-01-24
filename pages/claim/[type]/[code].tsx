@@ -11,12 +11,13 @@ import tenantConfig from './../../../tenant.config';
 import LandingSection from '../../../src/features/common/Layout/LandingSection';
 import { getFormattedNumber } from '../../../src/utils/getFormattedNumber';
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
+import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
-interface Props {}
+interface Props { }
 
-function ClaimDonation({}: Props): ReactElement {
+function ClaimDonation({ }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation([
     'me',
     'common',
@@ -31,6 +32,7 @@ function ClaimDonation({}: Props): ReactElement {
   const { user, contextLoaded, loginWithRedirect, token } = React.useContext(
     UserPropsContext
   );
+  const { handleError } = React.useContext(ErrorHandlingContext);
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState();
@@ -95,7 +97,8 @@ function ClaimDonation({}: Props): ReactElement {
       postAuthenticatedRequest(
         `/api/v1.3/${userLang}/validateCode`,
         submitData,
-        token
+        token,
+        handleError
       ).then((res) => {
         if (res.code === 401) {
           setErrorMessage(res.message);
@@ -152,7 +155,8 @@ function ClaimDonation({}: Props): ReactElement {
       postAuthenticatedRequest(
         `/api/v1.3/${userLang}/convertCode`,
         submitData,
-        token
+        token,
+        handleError
       ).then((res) => {
         if (res.code === 401) {
           setErrorMessage(res.message);

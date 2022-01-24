@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import { getRasterData } from '../../../../utils/apiRequests/api';
 import zoomToLocation from '../../../../utils/maps/zoomToLocation';
 import zoomToProjectSite from '../../../../utils/maps/zoomToProjectSite';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import Location from './Location';
 import Sites from './Sites';
@@ -27,9 +28,11 @@ export default function Project({
     setSiteViewPort
   } = React.useContext(ProjectPropsContext);
 
+  const { handleError } = React.useContext(ErrorHandlingContext);
+
   async function loadRasterData() {
-    const result = await getRasterData('');
-    const result2 = await getRasterData(project.id);
+    const result = await getRasterData('', handleError);
+    const result2 = await getRasterData(project.id, handleError);
     if (result && result2) {
       setRasterData({
         ...rasterData,

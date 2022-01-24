@@ -12,7 +12,6 @@ import {
   ThemeProvider,
 } from '@material-ui/core';
 import Modal from '@material-ui/core/Modal';
-import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { Autocomplete } from '@material-ui/lab';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -21,7 +20,8 @@ import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import { ThemeContext } from '../../../theme/themeContext';
 import getCurrencySymbolByCode from '../../../utils/countryCurrency/getCurrencySymbolByCode';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
-import themeProperties from '../../../theme/themeProperties';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+
 // interface EditDonationProps {
 //   editModalOpen
 //   handleEditModalClose
@@ -33,9 +33,7 @@ export const EditModal = ({
   editModalOpen,
   handleEditModalClose,
   record,
-}: // onClose
-any) => {
-  const [centAmount, setcentAmount] = React.useState();
+}: any) => {
   const [frequency, setFrequency] = React.useState(record?.frequency);
   const { theme } = React.useContext(ThemeContext);
   const [userLang, setUserLang] = React.useState('en');
@@ -44,8 +42,7 @@ any) => {
     mode: 'all',
   });
   const { token } = React.useContext(UserPropsContext);
-  // const symbol = getCurrencySymbolByCode(record?.currency);
-  console.log(record, 'Record');
+  const { handleError } = React.useContext(ErrorHandlingContext);
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
       const userLang = localStorage.getItem('language');
@@ -67,7 +64,7 @@ any) => {
     putAuthenticatedRequest(
       `/app/subscriptions/${record?.id}?scope=modify`,
       bodyToSend,
-      token
+      token, handleError
     )
       .then((res) => {
         console.log(res, 'Response');
@@ -193,7 +190,7 @@ any) => {
                       variant="outlined"
                       label={t('frequency')}
                       name="frequency"
-                      // defaultValue={"spme"}
+                    // defaultValue={"spme"}
                     />
                   )}
                 />
@@ -263,7 +260,7 @@ any) => {
                           minDate={
                             new Date(
                               new Date(record?.currentPeriodEnd).valueOf() +
-                                1000 * 3600 * 24
+                              1000 * 3600 * 24
                             )
                           }
                           maxDate={
@@ -276,7 +273,7 @@ any) => {
                       defaultValue={
                         new Date(
                           new Date(record?.currentPeriodEnd).valueOf() +
-                            1000 * 3600 * 24
+                          1000 * 3600 * 24
                         )
                       }
                     />
