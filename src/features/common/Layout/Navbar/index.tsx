@@ -39,7 +39,16 @@ export default function NavbarComponent(props: any) {
   }
   const [menu, setMenu] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
-
+  const [mobileWidth, setMobileWidth] = React.useState(false);
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (window.innerWidth > 767) {
+        setMobileWidth(false);
+      } else {
+        setMobileWidth(true);
+      }
+    }
+  });
   const width = useWidth();
 
   // changes the isMobile state to true if the window width is less than 768px
@@ -153,13 +162,12 @@ export default function NavbarComponent(props: any) {
               );
             }
             if (link === 'about' && SingleLink.visible) {
-              let aboutOnclick = `${SingleLink.onclick}${
-                (process.env.TENANT === 'planet' ||
+              let aboutOnclick = `${SingleLink.onclick}${(process.env.TENANT === 'planet' ||
                   process.env.TENANT === 'ttc') &&
-                lang_path[i18n.language]
+                  lang_path[i18n.language]
                   ? lang_path[i18n.language]
                   : ''
-              }`;
+                }`;
 
               aboutOnclick = isMobile ? '' : aboutOnclick;
               SingleLink = {
@@ -169,6 +177,9 @@ export default function NavbarComponent(props: any) {
               if (hasSubMenu) {
                 SingleLink.subMenu[0].onclick = aboutOnclick;
               }
+            }
+            if (link === 'shop' && mobileWidth) {
+              SingleLink.visible = false
             }
             return SingleLink.visible ? (
               <div
@@ -223,7 +234,7 @@ export default function NavbarComponent(props: any) {
                         <a
                           key={submenu.title}
                           className={'menuRow'}
-                          href={`https://a.plant-for-the-planet.org/${lang_path[i18n.language]?lang_path[i18n.language]:'en'}/${subMenuPath[submenu.title]}`}
+                          href={`https://a.plant-for-the-planet.org/${lang_path[i18n.language] ? lang_path[i18n.language] : 'en'}/${subMenuPath[submenu.title]}`}
                         >
                           <div
                             style={{
