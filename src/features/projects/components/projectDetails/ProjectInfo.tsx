@@ -45,7 +45,7 @@ function ProjectInfo({ project }: Props): ReactElement {
             const newSiteOwners = [];
 
             for (let i = 0; i < project.siteOwnerType.length; i++) {
-                const translatedOwnerType = siteOwners.find((element)=>element.value === project.siteOwnerType[i]);
+                const translatedOwnerType = siteOwners.find((element) => element.value === project.siteOwnerType[i]);
                 newSiteOwners.push(translatedOwnerType.title);
             }
 
@@ -53,14 +53,14 @@ function ProjectInfo({ project }: Props): ReactElement {
         }
     }, [ready])
 
-    const expenseAmount = project.expenses.map((expense:any)=>expense.amount);    
-    const calculatePercentage =(amount:any)=>{
+    const expenseAmount = project.expenses.map((expense: any) => expense.amount);
+    const calculatePercentage = (amount: any) => {
         const maxAmount = Math.max(...expenseAmount)
-        const percentage = (amount/maxAmount) * 100;
+        const percentage = (amount / maxAmount) * 100;
         return `${percentage}%`
     }
 
-    
+
 
     return ready ? (
         <div>
@@ -70,7 +70,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                     <div className={styles.projectMoreInfoHalf}>
                         <div className={styles.infoTitle}>
                             {t('manageProjects:abandonment')}
-                            <div style={{ position: 'absolute', width: 'fit-content',top:'0px',right:'18px' }}>
+                            <div style={{ position: 'absolute', width: 'fit-content', top: '0px', right: '18px' }}>
                                 <div className={styles.popover}>
                                     <InfoIcon />
                                     <div className={styles.popoverContent} style={{ left: '-140px' }}>
@@ -130,29 +130,29 @@ function ProjectInfo({ project }: Props): ReactElement {
                     </div>
                 )} */}
 
-                {project.employeesCount && (
+                {project.projectMeta.employeeCount && (
                     <div className={styles.projectMoreInfoHalf}>
                         <div className={styles.infoTitle}>
                             {t('manageProjects:employees')}
                         </div>
                         <div className={styles.infoText}>
-                            {project.employeesCount}
+                            {project.projectMeta.employeeCount}
                         </div>
                     </div>
                 )}
 
-                {project.plantingSeasons && project.plantingSeasons.length > 0 && (
+                {project.projectMeta.activitySeasons && project.projectMeta.activitySeasons.length > 0 && (
                     <div className={styles.projectMoreInfoHalf}>
                         <div className={styles.infoTitle}>
                             {t('manageProjects:plantingSeasons')}
                         </div>
                         <div className={styles.infoText}>
-                            {project.plantingSeasons.map((season: any, index: any) => {
+                            {project.projectMeta.activitySeasons.map((season: any, index: any) => {
                                 return (
-                                    <>
+                                    <React.Fragment key={plantingSeasons[season - 1].title}>
                                         {plantingSeasons[season - 1].title}
-                                        {index === (project.plantingSeasons.length - 2) ? ' and ' : index === (project.plantingSeasons.length - 1) ? '.' : ', '}
-                                    </>
+                                        {index === (project.projectMeta.activitySeasons.length - 2) ? ' and ' : index === (project.projectMeta.activitySeasons.length - 1) ? '.' : ', '}
+                                    </React.Fragment>
                                 )
                             })}
                         </div>
@@ -161,13 +161,13 @@ function ProjectInfo({ project }: Props): ReactElement {
 
             </div>
 
-            {project.mainChallenge && (
+            {project.projectMeta.mainChallenge && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
                         {t('manageProjects:mainChallenge')}
                     </div>
                     <div className={styles.infoText}>
-                        {project.mainChallenge}
+                        {project.projectMeta.mainChallenge}
                     </div>
                 </div>
             )}
@@ -182,10 +182,10 @@ function ProjectInfo({ project }: Props): ReactElement {
                         <div className={styles.infoText} style={{ fontWeight: 'bold' }}>
                             {ownerTypes.map((ownerType: any, index: any) => {
                                 return (
-                                    <>
+                                    <React.Fragment key={ownerType}>
                                         {t(`manageProjects:${ownerType}`)}
                                         {index === (ownerTypes.length - 2) ? ' and ' : index === (ownerTypes.length - 1) ? '.' : ', '}
-                                    </>
+                                    </React.Fragment>
                                 )
                             })}
                         </div>
@@ -209,24 +209,24 @@ function ProjectInfo({ project }: Props): ReactElement {
             )}
 
 
-            {project.motivation && (
+            {project.projectMeta.motivation && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
                         {t('manageProjects:whyThisSite')}
                     </div>
                     <div className={styles.infoText}>
-                        {project.motivation}
+                        {project.projectMeta.motivation}
                     </div>
                 </div>
             )}
 
-            {project.longTermPlan && (
+            {project.projectMeta.longTermPlan && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
                         {t('manageProjects:longTermProtection')}
                     </div>
                     <div className={styles.infoText}>
-                        {project.longTermPlan}
+                        {project.projectMeta.longTermPlan}
                     </div>
                 </div>
             )}
@@ -242,7 +242,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                             <div key={certificate.id} className={styles.infoText}>
                                 {certificate.certifierName}
                                 <a className={styles.infoTextButton} target="_blank" rel="noopener noreferrer"
-                                  href={getPDFFile('projectCertificate', certificate.pdf)}>
+                                    href={getPDFFile('projectCertificate', certificate.pdf)}>
                                     {t('common:view')}
                                 </a>
                             </div>
@@ -252,7 +252,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                 </div>
             )}
 
-           
+
             {project.expenses && project.expenses.length > 0 && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
@@ -261,14 +261,14 @@ function ProjectInfo({ project }: Props): ReactElement {
 
                     {project.expenses.map((expense: any) => {
                         return (
-                            <div key={expense.id} className={styles.infoText} style={{justifyContent:'normal'}}>
-                                 <span>
+                            <div key={expense.id} className={styles.infoText} style={{ justifyContent: 'normal' }}>
+                                <span>
                                     {expense.year}
                                 </span>
-                                <div style={{marginLeft:'6px',display:'flex',flexDirection:'row',position:'relative',width:'100%'}}>
-                                <div style={{backgroundColor:'#F2F2F7',width:calculatePercentage(expense.amount),height:'20px',position:'absolute',zIndex:1}}></div>
+                                <div style={{ marginLeft: '6px', display: 'flex', flexDirection: 'row', position: 'relative', width: '100%' }}>
+                                    <div style={{ backgroundColor: '#F2F2F7', width: calculatePercentage(expense.amount), height: '20px', position: 'absolute', zIndex: 1 }}></div>
 
-                                    <span style={{flexGrow:1,textAlign:'center',zIndex:2}}>
+                                    <span style={{ flexGrow: 1, textAlign: 'center', zIndex: 2 }}>
                                         {getFormatedCurrency(
                                             i18n.language,
                                             'EUR',
@@ -277,7 +277,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                                     </span>
 
                                     <a className={styles.infoTextButton} target="_blank" rel="noopener noreferrer"
-                                      href={getPDFFile('projectExpense', expense.pdf)} style={{zIndex:2}}>
+                                        href={getPDFFile('projectExpense', expense.pdf)} style={{ zIndex: 2 }}>
                                         {t('common:view')}
                                     </a>
                                 </div>

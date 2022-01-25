@@ -31,6 +31,9 @@
   margin: -20px 0 0 -20px;
   box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
   cursor: pointer;
+  &.conservationMarker {
+    background: #1EA9E4;
+  }
 }
 
 .markerType {
@@ -174,11 +177,11 @@
   width: 17px;
 }
 
-.exploreButton > svg > path{
+.exploreButton > svg > path {
   fill: $primaryFontColor;
 }
 
-.forestInfo{
+.forestInfo {
   color: $primaryFontColor;
 }
 .exploreText {
@@ -346,7 +349,7 @@
     rgba(59, 0, 255, 1) 100%
   );
 }
-.restorationInfo{
+.restorationInfo {
   color: $primaryFontColor;
 }
 
@@ -360,8 +363,8 @@
   // color: #fadc2f;
 }
 
-.openLink > svg > path{
-fill: $primaryFontColor;
+.openLink > svg > path {
+  fill: $primaryFontColor;
 }
 .currentForestScale {
   display: flex;
@@ -537,7 +540,7 @@ fill: $primaryFontColor;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
   color: $primaryFontColor;
   background: $backgroundColor;
 }
@@ -606,7 +609,7 @@ fill: $primaryFontColor;
 //   }
 // }
 
-@include xsPhoneView {
+@media screen and (max-height: 315px), (max-width: 481px) {
   .mapNavigation {
     display: none;
   }

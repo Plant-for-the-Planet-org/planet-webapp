@@ -96,5 +96,20 @@
   "nameAlreadyPublished": "Tu nombre completo aparecerá en la tabla de clasificación ya que tu perfil de Plant-for-the-Planet es actualmente público.",
   "orgNamePublishedTax": "El nombre de la empresa es visible en nuestra tabla de clasificación y en la aplicación. Se emitirán recibos de deducción de impuestos para el mismo nombre.",
   "orgNamePublished": "El nombre de la empresa es visible en nuestra tabla de clasificación y en la aplicación.",
-  "aboutProject": "Sobre el proyecto"
+  "aboutProject": "Sobre el proyecto",
+  "acceptingDonations": "Aceptación de donaciones",
+  "natural-regeneration": "Regeneración Natural",
+  "managed-regeneration": "Regeneración Asistida",
+  "large-scale-planting": "Restauración a gran escala",
+  "agroforestry": "Agroforestería",
+  "urban-planting": "Restauración Urbana",
+  "other-planting": "Restauración",
+  "mangroves": "Manglares",
+  "purpose": "Propósito",
+  "projectPurpose": "Objetivo del proyecto",
+  "type": "Tipo",
+  "projectType": "Tipo de proyecto",
+  "conservation": "Conservación",
+  "restoration": "Restauración",
+  "filters": "Filtros"
 }

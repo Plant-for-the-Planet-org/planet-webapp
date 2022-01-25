@@ -93,6 +93,7 @@ function SubmitForReview({ submitForReview, handleBack, isUploadingData, project
                                 onClick={() => submitForReview()}
                                 className="primaryButton"
                                 style={{minWidth:"240px"}}
+                                data-test-id="submitReview"
                             >
                                 {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:submitForReview')}
                             </button>

@@ -8,18 +8,21 @@ import AccountRecord, {
   Certificates,
   DetailsComponent,
   RecordHeader,
+  showStatusNote,
+  TransferDetails,
 } from './components/AccountRecord';
 import styles from './AccountHistory.module.scss';
+import { useRouter } from 'next/router';
 
 const { useTranslation } = i18next;
 
 interface Props {
-  filter: string;
-  setFilter: Function;
+  filter: string | null;
+  setFilter: (filter: string) => void;
   isDataLoading: boolean;
-  accountingFilters: Object;
-  paymentHistory: Object;
-  fetchPaymentHistory: Function;
+  accountingFilters: Payments.Filters | null;
+  paymentHistory: Payments.PaymentHistory | null;
+  fetchPaymentHistory: (next?: boolean) => Promise<void>;
 }
 
 export default function History({
@@ -31,8 +34,9 @@ export default function History({
   fetchPaymentHistory,
 }: Props): ReactElement {
   const { t, i18n } = useTranslation(['me']);
-  const [selectedRecord, setSelectedRecord] = React.useState(null);
+  const [selectedRecord, setSelectedRecord] = React.useState<number | null>(null);
   const [openModal, setOpenModal] = React.useState(false);
+  const router = useRouter();
 
   const handleRecordOpen = (index: number) => {
     if (selectedRecord === index) {
@@ -53,15 +57,29 @@ export default function History({
     setFilter(id);
   };
 
-  let currentRecord;
-  if (paymentHistory) {
-    currentRecord = paymentHistory?.items[selectedRecord];
+  let currentRecord: Payments.PaymentHistoryRecord | null = null;
+  if (paymentHistory && Array.isArray(paymentHistory?.items)) {
+    currentRecord = selectedRecord !== null && Number.isInteger(selectedRecord) ? paymentHistory?.items[selectedRecord] : null;
   }
 
   return (
     <div className="profilePage">
       <div className={'profilePageTitle'}>{t('me:payments')}</div>
       <div className={'profilePageSubTitle'}>{t('me:donationsSubTitle')}</div>
+      {/* <div className={styles.donationOptions}>
+        <div
+          className={`${styles.option} ${styles.active}`}
+          style={{ color: '#68B030' }}
+        >
+          {t('history')}
+        </div>
+        <button
+          onClick={() => router.push(`/profile/recurrency`)}
+          className={styles.option}
+        >
+          {t('recurrency')}
+        </button>
+      </div> */}
       <div className={styles.pageContainer}>
         <div className={styles.filterRow}>
           {accountingFilters &&
@@ -69,9 +87,8 @@ export default function History({
               return (
                 <div
                   key={item[0]}
-                  className={`${styles.filterButton} ${
-                    filter === item[0] ? styles.selected : ''
-                  }`}
+                  className={`${styles.filterButton} ${filter === item[0] ? styles.selected : ''
+                    }`}
                   onClick={() => handleSetFilter(item[0])}
                 >
                   {t(item[0])}
@@ -88,12 +105,15 @@ export default function History({
                   <TransactionListLoader />
                   <TransactionListLoader />
                 </>
-              ) : paymentHistory && paymentHistory.items.length === 0 ? (
+              ) : paymentHistory &&
+                Array.isArray(paymentHistory?.items) &&
+                paymentHistory.items.length === 0 ? (
                 <div className={styles.notFound}>
                   <TransactionsNotFound />
                 </div>
               ) : (
                 paymentHistory &&
+                Array.isArray(paymentHistory?.items) &&
                 paymentHistory?.items?.map((record: any, index: number) => {
                   return (
                     <AccountRecord
@@ -113,7 +133,7 @@ export default function History({
                 <button
                   onClick={() => fetchPaymentHistory(true)}
                   className="primaryButton"
-                  style={{ minWidth: '240px',marginTop:'30px' }}
+                  style={{ minWidth: '240px', marginTop: '30px' }}
                 >
                   {isDataLoading ? (
                     <div className={styles.spinner}></div>
@@ -132,9 +152,8 @@ export default function History({
                   return (
                     <div
                       key={item[0]}
-                      className={`${styles.filterButton} ${
-                        filter === item[0] ? styles.selected : ''
-                      }`}
+                      className={`${styles.filterButton} ${filter === item[0] ? styles.selected : ''
+                        }`}
                       onClick={() => handleSetFilter(item[0])}
                     >
                       {t(item[0])}
@@ -157,7 +176,10 @@ export default function History({
               </div>
               {currentRecord ? (
                 <>
-                  <RecordHeader record={currentRecord} />
+                  <RecordHeader
+                    record={currentRecord}
+                    handleRecordOpen={handleRecordOpen}
+                  />
                   <div className={styles.divider}></div>
                   <div className={styles.detailContainer}>
                     <div className={styles.detailGrid}>
@@ -167,20 +189,24 @@ export default function History({
                       <>
                         <div className={styles.title}>{t('bankDetails')}</div>
                         <div className={styles.detailGrid}>
-                          <BankDetails record={currentRecord} />
+                          <BankDetails recipientBank={currentRecord.details.recipientBank} />
                         </div>
                       </>
                     )}
+                    {currentRecord.details?.account && (
+                      <TransferDetails account={currentRecord.details.account} />
+                    )}
+                    {showStatusNote(currentRecord, t)}
                     {(currentRecord.details.donorCertificate ||
                       currentRecord.details.taxDeductibleReceipt ||
                       currentRecord.details.giftCertificate) && (
-                      <>
-                        <div className={styles.title}>{t('downloads')}</div>
-                        <div className={styles.detailGrid}>
-                          <Certificates record={currentRecord} />
-                        </div>
-                      </>
-                    )}
+                        <>
+                          <div className={styles.title}>{t('downloads')}</div>
+                          <div className={styles.detailGrid}>
+                            <Certificates recordDetails={currentRecord.details} />
+                          </div>
+                        </>
+                      )}
                   </div>
                 </>
               ) : null}

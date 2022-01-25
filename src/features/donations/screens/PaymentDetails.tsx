@@ -24,6 +24,7 @@ import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import { getCountryDataBy } from '../../../utils/countryCurrency/countryUtils';
 import Link from 'next/link';
 import { putRequest } from '../../../utils/apiRequests/api';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 const config = tenantConfig();
 
@@ -50,7 +51,7 @@ function PaymentDetails({
   setShouldCreateDonation,
 }: PaymentDetailsProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
-
+  const { handleError } = React.useContext(ErrorHandlingContext);
   const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
   const [directGift, setDirectGift] = React.useState(null);
 
@@ -65,7 +66,7 @@ function PaymentDetails({
     if (donationID) {
       putRequest(`/app/donations/${donationID}/publish`, {
         publish: publishName,
-      });
+      }, handleError);
     }
   }, [publishName, donationID]);
 
@@ -242,7 +243,7 @@ function PaymentDetails({
         )}
 
         {paymentError && (
-          <div className={styles.paymentError}>{paymentError}</div>
+          <div className={styles.paymentError} data-test-id="paymentError">{paymentError}</div>
         )}
 
         <div className={styles.treeDonationContainer}>
@@ -304,6 +305,7 @@ function PaymentDetails({
                 hidden={paymentType !== 'CARD'}
                 id={`payment-methods-tabpanel-${'CARD'}`}
                 aria-labelledby={`scrollable-force-tab-${'CARD'}`}
+
               >
                 <Elements stripe={getStripe(paymentSetup)}>
                   <CardPayments

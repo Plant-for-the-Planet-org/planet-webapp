@@ -7,6 +7,8 @@ import { useRouter } from 'next/router';
 import MuiAlert from '@material-ui/lab/Alert';
 import { ThemeContext } from '../../../theme/themeContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { TENANT_ID } from '../../../utils/constants/environment';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 interface Props {
   embedModalOpen: boolean;
@@ -20,7 +22,7 @@ export default function EmbedModal({
   setEmbedModalOpen,
 }: Props) {
   const { t, ready } = useTranslation(['editProfile']);
-
+  const { handleError } = React.useContext(ErrorHandlingContext);
   const [isPrivate, setIsPrivate] = React.useState(false);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [severity, setSeverity] = React.useState('success');
@@ -61,14 +63,14 @@ export default function EmbedModal({
     };
     if (contextLoaded && token) {
       try {
-        putAuthenticatedRequest(`/app/profile`, bodyToSend, token)
+        putAuthenticatedRequest(`/app/profile`, bodyToSend, token, handleError)
           .then((res) => {
             setSeverity('success');
             setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');
             setEmbedModalOpen(false);
             setIsUploadingData(false);
             router.push(
-              `${process.env.WIDGET_URL}?user=${user.id}&tenantkey=${process.env.TENANTID}`
+              `${process.env.WIDGET_URL}?user=${user.id}&tenantkey=${TENANT_ID}`
             );
           })
           .catch((error) => {

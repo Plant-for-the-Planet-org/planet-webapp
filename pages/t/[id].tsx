@@ -7,11 +7,14 @@ import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserP
 import Footer from '../../src/features/common/Layout/Footer';
 import Profile from '../../src/features/user/Profile';
 import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees';
+import ProjectsContainer from '../../src/features/user/Profile/ProjectsContainer';
+import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 
 function User(): ReactElement {
   // External imports
   const router = useRouter();
-  const { user, contextLoaded,token } = React.useContext(UserPropsContext);
+  const { user, contextLoaded, token } = React.useContext(UserPropsContext);
+  const { handleError } = React.useContext(ErrorHandlingContext);
 
   // Internal states
   const [profile, setProfile] = React.useState<null | Object>();
@@ -19,7 +22,11 @@ function User(): ReactElement {
 
   // Loads the public user profile
   async function loadPublicProfile(id: any) {
-    const profileData = await getRequest(`/app/profiles/${id}`);
+    const profileData = await getRequest(
+      `/app/profiles/${id}`,
+      handleError,
+      '/'
+    );
     setProfile(profileData);
     setAuthenticatedType('public');
   }
@@ -43,11 +50,16 @@ function User(): ReactElement {
     <>
       <GetPublicUserProfileMeta userprofile={profile} />
       <Profile userprofile={profile} authenticatedType={authenticatedType} />
-      <MyTrees
+      {profile && profile.type !== 'tpo' && (
+        <MyTrees
           authenticatedType={authenticatedType}
           profile={profile}
           token={token}
         />
+      )}
+      {profile && profile.type === 'tpo' && (
+        <ProjectsContainer profile={profile} />
+      )}
       <Footer />
     </>
   ) : (

@@ -8,7 +8,11 @@ const GreenRadio = withStyles({
       color: '#68B030',
     },
   },
-  checked: {},
+  checked: {
+    '& .MuiSvgIcon-root path': {
+      fill: '#68B030',
+    },
+  },
 })((props) => <Radio color="default" {...props} />);
 
 export default GreenRadio;

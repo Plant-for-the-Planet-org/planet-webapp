@@ -6,7 +6,8 @@
   "for": "für",
   "trees": "Bäume",
   "planted": "gepflanzt",
-  "privacyAndTerms": "Datenschutz & AGB",
+  "privacy": "Datenschutz",
+  "terms": "AGB",
   "imprint": "Impressum",
   "status": "Status",
   "contact": "Kontakt",
@@ -76,5 +77,17 @@
   "close": "Schließen",
   "logout": "Abmelden",
   "featured": "Empfohlen",
-  "treeMapper": "TreeMapper"
+  "treeMapper": "TreeMapper",
+  "overview": "Übersicht",
+  "childrenAndYouth": "Kinder und Jugendliche",
+  "trillionTrees": "Billionen Bäume",
+  "yucatan": "Yucatán Renaturierung",
+  "partners": "Partner",
+  "changeChocolate": "Die Gute Schokolade",
+  "stopTalkingStartPlanting": "Stop talking. Start planting.",
+  "underMaintenance": "In Wartung",
+  "notFound": "Die angeforderte Seite wurde nicht gefunden.",
+  "unauthorized": "Es ist ein Fehler aufgetreten. Bitte versuche, dich abzumelden und wieder anzumelden.",
+  "forbidden": "Du bist nicht berechtigt, diese Seite zu sehen!",
+  "internalServerError": "Interner Serverfehler - Bitte versuche es später noch einmal!"
 }

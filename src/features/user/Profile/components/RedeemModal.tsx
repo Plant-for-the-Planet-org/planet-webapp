@@ -15,6 +15,7 @@ import tenantConfig from '../../../../../tenant.config';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 export default function RedeemModal({
@@ -32,7 +33,7 @@ export default function RedeemModal({
   const config = tenantConfig();
 
   const { user, contextLoaded, token, setUser } = React.useContext(UserPropsContext);
-
+  const { handleError } = React.useContext(ErrorHandlingContext);
   const imageRef = React.createRef();
   const sendRef = () => imageRef;
 
@@ -42,6 +43,7 @@ export default function RedeemModal({
   const [validCodeData, setValidCodeData] = React.useState();
   const [codeRedeemed, setCodeRedeemed] = React.useState(false);
   const [code, setCode] = React.useState();
+  const [inputCode, setInputCode] = React.useState('');
   const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
     false
   );
@@ -107,7 +109,8 @@ export default function RedeemModal({
       postAuthenticatedRequest(
         `/api/v1.3/${userLang}/convertCode`,
         submitData,
-        token
+        token,
+        handleError
       ).then((res) => {
         if (res.code === 401) {
           setErrorMessage(res.message);
@@ -119,7 +122,7 @@ export default function RedeemModal({
           setCodeRedeemed(true);
           setIsUploadingData(false);
           setCodeValidated(false);
-          const newUser = {...user, score:{personal: res.schemata.treecounter.countPersonal, received: res.schemata.treecounter.countReceived, target: res.schemata.treecounter.countTarget}}
+          const newUser = { ...user, score: { personal: res.schemata.treecounter.countPersonal, received: res.schemata.treecounter.countReceived, target: res.schemata.treecounter.countTarget } }
           setUser(newUser);
         }
       });
@@ -294,6 +297,15 @@ export default function RedeemModal({
                         message: t('redeem:enterRedeemCode'),
                       },
                     })}
+                    onChange={(event) => {
+                      console.log(event.target.value);
+                      event.target.value.startsWith('pp.eco/c/')
+                        ? setInputCode(
+                          event.target.value.replace('pp.eco/c/', '')
+                        )
+                        : setInputCode(event.target.value);
+                    }}
+                    value={inputCode}
                     name={'code'}
                     placeholder="XAD-1SA-5F1-A"
                     label=""

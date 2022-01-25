@@ -6,7 +6,8 @@
   "for": "for",
   "trees": "Trees",
   "planted": "planted",
-  "privacyAndTerms": "Privacy & Terms",
+  "privacy": "Privacy",
+  "terms": "Terms",
   "imprint": "Imprint",
   "status": "Status",
   "contact": "Contact",
@@ -77,5 +78,16 @@
   "logout": "Logout",
   "featured": "Featured",
   "treeMapper": "TreeMapper",
-  "underMaintenance":"Under Maintenance"
+  "overview": "Overview",
+  "childrenAndYouth": "Children and Youth",
+  "trillionTrees": "Trillion Trees",
+  "yucatan": "Yucatán Restoration",
+  "partners": "Partners",
+  "changeChocolate": "The Change Chocolate",
+  "stopTalkingStartPlanting": "Stop talking. Start planting.",
+  "underMaintenance": "Under Maintenance",
+  "notFound": "Requested page was not found.",
+  "unauthorized": "Something went wrong. Please try logging out and logging in back again.",
+  "forbidden": "You are not allowed to view this page!",
+  "internalServerError": "Internal Server Error - Please try again later!"
 }

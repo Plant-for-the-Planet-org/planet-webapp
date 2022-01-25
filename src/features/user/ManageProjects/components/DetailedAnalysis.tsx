@@ -15,6 +15,7 @@ import InfoIcon from './../../../../../public/assets/images/icons/manageProjects
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import materialTheme from '../../../../theme/themeStyles';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
@@ -30,7 +31,7 @@ interface Props {
 }
 export default function DetailedAnalysis({ handleBack, userLang, token, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
     const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
-
+    const { handleError } = React.useContext(ErrorHandlingContext);
     const [siteOwners, setSiteOwners] = React.useState([
         { id: 1, title: ready ? t('manageProjects:siteOwnerPrivate') : '', value: 'private', isSet: false },
         { id: 2, title: ready ? t('manageProjects:siteOwnerPublic') : '', value: 'public-property', isSet: false },
@@ -117,7 +118,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
             plantingSeasons: months
         }
 
-        putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, token).then((res) => {
+        putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, token, handleError).then((res) => {
             if (!res.code) {
                 setProjectDetails(res)
                 setIsUploadingData(false)
@@ -255,7 +256,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                         </div>
                     </div>
                     <div className={styles.formField}>
-                        <div className={styles.formFieldHalf}>
+                        <div className={styles.formFieldHalf} data-test-id="plantingDensity">
 
                             {/* Integer - the planting density expressed in trees per ha */}
                             <MaterialTextField
@@ -284,7 +285,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                             )}
                         </div>
                         <div style={{ width: '20px' }}></div>
-                        <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
+                        <div className={styles.formFieldHalf} style={{ position: 'relative' }} data-test-id="employeeCount">
                             <MaterialTextField
                                 inputRef={register({ validate: value => parseInt(value, 10) > 0 })}
                                 label={t('manageProjects:employeeCount')}
@@ -576,6 +577,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                             onClick={handleSubmit(onSubmit)}
                             className="primaryButton"
                             style={{ minWidth: "240px" }}
+                            data-test-id="detailAnalysisCont"
                         >
                             {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
                         </button >

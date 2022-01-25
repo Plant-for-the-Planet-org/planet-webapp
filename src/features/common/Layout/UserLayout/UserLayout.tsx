@@ -21,7 +21,7 @@ import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/
 const { useTranslation } = i18next;
 
 function UserLayout(props: any): ReactElement {
-  const { t, i18n } = useTranslation(['common','me']);
+  const { t, i18n } = useTranslation(['common', 'me']);
   // Flags can be added to show labels on the right
   // TO DO - remove arrow when link is selected
   const navLinks = [
@@ -30,7 +30,7 @@ function UserLayout(props: any): ReactElement {
       title: t('me:profile'),
       path: '/profile',
       icon: <UserIcon />,
-
+      // Localize with translations if you ever activate this!!
       // subMenu: [
       //   // {
       //   //   title: 'Profile',
@@ -55,18 +55,22 @@ function UserLayout(props: any): ReactElement {
     {
       key: 3,
       title: t('me:payments'),
-      path: '/profile/history',
+      // path: '/profile/history',
       icon: <DonateIcon />,
-      flag: 'Beta',
+      flag: t('me:new'),
+      // hideSubMenu: true,
       subMenu: [
-        // {
-        //   title: 'History',
-        //   path: '/profile/history',
-        // },
-        // {
-        //   title: 'Recurring Donations',
-        //   path: '/profile/recurring-donations',
-        // },
+        {
+          title: t('me:history'),
+          path: '/profile/history',
+          // hideItem: true,
+        },
+        {
+          title: t('me:recurrency'),
+          path: '/profile/recurrency',
+          // hideItem: true,
+        },
+        // Localize with translations if you ever activate this!!
         // {
         //   title: 'Payouts',
         //   path: '/profile/payouts', // Only for Tpos
@@ -77,6 +81,7 @@ function UserLayout(props: any): ReactElement {
         // },
       ],
     },
+    // Localize with translations if you ever activate this!!
     // {
     //   title: 'TreeCash',
     //   path: '/profile/treecash',
@@ -97,7 +102,7 @@ function UserLayout(props: any): ReactElement {
       title: t('treeMapper'),
       path: '/profile/treemapper',
       icon: <TreeMappperIcon />,
-      flag: 'Beta',
+      flag: t('me:beta'),
     },
     {
       key: 5,
@@ -125,6 +130,7 @@ function UserLayout(props: any): ReactElement {
           title: t('me:deleteProfile'),
           path: '/profile/delete-account',
         },
+        // Localize with translations if you ever activate this!!
         // {
         //   title: 'Setup 2Factor Authentication',
         //   path: '/profile/2fa', // Only for Tpos
@@ -155,9 +161,8 @@ function UserLayout(props: any): ReactElement {
     }
   }, [router]);
 
-  const { user, logoutUser, contextLoaded } = React.useContext(
-    UserPropsContext
-  );
+  const { user, logoutUser, contextLoaded } =
+    React.useContext(UserPropsContext);
 
   React.useEffect(() => {
     if (contextLoaded) {
@@ -316,9 +321,8 @@ function NavLink({
   return (
     <div key={link.title} className={styles.navlinkMenu}>
       <div
-        className={`${styles.navlink} ${
-          activeLink === link.path ? styles.navlinkActive : ''
-        }`}
+        className={`${styles.navlink} ${activeLink === link.path ? styles.navlinkActive : ''
+          }`}
         onClick={() => {
           // This is to shift to the main page needed when there is no sub menu
           if ((!link.subMenu || link.subMenu.length <= 0) && link.path) {
@@ -326,7 +330,11 @@ function NavLink({
             setactiveLink(link.path);
             setActiveSubMenu('');
           } else {
-            setisSubMenuActive(!isSubMenuActive);
+            if (link.hideSubMenu) {
+              router.push(link.path);
+            } else {
+              setisSubMenuActive(!isSubMenuActive);
+            }
           }
         }}
       >
@@ -335,7 +343,7 @@ function NavLink({
           {link.title}
           {link.flag && <span>{link.flag}</span>}
         </button>
-        {link.subMenu && link.subMenu.length > 0 && (
+        {link.subMenu && link.subMenu.length > 0 && !link.hideSubMenu && (
           <button
             className={styles.subMenuArrow}
             style={{
@@ -349,21 +357,27 @@ function NavLink({
       {isSubMenuActive &&
         link.subMenu &&
         link.subMenu.length > 0 &&
-        link.subMenu.map((subLink: any, index: any) => (
-          <div
-            className={`${styles.navlinkSubMenu} ${
-              activeSubMenu === subLink.path ? styles.navlinkActiveSubMenu : ''
-            }`}
-            key={index}
-            onClick={() => {
-              setactiveLink(link.path);
-              setActiveSubMenu(subLink.path);
-              router.push(subLink.path);
-            }}
-          >
-            {subLink.title}
-          </div>
-        ))}
+        !link.hideSubMenu &&
+        link.subMenu.map((subLink: any, index: any) => {
+          if (!subLink.hideItem) {
+            return (
+              <div
+                className={`${styles.navlinkSubMenu} ${activeSubMenu === subLink.path
+                  ? styles.navlinkActiveSubMenu
+                  : ''
+                  }`}
+                key={index}
+                onClick={() => {
+                  setactiveLink(link.path);
+                  setActiveSubMenu(subLink.path);
+                  router.push(subLink.path);
+                }}
+              >
+                {subLink.title}
+              </div>
+            );
+          }
+        })}
     </div>
   );
 }

@@ -17,6 +17,7 @@ import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDF
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import materialTheme from '../../../../theme/themeStyles';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
@@ -32,7 +33,7 @@ interface Props {
 export default function ProjectSpending({ handleBack, token, handleNext, userLang, projectGUID, handleReset }: Props): ReactElement {
 
     const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
-
+    const { handleError } = React.useContext(ErrorHandlingContext);
     const { register, handleSubmit, errors, formState, getValues, setValue, control } = useForm({ mode: 'all' });
 
     const [amount, setAmount] = React.useState(0);
@@ -91,7 +92,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
             pdfFile: pdf
         }
 
-        postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`, submitData, token).then((res) => {
+        postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`, submitData, token, handleError).then((res) => {
             if (!res.code) {
                 const newUploadedFiles = uploadedFiles;
                 newUploadedFiles.push(res);
@@ -117,7 +118,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
 
     const deleteProjectSpending = (id: any) => {
         setIsUploadingData(true)
-        deleteAuthenticatedRequest(`/app/projects/${projectGUID}/expenses/${id}`, token).then(res => {
+        deleteAuthenticatedRequest(`/app/projects/${projectGUID}/expenses/${id}`, token, handleError).then(res => {
             if (res !== 404) {
                 const uploadedFilesTemp = uploadedFiles.filter(item => item.id !== id);
                 setUploadedFiles(uploadedFilesTemp)
@@ -130,12 +131,14 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
     React.useEffect(() => {
         // Fetch spending of the project 
         if (projectGUID && token)
-            getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`, token).then((result) => {
-                if (result?.expenses && result.expenses.length > 0) {
-                    setShowForm(false)
-                }
-                setUploadedFiles(result.expenses)
-            })
+            getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`, token, {},
+                handleError,
+                '/profile').then((result) => {
+                    if (result?.expenses && result.expenses.length > 0) {
+                        setShowForm(false)
+                    }
+                    setUploadedFiles(result.expenses)
+                })
     }, [projectGUID]);
 
     const fiveYearsAgo = new Date();
@@ -309,6 +312,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                             onClick={() => handleNext()}
                             className="primaryButton"
                             style={{ minWidth: "240px" }}
+                            data-test-id="projSpendingCont"
                         >
                             {isUploadingData ? <div className={styles.spinner}></div> : t('common:continue')}
                         </button>

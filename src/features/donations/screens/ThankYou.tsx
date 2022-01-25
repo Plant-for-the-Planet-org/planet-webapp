@@ -16,6 +16,7 @@ import PaymentFailedIllustration from '../../../../public/assets/images/icons/do
 import PaymentPendingIllustration from '../../../../public/assets/images/icons/donation/PaymentPending';
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
@@ -26,15 +27,18 @@ function ThankYou({
   redirectStatus,
 }: ThankYouProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
+  const { handleError } = React.useContext(ErrorHandlingContext);
 
   const [donation, setdonation] = React.useState(null);
 
   async function loadDonation() {
-    const donation = await getRequest(`/app/donations/${donationID}`);
+    const donation = await getRequest(
+      `/app/donations/${donationID}`,
+      handleError
+    );
     setdonation(donation);
   }
   const { theme } = React.useContext(ThemeContext);
-
 
   React.useEffect(() => {
     if (donationID) {
@@ -47,7 +51,8 @@ function ThankYou({
       if (
         donation &&
         (donation.paymentStatus === 'pending' ||
-          donation.paymentStatus === 'initiated' || donation.paymentStatus === 'draft')
+          donation.paymentStatus === 'initiated' ||
+          donation.paymentStatus === 'draft')
       ) {
         loadDonation();
       }
@@ -66,9 +71,8 @@ function ThankYou({
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
 
-  const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
-    false
-  );
+  const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] =
+    React.useState(false);
 
   const sendRef = () => imageRef;
 
@@ -103,17 +107,22 @@ function ThankYou({
             >
               <Close color="#fff" />
             </button>
-            <div className={styles.headerTitle}>{t('common:thankYou')}</div>
+            <div className={styles.headerTitle} data-test-id="test-thankYou">
+              {t('common:thankYou')}
+            </div>
           </div>
         </div>
 
         <div className={styles.contributionMessageContainer}>
           <div
             className={styles.contributionMessage}
-            style={{ marginTop: '0px',
-          color: theme === 'theme-light' ?
-        themeProperties.light.dark :
-      themeProperties.dark.dark }}
+            style={{
+              marginTop: '0px',
+              color:
+                theme === 'theme-light'
+                  ? themeProperties.light.dark
+                  : themeProperties.dark.dark,
+            }}
           >
             {t(
               paymentTypeUsed === 'GOOGLE_PAY' ||
@@ -145,10 +154,15 @@ function ThankYou({
               })}
           </div>
 
-          <div className={styles.contributionMessage}
-          style={{color: theme === 'theme-light' ?
-          themeProperties.light.dark :
-        themeProperties.dark.dark}}>
+          <div
+            className={styles.contributionMessage}
+            style={{
+              color:
+                theme === 'theme-light'
+                  ? themeProperties.light.dark
+                  : themeProperties.dark.dark,
+            }}
+          >
             {t('donate:contributionMessage')}
           </div>
         </div>
@@ -276,13 +290,14 @@ function ThankYou({
             >
               <Close color="#fff" />
             </button>
-            <div className={styles.headerTitle}>
-              {t('common:thankYou')}
-            </div>
+            <div className={styles.headerTitle}>{t('common:thankYou')}</div>
           </div>
         </div>
         <div className={styles.contributionMessageContainer}>
-          <div className={styles.contributionMessage}>
+          <div
+            className={styles.contributionMessage}
+            data-test-id="test-thankYou"
+          >
             {t('donate:donationPendingMessage')}
           </div>
           <div

@@ -25,8 +25,8 @@ export default function GrowingImpact() {
     },
     {
       id: 3,
-      copy: 'SEMEA Account teams committed to 1M trees by 2030.',
-      subCopy: 'How can you work with clients and partners?',
+      copy: 'SEMEA Account teams kicked off the 1M trees initiative.',
+      subCopy: 'How can you involve your clients and partners?',
       image: '/tenants/salesforce/images/growing-impact/success-3.jpg',
       foliage: '/tenants/salesforce/images/growing-impact/foliage-3.png',
       link: 'https://www.salesforce.com/products/sustainability-cloud/overview/',
@@ -34,7 +34,7 @@ export default function GrowingImpact() {
     },
     {
       id: 4,
-      copy: 'Accenture, our Dreamforce 2021 sustainability partner, donated $10,000 to help save trees!',
+      copy: 'Accenture, our Dreamforce 2021 sustainability partner, donated 5,000 trees!',
       image: '/tenants/salesforce/images/growing-impact/success-4.jpg',
       foliage: '/tenants/salesforce/images/growing-impact/foliage-4.png',
       link: 'https://www.salesforce.com/products/sustainability-cloud/overview/',

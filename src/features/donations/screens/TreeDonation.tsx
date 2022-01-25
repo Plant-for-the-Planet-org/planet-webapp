@@ -189,7 +189,7 @@ function TreeDonation({
                   tabIndex={0}
                 >
                   <div className={styles.currency}>{currency}</div>
-                  <div className={styles.downArrow}>
+                  <div className={styles.downArrow} data-test-id="downArrow">
                     <DownArrow color="#fff" />
                   </div>
                   <div className={styles.rate}>
@@ -203,7 +203,7 @@ function TreeDonation({
 
           <div className={styles.treeDonationContainer}>
             <div className={styles.isGiftDonation}>
-              <label className={styles.isGiftDonationText} htmlFor="checkedA" >
+              <label className={styles.isGiftDonationText} htmlFor="checkedA" data-test-id="giftToggle" >
                 {t('donate:myDonationGiftToSomeone')}
               </label>
               <ToggleSwitch
@@ -234,7 +234,7 @@ function TreeDonation({
               )
             ) : null}
 
-            <div className={styles.selectTreeCount}>
+            <div className={styles.selectTreeCount} >
               {treeCountOptions.map((option) => (
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -252,8 +252,8 @@ function TreeDonation({
                       : styles.treeCountOption
                   }
                 >
-                  <div className={styles.treeCountOptionTrees}>{option}</div>
-                  <div className={styles.treeCountOptionTrees}>
+                  <div className={styles.treeCountOptionTrees} data-test-id="selectTreeCount">{option}</div>
+                  <div className={styles.treeCountOptionTrees} >
                     {t('common:trees')}
                   </div>
                 </motion.button>
@@ -288,6 +288,7 @@ function TreeDonation({
                     setCustomTreeValue(e);
                     setCustomTreeInputValue(e.target.value);
                   }}
+                  data-test-id="customTreeInput"
                 />
                 <div className={styles.treeCountOptionTrees}>
                   {t('common:tree', {

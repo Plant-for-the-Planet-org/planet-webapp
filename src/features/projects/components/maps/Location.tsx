@@ -19,7 +19,7 @@ export default function Location({ siteExists, geoJson, project }: Props) {
           offsetLeft={5}
           offsetTop={-16}
         >
-          <div style={{ left: '28px' }} className={styles.marker} />
+          <div style={{ left: '28px' }} className={`${styles.marker} ${project.purpose === 'conservation'? styles.conservationMarker: ''}`} />
         </Marker>
       ) : (
         <ProjectPolygon id="locationPolygon" geoJson={geoJson} />
