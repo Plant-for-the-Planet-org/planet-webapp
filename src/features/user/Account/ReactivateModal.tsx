@@ -2,22 +2,13 @@ import React from 'react';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import FormControl from '@material-ui/core/FormControl';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
 import { useTranslation } from 'react-i18next';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
-import GreenRadio from '../../common/InputTypes/GreenRadio';
-import { ThemeProvider } from '@material-ui/styles';
-// import CalendarPicker from '@mui/lab/CalendarPicker';
-import { Calendar, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
-import materialTheme from '../../../theme/themeStyles';
-import { Controller } from '../../../../node_modules/react-hook-form/dist';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 export const ReactivateModal = ({
   reactivateModalOpen,
@@ -26,13 +17,14 @@ export const ReactivateModal = ({
 }: any) => {
   const { theme } = React.useContext(ThemeContext);
   const { token } = React.useContext(UserPropsContext);
+  const { handleError } = React.useContext(ErrorHandlingContext);
   const { t, i18n, ready } = useTranslation(['me']);
   const bodyToSend = {};
   const reactivateDonation = () => {
     putAuthenticatedRequest(
       `/app/subscriptions/${record.id}?scope=reactivate`,
       bodyToSend,
-      token
+      token, handleError
     )
       .then((res) => {
         console.log(res, 'Response');

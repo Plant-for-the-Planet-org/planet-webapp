@@ -5,6 +5,7 @@ import PaymentDetails from './screens/PaymentDetails';
 import ThankYou from './screens/ThankYou';
 import TreeDonation from './screens/TreeDonation';
 import { UserPropsContext } from '../common/Layout/UserPropsContext';
+import { ErrorHandlingContext } from '../common/Layout/ErrorHandlingContext';
 
 interface Props {
   onClose: any;
@@ -19,9 +20,8 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
   const [donationID, setDonationID] = React.useState(null);
   const [shouldCreateDonation, setShouldCreateDonation] = React.useState(false);
 
-  const { user, contextLoaded, loginWithRedirect, token } = React.useContext(
-    UserPropsContext
-  );
+  const { user, contextLoaded, loginWithRedirect, token } =
+    React.useContext(UserPropsContext);
 
   // for tax deduction part
   const [isTaxDeductible, setIsTaxDeductible] = React.useState(false);
@@ -34,9 +34,8 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
 
   // stores the value as boolean whether payment options is being fetched or not
   // used for showing a loader
-  const [isPaymentOptionsLoading, setIsPaymentOptionsLoading] = React.useState<
-    boolean
-  >(false);
+  const [isPaymentOptionsLoading, setIsPaymentOptionsLoading] =
+    React.useState<boolean>(false);
 
   const [paymentType, setPaymentType] = React.useState('');
 
@@ -47,6 +46,7 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
       setDirectGift(JSON.parse(getdirectGift));
     }
   }, []);
+  const { handleError } = React.useContext(ErrorHandlingContext);
 
   //  to load payment data
   React.useEffect(() => {
@@ -55,7 +55,8 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
         setIsPaymentOptionsLoading(true);
 
         const paymentSetupData = await getRequest(
-          `/app/projects/${project.id}/paymentOptions?country=${country}`
+          `/app/projects/${project.id}/paymentOptions?country=${country}`,
+          handleError
         );
         if (paymentSetupData) {
           setPaymentSetup(paymentSetupData);
@@ -262,4 +263,6 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
   }
 }
 
-export default DonationsPopup;
+export default React.forwardRef((props: Props, ref) => (
+  <DonationsPopup {...props} />
+));

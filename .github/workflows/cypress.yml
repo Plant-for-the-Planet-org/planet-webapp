@@ -14,6 +14,9 @@ jobs:
       - name: 'Checkout the repository'
         uses: actions/checkout@v2
 
+      - name: Upgrade npm to latest version
+        run: sudo npm i -g npm@latest
+
       - name: 'Install Node Modules'
         run: npm install
 

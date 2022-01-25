@@ -2,14 +2,15 @@ import React, { ReactElement } from 'react';
 import styles from '../../styles/MyTrees.module.scss';
 import dynamic from 'next/dynamic';
 import {
-  getRequestWithoutRedirecting,
-  getAuthenticatedRequestWithoutRedirecting,
+  getAuthenticatedRequest,
+  getRequest,
 } from '../../../../../utils/apiRequests/api';
 import i18next from '../../../../../../i18n';
 import { getFormattedNumber } from '../../../../../utils/getFormattedNumber';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
+import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
@@ -26,13 +27,17 @@ interface Props {
 export default function MyTrees({ profile, authenticatedType, token }: Props) {
   const { t, i18n, ready } = useTranslation(['country', 'me']);
   const [contributions, setContributions] = React.useState();
+  const { handleError } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     async function loadFunction() {
       if (authenticatedType === 'private' && token) {
-        getAuthenticatedRequestWithoutRedirecting(
+        getAuthenticatedRequest(
           `/app/profile/contributions`,
-          token
+          token,
+          {},
+          handleError,
+          '/profile'
         )
           .then((result: any) => {
             setContributions(result);
@@ -41,7 +46,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
             console.log('error occured :', e);
           });
       } else {
-        getRequestWithoutRedirecting(
+        getRequest(
           `/app/profiles/${profile.id}/contributions`
         )
           .then((result: any) => {
@@ -61,10 +66,10 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   };
 
   return contributions?.length > 0 && ready ? (
-    <div className={authenticatedType === 'private' ? 'profilePage' : ''} style={{marginTop:'0px'}}>
+    <div className={authenticatedType === 'private' ? 'profilePage' : ''} style={{ marginTop: '0px' }}>
       {contributions &&
-      Array.isArray(contributions) &&
-      contributions.length !== 0 ? (
+        Array.isArray(contributions) &&
+        contributions.length !== 0 ? (
         <>
           <div
             className={styles.myTreesSection}
@@ -83,8 +88,8 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
             </div>
             <div className={styles.myTreesContainer}>
               <div className={styles.treesList}>
-                {contributions.map((contribution: any,index:any) => {
-                  return <TreeList key={index}  contribution={contribution} />;
+                {contributions.map((contribution: any, index: any) => {
+                  return <TreeList key={index} contribution={contribution} />;
                 })}
               </div>
               <MyTreesMap {...MapProps} />
@@ -119,8 +124,8 @@ function TreeList({ contribution }: any) {
             <div className={styles.source}>
               {contribution.properties.giver.name
                 ? t('me:receivedFrom', {
-                    name: contribution.properties.giver.name,
-                  })
+                  name: contribution.properties.giver.name,
+                })
                 : t('me:receivedTrees')}
             </div>
           ) : null}
@@ -131,8 +136,8 @@ function TreeList({ contribution }: any) {
             <div className={styles.source}>
               {contribution.properties.recipient
                 ? t('me:giftToGiftee', {
-                    gifteeName: contribution.properties.recipient.name,
-                  })
+                  gifteeName: contribution.properties.recipient.name,
+                })
                 : null}
             </div>
           ) : null}
