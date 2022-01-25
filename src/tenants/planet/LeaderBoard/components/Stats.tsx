@@ -8,10 +8,10 @@ import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber
 import { ThemeContext } from '../../../../theme/themeContext';
 
 interface Props {
-  tenantScore:any;
+  tenantScore: any;
 }
 const { useTranslation } = i18next;
-export default function Stats({tenantScore}: Props): ReactElement {
+export default function Stats({ tenantScore }: Props): ReactElement {
   const [infoExpanded, setInfoExpanded] = React.useState(null);
   const { t, i18n, ready } = useTranslation(['leaderboard', 'common', 'planet']);
   const [openModal, setModalOpen] = React.useState(false);
@@ -26,12 +26,30 @@ export default function Stats({tenantScore}: Props): ReactElement {
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <div className={styles.statCard}>
-          <h2 className={styles.statNumber}>{localizedAbbreviatedNumber(i18n.language, Number(32020000), 2)}</h2>
+          <h2 className={styles.statNumber}>{localizedAbbreviatedNumber(i18n.language, Number(63356788), 2)}</h2>
           <h3 className={styles.statText}>{t('planet:treesDonated')}</h3>
+          <button id={'donatedStats'}
+            onClick={() => {
+              setInfoExpanded('donated');
+              setModalOpen(true);
+            }}
+            className={styles.statInfo}
+          >
+            <InfoIcon color="#000" />
+          </button>
         </div>
         <div className={styles.statCard}>
           <h2 className={styles.statNumber}> {localizedAbbreviatedNumber(i18n.language, Number(77060000), 2)} </h2>
-          <h3 className={styles.statText}>{t('planet:plantedByTPO', { projects: 160 })}</h3>
+          <h3 className={styles.statText}>{t('planet:plantedByTPO', { projects: 206 })}</h3>
+          <button id={'plantedStats'}
+            onClick={() => {
+              setInfoExpanded('planted');
+              setModalOpen(true);
+            }}
+            className={styles.statInfo}
+          >
+            <InfoIcon color="#000" />
+          </button>
         </div>
         <div className={styles.statCard}>
           <h2 className={styles.statNumber}>{localizedAbbreviatedNumber(i18n.language, Number(tenantScore.total), 2)}</h2>
@@ -43,11 +61,11 @@ export default function Stats({tenantScore}: Props): ReactElement {
             }}
             className={styles.statInfo}
           >
-            <InfoIcon />
+            <InfoIcon color="#000" />
           </button>
         </div>
         <div className={styles.statCard}>
-          <h2 className={styles.statNumber} style={{color:styles.dangerColor}}>
+          <h2 className={styles.statNumber} style={{ color: styles.dangerColor }}>
             {localizedAbbreviatedNumber(i18n.language, Number(10000000000), 2)}
           </h2>
           <h3 className={styles.statText}>{t('planet:forestLoss')}</h3>
@@ -58,13 +76,13 @@ export default function Stats({tenantScore}: Props): ReactElement {
             }}
             className={styles.statInfo}
           >
-            <InfoIcon />
+            <InfoIcon color="#000" />
           </button>
         </div>
       </div>
       {infoExpanded !== null ? (
         <Modal
-          className={'modalContainer'+' '+theme}
+          className={'modalContainer' + ' ' + theme}
           open={openModal}
           onClose={handleModalClose}
           aria-labelledby="simple-modal-title"

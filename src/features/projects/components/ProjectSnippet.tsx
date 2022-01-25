@@ -1,8 +1,5 @@
-import Modal from '@material-ui/core/Modal';
 import React, { ReactElement } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
-import { ThemeContext } from '../../../theme/themeContext';
-import DonationsPopup from '../../donations';
 import { useRouter } from 'next/router';
 import i18next from '../../../../i18n';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
@@ -10,17 +7,20 @@ import EditIcon from '../../../../public/assets/images/icons/manageProjects/Penc
 import Link from 'next/link';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
+import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { getDonationUrl } from '../../../utils/getDonationUrl';
 
 const { useTranslation } = i18next;
 interface Props {
   project: any;
-  key: number;
+  keyString: string;
   editMode: Boolean;
 }
 
 export default function ProjectSnippet({
   project,
-  key,
+  keyString,
   editMode,
 }: Props): ReactElement {
   const router = useRouter();
@@ -30,36 +30,24 @@ export default function ProjectSnippet({
     ? getImageUrl('project', 'medium', project.image)
     : '';
 
-  const { theme } = React.useContext(ThemeContext);
+  const { selectedPl, hoveredPl } = React.useContext(ProjectPropsContext);
+
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
   if (progressPercentage > 100) {
     progressPercentage = 100;
   }
 
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const { token } = React.useContext(UserPropsContext);
   const handleOpen = () => {
-    setOpen(true);
+    const url = getDonationUrl(project.slug, token);
+    window.location.href = url;
   };
 
   return ready ? (
-    <div className={'singleProject'} key={key}>
-      <Modal
-        className={`modalContainer ${theme}`}
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        disableBackdropClick
-      >
-          <DonationsPopup project={project} onClose={handleClose} />
-      </Modal>
-
+    <div className={'singleProject'} key={keyString}>
       {editMode ? (
-        <Link href={`/manage-projects/${project.id}`}>
+        <Link href={`/profile/projects/${project.id}`}>
           <button id={'projectSnipEdit'} className={'projectEditBlock'}>
             <EditIcon></EditIcon>
           </button>
@@ -67,11 +55,10 @@ export default function ProjectSnippet({
       ) : null}
       <div
         onClick={() => {
-          router.push('/[p]', `/${project.slug}`, {
-            shallow: true,
-          });
+          router.replace(`/${project.slug}`);
         }}
-        className={'projectImage'}
+        className={`projectImage ${selectedPl || hoveredPl ? 'projectCollapsed' : ''
+          }`}
       >
         {project.image && typeof project.image !== 'undefined' ? (
           <div
@@ -84,9 +71,11 @@ export default function ProjectSnippet({
         ) : null}
 
         <div className={'projectImageBlock'}>
-          {/* <div className={'projectType}>
-                {GetProjectClassification(project.classification)}
-              </div> */}
+          <div className={'projectType'}>
+
+            {project.classification &&
+              t(`donate:${project.classification}`)}
+          </div>
           <div className={'projectName'}>
             {truncateString(project.name, 54)}
           </div>
@@ -103,8 +92,16 @@ export default function ProjectSnippet({
         <div className={'projectData'}>
           <div className={'targetLocation'}>
             <div className={'target'}>
-              {localizedAbbreviatedNumber(i18n.language, Number(project.countPlanted), 1)}{' '}
-              {t('common:tree', { count: Number(project.countPlanted) })} •{' '}
+              {project.purpose === 'trees' ? (
+                <>
+                  {localizedAbbreviatedNumber(
+                    i18n.language,
+                    Number(project.countPlanted),
+                    1
+                  )}{' '}
+                  {t('common:tree', { count: Number(project.countPlanted) })} •{' '}
+                </>
+              ) : []}
               <span style={{ fontWeight: 400 }}>
                 {t('country:' + project.country.toLowerCase())}
               </span>
@@ -124,18 +121,23 @@ export default function ProjectSnippet({
 
         {project.allowDonations && (
           <div className={'projectCost'}>
-            {project.treeCost ? (
+            {project.unitCost ? (
               <>
-                <button id={`ProjSnippetDonate_${project.id}`} onClick={handleOpen} className={'donateButton'}>
+                <button
+                  id={`ProjSnippetDonate_${project.id}`}
+                  onClick={handleOpen}
+                  className={'donateButton'}
+                  data-test-id="donateButton"
+                >
                   {t('common:donate')}
                 </button>
                 <div className={'perTreeCost'}>
                   {getFormatedCurrency(
                     i18n.language,
                     project.currency,
-                    project.treeCost
+                    project.unitCost
                   )}{' '}
-                  <span>{t('donate:perTree')}</span>
+                  <span>{project.purpose === 'conservation' ? t('donate:perM2') : t('donate:perTree')}</span>
                 </div>
               </>
             ) : null}
@@ -143,5 +145,7 @@ export default function ProjectSnippet({
         )}
       </div>
     </div>
-  ) : <></>;
+  ) : (
+    <></>
+  );
 }

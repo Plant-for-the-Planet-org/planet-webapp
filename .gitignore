@@ -31,9 +31,16 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# Cypress env
+cypress.env.json
+
 # certificates
 ./certificates/localhost.crt
 ./certificates/localhost.key
 
 # tenant
 # tenant.config.js
+
+/cypress/videos
+/cypress/screenshots
+/cypress/integration/examples

@@ -1,1 +1,8 @@
-{ }
+{
+  "congratulations": "Congratulazioni!",
+  "addToMyTrees": "Aggiungi ai miei alberi",
+  "validateCode": "Convalidare il codice",
+  "enterRedeemCode": "Si prega di inserire un codice per riscattare",
+  "validating": "Convalida",
+  "invalidType": "Tipo non valido, si prega di controllare di nuovo il link"
+}

@@ -1,21 +1,21 @@
 import getsessionId from '../../../utils/apiRequests/getSessionId';
+import { TENANT_ID } from '../../../utils/constants/environment';
 import { CreateDonationFunctionProps } from '../../common/types/donations';
 
 export async function createDonation(data: any, token: any) {
   let headers = {
     'Content-Type': 'application/json',
-    'tenant-key': `${process.env.TENANTID}`,
+    'tenant-key': `${TENANT_ID}`,
     'X-SESSION-ID': await getsessionId(),
-    'x-locale': `${localStorage.getItem('language')
-      ? localStorage.getItem('language')
-      : 'en'
-      }`
-  }
+    'x-locale': `${
+      localStorage.getItem('language') ? localStorage.getItem('language') : 'en'
+    }`,
+  };
   if (token && token !== '') {
     headers = {
       ...headers,
-      'Authorization': `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    };
   }
   const res = await fetch(`${process.env.API_ENDPOINT}/app/donations`, {
     method: 'POST',
@@ -29,18 +29,17 @@ export async function createDonation(data: any, token: any) {
 export async function payDonation(data: any, id: any, token: any) {
   let headers = {
     'Content-Type': 'application/json',
-    'tenant-key': `${process.env.TENANTID}`,
+    'tenant-key': `${TENANT_ID}`,
     'X-SESSION-ID': await getsessionId(),
-    'x-locale': `${localStorage.getItem('language')
-      ? localStorage.getItem('language')
-      : 'en'
-      }`,
-  }
+    'x-locale': `${
+      localStorage.getItem('language') ? localStorage.getItem('language') : 'en'
+    }`,
+  };
   if (token && token !== '') {
     headers = {
       ...headers,
-      'Authorization': `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    };
   }
   const res = await fetch(`${process.env.API_ENDPOINT}/app/donations/${id}`, {
     method: 'PUT',
@@ -52,7 +51,7 @@ export async function payDonation(data: any, id: any, token: any) {
     return {
       code: res.status,
       message: await res.json(),
-    }
+    };
   } else {
     const contribution = await res.json();
     return contribution;
@@ -96,10 +95,19 @@ export async function createDonationFunction({
   setIsPaymentProcessing,
   setPaymentError,
   setDonationID,
-  token
+  token,
 }: CreateDonationFunctionProps) {
   const taxDeductionCountry = isTaxDeductible ? country : null;
-  const donationData = createDonationData({ project, treeCount, treeCost, currency, donorDetails, taxDeductionCountry, isGift, giftDetails })
+  const donationData = createDonationData({
+    project,
+    treeCount,
+    treeCost,
+    currency,
+    donorDetails,
+    taxDeductionCountry,
+    isGift,
+    giftDetails,
+  });
   try {
     const donation = await createDonation(donationData, token);
     if (donation) {
@@ -112,16 +120,15 @@ export async function createDonationFunction({
       } else if (donation.code === 503) {
         setIsPaymentProcessing(false);
         setPaymentError(
-          'App is undergoing maintenance, please check status.plant-for-the-planet.org for details',
+          'App is undergoing maintenance, please check status.plant-for-the-planet.org for details'
         );
       } else {
         // Donation is created. We need donation ID for further operations.
-        setDonationID(donation.id)
+        setDonationID(donation.id);
         return donation;
       }
     }
-  }
-  catch (error) {
+  } catch (error) {
     setIsPaymentProcessing(false);
     setPaymentError(error.message);
   }
@@ -135,7 +142,7 @@ export function createDonationData({
   donorDetails,
   taxDeductionCountry,
   isGift,
-  giftDetails
+  giftDetails,
 }: any) {
   let donationData = {
     type: 'trees',
@@ -162,7 +169,7 @@ export function createDonationData({
             recipientName: giftDetails.recipientName,
             recipientEmail: giftDetails.email,
             message: giftDetails.giftMessage,
-          }
+          },
         },
       };
     } else if (giftDetails.type === 'direct') {
@@ -173,7 +180,7 @@ export function createDonationData({
             type: 'direct',
             recipientTreecounter: giftDetails.recipientTreecounter,
             message: giftDetails.giftMessage,
-          }
+          },
         },
       };
     } else if (giftDetails.type === 'bulk') {
@@ -194,7 +201,7 @@ export async function payDonationFunction({
   token,
   setDonationStep,
   donorDetails,
-  country
+  country,
 }: any) {
   setIsPaymentProcessing(true);
 
@@ -215,39 +222,36 @@ export async function payDonationFunction({
         },
       },
     };
-  }
-  else if (gateway === 'paypal') {
+  } else if (gateway === 'paypal') {
     payDonationData = {
       paymentProviderRequest: {
         account: paymentSetup.gateways.paypal.account,
         gateway: 'paypal',
         source: {
-          ...paymentMethod
+          ...paymentMethod,
         },
       },
     };
-  }
-  else if (gateway === 'stripe_giropay') {
+  } else if (gateway === 'stripe_giropay') {
     payDonationData = {
       paymentProviderRequest: {
         account: paymentSetup.gateways.stripe.account,
         gateway: 'stripe_pi',
         source: {
-          object: 'giropay'
-        }
-      }
-    }
-  }
-  else if (gateway === 'stripe_sofort') {
+          object: 'giropay',
+        },
+      },
+    };
+  } else if (gateway === 'stripe_sofort') {
     payDonationData = {
       paymentProviderRequest: {
         account: paymentSetup.gateways.stripe.account,
         gateway: 'stripe_pi',
         source: {
-          object: 'sofort'
-        }
-      }
-    }
+          object: 'sofort',
+        },
+      },
+    };
   }
 
   try {
@@ -258,14 +262,16 @@ export async function payDonationFunction({
         setIsPaymentProcessing(false);
         setPaymentError(paidDonation.message);
         return;
-      } if (paidDonation.code === 500) {
+      }
+      if (paidDonation.code === 500) {
         setIsPaymentProcessing(false);
         setPaymentError('Something went wrong please try again soon!');
         return;
-      } if (paidDonation.code === 503) {
+      }
+      if (paidDonation.code === 503) {
         setIsPaymentProcessing(false);
         setPaymentError(
-          'App is undergoing maintenance, please check status.plant-for-the-planet.org for details',
+          'App is undergoing maintenance, please check status.plant-for-the-planet.org for details'
         );
         return;
       }
@@ -273,12 +279,14 @@ export async function payDonationFunction({
         setIsPaymentProcessing(false);
         setPaymentError(paidDonation.message);
         return paidDonation;
-      } else if (paidDonation.paymentStatus === 'success'
-        || paidDonation.paymentStatus === 'pending'
-        || paidDonation.paymentStatus === 'paid'
-        || paidDonation.status === 'success'
-        || paidDonation.status === 'pending'
-        || paidDonation.status === 'paid' ) {
+      } else if (
+        paidDonation.paymentStatus === 'success' ||
+        paidDonation.paymentStatus === 'pending' ||
+        paidDonation.paymentStatus === 'paid' ||
+        paidDonation.status === 'success' ||
+        paidDonation.status === 'pending' ||
+        paidDonation.status === 'paid'
+      ) {
         setIsPaymentProcessing(false);
         setDonationStep(4);
         return paidDonation;
@@ -294,8 +302,8 @@ export async function payDonationFunction({
           token,
           setDonationStep,
           donorDetails,
-          country
-        })
+          country,
+        });
       }
     }
   } catch (error) {
@@ -315,18 +323,17 @@ export async function handleSCAPaymentFunction({
   token,
   setDonationStep,
   donorDetails,
-  country
+  country,
 }: any) {
   const clientSecret = paidDonation.response.payment_intent_client_secret;
-  const key = paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey ? paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey : paymentSetup?.gateways?.stripe?.stripePublishableKey;
-  const stripe = window.Stripe(
-    key,
-    {
-      stripeAccount: paidDonation.response.account,
-    },
-  );
+  const key = paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey
+    ? paymentSetup?.gateways?.stripe?.authorization.stripePublishableKey
+    : paymentSetup?.gateways?.stripe?.stripePublishableKey;
+  const stripe = window.Stripe(key, {
+    stripeAccount: paidDonation.response.account,
+  });
   if (stripe) {
-    if(gateway === 'stripe'){
+    if (gateway === 'stripe') {
       const SCAdonation = await stripe.handleCardAction(clientSecret);
       if (SCAdonation) {
         if (SCAdonation.error) {
@@ -343,35 +350,42 @@ export async function handleSCAPaymentFunction({
               },
             },
           };
-          const SCAPaidDonation = await payDonation(payDonationData, donationID, token);
+          const SCAPaidDonation = await payDonation(
+            payDonationData,
+            donationID,
+            token
+          );
           if (SCAPaidDonation) {
-            if (SCAPaidDonation.paymentStatus) {
+            if (SCAPaidDonation.paymentStatus || SCAPaidDonation.status) {
               setIsPaymentProcessing(false);
               setDonationStep(4);
               return SCAPaidDonation;
             } else {
               setIsPaymentProcessing(false);
-              setPaymentError(SCAPaidDonation.error ? SCAPaidDonation.error.message : SCAPaidDonation.message);
+              setPaymentError(
+                SCAPaidDonation.error
+                  ? SCAPaidDonation.error.message
+                  : SCAPaidDonation.message
+              );
             }
           }
         }
       }
-    }
-    else if(gateway === 'stripe_giropay'){
-      const {error, paymentIntent} = await stripe.confirmGiropayPayment(
+    } else if (gateway === 'stripe_giropay') {
+      const { error, paymentIntent } = await stripe.confirmGiropayPayment(
         paidDonation.response.payment_intent_client_secret,
         {
           payment_method: {
             billing_details: {
               name: `${donorDetails.firstname} ${donorDetails.lastname}`,
-              email:donorDetails.email,
-              address:{
+              email: donorDetails.email,
+              address: {
                 city: donorDetails.city,
                 country: donorDetails.country,
                 line1: donorDetails.address,
                 postal_code: donorDetails.zipCode,
-              }
-            }
+              },
+            },
           },
           return_url: `${process.env.NEXTAUTH_URL}/payment-status?donationID=${donationID}&paymentType=Giropay`,
         }
@@ -380,30 +394,27 @@ export async function handleSCAPaymentFunction({
       if (error) {
         setIsPaymentProcessing(false);
         setPaymentError(error);
-      }
-      else {
+      } else {
         return;
       }
-    }
-
-    else if(gateway === 'stripe_sofort'){
-      const {error, paymentIntent} = await stripe.confirmSofortPayment(
+    } else if (gateway === 'stripe_sofort') {
+      const { error, paymentIntent } = await stripe.confirmSofortPayment(
         paidDonation.response.payment_intent_client_secret,
         {
           payment_method: {
             sofort: {
-              country: country
+              country: country,
             },
             billing_details: {
               name: `${donorDetails.firstname} ${donorDetails.lastname}`,
-              email:donorDetails.email,
-              address:{
+              email: donorDetails.email,
+              address: {
                 city: donorDetails.city,
                 country: donorDetails.country,
                 line1: donorDetails.address,
                 postal_code: donorDetails.zipCode,
-              }
-            }
+              },
+            },
           },
           return_url: `${process.env.NEXTAUTH_URL}/payment-status?donationID=${donationID}&paymentType=Sofort`,
         }
@@ -412,11 +423,9 @@ export async function handleSCAPaymentFunction({
       if (error) {
         setIsPaymentProcessing(false);
         setPaymentError(error);
-      }
-      else {
-        console.log('paymentIntent',paymentIntent)
+      } else {
+        console.log('paymentIntent', paymentIntent);
       }
     }
-
   }
 }

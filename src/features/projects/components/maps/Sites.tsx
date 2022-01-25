@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 import zoomToProjectSite from '../../../../utils/maps/zoomToProjectSite';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
+import PlantLocations from './PlantLocations';
 import ProjectPolygon from './ProjectPolygon';
 import SatelliteLayer from './SatelliteLayer';
 import VegetationChange from './VegetationChange';
@@ -20,6 +21,9 @@ export default function Sites({}: Props): ReactElement {
     mapRef,
     selectedMode,
     rasterData,
+    satellite,
+    setSiteViewPort,
+    plantLocationsLoaded
   } = React.useContext(ProjectPropsContext);
 
   React.useEffect(() => {
@@ -27,18 +31,18 @@ export default function Sites({}: Props): ReactElement {
       geoJson,
       selectedSite,
       viewport,
-      isMobile,
       setViewPort,
+      setSiteViewPort,
       4000
     );
-  }, [selectedSite]);
+  }, [selectedSite,selectedMode]);
 
   return (
     <>
       {selectedMode === 'location' && (
         <>
-          <SatelliteLayer />
-          <ProjectPolygon id="locationPolygon" geoJson={geoJson} />
+          {plantLocationsLoaded && satellite && <SatelliteLayer />}
+          {/* <ProjectPolygon id="locationPolygon" geoJson={geoJson} /> */}
         </>
       )}
       {Object.keys(rasterData.imagery).length !== 0 &&

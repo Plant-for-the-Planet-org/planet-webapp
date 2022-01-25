@@ -2,10 +2,10 @@
 
 .container {
   position: relative;
-  z-index: 6;
   transition: all 0.3s ease-in-out;
   width: 100vw;
   margin-top: 50vh;
+  z-index: 12;
 }
 
 .modalClose {
@@ -55,6 +55,13 @@
   }
 }
 
+.timeTravelContainer {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  position: relative;
+}
+
 // .modal::-webkit-scrollbar {
 //   width: 0px;
 // }
@@ -94,10 +101,19 @@
 }
 
 .projectSnippetContainer {
+  background-color: $backgroundColor;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   .projectInfo {
     padding-left: 16px;
     padding-right: 16px;
   }
+}
+
+.singleProjectDetails {
+  border-radius: 10px;
+  background-color: $backgroundColor;
+  padding-bottom: 16px;
 }
 
 .ratings {
@@ -258,9 +274,19 @@
   }
 
   .projectContainer {
-    margin-top: 90px;
+    margin-top: 0px;
     width: 360px;
     padding-bottom: 16px;
+    min-height: calc(100vh - 100px);
+    background-color: transparent;
+  }
+
+  .singleProjectDetails {
+    margin-top: 20px;
+  }
+
+  .projectSnippetContainer {
+    padding-bottom: 20px;
   }
 }
 
@@ -272,7 +298,7 @@
   .popoverContent {
     position: absolute;
     z-index: 10;
-    background-color: $light;
+    background-color: $backgroundColor;
     border-radius: 10px;
     padding: 12px;
     text-align: center;

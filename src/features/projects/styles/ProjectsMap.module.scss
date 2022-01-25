@@ -31,6 +31,9 @@
   margin: -20px 0 0 -20px;
   box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
   cursor: pointer;
+  &.conservationMarker {
+    background: #1EA9E4;
+  }
 }
 
 .markerType {
@@ -45,9 +48,28 @@
   position: absolute;
   right: 20px;
   bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
   > div {
     position: relative !important;
   }
+}
+
+.layerToggle {
+  width: 30px;
+  height: 30px;
+  box-shadow: 0 0 0 2px rgb(0 0 0 / 10%);
+  background-color: $backgroundColor;
+  border-radius: 100px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 10px;
+  top: 70px;
 }
 
 .projectControls {
@@ -95,7 +117,7 @@
 
 .projectSitesButton {
   position: fixed;
-  right: 60px;
+  right: 100px;
   top: 20px;
   display: flex;
   flex-direction: column;
@@ -115,13 +137,24 @@
 
 .dropdownContainer {
   position: fixed;
-  right: 60px;
+  right: 100px;
   top: 20px;
-  z-index: 100;
+  z-index: 11;
 }
 
 .projectSitesDropdown {
-  z-index: 9999;
+  z-index: 100;
+}
+
+.polygonIcon {
+  position: absolute;
+  z-index: 101;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .exploreButton {
@@ -144,10 +177,18 @@
   width: 17px;
 }
 
+.exploreButton > svg > path {
+  fill: $primaryFontColor;
+}
+
+.forestInfo {
+  color: $primaryFontColor;
+}
 .exploreText {
   padding-left: 4px;
   margin: 0;
   font-size: $fontSmall;
+  color: $primaryFontColor;
 }
 
 .exploreCaption {
@@ -156,6 +197,7 @@
   width: 200px;
   font-size: $fontXXSmall;
   text-align: center;
+  color: $primaryFontColor;
 }
 
 .exploreInfo {
@@ -165,6 +207,10 @@
   align-items: center;
   width: 10px;
   cursor: pointer;
+}
+
+.exploreInfo > svg > path {
+  fill: $primaryFontColor;
 }
 
 .deforestionSlider > div {
@@ -289,6 +335,7 @@
   align-items: center;
   width: 100%;
   margin: 20px 0;
+  color: $primaryFontColor;
 }
 
 .reforestationScale > div {
@@ -302,6 +349,9 @@
     rgba(59, 0, 255, 1) 100%
   );
 }
+.restorationInfo {
+  color: $primaryFontColor;
+}
 
 .reforestationScale > p:nth-child(1) {
   font-size: $fontXSmall;
@@ -313,6 +363,9 @@
   // color: #fadc2f;
 }
 
+.openLink > svg > path {
+  fill: $primaryFontColor;
+}
 .currentForestScale {
   display: flex;
   flex-direction: row;
@@ -391,6 +444,7 @@
   align-items: center;
   padding: 5px 0px;
   height: 48px;
+  color: $primaryFontColor;
 }
 
 .exploreToggleRow svg {
@@ -426,9 +480,9 @@
   bottom: 0px;
   right: 20px;
   font-size: 11px;
-  color: rgba(0, 0, 0, 0.75);
+  color: $primaryFontColor;
   cursor: pointer;
-  background-color: $light;
+  background-color: $backgroundColor;
   padding: 6px 18px 4px;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
@@ -445,14 +499,55 @@
   > a {
     margin-left: 10px;
     text-decoration: none;
-    color: rgba(0, 0, 0, 0.75);
+    color: rgba($primaryFontColor, 0.75);
   }
+}
+
+.layerSwitcher {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  right: 20px;
+  top: 100px;
+  border-radius: 8px !important;
+  overflow: hidden;
+  box-shadow: 0px 3px 6px #00000029;
+}
+
+.layerOption {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: $backgroundColor;
+  width: 60px;
+  height: 30px;
+  border-radius: 0 !important;
+  cursor: pointer;
+  font-family: $primaryFontFamily;
+  font-weight: 700;
+}
+
+.active {
+  background-color: $primaryColor;
+  color: $light;
+}
+
+.clickForDetails {
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: $primaryFontColor;
+  background: $backgroundColor;
 }
 
 @include smTabletView {
   .projectSitesButton {
     top: 100px;
-    right: 65px;
   }
 
   .dropdownContainer {
@@ -470,6 +565,10 @@
   // .infoExpanded {
   //   top: 100px;
   // }
+
+  .layerToggle {
+    top: 150px;
+  }
 }
 
 @include mdTabletView {
@@ -483,18 +582,24 @@
   }
   .projectSitesButton {
     top: 110px;
-    right: 70px;
+    right: 165px;
   }
 
   .dropdownContainer {
     top: 110px;
-    right: 70px;
+    right: 165px;
   }
 
   .exploreButton {
     top: 110px;
     right: 20px;
     flex-direction: row;
+  }
+
+  .layerToggle {
+    top: auto;
+    right: 20px;
+    bottom: 125px;
   }
 }
 
@@ -504,7 +609,7 @@
 //   }
 // }
 
-@include xsPhoneView {
+@media screen and (max-height: 315px), (max-width: 481px) {
   .mapNavigation {
     display: none;
   }
@@ -521,7 +626,7 @@
   .popoverContent {
     position: absolute;
     z-index: 10;
-    background-color: $light;
+    background-color: $backgroundColor;
     border-radius: 10px;
     padding: 12px;
     text-align: center;
@@ -536,6 +641,10 @@
       display: flex;
     }
   }
+}
+
+.popupProject {
+  min-width: 300px;
 }
 
 @include lgLaptopView {

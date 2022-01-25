@@ -15,6 +15,7 @@ import ulmpflanzt from './public/tenants/ulmpflanzt/config';
 import globalparli from './public/tenants/globalparli/config';
 import sitex from './public/tenants/sitex/config';
 import T3pleset from './public/tenants/3pleset/config';
+import weareams from './public/tenants/weareams/config';
 
 export default function tenantConfig() {
   switch (process.env.TENANT) {
@@ -52,6 +53,8 @@ export default function tenantConfig() {
       return sitex;
     case '3pleset':
       return T3pleset;
+    case 'weareams':
+      return weareams;
     default:
       return planetConfig;
   }

@@ -57,9 +57,11 @@
 }
 
 .editTragetContainer {
-  padding-right: 15px;
   cursor: pointer;
-  padding-left: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 12px;
 }
 
 .backgroundCircle {
@@ -84,7 +86,6 @@
   cursor: pointer;
 }
 .addTargetButton > p {
-  color:$light;
   opacity: 1;
   font-size: $fontMedium;
 }

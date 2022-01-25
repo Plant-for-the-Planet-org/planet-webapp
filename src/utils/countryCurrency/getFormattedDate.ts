@@ -6,7 +6,7 @@ export default function formatDate(dateString: any) {
   if (dateString) {
     try {
       return format(parseISO(dateString), 'LLLL d, yyyy', {
-        locale: localeMapForDate[localStorage.getItem('language') || 'en']
+        locale: localeMapForDate[localStorage.getItem('language') || 'en'],
       });
     } catch (error) {
       console.log(error);

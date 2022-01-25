@@ -12,6 +12,7 @@ const {
   SENTRY_PROJECT,
   SENTRY_AUTH_TOKEN,
   NODE_ENV,
+  VERCEL_GIT_COMMIT_SHA,
   VERCEL_GITHUB_COMMIT_SHA,
   VERCEL_GITLAB_COMMIT_SHA,
   VERCEL_BITBUCKET_COMMIT_SHA,
@@ -22,6 +23,7 @@ const {
 
 // allow source map uploads from Vercel, Heroku and Netlify deployments
 const COMMIT_SHA =
+  VERCEL_GIT_COMMIT_SHA ||
   VERCEL_GITHUB_COMMIT_SHA ||
   VERCEL_GITLAB_COMMIT_SHA ||
   VERCEL_BITBUCKET_COMMIT_SHA ||
@@ -44,9 +46,6 @@ const hasAssetPrefix =
   process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
 module.exports = withPlugins([[withBundleAnalyzer]], {
-  future: {
-    webpack5: true, // this sill seems to have a problem with Auth0
-  },
   productionBrowserSourceMaps: true,
   serverRuntimeConfig: {
     rootDir: __dirname,
@@ -76,7 +75,7 @@ module.exports = withPlugins([[withBundleAnalyzer]], {
     // for webpack5:
     config.resolve.fallback = {
       fs: false,
-      path: require.resolve("path-browserify")
+      path: require.resolve('path-browserify'),
     };
 
     // When all the Sentry configuration env variables are available/configured
@@ -93,13 +92,6 @@ module.exports = withPlugins([[withBundleAnalyzer]], {
       NODE_ENV === 'production'
     ) {
       config.plugins.push(
-        new SentryWebpackPlugin({
-          include: '.next',
-          ignore: ['node_modules'],
-          stripPrefix: ['webpack://_N_E/'],
-          urlPrefix: `~${basePath}/_next`,
-          release: COMMIT_SHA,
-        }),
         new SentryWebpackPlugin({
           include: '.next',
           ignore: ['node_modules'],
@@ -202,6 +194,18 @@ module.exports = withPlugins([[withBundleAnalyzer]], {
         permanent: true,
       },
     ];
+  },
+  async rewrites() {
+    return {
+      fallback: [
+        // These rewrites are checked after both pages/public files
+        // and dynamic routes are checked
+        {
+          source: '/profile/:slug*',
+          destination: `/profile/`,
+        },
+      ],
+    };
   },
   assetPrefix: hasAssetPrefix ? `${scheme}://${process.env.ASSET_PREFIX}` : '',
   // Asset Prefix allows to use CDN for the generated js files

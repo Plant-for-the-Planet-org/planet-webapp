@@ -62,7 +62,7 @@ export default function ImageDropdown({
         <div className={styles.beforeYear}>
           <FormControl>
             <NativeSelect
-              id="customized-select-native"
+              id="customized-select-native-1"
               value={selectedYear1}
               onChange={handleChangeYear1}
               input={<BootstrapInput />}
@@ -90,7 +90,7 @@ export default function ImageDropdown({
           {isSource1MenuOpen && (
             <FormControl>
               <NativeSelect
-                id="customized-select-native"
+                id="customized-select-native-2"
                 value={selectedSource1}
                 onChange={handleChangeSource1}
                 input={<BootstrapInput />}
@@ -121,7 +121,7 @@ export default function ImageDropdown({
           {isSource2MenuOpen && (
             <FormControl>
               <NativeSelect
-                id="customized-select-native"
+                id="customized-select-native-3"
                 value={selectedSource2}
                 onChange={handleChangeSource2}
                 input={<BootstrapInput />}
@@ -138,7 +138,7 @@ export default function ImageDropdown({
           )}
           <FormControl>
             <NativeSelect
-              id="customized-select-native"
+              id="customized-select-native-4"
               value={selectedYear2}
               onChange={handleChangeYear2}
               input={<BootstrapInput />}
