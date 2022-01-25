@@ -6,6 +6,9 @@ import ErrorPopup from './ErrorPopup';
 import Header from './Header';
 import Navbar from './Navbar';
 import RedeemPopup from './RedeemPopup';
+import tenantConfig from '../../../../tenant.config';
+
+const config = tenantConfig();
 
 export default function Layout(props: any) {
   const { theme: themeType } = useTheme();
@@ -16,20 +19,19 @@ export default function Layout(props: any) {
         {theme}
       </style>
       <div className={`${themeType}`}>
-        <Navbar theme={themeType} />
+        {config.hideNavbar ? null : <Navbar theme={themeType} />}
         <div>
           {props.children}
         </div>
-
         <div>
-          <div className={'notificationContainer'}>
-            <CookiePolicy />
-            <RedeemPopup />
-            <ErrorPopup />
-          </div>
+          {config.hideNotifications ? null : (
+            <div className={'notificationContainer'}>
+              <CookiePolicy />
+              <RedeemPopup />
+              <ErrorPopup />
+            </div>
+          )}
         </div>
-
-
       </div>
     </>
   );

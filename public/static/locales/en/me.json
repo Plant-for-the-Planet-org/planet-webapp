@@ -29,11 +29,15 @@
   "treesRequired": "Number of trees is required",
   "wentWrong": "Something went wrong. Please contact support@plant-for-the-planet.org",
   "locationMissing": "Select location on map",
-  "uploadPhotos": "Upload Photos",
+  "uploadPhotos": "Upload Photo",
   "dragHere": "or drag here",
   "contribNotFound": "Contribution Not Found",
   "errorOccured": "Error Occured",
   "contribSuccess": "Successfully added {{treeCount}} {{treeSpecies}} 🌳 from {{plantDate}}",
+  "thankYouForPlanting": "Thank you for planting {{treeCount}} trees.",
+  "contribSuccessLessThan200": " Please click the link on your email to confirm this registration, and you will be able to download a certificate.",
+  "contribSuccess200to1000": " Please send us details about your planting eg: videos, pictures at email@plant-for-the-planet.org etc with Reference id {{refId}}. Please click the link on your email to confirm this registration, and you will receive a certificate via email.",
+  "contribSuccessMoreThan1000": " Please click the link on your email to confirm this registration, and please share any material to help verify the planting of {{treeCount}} trees. You can send us, videos, geotagged pictures, news articles, etc, and you will receive a certificate via email.",
   "moreThanOne": "minimum 1 tree required",
   "registered": "Registered",
   "receivedTrees": "Received Trees",
@@ -204,5 +208,9 @@
   "past_due": "past due",
   "unpaid": "unpaid",
   "trialing": "active",
-  "paused": "paused"
+  "paused": "paused",
+  "agreeToGuidelines": " I agree to honor Jane’s name and trust by registering the planted trees and agreeing properly care for one or more “Trees for Jane”. I also agree to report the loss of a tree(s). The credibility of our program requires proper reporting from all who participate! Let’s not let Jane down!",
+  "agreeTerms": "I agree To Terms And Conditions Of ",
+  "pftp": "Plant-for-the-Planet.",
+  "imageMissing": "Please upload a photo of the tree(s)"
 }
