@@ -10,23 +10,23 @@
     {
         "currencyCode": "ALL",
         "value": 125
-    },  
+    },
     {
         "currencyCode": "AMD",
         "value": 636
-    },  
+    },
     {
         "currencyCode": "ALL",
         "value": 125
-    },  
+    },
     {
         "currencyCode": "ANG",
         "value": 2.25
-    },  
+    },
     {
         "currencyCode": "AOA",
         "value": 800
-    },  
+    },
     {
         "currencyCode": "ARS",
         "value": 100
@@ -85,8 +85,8 @@
         "value": 1.2
     },
     {
-        "currencyCode": "BTN", 
-        "value": 90       
+        "currencyCode": "BTN",
+        "value": 90
     },
     {
         "currencyCode": "BWP",
@@ -161,7 +161,7 @@
         "value": 7.5
     },
     {
-        "currencyCode": "DOP", 
+        "currencyCode": "DOP",
         "value": 70.0
     },
     {
@@ -181,9 +181,9 @@
         "value": 47.254779
     },
     {
-        
+
         "currencyCode": "EUR",
-        "value": 1
+        "value": 0.5
     },
     {
         "currencyCode": "FJD",
@@ -240,7 +240,7 @@
     {
         "currencyCode": "HRK",
         "value": 7.541668
-    }, 
+    },
     {
         "currencyCode": "HTG",
         "value": 88.586497
@@ -268,7 +268,7 @@
     {
         "currencyCode": "IQD",
         "value": 1449.407753
-    }, 
+    },
     {
         "currencyCode": "IRR",
         "value": 51283.456961
@@ -318,7 +318,7 @@
         "value": 1350.817542
     },
     {
-        
+
        "currencyCode": "KWD",
        "value": 0.37124
     },
@@ -428,7 +428,7 @@
     },
     {
         "currencyCode": "NIO",
-        "value": 42.495632        
+        "value": 42.495632
     },
     {
         "currencyCode": "NOK",

@@ -93,7 +93,7 @@
   flex-grow: 3;
   color: $primaryFontColor;
 }
-.searchInput > input{
+.searchInput > input {
   background-color: aqua;
 }
 .cancelIcon {
@@ -155,7 +155,7 @@
   text-align: center;
   padding: 0px 20px;
 }
-.project{
+.project {
   color: $primaryFontColor;
 }
 
@@ -233,8 +233,8 @@
   .container {
     overflow: visible;
     padding-top: 0px;
-    margin-top: 80px;
     padding-top: 30px;
+    margin-top: 50px; // Removed for iframe
     // padding-bottom: 0px;
     width: fit-content;
     // z-index: 2;

@@ -64,6 +64,11 @@ export default function Donate({
     }
   }, [router]);
 
+  React.useEffect(()=>{
+    if(typeof window  !== 'undefined'){
+      router.replace('http://waldrekord.de/');
+    }
+  },[router]);
   React.useEffect(() => {
     setShowSingleProject(false);
     setProject(null);

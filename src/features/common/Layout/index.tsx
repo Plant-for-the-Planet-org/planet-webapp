@@ -16,7 +16,7 @@ export default function Layout(props: any) {
         {theme}
       </style>
       <div className={`${themeType}`}>
-        <Navbar theme={themeType} />
+        {/* <Navbar theme={themeType} /> */}
         <div>
           {props.children}
         </div>

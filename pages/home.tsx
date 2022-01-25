@@ -1,12 +1,14 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import SalesforceHome from '../src/tenants/salesforce/Home';
+import SateinsHome from '../src/tenants/sateins/Home';
+
 import SternHome from '../src/tenants/stern/Home';
 import BasicHome from '../src/tenants/common/Home';
 import tenantConfig from '../tenant.config';
 import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
-import { getRequest } from '../src/utils/apiRequests/api';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
+import { getRequest } from '../src/utils/apiRequests/api';
 
 const config = tenantConfig();
 
@@ -56,6 +58,9 @@ export default function Home(initialized: Props) {
     switch (process.env.TENANT) {
       case 'salesforce':
         HomePage = SalesforceHome;
+        return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
+      case 'sateins':
+        HomePage = SateinsHome;
         return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
       case 'stern':
         HomePage = SternHome;
