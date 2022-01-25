@@ -7,6 +7,9 @@ import { getRequest } from '../src/utils/apiRequests/api';
 import DirectGift from '../src/features/donations/components/treeDonation/DirectGift';
 import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
 import Credits from '../src/features/projects/components/maps/Credits';
+import Filters from '../src/features/projects/components/projects/Filters';
+import { TENANT_ID } from '../src/utils/constants/environment';
+import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 
 interface Props {
   initialized: Boolean;
@@ -28,7 +31,9 @@ export default function Donate({
     setShowProjects,
     setsearchedProjects,
     setZoomLevel,
+    filteredProjects,
   } = React.useContext(ProjectPropsContext);
+  const { handleError } = React.useContext(ErrorHandlingContext);
 
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
@@ -73,7 +78,9 @@ export default function Donate({
         setInternalCurrencyCode(currency);
         setCurrencyCode(currency);
         const projects = await getRequest(
-          `/app/projects?_scope=map&currency=${currency}`
+          `/app/projects?_scope=map&filter[purpose]=trees,conservation&tenant=${TENANT_ID}&currency=${currency}`,
+          handleError,
+          '/'
         );
         setProjects(projects);
         setProject(null);
@@ -85,7 +92,7 @@ export default function Donate({
   }, [currencyCode]);
 
   const ProjectsProps = {
-    projects,
+    projects: filteredProjects,
     showProjects,
     setShowProjects,
     setsearchedProjects,
@@ -101,7 +108,7 @@ export default function Donate({
   return (
     <>
       {initialized ? (
-        projects && initialized ? (
+        filteredProjects && initialized ? (
           <>
             <GetAllProjectsMeta />
             <ProjectsList {...ProjectsProps} />
@@ -116,6 +123,7 @@ export default function Donate({
           <></>
         )
       ) : null}
+      {showProjects && <Filters />}
     </>
   );
 }

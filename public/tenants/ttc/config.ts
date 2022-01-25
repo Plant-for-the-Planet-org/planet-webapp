@@ -9,9 +9,11 @@ const config = {
   showUNDecadeLogo:true,
   showRedeemHint:true,
   enableGuestSepa:false,
+  darkModeEnabled: false,
+
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
-    primaryFontURL: "https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap",
+    primaryFontURL: "https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&display=swap",
     secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
     secondaryFontURL: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap",
   },
@@ -57,7 +59,7 @@ const config = {
     twitterHandle: '@trilliontrees',
     locale: 'en_US',
   },
-  footerLinks:["shop","privacyAndTerms","imprint","contact","downloads","annualReports","team","jobs","supportUs","blogs", "faqs"],
+  footerLinks:["shop","privacy","terms","imprint","contact","downloads","annualReports","team","jobs","supportUs","blogs", "faqs"],
   manifest: '/tenants/ttc/manifest.json',
 };
 

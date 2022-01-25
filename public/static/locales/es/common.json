@@ -6,7 +6,8 @@
   "for": "para",
   "trees": "Árboles",
   "planted": "plantado",
-  "privacyAndTerms": "Privacidad y condiciones",
+  "privacy": "Privacidad",
+  "terms": "Términos",
   "imprint": "Aviso Legal",
   "status": "Estado",
   "contact": "Contacto",
@@ -61,6 +62,7 @@
   "blogs": "Blogs",
   "faqs": "Preguntas frecuentes",
   "annualReports": "Informes anuales",
+  "skipIntroVideo": "Saltar la introducción",
   "mapInfo": "Créditos del mapa",
   "aboutUs": "Sobre nosotros",
   "alternativelyEditProfile": "También puede marcar su perfil como privado visitando Editar perfil.",
@@ -68,5 +70,13 @@
   "deleteIrreversible": "También entiendo que la eliminación de la cuenta de {{email}} es irreversible.",
   "goBack": "Regresar",
   "deleteAccountMessage": "Para continuar con el borrado, escriba `{{delete}}`",
-  "deleteAccountLabel": "Tipo: {{delete}}"
+  "deleteAccountLabel": "Tipo: {{delete}}",
+  "edit": "Editar",
+  "howDoesThisWork": "¿Cómo funciona esto?",
+  "copiedToClipboard": "Copiado en el portapapeles",
+  "close": "Cerrar",
+  "logout": "Cerrar Sesión",
+  "featured": "Destacado",
+  "treeMapper": "TreeMapper",
+  "underMaintenance": "En mantenimiento"
 }

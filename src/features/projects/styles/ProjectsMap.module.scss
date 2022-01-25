@@ -31,6 +31,9 @@
   margin: -20px 0 0 -20px;
   box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
   cursor: pointer;
+  &.conservationMarker {
+    background: #1EA9E4;
+  }
 }
 
 .markerType {
@@ -57,7 +60,7 @@
   width: 30px;
   height: 30px;
   box-shadow: 0 0 0 2px rgb(0 0 0 / 10%);
-  background-color: #fff;
+  background-color: $backgroundColor;
   border-radius: 100px;
   cursor: pointer;
   display: flex;
@@ -114,7 +117,7 @@
 
 .projectSitesButton {
   position: fixed;
-  right: 60px;
+  right: 100px;
   top: 20px;
   display: flex;
   flex-direction: column;
@@ -134,7 +137,7 @@
 
 .dropdownContainer {
   position: fixed;
-  right: 60px;
+  right: 100px;
   top: 20px;
   z-index: 11;
 }
@@ -174,10 +177,18 @@
   width: 17px;
 }
 
+.exploreButton > svg > path {
+  fill: $primaryFontColor;
+}
+
+.forestInfo {
+  color: $primaryFontColor;
+}
 .exploreText {
   padding-left: 4px;
   margin: 0;
   font-size: $fontSmall;
+  color: $primaryFontColor;
 }
 
 .exploreCaption {
@@ -186,6 +197,7 @@
   width: 200px;
   font-size: $fontXXSmall;
   text-align: center;
+  color: $primaryFontColor;
 }
 
 .exploreInfo {
@@ -195,6 +207,10 @@
   align-items: center;
   width: 10px;
   cursor: pointer;
+}
+
+.exploreInfo > svg > path {
+  fill: $primaryFontColor;
 }
 
 .deforestionSlider > div {
@@ -319,6 +335,7 @@
   align-items: center;
   width: 100%;
   margin: 20px 0;
+  color: $primaryFontColor;
 }
 
 .reforestationScale > div {
@@ -332,6 +349,9 @@
     rgba(59, 0, 255, 1) 100%
   );
 }
+.restorationInfo {
+  color: $primaryFontColor;
+}
 
 .reforestationScale > p:nth-child(1) {
   font-size: $fontXSmall;
@@ -343,6 +363,9 @@
   // color: #fadc2f;
 }
 
+.openLink > svg > path {
+  fill: $primaryFontColor;
+}
 .currentForestScale {
   display: flex;
   flex-direction: row;
@@ -421,6 +444,7 @@
   align-items: center;
   padding: 5px 0px;
   height: 48px;
+  color: $primaryFontColor;
 }
 
 .exploreToggleRow svg {
@@ -456,9 +480,9 @@
   bottom: 0px;
   right: 20px;
   font-size: 11px;
-  color: rgba(0, 0, 0, 0.75);
+  color: $primaryFontColor;
   cursor: pointer;
-  background-color: $light;
+  background-color: $backgroundColor;
   padding: 6px 18px 4px;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
@@ -475,7 +499,7 @@
   > a {
     margin-left: 10px;
     text-decoration: none;
-    color: rgba(0, 0, 0, 0.75);
+    color: rgba($primaryFontColor, 0.75);
   }
 }
 
@@ -517,12 +541,13 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  color: $primaryFontColor;
+  background: $backgroundColor;
 }
 
 @include smTabletView {
   .projectSitesButton {
     top: 100px;
-    right: 65px;
   }
 
   .dropdownContainer {
@@ -557,12 +582,12 @@
   }
   .projectSitesButton {
     top: 110px;
-    right: 70px;
+    right: 165px;
   }
 
   .dropdownContainer {
     top: 110px;
-    right: 70px;
+    right: 165px;
   }
 
   .exploreButton {
@@ -584,7 +609,7 @@
 //   }
 // }
 
-@include xsPhoneView {
+@media screen and (max-height: 315px), (max-width: 481px) {
   .mapNavigation {
     display: none;
   }
@@ -601,7 +626,7 @@
   .popoverContent {
     position: absolute;
     z-index: 10;
-    background-color: $light;
+    background-color: $backgroundColor;
     border-radius: 10px;
     padding: 12px;
     text-align: center;

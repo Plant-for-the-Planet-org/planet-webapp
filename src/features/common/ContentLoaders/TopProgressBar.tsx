@@ -8,7 +8,7 @@ const useStyles = makeStyles({
     width: '100%',
   },
   colorPrimary: {
-    backgroundColor: theme.light.blueishGrey,
+    backgroundColor: theme.light.backgroundColorDark,
   },
   barColorPrimary: {
     backgroundColor: theme.primaryColor,

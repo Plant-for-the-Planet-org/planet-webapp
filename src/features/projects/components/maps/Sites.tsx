@@ -22,25 +22,26 @@ export default function Sites({}: Props): ReactElement {
     selectedMode,
     rasterData,
     satellite,
+    setSiteViewPort,
+    plantLocationsLoaded
   } = React.useContext(ProjectPropsContext);
 
   React.useEffect(() => {
-    const isMobileTemp = window.innerWidth <= 767;
     zoomToProjectSite(
       geoJson,
       selectedSite,
       viewport,
-      isMobileTemp,
       setViewPort,
+      setSiteViewPort,
       4000
     );
-  }, [selectedSite]);
+  }, [selectedSite,selectedMode]);
 
   return (
     <>
       {selectedMode === 'location' && (
         <>
-          {satellite && <SatelliteLayer />}
+          {plantLocationsLoaded && satellite && <SatelliteLayer />}
           {/* <ProjectPolygon id="locationPolygon" geoJson={geoJson} /> */}
         </>
       )}

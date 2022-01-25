@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import styles from './../styles/StepForm.module.scss'
+import styles from './../StepForm.module.scss'
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n'
@@ -9,12 +9,15 @@ import {
     DatePicker,
     MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
+import { ThemeProvider } from '@material-ui/styles';
 import { useDropzone } from 'react-dropzone';
 import { deleteAuthenticatedRequest, getAuthenticatedRequest, postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { getPDFFile } from '../../../../utils/getImageURL';
 import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDFRed';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
+import materialTheme from '../../../../theme/themeStyles';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
@@ -29,8 +32,8 @@ interface Props {
 
 export default function ProjectSpending({ handleBack, token, handleNext, userLang, projectGUID, handleReset }: Props): ReactElement {
 
-    const { t, i18n, ready } = useTranslation(['manageProjects','common']);
-
+    const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
+    const { handleError } = React.useContext(ErrorHandlingContext);
     const { register, handleSubmit, errors, formState, getValues, setValue, control } = useForm({ mode: 'all' });
 
     const [amount, setAmount] = React.useState(0);
@@ -89,7 +92,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
             pdfFile: pdf
         }
 
-        postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`, submitData, token).then((res) => {
+        postAuthenticatedRequest(`/app/projects/${projectGUID}/expenses`, submitData, token, handleError).then((res) => {
             if (!res.code) {
                 const newUploadedFiles = uploadedFiles;
                 newUploadedFiles.push(res);
@@ -115,7 +118,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
 
     const deleteProjectSpending = (id: any) => {
         setIsUploadingData(true)
-        deleteAuthenticatedRequest(`/app/projects/${projectGUID}/expenses/${id}`, token).then(res => {
+        deleteAuthenticatedRequest(`/app/projects/${projectGUID}/expenses/${id}`, token, handleError).then(res => {
             if (res !== 404) {
                 const uploadedFilesTemp = uploadedFiles.filter(item => item.id !== id);
                 setUploadedFiles(uploadedFilesTemp)
@@ -128,19 +131,21 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
     React.useEffect(() => {
         // Fetch spending of the project 
         if (projectGUID && token)
-            getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`, token).then((result) => {
-                if (result?.expenses && result.expenses.length > 0) {
-                    setShowForm(false)
-                }
-                setUploadedFiles(result.expenses)
-            })
+            getAuthenticatedRequest(`/app/profile/projects/${projectGUID}?_scope=expenses`, token, {},
+                handleError,
+                '/profile').then((result) => {
+                    if (result?.expenses && result.expenses.length > 0) {
+                        setShowForm(false)
+                    }
+                    setUploadedFiles(result.expenses)
+                })
     }, [projectGUID]);
 
     const fiveYearsAgo = new Date();
     fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
     return ready ? (
         <div className={styles.stepContainer}>
-            <form onSubmit={(e)=>{e.preventDefault()}}>
+            <form onSubmit={(e) => { e.preventDefault() }}>
                 {uploadedFiles && uploadedFiles.length > 0 ? (
                     <div className={styles.formField}>
                         {uploadedFiles.map((report) => {
@@ -171,35 +176,37 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                     <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
                         <div className={styles.formField}>
                             <div className={`${styles.formFieldHalf}`}>
-                                <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
-                                    <Controller
-                                        render={properties => (
-                                            <DatePicker
-                                                inputRef={register({
-                                                    required: {
-                                                        value: true,
-                                                        message: t('manageProjects:spendingYearValidation')
-                                                    }
-                                                })}
-                                                views={["year"]}
-                                                value={properties.value}
-                                                onChange={properties.onChange}
-                                                label={t('manageProjects:spendingYear')}
-                                                inputVariant="outlined"
-                                                variant="inline"
-                                                TextFieldComponent={MaterialTextField}
-                                                autoOk
-                                                clearable
-                                                disableFuture
-                                                minDate={fiveYearsAgo}
-                                                maxDate={new Date()}
-                                            />
-                                        )}
-                                        defaultValue={new Date()}
-                                        name="year"
-                                        control={control}
-                                    />
-                                </MuiPickersUtilsProvider>
+                                <ThemeProvider theme={materialTheme}>
+                                    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
+                                        <Controller
+                                            render={properties => (
+                                                <DatePicker
+                                                    inputRef={register({
+                                                        required: {
+                                                            value: true,
+                                                            message: t('manageProjects:spendingYearValidation')
+                                                        }
+                                                    })}
+                                                    views={["year"]}
+                                                    value={properties.value}
+                                                    onChange={properties.onChange}
+                                                    label={t('manageProjects:spendingYear')}
+                                                    inputVariant="outlined"
+                                                    variant="inline"
+                                                    TextFieldComponent={MaterialTextField}
+                                                    autoOk
+                                                    clearable
+                                                    disableFuture
+                                                    minDate={fiveYearsAgo}
+                                                    maxDate={new Date()}
+                                                />
+                                            )}
+                                            defaultValue={new Date()}
+                                            name="year"
+                                            control={control}
+                                        />
+                                    </MuiPickersUtilsProvider>
+                                </ThemeProvider>
                                 {errors.year && (
                                     <span className={styles.formErrors}>
                                         {errors.year.message}
@@ -247,7 +254,7 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                                 <div className={styles.fileUploadContainer}>
                                     <div
                                         className="primaryButton"
-                                        style={{maxWidth:"240px"}}
+                                        style={{ maxWidth: "240px" }}
                                     >
                                         {t('manageProjects:uploadReport')}
                                     </div>
@@ -257,29 +264,29 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                                 </div>
                             </div>
                         ) : (
-                                <div className={styles.formFieldLarge} {...getRootProps()}>
-                                    <div className={styles.fileUploadContainer}>
-                                        <div
-                                            className="primaryButton"
-                                            style={{maxWidth:"240px"}}
-                                        >
-                                            <input {...getInputProps()} />
-                                            {t('manageProjects:uploadReport')}
-                                        </div>
-                                        <p style={{ marginTop: '18px' }}>
-                                            {t('manageProjects:dragInPdf')}
-                                        </p>
+                            <div className={styles.formFieldLarge} {...getRootProps()}>
+                                <div className={styles.fileUploadContainer}>
+                                    <div
+                                        className="primaryButton"
+                                        style={{ maxWidth: "240px" }}
+                                    >
+                                        <input {...getInputProps()} />
+                                        {t('manageProjects:uploadReport')}
                                     </div>
+                                    <p style={{ marginTop: '18px' }}>
+                                        {t('manageProjects:dragInPdf')}
+                                    </p>
                                 </div>
-                            )}
+                            </div>
+                        )}
                     </div>
                 ) : (
-                        <div className={styles.formFieldLarge} onClick={() => setShowForm(true)}>
-                            <p className={styles.inlineLinkButton}>
-                                {t('manageProjects:addAnotherYear')}
-                            </p>
-                        </div>
-                    )}
+                    <div className={styles.formFieldLarge} onClick={() => setShowForm(true)}>
+                        <p className={styles.inlineLinkButton}>
+                            {t('manageProjects:addAnotherYear')}
+                        </p>
+                    </div>
+                )}
 
                 {errorMessage && errorMessage !== '' ?
                     <div className={styles.formFieldLarge}>
@@ -304,7 +311,8 @@ export default function ProjectSpending({ handleBack, token, handleNext, userLan
                         <button
                             onClick={() => handleNext()}
                             className="primaryButton"
-                            style={{minWidth:"240px"}}
+                            style={{ minWidth: "240px" }}
+                            data-test-id="projSpendingCont"
                         >
                             {isUploadingData ? <div className={styles.spinner}></div> : t('common:continue')}
                         </button>

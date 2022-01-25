@@ -2,22 +2,22 @@ import React, { ReactElement } from 'react'
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n'
-import styles from './../styles/StepForm.module.scss'
+import styles from './../StepForm.module.scss'
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import DateFnsUtils from '@date-io/date-fns';
 import {
     DatePicker,
     MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
-import { MenuItem } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/styles';
 import ProjectCertificates from './ProjectCertificates';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info'
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
+import materialTheme from '../../../../theme/themeStyles';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
-
-
 
 interface Props {
     handleNext: Function;
@@ -31,7 +31,7 @@ interface Props {
 }
 export default function DetailedAnalysis({ handleBack, userLang, token, handleNext, projectDetails, setProjectDetails, projectGUID, handleReset }: Props): ReactElement {
     const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
-
+    const { handleError } = React.useContext(ErrorHandlingContext);
     const [siteOwners, setSiteOwners] = React.useState([
         { id: 1, title: ready ? t('manageProjects:siteOwnerPrivate') : '', value: 'private', isSet: false },
         { id: 2, title: ready ? t('manageProjects:siteOwnerPublic') : '', value: 'public-property', isSet: false },
@@ -104,7 +104,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
 
         const submitData = {
             yearAbandoned: data.yearAbandoned.getFullYear() ? data.yearAbandoned.getFullYear() : null,
-            firstTreePlanted: `${data.firstTreePlanted.getFullYear()}-${data.firstTreePlanted.getMonth()+1}-${data.firstTreePlanted.getDate()}`,
+            firstTreePlanted: `${data.firstTreePlanted.getFullYear()}-${data.firstTreePlanted.getMonth() + 1}-${data.firstTreePlanted.getDate()}`,
             plantingDensity: data.plantingDensity,
             employeesCount: data.employeesCount,
             mainChallenge: data.mainChallenge,
@@ -116,9 +116,9 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
             degradationCause: data.degradationCause,
             longTermPlan: data.longTermPlan,
             plantingSeasons: months
-        }        
+        }
 
-        putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, token).then((res) => {
+        putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, token, handleError).then((res) => {
             if (!res.code) {
                 setProjectDetails(res)
                 setIsUploadingData(false)
@@ -187,35 +187,36 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
     }, [projectDetails])
     return ready ? (
         <div className={styles.stepContainer}>
-            <form onSubmit={(e)=>{e.preventDefault()}}>
+            <form onSubmit={(e) => { e.preventDefault() }}>
                 <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
 
                     <div className={styles.formField}>
                         <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
-                                <Controller
-                                    render={properties => (
-                                        <DatePicker
-                                            views={["year"]}
-                                            value={properties.value}
-                                            onChange={properties.onChange}
-                                            label={t('manageProjects:yearOfAbandonment')}
-                                            inputVariant="outlined"
-                                            variant="inline"
-                                            TextFieldComponent={MaterialTextField}
-                                            autoOk
-                                            disableFuture
-                                            minDate={new Date(new Date().setFullYear(1950))}
-                                            maxDate={new Date()}
-                                        />
-                                    )
-                                    }
-                                    name="yearAbandoned"
-                                    control={control}
-                                    defaultValue=""
-                                />
-
-                            </MuiPickersUtilsProvider>
+                            <ThemeProvider theme={materialTheme}>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
+                                    <Controller
+                                        render={properties => (
+                                            <DatePicker
+                                                views={["year"]}
+                                                value={properties.value}
+                                                onChange={properties.onChange}
+                                                label={t('manageProjects:yearOfAbandonment')}
+                                                inputVariant="outlined"
+                                                variant="inline"
+                                                TextFieldComponent={MaterialTextField}
+                                                autoOk
+                                                disableFuture
+                                                minDate={new Date(new Date().setFullYear(1950))}
+                                                maxDate={new Date()}
+                                            />
+                                        )
+                                        }
+                                        name="yearAbandoned"
+                                        control={control}
+                                        defaultValue=""
+                                    />
+                                </MuiPickersUtilsProvider>
+                            </ThemeProvider>
                             <div style={{ position: 'absolute', top: '-9px', right: '16px', width: 'fit-content' }}>
                                 <div className={styles.popover}>
                                     <InfoIcon />
@@ -229,32 +230,33 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
 
                         </div>
                         <div className={styles.formFieldHalf}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
-                                <Controller
-                                    render={properties => (
-
-                                        <DatePicker
-                                            label={t('manageProjects:firstTreePlanted')}
-                                            value={properties.value}
-                                            onChange={properties.onChange}
-                                            inputVariant="outlined"
-                                            TextFieldComponent={MaterialTextField}
-                                            autoOk
-                                            disableFuture
-                                            minDate={new Date(new Date().setFullYear(1950))}
-                                            format="d MMMM yyyy"
-                                            maxDate={new Date()}
-                                        />)
-                                    }
-                                    name="firstTreePlanted"
-                                    control={control}
-                                    defaultValue=""
-                                />
-                            </MuiPickersUtilsProvider>
+                            <ThemeProvider theme={materialTheme}>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
+                                    <Controller
+                                        render={properties => (
+                                            <DatePicker
+                                                label={t('manageProjects:firstTreePlanted')}
+                                                value={properties.value}
+                                                onChange={properties.onChange}
+                                                inputVariant="outlined"
+                                                TextFieldComponent={MaterialTextField}
+                                                autoOk
+                                                disableFuture
+                                                minDate={new Date(new Date().setFullYear(1950))}
+                                                format="d MMMM yyyy"
+                                                maxDate={new Date()}
+                                            />)
+                                        }
+                                        name="firstTreePlanted"
+                                        control={control}
+                                        defaultValue=""
+                                    />
+                                </MuiPickersUtilsProvider>
+                            </ThemeProvider>
                         </div>
                     </div>
                     <div className={styles.formField}>
-                        <div className={styles.formFieldHalf}>
+                        <div className={styles.formFieldHalf} data-test-id="plantingDensity">
 
                             {/* Integer - the planting density expressed in trees per ha */}
                             <MaterialTextField
@@ -283,7 +285,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                             )}
                         </div>
                         <div style={{ width: '20px' }}></div>
-                        <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
+                        <div className={styles.formFieldHalf} style={{ position: 'relative' }} data-test-id="employeeCount">
                             <MaterialTextField
                                 inputRef={register({ validate: value => parseInt(value, 10) > 0 })}
                                 label={t('manageProjects:employeeCount')}
@@ -320,7 +322,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                                                 <path id="check-solid" d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z" transform="translate(0 -65.098)" fill="#fff" />
                                             </svg>
                                         </div>
-                                        <p>{month.title}</p>
+                                        <p style={{ color: 'var(--dark)' }}>{month.title}</p>
                                     </div>
                                 )
                             })}
@@ -409,7 +411,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                                                     <path id="check-solid" d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z" transform="translate(0 -65.098)" fill="#fff" />
                                                 </svg>
                                             </div>
-                                            <p>{owner.title}</p>
+                                            <p style={{ color: 'var(--dark)' }}>{owner.title}</p>
                                         </div>
                                     )
                                 })}
@@ -427,55 +429,57 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                     </div>
                     <div className={styles.formField}>
                         <div className={styles.formFieldHalf}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
-                                <Controller
-                                    render={properties => (
-                                        <DatePicker
-                                            label={t('manageProjects:acquisitionYear')}
-                                            value={properties.value}
-                                            onChange={properties.onChange}
-                                            inputVariant="outlined"
-                                            TextFieldComponent={MaterialTextField}
-                                            autoOk
-                                            disableFuture
-                                            minDate={new Date(new Date().setFullYear(1950))}
-                                            views={["year"]}
-                                            maxDate={new Date()}
-                                        />)
-                                    }
-                                    name="acquisitionYear"
-                                    control={control}
-                                    defaultValue=""
+                            <ThemeProvider theme={materialTheme}>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
+                                    <Controller
+                                        render={properties => (
+                                            <DatePicker
+                                                label={t('manageProjects:acquisitionYear')}
+                                                value={properties.value}
+                                                onChange={properties.onChange}
+                                                inputVariant="outlined"
+                                                TextFieldComponent={MaterialTextField}
+                                                autoOk
+                                                disableFuture
+                                                minDate={new Date(new Date().setFullYear(1950))}
+                                                views={["year"]}
+                                                maxDate={new Date()}
+                                            />)
+                                        }
+                                        name="acquisitionYear"
+                                        control={control}
+                                        defaultValue=""
 
-                                />
-                            </MuiPickersUtilsProvider>
-
+                                    />
+                                </MuiPickersUtilsProvider>
+                            </ThemeProvider>
                         </div>
                         <div style={{ width: '20px' }}></div>
                         <div className={styles.formFieldHalf}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
-                                <Controller
-                                    render={properties => (
-                                        <DatePicker
-                                            views={["year"]}
-                                            value={properties.value}
-                                            onChange={properties.onChange}
-                                            label={t('manageProjects:yearOfDegradation')}
-                                            inputVariant="outlined"
-                                            variant="inline"
-                                            TextFieldComponent={MaterialTextField}
-                                            autoOk
-                                            disableFuture
-                                            minDate={new Date(new Date().setFullYear(1950))}
-                                            maxDate={new Date()}
-                                        />)
-                                    }
-                                    name="degradationYear"
-                                    control={control}
-                                    defaultValue=""
-                                />
-                            </MuiPickersUtilsProvider>
-
+                            <ThemeProvider theme={materialTheme}>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
+                                    <Controller
+                                        render={properties => (
+                                            <DatePicker
+                                                views={["year"]}
+                                                value={properties.value}
+                                                onChange={properties.onChange}
+                                                label={t('manageProjects:yearOfDegradation')}
+                                                inputVariant="outlined"
+                                                variant="inline"
+                                                TextFieldComponent={MaterialTextField}
+                                                autoOk
+                                                disableFuture
+                                                minDate={new Date(new Date().setFullYear(1950))}
+                                                maxDate={new Date()}
+                                            />)
+                                        }
+                                        name="degradationYear"
+                                        control={control}
+                                        defaultValue=""
+                                    />
+                                </MuiPickersUtilsProvider>
+                            </ThemeProvider>
                         </div>
                     </div>
                     <div className={styles.formFieldLarge} style={{ position: 'relative' }}>
@@ -540,12 +544,12 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                     </div>
 
 
-                        <ProjectCertificates
-                            projectGUID={projectGUID}
-                            token={token}
-                            setIsUploadingData={setIsUploadingData}
-                            userLang={userLang}
-                        />
+                    <ProjectCertificates
+                        projectGUID={projectGUID}
+                        token={token}
+                        setIsUploadingData={setIsUploadingData}
+                        userLang={userLang}
+                    />
 
                 </div>
 
@@ -569,10 +573,11 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                     </div>
                     <div style={{ width: '20px' }}></div>
                     <div className={`${styles.formFieldHalf}`} >
-                        <button 
+                        <button
                             onClick={handleSubmit(onSubmit)}
                             className="primaryButton"
-                            style={{ minWidth: "240px"}}
+                            style={{ minWidth: "240px" }}
+                            data-test-id="detailAnalysisCont"
                         >
                             {isUploadingData ? <div className={styles.spinner}></div> : t('manageProjects:saveAndContinue')}
                         </button >

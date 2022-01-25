@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import styles from './../styles/StepForm.module.scss';
+import styles from './../StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { Controller, useForm } from 'react-hook-form';
 import i18next from './../../../../../i18n';
@@ -8,7 +8,7 @@ import dynamic from 'next/dynamic';
 import { WebMercatorViewport } from 'react-map-gl';
 import ReactMapboxGl, { GeoJSONLayer, Source, Layer } from 'react-mapbox-gl';
 import * as turf from '@turf/turf';
-import { MenuItem } from '@material-ui/core';
+import { makeStyles, MenuItem } from '@material-ui/core';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import {
   deleteAuthenticatedRequest,
@@ -21,7 +21,9 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import Modal from '@material-ui/core/Modal';
 import { ThemeContext } from '../../../../theme/themeContext';
+import themeProperties from '../../../../theme/themeProperties';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
@@ -50,12 +52,37 @@ export default function ProjectSites({
   handleReset,
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
+  const { theme } = React.useContext(ThemeContext)
   const [features, setFeatures] = React.useState([]);
   const { register, handleSubmit, errors, control } = useForm();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [openModal, setOpenModal] = React.useState(false);
+  const { handleError } = React.useContext(ErrorHandlingContext);
+
+  const useStylesAutoComplete = makeStyles({
+    root: {
+      color:
+        theme === "theme-light"
+          ? `${themeProperties.light.primaryFontColor} !important`
+          : `${themeProperties.dark.primaryFontColor} !important`,
+      backgroundColor:
+        theme === "theme-light"
+          ? `${themeProperties.light.backgroundColor} !important`
+          : `${themeProperties.dark.backgroundColor} !important`,
+    },
+    option: {
+      // color: '#2F3336',
+      "&:hover": {
+        backgroundColor:
+          theme === "theme-light"
+            ? `${themeProperties.light.backgroundColorDark} !important`
+            : `${themeProperties.dark.backgroundColorDark} !important`,
+      },
+    }
+  })
+  const classes = useStylesAutoComplete();
 
   const [geoLocation, setgeoLocation] = React.useState<Object>();
   const defaultSiteDetails = {
@@ -152,7 +179,8 @@ export default function ProjectSites({
       postAuthenticatedRequest(
         `/app/projects/${projectGUID}/sites`,
         submitData,
-        token
+        token,
+        handleError
       ).then((res) => {
         if (!res.code) {
           const temp = siteList;
@@ -193,7 +221,8 @@ export default function ProjectSites({
     setIsUploadingData(true);
     deleteAuthenticatedRequest(
       `/app/projects/${projectGUID}/sites/${id}`,
-      token
+      token,
+      handleError
     ).then((res) => {
       if (res !== 404) {
         const siteListTemp = siteList.filter((item) => item.id !== id);
@@ -227,7 +256,10 @@ export default function ProjectSites({
     if (projectGUID)
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}?_scope=sites`,
-        token
+        token,
+        {},
+        handleError,
+        '/profile'
       ).then((result) => {
         const geoLocation = {
           geoLatitude: result.geoLatitude,
@@ -305,7 +337,7 @@ export default function ProjectSites({
                   <div className={styles.mapboxContainer}>
                     <div className={styles.uploadedMapName}>{site.name}</div>
                     <div className={styles.uploadedMapStatus}>
-                      {String(site.status).toUpperCase()}
+                      {status.find(e => site.status == e.value)?.label.toUpperCase()}
                     </div>
                     <button
                       id={'trashIconProjS'}
@@ -356,7 +388,7 @@ export default function ProjectSites({
         {showForm ? (
           <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
             <div className={styles.formField}>
-              <div className={styles.formFieldHalf}>
+              <div className={styles.formFieldHalf} data-test-id="siteName">
                 <MaterialTextField
                   inputRef={register({ required: true })}
                   label={t('manageProjects:siteName')}
@@ -366,7 +398,7 @@ export default function ProjectSites({
                   defaultValue={siteDetails.name}
                 />
               </div>
-              <div className={styles.formFieldHalf}>
+              <div className={styles.formFieldHalf} data-test-id="siteStatus">
                 <Controller
                   as={
                     <MaterialTextField
@@ -378,7 +410,10 @@ export default function ProjectSites({
                       value={siteDetails.status}
                     >
                       {status.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
+                        <MenuItem key={option.value} value={option.value} classes={{
+                          // option: classes.option,
+                          root: classes.root,
+                        }}>
                           {option.label}
                         </MenuItem>
                       ))}
@@ -448,7 +483,8 @@ export default function ProjectSites({
             <button
               onClick={handleSubmit(uploadProjectSiteNext)}
               className="primaryButton"
-              style={{minWidth:"240px"}}
+              style={{ minWidth: "240px" }}
+              data-test-id="projSitesCont"
             >
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
@@ -490,6 +526,30 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
+  const { handleError } = React.useContext(ErrorHandlingContext);
+
+  const useStylesAutoComplete = makeStyles({
+    root: {
+      color:
+        theme === "theme-light"
+          ? `${themeProperties.light.primaryFontColor} !important`
+          : `${themeProperties.dark.primaryFontColor} !important`,
+      backgroundColor:
+        theme === "theme-light"
+          ? `${themeProperties.light.backgroundColor} !important`
+          : `${themeProperties.dark.backgroundColor} !important`,
+    },
+    option: {
+      // color: '#2F3336',
+      "&:hover": {
+        backgroundColor:
+          theme === "theme-light"
+            ? `${themeProperties.light.backgroundColorDark} !important`
+            : `${themeProperties.dark.backgroundColorDark} !important`,
+      },
+    }
+  })
+  const classes = useStylesAutoComplete();
 
   const MapProps = {
     geoJson,
@@ -513,19 +573,19 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
       putAuthenticatedRequest(
         `/app/projects/${projectGUID}/sites/${siteGUID}`,
         submitData,
-        token
+        token, handleError
       ).then((res) => {
         if (!res.code) {
           const temp = siteList;
           let siteIndex;
-          const singleSite = temp.find((site, index) => {
+          temp.find((site, index) => {
             if (site.id === res.id) {
               siteIndex = index;
               return true
             }
           });
           if (siteIndex !== null) {
-            temp[siteIndex] = singleSite;
+            temp[siteIndex] = res;
           }
           setSiteList(temp);
           setGeoJson(null);
@@ -587,7 +647,10 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
                       value={siteDetails.status}
                     >
                       {status.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
+                        <MenuItem key={option.value} value={option.value} classes={{
+                          // option: classes.option,
+                          root: classes.root,
+                        }}>
                           {option.label}
                         </MenuItem>
                       ))}
@@ -631,7 +694,7 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
               <button
                 onClick={handleSubmit(editProjectSite)}
                 className="primaryButton"
-                style={{minWidth:"240px"}}
+                style={{ minWidth: "240px" }}
               >
                 {isUploadingData ? (
                   <div className={styles.spinner}></div>

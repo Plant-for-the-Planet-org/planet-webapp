@@ -2,6 +2,7 @@ import React from 'react';
 import theme from '../../../theme/theme';
 import { useTheme } from '../../../theme/themeContext';
 import CookiePolicy from './CookiePolicy';
+import ErrorPopup from './ErrorPopup';
 import Header from './Header';
 import Navbar from './Navbar';
 import RedeemPopup from './RedeemPopup';
@@ -16,12 +17,19 @@ export default function Layout(props: any) {
       </style>
       <div className={`${themeType}`}>
         <Navbar theme={themeType} />
-        {props.children}
-        <div className={'notificationContainer'}>
-          <CookiePolicy />
-          <RedeemPopup />
+        <div>
+          {props.children}
         </div>
-        
+
+        <div>
+          <div className={'notificationContainer'}>
+            <CookiePolicy />
+            <RedeemPopup />
+            <ErrorPopup />
+          </div>
+        </div>
+
+
       </div>
     </>
   );

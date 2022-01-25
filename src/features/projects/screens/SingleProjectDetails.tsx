@@ -86,9 +86,14 @@ function SingleProjectDetails({}: Props): ReactElement {
     <>
       <Explore />
       {geoJson && <SitesDropdown />}
-      {Object.keys(rasterData.imagery).length !== 0 &&
-        rasterData.imagery.constructor === Object && <ProjectTabs />}
-      {geoJson && selectedMode === 'imagery' && <TimeTravel />}
+      {geoJson &&
+        Object.keys(rasterData.imagery).length !== 0 &&
+        rasterData.imagery.constructor === Object && (
+          <>
+            <ProjectTabs />
+              <TimeTravel />
+          </>
+        )}
       <div
         style={{ transform: `translate(0,${scrollY}px)` }}
         className={'container'}
@@ -141,7 +146,7 @@ function SingleProjectDetails({}: Props): ReactElement {
           </button>
           <div className={'projectSnippetContainer'}>
             <ProjectSnippet
-              key={project.id}
+              keyString={project.id}
               project={project}
               editMode={false}
             />
@@ -185,7 +190,7 @@ function SingleProjectDetails({}: Props): ReactElement {
                       controls={true}
                       config={{
                         youtube: {
-                          playerVars: { autoplay: 1 },
+                          playerVars: { autoPlay: 1 },
                         },
                       }}
                       url={project.videoUrl}

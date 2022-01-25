@@ -1,8 +1,9 @@
 import React, { ReactElement } from 'react';
-import styles from './../styles/StepForm.module.scss';
+import styles from './../StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import DateFnsUtils from '@date-io/date-fns';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { ThemeProvider } from '@material-ui/styles';
 import { useForm } from 'react-hook-form';
 import i18next from './../../../../../i18n';
 import { useDropzone } from 'react-dropzone';
@@ -13,10 +14,11 @@ import {
 } from '../../../../utils/apiRequests/api';
 import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDFRed';
 import { getPDFFile } from '../../../../utils/getImageURL';
-import PencilIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
+import materialTheme from '../../../../theme/themeStyles';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
@@ -34,6 +36,7 @@ function ProjectCertificates({
   userLang,
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
+  const { handleError } = React.useContext(ErrorHandlingContext);
 
   const {
     register,
@@ -73,7 +76,10 @@ function ProjectCertificates({
     if (projectGUID && token) {
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}?_scope=certificates`,
-        token
+        token,
+        {},
+        handleError,
+        '/profile'
       ).then((result) => {
         if (result && result.certificates && result.certificates.length > 0) {
           setShowForm(false);
@@ -117,12 +123,13 @@ function ProjectCertificates({
     postAuthenticatedRequest(
       `/app/projects/${projectGUID}/certificates`,
       submitData,
-      token
+      token,
+      handleError
     ).then((res) => {
       if (!res.code) {
-        let newUploadedFiles =  uploadedFiles;
+        let newUploadedFiles = uploadedFiles;
 
-        if(newUploadedFiles === undefined){
+        if (newUploadedFiles === undefined) {
           newUploadedFiles = [];
         }
 
@@ -149,7 +156,8 @@ function ProjectCertificates({
   const deleteProjectCertificate = (id: any) => {
     deleteAuthenticatedRequest(
       `/app/projects/${projectGUID}/certificates/${id}`,
-      token
+      token,
+      handleError
     ).then((res) => {
       if (res !== 404) {
         const uploadedFilesTemp = uploadedFiles.filter(
@@ -177,7 +185,7 @@ function ProjectCertificates({
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
             <div className={`${styles.formFieldRadio}`}>
-              <label htmlFor="isCertified" style={{cursor: 'pointer'}}>
+              <label htmlFor="isCertified" style={{ cursor: 'pointer' }}>
                 {t('manageProjects:isCertified')}
               </label>
               <ToggleSwitch
@@ -250,35 +258,37 @@ function ProjectCertificates({
             </div>
             <div style={{ width: '20px' }}></div>
             <div className={styles.formFieldHalf}>
-              <MuiPickersUtilsProvider
-                utils={DateFnsUtils}
-                locale={
-                  localeMapForDate[userLang]
-                    ? localeMapForDate[userLang]
-                    : localeMapForDate['en']
-                }
-              >
-                <DatePicker
-                  value={issueDate}
-                  onChange={setIssueDate}
-                  label={t('manageProjects:issueDate')}
-                  name="issueDate"
-                  inputVariant="outlined"
-                  variant="inline"
-                  TextFieldComponent={MaterialTextField}
-                  autoOk
-                  clearable
-                  disableFuture
-                  inputRef={register({
-                    required: {
-                      value: true,
-                      message: t('manageProjects:certificationDateValidation'),
-                    },
-                  })}
-                  maxDate={new Date()}
-                  minDate={tenYearsAgo}
-                />
-              </MuiPickersUtilsProvider>
+              <ThemeProvider theme={materialTheme}>
+                <MuiPickersUtilsProvider
+                  utils={DateFnsUtils}
+                  locale={
+                    localeMapForDate[userLang]
+                      ? localeMapForDate[userLang]
+                      : localeMapForDate['en']
+                  }
+                >
+                  <DatePicker
+                    value={issueDate}
+                    onChange={setIssueDate}
+                    label={t('manageProjects:issueDate')}
+                    name="issueDate"
+                    inputVariant="outlined"
+                    variant="inline"
+                    TextFieldComponent={MaterialTextField}
+                    autoOk
+                    clearable
+                    disableFuture
+                    inputRef={register({
+                      required: {
+                        value: true,
+                        message: t('manageProjects:certificationDateValidation'),
+                      },
+                    })}
+                    maxDate={new Date()}
+                    minDate={tenYearsAgo}
+                  />
+                </MuiPickersUtilsProvider>
+              </ThemeProvider>
               {errors.issueDate && (
                 <span className={styles.formErrors}>
                   {errors.issueDate.message}
@@ -296,7 +306,7 @@ function ProjectCertificates({
           {errors.certifierName || errors.issueDate || certifierName === '' ? (
             <div className={styles.formFieldLarge} style={{ opacity: 0.35 }}>
               <div className={styles.fileUploadContainer}>
-                <div className="primaryButton" style={{ maxWidth: "240px"}}>
+                <div className="primaryButton" style={{ maxWidth: "240px" }}>
                   {t('manageProjects:uploadCertificate')}
                 </div>
                 <p style={{ marginTop: '18px' }}>
@@ -307,7 +317,7 @@ function ProjectCertificates({
           ) : (
             <div className={styles.formFieldLarge} {...getRootProps()}>
               <div className={styles.fileUploadContainer}>
-                <div className="primaryButton" style={{ maxWidth: "240px"}}>
+                <div className="primaryButton" style={{ maxWidth: "240px" }}>
                   <input {...getInputProps()} />
                   {t('manageProjects:uploadCertificate')}
                 </div>

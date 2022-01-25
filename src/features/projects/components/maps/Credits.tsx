@@ -3,6 +3,8 @@ import styles from '../../styles/ProjectsMap.module.scss';
 import i18next from '../../../../../i18n';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
 import tenantConfig from '../../../../../tenant.config';
+import DarkModeSwitch from '../../../common/Layout/DarkModeSwitch.tsx';
+
 
 const config = tenantConfig();
 
@@ -17,7 +19,6 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
     const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
     const [selectedCountry, setSelectedCountry] = React.useState('DE');
     const [openLanguageModal, setLanguageModalOpen] = React.useState(false);
-    const [userLang, setUserLang] = React.useState('en');
 
     const handleLanguageModalClose = () => {
         setLanguageModalOpen(false);
@@ -26,19 +27,10 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
         setLanguageModalOpen(true);
     };
 
-    React.useEffect(() => {
-        if (typeof window !== 'undefined') {
-            if (localStorage.getItem('language')) {
-                const userLang = localStorage.getItem('language');
-                if (userLang) setUserLang(userLang);
-            }
-        }
-    }, []);
-
-
     return (
         <>
             <div className={styles.lngSwitcher + ' mapboxgl-map'}>
+                {config.darkModeEnabled && <DarkModeSwitch />}
                 <div
                     onClick={() => {
                         setLanguageModalOpen(true);
@@ -47,7 +39,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                     {`🌐 ${language ? language.toUpperCase() : ''
                         } • ${selectedCurrency}`}
                 </div>
-                {(process.env.TENANT === "ttc" || process.env.TENANT === "planet") ? < a 
+                {(process.env.TENANT === "ttc" || process.env.TENANT === "planet") ? < a
                     rel="noopener noreferrer"
                     href={`https://www.thegoodshop.org/de/shop/`}
                     target={'_blank'}
@@ -70,17 +62,24 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                 </a>
                 <a
                     rel="noopener noreferrer"
-                    href={`https://a.plant-for-the-planet.org/${userLang}/imprint`}
+                    href={`https://pp.eco/legal/${i18n.language}/imprint`}
                     target={'_blank'}
                 >
                     {t('common:imprint')}
                 </a>
                 <a
                     rel="noopener noreferrer"
-                    href={`https://a.plant-for-the-planet.org/${userLang}/privacy-terms`}
+                    href={`https://pp.eco/legal/${i18n.language}/privacy`}
                     target={'_blank'}
                 >
-                    {t('common:privacyAndTerms')}
+                    {t('common:privacy')}
+                </a>
+                <a
+                    rel="noopener noreferrer"
+                    href={`https://pp.eco/legal/${i18n.language}/terms`}
+                    target={'_blank'}
+                >
+                    {t('common:terms')}
                 </a>
 
                 <a
@@ -99,12 +98,12 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                                 style={{ left: '-270px', top: '-240px' }}
                             >
                                 <b>{t('maps:baseLayer')}</b>
-                                <a>Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS </a>
-                                <a>World Imagery: Esri, Maxar, Earthstar Geographics, CNES/Airbus DS, USDA FSA, USGS, Aerogrid, IGN, IGP, and the GIS User Community</a>
+                                <p>Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS </p>
+                                <p>World Imagery: Esri, Maxar, Earthstar Geographics, CNES/Airbus DS, USDA FSA, USGS, Aerogrid, IGN, IGP, and the GIS User Community</p>
                                 <b>{t('maps:satelliteImagery')}</b>
-                                <a>Image courtesy of Planet Labs, Inc</a>
-                                <a>Copernicus Sentinel data 2017-2021</a>
-                                <a>Landsat-8 image courtesy of the U.S. Geological Survey</a>
+                                <p>Image courtesy of Planet Labs, Inc</p>
+                                <p>Copernicus Sentinel data 2017-2021</p>
+                                <p>Landsat-8 image courtesy of the U.S. Geological Survey</p>
                             </div>
                         </div>
                     </div>
@@ -117,6 +116,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                 >
                     {t('common:contact')}
                 </a>
+
             </div>
             <SelectLanguageAndCountry
                 openModal={openLanguageModal}

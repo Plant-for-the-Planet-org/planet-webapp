@@ -92,7 +92,7 @@ export default function PlantLocations({}: Props): ReactElement {
       return t('today');
     } else if (differenceInDays < 2) {
       return t('yesterday');
-    } else if (differenceInDays < 30) {
+    } else if (differenceInDays <= 10) {
       return t('daysAgo', {
         days: localizedAbbreviatedNumber(i18n.language, differenceInDays, 0),
       });
@@ -119,7 +119,7 @@ export default function PlantLocations({}: Props): ReactElement {
             if (pl.type === 'multi') {
               const dateDiff = getDateDiff(pl);
               return (
-                <>
+                <React.Fragment key={pl.id}>
                   <Source
                     key={`${pl.id}-source`}
                     id={pl.id}
@@ -167,6 +167,7 @@ export default function PlantLocations({}: Props): ReactElement {
                     )}
                   </Source>
                   {pl &&
+                  pl.id === selectedPl?.id &&
                     pl.samplePlantLocations &&
                     pl.samplePlantLocations
                       .filter((item: any) => {
@@ -201,7 +202,7 @@ export default function PlantLocations({}: Props): ReactElement {
                           </Marker>
                         );
                       })}
-                </>
+                </React.Fragment>
               );
             } else {
               return (

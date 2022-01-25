@@ -6,7 +6,8 @@
   "for": "per",
   "trees": "Alberi",
   "planted": "piantato",
-  "privacyAndTerms": "Privacy e condizioni",
+  "privacy": "Privacy",
+  "terms": "Termini",
   "imprint": "Impronta",
   "status": "Stato",
   "contact": "Contatto",
@@ -61,6 +62,7 @@
   "blogs": "Blog",
   "faqs": "FAQ",
   "annualReports": "Rapporti annuali",
+  "skipIntroVideo": "Salta l'introduzione",
   "mapInfo": "Esri",
   "aboutUs": "Chi siamo",
   "alternativelyEditProfile": "In alternativa puoi marcare il tuo profilo come privato visitando Modifica profilo.",
@@ -68,5 +70,6 @@
   "deleteIrreversible": "Capisco anche che la cancellazione dell'account di {{email}} è irreversibile.",
   "goBack": "Torna indietro",
   "deleteAccountMessage": "Per continuare la cancellazione, digita `{{delete}}`",
-  "deleteAccountLabel": "Tipo: {{delete}}"
+  "deleteAccountLabel": "Tipo: {{delete}}",
+  "howDoesThisWork": "Come funziona?"
 }
