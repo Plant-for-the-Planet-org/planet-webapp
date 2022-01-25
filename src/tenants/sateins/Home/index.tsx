@@ -75,7 +75,7 @@ function Home({ leaderboard, tenantScore }: Props): ReactElement {
             >
                 <DonationsPopup project={project} onClose={handleClose} />
             </Modal>
-            <LandingSection tenantScore={tenantScore} handleViewProject={handleViewProject} handleOpen={handleOpen} LandingSectionData={LandingSectionData} />
+            <LandingSection tenantScore={tenantScore} handleViewProject={handleViewProject} handleOpen={handleOpen} LandingSectionData={LandingSectionData} projectID={projectID} />
             <LeaderBoard leaderboard={leaderboard} />
             <FeaturesSection FeaturesSectionData={FeaturesSectionData} />
             <p className={styles.poweredByLink}>Powered by <a href="https://a.plant-for-the-planet.org/de" target="_blank" rel="noreferrer">Plant-for-the-Planet</a> • <a href="https://a.plant-for-the-planet.org/de/imprint" target="_blank" rel="noreferrer">Impressum</a> • <a href="https://a.plant-for-the-planet.org/de/privacy-terms" target="_blank" rel="noreferrer">Datenschutz</a> </p>
