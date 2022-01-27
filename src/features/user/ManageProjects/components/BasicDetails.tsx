@@ -24,6 +24,7 @@ import {
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
@@ -90,6 +91,7 @@ export default function BasicDetails({
     }
   })
   const classes = useStylesAutoComplete();
+  const { handleError } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     //loads the default mapstyle
@@ -255,7 +257,7 @@ export default function BasicDetails({
       putAuthenticatedRequest(
         `/app/projects/${projectGUID}`,
         submitData,
-        token
+        token, handleError
       ).then((res) => {
         if (!res.code) {
           setErrorMessage('');
@@ -278,7 +280,7 @@ export default function BasicDetails({
         }
       });
     } else {
-      postAuthenticatedRequest(`/app/projects`, submitData, token).then(
+      postAuthenticatedRequest(`/app/projects`, submitData, token, handleError).then(
         (res) => {
           if (!res.code) {
             setErrorMessage('');

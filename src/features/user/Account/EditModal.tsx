@@ -20,6 +20,7 @@ import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import { ThemeContext } from '../../../theme/themeContext';
 import getCurrencySymbolByCode from '../../../utils/countryCurrency/getCurrencySymbolByCode';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 // interface EditDonationProps {
 //   editModalOpen
@@ -41,6 +42,7 @@ export const EditModal = ({
     mode: 'all',
   });
   const { token } = React.useContext(UserPropsContext);
+  const { handleError } = React.useContext(ErrorHandlingContext);
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
       const userLang = localStorage.getItem('language');
@@ -62,7 +64,7 @@ export const EditModal = ({
     putAuthenticatedRequest(
       `/app/subscriptions/${record?.id}?scope=modify`,
       bodyToSend,
-      token
+      token, handleError
     )
       .then((res) => {
         console.log(res, 'Response');

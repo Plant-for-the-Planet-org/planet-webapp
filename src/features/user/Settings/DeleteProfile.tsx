@@ -6,23 +6,24 @@ import AnimatedButton from '../../common/InputTypes/AnimatedButton';
 import { deleteAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { ThemeContext } from '../../../theme/themeContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
-export default function DeleteProfile({}: any) {
+export default function DeleteProfile({ }: any) {
   const { user, token, logoutUser } = React.useContext(UserPropsContext);
   const { t, ready } = useTranslation(['me', 'common', 'editProfile']);
   const handleChange = (e) => {
     e.preventDefault();
   };
-
+  const { handleError } = React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
 
   const [canDeleteAccount, setcanDeleteAccount] = React.useState(false);
 
   const handleDeleteAccount = () => {
     setIsUploadingData(true);
-    deleteAuthenticatedRequest('/app/profile', token).then((res) => {
+    deleteAuthenticatedRequest('/app/profile', token, handleError).then((res) => {
       if (res !== 404) {
         logoutUser(`${process.env.NEXTAUTH_URL}/`);
       } else {
