@@ -10,6 +10,7 @@ import i18next from '../../../../../../i18n';
 import { Controller, useForm, useFieldArray } from 'react-hook-form';
 import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
 import SampleTreeCard from './SampleTreeCard';
+import Papa from 'papaparse';
 
 const { useTranslation } = i18next;
 
@@ -40,12 +41,17 @@ export default function SampleTrees({
       reader.onabort = () => console.log('file reading was aborted');
       reader.onerror = () => console.log('file reading has failed');
       reader.onload = (event: any) => {
-        setSampleTrees(event.target.result);
+        const csv = event.target.result;
+        Papa.parse(csv, {
+          header: true,
+          complete: (results: any) => {
+            console.log(`results`, results)
+            setSampleTrees(results.data);
+          },
+        });
       };
     });
   }, []);
-
-  const { user, token, contextLoaded } = React.useContext(UserPropsContext);
 
   const defaultValues = {
     sampleTrees: [
@@ -75,6 +81,58 @@ export default function SampleTrees({
     control,
     name: 'sampleTrees',
   });
+
+  React.useEffect(() => {
+    setValue('sampleTrees', [
+      {
+        plantingDate: new Date(),
+        treeTag: 'test',
+        height: '1',
+        diameter: '10',
+        species: 'sspec_dReK4W4J0eg2Y51tJo',
+        latitude: 10,
+        longitude: 20,
+      },
+      {
+        plantingDate: new Date(),
+        treeTag: 'test',
+        height: '1',
+        diameter: '10',
+        species: 'sspec_dReK4W4J0eg2Y51tJo',
+        latitude: 10,
+        longitude: 20,
+      },
+      {
+        plantingDate: new Date(),
+        treeTag: 'test',
+        height: '1',
+        diameter: '10',
+        species: 'sspec_dReK4W4J0eg2Y51tJo',
+        latitude: 10,
+        longitude: 20,
+      },
+      {
+        plantingDate: new Date(),
+        treeTag: 'test',
+        height: '1',
+        diameter: '10',
+        species: 'sspec_dReK4W4J0eg2Y51tJo',
+        latitude: 10,
+        longitude: 20,
+      },
+      {
+        plantingDate: new Date(),
+        treeTag: 'test',
+        height: '1',
+        diameter: '10',
+        species: 'sspec_dReK4W4J0eg2Y51tJo',
+        latitude: 10,
+        longitude: 20,
+      }
+    ]);
+  }, []);
+
+  const { user, token, contextLoaded } = React.useContext(UserPropsContext);
 
   const onSubmit = (data: any) => {
     setIsUploadingData(true);
@@ -135,7 +193,7 @@ export default function SampleTrees({
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    // accept: 'text/*',
+    accept: ['.csv'],
     multiple: false,
     onDrop: onDrop,
     onDropAccepted: () => {
@@ -143,14 +201,19 @@ export default function SampleTrees({
     },
     onFileDialogCancel: () => setIsUploadingData(false),
   });
+
+  const csvTemplate = [['plantingDate', 'treeTag', 'height', 'diameter', 'species', 'latitude', 'longitude']];
+  const csv = Papa.unparse(csvTemplate);
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = window.URL.createObjectURL(blob);
   return (
     <>
       <div className={styles.formFieldLarge}>
         Download the following CSV template to import sample tree data in the
         designated format.
-        <div className={styles.downloadLink}>
+        <a href={url} download="Sample CSV Template" className={styles.downloadLink}>
           {t('treemapper:downloadCSVTemplate')}
-        </div>
+        </a>
       </div>
 
       <div className={styles.formFieldLarge}>
@@ -185,6 +248,7 @@ export default function SampleTrees({
               control={control}
               userLang={userLang}
               setValue={setValue}
+              item={item}
             />
           );
         })}

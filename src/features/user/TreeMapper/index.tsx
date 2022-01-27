@@ -8,8 +8,8 @@ import PlantLocationPage from './components/PlantLocationPage';
 import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import TopProgressBar from '../../common/ContentLoaders/TopProgressBar';
 import { useRouter } from 'next/router';
+import ImportIcon from '../../../../public/assets/images/icons/ImportIcon';
 import ThreeDotIcon from '../../../../public/assets/images/icons/ThreeDotIcon';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
@@ -29,16 +29,13 @@ function TreeMapper({ }: Props): ReactElement {
   const [selectedLocation, setselectedLocation] = React.useState('');
   const [location, setLocation] = React.useState(null);
   const [links, setLinks] = React.useState();
-  const { handleError } = React.useContext(ErrorHandlingContext);
 
   async function fetchTreemapperData(next = false) {
     setIsDataLoading(true);
     setProgress(70);
 
     if (next && links?.next) {
-      const response = await getAuthenticatedRequest(links.next, token, {},
-        handleError,
-        '/profile');
+      const response = await getAuthenticatedRequest(links.next, token);
       if (response) {
         const newPlantLocations = response?.items;
         for (const itr in newPlantLocations) {
@@ -67,10 +64,7 @@ function TreeMapper({ }: Props): ReactElement {
     } else {
       const response = await getAuthenticatedRequest(
         '/treemapper/plantLocations?_scope=extended&limit=15',
-        token,
-        {},
-        handleError,
-        '/profile'
+        token
       );
       if (response) {
         const plantLocations = response?.items;
@@ -165,7 +159,7 @@ function TreeMapper({ }: Props): ReactElement {
     {
       name: 'treemapper',
       label: 'treemapper:mySpecies',
-      url: () => router.replace('/profile/treemapper/mySpecies'), // string: external URL. function: callback to generate URL
+      url: () => router.replace('/profile/treemapper/my-species'), // string: external URL. function: callback to generate URL
     },
   ];
 
@@ -178,15 +172,23 @@ function TreeMapper({ }: Props): ReactElement {
       )}
 
       <div id="pageContainer" className={styles.pageContainer}>
-        {selectedLocation ? <PlantLocationPage {...TreeMapperProps} /> :
+        {selectedLocation ? (
+          <PlantLocationPage {...TreeMapperProps} />
+        ) : (
           <div className={styles.listContainer}>
-            <div className={'profilePageTitle'}>{t('treemapper:treeMapper')}</div>
-            <div className={styles.importButton}>
-              <ThreeDotMenu menu={MenuItems} />
+            <div className={styles.titleContainer}>
+              <div className={'profilePageTitle'}>
+                {t('treemapper:treeMapper')}
+              </div>
+              <div
+                className={styles.importButton}
+              >
+                <ThreeDotMenu menu={MenuItems} />
+              </div>
             </div>
             <TreeMapperList {...TreeMapperProps} />
           </div>
-        }
+        )}
         <div className={styles.mapContainer}>
           <PlantLocationMap
             locations={plantLocations}
@@ -194,8 +196,8 @@ function TreeMapper({ }: Props): ReactElement {
             setselectedLocation={setselectedLocation}
           />
         </div>
-      </div >
-    </div >
+      </div>
+    </div>
   );
 }
 

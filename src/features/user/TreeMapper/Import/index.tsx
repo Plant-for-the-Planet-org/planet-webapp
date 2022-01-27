@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { getAuthenticatedRequest, putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import PlantingLocation from './components/PlantingLocation';
 import styles from './Import.module.scss';
 import i18next from '../../../../../i18n';
@@ -21,7 +21,7 @@ const useStyles = makeStyles({
   },
 });
 
-interface Props {}
+interface Props { }
 
 const Map = dynamic(() => import('./components/Map'), {
   loading: () => <p>loading</p>,
@@ -32,9 +32,22 @@ const MapComponent = dynamic(() => import('./components/MapComponent'), {
   loading: () => <p></p>,
 });
 
-export default function ImportData({}: Props): ReactElement {
+export default function ImportData({ }: Props): ReactElement {
+  const router = useRouter();
   const { t, i18n, ready } = useTranslation(['treemapper']);
   const { token } = React.useContext(UserPropsContext);
+
+  // loc_ACxv7uldM1VdKd5cikv3qoF5
+  const fetchPlantLocation = async (id: any): Promise<void> => {
+    const result = await getAuthenticatedRequest(`/treemapper/plantLocations/${id}`, token);
+    setPlantLocation(result);
+  }
+
+  React.useEffect(() => {
+    if (router && router.query.loc) {
+      fetchPlantLocation(router.query.loc);
+    }
+  }, [router]);
 
   const classes = useStyles();
 
@@ -74,8 +87,6 @@ export default function ImportData({}: Props): ReactElement {
       if (userLang) setUserLang(userLang);
     }
   }, []);
-
-  const router = useRouter();
 
   const submitForReview = () => {
     setIsUploadingData(true);
@@ -139,16 +150,16 @@ export default function ImportData({}: Props): ReactElement {
       default:
         return (
           <PlantingLocation
-          handleNext={handleNext}
-          errorMessage={errorMessage}
-          setErrorMessage={setErrorMessage}
-          userLang={userLang}
-          plantLocation={plantLocation}
-          setPlantLocation={setPlantLocation}
-          geoJson={geoJson}
-          setGeoJson={setGeoJson}
-          activeMethod={activeMethod}
-          setActiveMethod={setActiveMethod}
+            handleNext={handleNext}
+            errorMessage={errorMessage}
+            setErrorMessage={setErrorMessage}
+            userLang={userLang}
+            plantLocation={plantLocation}
+            setPlantLocation={setPlantLocation}
+            geoJson={geoJson}
+            setGeoJson={setGeoJson}
+            activeMethod={activeMethod}
+            setActiveMethod={setActiveMethod}
           />
         );
     }
@@ -183,8 +194,8 @@ export default function ImportData({}: Props): ReactElement {
           </div>
         </div>
         <div className={styles.mapContainer}>
-              <MapComponent geoJson={geoJson} setGeoJson={setGeoJson} setActiveMethod={setActiveMethod}/>
-          </div>
+          <MapComponent geoJson={geoJson} setGeoJson={setGeoJson} setActiveMethod={setActiveMethod} />
+        </div>
       </div>
     </div>
   );

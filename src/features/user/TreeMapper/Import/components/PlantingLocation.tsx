@@ -24,6 +24,7 @@ import {
 import tj from '@mapbox/togeojson';
 import gjv from 'geojson-validation';
 import flatten from 'geojson-flatten';
+import SpeciesSelect from './SpeciesAutoComplete';
 
 const { useTranslation } = i18next;
 
@@ -58,6 +59,7 @@ export default function PlantingLocation({
   const [projects, setProjects] = React.useState([]);
   const importMethods = ['import', 'editor', 'draw'];
   const [geoJsonError, setGeoJsonError] = React.useState(false);
+  const [mySpecies, setMySpecies] = React.useState(null);
 
   const { t, ready } = useTranslation(['treemapper', 'common']);
   const defaultValues = {
@@ -72,14 +74,24 @@ export default function PlantingLocation({
     ],
   };
   const { register, handleSubmit, errors, control, reset, setValue, watch } =
-    useForm({ mode: 'onBlur', defaultValues: defaultValues });
+    useForm({ mode: 'onBlur', defaultValues: plantLocation ? plantLocation : defaultValues });
+
+  React.useEffect(() => {
+    if (plantLocation && plantLocation.geometry) {
+      setGeoJson(plantLocation.geometry);
+      setActiveMethod('editor');
+      setValue('plantProject', plantLocation.plantProject);
+      setValue('plantDate', plantLocation.plantDate);
+      setValue('plantedSpecies', plantLocation.plantedSpecies);
+    }
+  }, [plantLocation]);
 
   const { fields, append, remove, prepend } = useFieldArray({
     control,
     name: 'plantedSpecies',
   });
 
-  async function loadProjects() {
+  const loadProjects = async () => {
     await getAuthenticatedRequest('/app/profile/projects', token).then(
       (projects: any) => {
         setProjects(projects);
@@ -87,9 +99,19 @@ export default function PlantingLocation({
     );
   }
 
+  const loadMySpecies = async () => {
+    await getAuthenticatedRequest('/treemapper/species', token).then(
+      (species: any) => {
+        console.log(`species`, species)
+        setMySpecies(species);
+      }
+    );
+  }
+
   React.useEffect(() => {
     if (contextLoaded) {
       loadProjects();
+      loadMySpecies();
     }
   }, [contextLoaded]);
 
@@ -164,20 +186,19 @@ export default function PlantingLocation({
   });
 
   const onSubmit = (data: any) => {
+    console.log(`data`, data)
     if (geoJson) {
       setIsUploadingData(true);
-      const submitData = {
-        type: 'multi',
-        captureMode: 'off-site',
-        geometry: geoJson,
-        plantedSpecies: data.plantedSpecies,
-        plantDate: data.plantDate,
-        plantProject: data.plantProject,
-      };
       // Check if GUID is set use update instead of create project
       if (plantLocation?.id) {
+        const submitData = {
+          geometry: geoJson,
+          // plantedSpecies: data.plantedSpecies,
+          plantDate: data.plantDate,
+          plantProject: data.plantProject,
+        };
         putAuthenticatedRequest(
-          `/app/projects/${plantLocation.id}`,
+          `/treemapper/plantLocations/${plantLocation.id}`,
           submitData,
           token
         ).then((res: any) => {
@@ -202,7 +223,24 @@ export default function PlantingLocation({
           }
         });
       } else {
-        postAuthenticatedRequest(`/app/projects`, submitData, token).then(
+        const submitData = {
+          type: 'multi',
+          captureMode: 'off-site',
+          geometry: geoJson,
+          // TODO: Remove device location when we have a proper way to handle this
+          deviceLocation: {
+            "type": "Point",
+            "coordinates": [
+              72.95900344848633,
+              19.24438445451903
+            ]
+          },
+          plantedSpecies: data.plantedSpecies,
+          plantDate: data.plantDate,
+          registrationDate: plantLocation?.id ? undefined : new Date().toISOString(),
+          plantProject: data.plantProject,
+        };
+        postAuthenticatedRequest(`/treemapper/plantLocations`, submitData, token).then(
           (res: any) => {
             if (!res.code) {
               setErrorMessage('');
@@ -349,9 +387,8 @@ export default function PlantingLocation({
           {importMethods.map((method, index) => (
             <div
               onClick={() => setActiveMethod(method)}
-              className={`${styles.importTab} ${
-                activeMethod === method ? styles.active : ''
-              }`}
+              className={`${styles.importTab} ${activeMethod === method ? styles.active : ''
+                }`}
             >
               {t(`treemapper:${method}`)}
             </div>
@@ -360,7 +397,7 @@ export default function PlantingLocation({
         {getMethod(activeMethod)}
       </div>
       <div className={styles.formSubTitle}>Species Planted</div>
-      {fields.map((item, index) => {
+      {mySpecies && fields.map((item, index) => {
         return (
           <PlantedSpecies
             index={index}
@@ -369,6 +406,8 @@ export default function PlantingLocation({
             remove={remove}
             setValue={setValue}
             errors={errors}
+            mySpecies={mySpecies}
+            item={item}
           />
         );
       })}
@@ -384,8 +423,8 @@ export default function PlantingLocation({
       <div className={`${styles.formFieldLarge}`}>
         <button
           id={'basicDetailsCont'}
-          // onClick={handleSubmit(onSubmit)}
-          onClick={() => handleNext()}
+          onClick={handleSubmit(onSubmit)}
+          // onClick={() => handleNext()}
           className="primaryButton"
           style={{ minWidth: '240px' }}
         >
@@ -406,6 +445,8 @@ interface SpeciesProps {
   remove: Function;
   setValue: Function;
   errors: any;
+  mySpecies: any;
+  item: any;
 }
 
 function PlantedSpecies({
@@ -415,9 +456,13 @@ function PlantedSpecies({
   remove,
   setValue,
   errors,
+  mySpecies,
+  item,
 }: SpeciesProps): ReactElement {
+  console.log(`item`, item);
   let suggestion_counter = 0;
-  const [speciesSuggestion, setspeciesSuggestion] = React.useState([]);
+  const [showSuggestions, setShowSuggestions] = React.useState(false);
+  const [speciesSuggestion, setspeciesSuggestion] = React.useState(mySpecies);
   const suggestSpecies = (value: any) => {
     if (value.length > 2) {
       postRequest(`/suggest.php`, { q: value, t: 'species' }).then(
@@ -438,6 +483,7 @@ function PlantedSpecies({
   return (
     <div key={index} className={styles.speciesFieldGroup}>
       <div className={styles.speciesNameField}>
+        {/* <SpeciesSelect label={t('treemapper:species')} inputRef={register({ required: index ? false : true })} name={`plantedSpecies[${index}].scientificSpecies`} defaultValue={item.scientificSpecies} mySpecies={mySpecies} /> */}
         <MaterialTextField
           inputRef={register({ required: index ? false : true })}
           label={t('treeSpecies')}
@@ -446,29 +492,30 @@ function PlantedSpecies({
           onChange={(event) => {
             suggestSpecies(event.target.value);
           }}
-          // onBlur={() => setspeciesSuggestion([])}
+          onFocus={() => setShowSuggestions(true)}
+          onBlur={() => setShowSuggestions(false)}
         />
-        {speciesSuggestion
+        {showSuggestions && speciesSuggestion
           ? speciesSuggestion.length > 0 && (
-              <div className="suggestions-container scientific-species">
-                {speciesSuggestion.map((suggestion: any) => {
-                  return (
-                    <div
-                      key={'suggestion' + suggestion_counter++}
-                      onMouseDown={() => {
-                        setSpecies(
-                          `plantedSpecies[${index}].scientificSpecies`,
-                          suggestion.scientificName
-                        );
-                      }}
-                      className="suggestion"
-                    >
-                      {suggestion.scientificName}
-                    </div>
-                  );
-                })}
-              </div>
-            )
+            <div className="suggestions-container scientific-species">
+              {speciesSuggestion.map((suggestion: any) => {
+                return (
+                  <div
+                    key={'suggestion' + suggestion_counter++}
+                    onMouseDown={() => {
+                      setSpecies(
+                        `plantedSpecies[${index}].scientificSpecies`,
+                        suggestion.scientificSpecies
+                      );
+                    }}
+                    className="suggestion"
+                  >
+                    {suggestion.scientificName}
+                  </div>
+                );
+              })}
+            </div>
+          )
           : null}
       </div>
       <div className={styles.speciesCountField}>
@@ -477,9 +524,9 @@ function PlantedSpecies({
             required: index
               ? false
               : {
-                  value: true,
-                  message: t('treesRequired'),
-                },
+                value: true,
+                message: t('treesRequired'),
+              },
             validate: (value: any) => parseInt(value, 10) >= 1,
           })}
           onInput={(e: any) => {
@@ -501,5 +548,6 @@ function PlantedSpecies({
         <div className={styles.speciesDeleteField}></div>
       )}
     </div>
+    // </div >
   );
 }

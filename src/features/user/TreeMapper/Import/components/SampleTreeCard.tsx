@@ -18,9 +18,9 @@ interface Props {
   register: Function;
   remove: Function;
   getValues: Function;
-  control:any;
-  userLang:string;
-  setValue:Function;
+  control: any;
+  userLang: string;
+  setValue: Function;
 }
 
 export default function SampleTreeCard({
@@ -38,96 +38,93 @@ export default function SampleTreeCard({
   let suggestion_counter = 0;
 
   const [speciesSuggestion, setspeciesSuggestion] = React.useState([]);
-  const suggestSpecies = (value:any) => {
+  const suggestSpecies = (value: any) => {
     if (value.length > 2) {
-      postRequest(`/suggest.php`, {q:value, t:'species'}).then((res:any) => {
+      postRequest(`/suggest.php`, { q: value, t: 'species' }).then((res: any) => {
         if (res) {
           setspeciesSuggestion(res);
         }
       });
     }
-  };  
-  const setSpecies = (name:string, value:any) => {
-        setValue(name, value, {
-          shouldValidate: true,
-        });
-        setspeciesSuggestion([]);
+  };
+  const setSpecies = (name: string, value: any) => {
+    setValue(name, value, {
+      shouldValidate: true,
+    });
+    setspeciesSuggestion([]);
   };
 
   return (
     <div key={index} className={styles.sampleTreeFieldGroup}>
       <div className={styles.sampleTreeName}>
         <div>
-        {t('sampleTree', { number: index + 1 })}
-        {`${
-          sampleTrees[index]?.treeTag
-            ? ` • ${t('tag')} ${sampleTrees[index]?.treeTag}`
-            : ''
-        }`}
+          {t('sampleTree', { number: index + 1 })}
+          {`${sampleTrees[index]?.treeTag
+              ? ` • ${t('tag')} ${sampleTrees[index]?.treeTag}`
+              : ''
+            }`}
         </div>
         {index > 0 && (
-        <div
-          onClick={() => remove(index)}
-        >
-          <DeleteIcon />
-        </div>)
-}
+          <div
+            onClick={() => remove(index)}
+          >
+            <DeleteIcon />
+          </div>)
+        }
       </div>
       <div className={styles.sampleTreeSummary}>
-        {`${
-          sampleTrees[index]?.height
+        {`${sampleTrees[index]?.height
             ? ` • ${t('height')} ${sampleTrees[index]?.height}`
             : ''
-        }`}{' '}
-        {`${
-          sampleTrees[index]?.diameter
+          }`}{' '}
+        {`${sampleTrees[index]?.diameter
             ? ` • ${t('diameter')} ${sampleTrees[index]?.diameter}`
             : ''
-        }`}
+          }`}
       </div>
       <div className={styles.sampleTreeDetails}>
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
             <ThemeProvider theme={materialTheme}>
-            <MuiPickersUtilsProvider
-              utils={DateFnsUtils}
-              locale={
-                localeMapForDate[userLang]
-                  ? localeMapForDate[userLang]
-                  : localeMapForDate['en']
-              }
-            >
-              <Controller
-                render={(properties:any) => (
-                  <DatePicker
-                    label={t('plantingDate')}
-                    value={properties.value}
-                    onChange={properties.onChange}
-                    inputVariant="outlined"
-                    TextFieldComponent={MaterialTextField}
-                    autoOk
-                    disableFuture
-                    format="MMMM d, yyyy"
-                  />
-                )}
-                name={`sampleTrees[${index}].plantingDate`}
-                control={control}
-              />
-            </MuiPickersUtilsProvider>
-          </ThemeProvider>
+              <MuiPickersUtilsProvider
+                utils={DateFnsUtils}
+                locale={
+                  localeMapForDate[userLang]
+                    ? localeMapForDate[userLang]
+                    : localeMapForDate['en']
+                }
+              >
+                <Controller
+                  render={(properties: any) => (
+                    <DatePicker
+                      label={t('plantingDate')}
+                      value={properties.value}
+                      onChange={properties.onChange}
+                      inputVariant="outlined"
+                      TextFieldComponent={MaterialTextField}
+                      autoOk
+                      disableFuture
+                      format="MMMM d, yyyy"
+                    />
+                  )}
+                  name={`sampleTrees[${index}].plantingDate`}
+                  control={control}
+                />
+              </MuiPickersUtilsProvider>
+            </ThemeProvider>
           </div>
           <div className={styles.formFieldHalf}>
-          <MaterialTextField
+            <MaterialTextField
               inputRef={register({})}
               label={t('treeTag')}
               variant="outlined"
               name={`sampleTrees[${index}].treeTag`}
             />
-</div>
-          
+          </div>
+
         </div>
         <div className={styles.formField}>
-        <div className={styles.formFieldHalf}>
+          <div className={styles.formFieldHalf}>
             <MaterialTextField
               inputRef={register({
                 required: {
@@ -164,7 +161,7 @@ export default function SampleTreeCard({
         </div>
 
         <div className={styles.formField}>
-        <div className={styles.formFieldHalf}>
+          <div className={styles.formFieldHalf}>
             <MaterialTextField
               inputRef={register({
                 required: {
@@ -200,34 +197,34 @@ export default function SampleTreeCard({
           </div>
         </div>
         <div className={styles.formFieldLarge}>
-            <MaterialTextField
-                inputRef={register({ required: true })}
-                label={t('treeSpecies')}
-                variant="outlined"
-                name={`sampleTrees[${index}].species`}
-                onChange={(event) => {
-                  suggestSpecies(event.target.value);
-                }}
-                onBlur={() => setspeciesSuggestion([])}
-              />
-              {speciesSuggestion
-              ? speciesSuggestion.length > 0 && (
-                  <div className="suggestions-container sampleTrees">
-                    {speciesSuggestion.map((suggestion:any) => {
-                      return (
-                        <div key={'suggestion' + suggestion_counter++}
-                          onMouseDown={() => {
-                            setSpecies(`sampleTrees[${index}].species` ,suggestion.scientificName);
-                          }}
-                          className="suggestion"
-                        >
-                          {suggestion.scientificName}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )
-              : null}
+          <MaterialTextField
+            inputRef={register({ required: true })}
+            label={t('treeSpecies')}
+            variant="outlined"
+            name={`sampleTrees[${index}].species`}
+            onChange={(event) => {
+              suggestSpecies(event.target.value);
+            }}
+            onBlur={() => setspeciesSuggestion([])}
+          />
+          {speciesSuggestion
+            ? speciesSuggestion.length > 0 && (
+              <div className="suggestions-container sampleTrees">
+                {speciesSuggestion.map((suggestion: any) => {
+                  return (
+                    <div key={'suggestion' + suggestion_counter++}
+                      onMouseDown={() => {
+                        setSpecies(`sampleTrees[${index}].species`, suggestion.scientificSpecies);
+                      }}
+                      className="suggestion"
+                    >
+                      {suggestion.scientificName}
+                    </div>
+                  );
+                })}
+              </div>
+            )
+            : null}
         </div>
       </div>
     </div>
