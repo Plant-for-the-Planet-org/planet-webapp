@@ -408,6 +408,7 @@ export default function PlantingLocation({
             errors={errors}
             mySpecies={mySpecies}
             item={item}
+            control={control}
           />
         );
       })}
@@ -447,6 +448,7 @@ interface SpeciesProps {
   errors: any;
   mySpecies: any;
   item: any;
+  control: any;
 }
 
 function PlantedSpecies({
@@ -458,33 +460,14 @@ function PlantedSpecies({
   errors,
   mySpecies,
   item,
+  control,
 }: SpeciesProps): ReactElement {
   console.log(`item`, item);
-  let suggestion_counter = 0;
-  const [showSuggestions, setShowSuggestions] = React.useState(false);
-  const [speciesSuggestion, setspeciesSuggestion] = React.useState(mySpecies);
-  const suggestSpecies = (value: any) => {
-    if (value.length > 2) {
-      postRequest(`/suggest.php`, { q: value, t: 'species' }).then(
-        (res: any) => {
-          if (res) {
-            setspeciesSuggestion(res);
-          }
-        }
-      );
-    }
-  };
-  const setSpecies = (name: string, value: any) => {
-    setValue(name, value, {
-      shouldValidate: true,
-    });
-    setspeciesSuggestion([]);
-  };
   return (
     <div key={index} className={styles.speciesFieldGroup}>
       <div className={styles.speciesNameField}>
-        {/* <SpeciesSelect label={t('treemapper:species')} inputRef={register({ required: index ? false : true })} name={`plantedSpecies[${index}].scientificSpecies`} defaultValue={item.scientificSpecies} mySpecies={mySpecies} /> */}
-        <MaterialTextField
+        <SpeciesSelect label={t('treemapper:species')} name={`plantedSpecies[${index}].scientificSpecies`} defaultValue={item?.scientificSpecies ? item.scientificSpecies : ''} mySpecies={mySpecies} control={control} />
+        {/* <MaterialTextField
           inputRef={register({ required: index ? false : true })}
           label={t('treeSpecies')}
           variant="outlined"
@@ -516,7 +499,7 @@ function PlantedSpecies({
               })}
             </div>
           )
-          : null}
+          : null} */}
       </div>
       <div className={styles.speciesCountField}>
         <MaterialTextField

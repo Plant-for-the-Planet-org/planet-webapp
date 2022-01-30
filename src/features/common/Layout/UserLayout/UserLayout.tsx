@@ -100,9 +100,26 @@ function UserLayout(props: any): ReactElement {
     {
       key: 4,
       title: t('treeMapper'),
-      path: '/profile/treemapper',
+      // path: '/profile/treemapper',
       icon: <TreeMappperIcon />,
       flag: t('me:beta'),
+      subMenu: [
+        {
+          title: t('me:plantLocations'),
+          path: '/profile/treemapper',
+          // hideItem: true,
+        },
+        {
+          title: t('me:mySpecies'),
+          path: '/profile/treemapper/my-species',
+          // hideItem: true,
+        },
+        {
+          title: t('me:import'),
+          path: '/profile/treemapper/import',
+          // hideItem: true,
+        },
+      ]
     },
     {
       key: 5,

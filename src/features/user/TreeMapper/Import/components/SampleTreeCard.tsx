@@ -10,6 +10,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import materialTheme from '../../../../../theme/themeStyles';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
 import { postRequest } from '../../../../../utils/apiRequests/api';
+import SpeciesSelect from './SpeciesAutoComplete';
 
 const { useTranslation } = i18next;
 
@@ -60,8 +61,8 @@ export default function SampleTreeCard({
         <div>
           {t('sampleTree', { number: index + 1 })}
           {`${sampleTrees[index]?.treeTag
-              ? ` • ${t('tag')} ${sampleTrees[index]?.treeTag}`
-              : ''
+            ? ` • ${t('tag')} ${sampleTrees[index]?.treeTag}`
+            : ''
             }`}
         </div>
         {index > 0 && (
@@ -74,12 +75,12 @@ export default function SampleTreeCard({
       </div>
       <div className={styles.sampleTreeSummary}>
         {`${sampleTrees[index]?.height
-            ? ` • ${t('height')} ${sampleTrees[index]?.height}`
-            : ''
+          ? ` • ${t('height')} ${sampleTrees[index]?.height}`
+          : ''
           }`}{' '}
         {`${sampleTrees[index]?.diameter
-            ? ` • ${t('diameter')} ${sampleTrees[index]?.diameter}`
-            : ''
+          ? ` • ${t('diameter')} ${sampleTrees[index]?.diameter}`
+          : ''
           }`}
       </div>
       <div className={styles.sampleTreeDetails}>
@@ -197,7 +198,7 @@ export default function SampleTreeCard({
           </div>
         </div>
         <div className={styles.formFieldLarge}>
-          <MaterialTextField
+          {/* <MaterialTextField
             inputRef={register({ required: true })}
             label={t('treeSpecies')}
             variant="outlined"
@@ -224,7 +225,8 @@ export default function SampleTreeCard({
                 })}
               </div>
             )
-            : null}
+            : null} */}
+          <SpeciesSelect label={t('treemapper:species')} name={`scientificSpecies`} width='300px' control={control} />
         </div>
       </div>
     </div>

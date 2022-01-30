@@ -6,22 +6,21 @@ import { ThemeContext } from '../../../../../theme/themeContext';
 import themeProperties from '../../../../../theme/themeProperties';
 import tenantConfig from '../../../../../../tenant.config';
 import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
+import { postRequest } from '../../../../../utils/apiRequests/api';
+import { Controller } from 'react-hook-form';
 
 const config = tenantConfig();
 
 export default function SpeciesSelect(props: {
     label: React.ReactNode;
-    inputRef: ((instance: any) => void) | React.RefObject<any> | null | undefined;
-    name: string | undefined;
-    defaultValue: String | undefined;
-    mySpecies: [{ id: string; name: string, scientificName: string }];
-    onChange:
-    | ((
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => void)
-    | undefined;
+    name: string;
+    defaultValue?: String | undefined;
+    width?: string | undefined;
+    control: any;
+    mySpecies?: any;
 }) {
-    const [speciesSuggestion, setspeciesSuggestion] = React.useState(props.mySpecies);
+    const [speciesSuggestion, setspeciesSuggestion] = React.useState(props.mySpecies ? props.mySpecies : []);
+    const [query, setQuery] = React.useState('');
     const { theme } = React.useContext(ThemeContext)
     const useStylesAutoComplete = makeStyles({
         paper: {
@@ -58,42 +57,33 @@ export default function SpeciesSelect(props: {
     });
     const classes = useStylesAutoComplete();
 
-    // This value is in country code - eg. DE, IN, US
-    const { defaultValue } = props;
+    const [value, setValue] = React.useState<SpeciesType | undefined>();
 
-    const [value, setValue] = React.useState(defaultValue);
+    React.useEffect(() => {
+        if (speciesSuggestion) {
+            // create default object
+            const defaultSpecies = speciesSuggestion.filter((data: any) => data.id === props.defaultValue);
+            if (defaultSpecies && defaultSpecies.length > 0) {
+                setValue(defaultSpecies[0]);
+            }
+        }
+    }, [speciesSuggestion]);
 
-    const setSpecies = (name: string, value: any) => {
-        setValue(name, value, {
-            shouldValidate: true,
-        });
-        setspeciesSuggestion([]);
+    const suggestSpecies = (value: any) => {
+        if (value.length > 2) {
+            postRequest(`/suggest.php`, { q: value, t: 'species' }).then((res: any) => {
+                if (res) {
+                    setspeciesSuggestion(res);
+                }
+            });
+        }
     };
 
-    // This value is an object with keys - code, label and phone
-    // This has to be passed to the component as default value
-    // const [value, setValue] = React.useState();
-
-    // // use default country passed to create default object & set contact details
     React.useEffect(() => {
-        // create default object
-        const defaultSpecies = speciesSuggestion.filter((data) => data.id === defaultValue);
-        if (defaultSpecies && defaultSpecies.length > 0) {
-            // set initial value
-            setValue(defaultSpecies[0]);
-            // set contact details
-            props.onChange(defaultSpecies[0].id);
-        }
-    }, []);
+        suggestSpecies(query);
+    }, [query]);
 
-    // Set contact details everytime value changes
-    // React.useEffect(() => {
-    //     if (value) {
-    //         onChange(value.id);
-    //     }
-    // }, [value]);
-
-    speciesSuggestion.sort((a, b) => {
+    speciesSuggestion && speciesSuggestion.sort((a: any, b: any) => {
         const nameA = `${a.name}`
         const nameB = `${b.name}`
         if (nameA > nameB) {
@@ -104,39 +94,49 @@ export default function SpeciesSelect(props: {
         return 0;
     });
 
-    return value && (
-        <Autocomplete
-            id="species-select"
-            style={{ width: '100%' }}
-            options={speciesSuggestion as SpeciesType[]}
-            classes={{
-                option: classes.option,
-                paper: classes.paper,
-            }}
-            value={value}
-            autoHighlight
-            getOptionLabel={(option) => `${option.name}`}
-            renderOption={(option) => (
-                <>
-                    <span>{option.scientificName}</span>
-                </>
-            )}
+    return (
+        <Controller
             onChange={(event: any, newValue: SpeciesType | null) => {
                 if (newValue) {
                     setValue(newValue);
                 }
             }}
-            defaultValue={value.scientificName}
-            renderInput={(params) => (
-                <MaterialTextField
-                    {...params}
-                    label={props.label}
-                    variant="outlined"
-                    inputProps={{
-                        ...params.inputProps,
-                        autoComplete: 'new-password', // disable autocomplete and autofill
+            defaultValue={value}
+            name={props.name}
+            control={props.control}
+            render={({ onChange, ...renderProps }) => (
+                <Autocomplete
+                    id="species-select"
+                    style={{ width: props.width ? props.width : '100%' }}
+                    options={speciesSuggestion as SpeciesType[]}
+                    classes={{
+                        option: classes.option,
+                        paper: classes.paper,
                     }}
-                    name={'scientificSpecies'}
+                    autoHighlight
+                    getOptionLabel={(option) => `${option.name}`}
+                    renderOption={(option) => (
+                        <>
+                            <span>{option.scientificName}</span>
+                        </>
+                    )}
+                    {...renderProps}
+                    onChange={(e, data) => onChange(data)}
+                    renderInput={(params) => (
+                        <MaterialTextField
+                            {...params}
+                            label={props.label}
+                            variant="outlined"
+                            inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password', // disable autocomplete and autofill
+                            }}
+                            onChange={(event: any) => {
+                                setQuery(event.target.value);
+                            }}
+
+                        />
+                    )}
                 />
             )}
         />

@@ -33,9 +33,21 @@
   }
 }
 
+.addSpecies {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
 @include mdTabletView {
   .mySpeciesContainer {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .addSpecies {
+    display: flex;
+    flex-direction: row;
   }
 }
 
