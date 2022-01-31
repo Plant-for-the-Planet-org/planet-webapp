@@ -398,6 +398,7 @@ export default function ProjectSites({
                   defaultValue={siteDetails.name}
                 />
               </div>
+              <div style={{ width: '20px' }}></div>
               <div className={styles.formFieldHalf} data-test-id="siteStatus">
                 <Controller
                   as={
