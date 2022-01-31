@@ -540,6 +540,13 @@ input:-webkit-autofill {
   }
 }
 
+.MuiStepper-horizontal{
+  @include xsPhoneView{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+}
 
 
 

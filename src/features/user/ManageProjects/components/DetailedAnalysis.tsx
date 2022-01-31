@@ -156,23 +156,23 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
             degradationCause: data.degradationCause,
             longTermPlan: data.longTermPlan,
             plantingSeasons: months
-        } : 
-        {
-            projectMeta: {
-                location: data.location,
-                areaProtected: data.areaProtected,
-                employeeCount: data.employeeCount,
-                startingProtectionYear: data.startingProtectionYear.getFullYear(),
-                actions: data.actions,
-                activitySeasons: months,
-                mainChallenge: data.mainChallenge,
-                motivation: data.motivation,
-                longTermPlan: data.longTermPlan,
-                landOwnershipType: owners,
-                ownershipType: data.ownershipType
-            }
+        } :
+            {
+                projectMeta: {
+                    location: data.location,
+                    areaProtected: data.areaProtected,
+                    employeeCount: data.employeeCount,
+                    startingProtectionYear: data.startingProtectionYear.getFullYear(),
+                    actions: data.actions,
+                    activitySeasons: months,
+                    mainChallenge: data.mainChallenge,
+                    motivation: data.motivation,
+                    longTermPlan: data.longTermPlan,
+                    landOwnershipType: owners,
+                    ownershipType: data.ownershipType
+                }
 
-        }
+            }
 
         putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, token, handleError).then((res) => {
             if (!res.code) {
@@ -212,22 +212,22 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                 degradationYear: projectDetails.degradationYear ? new Date(new Date().setFullYear(projectDetails.degradationYear)) : new Date(),
                 degradationCause: projectDetails.degradationCause,
                 longTermPlan: projectDetails.longTermPlan,
-            } : 
-            {
-                projectMeta: {
-                    location: projectDetails.location,
-                    areaProtected: projectDetails.areaProtected,
-                    startingProtectionYear: projectDetails.startingProtectionYear ? new Date(new Date().setFullYear(projectDetails.startingProtectionYear)) : new Date(),
-                    actions: projectDetails.actions,
-                    activitySeasons: projectDetails.activitySeasons,
-                    employeeCount: projectDetails.employeeCount,
-                    mainChallenge: projectDetails.mainChallenge,
-                    motivation: projectDetails.motivation,
-                    longTermPlan: projectDetails.longTermPlan,
-                    landOwnershipType: projectDetails.landOwnershipType,
-                    ownershipType: projectDetails.ownershipType
-                }
-            };
+            } :
+                {
+                    projectMeta: {
+                        location: projectDetails.location,
+                        areaProtected: projectDetails.areaProtected,
+                        startingProtectionYear: projectDetails.startingProtectionYear ? new Date(new Date().setFullYear(projectDetails.startingProtectionYear)) : new Date(),
+                        actions: projectDetails.actions,
+                        activitySeasons: projectDetails.activitySeasons,
+                        employeeCount: projectDetails.employeeCount,
+                        mainChallenge: projectDetails.mainChallenge,
+                        motivation: projectDetails.motivation,
+                        longTermPlan: projectDetails.longTermPlan,
+                        landOwnershipType: projectDetails.landOwnershipType,
+                        ownershipType: projectDetails.ownershipType
+                    }
+                };
 
             // set planting seasons
             if (projectDetails.plantingSeasons && projectDetails.plantingSeasons.length > 0) {
@@ -432,26 +432,108 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                     }
 
 
-                        <div className={styles.formFieldLarge}>
-                            <div className={styles.plantingSeasons}>
-                                <p className={styles.plantingSeasonsLabel}> {purpose === "trees" ? t('manageProjects:plantingSeasons') : t('manageProjects:activitySeasons')} </p>
-                                {plantingSeasons.map((month) => {
-                                    return (
-                                        <div className={styles.multiSelectInput} key={month.id} onClick={() => handleSetPlantingSeasons(month.id)}>
-                                            <div className={`${styles.multiSelectInputCheck} ${month.isSet ? styles.multiSelectInputCheckTrue : ''}`}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="13.02" height="9.709" viewBox="0 0 13.02 9.709">
-                                                    <path id="check-solid" d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z" transform="translate(0 -65.098)" fill="#fff" />
-                                                </svg>
-                                            </div>
-                                            <p style={{ color: 'var(--dark)' }}>{month.title}</p>
+                    <div className={styles.formFieldLarge}>
+                        <div className={styles.plantingSeasons}>
+                            <p className={styles.plantingSeasonsLabel}> {purpose === "trees" ? t('manageProjects:plantingSeasons') : t('manageProjects:activitySeasons')} </p>
+                            {plantingSeasons.map((month) => {
+                                return (
+                                    <div className={styles.multiSelectInput} key={month.id} onClick={() => handleSetPlantingSeasons(month.id)}>
+                                        <div className={`${styles.multiSelectInputCheck} ${month.isSet ? styles.multiSelectInputCheckTrue : ''}`}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="13.02" height="9.709" viewBox="0 0 13.02 9.709">
+                                                <path id="check-solid" d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z" transform="translate(0 -65.098)" fill="#fff" />
+                                            </svg>
                                         </div>
-                                    )
-                                })}
-                            </div>
+                                        <p style={{ color: 'var(--dark)' }}>{month.title}</p>
+                                    </div>
+                                )
+                            })}
                         </div>
+                    </div>
 
 
+                    <div className={styles.formField}>
+                        <div className={styles.formFieldHalf}>
+                            <ThemeProvider theme={materialTheme}>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
+                                    <Controller
+                                        render={properties => (
+                                            <DatePicker
+                                                label={purpose === "trees" ? t('manageProjects:acquisitionYear') : t('manageProjects:startingProtectionYear')}
+                                                value={properties.value}
+                                                onChange={properties.onChange}
+                                                inputVariant="outlined"
+                                                TextFieldComponent={MaterialTextField}
+                                                autoOk
+                                                disableFuture
+                                                minDate={new Date(new Date().setFullYear(1950))}
+                                                views={["year"]}
+                                                maxDate={new Date()}
+                                            />)
+                                        }
+                                        name={purpose === "trees" ? "acquisitionYear" : "startingProtectionYear"}
+                                        control={control}
+                                        defaultValue=""
 
+                                    />
+                                </MuiPickersUtilsProvider>
+                            </ThemeProvider>
+                        </div>
+                        <div style={{ width: '20px' }}></div>
+                        {purpose === "trees" ?
+                            <div className={styles.formFieldHalf}>
+                                <ThemeProvider theme={materialTheme}>
+                                    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
+                                        <Controller
+                                            render={properties => (
+                                                <DatePicker
+                                                    views={["year"]}
+                                                    value={properties.value}
+                                                    onChange={properties.onChange}
+                                                    label={t('manageProjects:yearOfDegradation')}
+                                                    inputVariant="outlined"
+                                                    variant="inline"
+                                                    TextFieldComponent={MaterialTextField}
+                                                    autoOk
+                                                    disableFuture
+                                                    minDate={new Date(new Date().setFullYear(1950))}
+                                                    maxDate={new Date()}
+                                                />)
+                                            }
+                                            name="degradationYear"
+                                            control={control}
+                                            defaultValue=""
+                                        />
+                                    </MuiPickersUtilsProvider>
+                                </ThemeProvider>
+                            </div> :
+                            <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
+                                {/* the reason this project has been created (max. 300 characters) */}
+                                <MaterialTextField
+                                    inputRef={register({
+                                        maxLength: {
+                                            value: 300,
+                                            message: t('manageProjects:max300Chars')
+                                        }
+                                    })}
+                                    label={t('manageProjects:actions')}
+                                    variant="outlined"
+                                    name="actions"
+                                    multiline
+                                />
+
+                                <div style={{ position: 'absolute', top: '-9px', right: '16px', width: 'fit-content' }}>
+                                    <div className={styles.popover}>
+                                        <InfoIcon />
+                                        <div className={styles.popoverContent} style={{ left: '-290px' }}>
+                                            <p>
+                                                {t('manageProjects:max300Chars')}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
                     <div className={styles.formField} style={{ alignItems: 'flex-start' }}>
                         <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
 
@@ -546,176 +628,92 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                     </div>
 
 
-                    <div className={styles.formField}>
-                        <div className={styles.formFieldHalf}>
-
-                            <div className={styles.plantingSeasons}>
-                                <p className={styles.plantingSeasonsLabel}> {purpose === "trees" ? t('manageProjects:siteOwner') : t('manageProjects:landOwnershipType')} </p>
-                                {siteOwners.map((owner) => {
-                                    return (
-                                        <div className={styles.multiSelectInput} style={{ width: 'fit-content' }} key={owner.id} onClick={() => handleSetSiteOwner(owner.id)}>
-                                            <div className={`${styles.multiSelectInputCheck} ${owner.isSet ? styles.multiSelectInputCheckTrue : ''}`}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="13.02" height="9.709" viewBox="0 0 13.02 9.709">
-                                                    <path id="check-solid" d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z" transform="translate(0 -65.098)" fill="#fff" />
-                                                </svg>
-                                            </div>
-                                            <p style={{ color: 'var(--dark)' }}>{owner.title}</p>
+                    <div className={styles.formFieldLarge}>
+                        <div className={styles.plantingSeasons}>
+                            <p className={styles.plantingSeasonsLabel}> {purpose === "trees" ? t('manageProjects:siteOwner') : t('manageProjects:landOwnershipType')} </p>
+                            {siteOwners.map((owner) => {
+                                return (
+                                    <div className={styles.multiSelectInput} style={{ width: 'fit-content' }} key={owner.id} onClick={() => handleSetSiteOwner(owner.id)}>
+                                        <div className={`${styles.multiSelectInputCheck} ${owner.isSet ? styles.multiSelectInputCheckTrue : ''}`}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="13.02" height="9.709" viewBox="0 0 13.02 9.709">
+                                                <path id="check-solid" d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z" transform="translate(0 -65.098)" fill="#fff" />
+                                            </svg>
                                         </div>
-                                    )
-                                })}
-                            </div>
+                                        <p style={{ color: 'var(--dark)' }}>{owner.title}</p>
+                                    </div>
+                                )
+                            })}
                         </div>
-                        <div style={{ width: '20px' }}></div>
-                        {purpose === "trees" ?
-                            <div className={styles.formFieldHalf}>
-                                <MaterialTextField
-                                    label={t('manageProjects:ownerName')}
-                                    variant="outlined"
-                                    name="siteOwnerName"
-                                    inputRef={register()}
-                                />
-                            </div> :
-                            <div className={styles.formFieldHalf}>
-                                <Controller
-                                    as={
-                                        <MaterialTextField
-                                            label={t('manageProjects:ownershipType')}
-                                            variant="outlined"
-                                            select
-                                        >
-                                            {ownershipType.map((option) => (
-                                                <MenuItem key={option.value} value={option.value} classes={{
-                                                    // option: classes.option,
-                                                    root: classes.root,
-                                                }} >
-                                                    {option.label}
-                                                </MenuItem>
-                                            ))}
-                                        </MaterialTextField>
-                                    }
-                                    name="ownershipType"
-                                    rules={{
-                                        required: t('manageProjects:ownershipTypeValidation'),
-                                    }}
-                                    control={control}
-                                />
-
-                            </div>
-                        }
                     </div>
-                    <div className={styles.formField}>
-                        <div className={styles.formFieldHalf}>
-                            <ThemeProvider theme={materialTheme}>
-                                <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
-                                    <Controller
-                                        render={properties => (
-                                            <DatePicker
-                                                label={purpose === "trees" ? t('manageProjects:acquisitionYear') : t('manageProjects:startingProtectionYear')}
-                                                value={properties.value}
-                                                onChange={properties.onChange}
-                                                inputVariant="outlined"
-                                                TextFieldComponent={MaterialTextField}
-                                                autoOk
-                                                disableFuture
-                                                minDate={new Date(new Date().setFullYear(1950))}
-                                                views={["year"]}
-                                                maxDate={new Date()}
-                                            />)
-                                        }
-                                        name={purpose === "trees" ? "acquisitionYear" : "startingProtectionYear"}
-                                        control={control}
-                                        defaultValue=""
+                    {/* <div style={{ width: '20px' }}></div> */}
+                    {purpose === "trees" ?
+                        <div className={styles.formFieldLarge} style={{ position: 'relative' }}>
+                            <MaterialTextField
+                                label={t('manageProjects:ownerName')}
+                                variant="outlined"
+                                name="siteOwnerName"
+                                inputRef={register()}
+                            />
+                        </div> :
+                        <div className={styles.formFieldLarge} style={{ position: 'relative' }}>
+                            <Controller
+                                as={
+                                    <MaterialTextField
+                                        label={t('manageProjects:ownershipType')}
+                                        variant="outlined"
+                                        select
+                                    >
+                                        {ownershipType.map((option) => (
+                                            <MenuItem key={option.value} value={option.value} classes={{
+                                                // option: classes.option,
+                                                root: classes.root,
+                                            }} >
+                                                {option.label}
+                                            </MenuItem>
+                                        ))}
+                                    </MaterialTextField>
+                                }
+                                name="ownershipType"
+                                rules={{
+                                    required: t('manageProjects:ownershipTypeValidation'),
+                                }}
+                                control={control}
+                            />
 
-                                    />
-                                </MuiPickersUtilsProvider>
-                            </ThemeProvider>
                         </div>
-                        <div style={{ width: '20px' }}></div>
-                        {purpose === "trees" ?
-                            <div className={styles.formFieldHalf}>
-                                <ThemeProvider theme={materialTheme}>
-                                    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeMapForDate[userLang] ? localeMapForDate[userLang] : localeMapForDate['en']}>
-                                        <Controller
-                                            render={properties => (
-                                                <DatePicker
-                                                    views={["year"]}
-                                                    value={properties.value}
-                                                    onChange={properties.onChange}
-                                                    label={t('manageProjects:yearOfDegradation')}
-                                                    inputVariant="outlined"
-                                                    variant="inline"
-                                                    TextFieldComponent={MaterialTextField}
-                                                    autoOk
-                                                    disableFuture
-                                                    minDate={new Date(new Date().setFullYear(1950))}
-                                                    maxDate={new Date()}
-                                                />)
-                                            }
-                                            name="degradationYear"
-                                            control={control}
-                                            defaultValue=""
-                                        />
-                                    </MuiPickersUtilsProvider>
-                                </ThemeProvider>
-                            </div> :
-                            <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
-                                {/* the reason this project has been created (max. 300 characters) */}
-                                <MaterialTextField
-                                    inputRef={register({
-                                        maxLength: {
-                                            value: 300,
-                                            message: t('manageProjects:max300Chars')
-                                        }
-                                    })}
-                                    label={t('manageProjects:actions')}
-                                    variant="outlined"
-                                    name="actions"
-                                    multiline
-                                />
+                    }
 
-                                <div style={{ position: 'absolute', top: '-9px', right: '16px', width: 'fit-content' }}>
-                                    <div className={styles.popover}>
-                                        <InfoIcon />
-                                        <div className={styles.popoverContent} style={{ left: '-290px' }}>
-                                            <p>
-                                                {t('manageProjects:max300Chars')}
-                                            </p>
-                                        </div>
+
+                    {purpose === "trees" ?
+                        <div className={styles.formFieldLarge} style={{ position: 'relative' }}>
+                            <MaterialTextField
+                                label={t('manageProjects:causeOfDegradation')}
+                                variant="outlined"
+                                name="degradationCause"
+                                multiline
+                                inputRef={register({
+                                    maxLength: {
+                                        value: 300,
+                                        message: t('manageProjects:max300Chars')
+                                    }
+                                })}
+                            />
+                            {errors.degradationCause && (
+                                <span className={styles.formErrors}>
+                                    {errors.degradationCause.message}
+                                </span>
+                            )}
+                            <div style={{ position: 'absolute', top: '-9px', right: '16px', width: 'fit-content' }}>
+                                <div className={styles.popover}>
+                                    <InfoIcon />
+                                    <div className={styles.popoverContent} style={{ left: '-290px' }}>
+                                        <p>
+                                            {t('manageProjects:max300Chars')}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
-                        }
-                    </div>
-                    {purpose === "trees" ? 
-                    <div className={styles.formFieldLarge} style={{ position: 'relative' }}>
-                        <MaterialTextField
-                            label={t('manageProjects:causeOfDegradation')}
-                            variant="outlined"
-                            name="degradationCause"
-                            multiline
-                            inputRef={register({
-                                maxLength: {
-                                    value: 300,
-                                    message: t('manageProjects:max300Chars')
-                                }
-                            })}
-                        />
-                        {errors.degradationCause && (
-                            <span className={styles.formErrors}>
-                                {errors.degradationCause.message}
-                            </span>
-                        )}
-                        <div style={{ position: 'absolute', top: '-9px', right: '16px', width: 'fit-content' }}>
-                            <div className={styles.popover}>
-                                <InfoIcon />
-                                <div className={styles.popoverContent} style={{ left: '-290px' }}>
-                                    <p>
-                                        {t('manageProjects:max300Chars')}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div> : <></>}
+                        </div> : <></>}
                     <div className={styles.formFieldLarge} style={{ position: 'relative' }}>
                         <MaterialTextField
                             label={t('manageProjects:longTermPlan')}
