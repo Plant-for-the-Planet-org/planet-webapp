@@ -22,6 +22,7 @@ interface Props {
   control: any;
   userLang: string;
   setValue: Function;
+  item: any;
 }
 
 export default function SampleTreeCard({
@@ -32,28 +33,10 @@ export default function SampleTreeCard({
   control,
   userLang,
   setValue,
+  item,
 }: Props): ReactElement {
   const sampleTrees = getValues();
   const { t, ready } = useTranslation(['treemapper', 'common']);
-
-  let suggestion_counter = 0;
-
-  const [speciesSuggestion, setspeciesSuggestion] = React.useState([]);
-  const suggestSpecies = (value: any) => {
-    if (value.length > 2) {
-      postRequest(`/suggest.php`, { q: value, t: 'species' }).then((res: any) => {
-        if (res) {
-          setspeciesSuggestion(res);
-        }
-      });
-    }
-  };
-  const setSpecies = (name: string, value: any) => {
-    setValue(name, value, {
-      shouldValidate: true,
-    });
-    setspeciesSuggestion([]);
-  };
 
   return (
     <div key={index} className={styles.sampleTreeFieldGroup}>
@@ -96,6 +79,7 @@ export default function SampleTreeCard({
                 }
               >
                 <Controller
+                  defaultValue={item.plantingDate}
                   render={(properties: any) => (
                     <DatePicker
                       label={t('plantingDate')}
@@ -116,10 +100,11 @@ export default function SampleTreeCard({
           </div>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
-              inputRef={register({})}
+              inputRef={register()}
               label={t('treeTag')}
               variant="outlined"
               name={`sampleTrees[${index}].treeTag`}
+              defaultValue={item.treeTag}
             />
           </div>
 
@@ -127,36 +112,26 @@ export default function SampleTreeCard({
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
-              inputRef={register({
-                required: {
-                  value: true,
-                  message: t('heightRequired'),
-                },
-                validate: (value: any) => parseInt(value, 10) >= 1,
-              })}
+              inputRef={register()}
               onInput={(e: any) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
               }}
               label={t('height')}
               variant="outlined"
               name={`sampleTrees[${index}].height`}
+              defaultValue={item.height}
             />
           </div>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
-              inputRef={register({
-                required: {
-                  value: true,
-                  message: t('diameterRequired'),
-                },
-                validate: (value: any) => parseInt(value, 10) >= 1,
-              })}
+              inputRef={register()}
               onInput={(e: any) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
               }}
               label={t('diameter')}
               variant="outlined"
               name={`sampleTrees[${index}].diameter`}
+              defaultValue={item.diameter}
             />
           </div>
         </div>
@@ -164,69 +139,38 @@ export default function SampleTreeCard({
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
-              inputRef={register({
-                required: {
-                  value: true,
-                  message: t('latitudeRequired'),
-                },
-                validate: (value: any) => parseInt(value, 10) >= 1,
-              })}
+              inputRef={register()}
               onInput={(e: any) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
               }}
               label={t('latitude')}
               variant="outlined"
               name={`sampleTrees[${index}].latitude`}
+              defaultValue={item.latitude}
             />
           </div>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
-              inputRef={register({
-                required: {
-                  value: true,
-                  message: t('longitudeRequired'),
-                },
-                validate: (value: any) => parseInt(value, 10) >= 1,
-              })}
+              inputRef={register()}
               onInput={(e: any) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
               }}
               label={t('longitude')}
               variant="outlined"
               name={`sampleTrees[${index}].longitude`}
+              defaultValue={item.longitude}
             />
           </div>
         </div>
         <div className={styles.formFieldLarge}>
-          {/* <MaterialTextField
-            inputRef={register({ required: true })}
+          <MaterialTextField
+            inputRef={register()}
             label={t('treeSpecies')}
             variant="outlined"
-            name={`sampleTrees[${index}].species`}
-            onChange={(event) => {
-              suggestSpecies(event.target.value);
-            }}
-            onBlur={() => setspeciesSuggestion([])}
+            name={`sampleTrees[${index}].otherSpecies`}
+            defaultValue={item.otherSpecies}
           />
-          {speciesSuggestion
-            ? speciesSuggestion.length > 0 && (
-              <div className="suggestions-container sampleTrees">
-                {speciesSuggestion.map((suggestion: any) => {
-                  return (
-                    <div key={'suggestion' + suggestion_counter++}
-                      onMouseDown={() => {
-                        setSpecies(`sampleTrees[${index}].species`, suggestion.scientificSpecies);
-                      }}
-                      className="suggestion"
-                    >
-                      {suggestion.scientificName}
-                    </div>
-                  );
-                })}
-              </div>
-            )
-            : null} */}
-          <SpeciesSelect label={t('treemapper:species')} name={`scientificSpecies`} width='300px' control={control} />
+          {/* <SpeciesSelect label={t('treemapper:species')} name={`scientificSpecies`} width='300px' control={control} /> */}
         </div>
       </div>
     </div>

@@ -19,7 +19,7 @@ export default function SpeciesSelect(props: {
     control: any;
     mySpecies?: any;
 }) {
-    const [speciesSuggestion, setspeciesSuggestion] = React.useState(props.mySpecies ? props.mySpecies : []);
+    const [speciesSuggestion, setspeciesSuggestion] = React.useState<SpeciesType[]>([]);
     const [query, setQuery] = React.useState('');
     const { theme } = React.useContext(ThemeContext)
     const useStylesAutoComplete = makeStyles({
@@ -57,7 +57,20 @@ export default function SpeciesSelect(props: {
     });
     const classes = useStylesAutoComplete();
 
-    const [value, setValue] = React.useState<SpeciesType | undefined>();
+    const [value, setValue] = React.useState<string>();
+
+    React.useEffect(() => {
+        if (props.mySpecies && props.mySpecies.length > 0) {
+            const species = props.mySpecies.map((item: any) => (
+                {
+                    id: item.id,
+                    name: item.name,
+                    scientificName: item.scientificName,
+                }
+            ));
+            setspeciesSuggestion(species);
+        }
+    }, [props.mySpecies]);
 
     React.useEffect(() => {
         if (speciesSuggestion) {
@@ -72,8 +85,15 @@ export default function SpeciesSelect(props: {
     const suggestSpecies = (value: any) => {
         if (value.length > 2) {
             postRequest(`/suggest.php`, { q: value, t: 'species' }).then((res: any) => {
-                if (res) {
-                    setspeciesSuggestion(res);
+                if (res && res.length > 0) {
+                    const species = res.map((item: any) => (
+                        {
+                            id: item.id,
+                            name: item.name,
+                            scientificName: item.scientificName,
+                        }
+                    ));
+                    setspeciesSuggestion(species);
                 }
             });
         }
@@ -96,11 +116,13 @@ export default function SpeciesSelect(props: {
 
     return (
         <Controller
-            onChange={(event: any, newValue: SpeciesType | null) => {
-                if (newValue) {
-                    setValue(newValue);
-                }
-            }}
+            // onChange={(newValue: SpeciesType | null) => {
+            //     console.log('newValue', newValue);
+            //     if (newValue) {
+            //         console.log('newValue', newValue);
+            //         setValue(newValue.id);
+            //     }
+            // }}
             defaultValue={value}
             name={props.name}
             control={props.control}
@@ -114,14 +136,22 @@ export default function SpeciesSelect(props: {
                         paper: classes.paper,
                     }}
                     autoHighlight
-                    getOptionLabel={(option) => `${option.name}`}
-                    renderOption={(option) => (
+                    autoSelect
+                    freeSolo
+                    getOptionLabel={(option: SpeciesType) => `${option.name}`}
+                    getOptionSelected={(option: SpeciesType, value: SpeciesType) => option.id === value.id}
+                    renderOption={(option: SpeciesType) => (
                         <>
-                            <span>{option.scientificName}</span>
+                            <option value={option.id}>{option.name && option.name !== '' ? option.name : option.scientificName}</option>
                         </>
                     )}
                     {...renderProps}
-                    onChange={(e, data) => onChange(data)}
+                    onChange={(e, data) => {
+                        onChange(data)
+                        if (data) {
+                            setValue(data.scientificSpecies);
+                        }
+                    }}
                     renderInput={(params) => (
                         <MaterialTextField
                             {...params}
@@ -134,7 +164,6 @@ export default function SpeciesSelect(props: {
                             onChange={(event: any) => {
                                 setQuery(event.target.value);
                             }}
-
                         />
                     )}
                 />

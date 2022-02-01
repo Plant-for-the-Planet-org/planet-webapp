@@ -55,15 +55,15 @@ export default function SampleTrees({
 
   const defaultValues = {
     sampleTrees: [
-      {
-        plantingDate: new Date(),
-        treeTag: '',
-        height: '',
-        diameter: '',
-        species: '',
-        latitude: 0,
-        longitude: 0,
-      },
+      // {
+      //   plantingDate: new Date(),
+      //   treeTag: '',
+      //   height: '',
+      //   diameter: '',
+      //   otherSpecies: '',
+      //   latitude: 0,
+      //   longitude: 0,
+      // },
     ],
   };
   const {
@@ -82,114 +82,115 @@ export default function SampleTrees({
     name: 'sampleTrees',
   });
 
-  React.useEffect(() => {
-    setValue('sampleTrees', [
-      {
-        plantingDate: new Date(),
-        treeTag: 'test',
-        height: '1',
-        diameter: '10',
-        species: 'sspec_dReK4W4J0eg2Y51tJo',
-        latitude: 10,
-        longitude: 20,
-      },
-      {
-        plantingDate: new Date(),
-        treeTag: 'test',
-        height: '1',
-        diameter: '10',
-        species: 'sspec_dReK4W4J0eg2Y51tJo',
-        latitude: 10,
-        longitude: 20,
-      },
-      {
-        plantingDate: new Date(),
-        treeTag: 'test',
-        height: '1',
-        diameter: '10',
-        species: 'sspec_dReK4W4J0eg2Y51tJo',
-        latitude: 10,
-        longitude: 20,
-      },
-      {
-        plantingDate: new Date(),
-        treeTag: 'test',
-        height: '1',
-        diameter: '10',
-        species: 'sspec_dReK4W4J0eg2Y51tJo',
-        latitude: 10,
-        longitude: 20,
-      },
-      {
-        plantingDate: new Date(),
-        treeTag: 'test',
-        height: '1',
-        diameter: '10',
-        species: 'sspec_dReK4W4J0eg2Y51tJo',
-        latitude: 10,
-        longitude: 20,
-      }
-    ]);
-  }, []);
+  // React.useEffect(() => {
+  //   append([
+  //     {
+  //       plantingDate: new Date(),
+  //       treeTag: 'test',
+  //       height: '1',
+  //       diameter: '10',
+  //       otherSpecies: 'sspec_dReK4W4J0eg2Y51tJo',
+  //       latitude: 10,
+  //       longitude: 20,
+  //     },
+  //     {
+  //       plantingDate: new Date(),
+  //       treeTag: 'test',
+  //       height: '1',
+  //       diameter: '10',
+  //       otherSpecies: 'sspec_dReK4W4J0eg2Y51tJo',
+  //       latitude: 10,
+  //       longitude: 20,
+  //     },
+  //     {
+  //       plantingDate: new Date(),
+  //       treeTag: 'test',
+  //       height: '1',
+  //       diameter: '10',
+  //       otherSpecies: 'sspec_dReK4W4J0eg2Y51tJo',
+  //       latitude: 10,
+  //       longitude: 20,
+  //     },
+  //     {
+  //       plantingDate: new Date(),
+  //       treeTag: 'test',
+  //       height: '1',
+  //       diameter: '10',
+  //       otherSpecies: 'sspec_dReK4W4J0eg2Y51tJo',
+  //       latitude: 10,
+  //       longitude: 20,
+  //     },
+  //     {
+  //       plantingDate: new Date(),
+  //       treeTag: 'test',
+  //       height: '1',
+  //       diameter: '10',
+  //       otherSpecies: 'sspec_dReK4W4J0eg2Y51tJo',
+  //       latitude: 10,
+  //       longitude: 20,
+  //     }
+  //   ]);
+  // }, []);
 
   const { user, token, contextLoaded } = React.useContext(UserPropsContext);
 
   const onSubmit = (data: any) => {
-    setIsUploadingData(true);
-    const submitData = {};
+    // setIsUploadingData(true);
+    // const submitData = {};
+    console.log('data', data);
 
-    // Check if GUID is set use update instead of create project
-    if (plantLocation?.id) {
-      putAuthenticatedRequest(
-        `/app/projects/${plantLocation.id}`,
-        submitData,
-        token
-      ).then((res: any) => {
-        if (!res.code) {
-          setErrorMessage('');
-          setPlantLocation(res);
-          setIsUploadingData(false);
-          handleNext();
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          } else if (res.code === 400) {
-            setIsUploadingData(false);
-            if (res.errors && res.errors.children) {
-              //addServerErrors(res.errors.children, setError);
-            }
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          }
-        }
-      });
-    } else {
-      postAuthenticatedRequest(`/app/projects`, submitData, token).then(
-        (res: any) => {
-          if (!res.code) {
-            setErrorMessage('');
-            setPlantLocation(res);
-            setIsUploadingData(false);
-            handleNext();
-          } else {
-            if (res.code === 404) {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-            } else if (res.code === 400) {
-              setIsUploadingData(false);
-              if (res.errors && res.errors.children) {
-                // addServerErrors(res.errors.children, setError);
-              }
-            } else {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-            }
-          }
-        }
-      );
-    }
+    // // Check if GUID is set use update instead of create project
+    // if (plantLocation?.id) {
+    //   putAuthenticatedRequest(
+    //     `/app/projects/${plantLocation.id}`,
+    //     submitData,
+    //     token
+    //   ).then((res: any) => {
+    //     if (!res.code) {
+    //       setErrorMessage('');
+    //       setPlantLocation(res);
+    //       setIsUploadingData(false);
+    //       handleNext();
+    //     } else {
+    //       if (res.code === 404) {
+    //         setIsUploadingData(false);
+    //         setErrorMessage(res.message);
+    //       } else if (res.code === 400) {
+    //         setIsUploadingData(false);
+    //         if (res.errors && res.errors.children) {
+    //           //addServerErrors(res.errors.children, setError);
+    //         }
+    //       } else {
+    //         setIsUploadingData(false);
+    //         setErrorMessage(res.message);
+    //       }
+    //     }
+    //   });
+    // } else {
+    //   postAuthenticatedRequest(`/app/projects`, submitData, token).then(
+    //     (res: any) => {
+    //       if (!res.code) {
+    //         setErrorMessage('');
+    //         setPlantLocation(res);
+    //         setIsUploadingData(false);
+    //         handleNext();
+    //       } else {
+    //         if (res.code === 404) {
+    //           setIsUploadingData(false);
+    //           setErrorMessage(res.message);
+    //         } else if (res.code === 400) {
+    //           setIsUploadingData(false);
+    //           if (res.errors && res.errors.children) {
+    //             // addServerErrors(res.errors.children, setError);
+    //           }
+    //         } else {
+    //           setIsUploadingData(false);
+    //           setErrorMessage(res.message);
+    //         }
+    //       }
+    //     }
+    //   );
+    // }
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -256,17 +257,28 @@ export default function SampleTrees({
 
       <div
         onClick={() => {
-          append({ name: '', count: 0 });
+          append({
+            plantingDate: new Date(),
+            treeTag: '',
+            height: '',
+            diameter: '',
+            otherSpecies: '',
+            latitude: 0,
+            longitude: 0,
+          });
         }}
         className={styles.addSpeciesButton}
       >
-        {t('treemapper:addAnotherSampleTree')}
+        {fields.length === 0 ?
+          t('treemapper:addSampleTree')
+          :
+          t('treemapper:addAnotherSampleTree')}
       </div>
       <div className={`${styles.formField}`}>
         <div className={styles.formFieldHalf}>
           <button
-            // onClick={handleSubmit(onSubmit)}
-            onClick={() => handleNext()}
+            onClick={handleSubmit(onSubmit)}
+            // onClick={() => handleNext()}
             className="primaryButton"
           >
             {isUploadingData ? (

@@ -236,7 +236,11 @@
     &.active {
       color: $backgroundColor;
       border-radius: 10px;
-      background: linear-gradient(103deg, $primaryColor 5%, $primaryDarkColor 116%);
+      background: linear-gradient(
+        103deg,
+        $primaryColor 5%,
+        $primaryDarkColor 116%
+      );
     }
   }
 }
@@ -285,10 +289,65 @@
 }
 
 .sampleTreeDetails {
-  .formFieldHalf , .formFieldLarge {
+  .formFieldHalf,
+  .formFieldLarge {
     margin-top: 0px;
   }
 }
+
+.stepWrapper {
+  padding: 20px 0;
+  width: 100%;
+}
+
+.stepTitle {
+  font-weight: 700;
+  font-size: $fontMedium;
+  margin-bottom: 10px;
+  width: 100%;
+  text-align: left;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 20px;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.gridItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.gridItemTitle {
+  font-weight: 700;
+  font-size: $fontSmall;
+  margin-bottom: 10px;
+  width: 100%;
+  text-align: left;
+}
+
+.gridItemValue {
+  font-size: $fontSmall;
+  margin-bottom: 10px;
+  width: 100%;
+  text-align: left;
+}
+
+// .stepContent {
+//   display: flex;
+//   flex-direction: column;
+//   width: 100%;
+//   padding: 10px;
+//   background-color: $backgroundColor;
+//   border-radius: 10px;
+// }
 
 @include mdTabletView {
   .pageContainer {

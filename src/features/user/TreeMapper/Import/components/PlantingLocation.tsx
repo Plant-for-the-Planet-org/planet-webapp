@@ -68,7 +68,7 @@ export default function PlantingLocation({
     geometry: {},
     plantedSpecies: [
       {
-        scientificSpecies: '',
+        otherSpecies: '',
         treeCount: 0,
       },
     ],
@@ -187,86 +187,87 @@ export default function PlantingLocation({
 
   const onSubmit = (data: any) => {
     console.log(`data`, data)
-    if (geoJson) {
-      setIsUploadingData(true);
-      // Check if GUID is set use update instead of create project
-      if (plantLocation?.id) {
-        const submitData = {
-          geometry: geoJson,
-          // plantedSpecies: data.plantedSpecies,
-          plantDate: data.plantDate,
-          plantProject: data.plantProject,
-        };
-        putAuthenticatedRequest(
-          `/treemapper/plantLocations/${plantLocation.id}`,
-          submitData,
-          token
-        ).then((res: any) => {
-          if (!res.code) {
-            setErrorMessage('');
-            setPlantLocation(res);
-            setIsUploadingData(false);
-            handleNext();
-          } else {
-            if (res.code === 404) {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-            } else if (res.code === 400) {
-              setIsUploadingData(false);
-              if (res.errors && res.errors.children) {
-                //addServerErrors(res.errors.children, setError);
-              }
-            } else {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-            }
-          }
-        });
-      } else {
-        const submitData = {
-          type: 'multi',
-          captureMode: 'off-site',
-          geometry: geoJson,
-          // TODO: Remove device location when we have a proper way to handle this
-          deviceLocation: {
-            "type": "Point",
-            "coordinates": [
-              72.95900344848633,
-              19.24438445451903
-            ]
-          },
-          plantedSpecies: data.plantedSpecies,
-          plantDate: data.plantDate,
-          registrationDate: plantLocation?.id ? undefined : new Date().toISOString(),
-          plantProject: data.plantProject,
-        };
-        postAuthenticatedRequest(`/treemapper/plantLocations`, submitData, token).then(
-          (res: any) => {
-            if (!res.code) {
-              setErrorMessage('');
-              setPlantLocation(res);
-              setIsUploadingData(false);
-              handleNext();
-            } else {
-              if (res.code === 404) {
-                setIsUploadingData(false);
-                setErrorMessage(res.message);
-              } else if (res.code === 400) {
-                setIsUploadingData(false);
-                if (res.errors && res.errors.children) {
-                  // addServerErrors(res.errors.children, setError);
-                }
-              } else {
-                setIsUploadingData(false);
-                setErrorMessage(res.message);
-              }
-            }
-          }
-        );
-      }
-    } else {
-      setGeoJsonError(true);
-    }
+
+    // if (geoJson) {
+    //   setIsUploadingData(true);
+    //   // Check if GUID is set use update instead of create project
+    //   if (plantLocation?.id) {
+    //     const submitData = {
+    //       geometry: geoJson,
+    //       // plantedSpecies: data.plantedSpecies,
+    //       plantDate: data.plantDate,
+    //       plantProject: data.plantProject,
+    //     };
+    //     putAuthenticatedRequest(
+    //       `/treemapper/plantLocations/${plantLocation.id}`,
+    //       submitData,
+    //       token
+    //     ).then((res: any) => {
+    //       if (!res.code) {
+    //         setErrorMessage('');
+    //         setPlantLocation(res);
+    //         setIsUploadingData(false);
+    //         handleNext();
+    //       } else {
+    //         if (res.code === 404) {
+    //           setIsUploadingData(false);
+    //           setErrorMessage(res.message);
+    //         } else if (res.code === 400) {
+    //           setIsUploadingData(false);
+    //           if (res.errors && res.errors.children) {
+    //             //addServerErrors(res.errors.children, setError);
+    //           }
+    //         } else {
+    //           setIsUploadingData(false);
+    //           setErrorMessage(res.message);
+    //         }
+    //       }
+    //     });
+    //   } else {
+    //     const submitData = {
+    //       type: 'multi',
+    //       captureMode: 'off-site',
+    //       geometry: geoJson,
+    //       // TODO: Remove device location when we have a proper way to handle this
+    //       deviceLocation: {
+    //         "type": "Point",
+    //         "coordinates": [
+    //           72.95900344848633,
+    //           19.24438445451903
+    //         ]
+    //       },
+    //       plantedSpecies: data.plantedSpecies,
+    //       plantDate: data.plantDate,
+    //       registrationDate: plantLocation?.id ? undefined : new Date().toISOString(),
+    //       plantProject: data.plantProject,
+    //     };
+    //     postAuthenticatedRequest(`/treemapper/plantLocations`, submitData, token).then(
+    //       (res: any) => {
+    //         if (!res.code) {
+    //           setErrorMessage('');
+    //           setPlantLocation(res);
+    //           setIsUploadingData(false);
+    //           handleNext();
+    //         } else {
+    //           if (res.code === 404) {
+    //             setIsUploadingData(false);
+    //             setErrorMessage(res.message);
+    //           } else if (res.code === 400) {
+    //             setIsUploadingData(false);
+    //             if (res.errors && res.errors.children) {
+    //               // addServerErrors(res.errors.children, setError);
+    //             }
+    //           } else {
+    //             setIsUploadingData(false);
+    //             setErrorMessage(res.message);
+    //           }
+    //         }
+    //       }
+    //     );
+    //   }
+    // } else {
+    //   setGeoJsonError(true);
+    // }
   };
 
   const getMethod = (method: string) => {
@@ -414,7 +415,9 @@ export default function PlantingLocation({
       })}
       <div
         onClick={() => {
-          append({ scientificSpecies: '', treeCount: 0 });
+          append({
+            otherSpecies: "", treeCount: 0
+          });
         }}
         className={styles.addSpeciesButton}
       >
@@ -464,42 +467,15 @@ function PlantedSpecies({
 }: SpeciesProps): ReactElement {
   console.log(`item`, item);
   return (
-    <div key={index} className={styles.speciesFieldGroup}>
+    <div key={item.id} className={styles.speciesFieldGroup}>
       <div className={styles.speciesNameField}>
-        <SpeciesSelect label={t('treemapper:species')} name={`plantedSpecies[${index}].scientificSpecies`} defaultValue={item?.scientificSpecies ? item.scientificSpecies : ''} mySpecies={mySpecies} control={control} />
-        {/* <MaterialTextField
+        {/* <SpeciesSelect label={t('treemapper:species')} name={`plantedSpecies[${index}].species`} mySpecies={mySpecies} control={control} /> */}
+        <MaterialTextField
           inputRef={register({ required: index ? false : true })}
           label={t('treeSpecies')}
           variant="outlined"
-          name={`plantedSpecies[${index}].scientificSpecies`}
-          onChange={(event) => {
-            suggestSpecies(event.target.value);
-          }}
-          onFocus={() => setShowSuggestions(true)}
-          onBlur={() => setShowSuggestions(false)}
+          name={`plantedSpecies[${index}].otherSpecies`}
         />
-        {showSuggestions && speciesSuggestion
-          ? speciesSuggestion.length > 0 && (
-            <div className="suggestions-container scientific-species">
-              {speciesSuggestion.map((suggestion: any) => {
-                return (
-                  <div
-                    key={'suggestion' + suggestion_counter++}
-                    onMouseDown={() => {
-                      setSpecies(
-                        `plantedSpecies[${index}].scientificSpecies`,
-                        suggestion.scientificSpecies
-                      );
-                    }}
-                    className="suggestion"
-                  >
-                    {suggestion.scientificName}
-                  </div>
-                );
-              })}
-            </div>
-          )
-          : null} */}
       </div>
       <div className={styles.speciesCountField}>
         <MaterialTextField
@@ -531,6 +507,5 @@ function PlantedSpecies({
         <div className={styles.speciesDeleteField}></div>
       )}
     </div>
-    // </div >
   );
 }
