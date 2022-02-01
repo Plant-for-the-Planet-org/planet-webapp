@@ -56,6 +56,7 @@ const config = {
       },
     },
   },
+
   footerLinks: ['privacy', 'terms', 'imprint', 'contact', 'supportUs'],
 };
 
