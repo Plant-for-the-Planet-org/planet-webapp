@@ -422,28 +422,32 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                         </div> :
                         <div className={styles.formFieldLarge} style={{ position: 'relative' }}>
                             <MaterialTextField
-                                    inputRef={register({
-                                        maxLength: {
-                                            value: 300,
-                                            message: t('manageProjects:max300Chars')
-                                        }
-                                    })}
-                                    label={t('manageProjects:motivation')}
-                                    variant="outlined"
-                                    name="motivation"
-                                    multiline
-                                />
+                                inputRef={register({
+                                    maxLength: {
+                                        value: 300,
+                                        message: t('manageProjects:max300Chars')
+                                    }
+                                })}
+                                label={t('manageProjects:motivation')}
+                                variant="outlined"
+                                name="motivation"
+                                multiline
+                            />
 
-                                <div style={{ position: 'absolute', top: '-9px', right: '16px', width: 'fit-content' }}>
-                                    <div className={styles.popover}>
-                                        <InfoIcon />
-                                        <div className={styles.popoverContent} style={{ left: '-290px' }}>
-                                            <p>
-                                                {t('manageProjects:max300Chars')}
-                                            </p>
-                                        </div>
+                            <div style={{ position: 'absolute', top: '-9px', right: '16px', width: 'fit-content' }}>
+                                <div className={styles.popover}>
+                                    <InfoIcon />
+                                    <div className={styles.popoverContent} style={{ left: '-290px' }}>
+                                        <p>
+                                            {t('manageProjects:motivationInfo')}
+                                        </p>
+                                        <br />
+                                        <p>
+                                            {t('manageProjects:max300Chars')}
+                                        </p>
                                     </div>
                                 </div>
+                            </div>
                         </div>
                     }
 
@@ -488,7 +492,7 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                                         }
                                         name={purpose === "trees" ? "acquisitionYear" : "startingProtectionYear"}
                                         control={control}
-                                        // defaultValue=""
+                                    // defaultValue=""
 
                                     />
                                 </MuiPickersUtilsProvider>
@@ -542,8 +546,10 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                                         <InfoIcon />
                                         <div className={styles.popoverContent} style={{ left: '-290px' }}>
                                             <p>
-                                                {t('manageProjects:max300Chars')}
+                                                {t('manageProjects:actionInfo')}
                                             </p>
+                                            <br />
+                                            <p>{t('manageProjects:max300Chars')}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -575,6 +581,10 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                                 <div className={styles.popover}>
                                     <InfoIcon />
                                     <div className={styles.popoverContent} style={{ left: '-290px' }}>
+                                        <p>
+                                            {t('manageProjects:mainChallengeInfo')}
+                                        </p>
+                                        <br />
                                         <p>
                                             {t('manageProjects:max300Chars')}
                                         </p>
@@ -617,22 +627,22 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                             </div> :
                             <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
                                 <MaterialTextField
-                                inputRef={register({ validate: value => parseInt(value, 10) > 0 })}
-                                label={t('manageProjects:employeeCount')}
-                                variant="outlined"
-                                name="employeeCount"
-                                onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]./g, '') }}
-                            />
-                            <div style={{ position: 'absolute', top: '-9px', right: '16px', width: 'fit-content' }}>
-                                <div className={styles.popover}>
-                                    <InfoIcon />
-                                    <div className={styles.popoverContent} style={{ left: '-290px' }}>
-                                        <p>
-                                            {t('manageProjects:employeesCountInfo')}
-                                        </p>
+                                    inputRef={register({ validate: value => parseInt(value, 10) > 0 })}
+                                    label={t('manageProjects:employeeCount')}
+                                    variant="outlined"
+                                    name="employeeCount"
+                                    onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]./g, '') }}
+                                />
+                                <div style={{ position: 'absolute', top: '-9px', right: '16px', width: 'fit-content' }}>
+                                    <div className={styles.popover}>
+                                        <InfoIcon />
+                                        <div className={styles.popoverContent} style={{ left: '-290px' }}>
+                                            <p>
+                                                {t('manageProjects:employeesCountInfo')}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             </div>
                         }
                     </div>
