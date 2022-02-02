@@ -173,7 +173,6 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                 }
 
             }
-
         putAuthenticatedRequest(`/app/projects/${projectGUID}`, submitData, token, handleError).then((res) => {
             if (!res.code) {
                 setProjectDetails(res)
@@ -344,7 +343,13 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                             </div>
                             <div className={styles.formFieldHalf}>
                                 <MaterialTextField
-                                    inputRef={register({ validate: value => parseInt(value, 10) > 0 })}
+                                    inputRef={register({
+                                        required: {
+                                            value: true,
+                                            message: t('manageProjects:areaProtectedValidation'),
+                                        },
+                                        validate: value => parseInt(value, 10) > 0
+                                    })}
                                     label={t('manageProjects:areaProtected')}
                                     variant="outlined"
                                     name="areaProtected"
@@ -355,11 +360,16 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                                                 className={styles.inputEndAdornment}
                                                 style={{ marginLeft: '4px', width: '100%', textAlign: 'right', fontSize: '14px' }}
                                             >
-                                                {t('manageProjects:treePerHa')}
+                                                {t('manageProjects:hector')}
                                             </p>
                                         ),
                                     }}
                                 />
+                                {errors.areaProtected && (
+                                    <span className={styles.formErrors}>
+                                        {errors.areaProtected.message}
+                                    </span>
+                                )}
 
                             </div>
                         </div>
@@ -397,7 +407,13 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                             <div style={{ width: '20px' }}></div>
                             <div className={styles.formFieldHalf} style={{ position: 'relative' }} data-test-id="employeeCount">
                                 <MaterialTextField
-                                    inputRef={register({ validate: value => parseInt(value, 10) > 0 })}
+                                    inputRef={register({
+                                        required: {
+                                            value: true,
+                                            message: t('manageProjects:employeeCountValidation'),
+                                        },
+                                        validate: value => parseInt(value, 10) > 0
+                                    })}
                                     label={t('manageProjects:employeeCount')}
                                     variant="outlined"
                                     name="employeesCount"
@@ -478,6 +494,13 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                                     <Controller
                                         render={properties => (
                                             <DatePicker
+                                                inputRef={register({
+                                                    required: {
+                                                        value: true,
+                                                        message: t('manageProjects:employeeCountValidation'),
+                                                    }
+                                                }
+                                                )}
                                                 label={purpose === "trees" ? t('manageProjects:acquisitionYear') : t('manageProjects:startingProtectionYear')}
                                                 value={properties.value}
                                                 onChange={properties.onChange}
@@ -492,9 +515,17 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                                         }
                                         name={purpose === "trees" ? "acquisitionYear" : "startingProtectionYear"}
                                         control={control}
+                                        rules={{
+                                            required: t('manageProjects:ownershipTypeValidation'),
+                                        }}
                                     // defaultValue=""
 
                                     />
+                                    {errors.startingProtectionYear && (
+                                        <span className={styles.formErrors}>
+                                            {errors.startingProtectionYear.message}
+                                        </span>
+                                    )}
                                 </MuiPickersUtilsProvider>
                             </ThemeProvider>
                         </div>
@@ -627,12 +658,23 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                             </div> :
                             <div className={styles.formFieldHalf} style={{ position: 'relative' }}>
                                 <MaterialTextField
-                                    inputRef={register({ validate: value => parseInt(value, 10) > 0 })}
+                                    inputRef={register({
+                                        required: {
+                                            value: true,
+                                            message: t('manageProjects:employeeCountValidation'),
+                                        },
+                                        validate: value => parseInt(value, 10) > 0
+                                    })}
                                     label={t('manageProjects:employeeCount')}
                                     variant="outlined"
                                     name="employeeCount"
                                     onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]./g, '') }}
                                 />
+                                {errors.employeeCount && (
+                                    <span className={styles.formErrors}>
+                                        {errors.employeeCount.message}
+                                    </span>
+                                )}
                                 <div style={{ position: 'absolute', top: '-9px', right: '16px', width: 'fit-content' }}>
                                     <div className={styles.popover}>
                                         <InfoIcon />
@@ -679,6 +721,12 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                             <Controller
                                 as={
                                     <MaterialTextField
+                                        inputRef={register({
+                                            required: {
+                                                value: true,
+                                                message: t('manageProjects:ownershipTypeValidation'),
+                                            }
+                                        })}
                                         label={t('manageProjects:ownershipType')}
                                         variant="outlined"
                                         select
@@ -699,6 +747,11 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                                 }}
                                 control={control}
                             />
+                            {errors.ownershipType && (
+                                <span className={styles.formErrors}>
+                                    {errors.ownershipType.message}
+                                </span>
+                            )}
 
                         </div>
                     }

@@ -164,5 +164,10 @@
   "wrongCoordinates": "Wrong Coordinates",
   "actionInfo": "The actions your organization is taking to conserve the ecosystem.",
   "mainChallengeInfo": "The biggest challenge this project is facing.",
-  "motivationInfo": "The motivation behind protecting this specific ecosystem."
+  "motivationInfo": "The motivation behind protecting this specific ecosystem.",
+  "hector": "hector",
+  "areaProtectedValidation": "Please enter Area Protected",
+  "employeeCountValidation": "Please enter Employee Count",
+  "ownershipTypeValidation": "Please select Ownership Type",
+  "siteNameValidation": "Please enter Site Name"
 }

@@ -390,13 +390,21 @@ export default function ProjectSites({
             <div className={styles.formField}>
               <div className={styles.formFieldHalf} data-test-id="siteName">
                 <MaterialTextField
-                  inputRef={register({ required: true })}
+                  inputRef={register({ required: {
+                    value: true,
+                    message: t('manageProjects:siteNameValidation'),
+                  } })}
                   label={t('manageProjects:siteName')}
                   variant="outlined"
                   name="name"
                   onChange={changeSiteDetails}
                   defaultValue={siteDetails.name}
                 />
+                {errors.name && (
+                  <span className={styles.formErrors}>
+                    {errors.name.message}
+                  </span>
+                )}
               </div>
               <div style={{ width: '20px' }}></div>
               <div className={styles.formFieldHalf} data-test-id="siteStatus">
