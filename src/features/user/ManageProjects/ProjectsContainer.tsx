@@ -16,7 +16,6 @@ export default function ProjectsContainer({ }: any) {
   const { t, ready } = useTranslation(['donate', 'manageProjects']);
   const [projects, setProjects] = React.useState([]);
   const { handleError } = React.useContext(ErrorHandlingContext);
-
   const { user, contextLoaded, loginWithRedirect, token } = React.useContext(
     UserPropsContext
   );
@@ -86,7 +85,6 @@ function SingleProject({ project }: any) {
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
     : '';
-
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   return (
     <div className={styles.singleProject} key={project.id}>
@@ -105,6 +103,7 @@ function SingleProject({ project }: any) {
           {project.classification} •{' '}
           {project.country === null ? <></> : t('country:' + project.country.toLowerCase())}
         </p>
+        {project.purpose === "trees" ? 
         <p>
           {localizedAbbreviatedNumber(
             i18n.language,
@@ -112,7 +111,7 @@ function SingleProject({ project }: any) {
             1
           )}{' '}
           {t('common:tree', { count: Number(project.countPlanted) })}
-        </p>
+        </p> : <></>}
         <div className={styles.projectLabels}>
           {/* Needed in future */}
           {/* {!project.isFeatured && (
