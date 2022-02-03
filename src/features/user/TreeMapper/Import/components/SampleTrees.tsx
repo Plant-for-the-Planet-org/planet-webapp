@@ -46,7 +46,7 @@ export default function SampleTrees({
           header: true,
           complete: (results: any) => {
             console.log(`results`, results)
-            setSampleTrees(results.data);
+            addSampleTrees(results.data);
           },
         });
       };
@@ -82,92 +82,104 @@ export default function SampleTrees({
     name: 'sampleTrees',
   });
 
+  // Add sample trees
+  const test = [
+    {
+      plantingDate: new Date(),
+      treeTag: 'test',
+      height: '1',
+      diameter: '10',
+      otherSpecies: 'sspec_dReK4W4J0eg2Y51tJo',
+      latitude: 10,
+      longitude: 20,
+    },
+    {
+      plantingDate: new Date(),
+      treeTag: 'test',
+      height: '1',
+      diameter: '10',
+      otherSpecies: 'sspec_dReK4W4J0eg2Y51tJo',
+      latitude: 10,
+      longitude: 20,
+    },
+    {
+      plantingDate: new Date(),
+      treeTag: 'test',
+      height: '1',
+      diameter: '10',
+      otherSpecies: 'sspec_dReK4W4J0eg2Y51tJo',
+      latitude: 10,
+      longitude: 20,
+    },
+    {
+      plantingDate: new Date(),
+      treeTag: 'test',
+      height: '1',
+      diameter: '10',
+      otherSpecies: 'sspec_dReK4W4J0eg2Y51tJo',
+      latitude: 10,
+      longitude: 20,
+    },
+    {
+      plantingDate: new Date(),
+      treeTag: 'test',
+      height: '1',
+      diameter: '10',
+      otherSpecies: 'sspec_dReK4W4J0eg2Y51tJo',
+      latitude: 10,
+      longitude: 20,
+    }
+  ]
+
+  const addSampleTrees = (sampleTrees: Treemapper.SamplePlantLocation[]) => {
+    append(sampleTrees);
+  };
+
   // React.useEffect(() => {
-  //   append([
-  //     {
-  //       plantingDate: new Date(),
-  //       treeTag: 'test',
-  //       height: '1',
-  //       diameter: '10',
-  //       otherSpecies: 'sspec_dReK4W4J0eg2Y51tJo',
-  //       latitude: 10,
-  //       longitude: 20,
-  //     },
-  //     {
-  //       plantingDate: new Date(),
-  //       treeTag: 'test',
-  //       height: '1',
-  //       diameter: '10',
-  //       otherSpecies: 'sspec_dReK4W4J0eg2Y51tJo',
-  //       latitude: 10,
-  //       longitude: 20,
-  //     },
-  //     {
-  //       plantingDate: new Date(),
-  //       treeTag: 'test',
-  //       height: '1',
-  //       diameter: '10',
-  //       otherSpecies: 'sspec_dReK4W4J0eg2Y51tJo',
-  //       latitude: 10,
-  //       longitude: 20,
-  //     },
-  //     {
-  //       plantingDate: new Date(),
-  //       treeTag: 'test',
-  //       height: '1',
-  //       diameter: '10',
-  //       otherSpecies: 'sspec_dReK4W4J0eg2Y51tJo',
-  //       latitude: 10,
-  //       longitude: 20,
-  //     },
-  //     {
-  //       plantingDate: new Date(),
-  //       treeTag: 'test',
-  //       height: '1',
-  //       diameter: '10',
-  //       otherSpecies: 'sspec_dReK4W4J0eg2Y51tJo',
-  //       latitude: 10,
-  //       longitude: 20,
-  //     }
-  //   ]);
+
   // }, []);
 
   const { user, token, contextLoaded } = React.useContext(UserPropsContext);
 
   const onSubmit = (data: any) => {
     // setIsUploadingData(true);
-    // const submitData = {};
     console.log('data', data);
+    const submitData = data.sampleTrees.map((sampleTree: any) => ({
+      type: "sample",
+      captureMode: "external",
+      deviceLocation: {
+        coordinates: [
+          -90.66840648651123,
+          18.682146549182555
+        ],
+        type: "Point"
+      },
+      geometry: {
+        coordinates: [
+          Number(sampleTree.longitude),
+          Number(sampleTree.latitude)
+        ],
+        type: "Point"
+      },
+      plantDate: new Date(sampleTree.plantingDate).toISOString(),
+      registrationDate: new Date().toISOString(),
+      measurements: {
+        height: sampleTree.height,
+        width: sampleTree.diameter,
+      },
+      tag: sampleTree.treeTag,
+    }));
 
-    // // Check if GUID is set use update instead of create project
+    console.log('data', submitData);
+    const newPlantLocation = {
+      ...plantLocation,
+      samplePlantLocations: submitData,
+    };
+    setPlantLocation(newPlantLocation);
+    handleNext();
+    // Check if GUID is set use update instead of create project
     // if (plantLocation?.id) {
-    //   putAuthenticatedRequest(
-    //     `/app/projects/${plantLocation.id}`,
-    //     submitData,
-    //     token
-    //   ).then((res: any) => {
-    //     if (!res.code) {
-    //       setErrorMessage('');
-    //       setPlantLocation(res);
-    //       setIsUploadingData(false);
-    //       handleNext();
-    //     } else {
-    //       if (res.code === 404) {
-    //         setIsUploadingData(false);
-    //         setErrorMessage(res.message);
-    //       } else if (res.code === 400) {
-    //         setIsUploadingData(false);
-    //         if (res.errors && res.errors.children) {
-    //           //addServerErrors(res.errors.children, setError);
-    //         }
-    //       } else {
-    //         setIsUploadingData(false);
-    //         setErrorMessage(res.message);
-    //       }
-    //     }
-    //   });
-    // } else {
-    //   postAuthenticatedRequest(`/app/projects`, submitData, token).then(
+    //   postAuthenticatedRequest(`/treemapper/bulkPlantLocations`, submitData, token).then(
     //     (res: any) => {
     //       if (!res.code) {
     //         setErrorMessage('');

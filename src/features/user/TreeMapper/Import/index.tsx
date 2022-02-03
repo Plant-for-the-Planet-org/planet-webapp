@@ -5,10 +5,9 @@ import styles from './Import.module.scss';
 import i18next from '../../../../../i18n';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
-import { Step, StepContent, StepLabel, Stepper } from '@material-ui/core';
+import { Step, StepLabel, Stepper } from '@material-ui/core';
 import SampleTrees from './components/SampleTrees';
 import ReviewSubmit from './components/ReviewSubmit';
-import { getStoredConfig } from '../../../../utils/storeConfig';
 import dynamic from 'next/dynamic';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -62,18 +61,21 @@ export default function ImportData({ }: Props): ReactElement {
   const [errorMessage, setErrorMessage] = React.useState('');
   const steps = getSteps();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [plantLocation, setPlantLocation] = React.useState(null);
+  const [plantLocation, setPlantLocation] = React.useState<Treemapper.PlantLocation | null>(null);
   const [userLang, setUserLang] = React.useState('en');
   const [geoJson, setGeoJson] = React.useState(null);
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [activeMethod, setActiveMethod] = React.useState('import');
 
+
+  console.log('activeStep', activeStep);
+
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setActiveStep(activeStep + 1);
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    setActiveStep(activeStep - 1);
   };
 
   const handleReset = (message: any) => {
@@ -87,28 +89,6 @@ export default function ImportData({ }: Props): ReactElement {
       if (userLang) setUserLang(userLang);
     }
   }, []);
-
-  const submitForReview = () => {
-    setIsUploadingData(true);
-    const submitData = {
-      reviewRequested: true,
-    };
-    putAuthenticatedRequest(`/app/projects/`, submitData, token).then((res) => {
-      if (!res.code) {
-        setPlantLocation(res);
-        setErrorMessage('');
-        setIsUploadingData(false);
-      } else {
-        if (res.code === 404) {
-          setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-          setIsUploadingData(false);
-        } else {
-          setErrorMessage(res.message);
-          setIsUploadingData(false);
-        }
-      }
-    });
-  };
 
   function getStepContent(step: number) {
     switch (step) {
@@ -141,10 +121,10 @@ export default function ImportData({ }: Props): ReactElement {
       case 2:
         return (
           <ReviewSubmit
-            handleNext={handleNext}
+            plantLocation={plantLocation}
+            handleBack={handleBack}
             errorMessage={errorMessage}
             setErrorMessage={setErrorMessage}
-            plantLocation={plantLocation}
           />
         );
       default:
@@ -182,7 +162,7 @@ export default function ImportData({ }: Props): ReactElement {
             >
               {steps.map((label, index) => (
                 <Step key={index}>
-                  <StepLabel onClick={() => setActiveStep(index)}>
+                  <StepLabel>
                     {label}
                   </StepLabel>
                 </Step>

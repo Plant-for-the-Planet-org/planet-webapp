@@ -29,15 +29,15 @@ import SpeciesSelect from './SpeciesAutoComplete';
 const { useTranslation } = i18next;
 
 interface Props {
-  handleNext: Function;
-  errorMessage: String;
+  handleNext: () => void;
+  errorMessage: string;
   setErrorMessage: Function;
-  userLang: String;
+  userLang: string;
   plantLocation: any;
   setPlantLocation: Function;
   geoJson: any;
   setGeoJson: Function;
-  activeMethod: String;
+  activeMethod: string;
   setActiveMethod: Function;
 }
 
@@ -76,20 +76,33 @@ export default function PlantingLocation({
   const { register, handleSubmit, errors, control, reset, setValue, watch } =
     useForm({ mode: 'onBlur', defaultValues: plantLocation ? plantLocation : defaultValues });
 
-  React.useEffect(() => {
-    if (plantLocation && plantLocation.geometry) {
-      setGeoJson(plantLocation.geometry);
-      setActiveMethod('editor');
-      setValue('plantProject', plantLocation.plantProject);
-      setValue('plantDate', plantLocation.plantDate);
-      setValue('plantedSpecies', plantLocation.plantedSpecies);
-    }
-  }, [plantLocation]);
-
   const { fields, append, remove, prepend } = useFieldArray({
     control,
     name: 'plantedSpecies',
   });
+
+  // React.useEffect(() => {
+  //   if (plantLocation && plantLocation.geometry) {
+  //     setGeoJson(plantLocation.geometry);
+  //     setActiveMethod('editor');
+  //     setValue('plantProject', plantLocation.plantProject);
+  //     setValue('plantDate', plantLocation.plantDate);
+  //     if (plantLocation.plantedSpecies && plantLocation.plantedSpecies.length > 0) {
+  //       plantLocation.plantedSpecies.forEach((species: any, index: number) => {
+  //         if (index === 0) {
+  //           setValue('plantedSpecies[0].otherSpecies', species.otherSpecies);
+  //           setValue('plantedSpecies[0].treeCount', species.treeCount);
+  //         } else {
+  //           append({
+  //             species: species.species,
+  //             otherSpecies: species.otherSpecies,
+  //             treeCount: species.treeCount,
+  //           });
+  //         }
+  //       });
+  //     }
+  //   }
+  // }, [plantLocation]);
 
   const loadProjects = async () => {
     await getAuthenticatedRequest('/app/profile/projects', token).then(
@@ -187,87 +200,106 @@ export default function PlantingLocation({
 
   const onSubmit = (data: any) => {
     console.log(`data`, data)
+    if (geoJson) {
+      // setIsUploadingData(true);
+      const submitData = {
+        type: 'multi',
+        captureMode: 'external',
+        geometry: geoJson,
+        // TODO: Remove device location when we have a proper way to handle this
+        deviceLocation: {
+          "type": "Point",
+          "coordinates": [
+            72.95900344848633,
+            19.24438445451903
+          ]
+        },
+        plantedSpecies: data.plantedSpecies,
+        plantDate: data.plantDate.toISOString(),
+        registrationDate: new Date().toISOString(),
+        plantProject: data.plantProject,
+      };
 
-    // if (geoJson) {
-    //   setIsUploadingData(true);
-    //   // Check if GUID is set use update instead of create project
-    //   if (plantLocation?.id) {
-    //     const submitData = {
-    //       geometry: geoJson,
-    //       // plantedSpecies: data.plantedSpecies,
-    //       plantDate: data.plantDate,
-    //       plantProject: data.plantProject,
-    //     };
-    //     putAuthenticatedRequest(
-    //       `/treemapper/plantLocations/${plantLocation.id}`,
-    //       submitData,
-    //       token
-    //     ).then((res: any) => {
-    //       if (!res.code) {
-    //         setErrorMessage('');
-    //         setPlantLocation(res);
-    //         setIsUploadingData(false);
-    //         handleNext();
-    //       } else {
-    //         if (res.code === 404) {
-    //           setIsUploadingData(false);
-    //           setErrorMessage(res.message);
-    //         } else if (res.code === 400) {
-    //           setIsUploadingData(false);
-    //           if (res.errors && res.errors.children) {
-    //             //addServerErrors(res.errors.children, setError);
-    //           }
-    //         } else {
-    //           setIsUploadingData(false);
-    //           setErrorMessage(res.message);
-    //         }
-    //       }
-    //     });
-    //   } else {
-    //     const submitData = {
-    //       type: 'multi',
-    //       captureMode: 'off-site',
-    //       geometry: geoJson,
-    //       // TODO: Remove device location when we have a proper way to handle this
-    //       deviceLocation: {
-    //         "type": "Point",
-    //         "coordinates": [
-    //           72.95900344848633,
-    //           19.24438445451903
-    //         ]
-    //       },
-    //       plantedSpecies: data.plantedSpecies,
-    //       plantDate: data.plantDate,
-    //       registrationDate: plantLocation?.id ? undefined : new Date().toISOString(),
-    //       plantProject: data.plantProject,
-    //     };
-    //     postAuthenticatedRequest(`/treemapper/plantLocations`, submitData, token).then(
-    //       (res: any) => {
-    //         if (!res.code) {
-    //           setErrorMessage('');
-    //           setPlantLocation(res);
-    //           setIsUploadingData(false);
-    //           handleNext();
-    //         } else {
-    //           if (res.code === 404) {
-    //             setIsUploadingData(false);
-    //             setErrorMessage(res.message);
-    //           } else if (res.code === 400) {
-    //             setIsUploadingData(false);
-    //             if (res.errors && res.errors.children) {
-    //               // addServerErrors(res.errors.children, setError);
-    //             }
-    //           } else {
-    //             setIsUploadingData(false);
-    //             setErrorMessage(res.message);
-    //           }
-    //         }
-    //       }
-    //     );
-    //   }
-    // } else {
-    //   setGeoJsonError(true);
-    // }
+      setPlantLocation(submitData);
+      handleNext();
+      // Check if GUID is set use update instead of create project
+      // if (plantLocation?.id) {
+      //   const submitData = {
+      //     geometry: geoJson,
+      //     // plantedSpecies: data.plantedSpecies,
+      //     plantDate: data.plantDate,
+      //     plantProject: data.plantProject,
+      //   };
+      //   putAuthenticatedRequest(
+      //     `/treemapper/plantLocations/${plantLocation.id}`,
+      //     submitData,
+      //     token
+      //   ).then((res: any) => {
+      //     if (!res.code) {
+      //       setErrorMessage('');
+      //       setPlantLocation(res);
+      //       setIsUploadingData(false);
+      //       handleNext();
+      //     } else {
+      //       if (res.code === 404) {
+      //         setIsUploadingData(false);
+      //         setErrorMessage(res.message);
+      //       } else if (res.code === 400) {
+      //         setIsUploadingData(false);
+      //         if (res.errors && res.errors.children) {
+      //           //addServerErrors(res.errors.children, setError);
+      //         }
+      //       } else {
+      //         setIsUploadingData(false);
+      //         setErrorMessage(res.message);
+      //       }
+      //     }
+      //   });
+      // } else {
+      //   const submitData = {
+      //     type: 'multi',
+      //     captureMode: 'off-site',
+      //     geometry: geoJson,
+      //     // TODO: Remove device location when we have a proper way to handle this
+      //     deviceLocation: {
+      //       "type": "Point",
+      //       "coordinates": [
+      //         72.95900344848633,
+      //         19.24438445451903
+      //       ]
+      //     },
+      //     plantedSpecies: data.plantedSpecies,
+      //     plantDate: data.plantDate,
+      //     registrationDate: new Date().toISOString(),
+      //     plantProject: data.plantProject,
+      //   };
+      //   postAuthenticatedRequest(`/treemapper/plantLocations`, submitData, token).then(
+      //     (res: any) => {
+      //       if (!res.code) {
+      //         setErrorMessage('');
+      //         setPlantLocation(res);
+      //         setIsUploadingData(false);
+      //         handleNext();
+      //       } else {
+      //         if (res.code === 404) {
+      //           setIsUploadingData(false);
+      //           setErrorMessage(res.message);
+      //         } else if (res.code === 400) {
+      //           setIsUploadingData(false);
+      //           if (res.errors && res.errors.children) {
+      //             // addServerErrors(res.errors.children, setError);
+      //           }
+      //         } else {
+      //           setIsUploadingData(false);
+      //           setErrorMessage(res.message);
+      //         }
+      //       }
+      //     }
+      //   );
+      // }
+    } else {
+      setGeoJsonError(true);
+    }
   };
 
   const getMethod = (method: string) => {
@@ -475,6 +507,7 @@ function PlantedSpecies({
           label={t('treeSpecies')}
           variant="outlined"
           name={`plantedSpecies[${index}].otherSpecies`}
+          defaultValue={item.otherSpecies ? item.otherSpecies : ''}
         />
       </div>
       <div className={styles.speciesCountField}>
@@ -494,6 +527,7 @@ function PlantedSpecies({
           label={t('count')}
           variant="outlined"
           name={`plantedSpecies[${index}].treeCount`}
+          defaultValue={item.treeCount ? item.treeCount : ''}
         />
       </div>
       {index > 0 ? (
