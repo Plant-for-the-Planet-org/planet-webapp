@@ -169,5 +169,6 @@
   "areaProtectedValidation": "Please enter Area Protected",
   "employeeCountValidation": "Please enter Employee Count",
   "ownershipTypeValidation": "Please select Ownership Type",
-  "siteNameValidation": "Please enter Site Name"
+  "siteNameValidation": "Please enter Site Name",
+  "plantingDensityValidation": "Please enter Planting Density"
 }

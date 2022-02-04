@@ -384,6 +384,10 @@ export default function DetailedAnalysis({ handleBack, userLang, token, handleNe
                                     variant="outlined"
                                     name="plantingDensity"
                                     inputRef={register({
+                                        required: {
+                                            value: true,
+                                            message: t('manageProjects:plantingDensityValidation'),
+                                        },
                                         validate: value => parseInt(value, 10) > 1
                                     })}
                                     onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, '') }}
