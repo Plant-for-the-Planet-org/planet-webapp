@@ -53,7 +53,8 @@ export const PauseModal = ({
     putAuthenticatedRequest(
       `/app/subscriptions/${record.id}?scope=pause`,
       bodyToSend,
-      token, handleError
+      token,
+      handleError
     )
       .then((res) => {
         console.log(res, 'Response');
@@ -142,11 +143,11 @@ export const PauseModal = ({
                 <ThemeProvider theme={materialTheme}>
                   <MuiPickersUtilsProvider
                     utils={DateFnsUtils}
-                  // locale={
-                  //   localeMapForDate[userLang]
-                  //     ? localeMapForDate[userLang]
-                  //     : localeMapForDate['en']
-                  // }
+                    // locale={
+                    //   localeMapForDate[userLang]
+                    //     ? localeMapForDate[userLang]
+                    //     : localeMapForDate['en']
+                    // }
                   >
                     <Calendar
                       date={date}
@@ -157,7 +158,7 @@ export const PauseModal = ({
                       minDate={
                         new Date(
                           new Date(record?.currentPeriodEnd).valueOf() +
-                          1000 * 3600 * 24
+                            1000 * 3600 * 24
                         )
                       }
                       disablePast={true}
