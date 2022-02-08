@@ -247,7 +247,8 @@ export default function BasicDetails({
       currency: 'EUR',
       latitude: 0,
       longitude: 0,
-      projetMeta: {
+      ecosystems: '',
+      projectMeta: {
         ecosystems: {
           label: ready ? t('manageProjects:ecosystems') : '',
           value: null,
@@ -311,6 +312,7 @@ export default function BasicDetails({
           currency: projectDetails.currency,
           latitude: projectDetails.geoLatitude,
           longitude: projectDetails.geoLongitude,
+          ecosystems: projectDetails.projectMeta.ecosystems,
           projectMeta: {
             ecosystems: projectDetails.ecosystems,
             impacts: {
