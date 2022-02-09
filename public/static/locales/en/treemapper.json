@@ -37,5 +37,10 @@
   "addAnotherSampleTree": "Add Another Sample Tree",
   "skip": "Skip",
   "treeSpecies": "Tree Species",
-  "plantingDate":"Planting Date"
+  "plantingDate": "Planting Date",
+  "summary": "Summary",
+  "reviewSubmitDescription": "Review the data you just uploaded and submit it to TreeMapper.",
+  "submittedSuccess": "Submitted Successfully",
+  "submittedSuccessDescription": "Your trees have been submitted to TreeMapper. You can view them in your plant locations or in the TreeMapper app",
+  "myPlantLocations": "My Plant Locations"
 }

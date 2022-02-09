@@ -128,6 +128,21 @@ export default function PlantingLocation({
     }
   }, [contextLoaded]);
 
+  const normalizeGeoJson = (geoJson: any) => {
+    if (gjv.isGeoJSONObject(geoJson) && geoJson.features.length !== 0) {
+      const flattened = flatten(geoJson);
+      if (flattened.features[0].geometry.type === 'Polygon') {
+        setGeoJsonError(false);
+        setGeoJson(flattened.features[0].geometry);
+        setActiveMethod('editor');
+      } else {
+        setGeoJsonError(true);
+      }
+    } else {
+      setGeoJsonError(true);
+    }
+  };
+
   const onDrop = React.useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: any) => {
       const reader = new FileReader();
@@ -169,19 +184,7 @@ export default function PlantingLocation({
           reader.onerror = () => console.log('file reading has failed');
           reader.onload = (event) => {
             const geo = JSON.parse(event.target.result);
-            if (gjv.isGeoJSONObject(geo) && geo.features.length !== 0) {
-              const flattened = flatten(geo);
-              if (flattened.features[0].geometry.type === 'Polygon') {
-                setGeoJsonError(false);
-                setGeoJson(flattened.features[0].geometry);
-                setActiveMethod('editor');
-              } else {
-                setGeoJsonError(true);
-              }
-            } else {
-              setGeoJsonError(true);
-              console.log('invalid geojson');
-            }
+            normalizeGeoJson(geo);
           };
         }
       };
@@ -334,7 +337,7 @@ export default function PlantingLocation({
             <JSONInput
               id="json-editor"
               placeholder={geoJson}
-              onChange={(json: any) => setGeoJson(json.jsObject)}
+              onChange={(json: any) => normalizeGeoJson(json)}
               locale={locale}
               height="220px"
               width="100%"

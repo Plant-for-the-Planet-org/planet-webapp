@@ -168,6 +168,7 @@ export default function SampleTrees({
         width: sampleTree.diameter,
       },
       tag: sampleTree.treeTag,
+      otherSpecies: sampleTree.otherSpecies,
     }));
 
     console.log('data', submitData);
@@ -262,6 +263,7 @@ export default function SampleTrees({
               userLang={userLang}
               setValue={setValue}
               item={item}
+              plantLocation={plantLocation}
             />
           );
         })}

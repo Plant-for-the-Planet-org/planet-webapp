@@ -204,5 +204,8 @@
   "past_due": "past due",
   "unpaid": "unpaid",
   "trialing": "active",
-  "paused": "paused"
+  "paused": "paused",
+  "plantLocations": "Plant Locations",
+  "mySpecies": "My Species",
+  "import": "Import"
 }

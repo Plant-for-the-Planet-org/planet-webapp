@@ -349,6 +349,28 @@
 //   border-radius: 10px;
 // }
 
+.successContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  > h2 {
+    font-weight: 700;
+    font-size: $fontMedium;
+    margin-bottom: 10px;
+  }
+  > p {
+    font-weight: 400;
+    margin-bottom: 20px;
+  }
+  > button {
+    max-width: 220px;
+  }
+}
+
 @include mdTabletView {
   .pageContainer {
     justify-content: flex-start;

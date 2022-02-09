@@ -11,6 +11,8 @@ import materialTheme from '../../../../../theme/themeStyles';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
 import { postRequest } from '../../../../../utils/apiRequests/api';
 import SpeciesSelect from './SpeciesAutoComplete';
+import { MenuItem, NativeSelect } from '@material-ui/core';
+import BootstrapInput, { MaterialInput } from '../../../../common/InputTypes/BootstrapInput';
 
 const { useTranslation } = i18next;
 
@@ -23,6 +25,7 @@ interface Props {
   userLang: string;
   setValue: Function;
   item: any;
+  plantLocation: Treemapper.PlantLocation;
 }
 
 export default function SampleTreeCard({
@@ -34,6 +37,7 @@ export default function SampleTreeCard({
   userLang,
   setValue,
   item,
+  plantLocation,
 }: Props): ReactElement {
   const sampleTrees = getValues();
   const { t, ready } = useTranslation(['treemapper', 'common']);
@@ -163,12 +167,48 @@ export default function SampleTreeCard({
           </div>
         </div>
         <div className={styles.formFieldLarge}>
-          <MaterialTextField
+          {/* <MaterialTextField
             inputRef={register()}
             label={t('treeSpecies')}
             variant="outlined"
             name={`sampleTrees[${index}].otherSpecies`}
             defaultValue={item.otherSpecies}
+          /> */}
+          {/* <NativeSelect
+            id="sampleTreeSpecies"
+            input={<MaterialInput />}
+            inputRef={register()}
+            name={`sampleTrees[${index}].otherSpecies`}
+            defaultValue={item.otherSpecies}
+          >
+            {plantLocation.plantedSpecies.map((species: Treemapper.PlantedSpecies, index: number) => {
+              return (
+                <option key={index} value={species.otherSpecies}>
+                  {species.otherSpecies}
+                </option>
+              );
+            })}
+          </NativeSelect> */}
+          <Controller
+            as={
+              <MaterialTextField
+                label={t('treeSpecies')}
+                variant="outlined"
+                select
+                inputRef={register}
+              >
+                {plantLocation.plantedSpecies.map((species: Treemapper.PlantedSpecies, index: number) => (
+                  <MenuItem
+                    key={index} value={species.otherSpecies}
+                  >
+                    {species.otherSpecies}
+                  </MenuItem>
+                ))}
+              </MaterialTextField>
+            }
+            name={`sampleTrees[${index}].otherSpecies`}
+            defaultValue={item.otherSpecies}
+            control={control}
           />
           {/* <SpeciesSelect label={t('treemapper:species')} name={`scientificSpecies`} width='300px' control={control} /> */}
         </div>
