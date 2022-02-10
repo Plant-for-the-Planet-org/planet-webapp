@@ -95,76 +95,81 @@ export const CancelModal = ({
               </button>
             </div>
             <div className={styles.note}>
-              <p>{t('me:cancelDonationDescription')}</p>
+              {record?.method === 'paypal' ? (
+                <p>{t('me:cancelDonationPaypalDescription')}</p>
+              ) : (
+                <p>{t('me:cancelDonationDescription')}</p>
+              )}
             </div>
           </div>
-          <FormControl component="fieldset">
-            <RadioGroup
-              aria-label="date"
-              name="date"
-              value={option}
-              onChange={(event) => {
-                setoption(event.target.value);
-                if (event.target.value === 'cancelOnSelectedDate') {
-                  setshowCalender(true);
-                } else {
-                  setshowCalender(false);
-                }
-              }}
-              className={styles.radioButtonGrid}
-            >
-              <FormControlLabel
-                key={1}
-                value={'cancelImmediately'}
-                control={<GreenRadio />}
-                label={t('me:cancelImmediately')}
-              />
-              {/* <FormControlLabel
+          {record?.method !== 'paypal' ? (
+            <FormControl component="fieldset">
+              <RadioGroup
+                aria-label="date"
+                name="date"
+                value={option}
+                onChange={(event) => {
+                  setoption(event.target.value);
+                  if (event.target.value === 'cancelOnSelectedDate') {
+                    setshowCalender(true);
+                  } else {
+                    setshowCalender(false);
+                  }
+                }}
+                className={styles.radioButtonGrid}
+              >
+                <FormControlLabel
+                  key={1}
+                  value={'cancelImmediately'}
+                  control={<GreenRadio />}
+                  label={t('me:cancelImmediately')}
+                />
+                {/* <FormControlLabel
                 key={2}
                 value={'cancelOnPeriodEnd'}
                 control={<GreenRadio />}
                 label={'Cancel when current period ends'}
               /> */}
-              {record?.method !== 'paypal' ? (
+
                 <FormControlLabel
                   key={3}
                   value={'cancelOnSelectedDate'}
                   control={<GreenRadio />}
                   label={t('me:cancelOnSelectedDate')}
                 />
+              </RadioGroup>
+              {showCalender ? (
+                <>
+                  <ThemeProvider theme={materialTheme}>
+                    <MuiPickersUtilsProvider
+                      utils={DateFnsUtils}
+                      // locale={
+                      //   localeMapForDate[userLang]
+                      //     ? localeMapForDate[userLang]
+                      //     : localeMapForDate['en']
+                      // }
+                    >
+                      <Calendar
+                        date={date}
+                        onChange={(value) => {
+                          console.log(value);
+                          setdate(value);
+                        }}
+                        minDate={
+                          new Date(new Date().valueOf() + 1000 * 3600 * 24)
+                        }
+                        color={'#68B030'}
+                      />
+                    </MuiPickersUtilsProvider>
+                  </ThemeProvider>
+                </>
               ) : (
                 []
               )}
-            </RadioGroup>
-            {showCalender ? (
-              <>
-                <ThemeProvider theme={materialTheme}>
-                  <MuiPickersUtilsProvider
-                    utils={DateFnsUtils}
-                    // locale={
-                    //   localeMapForDate[userLang]
-                    //     ? localeMapForDate[userLang]
-                    //     : localeMapForDate['en']
-                    // }
-                  >
-                    <Calendar
-                      date={date}
-                      onChange={(value) => {
-                        console.log(value);
-                        setdate(value);
-                      }}
-                      minDate={
-                        new Date(new Date().valueOf() + 1000 * 3600 * 24)
-                      }
-                      color={'#68B030'}
-                    />
-                  </MuiPickersUtilsProvider>
-                </ThemeProvider>
-              </>
-            ) : (
-              []
-            )}
-          </FormControl>
+            </FormControl>
+          ) : (
+            []
+          )}
 
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button

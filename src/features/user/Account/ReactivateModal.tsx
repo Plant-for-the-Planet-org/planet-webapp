@@ -24,7 +24,8 @@ export const ReactivateModal = ({
     putAuthenticatedRequest(
       `/app/subscriptions/${record.id}?scope=reactivate`,
       bodyToSend,
-      token, handleError
+      token,
+      handleError
     )
       .then((res) => {
         console.log(res, 'Response');
@@ -70,7 +71,11 @@ export const ReactivateModal = ({
               </button>
             </div>
             <div className={styles.note}>
-              <p>{t('me:reactivateDonationDescription')}</p>
+              <p>
+                {t('me:reactivateDonationDescription', {
+                  currentPeriodEnds: record?.currentPeriodEnd,
+                })}
+              </p>
             </div>
           </div>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
