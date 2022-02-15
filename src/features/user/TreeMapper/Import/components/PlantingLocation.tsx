@@ -16,10 +16,7 @@ import { MenuItem } from '@material-ui/core';
 import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
 import {
   getAuthenticatedRequest,
-  getRequest,
   postAuthenticatedRequest,
-  postRequest,
-  putAuthenticatedRequest,
 } from '../../../../../utils/apiRequests/api';
 import tj from '@mapbox/togeojson';
 import gjv from 'geojson-validation';
@@ -209,96 +206,35 @@ export default function PlantingLocation({
         type: 'multi',
         captureMode: 'external',
         geometry: geoJson,
-        // TODO: Remove device location when we have a proper way to handle this
-        deviceLocation: {
-          "type": "Point",
-          "coordinates": [
-            72.95900344848633,
-            19.24438445451903
-          ]
-        },
         plantedSpecies: data.plantedSpecies,
         plantDate: data.plantDate.toISOString(),
         registrationDate: new Date().toISOString(),
         plantProject: data.plantProject,
       };
 
-      setPlantLocation(submitData);
-      handleNext();
-      // Check if GUID is set use update instead of create project
-      // if (plantLocation?.id) {
-      //   const submitData = {
-      //     geometry: geoJson,
-      //     // plantedSpecies: data.plantedSpecies,
-      //     plantDate: data.plantDate,
-      //     plantProject: data.plantProject,
-      //   };
-      //   putAuthenticatedRequest(
-      //     `/treemapper/plantLocations/${plantLocation.id}`,
-      //     submitData,
-      //     token
-      //   ).then((res: any) => {
-      //     if (!res.code) {
-      //       setErrorMessage('');
-      //       setPlantLocation(res);
-      //       setIsUploadingData(false);
-      //       handleNext();
-      //     } else {
-      //       if (res.code === 404) {
-      //         setIsUploadingData(false);
-      //         setErrorMessage(res.message);
-      //       } else if (res.code === 400) {
-      //         setIsUploadingData(false);
-      //         if (res.errors && res.errors.children) {
-      //           //addServerErrors(res.errors.children, setError);
-      //         }
-      //       } else {
-      //         setIsUploadingData(false);
-      //         setErrorMessage(res.message);
-      //       }
-      //     }
-      //   });
-      // } else {
-      //   const submitData = {
-      //     type: 'multi',
-      //     captureMode: 'off-site',
-      //     geometry: geoJson,
-      //     // TODO: Remove device location when we have a proper way to handle this
-      //     deviceLocation: {
-      //       "type": "Point",
-      //       "coordinates": [
-      //         72.95900344848633,
-      //         19.24438445451903
-      //       ]
-      //     },
-      //     plantedSpecies: data.plantedSpecies,
-      //     plantDate: data.plantDate,
-      //     registrationDate: new Date().toISOString(),
-      //     plantProject: data.plantProject,
-      //   };
-      //   postAuthenticatedRequest(`/treemapper/plantLocations`, submitData, token).then(
-      //     (res: any) => {
-      //       if (!res.code) {
-      //         setErrorMessage('');
-      //         setPlantLocation(res);
-      //         setIsUploadingData(false);
-      //         handleNext();
-      //       } else {
-      //         if (res.code === 404) {
-      //           setIsUploadingData(false);
-      //           setErrorMessage(res.message);
-      //         } else if (res.code === 400) {
-      //           setIsUploadingData(false);
-      //           if (res.errors && res.errors.children) {
-      //             // addServerErrors(res.errors.children, setError);
-      //           }
-      //         } else {
-      //           setIsUploadingData(false);
-      //           setErrorMessage(res.message);
-      //         }
-      //       }
-      //     }
-      //   );
+      postAuthenticatedRequest(`/treemapper/plantLocations`, submitData, token).then(
+        (res: any) => {
+          if (!res.code) {
+            setErrorMessage('');
+            setPlantLocation(res);
+            setIsUploadingData(false);
+            handleNext();
+          } else {
+            if (res.code === 404) {
+              setIsUploadingData(false);
+              setErrorMessage(res.message);
+            } else if (res.code === 400) {
+              setIsUploadingData(false);
+              if (res.errors && res.errors.children) {
+                // addServerErrors(res.errors.children, setError);
+              }
+            } else {
+              setIsUploadingData(false);
+              setErrorMessage(res.message);
+            }
+          }
+        }
+      );
       // }
     } else {
       setGeoJsonError(true);

@@ -54,7 +54,7 @@ export default function ImportData({ }: Props): ReactElement {
     return [
       ready ? t('treemapper:plantingLocation') : '',
       ready ? t('treemapper:sampleTrees') : '',
-      ready ? t('treemapper:reviewAndSubmit') : '',
+      ready ? t('treemapper:submitted') : '',
     ];
   }
   const [activeStep, setActiveStep] = React.useState(0);

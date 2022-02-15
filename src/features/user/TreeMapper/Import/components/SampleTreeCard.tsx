@@ -199,7 +199,7 @@ export default function SampleTreeCard({
               >
                 {plantLocation.plantedSpecies.map((species: Treemapper.PlantedSpecies, index: number) => (
                   <MenuItem
-                    key={index} value={species.otherSpecies}
+                    key={index} value={species.id}
                   >
                     {species.otherSpecies}
                   </MenuItem>

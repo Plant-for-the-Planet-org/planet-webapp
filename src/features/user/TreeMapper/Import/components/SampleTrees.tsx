@@ -33,7 +33,9 @@ export default function SampleTrees({
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['treemapper', 'common']);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [sampleTrees, setSampleTrees] = React.useState([]);
+  const [uploadIndex, setUploadIndex] = React.useState(0);
+  const [uploadStatus, setUploadStatus] = React.useState<string[]>([]);
+  const [sampleTrees, setSampleTrees] = React.useState<Treemapper.SamplePlantLocation[]>([]);
   const onDrop = React.useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: any) => {
       const reader = new FileReader();
@@ -141,69 +143,68 @@ export default function SampleTrees({
 
   const { user, token, contextLoaded } = React.useContext(UserPropsContext);
 
-  const onSubmit = (data: any) => {
-    // setIsUploadingData(true);
-    console.log('data', data);
-    const submitData = data.sampleTrees.map((sampleTree: any) => ({
-      type: "sample",
-      captureMode: "external",
-      deviceLocation: {
-        coordinates: [
-          -90.66840648651123,
-          18.682146549182555
-        ],
-        type: "Point"
-      },
-      geometry: {
-        coordinates: [
-          Number(sampleTree.longitude),
-          Number(sampleTree.latitude)
-        ],
-        type: "Point"
-      },
-      plantDate: new Date(sampleTree.plantingDate).toISOString(),
-      registrationDate: new Date().toISOString(),
-      measurements: {
-        height: sampleTree.height,
-        width: sampleTree.diameter,
-      },
-      tag: sampleTree.treeTag,
-      otherSpecies: sampleTree.otherSpecies,
-    }));
+  const uploadSampleTree = async (sampleTree: any, index: number) => {
+    setUploadIndex(index);
+    const newStatus = [...uploadStatus];
+    newStatus[index] = 'uploading';
+    setUploadStatus(newStatus);
+    const res = await postAuthenticatedRequest(`/treemapper/plantLocations`, sampleTree, token);
+    if (!res.code) {
+      setErrorMessage('');
+      const newSampleTrees = [...sampleTrees];
+      newSampleTrees[index] = res;
+      setSampleTrees(newSampleTrees);
+      setIsUploadingData(false);
+      const newStatus = [...uploadStatus];
+      newStatus[index] = 'success';
+      setUploadStatus(newStatus);
+    } else {
+      const newStatus = [...uploadStatus];
+      newStatus[index] = 'error';
+      setUploadStatus(newStatus);
+      if (res.code === 404) {
+        setIsUploadingData(false);
+        setErrorMessage(res.message);
+      } else if (res.code === 400) {
+        setIsUploadingData(false);
+        if (res.errors && res.errors.children) {
+          // addServerErrors(res.errors.children, setError);
+        }
+      } else {
+        setIsUploadingData(false);
+        setErrorMessage(res.message);
+      }
+    }
+  };
 
-    console.log('data', submitData);
-    const newPlantLocation = {
-      ...plantLocation,
-      samplePlantLocations: submitData,
-    };
-    setPlantLocation(newPlantLocation);
+  const onSubmit = (data: any) => {
+    console.log('data', data);
+    setIsUploadingData(true);
+    for (const [index, sampleTree] of data.sampleTrees.entries()) {
+      const samplePl = {
+        type: "sample",
+        captureMode: "external",
+        geometry: {
+          coordinates: [
+            Number(sampleTree.longitude),
+            Number(sampleTree.latitude)
+          ],
+          type: "Point"
+        },
+        plantDate: new Date(sampleTree.plantingDate).toISOString(),
+        registrationDate: new Date().toISOString(),
+        measurements: {
+          height: sampleTree.height,
+          width: sampleTree.diameter,
+        },
+        tag: sampleTree.treeTag,
+        // plantedSpecies: sampleTree.otherSpecies,
+        parent: plantLocation.id,
+      }
+      uploadSampleTree(samplePl, index);
+    }
+    setIsUploadingData(false);
     handleNext();
-    // Check if GUID is set use update instead of create project
-    // if (plantLocation?.id) {
-    //   postAuthenticatedRequest(`/treemapper/bulkPlantLocations`, submitData, token).then(
-    //     (res: any) => {
-    //       if (!res.code) {
-    //         setErrorMessage('');
-    //         setPlantLocation(res);
-    //         setIsUploadingData(false);
-    //         handleNext();
-    //       } else {
-    //         if (res.code === 404) {
-    //           setIsUploadingData(false);
-    //           setErrorMessage(res.message);
-    //         } else if (res.code === 400) {
-    //           setIsUploadingData(false);
-    //           if (res.errors && res.errors.children) {
-    //             // addServerErrors(res.errors.children, setError);
-    //           }
-    //         } else {
-    //           setIsUploadingData(false);
-    //           setErrorMessage(res.message);
-    //         }
-    //       }
-    //     }
-    //   );
-    // }
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

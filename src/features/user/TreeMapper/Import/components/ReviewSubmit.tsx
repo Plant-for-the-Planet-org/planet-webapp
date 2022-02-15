@@ -19,7 +19,7 @@ export default function ReviewSubmit({ plantLocation, handleBack, errorMessage, 
     const router = useRouter();
     const { t, ready } = useTranslation(['treemapper', 'common']);
     const [isUploadingData, setIsUploadingData] = React.useState(false);
-    const [submitted, setSubmitted] = React.useState(false);
+    const [submitted, setSubmitted] = React.useState(true);
     console.log(`plantLocation`, plantLocation)
 
     const { token } = React.useContext(UserPropsContext);
