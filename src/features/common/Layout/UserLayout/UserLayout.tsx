@@ -127,6 +127,10 @@ function UserLayout(props: any): ReactElement {
           path: '/profile/edit',
         },
         {
+          title: t('me:apiKey'),
+          path: '/profile/api-key',
+        },
+        {
           title: t('me:deleteProfile'),
           path: '/profile/delete-account',
         },
