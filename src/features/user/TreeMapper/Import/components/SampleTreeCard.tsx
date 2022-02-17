@@ -9,10 +9,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { ThemeProvider } from '@material-ui/styles';
 import materialTheme from '../../../../../theme/themeStyles';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
-import { postRequest } from '../../../../../utils/apiRequests/api';
-import SpeciesSelect from './SpeciesAutoComplete';
-import { MenuItem, NativeSelect } from '@material-ui/core';
-import BootstrapInput, { MaterialInput } from '../../../../common/InputTypes/BootstrapInput';
+import { MenuItem } from '@material-ui/core';
 
 const { useTranslation } = i18next;
 
@@ -26,6 +23,7 @@ interface Props {
   setValue: Function;
   item: any;
   plantLocation: Treemapper.PlantLocation;
+  errors: any;
 }
 
 export default function SampleTreeCard({
@@ -38,6 +36,7 @@ export default function SampleTreeCard({
   setValue,
   item,
   plantLocation,
+  errors,
 }: Props): ReactElement {
   const sampleTrees = getValues();
   const { t, ready } = useTranslation(['treemapper', 'common']);
@@ -116,54 +115,94 @@ export default function SampleTreeCard({
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
-              inputRef={register()}
-              onInput={(e: any) => {
-                e.target.value = e.target.value.replace(/[^0-9]/g, '');
-              }}
+              inputRef={register(
+                {
+                  pattern: {
+                    value: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/,
+                    message: t('invalidHeight')
+                  }
+                }
+              )}
+              type="text"
               label={t('height')}
               variant="outlined"
               name={`sampleTrees[${index}].height`}
               defaultValue={item.height}
             />
+            {errors?.sampleTrees?.[index]?.height && (
+              <span className={styles.errorMessage}>
+                {errors?.sampleTrees?.[index]?.height?.message}
+              </span>
+            )}
           </div>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
-              inputRef={register()}
-              onInput={(e: any) => {
-                e.target.value = e.target.value.replace(/[^0-9]/g, '');
-              }}
+              inputRef={register(
+                {
+                  pattern: {
+                    value: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/,
+                    message: t('invalidDiameter')
+                  }
+                }
+              )}
+              type="text"
               label={t('diameter')}
               variant="outlined"
               name={`sampleTrees[${index}].diameter`}
               defaultValue={item.diameter}
             />
+            {errors?.sampleTrees?.[index]?.diameter && (
+              <span className={styles.errorMessage}>
+                {errors?.sampleTrees?.[index]?.diameter?.message}
+              </span>
+            )}
           </div>
         </div>
 
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
-              inputRef={register()}
-              onInput={(e: any) => {
-                e.target.value = e.target.value.replace(/[^0-9]/g, '');
-              }}
+              inputRef={register(
+                {
+                  pattern: {
+                    value: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/,
+                    message: t('invalidLatitude')
+                  }
+                }
+              )}
+              type="text"
               label={t('latitude')}
               variant="outlined"
               name={`sampleTrees[${index}].latitude`}
               defaultValue={item.latitude}
             />
+            {errors?.sampleTrees?.[index]?.latitude && (
+              <span className={styles.errorMessage}>
+                {errors?.sampleTrees?.[index]?.latitude?.message}
+              </span>
+            )}
           </div>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
-              inputRef={register()}
-              onInput={(e: any) => {
-                e.target.value = e.target.value.replace(/[^0-9]/g, '');
-              }}
+              inputRef={register(
+                {
+                  pattern: {
+                    value: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/,
+                    message: t('invalidLongitude')
+                  }
+                }
+              )}
+              type="text"
               label={t('longitude')}
               variant="outlined"
               name={`sampleTrees[${index}].longitude`}
               defaultValue={item.longitude}
             />
+            {errors?.sampleTrees?.[index]?.longitude && (
+              <span className={styles.errorMessage}>
+                {errors?.sampleTrees?.[index]?.longitude?.message}
+              </span>
+            )}
           </div>
         </div>
         <div className={styles.formFieldLarge}>

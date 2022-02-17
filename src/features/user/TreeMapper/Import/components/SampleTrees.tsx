@@ -154,7 +154,6 @@ export default function SampleTrees({
       const newSampleTrees = [...sampleTrees];
       newSampleTrees[index] = res;
       setSampleTrees(newSampleTrees);
-      setIsUploadingData(false);
       const newStatus = [...uploadStatus];
       newStatus[index] = 'success';
       setUploadStatus(newStatus);
@@ -163,21 +162,18 @@ export default function SampleTrees({
       newStatus[index] = 'error';
       setUploadStatus(newStatus);
       if (res.code === 404) {
-        setIsUploadingData(false);
         setErrorMessage(res.message);
       } else if (res.code === 400) {
-        setIsUploadingData(false);
         if (res.errors && res.errors.children) {
           // addServerErrors(res.errors.children, setError);
         }
       } else {
-        setIsUploadingData(false);
         setErrorMessage(res.message);
       }
     }
   };
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     console.log('data', data);
     setIsUploadingData(true);
     for (const [index, sampleTree] of data.sampleTrees.entries()) {
@@ -194,14 +190,14 @@ export default function SampleTrees({
         plantDate: new Date(sampleTree.plantingDate).toISOString(),
         registrationDate: new Date().toISOString(),
         measurements: {
-          height: sampleTree.height,
-          width: sampleTree.diameter,
+          height: Number(sampleTree.height),
+          width: Number(sampleTree.diameter),
         },
         tag: sampleTree.treeTag,
         // plantedSpecies: sampleTree.otherSpecies,
         parent: plantLocation.id,
       }
-      uploadSampleTree(samplePl, index);
+      await uploadSampleTree(samplePl, index);
     }
     setIsUploadingData(false);
     handleNext();
@@ -265,6 +261,7 @@ export default function SampleTrees({
               setValue={setValue}
               item={item}
               plantLocation={plantLocation}
+              errors={errors}
             />
           );
         })}
@@ -278,8 +275,8 @@ export default function SampleTrees({
             height: '',
             diameter: '',
             otherSpecies: '',
-            latitude: 0,
-            longitude: 0,
+            latitude: '',
+            longitude: '',
           });
         }}
         className={styles.addSpeciesButton}

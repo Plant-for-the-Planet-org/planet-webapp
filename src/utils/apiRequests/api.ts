@@ -37,6 +37,15 @@ const handleApiError = (
       });
     }
     console.error('Error 403: Forbidden');
+  } else if (error === 400) {
+    if (errorHandler) {
+      errorHandler({
+        type: 'error',
+        message: 'validationFailed',
+        redirect: redirect,
+      });
+    }
+    console.error('Error 400: Validation Failed!');
   } else if (error === 500) {
     if (errorHandler) {
       errorHandler({

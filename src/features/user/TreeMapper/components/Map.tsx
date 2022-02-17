@@ -266,7 +266,7 @@ export default function MyTreesMap({
                       }}
                     />
                   )}
-                  {dateDiff && (
+                  {/* {dateDiff && (
                     <Layer
                       key={`${pl.id}-label`}
                       id={`${pl.id}-label`}
@@ -281,7 +281,7 @@ export default function MyTreesMap({
                         'text-color': satellite ? '#ffffff' : '#2f3336',
                       }}
                     />
-                  )}
+                  )} */}
                 </Source>
                 {pl &&
                   pl.samplePlantLocations &&
@@ -304,8 +304,8 @@ export default function MyTreesMap({
                             <div
                               key={`${spl.id}-marker`}
                               className={`${styles.single} ${spl.id === selectedLocation?.id
-                                  ? styles.singleSelected
-                                  : ''
+                                ? styles.singleSelected
+                                : ''
                                 }`}
                               role="button"
                               tabIndex={0}
