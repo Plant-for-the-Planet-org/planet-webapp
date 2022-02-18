@@ -70,10 +70,16 @@ export async function getAccountInfo(token: any): Promise<any> {
 export async function getRequest(
   url: any,
   errorHandler?: Function,
-  redirect?: string
+  redirect?: string,
+  queryParams?: { [key: string]: string }
 ) {
   let result;
-  await fetch(`${process.env.API_ENDPOINT}` + url, {
+  const lang = localStorage.getItem('language') || 'en';
+  const query: any = { ...queryParams, locale: lang };
+  const queryString = Object.keys(query)
+    .map((key) => key + '=' + query[key])
+    .join('&');
+  await fetch(`${process.env.API_ENDPOINT}${url}?${queryString}`, {
     method: 'GET',
     headers: {
       'tenant-key': `${TENANT_ID}`,
