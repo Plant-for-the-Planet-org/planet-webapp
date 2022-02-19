@@ -57,6 +57,7 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
         const paymentSetupData = await getRequest(
           `/app/projects/${project.id}/paymentOptions`,
           handleError,
+          '/',
           {
             country: country,
           }

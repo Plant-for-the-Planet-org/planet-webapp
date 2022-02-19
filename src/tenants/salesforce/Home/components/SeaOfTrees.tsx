@@ -19,6 +19,7 @@ export default function SeaOfTrees() {
       const project = await getRequest(
         `/app/projects/${projectID}`,
         handleError,
+        '/',
         {
           _scope: 'extended',
           currency: currencyCode,

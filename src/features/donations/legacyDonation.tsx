@@ -57,6 +57,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
         const paymentSetupData = await getRequest(
           `/app/projects/${paymentData.plantProjectGuid}/paymentOptions`,
           handleError,
+          '/',
           {
             country: country,
           }
