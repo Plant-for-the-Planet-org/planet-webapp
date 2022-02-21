@@ -18,12 +18,14 @@ import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
 import GeocoderArcGIS from "geocoder-arcgis";
 import { postRequest } from '../../../utils/apiRequests/api';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
 export default function CompleteSignup() {
   const router = useRouter();
   const { t, ready } = useTranslation(['editProfile', 'donate']);
+  const { handleError } = React.useContext(ErrorHandlingContext);
   const [addressSugggestions, setaddressSugggestions] = React.useState([]);
   const geocoder = new GeocoderArcGIS(process.env.ESRI_CLIENT_SECRET ? {
     client_id: process.env.ESRI_CLIENT_ID,
@@ -163,7 +165,8 @@ export default function CompleteSignup() {
     setRequestSent(true);
     try {
       const res = await postRequest(`${process.env.API_ENDPOINT}/app/profile`,
-        JSON.stringify(bodyToSend),
+        bodyToSend,
+        handleError,
       );
       setRequestSent(false);
       if (res.status === 200) {
