@@ -54,8 +54,8 @@ export default function ApiKey({ }: any) {
             <div className={styles.apiPage}>
                 <p className={styles.deleteModalContent}>
                     {t('me:apiKeyMessage1')}
-                    <br /><br />
-                    {t('me:apiKeyMessage2')}
+                   // <br /><br />
+                   // {t('me:apiKeyMessage2')}
                     <br /><br />
                     {t('me:apiKeyMessage3')}
                 </p>
