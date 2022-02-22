@@ -7,7 +7,7 @@
   transition: all 0.3s ease-in-out;
   width: 100vw;
   margin-top: 50vh;
-  padding-bottom: 60px;
+  // padding-bottom: 60px;
   z-index: 12;
 }
 
@@ -93,7 +93,7 @@
   flex-grow: 3;
   color: $primaryFontColor;
 }
-.searchInput > input{
+.searchInput > input {
   background-color: aqua;
 }
 .cancelIcon {
@@ -117,7 +117,7 @@
   width: 100%;
   padding-left: 16px;
   padding-right: 16px;
-  padding-bottom: 56px;
+  padding-bottom: 16px;
   height: auto;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -155,7 +155,7 @@
   text-align: center;
   padding: 0px 20px;
 }
-.project{
+.project {
   color: $primaryFontColor;
 }
 

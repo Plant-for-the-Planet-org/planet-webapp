@@ -175,10 +175,10 @@
 }
 
 @include xsPhoneView {
-  .mainNavContainer {
-    bottom: 0;
-    top: auto;
-  }
+  // .mainNavContainer {
+  //   bottom: 0;
+  //   top: auto;
+  // }
   .top_nav {
     display: flex !important;
     padding: 0;
