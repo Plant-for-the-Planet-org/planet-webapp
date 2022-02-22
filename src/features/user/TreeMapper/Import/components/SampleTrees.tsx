@@ -194,7 +194,7 @@ export default function SampleTrees({
           width: Number(sampleTree.diameter),
         },
         tag: sampleTree.treeTag,
-        // plantedSpecies: sampleTree.otherSpecies,
+        otherSpecies: sampleTree.otherSpecies,
         parent: plantLocation.id,
       }
       await uploadSampleTree(samplePl, index);

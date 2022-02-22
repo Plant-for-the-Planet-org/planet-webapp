@@ -236,13 +236,30 @@ export default function SampleTreeCard({
                 select
                 inputRef={register}
               >
-                {plantLocation.plantedSpecies.map((species: Treemapper.PlantedSpecies, index: number) => (
-                  <MenuItem
-                    key={index} value={species.id}
-                  >
-                    {species.otherSpecies}
-                  </MenuItem>
-                ))}
+                {plantLocation.plantedSpecies.map((species: Treemapper.PlantedSpecies, index: number) => {
+                  if (plantLocation.plantedSpecies.length === 1) {
+                    return (
+                      <MenuItem
+                        key={index} value={species.otherSpecies} selected={true}>
+                        {species.otherSpecies}
+                      </MenuItem>
+                    )
+                  } else if (species.otherSpecies === item.otherSpecies) {
+                    return (
+                      <MenuItem
+                        key={index} value={species.otherSpecies} selected={true}>
+                        {species.otherSpecies}
+                      </MenuItem>
+                    )
+                  } else {
+                    return (
+                      <MenuItem
+                        key={index} value={species.otherSpecies}>
+                        {species.otherSpecies}
+                      </MenuItem>
+                    )
+                  }
+                })}
               </MaterialTextField>
             }
             name={`sampleTrees[${index}].otherSpecies`}
