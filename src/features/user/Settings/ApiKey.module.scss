@@ -5,6 +5,15 @@
   flex-direction: column;
   background-color: $backgroundColor;
   max-width: 600px;
+  width: 90%;
+
+  .apiKeyContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+  }
 
   .deleteModalTitle {
     font-weight: bold;
