@@ -55,8 +55,12 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
         setIsPaymentOptionsLoading(true);
 
         const paymentSetupData = await getRequest(
-          `/app/projects/${paymentData.plantProjectGuid}/paymentOptions?country=${country}`,
-          handleError
+          `/app/projects/${paymentData.plantProjectGuid}/paymentOptions`,
+          handleError,
+          '/',
+          {
+            country: country,
+          }
         );
         if (paymentSetupData) {
           setPaymentSetup(paymentSetupData);
@@ -81,7 +85,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
       paymentSetup,
       donationID: paymentData.guid,
       token: null,
-      setDonationStep: () => {},
+      setDonationStep: () => { },
       country,
     }).then((res) => {
       if (res) {
@@ -150,10 +154,10 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
               <div className={styles.totalCost} style={{ color: styles.light }}>
                 {!isPaymentOptionsLoading
                   ? getFormatedCurrency(
-                      i18n.language,
-                      currency,
-                      treeCount * treeCost
-                    )
+                    i18n.language,
+                    currency,
+                    treeCount * treeCost
+                  )
                   : null}
               </div>
               <div
@@ -176,7 +180,7 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
               })}
             </div>
             {paymentData.giftRecipient ||
-            paymentData.supportedTreecounterName ? (
+              paymentData.supportedTreecounterName ? (
               paymentData.giftRecipient ? (
                 <div className={styles.plantProjectName}>
                   {t('donate:giftTo')} {paymentData.giftRecipient}
@@ -202,8 +206,8 @@ function LegacyDonations({ paymentData }: Props): ReactElement {
 
               <Elements stripe={getStripe(paymentSetup)}>
                 {!isPaymentOptionsLoading &&
-                paymentSetup?.gateways?.stripe?.account &&
-                currency ? (
+                  paymentSetup?.gateways?.stripe?.account &&
+                  currency ? (
                   <>
                     <div className={styles.horizontalLine} />
                     <NativePay

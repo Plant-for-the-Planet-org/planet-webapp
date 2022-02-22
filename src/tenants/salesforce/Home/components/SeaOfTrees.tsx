@@ -17,8 +17,13 @@ export default function SeaOfTrees() {
     async function loadProject() {
       const currencyCode = getStoredCurrency();
       const project = await getRequest(
-        `/app/projects/${projectID}?_scope=extended&currency=${currencyCode}`,
-        handleError
+        `/app/projects/${projectID}`,
+        handleError,
+        '/',
+        {
+          _scope: 'extended',
+          currency: currencyCode,
+        }
       );
       setProject(project);
     }
