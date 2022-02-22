@@ -55,8 +55,12 @@ function DonationsPopup({ onClose, project }: Props): ReactElement {
         setIsPaymentOptionsLoading(true);
 
         const paymentSetupData = await getRequest(
-          `/app/projects/${project.id}/paymentOptions?country=${country}`,
-          handleError
+          `/app/projects/${project.id}/paymentOptions`,
+          handleError,
+          '/',
+          {
+            country: country,
+          }
         );
         if (paymentSetupData) {
           setPaymentSetup(paymentSetupData);
