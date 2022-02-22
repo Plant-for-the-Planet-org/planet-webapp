@@ -4,7 +4,6 @@
   display: flex;
   flex-direction: column;
   background-color: $backgroundColor;
-  padding: 20px;
   max-width: 600px;
 
   .deleteModalTitle {
@@ -25,7 +24,7 @@
     margin-top: 20px;
     color: $dangerColor;
   }
-  .deleteButtonContainer {
+  .regenerateButtonContainer {
     display: flex;
     width: 100%;
     flex-direction: row;
@@ -61,9 +60,10 @@
         margin-left: 6px;
       }
     }
-    .deleteButton {
+    .regenerateButton {
       background-color: $primaryColor;
       height: 40px;
+      width: 200px;
       border-radius: 100px;
       padding-left: 24px;
       padding-right: 24px;
@@ -75,9 +75,8 @@
       border: 0px;
       transition-duration: 0.5s;
       transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-      flex: 1;
     }
-    .deleteButton:hover {
+    .regenerateButton:hover {
       transform: scale(1.05);
       cursor: pointer;
     }
