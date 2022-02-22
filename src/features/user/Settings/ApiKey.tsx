@@ -29,7 +29,7 @@ export default function ApiKey({ }: any) {
         const res = await getAuthenticatedRequest('/app/profile/apiKey', token, {}, handleError)
         if (res) {
             setApiKey(res.apiKey);
-        };
+        }
         setIsUploadingData(false);
     };
 
@@ -38,7 +38,7 @@ export default function ApiKey({ }: any) {
         const res = await putAuthenticatedRequest('/app/profile/apiKey', undefined, token, handleError)
         if (res) {
             setApiKey(res.apiKey);
-        };
+        }
         setIsUploadingData(false);
     };
 
@@ -54,8 +54,8 @@ export default function ApiKey({ }: any) {
             <div className={styles.apiPage}>
                 <p className={styles.deleteModalContent}>
                     {t('me:apiKeyMessage1')}
-                   // <br /><br />
-                   // {t('me:apiKeyMessage2')}
+                    {/* <br /><br />
+                   {t('me:apiKeyMessage2')} */}
                     <br /><br />
                     {t('me:apiKeyMessage3')}
                 </p>
