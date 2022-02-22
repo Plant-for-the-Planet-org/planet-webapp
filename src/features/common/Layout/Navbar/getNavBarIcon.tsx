@@ -8,6 +8,7 @@ import LeaderboardSelected from '../../../../../public/assets/images/navigation/
 import LeafSelected from '../../../../../public/assets/images/navigation/LeafSelected';
 import Leaf from '../../../../../public/assets/images/navigation/Leaf';
 import themeProperties from '../../../../theme/themeProperties';
+import ShopIcon from '../../../../../public/assets/images/navigation/ShopIcon'
 
 interface Props {
     mainKey: any;
@@ -61,11 +62,23 @@ function GetNavBarIcon({ mainKey, router, item }: Props): ReactElement {
             </button>
         )
     }
+    const ShopLink = () => {
+        return (
+            <button id={'shopIcon'} className={`link_icon ${router.pathname === item.onclick ? 'active_icon' : ''}`}>
+                {router.pathname === item.onclick ? (
+                    <ShopIcon color={themeProperties.primaryColor} />
+                ) : (
+                    <ShopIcon color={themeProperties.light.primaryFontColor} />
+                )}
+            </button>
+        )
+    }
     switch (mainKey) {
         case 'home': return <HomeLink />;
         case 'donate': return <DonateLink />;
         case 'about': return <AboutUsLink />;
         case 'leaderboard': return <LeadersLink />;
+        case 'shop': return <ShopLink />;
         default: <></>;
     }
 }

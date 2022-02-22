@@ -4,6 +4,7 @@ import React from 'react';
 import i18next from './../../i18n'
 import LegacyDonations from '../../src/features/donations/legacyDonation';
 import styles from './../../src/features/donations/styles/Donations.module.scss'
+import { getRequest } from '../../src/utils/apiRequests/api';
 interface Props {
     initialized: Boolean;
 }
@@ -21,20 +22,14 @@ function PaymentPage({ initialized }: Props) {
     React.useEffect(() => {
         async function loadProjects() {
             const userLang = localStorage.getItem('language') || 'en';
-            await fetch(`${process.env.API_ENDPOINT}/public/v1.3/${userLang}/paymentInfo/${router.query.code}`).then(async (res) => {
-                if (res.status !== 200) {
-                    setPaymentData(null)
-                    setIsLoaded(true)
-                }
-                else {
-                    const data = await res.json();
-                    setPaymentData(data);
-                    setIsLoaded(true)
-                }
-
-            }).catch((err) => {
-                console.log(err);
-            })
+            const res = await getRequest(`${process.env.API_ENDPOINT}/public/v1.3/${userLang}/paymentInfo/${router.query.code}`);
+            if (res) {
+                setPaymentData(null)
+                setIsLoaded(true)
+            } else {
+                setPaymentData(res)
+                setIsLoaded(true)
+            }
         }
         if (router.query.code) {
             loadProjects();
@@ -43,36 +38,36 @@ function PaymentPage({ initialized }: Props) {
     }, [router.query.code]);
 
     return ready ? (
-      isLoaded ? paymentData ? (
-        <>
-            <div className={styles.donationPaymentSection}>
+        isLoaded ? paymentData ? (
+            <>
+                <div className={styles.donationPaymentSection}>
 
-                {initialized && paymentData && (
-                    <LegacyDonations paymentData={paymentData} />
-                )}
-                <img
-                    className={styles.leaderBoardBushImage}
-                    src="/tenants/planet/images/leaderboard/Person.svg"
-                    alt=""
-                />
-                <img
-                    className={styles.leaderBoardGroupTreeImage}
-                    src="/tenants/planet/images/leaderboard/Trees.svg"
-                    alt=""
-                />
+                    {initialized && paymentData && (
+                        <LegacyDonations paymentData={paymentData} />
+                    )}
+                    <img
+                        className={styles.leaderBoardBushImage}
+                        src="/tenants/planet/images/leaderboard/Person.svg"
+                        alt=""
+                    />
+                    <img
+                        className={styles.leaderBoardGroupTreeImage}
+                        src="/tenants/planet/images/leaderboard/Trees.svg"
+                        alt=""
+                    />
 
-            </div>
-            <Footer />
-        </>
-      ) : 
-        <>
-            <div className={styles.donationPaymentSection}>
-                <h2>
-                    {t('donate:donationTokenInvalid')}
-                </h2>
-            </div>
-            <Footer />
-        </> : <>
+                </div>
+                <Footer />
+            </>
+        ) :
+            <>
+                <div className={styles.donationPaymentSection}>
+                    <h2>
+                        {t('donate:donationTokenInvalid')}
+                    </h2>
+                </div>
+                <Footer />
+            </> : <>
             <div className={styles.donationPaymentSection}>
                 <div className={styles.donationPaymentLoader} />
             </div>
