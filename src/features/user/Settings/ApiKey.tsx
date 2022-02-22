@@ -7,6 +7,8 @@ import { getAuthenticatedRequest, putAuthenticatedRequest } from '../../../utils
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import CopyToClipboard from '../../common/CopyToClipboard';
+import EyeIcon from '../../../../public/assets/images/icons/EyeIcon';
+import EyeDisabled from '../../../../public/assets/images/icons/EyeDisabled';
 
 const { useTranslation } = i18next;
 
@@ -16,6 +18,11 @@ export default function ApiKey({ }: any) {
     const { handleError } = React.useContext(ErrorHandlingContext);
     const [isUploadingData, setIsUploadingData] = React.useState(false);
     const [apiKey, setApiKey] = React.useState('');
+    const [isApiKeyVisible, setIsApiKeyVisible] = React.useState(false);
+
+    const handleVisibilityChange = () => {
+        setIsApiKeyVisible(!isApiKeyVisible);
+    }
 
     const getApiKey = async () => {
         setIsUploadingData(true);
@@ -55,12 +62,13 @@ export default function ApiKey({ }: any) {
                 <div className={styles.apiKeyContainer}>
                     <MaterialTextField
                         // label={t('me:apiKey')}
-                        type="text"
+                        type={isApiKeyVisible ? 'text' : 'password'}
                         variant="outlined"
                         name="apiKey"
                         disabled
                         value={apiKey}
                     />
+                    <EyeButton isVisible={isApiKeyVisible} onClick={handleVisibilityChange} />
                     <CopyToClipboard text={apiKey} isButton />
                 </div>
                 <div className={styles.regenerateButtonContainer}>
@@ -79,4 +87,16 @@ export default function ApiKey({ }: any) {
             </div>
         </div>
     );
+}
+
+const EyeButton = ({ isVisible, onClick }: any) => {
+    return (
+        <div className={styles.eyeButton} onClick={onClick}>
+            {isVisible ? (
+                <EyeIcon />
+            ) : (
+                <EyeDisabled />)
+            }
+        </div>
+    )
 }

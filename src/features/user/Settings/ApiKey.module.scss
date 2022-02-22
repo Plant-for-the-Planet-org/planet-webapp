@@ -13,6 +13,20 @@
     align-items: center;
     margin-top: 20px;
     gap: 10px;
+    position: relative;
+  }
+
+  .eyeButton {
+    cursor: pointer;
+    position: absolute;
+    right: 60px;
+    top: 14px;
+    width: 20px;
+    height: 20px;
+    > svg {
+      width: 100%;
+      fill: $primaryFontColor;
+    }
   }
 
   .deleteModalTitle {
