@@ -169,17 +169,17 @@ export default function CompleteSignup() {
         handleError,
       );
       setRequestSent(false);
-      if (res.status === 200) {
+      if (res) {
         // successful signup -> goto me page
-        const resJson = await res.json();
-        setUser(resJson);
+        setUser(res);
         setSnackbarMessage(ready ? t('editProfile:profileCreated') : '');
         setSeverity('success');
         handleSnackbarOpen();
 
         if (typeof window !== 'undefined') {
-          router.push('/t/[id]', `/t/${resJson.slug}`);
+          router.push('/t/[id]', `/t/${res.slug}`);
         }
+/*  This cannot be done anymore using `postRequest` as this does not return any status
       } else if (res.status === 401) {
         // in case of 401 - invalid token: signIn()
         setUser(false);
@@ -189,6 +189,7 @@ export default function CompleteSignup() {
           redirectUri: `${process.env.NEXTAUTH_URL}/login`,
           ui_locales: localStorage.getItem('language') || 'en',
         });
+ */
       } else {
         setSnackbarMessage(ready ? t('editProfile:profileCreationFailed') : '');
         setSubmit(false);
