@@ -47,8 +47,13 @@ export default function SampleTrees({
         Papa.parse(csv, {
           header: true,
           complete: (results: any) => {
-            console.log(`results`, results)
-            addSampleTrees(results.data);
+            const sampleTrees = results.data.map((sampleTree: any) => {
+              return {
+                ...sampleTree,
+                otherSpecies: sampleTree.otherSpecies,
+              };
+            });
+            addSampleTrees(sampleTrees);
           },
         });
       };

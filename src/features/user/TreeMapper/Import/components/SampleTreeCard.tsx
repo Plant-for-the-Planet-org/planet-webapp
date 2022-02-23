@@ -54,6 +54,9 @@ export default function SampleTreeCard({
         {index > 0 && (
           <div
             onClick={() => remove(index)}
+            style={{
+              cursor: 'pointer',
+            }}
           >
             <DeleteIcon />
           </div>)
