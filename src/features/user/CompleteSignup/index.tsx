@@ -164,7 +164,7 @@ export default function CompleteSignup() {
   const sendRequest = async (bodyToSend: any) => {
     setRequestSent(true);
     try {
-      const res = await postRequest(`${process.env.API_ENDPOINT}/app/profile`,
+      const res = await postRequest(`/app/profile`,
         bodyToSend,
         handleError,
       );
