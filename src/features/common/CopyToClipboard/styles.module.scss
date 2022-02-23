@@ -1,9 +1,20 @@
 @import '../../../theme/theme';
 
 .copyButtonContainer {
-    cursor: pointer;
-    padding: 5px 8px;
+  cursor: pointer;
+  padding: 5px 8px;
+  > svg {
+    width: 10px;
+    fill: $primaryFontColor;
+  }
+  &.button {
+    background-color: $backgroundColorDark;
+    padding: 8px;
+    border-radius: 6px;
+    width: 40px;
+    height: 100%;
     > svg {
-        width: 10px;
+      width: 100%;
     }
+  }
 }
