@@ -138,7 +138,7 @@ export default function PlantingLocation({
       } else {
         setGeoJsonError(true);
       }
-    } else if (geoJson.type === "Polygon") {
+    } else if (geoJson?.type && geoJson.type === "Polygon") {
       setGeoJsonError(false);
       setGeoJson(geoJson);
       setActiveMethod('editor');
@@ -208,7 +208,7 @@ export default function PlantingLocation({
   const onSubmit = (data: any) => {
     console.log(`data`, data)
     if (geoJson) {
-      // setIsUploadingData(true);
+      setIsUploadingData(true);
       const submitData = {
         type: 'multi',
         captureMode: 'external',
@@ -386,6 +386,9 @@ export default function PlantingLocation({
           ))}
         </div>
         {getMethod(activeMethod)}
+        <div className={styles.errorMessage}>
+          {geoJsonError && t('treemapper:geoJsonError')}
+        </div>
       </div>
       <div className={styles.formSubTitle}>Species Planted</div>
       {mySpecies && fields.map((item, index) => {
@@ -461,12 +464,23 @@ function PlantedSpecies({
       <div className={styles.speciesNameField}>
         {/* <SpeciesSelect label={t('treemapper:species')} name={`plantedSpecies[${index}].species`} mySpecies={mySpecies} control={control} /> */}
         <MaterialTextField
-          inputRef={register({ required: index ? false : true })}
+          inputRef={register({
+            required: index ? false : {
+              value: true,
+              message: t('treemapper:atLeastOneSpeciesRequired')
+            }
+          })}
           label={t('treeSpecies')}
           variant="outlined"
           name={`plantedSpecies[${index}].otherSpecies`}
           defaultValue={item.otherSpecies ? item.otherSpecies : ''}
         />
+        {errors.plantedSpecies && errors.plantedSpecies[index]?.otherSpecies && (
+          <span className={styles.errorMessage}>
+            {errors.plantedSpecies[index]?.otherSpecies &&
+              errors.plantedSpecies[index]?.otherSpecies.message}
+          </span>
+        )}
       </div>
       <div className={styles.speciesCountField}>
         <MaterialTextField
@@ -475,18 +489,24 @@ function PlantedSpecies({
               ? false
               : {
                 value: true,
-                message: t('treesRequired'),
+                message: t('treemapper:treesRequired'),
               },
             validate: (value: any) => parseInt(value, 10) >= 1,
           })}
           onInput={(e: any) => {
             e.target.value = e.target.value.replace(/[^0-9]/g, '');
           }}
-          label={t('count')}
+          label={t('treemapper:count')}
           variant="outlined"
           name={`plantedSpecies[${index}].treeCount`}
           defaultValue={item.treeCount ? item.treeCount : ''}
         />
+        {errors.plantedSpecies && errors.plantedSpecies[index]?.treeCount && (
+          <span className={styles.errorMessage}>
+            {errors.plantedSpecies[index]?.treeCount &&
+              errors.plantedSpecies[index]?.treeCount.message}
+          </span>
+        )}
       </div>
       {index > 0 ? (
         <div

@@ -44,5 +44,9 @@
   "submittedSuccessDescription": "Your trees have been submitted to TreeMapper. You can view them in your plant locations or in the TreeMapper app",
   "myPlantLocations": "My Plant Locations",
   "submitted": "Submitted",
-  "projectRequired": "Project Required"
+  "projectRequired": "Project Required",
+  "geoJsonError": "Unsupported GeoJSON/KML format",
+  "atLeastOneSpeciesRequired": "At least one species is required",
+  "treesRequired": "Tree Count Required",
+  "count": "Count"
 }
