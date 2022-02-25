@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import * as turf from '@turf/turf';
 import * as d3 from 'd3-ease';
-import ReactMapboxGl, { ZoomControl, Source, Layer } from 'react-mapbox-gl';
+import ReactMapboxGl, { ZoomControl, Source, Layer, GeoJSONLayer } from 'react-mapbox-gl';
 import DrawControl from 'react-mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import styles from '../Import.module.scss';
@@ -37,7 +37,7 @@ export default function MapComponent({
   });
   const [viewport2, setViewPort2] = React.useState({
     height: 1000,
-    width:500,
+    width: 500,
     center: defaultMapCenter,
     zoom: defaultZoom,
   });
@@ -84,7 +84,7 @@ export default function MapComponent({
 
   React.useEffect(() => {
     if (geoJson) {
-      const geo = turf.featureCollection([{type:'Feature',geometry:geoJson, properties:{}}]);
+      const geo = turf.featureCollection([{ type: 'Feature', geometry: geoJson, properties: {} }]);
       const bbox = turf.bbox(geo);
       const { longitude, latitude, zoom } = new WebMercatorViewport(
         viewport2
@@ -97,17 +97,17 @@ export default function MapComponent({
         center: [longitude, latitude],
         zoom: [zoom],
       };
-      setTimeout(() => {
-        if (drawControlRef.current) {
-          try {
-            drawControlRef.current.draw.add(geo);
-          } catch (e) {
-            // setGeoJsonError(true);
-            // setGeoJson(null);
-            console.log('We only support feature collection for now', e);
-          }
-        }
-      }, 1000);
+      // setTimeout(() => {
+      //   if (drawControlRef.current) {
+      //     try {
+      //       drawControlRef.current.draw.add(geo);
+      //     } catch (e) {
+      //       // setGeoJsonError(true);
+      //       // setGeoJson(null);
+      //       console.log('We only support feature collection for now', e);
+      //     }
+      //   }
+      // }, 1000);
       setViewPort(newViewport);
     } else {
       setViewPort({
@@ -127,7 +127,7 @@ export default function MapComponent({
           height: '100%',
           width: '100%',
         }}
-        onClick={() => setActiveMethod('draw')}
+      // onClick={() => setActiveMethod('draw')}
       >
         {/* {satellite && (
           <>
@@ -142,7 +142,7 @@ export default function MapComponent({
             />
           </>
         )} */}
-        <DrawControl
+        {/* <DrawControl
           ref={drawControlRef}
           onDrawCreate={onDrawCreate}
           onDrawUpdate={onDrawUpdate}
@@ -155,7 +155,7 @@ export default function MapComponent({
             uncombine_features: false,
           }}
           position="top-right"
-        />
+        /> */}
         {/* <div className={styles.layerSwitcher}>
           <div
             onClick={() => setSatellite(false)}
@@ -174,6 +174,22 @@ export default function MapComponent({
             Satellite
           </div>
         </div> */}
+        {
+          geoJson ?
+            (
+              <GeoJSONLayer
+                data={geoJson}
+                fillPaint={{
+                  'fill-color': '#fff',
+                  'fill-opacity': 0.2,
+                }}
+                linePaint={{
+                  'line-color': '#68B030',
+                  'line-width': 2,
+                }}
+              />
+            ) : null
+        }
         <ZoomControl position="bottom-right" />
       </Map>
     </>

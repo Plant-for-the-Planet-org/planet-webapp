@@ -54,7 +54,7 @@ export default function PlantingLocation({
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
-  const importMethods = ['import', 'editor', 'draw'];
+  const importMethods = ['import', 'editor'];
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [mySpecies, setMySpecies] = React.useState(null);
 
@@ -126,15 +126,22 @@ export default function PlantingLocation({
   }, [contextLoaded]);
 
   const normalizeGeoJson = (geoJson: any) => {
-    if (gjv.isGeoJSONObject(geoJson) && geoJson.features.length !== 0) {
+    console.log("geojson changed", geoJson);
+    if (gjv.isGeoJSONObject(geoJson) && geoJson.features?.length > 0) {
+      console.log("valid geojson");
       const flattened = flatten(geoJson);
-      if (flattened.features[0].geometry.type === 'Polygon') {
+      if (flattened.features[0]?.geometry?.type === 'Polygon') {
         setGeoJsonError(false);
+        console.log("updated");
         setGeoJson(flattened.features[0].geometry);
         setActiveMethod('editor');
       } else {
         setGeoJsonError(true);
       }
+    } else if (geoJson.type === "Polygon") {
+      setGeoJsonError(false);
+      setGeoJson(geoJson);
+      setActiveMethod('editor');
     } else {
       setGeoJsonError(true);
     }
@@ -273,17 +280,17 @@ export default function PlantingLocation({
             <JSONInput
               id="json-editor"
               placeholder={geoJson}
-              onChange={(json: any) => normalizeGeoJson(json)}
+              onChange={(json: any) => normalizeGeoJson(json.jsObject)}
               locale={locale}
               height="220px"
               width="100%"
             />
           </>
         );
-      case 'draw':
-        return (
-          <div className={styles.drawMapText}>draw on map on the right</div>
-        );
+      // case 'draw':
+      //   return (
+      //     <div className={styles.drawMapText}>draw on map on the right</div>
+      //   );
       default:
         return null;
     }
