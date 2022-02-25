@@ -322,13 +322,23 @@ export default function PlantingLocation({
                     format="MMMM d, yyyy"
                   />
                 )}
-                inputRef={register({ required: true })}
+                inputRef={register({
+                  required: {
+                    value: true,
+                    message: t('me:datePlantedRequired')
+                  }
+                })}
                 name="plantDate"
                 control={control}
                 defaultValue=""
               />
             </MuiPickersUtilsProvider>
           </ThemeProvider>
+          {errors.plantDate && (
+            <span className={styles.errorMessage}>
+              {errors.plantDate.message}
+            </span>
+          )}
         </div>
       </div>
       {user && user.type === 'tpo' && (
@@ -339,7 +349,6 @@ export default function PlantingLocation({
                 label={t('me:project')}
                 variant="outlined"
                 select
-                inputRef={register}
               >
                 {projects.map((option) => (
                   <MenuItem
@@ -353,9 +362,12 @@ export default function PlantingLocation({
             }
             name="plantProject"
             control={control}
+            rules={{
+              required: t('treemapper:projectRequired'),
+            }}
           />
           {errors.plantProject && (
-            <span className={styles.formErrors}>
+            <span className={styles.errorMessage}>
               {errors.plantProject.message}
             </span>
           )}

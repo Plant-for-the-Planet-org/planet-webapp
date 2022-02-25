@@ -43,5 +43,6 @@
   "submittedSuccess": "Submitted Successfully",
   "submittedSuccessDescription": "Your trees have been submitted to TreeMapper. You can view them in your plant locations or in the TreeMapper app",
   "myPlantLocations": "My Plant Locations",
-  "submitted": "Submitted"
+  "submitted": "Submitted",
+  "projectRequired": "Project Required"
 }
