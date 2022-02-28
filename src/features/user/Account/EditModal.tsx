@@ -60,7 +60,7 @@ export const EditModal = ({
 
   const onSubmit = (data: any) => {
     setDisabled(true);
-    let bodyToSend = {
+    const bodyToSend = {
       nextBilling:
         record.method !== 'paypal'
           ? new Date(data.currentPeriodEnd).toISOString().split('T')[0]
@@ -84,21 +84,25 @@ export const EditModal = ({
 
     console.log(bodyToSend, 'bodyToSend');
 
-    putAuthenticatedRequest(
-      `/app/subscriptions/${record?.id}?scope=modify`,
-      bodyToSend,
-      token,
-      handleError
-    )
-      .then((res) => {
-        if (res?.status === 'action_required') {
-          window.open(res.response.confirmationUrl, '_blank');
-        }
-        console.log(res, 'Response');
-        handleEditModalClose();
-        fetchRecurrentDonations();
-      })
-      .catch((err) => console.log(err));
+    if (Object.keys(bodyToSend).length !== 0) {
+      putAuthenticatedRequest(
+        `/app/subscriptions/${record?.id}?scope=modify`,
+        bodyToSend,
+        token,
+        handleError
+      )
+        .then((res) => {
+          if (res?.status === 'action_required') {
+            window.open(res.response.confirmationUrl, '_blank');
+          }
+          console.log(res, 'Response');
+          handleEditModalClose();
+          fetchRecurrentDonations();
+        })
+        .catch((err) => console.log(err));
+    } else {
+      handleEditModalClose();
+    }
   };
 
   return (
