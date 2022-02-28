@@ -6,13 +6,13 @@ import GlobeContentLoader from '../../../src/features/common/ContentLoaders/Proj
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
 import i18next from './../../../i18n';
-import  Head from 'next/head';
+import Head from 'next/head';
 
 const { useTranslation } = i18next;
 
-interface Props {}
+interface Props { }
 
-function ManageProjectsPage({}: Props): ReactElement {
+function ManageProjectsPage({ }: Props): ReactElement {
   const [accessDenied, setAccessDenied] = React.useState(false);
   const [setupAccess, setSetupAccess] = React.useState(false);
 
@@ -68,6 +68,7 @@ function ManageProjectsPage({}: Props): ReactElement {
               {' '}
               {t('manageProjects:addProject')}
             </div>
+            <div style={{ marginBottom: 15 }}>{t('manageProjects:onlyEnglish')}</div>
           </div>
         </div>
         <ManageProjects token={token} />

@@ -17,21 +17,24 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
 import GeocoderArcGIS from "geocoder-arcgis";
+import { postRequest } from '../../../utils/apiRequests/api';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
 export default function CompleteSignup() {
   const router = useRouter();
   const { t, ready } = useTranslation(['editProfile', 'donate']);
+  const { handleError } = React.useContext(ErrorHandlingContext);
   const [addressSugggestions, setaddressSugggestions] = React.useState([]);
   const geocoder = new GeocoderArcGIS(process.env.ESRI_CLIENT_SECRET ? {
-    client_id:process.env.ESRI_CLIENT_ID,
-    client_secret:process.env.ESRI_CLIENT_SECRET,
+    client_id: process.env.ESRI_CLIENT_ID,
+    client_secret: process.env.ESRI_CLIENT_SECRET,
   } : {});
   const suggestAddress = (value) => {
     if (value.length > 3) {
       geocoder
-        .suggest(value, {category:"Address", countryCode: country}) 
+        .suggest(value, { category: "Address", countryCode: country })
         .then((result) => {
           const filterdSuggestions = result.suggestions.filter((suggestion) => {
             return !suggestion.isCollection;
@@ -39,9 +42,9 @@ export default function CompleteSignup() {
           setaddressSugggestions(filterdSuggestions);
         })
         .catch(console.log);
-        
+
     }
-  };  
+  };
   const getAddress = (value) => {
     geocoder
       .findAddressCandidates(value, { outfields: "*" })
@@ -161,34 +164,23 @@ export default function CompleteSignup() {
   const sendRequest = async (bodyToSend: any) => {
     setRequestSent(true);
     try {
-      const res = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
-        body: JSON.stringify(bodyToSend),
-      });
+      const res = await postRequest(`/app/profile`,
+        bodyToSend,
+        handleError,
+        '/login'
+      );
       setRequestSent(false);
-      if (res.status === 200) {
+      if (res) {
         // successful signup -> goto me page
-        const resJson = await res.json();
-        setUser(resJson);
+        setUser(res);
         setSnackbarMessage(ready ? t('editProfile:profileCreated') : '');
         setSeverity('success');
         handleSnackbarOpen();
 
         if (typeof window !== 'undefined') {
-          router.push('/t/[id]', `/t/${resJson.slug}`);
+          router.push('/t/[id]', `/t/${res.slug}`);
         }
-      } else if (res.status === 401) {
-        // in case of 401 - invalid token: signIn()
-        setUser(false);
-        setSubmit(false);
-        logoutUser(`${process.env.NEXTAUTH_URL}/`);
-        loginWithRedirect({
-          redirectUri: `${process.env.NEXTAUTH_URL}/login`,
-          ui_locales: localStorage.getItem('language') || 'en',
-        });
+
       } else {
         setSnackbarMessage(ready ? t('editProfile:profileCreationFailed') : '');
         setSubmit(false);
@@ -255,15 +247,15 @@ export default function CompleteSignup() {
           backgroundImage: `url(${process.env.CDN_URL}/media/images/app/bg_layer.jpg)`,
         }}
       >
-        <div className={requestSent ? styles.signupRequestSent : styles.signup} 
-        style={{
-          backgroundColor: theme === 'theme-light' ?
-                          themeProperties.light.light :
-                          themeProperties.dark.backgroundColor,
-          color: theme === 'theme-light' ?
-                 themeProperties.light.primaryFontColor :
-                 themeProperties.dark.primaryFontColor,
-        }}>
+        <div className={requestSent ? styles.signupRequestSent : styles.signup}
+          style={{
+            backgroundColor: theme === 'theme-light' ?
+              themeProperties.light.light :
+              themeProperties.dark.backgroundColor,
+            color: theme === 'theme-light' ?
+              themeProperties.light.primaryFontColor :
+              themeProperties.dark.primaryFontColor,
+          }}>
           {/* header */}
           <div className={styles.header}>
             <div onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)} className={styles.headerBackIcon}>
@@ -371,23 +363,23 @@ export default function CompleteSignup() {
                   onBlur={() => setaddressSugggestions([])}
                 />
                 {addressSugggestions
-              ? addressSugggestions.length > 0 && (
-                  <div className="suggestions-container">
-                    {addressSugggestions.map((suggestion) => {
-                      return (
-                        <div key={'suggestion' + suggestion_counter++}
-                          onMouseDown={() => {
-                            getAddress(suggestion.text);
-                          }}
-                          className="suggestion"
-                        >
-                          {suggestion.text}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )
-              : null}
+                  ? addressSugggestions.length > 0 && (
+                    <div className="suggestions-container">
+                      {addressSugggestions.map((suggestion) => {
+                        return (
+                          <div key={'suggestion' + suggestion_counter++}
+                            onMouseDown={() => {
+                              getAddress(suggestion.text);
+                            }}
+                            className="suggestion"
+                          >
+                            {suggestion.text}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )
+                  : null}
                 {errors.address && (
                   <span className={styles.formErrors}>
                     {t('donate:addressRequired')}
@@ -403,8 +395,8 @@ export default function CompleteSignup() {
                     inputRef={register({ required: true })}
                     defaultValue={
                       getStoredConfig('loc').city === 'T1' ||
-                      getStoredConfig('loc').city === 'XX' ||
-                      getStoredConfig('loc').city === ''
+                        getStoredConfig('loc').city === 'XX' ||
+                        getStoredConfig('loc').city === ''
                         ? ''
                         : getStoredConfig('loc').city
                     }
@@ -427,8 +419,8 @@ export default function CompleteSignup() {
                     })}
                     defaultValue={
                       getStoredConfig('loc').postalCode === 'T1' ||
-                      getStoredConfig('loc').postalCode === 'XX' ||
-                      getStoredConfig('loc').postalCode === ''
+                        getStoredConfig('loc').postalCode === 'XX' ||
+                        getStoredConfig('loc').postalCode === ''
                         ? ''
                         : getStoredConfig('loc').postalCode
                     }
@@ -451,8 +443,8 @@ export default function CompleteSignup() {
               onChange={(country) => setCountry(country)}
               defaultValue={
                 getStoredConfig('loc').countryCode === 'T1' ||
-                getStoredConfig('loc').countryCode === 'XX' ||
-                getStoredConfig('loc').countryCode === ''
+                  getStoredConfig('loc').countryCode === 'XX' ||
+                  getStoredConfig('loc').countryCode === ''
                   ? ''
                   : getStoredConfig('loc').countryCode
               }
@@ -486,10 +478,10 @@ export default function CompleteSignup() {
               control={control}
               inputRef={register()}
               defaultValue={false}
-              render={(props:any) => (
+              render={(props: any) => (
                 <ToggleSwitch
                   checked={props.value}
-                  onChange={(e:any) => props.onChange(e.target.checked)}
+                  onChange={(e: any) => props.onChange(e.target.checked)}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
                   id="isPrivate"
                 />
@@ -509,10 +501,10 @@ export default function CompleteSignup() {
               control={control}
               inputRef={register()}
               defaultValue={true}
-              render={(props:any) => (
+              render={(props: any) => (
                 <ToggleSwitch
                   checked={props.value}
-                  onChange={(e:any) => props.onChange(e.target.checked)}
+                  onChange={(e: any) => props.onChange(e.target.checked)}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
                   id="getNews"
                 />
