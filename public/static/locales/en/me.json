@@ -206,8 +206,8 @@
   "trialing": "active",
   "paused": "paused",
   "apiKey": "API Key",
-  "apiKeyMessage1": "API Key is like a digital password that allows you any application to act as your profile. It also applications applications to donate on your behaf and view transactions.",
+  "apiKeyMessage1": "API Key is like a digital password that allows any application to act as your profile. It also allows applications to donate on your behalf, use PlanetCash and view transactions.",
   "apiKeyMessage2": "Once you generate an API Key, we will require two factor authentication for your login. This you’ll be able to setup next time you log in.",
-  "apiKeyMessage3": "Regenerating API Key will invalidate your existing API Key immediately.",
+  "apiKeyMessage3": "Regenerating an API Key will invalidate your existing API Key immediately.",
   "regenerateKey": "Regenerate Key"
 }
