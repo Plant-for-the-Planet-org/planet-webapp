@@ -139,7 +139,8 @@ export function RecordHeader({
           className={`${styles.status} ${
             record?.status === 'paused'
               ? styles.paused
-              : record?.status === 'canceled'
+              : record?.status === 'canceled' ||
+                record?.status === 'incomplete_expired'
               ? styles.cancelled
               : styles.active
           }`}
@@ -173,10 +174,10 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
           <p>{t(record?.frequency)}</p>
         </div>
       )}
-      {record?.paymentGateway && (
+      {record?.method && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('paymentMethod')}</p>
-          <p>{record.paymentGateway}</p>
+          <p>{t(record.method)}</p>
         </div>
       )}
       {record.totalDonated && (

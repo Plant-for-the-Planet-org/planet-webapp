@@ -17,20 +17,28 @@ import DateFnsUtils from '@date-io/date-fns';
 import materialTheme from '../../../theme/themeStyles';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { CircularProgress } from '@material-ui/core';
 export const CancelModal = ({
   cancelModalOpen,
   handleCancelModalClose,
   record,
+  fetchRecurrentDonations,
 }: any) => {
   const { theme } = React.useContext(ThemeContext);
   const { token } = React.useContext(UserPropsContext);
-  const [option, setoption] = React.useState();
+  const [option, setoption] = React.useState('cancelImmediately');
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState(new Date());
-
+  const [disabled, setDisabled] = React.useState(false);
   const { t, i18n, ready } = useTranslation(['me']);
   const { handleError } = React.useContext(ErrorHandlingContext);
+
+  React.useEffect(() => {
+    setDisabled(false);
+  }, [cancelModalOpen]);
+
   const cancelDonation = () => {
+    setDisabled(true);
     console.log(record.id, date.toISOString().split('T')[0], '{record.id');
     const bodyToSend = {
       cancellationType:
@@ -53,6 +61,7 @@ export const CancelModal = ({
       .then((res) => {
         console.log(res, 'Response');
         handleCancelModalClose();
+        fetchRecurrentDonations();
       })
       .catch((err) => {
         console.log(err, 'Error');
@@ -175,9 +184,25 @@ export const CancelModal = ({
             <button
               onClick={() => cancelDonation()}
               className={styles.submitButton}
+              disabled={disabled}
               style={{ minWidth: '20px', marginTop: '30px' }}
             >
-              {t('save')}
+              {disabled ? (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {t('cancellingDonation')}
+                  <div style={{ marginLeft: '5px' }}>
+                    <CircularProgress color="inherit" size={15} />
+                  </div>
+                </div>
+              ) : (
+                t('save')
+              )}
             </button>
           </div>
         </div>

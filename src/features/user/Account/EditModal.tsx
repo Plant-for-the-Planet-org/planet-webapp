@@ -7,6 +7,7 @@ import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import styles from './AccountHistory.module.scss';
 import {
   Backdrop,
+  CircularProgress,
   Fade,
   InputAdornment,
   ThemeProvider,
@@ -33,6 +34,7 @@ export const EditModal = ({
   editModalOpen,
   handleEditModalClose,
   record,
+  fetchRecurrentDonations,
 }: any) => {
   console.log('record', record);
   const [frequency, setFrequency] = React.useState(record?.frequency);
@@ -94,6 +96,7 @@ export const EditModal = ({
         }
         console.log(res, 'Response');
         handleEditModalClose();
+        fetchRecurrentDonations();
       })
       .catch((err) => console.log(err));
   };
@@ -250,23 +253,32 @@ export const EditModal = ({
               []
             )}
           </form>
+          <div className={styles.note}>
+            <p>{record.method === 'paypal' ? t('me:noteToWait') : []}</p>
+          </div>
           <button
             onClick={handleSubmit(onSubmit)}
             className={styles.submitButton}
             style={{ minWidth: '20px', marginTop: '30px' }}
             disabled={disabled}
           >
-            {t('save')}
+            {disabled ? (
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}
+              >
+                {t('editingDonation')}
+                <div style={{ marginLeft: '5px' }}>
+                  <CircularProgress color="inherit" size={15} />
+                </div>
+              </div>
+            ) : (
+              t('save')
+            )}
           </button>
-          {/* <button
-            onClick={() => {
-              handleEditModalClose();
-            }}
-            className={styles.cancelButton}
-            style={{ minWidth: '20px', marginTop: '30px' }}
-          >
-            {t('cancel')}
-          </button> */}
         </div>
       </Fade>
     </Modal>

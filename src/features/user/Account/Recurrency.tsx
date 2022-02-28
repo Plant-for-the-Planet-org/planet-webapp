@@ -38,9 +38,9 @@ export default function Recurrency({
   const [currentRecord, setCurrentRecord] = React.useState<number>(0);
   const router = useRouter();
 
-  React.useEffect(() => {
-    fetchRecurrentDonations();
-  }, [editModalOpen, pauseModalOpen, cancelModalOpen, reactivateModalOpen]);
+  // React.useEffect(() => {
+  //   fetchRecurrentDonations();
+  // }, [editModalOpen, pauseModalOpen, cancelModalOpen, reactivateModalOpen]);
 
   React.useEffect(() => {
     if (
@@ -165,21 +165,25 @@ export default function Recurrency({
             pauseModalOpen={pauseModalOpen}
             handlePauseModalClose={handlePauseModalClose}
             record={currentRecord}
+            fetchRecurrentDonations={fetchRecurrentDonations}
           />
           <CancelModal
             cancelModalOpen={cancelModalOpen}
             handleCancelModalClose={handleCancelModalClose}
             record={currentRecord}
+            fetchRecurrentDonations={fetchRecurrentDonations}
           />
           <EditModal
             editModalOpen={editModalOpen}
             handleEditModalClose={handleEditModalClose}
             record={currentRecord}
+            fetchRecurrentDonations={fetchRecurrentDonations}
           />
           <ReactivateModal
             reactivateModalOpen={reactivateModalOpen}
             handleReactivateModalClose={handleReactivateModalClose}
             record={currentRecord}
+            fetchRecurrentDonations={fetchRecurrentDonations}
           />
         </div>
       </>

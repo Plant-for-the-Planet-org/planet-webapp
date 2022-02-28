@@ -177,6 +177,7 @@
   "recurrencySubTitle": "Manage all your Recurrency Donations from one place.",
   "payments": "Payments",
   "stripe-sepa_debit": "SEPA (Stripe)",
+  "sepa_debit": "SEPA (Stripe)",
   "offline-offline": "Offline",
   "profile": "Profile",
   "projects": "Projects",
@@ -205,5 +206,10 @@
   "past_due": "past due",
   "unpaid": "unpaid",
   "trialing": "active",
-  "paused": "paused"
+  "paused": "paused",
+  "pausingDonation": "Pausing donation",
+  "cancellingDonation": "Cancelling donation",
+  "reactivatingDonation": "Reactivating donation",
+  "editingDonation": "Editing donation",
+  "noteToWait": "Note: It will take 5-10 minutes to update the Recurring Donation"
 }
