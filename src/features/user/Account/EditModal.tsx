@@ -95,7 +95,7 @@ export const EditModal = ({
           handleEditModalClose();
           fetchRecurrentDonations();
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log('Error editing recurring donation.'));
     } else {
       handleEditModalClose();
     }

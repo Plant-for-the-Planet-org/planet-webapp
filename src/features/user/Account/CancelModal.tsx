@@ -62,7 +62,7 @@ export const CancelModal = ({
         fetchRecurrentDonations();
       })
       .catch((err) => {
-        console.log(err, 'Error');
+        console.log('Error cancelling recurring donations.');
       });
   };
   return (

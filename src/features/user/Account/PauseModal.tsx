@@ -70,7 +70,7 @@ export const PauseModal = ({
         fetchRecurrentDonations();
       })
       .catch((err) => {
-        console.log(err, 'Error');
+        console.log('Error pausing recurring donation.');
       });
   };
   return (

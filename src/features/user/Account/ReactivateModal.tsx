@@ -41,7 +41,7 @@ export const ReactivateModal = ({
         fetchRecurrentDonations();
       })
       .catch((err) => {
-        console.log(err, 'Error');
+        console.log('Error reactivating recurring donation');
       });
   };
   return (
