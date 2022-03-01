@@ -58,9 +58,13 @@ export default function Donate({
         setInternalCurrencyCode(currency);
         setCurrencyCode(currency);
         const project = await getRequest(
-          `/app/projects/${router.query.p}?_scope=extended&currency=${currency}`,
+          `/app/projects/${router.query.p}`,
           handleError,
-          '/'
+          '/',
+          {
+            _scope: 'extended',
+            currency: currency,
+          }
         );
         setProject(project);
         setShowSingleProject(true);

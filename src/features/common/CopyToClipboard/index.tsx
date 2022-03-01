@@ -7,37 +7,38 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import i18next from '../../../../i18n';
 const { useTranslation } = i18next;
 function Alert(props: AlertProps) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
-  
-  const useStyles = makeStyles((theme: Theme) => ({
-    root: {
-      width: '100%',
-      '& > * + *': {
-        marginTop: theme.spacing(2),
-      },
-    },
-  }));
-  
-
-interface Props {
-    text: any;
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export default function CopyToClipboard({text}: Props): ReactElement {
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
+
+
+interface Props {
+  text: any;
+  isButton: any;
+}
+
+export default function CopyToClipboard({ text, isButton }: Props): ReactElement {
   const { t, i18n } = useTranslation(['common']);
-    const classes = useStyles();
+  const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
   const handleClick = async () => {
     try {
-        await navigator.clipboard.writeText(text);
-        setOpen(true);
-      } catch (err) {
-        console.error('Failed to copy text: ', err);
-      }
-    
-      }
+      await navigator.clipboard.writeText(text);
+      setOpen(true);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+
+  }
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === 'clickaway') {
@@ -46,16 +47,16 @@ export default function CopyToClipboard({text}: Props): ReactElement {
 
     setOpen(false);
   };
-    return (
-        <>
-        <div onClick={handleClick} className={styles.copyButtonContainer}>
-        <CopyIcon/> 
-        </div>
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+  return (
+    <>
+      <div onClick={handleClick} className={`${styles.copyButtonContainer} ${isButton ? styles.button : ''}`}>
+        <CopyIcon />
+      </div>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success">
-            {t("copiedToClipboard")}
+          {t("copiedToClipboard")}
         </Alert>
       </Snackbar>
-        </>
-    )
+    </>
+  )
 }
