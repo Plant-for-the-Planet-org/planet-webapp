@@ -48,5 +48,6 @@
   "geoJsonError": "Unsupported GeoJSON/KML format",
   "atLeastOneSpeciesRequired": "At least one species is required",
   "treesRequired": "Tree Count Required",
-  "count": "Count"
+  "count": "Count",
+  "addSampleTree": "Add Sample Tree"
 }

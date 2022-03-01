@@ -67,9 +67,6 @@ export default function ImportData({ }: Props): ReactElement {
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [activeMethod, setActiveMethod] = React.useState('import');
 
-
-  console.log('activeStep', activeStep);
-
   const handleNext = () => {
     setActiveStep(activeStep + 1);
   };
