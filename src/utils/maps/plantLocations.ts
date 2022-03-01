@@ -58,7 +58,8 @@ export async function getAllPlantLocations(
     '/',
     {
       _scope: 'extended',
-    }
+    },
+    '1.0.4'
   );
   if (result) {
     return result;

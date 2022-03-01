@@ -1,29 +1,35 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
+import { UserPropsContext } from './UserPropsContext';
 
-interface Props {}
+interface Props { }
 
 export const ErrorHandlingContext = React.createContext({
   error: null,
-  setError: () => {},
-  handleError: ({}) => {},
+  setError: () => { },
+  handleError: ({ }) => { },
 });
 
 function ErrorHandlingProvider({ children }: any): ReactElement {
   const [error, setError] = React.useState<{} | null>(null);
   const router = useRouter();
+  const { setUser, logoutUser, loginWithRedirect } = React.useContext(UserPropsContext);
 
   const handleError = (error: any) => {
     setError(error);
     setTimeout(() => {
       setError(null);
-      console.log(`error.redirect`, error.redirect);
       if (error.redirect) {
-        // if (typeof error.redirect === 'string') {
-        router.push(error.redirect);
-        // } else {
-        // router.push('/');
-        // }
+        if (error.code === 401) {
+          setUser(false);
+          logoutUser(`${process.env.NEXTAUTH_URL}/`);
+          loginWithRedirect({
+            redirectUri: `${process.env.NEXTAUTH_URL}/login`,
+            ui_locales: localStorage.getItem('language') || 'en',
+          });
+        } else {
+          router.push(error.redirect);
+        }
       }
     }, 5000);
   };

@@ -35,7 +35,9 @@ function TreeMapper({ }: Props): ReactElement {
     setProgress(70);
 
     if (next && links?.next) {
-      const response = await getAuthenticatedRequest(links.next, token);
+      const response = await getAuthenticatedRequest(links.next, token, {},
+        handleError,
+        '/profile', undefined, '1.0.4');
       if (response) {
         const newPlantLocations = response?.items;
         for (const itr in newPlantLocations) {
@@ -64,7 +66,12 @@ function TreeMapper({ }: Props): ReactElement {
     } else {
       const response = await getAuthenticatedRequest(
         '/treemapper/plantLocations?_scope=extended&limit=15',
-        token
+        token,
+        {},
+        handleError,
+        '/profile',
+        undefined,
+        '1.0.4'
       );
       if (response) {
         const plantLocations = response?.items;

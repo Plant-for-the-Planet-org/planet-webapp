@@ -1,4 +1,5 @@
 import { TENANT_ID } from '../constants/environment';
+import { getQueryString } from './getQueryString';
 import getsessionId from './getSessionId';
 import { validateToken } from './validateToken';
 
@@ -15,6 +16,7 @@ const handleApiError = (
         type: 'error',
         message: 'notFound',
         redirect: redirect,
+        code: error,
       });
     }
     // show error in console
@@ -25,6 +27,7 @@ const handleApiError = (
         type: 'warning',
         message: 'unauthorized',
         redirect: redirect,
+        code: error,
       });
     }
     console.error('Error 401: You are not Authorized!');
@@ -34,6 +37,7 @@ const handleApiError = (
         type: 'warning',
         message: 'unauthorized',
         redirect: redirect,
+        code: error,
       });
     }
     console.error('Error 403: Forbidden');
@@ -52,6 +56,7 @@ const handleApiError = (
         type: 'error',
         message: 'internalServerError',
         redirect: redirect,
+        code: error,
       });
     }
     console.error('Error 500: Server Error!');
@@ -80,14 +85,13 @@ export async function getRequest(
   url: any,
   errorHandler?: Function,
   redirect?: string,
-  queryParams?: { [key: string]: string }
+  queryParams?: { [key: string]: string },
+  version?: string
 ) {
   let result;
   const lang = localStorage.getItem('language') || 'en';
   const query: any = { ...queryParams, locale: lang };
-  const queryString = Object.keys(query)
-    .map((key) => key + '=' + query[key])
-    .join('&');
+  const queryString = getQueryString(query);
   await fetch(`${process.env.API_ENDPOINT}${url}?${queryString}`, {
     method: 'GET',
     headers: {
@@ -98,6 +102,7 @@ export async function getRequest(
           ? localStorage.getItem('language')
           : 'en'
       }`,
+      'x-accept-versions': version ? version : '1.0.3',
     },
   })
     .then(async (res) => {
@@ -113,21 +118,23 @@ export async function getAuthenticatedRequest(
   token: any,
   header: any = null,
   errorHandler?: Function,
-  redirect?: string
+  redirect?: string,
+  queryParams?: { [key: string]: string },
+  version?: string
 ): Promise<any> {
   let result = {};
-  await fetch(`${process.env.API_ENDPOINT}` + url, {
+  const lang = localStorage.getItem('language') || 'en';
+  const query: any = { ...queryParams };
+  const queryString = getQueryString(query);
+
+  await fetch(`${process.env.API_ENDPOINT}${url}?${queryString}`, {
     method: 'GET',
     headers: {
       'tenant-key': `${TENANT_ID}`,
       'X-SESSION-ID': await getsessionId(),
       Authorization: `Bearer ${token}`,
-      'x-locale': `${
-        localStorage.getItem('language')
-          ? localStorage.getItem('language')
-          : 'en'
-      }`,
-      'x-accept-versions': '1.0.3',
+      'x-locale': `${lang}`,
+      'x-accept-versions': version ? version : '1.0.3',
     },
   })
     .then(async (res) => {
@@ -178,7 +185,8 @@ export async function postAuthenticatedRequest(
 export async function postRequest(
   url: any,
   data: any,
-  errorHandler?: Function
+  errorHandler?: Function,
+  redirect?: string
 ): Promise<any> {
   const res = await fetch(process.env.API_ENDPOINT + url, {
     method: 'POST',
@@ -195,7 +203,7 @@ export async function postRequest(
     },
   });
   const result = await res.json();
-  handleApiError(res.status, errorHandler);
+  handleApiError(res.status, errorHandler, redirect);
   return result;
 }
 
