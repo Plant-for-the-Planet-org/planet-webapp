@@ -39,7 +39,6 @@ export const CancelModal = ({
 
   const cancelDonation = () => {
     setDisabled(true);
-    console.log(record.id, date.toISOString().split('T')[0], '{record.id');
     const bodyToSend = {
       cancellationType:
         option == 'cancelImmediately'
@@ -59,7 +58,6 @@ export const CancelModal = ({
       handleError
     )
       .then((res) => {
-        console.log(res, 'Response');
         handleCancelModalClose();
         fetchRecurrentDonations();
       })
@@ -67,7 +65,6 @@ export const CancelModal = ({
         console.log(err, 'Error');
       });
   };
-  console.log(record, 'record');
   return (
     <Modal
       className={'modalContainer' + ' ' + theme}
@@ -161,7 +158,6 @@ export const CancelModal = ({
                       <Calendar
                         date={date}
                         onChange={(value) => {
-                          console.log(value);
                           setdate(value);
                         }}
                         minDate={

@@ -37,7 +37,6 @@ export const ReactivateModal = ({
       handleError
     )
       .then((res) => {
-        console.log(res, 'Response');
         handleReactivateModalClose();
         fetchRecurrentDonations();
       })

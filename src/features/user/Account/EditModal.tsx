@@ -36,7 +36,6 @@ export const EditModal = ({
   record,
   fetchRecurrentDonations,
 }: any) => {
-  console.log('record', record);
   const [frequency, setFrequency] = React.useState(record?.frequency);
   const { theme } = React.useContext(ThemeContext);
   const [userLang, setUserLang] = React.useState('en');
@@ -82,8 +81,6 @@ export const EditModal = ({
       delete bodyToSend.centAmount;
     }
 
-    console.log(bodyToSend, 'bodyToSend');
-
     if (Object.keys(bodyToSend).length !== 0) {
       putAuthenticatedRequest(
         `/app/subscriptions/${record?.id}?scope=modify`,
@@ -95,7 +92,6 @@ export const EditModal = ({
           if (res?.status === 'action_required') {
             window.open(res.response.confirmationUrl, '_blank');
           }
-          console.log(res, 'Response');
           handleEditModalClose();
           fetchRecurrentDonations();
         })

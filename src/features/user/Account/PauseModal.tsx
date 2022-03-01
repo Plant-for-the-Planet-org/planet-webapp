@@ -66,7 +66,6 @@ export const PauseModal = ({
       handleError
     )
       .then((res) => {
-        console.log(res, 'Response');
         handlePauseModalClose();
         fetchRecurrentDonations();
       })
@@ -162,7 +161,6 @@ export const PauseModal = ({
                     <Calendar
                       date={date}
                       onChange={(value) => {
-                        console.log('value calendar', value);
                         setdate(value);
                       }}
                       minDate={

@@ -17,7 +17,6 @@ function ErrorHandlingProvider({ children }: any): ReactElement {
     setError(error);
     setTimeout(() => {
       setError(null);
-      console.log(`error.redirect`, error.redirect);
       if (error.redirect) {
         // if (typeof error.redirect === 'string') {
         router.push(error.redirect);
