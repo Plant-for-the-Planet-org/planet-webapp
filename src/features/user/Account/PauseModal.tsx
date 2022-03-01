@@ -17,11 +17,13 @@ import DateFnsUtils from '@date-io/date-fns';
 import materialTheme from '../../../theme/themeStyles';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export const PauseModal = ({
   pauseModalOpen,
   handlePauseModalClose,
   record,
+  fetchRecurrentDonations,
 }: any) => {
   const { theme } = React.useContext(ThemeContext);
   const { token } = React.useContext(UserPropsContext);
@@ -30,6 +32,8 @@ export const PauseModal = ({
   const [date, setdate] = React.useState(
     new Date(new Date(record?.currentPeriodEnd).valueOf() + 1000 * 3600 * 24)
   );
+  const [disabled, setDisabled] = React.useState(false);
+
   const { t, i18n, ready } = useTranslation(['me']);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
@@ -39,7 +43,12 @@ export const PauseModal = ({
     );
   }, [record?.currentPeriodEnd]);
 
+  React.useEffect(() => {
+    setDisabled(false);
+  }, [pauseModalOpen]);
+
   const pauseDonation = () => {
+    setDisabled(true);
     const bodyToSend = {
       pauseType:
         option == 'pauseForMonth' || option == 'pauseUntilDate'
@@ -53,14 +62,15 @@ export const PauseModal = ({
     putAuthenticatedRequest(
       `/app/subscriptions/${record.id}?scope=pause`,
       bodyToSend,
-      token, handleError
+      token,
+      handleError
     )
       .then((res) => {
-        console.log(res, 'Response');
         handlePauseModalClose();
+        fetchRecurrentDonations();
       })
       .catch((err) => {
-        console.log(err, 'Error');
+        console.log('Error pausing recurring donation.');
       });
   };
   return (
@@ -142,22 +152,21 @@ export const PauseModal = ({
                 <ThemeProvider theme={materialTheme}>
                   <MuiPickersUtilsProvider
                     utils={DateFnsUtils}
-                  // locale={
-                  //   localeMapForDate[userLang]
-                  //     ? localeMapForDate[userLang]
-                  //     : localeMapForDate['en']
-                  // }
+                    // locale={
+                    //   localeMapForDate[userLang]
+                    //     ? localeMapForDate[userLang]
+                    //     : localeMapForDate['en']
+                    // }
                   >
                     <Calendar
                       date={date}
                       onChange={(value) => {
-                        console.log('value calendar', value);
                         setdate(value);
                       }}
                       minDate={
                         new Date(
                           new Date(record?.currentPeriodEnd).valueOf() +
-                          1000 * 3600 * 24
+                            1000 * 3600 * 24
                         )
                       }
                       disablePast={true}
@@ -175,9 +184,25 @@ export const PauseModal = ({
             <button
               onClick={() => pauseDonation()}
               className={styles.submitButton}
+              disabled={disabled}
               style={{ minWidth: '20px', marginTop: '30px' }}
             >
-              {t('save')}
+              {disabled ? (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {t('pausingDonation')}
+                  <div style={{ marginLeft: '5px' }}>
+                    <CircularProgress color="inherit" size={15} />
+                  </div>
+                </div>
+              ) : (
+                t('save')
+              )}
             </button>
           </div>
         </div>
