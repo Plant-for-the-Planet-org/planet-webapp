@@ -27,6 +27,7 @@ export default function Donate({
 }: Props) {
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
+  const [internalLanguage, setInternalLanguage] = React.useState('');
   const [open, setOpen] = React.useState(false);
   const { theme } = React.useContext(ThemeContext);
   const { i18n } = useTranslation();
@@ -57,9 +58,10 @@ export default function Donate({
 
   React.useEffect(() => {
     async function loadProject() {
-      if (!internalCurrencyCode || currencyCode !== internalCurrencyCode) {
+      if (!internalCurrencyCode || currencyCode !== internalCurrencyCode || internalLanguage !== i18n.language) {
         const currency = getStoredCurrency();
         setInternalCurrencyCode(currency);
+        setInternalLanguage(i18n.language);
         setCurrencyCode(currency);
         const project = await getRequest(
           `/app/projects/${router.query.p}`,
