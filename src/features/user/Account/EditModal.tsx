@@ -7,6 +7,7 @@ import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import styles from './AccountHistory.module.scss';
 import {
   Backdrop,
+  CircularProgress,
   Fade,
   InputAdornment,
   ThemeProvider,
@@ -33,14 +34,17 @@ export const EditModal = ({
   editModalOpen,
   handleEditModalClose,
   record,
+  fetchRecurrentDonations,
 }: any) => {
   const [frequency, setFrequency] = React.useState(record?.frequency);
   const { theme } = React.useContext(ThemeContext);
   const [userLang, setUserLang] = React.useState('en');
+  const [disabled, setDisabled] = React.useState(false);
   const { t, i18n } = useTranslation(['me']);
-  const { register, handleSubmit, errors, setValue, control } = useForm({
-    mode: 'all',
-  });
+  const { register, handleSubmit, errors, setValue, control, getValues } =
+    useForm({
+      mode: 'all',
+    });
   const { token } = React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
   React.useEffect(() => {
@@ -49,28 +53,52 @@ export const EditModal = ({
       if (userLang) setUserLang(userLang);
     }
   }, []);
+  React.useEffect(() => {
+    setDisabled(false);
+  }, [editModalOpen]);
+
   const onSubmit = (data: any) => {
-    console.log(
-      new Date(data.date).toISOString().split('T')[0],
-      Number(data.donationAmount.slice(1)) * 100,
-      frequency,
-      'data'
-    );
+    setDisabled(true);
     const bodyToSend = {
-      nextBilling: new Date(data.date).toISOString().split('T')[0],
-      centAmount: Number(data.donationAmount) * 100,
+      nextBilling:
+        record.method !== 'paypal'
+          ? new Date(data.currentPeriodEnd).toISOString().split('T')[0]
+          : null,
+      centAmount: Number(data.amount) * 100,
       frequency: frequency,
     };
-    putAuthenticatedRequest(
-      `/app/subscriptions/${record?.id}?scope=modify`,
-      bodyToSend,
-      token, handleError
-    )
-      .then((res) => {
-        console.log(res, 'Response');
-        handleEditModalClose();
-      })
-      .catch((err) => console.log(err));
+    if (
+      new Date(data.currentPeriodEnd).toDateString() ==
+        new Date(record.currentPeriodEnd).toDateString() ||
+      bodyToSend.nextBilling === null
+    ) {
+      delete bodyToSend.nextBilling;
+    }
+    if (data.frequency.toLowerCase() === record.frequency) {
+      delete bodyToSend.frequency;
+    }
+    if (data.amount == record.amount) {
+      delete bodyToSend.centAmount;
+    }
+
+    if (Object.keys(bodyToSend).length !== 0) {
+      putAuthenticatedRequest(
+        `/app/subscriptions/${record?.id}?scope=modify`,
+        bodyToSend,
+        token,
+        handleError
+      )
+        .then((res) => {
+          if (res?.status === 'action_required') {
+            window.open(res.response.confirmationUrl, '_blank');
+          }
+          handleEditModalClose();
+          fetchRecurrentDonations();
+        })
+        .catch((err) => console.log('Error editing recurring donation.'));
+    } else {
+      handleEditModalClose();
+    }
   };
 
   return (
@@ -115,40 +143,13 @@ export const EditModal = ({
             </div>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
-            {/* <div className={styles.formRowInput}>
-              <MaterialTextField
-                inputRef={register({ required: true })}
-                label={t('project')}
-                variant="outlined"
-                name="project"
-                defaultValue={record?.project.name}
-                disabled={true}
-              />
-              {errors.project && (
-                <span className={styles.formErrors}>
-                  {t('donate:projectRequired')}
-                </span>
-              )}
-            </div> */}
-            {/* <div className={styles.formRowInput}>
-            <MaterialTextField
-              inputRef={register({ required: true })}
-              label={t('donorName')}
-              variant="outlined"
-              name="donorName"
-              defaultValue={record.donorName}
-            />
-            {errors.donorName && (
-              <span className={styles.formErrors}>{t('donorNameRequired')}</span>
-            )}
-          </div> */}
             <div className={styles.formRow}>
               <div className={styles.formRowInput}>
                 <MaterialTextField
                   inputRef={register({ required: true })}
                   label={t('donationAmount')}
                   variant="outlined"
-                  name="donationAmount"
+                  name="amount"
                   defaultValue={record?.amount}
                   InputProps={{
                     startAdornment: (
@@ -162,7 +163,7 @@ export const EditModal = ({
                     ),
                   }}
                 />
-                {errors.donationAmount && (
+                {errors.amount && (
                   <span className={styles.formErrors}>
                     {t('donationAmountRequired')}
                   </span>
@@ -190,43 +191,6 @@ export const EditModal = ({
                       variant="outlined"
                       label={t('frequency')}
                       name="frequency"
-                    // defaultValue={"spme"}
-                    />
-                  )}
-                />
-                {errors.frequency && (
-                  <span className={styles.formErrors}>
-                    {t('frequencyRequired')}
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className={styles.formRow}>
-              {/* <div className={styles.formRowInput}>
-                <Autocomplete
-                  disablePortal
-                  id="combo-box-demo"
-                  options={['monthly', 'yearly']}
-                  sx={{ width: 300 }}
-                  defaultValue={record?.frequency}
-                  onChange={(event: any, newValue: string) => {
-                    if (newValue) {
-                      setFrequency(newValue);
-                    }
-                  }}
-                  getOptionLabel={(option) => t(`${option.toLowerCase()}`)}
-                  renderOption={(option) => (
-                    <>
-                      {t(`${option.toLowerCase()}`)}
-                    </>
-                  )}
-                  renderInput={(params) => (
-                    <MaterialTextField
-                      {...params}
-                      inputRef={register({ required: true })}
-                      variant="outlined"
-                      label={t('frequency')}
-                      name="frequency"
                       // defaultValue={"spme"}
                     />
                   )}
@@ -236,73 +200,85 @@ export const EditModal = ({
                     {t('frequencyRequired')}
                   </span>
                 )}
-              </div> */}
-              <div className={styles.formRowInput}>
-                <ThemeProvider theme={materialTheme}>
-                  <MuiPickersUtilsProvider
-                    utils={DateFnsUtils}
-                    locale={
-                      localeMapForDate[userLang]
-                        ? localeMapForDate[userLang]
-                        : localeMapForDate['en']
-                    }
-                  >
-                    <Controller
-                      render={(properties) => (
-                        <DatePicker
-                          label={t('me:date')}
-                          value={properties.value}
-                          onChange={properties.onChange}
-                          inputVariant="outlined"
-                          TextFieldComponent={MaterialTextField}
-                          autoOk
-                          format="MMMM d, yyyy"
-                          minDate={
-                            new Date(
-                              new Date(record?.currentPeriodEnd).valueOf() +
-                              1000 * 3600 * 24
-                            )
-                          }
-                          maxDate={
-                            record?.endsAt ? record.endsAt : '2100-01-01'
-                          }
-                        />
-                      )}
-                      name="date"
-                      control={control}
-                      defaultValue={
-                        new Date(
-                          new Date(record?.currentPeriodEnd).valueOf() +
-                          1000 * 3600 * 24
-                        )
-                      }
-                    />
-                  </MuiPickersUtilsProvider>
-                </ThemeProvider>
-                {errors.date && (
-                  <span className={styles.formErrors}>
-                    {t('donate:dateRequired')}
-                  </span>
-                )}
               </div>
             </div>
+            {record?.method !== 'paypal' ? (
+              <div className={styles.formRow}>
+                <div className={styles.formRowInput}>
+                  <ThemeProvider theme={materialTheme}>
+                    <MuiPickersUtilsProvider
+                      utils={DateFnsUtils}
+                      locale={
+                        localeMapForDate[userLang]
+                          ? localeMapForDate[userLang]
+                          : localeMapForDate['en']
+                      }
+                    >
+                      <Controller
+                        render={(properties) => (
+                          <DatePicker
+                            label={t('me:date')}
+                            value={properties.value}
+                            onChange={properties.onChange}
+                            inputVariant="outlined"
+                            TextFieldComponent={MaterialTextField}
+                            autoOk
+                            format="MMMM d, yyyy"
+                            minDate={
+                              new Date(
+                                new Date(record?.currentPeriodEnd).valueOf()
+                              )
+                            }
+                            maxDate={
+                              record?.endsAt ? record.endsAt : '2100-01-01'
+                            }
+                          />
+                        )}
+                        name="currentPeriodEnd"
+                        control={control}
+                        defaultValue={
+                          new Date(new Date(record?.currentPeriodEnd).valueOf())
+                        }
+                      />
+                    </MuiPickersUtilsProvider>
+                  </ThemeProvider>
+                  {errors.currentPeriodEnd && (
+                    <span className={styles.formErrors}>
+                      {t('donate:dateRequired')}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ) : (
+              []
+            )}
           </form>
+          <div className={styles.note}>
+            <p>{record.method === 'paypal' ? t('me:noteToWait') : []}</p>
+          </div>
           <button
             onClick={handleSubmit(onSubmit)}
             className={styles.submitButton}
             style={{ minWidth: '20px', marginTop: '30px' }}
+            disabled={disabled}
           >
-            {t('save')}
+            {disabled ? (
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}
+              >
+                {t('editingDonation')}
+                <div style={{ marginLeft: '5px' }}>
+                  <CircularProgress color="inherit" size={15} />
+                </div>
+              </div>
+            ) : (
+              t('save')
+            )}
           </button>
-          {/* <button
-            onClick={() => {
-              handleEditModalClose();
-            }}
-            className={styles.cancelButton}
-            style={{ minWidth: '20px', marginTop: '30px' }}
-          >
-            {t('cancel')}
-          </button> */}
         </div>
       </Fade>
     </Modal>
