@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import React, { ReactElement } from 'react'
-import ThankYou from '../src/features/donations/screens/ThankYou';
+import ThankYou from '../src/features/donations/components/Thankyou';
 interface Props {
 
 }
