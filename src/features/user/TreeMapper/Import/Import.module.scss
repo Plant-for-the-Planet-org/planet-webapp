@@ -4,7 +4,7 @@
   margin-top: 300px;
   font-family: $primaryFontFamily;
   color: $primaryFontColor;
-  margin-bottom: 80px;
+  // margin-bottom: 80px;
   background-color: $backgroundBase;
 }
 
@@ -82,7 +82,7 @@
   display: flex;
   width: 50%;
   max-width: 100%;
-  padding: 5px;
+  padding: 8px;
   flex-direction: column;
   div,
   input {
@@ -92,7 +92,7 @@
 
 .formFieldLarge {
   margin-top: 20px;
-  padding: 5px;
+  padding: 8px;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -372,6 +372,7 @@
 }
 
 .errorMessage {
+  margin-top: 5px;
   color: $dangerColor;
   font-size: $fontSmall;
 }
@@ -411,7 +412,6 @@
 
   .profilePage {
     margin-top: 80px;
-    margin-bottom: 0;
   }
 
   .listContainer {
