@@ -256,6 +256,7 @@ export default function SampleTrees({
         {fields.map((item, index) => {
           return (
             <SampleTreeCard
+              key={index}
               index={index}
               register={register}
               remove={remove}

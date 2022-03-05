@@ -376,7 +376,7 @@ export default function PlantingLocation({
       <div className={styles.formFieldLarge}>
         <div className={styles.importTabs}>
           {importMethods.map((method, index) => (
-            <div
+            <div key={index}
               onClick={() => setActiveMethod(method)}
               className={`${styles.importTab} ${activeMethod === method ? styles.active : ''
                 }`}
@@ -394,6 +394,7 @@ export default function PlantingLocation({
       {mySpecies && fields.map((item, index) => {
         return (
           <PlantedSpecies
+            key={index}
             index={index}
             t={t}
             register={register}
