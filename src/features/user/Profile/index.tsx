@@ -27,7 +27,7 @@ function Profile({ userprofile, authenticatedType }: Props): ReactElement {
   const [addTargetModalOpen, setAddTargetModalOpen] = React.useState(false);
 
   return (
-    <div> 
+    <div>
     {/* TO DO - find solution for this */}
       {/* maybe we use this as edit button */}
       {/* {authenticatedType === 'private' && (
@@ -83,6 +83,7 @@ function Profile({ userprofile, authenticatedType }: Props): ReactElement {
               <div className={styles.treeCounterDescription}>
                 {ready ? (
                   <ReadMoreReact
+                    key={userprofile.bio || ''}
                     ideal={120}
                     readMoreText={t('donate:readMore')}
                     text={userprofile.bio || ''}
