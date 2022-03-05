@@ -58,7 +58,7 @@ export default function PlantingLocation({
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [mySpecies, setMySpecies] = React.useState(null);
 
-  const { t, ready } = useTranslation(['treemapper', 'common']);
+  const { t, ready } = useTranslation(['treemapper', 'common', 'maps']);
   const defaultValues = {
     plantDate: new Date(),
     plantProject: '',
@@ -267,10 +267,10 @@ export default function PlantingLocation({
                 {isUploadingData ? (
                   <div className={styles.spinner}></div>
                 ) : (
-                  'Upload File'
+                  t('treemapper:uploadFile')
                 )}
               </button>
-              <p style={{ marginTop: '18px' }}>{'File (geojson/kml)'}</p>
+              <p style={{ marginTop: '18px' }}>{t('treemapper:fileFormatKML')}</p>
             </label>
           </>
         );
@@ -390,7 +390,7 @@ export default function PlantingLocation({
           {geoJsonError && t('treemapper:geoJsonError')}
         </div>
       </div>
-      <div className={styles.formSubTitle}>Species Planted</div>
+      <div className={styles.formSubTitle}>{t('maps:speciesPlanted')}</div>
       {mySpecies && fields.map((item, index) => {
         return (
           <PlantedSpecies

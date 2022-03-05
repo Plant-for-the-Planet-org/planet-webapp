@@ -204,5 +204,8 @@
   "past_due": "überfällig",
   "unpaid": "unbezahlt",
   "trialing": "aktiv",
-  "paused": "pausiert"
+  "paused": "pausiert",
+  "plantLocations": "Pflanzungsstandorte",
+  "mySpecies": "Meine Arten",
+  "import": "Importieren"
 }

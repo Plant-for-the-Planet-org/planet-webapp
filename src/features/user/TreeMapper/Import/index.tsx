@@ -145,10 +145,9 @@ export default function ImportData({ }: Props): ReactElement {
     <div className={styles.profilePage}>
       <div className={styles.pageContainer}>
         <div className={styles.listContainer}>
-          <div className={styles.pageTitle}>Import Data</div>
+          <div className={styles.pageTitle}>{t('treemapper:importData')}</div>
           <p>
-            You can import kml, csv and other files to TreeMapper.... (only
-            available on web) type: `external` not off-site
+            {t('treemapper:importExplanation')}
           </p>
           <div className={styles.stepperContainer}>
             <Stepper

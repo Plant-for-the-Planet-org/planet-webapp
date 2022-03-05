@@ -49,5 +49,13 @@
   "atLeastOneSpeciesRequired": "At least one species is required",
   "treesRequired": "Tree Count Required",
   "count": "Count",
-  "addSampleTree": "Add Sample Tree"
+  "addSampleTree": "Add Sample Tree",
+  "uploadFile": "Upload File",
+  "fileFormatKML": "File (geojson/kml)",
+  "importData": "Import Data",
+  "importExplanation": "You can import kml, csv and other files to TreeMapper.... (only available on web) type: `external` not off-site.",
+  "downloadExplanation": "Download the following CSV template to import sample tree data in the designated format.",
+  "importCSV": "Import CSV",
+  "fileFormatCSV": "File (csv)",
+  "aliases": "Aliases"
 }

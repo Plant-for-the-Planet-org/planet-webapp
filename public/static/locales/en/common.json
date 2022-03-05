@@ -90,5 +90,6 @@
   "unauthorized": "Something went wrong. Please try logging out and logging in back again.",
   "forbidden": "You are not allowed to view this page!",
   "internalServerError": "Internal Server Error - Please try again later!",
-  "validationFailed": "Validation Failed!"
+  "validationFailed": "Validation Failed!",
+  "add": "Add"
 }

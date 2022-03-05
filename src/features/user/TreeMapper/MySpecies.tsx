@@ -17,7 +17,7 @@ interface Props {
 }
 
 export default function MySpecies({ }: Props): ReactElement {
-    const { t } = useTranslation();
+    const { t } = useTranslation('treemapper', 'me', 'common');
     const { token, contextLoaded } = React.useContext(UserPropsContext);
     const { handleError } = React.useContext(ErrorHandlingContext);
     const [species, setSpecies] = React.useState<any[]>([]);
@@ -66,7 +66,7 @@ export default function MySpecies({ }: Props): ReactElement {
                         variant="outlined"
                     />
                     <MaterialButton id='addSpecies' onClick={handleSubmit(addSpecies)} width='120px' >
-                        Add
+                    {t('common:add')}
                     </MaterialButton>
                 </div>
             </form>

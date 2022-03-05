@@ -11,11 +11,11 @@ interface Props {
 }
 
 export default function Import({ }: Props): ReactElement {
-  const { t } = useTranslation('me');
+  const { t } = useTranslation('treemapper');
   return (
     <UserLayout>
       <Head>
-        <title>{t('Import Data')}</title>
+        <title>{t('treemapper:importData')}</title>
       </Head>
       <ImportData />
     </UserLayout>

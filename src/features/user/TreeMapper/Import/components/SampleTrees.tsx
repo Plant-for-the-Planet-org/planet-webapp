@@ -225,8 +225,7 @@ export default function SampleTrees({
   return (
     <>
       <div className={styles.formFieldLarge}>
-        Download the following CSV template to import sample tree data in the
-        designated format.
+        {t('treemapper:downloadExplanation')}
         <a href={url} download="Sample CSV Template" className={styles.downloadLink}>
           {t('treemapper:downloadCSVTemplate')}
         </a>
@@ -247,10 +246,10 @@ export default function SampleTrees({
             {isUploadingData ? (
               <div className={styles.spinner}></div>
             ) : (
-              'Import CSV'
+              t('treemapper:importCSV')
             )}
           </button>
-          <p style={{ marginTop: '18px' }}>{'File (csv)'}</p>
+          <p style={{ marginTop: '18px' }}>{t('treemapper:fileFormatCSV')}</p>
         </label>
       </div>
       <div className={styles.sampleTreeContainer}>
