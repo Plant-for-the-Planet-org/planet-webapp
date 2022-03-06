@@ -171,6 +171,7 @@ function SingleProjectDetails({}: Props): ReactElement {
                 <div className={'projectDescription'}>
                   <div className={'infoTitle'}>{t('donate:aboutProject')}</div>
                   <ReadMoreReact
+                    key={project.description}
                     min={300}
                     ideal={350}
                     max={400}

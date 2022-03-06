@@ -148,7 +148,7 @@ export default function Footer() {
                       <g id="Group_3318" data-name="Group 3318" transform="translate(-449.175 -500.555)">
                         <g className="iconFillNone" id="Ellipse_1309" data-name="Ellipse 1309" transform="translate(449.175 500.555)" strokeWidth="1">
                           <circle cx="23" cy="23" r="23" stroke="none" />
-                          <circle className="iconFillNone" cx="23" cy="23" r="22.5"  />
+                          <circle className="iconFillNone" cx="23" cy="23" r="22.5" />
                         </g>
                         <path className="iconFillColor" id="Icon_awesome-twitter" data-name="Icon awesome-twitter" d="M25.273,10.116c.018.246.018.492.018.738A16.171,16.171,0,0,1,8.865,27.01,16.513,16.513,0,0,1,0,24.461a12.14,12.14,0,0,0,1.394.07A11.685,11.685,0,0,0,8.561,22.1a5.772,5.772,0,0,1-5.4-3.938,7.4,7.4,0,0,0,1.09.088,6.2,6.2,0,0,0,1.519-.193,5.7,5.7,0,0,1-4.629-5.573v-.07a5.888,5.888,0,0,0,2.609.721A5.651,5.651,0,0,1,1.18,8.41a5.565,5.565,0,0,1,.786-2.865,16.5,16.5,0,0,0,11.9,5.942,6.309,6.309,0,0,1-.143-1.3A5.724,5.724,0,0,1,19.5,4.508,5.8,5.8,0,0,1,23.718,6.3,11.482,11.482,0,0,0,27.382,4.93a5.681,5.681,0,0,1-2.538,3.129,11.726,11.726,0,0,0,3.324-.879,12.3,12.3,0,0,1-2.9,2.936Z" transform="translate(458.175 510.046)" />
                       </g>
@@ -189,7 +189,7 @@ export default function Footer() {
                           <circle cx="23" cy="23" r="22.5"></circle>
                         </g>
                         <path
-                        className="iconFillColor"
+                          className="iconFillColor"
                           d="M5.959 26.63H.44V8.857h5.519zM3.2 6.433a3.211 3.211 0 113.2-3.227 3.223 3.223 0 01-3.2 3.227zm23.418 20.2h-5.51v-8.655c0-2.062-.042-4.706-2.869-4.706-2.869 0-3.309 2.24-3.309 4.558v8.8H9.416V8.857h5.293v2.424h.077a5.8 5.8 0 015.222-2.87c5.586 0 6.612 3.678 6.612 8.456v9.763z"
                           transform="translate(-5501.833 -4929.03)"
                         ></path>
@@ -254,14 +254,22 @@ export default function Footer() {
                     </svg>
                   </a>
                 </button>
+                <button id={'tiktokIcon'}>
+                  <a className={styles.social_button} target="_blank" rel="noreferrer" href="https://www.tiktok.com/@plantfortheplanet.org">
+                    <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="23" cy="23" r="22.5" fill="white" stroke="#2F3336" />
+                      <path d="M34.6241 20.0723C32.3019 20.0778 30.0366 19.3536 28.1483 18.0019V27.429C28.1477 29.175 27.614 30.8792 26.6186 32.3137C25.6233 33.7482 24.2137 34.8447 22.5784 35.4564C20.9431 36.0682 19.16 36.1662 17.4675 35.7372C15.7751 35.3082 14.2539 34.3727 13.1074 33.0559C11.9609 31.739 11.2438 30.1036 11.0519 28.3681C10.8601 26.6327 11.2026 24.8801 12.0337 23.3446C12.8648 21.8091 14.1448 20.5639 15.7027 19.7755C17.2606 18.9871 19.022 18.6932 20.7515 18.9329V23.6744C19.9601 23.4255 19.1103 23.433 18.3234 23.6958C17.5365 23.9587 16.8528 24.4635 16.3699 25.1381C15.887 25.8127 15.6296 26.6227 15.6345 27.4523C15.6394 28.2819 15.9063 29.0888 16.3971 29.7576C16.8879 30.4265 17.5775 30.9232 18.3674 31.1768C19.1574 31.4303 20.0072 31.4278 20.7956 31.1696C21.584 30.9114 22.2707 30.4106 22.7575 29.7388C23.2444 29.0671 23.5065 28.2586 23.5065 27.429V9H28.1483C28.1451 9.39199 28.1779 9.78344 28.2464 10.1694V10.1694C28.4077 11.031 28.7431 11.8507 29.232 12.5783C29.721 13.3058 30.3532 13.926 31.09 14.4008C32.1383 15.094 33.3674 15.4634 34.6241 15.4632V20.0723Z" fill="#2F3336" />
+                    </svg>
+                  </a>
+                </button>
               </div>
             </div>
             <div className={styles.footer_links_container}>
-            {config.darkModeEnabled &&
-              (<div className={styles.switch}>
-              <DarkModeSwitch />
-              </div>)
-            }
+              {config.darkModeEnabled &&
+                (<div className={styles.switch}>
+                  <DarkModeSwitch />
+                </div>)
+              }
 
               {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
               {config.footerLinks && config.footerLinks.map((key: any) => {

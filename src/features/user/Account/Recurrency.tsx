@@ -35,14 +35,25 @@ export default function Recurrency({
   const [pauseModalOpen, setpauseModalOpen] = React.useState(false);
   const [cancelModalOpen, setcancelModalOpen] = React.useState(false);
   const [reactivateModalOpen, setreactivateModalOpen] = React.useState(false);
+  const [currentRecord, setCurrentRecord] = React.useState<number>(0);
   const router = useRouter();
 
+  // React.useEffect(() => {
+  //   fetchRecurrentDonations();
+  // }, [editModalOpen, pauseModalOpen, cancelModalOpen, reactivateModalOpen]);
+
   React.useEffect(() => {
-    fetchRecurrentDonations();
-  }, [editModalOpen, pauseModalOpen, cancelModalOpen, reactivateModalOpen]);
+    if (
+      recurrencies &&
+      (selectedRecord !== null || selectedRecord !== undefined)
+    ) {
+      setCurrentRecord(recurrencies[selectedRecord]);
+    }
+  }, [selectedRecord, recurrencies]);
+
   const handleRecordOpen = (index: number) => {
     if (selectedRecord === index && window.innerWidth > 980) {
-      setSelectedRecord(null);
+      setSelectedRecord(index);
       setOpenModal(false);
     } else {
       if (recurrencies && recurrencies[index]?.status !== 'incomplete') {
@@ -68,10 +79,6 @@ export default function Recurrency({
   const handleEditModalClose = () => {
     seteditModalOpen(false);
   };
-  let currentRecord;
-  if (recurrencies) {
-    currentRecord = selectedRecord ? recurrencies[selectedRecord] : null;
-  }
 
   return (
     <div className="profilePage">
@@ -131,7 +138,7 @@ export default function Recurrency({
                     <>
                       <RecordHeader
                         record={currentRecord}
-                        handleRecordOpen={() => { }}
+                        handleRecordOpen={() => {}}
                       />
                       <div className={styles.divider}></div>
                       <div className={styles.detailContainer}>
@@ -158,21 +165,25 @@ export default function Recurrency({
             pauseModalOpen={pauseModalOpen}
             handlePauseModalClose={handlePauseModalClose}
             record={currentRecord}
+            fetchRecurrentDonations={fetchRecurrentDonations}
           />
           <CancelModal
             cancelModalOpen={cancelModalOpen}
             handleCancelModalClose={handleCancelModalClose}
             record={currentRecord}
+            fetchRecurrentDonations={fetchRecurrentDonations}
           />
           <EditModal
             editModalOpen={editModalOpen}
             handleEditModalClose={handleEditModalClose}
             record={currentRecord}
+            fetchRecurrentDonations={fetchRecurrentDonations}
           />
           <ReactivateModal
             reactivateModalOpen={reactivateModalOpen}
             handleReactivateModalClose={handleReactivateModalClose}
             record={currentRecord}
+            fetchRecurrentDonations={fetchRecurrentDonations}
           />
         </div>
       </>
