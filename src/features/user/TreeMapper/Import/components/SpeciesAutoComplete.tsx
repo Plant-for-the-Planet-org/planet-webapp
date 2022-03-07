@@ -34,7 +34,6 @@ export default function SpeciesSelect(props: {
                     : `${themeProperties.dark.backgroundColor} !important`,
         },
         option: {
-            // color: '#2F3336',
             fontFamily: config!.font.primaryFontFamily,
             "&:hover": {
                 backgroundColor:
@@ -116,13 +115,13 @@ export default function SpeciesSelect(props: {
 
     return (
         <Controller
-            // onChange={(newValue: SpeciesType | null) => {
-            //     console.log('newValue', newValue);
-            //     if (newValue) {
-            //         console.log('newValue', newValue);
-            //         setValue(newValue.id);
-            //     }
-            // }}
+            onChange={(newValue: SpeciesType | null) => {
+                console.log('newValue', newValue);
+                if (newValue) {
+                    console.log('newValue', newValue);
+                    setValue(newValue);
+                }
+            }}
             defaultValue={value}
             name={props.name}
             control={props.control}
@@ -136,21 +135,16 @@ export default function SpeciesSelect(props: {
                         paper: classes.paper,
                     }}
                     autoHighlight
-                    autoSelect
-                    freeSolo
-                    getOptionLabel={(option: SpeciesType) => `${option.name}`}
+                    getOptionLabel={(option: SpeciesType) => `${option.scientificName}`}
                     getOptionSelected={(option: SpeciesType, value: SpeciesType) => option.id === value.id}
                     renderOption={(option: SpeciesType) => (
                         <>
-                            <option value={option.id}>{option.name && option.name !== '' ? option.name : option.scientificName}</option>
+                            <span>{option.scientificName}</span>
                         </>
                     )}
                     {...renderProps}
                     onChange={(e, data) => {
                         onChange(data)
-                        if (data) {
-                            setValue(data.scientificSpecies);
-                        }
                     }}
                     renderInput={(params) => (
                         <MaterialTextField

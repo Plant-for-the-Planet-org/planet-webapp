@@ -21,28 +21,29 @@ export default function MySpecies({ }: Props): ReactElement {
     const { token, contextLoaded } = React.useContext(UserPropsContext);
     const { handleError } = React.useContext(ErrorHandlingContext);
     const [species, setSpecies] = React.useState<any[]>([]);
+    const [isUploadingData, setIsUploadingData] = React.useState(false);
 
     const { register, handleSubmit, errors, control, getValues } = useForm();
 
     const fetchMySpecies = async () => {
         const result = await getAuthenticatedRequest('/treemapper/species', token);
-        console.log(`result`, result)
         setSpecies(result);
     }
 
     const deleteSpecies = async (id: number) => {
         const result = await deleteAuthenticatedRequest(`/treemapper/species/${id}`, token);
-        console.log(`result`, result)
         fetchMySpecies();
     }
 
     const addSpecies = async (species: any) => {
+        setIsUploadingData(true);
         const data = {
             aliases: species.aliases || species.aliases !== '' ? species.aliases : species.scientificSpecies.name,
             scientificSpecies: species.scientificSpecies.id,
         }
         const result = await postAuthenticatedRequest(`/treemapper/species`, data, token, handleError);
-        console.log(`result`, result);
+        fetchMySpecies();
+        setIsUploadingData(false);
     }
 
     React.useEffect(() => {
@@ -66,7 +67,11 @@ export default function MySpecies({ }: Props): ReactElement {
                         variant="outlined"
                     />
                     <MaterialButton id='addSpecies' onClick={handleSubmit(addSpecies)} width='120px' >
-                    {t('common:add')}
+                        {isUploadingData ? (
+                            <div className={styles.spinner}></div>
+                        ) : (
+                            t('common:add')
+                        )}
                     </MaterialButton>
                 </div>
             </form>
