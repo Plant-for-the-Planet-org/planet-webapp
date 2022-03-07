@@ -218,7 +218,7 @@ export default function SampleTrees({
     onFileDialogCancel: () => setIsUploadingData(false),
   });
 
-  const csvTemplate = [['plantingDate', 'treeTag', 'height', 'diameter', 'otherSpecies', 'latitude', 'longitude']];
+  const csvTemplate = [['plantingDate', 'treeTag', 'height', 'diameter', 'otherSpecies', 'latitude', 'longitude'], ["Date format - DD/MM/YYYY", "text", "height in meters", "diameter in centimeters", "Scientific Species", "valid coordinate", "valid coordinate"], [new Date().toLocaleDateString('en-US'), 'test', '1', '10', 'Sample Name', '26.78590', '92.04986']];
   const csv = Papa.unparse(csvTemplate);
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const url = window.URL.createObjectURL(blob);
