@@ -218,7 +218,7 @@ export default function SampleTrees({
     onFileDialogCancel: () => setIsUploadingData(false),
   });
 
-  const csvTemplate = [['plantingDate', 'treeTag', 'height', 'diameter', 'species', 'latitude', 'longitude']];
+  const csvTemplate = [['plantingDate', 'treeTag', 'height', 'diameter', 'otherSpecies', 'latitude', 'longitude']];
   const csv = Papa.unparse(csvTemplate);
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const url = window.URL.createObjectURL(blob);
