@@ -123,5 +123,6 @@
   "longitudeRequired": "Längengrad ist erforderlich",
   "manageProject": "Projekte verwalten",
   "descriptionForManageProjects": "Präsentiere deine Wiederaufforstungen zur Überwachung und um Spenden zu erhalten.",
-  "manageProjects": "Projekte verwalten"
+  "manageProjects": "Projekte verwalten",
+  "onlyEnglish": "Bitte erstelle/bearbeite Projekte nur auf Englisch. Übersetzungen von Projekten werden automatisch von Plant-for-the-Planet verwaltet."
 }

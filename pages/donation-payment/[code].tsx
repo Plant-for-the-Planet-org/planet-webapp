@@ -22,7 +22,7 @@ function PaymentPage({ initialized }: Props) {
     React.useEffect(() => {
         async function loadProjects() {
             const userLang = localStorage.getItem('language') || 'en';
-            const res = await getRequest(`${process.env.API_ENDPOINT}/public/v1.3/${userLang}/paymentInfo/${router.query.code}`);
+            const res = await getRequest(`/public/v1.3/${userLang}/paymentInfo/${router.query.code}`);
             if (res) {
                 setPaymentData(null)
                 setIsLoaded(true)
