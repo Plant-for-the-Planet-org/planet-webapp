@@ -57,5 +57,6 @@
   "downloadExplanation": "Download the following CSV template to import sample tree data in the designated format.",
   "importCSV": "Import CSV",
   "fileFormatCSV": "File (csv)",
-  "aliases": "Aliases"
+  "aliases": "Aliases",
+  "external": "External"
 }

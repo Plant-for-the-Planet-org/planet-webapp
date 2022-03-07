@@ -67,7 +67,7 @@ export default function PlantLocationPage({
     router.replace('/profile/treemapper');
   };
 
-  const handleEditButton = () => {};
+  const handleEditButton = () => { };
 
   const DetailProps = {
     location,
@@ -136,9 +136,8 @@ export function LocationDetails({
           if (element.coordinates?.[0]) {
             images.push({
               image: element.coordinates[0].image,
-              description: `${t('maps:sampleTree')} ${
-                element.tag ? '#' + element.tag : ''
-              }`,
+              description: `${t('maps:sampleTree')} ${element.tag ? '#' + element.tag : ''
+                }`,
             });
           }
         }
@@ -181,14 +180,16 @@ export function LocationDetails({
           <p className={styles.title}>{t('captureStatus')}</p>
           <div className={styles.value}>{t(location.captureStatus)}</div>
         </div>
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>
-            {t('coordinates')} <CopyToClipboard text={text} />
-          </p>
-          <div className={styles.value}>
-            {text}
+        {location?.deviceLocation ? (
+          <div className={styles.singleDetail}>
+            <p className={styles.title}>
+              {t('coordinates')} <CopyToClipboard text={text} />
+            </p>
+            <div className={styles.value}>
+              {text}
+            </div>
           </div>
-        </div>
+        ) : []}
         {/* <div className={styles.singleDetail}>
           <p className={styles.title}>{t('guid')}</p>
           <div className={styles.value}>{location.id}</div>
@@ -226,8 +227,8 @@ export function LocationDetails({
             <p className={styles.title}>{t('plantProject')}</p>
             <div className={styles.value}>
               <span
-                // className={styles.link}
-                // onClick={() => router.push(`/[p]`, `/${location.plantProject}`)}
+              // className={styles.link}
+              // onClick={() => router.push(`/[p]`, `/${location.plantProject}`)}
               >
                 {location.plantProject}
               </span>
@@ -248,8 +249,8 @@ export function LocationDetails({
                       {species.scientificName
                         ? species.scientificName
                         : species.otherSpecies && species.otherSpecies !== 'Unknown'
-                        ? species.otherSpecies:
-                        t('maps:unknown')}
+                          ? species.otherSpecies :
+                          t('maps:unknown')}
                     </p>
                   );
                 })}
@@ -273,8 +274,8 @@ export function LocationDetails({
                       {spl.scientificName
                         ? spl.scientificName
                         : spl.scientificSpecies && spl.scientificSpecies !== 'Unknown'
-                        ? spl.scientificSpecies
-                        : t('maps:unknown')}
+                          ? spl.scientificSpecies
+                          : t('maps:unknown')}
                     </span>
                     <br />
                     {spl.tag ? `${t('maps:tag')} #${spl.tag} • ` : null}

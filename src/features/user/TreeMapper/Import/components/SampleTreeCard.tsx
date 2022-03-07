@@ -9,7 +9,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { ThemeProvider } from '@material-ui/styles';
 import materialTheme from '../../../../../theme/themeStyles';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
-import { MenuItem } from '@material-ui/core';
+import { InputAdornment, MenuItem } from '@material-ui/core';
 
 const { useTranslation } = i18next;
 
@@ -131,6 +131,9 @@ export default function SampleTreeCard({
               variant="outlined"
               name={`sampleTrees[${index}].height`}
               defaultValue={item.height}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">{t('m')}</InputAdornment>,
+              }}
             />
             {errors?.sampleTrees?.[index]?.height && (
               <span className={styles.errorMessage}>
@@ -153,6 +156,9 @@ export default function SampleTreeCard({
               variant="outlined"
               name={`sampleTrees[${index}].diameter`}
               defaultValue={item.diameter}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">{t('cm')}</InputAdornment>,
+              }}
             />
             {errors?.sampleTrees?.[index]?.diameter && (
               <span className={styles.errorMessage}>
