@@ -20,36 +20,11 @@ export default function ReviewSubmit({ plantLocation, handleBack, errorMessage, 
     const { t, ready } = useTranslation(['treemapper', 'common']);
     const [isUploadingData, setIsUploadingData] = React.useState(false);
     const [submitted, setSubmitted] = React.useState(true);
-    console.log(`plantLocation`, plantLocation)
 
     const { token } = React.useContext(UserPropsContext);
 
     const handleSubmit = () => {
         setIsUploadingData(true);
-        // postAuthenticatedRequest(`/treemapper/bulkPlantLocations`, [plantLocation], token).then(
-        //     (res: any) => {
-        //         if (!res.code) {
-        //             setErrorMessage('');
-        //             // setPlantLocation(res);
-        //             setIsUploadingData(false);
-        //             setSubmitted(true);
-        //         } else {
-        //             if (res.code === 404) {
-        //                 setIsUploadingData(false);
-        //                 setErrorMessage(res.message);
-        //             } else if (res.code === 400) {
-        //                 setIsUploadingData(false);
-        //                 if (res.errors && res.errors.children) {
-        //                     // addServerErrors(res.errors.children, setError);
-        //                 }
-        //             } else {
-        //                 setIsUploadingData(false);
-        //                 setErrorMessage(res.message);
-        //             }
-        //         }
-        //     }
-        // );
-
         setSubmitted(true);
         setIsUploadingData(false);
     };

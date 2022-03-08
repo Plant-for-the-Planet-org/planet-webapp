@@ -112,7 +112,6 @@ export default function PlantingLocation({
   const loadMySpecies = async () => {
     await getAuthenticatedRequest('/treemapper/species', token).then(
       (species: any) => {
-        console.log(`species`, species)
         setMySpecies(species);
       }
     );
@@ -126,13 +125,10 @@ export default function PlantingLocation({
   }, [contextLoaded]);
 
   const normalizeGeoJson = (geoJson: any) => {
-    console.log("geojson changed", geoJson);
     if (gjv.isGeoJSONObject(geoJson) && geoJson.features?.length > 0) {
-      console.log("valid geojson");
       const flattened = flatten(geoJson);
       if (flattened.features[0]?.geometry?.type === 'Polygon') {
         setGeoJsonError(false);
-        console.log("updated");
         setGeoJson(flattened.features[0].geometry);
         setActiveMethod('editor');
       } else {
@@ -199,14 +195,11 @@ export default function PlantingLocation({
     accept: ['.geojson', '.kml'],
     multiple: false,
     onDrop: onDrop,
-    onDropAccepted: () => {
-      console.log('uploading');
-    },
+    onDropAccepted: () => { },
     onFileDialogCancel: () => setIsUploadingData(false),
   });
 
   const onSubmit = (data: any) => {
-    console.log(`data`, data)
     if (geoJson) {
       setIsUploadingData(true);
       const submitData = {
@@ -459,7 +452,6 @@ function PlantedSpecies({
   item,
   control,
 }: SpeciesProps): ReactElement {
-  console.log(`item`, item);
   return (
     <div key={item.id} className={styles.speciesFieldGroup}>
       <div className={styles.speciesNameField}>

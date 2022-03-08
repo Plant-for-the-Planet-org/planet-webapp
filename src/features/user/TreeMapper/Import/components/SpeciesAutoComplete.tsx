@@ -116,9 +116,7 @@ export default function SpeciesSelect(props: {
     return (
         <Controller
             onChange={(newValue: SpeciesType | null) => {
-                console.log('newValue', newValue);
                 if (newValue) {
-                    console.log('newValue', newValue);
                     setValue(newValue);
                 }
             }}

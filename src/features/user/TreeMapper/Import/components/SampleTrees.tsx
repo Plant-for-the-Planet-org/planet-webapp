@@ -179,7 +179,6 @@ export default function SampleTrees({
   };
 
   const onSubmit = async (data: any) => {
-    console.log('data', data);
     if (data.sampleTrees?.length > 0) {
       setIsUploadingData(true);
       for (const [index, sampleTree] of data.sampleTrees.entries()) {
@@ -214,9 +213,7 @@ export default function SampleTrees({
     accept: ['.csv'],
     multiple: false,
     onDrop: onDrop,
-    onDropAccepted: () => {
-      console.log('uploading');
-    },
+    onDropAccepted: () => { },
     onFileDialogCancel: () => setIsUploadingData(false),
   });
 
