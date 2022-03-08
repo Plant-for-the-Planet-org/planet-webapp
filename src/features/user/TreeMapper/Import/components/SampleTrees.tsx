@@ -180,32 +180,34 @@ export default function SampleTrees({
 
   const onSubmit = async (data: any) => {
     console.log('data', data);
-    setIsUploadingData(true);
-    for (const [index, sampleTree] of data.sampleTrees.entries()) {
-      const samplePl = {
-        type: "sample",
-        captureMode: "external",
-        geometry: {
-          coordinates: [
-            Number(sampleTree.longitude),
-            Number(sampleTree.latitude)
-          ],
-          type: "Point"
-        },
-        plantDate: new Date(sampleTree.plantingDate).toISOString(),
-        registrationDate: new Date().toISOString(),
-        measurements: {
-          height: Number(sampleTree.height),
-          width: Number(sampleTree.diameter),
-        },
-        tag: sampleTree.treeTag,
-        otherSpecies: sampleTree.otherSpecies,
-        parent: plantLocation.id,
+    if (data.sampleTrees?.length > 0) {
+      setIsUploadingData(true);
+      for (const [index, sampleTree] of data.sampleTrees.entries()) {
+        const samplePl = {
+          type: "sample",
+          captureMode: "external",
+          geometry: {
+            coordinates: [
+              Number(sampleTree.longitude),
+              Number(sampleTree.latitude)
+            ],
+            type: "Point"
+          },
+          plantDate: new Date(sampleTree.plantingDate).toISOString(),
+          registrationDate: new Date().toISOString(),
+          measurements: {
+            height: Number(sampleTree.height),
+            width: Number(sampleTree.diameter),
+          },
+          tag: sampleTree.treeTag,
+          otherSpecies: sampleTree.otherSpecies,
+          parent: plantLocation.id,
+        }
+        await uploadSampleTree(samplePl, index);
       }
-      await uploadSampleTree(samplePl, index);
+      setIsUploadingData(false);
+      handleNext();
     }
-    setIsUploadingData(false);
-    handleNext();
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

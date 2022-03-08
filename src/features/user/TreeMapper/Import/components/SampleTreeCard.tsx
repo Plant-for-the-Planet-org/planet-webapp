@@ -51,16 +51,14 @@ export default function SampleTreeCard({
             : ''
             }`}
         </div>
-        {index > 0 && (
-          <div
-            onClick={() => remove(index)}
-            style={{
-              cursor: 'pointer',
-            }}
-          >
-            <DeleteIcon />
-          </div>)
-        }
+        <div
+          onClick={() => remove(index)}
+          style={{
+            cursor: 'pointer',
+          }}
+        >
+          <DeleteIcon />
+        </div>
       </div>
       <div className={styles.sampleTreeSummary}>
         {`${sampleTrees[index]?.height
