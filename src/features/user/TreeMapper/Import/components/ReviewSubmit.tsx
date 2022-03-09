@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react';
 import styles from '../Import.module.scss';
 import i18next from '../../../../../../i18n';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
-import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
 
@@ -100,7 +99,6 @@ export default function ReviewSubmit({ plantLocation, handleBack, errorMessage, 
                                                     <div key={index} className={styles.value}>
                                                         {index + 1}.{' '}
                                                         <span
-                                                            //   onClick={() => setselectedLocation(spl)}
                                                             className={styles.link}
                                                         >
                                                             {spl.otherSpecies}
@@ -120,7 +118,6 @@ export default function ReviewSubmit({ plantLocation, handleBack, errorMessage, 
                                 <div className={styles.formFieldHalf}>
                                     <button
                                         onClick={handleBack}
-                                        // onClick={() => handleNext()}
                                         className="secondaryButton"
                                     >
                                         {isUploadingData ? (
@@ -132,7 +129,6 @@ export default function ReviewSubmit({ plantLocation, handleBack, errorMessage, 
                                 </div>
                                 <div className={styles.formFieldHalf}>
                                     <button
-                                        // onClick={handleSubmit(onSubmit)}
                                         onClick={handleSubmit}
                                         className="primaryButton"
                                     >

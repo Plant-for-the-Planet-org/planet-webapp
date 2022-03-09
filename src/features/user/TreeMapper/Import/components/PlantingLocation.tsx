@@ -21,7 +21,6 @@ import {
 import tj from '@mapbox/togeojson';
 import gjv from 'geojson-validation';
 import flatten from 'geojson-flatten';
-import SpeciesSelect from './SpeciesAutoComplete';
 
 const { useTranslation } = i18next;
 
@@ -77,29 +76,6 @@ export default function PlantingLocation({
     control,
     name: 'plantedSpecies',
   });
-
-  // React.useEffect(() => {
-  //   if (plantLocation && plantLocation.geometry) {
-  //     setGeoJson(plantLocation.geometry);
-  //     setActiveMethod('editor');
-  //     setValue('plantProject', plantLocation.plantProject);
-  //     setValue('plantDate', plantLocation.plantDate);
-  //     if (plantLocation.plantedSpecies && plantLocation.plantedSpecies.length > 0) {
-  //       plantLocation.plantedSpecies.forEach((species: any, index: number) => {
-  //         if (index === 0) {
-  //           setValue('plantedSpecies[0].otherSpecies', species.otherSpecies);
-  //           setValue('plantedSpecies[0].treeCount', species.treeCount);
-  //         } else {
-  //           append({
-  //             species: species.species,
-  //             otherSpecies: species.otherSpecies,
-  //             treeCount: species.treeCount,
-  //           });
-  //         }
-  //       });
-  //     }
-  //   }
-  // }, [plantLocation]);
 
   const loadProjects = async () => {
     await getAuthenticatedRequest('/app/profile/projects', token).then(
@@ -226,7 +202,6 @@ export default function PlantingLocation({
             } else if (res.code === 400) {
               setIsUploadingData(false);
               if (res.errors && res.errors.children) {
-                // addServerErrors(res.errors.children, setError);
               }
             } else {
               setIsUploadingData(false);
@@ -235,7 +210,6 @@ export default function PlantingLocation({
           }
         }
       );
-      // }
     } else {
       setGeoJsonError(true);
     }
@@ -252,7 +226,6 @@ export default function PlantingLocation({
               {...getRootProps()}
             >
               <button
-                // onClick={(image:any) => setImage(image)}
                 className="primaryButton"
                 style={{ maxWidth: '200px' }}
               >
@@ -415,7 +388,6 @@ export default function PlantingLocation({
         <button
           id={'basicDetailsCont'}
           onClick={handleSubmit(onSubmit)}
-          // onClick={() => handleNext()}
           className="primaryButton"
           style={{ minWidth: '240px' }}
         >

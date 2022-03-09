@@ -3,12 +3,10 @@ import styles from '../Import.module.scss';
 import { useDropzone } from 'react-dropzone';
 import {
   postAuthenticatedRequest,
-  putAuthenticatedRequest,
 } from '../../../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
 import i18next from '../../../../../../i18n';
-import { Controller, useForm, useFieldArray } from 'react-hook-form';
-import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
+import { useForm, useFieldArray } from 'react-hook-form';
 import SampleTreeCard from './SampleTreeCard';
 import Papa from 'papaparse';
 
@@ -61,17 +59,7 @@ export default function SampleTrees({
   }, []);
 
   const defaultValues = {
-    sampleTrees: [
-      // {
-      //   plantingDate: new Date(),
-      //   treeTag: '',
-      //   height: '',
-      //   diameter: '',
-      //   otherSpecies: '',
-      //   latitude: 0,
-      //   longitude: 0,
-      // },
-    ],
+    sampleTrees: [],
   };
   const {
     register,
@@ -89,64 +77,11 @@ export default function SampleTrees({
     name: 'sampleTrees',
   });
 
-  // Add sample trees
-  const test = [
-    {
-      plantingDate: new Date(),
-      treeTag: 'test',
-      height: '1',
-      diameter: '10',
-      otherSpecies: 'sspec_dReK4W4J0eg2Y51tJo',
-      latitude: 10,
-      longitude: 20,
-    },
-    {
-      plantingDate: new Date(),
-      treeTag: 'test',
-      height: '1',
-      diameter: '10',
-      otherSpecies: 'sspec_dReK4W4J0eg2Y51tJo',
-      latitude: 10,
-      longitude: 20,
-    },
-    {
-      plantingDate: new Date(),
-      treeTag: 'test',
-      height: '1',
-      diameter: '10',
-      otherSpecies: 'sspec_dReK4W4J0eg2Y51tJo',
-      latitude: 10,
-      longitude: 20,
-    },
-    {
-      plantingDate: new Date(),
-      treeTag: 'test',
-      height: '1',
-      diameter: '10',
-      otherSpecies: 'sspec_dReK4W4J0eg2Y51tJo',
-      latitude: 10,
-      longitude: 20,
-    },
-    {
-      plantingDate: new Date(),
-      treeTag: 'test',
-      height: '1',
-      diameter: '10',
-      otherSpecies: 'sspec_dReK4W4J0eg2Y51tJo',
-      latitude: 10,
-      longitude: 20,
-    }
-  ]
-
   const addSampleTrees = (sampleTrees: Treemapper.SamplePlantLocation[]) => {
     append(sampleTrees);
   };
 
-  // React.useEffect(() => {
-
-  // }, []);
-
-  const { user, token, contextLoaded } = React.useContext(UserPropsContext);
+  const { token } = React.useContext(UserPropsContext);
 
   const uploadSampleTree = async (sampleTree: any, index: number) => {
     setUploadIndex(index);
@@ -170,7 +105,6 @@ export default function SampleTrees({
         setErrorMessage(res.message);
       } else if (res.code === 400) {
         if (res.errors && res.errors.children) {
-          // addServerErrors(res.errors.children, setError);
         }
       } else {
         setErrorMessage(res.message);
@@ -237,7 +171,6 @@ export default function SampleTrees({
           {...getRootProps()}
         >
           <button
-            // onClick={(image:any) => setImage(image)}
             className="primaryButton"
             style={{ maxWidth: '200px' }}
           >
@@ -294,7 +227,6 @@ export default function SampleTrees({
         <div className={styles.formFieldHalf}>
           <button
             onClick={handleSubmit(onSubmit)}
-            // onClick={() => handleNext()}
             className="primaryButton"
           >
             {isUploadingData ? (
@@ -306,7 +238,6 @@ export default function SampleTrees({
         </div>
         <div className={styles.formFieldHalf}>
           <button
-            // onClick={handleSubmit(onSubmit)}
             onClick={() => handleNext()}
             className="secondaryButton"
           >
