@@ -53,7 +53,7 @@
   "uploadFile": "Datei hochladen",
   "fileFormatKML": "Datei (geojson/kml)",
   "importData": "Importiere Daten",
-  "importExplanation": "Du kannst KML, CSV und andere Dateien in TreeMapper importieren... (nur im Web) vom Typ: `external` nicht off-site.",
+  "importExplanation": "Hier können TreeMapper Daten importiert werden, die als \"external\" markiert sind (nicht \"off-site\", hierfür bitte die App verwenden). Für die Koordinaten der Pflanzfläche wird das Format *.kml oder geojson akzeptiert, für (optionale) Beispielbäume *.csv (eine Vorlage wird in Schritt 2 bereitgestellt).",
   "downloadExplanation": "Lade die folgende CSV Vorlage herunter, um Musterbäume im vorgesehenen Format zu importieren.",
   "importCSV": "Importiere CSV",
   "fileFormatCSV": "Datei (csv)",

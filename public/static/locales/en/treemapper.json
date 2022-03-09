@@ -53,7 +53,7 @@
   "uploadFile": "Upload File",
   "fileFormatKML": "File (geojson/kml)",
   "importData": "Import Data",
-  "importExplanation": "ere you can import TreeMapper data, that will be marked as \"external\" (not \"off-site\", please use the app for that). For coordinates of planting sites we accept *.kml or geojson, for (optional) sample trees *.csv (template is provided in step 2).",
+  "importExplanation": "Here you can import TreeMapper data, that will be marked as \"external\" (not \"off-site\", please use the app for that). For coordinates of planting sites we accept *.kml or geojson, for (optional) sample trees *.csv (template is provided in step 2).",
   "downloadExplanation": "Download the following CSV template to import sample tree data in the designated format.",
   "importCSV": "Import CSV",
   "fileFormatCSV": "File (csv)",
