@@ -27,7 +27,7 @@
   "import": "Importieren",
   "editor": "Editor",
   "draw": "Zeichnen",
-  "addAnotherSpecies": "Fügen Art hinzu",
+  "addAnotherSpecies": "Füge weitere Art hinzu",
   "continue": "Weiter",
   "downloadCSVTemplate": "Download CSV Vorlage",
   "treeTag": "Baum Tag",
@@ -54,7 +54,7 @@
   "fileFormatKML": "Datei (geojson/kml)",
   "importData": "Importiere Daten",
   "importExplanation": "Hier können TreeMapper Daten importiert werden, die als \"external\" markiert sind (nicht \"off-site\", hierfür bitte die App verwenden). Für die Koordinaten der Pflanzfläche wird das Format *.kml oder geojson akzeptiert, für (optionale) Beispielbäume *.csv (eine Vorlage wird in Schritt 2 bereitgestellt).",
-  "downloadExplanation": "Lade die folgende CSV Vorlage herunter, um Musterbäume im vorgesehenen Format zu importieren.",
+  "downloadExplanation": "Lade die folgende CSV Vorlage herunter, um Musterbäume im vorgesehenen Format zu importieren. Benutze bitte einen einfachen Editor um die Dateien zu bearbeiten. Die zweite und dritte Zeile sind Formatangaben und ein Beispiel und müssen gelöscht werden.",
   "importCSV": "Importiere CSV",
   "fileFormatCSV": "Datei (csv)",
   "aliases": "Aliasse"
