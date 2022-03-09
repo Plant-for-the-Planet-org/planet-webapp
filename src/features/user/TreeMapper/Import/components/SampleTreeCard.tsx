@@ -24,6 +24,7 @@ interface Props {
   item: any;
   plantLocation: Treemapper.PlantLocation;
   errors: any;
+  key: string;
 }
 
 export default function SampleTreeCard({
@@ -37,12 +38,13 @@ export default function SampleTreeCard({
   item,
   plantLocation,
   errors,
+  key,
 }: Props): ReactElement {
   const sampleTrees = getValues();
   const { t, ready } = useTranslation(['treemapper', 'common']);
 
   return (
-    <div key={index} className={styles.sampleTreeFieldGroup}>
+    <div key={key} className={styles.sampleTreeFieldGroup}>
       <div className={styles.sampleTreeName}>
         <div>
           {t('sampleTree', { number: index + 1 })}

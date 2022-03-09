@@ -185,10 +185,10 @@ export default function SampleTrees({
         </label>
       </div>
       <div className={styles.sampleTreeContainer}>
-        {fields.map((item, index) => {
+        {fields && fields.map((item, index) => {
           return (
             <SampleTreeCard
-              key={index}
+              key={item.id}
               index={index}
               register={register}
               remove={remove}
