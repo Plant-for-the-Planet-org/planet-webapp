@@ -115,7 +115,7 @@ export const EditModal = ({
       }}
     >
       <Fade in={editModalOpen}>
-        <div className={styles.manageDonationModal}>
+        <div className={styles.manageDonationModal} style={{width:"35vw",height:"62vh" ,maxWidth:'min-content',maxHeight:'min-content'}}>
           <div className={styles.modalTexts}>
             <div
               style={{
@@ -123,6 +123,7 @@ export const EditModal = ({
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 width: '100%',
+                //width:"25vw"
               }}
             >
               <h4 style={{ marginRight: '64px' }}>
