@@ -17,27 +17,35 @@ import DateFnsUtils from '@date-io/date-fns';
 import materialTheme from '../../../theme/themeStyles';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { CircularProgress } from '@material-ui/core';
 export const CancelModal = ({
   cancelModalOpen,
   handleCancelModalClose,
   record,
+  fetchRecurrentDonations,
 }: any) => {
   const { theme } = React.useContext(ThemeContext);
   const { token } = React.useContext(UserPropsContext);
-  const [option, setoption] = React.useState();
+  const [option, setoption] = React.useState('cancelImmediately');
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState(new Date());
+  const [disabled, setDisabled] = React.useState(false);
   const { t, i18n, ready } = useTranslation(['me']);
   const { handleError } = React.useContext(ErrorHandlingContext);
+
+  React.useEffect(() => {
+    setDisabled(false);
+  }, [cancelModalOpen]);
+
   const cancelDonation = () => {
-    console.log(record.id, date.toISOString().split('T')[0], '{record.id');
+    setDisabled(true);
     const bodyToSend = {
       cancellationType:
         option == 'cancelImmediately'
           ? 'immediate'
           : option == 'cancelOnPeriodEnd'
-            ? 'period-end'
-            : 'custom-date', // immediate|period-end|custom-date
+          ? 'period-end'
+          : 'custom-date', // immediate|period-end|custom-date
       cancellationDate:
         option == 'cancelOnSelectedDate'
           ? date.toISOString().split('T')[0]
@@ -50,11 +58,11 @@ export const CancelModal = ({
       handleError
     )
       .then((res) => {
-        console.log(res, 'Response');
         handleCancelModalClose();
+        fetchRecurrentDonations();
       })
       .catch((err) => {
-        console.log(err, 'Error');
+        console.log('Error cancelling recurring donations.');
       });
   };
   return (
@@ -93,80 +101,104 @@ export const CancelModal = ({
               </button>
             </div>
             <div className={styles.note}>
-              <p>{t('me:cancelDonationDescription')}</p>
+              {record?.method === 'paypal' ? (
+                <p>{t('me:cancelDonationPaypalDescription')}</p>
+              ) : (
+                <p>{t('me:cancelDonationDescription')}</p>
+              )}
             </div>
           </div>
-          <FormControl component="fieldset">
-            <RadioGroup
-              aria-label="date"
-              name="date"
-              value={option}
-              onChange={(event) => {
-                setoption(event.target.value);
-                if (event.target.value === 'cancelOnSelectedDate') {
-                  setshowCalender(true);
-                } else {
-                  setshowCalender(false);
-                }
-              }}
-              className={styles.radioButtonGrid}
-            >
-              <FormControlLabel
-                key={1}
-                value={'cancelImmediately'}
-                control={<GreenRadio />}
-                label={t('me:cancelImmediately')}
-              />
-              {/* <FormControlLabel
+          {record?.method !== 'paypal' ? (
+            <FormControl component="fieldset">
+              <RadioGroup
+                aria-label="date"
+                name="date"
+                value={option}
+                onChange={(event) => {
+                  setoption(event.target.value);
+                  if (event.target.value === 'cancelOnSelectedDate') {
+                    setshowCalender(true);
+                  } else {
+                    setshowCalender(false);
+                  }
+                }}
+                className={styles.radioButtonGrid}
+              >
+                <FormControlLabel
+                  key={1}
+                  value={'cancelImmediately'}
+                  control={<GreenRadio />}
+                  label={t('me:cancelImmediately')}
+                />
+                {/* <FormControlLabel
                 key={2}
                 value={'cancelOnPeriodEnd'}
                 control={<GreenRadio />}
                 label={'Cancel when current period ends'}
               /> */}
-              <FormControlLabel
-                key={3}
-                value={'cancelOnSelectedDate'}
-                control={<GreenRadio />}
-                label={t('me:cancelOnSelectedDate')}
-              />
-            </RadioGroup>
-            {showCalender ? (
-              <>
-                <ThemeProvider theme={materialTheme}>
-                  <MuiPickersUtilsProvider
-                    utils={DateFnsUtils}
-                  // locale={
-                  //   localeMapForDate[userLang]
-                  //     ? localeMapForDate[userLang]
-                  //     : localeMapForDate['en']
-                  // }
-                  >
-                    <Calendar
-                      date={date}
-                      onChange={(value) => {
-                        console.log(value);
-                        setdate(value);
-                      }}
-                      minDate={
-                        new Date(new Date().valueOf() + 1000 * 3600 * 24)
-                      }
-                      color={'#68B030'}
-                    />
-                  </MuiPickersUtilsProvider>
-                </ThemeProvider>
-              </>
-            ) : (
-              []
-            )}
-          </FormControl>
+
+                <FormControlLabel
+                  key={3}
+                  value={'cancelOnSelectedDate'}
+                  control={<GreenRadio />}
+                  label={t('me:cancelOnSelectedDate')}
+                />
+              </RadioGroup>
+              {showCalender ? (
+                <>
+                  <ThemeProvider theme={materialTheme}>
+                    <MuiPickersUtilsProvider
+                      utils={DateFnsUtils}
+                      // locale={
+                      //   localeMapForDate[userLang]
+                      //     ? localeMapForDate[userLang]
+                      //     : localeMapForDate['en']
+                      // }
+                    >
+                      <Calendar
+                        date={date}
+                        onChange={(value) => {
+                          setdate(value);
+                        }}
+                        minDate={
+                          new Date(new Date().valueOf() + 1000 * 3600 * 24)
+                        }
+                        color={'#68B030'}
+                      />
+                    </MuiPickersUtilsProvider>
+                  </ThemeProvider>
+                </>
+              ) : (
+                []
+              )}
+            </FormControl>
+          ) : (
+            []
+          )}
 
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button
               onClick={() => cancelDonation()}
               className={styles.submitButton}
+              disabled={disabled}
               style={{ minWidth: '20px', marginTop: '30px' }}
             >
-              {t('save')}
+              {disabled ? (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {t('cancellingDonation')}
+                  <div style={{ marginLeft: '5px' }}>
+                    <CircularProgress color="inherit" size={15} />
+                  </div>
+                </div>
+              ) : (
+                t('save')
+              )}
             </button>
           </div>
         </div>

@@ -37,7 +37,7 @@ function TreeMapper({ }: Props): ReactElement {
     if (next && links?.next) {
       const response = await getAuthenticatedRequest(links.next, token, {},
         handleError,
-        '/profile');
+        '/profile', undefined, '1.0.4');
       if (response) {
         const newPlantLocations = response?.items;
         for (const itr in newPlantLocations) {
@@ -69,7 +69,9 @@ function TreeMapper({ }: Props): ReactElement {
         token,
         {},
         handleError,
-        '/profile'
+        '/profile',
+        undefined,
+        '1.0.4'
       );
       if (response) {
         const plantLocations = response?.items;
@@ -148,12 +150,18 @@ function TreeMapper({ }: Props): ReactElement {
       )}
 
       <div id="pageContainer" className={styles.pageContainer}>
-        {selectedLocation ? <PlantLocationPage {...TreeMapperProps} /> :
+        {selectedLocation ? (
+          <PlantLocationPage {...TreeMapperProps} />
+        ) : (
           <div className={styles.listContainer}>
-            <div className={'profilePageTitle'}>{t('treemapper:treeMapper')}</div>
+            <div className={styles.titleContainer}>
+              <div className={'profilePageTitle'}>
+                {t('treemapper:treeMapper')}
+              </div>
+            </div>
             <TreeMapperList {...TreeMapperProps} />
           </div>
-        }
+        )}
         <div className={styles.mapContainer}>
           <PlantLocationMap
             locations={plantLocations}

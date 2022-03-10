@@ -1,4 +1,5 @@
 import { TENANT_ID } from '../constants/environment';
+import { getQueryString } from './getQueryString';
 import getsessionId from './getSessionId';
 import { validateToken } from './validateToken';
 
@@ -40,6 +41,15 @@ const handleApiError = (
       });
     }
     console.error('Error 403: Forbidden');
+  } else if (error === 400) {
+    if (errorHandler) {
+      errorHandler({
+        type: 'error',
+        message: 'validationFailed',
+        redirect: redirect,
+      });
+    }
+    console.error('Error 400: Validation Failed!');
   } else if (error === 500) {
     if (errorHandler) {
       errorHandler({
@@ -75,14 +85,13 @@ export async function getRequest(
   url: any,
   errorHandler?: Function,
   redirect?: string,
-  queryParams?: { [key: string]: string }
+  queryParams?: { [key: string]: string },
+  version?: string
 ) {
   let result;
   const lang = localStorage.getItem('language') || 'en';
   const query: any = { ...queryParams, locale: lang };
-  const queryString = Object.keys(query)
-    .map((key) => key + '=' + query[key])
-    .join('&');
+  const queryString = getQueryString(query);
   await fetch(`${process.env.API_ENDPOINT}${url}?${queryString}`, {
     method: 'GET',
     headers: {
@@ -93,6 +102,7 @@ export async function getRequest(
           ? localStorage.getItem('language')
           : 'en'
       }`,
+      'x-accept-versions': version ? version : '1.0.3',
     },
   })
     .then(async (res) => {
@@ -108,21 +118,23 @@ export async function getAuthenticatedRequest(
   token: any,
   header: any = null,
   errorHandler?: Function,
-  redirect?: string
+  redirect?: string,
+  queryParams?: { [key: string]: string },
+  version?: string
 ): Promise<any> {
   let result = {};
-  await fetch(`${process.env.API_ENDPOINT}` + url, {
+  const lang = localStorage.getItem('language') || 'en';
+  const query: any = { ...queryParams };
+  const queryString = getQueryString(query);
+
+  await fetch(`${process.env.API_ENDPOINT}${url}?${queryString}`, {
     method: 'GET',
     headers: {
       'tenant-key': `${TENANT_ID}`,
       'X-SESSION-ID': await getsessionId(),
       Authorization: `Bearer ${token}`,
-      'x-locale': `${
-        localStorage.getItem('language')
-          ? localStorage.getItem('language')
-          : 'en'
-      }`,
-      'x-accept-versions': '1.0.3',
+      'x-locale': `${lang}`,
+      'x-accept-versions': version ? version : '1.0.3',
     },
   })
     .then(async (res) => {

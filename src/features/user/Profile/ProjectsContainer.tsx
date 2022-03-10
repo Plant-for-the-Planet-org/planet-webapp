@@ -20,12 +20,14 @@ const ProjectSnippet = dynamic(
 );
 
 export default function ProjectsContainer({ profile }: any) {
-  const { t, ready } = useTranslation(['donate', 'manageProjects']);
+  const { t, ready, i18n } = useTranslation(['donate', 'manageProjects']);
   const [projects, setProjects] = React.useState([]);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
   async function loadProjects() {
-    await getRequest(`/app/profiles/${profile.id}/projects`, handleError).then(
+    await getRequest(`/app/profiles/${profile.id}/projects`, handleError, undefined, {
+      locale: i18n.language,
+    }).then(
       (projects) => {
         setProjects(projects);
       }
@@ -35,7 +37,7 @@ export default function ProjectsContainer({ profile }: any) {
   // This effect is used to get and update UserInfo if the isAuthenticated changes
   React.useEffect(() => {
     loadProjects();
-  }, []);
+  }, [i18n.language]);
 
   return ready ? (
     <div className={styles.tpoProjectsContainer}>

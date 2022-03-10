@@ -15,19 +15,18 @@
     & .hamburgerIcon {
       display: block;
       position: fixed;
-      top: 28px;
+      top: 100px;
       left: 20px;
       z-index: 10;
       height: 42px;
       width: 42px;
       background-color: $backgroundColorDark;
-        border-radius: 10px;
+      border-radius: 10px;
       svg {
-        
-        path{
-          fill:$primaryFontColor;
+        path {
+          fill: $primaryFontColor;
         }
-        rect{
+        rect {
           stroke: $primaryFontColor;
         }
       }
@@ -53,7 +52,7 @@
 .sidebar {
   width: 60px;
   position: fixed;
-  top: 0px;
+  top: 80px;
   left: 0px;
   display: flex;
   flex-direction: column;
