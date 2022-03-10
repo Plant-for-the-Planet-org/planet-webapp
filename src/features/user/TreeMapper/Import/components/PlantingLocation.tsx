@@ -201,8 +201,6 @@ export default function PlantingLocation({
               setErrorMessage(res.message);
             } else if (res.code === 400) {
               setIsUploadingData(false);
-              if (res.errors && res.errors.children) {
-              }
             } else {
               setIsUploadingData(false);
               setErrorMessage(res.message);

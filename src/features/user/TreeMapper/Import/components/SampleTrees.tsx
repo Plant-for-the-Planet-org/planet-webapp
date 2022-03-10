@@ -104,8 +104,7 @@ export default function SampleTrees({
       if (res.code === 404) {
         setErrorMessage(res.message);
       } else if (res.code === 400) {
-        if (res.errors && res.errors.children) {
-        }
+        setErrorMessage(res.message);
       } else {
         setErrorMessage(res.message);
       }
