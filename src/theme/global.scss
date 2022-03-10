@@ -248,7 +248,7 @@ video {
   text-align: center;
   border: 0px;
   border-radius: 52px;
-  min-width: 200px;
+  min-width: 100px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -264,7 +264,6 @@ video {
 }
 
 .secondaryButton {
-  min-width: 240px;
   background-image: none;
   background-color: $backgroundColorDark;
   color: $primaryFontColor;
@@ -486,6 +485,20 @@ input:-webkit-autofill {
   overflow: scroll;
   box-shadow: 0px 3px 6px -3px rgba($color: #000000, $alpha: 0.26);
   min-width: 100%;
+  &.scientific-species {
+    width: 100%;
+    min-width: auto;
+    max-width: 280px;
+    .suggestion {
+      font-style: italic;
+    }
+  }
+  &.sampleTrees {
+    width: 100%;
+    max-width: 390px;
+    min-width: auto;
+    margin-top: 48px;
+  }
   .suggestion {
     min-width: 100%;
     &:nth-child(even) {

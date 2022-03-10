@@ -1,19 +1,23 @@
 import React, { ReactElement } from 'react'
 import styles from './../../styles/ProjectDetails.module.scss'
+import i18next from '../../../../../i18n';
+
+const { useTranslation } = i18next;
 
 interface Props {
     species:Array<{
         id: number;
         percentage: string;
         speciesName: string;
-    }> 
+    }>
 }
 
 function PlantSpecies({species}: Props): ReactElement {
+    const { t, ready } = useTranslation(['maps']);
     return (
         <div className={styles.projectMoreInfo}>
             <div className={styles.infoTitle}>
-                {species.length} Species Planted
+                {species.length} {t('maps:speciesPlanted')}
             </div>
                 {species.map(species =>(
                     <div key={species.id}>
