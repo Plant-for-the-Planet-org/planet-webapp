@@ -22,6 +22,12 @@ const { useTranslation } = i18next;
 
 function UserLayout(props: any): ReactElement {
   const { t, i18n } = useTranslation(['common', 'me']);
+
+  const { user, logoutUser, contextLoaded } =
+    React.useContext(UserPropsContext);
+
+  console.log('user', user.type === 'tpo')
+
   // Flags can be added to show labels on the right
   // TO DO - remove arrow when link is selected
   const navLinks = [
@@ -112,12 +118,12 @@ function UserLayout(props: any): ReactElement {
         {
           title: t('me:mySpecies'),
           path: '/profile/treemapper/my-species',
-          // hideItem: true,
+          hideItem: !(user?.type === 'tpo'),
         },
         {
           title: t('me:import'),
           path: '/profile/treemapper/import',
-          // hideItem: true,
+          hideItem: !(user?.type === 'tpo'),
         },
       ]
     },
@@ -181,9 +187,6 @@ function UserLayout(props: any): ReactElement {
       }
     }
   }, [router]);
-
-  const { user, logoutUser, contextLoaded } =
-    React.useContext(UserPropsContext);
 
   React.useEffect(() => {
     if (contextLoaded) {
