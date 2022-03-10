@@ -144,23 +144,26 @@ export default function History({
               </div>
             )}
           </div>
-          <div className={styles.filterContainer}>
-            <p className={styles.header}>{t('me:filters')}</p>
-            <div className={styles.filterGrid}>
-              {accountingFilters &&
-                Object.entries(accountingFilters).map((item) => {
-                  return (
-                    <div
-                      key={item[0]}
-                      className={`${styles.filterButton} ${filter === item[0] ? styles.selected : ''
-                        }`}
-                      onClick={() => handleSetFilter(item[0])}
-                    >
-                      {t(item[0])}
-                    </div>
-                  );
-                })}
+          <div className={styles.filterContent}>
+            <div className={styles.filterContainer}>
+              <p className={styles.header}>{t('me:filters')}</p>
+              <div className={styles.filterGrid}>
+                {accountingFilters &&
+                  Object.entries(accountingFilters).map((item) => {
+                    return (
+                      <div
+                        key={item[0]}
+                        className={`${styles.filterButton} ${filter === item[0] ? styles.selected : ''
+                          }`}
+                        onClick={() => handleSetFilter(item[0])}
+                      >
+                        {t(item[0])}
+                      </div>
+                    );
+                  })}
+              </div>
             </div>
+            <iframe src='https://www5.plant-for-the-planet.org/assets/300250' className={styles.adSpace} />
           </div>
         </div>
         {openModal && (

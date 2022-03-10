@@ -504,6 +504,20 @@
   font-style: italic;
 }
 
+.filterContent {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+}
+
+.adSpace {
+  margin-top: 20px;
+  margin-left: 20px;
+  display: none;
+  width: 100%;
+  height: 250px;
+}
+
 @include smTabletView {
   .detailGrid {
     grid-template-columns: repeat(2, 1fr);
@@ -556,6 +570,11 @@
       }
     }
   }
+
+  .adSpace {
+    display: block;
+  }
+
   .filterContainer {
     width: 30%;
     display: flex;
@@ -615,8 +634,9 @@
       }
     }
   }
+
   .filterContainer {
-    width: 30%;
+    width: 100%;
     display: flex;
     margin-left: 20px;
   }
