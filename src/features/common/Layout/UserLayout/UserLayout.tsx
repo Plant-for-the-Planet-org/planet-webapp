@@ -26,8 +26,6 @@ function UserLayout(props: any): ReactElement {
   const { user, logoutUser, contextLoaded } =
     React.useContext(UserPropsContext);
 
-  console.log('user', user.type === 'tpo')
-
   // Flags can be added to show labels on the right
   // TO DO - remove arrow when link is selected
   const navLinks = [
