@@ -153,14 +153,14 @@ function UserLayout(props: any): ReactElement {
       for (const link of navLinks) {
         
         if (router.router?.asPath === link.path) {
-              setactiveLink(link.path);
+            setactiveLink(link.path);
         } else if (link.subMenu && link.subMenu.length > 0) {
           const subMenuItem = link.subMenu.find((subMenuItem: any) => {
             return subMenuItem.path === router.router?.asPath;
           })
           if (subMenuItem) {
            if (subMenuItem && typeof subMenuItem !== 'undefined') {
-             setactiveLink(link.path);
+            setactiveLink(link.path);
             setActiveSubMenu(subMenuItem.path);
           }
         }
@@ -208,7 +208,7 @@ function UserLayout(props: any): ReactElement {
                 link={link}
                 setactiveLink={setactiveLink}
                 activeLink={activeLink}
-                // activeSubMenu={activeSubMenu}
+                activeSubMenu={activeSubMenu}
                 setActiveSubMenu={setActiveSubMenu}
                 user={user}
                 key={index}
