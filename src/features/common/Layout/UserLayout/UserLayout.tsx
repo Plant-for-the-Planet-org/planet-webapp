@@ -148,21 +148,24 @@ function UserLayout(props: any): ReactElement {
   const [activeSubMenu, setActiveSubMenu] = React.useState('');
 
   React.useEffect(() => {
+    
     if (router) {
       for (const link of navLinks) {
+        
         if (router.router?.asPath === link.path) {
-          setactiveLink(link.path);
+              setactiveLink(link.path);
         } else if (link.subMenu && link.subMenu.length > 0) {
           const subMenuItem = link.subMenu.find((subMenuItem: any) => {
             return subMenuItem.path === router.router?.asPath;
-          });
+          })
           if (subMenuItem) {
-            setactiveLink(link.path);
+           if (subMenuItem && typeof subMenuItem !== 'undefined') {
+             setactiveLink(link.path);
             setActiveSubMenu(subMenuItem.path);
           }
         }
       }
-    }
+    }}
   }, [router]);
 
   const { user, logoutUser, contextLoaded } =
@@ -200,16 +203,18 @@ function UserLayout(props: any): ReactElement {
               </div>
             </div>
             {navLinks.map((link: any, index: any) => (
+              <>
               <NavLink
                 link={link}
                 setactiveLink={setactiveLink}
                 activeLink={activeLink}
-                activeSubMenu={activeSubMenu}
+                // activeSubMenu={activeSubMenu}
                 setActiveSubMenu={setActiveSubMenu}
                 user={user}
                 key={index}
                 closeMenu={() => setIsMenuOpen(false)}
               />
+              </>
             ))}
           </>
         </div>
@@ -321,11 +326,11 @@ function NavLink({
   }
 
   const [isSubMenuActive, setisSubMenuActive] = React.useState(false);
-
   return (
     <div key={link.title} className={styles.navlinkMenu}>
+      
       <div
-        className={`${styles.navlink} ${activeLink === link.path ? styles.navlinkActive : ''
+        className={`${styles.navlink} ${activeLink === link.path && typeof activeLink !== 'undefined' ? styles.navlinkActive : ''
           }`}
         onClick={() => {
           // This is to shift to the main page needed when there is no sub menu
@@ -342,6 +347,7 @@ function NavLink({
           }
         }}
       >
+        
         {link.icon}
         <button className={styles.navlinkTitle}>
           {link.title}
