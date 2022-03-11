@@ -115,7 +115,7 @@ export const EditModal = ({
       }}
     >
       <Fade in={editModalOpen}>
-        <div className={styles.manageDonationModal} style={{width:"35vw",height:"62vh" ,maxWidth:'min-content',maxHeight:'min-content'}}>
+        <div className={styles.manageDonationModal}  style={{width:"35vw",height:"auto" ,maxWidth:'min-content',overflow:'auto'}} >
           <div className={styles.modalTexts}>
             <div
               style={{
