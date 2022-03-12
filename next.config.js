@@ -1,9 +1,8 @@
-const { i18n } = require('./next-i18next.config');
-
 const withPlugins = require('next-compose-plugins');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
+const { i18n } = require('./next-i18next.config');
 
 // Use the SentryWebpack plugin to upload the source maps during build step
 const SentryWebpackPlugin = require('@sentry/webpack-plugin');
@@ -48,7 +47,6 @@ const hasAssetPrefix =
   process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
 module.exports = withPlugins([[withBundleAnalyzer]], {
-  i18n,
   productionBrowserSourceMaps: true,
   serverRuntimeConfig: {
     rootDir: __dirname,
@@ -75,11 +73,6 @@ module.exports = withPlugins([[withBundleAnalyzer]], {
     //config.node = {
     //  fs: 'empty',
     //}
-    // for webpack5:
-    config.resolve.fallback = {
-      fs: false,
-      path: require.resolve('path-browserify'),
-    };
 
     // When all the Sentry configuration env variables are available/configured
     // The Sentry webpack plugin gets pushed to the webpack plugins to build
@@ -211,6 +204,7 @@ module.exports = withPlugins([[withBundleAnalyzer]], {
     };
   },
   assetPrefix: hasAssetPrefix ? `${scheme}://${process.env.ASSET_PREFIX}` : '',
+  i18n,
   // Asset Prefix allows to use CDN for the generated js files
   // https://nextjs.org/docs/api-reference/next.config.js/cdn-support-with-asset-prefix
 });

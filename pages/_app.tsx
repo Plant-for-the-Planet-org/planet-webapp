@@ -87,7 +87,7 @@ function PlanetWeb({ Component, pageProps, err }: any) {
   const [isMap, setIsMap] = React.useState(false);
   const [currencyCode, setCurrencyCode] = React.useState('');
   const [browserCompatible, setBrowserCompatible] = React.useState(false);
-  const { i18n } = useTranslation();
+  const { ready } = useTranslation();
   const config = tenantConfig();
 
   const tagManagerArgs = {
@@ -106,10 +106,8 @@ function PlanetWeb({ Component, pageProps, err }: any) {
     storeConfig();
   }, []);
   React.useEffect(() => {
-    i18n.init().then(() => {
-      setInitialized(true);
-    });
-  }, []);
+    setInitialized(ready);
+  }, [ready]);
 
   React.useEffect(() => {
     if (
