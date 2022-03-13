@@ -69,7 +69,7 @@ export const EditModal = ({
     };
     if (
       new Date(data.currentPeriodEnd).toDateString() ==
-        new Date(record.currentPeriodEnd).toDateString() ||
+      new Date(record.currentPeriodEnd).toDateString() ||
       bodyToSend.nextBilling === null
     ) {
       delete bodyToSend.nextBilling;
@@ -191,7 +191,7 @@ export const EditModal = ({
                       variant="outlined"
                       label={t('frequency')}
                       name="frequency"
-                      // defaultValue={"spme"}
+                    // defaultValue={"spme"}
                     />
                   )}
                 />
@@ -254,7 +254,7 @@ export const EditModal = ({
             )}
           </form>
           <div className={styles.note}>
-            <p>{record.method === 'paypal' ? t('me:noteToWait') : []}</p>
+            <p>{record?.method === 'paypal' ? t('me:noteToWait') : []}</p>
           </div>
           <button
             onClick={handleSubmit(onSubmit)}

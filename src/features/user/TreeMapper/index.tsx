@@ -150,12 +150,18 @@ function TreeMapper({ }: Props): ReactElement {
       )}
 
       <div id="pageContainer" className={styles.pageContainer}>
-        {selectedLocation ? <PlantLocationPage {...TreeMapperProps} /> :
+        {selectedLocation ? (
+          <PlantLocationPage {...TreeMapperProps} />
+        ) : (
           <div className={styles.listContainer}>
-            <div className={'profilePageTitle'}>{t('treemapper:treeMapper')}</div>
+            <div className={styles.titleContainer}>
+              <div className={'profilePageTitle'}>
+                {t('treemapper:treeMapper')}
+              </div>
+            </div>
             <TreeMapperList {...TreeMapperProps} />
           </div>
-        }
+        )}
         <div className={styles.mapContainer}>
           <PlantLocationMap
             locations={plantLocations}
