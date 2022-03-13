@@ -86,7 +86,7 @@
   "pausedUntil": "Pausiert bis",
   "pauseUntilDate": "Pausieren bis zum gewählten Datum",
   "reactivateDonationConfirmation": "Spende wieder aktivieren",
-  "reactivateDonationDescription": "Ihre Spende wird wieder aktiviert und zum Datum {{currentPeriodEnds}} weitergeführt.",
+  "reactivateDonationDescription": "Deine Spende wird wieder aktiviert und zum Datum {{currentPeriodEnds}} weitergeführt.",
   "cancelDonationConfirmation": "Spende beenden",
   "cancelDonationDescription": "Einmal beendet kann die Spende nicht weitergeführt werden.",
   "cancelDonationPaypalDescription": "Diese Spende wird sofort storniert und kann nicht wieder aufgenommen werden.",
