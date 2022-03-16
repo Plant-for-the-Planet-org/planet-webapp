@@ -324,15 +324,22 @@ function NavLink({
   user,
   closeMenu,
 }: any) {
+ 
+  const [isSubMenuActive, setisSubMenuActive] = React.useState(false);
+
   React.useEffect(() => {
     // Check if array of submenu has activeSubLink
     if (link.subMenu && link.subMenu.length > 0) {
       const subMenuItem = link.subMenu.find((subMenuItem: any) => {
-        return subMenuItem.path === activeLink;
+        // return subMenuItem.path === activeLink;
+        return subMenuItem.path === activeSubMenu;
       });
       if (subMenuItem) {
         setactiveLink(link.path);
         setActiveSubMenu(subMenuItem.path);
+        if (activeSubMenu && subMenuItem.path === activeSubMenu) {
+          setisSubMenuActive(true);
+        }
       }
     }
   }, [activeLink]);
@@ -343,7 +350,6 @@ function NavLink({
     }
   }
 
-  const [isSubMenuActive, setisSubMenuActive] = React.useState(false);
   return (
     <div key={link.title} className={styles.navlinkMenu}>
       
