@@ -678,3 +678,47 @@
 .headerCloseIcon:hover {
   cursor: pointer;
 }
+
+
+.editDonationModal{
+  width: 38vw;
+  min-width: 38vw;
+  height: auto;
+  max-width: min-content;
+  overflow: auto;
+}
+
+@media  screen and (min-width:250px) and (max-width:449px){
+  .editDonationModal{
+  width: 98vw;
+  min-width: 98vw;
+  height: auto;
+  max-width: min-content;
+  overflow: auto;
+  }
+  .formRow{
+    flex-direction: column;
+  }
+}
+
+@media screen and (min-width:450px) and (max-width:700px){
+  .editDonationModal{
+    width: 80vw;
+    min-width: 80vw;
+    height: auto;
+    max-width: min-content;
+    overflow: auto;
+}
+.formRow{
+  flex-direction: column;
+}
+}
+
+@media screen and (min-width:701px) and (max-width:1048px){
+  .editDonationModal{
+    width: 60vw;
+    min-width: 60vw;
+    height: auto;
+    max-width: min-content;
+    overflow: auto;
+}}
