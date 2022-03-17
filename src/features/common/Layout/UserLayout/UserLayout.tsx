@@ -169,28 +169,27 @@ function UserLayout(props: any): ReactElement {
   const [activeSubMenu, setActiveSubMenu] = React.useState('');
 
   React.useEffect(() => {
-    
     if (router) {
       for (const link of navLinks) {
-        
+        //checks whether the path belongs to menu or Submenu 
         if (router.router?.asPath === link.path) {
-            setactiveLink(link.path);
+          setactiveLink(link.path);
         } else if (link.subMenu && link.subMenu.length > 0) {
           const subMenuItem = link.subMenu.find((subMenuItem: any) => {
             return subMenuItem.path === router.router?.asPath;
-          })
+          });
           if (subMenuItem) {
-           if (subMenuItem && typeof subMenuItem !== 'undefined') {
             setactiveLink(link.path);
             setActiveSubMenu(subMenuItem.path);
           }
         }
       }
-    }}
+    }
   }, [router]);
 
   React.useEffect(() => {
     if (contextLoaded) {
+      //checks whether user is login 
       if (!user) {
         router.push('/login');
       }
@@ -202,7 +201,7 @@ function UserLayout(props: any): ReactElement {
       <div
         key={'hamburgerIcon'}
         className={`${styles.hamburgerIcon}`}
-        onClick={() => setIsMenuOpen(true)}
+        onClick={() => setIsMenuOpen(true)} // for mobile verion to open menu 
       >
         <MenuIcon />
       </div>
@@ -214,14 +213,13 @@ function UserLayout(props: any): ReactElement {
             <div key={'closeMenu'} className={`${styles.closeMenu}`}>
               <div
                 className={`${styles.navlink}`}
-                onClick={() => setIsMenuOpen(false)}
+                onClick={() => setIsMenuOpen(false)} //for mobile version to close menu
               >
                 <BackArrow />
                 <button className={styles.navlinkTitle}>{t('close')}</button>
               </div>
             </div>
             {navLinks.map((link: any, index: any) => (
-              <>
               <NavLink
                 link={link}
                 setactiveLink={setactiveLink}
@@ -232,7 +230,6 @@ function UserLayout(props: any): ReactElement {
                 key={index}
                 closeMenu={() => setIsMenuOpen(false)}
               />
-              </>
             ))}
           </>
         </div>
@@ -241,6 +238,7 @@ function UserLayout(props: any): ReactElement {
           <LanguageSwitcher />
           <div
             className={styles.navlink}
+            //logout user
             onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)}
           >
             <LogoutIcon />
@@ -266,6 +264,7 @@ function LanguageSwitcher() {
 
   React.useEffect(() => {
     if (typeof Storage !== 'undefined') {
+      //fetching language from browser's local storage
       if (localStorage.getItem('language')) {
         const langCode = localStorage.getItem('language') || 'en';
         if (langCode) setLanguage(langCode.toLowerCase());
@@ -275,10 +274,12 @@ function LanguageSwitcher() {
 
   React.useEffect(() => {
     if (typeof Storage !== 'undefined') {
+      //fetching currencycode from browser's localstorage
       if (localStorage.getItem('currencyCode')) {
         const currencyCode = localStorage.getItem('currencyCode');
         if (currencyCode) setSelectedCurrency(currencyCode);
       }
+      //fetching country code from browser's localstorage
       if (localStorage.getItem('countryCode')) {
         const countryCode = localStorage.getItem('countryCode');
         if (countryCode) setSelectedCountry(countryCode);
@@ -324,14 +325,12 @@ function NavLink({
   user,
   closeMenu,
 }: any) {
- 
   const [isSubMenuActive, setisSubMenuActive] = React.useState(false);
 
   React.useEffect(() => {
     // Check if array of submenu has activeSubLink
     if (link.subMenu && link.subMenu.length > 0) {
       const subMenuItem = link.subMenu.find((subMenuItem: any) => {
-        // return subMenuItem.path === activeLink;
         return subMenuItem.path === activeSubMenu;
       });
       if (subMenuItem) {
@@ -352,10 +351,10 @@ function NavLink({
 
   return (
     <div key={link.title} className={styles.navlinkMenu}>
-      
       <div
-        className={`${styles.navlink} ${activeLink === link.path && typeof activeLink !== 'undefined' ? styles.navlinkActive : ''
-          }`}
+        className={`${styles.navlink} ${
+          activeLink && activeLink === link.path ? styles.navlinkActive : ''
+        }`}
         onClick={() => {
           // This is to shift to the main page needed when there is no sub menu
           if ((!link.subMenu || link.subMenu.length <= 0) && link.path) {
@@ -371,7 +370,6 @@ function NavLink({
           }
         }}
       >
-        
         {link.icon}
         <button className={styles.navlinkTitle}>
           {link.title}
@@ -396,12 +394,14 @@ function NavLink({
           if (!subLink.hideItem) {
             return (
               <div
-                className={`${styles.navlinkSubMenu} ${activeSubMenu === subLink.path
-                  ? styles.navlinkActiveSubMenu
-                  : ''
-                  }`}
+                className={`${styles.navlinkSubMenu} ${
+                  activeSubMenu === subLink.path
+                    ? styles.navlinkActiveSubMenu
+                    : ''
+                }`}
                 key={index}
                 onClick={() => {
+                  //this is to shift to the submenu pages
                   setactiveLink(link.path);
                   setActiveSubMenu(subLink.path);
                   router.push(subLink.path);
