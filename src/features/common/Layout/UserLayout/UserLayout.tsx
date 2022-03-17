@@ -355,7 +355,7 @@ function NavLink({
       <div
         className={`${styles.navlink} ${
           activeLink && activeLink === link.path ? styles.navlinkActive : ''
-        }`}
+        } ${isSubMenuActive ? styles.navlinkActive : ''}`}
         onClick={() => {
           // This is to shift to the main page needed when there is no sub menu
           if ((!link.subMenu || link.subMenu.length <= 0) && link.path) {
