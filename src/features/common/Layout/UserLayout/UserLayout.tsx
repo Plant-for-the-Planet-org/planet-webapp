@@ -292,7 +292,7 @@ function LanguageSwitcher() {
       <div
         className={styles.navlink}
         onClick={() => {
-          setOpenModal(true);
+          setOpenModal(true); // open language and country change modal
         }}
       >
         <GlobeIcon />
@@ -344,6 +344,7 @@ function NavLink({
   }, [activeLink]);
 
   if (link.accessLevel) {
+    //checks the type of user login
     if (!link.accessLevel.includes(user.type)) {
       return null;
     }
