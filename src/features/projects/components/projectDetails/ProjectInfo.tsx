@@ -197,13 +197,13 @@ function ProjectInfo({ project }: Props): ReactElement {
                 </div>
             )}
 
-            {project.degradationCause && (
+            {project.projectMeta.degradationCause && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
                         {t('manageProjects:causeOfDegradation')}
                     </div>
                     <div className={styles.infoText}>
-                        {project.degradationCause}
+                        {project.projectMeta.degradationCause}
                     </div>
                 </div>
             )}
