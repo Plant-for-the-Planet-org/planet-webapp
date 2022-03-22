@@ -506,15 +506,20 @@
 
 .filterContent {
   width: 30%;
-  display: flex;
+  display: none;
   flex-direction: column;
 }
+.topAdSpace {
+  margin-top: 20px;
+  width: auto;
+  height: 250px;
+}
 
-.adSpace {
+.rightAdSpace {
   margin-top: 20px;
   margin-left: 20px;
   display: none;
-  width: 100%;
+  width: auto;
   height: 250px;
 }
 
@@ -523,6 +528,12 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+@include mdTabletView {
+  .rightAdSpace {
+    display: block;
+  }
+}
+
 .record {
   -webkit-transition: max-height 1s;
   -moz-transition: max-height 1s;
@@ -535,6 +546,14 @@
 }
 
 @include lgLaptopView {
+  .filterContent {
+    display: flex;
+  }
+
+  .topAdSpace {
+    display: none;
+  }
+
   .accountHistory {
     width: 70%;
     > .historyList {
@@ -569,10 +588,6 @@
         }
       }
     }
-  }
-
-  .adSpace {
-    display: block;
   }
 
   .filterContainer {
