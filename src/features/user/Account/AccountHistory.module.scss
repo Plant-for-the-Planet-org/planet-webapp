@@ -508,19 +508,22 @@
   width: 30%;
   display: none;
   flex-direction: column;
+  min-width: 250px;
+  margin-left: 20px;
 }
 .topAdSpace {
   margin-top: 20px;
-  width: auto;
+  width: 250px;
   height: 250px;
+  border-radius: 10px;
 }
 
 .rightAdSpace {
   margin-top: 20px;
-  margin-left: 20px;
   display: none;
-  width: auto;
+  width: 250px;
   height: 250px;
+  border-radius: 10px;
 }
 
 @include smTabletView {
@@ -593,7 +596,6 @@
   .filterContainer {
     width: 30%;
     display: flex;
-    margin-left: 20px;
   }
 
   .filterRow {
@@ -653,7 +655,6 @@
   .filterContainer {
     width: 100%;
     display: flex;
-    margin-left: 20px;
   }
 
   .filterRow {
