@@ -550,7 +550,7 @@ export default function CompleteSignup() {
                 </a>
                 {t('editProfile:termAndConditionPart3')}
               </label>
-              <div>
+              <div className={}>
                 {!acceptTerms && (
                   <span className={styles.formErrors}>
                     {t('editProfile:termAndConditionError')}
