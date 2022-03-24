@@ -265,6 +265,13 @@
   bottom: -18px;
 }
 
+.termsError {
+  font-family: $primaryFontFamily;
+  font-size: $fontXSmall;
+  color: $dangerColor;
+  margin-left: -131px;
+}
+
 :export {
   primaryFontColor: $primaryFontColor;
 }

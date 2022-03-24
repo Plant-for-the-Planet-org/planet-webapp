@@ -535,10 +535,7 @@ export default function CompleteSignup() {
             />
           </div>
 
-          <div
-            className={styles.isPrivateAccountDiv}
-            style={{ display: 'flex' }}
-          >
+          <div className={styles.isPrivateAccountDiv}>
             <div className={styles.mainText}>
               <label htmlFor={'terms'} style={{ cursor: 'pointer' }}>
                 {t('editProfile:termAndConditionPart1')}
@@ -550,13 +547,6 @@ export default function CompleteSignup() {
                 </a>
                 {t('editProfile:termAndConditionPart3')}
               </label>
-              <div className={}>
-                {!acceptTerms && (
-                  <span className={styles.formErrors}>
-                    {t('editProfile:termAndConditionError')}
-                  </span>
-                )}
-              </div>
             </div>
             <Controller
               name="terms"
@@ -579,7 +569,13 @@ export default function CompleteSignup() {
               }}
             />
           </div>
-
+          <div>
+            {!acceptTerms && (
+              <span className={styles.termsError}>
+                {t('editProfile:termAndConditionError')}
+              </span>
+            )}
+          </div>
           <div className={styles.horizontalLine} />
 
           <button
