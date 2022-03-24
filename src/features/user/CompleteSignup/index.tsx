@@ -202,9 +202,6 @@ export default function CompleteSignup() {
     setAcceptTerms(value);
     if (!value) {
       setSubmit(false);
-      setSnackbarMessage(t('editProfile:termAndConditionError'));
-      setSeverity('error');
-      handleSnackbarOpen();
     }
   };
   const profileTypes = [
@@ -526,7 +523,6 @@ export default function CompleteSignup() {
               inputRef={register()}
               defaultValue={true}
               render={(props: any) => {
-                console.log(props);
                 return (
                   <ToggleSwitch
                     checked={props.value}
@@ -539,7 +535,10 @@ export default function CompleteSignup() {
             />
           </div>
 
-          <div className={styles.isPrivateAccountDiv}>
+          <div
+            className={styles.isPrivateAccountDiv}
+            style={{ display: 'flex' }}
+          >
             <div className={styles.mainText}>
               <label htmlFor={'terms'} style={{ cursor: 'pointer' }}>
                 {t('editProfile:termAndConditionPart1')}
@@ -551,6 +550,13 @@ export default function CompleteSignup() {
                 </a>
                 {t('editProfile:termAndConditionPart3')}
               </label>
+              <div>
+                {!acceptTerms && (
+                  <span className={styles.formErrors}>
+                    {t('editProfile:termAndConditionError')}
+                  </span>
+                )}
+              </div>
             </div>
             <Controller
               name="terms"
