@@ -92,7 +92,8 @@ export async function getRequest(
   const lang = localStorage.getItem('language') || 'en';
   const query: any = { ...queryParams, locale: lang };
   const queryString = getQueryString(query);
-  await fetch(`${process.env.API_ENDPOINT}${url}?${queryString}`, {
+  const queryStringSuffix = queryString ? '?' + queryString : ''
+  await fetch(`${process.env.API_ENDPOINT}${url}${queryStringSuffix}`, {
     method: 'GET',
     headers: {
       'tenant-key': `${TENANT_ID}`,
@@ -126,8 +127,8 @@ export async function getAuthenticatedRequest(
   const lang = localStorage.getItem('language') || 'en';
   const query: any = { ...queryParams };
   const queryString = getQueryString(query);
-
-  await fetch(`${process.env.API_ENDPOINT}${url}?${queryString}`, {
+  const queryStringSuffix = queryString ? '?' + queryString : ''
+  await fetch(`${process.env.API_ENDPOINT}${url}${queryStringSuffix}`, {
     method: 'GET',
     headers: {
       'tenant-key': `${TENANT_ID}`,
