@@ -69,7 +69,7 @@
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   @include xsPhoneView {
-    width: 256px;
+    width: 300px;
     & .navlink {
       padding: 16px 20px;
       justify-content: space-between;
@@ -90,7 +90,7 @@
       display: none;
     }
     &:hover {
-      width: 256px !important;
+      width: 300px !important;
     }
     &:hover .navlink {
       padding: 16px 20px;
@@ -191,7 +191,7 @@
 
 @include lgLaptopView {
   .sidebar {
-    width: 256px;
+    width: 300px;
   }
   .navlink button {
     display: block;
@@ -201,7 +201,7 @@
     justify-content: space-between;
   }
   .profilePageContainer {
-    padding-left: 256px;
+    padding-left: 300px;
   }
   .navlinkSubMenu {
     display: flex;
