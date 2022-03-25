@@ -123,7 +123,7 @@
   "targetSave": "Sauvegarder",
   "targetErrorMessage": "Le nombre doit être supérieur à zéro",
   "taxDeductibleReceipt": "Reçu déductible des impôts",
-  "Gift Certificate": "Certificat de don",
+  "giftCertificate": "Certificat de don",
   "paypal-paypal": "Paypal",
   "stripe-": "Stripe",
   "unknown-method": "Inconnu",
