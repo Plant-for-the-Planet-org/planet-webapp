@@ -714,3 +714,22 @@
 .headerCloseIcon:hover {
   cursor: pointer;
 }
+
+.editDonationModal {
+  min-width: 420px;
+  height: auto;
+  max-width: min-content;
+  overflow: auto;
+}
+
+@include xsPhoneView {
+  .editDonationModal {
+    min-width: 80vw;
+    height: auto;
+    max-width: min-content;
+    overflow: auto;
+  }
+  .formRow {
+    flex-direction: column;
+  }
+}
