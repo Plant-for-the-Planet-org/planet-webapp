@@ -230,7 +230,7 @@ export default function CompleteSignup() {
 
   const createButtonClicked = async (data: any) => {
     if (!acceptTerms) {
-      handleTermsAndCondition(acceptTerms);
+      handleTermsAndCondition(false);
       return;
     }
     setSubmit(true);
@@ -548,29 +548,18 @@ export default function CompleteSignup() {
                 {t('editProfile:termAndConditionPart3')}
               </label>
             </div>
-            <Controller
-              name="terms"
-              id="terms"
-              control={control}
-              inputRef={register()}
-              defaultValue={false}
-              render={(props: any) => {
-                return (
-                  <ToggleSwitch
-                    checked={props.value}
-                    onChange={(e: any) => {
-                      props.onChange(e.target.checked);
-                      handleTermsAndCondition(e.target.checked);
-                    }}
-                    inputProps={{ 'aria-label': 'secondary checkbox' }}
-                    id="terms"
-                  />
-                );
+
+            <ToggleSwitch
+              checked={acceptTerms}
+              onChange={(e: any) => {
+                handleTermsAndCondition(e.target.checked);
               }}
+              inputProps={{ 'aria-label': 'secondary checkbox' }}
+              id="terms"
             />
           </div>
           <div>
-            {!acceptTerms && (
+            {!acceptTerms && typeof acceptTerms !== 'object' && (
               <span className={styles.termsError}>
                 {t('editProfile:termAndConditionError')}
               </span>
