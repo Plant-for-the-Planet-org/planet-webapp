@@ -20,7 +20,7 @@ import GeocoderArcGIS from "geocoder-arcgis";
 import { postRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
-const { useTranslation } = i18next;
+const { Trans, useTranslation } = i18next;
 
 export default function CompleteSignup() {
   const router = useRouter();
@@ -538,16 +538,14 @@ export default function CompleteSignup() {
           <div className={styles.isPrivateAccountDiv}>
             <div className={styles.mainText}>
               <label htmlFor={'terms'} style={{ cursor: 'pointer' }}>
-                {t('editProfile:termAndConditionPart1')}
-                <a
-                  className={styles.termsLink}
-                  rel="noopener noreferrer"
-                  href={`https://pp.eco/legal/${i18n.language}/terms`}
-                  target={'_blank'}
-                >
-                  {t('editProfile:termAndConditionPart2')}
-                </a>
-                {t('editProfile:termAndConditionPart3')}
+                <Trans i18nKey="editProfile:termAndCondition">
+                  I agree to the <a
+                    className={styles.termsLink}
+                    rel="noopener noreferrer"
+                    href={`https://pp.eco/legal/${i18n.language}/terms`}
+                    target={'_blank'}
+                  >Terms and Conditions</a> of the Plant-for-the-Planet platform.
+                </Trans>
               </label>
             </div>
 
