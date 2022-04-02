@@ -541,7 +541,9 @@ export default function CompleteSignup() {
                 {t('editProfile:termAndConditionPart1')}
                 <a
                   className={styles.termsLink}
+                  rel="noopener noreferrer"
                   href={`https://pp.eco/legal/${i18n.language}/terms`}
+                  target={'_blank'}
                 >
                   {t('editProfile:termAndConditionPart2')}
                 </a>
