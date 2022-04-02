@@ -154,6 +154,7 @@ function SubmitForReview({ submitForReview, handleBack, isUploadingData, project
                             <button
                                 onClick={handleBack}
                                 className="secondaryButton"
+                                style={{width:'234px',height:'46px', marginLeft:"40px"}}
                             >
                                 <BackArrow />
                                 <p>

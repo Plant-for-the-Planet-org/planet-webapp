@@ -43,12 +43,14 @@ export default function ProjectsContainer({ }: any) {
     <div className="profilePage">
       <div className="profilePageHeader">
         <div>
-          <div className={'profilePageTitle'}>{t('manageProjects:manageProject')}</div>
+          <div className={'profilePageTitle'}>
+            {t('manageProjects:manageProject')}
+          </div>
           <div className={'profilePageSubTitle'}>
             {t('manageProjects:descriptionForManageProjects')}
           </div>
         </div>
-        <div style={{display: 'flex', flexDirection: 'column', gap: 14}}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <Link href="/profile/projects/new-project">
             <button
               id={'addProjectBut'}

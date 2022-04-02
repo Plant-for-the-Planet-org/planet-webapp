@@ -1,6 +1,8 @@
 @import '../../../../theme/theme';
 
 .profilePageContainer {
+  margin-top: -17px;
+  margin-left: 55px;
   position: relative;
   display: flex;
   padding-left: 60px;
@@ -51,7 +53,7 @@
 }
 
 .sidebar {
-  width: 60px;
+  width: 109px;
   position: fixed;
   top: 0px;
   left: 0px;
@@ -190,21 +192,21 @@
   width: 100%;
 }
 
-@include lgLaptopView {
-  .sidebar {
-    width: 256px;
-  }
-  .navlink button {
-    display: block;
-  }
-  .navlink {
-    padding: 16px 20px;
-    justify-content: space-between;
-  }
-  .profilePageContainer {
-    padding-left: 256px;
-  }
-  .navlinkSubMenu {
-    display: flex;
-  }
-}
+// @include lgLaptopView {
+//   .sidebar {
+//     width: 256px;
+//   }
+//   .navlink button {
+//     display: block;
+//   }
+//   .navlink {
+//     padding: 16px 20px;
+//     justify-content: space-between;
+//   }
+//   .profilePageContainer {
+//     padding-left: 256px;
+//   }
+//   .navlinkSubMenu {
+//     display: flex;
+//   }
+// }

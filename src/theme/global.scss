@@ -233,6 +233,15 @@ video {
   fill: $primaryFontColor;
 }
 
+.backTO{
+  width:234px;
+  height:54px;
+  border-radius: 80px;
+}
+
+
+
+
 .primaryButton,
 .secondaryButton {
   color: $light;
@@ -243,12 +252,12 @@ video {
     $primaryColor 5%,
     $primaryDarkColor 116%
   );
-  height: 40px;
+  height: 46px;
   padding: 0px;
   text-align: center;
   border: 0px;
-  border-radius: 52px;
-  min-width: 200px;
+  border-radius: 80px;
+  // min-width: 200px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -504,6 +513,11 @@ input:-webkit-autofill {
   display: flex;
   align-items: flex-start;
 }
+.project-form-flow {
+  display: flex;
+  justify-content: center;
+  width: max-content;
+}
 .add-projects-button{
   background-color: $backgroundColor;
   border: 1px solid #F3F3F3;
@@ -517,6 +531,8 @@ input:-webkit-autofill {
 }
 
 .add-project{
+  margin-top: 65px;
+  margin-left: 90px;
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -547,6 +563,69 @@ input:-webkit-autofill {
     gap: 16px;
   }
 }
+
+.tab-flow {
+  text-transform: capitalize !important;
+  text-align: left;
+  align-items: flex-start;
+}
+
+
+.tab-flow.Mui-selected	{
+  span {
+    color: $primaryColor !important;
+  }
+}
+.custom-tab {
+  >.MuiTabs-scroller {
+    >.PrivateTabIndicator-root-1 {
+      width: 2px;
+      height: 20px;
+      top: 61px;
+    }
+
+    >.MuiTabs-flexContainer {
+
+
+      >.MuiTab-root {
+        padding-top: 0%;
+        min-height: 35px;
+
+      }
+
+      >.MuiButtonBase-root {
+        padding-bottom: 0%;
+
+        >.MuiTab-wrapper:active{
+          color: $primaryColor;
+          text-decoration: none;
+        }
+        >.MuiTab-wrapper {
+          align-items: flex-start;
+          font-family: Raleway;
+          font-weight: 600;
+          font-size: 14px;
+          position: static;
+          width: 124px;
+          height: 20px;
+          left: 18px;
+          top: 0px;
+          color: #828282;
+          
+
+        }
+      }
+    }
+
+    >.PrivateTabIndicator-vertical-4 {
+      left: 0;
+      background-color: $primaryColor;
+      height: 10px;
+
+    }
+  }
+}
+
 
 
 

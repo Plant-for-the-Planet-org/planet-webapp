@@ -12,7 +12,8 @@
 }
 
 .stepContainer {
-  margin: auto;
+  margin-top: -50px;
+  margin-left: 100px;
   font-family: $primaryFontFamily;
   display: flex;
   background-color: $backgroundBase;
@@ -51,7 +52,6 @@
   max-width: 320px;
   min-width: 320px;
 }
-
 .latitudeInput {
   width: fit-content !important;
   div {
