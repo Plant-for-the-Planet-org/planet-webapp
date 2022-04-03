@@ -621,34 +621,34 @@ export default function BasicDetails({
                   </span>
                 )}
               </div>
-              <div className={styles.formFieldHalf} data-test-id="website">
-                <MaterialTextField
-                  label={t('manageProjects:website')}
-                  variant="outlined"
-                  name="website"
-                  inputRef={register({
-                    required: {
-                      value: true,
-                      message: t('manageProjects:websiteValidationRequired'),
-                    },
-                    pattern: {
-                      //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
-                      value:
-                        /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
-                      message: t('manageProjects:websiteValidationInvalid'),
-                    },
-                  })}
-                />
-                {errors.website && (
-                  <span className={styles.formErrors}>
-                    {errors.website.message}
-                  </span>
-                )}
-              </div>
             </div>
           ) : (
             <></>
           )}
+          <div className={styles.formFieldHalf} data-test-id="website">
+            <MaterialTextField
+              label={t('manageProjects:website')}
+              variant="outlined"
+              name="website"
+              inputRef={register({
+                required: {
+                  value: true,
+                  message: t('manageProjects:websiteValidationRequired'),
+                },
+                pattern: {
+                  //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
+                  value:
+                    /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
+                  message: t('manageProjects:websiteValidationInvalid'),
+                },
+              })}
+            />
+            {errors.website && (
+              <span className={styles.formErrors}>
+                {errors.website.message}
+              </span>
+            )}
+          </div>
 
           <div className={styles.formFieldLarge} data-test-id="aboutProject">
             <MaterialTextField
@@ -908,60 +908,55 @@ export default function BasicDetails({
             </div>
           </div>
 
-          {purpose === 'trees' ? (
-            <>
-              <div className={styles.formFieldLarge} style={{ width: '320px' }}>
-                <div className={styles.formFieldRadio}>
-                  <label
-                    htmlFor="visitorAssistance"
-                    style={{ cursor: 'pointer' }}
-                    data-test-id="visitorAssistance"
-                  >
-                    {t('manageProjects:visitorAssistanceLabel')}
-                  </label>
-                  <Controller
-                    name="visitorAssistance"
-                    control={control}
-                    render={(properties) => (
-                      <ToggleSwitch
-                        id="visitorAssistance"
-                        checked={properties.value}
-                        onChange={(e) => properties.onChange(e.target.checked)}
-                        inputProps={{ 'aria-label': 'secondary checkbox' }}
-                      />
-                    )}
+          <div className={styles.formFieldLarge} style={{ width: '320px' }}>
+            <div className={styles.formFieldRadio}>
+              <label
+                htmlFor="visitorAssistance"
+                style={{ cursor: 'pointer' }}
+                data-test-id="visitorAssistance"
+              >
+                {t('manageProjects:visitorAssistanceLabel')}
+              </label>
+              <Controller
+                name="visitorAssistance"
+                control={control}
+                render={(properties) => (
+                  <ToggleSwitch
+                    id="visitorAssistance"
+                    checked={properties.value}
+                    onChange={(e) => properties.onChange(e.target.checked)}
+                    inputProps={{ 'aria-label': 'secondary checkbox' }}
                   />
-                </div>
-              </div>
+                )}
+              />
+            </div>
+          </div>
 
-              <div className={styles.formFieldLarge} style={{ width: '320px' }}>
-                <div className={`${styles.formFieldRadio}`}>
-                  <label
-                    htmlFor={'publish'}
-                    style={{ cursor: 'pointer' }}
-                    data-test-id="publishProject"
-                  >
-                    {t('manageProjects:publishProject')}
-                  </label>
+          <div className={styles.formFieldLarge} style={{ width: '320px' }}>
+            <div className={`${styles.formFieldRadio}`}>
+              <label
+                htmlFor={'publish'}
+                style={{ cursor: 'pointer' }}
+                data-test-id="publishProject"
+              >
+                {t('manageProjects:publishProject')}
+              </label>
 
-                  <Controller
-                    name="publish"
-                    control={control}
-                    render={(properties) => (
-                      <ToggleSwitch
-                        checked={properties.value}
-                        onChange={(e) => properties.onChange(e.target.checked)}
-                        id="publish"
-                        inputProps={{ 'aria-label': 'secondary checkbox' }}
-                      />
-                    )}
+              <Controller
+                name="publish"
+                control={control}
+                render={(properties) => (
+                  <ToggleSwitch
+                    checked={properties.value}
+                    onChange={(e) => properties.onChange(e.target.checked)}
+                    id="publish"
+                    inputProps={{ 'aria-label': 'secondary checkbox' }}
                   />
-                </div>
-              </div>
-            </>
-          ) : (
-            <></>
-          )}
+                )}
+              />
+            </div>
+          </div>
+
           {/* <div className={styles.formFieldLarge} style={{ width: '320px' }}>
             <div className={`${styles.formFieldRadio}`}>
               <label htmlFor={'enablePlantLocations'}>

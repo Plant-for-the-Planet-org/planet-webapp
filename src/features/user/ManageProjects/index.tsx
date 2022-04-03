@@ -1,10 +1,10 @@
 import React from 'react';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
+// import Stepper from '@material-ui/core/Stepper';
+// import Step from '@material-ui/core/Step';
+// import StepLabel from '@material-ui/core/StepLabel';
 import { Tabs, Tab } from '@material-ui/core';
 import BasicDetails from './components/BasicDetails';
-import StepContent from '@material-ui/core/StepContent';
+// import StepContent from '@material-ui/core/StepContent';
 import styles from './StepForm.module.scss';
 import ProjectMedia from './components/ProjectMedia';
 import ProjectSelection from './components/ProjectSelection';
