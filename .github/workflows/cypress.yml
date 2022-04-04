@@ -18,7 +18,7 @@ jobs:
         run: sudo npm i -g npm@latest
 
       - name: 'Install Node Modules'
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Setting Environment Variables
         env:

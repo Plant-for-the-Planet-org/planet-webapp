@@ -123,7 +123,7 @@ Rename `env.local.sample` to `env.local` and add the necessary keys
 ### Run the development server
 
 ```bash
-npm install
+npm install --legacy-peer-deps
 npm run dev
 # or
 yarn dev
@@ -164,4 +164,4 @@ Any brand-images/logo/iconography used in this project, including of Plant-for-t
 
 [Trillion Tree Campaign icon](https://www.trilliontreecampaign.org/tenants/ttc/logo.png) is available under Creative Commons CC BY-NC-ND.
 
-Please contact partner[at]plant-for-the-planet[dot]org for approval to use the Plant-for-the-Planet Logo. 
+Please contact partner[at]plant-for-the-planet[dot]org for approval to use the Plant-for-the-Planet Logo.

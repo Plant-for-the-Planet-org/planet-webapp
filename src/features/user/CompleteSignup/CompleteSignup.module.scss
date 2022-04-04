@@ -105,6 +105,11 @@
   color: $highlightBackground;
 }
 
+.termsLink{
+  color: $primaryColor;
+  cursor: pointer;
+}
+
 .horizontalLine {
     border-top: 1px solid $primaryColor;
     width: 100%;
@@ -260,6 +265,12 @@
   bottom: -18px;
 }
 
+.termsError {
+  font-family: $primaryFontFamily;
+  font-size: $fontXSmall;
+  color: $dangerColor;
+}
+
 :export {
   primaryFontColor: $primaryFontColor;
 }
@@ -273,3 +284,4 @@
     min-height: calc(100vh - 150px);
   }
 }
+
