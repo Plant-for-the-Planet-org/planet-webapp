@@ -1,10 +1,6 @@
 import React from 'react';
-// import Stepper from '@material-ui/core/Stepper';
-// import Step from '@material-ui/core/Step';
-// import StepLabel from '@material-ui/core/StepLabel';
 import { Tabs, Tab } from '@material-ui/core';
 import BasicDetails from './components/BasicDetails';
-// import StepContent from '@material-ui/core/StepContent';
 import styles from './StepForm.module.scss';
 import ProjectMedia from './components/ProjectMedia';
 import ProjectSelection from './components/ProjectSelection';
@@ -207,22 +203,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
           />
         );
       default:
-        return (
-          // <BasicDetails
-          //   handleNext={handleNext}
-          //   token={token}
-          //   projectDetails={projectDetails}
-          //   setProjectDetails={setProjectDetails}
-          //   errorMessage={errorMessage}
-          //   setProjectGUID={setProjectGUID}
-          //   projectGUID={projectGUID}
-          //   setErrorMessage={setErrorMessage}
-          //   purpose={
-          //     project?.purpose ? project?.purpose : router.query?.purpose
-          //   }
-          // />
-          <ProjectSelection />
-        );
+        return <ProjectSelection />;
     }
   }
 
@@ -239,17 +220,6 @@ export default function ManageProjects({ GUID, token, project }: any) {
       className={styles.mainContainer}
       style={{ display: 'flex', flexDirection: 'column' }}
     >
-      {/* <Stepper activeStep={activeStep} >
-        
-          {steps.map((label, index) => (
-            <Step key={label}>
-              <StepLabel onClick={() => setActiveStep(index)}>{label}
-              </StepLabel>
-            </Step>
-          ))}
-      
-        
-      </Stepper> */}
       <div className={'project-form-flow'}>
         <div style={{ display: 'flex' }}>
           <Tabs
@@ -286,7 +256,13 @@ export default function ManageProjects({ GUID, token, project }: any) {
             <Tab label={t('manageProjects:review')} className={'tab-flow'} />
           </Tabs>
         </div>
-        <div style={{ marginTop: '40px', width: '1000px', display: 'flex' }}>
+        <div
+          style={{
+            marginTop: '40px',
+            width: '1000px',
+            display: 'flex',
+          }}
+        >
           {getStepContent(tabSelected)}
         </div>
       </div>

@@ -617,11 +617,10 @@ input:-webkit-autofill {
       }
     }
 
-    >.PrivateTabIndicator-vertical-4 {
-      left: 0;
-      background-color: $primaryColor;
+    > .MuiTabs-indicator{
+      left: 0 !important;
+      background-color: $primaryColor !important;
       height: 10px;
-
     }
   }
 }

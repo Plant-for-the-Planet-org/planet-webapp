@@ -511,7 +511,7 @@ export default function ProjectSites({
           </div>
         ) : null}
 
-        <div className={styles.formField}>
+        <div className={styles.formField} style={{ marginTop: '10px' }}>
           <div className={`${styles.formFieldHalf}`}>
             <button onClick={handleBack} className="secondaryButton">
               <BackArrow />
@@ -531,6 +531,15 @@ export default function ProjectSites({
               ) : (
                 t('manageProjects:saveAndContinue')
               )}
+            </button>
+          </div>
+          <div className={styles.formFieldHalf}>
+            <button
+              onClick={handleNext}
+              className="primaryButton"
+              style={{ width: '89px', marginRight: '40px', marginLeft: '20px' }}
+            >
+              {t('manageProjects:skip')}
             </button>
           </div>
         </div>
