@@ -123,7 +123,7 @@ Rename `env.local.sample` to `env.local` and add the necessary keys
 ### Run the development server
 
 ```bash
-npm install
+npm install --legacy-peer-deps
 npm run dev
 # or
 yarn dev

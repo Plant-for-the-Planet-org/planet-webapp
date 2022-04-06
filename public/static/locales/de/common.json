@@ -80,7 +80,7 @@
   "treeMapper": "TreeMapper",
   "overview": "Übersicht",
   "childrenAndYouth": "Kinder und Jugendliche",
-  "trillionTrees": "Billion Bäume",
+  "trillionTrees": "Billionen Bäume",
   "yucatan": "Yucatán Renaturierung",
   "partners": "Partner",
   "changeChocolate": "Die Gute Schokolade",
@@ -89,5 +89,7 @@
   "notFound": "Die angeforderte Seite wurde nicht gefunden.",
   "unauthorized": "Es ist ein Fehler aufgetreten. Bitte versuche, dich abzumelden und wieder anzumelden.",
   "forbidden": "Du bist nicht berechtigt, diese Seite zu sehen!",
-  "internalServerError": "Interner Serverfehler - Bitte versuche es später noch einmal!"
+  "internalServerError": "Interner Serverfehler - Bitte versuche es später noch einmal!",
+  "validationFailed": "Prüfung fehlgeschlagen!",
+  "add": "Hinzufügen"
 }

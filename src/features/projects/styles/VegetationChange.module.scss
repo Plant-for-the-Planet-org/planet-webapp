@@ -2,7 +2,7 @@
 
 .VegetationChangeContainer {
   position: fixed;
-  top: 20px;
+  top: 100px;
   left: 10px;
   right: auto;
   margin: 0 auto;
@@ -36,7 +36,7 @@
   height: 18px;
   padding-right: 4px;
 }
-.options > svg > path{
+.options > svg > path {
   fill: $primaryFontColor;
 }
 .options p {
@@ -52,7 +52,7 @@
 
 .dropdownContainer {
   position: fixed;
-  top: 65px;
+  top: 140px;
   left: 0;
   right: 0;
   padding: 0 10px;

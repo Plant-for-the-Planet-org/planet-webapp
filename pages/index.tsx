@@ -4,12 +4,15 @@ import ProjectsList from '../src/features/projects/screens/Projects';
 import GetAllProjectsMeta from '../src/utils/getMetaTags/GetAllProjectsMeta';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import { getRequest } from '../src/utils/apiRequests/api';
-import DirectGift from '../src/features/donations/components/treeDonation/DirectGift';
 import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
 import Credits from '../src/features/projects/components/maps/Credits';
 import Filters from '../src/features/projects/components/projects/Filters';
 import { TENANT_ID } from '../src/utils/constants/environment';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
+import DirectGift from '../src/features/donations/components/DirectGift';
+import i18next from '../i18n';
+
+const { useTranslation } = i18next;
 
 interface Props {
   initialized: Boolean;
@@ -34,11 +37,12 @@ export default function Donate({
     filteredProjects,
   } = React.useContext(ProjectPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
-
+  const { i18n } = useTranslation();
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
   const [directGift, setDirectGift] = React.useState(null);
   const [showdirectGift, setShowDirectGift] = React.useState(true);
+  const [internalLanguage, setInternalLanguage] = React.useState('');
 
   React.useEffect(() => {
     const getdirectGift = localStorage.getItem('directGift');
@@ -73,14 +77,22 @@ export default function Donate({
   // Load all projects
   React.useEffect(() => {
     async function loadProjects() {
-      if (!internalCurrencyCode || currencyCode !== internalCurrencyCode) {
+      if (!internalCurrencyCode || currencyCode !== internalCurrencyCode || internalLanguage !== i18n.language) {
         const currency = getStoredCurrency();
         setInternalCurrencyCode(currency);
         setCurrencyCode(currency);
+        setInternalLanguage(i18n.language);
         const projects = await getRequest(
-          `/app/projects?_scope=map&filter[purpose]=trees,conservation&tenant=${TENANT_ID}&currency=${currency}`,
+          `/app/projects`,
           handleError,
-          '/'
+          '/',
+          {
+            _scope: 'map',
+            currency: currency,
+            tenant: TENANT_ID,
+            'filter[purpose]': 'trees,conservation',
+            locale: i18n.language,
+          }
         );
         setProjects(projects);
         setProject(null);
@@ -89,7 +101,7 @@ export default function Donate({
       }
     }
     loadProjects();
-  }, [currencyCode]);
+  }, [currencyCode, i18n.language]);
 
   const ProjectsProps = {
     projects: filteredProjects,

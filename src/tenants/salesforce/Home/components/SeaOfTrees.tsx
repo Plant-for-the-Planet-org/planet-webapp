@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
-import gridStyles from './../styles/Grid.module.scss';
-import styles from './../styles/SeaOfTrees.module.scss';
-import { Modal } from '@material-ui/core';
-import DonationsPopup from '../../../../features/donations';
+import React, { useContext, useEffect, useState } from 'react';
+import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
+import { ThemeContext } from '../../../../theme/themeContext';
 import { getRequest } from '../../../../utils/apiRequests/api';
 import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
-import { ThemeContext } from '../../../../theme/themeContext';
-import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
+import gridStyles from './../styles/Grid.module.scss';
+import styles from './../styles/SeaOfTrees.module.scss';
 
 export default function SeaOfTrees() {
   const projectID = 'proj_7gmlF7Q8aL65V7j7AG9NW8Yy';
@@ -17,8 +15,13 @@ export default function SeaOfTrees() {
     async function loadProject() {
       const currencyCode = getStoredCurrency();
       const project = await getRequest(
-        `/app/projects/${projectID}?_scope=extended&currency=${currencyCode}`,
-        handleError
+        `/app/projects/${projectID}`,
+        handleError,
+        '/',
+        {
+          _scope: 'extended',
+          currency: currencyCode,
+        }
       );
       setProject(project);
     }

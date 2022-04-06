@@ -9,29 +9,39 @@ import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { CircularProgress } from '@material-ui/core';
 
 export const ReactivateModal = ({
   reactivateModalOpen,
   handleReactivateModalClose,
   record,
+  fetchRecurrentDonations,
 }: any) => {
+  const [disabled, setDisabled] = React.useState(false);
   const { theme } = React.useContext(ThemeContext);
   const { token } = React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const { t, i18n, ready } = useTranslation(['me']);
   const bodyToSend = {};
+
+  React.useEffect(() => {
+    setDisabled(false);
+  }, [reactivateModalOpen]);
+
   const reactivateDonation = () => {
+    setDisabled(true);
     putAuthenticatedRequest(
       `/app/subscriptions/${record.id}?scope=reactivate`,
       bodyToSend,
-      token, handleError
+      token,
+      handleError
     )
       .then((res) => {
-        console.log(res, 'Response');
         handleReactivateModalClose();
+        fetchRecurrentDonations();
       })
       .catch((err) => {
-        console.log(err, 'Error');
+        console.log('Error reactivating recurring donation');
       });
   };
   return (
@@ -70,16 +80,36 @@ export const ReactivateModal = ({
               </button>
             </div>
             <div className={styles.note}>
-              <p>{t('me:reactivateDonationDescription')}</p>
+              <p>
+                {t('me:reactivateDonationDescription', {
+                  currentPeriodEnds: record?.currentPeriodEnd,
+                })}
+              </p>
             </div>
           </div>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button
               onClick={() => reactivateDonation()}
               className={styles.submitButton}
+              disabled={disabled}
               style={{ minWidth: '20px', marginTop: '30px' }}
             >
-              {t('save')}
+              {disabled ? (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {t('reactivatingDonation')}
+                  <div style={{ marginLeft: '5px' }}>
+                    <CircularProgress color="inherit" size={15} />
+                  </div>
+                </div>
+              ) : (
+                t('save')
+              )}
             </button>
           </div>
         </div>

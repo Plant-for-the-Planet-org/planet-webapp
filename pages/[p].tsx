@@ -10,6 +10,9 @@ import { getRequest } from '../src/utils/apiRequests/api';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
 import { getAllPlantLocations } from '../src/utils/maps/plantLocations';
+import i18next from '../i18n';
+
+const { useTranslation } = i18next;
 
 interface Props {
   initialized: boolean;
@@ -24,8 +27,10 @@ export default function Donate({
 }: Props) {
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
+  const [internalLanguage, setInternalLanguage] = React.useState('');
   const [open, setOpen] = React.useState(false);
   const { theme } = React.useContext(ThemeContext);
+  const { i18n } = useTranslation();
   const {
     project,
     setProject,
@@ -53,14 +58,20 @@ export default function Donate({
 
   React.useEffect(() => {
     async function loadProject() {
-      if (!internalCurrencyCode || currencyCode !== internalCurrencyCode) {
+      if (!internalCurrencyCode || currencyCode !== internalCurrencyCode || internalLanguage !== i18n.language) {
         const currency = getStoredCurrency();
         setInternalCurrencyCode(currency);
+        setInternalLanguage(i18n.language);
         setCurrencyCode(currency);
         const project = await getRequest(
-          `/app/projects/${router.query.p}?_scope=extended&currency=${currency}`,
+          `/app/projects/${router.query.p}`,
           handleError,
-          '/'
+          '/',
+          {
+            _scope: 'extended',
+            currency: currency,
+            locale: i18n.language,
+          }
         );
         setProject(project);
         setShowSingleProject(true);
@@ -70,7 +81,7 @@ export default function Donate({
     if (router.query.p) {
       loadProject();
     }
-  }, [router.query.p, currencyCode]);
+  }, [router.query.p, currencyCode, i18n.language]);
 
   React.useEffect(() => {
     async function loadPl() {

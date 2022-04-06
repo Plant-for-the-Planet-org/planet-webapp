@@ -17,21 +17,28 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
 import GeocoderArcGIS from "geocoder-arcgis";
+import { postRequest } from '../../../utils/apiRequests/api';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
-const { useTranslation } = i18next;
+const { Trans, useTranslation } = i18next;
 
 export default function CompleteSignup() {
   const router = useRouter();
-  const { t, ready } = useTranslation(['editProfile', 'donate']);
+  const { i18n, t, ready } = useTranslation(['editProfile', 'donate']);
+  const { handleError } = React.useContext(ErrorHandlingContext);
   const [addressSugggestions, setaddressSugggestions] = React.useState([]);
-  const geocoder = new GeocoderArcGIS(process.env.ESRI_CLIENT_SECRET ? {
-    client_id:process.env.ESRI_CLIENT_ID,
-    client_secret:process.env.ESRI_CLIENT_SECRET,
-  } : {});
+  const geocoder = new GeocoderArcGIS(
+    process.env.ESRI_CLIENT_SECRET
+      ? {
+          client_id: process.env.ESRI_CLIENT_ID,
+          client_secret: process.env.ESRI_CLIENT_SECRET,
+        }
+      : {}
+  );
   const suggestAddress = (value) => {
     if (value.length > 3) {
       geocoder
-        .suggest(value, {category:"Address", countryCode: country}) 
+        .suggest(value, { category: 'Address', countryCode: country })
         .then((result) => {
           const filterdSuggestions = result.suggestions.filter((suggestion) => {
             return !suggestion.isCollection;
@@ -39,20 +46,19 @@ export default function CompleteSignup() {
           setaddressSugggestions(filterdSuggestions);
         })
         .catch(console.log);
-        
     }
-  };  
+  };
   const getAddress = (value) => {
     geocoder
-      .findAddressCandidates(value, { outfields: "*" })
+      .findAddressCandidates(value, { outfields: '*' })
       .then((result) => {
-        setValue("address", result.candidates[0].attributes.ShortLabel, {
+        setValue('address', result.candidates[0].attributes.ShortLabel, {
           shouldValidate: true,
         });
-        setValue("city", result.candidates[0].attributes.City, {
+        setValue('city', result.candidates[0].attributes.City, {
           shouldValidate: true,
         });
-        setValue("zipCode", result.candidates[0].attributes.Postal, {
+        setValue('zipCode', result.candidates[0].attributes.Postal, {
           shouldValidate: true,
         });
         setaddressSugggestions([]);
@@ -64,24 +70,24 @@ export default function CompleteSignup() {
   const useStylesAutoComplete = makeStyles({
     root: {
       color:
-        theme === "theme-light"
+        theme === 'theme-light'
           ? `${themeProperties.light.primaryFontColor} !important`
           : `${themeProperties.dark.primaryFontColor} !important`,
       backgroundColor:
-        theme === "theme-light"
+        theme === 'theme-light'
           ? `${themeProperties.light.backgroundColor} !important`
           : `${themeProperties.dark.backgroundColor} !important`,
     },
     option: {
       // color: '#2F3336',
-      "&:hover": {
+      '&:hover': {
         backgroundColor:
-          theme === "theme-light"
+          theme === 'theme-light'
             ? `${themeProperties.light.backgroundColorDark} !important`
             : `${themeProperties.dark.backgroundColorDark} !important`,
       },
-    }
-  })
+    },
+  });
   const classes = useStylesAutoComplete();
 
   const {
@@ -143,7 +149,7 @@ export default function CompleteSignup() {
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
   const [severity, setSeverity] = useState('info');
   const [requestSent, setRequestSent] = useState(false);
-
+  const [acceptTerms, setAcceptTerms] = useState(null);
   const [country, setCountry] = useState('');
   const defaultCountry =
     typeof window !== 'undefined' ? localStorage.getItem('countryCode') : 'DE';
@@ -161,34 +167,23 @@ export default function CompleteSignup() {
   const sendRequest = async (bodyToSend: any) => {
     setRequestSent(true);
     try {
-      const res = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
-        body: JSON.stringify(bodyToSend),
-      });
+      const res = await postRequest(
+        `/app/profile`,
+        bodyToSend,
+        handleError,
+        '/login'
+      );
       setRequestSent(false);
-      if (res.status === 200) {
+      if (res) {
         // successful signup -> goto me page
-        const resJson = await res.json();
-        setUser(resJson);
+        setUser(res);
         setSnackbarMessage(ready ? t('editProfile:profileCreated') : '');
         setSeverity('success');
         handleSnackbarOpen();
 
         if (typeof window !== 'undefined') {
-          router.push('/t/[id]', `/t/${resJson.slug}`);
+          router.push('/t/[id]', `/t/${res.slug}`);
         }
-      } else if (res.status === 401) {
-        // in case of 401 - invalid token: signIn()
-        setUser(false);
-        setSubmit(false);
-        logoutUser(`${process.env.NEXTAUTH_URL}/`);
-        loginWithRedirect({
-          redirectUri: `${process.env.NEXTAUTH_URL}/login`,
-          ui_locales: localStorage.getItem('language') || 'en',
-        });
       } else {
         setSnackbarMessage(ready ? t('editProfile:profileCreationFailed') : '');
         setSubmit(false);
@@ -203,6 +198,12 @@ export default function CompleteSignup() {
     }
   };
 
+  const handleTermsAndCondition = (value) => {
+    setAcceptTerms(value);
+    if (!value) {
+      setSubmit(false);
+    }
+  };
   const profileTypes = [
     {
       id: 1,
@@ -228,6 +229,10 @@ export default function CompleteSignup() {
   }, [type]);
 
   const createButtonClicked = async (data: any) => {
+    if (!acceptTerms) {
+      handleTermsAndCondition(false);
+      return;
+    }
     setSubmit(true);
     if (contextLoaded && token) {
       const submitData = {
@@ -255,18 +260,25 @@ export default function CompleteSignup() {
           backgroundImage: `url(${process.env.CDN_URL}/media/images/app/bg_layer.jpg)`,
         }}
       >
-        <div className={requestSent ? styles.signupRequestSent : styles.signup} 
-        style={{
-          backgroundColor: theme === 'theme-light' ?
-                          themeProperties.light.light :
-                          themeProperties.dark.backgroundColor,
-          color: theme === 'theme-light' ?
-                 themeProperties.light.primaryFontColor :
-                 themeProperties.dark.primaryFontColor,
-        }}>
+        <div
+          className={requestSent ? styles.signupRequestSent : styles.signup}
+          style={{
+            backgroundColor:
+              theme === 'theme-light'
+                ? themeProperties.light.light
+                : themeProperties.dark.backgroundColor,
+            color:
+              theme === 'theme-light'
+                ? themeProperties.light.primaryFontColor
+                : themeProperties.dark.primaryFontColor,
+          }}
+        >
           {/* header */}
           <div className={styles.header}>
-            <div onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)} className={styles.headerBackIcon}>
+            <div
+              onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)}
+              className={styles.headerBackIcon}
+            >
               <CancelIcon color={styles.primaryFontColor} />
             </div>
             <div className={styles.headerTitle}>
@@ -371,23 +383,24 @@ export default function CompleteSignup() {
                   onBlur={() => setaddressSugggestions([])}
                 />
                 {addressSugggestions
-              ? addressSugggestions.length > 0 && (
-                  <div className="suggestions-container">
-                    {addressSugggestions.map((suggestion) => {
-                      return (
-                        <div key={'suggestion' + suggestion_counter++}
-                          onMouseDown={() => {
-                            getAddress(suggestion.text);
-                          }}
-                          className="suggestion"
-                        >
-                          {suggestion.text}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )
-              : null}
+                  ? addressSugggestions.length > 0 && (
+                      <div className="suggestions-container">
+                        {addressSugggestions.map((suggestion) => {
+                          return (
+                            <div
+                              key={'suggestion' + suggestion_counter++}
+                              onMouseDown={() => {
+                                getAddress(suggestion.text);
+                              }}
+                              className="suggestion"
+                            >
+                              {suggestion.text}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )
+                  : null}
                 {errors.address && (
                   <span className={styles.formErrors}>
                     {t('donate:addressRequired')}
@@ -486,10 +499,10 @@ export default function CompleteSignup() {
               control={control}
               inputRef={register()}
               defaultValue={false}
-              render={(props:any) => (
+              render={(props: any) => (
                 <ToggleSwitch
                   checked={props.value}
-                  onChange={(e:any) => props.onChange(e.target.checked)}
+                  onChange={(e: any) => props.onChange(e.target.checked)}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
                   id="isPrivate"
                 />
@@ -509,17 +522,49 @@ export default function CompleteSignup() {
               control={control}
               inputRef={register()}
               defaultValue={true}
-              render={(props:any) => (
-                <ToggleSwitch
-                  checked={props.value}
-                  onChange={(e:any) => props.onChange(e.target.checked)}
-                  inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  id="getNews"
-                />
-              )}
+              render={(props: any) => {
+                return (
+                  <ToggleSwitch
+                    checked={props.value}
+                    onChange={(e: any) => props.onChange(e.target.checked)}
+                    inputProps={{ 'aria-label': 'secondary checkbox' }}
+                    id="getNews"
+                  />
+                );
+              }}
             />
           </div>
 
+          <div className={styles.isPrivateAccountDiv}>
+            <div className={styles.mainText}>
+              <label htmlFor={'terms'} style={{ cursor: 'pointer' }}>
+                <Trans i18nKey="editProfile:termAndCondition">
+                  I agree to the <a
+                    className={styles.termsLink}
+                    rel="noopener noreferrer"
+                    href={`https://pp.eco/legal/${i18n.language}/terms`}
+                    target={'_blank'}
+                  >Terms and Conditions</a> of the Plant-for-the-Planet platform.
+                </Trans>
+              </label>
+            </div>
+
+            <ToggleSwitch
+              checked={acceptTerms}
+              onChange={(e: any) => {
+                handleTermsAndCondition(e.target.checked);
+              }}
+              inputProps={{ 'aria-label': 'secondary checkbox' }}
+              id="terms"
+            />
+          </div>
+          <div>
+            {!acceptTerms && typeof acceptTerms !== 'object' && (
+              <span className={styles.termsError}>
+                {t('editProfile:termAndConditionError')}
+              </span>
+            )}
+          </div>
           <div className={styles.horizontalLine} />
 
           <button

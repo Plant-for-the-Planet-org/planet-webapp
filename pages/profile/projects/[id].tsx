@@ -16,7 +16,7 @@ const { useTranslation } = i18next;
 interface Props { }
 
 function ManageSingleProject({ }: Props): ReactElement {
-  const { t } = useTranslation('me');
+  const { t } = useTranslation(['me', 'manageProjects']);
   const [projectGUID, setProjectGUID] = React.useState(null);
   const [ready, setReady] = React.useState(false);
   const router = useRouter();
@@ -81,6 +81,7 @@ function ManageSingleProject({ }: Props): ReactElement {
           <div className="profilePageHeader">
             <div>
               <div className={'profilePageTitle'}>{project.name}</div>
+              <div style={{ marginBottom: 15 }}>{t('manageProjects:onlyEnglish')}</div>
             </div>
           </div>
           <ManageProjects GUID={projectGUID} token={token} project={project} />

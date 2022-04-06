@@ -9,6 +9,7 @@
   padding-top: 50px;
   padding-bottom: 0px;
   position: relative;
+  margin-top: 60px;
 }
 
 .leaderBoard {
@@ -75,11 +76,14 @@
   color: $primaryFontColor;
   > svg {
     height: 13px;
-    > path {fill: $primaryColor;}
+    > path {
+      fill: $primaryColor;
+    }
   }
 }
 
-.leaderBoardTableHeaderTitleSelected, .leaderBoardTableHeaderTitle > svg > path{
+.leaderBoardTableHeaderTitleSelected,
+.leaderBoardTableHeaderTitle > svg > path {
   fill: $primaryFontColor;
 }
 .leaderBoardTableHeaderTitle:hover {
@@ -174,7 +178,7 @@
   }
 }
 
-.searchedUserCard{
+.searchedUserCard {
   display: flex;
   flex-direction: row;
   justify-content: left;

@@ -34,7 +34,9 @@ export default function History({
   fetchPaymentHistory,
 }: Props): ReactElement {
   const { t, i18n } = useTranslation(['me']);
-  const [selectedRecord, setSelectedRecord] = React.useState<number | null>(null);
+  const [selectedRecord, setSelectedRecord] = React.useState<number | null>(
+    null
+  );
   const [openModal, setOpenModal] = React.useState(false);
   const router = useRouter();
 
@@ -59,27 +61,18 @@ export default function History({
 
   let currentRecord: Payments.PaymentHistoryRecord | null = null;
   if (paymentHistory && Array.isArray(paymentHistory?.items)) {
-    currentRecord = selectedRecord !== null && Number.isInteger(selectedRecord) ? paymentHistory?.items[selectedRecord] : null;
+    currentRecord =
+      selectedRecord !== null && Number.isInteger(selectedRecord)
+        ? paymentHistory?.items[selectedRecord]
+        : null;
   }
+
+  const adSpaceLanguage = i18n.language === 'de' ? 'de' : 'en';
 
   return (
     <div className="profilePage">
       <div className={'profilePageTitle'}>{t('me:payments')}</div>
       <div className={'profilePageSubTitle'}>{t('me:donationsSubTitle')}</div>
-      {/* <div className={styles.donationOptions}>
-        <div
-          className={`${styles.option} ${styles.active}`}
-          style={{ color: '#68B030' }}
-        >
-          {t('history')}
-        </div>
-        <button
-          onClick={() => router.push(`/profile/recurrency`)}
-          className={styles.option}
-        >
-          {t('recurrency')}
-        </button>
-      </div> */}
       <div className={styles.pageContainer}>
         <div className={styles.filterRow}>
           {accountingFilters &&
@@ -87,8 +80,9 @@ export default function History({
               return (
                 <div
                   key={item[0]}
-                  className={`${styles.filterButton} ${filter === item[0] ? styles.selected : ''
-                    }`}
+                  className={`${styles.filterButton} ${
+                    filter === item[0] ? styles.selected : ''
+                  }`}
                   onClick={() => handleSetFilter(item[0])}
                 >
                   {t(item[0])}
@@ -96,6 +90,10 @@ export default function History({
               );
             })}
         </div>
+        <iframe
+          src={`https://www5.plant-for-the-planet.org/membership-cta/${adSpaceLanguage}/`}
+          className={styles.topAdSpace}
+        />
         <div className={styles.section}>
           <div className={styles.accountHistory}>
             <div className={styles.historyList}>
@@ -144,23 +142,30 @@ export default function History({
               </div>
             )}
           </div>
-          <div className={styles.filterContainer}>
-            <p className={styles.header}>{t('me:filters')}</p>
-            <div className={styles.filterGrid}>
-              {accountingFilters &&
-                Object.entries(accountingFilters).map((item) => {
-                  return (
-                    <div
-                      key={item[0]}
-                      className={`${styles.filterButton} ${filter === item[0] ? styles.selected : ''
+          <div className={styles.filterContent}>
+            <div className={styles.filterContainer}>
+              <p className={styles.header}>{t('me:filters')}</p>
+              <div className={styles.filterGrid}>
+                {accountingFilters &&
+                  Object.entries(accountingFilters).map((item) => {
+                    return (
+                      <div
+                        key={item[0]}
+                        className={`${styles.filterButton} ${
+                          filter === item[0] ? styles.selected : ''
                         }`}
-                      onClick={() => handleSetFilter(item[0])}
-                    >
-                      {t(item[0])}
-                    </div>
-                  );
-                })}
+                        onClick={() => handleSetFilter(item[0])}
+                      >
+                        {t(item[0])}
+                      </div>
+                    );
+                  })}
+              </div>
             </div>
+            <iframe
+              src={`https://www5.plant-for-the-planet.org/membership-cta/${adSpaceLanguage}/`}
+              className={styles.rightAdSpace}
+            />
           </div>
         </div>
         {openModal && (
@@ -189,24 +194,28 @@ export default function History({
                       <>
                         <div className={styles.title}>{t('bankDetails')}</div>
                         <div className={styles.detailGrid}>
-                          <BankDetails recipientBank={currentRecord.details.recipientBank} />
+                          <BankDetails
+                            recipientBank={currentRecord.details.recipientBank}
+                          />
                         </div>
                       </>
                     )}
                     {currentRecord.details?.account && (
-                      <TransferDetails account={currentRecord.details.account} />
+                      <TransferDetails
+                        account={currentRecord.details.account}
+                      />
                     )}
                     {showStatusNote(currentRecord, t)}
                     {(currentRecord.details.donorCertificate ||
                       currentRecord.details.taxDeductibleReceipt ||
                       currentRecord.details.giftCertificate) && (
-                        <>
-                          <div className={styles.title}>{t('downloads')}</div>
-                          <div className={styles.detailGrid}>
-                            <Certificates recordDetails={currentRecord.details} />
-                          </div>
-                        </>
-                      )}
+                      <>
+                        <div className={styles.title}>{t('downloads')}</div>
+                        <div className={styles.detailGrid}>
+                          <Certificates recordDetails={currentRecord.details} />
+                        </div>
+                      </>
+                    )}
                   </div>
                 </>
               ) : null}

@@ -53,9 +53,13 @@ export async function getAllPlantLocations(
   handleError: Function
 ) {
   const result = await getRequest(
-    `/app/plantLocations/${project}?_scope=extended`,
+    `/app/plantLocations/${project}`,
     handleError,
-    '/'
+    '/',
+    {
+      _scope: 'extended',
+    },
+    '1.0.4'
   );
   if (result) {
     return result;

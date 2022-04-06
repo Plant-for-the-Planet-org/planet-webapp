@@ -8,7 +8,6 @@ import i18next from '../../../../../i18n';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useForm } from 'react-hook-form';
 import Close from '../../../../../public/assets/images/icons/headerIcons/close';
-import ShareOptions from '../../../donations/components/ShareOptions';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import tenantConfig from '../../../../../tenant.config';
@@ -16,6 +15,7 @@ import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import ShareOptions from '../../../common/ShareOptions/ShareOptions';
 
 const { useTranslation } = i18next;
 export default function RedeemModal({

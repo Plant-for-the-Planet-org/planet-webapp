@@ -17,19 +17,18 @@
     & .hamburgerIcon {
       display: block;
       position: fixed;
-      top: 28px;
+      top: 100px;
       left: 20px;
       z-index: 10;
       height: 42px;
       width: 42px;
       background-color: $backgroundColorDark;
-        border-radius: 10px;
+      border-radius: 10px;
       svg {
-        
-        path{
-          fill:$primaryFontColor;
+        path {
+          fill: $primaryFontColor;
         }
-        rect{
+        rect {
           stroke: $primaryFontColor;
         }
       }
@@ -55,7 +54,7 @@
 .sidebar {
   width: 109px;
   position: fixed;
-  top: 0px;
+  top: 80px;
   left: 0px;
   display: flex;
   flex-direction: column;
@@ -72,7 +71,7 @@
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   @include xsPhoneView {
-    width: 256px;
+    width: 300px;
     & .navlink {
       padding: 16px 20px;
       justify-content: space-between;
@@ -93,7 +92,7 @@
       display: none;
     }
     &:hover {
-      width: 256px !important;
+      width: 300px !important;
     }
     &:hover .navlink {
       padding: 16px 20px;
@@ -192,21 +191,21 @@
   width: 100%;
 }
 
-// @include lgLaptopView {
-//   .sidebar {
-//     width: 256px;
-//   }
-//   .navlink button {
-//     display: block;
-//   }
-//   .navlink {
-//     padding: 16px 20px;
-//     justify-content: space-between;
-//   }
-//   .profilePageContainer {
-//     padding-left: 256px;
-//   }
-//   .navlinkSubMenu {
-//     display: flex;
-//   }
-// }
+@include lgLaptopView {
+  .sidebar {
+    width: 300px;
+  }
+  .navlink button {
+    display: block;
+  }
+  .navlink {
+    padding: 16px 20px;
+    justify-content: space-between;
+  }
+  .profilePageContainer {
+    padding-left: 300px;
+  }
+  .navlinkSubMenu {
+    display: flex;
+  }
+}
