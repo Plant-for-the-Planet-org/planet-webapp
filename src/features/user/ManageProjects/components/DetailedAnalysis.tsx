@@ -13,7 +13,7 @@ import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import materialTheme from '../../../../theme/themeStyles';
 import { useRouter } from 'next/router';
-import { MenuItem, makeStyles } from '@material-ui/core';
+import { MenuItem, makeStyles, Grid } from '@material-ui/core';
 import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
@@ -30,6 +30,7 @@ interface Props {
   token: any;
   userLang: String;
   purpose: String;
+  siteOwnerName: String;
 }
 export default function DetailedAnalysis({
   handleBack,
@@ -82,7 +83,7 @@ export default function DetailedAnalysis({
       isSet: false,
     },
   ]);
-
+  const [addSpecies, setAddSpecies] = React.useState(false);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const { theme } = React.useContext(ThemeContext);
@@ -111,6 +112,10 @@ export default function DetailedAnalysis({
       label: 'animal 2',
     },
   ];
+
+  const addHandler = () => {
+    setAddSpecies(true);
+  };
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -160,26 +165,61 @@ export default function DetailedAnalysis({
     }
   });
 
-  const { register, handleSubmit, errors, control, reset, setValue, watch } =
-    useForm({ mode: 'onBlur' });
+  const defaultDetailedAnalysis =
+    purpose === 'trees'
+      ? {
+          yearAbandoned: '',
+          firstTreePlanted: '',
+          plantingDensity: '',
+          employeesCount: '',
+          mainChallenge: '',
+          siteOwnerType: '',
+          siteOwnerName: '',
+          acquisitionYear: '',
+          degradationYear: '',
+          degradationCause: '',
+          longTermPlan: '',
+          plantingSeasons: '',
+          whyThisSite: '',
+        }
+      : {
+          employeesCount: '',
+          acquisitionYear: '',
+          protectionStartedYear: '',
+          areaProtected: '',
+          employeeCount: '',
+          timePeriod: '',
+          forestProtectionType: '',
+          conservationImpacts: '',
+          siteOwnerType: '',
+          siteOwnerName: '',
+          mainChallenge: '',
+          longTermPlan: '',
+          endangeredSpecies: '',
+          addAnotherSpecies: '',
+          whyThisSite: '',
+        };
 
+  const { register, handleSubmit, errors, control, reset, setValue, watch } =
+    useForm({ mode: 'onBlur', defaultValues: defaultDetailedAnalysis });
+
+  const owners = [];
+  for (let i = 0; i < siteOwners.length; i++) {
+    if (siteOwners[i].isSet) {
+      owners.push(siteOwners[i].value);
+    }
+  }
+
+  const months = [];
+  for (let i = 0; i < plantingSeasons.length; i++) {
+    if (plantingSeasons[i].isSet) {
+      const j = i + 1;
+      months.push(j);
+    }
+  }
   const onSubmit = (data: any) => {
     setIsUploadingData(true);
-    const months = [];
-    for (let i = 0; i < plantingSeasons.length; i++) {
-      if (plantingSeasons[i].isSet) {
-        const j = i + 1;
-        months.push(j);
-      }
-    }
-
-    const owners = [];
-    for (let i = 0; i < siteOwners.length; i++) {
-      if (siteOwners[i].isSet) {
-        owners.push(siteOwners[i].value);
-      }
-    }
-
+    console.log(data, 'data');
     const submitData =
       purpose === 'trees'
         ? {
@@ -199,21 +239,28 @@ export default function DetailedAnalysis({
             degradationCause: data.degradationCause,
             longTermPlan: data.longTermPlan,
             plantingSeasons: months,
+            whyThisSite: data.WhythisSite,
           }
         : {
             projectMeta: {
-              location: data.location,
+              employeesCount: data.employeesCount,
+              acquisitionYear: data.acquisitionYear.getFullYear(),
+              protectionStartedYear: data.protectionStartedYear.getFullYear(),
               areaProtected: data.areaProtected,
               employeeCount: data.employeeCount,
-              startingProtectionYear: data.startingProtectionYear.getFullYear(),
-              actions: data.actions,
-              activitySeasons: months,
+              timePeriod: months,
+              forestProtectionType: data.forestProtectionType,
+              conservationImpacts: data.conservationImpacts,
+              siteOwnerType: owners,
+              siteOwnerName: data.siteOwnerName,
               mainChallenge: data.mainChallenge,
               longTermPlan: data.longTermPlan,
-              landOwnershipType: owners,
-              ownershipType: data.ownershipType,
+              endangeredSpecies: data.endangeredSpecies,
+              addAnotherSpecies: data.addAnotherSpecies,
+              whyThisSite: data.WhythisSite,
             },
           };
+
     putAuthenticatedRequest(
       `/app/projects/${projectGUID}`,
       submitData,
@@ -241,7 +288,7 @@ export default function DetailedAnalysis({
 
   React.useEffect(() => {
     if (projectDetails) {
-      const defaultDetailedAnalysisData =
+      const detailedAnalysis =
         purpose === 'trees'
           ? {
               yearAbandoned: projectDetails.yearAbandoned
@@ -253,7 +300,6 @@ export default function DetailedAnalysis({
               plantingDensity: projectDetails.plantingDensity,
               employeesCount: projectDetails.employeesCount,
               mainChallenge: projectDetails.mainChallenge,
-              motivation: projectDetails.motivation,
               siteOwnerName: projectDetails.siteOwnerName,
               acquisitionYear: projectDetails.acquisitionYear
                 ? new Date(
@@ -267,26 +313,34 @@ export default function DetailedAnalysis({
                 : new Date(),
               degradationCause: projectDetails.degradationCause,
               longTermPlan: projectDetails.longTermPlan,
+              whyThisSite: projectDetails.WhythisSite,
             }
           : {
               projectMeta: {
-                location: projectDetails.location,
                 areaProtected: projectDetails.areaProtected,
-                startingProtectionYear: projectDetails.startingProtectionYear
+                protectionStartedYear: projectDetails.protectionStartedYear
                   ? new Date(
                       new Date().setFullYear(
-                        projectDetails.startingProtectionYear
+                        projectDetails.protectionStartedYear
                       )
                     )
                   : new Date(),
-                actions: projectDetails.actions,
-                activitySeasons: projectDetails.activitySeasons,
+                acquisitionYear: projectDetails.acquisitionYear
+                  ? new Date(
+                      new Date().setFullYear(projectDetails.acquisitionYear)
+                    )
+                  : new Date(),
+
                 employeeCount: projectDetails.employeeCount,
                 mainChallenge: projectDetails.mainChallenge,
-                motivation: projectDetails.motivation,
+                siteOwnerName: projectDetails.siteOwnerName,
                 longTermPlan: projectDetails.longTermPlan,
-                landOwnershipType: projectDetails.landOwnershipType,
+                endangeredSpecies: projectDetails.endangeredSpecies,
                 ownershipType: projectDetails.ownershipType,
+                forestProtectionType: projectDetails.forestProtectionType,
+                conservationImpacts: projectDetails.conservationImpacts,
+                addAnotherSpecies: projectDetails.addAnotherSpecies,
+                whyThisSite: projectDetails.WhythisSite,
               },
             };
 
@@ -319,7 +373,7 @@ export default function DetailedAnalysis({
         setSiteOwners(newSiteOwners);
       }
 
-      reset(defaultDetailedAnalysisData);
+      reset(detailedAnalysis);
     }
   }, [projectDetails]);
   return ready ? (
@@ -367,7 +421,7 @@ export default function DetailedAnalysis({
                       )}
                       name="yearAbandoned"
                       control={control}
-                      defaultValue=""
+                      // defaultValue=""
                     />
                   </MuiPickersUtilsProvider>
                 </ThemeProvider>
@@ -418,7 +472,7 @@ export default function DetailedAnalysis({
                       )}
                       name="firstTreePlanted"
                       control={control}
-                      defaultValue=""
+                      // defaultValue=""
                     />
                   </MuiPickersUtilsProvider>
                 </ThemeProvider>
@@ -431,7 +485,9 @@ export default function DetailedAnalysis({
                   inputRef={register({
                     required: {
                       value: true,
-                      message: t('manageProjects:areaProtectedValidation'),
+                      message: t('manageProjects:validation', {
+                        fieldName: 'Area Protected',
+                      }),
                     },
                     validate: (value) => parseInt(value, 10) > 0,
                   })}
@@ -447,24 +503,6 @@ export default function DetailedAnalysis({
                     {errors.areaProtected.message}
                   </span>
                 )}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '-9px',
-                    right: '16px',
-                    width: 'fit-content',
-                  }}
-                >
-                  <div className={styles.popover}>
-                    <InfoIcon />
-                    <div
-                      className={styles.popoverContent}
-                      style={{ left: '-290px' }}
-                    >
-                      <p>{t('manageProjects:areaProtectedInfo')}</p>
-                    </div>
-                  </div>
-                </div>
               </div>
               <div style={{ width: '20px' }}></div>
               <div className={styles.formFieldHalf}>
@@ -483,9 +521,9 @@ export default function DetailedAnalysis({
                           inputRef={register({
                             required: {
                               value: true,
-                              message: t(
-                                'manageProjects:employeeCountValidation'
-                              ),
+                              message: t('manageProjects:validation', {
+                                fieldName: 'Date',
+                              }),
                             },
                           })}
                           label={t('manageProjects:protectionStartedIN')}
@@ -500,10 +538,12 @@ export default function DetailedAnalysis({
                           maxDate={new Date()}
                         />
                       )}
-                      name={'acquisitionYear'}
+                      name="protectionStartedYear"
                       control={control}
                       rules={{
-                        required: t('manageProjects:ownershipTypeValidation'),
+                        required: t('manageProjects:validation', {
+                          fieldName: 'Date',
+                        }),
                       }}
                       // defaultValue=""
                     />
@@ -527,7 +567,9 @@ export default function DetailedAnalysis({
                 inputRef={register({
                   required: {
                     value: true,
-                    message: t('manageProjects:employeeCountValidation'),
+                    message: t('manageProjects:validation', {
+                      fieldName: 'Employee Count',
+                    }),
                   },
                   validate: (value) => parseInt(value, 10) > 0,
                 })}
@@ -596,10 +638,12 @@ export default function DetailedAnalysis({
                         maxDate={new Date()}
                       />
                     )}
-                    name={'acquisitionYear'}
+                    name="acquisitionYear"
                     control={control}
                     rules={{
-                      required: t('manageProjects:ownershipTypeValidation'),
+                      required: t('manageProjects:validation', {
+                        fieldName: 'acquisitionYear',
+                      }),
                     }}
                     // defaultValue=""
                   />
@@ -744,9 +788,9 @@ export default function DetailedAnalysis({
                     message: t('manageProjects:max300Chars'),
                   },
                 })}
-                label={t('manageProjects:ForestProtectionType')}
+                label={t('manageProjects:forestProtectionType')}
                 variant="outlined"
-                name="motivation"
+                name="forestProtectionType"
                 multiline
               />
             </div>
@@ -800,7 +844,7 @@ export default function DetailedAnalysis({
               <MaterialTextField
                 label={t('manageProjects:conservationImpacts')}
                 variant="outlined"
-                name="degradationCause"
+                name="conservationImpacts"
                 multiline
                 inputRef={register({
                   maxLength: {
@@ -908,10 +952,7 @@ export default function DetailedAnalysis({
           <div className={styles.formFieldLarge}>
             <div className={styles.plantingSeasons}>
               <p className={styles.plantingSeasonsLabel}>
-                {' '}
-                {purpose === 'trees'
-                  ? t('manageProjects:siteOwner')
-                  : t('manageProjects:landOwnershipType')}{' '}
+                {t('manageProjects:siteOwner')}
               </p>
               {siteOwners.map((owner) => {
                 return (
@@ -1009,16 +1050,49 @@ export default function DetailedAnalysis({
                     ))}
                   </MaterialTextField>
                 }
-                name={t('manageProjects:endangeredSpecies')}
+                name="endangeredSpecies"
                 rules={{
                   required: t('manageProjects:endangeredSpeciesValidation'),
                 }}
                 control={control}
+                defaultValue=""
               />
               {errors.degradationCause && (
                 <span className={styles.formErrors}>
                   {errors.degradationCause.message}
                 </span>
+              )}
+              <div className={styles.formField}>
+                <button
+                  className={styles.formFieldHalf}
+                  style={{ marginLeft: '7px' }}
+                  onClick={addHandler}
+                >
+                  <p className={styles.inlineLinkButton}>
+                    {t('manageProjects:addAnotherSpecies')}
+                  </p>
+                </button>
+              </div>
+
+              {addSpecies ? (
+                <Grid
+                  container
+                  xs="12"
+                  justifyContent="space-between"
+                  direction="row"
+                  style={{ margin: '5px' }}
+                >
+                  <Grid xs="6" style={{ marginTop: '10px' }}>
+                    <MaterialTextField
+                      inputRef={register()}
+                      label={t('manageProjects:addAnotherSpecies')}
+                      name="addAnotherSpecies"
+                      variant="outlined"
+                    />
+                  </Grid>
+                </Grid>
+              ) : (
+                <></>
               )}
             </div>
           ) : (

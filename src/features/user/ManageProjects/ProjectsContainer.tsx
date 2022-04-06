@@ -12,23 +12,24 @@ import styles from './ProjectsContainer.module.scss';
 
 const { useTranslation } = i18next;
 
-export default function ProjectsContainer({ }: any) {
+export default function ProjectsContainer({}: any) {
   const { t, ready } = useTranslation(['donate', 'manageProjects']);
   const [projects, setProjects] = React.useState([]);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { user, contextLoaded, loginWithRedirect, token } = React.useContext(
-    UserPropsContext
-  );
+  const { user, contextLoaded, loginWithRedirect, token } =
+    React.useContext(UserPropsContext);
 
   async function loadProjects() {
     if (user) {
-      await getAuthenticatedRequest('/app/profile/projects?version=1.2', token, {},
+      await getAuthenticatedRequest(
+        '/app/profile/projects?version=1.2',
+        token,
+        {},
         handleError,
-        '/profile').then(
-          (projects) => {
-            setProjects(projects);
-          }
-        );
+        '/profile'
+      ).then((projects) => {
+        setProjects(projects);
+      });
     }
   }
 
@@ -53,9 +54,9 @@ export default function ProjectsContainer({ }: any) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <Link href="/profile/projects/new-project">
             <button
-              id={'addProjectBut'}
-              className={'primaryButton'}
-              style={{ maxWidth: '160px' }}
+              // id={'addProjectBut'}
+              className="primaryButton"
+              style={{ width: '89px' }}
             >
               {t('manageProjects:addProject')}
             </button>
@@ -103,17 +104,24 @@ function SingleProject({ project }: any) {
         <p className={styles.projectName}>{project.name}</p>
         <p className={styles.projectClassification}>
           {project.classification} •{' '}
-          {project.country === null ? <></> : t('country:' + project.country.toLowerCase())}
+          {project.country === null ? (
+            <></>
+          ) : (
+            t('country:' + project.country.toLowerCase())
+          )}
         </p>
-        {project.purpose === "trees" ? 
-        <p>
-          {localizedAbbreviatedNumber(
-            i18n.language,
-            Number(project.countPlanted),
-            1
-          )}{' '}
-          {t('common:tree', { count: Number(project.countPlanted) })}
-        </p> : <></>}
+        {project.purpose === 'trees' ? (
+          <p>
+            {localizedAbbreviatedNumber(
+              i18n.language,
+              Number(project.countPlanted),
+              1
+            )}{' '}
+            {t('common:tree', { count: Number(project.countPlanted) })}
+          </p>
+        ) : (
+          <></>
+        )}
         <div className={styles.projectLabels}>
           {/* Needed in future */}
           {/* {!project.isFeatured && (
@@ -123,7 +131,9 @@ function SingleProject({ project }: any) {
             <div className={styles.projectLabel}>🌟 {t('common:featured')}</div>
           )}
           {!project.allowDonations && (
-            <div className={styles.projectLabel}>💸 {t('donate:acceptingDonations')}</div>
+            <div className={styles.projectLabel}>
+              💸 {t('donate:acceptingDonations')}
+            </div>
           )}
         </div>
       </div>

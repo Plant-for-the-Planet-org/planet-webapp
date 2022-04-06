@@ -138,7 +138,9 @@
   "protectionStartedIn": "Protection Started in",
   "actions": "Actions",
   "activitySeasons": "Activity Seasons",
-  "ForestProtectionType": "Forest Protection Type/Measures",
+  "addAnotherSpecies": "Add Another Species",
+  "add": "Add",
+  "forestProtectionType": "Forest Protection Type/Measures",
   "ecologicalBenefits": "Ecological Benefits",
   "socialBenefits": "Social Benefits",
   "coBenefits": "Co-Benefits",
@@ -173,10 +175,7 @@
   "actionInfo": "The actions your organization is taking to conserve the ecosystem.",
   "mainChallengeInfo": "The biggest challenge this project is facing.",
   "motivationInfo": "The motivation behind protecting this specific ecosystem.",
-  "hector": "hector",
-  "areaProtectedValidation": "Please enter Area Protected",
-  "employeeCountValidation": "Please enter Employee Count",
-  "ownershipTypeValidation": "Please select Ownership Type",
-  "siteNameValidation": "Please enter Site Name",
+  "hectar": "hectar",
+  "validation": "{{fieldName}} is Invalid",
   "plantingDensityValidation": "Please enter Planting Density"
 }
