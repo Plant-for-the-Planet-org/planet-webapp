@@ -59,6 +59,9 @@ export default function BasicDetails({
     sources: {},
     layers: [],
   };
+
+  const [skipButtonVisible, setSkipButtonVisible] = React.useState(false);
+
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   // Map setup
   const { theme } = React.useContext(ThemeContext);
@@ -280,6 +283,15 @@ export default function BasicDetails({
   };
 
   const [acceptDonations, setAcceptDonations] = useState(false);
+  /**
+   * *if project is already had created then user can visit to  other forms using skip button
+   */
+  React.useEffect(() => {
+    if (projectDetails.id) {
+      setSkipButtonVisible(true);
+    }
+  }, [router]);
+
   // const treeCost = watch('treeCost');
 
   React.useEffect(() => {
@@ -1010,24 +1022,28 @@ export default function BasicDetails({
             </button>
           </div>
 
-          <div
-            className={styles.formField}
-            style={{
-              width: '89px',
-              padding: '15px, 30px, 15px, 30px',
-            }}
-          >
-            <button
-              id={'skip'}
-              className="primaryButton"
-              onClick={nextStep}
+          {skipButtonVisible ? (
+            <div
+              className={styles.formField}
               style={{
                 width: '89px',
+                padding: '15px, 30px, 15px, 30px',
               }}
             >
-              {t('manageProjects:skip')}
-            </button>
-          </div>
+              <button
+                id={'skip'}
+                className="primaryButton"
+                onClick={nextStep}
+                style={{
+                  width: '89px',
+                }}
+              >
+                {t('manageProjects:skip')}
+              </button>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </form>
     </div>

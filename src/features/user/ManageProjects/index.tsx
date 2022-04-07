@@ -15,14 +15,13 @@ import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import i18next from '../../../../i18n';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const { useTranslation } = i18next;
 
 export default function ManageProjects({ GUID, token, project }: any) {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
-
+  const router = useRouter();
   function getSteps() {
     return [
       ready ? t('manageProjects:basicDetails') : '',
@@ -33,17 +32,23 @@ export default function ManageProjects({ GUID, token, project }: any) {
       ready ? t('manageProjects:review') : '',
     ];
   }
+  const [accessToBasicDetail, setAccessToBasicDetail] = React.useState(false);
+  const [lockToProjectSelection, setLockToProjectSelection] =
+    React.useState(false);
   const [activeStep, setActiveStep] = React.useState(0);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [tabSelected, setTabSelected] = React.useState(0);
   const steps = getSteps();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
+  const [projectGUID, setProjectGUID] = React.useState(GUID ? GUID : '');
+  const [projectDetails, setProjectDetails] = React.useState(
+    project ? project : {}
+  );
 
   /**
    * * for moving next tab
    */
   const handleNext = () => {
-    // setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setTabSelected((prevTabSelected) => prevTabSelected + 1);
   };
 
@@ -59,11 +64,24 @@ export default function ManageProjects({ GUID, token, project }: any) {
     setActiveStep(0);
   };
 
-  const [projectGUID, setProjectGUID] = React.useState(GUID ? GUID : '');
-  const [projectDetails, setProjectDetails] = React.useState(
-    project ? project : {}
-  );
-  const router = useRouter();
+  const handleChange = (e: React.ChangeEvent<{}>, newValue: number) => {
+    if (newValue < 1) {
+      e.preventDefault();
+      return;
+    }
+    /**
+     * *Type of Project Selection get lock
+     */
+    if (lockToProjectSelection) {
+      e.preventDefault();
+    }
+    /**
+     * *for getting access to tab for edit of individual project
+     */
+    if (router.query.id) {
+      setTabSelected(newValue);
+    }
+  };
 
   const submitForReview = () => {
     setIsUploadingData(true);
@@ -117,10 +135,21 @@ export default function ManageProjects({ GUID, token, project }: any) {
   React.useEffect(() => {
     if (router.query.purpose) {
       handleNext();
+      /**
+       * *Once type of Project type is selected it get locked
+       */
+      if (accessToBasicDetail) {
+        setLockToProjectSelection(true);
+      }
     }
   }, [router]);
 
-  const matches = useMediaQuery('(max-width:600px)');
+  React.useEffect(() => {
+    if (router.query.id) {
+      handleNext();
+    }
+  }, [router]);
+
   function getStepContent(step: number) {
     switch (step) {
       case 0:
@@ -205,17 +234,6 @@ export default function ManageProjects({ GUID, token, project }: any) {
         return <ProjectSelection />;
     }
   }
-  // console.log(router);
-  const handleChange = (e: React.ChangeEvent<{}>, newValue: number) => {
-    if (newValue < 1) {
-      e.preventDefault();
-      return;
-    }
-
-    if (router.query.purpose) {
-      setTabSelected(newValue);
-    }
-  };
 
   return ready ? (
     <div
@@ -240,7 +258,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
             <Tabs
               value={tabSelected}
               onChange={handleChange}
-              orientation={matches ? 'horizontal' : 'vertical'}
+              orientation={'vertical'}
               variant="scrollable"
               className={'custom-tab'}
             >
@@ -277,9 +295,6 @@ export default function ManageProjects({ GUID, token, project }: any) {
             marginTop: '40px',
             width: '1000px',
             display: 'flex',
-            // height: '60vh',
-            // maxHeight: '60vh',
-            // overflowY: 'scroll',
           }}
         >
           {getStepContent(tabSelected)}
