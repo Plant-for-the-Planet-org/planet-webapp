@@ -206,7 +206,7 @@ export default function History({
                       />
                     )}
                     {showStatusNote(currentRecord, t)}
-                    {(currentRecord.details.donorCertificate ||
+                    {(currentRecord.details?.donorCertificate ||
                       currentRecord.details.taxDeductibleReceipt ||
                       currentRecord.details.giftCertificate) && (
                       <>
