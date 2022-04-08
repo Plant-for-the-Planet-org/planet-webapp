@@ -244,19 +244,19 @@ export default function DetailedAnalysis({
         : {
             projectMeta: {
               employeesCount: data.employeesCount,
-              acquisitionYear: data.acquisitionYear.getFullYear(),
-              protectionStartedYear: data.protectionStartedYear.getFullYear(),
+              // acquisitionYear: data.acquisitionYear.getFullYear(),
+              startingProtectionYear: data.startingProtectionYear.getFullYear(),
               areaProtected: data.areaProtected,
               employeeCount: data.employeeCount,
-              timePeriod: months,
-              forestProtectionType: data.forestProtectionType,
-              conservationImpacts: data.conservationImpacts,
+              // timePeriod: months,
+              // forestProtectionType: data.forestProtectionType,
+              // conservationImpacts: data.conservationImpacts,
               siteOwnerType: owners,
               siteOwnerName: data.siteOwnerName,
               mainChallenge: data.mainChallenge,
               longTermPlan: data.longTermPlan,
-              endangeredSpecies: data.endangeredSpecies,
-              addAnotherSpecies: data.addAnotherSpecies,
+              // endangeredSpecies: data.endangeredSpecies,
+              // addAnotherSpecies: data.addAnotherSpecies,
               whyThisSite: data.WhythisSite,
             },
           };
@@ -271,7 +271,7 @@ export default function DetailedAnalysis({
         setProjectDetails(res);
         setIsUploadingData(false);
         setErrorMessage('');
-        handleNext();
+        // handleNext();
       } else {
         if (res.code === 404) {
           setIsUploadingData(false);
@@ -288,6 +288,7 @@ export default function DetailedAnalysis({
 
   React.useEffect(() => {
     if (projectDetails) {
+      console.log(projectDetails);
       const detailedAnalysis =
         purpose === 'trees'
           ? {
@@ -318,10 +319,10 @@ export default function DetailedAnalysis({
           : {
               projectMeta: {
                 areaProtected: projectDetails.areaProtected,
-                protectionStartedYear: projectDetails.protectionStartedYear
+                startingProtectionYear: projectDetails.startingProtectionYear
                   ? new Date(
                       new Date().setFullYear(
-                        projectDetails.protectionStartedYear
+                        projectDetails.startingProtectionYear
                       )
                     )
                   : new Date(),
@@ -335,11 +336,11 @@ export default function DetailedAnalysis({
                 mainChallenge: projectDetails.mainChallenge,
                 siteOwnerName: projectDetails.siteOwnerName,
                 longTermPlan: projectDetails.longTermPlan,
-                endangeredSpecies: projectDetails.endangeredSpecies,
+                // endangeredSpecies: projectDetails.endangeredSpecies,
                 ownershipType: projectDetails.ownershipType,
-                forestProtectionType: projectDetails.forestProtectionType,
-                conservationImpacts: projectDetails.conservationImpacts,
-                addAnotherSpecies: projectDetails.addAnotherSpecies,
+                // forestProtectionType: projectDetails.forestProtectionType,
+                // conservationImpacts: projectDetails.conservationImpacts,
+                // addAnotherSpecies: projectDetails.addAnotherSpecies,
                 whyThisSite: projectDetails.WhythisSite,
               },
             };
@@ -538,7 +539,7 @@ export default function DetailedAnalysis({
                           maxDate={new Date()}
                         />
                       )}
-                      name="protectionStartedYear"
+                      name="startingProtectionYear"
                       control={control}
                       rules={{
                         required: t('manageProjects:validation', {

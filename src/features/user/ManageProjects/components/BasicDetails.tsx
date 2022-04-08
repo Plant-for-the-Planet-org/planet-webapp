@@ -310,7 +310,7 @@ export default function BasicDetails({
                 i18n.language,
                 projectDetails.unitCost || 0
               ),
-              publish: projectDetails.publish,
+              // publish: projectDetails.publish,
               visitorAssistance: projectDetails.visitorAssistance,
               enablePlantLocations: projectDetails.enablePlantLocations,
               currency: projectDetails.currency,
@@ -384,7 +384,7 @@ export default function BasicDetails({
               : undefined,
             currency: 'EUR',
             visitorAssistance: data.visitorAssistance,
-            publish: data.publish,
+            // publish: data.publish,
             enablePlantLocations: data.enablePlantLocations,
           }
         : {
@@ -944,7 +944,7 @@ export default function BasicDetails({
             </div>
           </div>
 
-          <div className={styles.formFieldLarge} style={{ width: '320px' }}>
+          {/* <div className={styles.formFieldLarge} style={{ width: '320px' }}>
             <div className={`${styles.formFieldRadio}`}>
               <label
                 htmlFor={'publish'}
@@ -967,7 +967,7 @@ export default function BasicDetails({
                 )}
               />
             </div>
-          </div>
+          </div> */}
 
           {/* <div className={styles.formFieldLarge} style={{ width: '320px' }}>
             <div className={`${styles.formFieldRadio}`}>

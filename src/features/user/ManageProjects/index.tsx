@@ -32,9 +32,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
       ready ? t('manageProjects:review') : '',
     ];
   }
-  const [accessToBasicDetail, setAccessToBasicDetail] = React.useState(false);
-  const [lockToProjectSelection, setLockToProjectSelection] =
-    React.useState(false);
+
   const [activeStep, setActiveStep] = React.useState(0);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [tabSelected, setTabSelected] = React.useState(0);
@@ -65,21 +63,38 @@ export default function ManageProjects({ GUID, token, project }: any) {
   };
 
   const handleChange = (e: React.ChangeEvent<{}>, newValue: number) => {
+    /**
+     * * A project type should be selected to move to the next step
+     */
+    if (!router.query.purpose) {
+      return;
+    }
+
+    /**
+     * *if project selected don't let it change
+     */
     if (newValue < 1) {
       e.preventDefault();
       return;
     }
     /**
-     * *Type of Project Selection get lock
+     * * if the Project is not created then lock it to basic details
      */
-    if (lockToProjectSelection) {
+    console.log(newValue);
+    if (projectGUID === '') {
       e.preventDefault();
+      return;
     }
+    setTabSelected(newValue);
     /**
-     * *for getting access to tab for edit of individual project
+     * *for getting access to other tab for edit of individual project
      */
     if (router.query.id) {
       setTabSelected(newValue);
+    }
+
+    if (router.query.id) {
+      handleNext();
     }
   };
 
@@ -135,12 +150,6 @@ export default function ManageProjects({ GUID, token, project }: any) {
   React.useEffect(() => {
     if (router.query.purpose) {
       handleNext();
-      /**
-       * *Once type of Project type is selected it get locked
-       */
-      if (accessToBasicDetail) {
-        setLockToProjectSelection(true);
-      }
     }
   }, [router]);
 
@@ -244,15 +253,12 @@ export default function ManageProjects({ GUID, token, project }: any) {
         <div
           style={{
             display: 'flex',
-            // justifyContent: 'center',
-            // alignItems: 'center',
             flexBasis: '10%',
           }}
         >
           <div
             style={{
               display: 'flex',
-              // position: 'fixed'
             }}
           >
             <Tabs
