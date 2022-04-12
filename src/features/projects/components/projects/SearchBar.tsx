@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import i18next from '../../../../../i18n/'
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
-import { TextField } from '@material-ui/core';
+import { TextField } from 'mui-latest';
 
 interface Props {
     setSearchValue: Function;
