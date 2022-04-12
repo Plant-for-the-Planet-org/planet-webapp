@@ -66,6 +66,7 @@
     "mapbox-gl": "^1.13.0",
     "mapbox-gl-compare": "^0.4.0",
     "moment": "^2.29.1",
+    "mui-latest": "npm:@mui/material@^5.6.1",
     "next": "^11.1.4",
     "next-compose-plugins": "^2.2.1",
     "next-i18next": "^6.0.3",
