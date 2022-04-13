@@ -134,12 +134,19 @@ function UserLayout(props: any): ReactElement {
     },
     {
       key: 6,
+      title: t('me:bulkCodes'),
+      path: '/profile/bulk-codes',
+      icon: <MapIcon />,
+      accessLevel: ['tpo'],
+    },
+    {
+      key: 7,
       title: t('me:embedWidget'),
       path: '/profile/widgets',
       icon: <WidgetIcon />,
     },
     {
-      key: 7,
+      key: 8,
       title: t('me:settings'),
       icon: <SettingsIcon />,
       subMenu: [
