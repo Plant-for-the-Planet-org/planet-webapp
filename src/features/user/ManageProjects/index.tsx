@@ -95,8 +95,15 @@ export default function ManageProjects({ GUID, token, project }: any) {
     setErrorMessage(message);
     setActiveStep(0);
   };
-
+  console.log(router);
   const handleChange = (e: React.ChangeEvent<{}>, newValue: number) => {
+    /**
+     * *restrict the access of Tab
+     */
+    if (router.asPath === '/profile/projects/new-project') {
+      e.preventDefault();
+      return;
+    }
     /**
      * * show the same route as respective form
      */
