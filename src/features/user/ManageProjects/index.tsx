@@ -43,10 +43,43 @@ export default function ManageProjects({ GUID, token, project }: any) {
     project ? project : {}
   );
 
+  const formRouteHandler = (val) => {
+    if (router.query.purpose) return;
+    switch (val) {
+      case 1:
+        router.push(`/profile/projects/${projectGUID}/basic-details`);
+
+        break;
+      case 2:
+        router.push(`/profile/projects/${projectGUID}/media`);
+
+        break;
+      case 3:
+        router.push(`/profile/projects/${projectGUID}/detail-analysis`);
+
+        break;
+      case 4:
+        router.push(`/profile/projects/${projectGUID}/project-sites`);
+
+        break;
+      case 5:
+        router.push(`/profile/projects/${projectGUID}/project-spendings`);
+
+        break;
+      case 6:
+        router.push(`/profile/projects/${projectGUID}/review`);
+
+        break;
+      default:
+        break;
+    }
+  };
+
   /**
    * * for moving next tab
    */
   const handleNext = () => {
+    formRouteHandler(tabSelected + 1);
     setTabSelected((prevTabSelected) => prevTabSelected + 1);
   };
 
@@ -54,6 +87,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
    * *for moving previous tab
    */
   const handleBack = () => {
+    formRouteHandler(tabSelected - 1);
     setTabSelected((prevActiveStep) => prevActiveStep - 1);
   };
 
@@ -64,11 +98,10 @@ export default function ManageProjects({ GUID, token, project }: any) {
 
   const handleChange = (e: React.ChangeEvent<{}>, newValue: number) => {
     /**
-     * * A project type should be selected to move to the next step
+     * * show the same route as respective form
      */
-    if (!router.query.purpose) {
-      return;
-    }
+
+    formRouteHandler(newValue);
 
     /**
      * *if project selected don't let it change
@@ -77,10 +110,10 @@ export default function ManageProjects({ GUID, token, project }: any) {
       e.preventDefault();
       return;
     }
+
     /**
      * * if the Project is not created then lock it to basic details
      */
-    console.log(newValue);
     if (projectGUID === '') {
       e.preventDefault();
       return;
@@ -93,15 +126,47 @@ export default function ManageProjects({ GUID, token, project }: any) {
       setTabSelected(newValue);
     }
 
+    /**
+     * * A project type should be selected to move to the next step
+     */
+    if (!router.query.purpose) {
+      return;
+    }
+
     if (router.query.id) {
       handleNext();
     }
   };
-
   const submitForReview = () => {
     setIsUploadingData(true);
     const submitData = {
       reviewRequested: true,
+    };
+    putAuthenticatedRequest(
+      `/app/projects/${projectGUID}`,
+      submitData,
+      token,
+      handleError
+    ).then((res) => {
+      if (!res.code) {
+        setProjectDetails(res);
+        setErrorMessage('');
+        setIsUploadingData(false);
+      } else {
+        if (res.code === 404) {
+          setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
+          setIsUploadingData(false);
+        } else {
+          setErrorMessage(res.message);
+          setIsUploadingData(false);
+        }
+      }
+    });
+  };
+
+  const handlePublishChange = (val) => {
+    const submitData = {
+      publish: val,
     };
     putAuthenticatedRequest(
       `/app/projects/${projectGUID}`,
@@ -152,12 +217,31 @@ export default function ManageProjects({ GUID, token, project }: any) {
       handleNext();
     }
   }, [router]);
-
+  console.log(router.query.screen);
   React.useEffect(() => {
-    if (router.query.id) {
-      handleNext();
+    switch (router.query.screen) {
+      case 'basic-details':
+        setTabSelected(1);
+        break;
+      case 'media':
+        setTabSelected(2);
+        break;
+      case 'detail-analysis':
+        setTabSelected(3);
+        break;
+      case 'sites':
+        setTabSelected(4);
+        break;
+      case 'spending':
+        setTabSelected(5);
+        break;
+      case 'review':
+        setTabSelected(6);
+        break;
+      default:
+        null;
     }
-  }, [router]);
+  }, [router.query.screen]);
 
   function getStepContent(step: number) {
     switch (step) {
@@ -237,6 +321,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
             isUploadingData={isUploadingData}
             projectGUID={projectGUID}
             handleReset={handleReset}
+            handlePublishChange={handlePublishChange}
           />
         );
       default:

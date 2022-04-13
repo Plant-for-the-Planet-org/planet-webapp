@@ -7,6 +7,7 @@ import i18next from './../../../../../i18n';
 import NotReviewed from '../../../../../public/assets/images/icons/manageProjects/NotReviewed';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import { Controller, useForm } from 'react-hook-form';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
@@ -17,6 +18,7 @@ interface Props {
   projectGUID: any;
   handleReset: Function;
   projectDetails: any;
+  handlePublishChange: Function;
 }
 
 function SubmitForReview({
@@ -26,6 +28,7 @@ function SubmitForReview({
   projectGUID,
   handleReset,
   projectDetails,
+  handlePublishChange,
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
 
@@ -69,6 +72,8 @@ function SubmitForReview({
 
   function NotSubmittedReview() {
     const { control } = useForm({ mode: 'onBlur' });
+    const [publish, setPublish] = React.useState(projectDetails.publish);
+
     return (
       <div
         className={styles.stepContainer}
@@ -88,17 +93,11 @@ function SubmitForReview({
               {t('manageProjects:publishProject')}
             </label>
 
-            <Controller
-              name="publish"
-              control={control}
-              render={(properties) => (
-                <ToggleSwitch
-                  checked={properties.value}
-                  onChange={(e) => properties.onChange(e.target.checked)}
-                  id="publish"
-                  inputProps={{ 'aria-label': 'secondary checkbox' }}
-                />
-              )}
+            <ToggleSwitch
+              checked={publish}
+              onChange={(e) => handlePublishChange(e.target.checked)}
+              id="publish"
+              inputProps={{ 'aria-label': 'secondary checkbox' }}
             />
           </div>
         </div>

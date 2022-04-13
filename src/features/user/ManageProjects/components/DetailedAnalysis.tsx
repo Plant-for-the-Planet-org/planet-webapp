@@ -239,12 +239,12 @@ export default function DetailedAnalysis({
             degradationCause: data.degradationCause,
             longTermPlan: data.longTermPlan,
             plantingSeasons: months,
-            whyThisSite: data.WhythisSite,
+            motivation: data.motivation,
           }
         : {
             projectMeta: {
               employeesCount: data.employeesCount,
-              // acquisitionYear: data.acquisitionYear.getFullYear(),
+              acquisitionYear: data.acquisitionYear.getFullYear(),
               startingProtectionYear: data.startingProtectionYear.getFullYear(),
               areaProtected: data.areaProtected,
               employeeCount: data.employeeCount,
@@ -257,7 +257,7 @@ export default function DetailedAnalysis({
               longTermPlan: data.longTermPlan,
               // endangeredSpecies: data.endangeredSpecies,
               // addAnotherSpecies: data.addAnotherSpecies,
-              whyThisSite: data.WhythisSite,
+              motivation: data.motivation,
             },
           };
 
@@ -314,7 +314,7 @@ export default function DetailedAnalysis({
                 : new Date(),
               degradationCause: projectDetails.degradationCause,
               longTermPlan: projectDetails.longTermPlan,
-              whyThisSite: projectDetails.WhythisSite,
+              motivation: projectDetails.motivation,
             }
           : {
               projectMeta: {
@@ -341,7 +341,7 @@ export default function DetailedAnalysis({
                 // forestProtectionType: projectDetails.forestProtectionType,
                 // conservationImpacts: projectDetails.conservationImpacts,
                 // addAnotherSpecies: projectDetails.addAnotherSpecies,
-                whyThisSite: projectDetails.WhythisSite,
+                motivation: projectDetails.motivation,
               },
             };
 

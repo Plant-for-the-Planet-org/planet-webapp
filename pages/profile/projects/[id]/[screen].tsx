@@ -1,15 +1,15 @@
 import React, { ReactElement, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import ManageProjects from '../../../src/features/user/ManageProjects';
-import { getAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
-import GlobeContentLoader from '../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
-import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
-import Footer from '../../../src/features/common/Layout/Footer';
-import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
-import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
+import ManageProjects from '../../../../src/features/user/ManageProjects';
+import { getAuthenticatedRequest } from '../../../../src/utils/apiRequests/api';
+import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
+import AccessDeniedLoader from '../../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
+import Footer from '../../../../src/features/common/Layout/Footer';
+import { UserPropsContext } from '../../../../src/features/common/Layout/UserPropsContext';
+import UserLayout from '../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
-import i18next from '../../../i18n';
-import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
+import i18next from '../../../../i18n';
+import { ErrorHandlingContext } from '../../../../src/features/common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
