@@ -1,10 +1,4 @@
 import React from 'react';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
-import FormControl from '@material-ui/core/FormControl';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
 import { useTranslation } from 'react-i18next';
@@ -17,7 +11,14 @@ import DateFnsUtils from '@date-io/date-fns';
 import materialTheme from '../../../theme/themeStyles';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { CircularProgress } from '@material-ui/core';
+import {
+  CircularProgress,
+  Modal,
+  Fade,
+  FormControl,
+  RadioGroup,
+  FormControlLabel,
+} from 'mui-latest';
 export const CancelModal = ({
   cancelModalOpen,
   handleCancelModalClose,
@@ -73,7 +74,6 @@ export const CancelModal = ({
       closeAfterTransition
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
-      BackdropComponent={Backdrop}
       BackdropProps={{
         timeout: 500,
       }}
@@ -109,7 +109,7 @@ export const CancelModal = ({
             </div>
           </div>
           {record?.method !== 'paypal' ? (
-            <FormControl component="fieldset">
+            <FormControl variant="standard" component="fieldset">
               <RadioGroup
                 aria-label="date"
                 name="date"
