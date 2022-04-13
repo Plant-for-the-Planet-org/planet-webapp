@@ -5,14 +5,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import styles from './AccountHistory.module.scss';
-import { CircularProgress } from 'mui-latest';
-import {
-  Backdrop,
-  Fade,
-  InputAdornment,
-  ThemeProvider,
-} from '@material-ui/core';
-import Modal from '@material-ui/core/Modal';
+import { CircularProgress, Modal, Fade, InputAdornment } from 'mui-latest';
+import { ThemeProvider } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -109,7 +103,6 @@ export const EditModal = ({
       closeAfterTransition
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
-      BackdropComponent={Backdrop}
       BackdropProps={{
         timeout: 500,
       }}
