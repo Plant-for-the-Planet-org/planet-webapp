@@ -1,5 +1,5 @@
 import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from 'mui-latest';
+import { CircularProgress } from 'mui-latest';
 import i18next from '../../../../../i18n';
 import styles from './PaymentProgress.module.scss';
 

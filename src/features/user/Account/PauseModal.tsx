@@ -17,7 +17,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import materialTheme from '../../../theme/themeStyles';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import CircularProgress from 'mui-latest/CircularProgress';
+import { CircularProgress } from 'mui-latest';
 
 export const PauseModal = ({
   pauseModalOpen,
