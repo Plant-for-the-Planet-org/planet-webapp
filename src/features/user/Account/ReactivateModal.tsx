@@ -9,7 +9,7 @@ import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress } from 'mui-latest';
 
 export const ReactivateModal = ({
   reactivateModalOpen,

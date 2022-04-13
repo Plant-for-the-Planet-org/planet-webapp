@@ -5,9 +5,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import styles from './AccountHistory.module.scss';
+import { CircularProgress } from 'mui-latest';
 import {
   Backdrop,
-  CircularProgress,
   Fade,
   InputAdornment,
   ThemeProvider,
@@ -69,7 +69,7 @@ export const EditModal = ({
     };
     if (
       new Date(data.currentPeriodEnd).toDateString() ==
-      new Date(record.currentPeriodEnd).toDateString() ||
+        new Date(record.currentPeriodEnd).toDateString() ||
       bodyToSend.nextBilling === null
     ) {
       delete bodyToSend.nextBilling;
