@@ -156,18 +156,6 @@ function SingleProjectDetails({}: Props): ReactElement {
           ) : (
             <div className={'singleProjectDetails'}>
               <div className={'projectCompleteInfo'}>
-                {/* <div className={'ratings}>
-              <div className={'calculatedRating}>{rating}</div>
-              <div className={'ratingButton}>
-                <MaterialRatings
-                  name="simple-controlled"
-                  value={rating}
-                  size="small"
-                  readOnly
-                />
-              </div>
-            </div> */}
-
                 <div className={'projectDescription'}>
                   <div className={'infoTitle'}>{t('donate:aboutProject')}</div>
                   <ReadMoreReact
