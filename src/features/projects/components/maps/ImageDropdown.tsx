@@ -1,4 +1,4 @@
-import { FormControl, NativeSelect } from '@material-ui/core';
+import { FormControl, NativeSelect } from 'mui-latest';
 import React, { ReactElement } from 'react';
 import BootstrapInput from '../../../common/InputTypes/BootstrapInput';
 import styles from '../../styles/VegetationChange.module.scss';
@@ -60,7 +60,7 @@ export default function ImageDropdown({
     <>
       <div className={styles.dropdownContainer}>
         <div className={styles.beforeYear}>
-          <FormControl>
+          <FormControl variant="standard">
             <NativeSelect
               id="customized-select-native-1"
               value={selectedYear1}
@@ -88,7 +88,7 @@ export default function ImageDropdown({
             </div>
           ) : null}
           {isSource1MenuOpen && (
-            <FormControl>
+            <FormControl variant="standard">
               <NativeSelect
                 id="customized-select-native-2"
                 value={selectedSource1}
@@ -119,7 +119,7 @@ export default function ImageDropdown({
             </div>
           ) : null}
           {isSource2MenuOpen && (
-            <FormControl>
+            <FormControl variant="standard">
               <NativeSelect
                 id="customized-select-native-3"
                 value={selectedSource2}
@@ -136,7 +136,7 @@ export default function ImageDropdown({
               </NativeSelect>
             </FormControl>
           )}
-          <FormControl>
+          <FormControl variant="standard">
             <NativeSelect
               id="customized-select-native-4"
               value={selectedYear2}

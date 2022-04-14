@@ -1,11 +1,4 @@
-import {
-  createStyles,
-  FormControl,
-  InputBase,
-  NativeSelect,
-  Theme,
-  withStyles,
-} from '@material-ui/core';
+import { FormControl, NativeSelect } from 'mui-latest';
 import React, { ReactElement } from 'react';
 import PolygonIcon from '../../../../../public/assets/images/icons/PolygonIcon';
 import styles from '../../styles/ProjectsMap.module.scss';
@@ -26,7 +19,7 @@ export default function SitesDropdown(): ReactElement {
 
   const handleChangeSite = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSelectedSite(event.target.value as string);
-    if(isMobile)setIsPolygonMenuOpen(false);
+    if (isMobile) setIsPolygonMenuOpen(false);
   };
 
   return (
@@ -49,7 +42,7 @@ export default function SitesDropdown(): ReactElement {
           {isPolygonMenuOpen ? (
             <div className={styles.dropdownContainer}>
               <div className={styles.projectSitesDropdown}>
-                <FormControl>
+                <FormControl variant="standard">
                   <div className={styles.polygonIcon}>
                     <PolygonIcon />
                   </div>
