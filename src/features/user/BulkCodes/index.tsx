@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import i18next from '../../../../i18n';
+
+import FormSteps from './FormSteps';
+
+import styles from './BulkCodes.module.scss';
+
 interface Props {}
 
 const { useTranslation } = i18next;
 
-export default function BulkCodes({}: Props) {
+export default function BulkCodes({}: Props): ReactElement | null {
   const { t, ready } = useTranslation(['bulkCodes']);
   return ready ? (
     <div className="profilePage">
@@ -14,6 +19,10 @@ export default function BulkCodes({}: Props) {
         <br />
         {t('bulkCodes:bulkCodesDescription2')}
       </div>
+      <main className={styles.contentContainer}>
+        <FormSteps />
+        <div className={styles.formContainer}>Right Side Content</div>
+      </main>
     </div>
   ) : null;
 }

@@ -1,5 +1,8 @@
 {
 	"bulkCodes": "Issue Bulk Codes",
 	"bulkCodesDescription1": "Using PlanetCash you can generate thousands of codes in a single operation.",
-	"bulkCodesDescription2":  "You can use this feature to create codes for custom certificates, gift cards, donations on behalf of users and redeemable codes that you can associate with your products."
+	"bulkCodesDescription2":  "You can use this feature to create codes for custom certificates, gift cards, donations on behalf of users and redeemable codes that you can associate with your products.",
+	"tabCreationMethod": "Creation Method",
+	"tabSelectProject": "Select Project",
+	"tabIssueCodes": "Issue Codes"
 }
