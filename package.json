@@ -43,7 +43,7 @@
     "@math.gl/web-mercator": "^3.5.3",
     "@next/bundle-analyzer": "^10.2.3",
     "@sentry/browser": "^6.15.0",
-    "@sentry/integrations": "^6.15.0",
+    "@sentry/integrations": "^6.19.2",
     "@sentry/node": "^6.15.0",
     "@sentry/webpack-plugin": "^1.18.3",
     "@turf/turf": "^5.1.6",
