@@ -1,20 +1,16 @@
-import { withStyles } from '@material-ui/core/styles';
-import Switch from '@material-ui/core/Switch';
+import { Switch } from 'mui-latest';
+import { styled } from 'mui-latest/styles';
 
 export default function ToggleSwitch(props: any) {
-  const ToggleSwitch = withStyles({
-    switchBase: {
-      color: '#fff',
-      '&$checked': {
-        color: props.color ? props.color : '#68B030',
-      },
-      '&$checked + $track': {
-        backgroundColor: props.color ? props.color : '#68B030',
-      },
+  const ToggleSwitch = styled(Switch)({
+    '& .MuiSwitch-switchBase.Mui-checked': {
+      color: props.color ? props.color : '#68B030',
     },
-    checked: {},
-    track: {},
-  })(Switch);
+    '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+      backgroundColor: props.color ? props.color : '#68B030',
+    },
+  });
+
   return (
     <ToggleSwitch
       checked={props.checked}
@@ -25,5 +21,3 @@ export default function ToggleSwitch(props: any) {
     />
   );
 }
-
-//export default ToggleSwitch;
