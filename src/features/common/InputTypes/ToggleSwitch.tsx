@@ -1,13 +1,14 @@
 import { Switch } from 'mui-latest';
 import { styled } from 'mui-latest/styles';
+import theme from '../../../theme/themeProperties';
 
 export default function ToggleSwitch(props: any) {
   const ToggleSwitch = styled(Switch)({
     '& .MuiSwitch-switchBase.Mui-checked': {
-      color: props.color ? props.color : '#68B030',
+      color: props.color ? props.color : theme.primaryColor,
     },
     '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-      backgroundColor: props.color ? props.color : '#68B030',
+      backgroundColor: props.color ? props.color : theme.primaryColor,
     },
   });
 
