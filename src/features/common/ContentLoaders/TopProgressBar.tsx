@@ -1,16 +1,12 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import LinearProgress from '@material-ui/core/LinearProgress';
 import theme from '../../../theme/themeProperties';
+import { LinearProgress, styled } from 'mui-latest';
 
-const useStyles = makeStyles({
-  root: {
-    width: '100%',
-  },
-  colorPrimary: {
+const ProgressBar = styled(LinearProgress)({
+  '&.MuiLinearProgress-root': {
     backgroundColor: theme.light.backgroundColorDark,
   },
-  barColorPrimary: {
+  '& > .MuiLinearProgress-bar': {
     backgroundColor: theme.primaryColor,
   },
 });
@@ -20,18 +16,9 @@ interface Props {
 }
 
 export default function TopProgressBar({ progress }: Props) {
-  const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <LinearProgress
-        classes={{
-          colorPrimary: classes.colorPrimary,
-          barColorPrimary: classes.barColorPrimary,
-        }}
-        color="primary"
-        variant="determinate"
-        value={progress}
-      />
+    <div style={{ width: '100%' }}>
+      <ProgressBar color="primary" variant="determinate" value={progress} />
     </div>
   );
 }
