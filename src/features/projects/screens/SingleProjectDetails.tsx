@@ -1,4 +1,4 @@
-import Modal from 'mui-latest/Modal';
+import Modal from '@mui/material/Modal';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';

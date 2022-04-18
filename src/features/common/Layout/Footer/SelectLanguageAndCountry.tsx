@@ -4,7 +4,7 @@ import {
   FormControl,
   FormControlLabel,
   RadioGroup,
-} from 'mui-latest';
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import {
   getCountryDataBy,

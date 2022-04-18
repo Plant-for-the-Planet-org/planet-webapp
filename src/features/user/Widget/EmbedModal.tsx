@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
-import { Modal, Snackbar } from 'mui-latest';
-import MuiAlert from 'mui-latest/Alert';
+import { Modal, Snackbar } from '@mui/material';
+import MuiAlert from '@mui/material/Alert';
 import styles from './EmbedModal.module.scss';
 import i18next from '../../../../i18n';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';

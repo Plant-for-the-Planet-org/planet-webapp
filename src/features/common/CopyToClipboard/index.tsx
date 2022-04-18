@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
 import CopyIcon from '../../../../public/assets/images/icons/CopyIcon';
 import styles from './styles.module.scss';
-import Snackbar from 'mui-latest/Snackbar';
-import MuiAlert, { AlertProps } from 'mui-latest/Alert';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import i18next from '../../../../i18n';
 const { useTranslation } = i18next;
 function Alert(props: AlertProps) {

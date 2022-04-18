@@ -5,7 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import styles from './AccountHistory.module.scss';
-import { CircularProgress, Modal, Fade, InputAdornment } from 'mui-latest';
+import { CircularProgress, Modal, Fade, InputAdornment } from '@mui/material';
 import { ThemeProvider } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';

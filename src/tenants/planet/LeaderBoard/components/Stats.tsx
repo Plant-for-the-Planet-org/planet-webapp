@@ -1,4 +1,4 @@
-import { Modal } from 'mui-latest';
+import { Modal } from '@mui/material';
 import React, { ReactElement } from 'react';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import styles from './Stats.module.scss';

@@ -1,7 +1,7 @@
 import React from 'react';
-import Modal from 'mui-latest/Modal';
+import Modal from '@mui/material/Modal';
 import { useForm } from 'react-hook-form';
-import Fade from 'mui-latest/Fade';
+import Fade from '@mui/material/Fade';
 import styles from '../styles/RedeemModal.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import i18next from '../../../../../i18n';
@@ -18,9 +18,8 @@ export default function AddTargetModal({
 }: any) {
   // External imports
   const { t, ready } = useTranslation(['me']);
-  const { user, token, contextLoaded, setUser } = React.useContext(
-    UserPropsContext
-  );
+  const { user, token, contextLoaded, setUser } =
+    React.useContext(UserPropsContext);
   const { register, handleSubmit, errors } = useForm({ mode: 'onBlur' });
   const { theme } = React.useContext(ThemeContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
@@ -85,9 +84,7 @@ export default function AddTargetModal({
             />
           </div>
           {errors.addTarget && (
-            <span className={'formErrors'}>
-              {t('me:targetErrorMessage')}
-            </span>
+            <span className={'formErrors'}>{t('me:targetErrorMessage')}</span>
           )}
           {errors.addTarget ? (
             <div className="primaryButton" style={{ marginTop: '24px' }}>

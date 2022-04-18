@@ -1,6 +1,6 @@
 import React from 'react';
 import theme from '../../../theme/themeProperties';
-import { LinearProgress, styled } from 'mui-latest';
+import { LinearProgress, styled } from '@mui/material';
 
 const ProgressBar = styled(LinearProgress)({
   '&.MuiLinearProgress-root': {

@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from '../styles/SettingsModal.module.scss';
-import Modal from 'mui-latest/Modal';
+import Modal from '@mui/material/Modal';
 import { useRouter } from 'next/router';
-import Fade from 'mui-latest/Fade';
+import Fade from '@mui/material/Fade';
 import EditProfileModal from '../components/EditProfileModal';
 import i18next from '../../../../../i18n';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';

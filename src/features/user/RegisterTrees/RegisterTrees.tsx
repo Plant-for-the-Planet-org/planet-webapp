@@ -1,5 +1,5 @@
 import DateFnsUtils from '@date-io/date-fns';
-import { MenuItem } from 'mui-latest';
+import { MenuItem } from '@mui/material';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { MuiPickersOverrides } from '@material-ui/pickers/typings/overrides';
 import { ThemeProvider } from '@material-ui/styles';

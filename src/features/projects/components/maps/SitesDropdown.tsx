@@ -1,4 +1,4 @@
-import { FormControl, NativeSelect } from 'mui-latest';
+import { FormControl, NativeSelect } from '@mui/material';
 import React, { ReactElement } from 'react';
 import PolygonIcon from '../../../../../public/assets/images/icons/PolygonIcon';
 import styles from '../../styles/ProjectsMap.module.scss';

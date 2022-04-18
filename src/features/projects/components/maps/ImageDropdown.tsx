@@ -1,4 +1,4 @@
-import { FormControl, NativeSelect } from 'mui-latest';
+import { FormControl, NativeSelect } from '@mui/material';
 import React, { ReactElement } from 'react';
 import BootstrapInput from '../../../common/InputTypes/BootstrapInput';
 import styles from '../../styles/VegetationChange.module.scss';

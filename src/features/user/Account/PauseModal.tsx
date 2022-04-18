@@ -18,7 +18,7 @@ import {
   Fade,
   Modal,
   FormControlLabel,
-} from 'mui-latest';
+} from '@mui/material';
 
 export const PauseModal = ({
   pauseModalOpen,

@@ -6,7 +6,7 @@ import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { CircularProgress, Modal, Fade } from 'mui-latest';
+import { CircularProgress, Modal, Fade } from '@mui/material';
 
 export const ReactivateModal = ({
   reactivateModalOpen,

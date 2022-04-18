@@ -12,7 +12,7 @@ import { useDropzone } from 'react-dropzone';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
 import JSONInput from 'react-json-editor-ajrm';
 import locale from 'react-json-editor-ajrm/locale/en';
-import { MenuItem } from 'mui-latest';
+import { MenuItem } from '@mui/material';
 import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
 import {
   getAuthenticatedRequest,

@@ -1,6 +1,6 @@
-import { MenuItem } from 'mui-latest';
-import Snackbar from 'mui-latest/Snackbar';
-import MuiAlert from 'mui-latest/Alert';
+import { MenuItem } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Controller, useForm } from 'react-hook-form';

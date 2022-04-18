@@ -1,5 +1,5 @@
-import { Switch } from 'mui-latest';
-import { styled } from 'mui-latest/styles';
+import { Switch } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import theme from '../../../theme/themeProperties';
 
 export default function ToggleSwitch(props: any) {

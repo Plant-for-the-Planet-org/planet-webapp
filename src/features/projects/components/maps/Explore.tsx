@@ -3,7 +3,7 @@ import styles from '../../styles/ProjectsMap.module.scss';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import ExploreIcon from '../../../../../public/assets/images/icons/ExploreIcon';
 import i18next from '../../../../../i18n';
-import { Modal, FormGroup, FormControlLabel } from 'mui-latest';
+import { Modal, FormGroup, FormControlLabel } from '@mui/material';
 import Switch from '../../../common/InputTypes/ToggleSwitch';
 import {
   Icons,

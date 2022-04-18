@@ -1,4 +1,4 @@
-import Radio from 'mui-latest/Radio';
+import Radio from '@mui/material/Radio';
 import { withStyles } from '@mui/styles';
 
 const GreenRadio = withStyles({

@@ -1,14 +1,14 @@
 import React from 'react';
 import styles from '../styles/RedeemModal.module.scss';
-import Modal from 'mui-latest/Modal';
-import Fade from 'mui-latest/Fade';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import i18next from '../../../../../i18n';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useForm } from 'react-hook-form';
 import Close from '../../../../../public/assets/images/icons/headerIcons/close';
-import Snackbar from 'mui-latest/Snackbar';
-import MuiAlert, { AlertProps } from 'mui-latest/Alert';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import tenantConfig from '../../../../../tenant.config';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
