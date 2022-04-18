@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import i18next from '../../../../i18n';
 
 import FormSteps from './FormSteps';
+import BulkMethodSelector from './components/BulkMethodSelector';
 
 import styles from './BulkCodes.module.scss';
 
@@ -21,7 +22,9 @@ export default function BulkCodes({}: Props): ReactElement | null {
       </div>
       <main className={styles.contentContainer}>
         <FormSteps />
-        <div className={styles.formContainer}>Right Side Content</div>
+        <div className={styles.formContainer}>
+          <BulkMethodSelector />
+        </div>
       </main>
     </div>
   ) : null;
