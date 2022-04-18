@@ -1,15 +1,14 @@
 import React from 'react';
 import styles from '../styles/RedeemModal.module.scss';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
+import Modal from 'mui-latest/Modal';
+import Fade from 'mui-latest/Fade';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import i18next from '../../../../../i18n';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useForm } from 'react-hook-form';
 import Close from '../../../../../public/assets/images/icons/headerIcons/close';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import Snackbar from 'mui-latest/Snackbar';
+import MuiAlert, { AlertProps } from 'mui-latest/Alert';
 import tenantConfig from '../../../../../tenant.config';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
@@ -32,7 +31,8 @@ export default function RedeemModal({
 
   const config = tenantConfig();
 
-  const { user, contextLoaded, token, setUser } = React.useContext(UserPropsContext);
+  const { user, contextLoaded, token, setUser } =
+    React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const imageRef = React.createRef();
   const sendRef = () => imageRef;
@@ -44,9 +44,8 @@ export default function RedeemModal({
   const [codeRedeemed, setCodeRedeemed] = React.useState(false);
   const [code, setCode] = React.useState();
   const [inputCode, setInputCode] = React.useState('');
-  const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
-    false
-  );
+  const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] =
+    React.useState(false);
   const handleTextCopiedSnackbarOpen = () => {
     setTextCopiedSnackbarOpen(true);
   };
@@ -122,7 +121,14 @@ export default function RedeemModal({
           setCodeRedeemed(true);
           setIsUploadingData(false);
           setCodeValidated(false);
-          const newUser = { ...user, score: { personal: res.schemata.treecounter.countPersonal, received: res.schemata.treecounter.countReceived, target: res.schemata.treecounter.countTarget } }
+          const newUser = {
+            ...user,
+            score: {
+              personal: res.schemata.treecounter.countPersonal,
+              received: res.schemata.treecounter.countReceived,
+              target: res.schemata.treecounter.countTarget,
+            },
+          };
           setUser(newUser);
         }
       });
@@ -150,105 +156,105 @@ export default function RedeemModal({
       closeAfterTransition
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
-      BackdropComponent={Backdrop}
       BackdropProps={{
         timeout: 500,
       }}
     >
       <Fade in={redeemModalOpen}>
         {codeRedeemed && validCodeData ? (
-          <>
-            <div className={styles.modalFinal}>
-              <div className={styles.header}>
-                <button
-                  id={'closeRedeemM'}
-                  onClick={() => closeRedeem()}
-                  className={styles.headerCloseIcon}
-                >
-                  <Close />
-                </button>
-                <div className={styles.headerTitle}>
-                  {t('redeem:congratulations')}
-                </div>
+          <div className={styles.modalFinal}>
+            <div className={styles.header}>
+              <button
+                id={'closeRedeemM'}
+                onClick={() => closeRedeem()}
+                className={styles.headerCloseIcon}
+              >
+                <Close />
+              </button>
+              <div className={styles.headerTitle}>
+                {t('redeem:congratulations')}
               </div>
+            </div>
 
-              <div className={styles.thankyouImageContainer}>
-                <div className={styles.thankyouImage}>
-                  <div className={styles.thankyouImageHeader}>
-                    <p
-                      dangerouslySetInnerHTML={{
-                        __html: t('donate:thankyouHeaderText'),
-                      }}
-                    />
-                  </div>
-                  <div className={styles.donationCount}>
-                    {t('redeem:myPlantedTreesByOrg', {
-                      count: Number(validCodeData.treeCount),
-                      formattedNumber: getFormattedNumber(
-                        i18n.language,
-                        Number(validCodeData.treeCount)
-                      ),
-                      tpoName: validCodeData.tpos[0].tpoName,
-                    })}
-                    <p className={styles.donationTenant}>
-                      {t('donate:plantTreesAtURL', { url: config.tenantURL })}
-                    </p>
-                  </div>
+            <div className={styles.thankyouImageContainer}>
+              <div className={styles.thankyouImage}>
+                <div className={styles.thankyouImageHeader}>
+                  <p
+                    dangerouslySetInnerHTML={{
+                      __html: t('donate:thankyouHeaderText'),
+                    }}
+                  />
                 </div>
-              </div>
-
-              {/* hidden div for image download */}
-              <div style={{ width: '0px', height: '0px', overflow: 'hidden' }}>
-                <div className={styles.tempThankYouImage} ref={imageRef}>
-                  <div className={styles.tempthankyouImageHeader}>
-                    <p
-                      dangerouslySetInnerHTML={{
-                        __html: t('donate:thankyouHeaderText'),
-                      }}
-                    />
-                  </div>
-                  <p className={styles.tempDonationCount}>
-                    {t('redeem:myPlantedTreesByOrg', {
-                      count: Number(validCodeData.treeCount),
-                      formattedNumber: getFormattedNumber(
-                        i18n.language,
-                        Number(validCodeData.treeCount)
-                      ),
-                      tpoName: validCodeData.tpos[0].tpoName,
-                    })}
-                  </p>
-                  <p className={styles.tempDonationTenant}>
+                <div className={styles.donationCount}>
+                  {t('redeem:myPlantedTreesByOrg', {
+                    count: Number(validCodeData.treeCount),
+                    formattedNumber: getFormattedNumber(
+                      i18n.language,
+                      Number(validCodeData.treeCount)
+                    ),
+                    tpoName: validCodeData.tpos[0].tpoName,
+                  })}
+                  <p className={styles.donationTenant}>
                     {t('donate:plantTreesAtURL', { url: config.tenantURL })}
                   </p>
                 </div>
               </div>
+            </div>
 
-              <div className={styles.shareOptions}>
-                <ShareOptions
-                  treeCount={getFormattedNumber(
-                    i18n.language,
-                    Number(validCodeData.treeCount)
-                  )}
-                  sendRef={sendRef}
-                  handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
-                  contactDetails={contactDetails}
-                />
+            {/* hidden div for image download */}
+            <div style={{ width: '0px', height: '0px', overflow: 'hidden' }}>
+              <div className={styles.tempThankYouImage} ref={imageRef}>
+                <div className={styles.tempthankyouImageHeader}>
+                  <p
+                    dangerouslySetInnerHTML={{
+                      __html: t('donate:thankyouHeaderText'),
+                    }}
+                  />
+                </div>
+                <p className={styles.tempDonationCount}>
+                  {t('redeem:myPlantedTreesByOrg', {
+                    count: Number(validCodeData.treeCount),
+                    formattedNumber: getFormattedNumber(
+                      i18n.language,
+                      Number(validCodeData.treeCount)
+                    ),
+                    tpoName: validCodeData.tpos[0].tpoName,
+                  })}
+                </p>
+                <p className={styles.tempDonationTenant}>
+                  {t('donate:plantTreesAtURL', { url: config.tenantURL })}
+                </p>
               </div>
+            </div>
 
-              <Snackbar
-                open={textCopiedsnackbarOpen}
-                autoHideDuration={4000}
-                onClose={handleTextCopiedSnackbarClose}
-              >
+            <div className={styles.shareOptions}>
+              <ShareOptions
+                treeCount={getFormattedNumber(
+                  i18n.language,
+                  Number(validCodeData.treeCount)
+                )}
+                sendRef={sendRef}
+                handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
+                contactDetails={contactDetails}
+              />
+            </div>
+
+            <Snackbar
+              open={textCopiedsnackbarOpen}
+              autoHideDuration={4000}
+              onClose={handleTextCopiedSnackbarClose}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+              <div>
                 <Alert
                   onClose={handleTextCopiedSnackbarClose}
                   severity="success"
                 >
                   {t('donate:copiedToClipboard')}
                 </Alert>
-              </Snackbar>
-            </div>
-          </>
+              </div>
+            </Snackbar>
+          </div>
         ) : (
           <div className={styles.modal}>
             {codeValidated && validCodeData ? (
@@ -301,8 +307,8 @@ export default function RedeemModal({
                       console.log(event.target.value);
                       event.target.value.startsWith('pp.eco/c/')
                         ? setInputCode(
-                          event.target.value.replace('pp.eco/c/', '')
-                        )
+                            event.target.value.replace('pp.eco/c/', '')
+                          )
                         : setInputCode(event.target.value);
                     }}
                     value={inputCode}
