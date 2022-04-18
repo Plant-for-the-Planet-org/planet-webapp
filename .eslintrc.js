@@ -21,6 +21,7 @@ module.exports = {
   plugins: [
     'react',
     '@typescript-eslint',
+    '@emotion'
   ],
   rules: {
     'react/react-in-jsx-scope': 'off',
@@ -36,7 +37,11 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 'off',
     'no-empty-pattern': 'off',
     'react/display-name': 'off',
-    'react/no-find-dom-node': 'off'
+    'react/no-find-dom-node': 'off',
+    "@emotion/jsx-import": "error",
+    "@emotion/no-vanilla": "error",
+    "@emotion/import-from-emotion": "error",
+    "@emotion/styled-import": "error"
   },
   globals: {
     React: 'writable',
