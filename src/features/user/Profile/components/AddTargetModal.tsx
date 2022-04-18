@@ -1,8 +1,7 @@
 import React from 'react';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
+import Modal from 'mui-latest/Modal';
 import { useForm } from 'react-hook-form';
-import Fade from '@material-ui/core/Fade';
+import Fade from 'mui-latest/Fade';
 import styles from '../styles/RedeemModal.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import i18next from '../../../../../i18n';
@@ -63,7 +62,6 @@ export default function AddTargetModal({
       closeAfterTransition
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
-      BackdropComponent={Backdrop}
       BackdropProps={{
         timeout: 500,
       }}
