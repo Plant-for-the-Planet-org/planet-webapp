@@ -119,6 +119,7 @@
     "axios": "^0.21.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
+    "chromatic": "^6.5.4",
     "cross-env": "^7.0.2",
     "css-loader": "^6.7.1",
     "cypress": "^8.5.0",
