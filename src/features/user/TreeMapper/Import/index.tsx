@@ -8,7 +8,11 @@ import styles from './Import.module.scss';
 import i18next from '../../../../../i18n';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
-import { Step, StepLabel, Stepper as MuiStepper } from '@mui/material';
+import {
+  Step as MuiStep,
+  StepLabel,
+  Stepper as MuiStepper,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import SampleTrees from './components/SampleTrees';
 import ReviewSubmit from './components/ReviewSubmit';
@@ -22,7 +26,13 @@ const Stepper = styled(MuiStepper)({
     backgroundColor: 'transparent',
     padding: '20px 0 5px',
   },
-  '.Mui-active, .Mui-completed': {
+});
+
+const Step = styled(MuiStep)({
+  '& > span > span > .Mui-active': {
+    color: theme.primaryColor,
+  },
+  '& > span > span > .Mui-completed': {
     color: theme.primaryColor,
   },
 });
