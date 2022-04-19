@@ -33,6 +33,7 @@ function SearchBar({
           placeholder={t('donate:searchProjects')}
           onChange={(e) => setSearchValue(e.target.value)}
           value={searchValue}
+          variant="standard"
         />
       </div>
       <button
