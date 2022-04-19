@@ -1,4 +1,5 @@
 @import '../../../theme/theme';
+// @import './themeCopy';
 
 .contentContainer {
   display: flex;
@@ -13,6 +14,13 @@
   border-radius: 9px;
   box-shadow: rgb(170 170 170 / 20%) 0px 1px 4px;
   max-width: 640px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
 }
 
 .inputContainer {

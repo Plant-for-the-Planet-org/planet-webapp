@@ -4,5 +4,23 @@
 	"bulkCodesDescription2":  "You can use this feature to create codes for custom certificates, gift cards, donations on behalf of users and redeemable codes that you can associate with your products.",
 	"tabCreationMethod": "Creation Method",
 	"tabSelectProject": "Select Project",
-	"tabIssueCodes": "Issue Codes"
+	"tabIssueCodes": "Issue Codes",
+	"importMethodText": {
+		"title": "Import File",
+		"subtitle": "Use this method if one of the following criterias match your usecase:",
+		"details": [
+			"I want to provide the Recipient's name or Email for each code",
+			"I want Plant-for-the-Planet to automatically email the recipients once it has been generated (optional)",
+      "I want to issue codes with different units of trees"
+		]
+	},
+	"genericMethodText": {
+		"title": "Create Generic Codes",
+		"subtitle": "Use this method if the following criterias match your usecase:",
+		"details": [
+			"All codes will have the same value",
+      "I want to generate a number of code for arbitrary recipients",
+      "Names and Emails cannot be associated with the code"
+		]
+	}
 }
