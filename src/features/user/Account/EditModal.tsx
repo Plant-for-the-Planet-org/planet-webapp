@@ -7,7 +7,7 @@ import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import styles from './AccountHistory.module.scss';
 import { CircularProgress, Modal, Fade, InputAdornment } from '@mui/material';
 import { ThemeProvider } from '@material-ui/core';
-import { Autocomplete } from '@material-ui/lab';
+import { Autocomplete } from '@mui/material';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import materialTheme from '../../../theme/themeStyles';
@@ -177,7 +177,6 @@ export const EditModal = ({
                   disablePortal
                   id="combo-box-demo"
                   options={['monthly', 'yearly']}
-                  sx={{ width: 300 }}
                   defaultValue={record?.frequency}
                   onChange={(event: any, newValue: string) => {
                     if (newValue) {
@@ -185,7 +184,6 @@ export const EditModal = ({
                     }
                   }}
                   getOptionLabel={(option) => t(`${option.toLowerCase()}`)}
-                  renderOption={(option) => <>{t(`${option.toLowerCase()}`)}</>}
                   renderInput={(params) => (
                     <MaterialTextField
                       {...params}
