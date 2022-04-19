@@ -49,3 +49,4 @@ cypress.env.json
 /storybook-static
 build-storybook.log
 src/stories
+.vscode/settings.json
