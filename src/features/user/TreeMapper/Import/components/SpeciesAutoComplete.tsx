@@ -1,6 +1,4 @@
 /* eslint-disable no-use-before-define */
-import { makeStyles } from '@material-ui/core/styles';
-import { Autocomplete } from '@mui/material';
 import React from 'react';
 import { ThemeContext } from '../../../../../theme/themeContext';
 import themeProperties from '../../../../../theme/themeProperties';
@@ -8,6 +6,8 @@ import tenantConfig from '../../../../../../tenant.config';
 import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
 import { postRequest } from '../../../../../utils/apiRequests/api';
 import { Controller } from 'react-hook-form';
+import { Autocomplete } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
 const config = tenantConfig();
 

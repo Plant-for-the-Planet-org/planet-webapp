@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
-import { makeStyles } from '@material-ui/core/styles';
-import Autocomplete from '@mui/material/Autocomplete';
+import { Autocomplete } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
 import tenantConfig from '../../../../tenant.config';
 import MaterialTextField from './MaterialTextField';
