@@ -3,20 +3,19 @@ import { useRouter } from 'next/router';
 import styles from './CompleteSignup.module.scss';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
+import { Snackbar,Alert as MuiAlert, MenuItem } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from '../../../../i18n';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { selectUserType } from '../../../utils/selectUserType';
-import { makeStyles, MenuItem } from '@material-ui/core';
 import { getStoredConfig } from '../../../utils/storeConfig';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
-import GeocoderArcGIS from "geocoder-arcgis";
+import GeocoderArcGIS from 'geocoder-arcgis';
 import { postRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
@@ -539,12 +538,16 @@ export default function CompleteSignup() {
             <div className={styles.mainText}>
               <label htmlFor={'terms'} style={{ cursor: 'pointer' }}>
                 <Trans i18nKey="editProfile:termAndCondition">
-                  I agree to the <a
+                  I agree to the{' '}
+                  <a
                     className={styles.termsLink}
                     rel="noopener noreferrer"
                     href={`https://pp.eco/legal/${i18n.language}/terms`}
                     target={'_blank'}
-                  >Terms and Conditions</a> of the Plant-for-the-Planet platform.
+                  >
+                    Terms and Conditions
+                  </a>{' '}
+                  of the Plant-for-the-Planet platform.
                 </Trans>
               </label>
             </div>
@@ -585,14 +588,16 @@ export default function CompleteSignup() {
           autoHideDuration={2000}
           onClose={handleSnackbarClose}
         >
-          <MuiAlert
-            elevation={6}
-            variant="filled"
-            onClose={handleSnackbarClose}
-            severity={severity}
-          >
-            {snackbarMessage}
-          </MuiAlert>
+          <div>
+            <MuiAlert
+              elevation={6}
+              variant="filled"
+              onClose={handleSnackbarClose}
+              severity={severity}
+            >
+              {snackbarMessage}
+            </MuiAlert>
+          </div>
         </Snackbar>
       </div>
     ) : null;
