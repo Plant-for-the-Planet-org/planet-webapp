@@ -123,7 +123,7 @@ function UserLayout(props: any): ReactElement {
           path: '/profile/treemapper/import',
           hideItem: !(user?.type === 'tpo'),
         },
-      ]
+      ],
     },
     {
       key: 5,
@@ -137,7 +137,6 @@ function UserLayout(props: any): ReactElement {
       title: t('me:bulkCodes'),
       path: '/profile/bulk-codes',
       icon: <MapIcon />,
-      accessLevel: ['tpo'],
     },
     {
       key: 7,
@@ -178,7 +177,7 @@ function UserLayout(props: any): ReactElement {
   React.useEffect(() => {
     if (router) {
       for (const link of navLinks) {
-        //checks whether the path belongs to menu or Submenu 
+        //checks whether the path belongs to menu or Submenu
         if (router.router?.asPath === link.path) {
           setactiveLink(link.path);
         } else if (link.subMenu && link.subMenu.length > 0) {
@@ -196,7 +195,7 @@ function UserLayout(props: any): ReactElement {
 
   React.useEffect(() => {
     if (contextLoaded) {
-      //checks whether user is login 
+      //checks whether user is login
       if (!user) {
         router.push('/login');
       }
@@ -208,7 +207,7 @@ function UserLayout(props: any): ReactElement {
       <div
         key={'hamburgerIcon'}
         className={`${styles.hamburgerIcon}`}
-        onClick={() => setIsMenuOpen(true)} // for mobile verion to open menu 
+        onClick={() => setIsMenuOpen(true)} // for mobile verion to open menu
       >
         <MenuIcon />
       </div>
