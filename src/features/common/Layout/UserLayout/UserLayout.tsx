@@ -22,7 +22,8 @@ const { useTranslation } = i18next;
 
 function UserLayout(props: any): ReactElement {
   const { t, i18n } = useTranslation(['common', 'me']);
-  const { asPath } = useRouter();
+  // const { asPath } = useRouter();
+  const router = useRouter();
   const { user, logoutUser, contextLoaded } =
     React.useContext(UserPropsContext);
 
@@ -190,8 +191,12 @@ function UserLayout(props: any): ReactElement {
   React.useEffect(() => {
     if (contextLoaded) {
       //checks whether user is login
-      if (asPath) {
-        localStorage.setItem('redirectLink', asPath);
+      if (router.asPath) {
+        if (router.query.slug) {
+          router.push(`${router.pathname}`);
+        } else {
+          localStorage.setItem('redirectLink', router.asPath);
+        }
       }
       if (!user) {
         router.push('/login');
