@@ -1,4 +1,5 @@
 import React, { FormEvent, ReactElement } from 'react';
+import { styled } from 'mui-latest';
 
 import styles from '../BulkCodes.module.scss';
 
@@ -10,6 +11,30 @@ export interface SelectorOptionProps {
   isSelected?: boolean;
   handleMethodChange?: (method: string) => void;
 }
+
+const SelectorOptionContainer = styled('div')(({ theme }) => ({
+  border: `1px solid ${theme.palette.text.primary}`,
+  borderRadius: 9,
+  padding: 24,
+  '& input[type="radio"]': {
+    display: 'none',
+  },
+  '& .optionLabel': {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 10,
+  },
+  '& .optionDetails': {
+    margin: '0 24px',
+  },
+  '&.selected': {
+    borderColor: theme.palette.primary.main,
+  },
+  '& .optionTitle': {
+    fontSize: theme.typography.h2.fontSize,
+    color: theme.palette.text.secondary,
+  },
+}));
 
 const SelectorOption = ({
   method,
@@ -29,11 +54,9 @@ const SelectorOption = ({
     return details.map((detail, index) => <li key={index}>{detail}</li>);
   };
 
-  const optionClasses = `${styles.selectorOption} ${
-    isSelected ? `${styles.selected}` : null
-  }`;
+  const optionClasses = `SelectorOption ${isSelected ? `selected` : null}`;
   return (
-    <div className={optionClasses} onClick={handleClick}>
+    <SelectorOptionContainer className={optionClasses} onClick={handleClick}>
       <input
         type="radio"
         name="method"
@@ -41,12 +64,12 @@ const SelectorOption = ({
         id={method}
         checked={isSelected}
       />
-      <label htmlFor={method} className={styles.optionLabel}>
-        <h2 className={styles.optionTitle}>{title}</h2>
+      <label htmlFor={method} className="optionLabel">
+        <h2 className="optionTitle">{title}</h2>
         <p>{subtitle}</p>
-        <ul className={styles.optionDetails}>{renderDetailsList()}</ul>
+        <ul className="optionDetails">{renderDetailsList()}</ul>
       </label>
-    </div>
+    </SelectorOptionContainer>
   );
 };
 

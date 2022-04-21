@@ -1,5 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import i18next from '../../../../../i18n';
+import { styled } from 'mui-latest';
 
 import StyledButton from './StyledButton';
 import SelectorOption, { SelectorOptionProps } from './SelectorOption';
@@ -60,4 +61,14 @@ const BulkMethodSelector = (): ReactElement | null => {
   return null;
 };
 
-export default BulkMethodSelector;
+const styledBulkMethodSelector = styled(BulkMethodSelector)(({ theme }) => {
+  console.log(theme.palette.primary.main);
+  return {
+    '& .form': {
+      color: theme.palette.primary.main,
+      backgroundColor: 'orange',
+    },
+  };
+});
+
+export default styledBulkMethodSelector;

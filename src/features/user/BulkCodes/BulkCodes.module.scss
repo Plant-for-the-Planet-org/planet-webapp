@@ -7,14 +7,14 @@
   align-items: flex-start;
 }
 
-.formContainer {
-  background-color: $backgroundColor;
+/* .formContainer {
+  // background-color: $backgroundColor;
   flex: 1;
-  padding: 20px;
+  padding: 24px;
   border-radius: 9px;
   box-shadow: rgb(170 170 170 / 20%) 0px 1px 4px;
   max-width: 640px;
-}
+} */
 
 .form {
   display: flex;
@@ -29,33 +29,32 @@
   gap: 20px;
 }
 
-.selectorOption {
+/* .selectorOption {
   border: 1px solid $primaryFontColor;
   border-radius: 9px;
-  padding: 20px;
+  padding: 20px; */
 
-  &.selected {
+/* &.selected {
     border: 1px solid $primaryColor;
     // border: 1px solid #81ae3f;
-  }
+  } */
 
-  .optionTitle {
+/* .optionTitle {
     font-size: $fontLarge;
-    color: rgba(0, 0, 0, 0.6);
-  }
+    // color: rgba(0, 0, 0, 0.6);
+  } */
 
-  .optionDetails {
+/* .optionDetails {
     margin: 0 20px;
-  }
+  } */
 
-  .optionLabel {
-    color: rgba(0, 0, 0, 0.87);
+/* .optionLabel {
+    // color: rgba(0, 0, 0, 0.87);
     display: flex;
     flex-direction: column;
     gap: 13px;
-  }
+  } */
 
-  input[type='radio'] {
+/* input[type='radio'] {
     display: none;
-  }
-}
+  } */
