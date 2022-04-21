@@ -28,7 +28,7 @@ Unselected.args = {
 export const Selected = Template.bind({});
 Selected.args = {
   method: 'generic',
-  title: 'Create Generic Codes',
+  title: 'Import Codes',
   subtitle: 'Use this method if the following criterias match your usecase:',
   details: [
     'All codes will have the same value',
