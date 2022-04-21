@@ -277,7 +277,6 @@ function ProjectCertificates({
                     label={t('manageProjects:issueDate')}
                     name="issueDate"
                     renderInput={(props) => <MaterialTextField {...props} />}
-                    autoOk
                     clearable
                     disableFuture
                     inputRef={register({

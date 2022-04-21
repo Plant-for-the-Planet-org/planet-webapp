@@ -4,19 +4,21 @@ import { useForm, Controller } from 'react-hook-form';
 import i18next from '../../../../../i18n';
 import styles from './../StepForm.module.scss';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
-import DateFnsUtils from '@date-io/date-fns';
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { ThemeProvider } from '@material-ui/styles';
 import ProjectCertificates from './ProjectCertificates';
 import InfoIcon from '../../../../../public/assets/images/icons/manageProjects/Info';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import materialTheme from '../../../../theme/themeStyles';
 import { useRouter } from 'next/router';
-import { MenuItem, makeStyles, Grid } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { MenuItem, Grid, ThemeProvider } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+
+import MuiDatePicker from '@mui/lab/MobileDatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 const { useTranslation } = i18next;
 
@@ -396,8 +398,8 @@ export default function DetailedAnalysis({
                 style={{ position: 'relative' }}
               >
                 <ThemeProvider theme={materialTheme}>
-                  <MuiPickersUtilsProvider
-                    utils={DateFnsUtils}
+                  <LocalizationProvider
+                    dateAdapter={AdapterDateFns}
                     locale={
                       localeMapForDate[userLang]
                         ? localeMapForDate[userLang]
@@ -406,14 +408,14 @@ export default function DetailedAnalysis({
                   >
                     <Controller
                       render={(properties) => (
-                        <DatePicker
+                        <MuiDatePicker
                           views={['year']}
                           value={properties.value}
                           onChange={properties.onChange}
                           label={t('manageProjects:yearOfAbandonment')}
-                          inputVariant="outlined"
-                          variant="inline"
-                          TextFieldComponent={MaterialTextField}
+                          renderInput={(props) => (
+                            <MaterialTextField {...props} />
+                          )}
                           autoOk
                           disableFuture
                           minDate={new Date(new Date().setFullYear(1950))}
@@ -422,9 +424,9 @@ export default function DetailedAnalysis({
                       )}
                       name="yearAbandoned"
                       control={control}
-                      // defaultValue=""
+                      defaultValue={new Date()}
                     />
-                  </MuiPickersUtilsProvider>
+                  </LocalizationProvider>
                 </ThemeProvider>
                 <div
                   style={{
@@ -448,8 +450,8 @@ export default function DetailedAnalysis({
               <div style={{ width: '20px' }}></div>
               <div className={styles.formFieldHalf}>
                 <ThemeProvider theme={materialTheme}>
-                  <MuiPickersUtilsProvider
-                    utils={DateFnsUtils}
+                  <LocalizationProvider
+                    dateAdapter={AdapterDateFns}
                     locale={
                       localeMapForDate[userLang]
                         ? localeMapForDate[userLang]
@@ -458,24 +460,23 @@ export default function DetailedAnalysis({
                   >
                     <Controller
                       render={(properties) => (
-                        <DatePicker
+                        <MuiDatePicker
                           label={t('manageProjects:firstTreePlanted')}
                           value={properties.value}
                           onChange={properties.onChange}
-                          inputVariant="outlined"
-                          TextFieldComponent={MaterialTextField}
-                          autoOk
+                          renderInput={(props) => (
+                            <MaterialTextField {...props} />
+                          )}
                           disableFuture
                           minDate={new Date(new Date().setFullYear(1950))}
-                          format="d MMMM yyyy"
+                          inputFormat="d MMMM yyyy"
                           maxDate={new Date()}
                         />
                       )}
                       name="firstTreePlanted"
                       control={control}
-                      // defaultValue=""
                     />
-                  </MuiPickersUtilsProvider>
+                  </LocalizationProvider>
                 </ThemeProvider>
               </div>
             </div>
@@ -508,8 +509,8 @@ export default function DetailedAnalysis({
               <div style={{ width: '20px' }}></div>
               <div className={styles.formFieldHalf}>
                 <ThemeProvider theme={materialTheme}>
-                  <MuiPickersUtilsProvider
-                    utils={DateFnsUtils}
+                  <LocalizationProvider
+                    dateAdapter={AdapterDateFns}
                     locale={
                       localeMapForDate[userLang]
                         ? localeMapForDate[userLang]
@@ -518,7 +519,7 @@ export default function DetailedAnalysis({
                   >
                     <Controller
                       render={(properties) => (
-                        <DatePicker
+                        <MuiDatePicker
                           inputRef={register({
                             required: {
                               value: true,
@@ -530,9 +531,9 @@ export default function DetailedAnalysis({
                           label={t('manageProjects:protectionStartedIN')}
                           value={properties.value}
                           onChange={properties.onChange}
-                          inputVariant="outlined"
-                          TextFieldComponent={MaterialTextField}
-                          autoOk
+                          renderInput={(props) => (
+                            <MaterialTextField {...props} />
+                          )}
                           disableFuture
                           minDate={new Date(new Date().setFullYear(1950))}
                           views={['year']}
@@ -548,13 +549,13 @@ export default function DetailedAnalysis({
                       }}
                       // defaultValue=""
                     />
-                    {errors.startingProtectionYear && (
-                      <span className={styles.formErrors}>
-                        {errors.startingProtectionYear.message}
-                      </span>
-                    )}
-                  </MuiPickersUtilsProvider>
+                  </LocalizationProvider>
                 </ThemeProvider>
+                {errors.startingProtectionYear && (
+                  <span className={styles.formErrors}>
+                    {errors.startingProtectionYear.message}
+                  </span>
+                )}
               </div>
             </div>
           )}
@@ -608,8 +609,8 @@ export default function DetailedAnalysis({
             <div style={{ width: '20px' }}></div>
             <div className={styles.formFieldHalf}>
               <ThemeProvider theme={materialTheme}>
-                <MuiPickersUtilsProvider
-                  utils={DateFnsUtils}
+                <LocalizationProvider
+                  dateAdapter={AdapterDateFns}
                   locale={
                     localeMapForDate[userLang]
                       ? localeMapForDate[userLang]
@@ -618,7 +619,7 @@ export default function DetailedAnalysis({
                 >
                   <Controller
                     render={(properties) => (
-                      <DatePicker
+                      <MuiDatePicker
                         inputRef={register({
                           required: {
                             value: true,
@@ -630,9 +631,9 @@ export default function DetailedAnalysis({
                         label={t('manageProjects:acquisitionYear')}
                         value={properties.value}
                         onChange={properties.onChange}
-                        inputVariant="outlined"
-                        TextFieldComponent={MaterialTextField}
-                        autoOk
+                        renderInput={(props) => (
+                          <MaterialTextField {...props} />
+                        )}
                         disableFuture
                         minDate={new Date(new Date().setFullYear(1950))}
                         views={['year']}
@@ -653,7 +654,7 @@ export default function DetailedAnalysis({
                       {errors.startingProtectionYear.message}
                     </span>
                   )}
-                </MuiPickersUtilsProvider>
+                </LocalizationProvider>
               </ThemeProvider>
             </div>
           </div>
@@ -745,8 +746,8 @@ export default function DetailedAnalysis({
               <div style={{ width: '20px' }}></div>
               <div className={styles.formFieldHalf}>
                 <ThemeProvider theme={materialTheme}>
-                  <MuiPickersUtilsProvider
-                    utils={DateFnsUtils}
+                  <LocalizationProvider
+                    dateAdapter={AdapterDateFns}
                     locale={
                       localeMapForDate[userLang]
                         ? localeMapForDate[userLang]
@@ -755,15 +756,14 @@ export default function DetailedAnalysis({
                   >
                     <Controller
                       render={(properties) => (
-                        <DatePicker
+                        <MuiDatePicker
                           views={['year']}
                           value={properties.value}
                           onChange={properties.onChange}
                           label={t('manageProjects:yearOfDegradation')}
-                          inputVariant="outlined"
-                          variant="inline"
-                          TextFieldComponent={MaterialTextField}
-                          autoOk
+                          renderInput={(props) => (
+                            <MaterialTextField {...props} />
+                          )}
                           disableFuture
                           minDate={new Date(new Date().setFullYear(1950))}
                           maxDate={new Date()}
@@ -773,7 +773,7 @@ export default function DetailedAnalysis({
                       control={control}
                       defaultValue=""
                     />
-                  </MuiPickersUtilsProvider>
+                  </LocalizationProvider>
                 </ThemeProvider>
               </div>
             </div>
