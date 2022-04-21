@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Tab } from '@material-ui/core';
+import { Tabs, Tab, ThemeProvider } from '@mui/material';
 import BasicDetails from './components/BasicDetails';
 import styles from './StepForm.module.scss';
 import ProjectMedia from './components/ProjectMedia';
@@ -15,6 +15,7 @@ import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import i18next from '../../../../i18n';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import materialTheme from '../../../theme/themeStyles';
 
 const { useTranslation } = i18next;
 
@@ -337,67 +338,72 @@ export default function ManageProjects({ GUID, token, project }: any) {
   }
 
   return ready ? (
-    <div
-      className={styles.mainContainer}
-      style={{ display: 'flex', flexDirection: 'column' }}
-    >
-      <div className={'project-form-flow'}>
-        <div
-          style={{
-            display: 'flex',
-            flexBasis: '10%',
-          }}
-        >
+    <ThemeProvider theme={materialTheme}>
+      <div
+        className={styles.mainContainer}
+        style={{ display: 'flex', flexDirection: 'column' }}
+      >
+        <div className={'project-form-flow'}>
           <div
             style={{
               display: 'flex',
+              flexBasis: '10%',
             }}
           >
-            <Tabs
-              value={tabSelected}
-              onChange={handleChange}
-              orientation={'vertical'}
-              variant="scrollable"
-              className={'custom-tab'}
+            <div
+              style={{
+                display: 'flex',
+              }}
             >
-              <Tab
-                label={t('manageProjects:projectType')}
-                className={'tab-flow'}
-              ></Tab>
-              <Tab
-                label={t('manageProjects:basicDetails')}
-                className={'tab-flow'}
-              ></Tab>
-              <Tab
-                label={t('manageProjects:projectMedia')}
-                className={'tab-flow'}
-              ></Tab>
-              <Tab
-                label={t('manageProjects:detailedAnalysis')}
-                className={'tab-flow'}
-              />
-              <Tab
-                label={t('manageProjects:projectSites')}
-                className={'tab-flow'}
-              />
-              <Tab
-                label={t('manageProjects:projectSpending')}
-                className={'tab-flow'}
-              />
-              <Tab label={t('manageProjects:review')} className={'tab-flow'} />
-            </Tabs>
+              <Tabs
+                value={tabSelected}
+                onChange={handleChange}
+                orientation={'vertical'}
+                variant="scrollable"
+                className={'custom-tab'}
+              >
+                <Tab
+                  label={t('manageProjects:projectType')}
+                  className={'tab-flow'}
+                ></Tab>
+                <Tab
+                  label={t('manageProjects:basicDetails')}
+                  className={'tab-flow'}
+                ></Tab>
+                <Tab
+                  label={t('manageProjects:projectMedia')}
+                  className={'tab-flow'}
+                ></Tab>
+                <Tab
+                  label={t('manageProjects:detailedAnalysis')}
+                  className={'tab-flow'}
+                />
+                <Tab
+                  label={t('manageProjects:projectSites')}
+                  className={'tab-flow'}
+                />
+                <Tab
+                  label={t('manageProjects:projectSpending')}
+                  className={'tab-flow'}
+                />
+                <Tab
+                  label={t('manageProjects:review')}
+                  className={'tab-flow'}
+                />
+              </Tabs>
+            </div>
+          </div>
+          <div
+            style={{
+              marginTop: '40px',
+              width: '1000px',
+              display: 'flex',
+            }}
+          >
+            {getStepContent(tabSelected)}
           </div>
         </div>
-        <div
-          style={{
-            marginTop: '40px',
-            width: '1000px',
-            display: 'flex',
-          }}
-        >
-          {getStepContent(tabSelected)}
-        </div>
       </div>
-    </div>
+    </ThemeProvider>
   ) : null;
 }

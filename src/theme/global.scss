@@ -233,14 +233,11 @@ video {
   fill: $primaryFontColor;
 }
 
-.backTO{
-  width:234px;
-  height:54px;
+.backTO {
+  width: 234px;
+  height: 54px;
   border-radius: 80px;
 }
-
-
-
 
 .primaryButton,
 .secondaryButton {
@@ -522,7 +519,7 @@ input:-webkit-autofill {
   }
 }
 
-.add-project-container{
+.add-project-container {
   display: flex;
   align-items: flex-start;
 }
@@ -531,9 +528,9 @@ input:-webkit-autofill {
   justify-content: center;
   width: max-content;
 }
-.add-projects-button{
+.add-projects-button {
   background-color: $backgroundColor;
-  border: 1px solid #F3F3F3;
+  border: 1px solid #f3f3f3;
   border-radius: 7px;
   cursor: pointer;
   width: 300px;
@@ -543,25 +540,25 @@ input:-webkit-autofill {
   border-radius: 10px;
 }
 
-.add-project{
+.add-project {
   margin-top: 65px;
   margin-left: 90px;
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 140px; 
-  gap: 20px; 
+  top: 140px;
+  gap: 20px;
   justify-content: center;
   align-items: center;
-  @include mdTabletView{
+  @include mdTabletView {
     flex-direction: row;
   }
-  @include xsPhoneView{
+  @include xsPhoneView {
     width: 100%;
   }
 }
 
-.add-project-title{
+.add-project-title {
   font-size: $fontSixteen;
   margin-bottom: 80px;
   span {
@@ -569,8 +566,8 @@ input:-webkit-autofill {
   }
 }
 
-.MuiStepper-horizontal{
-  @include xsPhoneView{
+.MuiStepper-horizontal {
+  @include xsPhoneView {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
@@ -581,39 +578,36 @@ input:-webkit-autofill {
   text-transform: capitalize !important;
   text-align: left;
   align-items: flex-start;
+  width: 200px;
 }
 
-
-.tab-flow.Mui-selected	{
+.tab-flow.Mui-selected {
   span {
     color: $primaryColor !important;
   }
 }
 .custom-tab {
-  >.MuiTabs-scroller {
-    >.PrivateTabIndicator-root-1 {
+  > .MuiTabs-scroller {
+    > .PrivateTabIndicator-root-1 {
       width: 2px;
       height: 20px;
       top: 61px;
     }
 
-    >.MuiTabs-flexContainer {
-
-
-      >.MuiTab-root {
+    > .MuiTabs-flexContainer {
+      > .MuiTab-root {
         padding-top: 0%;
         min-height: 35px;
-
       }
 
-      >.MuiButtonBase-root {
+      > .MuiButtonBase-root {
         padding-bottom: 0%;
 
-        >.MuiTab-wrapper:active{
+        > .MuiTab-wrapper:active {
           color: $primaryColor;
           text-decoration: none;
         }
-        >.MuiTab-wrapper {
+        > .MuiTab-wrapper {
           align-items: flex-start;
           font-family: Raleway;
           font-weight: 600;
@@ -624,20 +618,14 @@ input:-webkit-autofill {
           left: 18px;
           top: 0px;
           color: #828282;
-          
-
         }
       }
     }
 
-    > .MuiTabs-indicator{
+    > .MuiTabs-indicator {
       left: 0 !important;
       background-color: $primaryColor !important;
       height: 10px;
     }
   }
 }
-
-
-
-
