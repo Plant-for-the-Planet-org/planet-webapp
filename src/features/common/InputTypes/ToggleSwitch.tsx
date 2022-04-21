@@ -13,7 +13,9 @@ export default function ToggleSwitch(props: any) {
       },
     },
     checked: {},
-    track: {},
+    track: {
+      backgroundColor: '#787878',
+    },
   })(Switch);
   return (
     <ToggleSwitch
