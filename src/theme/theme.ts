@@ -1,9 +1,8 @@
-import css from 'styled-jsx/css';
 import tenantConfig from '../../tenant.config';
 import theme from './themeProperties';
 const config = tenantConfig();
 
-const { light, dark, fontSizes, primaryColor,primaryDarkColor } = theme;
+const { light, dark, fontSizes, primaryColor, primaryDarkColor } = theme;
 
 const globalStyles = css.global`
   :root {
@@ -31,7 +30,7 @@ const globalStyles = css.global`
     --light: ${light.light};
     --dark: ${light.dark};
     --danger-color: ${light.dangerColor};
-    --safe-color:${light.safeColor};
+    --safe-color: ${light.safeColor};
     --undecade-fill: ${light.unDecadeFill};
     --mapbox-icon: ${light.mapboxIcon};
     --background-base: ${light.backgroundBase};
@@ -47,7 +46,7 @@ const globalStyles = css.global`
     --light: ${dark.light};
     --dark: ${dark.dark};
     --danger-color: ${dark.dangerColor};
-    --safe-color:${dark.safeColor};
+    --safe-color: ${dark.safeColor};
     --undecade-fill: ${dark.unDecadeFill};
     --mapbox-icon: ${dark.mapboxIcon};
     --background-base: ${dark.backgroundBase};
