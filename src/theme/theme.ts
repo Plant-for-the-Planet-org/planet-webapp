@@ -1,3 +1,4 @@
+import css from 'styled-jsx/css';
 import tenantConfig from '../../tenant.config';
 import theme from './themeProperties';
 const config = tenantConfig();
