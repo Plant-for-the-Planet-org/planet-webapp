@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
-import { makeStyles } from '@material-ui/core/styles';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import { Autocomplete } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
 import tenantConfig from '../../../../tenant.config';
 import MaterialTextField from './MaterialTextField';
@@ -136,13 +136,13 @@ export default function CountrySelect(props: {
       value={value}
       autoHighlight
       getOptionLabel={(option) => t(`country:${option.code.toLowerCase()}`)}
-      renderOption={(option) => (
-        <>
+      renderOption={(props, option) => (
+        <li {...props}>
           <span>{countryToFlag(option.code)}</span>
           {props.name === 'editProfile'
             ? t(`country:${option.code.toLowerCase()}`)
             : t(`country:${option.code.toLowerCase()}`) + ' ' + option.code}
-        </>
+        </li>
       )}
       onChange={(event: any, newValue: CountryType | null) => {
         if (newValue) {

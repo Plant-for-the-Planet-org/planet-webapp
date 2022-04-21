@@ -1,26 +1,43 @@
 import React, { ReactElement } from 'react';
-import { getAuthenticatedRequest, putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import {
+  getAuthenticatedRequest,
+  putAuthenticatedRequest,
+} from '../../../../utils/apiRequests/api';
 import PlantingLocation from './components/PlantingLocation';
 import styles from './Import.module.scss';
 import i18next from '../../../../../i18n';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
-import { Step, StepLabel, Stepper } from '@material-ui/core';
+import {
+  Step as MuiStep,
+  StepLabel,
+  Stepper as MuiStepper,
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 import SampleTrees from './components/SampleTrees';
 import ReviewSubmit from './components/ReviewSubmit';
 import dynamic from 'next/dynamic';
-import { makeStyles } from '@material-ui/core/styles';
+import theme from '../../../../theme/themeProperties';
 
 const { useTranslation } = i18next;
 
-const useStyles = makeStyles({
-  root: {
+const Stepper = styled(MuiStepper)({
+  '&': {
     backgroundColor: 'transparent',
-    padding: '20px 0 5px'
+    padding: '20px 0 5px',
   },
 });
 
-interface Props { }
+const Step = styled(MuiStep)({
+  '& > span > span > .Mui-active': {
+    color: theme.primaryColor,
+  },
+  '& > span > span > .Mui-completed': {
+    color: theme.primaryColor,
+  },
+});
+
+interface Props {}
 
 const Map = dynamic(() => import('./components/Map'), {
   loading: () => <p>loading</p>,
@@ -31,24 +48,25 @@ const MapComponent = dynamic(() => import('./components/MapComponent'), {
   loading: () => <p></p>,
 });
 
-export default function ImportData({ }: Props): ReactElement {
+export default function ImportData({}: Props): ReactElement {
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['treemapper']);
   const { token } = React.useContext(UserPropsContext);
 
   // loc_ACxv7uldM1VdKd5cikv3qoF5
   const fetchPlantLocation = async (id: any): Promise<void> => {
-    const result = await getAuthenticatedRequest(`/treemapper/plantLocations/${id}?_scope=extended`, token);
+    const result = await getAuthenticatedRequest(
+      `/treemapper/plantLocations/${id}?_scope=extended`,
+      token
+    );
     setPlantLocation(result);
-  }
+  };
 
   React.useEffect(() => {
     if (router && router.query.loc) {
       fetchPlantLocation(router.query.loc);
     }
   }, [router]);
-
-  const classes = useStyles();
 
   function getSteps() {
     return [
@@ -61,7 +79,8 @@ export default function ImportData({ }: Props): ReactElement {
   const [errorMessage, setErrorMessage] = React.useState('');
   const steps = getSteps();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [plantLocation, setPlantLocation] = React.useState<Treemapper.PlantLocation | null>(null);
+  const [plantLocation, setPlantLocation] =
+    React.useState<Treemapper.PlantLocation | null>(null);
   const [userLang, setUserLang] = React.useState('en');
   const [geoJson, setGeoJson] = React.useState(null);
   const [geoJsonError, setGeoJsonError] = React.useState(false);
@@ -146,21 +165,16 @@ export default function ImportData({ }: Props): ReactElement {
       <div className={styles.pageContainer}>
         <div className={styles.listContainer}>
           <div className={styles.pageTitle}>{t('treemapper:importData')}</div>
-          <p>
-            {t('treemapper:importExplanation')}
-          </p>
+          <p>{t('treemapper:importExplanation')}</p>
           <div className={styles.stepperContainer}>
             <Stepper
               activeStep={activeStep}
               orientation="horizontal"
               alternativeLabel
-              className={classes.root}
             >
               {steps.map((label, index) => (
                 <Step key={index}>
-                  <StepLabel>
-                    {label}
-                  </StepLabel>
+                  <StepLabel>{label}</StepLabel>
                 </Step>
               ))}
             </Stepper>
@@ -170,7 +184,11 @@ export default function ImportData({ }: Props): ReactElement {
           </div>
         </div>
         <div className={styles.mapContainer}>
-          <MapComponent geoJson={geoJson} setGeoJson={setGeoJson} setActiveMethod={setActiveMethod} />
+          <MapComponent
+            geoJson={geoJson}
+            setGeoJson={setGeoJson}
+            setActiveMethod={setActiveMethod}
+          />
         </div>
       </div>
     </div>

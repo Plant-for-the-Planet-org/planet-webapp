@@ -1,4 +1,4 @@
-import CssBaseline from '@material-ui/core/CssBaseline';
+import CssBaseline from '@mui/material/CssBaseline';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
 import React from 'react';
@@ -29,9 +29,12 @@ import PlayButton from '../src/features/common/LandingVideo/PlayButton';
 import ErrorHandlingProvider from '../src/features/common/Layout/ErrorHandlingContext';
 import dynamic from 'next/dynamic';
 
-const VideoContainer = dynamic(() => import('../src/features/common/LandingVideo'), {
-  ssr: false,
-});
+const VideoContainer = dynamic(
+  () => import('../src/features/common/LandingVideo'),
+  {
+    ssr: false,
+  }
+);
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
@@ -166,7 +169,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   }, []);
 
   React.useEffect(() => {
-    setshowVideo(localShowVideo)
+    setshowVideo(localShowVideo);
   }, [localShowVideo]);
 
   const { project, projects } = React.useContext(ProjectPropsContext);
@@ -180,7 +183,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
           <div
             style={
               showVideo &&
-                (config.tenantName === 'planet' || config.tenantName === 'ttc')
+              (config.tenantName === 'planet' || config.tenantName === 'ttc')
                 ? {}
                 : { display: 'none' }
             }
@@ -195,7 +198,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
           <div
             style={
               showVideo &&
-                (config.tenantName === 'planet' || config.tenantName === 'ttc')
+              (config.tenantName === 'planet' || config.tenantName === 'ttc')
                 ? { display: 'none' }
                 : {}
             }
@@ -224,7 +227,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
                           <div
                             style={
                               config.tenantName === 'planet' ||
-                                config.tenantName === 'ttc'
+                              config.tenantName === 'ttc'
                                 ? {}
                                 : { display: 'none' }
                             }

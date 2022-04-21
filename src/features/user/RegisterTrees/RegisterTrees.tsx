@@ -1,8 +1,5 @@
-import DateFnsUtils from '@date-io/date-fns';
-import { MenuItem } from '@material-ui/core';
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { MuiPickersOverrides } from '@material-ui/pickers/typings/overrides';
-import { ThemeProvider } from '@material-ui/styles';
+import { MenuItem, ThemeProvider } from '@mui/material';
+
 import * as d3 from 'd3-ease';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
@@ -29,22 +26,19 @@ import SingleContribution from './RegisterTrees/SingleContribution';
 import materialTheme from '../../../theme/themeStyles';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
-type overridesNameToClassKey = {
-  [P in keyof MuiPickersOverrides]: keyof MuiPickersOverrides[P];
-};
-declare module '@material-ui/core/styles/overrides' {
-  export type ComponentNameToClassKey = overridesNameToClassKey;
-}
+import MuiDatePicker from '@mui/lab/MobileDatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   ssr: false,
   loading: () => <p></p>,
 });
 
-interface Props { }
+interface Props {}
 
 const { useTranslation } = i18next;
-export default function RegisterTrees({ }: Props) {
+export default function RegisterTrees({}: Props) {
   const router = useRouter();
   const { user, token, contextLoaded } = React.useContext(UserPropsContext);
   const { t, ready } = useTranslation(['me', 'common']);
@@ -129,15 +123,8 @@ export default function RegisterTrees({ }: Props) {
     plantDate: new Date(),
     geometry: {},
   };
-  const {
-    register,
-    handleSubmit,
-    errors,
-    control,
-    reset,
-    setValue,
-    watch,
-  } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
+  const { register, handleSubmit, errors, control, reset, setValue, watch } =
+    useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
 
   const treeCount = watch('treeCount');
 
@@ -163,28 +150,31 @@ export default function RegisterTrees({ }: Props) {
           plantDate: new Date(data.plantDate),
           geometry: geometry,
         };
-        postAuthenticatedRequest(`/app/contributions`, submitData, token, handleError).then(
-          (res) => {
-            if (!res.code) {
-              setErrorMessage('');
-              setContributionGUID(res.id);
-              setContributionDetails(res);
+        postAuthenticatedRequest(
+          `/app/contributions`,
+          submitData,
+          token,
+          handleError
+        ).then((res) => {
+          if (!res.code) {
+            setErrorMessage('');
+            setContributionGUID(res.id);
+            setContributionDetails(res);
+            setIsUploadingData(false);
+            setRegistered(true);
+            // router.push('/c/[id]', `/c/${res.id}`);
+          } else {
+            if (res.code === 404) {
               setIsUploadingData(false);
-              setRegistered(true);
-              // router.push('/c/[id]', `/c/${res.id}`);
+              setErrorMessage(res.message);
+              setRegistered(false);
             } else {
-              if (res.code === 404) {
-                setIsUploadingData(false);
-                setErrorMessage(res.message);
-                setRegistered(false);
-              } else {
-                setIsUploadingData(false);
-                setErrorMessage(res.message);
-                setRegistered(false);
-              }
+              setIsUploadingData(false);
+              setErrorMessage(res.message);
+              setRegistered(false);
             }
           }
-        );
+        });
 
         // handleNext();
       } else {
@@ -196,13 +186,15 @@ export default function RegisterTrees({ }: Props) {
   };
 
   async function loadProjects() {
-    await getAuthenticatedRequest('/app/profile/projects', token, {},
+    await getAuthenticatedRequest(
+      '/app/profile/projects',
+      token,
+      {},
       handleError,
-      '/profile').then(
-        (projects: any) => {
-          setProjects(projects);
-        }
-      );
+      '/profile'
+    ).then((projects: any) => {
+      setProjects(projects);
+    });
   }
 
   React.useEffect(() => {
@@ -228,7 +220,6 @@ export default function RegisterTrees({ }: Props) {
       <h2 className={'profilePageTitle'}>{t('me:registerTrees')}</h2>
       <div className={styles.registerTreesPage}>
         {!registered ? (
-
           <form onSubmit={handleSubmit(submitRegisterTrees)}>
             <div className={styles.note}>
               <p>{t('me:registerTreesDescription')}</p>
@@ -261,8 +252,8 @@ export default function RegisterTrees({ }: Props) {
               </div>
               <div className={styles.formFieldHalf}>
                 <ThemeProvider theme={materialTheme}>
-                  <MuiPickersUtilsProvider
-                    utils={DateFnsUtils}
+                  <LocalizationProvider
+                    dateAdapter={AdapterDateFns}
                     locale={
                       localeMapForDate[userLang]
                         ? localeMapForDate[userLang]
@@ -271,24 +262,24 @@ export default function RegisterTrees({ }: Props) {
                   >
                     <Controller
                       render={(properties) => (
-                        <DatePicker
+                        <MuiDatePicker
                           label={t('me:datePlanted')}
                           value={properties.value}
                           onChange={properties.onChange}
-                          inputVariant="outlined"
-                          TextFieldComponent={MaterialTextField}
-                          autoOk
+                          renderInput={(props) => (
+                            <MaterialTextField {...props} />
+                          )}
                           disableFuture
                           minDate={new Date(new Date().setFullYear(1950))}
-                          format="MMMM d, yyyy"
+                          inputFormat="MMMM d, yyyy"
                           maxDate={new Date()}
                         />
                       )}
                       name="plantDate"
                       control={control}
-                      defaultValue=""
+                      defaultValue={new Date()}
                     />
-                  </MuiPickersUtilsProvider>
+                  </LocalizationProvider>
                 </ThemeProvider>
               </div>
             </div>
@@ -420,7 +411,6 @@ export default function RegisterTrees({ }: Props) {
               </button>
             </div>
           </form>
-
         ) : (
           <SingleContribution {...ContributionProps} />
         )}

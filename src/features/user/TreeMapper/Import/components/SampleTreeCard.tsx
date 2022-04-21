@@ -3,13 +3,14 @@ import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
 import i18next from '../../../../../../i18n';
 import styles from '../Import.module.scss';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { Controller } from 'react-hook-form';
-import DateFnsUtils from '@date-io/date-fns';
-import { ThemeProvider } from '@material-ui/styles';
 import materialTheme from '../../../../../theme/themeStyles';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
-import { InputAdornment, MenuItem } from '@material-ui/core';
+import { InputAdornment, MenuItem, ThemeProvider } from '@mui/material';
+
+import MuiDatePicker from '@mui/lab/MobileDatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 const { useTranslation } = i18next;
 
@@ -48,10 +49,11 @@ export default function SampleTreeCard({
       <div className={styles.sampleTreeName}>
         <div>
           {t('sampleTree', { number: index + 1 })}
-          {`${sampleTrees[index]?.treeTag
-            ? ` • ${t('tag')} ${sampleTrees[index]?.treeTag}`
-            : ''
-            }`}
+          {`${
+            sampleTrees[index]?.treeTag
+              ? ` • ${t('tag')} ${sampleTrees[index]?.treeTag}`
+              : ''
+          }`}
         </div>
         <div
           onClick={() => remove(index)}
@@ -63,21 +65,23 @@ export default function SampleTreeCard({
         </div>
       </div>
       <div className={styles.sampleTreeSummary}>
-        {`${sampleTrees[index]?.height
-          ? ` • ${t('height')} ${sampleTrees[index]?.height}`
-          : ''
-          }`}{' '}
-        {`${sampleTrees[index]?.diameter
-          ? ` • ${t('diameter')} ${sampleTrees[index]?.diameter}`
-          : ''
-          }`}
+        {`${
+          sampleTrees[index]?.height
+            ? ` • ${t('height')} ${sampleTrees[index]?.height}`
+            : ''
+        }`}{' '}
+        {`${
+          sampleTrees[index]?.diameter
+            ? ` • ${t('diameter')} ${sampleTrees[index]?.diameter}`
+            : ''
+        }`}
       </div>
       <div className={styles.sampleTreeDetails}>
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
             <ThemeProvider theme={materialTheme}>
-              <MuiPickersUtilsProvider
-                utils={DateFnsUtils}
+              <LocalizationProvider
+                dateAdapter={AdapterDateFns}
                 locale={
                   localeMapForDate[userLang]
                     ? localeMapForDate[userLang]
@@ -87,21 +91,19 @@ export default function SampleTreeCard({
                 <Controller
                   defaultValue={item.plantingDate}
                   render={(properties: any) => (
-                    <DatePicker
+                    <MuiDatePicker
                       label={t('plantingDate')}
                       value={properties.value}
                       onChange={properties.onChange}
-                      inputVariant="outlined"
-                      TextFieldComponent={MaterialTextField}
-                      autoOk
+                      renderInput={(props) => <MaterialTextField {...props} />}
                       disableFuture
-                      format="MMMM d, yyyy"
+                      inputFormat="MMMM d, yyyy"
                     />
                   )}
                   name={`sampleTrees[${index}].plantingDate`}
                   control={control}
                 />
-              </MuiPickersUtilsProvider>
+              </LocalizationProvider>
             </ThemeProvider>
           </div>
           <div className={styles.formFieldHalf}>
@@ -113,26 +115,25 @@ export default function SampleTreeCard({
               defaultValue={item.treeTag}
             />
           </div>
-
         </div>
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
-              inputRef={register(
-                {
-                  pattern: {
-                    value: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/,
-                    message: t('invalidHeight')
-                  }
-                }
-              )}
+              inputRef={register({
+                pattern: {
+                  value: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/,
+                  message: t('invalidHeight'),
+                },
+              })}
               type="text"
               label={t('height')}
               variant="outlined"
               name={`sampleTrees[${index}].height`}
               defaultValue={item.height}
               InputProps={{
-                endAdornment: <InputAdornment position="end">{t('m')}</InputAdornment>,
+                endAdornment: (
+                  <InputAdornment position="end">{t('m')}</InputAdornment>
+                ),
               }}
             />
             {errors?.sampleTrees?.[index]?.height && (
@@ -143,21 +144,21 @@ export default function SampleTreeCard({
           </div>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
-              inputRef={register(
-                {
-                  pattern: {
-                    value: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/,
-                    message: t('invalidDiameter')
-                  }
-                }
-              )}
+              inputRef={register({
+                pattern: {
+                  value: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/,
+                  message: t('invalidDiameter'),
+                },
+              })}
               type="text"
               label={t('diameter')}
               variant="outlined"
               name={`sampleTrees[${index}].diameter`}
               defaultValue={item.diameter}
               InputProps={{
-                endAdornment: <InputAdornment position="end">{t('cm')}</InputAdornment>,
+                endAdornment: (
+                  <InputAdornment position="end">{t('cm')}</InputAdornment>
+                ),
               }}
             />
             {errors?.sampleTrees?.[index]?.diameter && (
@@ -171,14 +172,12 @@ export default function SampleTreeCard({
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
-              inputRef={register(
-                {
-                  pattern: {
-                    value: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/,
-                    message: t('invalidLatitude')
-                  }
-                }
-              )}
+              inputRef={register({
+                pattern: {
+                  value: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/,
+                  message: t('invalidLatitude'),
+                },
+              })}
               type="text"
               label={t('latitude')}
               variant="outlined"
@@ -193,14 +192,12 @@ export default function SampleTreeCard({
           </div>
           <div className={styles.formFieldHalf}>
             <MaterialTextField
-              inputRef={register(
-                {
-                  pattern: {
-                    value: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/,
-                    message: t('invalidLongitude')
-                  }
-                }
-              )}
+              inputRef={register({
+                pattern: {
+                  value: /^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/,
+                  message: t('invalidLongitude'),
+                },
+              })}
               type="text"
               label={t('longitude')}
               variant="outlined"
@@ -245,30 +242,37 @@ export default function SampleTreeCard({
                 select
                 inputRef={register}
               >
-                {plantLocation.plantedSpecies.map((species: Treemapper.PlantedSpecies, index: number) => {
-                  if (plantLocation.plantedSpecies.length === 1) {
-                    return (
-                      <MenuItem
-                        key={index} value={species.otherSpecies} selected={true}>
-                        {species.otherSpecies}
-                      </MenuItem>
-                    )
-                  } else if (species.otherSpecies === item.otherSpecies) {
-                    return (
-                      <MenuItem
-                        key={index} value={species.otherSpecies} selected={true}>
-                        {species.otherSpecies}
-                      </MenuItem>
-                    )
-                  } else {
-                    return (
-                      <MenuItem
-                        key={index} value={species.otherSpecies}>
-                        {species.otherSpecies}
-                      </MenuItem>
-                    )
+                {plantLocation.plantedSpecies.map(
+                  (species: Treemapper.PlantedSpecies, index: number) => {
+                    if (plantLocation.plantedSpecies.length === 1) {
+                      return (
+                        <MenuItem
+                          key={index}
+                          value={species.otherSpecies}
+                          selected={true}
+                        >
+                          {species.otherSpecies}
+                        </MenuItem>
+                      );
+                    } else if (species.otherSpecies === item.otherSpecies) {
+                      return (
+                        <MenuItem
+                          key={index}
+                          value={species.otherSpecies}
+                          selected={true}
+                        >
+                          {species.otherSpecies}
+                        </MenuItem>
+                      );
+                    } else {
+                      return (
+                        <MenuItem key={index} value={species.otherSpecies}>
+                          {species.otherSpecies}
+                        </MenuItem>
+                      );
+                    }
                   }
-                })}
+                )}
               </MaterialTextField>
             }
             name={`sampleTrees[${index}].otherSpecies`}

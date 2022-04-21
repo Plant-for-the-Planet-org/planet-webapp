@@ -6,22 +6,23 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import styles from './AccountHistory.module.scss';
 import {
-  Backdrop,
   CircularProgress,
+  Modal,
   Fade,
   InputAdornment,
+  Autocomplete,
   ThemeProvider,
-} from '@material-ui/core';
-import Modal from '@material-ui/core/Modal';
-import { Autocomplete } from '@material-ui/lab';
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
+} from '@mui/material';
 import materialTheme from '../../../theme/themeStyles';
 import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import { ThemeContext } from '../../../theme/themeContext';
 import getCurrencySymbolByCode from '../../../utils/countryCurrency/getCurrencySymbolByCode';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+
+import MuiDatePicker from '@mui/lab/MobileDatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 // interface EditDonationProps {
 //   editModalOpen
@@ -69,7 +70,7 @@ export const EditModal = ({
     };
     if (
       new Date(data.currentPeriodEnd).toDateString() ==
-      new Date(record.currentPeriodEnd).toDateString() ||
+        new Date(record.currentPeriodEnd).toDateString() ||
       bodyToSend.nextBilling === null
     ) {
       delete bodyToSend.nextBilling;
@@ -109,7 +110,6 @@ export const EditModal = ({
       closeAfterTransition
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
-      BackdropComponent={Backdrop}
       BackdropProps={{
         timeout: 500,
       }}
@@ -184,7 +184,6 @@ export const EditModal = ({
                   disablePortal
                   id="combo-box-demo"
                   options={['monthly', 'yearly']}
-                  sx={{ width: 300 }}
                   defaultValue={record?.frequency}
                   onChange={(event: any, newValue: string) => {
                     if (newValue) {
@@ -192,7 +191,6 @@ export const EditModal = ({
                     }
                   }}
                   getOptionLabel={(option) => t(`${option.toLowerCase()}`)}
-                  renderOption={(option) => <>{t(`${option.toLowerCase()}`)}</>}
                   renderInput={(params) => (
                     <MaterialTextField
                       {...params}
@@ -215,8 +213,8 @@ export const EditModal = ({
               <div className={styles.formRow}>
                 <div className={styles.formRowInput}>
                   <ThemeProvider theme={materialTheme}>
-                    <MuiPickersUtilsProvider
-                      utils={DateFnsUtils}
+                    <LocalizationProvider
+                      dateAdapter={AdapterDateFns}
                       locale={
                         localeMapForDate[userLang]
                           ? localeMapForDate[userLang]
@@ -225,21 +223,23 @@ export const EditModal = ({
                     >
                       <Controller
                         render={(properties) => (
-                          <DatePicker
+                          <MuiDatePicker
                             label={t('me:date')}
                             value={properties.value}
                             onChange={properties.onChange}
-                            inputVariant="outlined"
-                            TextFieldComponent={MaterialTextField}
-                            autoOk
-                            format="MMMM d, yyyy"
+                            renderInput={(props) => (
+                              <MaterialTextField {...props} />
+                            )}
+                            inputFormat="MMMM d, yyyy"
                             minDate={
                               new Date(
                                 new Date(record?.currentPeriodEnd).valueOf()
                               )
                             }
                             maxDate={
-                              record?.endsAt ? record.endsAt : '2100-01-01'
+                              record?.endsAt
+                                ? record.endsAt
+                                : new Date('2100-01-01')
                             }
                           />
                         )}
@@ -249,7 +249,7 @@ export const EditModal = ({
                           new Date(new Date(record?.currentPeriodEnd).valueOf())
                         }
                       />
-                    </MuiPickersUtilsProvider>
+                    </LocalizationProvider>
                   </ThemeProvider>
                   {errors.currentPeriodEnd && (
                     <span className={styles.formErrors}>

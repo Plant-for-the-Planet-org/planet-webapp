@@ -1,23 +1,27 @@
 import React from 'react';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
-import FormControl from '@material-ui/core/FormControl';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
 import { useTranslation } from 'react-i18next';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import GreenRadio from '../../common/InputTypes/GreenRadio';
-import { ThemeProvider } from '@material-ui/styles';
-import { Calendar, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
 import materialTheme from '../../../theme/themeStyles';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { CircularProgress } from '@material-ui/core';
+import {
+  CircularProgress,
+  Modal,
+  Fade,
+  FormControl,
+  RadioGroup,
+  FormControlLabel,
+  ThemeProvider,
+} from '@mui/material';
+
+import MuiCalenderPicker from '@mui/lab/CalendarPicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+
 export const CancelModal = ({
   cancelModalOpen,
   handleCancelModalClose,
@@ -73,7 +77,6 @@ export const CancelModal = ({
       closeAfterTransition
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
-      BackdropComponent={Backdrop}
       BackdropProps={{
         timeout: 500,
       }}
@@ -109,7 +112,7 @@ export const CancelModal = ({
             </div>
           </div>
           {record?.method !== 'paypal' ? (
-            <FormControl component="fieldset">
+            <FormControl variant="standard" component="fieldset">
               <RadioGroup
                 aria-label="date"
                 name="date"
@@ -147,15 +150,8 @@ export const CancelModal = ({
               {showCalender ? (
                 <>
                   <ThemeProvider theme={materialTheme}>
-                    <MuiPickersUtilsProvider
-                      utils={DateFnsUtils}
-                      // locale={
-                      //   localeMapForDate[userLang]
-                      //     ? localeMapForDate[userLang]
-                      //     : localeMapForDate['en']
-                      // }
-                    >
-                      <Calendar
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <MuiCalenderPicker
                         date={date}
                         onChange={(value) => {
                           setdate(value);
@@ -163,9 +159,8 @@ export const CancelModal = ({
                         minDate={
                           new Date(new Date().valueOf() + 1000 * 3600 * 24)
                         }
-                        color={'#68B030'}
                       />
-                    </MuiPickersUtilsProvider>
+                    </LocalizationProvider>
                   </ThemeProvider>
                 </>
               ) : (

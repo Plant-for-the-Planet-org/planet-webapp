@@ -3,16 +3,13 @@ import { Controller, useForm, useFieldArray } from 'react-hook-form';
 import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
 import styles from '../Import.module.scss';
 import i18next from '../../../../../../i18n';
-import DateFnsUtils from '@date-io/date-fns';
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { ThemeProvider } from '@material-ui/styles';
 import materialTheme from '../../../../../theme/themeStyles';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
 import { useDropzone } from 'react-dropzone';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
 import JSONInput from 'react-json-editor-ajrm';
 import locale from 'react-json-editor-ajrm/locale/en';
-import { MenuItem } from '@material-ui/core';
+import { MenuItem, ThemeProvider } from '@mui/material';
 import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
 import {
   getAuthenticatedRequest,
@@ -21,6 +18,10 @@ import {
 import tj from '@mapbox/togeojson';
 import gjv from 'geojson-validation';
 import flatten from 'geojson-flatten';
+
+import MuiDatePicker from '@mui/lab/MobileDatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 const { useTranslation } = i18next;
 
@@ -70,7 +71,10 @@ export default function PlantingLocation({
     ],
   };
   const { register, handleSubmit, errors, control, reset, setValue, watch } =
-    useForm({ mode: 'onBlur', defaultValues: plantLocation ? plantLocation : defaultValues });
+    useForm({
+      mode: 'onBlur',
+      defaultValues: plantLocation ? plantLocation : defaultValues,
+    });
 
   const { fields, append, remove, prepend } = useFieldArray({
     control,
@@ -83,7 +87,7 @@ export default function PlantingLocation({
         setProjects(projects);
       }
     );
-  }
+  };
 
   const loadMySpecies = async () => {
     await getAuthenticatedRequest('/treemapper/species', token).then(
@@ -91,7 +95,7 @@ export default function PlantingLocation({
         setMySpecies(species);
       }
     );
-  }
+  };
 
   React.useEffect(() => {
     if (contextLoaded) {
@@ -110,7 +114,7 @@ export default function PlantingLocation({
       } else {
         setGeoJsonError(true);
       }
-    } else if (geoJson?.type && geoJson.type === "Polygon") {
+    } else if (geoJson?.type && geoJson.type === 'Polygon') {
       setGeoJsonError(false);
       setGeoJson(geoJson);
       setActiveMethod('editor');
@@ -171,7 +175,7 @@ export default function PlantingLocation({
     accept: ['.geojson', '.kml'],
     multiple: false,
     onDrop: onDrop,
-    onDropAccepted: () => { },
+    onDropAccepted: () => {},
     onFileDialogCancel: () => setIsUploadingData(false),
   });
 
@@ -188,26 +192,28 @@ export default function PlantingLocation({
         plantProject: data.plantProject,
       };
 
-      postAuthenticatedRequest(`/treemapper/plantLocations`, submitData, token).then(
-        (res: any) => {
-          if (!res.code) {
-            setErrorMessage('');
-            setPlantLocation(res);
+      postAuthenticatedRequest(
+        `/treemapper/plantLocations`,
+        submitData,
+        token
+      ).then((res: any) => {
+        if (!res.code) {
+          setErrorMessage('');
+          setPlantLocation(res);
+          setIsUploadingData(false);
+          handleNext();
+        } else {
+          if (res.code === 404) {
             setIsUploadingData(false);
-            handleNext();
+            setErrorMessage(res.message);
+          } else if (res.code === 400) {
+            setIsUploadingData(false);
           } else {
-            if (res.code === 404) {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-            } else if (res.code === 400) {
-              setIsUploadingData(false);
-            } else {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-            }
+            setIsUploadingData(false);
+            setErrorMessage(res.message);
           }
         }
-      );
+      });
     } else {
       setGeoJsonError(true);
     }
@@ -223,10 +229,7 @@ export default function PlantingLocation({
               className={styles.fileUploadContainer}
               {...getRootProps()}
             >
-              <button
-                className="primaryButton"
-                style={{ maxWidth: '200px' }}
-              >
+              <button className="primaryButton" style={{ maxWidth: '200px' }}>
                 <input {...getInputProps()} />
                 {isUploadingData ? (
                   <div className={styles.spinner}></div>
@@ -234,7 +237,9 @@ export default function PlantingLocation({
                   t('treemapper:uploadFile')
                 )}
               </button>
-              <p style={{ marginTop: '18px' }}>{t('treemapper:fileFormatKML')}</p>
+              <p style={{ marginTop: '18px' }}>
+                {t('treemapper:fileFormatKML')}
+              </p>
             </label>
           </>
         );
@@ -265,8 +270,8 @@ export default function PlantingLocation({
       <div className={styles.formField}>
         <div className={styles.formFieldLarge}>
           <ThemeProvider theme={materialTheme}>
-            <MuiPickersUtilsProvider
-              utils={DateFnsUtils}
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
               locale={
                 localeMapForDate[userLang]
                   ? localeMapForDate[userLang]
@@ -275,28 +280,26 @@ export default function PlantingLocation({
             >
               <Controller
                 render={(properties) => (
-                  <DatePicker
+                  <MuiDatePicker
                     label={t('me:datePlanted')}
                     value={properties.value}
                     onChange={properties.onChange}
-                    inputVariant="outlined"
-                    TextFieldComponent={MaterialTextField}
-                    autoOk
+                    renderInput={(props) => <MaterialTextField {...props} />}
                     disableFuture
-                    format="MMMM d, yyyy"
+                    inputFormat="MMMM d, yyyy"
                   />
                 )}
                 inputRef={register({
                   required: {
                     value: true,
-                    message: t('me:datePlantedRequired')
-                  }
+                    message: t('me:datePlantedRequired'),
+                  },
                 })}
                 name="plantDate"
                 control={control}
-                defaultValue=""
+                defaultValue={new Date()}
               />
-            </MuiPickersUtilsProvider>
+            </LocalizationProvider>
           </ThemeProvider>
           {errors.plantDate && (
             <span className={styles.errorMessage}>
@@ -305,6 +308,7 @@ export default function PlantingLocation({
           )}
         </div>
       </div>
+
       {user && user.type === 'tpo' && (
         <div className={styles.formFieldLarge}>
           <Controller
@@ -340,10 +344,12 @@ export default function PlantingLocation({
       <div className={styles.formFieldLarge}>
         <div className={styles.importTabs}>
           {importMethods.map((method, index) => (
-            <div key={index}
+            <div
+              key={index}
               onClick={() => setActiveMethod(method)}
-              className={`${styles.importTab} ${activeMethod === method ? styles.active : ''
-                }`}
+              className={`${styles.importTab} ${
+                activeMethod === method ? styles.active : ''
+              }`}
             >
               {t(`treemapper:${method}`)}
             </div>
@@ -355,26 +361,28 @@ export default function PlantingLocation({
         </div>
       </div>
       <div className={styles.formSubTitle}>{t('maps:speciesPlanted')}</div>
-      {mySpecies && fields.map((item, index) => {
-        return (
-          <PlantedSpecies
-            key={index}
-            index={index}
-            t={t}
-            register={register}
-            remove={remove}
-            setValue={setValue}
-            errors={errors}
-            mySpecies={mySpecies}
-            item={item}
-            control={control}
-          />
-        );
-      })}
+      {mySpecies &&
+        fields.map((item, index) => {
+          return (
+            <PlantedSpecies
+              key={index}
+              index={index}
+              t={t}
+              register={register}
+              remove={remove}
+              setValue={setValue}
+              errors={errors}
+              mySpecies={mySpecies}
+              item={item}
+              control={control}
+            />
+          );
+        })}
       <div
         onClick={() => {
           append({
-            otherSpecies: "", treeCount: 0
+            otherSpecies: '',
+            treeCount: 0,
           });
         }}
         className={styles.addSpeciesButton}
@@ -428,22 +436,25 @@ function PlantedSpecies({
         {/* <SpeciesSelect label={t('treemapper:species')} name={`plantedSpecies[${index}].species`} mySpecies={mySpecies} control={control} /> */}
         <MaterialTextField
           inputRef={register({
-            required: index ? false : {
-              value: true,
-              message: t('treemapper:atLeastOneSpeciesRequired')
-            }
+            required: index
+              ? false
+              : {
+                  value: true,
+                  message: t('treemapper:atLeastOneSpeciesRequired'),
+                },
           })}
           label={t('treeSpecies')}
           variant="outlined"
           name={`plantedSpecies[${index}].otherSpecies`}
           defaultValue={item.otherSpecies ? item.otherSpecies : ''}
         />
-        {errors.plantedSpecies && errors.plantedSpecies[index]?.otherSpecies && (
-          <span className={styles.errorMessage}>
-            {errors.plantedSpecies[index]?.otherSpecies &&
-              errors.plantedSpecies[index]?.otherSpecies.message}
-          </span>
-        )}
+        {errors.plantedSpecies &&
+          errors.plantedSpecies[index]?.otherSpecies && (
+            <span className={styles.errorMessage}>
+              {errors.plantedSpecies[index]?.otherSpecies &&
+                errors.plantedSpecies[index]?.otherSpecies.message}
+            </span>
+          )}
       </div>
       <div className={styles.speciesCountField}>
         <MaterialTextField
@@ -451,9 +462,9 @@ function PlantedSpecies({
             required: index
               ? false
               : {
-                value: true,
-                message: t('treemapper:treesRequired'),
-              },
+                  value: true,
+                  message: t('treemapper:treesRequired'),
+                },
             validate: (value: any) => parseInt(value, 10) >= 1,
           })}
           onInput={(e: any) => {
