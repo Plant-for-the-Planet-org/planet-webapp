@@ -3,13 +3,14 @@ import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
 import i18next from '../../../../../../i18n';
 import styles from '../Import.module.scss';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { Controller } from 'react-hook-form';
-import DateFnsUtils from '@date-io/date-fns';
-import { ThemeProvider } from '@material-ui/styles';
 import materialTheme from '../../../../../theme/themeStyles';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
-import { InputAdornment, MenuItem } from '@mui/material';
+import { InputAdornment, MenuItem, ThemeProvider } from '@mui/material';
+
+import MuiDatePicker from '@mui/lab/MobileDatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 const { useTranslation } = i18next;
 
@@ -79,8 +80,8 @@ export default function SampleTreeCard({
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
             <ThemeProvider theme={materialTheme}>
-              <MuiPickersUtilsProvider
-                utils={DateFnsUtils}
+              <LocalizationProvider
+                dateAdapter={AdapterDateFns}
                 locale={
                   localeMapForDate[userLang]
                     ? localeMapForDate[userLang]
@@ -90,21 +91,19 @@ export default function SampleTreeCard({
                 <Controller
                   defaultValue={item.plantingDate}
                   render={(properties: any) => (
-                    <DatePicker
+                    <MuiDatePicker
                       label={t('plantingDate')}
                       value={properties.value}
                       onChange={properties.onChange}
-                      inputVariant="outlined"
-                      TextFieldComponent={MaterialTextField}
-                      autoOk
+                      renderInput={(props) => <MaterialTextField {...props} />}
                       disableFuture
-                      format="MMMM d, yyyy"
+                      inputFormat="MMMM d, yyyy"
                     />
                   )}
                   name={`sampleTrees[${index}].plantingDate`}
                   control={control}
                 />
-              </MuiPickersUtilsProvider>
+              </LocalizationProvider>
             </ThemeProvider>
           </div>
           <div className={styles.formFieldHalf}>

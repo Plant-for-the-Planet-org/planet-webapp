@@ -5,17 +5,24 @@ import { Controller, useForm } from 'react-hook-form';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import styles from './AccountHistory.module.scss';
-import { CircularProgress, Modal, Fade, InputAdornment } from '@mui/material';
-import { ThemeProvider } from '@material-ui/core';
-import { Autocomplete } from '@mui/material';
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
+import {
+  CircularProgress,
+  Modal,
+  Fade,
+  InputAdornment,
+  Autocomplete,
+  ThemeProvider,
+} from '@mui/material';
 import materialTheme from '../../../theme/themeStyles';
 import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import { ThemeContext } from '../../../theme/themeContext';
 import getCurrencySymbolByCode from '../../../utils/countryCurrency/getCurrencySymbolByCode';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+
+import MuiDatePicker from '@mui/lab/MobileDatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 // interface EditDonationProps {
 //   editModalOpen
@@ -206,8 +213,8 @@ export const EditModal = ({
               <div className={styles.formRow}>
                 <div className={styles.formRowInput}>
                   <ThemeProvider theme={materialTheme}>
-                    <MuiPickersUtilsProvider
-                      utils={DateFnsUtils}
+                    <LocalizationProvider
+                      dateAdapter={AdapterDateFns}
                       locale={
                         localeMapForDate[userLang]
                           ? localeMapForDate[userLang]
@@ -216,21 +223,23 @@ export const EditModal = ({
                     >
                       <Controller
                         render={(properties) => (
-                          <DatePicker
+                          <MuiDatePicker
                             label={t('me:date')}
                             value={properties.value}
                             onChange={properties.onChange}
-                            inputVariant="outlined"
-                            TextFieldComponent={MaterialTextField}
-                            autoOk
-                            format="MMMM d, yyyy"
+                            renderInput={(props) => (
+                              <MaterialTextField {...props} />
+                            )}
+                            inputFormat="MMMM d, yyyy"
                             minDate={
                               new Date(
                                 new Date(record?.currentPeriodEnd).valueOf()
                               )
                             }
                             maxDate={
-                              record?.endsAt ? record.endsAt : '2100-01-01'
+                              record?.endsAt
+                                ? record.endsAt
+                                : new Date('2100-01-01')
                             }
                           />
                         )}
@@ -240,7 +249,7 @@ export const EditModal = ({
                           new Date(new Date(record?.currentPeriodEnd).valueOf())
                         }
                       />
-                    </MuiPickersUtilsProvider>
+                    </LocalizationProvider>
                   </ThemeProvider>
                   {errors.currentPeriodEnd && (
                     <span className={styles.formErrors}>

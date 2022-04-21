@@ -3,16 +3,13 @@ import { Controller, useForm, useFieldArray } from 'react-hook-form';
 import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
 import styles from '../Import.module.scss';
 import i18next from '../../../../../../i18n';
-import DateFnsUtils from '@date-io/date-fns';
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { ThemeProvider } from '@material-ui/styles';
 import materialTheme from '../../../../../theme/themeStyles';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
 import { useDropzone } from 'react-dropzone';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
 import JSONInput from 'react-json-editor-ajrm';
 import locale from 'react-json-editor-ajrm/locale/en';
-import { MenuItem } from '@mui/material';
+import { MenuItem, ThemeProvider } from '@mui/material';
 import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
 import {
   getAuthenticatedRequest,
@@ -21,6 +18,10 @@ import {
 import tj from '@mapbox/togeojson';
 import gjv from 'geojson-validation';
 import flatten from 'geojson-flatten';
+
+import MuiDatePicker from '@mui/lab/MobileDatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 const { useTranslation } = i18next;
 
@@ -269,8 +270,8 @@ export default function PlantingLocation({
       <div className={styles.formField}>
         <div className={styles.formFieldLarge}>
           <ThemeProvider theme={materialTheme}>
-            <MuiPickersUtilsProvider
-              utils={DateFnsUtils}
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
               locale={
                 localeMapForDate[userLang]
                   ? localeMapForDate[userLang]
@@ -279,15 +280,13 @@ export default function PlantingLocation({
             >
               <Controller
                 render={(properties) => (
-                  <DatePicker
+                  <MuiDatePicker
                     label={t('me:datePlanted')}
                     value={properties.value}
                     onChange={properties.onChange}
-                    inputVariant="outlined"
-                    TextFieldComponent={MaterialTextField}
-                    autoOk
+                    renderInput={(props) => <MaterialTextField {...props} />}
                     disableFuture
-                    format="MMMM d, yyyy"
+                    inputFormat="MMMM d, yyyy"
                   />
                 )}
                 inputRef={register({
@@ -298,9 +297,9 @@ export default function PlantingLocation({
                 })}
                 name="plantDate"
                 control={control}
-                defaultValue=""
+                defaultValue={new Date()}
               />
-            </MuiPickersUtilsProvider>
+            </LocalizationProvider>
           </ThemeProvider>
           {errors.plantDate && (
             <span className={styles.errorMessage}>
@@ -309,6 +308,7 @@ export default function PlantingLocation({
           )}
         </div>
       </div>
+
       {user && user.type === 'tpo' && (
         <div className={styles.formFieldLarge}>
           <Controller

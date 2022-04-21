@@ -5,9 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import GreenRadio from '../../common/InputTypes/GreenRadio';
-import { ThemeProvider } from '@material-ui/styles';
-import { Calendar, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
 import materialTheme from '../../../theme/themeStyles';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
@@ -18,7 +15,12 @@ import {
   Fade,
   Modal,
   FormControlLabel,
+  ThemeProvider,
 } from '@mui/material';
+
+import MuiCalenderPicker from '@mui/lab/CalendarPicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 export const PauseModal = ({
   pauseModalOpen,
@@ -150,15 +152,8 @@ export const PauseModal = ({
             {showCalender ? (
               <>
                 <ThemeProvider theme={materialTheme}>
-                  <MuiPickersUtilsProvider
-                    utils={DateFnsUtils}
-                    // locale={
-                    //   localeMapForDate[userLang]
-                    //     ? localeMapForDate[userLang]
-                    //     : localeMapForDate['en']
-                    // }
-                  >
-                    <Calendar
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <MuiCalenderPicker
                       date={date}
                       onChange={(value) => {
                         setdate(value);
@@ -171,7 +166,7 @@ export const PauseModal = ({
                       }
                       disablePast={true}
                     />
-                  </MuiPickersUtilsProvider>
+                  </LocalizationProvider>
                 </ThemeProvider>
                 <p className={styles.pauseNote}>{t('pauseNote')}</p>
               </>

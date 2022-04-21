@@ -1,8 +1,5 @@
-import DateFnsUtils from '@date-io/date-fns';
-import { MenuItem } from '@mui/material';
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { MuiPickersOverrides } from '@material-ui/pickers/typings/overrides';
-import { ThemeProvider } from '@material-ui/styles';
+import { MenuItem, ThemeProvider } from '@mui/material';
+
 import * as d3 from 'd3-ease';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
@@ -29,12 +26,9 @@ import SingleContribution from './RegisterTrees/SingleContribution';
 import materialTheme from '../../../theme/themeStyles';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
-type overridesNameToClassKey = {
-  [P in keyof MuiPickersOverrides]: keyof MuiPickersOverrides[P];
-};
-declare module '@material-ui/core/styles/overrides' {
-  export type ComponentNameToClassKey = overridesNameToClassKey;
-}
+import MuiDatePicker from '@mui/lab/MobileDatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   ssr: false,
@@ -258,8 +252,8 @@ export default function RegisterTrees({}: Props) {
               </div>
               <div className={styles.formFieldHalf}>
                 <ThemeProvider theme={materialTheme}>
-                  <MuiPickersUtilsProvider
-                    utils={DateFnsUtils}
+                  <LocalizationProvider
+                    dateAdapter={AdapterDateFns}
                     locale={
                       localeMapForDate[userLang]
                         ? localeMapForDate[userLang]
@@ -268,24 +262,24 @@ export default function RegisterTrees({}: Props) {
                   >
                     <Controller
                       render={(properties) => (
-                        <DatePicker
+                        <MuiDatePicker
                           label={t('me:datePlanted')}
                           value={properties.value}
                           onChange={properties.onChange}
-                          inputVariant="outlined"
-                          TextFieldComponent={MaterialTextField}
-                          autoOk
+                          renderInput={(props) => (
+                            <MaterialTextField {...props} />
+                          )}
                           disableFuture
                           minDate={new Date(new Date().setFullYear(1950))}
-                          format="MMMM d, yyyy"
+                          inputFormat="MMMM d, yyyy"
                           maxDate={new Date()}
                         />
                       )}
                       name="plantDate"
                       control={control}
-                      defaultValue=""
+                      defaultValue={new Date()}
                     />
-                  </MuiPickersUtilsProvider>
+                  </LocalizationProvider>
                 </ThemeProvider>
               </div>
             </div>
