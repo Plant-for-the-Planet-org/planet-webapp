@@ -1,7 +1,9 @@
 import React, { ReactElement } from 'react';
 import i18next from '../../../../i18n';
+// import { styled } from 'mui-latest';
 
-import FormSteps from './FormSteps';
+import DashboardView from '../../common/Layout/DashboardView';
+import TabbedView from './TabbedView';
 import BulkMethodSelector from './components/BulkMethodSelector';
 
 import styles from './BulkCodes.module.scss';
@@ -13,19 +15,19 @@ const { useTranslation } = i18next;
 export default function BulkCodes({}: Props): ReactElement | null {
   const { t, ready } = useTranslation(['bulkCodes']);
   return ready ? (
-    <div className="profilePage">
-      <h2 className={'profilePageTitle'}>{t('bulkCodes:bulkCodes')}</h2>
-      <div className={'profilePageSubTitle'}>
-        {t('bulkCodes:bulkCodesDescription1')}
-        <br />
-        {t('bulkCodes:bulkCodesDescription2')}
-      </div>
-      <main className={styles.contentContainer}>
-        <FormSteps />
-        <div className={styles.formContainer}>
-          <BulkMethodSelector />
-        </div>
-      </main>
-    </div>
+    <DashboardView
+      title={t('bulkCodes:bulkCodes')}
+      subtitle={
+        <p>
+          {t('bulkCodes:bulkCodesDescription1')}
+          <br />
+          {t('bulkCodes:bulkCodesDescription2')}
+        </p>
+      }
+    >
+      <TabbedView>
+        <BulkMethodSelector />
+      </TabbedView>
+    </DashboardView>
   ) : null;
 }

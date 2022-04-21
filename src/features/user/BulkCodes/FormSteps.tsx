@@ -2,31 +2,31 @@ import React, { ReactElement, useState } from 'react';
 import { Tab, Tabs } from 'mui-latest';
 import { styled } from 'mui-latest/styles';
 import i18next from '../../../../i18n';
-import themeProperties from '../../../theme/themeProperties';
-import materialTheme from '../../../theme/themeStyles';
 
 interface Props {}
 
 const { useTranslation } = i18next;
 
 const StyledTabs = styled(Tabs)({
+  paddingTop: 24,
   textTransform: 'capitalize',
-  minWidth: '200px',
+  minWidth: 200,
+  '& .MuiTabs-flexContainer': {
+    gap: 8,
+  },
   '& .MuiTabs-indicator': {
-    backgroundColor: themeProperties.primaryColor,
     left: 0,
   },
 });
 
 const StyledTab = styled(Tab)({
   textTransform: 'inherit',
-  fontFamily: 'inherit',
-  textAlign: 'left',
   alignItems: 'flex-start',
+  padding: '0 16px',
   '&.Mui-selected': {
-    color: themeProperties.primaryColor,
-    fontWeight: 600,
+    /* fontWeight: 600, */
   },
+  '&.MuiTab-root': {},
 });
 
 export default function FormSteps({}: Props): ReactElement {
