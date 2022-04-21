@@ -4,9 +4,6 @@ import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
-import DateFnsUtils from '@date-io/date-fns';
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { ThemeProvider } from '@material-ui/styles';
 import { useDropzone } from 'react-dropzone';
 import {
   deleteAuthenticatedRequest,
@@ -19,6 +16,10 @@ import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import materialTheme from '../../../../theme/themeStyles';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { ThemeProvider } from '@mui/material';
+import MuiDatePicker from '@mui/lab/MobileDatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 const { useTranslation } = i18next;
 
@@ -218,8 +219,8 @@ export default function ProjectSpending({
             <div className={styles.formField}>
               <div className={`${styles.formFieldHalf}`}>
                 <ThemeProvider theme={materialTheme}>
-                  <MuiPickersUtilsProvider
-                    utils={DateFnsUtils}
+                  <LocalizationProvider
+                    dateAdapter={AdapterDateFns}
                     locale={
                       localeMapForDate[userLang]
                         ? localeMapForDate[userLang]
@@ -228,7 +229,7 @@ export default function ProjectSpending({
                   >
                     <Controller
                       render={(properties) => (
-                        <DatePicker
+                        <MuiDatePicker
                           inputRef={register({
                             required: {
                               value: true,
@@ -241,11 +242,9 @@ export default function ProjectSpending({
                           value={properties.value}
                           onChange={properties.onChange}
                           label={t('manageProjects:spendingYear')}
-                          inputVariant="outlined"
-                          variant="inline"
-                          TextFieldComponent={MaterialTextField}
-                          autoOk
-                          clearable
+                          renderInput={(props) => (
+                            <MaterialTextField {...props} />
+                          )}
                           disableFuture
                           minDate={fiveYearsAgo}
                           maxDate={new Date()}
@@ -255,7 +254,7 @@ export default function ProjectSpending({
                       name="year"
                       control={control}
                     />
-                  </MuiPickersUtilsProvider>
+                  </LocalizationProvider>
                 </ThemeProvider>
                 {errors.year && (
                   <span className={styles.formErrors}>
