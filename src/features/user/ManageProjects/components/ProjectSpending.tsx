@@ -14,9 +14,7 @@ import { getPDFFile } from '../../../../utils/getImageURL';
 import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDFRed';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
-import materialTheme from '../../../../theme/themeStyles';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { ThemeProvider } from '@mui/material';
 import MuiDatePicker from '@mui/lab/MobileDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -218,44 +216,40 @@ export default function ProjectSpending({
           <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
             <div className={styles.formField}>
               <div className={`${styles.formFieldHalf}`}>
-                <ThemeProvider theme={materialTheme}>
-                  <LocalizationProvider
-                    dateAdapter={AdapterDateFns}
-                    locale={
-                      localeMapForDate[userLang]
-                        ? localeMapForDate[userLang]
-                        : localeMapForDate['en']
-                    }
-                  >
-                    <Controller
-                      render={(properties) => (
-                        <MuiDatePicker
-                          inputRef={register({
-                            required: {
-                              value: true,
-                              message: t(
-                                'manageProjects:spendingYearValidation'
-                              ),
-                            },
-                          })}
-                          views={['year']}
-                          value={properties.value}
-                          onChange={properties.onChange}
-                          label={t('manageProjects:spendingYear')}
-                          renderInput={(props) => (
-                            <MaterialTextField {...props} />
-                          )}
-                          disableFuture
-                          minDate={fiveYearsAgo}
-                          maxDate={new Date()}
-                        />
-                      )}
-                      defaultValue={new Date()}
-                      name="year"
-                      control={control}
-                    />
-                  </LocalizationProvider>
-                </ThemeProvider>
+                <LocalizationProvider
+                  dateAdapter={AdapterDateFns}
+                  locale={
+                    localeMapForDate[userLang]
+                      ? localeMapForDate[userLang]
+                      : localeMapForDate['en']
+                  }
+                >
+                  <Controller
+                    render={(properties) => (
+                      <MuiDatePicker
+                        inputRef={register({
+                          required: {
+                            value: true,
+                            message: t('manageProjects:spendingYearValidation'),
+                          },
+                        })}
+                        views={['year']}
+                        value={properties.value}
+                        onChange={properties.onChange}
+                        label={t('manageProjects:spendingYear')}
+                        renderInput={(props) => (
+                          <MaterialTextField {...props} />
+                        )}
+                        disableFuture
+                        minDate={fiveYearsAgo}
+                        maxDate={new Date()}
+                      />
+                    )}
+                    defaultValue={new Date()}
+                    name="year"
+                    control={control}
+                  />
+                </LocalizationProvider>
                 {errors.year && (
                   <span className={styles.formErrors}>
                     {errors.year.message}

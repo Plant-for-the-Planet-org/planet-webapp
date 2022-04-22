@@ -1,4 +1,4 @@
-import { MenuItem, ThemeProvider } from '@mui/material';
+import { MenuItem } from '@mui/material';
 
 import * as d3 from 'd3-ease';
 import dynamic from 'next/dynamic';
@@ -23,7 +23,6 @@ import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './RegisterModal.module.scss';
 import SingleContribution from './RegisterTrees/SingleContribution';
-import materialTheme from '../../../theme/themeStyles';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 import MuiDatePicker from '@mui/lab/MobileDatePicker';
@@ -251,36 +250,34 @@ export default function RegisterTrees({}: Props) {
                 )}
               </div>
               <div className={styles.formFieldHalf}>
-                <ThemeProvider theme={materialTheme}>
-                  <LocalizationProvider
-                    dateAdapter={AdapterDateFns}
-                    locale={
-                      localeMapForDate[userLang]
-                        ? localeMapForDate[userLang]
-                        : localeMapForDate['en']
-                    }
-                  >
-                    <Controller
-                      render={(properties) => (
-                        <MuiDatePicker
-                          label={t('me:datePlanted')}
-                          value={properties.value}
-                          onChange={properties.onChange}
-                          renderInput={(props) => (
-                            <MaterialTextField {...props} />
-                          )}
-                          disableFuture
-                          minDate={new Date(new Date().setFullYear(1950))}
-                          inputFormat="MMMM d, yyyy"
-                          maxDate={new Date()}
-                        />
-                      )}
-                      name="plantDate"
-                      control={control}
-                      defaultValue={new Date()}
-                    />
-                  </LocalizationProvider>
-                </ThemeProvider>
+                <LocalizationProvider
+                  dateAdapter={AdapterDateFns}
+                  locale={
+                    localeMapForDate[userLang]
+                      ? localeMapForDate[userLang]
+                      : localeMapForDate['en']
+                  }
+                >
+                  <Controller
+                    render={(properties) => (
+                      <MuiDatePicker
+                        label={t('me:datePlanted')}
+                        value={properties.value}
+                        onChange={properties.onChange}
+                        renderInput={(props) => (
+                          <MaterialTextField {...props} />
+                        )}
+                        disableFuture
+                        minDate={new Date(new Date().setFullYear(1950))}
+                        inputFormat="MMMM d, yyyy"
+                        maxDate={new Date()}
+                      />
+                    )}
+                    name="plantDate"
+                    control={control}
+                    defaultValue={new Date()}
+                  />
+                </LocalizationProvider>
               </div>
             </div>
             <div className={styles.formFieldLarge}>

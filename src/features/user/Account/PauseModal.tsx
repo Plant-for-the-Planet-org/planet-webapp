@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import GreenRadio from '../../common/InputTypes/GreenRadio';
-import materialTheme from '../../../theme/themeStyles';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import {
@@ -15,7 +14,6 @@ import {
   Fade,
   Modal,
   FormControlLabel,
-  ThemeProvider,
 } from '@mui/material';
 
 import MuiCalenderPicker from '@mui/lab/CalendarPicker';
@@ -151,23 +149,21 @@ export const PauseModal = ({
             </RadioGroup>
             {showCalender ? (
               <>
-                <ThemeProvider theme={materialTheme}>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <MuiCalenderPicker
-                      date={date}
-                      onChange={(value) => {
-                        setdate(value);
-                      }}
-                      minDate={
-                        new Date(
-                          new Date(record?.currentPeriodEnd).valueOf() +
-                            1000 * 3600 * 24
-                        )
-                      }
-                      disablePast={true}
-                    />
-                  </LocalizationProvider>
-                </ThemeProvider>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <MuiCalenderPicker
+                    date={date}
+                    onChange={(value) => {
+                      setdate(value);
+                    }}
+                    minDate={
+                      new Date(
+                        new Date(record?.currentPeriodEnd).valueOf() +
+                          1000 * 3600 * 24
+                      )
+                    }
+                    disablePast={true}
+                  />
+                </LocalizationProvider>
                 <p className={styles.pauseNote}>{t('pauseNote')}</p>
               </>
             ) : (

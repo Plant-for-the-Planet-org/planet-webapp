@@ -11,9 +11,7 @@ import {
   Fade,
   InputAdornment,
   Autocomplete,
-  ThemeProvider,
 } from '@mui/material';
-import materialTheme from '../../../theme/themeStyles';
 import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import { ThemeContext } from '../../../theme/themeContext';
 import getCurrencySymbolByCode from '../../../utils/countryCurrency/getCurrencySymbolByCode';
@@ -212,45 +210,43 @@ export const EditModal = ({
             {record?.method !== 'paypal' ? (
               <div className={styles.formRow}>
                 <div className={styles.formRowInput}>
-                  <ThemeProvider theme={materialTheme}>
-                    <LocalizationProvider
-                      dateAdapter={AdapterDateFns}
-                      locale={
-                        localeMapForDate[userLang]
-                          ? localeMapForDate[userLang]
-                          : localeMapForDate['en']
+                  <LocalizationProvider
+                    dateAdapter={AdapterDateFns}
+                    locale={
+                      localeMapForDate[userLang]
+                        ? localeMapForDate[userLang]
+                        : localeMapForDate['en']
+                    }
+                  >
+                    <Controller
+                      render={(properties) => (
+                        <MuiDatePicker
+                          label={t('me:date')}
+                          value={properties.value}
+                          onChange={properties.onChange}
+                          renderInput={(props) => (
+                            <MaterialTextField {...props} />
+                          )}
+                          inputFormat="MMMM d, yyyy"
+                          minDate={
+                            new Date(
+                              new Date(record?.currentPeriodEnd).valueOf()
+                            )
+                          }
+                          maxDate={
+                            record?.endsAt
+                              ? record.endsAt
+                              : new Date('2100-01-01')
+                          }
+                        />
+                      )}
+                      name="currentPeriodEnd"
+                      control={control}
+                      defaultValue={
+                        new Date(new Date(record?.currentPeriodEnd).valueOf())
                       }
-                    >
-                      <Controller
-                        render={(properties) => (
-                          <MuiDatePicker
-                            label={t('me:date')}
-                            value={properties.value}
-                            onChange={properties.onChange}
-                            renderInput={(props) => (
-                              <MaterialTextField {...props} />
-                            )}
-                            inputFormat="MMMM d, yyyy"
-                            minDate={
-                              new Date(
-                                new Date(record?.currentPeriodEnd).valueOf()
-                              )
-                            }
-                            maxDate={
-                              record?.endsAt
-                                ? record.endsAt
-                                : new Date('2100-01-01')
-                            }
-                          />
-                        )}
-                        name="currentPeriodEnd"
-                        control={control}
-                        defaultValue={
-                          new Date(new Date(record?.currentPeriodEnd).valueOf())
-                        }
-                      />
-                    </LocalizationProvider>
-                  </ThemeProvider>
+                    />
+                  </LocalizationProvider>
                   {errors.currentPeriodEnd && (
                     <span className={styles.formErrors}>
                       {t('donate:dateRequired')}

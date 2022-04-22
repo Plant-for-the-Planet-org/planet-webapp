@@ -4,9 +4,8 @@ import i18next from '../../../../../../i18n';
 import styles from '../Import.module.scss';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
 import { Controller } from 'react-hook-form';
-import materialTheme from '../../../../../theme/themeStyles';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
-import { InputAdornment, MenuItem, ThemeProvider } from '@mui/material';
+import { InputAdornment, MenuItem } from '@mui/material';
 
 import MuiDatePicker from '@mui/lab/MobileDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -79,32 +78,30 @@ export default function SampleTreeCard({
       <div className={styles.sampleTreeDetails}>
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
-            <ThemeProvider theme={materialTheme}>
-              <LocalizationProvider
-                dateAdapter={AdapterDateFns}
-                locale={
-                  localeMapForDate[userLang]
-                    ? localeMapForDate[userLang]
-                    : localeMapForDate['en']
-                }
-              >
-                <Controller
-                  defaultValue={item.plantingDate}
-                  render={(properties: any) => (
-                    <MuiDatePicker
-                      label={t('plantingDate')}
-                      value={properties.value}
-                      onChange={properties.onChange}
-                      renderInput={(props) => <MaterialTextField {...props} />}
-                      disableFuture
-                      inputFormat="MMMM d, yyyy"
-                    />
-                  )}
-                  name={`sampleTrees[${index}].plantingDate`}
-                  control={control}
-                />
-              </LocalizationProvider>
-            </ThemeProvider>
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
+              locale={
+                localeMapForDate[userLang]
+                  ? localeMapForDate[userLang]
+                  : localeMapForDate['en']
+              }
+            >
+              <Controller
+                defaultValue={item.plantingDate}
+                render={(properties: any) => (
+                  <MuiDatePicker
+                    label={t('plantingDate')}
+                    value={properties.value}
+                    onChange={properties.onChange}
+                    renderInput={(props) => <MaterialTextField {...props} />}
+                    disableFuture
+                    inputFormat="MMMM d, yyyy"
+                  />
+                )}
+                name={`sampleTrees[${index}].plantingDate`}
+                control={control}
+              />
+            </LocalizationProvider>
           </div>
           <div className={styles.formFieldHalf}>
             <MaterialTextField

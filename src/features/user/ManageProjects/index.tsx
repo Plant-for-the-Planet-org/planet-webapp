@@ -338,72 +338,67 @@ export default function ManageProjects({ GUID, token, project }: any) {
   }
 
   return ready ? (
-    <ThemeProvider theme={materialTheme}>
-      <div
-        className={styles.mainContainer}
-        style={{ display: 'flex', flexDirection: 'column' }}
-      >
-        <div className={'project-form-flow'}>
+    <div
+      className={styles.mainContainer}
+      style={{ display: 'flex', flexDirection: 'column' }}
+    >
+      <div className={'project-form-flow'}>
+        <div
+          style={{
+            display: 'flex',
+            flexBasis: '10%',
+          }}
+        >
           <div
             style={{
               display: 'flex',
-              flexBasis: '10%',
             }}
           >
-            <div
-              style={{
-                display: 'flex',
-              }}
+            <Tabs
+              value={tabSelected}
+              onChange={handleChange}
+              orientation={'vertical'}
+              variant="scrollable"
+              className={'custom-tab'}
             >
-              <Tabs
-                value={tabSelected}
-                onChange={handleChange}
-                orientation={'vertical'}
-                variant="scrollable"
-                className={'custom-tab'}
-              >
-                <Tab
-                  label={t('manageProjects:projectType')}
-                  className={'tab-flow'}
-                ></Tab>
-                <Tab
-                  label={t('manageProjects:basicDetails')}
-                  className={'tab-flow'}
-                ></Tab>
-                <Tab
-                  label={t('manageProjects:projectMedia')}
-                  className={'tab-flow'}
-                ></Tab>
-                <Tab
-                  label={t('manageProjects:detailedAnalysis')}
-                  className={'tab-flow'}
-                />
-                <Tab
-                  label={t('manageProjects:projectSites')}
-                  className={'tab-flow'}
-                />
-                <Tab
-                  label={t('manageProjects:projectSpending')}
-                  className={'tab-flow'}
-                />
-                <Tab
-                  label={t('manageProjects:review')}
-                  className={'tab-flow'}
-                />
-              </Tabs>
-            </div>
-          </div>
-          <div
-            style={{
-              marginTop: '40px',
-              width: '1000px',
-              display: 'flex',
-            }}
-          >
-            {getStepContent(tabSelected)}
+              <Tab
+                label={t('manageProjects:projectType')}
+                className={'tab-flow'}
+              ></Tab>
+              <Tab
+                label={t('manageProjects:basicDetails')}
+                className={'tab-flow'}
+              ></Tab>
+              <Tab
+                label={t('manageProjects:projectMedia')}
+                className={'tab-flow'}
+              ></Tab>
+              <Tab
+                label={t('manageProjects:detailedAnalysis')}
+                className={'tab-flow'}
+              />
+              <Tab
+                label={t('manageProjects:projectSites')}
+                className={'tab-flow'}
+              />
+              <Tab
+                label={t('manageProjects:projectSpending')}
+                className={'tab-flow'}
+              />
+              <Tab label={t('manageProjects:review')} className={'tab-flow'} />
+            </Tabs>
           </div>
         </div>
+        <div
+          style={{
+            marginTop: '40px',
+            width: '1000px',
+            display: 'flex',
+          }}
+        >
+          {getStepContent(tabSelected)}
+        </div>
       </div>
-    </ThemeProvider>
+    </div>
   ) : null;
 }

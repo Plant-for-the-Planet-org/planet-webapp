@@ -3,13 +3,12 @@ import { Controller, useForm, useFieldArray } from 'react-hook-form';
 import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
 import styles from '../Import.module.scss';
 import i18next from '../../../../../../i18n';
-import materialTheme from '../../../../../theme/themeStyles';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
 import { useDropzone } from 'react-dropzone';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
 import JSONInput from 'react-json-editor-ajrm';
 import locale from 'react-json-editor-ajrm/locale/en';
-import { MenuItem, ThemeProvider } from '@mui/material';
+import { MenuItem } from '@mui/material';
 import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
 import {
   getAuthenticatedRequest,
@@ -269,38 +268,36 @@ export default function PlantingLocation({
     <>
       <div className={styles.formField}>
         <div className={styles.formFieldLarge}>
-          <ThemeProvider theme={materialTheme}>
-            <LocalizationProvider
-              dateAdapter={AdapterDateFns}
-              locale={
-                localeMapForDate[userLang]
-                  ? localeMapForDate[userLang]
-                  : localeMapForDate['en']
-              }
-            >
-              <Controller
-                render={(properties) => (
-                  <MuiDatePicker
-                    label={t('me:datePlanted')}
-                    value={properties.value}
-                    onChange={properties.onChange}
-                    renderInput={(props) => <MaterialTextField {...props} />}
-                    disableFuture
-                    inputFormat="MMMM d, yyyy"
-                  />
-                )}
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: t('me:datePlantedRequired'),
-                  },
-                })}
-                name="plantDate"
-                control={control}
-                defaultValue={new Date()}
-              />
-            </LocalizationProvider>
-          </ThemeProvider>
+          <LocalizationProvider
+            dateAdapter={AdapterDateFns}
+            locale={
+              localeMapForDate[userLang]
+                ? localeMapForDate[userLang]
+                : localeMapForDate['en']
+            }
+          >
+            <Controller
+              render={(properties) => (
+                <MuiDatePicker
+                  label={t('me:datePlanted')}
+                  value={properties.value}
+                  onChange={properties.onChange}
+                  renderInput={(props) => <MaterialTextField {...props} />}
+                  disableFuture
+                  inputFormat="MMMM d, yyyy"
+                />
+              )}
+              inputRef={register({
+                required: {
+                  value: true,
+                  message: t('me:datePlantedRequired'),
+                },
+              })}
+              name="plantDate"
+              control={control}
+              defaultValue={new Date()}
+            />
+          </LocalizationProvider>
           {errors.plantDate && (
             <span className={styles.errorMessage}>
               {errors.plantDate.message}

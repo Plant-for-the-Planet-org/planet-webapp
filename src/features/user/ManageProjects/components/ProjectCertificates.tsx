@@ -14,9 +14,7 @@ import { getPDFFile } from '../../../../utils/getImageURL';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
-import materialTheme from '../../../../theme/themeStyles';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { ThemeProvider } from '@mui/material';
 import MuiDatePicker from '@mui/lab/MobileDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -262,7 +260,6 @@ function ProjectCertificates({
             </div>
             <div style={{ width: '20px' }}></div>
             <div className={styles.formFieldHalf}>
-              <ThemeProvider theme={materialTheme}>
                 <LocalizationProvider
                   dateAdapter={AdapterDateFns}
                   locale={
@@ -291,7 +288,6 @@ function ProjectCertificates({
                     minDate={tenYearsAgo}
                   />
                 </LocalizationProvider>
-              </ThemeProvider>
               {errors.issueDate && (
                 <span className={styles.formErrors}>
                   {errors.issueDate.message}
