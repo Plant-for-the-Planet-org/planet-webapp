@@ -7,9 +7,6 @@ const FormContainer = styled('div')(({ theme }) => ({
   padding: 24,
   borderRadius: 9,
   boxShadow: theme.shadows[1],
-  '& .formButton': {
-    marginTop: 24,
-  },
 }));
 
 interface TabbedViewProps {

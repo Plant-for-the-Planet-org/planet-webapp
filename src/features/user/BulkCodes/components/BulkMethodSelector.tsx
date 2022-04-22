@@ -1,13 +1,27 @@
 import React, { ReactElement, useState } from 'react';
 import i18next from '../../../../../i18n';
-import { styled } from 'mui-latest';
-import { Button } from 'mui-latest';
+import { styled, Button } from 'mui-latest';
 
 import SelectorOption, { SelectorOptionProps } from './SelectorOption';
 
 import styles from '../BulkCodes.module.scss';
 
 const { useTranslation } = i18next;
+
+const BulkMethodForm = styled('form')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 24,
+  alignItems: 'flex-start',
+  '& .formButton': {
+    marginTop: 24,
+  },
+  '& .inputContainer': {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 24,
+  },
+}));
 
 const BulkMethodSelector = (): ReactElement | null => {
   const [method, setMethod] = useState<string | null>(null);
@@ -52,8 +66,8 @@ const BulkMethodSelector = (): ReactElement | null => {
     };
 
     return (
-      <form className={styles.form}>
-        <div className={styles.inputContainer}>{renderSelectorOptions()}</div>
+      <BulkMethodForm className="BulkMethodSelector">
+        <div className="inputContainer">{renderSelectorOptions()}</div>
         <Button
           variant="contained"
           color="primary"
@@ -62,20 +76,10 @@ const BulkMethodSelector = (): ReactElement | null => {
         >
           {t('common:continue')}
         </Button>
-      </form>
+      </BulkMethodForm>
     );
   }
   return null;
 };
 
-const styledBulkMethodSelector = styled(BulkMethodSelector)(({ theme }) => {
-  console.log(theme.palette.primary.main);
-  return {
-    '& .form': {
-      color: theme.palette.primary.main,
-      backgroundColor: 'orange',
-    },
-  };
-});
-
-export default styledBulkMethodSelector;
+export default BulkMethodSelector;

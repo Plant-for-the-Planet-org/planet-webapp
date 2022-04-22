@@ -1,12 +1,9 @@
 import React, { ReactElement } from 'react';
 import i18next from '../../../../i18n';
-// import { styled } from 'mui-latest';
 
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from './TabbedView';
 import BulkMethodSelector from './components/BulkMethodSelector';
-
-import styles from './BulkCodes.module.scss';
 
 interface Props {}
 
