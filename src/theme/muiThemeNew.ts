@@ -11,6 +11,7 @@ const muiThemeNew = createTheme({
   palette: {
     primary: {
       main: '#68b030',
+      contrastText: '#fff',
     },
     background: {
       base: '#fafaff',
@@ -40,12 +41,25 @@ const muiThemeNew = createTheme({
     h2: {
       fontSize: '1.5rem',
     },
+    button: {
+      fontSize: '1.125rem',
+      lineHeight: 1.3333,
+    },
   },
   components: {
     MuiTab: {
       styleOverrides: {
         root: {
           minHeight: 30,
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 28,
+          textTransform: 'capitalize',
+          padding: '12px 30px',
         },
       },
     },

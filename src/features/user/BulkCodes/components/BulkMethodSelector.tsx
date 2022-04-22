@@ -1,8 +1,8 @@
 import React, { ReactElement, useState } from 'react';
 import i18next from '../../../../../i18n';
 import { styled } from 'mui-latest';
+import { Button } from 'mui-latest';
 
-import StyledButton from './StyledButton';
 import SelectorOption, { SelectorOptionProps } from './SelectorOption';
 
 import styles from '../BulkCodes.module.scss';
@@ -54,7 +54,14 @@ const BulkMethodSelector = (): ReactElement | null => {
     return (
       <form className={styles.form}>
         <div className={styles.inputContainer}>{renderSelectorOptions()}</div>
-        <StyledButton variant="contained">{t('common:continue')}</StyledButton>
+        <Button
+          variant="contained"
+          color="primary"
+          className="formButton"
+          disabled={method === null}
+        >
+          {t('common:continue')}
+        </Button>
       </form>
     );
   }
