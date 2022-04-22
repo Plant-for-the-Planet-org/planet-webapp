@@ -51,6 +51,7 @@ const muiThemeNew = createTheme({
       styleOverrides: {
         root: {
           minHeight: 30,
+          fontSize: '0.875rem',
         },
       },
     },

@@ -23,10 +23,6 @@ const StyledTab = styled(Tab)({
   textTransform: 'inherit',
   alignItems: 'flex-start',
   padding: '0 16px',
-  '&.Mui-selected': {
-    /* fontWeight: 600, */
-  },
-  '&.MuiTab-root': {},
 });
 
 export default function FormSteps({}: Props): ReactElement {
