@@ -804,7 +804,6 @@ export default function BasicDetails({
                       setWrongCoordinatesMessage(false);
                       clearErrors('latitude');
                     }
-                    console.log(result);
                   })
                   .catch((error) => {
                     console.log(`error`, error);

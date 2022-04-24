@@ -218,8 +218,8 @@ export default function DetailedAnalysis({
     }
   }
   const onSubmit = (data: any) => {
-    setIsUploadingData(true);
     console.log(data, 'data');
+    setIsUploadingData(true);
     const submitData =
       purpose === 'trees'
         ? {
@@ -243,16 +243,17 @@ export default function DetailedAnalysis({
           }
         : {
             projectMeta: {
-              employeesCount: data.employeesCount,
-              acquisitionYear: data.acquisitionYear.getFullYear(),
+              employeeCount: data.employeesCount,
+              // acquisitionYear: data.acquisitionYear.getFullYear(),
               startingProtectionYear: data.startingProtectionYear.getFullYear(),
               areaProtected: data.areaProtected,
-              employeeCount: data.employeeCount,
+
               // timePeriod: months,
               // forestProtectionType: data.forestProtectionType,
               // conservationImpacts: data.conservationImpacts,
-              siteOwnerType: owners,
-              siteOwnerName: data.siteOwnerName,
+              // siteOwnerType: owners,
+              // ownershipType: owners,
+              // siteOwnerName: data.siteOwnerName,
               mainChallenge: data.mainChallenge,
               longTermPlan: data.longTermPlan,
               // endangeredSpecies: data.endangeredSpecies,
@@ -260,6 +261,29 @@ export default function DetailedAnalysis({
               motivation: data.motivation,
             },
           };
+
+    // "projectMeta": {
+    //   "children": {
+    //       "location": {},
+    //       "areaProtected": {},
+    //       "ecosystems": {},
+    //       "startingProtectionYear": {},
+    //       "actions": {},
+    //       "activitySeasons": {},
+    //       "employeeCount": {},
+    //       "mainChallenge": {},
+    //       "motivation": {},
+    //       "landOwnershipType": {},
+    //       "ownershipType": {},
+    //       "longTermPlan": {},
+    //       "impacts": {
+    //           "children": {
+    //               "benefits": {},
+    //               "coBenefits": {},
+    //               "socialBenefits": {},
+    //               "ecologicalBenefits": {}
+    //           }
+    //       }
 
     putAuthenticatedRequest(
       `/app/projects/${projectGUID}`,
@@ -288,7 +312,7 @@ export default function DetailedAnalysis({
 
   React.useEffect(() => {
     if (projectDetails) {
-      console.log(projectDetails);
+      console.log(projectDetails, purpose);
       const detailedAnalysis =
         purpose === 'trees'
           ? {
@@ -298,8 +322,8 @@ export default function DetailedAnalysis({
               firstTreePlanted: projectDetails.firstTreePlanted
                 ? new Date(projectDetails.firstTreePlanted)
                 : new Date(),
-              plantingDensity: projectDetails.plantingDensity,
-              employeesCount: projectDetails.employeesCount,
+              plantingDensity: projectDetails.projectMeta.plantingDensity,
+              employeesCount: projectDetails.projectMeta.employeesCount,
               mainChallenge: projectDetails.mainChallenge,
               siteOwnerName: projectDetails.siteOwnerName,
               acquisitionYear: projectDetails.acquisitionYear
@@ -318,7 +342,7 @@ export default function DetailedAnalysis({
             }
           : {
               projectMeta: {
-                areaProtected: projectDetails.areaProtected,
+                areaProtected: projectDetails.projectMeta.areaProtected,
                 startingProtectionYear: projectDetails.startingProtectionYear
                   ? new Date(
                       new Date().setFullYear(
@@ -332,7 +356,7 @@ export default function DetailedAnalysis({
                     )
                   : new Date(),
 
-                employeeCount: projectDetails.employeeCount,
+                employeesCount: projectDetails.projectMeta.employeesCount,
                 mainChallenge: projectDetails.mainChallenge,
                 siteOwnerName: projectDetails.siteOwnerName,
                 longTermPlan: projectDetails.longTermPlan,
@@ -344,7 +368,7 @@ export default function DetailedAnalysis({
                 motivation: projectDetails.motivation,
               },
             };
-
+      console.log(detailedAnalysis);
       // set planting seasons
       if (
         projectDetails.plantingSeasons &&
@@ -576,7 +600,7 @@ export default function DetailedAnalysis({
                 })}
                 label={t('manageProjects:employeeCount')}
                 variant="outlined"
-                name="employeeCount"
+                name="employeesCount"
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9]./g, '');
                 }}
@@ -859,6 +883,7 @@ export default function DetailedAnalysis({
                   {errors.degradationCause.message}
                 </span>
               )}
+              {errors && console.log(errors, 'errors')}
             </div>
           )}
 
@@ -1028,14 +1053,14 @@ export default function DetailedAnalysis({
               <Controller
                 as={
                   <MaterialTextField
-                    inputRef={register({
-                      required: {
-                        value: true,
-                        message: t(
-                          'manageProjects:endangeredSpeciesValidation'
-                        ),
-                      },
-                    })}
+                    // inputRef={register({
+                    //   required: {
+                    //     value: false,
+                    //     message: t(
+                    //       'manageProjects:endangeredSpeciesValidation'
+                    //     ),
+                    //   },
+                    // })}
                     label={t('manageProjects:endangeredSpecies')}
                     variant="outlined"
                     select
@@ -1052,9 +1077,9 @@ export default function DetailedAnalysis({
                   </MaterialTextField>
                 }
                 name="endangeredSpecies"
-                rules={{
-                  required: t('manageProjects:endangeredSpeciesValidation'),
-                }}
+                // rules={{
+                //   required: t('manageProjects:endangeredSpeciesValidation'),
+                // }}
                 control={control}
                 defaultValue=""
               />

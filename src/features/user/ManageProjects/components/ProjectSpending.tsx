@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import styles from './../StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
@@ -133,7 +133,7 @@ export default function ProjectSpending({
         }
       }
     });
-    // handleNext()
+    // handleNext();
   };
 
   const deleteProjectSpending = (id: any) => {
@@ -355,7 +355,13 @@ export default function ProjectSpending({
           <div style={{ width: '20px' }}></div>
           <div className={`${styles.formFieldHalf}`}>
             <button
-              onClick={() => handleNext()}
+              onClick={() => {
+                if (uploadedFiles && uploadedFiles.length > 0) {
+                  handleNext();
+                } else {
+                  setErrorMessage('Please upload  report');
+                }
+              }}
               className="primaryButton"
               style={{ width: '169px', height: '46px', marginRight: '20px' }}
               data-test-id="projSpendingCont"

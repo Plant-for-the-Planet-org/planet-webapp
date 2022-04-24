@@ -95,7 +95,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
     setErrorMessage(message);
     setActiveStep(0);
   };
-  console.log(router);
+
   const handleChange = (e: React.ChangeEvent<{}>, newValue: number) => {
     /**
      * *restrict the access of Tab
@@ -224,7 +224,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
       handleNext();
     }
   }, [router]);
-  console.log(router.query.screen);
+
   React.useEffect(() => {
     switch (router.query.screen) {
       case 'basic-details':
