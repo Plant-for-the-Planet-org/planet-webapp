@@ -4,9 +4,6 @@ import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
-import DateFnsUtils from '@date-io/date-fns';
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { ThemeProvider } from '@material-ui/styles';
 import { useDropzone } from 'react-dropzone';
 import {
   deleteAuthenticatedRequest,
@@ -17,8 +14,10 @@ import { getPDFFile } from '../../../../utils/getImageURL';
 import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDFRed';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
-import materialTheme from '../../../../theme/themeStyles';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import MuiDatePicker from '@mui/lab/MobileDatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 const { useTranslation } = i18next;
 
@@ -217,46 +216,40 @@ export default function ProjectSpending({
           <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
             <div className={styles.formField}>
               <div className={`${styles.formFieldHalf}`}>
-                <ThemeProvider theme={materialTheme}>
-                  <MuiPickersUtilsProvider
-                    utils={DateFnsUtils}
-                    locale={
-                      localeMapForDate[userLang]
-                        ? localeMapForDate[userLang]
-                        : localeMapForDate['en']
-                    }
-                  >
-                    <Controller
-                      render={(properties) => (
-                        <DatePicker
-                          inputRef={register({
-                            required: {
-                              value: true,
-                              message: t(
-                                'manageProjects:spendingYearValidation'
-                              ),
-                            },
-                          })}
-                          views={['year']}
-                          value={properties.value}
-                          onChange={properties.onChange}
-                          label={t('manageProjects:spendingYear')}
-                          inputVariant="outlined"
-                          variant="inline"
-                          TextFieldComponent={MaterialTextField}
-                          autoOk
-                          clearable
-                          disableFuture
-                          minDate={fiveYearsAgo}
-                          maxDate={new Date()}
-                        />
-                      )}
-                      defaultValue={new Date()}
-                      name="year"
-                      control={control}
-                    />
-                  </MuiPickersUtilsProvider>
-                </ThemeProvider>
+                <LocalizationProvider
+                  dateAdapter={AdapterDateFns}
+                  locale={
+                    localeMapForDate[userLang]
+                      ? localeMapForDate[userLang]
+                      : localeMapForDate['en']
+                  }
+                >
+                  <Controller
+                    render={(properties) => (
+                      <MuiDatePicker
+                        inputRef={register({
+                          required: {
+                            value: true,
+                            message: t('manageProjects:spendingYearValidation'),
+                          },
+                        })}
+                        views={['year']}
+                        value={properties.value}
+                        onChange={properties.onChange}
+                        label={t('manageProjects:spendingYear')}
+                        renderInput={(props) => (
+                          <MaterialTextField {...props} />
+                        )}
+                        disableFuture
+                        minDate={fiveYearsAgo}
+                        maxDate={new Date()}
+                      />
+                    )}
+                    defaultValue={new Date()}
+                    name="year"
+                    control={control}
+                  />
+                </LocalizationProvider>
                 {errors.year && (
                   <span className={styles.formErrors}>
                     {errors.year.message}

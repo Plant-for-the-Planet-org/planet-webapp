@@ -1,9 +1,8 @@
 import React from 'react';
 import styles from '../styles/SettingsModal.module.scss';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
+import Modal from '@mui/material/Modal';
 import { useRouter } from 'next/router';
-import Fade from '@material-ui/core/Fade';
+import Fade from '@mui/material/Fade';
 import EditProfileModal from '../components/EditProfileModal';
 import i18next from '../../../../../i18n';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
@@ -60,7 +59,6 @@ export default function SettingsModal({
         closeAfterTransition
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
-        BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
         }}
@@ -170,13 +168,15 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose }: any) {
 
   const handleDeleteAccount = () => {
     setIsUploadingData(true);
-    deleteAuthenticatedRequest('/app/profile', token, handleError).then((res) => {
-      if (res !== 404) {
-        logoutUser(`${process.env.NEXTAUTH_URL}/`);
-      } else {
-        console.log(res.errorText);
+    deleteAuthenticatedRequest('/app/profile', token, handleError).then(
+      (res) => {
+        if (res !== 404) {
+          logoutUser(`${process.env.NEXTAUTH_URL}/`);
+        } else {
+          console.log(res.errorText);
+        }
       }
-    });
+    );
   };
 
   const { theme } = React.useContext(ThemeContext);
@@ -189,7 +189,6 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose }: any) {
       closeAfterTransition
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
-      BackdropComponent={Backdrop}
       BackdropProps={{
         timeout: 500,
       }}

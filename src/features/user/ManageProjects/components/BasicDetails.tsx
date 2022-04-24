@@ -10,7 +10,8 @@ import MapGL, {
   FlyToInterpolator,
 } from 'react-map-gl';
 import * as d3 from 'd3-ease';
-import { makeStyles, MenuItem } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { MenuItem } from '@mui/material';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info';
 import {
   postAuthenticatedRequest,

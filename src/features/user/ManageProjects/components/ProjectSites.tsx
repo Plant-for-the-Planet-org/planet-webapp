@@ -8,7 +8,6 @@ import dynamic from 'next/dynamic';
 import { WebMercatorViewport } from 'react-map-gl';
 import ReactMapboxGl, { GeoJSONLayer, Source, Layer } from 'react-mapbox-gl';
 import * as turf from '@turf/turf';
-import { makeStyles, MenuItem } from '@material-ui/core';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import {
   deleteAuthenticatedRequest,
@@ -17,9 +16,8 @@ import {
   putAuthenticatedRequest,
 } from '../../../../utils/apiRequests/api';
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
-import Modal from '@material-ui/core/Modal';
+import { makeStyles } from '@mui/styles';
+import { Fade, Modal, MenuItem } from '@mui/material';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
@@ -681,7 +679,6 @@ function EditSite({
       open={openModal}
       onClose={handleModalClose}
       closeAfterTransition
-      BackdropComponent={Backdrop}
       BackdropProps={{
         timeout: 500,
       }}

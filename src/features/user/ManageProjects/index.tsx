@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Tab } from '@material-ui/core';
+import { Tabs, Tab, ThemeProvider } from '@mui/material';
 import BasicDetails from './components/BasicDetails';
 import styles from './StepForm.module.scss';
 import ProjectMedia from './components/ProjectMedia';
@@ -15,6 +15,7 @@ import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import i18next from '../../../../i18n';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import materialTheme from '../../../theme/themeStyles';
 
 const { useTranslation } = i18next;
 

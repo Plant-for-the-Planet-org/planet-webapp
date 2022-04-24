@@ -1,7 +1,4 @@
 import React from 'react';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
 import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +6,7 @@ import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Modal, Fade } from '@mui/material';
 
 export const ReactivateModal = ({
   reactivateModalOpen,
@@ -52,7 +49,6 @@ export const ReactivateModal = ({
       closeAfterTransition
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
-      BackdropComponent={Backdrop}
       BackdropProps={{
         timeout: 500,
       }}
