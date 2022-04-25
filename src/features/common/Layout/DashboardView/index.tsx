@@ -17,6 +17,7 @@ const DashboardGridContainer = styled(Box)(({ theme }) => ({
     padding: 40,
     maxWidth: 1060,
     gap: 24,
+    alignItems: 'flex-start',
   },
   '& .dashboardHeader': {
     gap: 10,
@@ -25,6 +26,9 @@ const DashboardGridContainer = styled(Box)(({ theme }) => ({
     color: theme.palette.text.primary,
     fontWeight: theme.typography.fontWeightBold,
     fontSize: theme.typography.h1.fontSize,
+  },
+  '& main': {
+    width: '100%',
   },
   '& *': {
     fontFamily: theme.typography.fontFamily,

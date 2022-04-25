@@ -4,7 +4,7 @@ import { styled, Button } from 'mui-latest';
 
 import SelectorOption, { SelectorOptionProps } from './SelectorOption';
 
-import styles from '../BulkCodes.module.scss';
+// import styles from '../BulkCodes.module.scss';
 
 const { useTranslation } = i18next;
 
@@ -20,6 +20,7 @@ const BulkMethodForm = styled('form')(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: 24,
+    width: '100%',
   },
 }));
 
