@@ -289,6 +289,7 @@ export default function ProjectSites({
         },
       ],
     };
+
     setGeoJson(collection);
     setSiteDetails(defaultSiteDetails);
     setSiteGUID(site.id);

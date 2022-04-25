@@ -219,7 +219,6 @@ export default function DetailedAnalysis({
     }
   }
   const onSubmit = (data: any) => {
-    console.log(data, 'data');
     setIsUploadingData(true);
     const submitData =
       purpose === 'trees'
@@ -263,29 +262,6 @@ export default function DetailedAnalysis({
             },
           };
 
-    // "projectMeta": {
-    //   "children": {
-    //       "location": {},
-    //       "areaProtected": {},
-    //       "ecosystems": {},
-    //       "startingProtectionYear": {},
-    //       "actions": {},
-    //       "activitySeasons": {},
-    //       "employeeCount": {},
-    //       "mainChallenge": {},
-    //       "motivation": {},
-    //       "landOwnershipType": {},
-    //       "ownershipType": {},
-    //       "longTermPlan": {},
-    //       "impacts": {
-    //           "children": {
-    //               "benefits": {},
-    //               "coBenefits": {},
-    //               "socialBenefits": {},
-    //               "ecologicalBenefits": {}
-    //           }
-    //       }
-
     putAuthenticatedRequest(
       `/app/projects/${projectGUID}`,
       submitData,
@@ -296,7 +272,7 @@ export default function DetailedAnalysis({
         setProjectDetails(res);
         setIsUploadingData(false);
         setErrorMessage('');
-        // handleNext();
+        handleNext();
       } else {
         if (res.code === 404) {
           setIsUploadingData(false);
@@ -313,7 +289,6 @@ export default function DetailedAnalysis({
 
   React.useEffect(() => {
     if (projectDetails) {
-      console.log(projectDetails, purpose);
       const detailedAnalysis =
         purpose === 'trees'
           ? {
@@ -325,8 +300,8 @@ export default function DetailedAnalysis({
                 : new Date(),
               plantingDensity: projectDetails.projectMeta.plantingDensity,
               employeesCount: projectDetails.projectMeta.employeesCount,
-              mainChallenge: projectDetails.mainChallenge,
-              siteOwnerName: projectDetails.siteOwnerName,
+              mainChallenge: projectDetails.projectMeta.mainChallenge,
+              siteOwnerName: projectDetails.projectMeta.siteOwnerName,
               acquisitionYear: projectDetails.acquisitionYear
                 ? new Date(
                     new Date().setFullYear(projectDetails.acquisitionYear)
@@ -337,9 +312,9 @@ export default function DetailedAnalysis({
                     new Date().setFullYear(projectDetails.degradationYear)
                   )
                 : new Date(),
-              degradationCause: projectDetails.degradationCause,
-              longTermPlan: projectDetails.longTermPlan,
-              motivation: projectDetails.motivation,
+              degradationCause: projectDetails.projectMeta.degradationCause,
+              longTermPlan: projectDetails.projectMeta.longTermPlan,
+              motivation: projectDetails.projectMeta.motivation,
             }
           : {
               projectMeta: {
@@ -361,15 +336,13 @@ export default function DetailedAnalysis({
                 mainChallenge: projectDetails.mainChallenge,
                 siteOwnerName: projectDetails.siteOwnerName,
                 longTermPlan: projectDetails.longTermPlan,
-                // endangeredSpecies: projectDetails.endangeredSpecies,
+
                 ownershipType: projectDetails.ownershipType,
-                // forestProtectionType: projectDetails.forestProtectionType,
-                // conservationImpacts: projectDetails.conservationImpacts,
-                // addAnotherSpecies: projectDetails.addAnotherSpecies,
+
                 motivation: projectDetails.motivation,
               },
             };
-      console.log(detailedAnalysis);
+
       // set planting seasons
       if (
         projectDetails.plantingSeasons &&
@@ -868,7 +841,6 @@ export default function DetailedAnalysis({
                   {errors.degradationCause.message}
                 </span>
               )}
-              {errors && console.log(errors, 'errors')}
             </div>
           )}
 
@@ -931,7 +903,7 @@ export default function DetailedAnalysis({
                 })}
                 label={t('manageProjects:whyThisSite')}
                 variant="outlined"
-                name="whyThisSite"
+                name="motivation"
                 multiline
               />
               {errors.motivation && (
