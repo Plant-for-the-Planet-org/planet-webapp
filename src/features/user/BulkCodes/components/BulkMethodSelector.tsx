@@ -23,7 +23,13 @@ const BulkMethodForm = styled('form')(({ theme }) => ({
   },
 }));
 
-const BulkMethodSelector = (): ReactElement | null => {
+interface BulkMethodSelectorProps {
+  setStep?: (step: 0 | 1 | 2) => void;
+}
+
+const BulkMethodSelector = ({
+  setStep,
+}: BulkMethodSelectorProps): ReactElement | null => {
   const [method, setMethod] = useState<string | null>(null);
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
 
@@ -73,6 +79,7 @@ const BulkMethodSelector = (): ReactElement | null => {
           color="primary"
           className="formButton"
           disabled={method === null}
+          onClick={setStep ? () => setStep(1) : undefined}
         >
           {t('common:continue')}
         </Button>
