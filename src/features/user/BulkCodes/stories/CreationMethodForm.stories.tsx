@@ -4,7 +4,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import CreationMethodForm from '../components/CreationMethodForm';
 
 export default {
-  title: `Components/CreationMethodForm`,
+  title: `Forms/CreationMethodForm`,
   component: CreationMethodForm,
 } as ComponentMeta<typeof CreationMethodForm>;
 
