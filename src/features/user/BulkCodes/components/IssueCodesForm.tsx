@@ -23,9 +23,10 @@ const IssueCodesForm = ({
       <BulkCodesForm className="IssueCodesForm">
         <div className="inputContainer">
           <ProjectSelector project={project} active={false} />
-          <TextField label="Comment [Private]"></TextField>
+          <TextField label={t('bulkCodes:labelComment')}></TextField>
           <GenericCodesPartial />
-          <BulkGiftTotal amount={0} currency={'USD'} units={0} unit={'Trees'} />
+          <BulkGiftTotal amount={0} currency={'USD'} units={0} unit={'tree'} />
+          {/* TODOO translation and pluralization */}
         </div>
         <Button
           variant="contained"

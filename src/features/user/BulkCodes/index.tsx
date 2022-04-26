@@ -37,7 +37,7 @@ export default function BulkCodes({}: Props): ReactElement | null {
 
   return ready ? (
     <DashboardView
-      title={t('bulkCodes:bulkCodes')}
+      title={t('bulkCodes:bulkCodesTitle')}
       subtitle={
         <p>
           {t('bulkCodes:bulkCodesDescription1')}
