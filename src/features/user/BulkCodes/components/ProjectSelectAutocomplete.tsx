@@ -25,11 +25,13 @@ const MuiAutocomplete = styled(Autocomplete)(({ theme }) => {
 interface ProjectSelectAutocompleteProps {
   project: string | null;
   handleProjectChange?: (project: string | null) => void;
+  active: boolean;
 }
 
 const ProjectSelectAutocomplete = ({
   project = '',
   handleProjectChange,
+  active = true,
 }: ProjectSelectAutocompleteProps): ReactElement => {
   const [value, setValue] = useState<string | null>(project);
 
@@ -50,6 +52,7 @@ const ProjectSelectAutocomplete = ({
       renderInput={(params) => (
         <TextField {...params} label="Project Name" color="primary" />
       )}
+      disabled={!active}
     />
   );
 };

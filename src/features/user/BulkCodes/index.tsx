@@ -16,13 +16,20 @@ const { useTranslation } = i18next;
 export default function BulkCodes({}: Props): ReactElement | null {
   const { t, ready } = useTranslation(['bulkCodes']);
   const [step, setStep] = useState<0 | 1 | 2>(0);
+  const [project, setProject] = useState<string | null>(null);
 
   const renderStep = () => {
     switch (step) {
       case 0:
         return <CreationMethodForm setStep={setStep} />;
       case 1:
-        return <ProjectSelector setStep={setStep} />;
+        return (
+          <SelectProjectForm
+            setStep={setStep}
+            project={project}
+            setProject={setProject}
+          />
+        );
       case 2:
         return <div>Step 3 will come here</div>;
       default:
