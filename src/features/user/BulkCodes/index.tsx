@@ -3,8 +3,8 @@ import i18next from '../../../../i18n';
 
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from './TabbedView';
-import BulkMethodSelector from './components/BulkMethodSelector';
-import ProjectSelector from './components/ProjectSelector';
+import CreationMethodForm from './components/CreationMethodForm';
+import SelectProjectForm from './components/SelectProjectForm';
 
 interface Props {
   // step: 0 | 1 | 2;
@@ -20,13 +20,13 @@ export default function BulkCodes({}: Props): ReactElement | null {
   const renderStep = () => {
     switch (step) {
       case 0:
-        return <BulkMethodSelector setStep={setStep} />;
+        return <CreationMethodForm setStep={setStep} />;
       case 1:
         return <ProjectSelector setStep={setStep} />;
       case 2:
         return <div>Step 3 will come here</div>;
       default:
-        return <BulkMethodSelector setStep={setStep} />;
+        return <CreationMethodForm setStep={setStep} />;
     }
   };
 

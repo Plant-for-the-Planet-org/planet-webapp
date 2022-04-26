@@ -1,36 +1,19 @@
 import React, { ReactElement, useState } from 'react';
 import i18next from '../../../../../i18n';
-import { styled, Button } from 'mui-latest';
+import { Button } from 'mui-latest';
 
+import BulkCodesForm from './BulkCodesForm';
 import SelectorOption, { SelectorOptionProps } from './SelectorOption';
-
-// import styles from '../BulkCodes.module.scss';
 
 const { useTranslation } = i18next;
 
-const BulkMethodForm = styled('form')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 24,
-  alignItems: 'flex-start',
-  '& .formButton': {
-    marginTop: 24,
-  },
-  '& .inputContainer': {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 24,
-    width: '100%',
-  },
-}));
-
-interface BulkMethodSelectorProps {
+interface CreationMethodFormProps {
   setStep?: (step: 0 | 1 | 2) => void;
 }
 
-const BulkMethodSelector = ({
+const CreationMethodForm = ({
   setStep,
-}: BulkMethodSelectorProps): ReactElement | null => {
+}: CreationMethodFormProps): ReactElement | null => {
   const [method, setMethod] = useState<string | null>(null);
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
 
@@ -73,7 +56,7 @@ const BulkMethodSelector = ({
     };
 
     return (
-      <BulkMethodForm className="BulkMethodSelector">
+      <BulkCodesForm className="CreationMethodForm">
         <div className="inputContainer">{renderSelectorOptions()}</div>
         <Button
           variant="contained"
@@ -84,10 +67,10 @@ const BulkMethodSelector = ({
         >
           {t('common:continue')}
         </Button>
-      </BulkMethodForm>
+      </BulkCodesForm>
     );
   }
   return null;
 };
 
-export default BulkMethodSelector;
+export default CreationMethodForm;
