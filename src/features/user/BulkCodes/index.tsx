@@ -5,11 +5,9 @@ import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from './TabbedView';
 import CreationMethodForm from './components/CreationMethodForm';
 import SelectProjectForm from './components/SelectProjectForm';
+import IssueCodesForm from './components/IssueCodesForm';
 
-interface Props {
-  // step: 0 | 1 | 2;
-  // setStep: (step: 0 | 1 | 2) => void;
-}
+interface Props {}
 
 const { useTranslation } = i18next;
 
@@ -31,7 +29,7 @@ export default function BulkCodes({}: Props): ReactElement | null {
           />
         );
       case 2:
-        return <div>Step 3 will come here</div>;
+        return <IssueCodesForm project={project} />;
       default:
         return <CreationMethodForm setStep={setStep} />;
     }
