@@ -3,36 +3,41 @@ import i18next from '../../../../i18n';
 
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from './TabbedView';
-import BulkMethodSelector from './components/BulkMethodSelector';
-import ProjectSelector from './components/ProjectSelector';
+import CreationMethodForm from './components/CreationMethodForm';
+import SelectProjectForm from './components/SelectProjectForm';
+import IssueCodesForm from './components/IssueCodesForm';
 
-interface Props {
-  // step: 0 | 1 | 2;
-  // setStep: (step: 0 | 1 | 2) => void;
-}
+interface Props {}
 
 const { useTranslation } = i18next;
 
 export default function BulkCodes({}: Props): ReactElement | null {
   const { t, ready } = useTranslation(['bulkCodes']);
   const [step, setStep] = useState<0 | 1 | 2>(0);
+  const [project, setProject] = useState<string | null>(null);
 
   const renderStep = () => {
     switch (step) {
       case 0:
-        return <BulkMethodSelector setStep={setStep} />;
+        return <CreationMethodForm setStep={setStep} />;
       case 1:
-        return <ProjectSelector setStep={setStep} />;
+        return (
+          <SelectProjectForm
+            setStep={setStep}
+            project={project}
+            setProject={setProject}
+          />
+        );
       case 2:
-        return <div>Step 3 will come here</div>;
+        return <IssueCodesForm project={project} />;
       default:
-        return <BulkMethodSelector setStep={setStep} />;
+        return <CreationMethodForm setStep={setStep} />;
     }
   };
 
   return ready ? (
     <DashboardView
-      title={t('bulkCodes:bulkCodes')}
+      title={t('bulkCodes:bulkCodesTitle')}
       subtitle={
         <p>
           {t('bulkCodes:bulkCodesDescription1')}
