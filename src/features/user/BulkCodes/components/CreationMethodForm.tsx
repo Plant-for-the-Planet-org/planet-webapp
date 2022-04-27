@@ -10,16 +10,19 @@ import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeMethods';
 
 const { useTranslation } = i18next;
 
-interface CreationMethodFormProps {
-  setStep?: (step: 0 | 1 | 2) => void;
-}
+interface CreationMethodFormProps {}
 
-const CreationMethodForm = ({
-  setStep,
-}: CreationMethodFormProps): ReactElement | null => {
+const CreationMethodForm = ({}: // setStep,
+CreationMethodFormProps): ReactElement | null => {
   const router = useRouter();
-  const { bulkMethod, setBulkMethod } = useBulkCode();
-  const [method, setMethod] = useState<string | null>(null);
+  const {
+    bulkMethod,
+    setBulkMethod,
+    setProject,
+    setBulkGiftData,
+    setTotalUnits,
+  } = useBulkCode();
+  const [method, setMethod] = useState<typeof bulkMethod>(bulkMethod);
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
 
   if (ready) {
@@ -56,15 +59,19 @@ const CreationMethodForm = ({
       ));
     };
 
-    const handleMethodChange = (
-      method: BulkCodeMethods.GENERIC | BulkCodeMethods.IMPORT
-    ) => {
+    const handleMethodChange = (method: typeof bulkMethod) => {
       setMethod(method);
-      setBulkMethod(method);
     };
 
     const handleFormSubmit = () => {
-      router.push(`/profile/bulk-codes/${method}`);
+      // Clear form data stored in context if method is changed
+      if (method !== bulkMethod) {
+        setProject(null);
+        setBulkGiftData(null);
+        setTotalUnits(null);
+      }
+      setBulkMethod(method);
+      router.push(`/profile/bulk-codes/${bulkMethod}`);
     };
 
     return (
