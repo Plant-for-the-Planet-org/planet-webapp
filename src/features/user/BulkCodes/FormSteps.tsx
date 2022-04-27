@@ -1,7 +1,9 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, SyntheticEvent } from 'react';
+import { useRouter } from 'next/router';
 import { Tab, Tabs } from 'mui-latest';
 import { styled } from 'mui-latest/styles';
 import i18next from '../../../../i18n';
+import { useBulkCode } from '../../../features/common/Layout/BulkCodeContext';
 
 interface FormStepsProps {
   step: number;
@@ -27,21 +29,52 @@ const StyledTab = styled(Tab)({
   padding: '0 16px',
 });
 
-export default function FormSteps({ step = 0 }: FormStepsProps): ReactElement {
+export default function FormSteps({
+  step = 0,
+}: FormStepsProps): ReactElement | null {
   const { t, ready } = useTranslation(['bulkCodes']);
-  // const [tabSelected, setTabSelected] = useState(step);
+  const router = useRouter();
+  const { bulkMethod, project } = useBulkCode();
 
-  return (
-    <StyledTabs
-      orientation="vertical"
-      variant="scrollable"
-      aria-label="form-steps"
-      value={step}
-      TabIndicatorProps={{ children: <span /> }}
-    >
-      <StyledTab label={t('bulkCodes:tabCreationMethod')} />
-      <StyledTab label={t('bulkCodes:tabSelectProject')} />
-      <StyledTab label={t('bulkCodes:tabIssueCodes')} />
-    </StyledTabs>
-  );
+  const handleTabChange = (event: SyntheticEvent) => {
+    if (event.currentTarget instanceof HTMLButtonElement) {
+      const targetLink = event.currentTarget.dataset.link as string;
+      router.push(targetLink);
+    }
+  };
+
+  if (ready) {
+    return (
+      <StyledTabs
+        orientation="vertical"
+        variant="scrollable"
+        aria-label="form-steps"
+        value={step}
+        TabIndicatorProps={{ children: <span /> }}
+        onChange={handleTabChange}
+      >
+        <StyledTab
+          label={t('bulkCodes:tabCreationMethod')}
+          data-link={`/profile/bulk-codes`}
+        />
+        <StyledTab
+          label={t('bulkCodes:tabSelectProject')}
+          data-link={
+            bulkMethod !== null ? `/profile/bulk-codes/${bulkMethod}` : ''
+          }
+          disabled={bulkMethod === null}
+        />
+        <StyledTab
+          label={t('bulkCodes:tabIssueCodes')}
+          data-link={
+            bulkMethod !== null && project !== null
+              ? `/profile/bulk-codes/${bulkMethod}/${project.guid}`
+              : ''
+          }
+          disabled={bulkMethod === null || project === null}
+        />
+      </StyledTabs>
+    );
+  }
+  return null;
 }
