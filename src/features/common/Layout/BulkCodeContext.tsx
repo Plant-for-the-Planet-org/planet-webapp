@@ -108,10 +108,10 @@ export const BulkCodeProvider: FC = ({ children }) => {
   );
 };
 
-export const useBulkCode = (): BulkCodeContextInterface => {
+export const useBulkCode = (): BulkCodeContextInterface | null => {
   const context = useContext(BulkCodeContext);
-  if (!context) {
-    throw new Error('BulkCodeContext must be used within BulkCodeProvider');
-  }
+  // if (!context) {
+  //   throw new Error('BulkCodeContext must be used within BulkCodeProvider');
+  // }
   return context;
 };
