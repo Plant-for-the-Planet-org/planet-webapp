@@ -7,8 +7,6 @@ import CreationMethodForm from './components/CreationMethodForm';
 import SelectProjectForm from './components/SelectProjectForm';
 import IssueCodesForm from './components/IssueCodesForm';
 
-import { BulkCodeProvider } from '../../common/Layout/BulkCodeContext';
-
 interface Props {}
 
 const { useTranslation } = i18next;
@@ -38,7 +36,6 @@ export default function BulkCodes({}: Props): ReactElement | null {
   };
 
   return ready ? (
-    <BulkCodeProvider>
       <DashboardView
         title={t('bulkCodes:bulkCodesTitle')}
         subtitle={
@@ -51,6 +48,5 @@ export default function BulkCodes({}: Props): ReactElement | null {
       >
         <TabbedView>{renderStep()}</TabbedView>
       </DashboardView>
-    </BulkCodeProvider>
   ) : null;
 }
