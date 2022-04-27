@@ -4,6 +4,8 @@ import { Button } from 'mui-latest';
 
 import BulkCodesForm from './BulkCodesForm';
 import SelectorOption, { SelectorOptionProps } from './SelectorOption';
+import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
+import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeMethods';
 
 const { useTranslation } = i18next;
 
@@ -14,13 +16,14 @@ interface CreationMethodFormProps {
 const CreationMethodForm = ({
   setStep,
 }: CreationMethodFormProps): ReactElement | null => {
+  const { bulkMethod, setBulkMethod } = useBulkCode();
   const [method, setMethod] = useState<string | null>(null);
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
 
   if (ready) {
     const selectorOptions: SelectorOptionProps[] = [
       {
-        method: 'import',
+        method: BulkCodeMethods.IMPORT,
         title: t('bulkCodes:importMethodText.title'),
         subtitle: t('bulkCodes:importMethodText.subtitle'),
         details: t('bulkCodes:importMethodText.details', {
@@ -28,7 +31,7 @@ const CreationMethodForm = ({
         }),
       },
       {
-        method: 'generic',
+        method: BulkCodeMethods.GENERIC,
         title: t('bulkCodes:genericMethodText.title'),
         subtitle: t('bulkCodes:genericMethodText.subtitle'),
         details: t('bulkCodes:genericMethodText.details', {
@@ -51,8 +54,11 @@ const CreationMethodForm = ({
       ));
     };
 
-    const handleMethodChange = (method: string) => {
+    const handleMethodChange = (
+      method: BulkCodeMethods.GENERIC | BulkCodeMethods.IMPORT
+    ) => {
       setMethod(method);
+      setBulkMethod(method);
     };
 
     return (

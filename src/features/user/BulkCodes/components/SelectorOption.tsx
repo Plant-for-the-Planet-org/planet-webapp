@@ -1,15 +1,16 @@
-import React, { FormEvent, ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import { styled } from 'mui-latest';
-
-import styles from '../BulkCodes.module.scss';
+import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeMethods';
 
 export interface SelectorOptionProps {
-  method: 'generic' | 'import';
+  method: BulkCodeMethods.GENERIC | BulkCodeMethods.IMPORT;
   title: string;
   subtitle: string;
   details: string[];
   isSelected?: boolean;
-  handleMethodChange?: (method: string) => void;
+  handleMethodChange?: (
+    method: BulkCodeMethods.GENERIC | BulkCodeMethods.IMPORT
+  ) => void;
 }
 
 const SelectorOptionContainer = styled('div')(({ theme }) => ({
