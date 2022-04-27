@@ -7,31 +7,28 @@ import CreationMethodForm from './components/CreationMethodForm';
 import SelectProjectForm from './components/SelectProjectForm';
 import IssueCodesForm from './components/IssueCodesForm';
 
-interface Props {}
+interface BulkCodesProps {
+  step: 0 | 1 | 2;
+}
 
 const { useTranslation } = i18next;
 
-export default function BulkCodes({}: Props): ReactElement | null {
+export default function BulkCodes({
+  step,
+}: BulkCodesProps): ReactElement | null {
   const { t, ready } = useTranslation(['bulkCodes']);
-  const [step, setStep] = useState<0 | 1 | 2>(0);
   const [project, setProject] = useState<string | null>(null);
 
   const renderStep = () => {
     switch (step) {
       case 0:
-        return <CreationMethodForm setStep={setStep} />;
+        return <CreationMethodForm />;
       case 1:
-        return (
-          <SelectProjectForm
-            setStep={setStep}
-            project={project}
-            setProject={setProject}
-          />
-        );
+        return <SelectProjectForm project={project} setProject={setProject} />;
       case 2:
         return <IssueCodesForm project={project} />;
       default:
-        return <CreationMethodForm setStep={setStep} />;
+        return <CreationMethodForm />;
     }
   };
 
@@ -46,7 +43,7 @@ export default function BulkCodes({}: Props): ReactElement | null {
         </p>
       }
     >
-      <TabbedView>{renderStep()}</TabbedView>
+      <TabbedView step={step}>{renderStep()}</TabbedView>
     </DashboardView>
   ) : null;
 }

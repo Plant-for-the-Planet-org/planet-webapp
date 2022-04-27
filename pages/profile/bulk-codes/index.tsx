@@ -12,9 +12,9 @@ export default function BulkCodePage({}: Props): ReactElement {
   return (
     <UserLayout>
       <Head>
-        <title>{t('bulkCodes')}</title>
+        <title>{t('bulkCodesTitle')}</title>
       </Head>
-      <BulkCodes />
+      <BulkCodes step={0} />
     </UserLayout>
   );
 }

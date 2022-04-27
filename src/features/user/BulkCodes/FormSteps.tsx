@@ -3,7 +3,9 @@ import { Tab, Tabs } from 'mui-latest';
 import { styled } from 'mui-latest/styles';
 import i18next from '../../../../i18n';
 
-interface Props {}
+interface FormStepsProps {
+  step: number;
+}
 
 const { useTranslation } = i18next;
 
@@ -25,16 +27,16 @@ const StyledTab = styled(Tab)({
   padding: '0 16px',
 });
 
-export default function FormSteps({}: Props): ReactElement {
+export default function FormSteps({ step = 0 }: FormStepsProps): ReactElement {
   const { t, ready } = useTranslation(['bulkCodes']);
-  const [tabSelected, setTabSelected] = useState(0);
+  // const [tabSelected, setTabSelected] = useState(step);
 
   return (
     <StyledTabs
       orientation="vertical"
       variant="scrollable"
       aria-label="form-steps"
-      value={tabSelected}
+      value={step}
       TabIndicatorProps={{ children: <span /> }}
     >
       <StyledTab label={t('bulkCodes:tabCreationMethod')} />

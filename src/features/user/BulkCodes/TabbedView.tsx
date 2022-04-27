@@ -11,14 +11,21 @@ const FormContainer = styled('div')(({ theme }) => ({
 
 interface TabbedViewProps {
   children: React.ReactNode;
+  step: number;
 }
 
 export default function TabbedView({
   children,
+  step,
 }: TabbedViewProps): ReactElement {
   return (
     <Grid container className="TabbedView">
-      <Grid item xs={12} md={3} component={FormSteps}></Grid>
+      <Grid
+        item
+        xs={12}
+        md={3}
+        component={() => <FormSteps step={step} />}
+      ></Grid>
       <Grid item xs={12} md={9} component={FormContainer}>
         {children}
       </Grid>

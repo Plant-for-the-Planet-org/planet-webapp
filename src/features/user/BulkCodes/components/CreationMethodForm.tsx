@@ -1,4 +1,5 @@
 import React, { ReactElement, useState } from 'react';
+import { useRouter } from 'next/router';
 import i18next from '../../../../../i18n';
 import { Button } from 'mui-latest';
 
@@ -14,6 +15,7 @@ interface CreationMethodFormProps {
 const CreationMethodForm = ({
   setStep,
 }: CreationMethodFormProps): ReactElement | null => {
+  const router = useRouter();
   const [method, setMethod] = useState<string | null>(null);
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
 
@@ -55,6 +57,10 @@ const CreationMethodForm = ({
       setMethod(method);
     };
 
+    const handleFormSubmit = () => {
+      router.push(`/profile/bulk-codes/${method}`);
+    };
+
     return (
       <BulkCodesForm className="CreationMethodForm">
         <div className="inputContainer">{renderSelectorOptions()}</div>
@@ -63,7 +69,7 @@ const CreationMethodForm = ({
           color="primary"
           className="formButton"
           disabled={method === null}
-          onClick={setStep ? () => setStep(1) : undefined}
+          onClick={handleFormSubmit}
         >
           {t('common:continue')}
         </Button>

@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import i18next from '../../../../../i18n';
+import { useRouter } from 'next/router';
 import { Button } from 'mui-latest';
 
 import BulkCodesForm from './BulkCodesForm';
@@ -18,7 +19,13 @@ const SelectProjectForm = ({
   setProject,
   project,
 }: SelectProjectFormProps): ReactElement | null => {
+  const router = useRouter();
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
+  const { method } = router.query;
+
+  const handleFormSubmit = () => {
+    router.push(`/profile/bulk-codes/${method}/jnkjansdkja`);
+  };
 
   if (ready) {
     return (
@@ -31,7 +38,7 @@ const SelectProjectForm = ({
           color="primary"
           className="formButton"
           disabled={project === null}
-          onClick={setStep ? () => setStep(2) : undefined}
+          onClick={handleFormSubmit}
         >
           {t('common:continue')}
         </Button>
