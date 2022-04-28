@@ -137,6 +137,7 @@ function UserLayout(props: any): ReactElement {
       title: t('me:bulkCodes'),
       path: '/profile/bulk-codes',
       icon: <MapIcon />,
+      hasRelatedLinks: true,
     },
     {
       key: 7,
@@ -188,6 +189,11 @@ function UserLayout(props: any): ReactElement {
             setactiveLink(link.path);
             setActiveSubMenu(subMenuItem.path);
           }
+        } else if (
+          link.hasRelatedLinks &&
+          router.router?.asPath.includes(link.path)
+        ) {
+          setactiveLink(link.path);
         }
       }
     }
