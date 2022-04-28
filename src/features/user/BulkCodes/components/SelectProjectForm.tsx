@@ -10,29 +10,28 @@ import ProjectSelector from './ProjectSelector';
 const { useTranslation } = i18next;
 
 interface SelectProjectFormProps {
-  setStep?: (step: 0 | 1 | 2) => void;
+  // setStep?: (step: 0 | 1 | 2) => void;
 }
 
-const SelectProjectForm = ({
-  setStep,
-}: SelectProjectFormProps): ReactElement | null => {
+const SelectProjectForm = ({}: // setStep,
+SelectProjectFormProps): ReactElement | null => {
   const router = useRouter();
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
   const { method } = router.query;
   const { setProject } = useBulkCode();
 
-  const [localProject, setLocalProject] = useState<string | null>(null);
+  const [localProject, setLocalProject] = useState<Object | null>(null);
 
   const handleFormSubmit = () => {
     setProject({
-      guid: `${Math.random()}`,
-      slug: localProject ?? '',
+      guid: localProject.guid,
+      slug: localProject.slug,
       unitCost: `${Math.random()}`,
       currency: `${Math.random()}`,
       unit: `${Math.random()}`,
       purpose: `${Math.random()}`,
     });
-    router.push(`/profile/bulk-codes/${method}/jnkjansdkja`);
+    router.push(`/profile/bulk-codes/${method}/${localProject.guid}`);
   };
 
   if (ready) {

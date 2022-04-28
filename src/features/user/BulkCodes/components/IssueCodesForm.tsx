@@ -24,10 +24,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
     return (
       <BulkCodesForm className="IssueCodesForm">
         <div className="inputContainer">
-          <ProjectSelector
-            project={project?.slug.label as string}
-            active={false}
-          />
+          <ProjectSelector project={project} active={false} />
           <TextField
             onChange={(e) => setComment(e.target.value)}
             value={comment}
