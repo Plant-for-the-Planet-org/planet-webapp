@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement } from 'react';
 import i18next from '../../../../i18n';
 
 import DashboardView from '../../common/Layout/DashboardView';
@@ -17,16 +17,15 @@ export default function BulkCodes({
   step,
 }: BulkCodesProps): ReactElement | null {
   const { t, ready } = useTranslation(['bulkCodes']);
-  const [project, setProject] = useState<string | null>(null);
 
   const renderStep = () => {
     switch (step) {
       case 0:
         return <CreationMethodForm />;
       case 1:
-        return <SelectProjectForm project={project} setProject={setProject} />;
+        return <SelectProjectForm />;
       case 2:
-        return <IssueCodesForm project={project} />;
+        return <IssueCodesForm/>;
       default:
         return <CreationMethodForm />;
     }

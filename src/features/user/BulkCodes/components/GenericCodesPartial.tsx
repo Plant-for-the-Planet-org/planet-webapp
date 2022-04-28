@@ -1,6 +1,7 @@
 import { TextField, styled } from 'mui-latest';
 import { ReactElement } from 'react';
 import i18next from '../../../../../i18n';
+import { SetState } from '../../../common/Layout/BulkCodeContext';
 
 const { useTranslation } = i18next;
 
@@ -9,18 +10,44 @@ const InlineFormGroup = styled('div')({
   gap: 16,
 });
 
-interface GenericCodesProps {}
+interface GenericCodesProps {
+  codeQuantity: string;
+  unit: string;
+  occasion: string;
+  setCodeQuantity: SetState<string>;
+  setUnit: SetState<string>;
+  setOccasion: SetState<string>;
+}
 
-const GenericCodesPartial = ({}: GenericCodesProps): ReactElement | null => {
+const GenericCodesPartial = ({
+  codeQuantity,
+  unit,
+  occasion,
+  setCodeQuantity,
+  setUnit,
+  setOccasion,
+}: GenericCodesProps): ReactElement | null => {
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
   if (ready) {
     return (
       <>
         <InlineFormGroup>
-          <TextField label={t('bulkCodes:unitsPerCode')}></TextField>
-          <TextField label={t('bulkCodes:totalNumberOfCodes')}></TextField>
+          <TextField
+            value={unit}
+            onChange={(e) => setUnit(e.target.value)}
+            label={t('bulkCodes:unitsPerCode')}
+          ></TextField>
+          <TextField
+            value={codeQuantity}
+            onChange={(e) => setCodeQuantity(e.target.value)}
+            label={t('bulkCodes:totalNumberOfCodes')}
+          ></TextField>
         </InlineFormGroup>
-        <TextField label={t('bulkCodes:occasion')}></TextField>
+        <TextField
+          value={occasion}
+          onChange={(e) => setOccasion(e.target.value)}
+          label={t('bulkCodes:occasion')}
+        ></TextField>
       </>
     );
   }

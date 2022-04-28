@@ -6,9 +6,13 @@ import {
   FC,
   Dispatch,
   SetStateAction,
+  useEffect,
+  useCallback,
 } from 'react';
-
+import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { BulkCodeMethods } from '../../../utils/constants/bulkCodeMethods';
+import { ErrorHandlingContext } from './ErrorHandlingContext';
+import { UserPropsContext } from './UserPropsContext';
 
 interface PlanetCashAccount {
   guid: string;
@@ -45,7 +49,7 @@ interface BulkGiftImportData {
 
 type BulkGiftData = BulkGiftGenericData | BulkGiftImportData;
 
-type SetState<T> = Dispatch<SetStateAction<T>>;
+export type SetState<T> = Dispatch<SetStateAction<T>>;
 
 interface BulkCodeContextInterface {
   bulkMethod: BulkCodeMethods.GENERIC | BulkCodeMethods.IMPORT | null;
@@ -65,6 +69,9 @@ interface BulkCodeContextInterface {
 const BulkCodeContext = createContext<BulkCodeContextInterface | null>(null);
 
 export const BulkCodeProvider: FC = ({ children }) => {
+  const { handleError } = useContext(ErrorHandlingContext);
+  const { token, contextLoaded } = useContext(UserPropsContext);
+
   const [bulkMethod, setBulkMethod] = useState<
     BulkCodeMethods.GENERIC | BulkCodeMethods.IMPORT | null
   >(null);
@@ -73,6 +80,33 @@ export const BulkCodeProvider: FC = ({ children }) => {
   const [project, setProject] = useState<Project | null>(null);
   const [bulkGiftData, setBulkGiftData] = useState<BulkGiftData | null>(null);
   const [totalUnits, setTotalUnits] = useState<number | null>(null);
+
+  const fetchProfile = useCallback(async () => {
+    if (contextLoaded && token) {
+      try {
+        const { planetCash } = await getAuthenticatedRequest(
+          '/app/profile',
+          token,
+          {},
+          handleError
+        );
+
+        if (planetCash) {
+          setPlanetCashAccount({
+            guid: planetCash.account,
+            country: planetCash.country,
+            currency: planetCash.currency,
+          });
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }, [token, contextLoaded]);
+
+  useEffect(() => {
+    fetchProfile();
+  }, [fetchProfile]);
 
   const value: BulkCodeContextInterface | null = useMemo(
     () => ({
