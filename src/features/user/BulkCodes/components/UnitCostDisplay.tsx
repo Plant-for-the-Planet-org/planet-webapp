@@ -6,7 +6,8 @@ const { useTranslation } = i18next;
 
 const UnitCostDisplayGroup = styled('div')({
   display: 'flex',
-  gap: 16,
+  justifyContent: 'space-between',
+  columnGap: '10px',
 });
 
 interface UnitCostDisplayProps {

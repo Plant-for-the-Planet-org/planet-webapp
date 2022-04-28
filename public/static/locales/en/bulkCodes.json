@@ -36,5 +36,7 @@
 	"unitsPerCode": "Units per Code",
 	"totalNumberOfCodes": "Total Number of Codes",
 	"occasion": "Occasion",
-	"total": "Total"
+	"total": "Total",
+	"unitsRequired": "Unit per code is a required",
+	"quantityCodesRequired":"Code Quantity is a required"
 }
