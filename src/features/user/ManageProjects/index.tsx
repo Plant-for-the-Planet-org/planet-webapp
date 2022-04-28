@@ -48,27 +48,27 @@ export default function ManageProjects({ GUID, token, project }: any) {
     if (router.query.purpose) return;
     switch (val) {
       case 1:
-        router.push(`/profile/projects/${projectGUID}/basic-details`);
+        router.push(`/profile/projects/${projectGUID}?type=basic-details`);
 
         break;
       case 2:
-        router.push(`/profile/projects/${projectGUID}/media`);
+        router.push(`/profile/projects/${projectGUID}?type=media`);
 
         break;
       case 3:
-        router.push(`/profile/projects/${projectGUID}/detail-analysis`);
+        router.push(`/profile/projects/${projectGUID}?type=detail-analysis`);
 
         break;
       case 4:
-        router.push(`/profile/projects/${projectGUID}/project-sites`);
+        router.push(`/profile/projects/${projectGUID}?type=project-sites`);
 
         break;
       case 5:
-        router.push(`/profile/projects/${projectGUID}/project-spendings`);
+        router.push(`/profile/projects/${projectGUID}?type=project-spendings`);
 
         break;
       case 6:
-        router.push(`/profile/projects/${projectGUID}/review`);
+        router.push(`/profile/projects/${projectGUID}?type=review`);
 
         break;
       default:
@@ -227,7 +227,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
   }, [router]);
 
   React.useEffect(() => {
-    switch (router.query.screen) {
+    switch (router.query.type) {
       case 'basic-details':
         setTabSelected(1);
         break;

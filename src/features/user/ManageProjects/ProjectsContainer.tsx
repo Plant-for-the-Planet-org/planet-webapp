@@ -141,7 +141,7 @@ function SingleProject({ project }: any) {
         <Link href={'/' + project.id}>
           <button className={styles.secondaryLink}>{t('common:view')}</button>
         </Link>
-        <Link href={`/profile/projects/${project.id}/basic-details`}>
+        <Link href={`/profile/projects/${project.id}?type=basic-details`}>
           <button className={styles.primaryLink}>{t('common:edit')}</button>
         </Link>
       </div>

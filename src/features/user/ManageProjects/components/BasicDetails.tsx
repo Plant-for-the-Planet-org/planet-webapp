@@ -293,6 +293,12 @@ export default function BasicDetails({
     }
   }, [router]);
 
+  React.useEffect(() => {
+    if (projectGUID) {
+      router.push(`/profile/projects/${projectGUID}?type=basic-details`);
+    }
+  }, [projectGUID]);
+
   // const treeCost = watch('treeCost');
 
   React.useEffect(() => {
@@ -318,30 +324,31 @@ export default function BasicDetails({
               latitude: projectDetails.geoLatitude,
               longitude: projectDetails.geoLongitude,
             }
-          : {
-              purpose: projectDetails.purpose,
-              name: projectDetails.name,
-              slug: projectDetails.slug,
-              description: projectDetails.description,
-              acceptDonations: projectDetails.acceptDonations,
-              unitCost: getFormattedNumber(
-                i18n.language,
-                projectDetails.unitCost || 0
-              ),
-              currency: projectDetails.currency,
-              latitude: projectDetails.geoLatitude,
-              longitude: projectDetails.geoLongitude,
-              ecosystems: projectDetails?.projectMeta?.ecosystems,
-              projectMeta: {
-                ecosystems: projectDetails.ecosystems,
-                impacts: {
-                  benefits: projectDetails.benefits,
-                  coBenefits: projectDetails.coBenefits,
-                  ecologicalBenefits: projectDetails.ecologicalBenefits,
-                  socialBenefits: projectDetails.socialbenefits,
-                },
-              },
-            };
+          : '';
+      // : {
+      //     purpose: projectDetails.purpose,
+      //     name: projectDetails.name,
+      //     slug: projectDetails.slug,
+      //     description: projectDetails.description,
+      //     acceptDonations: projectDetails.acceptDonations,
+      //     unitCost: getFormattedNumber(
+      //       i18n.language,
+      //       projectDetails.unitCost || 0
+      //     ),
+      //     currency: projectDetails.currency,
+      //     latitude: projectDetails.geoLatitude,
+      //     longitude: projectDetails.geoLongitude,
+      //     ecosystems: projectDetails?.projectMeta?.ecosystems,
+      //     projectMeta: {
+      //       ecosystems: projectDetails.ecosystems,
+      //       impacts: {
+      //         benefits: projectDetails.benefits,
+      //         coBenefits: projectDetails.coBenefits,
+      //         ecologicalBenefits: projectDetails.ecologicalBenefits,
+      //         socialBenefits: projectDetails.socialbenefits,
+      //       },
+      //     },
+      //   };
       if (projectDetails.geoLongitude && projectDetails.geoLatitude) {
         setProjectCoords([
           projectDetails.geoLongitude,
@@ -385,7 +392,6 @@ export default function BasicDetails({
               : undefined,
             currency: 'EUR',
             visitorAssistance: data.visitorAssistance,
-            // publish: data.publish,
             enablePlantLocations: data.enablePlantLocations,
           }
         : {
@@ -456,7 +462,6 @@ export default function BasicDetails({
           setProjectGUID(res.id);
           setProjectDetails(res);
           setIsUploadingData(false);
-          handleNext();
         } else {
           if (res.code === 404) {
             setIsUploadingData(false);
@@ -809,7 +814,6 @@ export default function BasicDetails({
                   .catch((error) => {
                     console.log(`error`, error);
                   });
-                console.log(`latLong`, latLong.latitude, latLong.longitude);
                 setViewPort({
                   ...viewport,
                   latitude: event.lngLat[1],

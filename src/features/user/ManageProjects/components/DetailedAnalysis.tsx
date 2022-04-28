@@ -181,7 +181,7 @@ export default function DetailedAnalysis({
           degradationCause: '',
           longTermPlan: '',
           plantingSeasons: '',
-          whyThisSite: '',
+          motivation: '',
         }
       : {
           employeesCount: '',
@@ -198,7 +198,7 @@ export default function DetailedAnalysis({
           longTermPlan: '',
           endangeredSpecies: '',
           addAnotherSpecies: '',
-          whyThisSite: '',
+          motivation: '',
         };
 
   const { register, handleSubmit, errors, control, reset, setValue, watch } =
@@ -287,13 +287,19 @@ export default function DetailedAnalysis({
 
   // Use Effect to hide error message after 10 seconds
 
+  console.log(projectDetails);
+
   React.useEffect(() => {
     if (projectDetails) {
       const detailedAnalysis =
         purpose === 'trees'
           ? {
-              yearAbandoned: projectDetails.yearAbandoned
-                ? new Date(new Date().setFullYear(projectDetails.yearAbandoned))
+              yearAbandoned: projectDetails.projectMeta.yearAbandoned
+                ? new Date(
+                    new Date().setFullYear(
+                      projectDetails.projectMeta.yearAbandoned
+                    )
+                  )
                 : new Date(),
               firstTreePlanted: projectDetails.firstTreePlanted
                 ? new Date(projectDetails.firstTreePlanted)
@@ -307,9 +313,11 @@ export default function DetailedAnalysis({
                     new Date().setFullYear(projectDetails.acquisitionYear)
                   )
                 : new Date(),
-              degradationYear: projectDetails.degradationYear
+              degradationYear: projectDetails.projectMeta.degradationYear
                 ? new Date(
-                    new Date().setFullYear(projectDetails.degradationYear)
+                    new Date().setFullYear(
+                      projectDetails.projectMeta.degradationYear
+                    )
                   )
                 : new Date(),
               degradationCause: projectDetails.projectMeta.degradationCause,
@@ -342,6 +350,8 @@ export default function DetailedAnalysis({
                 motivation: projectDetails.motivation,
               },
             };
+
+      console.log(projectDetails);
 
       // set planting seasons
       if (
