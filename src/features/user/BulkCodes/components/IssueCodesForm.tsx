@@ -1,24 +1,32 @@
 import React, { ReactElement, useState } from 'react';
 import i18next from '../../../../../i18n';
-import { Button, TextField } from 'mui-latest';
+import { Button, TextField, styled } from 'mui-latest';
+import { useForm, Controller, ControllerRenderProps } from 'react-hook-form';
 import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
+import styles from '../BulkCodes.module.scss';
 
 import BulkCodesForm from './BulkCodesForm';
 import ProjectSelector from './ProjectSelector';
-import GenericCodesPartial from './GenericCodesPartial';
 import BulkGiftTotal from './BulkGiftTotal';
 
 const { useTranslation } = i18next;
+
+const InlineFormGroup = styled('div')({
+  display: 'flex',
+  justifyContent: 'space-between',
+  columnGap: '10px',
+});
 
 interface IssueCodesFormProps {}
 
 const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
   const { project } = useBulkCode();
-  const [comment, setComment] = useState<string>('');
-  const [codeQuantity, setCodeQuantity] = useState<string>('');
-  const [unit, setUnit] = useState<string>('');
-  const [occasion, setOccasion] = useState<string>('');
+  const { control, handleSubmit, errors, register } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
 
   if (ready) {
     return (
@@ -28,20 +36,77 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             project={project?.slug.label as string}
             active={false}
           />
-          <TextField
-            onChange={(e) => setComment(e.target.value)}
-            value={comment}
-            label={t('bulkCodes:labelComment')}
-          ></TextField>
-          <GenericCodesPartial
-            {...{
-              codeQuantity,
-              unit,
-              occasion,
-              setCodeQuantity,
-              setUnit,
-              setOccasion,
-            }}
+          <Controller
+            name="comment"
+            control={control}
+            defaultValue=""
+            render={({ onChange, value }) => (
+              <TextField
+                onChange={onChange}
+                value={value}
+                label={t('bulkCodes:labelComment')}
+              />
+            )}
+          />
+
+          <InlineFormGroup>
+            <div style={{ width: '100%' }}>
+              <Controller
+                name="units"
+                control={control}
+                rules={{ required: true }}
+                render={(props: ControllerRenderProps) => (
+                  <TextField
+                    {...props}
+                    onChange={props.onChange}
+                    value={props.value}
+                    label={t('bulkCodes:unitsPerCode')}
+                    onInput={(e) => {
+                      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                    }}
+                  />
+                )}
+              />
+              {errors.units && (
+                <span className={styles.formErrors}>
+                  {t('bulkCodes:unitsRequired')}
+                </span>
+              )}
+            </div>
+            <div style={{ width: '100%' }}>
+              <Controller
+                name="codeQuantity"
+                control={control}
+                rules={{ required: true }}
+                render={(props: ControllerRenderProps) => (
+                  <TextField
+                    {...props}
+                    onChange={props.onChange}
+                    value={props.value}
+                    label={t('bulkCodes:totalNumberOfCodes')}
+                    onInput={(e) => {
+                      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                    }}
+                  />
+                )}
+              />
+              {errors.codeQuantity && (
+                <span className={styles.formErrors}>
+                  {t('bulkCodes:quantityCodesRequired')}
+                </span>
+              )}
+            </div>
+          </InlineFormGroup>
+          <Controller
+            name="occasion"
+            control={control}
+            render={({ onChange, value }) => (
+              <TextField
+                onChange={onChange}
+                value={value}
+                label={t('bulkCodes:occasion')}
+              />
+            )}
           />
           <BulkGiftTotal amount={0} currency={'USD'} units={0} unit={'tree'} />
           {/* TODOO translation and pluralization */}
@@ -50,8 +115,8 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
           variant="contained"
           color="primary"
           className="formButton"
-          /* disabled={project === null}
-          onClick={undefined} */
+          //  disabled={project === null}
+          onClick={handleSubmit(onSubmit)}
         >
           {t('bulkCodes:issueCodes')}
         </Button>

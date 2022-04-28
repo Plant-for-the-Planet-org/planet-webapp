@@ -58,3 +58,13 @@
 /* input[type='radio'] {
     display: none;
   } */
+
+  .formErrors {
+    // position: absolute;
+    font-family: $primaryFontFamily;
+    font-size: $fontXSmall;
+    color: $dangerColor;
+    margin-left: 6px;
+    margin-top: 6px;
+    max-width: 320px;
+  }
