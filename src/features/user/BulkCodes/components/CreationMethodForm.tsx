@@ -71,7 +71,7 @@ CreationMethodFormProps): ReactElement | null => {
         setTotalUnits(null);
       }
       setBulkMethod(method);
-      router.push(`/profile/bulk-codes/${bulkMethod}`);
+      router.push(`/profile/bulk-codes/${method}`);
     };
 
     return (
