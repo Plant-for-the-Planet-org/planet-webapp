@@ -6,14 +6,10 @@ import React, {
 } from 'react';
 import { Autocomplete, TextField, styled } from 'mui-latest';
 import i18next from '../../../../../i18n';
+import bulkCodeProjects from '../bulkCodeProjects.json';
 
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
-
-const projects = [
-  { label: 'Yucatan Reforestation' },
-  { label: 'Pench Reforestation' },
-  { label: 'Leipzig Reforestation' },
-];
+import { Project } from '../../../common/Layout/BulkCodeContext';
 
 const { useTranslation } = i18next;
 
@@ -26,33 +22,35 @@ const MuiAutocomplete = styled(Autocomplete)((/* { theme } */) => {
 });
 
 interface ProjectSelectAutocompleteProps {
-  project: string | null;
-  handleProjectChange?: (project: string | null) => void;
+  project: Project | null;
+  handleProjectChange?: (project: Project | null) => void;
   active: boolean;
 }
 
 const ProjectSelectAutocomplete = ({
-  project = '',
+  project,
   handleProjectChange,
   active = true,
 }: ProjectSelectAutocompleteProps): ReactElement | null => {
-  const [value, setValue] = useState<string | null>(project);
+  const [localProject, setLocalProject] = useState<Project | null>(project);
   const { t, ready } = useTranslation(['bulkCodes']);
 
   useEffect(() => {
     if (handleProjectChange) {
-      handleProjectChange(value);
+      handleProjectChange(localProject);
     }
-  }, [value]);
+  }, [localProject]);
 
   if (ready) {
     return (
       <MuiAutocomplete
         popupIcon={SearchIcon({})}
-        options={projects}
-        value={value}
+        options={bulkCodeProjects}
+        getOptionLabel={(option: any) => option.name}
+        //TODOO Have left option as type: any here.
+        value={localProject}
         onChange={(event: SyntheticEvent, newValue: unknown) =>
-          setValue(newValue as string | null)
+          setLocalProject(newValue as Project | null)
         }
         renderInput={(params) => (
           <TextField

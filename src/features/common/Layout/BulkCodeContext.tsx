@@ -14,16 +14,17 @@ import { BulkCodeMethods } from '../../../utils/constants/bulkCodeMethods';
 import { ErrorHandlingContext } from './ErrorHandlingContext';
 import { UserPropsContext } from './UserPropsContext';
 
-interface PlanetCashAccount {
+export interface PlanetCashAccount {
   guid: string;
   currency: string;
   country: string;
 }
 
-interface Project {
+export interface Project {
   guid: string;
   slug: string;
-  unitCost: string;
+  name: string;
+  unitCost: number;
   currency: string;
   unit: string;
   purpose: string;
