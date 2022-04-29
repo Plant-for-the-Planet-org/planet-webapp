@@ -69,7 +69,7 @@ const ProjectSelector = ({
       />
       <UnitCostDisplay
         unitCost={project ? project.unitCost : '-'}
-        currency={project ? project.currency : ''}
+        currency={planetCashAccount ? planetCashAccount.currency : ''}
         unit={project ? project.unit : '-'}
       />
     </>
