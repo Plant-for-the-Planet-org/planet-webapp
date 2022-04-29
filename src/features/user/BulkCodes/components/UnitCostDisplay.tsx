@@ -11,9 +11,9 @@ const UnitCostDisplayGroup = styled('div')({
 });
 
 interface UnitCostDisplayProps {
-  unitCost: number;
+  unitCost: number | '-';
   currency: string;
-  unit: 'tree' | 'm2' | 'ha';
+  unit: string;
 }
 
 const UnitCostDisplay = ({
