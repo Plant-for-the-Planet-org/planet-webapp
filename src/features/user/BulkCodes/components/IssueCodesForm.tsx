@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement } from 'react';
 import i18next from '../../../../../i18n';
 import { Button, TextField, styled } from 'mui-latest';
 import { useForm, Controller, ControllerRenderProps } from 'react-hook-form';
@@ -22,7 +22,7 @@ interface IssueCodesFormProps {}
 const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
   const { project } = useBulkCode();
-  const { control, handleSubmit, errors, register } = useForm();
+  const { control, handleSubmit, errors } = useForm();
 
   const onSubmit = (data) => {
     console.log(data);
