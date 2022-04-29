@@ -64,6 +64,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
                     onInput={(e) => {
                       e.target.value = e.target.value.replace(/[^0-9]/g, '');
                     }}
+                    error={errors.units}
                   />
                 )}
               />
@@ -87,6 +88,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
                     onInput={(e) => {
                       e.target.value = e.target.value.replace(/[^0-9]/g, '');
                     }}
+                    error={errors.codeQuantity}
                   />
                 )}
               />
