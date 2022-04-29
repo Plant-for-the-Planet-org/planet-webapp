@@ -81,7 +81,7 @@ export async function getAccountInfo(token: any): Promise<any> {
   return response;
 }
 
-export async function getRequest(
+export async function getRequest<T>(
   url: any,
   errorHandler?: Function,
   redirect?: string,
@@ -92,7 +92,7 @@ export async function getRequest(
   const lang = localStorage.getItem('language') || 'en';
   const query: any = { ...queryParams, locale: lang };
   const queryString = getQueryString(query);
-  const queryStringSuffix = queryString ? '?' + queryString : ''
+  const queryStringSuffix = queryString ? '?' + queryString : '';
   await fetch(`${process.env.API_ENDPOINT}${url}${queryStringSuffix}`, {
     method: 'GET',
     headers: {
@@ -111,7 +111,7 @@ export async function getRequest(
       handleApiError(res.status, errorHandler, redirect);
     })
     .catch((err) => console.error(`Unhandled Exception: ${err}`));
-  return result;
+  return result as unknown as T;
 }
 
 export async function getAuthenticatedRequest(
@@ -127,7 +127,7 @@ export async function getAuthenticatedRequest(
   const lang = localStorage.getItem('language') || 'en';
   const query: any = { ...queryParams };
   const queryString = getQueryString(query);
-  const queryStringSuffix = queryString ? '?' + queryString : ''
+  const queryStringSuffix = queryString ? '?' + queryString : '';
   await fetch(`${process.env.API_ENDPOINT}${url}${queryStringSuffix}`, {
     method: 'GET',
     headers: {

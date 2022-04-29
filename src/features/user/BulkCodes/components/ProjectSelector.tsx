@@ -28,32 +28,18 @@ const ProjectSelector = ({
   // const { t, ready } = useTranslation(['common', 'bulkCodes']);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
-  const fetchProjectDetails = async (
-    guid: string
-  ): Promise<
-    | {
-        properties: {
-          currency: string;
-          unitCost: number;
-          purpose: string;
-        };
-      }
-    | undefined
-  > => {
-    try {
-      const project = await getRequest(
-        `/app/projects/${guid}`,
-        handleError,
-        undefined,
-        {
-          _scope: 'map',
-          currency: planetCashAccount?.currency || 'USD',
-        }
-      );
-      return project;
-    } catch (err) {
-      console.log(err);
-    }
+  const fetchProjectDetails = async (guid: string) => {
+    const project = await getRequest<{
+      properties: {
+        currency: string;
+        unitCost: number;
+        purpose: string;
+      };
+    }>(`/app/projects/${guid}`, handleError, undefined, {
+      _scope: 'map',
+      currency: planetCashAccount?.currency || 'USD',
+    });
+    return project;
   };
 
   const handleProjectChange = async (project: Project | null) => {
