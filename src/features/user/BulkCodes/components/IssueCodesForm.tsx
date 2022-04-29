@@ -22,7 +22,10 @@ interface IssueCodesFormProps {}
 const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
   const { project, planetCashAccount } = useBulkCode();
-  const { control, handleSubmit, errors } = useForm();
+  const { control, handleSubmit, errors, watch } = useForm();
+
+  const codeQuantity = watch('codeQuantity', 0);
+  const unitsPerCode = watch('unitsPerCode', 0);
 
   const onSubmit = (data) => {
     console.log(data);
@@ -53,7 +56,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
           <InlineFormGroup>
             <div style={{ width: '100%' }}>
               <Controller
-                name="units"
+                name="unitsPerCode"
                 control={control}
                 rules={{ required: true }}
                 render={(props: ControllerRenderProps) => (
@@ -111,7 +114,16 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
               />
             )}
           />
-          <BulkGiftTotal amount={0} currency={'USD'} units={0} unit={'tree'} />
+          <BulkGiftTotal
+            amount={
+              project
+                ? project.unitCost * codeQuantity * unitsPerCode
+                : undefined
+            }
+            currency={planetCashAccount?.currency}
+            units={project ? codeQuantity * unitsPerCode : undefined}
+            unit={project?.unit}
+          />
           {/* TODOO translation and pluralization */}
         </div>
         <Button

@@ -5,17 +5,17 @@ import i18next from '../../../../../i18n';
 const { useTranslation } = i18next;
 
 interface BulkGiftTotalProps {
-  amount: number;
-  currency: string;
-  units: number;
-  unit: 'tree' | 'm2' | 'ha';
+  amount?: number;
+  currency?: string;
+  units?: number;
+  unit?: string;
 }
 
 const BulkGiftTotal = ({
-  amount = 0,
-  currency = 'USD',
-  units = 0,
-  unit = 'tree',
+  amount,
+  currency,
+  units,
+  unit,
 }: BulkGiftTotalProps): ReactElement | null => {
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
 
