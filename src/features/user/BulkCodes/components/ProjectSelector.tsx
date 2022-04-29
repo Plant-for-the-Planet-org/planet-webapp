@@ -34,6 +34,7 @@ const ProjectSelector = ({
         currency: string;
         unitCost: number;
         purpose: string;
+        slug: string;
       };
     }>(`/app/projects/${guid}`, handleError, undefined, {
       _scope: 'map',
@@ -52,6 +53,7 @@ const ProjectSelector = ({
         project.unitCost = projectDetails.properties.unitCost;
         project.unit = 'tree';
         project.purpose = projectDetails.properties.purpose;
+        project.slug = projectDetails.properties.slug;
       }
     }
     // set context
