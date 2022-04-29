@@ -65,10 +65,12 @@ CreationMethodFormProps): ReactElement | null => {
 
     const handleFormSubmit = () => {
       // Clear form data stored in context if method is changed
-      if (method !== bulkMethod) {
-        setProject(null);
-        setBulkGiftData(null);
-        setTotalUnits(null);
+      if (bulkMethod) {
+        if (method !== bulkMethod) {
+          setProject(null);
+          setBulkGiftData(null);
+          setTotalUnits(null);
+        }
       }
       setBulkMethod(method);
       router.push(`/profile/bulk-codes/${method}`);
