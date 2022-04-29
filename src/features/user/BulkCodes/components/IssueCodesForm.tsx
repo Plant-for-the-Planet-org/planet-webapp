@@ -21,7 +21,7 @@ interface IssueCodesFormProps {}
 
 const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
-  const { project } = useBulkCode();
+  const { project, planetCashAccount } = useBulkCode();
   const { control, handleSubmit, errors } = useForm();
 
   const onSubmit = (data) => {
@@ -32,7 +32,11 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
     return (
       <BulkCodesForm className="IssueCodesForm">
         <div className="inputContainer">
-          <ProjectSelector project={project} active={false} />
+          <ProjectSelector
+            project={project}
+            active={false}
+            planetCashAccount={planetCashAccount}
+          />
           <Controller
             name="comment"
             control={control}

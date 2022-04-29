@@ -14,7 +14,7 @@ import UnitCostDisplay from './UnitCostDisplay';
 
 interface ProjectSelectorProps {
   project: Project | null;
-  setProject: (project: Project | null) => void;
+  setProject?: (project: Project | null) => void;
   active?: boolean;
   planetCashAccount: PlanetCashAccount | null;
 }
