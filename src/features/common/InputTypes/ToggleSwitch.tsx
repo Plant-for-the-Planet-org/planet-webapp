@@ -15,7 +15,7 @@ export default function ToggleSwitch(props: any) {
   return (
     <ToggleSwitch
       checked={props.checked}
-      onChange={props.onChange}
+      onClick={props.onChange}
       id={props.id}
       inputProps={props.inputProps}
       name={props.name}
