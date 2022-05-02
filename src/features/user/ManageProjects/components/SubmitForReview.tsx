@@ -83,6 +83,7 @@ function SubmitForReview({
             <button
               id={'backArrowSubmitR'}
               className={`${styles.formFieldHalf}`}
+              style={{ width: '234px' }}
             >
               <button onClick={handleBack} className="secondaryButton">
                 <BackArrow />
@@ -150,9 +151,10 @@ function SubmitForReview({
             <button
               id={'backArrowSubmitR'}
               className={`${styles.formFieldHalf}`}
+              style={{ width: '234px' }}
             >
               <button onClick={handleBack} className="secondaryButton">
-                <BackArrow />
+                {/* <BackArrow /> */}
                 <p>{t('manageProjects:backToSpending')}</p>
               </button>
             </button>

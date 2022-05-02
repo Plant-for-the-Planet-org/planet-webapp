@@ -753,7 +753,11 @@ function EditSite({
 
           <div className={styles.formField}>
             <div className={`${styles.formFieldHalf}`}>
-              <button onClick={handleModalClose} className="secondaryButton">
+              <button
+                onClick={handleModalClose}
+                // className="secondaryButton"
+                style={{ width: '234px' }}
+              >
                 <BackArrow />
                 <p>{t('manageProjects:backToSites')}</p>
               </button>

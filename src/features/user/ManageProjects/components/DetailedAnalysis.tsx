@@ -287,8 +287,6 @@ export default function DetailedAnalysis({
 
   // Use Effect to hide error message after 10 seconds
 
-  console.log(projectDetails);
-
   React.useEffect(() => {
     if (projectDetails) {
       const detailedAnalysis =
