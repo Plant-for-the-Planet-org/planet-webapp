@@ -293,12 +293,6 @@ export default function BasicDetails({
     }
   }, [router]);
 
-  React.useEffect(() => {
-    if (projectGUID) {
-      router.push(`/profile/projects/${projectGUID}?type=basic-details`);
-    }
-  }, [projectGUID]);
-
   // const treeCost = watch('treeCost');
 
   React.useEffect(() => {
@@ -434,7 +428,7 @@ export default function BasicDetails({
           setErrorMessage('');
           setProjectDetails(res);
           setIsUploadingData(false);
-          // handleNext();
+          handleNext();
         } else {
           if (res.code === 404) {
             setIsUploadingData(false);
@@ -461,7 +455,9 @@ export default function BasicDetails({
           setErrorMessage('');
           setProjectGUID(res.id);
           setProjectDetails(res);
+          router.push(`/profile/projects/${res.id}?type=media`);
           setIsUploadingData(false);
+          // handleNext();
         } else {
           if (res.code === 404) {
             setIsUploadingData(false);
