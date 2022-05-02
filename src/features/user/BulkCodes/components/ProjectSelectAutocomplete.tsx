@@ -36,6 +36,10 @@ const ProjectSelectAutocomplete = ({
   const { t, ready } = useTranslation(['bulkCodes']);
 
   useEffect(() => {
+    setLocalProject(project);
+  }, [project]);
+
+  useEffect(() => {
     if (handleProjectChange) {
       handleProjectChange(localProject);
     }
@@ -47,6 +51,7 @@ const ProjectSelectAutocomplete = ({
         popupIcon={SearchIcon({})}
         options={bulkCodeProjects}
         getOptionLabel={(option: any) => option.name}
+        isOptionEqualToValue={(option: any, value) => option.name === value}
         //TODOO Have left option as type: any here.
         value={localProject}
         onChange={(event: SyntheticEvent, newValue: unknown) =>

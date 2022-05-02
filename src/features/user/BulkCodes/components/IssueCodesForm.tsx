@@ -109,6 +109,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             render={({ onChange, value }) => (
               <TextField
                 onChange={onChange}
+                defaultValue=""
                 value={value}
                 label={t('bulkCodes:occasion')}
               />
