@@ -39,9 +39,36 @@ function SubmitForReview({
   });
 
   function UnderReviewComponent() {
+    const { control } = useForm({ mode: 'onBlur' });
+    const [publish, setPublish] = React.useState(projectDetails.publish);
+
     return (
       <div className={styles.stepContainer}>
         <div>
+          <div
+            className={styles.formFieldLarge}
+            style={{ width: '320px', marginLeft: '138px' }}
+          >
+            <div
+              className={`${styles.formFieldRadio}`}
+              style={{ marginLeft: '100px' }}
+            >
+              <label
+                htmlFor={'publish'}
+                style={{ cursor: 'pointer' }}
+                data-test-id="publishProject"
+              >
+                {t('manageProjects:publishProject')}
+              </label>
+
+              <ToggleSwitch
+                checked={publish}
+                onChange={(e) => handlePublishChange(e.target.checked)}
+                id="publish"
+                inputProps={{ 'aria-label': 'secondary checkbox' }}
+              />
+            </div>
+          </div>
           <div className={styles.formFieldLarge}>
             <div style={{ height: '240px', width: '100%' }}>
               <UnderReview />
@@ -52,7 +79,6 @@ function SubmitForReview({
               {t('manageProjects:projectUnderReview')}
             </p>
           </div>
-
           <div className={styles.formField}>
             <button
               id={'backArrowSubmitR'}
@@ -83,8 +109,14 @@ function SubmitForReview({
           alignItems: 'center',
         }}
       >
-        <div className={styles.formFieldLarge} style={{ width: '320px' }}>
-          <div className={`${styles.formFieldRadio}`}>
+        <div
+          className={styles.formFieldLarge}
+          style={{ width: '320px', marginRight: '70px' }}
+        >
+          <div
+            className={`${styles.formFieldRadio}`}
+            style={{ marginLeft: '100px' }}
+          >
             <label
               htmlFor={'publish'}
               style={{ cursor: 'pointer' }}
@@ -101,6 +133,7 @@ function SubmitForReview({
             />
           </div>
         </div>
+
         <div>
           <div className={styles.formFieldLarge}>
             <div style={{ height: '240px', width: '100%' }}>
