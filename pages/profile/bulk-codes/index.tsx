@@ -8,11 +8,11 @@ const { useTranslation } = i18next;
 
 interface Props {}
 export default function BulkCodePage({}: Props): ReactElement {
-  const { t } = useTranslation('me');
+  const { t, ready } = useTranslation('me');
   return (
     <UserLayout>
       <Head>
-        <title>{t('bulkCodesTitle')}</title>
+        <title>{ready ? t('bulkCodesTitle') : ''}</title>
       </Head>
       <BulkCodes step={0} />
     </UserLayout>

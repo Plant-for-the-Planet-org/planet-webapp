@@ -33,7 +33,7 @@ export default function BulkCodeSelectProjectPage({}: Props): ReactElement {
   return (
     <UserLayout>
       <Head>
-        <title>{t('bulkCodesTitleStep2')}</title>
+        <title>{ready ? t('bulkCodesTitleStep2') : ''}</title>
       </Head>
       <BulkCodes step={1} />
     </UserLayout>

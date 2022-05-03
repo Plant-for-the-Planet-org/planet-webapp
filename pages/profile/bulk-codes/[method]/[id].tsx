@@ -76,7 +76,7 @@ export default function BulkCodeIssueCodesPage({}: Props): ReactElement {
   return (
     <UserLayout>
       <Head>
-        <title>{t('bulkCodesTitleStep3')}</title>
+        <title>{ready ? t('bulkCodesTitleStep3') : ''}</title>
       </Head>
       <BulkCodes step={2} />
     </UserLayout>
