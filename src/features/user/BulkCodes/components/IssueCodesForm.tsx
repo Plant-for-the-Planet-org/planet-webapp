@@ -27,8 +27,63 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const codeQuantity = watch('codeQuantity', 0);
   const unitsPerCode = watch('unitsPerCode', 0);
 
-  const onSubmit = (data) => {
+  const getMockDonation = () => {
+    return new Promise((resolve, reject) => {
+      const shouldResolve = true;
+
+      if (shouldResolve) {
+        setTimeout(() => {
+          resolve({
+            id: 'don_0HJcA2pIFHai7lb2BHQejdzs',
+            treeCount: 100.0,
+            token: 'G79STO511ASU',
+            metadata: null,
+            isRecurrent: false,
+            tenant: 'ten_I9TW3ncG',
+            project: {
+              id: 'proj_WZkyugryh35sMmZMmXCwq7YY',
+              name: 'Yucatán Restoration',
+              country: 'MX',
+              purpose: 'trees',
+            },
+            gift: {
+              id: 'bgft_nki37Kzi6dWbHdqOkkJoA1v4',
+              type: 'code-bulk',
+              value: 100,
+              status: 'registered',
+            },
+            paymentDate: '2022-05-03 04:58:22',
+            signupPending: false,
+            hasPublicProfile: true,
+            comment: 'Trees',
+            uid: '000815737',
+            donorAlias: null,
+            amount: 100.0,
+            currency: 'EUR',
+            frequency: null,
+            gateway: 'planet-cash',
+            paymentStatus: 'paid',
+            taxDeductionCountry: null,
+            quantity: 100.0,
+          });
+        }, 2000);
+      } else {
+        reject(new Error('Error occurred while making donation'));
+      }
+    });
+  };
+
+  const onSubmit = async (data) => {
+    // bulkGiftData.value = unitsPerCode * unitCost
     console.log(data);
+
+    // Mocking the API call
+    try {
+      const res = await getMockDonation();
+      console.log(res);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   if (ready) {
@@ -118,7 +173,9 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
           <BulkGiftTotal
             amount={
               project
-                ? project.unitCost * codeQuantity * unitsPerCode
+                ? `${(project.unitCost * codeQuantity * unitsPerCode).toFixed(
+                    2
+                  )}`
                 : undefined
             }
             currency={planetCashAccount?.currency}
