@@ -602,6 +602,7 @@ input:-webkit-autofill {
 
       > .MuiButtonBase-root {
         padding-bottom: 0%;
+        align-items:baseline;
 
         > .MuiTab-wrapper:active {
           color: $primaryColor;

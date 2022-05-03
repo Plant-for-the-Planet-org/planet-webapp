@@ -755,7 +755,7 @@ function EditSite({
             <div className={`${styles.formFieldHalf}`}>
               <button
                 onClick={handleModalClose}
-                // className="secondaryButton"
+                className="secondaryButton"
                 style={{ width: '234px' }}
               >
                 <BackArrow />

@@ -51,12 +51,19 @@ export default function ProjectsContainer({}: any) {
             {t('manageProjects:descriptionForManageProjects')}
           </div>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 14,
+            marginLeft: '100px',
+          }}
+        >
           <Link href="/profile/projects/new-project">
             <button
               // id={'addProjectBut'}
               className="primaryButton"
-              style={{ width: '89px' }}
+              style={{ width: '175px' }}
             >
               {t('manageProjects:addProject')}
             </button>

@@ -67,6 +67,7 @@ export default function AddProjectType(): ReactElement {
         <Head>
           <title>{t('manageProjects:addNewProject')}</title>
         </Head>
+
         <div className="profilePageHeader">
           <div>
             <div className={'profilePageTitle'}>
