@@ -3,6 +3,7 @@ import UserLayout from '../../../../src/features/common/Layout/UserLayout/UserLa
 import BulkCodes from '../../../../src/features/user/BulkCodes';
 import Head from 'next/head';
 import i18next from '../../../../i18n';
+import { BulkCodeMethods } from '../../../../src/utils/constants/bulkCodeMethods';
 import { useBulkCode } from '../../../../src/features/common/Layout/BulkCodeContext';
 import { ErrorHandlingContext } from '../../../../src/features/common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../../src/utils/apiRequests/api';
@@ -12,13 +13,15 @@ const { useTranslation } = i18next;
 
 interface Props {}
 export default function BulkCodeIssueCodesPage({}: Props): ReactElement {
+  const router = useRouter();
   const { isReady, query } = useRouter();
-  const { t } = useTranslation('me');
+  const { t, ready } = useTranslation('me');
   const { handleError } = useContext(ErrorHandlingContext);
 
-  const { project, setProject, planetCashAccount } = useBulkCode();
+  const { project, setProject, bulkMethod, setBulkMethod, planetCashAccount } =
+    useBulkCode();
 
-  const fetchProject = useCallback(async () => {
+  const checkContext = useCallback(async () => {
     if (planetCashAccount) {
       if (!project) {
         if (isReady) {
@@ -45,14 +48,30 @@ export default function BulkCodeIssueCodesPage({}: Props): ReactElement {
             };
             setProject(_project);
           }
+        } else {
+          router.push(`/profile/bulk-codes`);
+        }
+      }
+
+      if (!bulkMethod) {
+        if (isReady) {
+          const _bulkMethod = query.method;
+          if (
+            _bulkMethod === BulkCodeMethods.GENERIC ||
+            _bulkMethod === BulkCodeMethods.IMPORT
+          ) {
+            setBulkMethod(_bulkMethod);
+          } else {
+            router.push(`/profile/bulk-codes`);
+          }
         }
       }
     }
-  }, [project, isReady, planetCashAccount]);
+  }, [project, bulkMethod, isReady, planetCashAccount]);
 
   useEffect(() => {
-    fetchProject();
-  }, [fetchProject]);
+    checkContext();
+  }, [checkContext]);
 
   return (
     <UserLayout>
