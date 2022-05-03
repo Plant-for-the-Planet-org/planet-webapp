@@ -218,6 +218,7 @@ export default function DetailedAnalysis({
       months.push(j);
     }
   }
+
   const onSubmit = (data: any) => {
     setIsUploadingData(true);
     const submitData =
@@ -243,22 +244,18 @@ export default function DetailedAnalysis({
           }
         : {
             projectMeta: {
-              employeeCount: data.employeesCount,
-              // acquisitionYear: data.acquisitionYear.getFullYear(),
-              startingProtectionYear: data.startingProtectionYear.getFullYear(),
+              aquisitionDate: data.acquisitionYear.getFullYear(),
+              activitySeasons: months,
               areaProtected: data.areaProtected,
-
-              // timePeriod: months,
-              // forestProtectionType: data.forestProtectionType,
-              // conservationImpacts: data.conservationImpacts,
-              // siteOwnerType: owners,
-              // ownershipType: owners,
-              // siteOwnerName: data.siteOwnerName,
+              employeesCount: data.employeesCount,
+              startingProtectionYear: data.startingProtectionYear.getFullYear(),
+              ownershipType: data.siteOwnerName,
+              landOwnershipType: owners,
+              actions: data.actions,
               mainChallenge: data.mainChallenge,
-              longTermPlan: data.longTermPlan,
-              // endangeredSpecies: data.endangeredSpecies,
-              // addAnotherSpecies: data.addAnotherSpecies,
               motivation: data.motivation,
+              longTermPlan: data.longTermPlan,
+              benefits: data.benefits,
             },
           };
 
@@ -272,6 +269,7 @@ export default function DetailedAnalysis({
         setProjectDetails(res);
         setIsUploadingData(false);
         setErrorMessage('');
+
         handleNext();
       } else {
         if (res.code === 404) {
@@ -286,6 +284,9 @@ export default function DetailedAnalysis({
   };
 
   // Use Effect to hide error message after 10 seconds
+
+  console.log(projectDetails);
+  console.log(purpose);
 
   React.useEffect(() => {
     if (projectDetails) {
@@ -781,7 +782,7 @@ export default function DetailedAnalysis({
                 })}
                 label={t('manageProjects:forestProtectionType')}
                 variant="outlined"
-                name="forestProtectionType"
+                name="actions"
                 multiline
               />
             </div>
@@ -835,7 +836,7 @@ export default function DetailedAnalysis({
               <MaterialTextField
                 label={t('manageProjects:conservationImpacts')}
                 variant="outlined"
-                name="conservationImpacts"
+                name="benefits"
                 multiline
                 inputRef={register({
                   maxLength: {
@@ -1013,82 +1014,6 @@ export default function DetailedAnalysis({
               </span>
             )}
           </div>
-          {purpose === 'conservation' ? (
-            <div className={styles.formFieldHalf}>
-              <Controller
-                as={
-                  <MaterialTextField
-                    // inputRef={register({
-                    //   required: {
-                    //     value: false,
-                    //     message: t(
-                    //       'manageProjects:endangeredSpeciesValidation'
-                    //     ),
-                    //   },
-                    // })}
-                    label={t('manageProjects:endangeredSpecies')}
-                    variant="outlined"
-                    select
-                  >
-                    {enSpecies.map((option) => (
-                      <MenuItem
-                        key={option.id}
-                        value={option.id}
-                        classes={{ root: classes.root }}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </MaterialTextField>
-                }
-                name="endangeredSpecies"
-                // rules={{
-                //   required: t('manageProjects:endangeredSpeciesValidation'),
-                // }}
-                control={control}
-                defaultValue=""
-              />
-              {errors.degradationCause && (
-                <span className={styles.formErrors}>
-                  {errors.degradationCause.message}
-                </span>
-              )}
-              <div className={styles.formField}>
-                <button
-                  className={styles.formFieldHalf}
-                  style={{ marginLeft: '7px' }}
-                  onClick={addHandler}
-                >
-                  <p className={styles.inlineLinkButton}>
-                    {t('manageProjects:addAnotherSpecies')}
-                  </p>
-                </button>
-              </div>
-
-              {addSpecies ? (
-                <Grid
-                  container
-                  xs="12"
-                  justifyContent="space-between"
-                  direction="row"
-                  style={{ margin: '5px' }}
-                >
-                  <Grid xs="6" style={{ marginTop: '10px' }}>
-                    <MaterialTextField
-                      inputRef={register()}
-                      label={t('manageProjects:addAnotherSpecies')}
-                      name="addAnotherSpecies"
-                      variant="outlined"
-                    />
-                  </Grid>
-                </Grid>
-              ) : (
-                <></>
-              )}
-            </div>
-          ) : (
-            <></>
-          )}
 
           <ProjectCertificates
             projectGUID={projectGUID}

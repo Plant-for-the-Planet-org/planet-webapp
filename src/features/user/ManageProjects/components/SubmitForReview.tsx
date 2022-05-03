@@ -8,6 +8,7 @@ import NotReviewed from '../../../../../public/assets/images/icons/manageProject
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import { Controller, useForm } from 'react-hook-form';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import router from 'next/router';
 
 const { useTranslation } = i18next;
 
@@ -90,6 +91,17 @@ function SubmitForReview({
                 <p>{t('manageProjects:backToSpending')}</p>
               </button>
             </button>
+            <button
+              className="primaryButton"
+              style={{
+                width: '100px',
+                marginTop: '30px',
+                marginRight: '245px',
+              }}
+              onClick={() => router.push('/profile/projects')}
+            >
+              <p>{t('manageProjects:exit')}</p>
+            </button>
             <div style={{ width: '20px' }}></div>
           </div>
         </div>
@@ -148,24 +160,18 @@ function SubmitForReview({
           </div>
 
           <div className={styles.formField}>
-            <button
-              id={'backArrowSubmitR'}
-              className={`${styles.formFieldHalf}`}
-              style={{ width: '234px' }}
-            >
-              <button onClick={handleBack} className="secondaryButton">
-                {/* <BackArrow /> */}
-                <p>{t('manageProjects:backToSpending')}</p>
+            <div style={{ display: 'flex', marginTop: '30px' }}>
+              <button id={'backArrowSubmitR'} style={{ width: '234px' }}>
+                <button onClick={handleBack} className="secondaryButton">
+                  <BackArrow />
+                  <p>{t('manageProjects:backToSpending')}</p>
+                </button>
               </button>
-            </button>
-            <div style={{ width: '20px' }}></div>
-
-            <div className={`${styles.formFieldHalf}`}>
               <button
                 onClick={() => submitForReview()}
                 className="primaryButton"
-                style={{ minWidth: '240px' }}
                 data-test-id="submitReview"
+                style={{ width: '180px', marginLeft: '10px' }}
               >
                 {isUploadingData ? (
                   <div className={styles.spinner}></div>
@@ -173,7 +179,16 @@ function SubmitForReview({
                   t('manageProjects:submitForReview')
                 )}
               </button>
+
+              <button
+                className="primaryButton"
+                style={{ width: '100px', marginLeft: '15px' }}
+                onClick={() => router.push('/profile/projects')}
+              >
+                <p>{t('manageProjects:exit')}</p>
+              </button>
             </div>
+            <div style={{ width: '20px' }}></div>
           </div>
         </div>
       </div>
@@ -225,6 +240,7 @@ function SubmitForReview({
               {t('manageProjects:deniedReview')}
             </p>
           </div>
+
           <div className={styles.formField}>
             <button
               id={'backArrowSubmitR'}

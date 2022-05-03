@@ -24,6 +24,7 @@
   "receiveDonations": "Receive Donations",
   "receiveDonationsInfo": "Please activate once the project profile is complete. Plant-for-the-Planet will then review the profile and inform you if you are eligible to receive donation through this platform. This may take a few weeks.",
   "unitCost": "Cost per tree (in EUR)",
+  "exit": "Exit",
   "treeCostValidaitonRequired": "Please enter cost per tree",
   "treeCostValidationInvalid": "Please enter valid cost per tree",
   "treeCostValidation": "Cost per tree should be more than €0 or lesser than €100",
