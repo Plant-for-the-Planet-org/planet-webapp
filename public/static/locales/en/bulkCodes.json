@@ -37,6 +37,7 @@
 	"totalNumberOfCodes": "Total Number of Codes",
 	"occasion": "Occasion",
 	"total": "Total",
+	"chargeConsentText": "By clicking Issue Codes, you agree that above amount will be charged to your account.",
 	"unitsRequired": "Unit per code is a required",
 	"quantityCodesRequired":"Code Quantity is a required"
 }

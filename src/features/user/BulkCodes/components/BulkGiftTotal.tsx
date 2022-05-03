@@ -26,6 +26,7 @@ const BulkGiftTotal = ({
         disabled
         inputProps={{ readOnly: true }}
         value={`${amount} ${currency} for ${units} ${unit}`}
+        helperText={t('bulkCodes:chargeConsentText')}
         // TODOO translation and pluralization
       ></TextField>
     );
