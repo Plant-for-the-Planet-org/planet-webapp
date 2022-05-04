@@ -30,32 +30,29 @@ const ProjectSelector = ({
   // const { t, ready } = useTranslation(['common', 'bulkCodes']);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
-  const fetchProjectDetails = async (guid: string) => {
-    const project = await getRequest<{
-      properties: {
-        currency: string;
-        unitCost: number;
-        purpose: string;
-        slug: string;
-      };
-    }>(`/app/projects/${guid}`, handleError, undefined, {
-      _scope: 'map',
-      currency: planetCashAccount?.currency || 'USD',
+  const fetchPaymentOptions = async (guid: string) => {
+    const paymentOptions = await getRequest<{
+      currency: string;
+      unitCost: number;
+      purpose: string;
+      // slug: string;
+      unit: string;
+    }>(`/app/paymentOptions/${guid}`, handleError, undefined, {
+      country: planetCashAccount?.country || '',
     });
-    return project;
+    return paymentOptions;
   };
 
   const handleProjectChange = async (project: Project | null) => {
     // fetch project details
     if (project) {
-      const projectDetails = await fetchProjectDetails(project.guid);
+      const paymentOptions = await fetchPaymentOptions(project.guid);
       // Add to project object
-      if (projectDetails) {
-        project.currency = projectDetails.properties.currency;
-        project.unitCost = projectDetails.properties.unitCost;
-        project.unit = 'tree';
-        project.purpose = projectDetails.properties.purpose;
-        project.slug = projectDetails.properties.slug;
+      if (paymentOptions) {
+        project.currency = paymentOptions.currency;
+        project.unitCost = paymentOptions.unitCost;
+        project.unit = paymentOptions.unit;
+        project.purpose = paymentOptions.purpose;
       }
     }
     // set context
