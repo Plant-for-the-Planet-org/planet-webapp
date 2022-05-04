@@ -24,7 +24,7 @@ interface IssueCodesFormProps {}
 
 const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
-  const { project, planetCashAccount } = useBulkCode();
+  const { project, planetCashAccount, projectList } = useBulkCode();
   const { user } = useContext(UserPropsContext);
   const { control, handleSubmit, errors, watch } = useForm();
 
@@ -95,6 +95,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
       <BulkCodesForm className="IssueCodesForm">
         <div className="inputContainer">
           <ProjectSelector
+            projectList={projectList || []}
             project={project}
             active={false}
             planetCashAccount={planetCashAccount}

@@ -24,7 +24,7 @@ SelectProjectFormProps): ReactElement | null => {
   const router = useRouter();
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
   const { method } = router.query;
-  const { project, setProject, planetCashAccount } = useBulkCode();
+  const { project, setProject, projectList, planetCashAccount } = useBulkCode();
   const { user } = useContext(UserPropsContext);
 
   const [localProject, setLocalProject] = useState<Project | null>(project);
@@ -41,6 +41,7 @@ SelectProjectFormProps): ReactElement | null => {
       <BulkCodesForm className="ProjectSelectorForm">
         <div className="inputContainer">
           <ProjectSelector
+            projectList={projectList || []}
             project={localProject}
             setProject={setLocalProject}
             planetCashAccount={planetCashAccount}
