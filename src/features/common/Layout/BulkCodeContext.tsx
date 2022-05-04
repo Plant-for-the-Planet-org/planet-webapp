@@ -153,18 +153,21 @@ export const BulkCodeProvider: FC = ({ children }) => {
           fetchedProjects.length > 0
         ) {
           setProjectList(
-            fetchedProjects.map((project) => {
-              return {
-                guid: project.properties.id,
-                slug: project.properties.slug,
-                name: project.properties.name,
-                unitCost: project.properties.unitCost,
-                currency: project.properties.currency,
-                unit: 'trees',
-                purpose: project.properties.purpose,
-                allowDonations: project.properties.allowDonations,
-              };
-            })
+            // Filter projects which allow donations, and store only required values in context
+            fetchedProjects
+              .filter((project) => project.properties.allowDonations)
+              .map((project) => {
+                return {
+                  guid: project.properties.id,
+                  slug: project.properties.slug,
+                  name: project.properties.name,
+                  unitCost: project.properties.unitCost,
+                  currency: project.properties.currency,
+                  unit: 'trees',
+                  purpose: project.properties.purpose,
+                  allowDonations: project.properties.allowDonations,
+                };
+              })
           );
         }
       } catch (err) {
