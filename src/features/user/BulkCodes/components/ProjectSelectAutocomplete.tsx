@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import { Autocomplete, TextField, styled } from 'mui-latest';
 import i18next from '../../../../../i18n';
-import bulkCodeProjects from '../bulkCodeProjects.json';
+// import bulkCodeProjects from '../bulkCodeProjects.json';
 
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import { Project } from '../../../common/Layout/BulkCodeContext';
@@ -22,12 +22,14 @@ const MuiAutocomplete = styled(Autocomplete)((/* { theme } */) => {
 });
 
 interface ProjectSelectAutocompleteProps {
+  projectList: Project[];
   project: Project | null;
   handleProjectChange?: (project: Project | null) => void;
   active: boolean;
 }
 
 const ProjectSelectAutocomplete = ({
+  projectList,
   project,
   handleProjectChange,
   active = true,
@@ -49,7 +51,7 @@ const ProjectSelectAutocomplete = ({
     return (
       <MuiAutocomplete
         popupIcon={SearchIcon({})}
-        options={bulkCodeProjects}
+        options={projectList}
         getOptionLabel={(option: any) => option.name}
         isOptionEqualToValue={(option: any, value) => option.name === value}
         //TODOO Have left option as type: any here.

@@ -13,6 +13,7 @@ import UnitCostDisplay from './UnitCostDisplay';
 // const { useTranslation } = i18next;
 
 interface ProjectSelectorProps {
+  projectList: Project[];
   project: Project | null;
   setProject?: (project: Project | null) => void;
   active?: boolean;
@@ -20,6 +21,7 @@ interface ProjectSelectorProps {
 }
 
 const ProjectSelector = ({
+  projectList,
   project,
   setProject,
   active = true,
@@ -67,6 +69,7 @@ const ProjectSelector = ({
       <ProjectSelectAutocomplete
         handleProjectChange={handleProjectChange}
         project={project}
+        projectList={projectList || []}
         active={active}
       />
       <UnitCostDisplay
