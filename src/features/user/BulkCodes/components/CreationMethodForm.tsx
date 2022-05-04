@@ -1,11 +1,13 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import i18next from '../../../../../i18n';
 import { Button } from 'mui-latest';
 
 import BulkCodesForm from './BulkCodesForm';
 import SelectorOption, { SelectorOptionProps } from './SelectorOption';
+import BulkCodesError from './BulkCodesError';
 import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeMethods';
 
 const { useTranslation } = i18next;
@@ -24,6 +26,7 @@ CreationMethodFormProps): ReactElement | null => {
   } = useBulkCode();
   const [method, setMethod] = useState<typeof bulkMethod>(bulkMethod);
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
+  const { user } = useContext(UserPropsContext);
 
   if (ready) {
     const selectorOptions: SelectorOptionProps[] = [
@@ -79,11 +82,20 @@ CreationMethodFormProps): ReactElement | null => {
     return (
       <BulkCodesForm className="CreationMethodForm">
         <div className="inputContainer">{renderSelectorOptions()}</div>
+
+        <BulkCodesError />
+
         <Button
           variant="contained"
           color="primary"
           className="formButton"
-          disabled={method === null}
+          disabled={
+            !(
+              user.hasLogoLicense &&
+              user.planetCash &&
+              !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
+            ) || method === null
+          }
           onClick={handleFormSubmit}
         >
           {t('common:continue')}

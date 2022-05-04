@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useContext, useState } from 'react';
 import i18next from '../../../../../i18n';
 import { useRouter } from 'next/router';
 import { Button } from 'mui-latest';
@@ -10,6 +10,8 @@ import {
 
 import BulkCodesForm from './BulkCodesForm';
 import ProjectSelector from './ProjectSelector';
+import BulkCodesError from './BulkCodesError';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const { useTranslation } = i18next;
 
@@ -23,6 +25,7 @@ SelectProjectFormProps): ReactElement | null => {
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
   const { method } = router.query;
   const { project, setProject, planetCashAccount } = useBulkCode();
+  const { user } = useContext(UserPropsContext);
 
   const [localProject, setLocalProject] = useState<Project | null>(project);
 
@@ -43,11 +46,20 @@ SelectProjectFormProps): ReactElement | null => {
             planetCashAccount={planetCashAccount}
           />
         </div>
+
+        <BulkCodesError />
+
         <Button
           variant="contained"
           color="primary"
           className="formButton"
-          disabled={localProject === null}
+          disabled={
+            !(
+              user.hasLogoLicense &&
+              user.planetCash &&
+              !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
+            ) || localProject === null
+          }
           onClick={handleFormSubmit}
         >
           {t('common:continue')}

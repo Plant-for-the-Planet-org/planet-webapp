@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useContext } from 'react';
 import i18next from '../../../../../i18n';
 import { Button, TextField, styled } from 'mui-latest';
 import { useForm, Controller, ControllerRenderProps } from 'react-hook-form';
@@ -8,6 +8,9 @@ import styles from '../BulkCodes.module.scss';
 import BulkCodesForm from './BulkCodesForm';
 import ProjectSelector from './ProjectSelector';
 import BulkGiftTotal from './BulkGiftTotal';
+
+import BulkCodesError from './BulkCodesError';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const { useTranslation } = i18next;
 
@@ -22,6 +25,7 @@ interface IssueCodesFormProps {}
 const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
   const { project, planetCashAccount } = useBulkCode();
+  const { user } = useContext(UserPropsContext);
   const { control, handleSubmit, errors, watch } = useForm();
 
   const codeQuantity = watch('codeQuantity', 0);
@@ -184,11 +188,20 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
           />
           {/* TODOO translation and pluralization */}
         </div>
+
+        <BulkCodesError />
+
         <Button
           variant="contained"
           color="primary"
           className="formButton"
-          //  disabled={project === null}
+          disabled={
+            !(
+              user.hasLogoLicense &&
+              user.planetCash &&
+              !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
+            )
+          }
           onClick={handleSubmit(onSubmit)}
         >
           {t('bulkCodes:issueCodes')}

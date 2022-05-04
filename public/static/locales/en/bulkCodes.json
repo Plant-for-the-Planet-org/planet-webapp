@@ -1,42 +1,46 @@
 {
-	"bulkCodesTitle": "Issue Bulk Codes",
-	"bulkCodesDescription1": "Using PlanetCash you can generate thousands of codes in a single operation.",
-	"bulkCodesDescription2":  "You can use this feature to create codes for custom certificates, gift cards, donations on behalf of users and redeemable codes that you can associate with your products.",
-	"tabCreationMethod": "Creation Method",
-	"tabSelectProject": "Select Project",
-	"tabIssueCodes": "Issue Codes",
-	"issueCodes": "Issue Codes",
-	"importMethodText": {
-		"title": "Import File",
-		"subtitle": "Use this method if one of the following criterias match your usecase:",
-		"details": [
-			"I want to provide the Recipient's name or Email for each code",
-			"I want Plant-for-the-Planet to automatically email the recipients once it has been generated (optional)",
+  "bulkCodesTitle": "Issue Bulk Codes",
+  "bulkCodesDescription1": "Using PlanetCash you can generate thousands of codes in a single operation.",
+  "bulkCodesDescription2": "You can use this feature to create codes for custom certificates, gift cards, donations on behalf of users and redeemable codes that you can associate with your products.",
+  "tabCreationMethod": "Creation Method",
+  "tabSelectProject": "Select Project",
+  "tabIssueCodes": "Issue Codes",
+  "issueCodes": "Issue Codes",
+  "importMethodText": {
+    "title": "Import File",
+    "subtitle": "Use this method if one of the following criterias match your usecase:",
+    "details": [
+      "I want to provide the Recipient's name or Email for each code",
+      "I want Plant-for-the-Planet to automatically email the recipients once it has been generated (optional)",
       "I want to issue codes with different units of trees"
-		]
-	},
-	"genericMethodText": {
-		"title": "Create Generic Codes",
-		"subtitle": "Use this method if the following criterias match your usecase:",
-		"details": [
-			"All codes will have the same value",
+    ]
+  },
+  "genericMethodText": {
+    "title": "Create Generic Codes",
+    "subtitle": "Use this method if the following criterias match your usecase:",
+    "details": [
+      "All codes will have the same value",
       "I want to generate a number of code for arbitrary recipients",
       "Names and Emails cannot be associated with the code"
-		]
-	},
-	"projectName": "Project Name",
-	"costPerUnit": "Cost per Unit",
-	"labelComment": "Comment [Private]",
-	"unitOfMeasurement": "Unit of Measurement",
-	"units": {
-		"ha": "ha",
-		"tree": "tree",
-		"m2": "m²"
-	},
-	"unitsPerCode": "Units per Code",
-	"totalNumberOfCodes": "Total Number of Codes",
-	"occasion": "Occasion",
-	"total": "Total",
-	"unitsRequired": "Unit per code is a required",
-	"quantityCodesRequired":"Code Quantity is a required"
+    ]
+  },
+  "projectName": "Project Name",
+  "costPerUnit": "Cost per Unit",
+  "labelComment": "Comment [Private]",
+  "unitOfMeasurement": "Unit of Measurement",
+  "units": {
+    "ha": "ha",
+    "tree": "tree",
+    "m2": "m²"
+  },
+  "unitsPerCode": "Units per Code",
+  "totalNumberOfCodes": "Total Number of Codes",
+  "occasion": "Occasion",
+  "total": "Total",
+  "unitsRequired": "Unit per code is a required",
+  "quantityCodesRequired": "Code Quantity is a required",
+  "featureAvailability": "This feature is available only for partner project.",
+  "planetCashDisabled": "PlanetCash is disabled. Please enable PlanetCash to use this feature.",
+	"insufficientPCashBalance":"Planet Cash don't have sufficient balance.",
+	"addBalance": "Add Balance"
 }

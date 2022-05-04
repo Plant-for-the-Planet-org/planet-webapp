@@ -13,6 +13,9 @@ const muiThemeNew = createTheme({
       main: '#68b030',
       contrastText: '#fff',
     },
+    error: {
+      main: '#e74c3c',
+    },
     background: {
       base: '#fafaff',
       default: '#fff',
