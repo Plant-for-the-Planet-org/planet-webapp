@@ -269,7 +269,6 @@ export default function DetailedAnalysis({
         setProjectDetails(res);
         setIsUploadingData(false);
         setErrorMessage('');
-
         handleNext();
       } else {
         if (res.code === 404) {
@@ -284,9 +283,6 @@ export default function DetailedAnalysis({
   };
 
   // Use Effect to hide error message after 10 seconds
-
-  console.log(projectDetails);
-  console.log(purpose);
 
   React.useEffect(() => {
     if (projectDetails) {
@@ -349,8 +345,6 @@ export default function DetailedAnalysis({
                 motivation: projectDetails.motivation,
               },
             };
-
-      console.log(projectDetails);
 
       // set planting seasons
       if (
@@ -483,7 +477,10 @@ export default function DetailedAnalysis({
             </div>
           ) : (
             <div className={styles.formField}>
-              <div className={styles.formFieldHalf}>
+              <div
+                className={styles.formFieldHalf}
+                style={{ position: 'relative' }}
+              >
                 <MaterialTextField
                   inputRef={register({
                     required: {
@@ -506,8 +503,26 @@ export default function DetailedAnalysis({
                     {errors.areaProtected.message}
                   </span>
                 )}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '-9px',
+                    right: '16px',
+                    width: 'fit-content',
+                  }}
+                >
+                  <div className={styles.popover}>
+                    <InfoIcon />
+                    <div
+                      className={styles.popoverContent}
+                      style={{ left: '-290px' }}
+                    >
+                      <p>{t('manageProjects:areaProtectedInfo')}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div style={{ width: '20px' }}></div>
+              {/* <div style={{ width: '20px' }}></div> */}
               <div className={styles.formFieldHalf}>
                 <LocalizationProvider
                   dateAdapter={AdapterDateFns}

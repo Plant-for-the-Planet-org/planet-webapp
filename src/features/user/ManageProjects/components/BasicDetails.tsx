@@ -459,7 +459,6 @@ export default function BasicDetails({
           setProjectDetails(res);
           router.push(`/profile/projects/${res.id}?type=media`);
           setIsUploadingData(false);
-          handleNext();
         } else {
           if (res.code === 404) {
             setIsUploadingData(false);
@@ -700,10 +699,15 @@ export default function BasicDetails({
                 >
                   {t('manageProjects:receiveDonations')}
                   <div
-                    style={{ height: '13px', width: '13px', marginLeft: '6px' }}
+                    style={{
+                      height: '13px',
+                      width: '13px',
+                      marginLeft: '6px',
+                      marginBottom: '30px',
+                    }}
                   >
+                    <InfoIcon />
                     <div className={styles.popover}>
-                      <InfoIcon />
                       <div
                         className={styles.popoverContent}
                         style={{ left: '-150px' }}
