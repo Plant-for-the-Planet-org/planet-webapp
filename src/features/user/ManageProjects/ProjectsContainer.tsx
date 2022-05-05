@@ -9,6 +9,7 @@ import getImageUrl from '../../../utils/getImageURL';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './ProjectsContainer.module.scss';
+import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 
 const { useTranslation } = i18next;
 
@@ -66,11 +67,14 @@ export default function ProjectsContainer({}: any) {
 
       <div className={styles.projectsContainer} id="projectsContainer">
         {projects && projects.length < 1 ? (
-          <div className={styles.projectNotFound}>
-            <LazyLoad>
-              <NotFound className={styles.projectNotFoundImage} />
-              <h5>{t('donate:noProjectsFound')}</h5>
-            </LazyLoad>
+          <div style={{ marginTop: '-210px' }}>
+            <GlobeContentLoader />
+            <div className={styles.projectNotFound}>
+              <LazyLoad>
+                <NotFound className={styles.projectNotFoundImage} />
+                <h5>{t('donate:noProjectsFound')}</h5>
+              </LazyLoad>
+            </div>
           </div>
         ) : (
           <div className={styles.listProjects}>
