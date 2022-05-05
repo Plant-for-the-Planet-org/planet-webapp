@@ -307,6 +307,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
             handleBack={handleBack}
             projectGUID={projectGUID}
             handleReset={handleReset}
+            projectDetails={projectDetails}
           />
         );
       case 5:

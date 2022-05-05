@@ -35,6 +35,7 @@ interface Props {
   projectGUID: String;
   handleReset: Function;
   token: any;
+  projectDetails: object;
 }
 
 const Map = dynamic(() => import('./MapComponent'), {
@@ -48,6 +49,7 @@ export default function ProjectSites({
   handleNext,
   projectGUID,
   handleReset,
+  projectDetails,
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
   const { theme } = React.useContext(ThemeContext);
@@ -435,42 +437,48 @@ export default function ProjectSites({
                 )}
               </div>
               <div style={{ width: '20px' }}></div>
-              <div className={styles.formFieldHalf} data-test-id="siteStatus">
-                <Controller
-                  as={
-                    <MaterialTextField
-                      label={t('manageProjects:siteStatus')}
-                      variant="outlined"
-                      name="status"
-                      onChange={changeSiteDetails}
-                      select
-                      value={siteDetails.status}
-                    >
-                      {status.map((option) => (
-                        <MenuItem
-                          key={option.value}
-                          value={option.value}
-                          classes={{
-                            // option: classes.option,
-                            root: classes.root,
-                          }}
-                        >
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </MaterialTextField>
-                  }
-                  name="status"
-                  rules={{ required: t('manageProjects:selectProjectStatus') }}
-                  control={control}
-                  defaultValue={siteDetails.status ? siteDetails.status : ''}
-                />
-                {errors.status && (
-                  <span className={styles.formErrors}>
-                    {errors.status.message}
-                  </span>
-                )}
-              </div>
+              {projectDetails.purpose === 'trees' ? (
+                <div className={styles.formFieldHalf} data-test-id="siteStatus">
+                  <Controller
+                    as={
+                      <MaterialTextField
+                        label={t('manageProjects:siteStatus')}
+                        variant="outlined"
+                        name="status"
+                        onChange={changeSiteDetails}
+                        select
+                        value={siteDetails.status}
+                      >
+                        {status.map((option) => (
+                          <MenuItem
+                            key={option.value}
+                            value={option.value}
+                            classes={{
+                              // option: classes.option,
+                              root: classes.root,
+                            }}
+                          >
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </MaterialTextField>
+                    }
+                    name="status"
+                    rules={{
+                      required: t('manageProjects:selectProjectStatus'),
+                    }}
+                    control={control}
+                    defaultValue={siteDetails.status ? siteDetails.status : ''}
+                  />
+                  {errors.status && (
+                    <span className={styles.formErrors}>
+                      {errors.status.message}
+                    </span>
+                  )}
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
 
             {geoLocation && <Map {...MapProps} />}
