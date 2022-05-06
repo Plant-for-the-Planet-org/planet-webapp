@@ -231,18 +231,25 @@ function UserLayout(props: any): ReactElement {
                 <button className={styles.navlinkTitle}>{t('close')}</button>
               </div>
             </div>
-            {navLinks.map((link: any, index: any) => (
-              <NavLink
-                link={link}
-                setactiveLink={setactiveLink}
-                activeLink={activeLink}
-                activeSubMenu={activeSubMenu}
-                setActiveSubMenu={setActiveSubMenu}
-                user={user}
-                key={index}
-                closeMenu={() => setIsMenuOpen(false)}
-              />
-            ))}
+            {navLinks
+              .filter((links) => {
+                if (!user.planetCash) {
+                  return links.key !== 6;
+                }
+                return links;
+              })
+              .map((link: any, index: any) => (
+                <NavLink
+                  link={link}
+                  setactiveLink={setactiveLink}
+                  activeLink={activeLink}
+                  activeSubMenu={activeSubMenu}
+                  setActiveSubMenu={setActiveSubMenu}
+                  user={user}
+                  key={index}
+                  closeMenu={() => setIsMenuOpen(false)}
+                />
+              ))}
           </>
         </div>
 

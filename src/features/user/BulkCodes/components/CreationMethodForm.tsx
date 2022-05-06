@@ -91,7 +91,6 @@ CreationMethodFormProps): ReactElement | null => {
           className="formButton"
           disabled={
             !(
-              user.hasLogoLicense &&
               user.planetCash &&
               !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
             ) || method === null

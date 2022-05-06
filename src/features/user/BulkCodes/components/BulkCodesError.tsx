@@ -23,9 +23,7 @@ const BulkCodesError = () => {
   const GetDisableBulkCodesReason = () => {
     // TODO - Translations
     if (user) {
-      if (!user.hasLogoLicense) {
-        return <ErrorMessage>{t('featureAvailability')}</ErrorMessage>;
-      } else if (!user.planetCash) {
+      if (!user.planetCash) {
         return <ErrorMessage>{t('planetCashDisabled')}</ErrorMessage>;
       } else if (Object.keys(user.planetCash).length > 0) {
         if (user.planetCash.balance + user.planetCash.creditLimit <= 0) {
