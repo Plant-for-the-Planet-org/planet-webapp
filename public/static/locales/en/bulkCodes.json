@@ -42,6 +42,6 @@
   "quantityCodesRequired": "Code Quantity is a required",
   "featureAvailability": "This feature is available only for partner project.",
   "planetCashDisabled": "PlanetCash is disabled. Please enable PlanetCash to use this feature.",
-  "insufficientPCashBalance": "PlanetCash don't have sufficient balance.",
-  "addBalance": "Add Balance"
+  "insufficientPCashBalance": "Insufficient balance.",
+  "addBalanceGeneric": "Please Click here to add funds."
 }

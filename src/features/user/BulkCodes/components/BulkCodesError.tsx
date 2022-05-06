@@ -10,6 +10,9 @@ const AddBalanceLink = styled('span')(({ theme }) => ({
   color: theme.palette.primary.main,
   fontWeight: 600,
   cursor: 'pointer',
+  '&:hover': {
+    textDecoration: 'underline',
+  },
 }));
 
 const ErrorMessage = styled('span')(({ theme }) => ({
@@ -36,7 +39,7 @@ const BulkCodesError = () => {
                 href={`${process.env.NEXT_PUBLIC_DONATION_URL}/?to=${user.planetCash.account}&step=donate`}
                 rel="noopener noreferrer"
               >
-                <AddBalanceLink> {t('addBalance')} </AddBalanceLink>
+                <AddBalanceLink>{t('addBalanceGeneric')}</AddBalanceLink>
               </a>
             </div>
           );
