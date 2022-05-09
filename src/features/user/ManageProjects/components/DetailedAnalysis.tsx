@@ -247,12 +247,12 @@ export default function DetailedAnalysis({
           }
         : {
             metadata: {
-              aquisitionDate: data.acquisitionYear.getFullYear(),
+              acquisitionYear: data.acquisitionYear.getFullYear(),
               activitySeasons: months,
               areaProtected: data.areaProtected,
               employeesCount: data.employeesCount,
               startingProtectionYear: data.startingProtectionYear.getFullYear(),
-              ownershipType: data.siteOwnerName,
+              // ownershipType: data.siteOwnerName,
               landOwnershipType: owners,
               actions: data.actions,
               mainChallenge: data.mainChallenge,
@@ -286,7 +286,7 @@ export default function DetailedAnalysis({
   };
 
   // Use Effect to hide error message after 10 seconds
-
+  console.log(projectDetails);
   React.useEffect(() => {
     if (projectDetails) {
       const detailedAnalysis =
@@ -324,30 +324,32 @@ export default function DetailedAnalysis({
               // motivation: projectDetails.projectMeta.motivation,
             }
           : {
-              projectMeta: {
-                areaProtected: projectDetails.projectMeta.areaProtected,
-                startingProtectionYear: projectDetails.startingProtectionYear
-                  ? new Date(
-                      new Date().setFullYear(
-                        projectDetails.startingProtectionYear
-                      )
+              areaProtected: projectDetails.metadata.areaProtected,
+              activitySeasons: months,
+              startingProtectionYear: projectDetails.metadata
+                .startingProtectionYear
+                ? new Date(
+                    new Date().setFullYear(
+                      projectDetails.metadata.startingProtectionYear
                     )
-                  : new Date(),
-                acquisitionYear: projectDetails.acquisitionYear
-                  ? new Date(
-                      new Date().setFullYear(projectDetails.acquisitionYear)
+                  )
+                : new Date(),
+              acquisitionYear: projectDetails.metadata.acquisitionYear
+                ? new Date(
+                    new Date().setFullYear(
+                      projectDetails.metadata.acquisitionYear
                     )
-                  : new Date(),
+                  )
+                : new Date(),
 
-                employeesCount: projectDetails.projectMeta.employeesCount,
-                mainChallenge: projectDetails.mainChallenge,
-                siteOwnerName: projectDetails.siteOwnerName,
-                longTermPlan: projectDetails.longTermPlan,
+              employeesCount: projectDetails.metadata.employeesCount,
+              mainChallenge: projectDetails.metadata.mainChallenge,
+              siteOwnerName: projectDetails.metadata.siteOwnerName,
+              longTermPlan: projectDetails.metadata.longTermPlan,
 
-                ownershipType: projectDetails.ownershipType,
+              // ownershipType: projectDetails.ownershipType,
 
-                motivation: projectDetails.motivation,
-              },
+              motivation: projectDetails.metadata.motivation,
             };
 
       // set planting seasons
@@ -1050,8 +1052,8 @@ export default function DetailedAnalysis({
             <div className={`${styles.formFieldHalf}`}>
               <button
                 onClick={handleBack}
-                className="secondaryButton"
-                style={{ width: '234px', height: '46px', marginLeft: '45px' }}
+                className="secondaryButton backButton"
+                style={{ width: '234px', height: '46px' }}
               >
                 <BackArrow />
                 <p>{t('manageProjects:backToMedia')}</p>

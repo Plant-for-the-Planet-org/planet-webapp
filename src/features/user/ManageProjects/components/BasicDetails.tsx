@@ -294,7 +294,7 @@ export default function BasicDetails({
   }, [router]);
 
   // const treeCost = watch('treeCost');
-
+  console.log(purpose);
   React.useEffect(() => {
     if (projectDetails) {
       const basicDetails =
@@ -333,16 +333,7 @@ export default function BasicDetails({
               currency: projectDetails.currency,
               latitude: projectDetails.geoLatitude,
               longitude: projectDetails.geoLongitude,
-              ecosystems: projectDetails?.projectMeta?.ecosystems,
-              projectMeta: {
-                ecosystems: projectDetails.ecosystems,
-                impacts: {
-                  benefits: projectDetails.benefits,
-                  coBenefits: projectDetails.coBenefits,
-                  ecologicalBenefits: projectDetails.ecologicalBenefits,
-                  socialBenefits: projectDetails.socialbenefits,
-                },
-              },
+              ecosystems: projectDetails.metadata.ecosystems,
             };
       if (projectDetails.geoLongitude && projectDetails.geoLatitude) {
         setProjectCoords([
@@ -407,14 +398,14 @@ export default function BasicDetails({
               ? parseNumber(i18n.language, data.unitCost)
               : null,
             currency: 'EUR',
-            projectMeta: {
+            metadata: {
               ecosystems: data.ecosystems,
-              impacts: {
-                benefits: data.benefits,
-                coBenefits: data.coBenefits,
-                ecologicalBenefits: data.ecologicalBenefits,
-                socialBenefits: data.socialBenefits,
-              },
+              // impacts: {
+              //   benefits: data.benefits,
+              //   coBenefits: data.coBenefits,
+              //   ecologicalBenefits: data.ecologicalBenefits,
+              //   socialBenefits: data.socialBenefits,
+              // },
             },
           };
 

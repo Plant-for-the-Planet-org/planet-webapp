@@ -19,19 +19,20 @@
   background-color: $backgroundBase;
   color: $primaryFontColor;
   @include xsPhoneView{
-    margin-left: -67px;
+    margin-left: -71px;
     margin-top: 5px;
     }
   @include smTabletView {
-    margin-left: -67px;
+    margin-left: -71px;
     margin-top: 5px;
     }
   @include mdTabletView {
-    margin-left: -67px;
+    margin-left: -71px;
     margin-top: 5px;
     }
   @include lgLaptopView {
     margin-top: -60px;
+    margin-left: 40px;
     }
   }
 
