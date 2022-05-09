@@ -84,7 +84,7 @@ function SingleProjectDetails({}: Props): ReactElement {
 
   return ready ? (
     <>
-      <Explore />
+      {/* <Explore /> */}
       {geoJson && <SitesDropdown />}
       {geoJson &&
         Object.keys(rasterData.imagery).length !== 0 &&
