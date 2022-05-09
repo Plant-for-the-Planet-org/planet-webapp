@@ -1016,8 +1016,8 @@ export default function BasicDetails({
             <button
               id={'basicDetailsCont'}
               onClick={handleSubmit(onSubmit)}
-              className="primaryButton"
-              style={{ width: '169px', height: '46px', marginLeft: '350px' }}
+              className="primaryButton custom"
+              style={{ width: '169px', height: '46px' }}
               data-test-id="basicDetailsCont"
             >
               {isUploadingData ? (

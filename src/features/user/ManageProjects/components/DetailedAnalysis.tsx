@@ -224,26 +224,29 @@ export default function DetailedAnalysis({
     const submitData =
       purpose === 'trees'
         ? {
-            yearAbandoned: data.yearAbandoned.getFullYear()
-              ? data.yearAbandoned.getFullYear()
-              : null,
+            acquisitionYear: data.acquisitionYear.getFullYear(),
+            // metadata: {
+            //   acquisitionYear: data.acquisitionYear.getFullYear(),
+            // },
+            degradationYear: data.degradationYear.getFullYear(),
+            employeesCount: data.employeesCount,
             firstTreePlanted: `${data.firstTreePlanted.getFullYear()}-${
               data.firstTreePlanted.getMonth() + 1
             }-${data.firstTreePlanted.getDate()}`,
-            plantingDensity: data.plantingDensity,
-            employeesCount: data.employeesCount,
-            mainChallenge: data.mainChallenge,
-            siteOwnerType: owners,
-            siteOwnerName: data.siteOwnerName,
-            acquisitionYear: data.acquisitionYear.getFullYear(),
-            degradationYear: data.degradationYear.getFullYear(),
-            degradationCause: data.degradationCause,
-            longTermPlan: data.longTermPlan,
             plantingSeasons: months,
-            motivation: data.motivation,
+            siteOwnerName: data.siteOwnerName,
+            siteOwnerType: owners,
+            yearAbandoned: data.yearAbandoned.getFullYear()
+              ? data.yearAbandoned.getFullYear()
+              : null,
+
+            // mainChallenge: data.mainChallenge,
+            // degradationCause: data.degradationCause,
+            // longTermPlan: data.longTermPlan,
+            // motivation: data.motivation,
           }
         : {
-            projectMeta: {
+            metadata: {
               aquisitionDate: data.acquisitionYear.getFullYear(),
               activitySeasons: months,
               areaProtected: data.areaProtected,
@@ -289,35 +292,36 @@ export default function DetailedAnalysis({
       const detailedAnalysis =
         purpose === 'trees'
           ? {
-              yearAbandoned: projectDetails.projectMeta.yearAbandoned
-                ? new Date(
-                    new Date().setFullYear(
-                      projectDetails.projectMeta.yearAbandoned
-                    )
-                  )
-                : new Date(),
-              firstTreePlanted: projectDetails.firstTreePlanted
-                ? new Date(projectDetails.firstTreePlanted)
-                : new Date(),
-              plantingDensity: projectDetails.projectMeta.plantingDensity,
-              employeesCount: projectDetails.projectMeta.employeesCount,
-              mainChallenge: projectDetails.projectMeta.mainChallenge,
-              siteOwnerName: projectDetails.projectMeta.siteOwnerName,
               acquisitionYear: projectDetails.acquisitionYear
                 ? new Date(
                     new Date().setFullYear(projectDetails.acquisitionYear)
                   )
                 : new Date(),
-              degradationYear: projectDetails.projectMeta.degradationYear
+              yearAbandoned: projectDetails.metadata.yearAbandoned
                 ? new Date(
                     new Date().setFullYear(
-                      projectDetails.projectMeta.degradationYear
+                      projectDetails.metadata.yearAbandoned
                     )
                   )
                 : new Date(),
-              degradationCause: projectDetails.projectMeta.degradationCause,
-              longTermPlan: projectDetails.projectMeta.longTermPlan,
-              motivation: projectDetails.projectMeta.motivation,
+
+              employeesCount: projectDetails.metadata.employeesCount,
+              siteOwnerName: projectDetails.metadata.siteOwnerName,
+              degradationYear: projectDetails.metadata.degradationYear
+                ? new Date(
+                    new Date().setFullYear(
+                      projectDetails.metadata.degradationYear
+                    )
+                  )
+                : new Date(),
+              // degradationCause: projectDetails.projectMeta.degradationCause,
+
+              firstTreePlanted: projectDetails.firstTreePlanted
+                ? new Date(projectDetails.firstTreePlanted)
+                : new Date(),
+              // mainChallenge: projectDetails.projectMeta.mainChallenge,
+              // longTermPlan: projectDetails.projectMeta.longTermPlan,
+              // motivation: projectDetails.projectMeta.motivation,
             }
           : {
               projectMeta: {
@@ -379,7 +383,7 @@ export default function DetailedAnalysis({
     }
   }, [projectDetails]);
   return ready ? (
-    <div className={styles.stepContainer} style={{ marginLeft: '10px' }}>
+    <div className={styles.stepContainer}>
       {' '}
       <form
         onClick={(e) => {
@@ -712,13 +716,13 @@ export default function DetailedAnalysis({
             <div className={styles.formField}>
               <div
                 className={styles.formFieldHalf}
-                data-test-id="plantingDensity"
+                data-test-id="maxPlantingDensity"
               >
                 {/* Integer - the planting density expressed in trees per ha */}
                 <MaterialTextField
                   label={t('manageProjects:plantingDensity')}
                   variant="outlined"
-                  name="plantingDensity"
+                  name="maxPlantingDensity"
                   inputRef={register({
                     required: {
                       value: true,

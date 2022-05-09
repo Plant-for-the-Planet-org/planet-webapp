@@ -341,20 +341,17 @@ export default function ManageProjects({ GUID, token, project }: any) {
   return ready ? (
     <div
       className={styles.mainContainer}
-      style={{ display: 'flex', flexDirection: 'column' }}
+      style={{ display: 'flex', flexDirection: 'row' }}
     >
-      <div className={'project-form-flow'}>
+      <div className={'project-form-flow'} style={{ display: 'flex' }}>
         <div
           style={{
             display: 'flex',
             flexBasis: '10%',
+            flexDirection: 'column',
           }}
         >
-          <div
-            style={{
-              display: 'flex',
-            }}
-          >
+          <div className="tab-box">
             <Tabs
               value={tabSelected}
               onChange={handleChange}

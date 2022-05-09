@@ -269,6 +269,10 @@ video {
   cursor: pointer;
 }
 
+
+
+
+
 .secondaryButton {
   background-image: none;
   background-color: $backgroundColorDark;
@@ -331,7 +335,8 @@ button {
 }
 
 @include xsPhoneView {
-  .notificationContainer {
+
+.notificationContainer {
     position: fixed;
     display: flex;
     flex-direction: column;
@@ -528,6 +533,45 @@ input:-webkit-autofill {
   justify-content: center;
   width: max-content;
 }
+
+.tab-flow{
+  display: flex;
+ }
+
+@include xsPhoneView{
+  .project-form-flow{
+    flex-direction: column;
+  }
+  .tab-flow{
+    max-width: 90vw;
+    justify-content: center;
+  }
+  .primaryButton{
+    margin-left: 0px;
+  }
+}
+
+@include smTabletView {
+  .project-form-flow {
+    flex-direction: column;
+    margin-top: 10px;
+  }
+ }
+
+ @include mdTabletView{
+  .project-form-flow {
+    flex-direction: column;
+    margin-top: 0px;
+  }
+  
+ }
+
+ @include lgLaptopView {
+  .project-form-flow {
+    flex-direction: row;
+    margin-top: 0px;
+  }
+ }
 .add-projects-button {
   background-color: $backgroundColor;
   border: 1px solid #f3f3f3;
@@ -550,13 +594,33 @@ input:-webkit-autofill {
   gap: 20px;
   justify-content: center;
   align-items: center;
+  @include xsPhoneView {
+    width: 100%;
+    margin-left: -19px;
+    margin-top: 0px;
+    top: 568px;
+  }
+  @include smTabletView {
+    width: 100%;
+    margin-left: -49px;
+    margin-top: 0px;
+    top: 568px;
+  }
   @include mdTabletView {
     flex-direction: row;
   }
-  @include xsPhoneView {
-    width: 100%;
+
+  @include lgLaptopView {
+    top: 208px;
+    margin-left: -126px;
+  }
+
+  @include xlDesktopView {
+    margin-left: -250px;
   }
 }
+
+
 
 .add-project-title {
   font-size: $fontSixteen;
@@ -573,6 +637,10 @@ input:-webkit-autofill {
     gap: 16px;
   }
 }
+
+
+
+
 
 .tab-flow {
   text-transform: capitalize !important;
