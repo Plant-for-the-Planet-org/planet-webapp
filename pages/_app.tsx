@@ -215,8 +215,8 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
               useRefreshTokens={true}
             >
               <ThemeProvider>
-                <CssBaseline />
                 <MuiThemeProvider theme={materialTheme}>
+                <CssBaseline />
                   <UserPropsProvider>
                     <Layout>
                       <ProjectPropsProvider>
