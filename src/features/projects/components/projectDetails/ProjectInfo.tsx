@@ -203,15 +203,6 @@ function ProjectInfo({ project }: Props): ReactElement {
         </div>
       )}
 
-      {project.mainChallenge && (
-        <div className={styles.projectMoreInfo}>
-          <div className={styles.infoTitle}>
-            {t('manageProjects:mainChallenge')}
-          </div>
-          <div className={styles.infoText}>{project.mainChallenge}</div>
-        </div>
-      )}
-
       {project.siteOwnerName && (
         <div className={styles.projectMoreInfo}>
           <div className={styles.infoTitle}>
