@@ -14,6 +14,7 @@ function ProjectInfo({ project }: Props): ReactElement {
   const { useTranslation } = i18next;
 
   const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
+  console.log(project, 'project');
 
   const plantingSeasons = [
     { id: 0, title: ready ? t('common:january') : '' },
@@ -176,25 +177,31 @@ function ProjectInfo({ project }: Props): ReactElement {
               {t('manageProjects:plantingSeasons')}
             </div>
             <div className={styles.infoText}>
-              {project.projectMeta.activitySeasons.map(
-                (season: any, index: any) => {
-                  return (
-                    <React.Fragment key={plantingSeasons[season - 1].title}>
-                      {plantingSeasons[season - 1].title}
-                      {index === project.projectMeta.activitySeasons.length - 2
-                        ? ' and '
-                        : index ===
-                          project.projectMeta.activitySeasons.length - 1
-                        ? '.'
-                        : ', '}
-                    </React.Fragment>
-                  );
-                }
-              )}
+              {project.activitySeasons.map((season: any, index: any) => {
+                return (
+                  <React.Fragment key={plantingSeasons[season - 1].title}>
+                    {plantingSeasons[season - 1].title}
+                    {index === project.activitySeasons.length - 2
+                      ? ' and '
+                      : index === project.activitySeasons.length - 1
+                      ? '.'
+                      : ', '}
+                  </React.Fragment>
+                );
+              })}
             </div>
           </div>
         )}
       </div>
+
+      {project.mainChallenge && (
+        <div className={styles.projectMoreInfo}>
+          <div className={styles.infoTitle}>
+            {t('manageProjects:mainChallenge')}
+          </div>
+          <div className={styles.infoText}>{project.mainChallenge}</div>
+        </div>
+      )}
 
       {project.mainChallenge && (
         <div className={styles.projectMoreInfo}>
@@ -211,7 +218,7 @@ function ProjectInfo({ project }: Props): ReactElement {
             {t('manageProjects:siteOwnership')}
           </div>
           {project.siteOwnerType && (
-            <div className={styles.infoText} style={{ fontWeight: 'bold' }}>
+            <div className={styles.infoText}>
               {ownerTypes.map((ownerType: any, index: any) => {
                 return (
                   <React.Fragment key={ownerType}>
@@ -219,7 +226,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                     {index === ownerTypes.length - 2
                       ? ' and '
                       : index === ownerTypes.length - 1
-                      ? '.'
+                      ? ''
                       : ', '}
                   </React.Fragment>
                 );
