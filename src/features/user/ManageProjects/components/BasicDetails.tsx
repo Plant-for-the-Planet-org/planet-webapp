@@ -294,7 +294,7 @@ export default function BasicDetails({
   }, [router]);
 
   // const treeCost = watch('treeCost');
-  console.log(purpose);
+
   React.useEffect(() => {
     if (projectDetails) {
       const basicDetails =
@@ -694,7 +694,7 @@ export default function BasicDetails({
                       height: '13px',
                       width: '13px',
                       marginLeft: '6px',
-                      marginBottom: '30px',
+                      marginBottom: '3px',
                     }}
                   >
                     <InfoIcon />
