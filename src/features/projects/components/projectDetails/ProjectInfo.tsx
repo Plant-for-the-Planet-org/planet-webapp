@@ -60,8 +60,6 @@ function ProjectInfo({ project }: Props): ReactElement {
         return `${percentage}%`
     }
 
-
-
     return ready ? (
         <div>
             <div className={styles.projectMoreInfoHalfContainer}>
@@ -130,7 +128,9 @@ function ProjectInfo({ project }: Props): ReactElement {
                     </div>
                 )} */}
 
-                {project.projectMeta.employeeCount && (
+
+
+                {project && project.projectMeta && project.projectMeta.employeeCount && project.projectMeta.employeeCount !== 0 && (
                     <div className={styles.projectMoreInfoHalf}>
                         <div className={styles.infoTitle}>
                             {t('manageProjects:employees')}
@@ -141,7 +141,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                     </div>
                 )}
 
-                {project.projectMeta.activitySeasons && project.projectMeta.activitySeasons.length > 0 && (
+                {project && project.projectMeta && project.projectMeta.activitySeasons && project.projectMeta.activitySeasons.length > 0 && (
                     <div className={styles.projectMoreInfoHalf}>
                         <div className={styles.infoTitle}>
                             {t('manageProjects:plantingSeasons')}
@@ -161,7 +161,7 @@ function ProjectInfo({ project }: Props): ReactElement {
 
             </div>
 
-            {project.projectMeta.mainChallenge && (
+            {project && project.projectMeta && project.projectMeta.mainChallenge && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
                         {t('manageProjects:mainChallenge')}
@@ -197,7 +197,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                 </div>
             )}
 
-            {project.projectMeta.degradationCause && (
+            {project && project.projectMeta && project.projectMeta.degradationCause && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
                         {t('manageProjects:causeOfDegradation')}
@@ -209,7 +209,7 @@ function ProjectInfo({ project }: Props): ReactElement {
             )}
 
 
-            {project.projectMeta.motivation && (
+            {project && project.projectMeta && project.projectMeta.motivation && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
                         {t('manageProjects:whyThisSite')}
@@ -220,7 +220,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                 </div>
             )}
 
-            {project.projectMeta.longTermPlan && (
+            {project && project.projectMeta && project.projectMeta.longTermPlan && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
                         {t('manageProjects:longTermProtection')}
