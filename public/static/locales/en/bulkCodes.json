@@ -43,5 +43,11 @@
   "featureAvailability": "This feature is available only for partner project.",
   "planetCashDisabled": "PlanetCash is disabled. Please enable PlanetCash to use this feature.",
   "insufficientPCashBalance": "Insufficient balance.",
-  "addBalanceGeneric": "Please Click here to add funds."
+  "addBalanceGeneric": "Please Click here to add funds.",
+  "textUploadCSV": {
+	  "empty": "Drag and drop / click to select a .csv or .xslx file for upload",
+	  "error": "Please check for issues and drag .csv or .xlsx file here to upload",
+	  "processing": "Please wait while we analyze your file...",
+	  "success": "Continue or drag .csv or .xlsx file here to replace current file." 
+  }
 }

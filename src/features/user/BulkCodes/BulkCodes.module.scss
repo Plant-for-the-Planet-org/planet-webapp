@@ -59,12 +59,35 @@
     display: none;
   } */
 
-  .formErrors {
-    // position: absolute;
-    font-family: $primaryFontFamily;
-    font-size: $fontXSmall;
-    color: $dangerColor;
-    margin-left: 6px;
-    margin-top: 6px;
-    max-width: 320px;
+.formErrors {
+  // position: absolute;
+  font-family: $primaryFontFamily;
+  font-size: $fontXSmall;
+  color: $dangerColor;
+  margin-left: 6px;
+  margin-top: 6px;
+  max-width: 320px;
+}
+
+.dropzone {
+  background: #f2f2f7;
+  border: 1px solid #689f38;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  padding: 15px 12px;
+  gap: 0.5rem;
+  color: #2f3336;
+
+  svg {
+    height: 24px;
   }
+
+  & p {
+    text-align: center;
+  }
+
+  &--error {
+    border: 1px solid #e53935;
+  }
+}
