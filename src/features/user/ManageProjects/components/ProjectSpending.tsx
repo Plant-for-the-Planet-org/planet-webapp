@@ -271,6 +271,7 @@ export default function ProjectSpending({
                   variant="outlined"
                   name="amount"
                   onInput={(e) => {
+                    e.target.value = e.target.value.replace(/[^0-9]./g, '');
                     setAmount(e.target.value);
                   }}
                   InputProps={{

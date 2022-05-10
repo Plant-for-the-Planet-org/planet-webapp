@@ -237,10 +237,10 @@ export default function ManageProjects({ GUID, token, project }: any) {
       case 'detail-analysis':
         setTabSelected(3);
         break;
-      case 'sites':
+      case 'project-sites':
         setTabSelected(4);
         break;
-      case 'spending':
+      case 'project-spendings':
         setTabSelected(5);
         break;
       case 'review':

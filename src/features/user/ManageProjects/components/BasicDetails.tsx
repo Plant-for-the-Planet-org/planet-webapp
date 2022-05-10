@@ -333,16 +333,7 @@ export default function BasicDetails({
               currency: projectDetails.currency,
               latitude: projectDetails.geoLatitude,
               longitude: projectDetails.geoLongitude,
-              ecosystems: projectDetails?.projectMeta?.ecosystems,
-              projectMeta: {
-                ecosystems: projectDetails.ecosystems,
-                impacts: {
-                  benefits: projectDetails.benefits,
-                  coBenefits: projectDetails.coBenefits,
-                  ecologicalBenefits: projectDetails.ecologicalBenefits,
-                  socialBenefits: projectDetails.socialbenefits,
-                },
-              },
+              ecosystems: projectDetails.metadata.ecosystems,
             };
       if (projectDetails.geoLongitude && projectDetails.geoLatitude) {
         setProjectCoords([
@@ -407,14 +398,14 @@ export default function BasicDetails({
               ? parseNumber(i18n.language, data.unitCost)
               : null,
             currency: 'EUR',
-            projectMeta: {
+            metadata: {
               ecosystems: data.ecosystems,
-              impacts: {
-                benefits: data.benefits,
-                coBenefits: data.coBenefits,
-                ecologicalBenefits: data.ecologicalBenefits,
-                socialBenefits: data.socialBenefits,
-              },
+              // impacts: {
+              //   benefits: data.benefits,
+              //   coBenefits: data.coBenefits,
+              //   ecologicalBenefits: data.ecologicalBenefits,
+              //   socialBenefits: data.socialBenefits,
+              // },
             },
           };
 
@@ -703,7 +694,7 @@ export default function BasicDetails({
                       height: '13px',
                       width: '13px',
                       marginLeft: '6px',
-                      marginBottom: '30px',
+                      marginBottom: '3px',
                     }}
                   >
                     <InfoIcon />

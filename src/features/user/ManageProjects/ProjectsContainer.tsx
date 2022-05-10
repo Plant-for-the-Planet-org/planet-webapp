@@ -16,6 +16,7 @@ const { useTranslation } = i18next;
 export default function ProjectsContainer({}: any) {
   const { t, ready } = useTranslation(['donate', 'manageProjects']);
   const [projects, setProjects] = React.useState([]);
+  const [loader, setLoader] = React.useState(true);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const { user, contextLoaded, loginWithRedirect, token } =
     React.useContext(UserPropsContext);
@@ -30,16 +31,18 @@ export default function ProjectsContainer({}: any) {
         '/profile'
       ).then((projects) => {
         setProjects(projects);
+        setLoader(false);
       });
     }
   }
-
   // This effect is used to get and update UserInfo if the isAuthenticated changes
   React.useEffect(() => {
     if (contextLoaded && token) {
       loadProjects();
     }
   }, [contextLoaded, token]);
+
+  // console.log(contextLoaded);
 
   return ready ? (
     <div className="profilePage">
@@ -66,15 +69,13 @@ export default function ProjectsContainer({}: any) {
       </div>
 
       <div className={styles.projectsContainer} id="projectsContainer">
-        {projects && projects.length < 1 ? (
-          <div style={{ marginTop: '-210px' }}>
-            <GlobeContentLoader />
-            <div className={styles.projectNotFound}>
-              <LazyLoad>
-                <NotFound className={styles.projectNotFoundImage} />
-                <h5>{t('donate:noProjectsFound')}</h5>
-              </LazyLoad>
-            </div>
+        {loader && <GlobeContentLoader />}
+        {projects?.length < 1 && !loader ? (
+          <div className={styles.projectNotFound}>
+            <LazyLoad>
+              <NotFound className={styles.projectNotFoundImage} />
+              <h5>{t('donate:noProjectsFound')}</h5>
+            </LazyLoad>
           </div>
         ) : (
           <div className={styles.listProjects}>

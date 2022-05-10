@@ -186,6 +186,12 @@
   input {
     width: 130px;
   }
+  button, .backButton {
+    margin-left: 45px;
+    @include xsPhoneView {
+      margin-left: 0px !important;
+    }
+  }
 }
 .formFieldLarge {
   margin-top: 24px;
