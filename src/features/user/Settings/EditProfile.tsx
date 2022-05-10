@@ -1,4 +1,4 @@
-import { MenuItem } from '@mui/material';
+import { MenuItem, styled } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import React, { useState } from 'react';
@@ -22,6 +22,12 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 const { useTranslation } = i18next;
 
 interface Props {}
+
+const Alert = styled(MuiAlert)(({theme}) => {
+  return {
+    backgroundColor: theme.palette.primary.main,
+  }
+})
 
 export default function EditProfile({}: Props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -566,14 +572,14 @@ export default function EditProfile({}: Props) {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <div>
-          <MuiAlert
+          <Alert
             elevation={6}
             variant="filled"
             onClose={handleSnackbarClose}
             severity={severity}
           >
             {snackbarMessage}
-          </MuiAlert>
+          </Alert>
         </div>
       </Snackbar>
     </div>
