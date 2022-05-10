@@ -225,9 +225,6 @@ export default function DetailedAnalysis({
       purpose === 'trees'
         ? {
             acquisitionYear: data.acquisitionYear.getFullYear(),
-            // metadata: {
-            //   acquisitionYear: data.acquisitionYear.getFullYear(),
-            // },
             degradationYear: data.degradationYear.getFullYear(),
             employeesCount: data.employeesCount,
             firstTreePlanted: `${data.firstTreePlanted.getFullYear()}-${
@@ -304,7 +301,7 @@ export default function DetailedAnalysis({
                     )
                   )
                 : new Date(),
-
+              plantingSeasons: projectDetails.metadata.plantingSeasons,
               employeesCount: projectDetails.metadata.employeesCount,
               siteOwnerName: projectDetails.metadata.siteOwnerName,
               degradationYear: projectDetails.metadata.degradationYear
@@ -325,7 +322,7 @@ export default function DetailedAnalysis({
             }
           : {
               areaProtected: projectDetails.metadata.areaProtected,
-              activitySeasons: months,
+              activitySeasons: projectDetails?.metadata?.plantingSeasons,
               startingProtectionYear: projectDetails.metadata
                 .startingProtectionYear
                 ? new Date(
@@ -345,6 +342,7 @@ export default function DetailedAnalysis({
               employeesCount: projectDetails.metadata.employeesCount,
               mainChallenge: projectDetails.metadata.mainChallenge,
               siteOwnerName: projectDetails.metadata.siteOwnerName,
+              landOwnershipType: projectDetails.metadata.landOwnershipType,
               longTermPlan: projectDetails.metadata.longTermPlan,
 
               // ownershipType: projectDetails.ownershipType,
@@ -353,32 +351,86 @@ export default function DetailedAnalysis({
             };
 
       // set planting seasons
-      if (
-        projectDetails.plantingSeasons &&
-        projectDetails.plantingSeasons.length > 0
-      ) {
-        for (let i = 0; i < projectDetails.plantingSeasons.length; i++) {
-          if (projectDetails.plantingSeasons[i]) {
-            const j = projectDetails.plantingSeasons[i] - 1;
-            handleSetPlantingSeasons(j);
+      if (purpose === 'trees') {
+        if (
+          projectDetails.metadata.plantingSeasons &&
+          projectDetails.metadata.plantingSeasons.length > 0
+        ) {
+          for (
+            let i = 0;
+            i < projectDetails.metadata.plantingSeasons.length;
+            i++
+          ) {
+            if (projectDetails.metadata.plantingSeasons[i]) {
+              const j = projectDetails.metadata.plantingSeasons[i] - 1;
+              handleSetPlantingSeasons(j);
+            }
+          }
+        }
+      } else {
+        if (
+          projectDetails.metadata.activitySeasons &&
+          projectDetails.metadata.activitySeasons.length > 0
+        ) {
+          for (
+            let i = 0;
+            i < projectDetails.metadata.activitySeasons.length;
+            i++
+          ) {
+            if (projectDetails.metadata.activitySeasons[i]) {
+              const j = projectDetails.metadata.activitySeasons[i] - 1;
+              handleSetPlantingSeasons(j);
+            }
           }
         }
       }
 
       // set owner type
-      if (
-        projectDetails.siteOwnerType &&
-        projectDetails.siteOwnerType.length > 0
-      ) {
-        const newSiteOwners = siteOwners;
-        for (let i = 0; i < projectDetails.siteOwnerType.length; i++) {
-          for (let j = 0; j < newSiteOwners.length; j++) {
-            if (newSiteOwners[j].value === projectDetails.siteOwnerType[i]) {
-              newSiteOwners[j].isSet = true;
+
+      if (purpose === 'trees') {
+        if (
+          projectDetails.metadata.siteOwnerType &&
+          projectDetails.metadata.siteOwnerType.length > 0
+        ) {
+          const newSiteOwners = siteOwners;
+          for (
+            let i = 0;
+            i < projectDetails.metadata.siteOwnerType.length;
+            i++
+          ) {
+            for (let j = 0; j < newSiteOwners.length; j++) {
+              if (
+                newSiteOwners[j].value ===
+                projectDetails.metadata.siteOwnerType[i]
+              ) {
+                newSiteOwners[j].isSet = true;
+              }
             }
           }
+          setSiteOwners(newSiteOwners);
         }
-        setSiteOwners(newSiteOwners);
+      } else {
+        if (
+          projectDetails.metadata.landOwnershipType &&
+          projectDetails.metadata.landOwnershipType.length > 0
+        ) {
+          const newSiteOwners = siteOwners;
+          for (
+            let i = 0;
+            i < projectDetails.metadata.landOwnershipType.length;
+            i++
+          ) {
+            for (let j = 0; j < newSiteOwners.length; j++) {
+              if (
+                newSiteOwners[j].value ===
+                projectDetails.metadata.landOwnershipType[i]
+              ) {
+                newSiteOwners[j].isSet = true;
+              }
+            }
+          }
+          setSiteOwners(newSiteOwners);
+        }
       }
 
       reset(detailedAnalysis);
