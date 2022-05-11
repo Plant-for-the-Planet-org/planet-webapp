@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { Modal, Snackbar } from '@mui/material';
+import { Modal, Snackbar, styled } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import styles from './EmbedModal.module.scss';
 import i18next from '../../../../i18n';
@@ -16,6 +16,12 @@ interface Props {
 }
 
 const { useTranslation } = i18next;
+
+const Alert = styled(MuiAlert)(({theme}) => {
+  return {
+    backgroundColor: theme.palette.primary.main,
+  }
+})
 
 export default function EmbedModal({
   embedModalOpen,
@@ -157,14 +163,14 @@ export default function EmbedModal({
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <div>
-          <MuiAlert
+          <Alert
             elevation={6}
             variant="filled"
             onClose={handleSnackbarClose}
             severity={severity}
           >
             {snackbarMessage}
-          </MuiAlert>
+          </Alert>
         </div>
       </Snackbar>
     </>

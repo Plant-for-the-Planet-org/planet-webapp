@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
 import styles from './../../../src/features/user/Profile/styles/RedeemModal.module.scss';
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import MuiAlert from '@mui/material/Alert';
 import Close from '../../../public/assets/images/icons/headerIcons/close';
 import i18next from './../../../i18n';
 import tenantConfig from './../../../tenant.config';
@@ -12,6 +12,7 @@ import { getFormattedNumber } from '../../../src/utils/getFormattedNumber';
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import ShareOptions from '../../../src/features/common/ShareOptions/ShareOptions';
+import { styled } from '@mui/material';
 
 const { useTranslation } = i18next;
 
@@ -61,9 +62,11 @@ function ClaimDonation({}: Props): ReactElement {
     setTextCopiedSnackbarOpen(false);
   };
 
-  function Alert(props: AlertProps) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
+  const Alert = styled(MuiAlert)(({theme}) => {
+    return {
+      backgroundColor: theme.palette.primary.main,
+    }
+  })
 
   const [codeRedeemed, setCodeRedeemed] = React.useState(false);
 
@@ -266,6 +269,8 @@ function ClaimDonation({}: Props): ReactElement {
               >
                 <div>
                   <Alert
+                    elevation={6}
+                    variant="filled"
                     onClose={handleTextCopiedSnackbarClose}
                     severity="success"
                   >

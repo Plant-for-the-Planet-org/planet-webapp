@@ -2,12 +2,17 @@ import React, { ReactElement } from 'react';
 import CopyIcon from '../../../../public/assets/images/icons/CopyIcon';
 import styles from './styles.module.scss';
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import MuiAlert from '@mui/material/Alert';
+import { styled } from '@mui/material/styles';
+
 import i18next from '../../../../i18n';
 const { useTranslation } = i18next;
-function Alert(props: AlertProps) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+
+const Alert = styled(MuiAlert)(({theme}) => {
+  return {
+    backgroundColor: theme.palette.primary.main,
+  }
+})
 
 interface Props {
   text: any;
@@ -54,7 +59,7 @@ export default function CopyToClipboard({
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <div>
-          <Alert onClose={handleClose} severity="success">
+          <Alert elevation={6} variant="filled" onClose={handleClose} severity="success">
             {t('copiedToClipboard')}
           </Alert>
         </div>

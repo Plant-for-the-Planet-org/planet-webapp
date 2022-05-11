@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import styles from './CompleteSignup.module.scss';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
-import { Snackbar,Alert as MuiAlert, MenuItem } from '@mui/material';
+import { Snackbar,Alert as MuiAlert, MenuItem, styled } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
@@ -20,6 +20,12 @@ import { postRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 const { Trans, useTranslation } = i18next;
+
+const Alert = styled(MuiAlert)(({theme}) => {
+  return {
+    backgroundColor: theme.palette.primary.main,
+  }
+})
 
 export default function CompleteSignup() {
   const router = useRouter();
@@ -589,14 +595,14 @@ export default function CompleteSignup() {
           onClose={handleSnackbarClose}
         >
           <div>
-            <MuiAlert
+            <Alert
               elevation={6}
               variant="filled"
               onClose={handleSnackbarClose}
               severity={severity}
             >
               {snackbarMessage}
-            </MuiAlert>
+            </Alert>
           </div>
         </Snackbar>
       </div>

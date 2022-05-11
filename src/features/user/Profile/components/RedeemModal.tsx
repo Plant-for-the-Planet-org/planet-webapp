@@ -8,13 +8,14 @@ import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useForm } from 'react-hook-form';
 import Close from '../../../../../public/assets/images/icons/headerIcons/close';
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import MuiAlert from '@mui/material/Alert';
 import tenantConfig from '../../../../../tenant.config';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import ShareOptions from '../../../common/ShareOptions/ShareOptions';
+import { styled } from '@mui/material';
 
 const { useTranslation } = i18next;
 export default function RedeemModal({
@@ -60,9 +61,11 @@ export default function RedeemModal({
     setTextCopiedSnackbarOpen(false);
   };
 
-  function Alert(props: AlertProps) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
+  const Alert = styled(MuiAlert)(({theme}) => {
+    return {
+      backgroundColor: theme.palette.primary.main,
+    }
+  })
 
   const { register, handleSubmit, errors, getValues } = useForm({
     mode: 'onBlur',
@@ -247,6 +250,8 @@ export default function RedeemModal({
             >
               <div>
                 <Alert
+                elevation={6}
+                variant="filled"
                   onClose={handleTextCopiedSnackbarClose}
                   severity="success"
                 >
