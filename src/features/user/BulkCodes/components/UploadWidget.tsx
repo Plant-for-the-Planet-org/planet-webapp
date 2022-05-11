@@ -35,16 +35,31 @@ const UploadWidget = ({
     }
   };
 
+  const renderStatusText = (status: UploadStatus) => {
+    if (['success', 'error'].includes(status)) {
+      return (
+        <div className={styles[`uploadWidget__statusText--${status}`]}>
+          {t(`bulkCodes:statusUploadCSV.${status}`)}
+        </div>
+      );
+    }
+
+    return null;
+  };
+
   if (ready) {
     return (
       <div
         {...getRootProps({
-          className: `${styles.dropzone} ${styles[`dropzone--${status}`]}`,
+          className: `${styles.uploadWidget} ${
+            styles[`uploadWidget--${status}`]
+          }`,
         })}
       >
         <input {...getInputProps()} />
         {renderWidgetIcon(status)}
-        <p>{t(`bulkCodes:textUploadCSV.${status}`)}</p>
+        {renderStatusText(status)}
+        <p>{t(`bulkCodes:instructionsUploadCSV.${status}`)}</p>
       </div>
     );
   }

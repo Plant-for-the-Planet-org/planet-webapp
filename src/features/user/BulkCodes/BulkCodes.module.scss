@@ -69,7 +69,7 @@
   max-width: 320px;
 }
 
-.dropzone {
+.uploadWidget {
   background: #f2f2f7;
   border: 1px solid #689f38;
   border-radius: 4px;
@@ -78,13 +78,19 @@
   padding: 15px 12px;
   gap: 0.5rem;
   color: #2f3336;
+  text-align: center;
 
   svg {
     height: 24px;
   }
 
-  & p {
-    text-align: center;
+  &__statusText {
+    &--error {
+      color: #e53935;
+    }
+    &--success {
+      color: #689f38;
+    }
   }
 
   &--error {
