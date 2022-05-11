@@ -333,7 +333,7 @@ export default function BasicDetails({
               currency: projectDetails.currency,
               latitude: projectDetails.geoLatitude,
               longitude: projectDetails.geoLongitude,
-              ecosystems: projectDetails.metadata.ecosystems,
+              ecosystems: projectDetails.ecosystems,
             };
       if (projectDetails.geoLongitude && projectDetails.geoLatitude) {
         setProjectCoords([
