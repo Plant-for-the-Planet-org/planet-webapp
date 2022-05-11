@@ -231,6 +231,7 @@ export default function DetailedAnalysis({
               data.firstTreePlanted.getMonth() + 1
             }-${data.firstTreePlanted.getDate()}`,
             plantingSeasons: months,
+            plantingDensity: data.plantingDensity,
             siteOwnerName: data.siteOwnerName,
             siteOwnerType: owners,
             yearAbandoned: data.yearAbandoned.getFullYear()
@@ -283,7 +284,7 @@ export default function DetailedAnalysis({
   };
 
   // Use Effect to hide error message after 10 seconds
-  console.log(projectDetails);
+
   React.useEffect(() => {
     if (projectDetails) {
       const detailedAnalysis =
@@ -302,6 +303,7 @@ export default function DetailedAnalysis({
                   )
                 : new Date(),
               plantingSeasons: projectDetails.metadata.plantingSeasons,
+              plantingDensity: projectDetails.metadata.plantingDensity,
               employeesCount: projectDetails.metadata.employeesCount,
               siteOwnerName: projectDetails.metadata.siteOwnerName,
               degradationYear: projectDetails.metadata.degradationYear
@@ -322,7 +324,7 @@ export default function DetailedAnalysis({
             }
           : {
               areaProtected: projectDetails.metadata.areaProtected,
-              activitySeasons: projectDetails?.metadata?.plantingSeasons,
+              activitySeasons: projectDetails.metadata.plantingSeasons,
               startingProtectionYear: projectDetails.metadata
                 .startingProtectionYear
                 ? new Date(
@@ -770,13 +772,13 @@ export default function DetailedAnalysis({
             <div className={styles.formField}>
               <div
                 className={styles.formFieldHalf}
-                data-test-id="maxPlantingDensity"
+                data-test-id="plantingDensity"
               >
                 {/* Integer - the planting density expressed in trees per ha */}
                 <MaterialTextField
                   label={t('manageProjects:plantingDensity')}
                   variant="outlined"
-                  name="maxPlantingDensity"
+                  name="plantingDensity"
                   inputRef={register({
                     required: {
                       value: true,
