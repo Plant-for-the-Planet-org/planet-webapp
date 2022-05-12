@@ -94,9 +94,10 @@ function SubmitForReview({
             <button
               className="primaryButton"
               style={{
-                width: '100px',
+                width: '150px',
                 marginTop: '30px',
                 marginRight: '245px',
+                marginLeft: '30px',
               }}
               onClick={() => router.push('/profile/projects')}
             >
@@ -182,7 +183,7 @@ function SubmitForReview({
 
               <button
                 className="primaryButton"
-                style={{ width: '100px', marginLeft: '15px' }}
+                style={{ width: '150px', marginLeft: '15px' }}
                 onClick={() => router.push('/profile/projects')}
               >
                 <p>{t('manageProjects:exit')}</p>

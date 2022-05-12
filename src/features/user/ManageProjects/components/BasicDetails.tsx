@@ -333,7 +333,7 @@ export default function BasicDetails({
               currency: projectDetails.currency,
               latitude: projectDetails.geoLatitude,
               longitude: projectDetails.geoLongitude,
-              ecosystems: projectDetails.ecosystems,
+              ecosystems: projectDetails?.metadata?.ecosystems,
             };
       if (projectDetails.geoLongitude && projectDetails.geoLatitude) {
         setProjectCoords([
@@ -400,12 +400,6 @@ export default function BasicDetails({
             currency: 'EUR',
             metadata: {
               ecosystems: data.ecosystems,
-              // impacts: {
-              //   benefits: data.benefits,
-              //   coBenefits: data.coBenefits,
-              //   ecologicalBenefits: data.ecologicalBenefits,
-              //   socialBenefits: data.socialBenefits,
-              // },
             },
           };
 
@@ -740,6 +734,7 @@ export default function BasicDetails({
                   })}
                   label={t('manageProjects:unitCost')}
                   variant="outlined"
+                  type="number"
                   name="unitCost"
                   placeholder={'0'}
                   InputProps={{

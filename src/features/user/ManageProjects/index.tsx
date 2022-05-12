@@ -76,17 +76,13 @@ export default function ManageProjects({ GUID, token, project }: any) {
     }
   };
 
-  /**
-   * * for moving next tab
-   */
+  // for moving next tab
   const handleNext = () => {
     formRouteHandler(tabSelected + 1);
     setTabSelected((prevTabSelected) => prevTabSelected + 1);
   };
 
-  /**
-   * *for moving previous tab
-   */
+  //for moving previous tab
   const handleBack = () => {
     formRouteHandler(tabSelected - 1);
     setTabSelected((prevActiveStep) => prevActiveStep - 1);
@@ -98,45 +94,33 @@ export default function ManageProjects({ GUID, token, project }: any) {
   };
 
   const handleChange = (e: React.ChangeEvent<{}>, newValue: number) => {
-    /**
-     * *restrict the access of Tab
-     */
+    //restrict the access of Tab
     if (router.asPath === '/profile/projects/new-project') {
       e.preventDefault();
       return;
     }
-    /**
-     * * show the same route as respective form
-     */
+    //show the same route as respective form
 
     formRouteHandler(newValue);
 
-    /**
-     * *if project selected don't let it change
-     */
+    //if project selected don't let it change
     if (newValue < 1) {
       e.preventDefault();
       return;
     }
 
-    /**
-     * * if the Project is not created then lock it to basic details
-     */
+    //if the Project is not created then lock it to basic details
     if (projectGUID === '') {
       e.preventDefault();
       return;
     }
     setTabSelected(newValue);
-    /**
-     * *for getting access to other tab for edit of individual project
-     */
+    //for getting access to other tab for edit of individual project
     if (router.query.id) {
       setTabSelected(newValue);
     }
 
-    /**
-     * * A project type should be selected to move to the next step
-     */
+    // A project type should be selected to move to the next step
     if (!router.query.purpose) {
       return;
     }

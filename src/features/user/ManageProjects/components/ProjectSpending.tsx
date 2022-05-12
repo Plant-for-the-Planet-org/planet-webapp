@@ -268,10 +268,11 @@ export default function ProjectSpending({
                   })}
                   label={t('manageProjects:spendingAmount')}
                   placeholder={0}
+                  type="number"
+                  onBlur={(e) => e.preventDefault()}
                   variant="outlined"
                   name="amount"
                   onInput={(e) => {
-                    e.target.value = e.target.value.replace(/[^0-9]./g, '');
                     setAmount(e.target.value);
                   }}
                   InputProps={{

@@ -582,6 +582,10 @@ input:-webkit-autofill {
   padding: 20px;
   box-shadow: rgb(170 170 170 / 20%) 0px 1px 4px;
   border-radius: 10px;
+  @include xsPhoneView{
+    width: 190px;
+  }
+
 }
 
 .add-project {
@@ -596,8 +600,8 @@ input:-webkit-autofill {
   align-items: center;
   @include xsPhoneView {
     width: 100%;
-    margin-left: -19px;
-    margin-top: 0px;
+    margin-left: 12px;
+    margin-top: 100px;
     top: 568px;
   }
   @include smTabletView {
@@ -617,10 +621,22 @@ input:-webkit-autofill {
 
   @include xlDesktopView {
     margin-left: -250px;
-    margin-top: 90px;
+    
   }
 }
 
+
+/* remove updown arrow on input type=number for  Chrome, Safari, Edge, Opera  */ 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* remove updown arrow on input type=number for  Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 
 
 .add-project-title {

@@ -554,9 +554,8 @@ export default function DetailedAnalysis({
                   label={t('manageProjects:areaProtected')}
                   variant="outlined"
                   name="areaProtected"
-                  onInput={(e) => {
-                    e.target.value = e.target.value.replace(/[^0-9]./g, '');
-                  }}
+                  type="number"
+                  onBlur={(e) => e.preventDefault()}
                 />
                 {errors.areaProtected && (
                   <span className={styles.formErrors}>
