@@ -1,6 +1,6 @@
-import React, { ReactElement } from 'react'
-import CopyIcon from '../../../../public/assets/images/icons/CopyIcon'
-import styles from './styles.module.scss'
+import React, { ReactElement } from 'react';
+import CopyIcon from '../../../../public/assets/images/icons/CopyIcon';
+import styles from './styles.module.scss';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -19,13 +19,15 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-
 interface Props {
   text: any;
   isButton: any;
 }
 
-export default function CopyToClipboard({ text, isButton }: Props): ReactElement {
+export default function CopyToClipboard({
+  text,
+  isButton,
+}: Props): ReactElement {
   const { t, i18n } = useTranslation(['common']);
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -37,8 +39,7 @@ export default function CopyToClipboard({ text, isButton }: Props): ReactElement
     } catch (err) {
       console.error('Failed to copy text: ', err);
     }
-
-  }
+  };
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === 'clickaway') {
@@ -49,14 +50,19 @@ export default function CopyToClipboard({ text, isButton }: Props): ReactElement
   };
   return (
     <>
-      <div onClick={handleClick} className={`${styles.copyButtonContainer} ${isButton ? styles.button : ''}`}>
+      <div
+        onClick={handleClick}
+        className={`${styles.copyButtonContainer} ${
+          isButton ? styles.button : ''
+        }`}
+      >
         <CopyIcon />
       </div>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success">
-          {t("copiedToClipboard")}
+          {t('copiedToClipboard')}
         </Alert>
       </Snackbar>
     </>
-  )
+  );
 }

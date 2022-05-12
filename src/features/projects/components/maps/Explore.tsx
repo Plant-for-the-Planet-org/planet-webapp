@@ -243,9 +243,7 @@ export default function Explore({}: Props): ReactElement {
                     }}
                     className={styles.exploreInfo}
                   >
-                    
                     <InfoIcon />
-                    
                   </div>
                 </div>
                 <div className={styles.exploreToggleRow}>
@@ -384,11 +382,8 @@ export default function Explore({}: Props): ReactElement {
 }
 
 const ExploreLayers = () => {
-  const {
-    exploreForests,
-    explorePotential,
-    exploreDeforestation,
-  } = React.useContext(ProjectPropsContext);
+  const { exploreForests, explorePotential, exploreDeforestation } =
+    React.useContext(ProjectPropsContext);
   return (
     <>
       {exploreForests ? (
@@ -408,12 +403,8 @@ const ExploreLayers = () => {
         <LayerManager map={mapRef?.current.getMap()} plugin={PluginMapboxGl}>
           {exploreDeforestation &&
             TreeCoverLoss.map((layer) => {
-              const {
-                id,
-                decodeConfig,
-                timelineConfig,
-                decodeFunction,
-              } = layer;
+              const { id, decodeConfig, timelineConfig, decodeFunction } =
+                layer;
 
               const lSettings = layersSettings[id] || {};
 

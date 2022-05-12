@@ -13,24 +13,23 @@ export default function Custom404(initialized: Props) {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection:'column'
-  }
+    flexDirection: 'column',
+  };
   const router = useRouter();
 
   return (
     <>
       {initialized ? (
-           <div style={styles}>
-            <h2>{router.query.error}</h2>
-            <div style={{width:'300px',height:'175px'}}>
-              <Custom404Image />
-            </div>
-            
+        <div style={styles}>
+          <h2>{router.query.error}</h2>
+          <div style={{ width: '300px', height: '175px' }}>
+            <Custom404Image />
           </div>
+        </div>
       ) : (
         <></>
       )}
-      <Footer/>
+      <Footer />
     </>
   );
 }

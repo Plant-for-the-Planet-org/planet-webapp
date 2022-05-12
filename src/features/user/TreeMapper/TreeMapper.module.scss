@@ -40,121 +40,119 @@
     text-align: center;
   }
 }
- 
+
 .locationList {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  max-width: 100%;
+  width: 325px;
+  z-index: 10;
+  height: 85%;
+  height: 100%;
+  background-color: $backgroundColor;
+  .singleLocation {
+    :hover {
+      background-color: $backgroundColorDark;
+    }
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    > .locationHeader {
+      padding: 20px 20px;
+      position: relative;
       display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      max-width: 100%;
-      width: 325px;
-      z-index: 10;
-      height: 85%;
-      height: 100%;
-      background-color: $backgroundColor;
-      .singleLocation {
-        :hover {
-          background-color:  $backgroundColorDark;
-        }
+      flex-direction: row;
+      width: 100%;
+      justify-content: space-between;
+      &:hover {
+        cursor: pointer;
+      }
+      > .left {
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        width: 100%;
-        > .locationHeader {
-          padding: 20px 20px;
-          position: relative;
-          display: flex;
-          flex-direction: row;
-          width: 100%;
-          justify-content: space-between;
-          &:hover {
-            cursor: pointer;
-          }
-          > .left {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            > .treeCount {
-              font-weight: 700;
-            }
-            > .date {
-              font-weight: 400;
-            }
-          }
-          > .right {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 10px;
-            > .status {
-              display: flex;
-              font-weight: 700;
-            }
-            > .mode {
-              font-weight: 400;
-            }
-          }
+        gap: 10px;
+        > .treeCount {
+          font-weight: 700;
         }
-        > .detailContainer {
-          display: none;
+        > .date {
+          font-weight: 400;
         }
       }
-    }
-.locationDetails {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      max-width: 100%;
-      width: 390px;
-      min-height: calc(100vh - 80px);
-      z-index: 10;
-      height: auto;
-      overflow-y: auto;
-      background-color: $backgroundColor;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-      padding: 30px 20px;
-      > .locationNav {
+      > .right {
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        > .backButton {
-          cursor: pointer;
-          margin-left: -16px;
-        }
-        
-        > .locationMenu {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+        > .status {
           display: flex;
-          gap: 16px;
-          > .deleteButton {
-            cursor: pointer;
-            svg {
-              width: 14px;
-            }
-          }
-          > .editButton {
-            cursor: pointer;
-            svg {
-              width: 16px;
-            }
-          }
+          font-weight: 700;
+        }
+        > .mode {
+          font-weight: 400;
         }
       }
-      
     }
-  .mapContainer {
-      position: fixed;
-      top: 0;
-      bottom: 50vh;
-      left: 0;
-      right: 0;
-      > div:first-child {
-        height: 100% !important;
-        width: 100% !important;
-      }
+    > .detailContainer {
+      display: none;
+    }
+  }
+}
+.locationDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  max-width: 100%;
+  width: 390px;
+  min-height: calc(100vh - 80px);
+  z-index: 10;
+  height: auto;
+  overflow-y: auto;
+  background-color: $backgroundColor;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 30px 20px;
+  > .locationNav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    > .backButton {
+      cursor: pointer;
+      margin-left: -16px;
     }
 
+    > .locationMenu {
+      display: flex;
+      gap: 16px;
+      > .deleteButton {
+        cursor: pointer;
+        svg {
+          width: 14px;
+        }
+      }
+      > .editButton {
+        cursor: pointer;
+        svg {
+          width: 16px;
+        }
+      }
+    }
+  }
+}
+.mapContainer {
+  position: fixed;
+  top: 0;
+  bottom: 50vh;
+  left: 0;
+  right: 0;
+  > div:first-child {
+    height: 100% !important;
+    width: 100% !important;
+  }
+}
 
 .imageContainer {
   display: flex;
@@ -178,7 +176,6 @@
   padding-top: 20px;
   grid-row-gap: 20px;
   grid-template-columns: 1fr 1fr;
-  
 }
 
 .detailsFull {
@@ -449,28 +446,27 @@
 }
 
 @include mdTabletView {
-
   .pageContainer {
     justify-content: flex-start;
   }
 
   .locationList {
-        > .singleLocation {
-          > .detailContainer {
-            display: none;
-          }
-          > .detailContainer.selected {
-            display: block;
-            padding: 20px 0;
-          }
-        }
-        > .singleLocation.selected {
-          margin-bottom: 10px;
-          background-color: #fafafa;
-          border-radius: 10px;
-          box-shadow: 1px 2px 8px -6px #707070;
-        }
+    > .singleLocation {
+      > .detailContainer {
+        display: none;
       }
+      > .detailContainer.selected {
+        display: block;
+        padding: 20px 0;
+      }
+    }
+    > .singleLocation.selected {
+      margin-bottom: 10px;
+      background-color: #fafafa;
+      border-radius: 10px;
+      box-shadow: 1px 2px 8px -6px #707070;
+    }
+  }
 
   .pullUpContainer {
     display: none;
@@ -482,17 +478,17 @@
 
   .mapContainer {
     top: 80px;
-      bottom: 0;
-      left: 450px;
-      right: 0;
+    bottom: 0;
+    left: 450px;
+    right: 0;
   }
 
-  .listContainer { 
+  .listContainer {
     margin: 0;
     background-color: $backgroundBase;
     border-top-left-radius: 0px;
-      border-top-right-radius: 0px;
-      box-shadow: none;
+    border-top-right-radius: 0px;
+    box-shadow: none;
     > :first-child {
       padding: 0 50px;
       text-align: left;

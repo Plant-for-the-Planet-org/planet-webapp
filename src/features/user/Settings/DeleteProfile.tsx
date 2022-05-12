@@ -10,7 +10,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
-export default function DeleteProfile({ }: any) {
+export default function DeleteProfile({}: any) {
   const { user, token, logoutUser } = React.useContext(UserPropsContext);
   const { t, ready } = useTranslation(['me', 'common', 'editProfile']);
   const handleChange = (e) => {
@@ -23,13 +23,15 @@ export default function DeleteProfile({ }: any) {
 
   const handleDeleteAccount = () => {
     setIsUploadingData(true);
-    deleteAuthenticatedRequest('/app/profile', token, handleError).then((res) => {
-      if (res !== 404) {
-        logoutUser(`${process.env.NEXTAUTH_URL}/`);
-      } else {
-        console.log(res.errorText);
+    deleteAuthenticatedRequest('/app/profile', token, handleError).then(
+      (res) => {
+        if (res !== 404) {
+          logoutUser(`${process.env.NEXTAUTH_URL}/`);
+        } else {
+          console.log(res.errorText);
+        }
       }
-    });
+    );
   };
 
   const { theme } = React.useContext(ThemeContext);

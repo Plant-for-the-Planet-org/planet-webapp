@@ -365,7 +365,7 @@
     z-index: 999;
     right: 5%;
     > svg {
-      path{
+      path {
         fill: $primaryFontColor;
       }
       height: 12px;
@@ -499,13 +499,13 @@
       transition-duration: 0.4s;
       transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
       svg {
-        path{
+        path {
           fill: $primaryFontColor;
         }
       }
-      svg .selected{
-        path{
-          fill: '#ECB641'
+      svg .selected {
+        path {
+          fill: '#ECB641';
         }
       }
       &:hover {

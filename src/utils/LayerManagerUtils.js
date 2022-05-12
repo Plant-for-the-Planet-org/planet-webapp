@@ -14,9 +14,7 @@ export const dateDiffInDays = (startDate, endDate) => {
 };
 
 export const getDayRange = (params = {}) => {
-  const {
-    startDate, endDate, minDate, maxDate,
-  } = params || {};
+  const { startDate, endDate, minDate, maxDate } = params || {};
 
   if (!startDate || !endDate || !minDate || !maxDate) return null;
 
@@ -27,7 +25,8 @@ export const getDayRange = (params = {}) => {
   // timeline or hover effect active range
   const startDateTime = new Date(startDate);
   const endDateTime = new Date(endDate);
-  const activeStartDay = numberOfDays - dateDiffInDays(maxDateTime, startDateTime);
+  const activeStartDay =
+    numberOfDays - dateDiffInDays(maxDateTime, startDateTime);
   const activeEndDay = numberOfDays - dateDiffInDays(maxDateTime, endDateTime);
 
   // get start and end day
@@ -57,9 +56,7 @@ export const getParams = (config = [], params = {}) => {
     ...params,
   };
 
-  const {
-    startDate, endDate, trimEndDate, maxAbsoluteDate,
-  } = newParams;
+  const { startDate, endDate, trimEndDate, maxAbsoluteDate } = newParams;
 
   const start = startDate;
   const end = endDate > maxAbsoluteDate ? maxAbsoluteDate : endDate;
