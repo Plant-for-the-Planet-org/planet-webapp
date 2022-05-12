@@ -16,7 +16,7 @@ import { getStoredConfig } from '../../../utils/storeConfig';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
-import GeocoderArcGIS from "geocoder-arcgis";
+import GeocoderArcGIS from 'geocoder-arcgis';
 import { postRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
@@ -539,12 +539,16 @@ export default function CompleteSignup() {
             <div className={styles.mainText}>
               <label htmlFor={'terms'} style={{ cursor: 'pointer' }}>
                 <Trans i18nKey="editProfile:termAndCondition">
-                  I agree to the <a
+                  I agree to the{' '}
+                  <a
                     className={styles.termsLink}
                     rel="noopener noreferrer"
                     href={`https://pp.eco/legal/${i18n.language}/terms`}
                     target={'_blank'}
-                  >Terms and Conditions</a> of the Plant-for-the-Planet platform.
+                  >
+                    Terms and Conditions
+                  </a>{' '}
+                  of the Plant-for-the-Planet platform.
                 </Trans>
               </label>
             </div>

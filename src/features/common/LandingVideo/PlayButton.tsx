@@ -6,14 +6,18 @@ import i18next from '../../../../i18n';
 const { useTranslation } = i18next;
 
 interface Props {
-    setshowVideo: Function;
+  setshowVideo: Function;
 }
 
-export default function PlayButton({setshowVideo}: Props): ReactElement {
-    const { t } = useTranslation(['common']);
-    return (
-        <div title={t('howDoesThisWork')} onClick={()=>setshowVideo(true)} className={styles.playButton}>
-            <PlayIcon/>
-        </div>
-    )
+export default function PlayButton({ setshowVideo }: Props): ReactElement {
+  const { t } = useTranslation(['common']);
+  return (
+    <div
+      title={t('howDoesThisWork')}
+      onClick={() => setshowVideo(true)}
+      className={styles.playButton}
+    >
+      <PlayIcon />
+    </div>
+  );
 }

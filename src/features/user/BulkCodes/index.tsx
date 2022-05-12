@@ -25,7 +25,7 @@ export default function BulkCodes({
       case 1:
         return <SelectProjectForm />;
       case 2:
-        return <IssueCodesForm/>;
+        return <IssueCodesForm />;
       default:
         return <CreationMethodForm />;
     }

@@ -19,9 +19,8 @@ export default function AddTargetModal({
 }: any) {
   // External imports
   const { t, ready } = useTranslation(['me']);
-  const { user, token, contextLoaded, setUser } = React.useContext(
-    UserPropsContext
-  );
+  const { user, token, contextLoaded, setUser } =
+    React.useContext(UserPropsContext);
   const { register, handleSubmit, errors } = useForm({ mode: 'onBlur' });
   const { theme } = React.useContext(ThemeContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
@@ -87,9 +86,7 @@ export default function AddTargetModal({
             />
           </div>
           {errors.addTarget && (
-            <span className={'formErrors'}>
-              {t('me:targetErrorMessage')}
-            </span>
+            <span className={'formErrors'}>{t('me:targetErrorMessage')}</span>
           )}
           {errors.addTarget ? (
             <div className="primaryButton" style={{ marginTop: '24px' }}>

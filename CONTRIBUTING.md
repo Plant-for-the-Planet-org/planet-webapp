@@ -8,5 +8,5 @@ Please note we have a [code of conduct](https://github.com/Plant-for-the-Planet-
 
 1. Ensure you pull request builds with `npm run dev`
 2. Update the [README.md](https://github.com/Plant-for-the-Planet-org/planet-webapp/blob/develop/README.md) if you change something in the development process.
-5. You may merge the Pull Request in once you have the sign-off of another developer, or if you
+3. You may merge the Pull Request in once you have the sign-off of another developer, or if you
    do not have permission to do that, you may request the reviewer to merge it for you.

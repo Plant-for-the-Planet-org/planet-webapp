@@ -1,7 +1,12 @@
 import React, { ReactElement } from 'react';
 import * as turf from '@turf/turf';
 import * as d3 from 'd3-ease';
-import ReactMapboxGl, { ZoomControl, Source, Layer, GeoJSONLayer } from 'react-mapbox-gl';
+import ReactMapboxGl, {
+  ZoomControl,
+  Source,
+  Layer,
+  GeoJSONLayer,
+} from 'react-mapbox-gl';
 import DrawControl from 'react-mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import styles from '../Import.module.scss';
@@ -24,7 +29,7 @@ const Map = ReactMapboxGl({ maxZoom: 15 });
 export default function MapComponent({
   geoJson,
   setGeoJson,
-  setActiveMethod
+  setActiveMethod,
 }: Props): ReactElement {
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
@@ -70,21 +75,23 @@ export default function MapComponent({
 
   const onDrawCreate = ({ features }: any) => {
     if (drawControlRef.current) {
-      const geo = drawControlRef.current.draw.getAll()
+      const geo = drawControlRef.current.draw.getAll();
       setGeoJson(geo.features[0].geometry);
     }
   };
 
   const onDrawUpdate = ({ features }: any) => {
     if (drawControlRef.current) {
-      const geo = drawControlRef.current.draw.getAll()
+      const geo = drawControlRef.current.draw.getAll();
       setGeoJson(geo.features[0].geometry);
     }
   };
 
   React.useEffect(() => {
     if (geoJson) {
-      const geo = turf.featureCollection([{ type: 'Feature', geometry: geoJson, properties: {} }]);
+      const geo = turf.featureCollection([
+        { type: 'Feature', geometry: geoJson, properties: {} },
+      ]);
       const bbox = turf.bbox(geo);
       const { longitude, latitude, zoom } = new WebMercatorViewport(
         viewport2
@@ -127,7 +134,7 @@ export default function MapComponent({
           height: '100%',
           width: '100%',
         }}
-      // onClick={() => setActiveMethod('draw')}
+        // onClick={() => setActiveMethod('draw')}
       >
         {/* {satellite && (
           <>
@@ -174,22 +181,19 @@ export default function MapComponent({
             Satellite
           </div>
         </div> */}
-        {
-          geoJson ?
-            (
-              <GeoJSONLayer
-                data={geoJson}
-                fillPaint={{
-                  'fill-color': '#fff',
-                  'fill-opacity': 0.2,
-                }}
-                linePaint={{
-                  'line-color': '#68B030',
-                  'line-width': 2,
-                }}
-              />
-            ) : null
-        }
+        {geoJson ? (
+          <GeoJSONLayer
+            data={geoJson}
+            fillPaint={{
+              'fill-color': '#fff',
+              'fill-opacity': 0.2,
+            }}
+            linePaint={{
+              'line-color': '#68B030',
+              'line-width': 2,
+            }}
+          />
+        ) : null}
         <ZoomControl position="bottom-right" />
       </Map>
     </>

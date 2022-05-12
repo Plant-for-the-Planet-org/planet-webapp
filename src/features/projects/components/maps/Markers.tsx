@@ -42,10 +42,11 @@ export default function Markers({
           style={{ left: '28px' }}
         >
           <div
-            className={`${styles.marker} ${projectMarker.properties.purpose === 'conservation'
+            className={`${styles.marker} ${
+              projectMarker.properties.purpose === 'conservation'
                 ? styles.conservationMarker
                 : ''
-              }`}
+            }`}
             onClick={() =>
               router.push('/[p]', `/${projectMarker.properties.slug}`, {
                 shallow: true,
@@ -71,7 +72,7 @@ export default function Markers({
             onMouseLeave={() => {
               clearTimeout(timer);
             }}
-            onFocus={() => { }}
+            onFocus={() => {}}
           />
         </Marker>
       ))}

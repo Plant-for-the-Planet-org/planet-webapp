@@ -11,9 +11,8 @@ interface Props {}
 export default function ProjectTabs({}: Props): ReactElement {
   const { useTranslation } = i18next;
   const { i18n, t } = useTranslation(['maps']);
-  const { selectedMode, setSelectedMode, rasterData } = React.useContext(
-    ProjectPropsContext
-  );
+  const { selectedMode, setSelectedMode, rasterData } =
+    React.useContext(ProjectPropsContext);
   return (
     <>
       <div className={styles.VegetationChangeContainer}>

@@ -17,9 +17,7 @@ export default function Layout(props: any) {
       </style>
       <div className={`${themeType}`}>
         <Navbar theme={themeType} />
-        <div>
-          {props.children}
-        </div>
+        <div>{props.children}</div>
 
         <div>
           <div className={'notificationContainer'}>
@@ -28,8 +26,6 @@ export default function Layout(props: any) {
             <ErrorPopup />
           </div>
         </div>
-
-
       </div>
     </>
   );

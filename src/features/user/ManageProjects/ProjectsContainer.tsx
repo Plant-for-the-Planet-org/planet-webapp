@@ -12,24 +12,25 @@ import styles from './ProjectsContainer.module.scss';
 
 const { useTranslation } = i18next;
 
-export default function ProjectsContainer({ }: any) {
+export default function ProjectsContainer({}: any) {
   const { t, ready } = useTranslation(['donate', 'manageProjects']);
   const [projects, setProjects] = React.useState([]);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
-  const { user, contextLoaded, loginWithRedirect, token } = React.useContext(
-    UserPropsContext
-  );
+  const { user, contextLoaded, loginWithRedirect, token } =
+    React.useContext(UserPropsContext);
 
   async function loadProjects() {
     if (user) {
-      await getAuthenticatedRequest('/app/profile/projects', token, {},
+      await getAuthenticatedRequest(
+        '/app/profile/projects',
+        token,
+        {},
         handleError,
-        '/profile').then(
-          (projects) => {
-            setProjects(projects);
-          }
-        );
+        '/profile'
+      ).then((projects) => {
+        setProjects(projects);
+      });
     }
   }
 
@@ -44,7 +45,9 @@ export default function ProjectsContainer({ }: any) {
     <div className="profilePage">
       <div className="profilePageHeader">
         <div>
-          <div className={'profilePageTitle'}>{t('manageProjects:manageProject')}</div>
+          <div className={'profilePageTitle'}>
+            {t('manageProjects:manageProject')}
+          </div>
           <div className={'profilePageSubTitle'}>
             {t('manageProjects:descriptionForManageProjects')}
           </div>
@@ -120,7 +123,9 @@ function SingleProject({ project }: any) {
             <div className={styles.projectLabel}>🌟 {t('common:featured')}</div>
           )}
           {!project.allowDonations && (
-            <div className={styles.projectLabel}>💸 {t('donate:acceptingDonations')}</div>
+            <div className={styles.projectLabel}>
+              💸 {t('donate:acceptingDonations')}
+            </div>
           )}
         </div>
       </div>

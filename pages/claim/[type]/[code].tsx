@@ -15,9 +15,9 @@ import ShareOptions from '../../../src/features/common/ShareOptions/ShareOptions
 
 const { useTranslation } = i18next;
 
-interface Props { }
+interface Props {}
 
-function ClaimDonation({ }: Props): ReactElement {
+function ClaimDonation({}: Props): ReactElement {
   const { t, i18n, ready } = useTranslation([
     'me',
     'common',
@@ -29,9 +29,8 @@ function ClaimDonation({ }: Props): ReactElement {
 
   const router = useRouter();
 
-  const { user, contextLoaded, loginWithRedirect, token } = React.useContext(
-    UserPropsContext
-  );
+  const { user, contextLoaded, loginWithRedirect, token } =
+    React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
@@ -46,9 +45,8 @@ function ClaimDonation({ }: Props): ReactElement {
   const imageRef = React.createRef();
   const sendRef = () => imageRef;
 
-  const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
-    false
-  );
+  const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] =
+    React.useState(false);
   const handleTextCopiedSnackbarOpen = () => {
     setTextCopiedSnackbarOpen(true);
   };

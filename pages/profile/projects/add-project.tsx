@@ -10,17 +10,15 @@ import Head from 'next/head';
 
 const { useTranslation } = i18next;
 
-interface Props { }
+interface Props {}
 
-function ManageProjectsPage({ }: Props): ReactElement {
+function ManageProjectsPage({}: Props): ReactElement {
   const [accessDenied, setAccessDenied] = React.useState(false);
   const [setupAccess, setSetupAccess] = React.useState(false);
 
-  const { user, contextLoaded, token, loginWithRedirect } = React.useContext(
-    UserPropsContext
-  );
+  const { user, contextLoaded, token, loginWithRedirect } =
+    React.useContext(UserPropsContext);
   const { t, i18n } = useTranslation(['manageProjects']);
-
 
   React.useEffect(() => {
     async function loadUserData() {
@@ -68,7 +66,9 @@ function ManageProjectsPage({ }: Props): ReactElement {
               {' '}
               {t('manageProjects:addProject')}
             </div>
-            <div style={{ marginBottom: 15 }}>{t('manageProjects:onlyEnglish')}</div>
+            <div style={{ marginBottom: 15 }}>
+              {t('manageProjects:onlyEnglish')}
+            </div>
           </div>
         </div>
         <ManageProjects token={token} />

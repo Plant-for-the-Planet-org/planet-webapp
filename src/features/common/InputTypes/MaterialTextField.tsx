@@ -42,14 +42,16 @@ const MaterialTextField = withStyles({
     '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"]': {
       padding: '14px',
     },
-    '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input': {
-      padding: '0px',
-    },
-    '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input:first-child': {
-      paddingLeft: '0px',
-    },
-    "& .Mui-disabled.MuiOutlinedInput-input ": {
-      color: "var(--disabled-font-color)",
+    '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input':
+      {
+        padding: '0px',
+      },
+    '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input:first-child':
+      {
+        paddingLeft: '0px',
+      },
+    '& .Mui-disabled.MuiOutlinedInput-input ': {
+      color: 'var(--disabled-font-color)',
     },
   },
 })(TextField);

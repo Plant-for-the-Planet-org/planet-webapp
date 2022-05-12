@@ -45,13 +45,13 @@
   "insufficientPCashBalance": "Insufficient balance.",
   "addBalanceGeneric": "Please Click here to add funds.",
   "instructionsUploadCSV": {
-	  "empty": "Drag and drop / click to select a .csv or .xslx file for upload",
-	  "error": "Please check for issues and drag .csv or .xlsx file here to upload",
-	  "processing": "Please wait while we analyze your file...",
-	  "success": "Continue or drag .csv or .xlsx file here to replace current file." 
+    "empty": "Drag and drop / click to select a .csv or .xslx file for upload",
+    "error": "Please check for issues and drag .csv or .xlsx file here to upload",
+    "processing": "Please wait while we analyze your file...",
+    "success": "Continue or drag .csv or .xlsx file here to replace current file."
   },
   "statusUploadCSV": {
-	"error": "Error: unexpected column...",
-	"success": "File analysis complete" 
+    "error": "Error: unexpected column...",
+    "success": "File analysis complete"
   }
 }

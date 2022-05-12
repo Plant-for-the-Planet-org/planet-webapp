@@ -70,12 +70,12 @@ export const ProjectPropsContext = React.createContext({
   setHoveredPl: (value: {}) => {},
   isPolygonMenuOpen: false,
   setIsPolygonMenuOpen: (value: boolean) => {},
-  siteViewPort: null || {}, 
-  setSiteViewPort:(value: {}) => {},
-  filteredProjects:null || [],
-  setFilteredProjects:(value: []) => {},
-  filtersOpen:false,
-  setFilterOpen:(value:boolean) => {},
+  siteViewPort: null || {},
+  setSiteViewPort: (value: {}) => {},
+  filteredProjects: null || [],
+  setFilteredProjects: (value: []) => {},
+  filtersOpen: false,
+  setFilterOpen: (value: boolean) => {},
   plantLocationsLoaded: false,
   setPlantLocationsLoaded: (value: boolean) => {},
 });
@@ -145,22 +145,22 @@ function ProjectPropsProvider({ children }: any): ReactElement {
   const [siteViewPort, setSiteViewPort] = React.useState(null);
 
   React.useEffect(() => {
-    if(typeof window !== 'undefined') {
-      if(window.innerWidth > 767) {
+    if (typeof window !== 'undefined') {
+      if (window.innerWidth > 767) {
         setIsMobile(false);
       } else {
         setIsMobile(true);
+      }
     }
-  }
   });
 
   React.useEffect(() => {
-    if(isMobile) {
+    if (isMobile) {
       setIsPolygonMenuOpen(false);
     } else {
       setIsPolygonMenuOpen(true);
     }
-  },[isMobile]);
+  }, [isMobile]);
 
   const updateWidth = () => {
     setWindowSize(window.innerWidth);
@@ -281,7 +281,7 @@ function ProjectPropsProvider({ children }: any): ReactElement {
         setIsPolygonMenuOpen,
         siteViewPort,
         setSiteViewPort,
-        filteredProjects, 
+        filteredProjects,
         setFilteredProjects,
         filtersOpen,
         setFilterOpen,

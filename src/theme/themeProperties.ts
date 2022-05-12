@@ -8,7 +8,7 @@ const themeProperties = {
     fontLarge: '22px',
     fontXLarge: '26px',
     fontXXLarge: '36px',
-    fontXXXLarge: '48px'
+    fontXXXLarge: '48px',
   },
   primaryColor: '#68B030',
   primaryDarkColor: '#007a49',
@@ -20,13 +20,13 @@ const themeProperties = {
     highlightBackground: '#4d5153',
     light: '#fff',
     dark: '#000',
-    dangerColor:'#e74c3c',
-    safeColor:"#2980b9",
+    dangerColor: '#e74c3c',
+    safeColor: '#2980b9',
     backgroundColorDark: '#F2F2F7',
     unDecadeFill: '#1d1d1b',
     mapboxIcon: 'invert(0) hue-rotate(180deg)',
     backgroundBase: '#FaFaFf',
-    disabledFontColor: "#909090"
+    disabledFontColor: '#909090',
   },
   dark: {
     primaryFontColor: '#ffffff',
@@ -36,13 +36,13 @@ const themeProperties = {
     highlightBackground: '#f2f2f2',
     light: '#fff',
     dark: '#000',
-    dangerColor:'#00ef00',
-    safeColor:"#2980b9",
+    dangerColor: '#00ef00',
+    safeColor: '#2980b9',
     backgroundColorDark: '#101113',
     unDecadeFill: '#fff',
     mapboxIcon: 'invert(0.8) hue-rotate(180deg)',
     backgroundBase: '#202020',
-    disabledFontColor: "#686868"
+    disabledFontColor: '#686868',
   },
 };
 

@@ -28,10 +28,15 @@ export default function AccountRecord({
   return (
     <div
       key={index}
-      className={`${styles.record} ${selectedRecord === index ? styles.selected : ''
-        }`}
+      className={`${styles.record} ${
+        selectedRecord === index ? styles.selected : ''
+      }`}
     >
-      <RecordHeader record={record} handleRecordOpen={handleRecordOpen} index={index} />
+      <RecordHeader
+        record={record}
+        handleRecordOpen={handleRecordOpen}
+        index={index}
+      />
       {index !== paymentHistory?.items?.length - 1 && (
         <div className={styles.divider} />
       )}
@@ -54,13 +59,13 @@ export default function AccountRecord({
         {(record.details.donorCertificate ||
           record.details.taxDeductibleReceipt ||
           record.details.giftCertificate) && (
-            <>
-              <div className={styles.title}>{t('downloads')}</div>
-              <div className={styles.detailGrid}>
-                <Certificates recordDetails={record.details} />
-              </div>
-            </>
-          )}
+          <>
+            <div className={styles.title}>{t('downloads')}</div>
+            <div className={styles.detailGrid}>
+              <Certificates recordDetails={record.details} />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
@@ -72,27 +77,48 @@ interface HeaderProps {
   index?: number;
 }
 
-export function RecordHeader({ record, handleRecordOpen, index }: HeaderProps): ReactElement {
+export function RecordHeader({
+  record,
+  handleRecordOpen,
+  index,
+}: HeaderProps): ReactElement {
   const { t, i18n } = useTranslation(['me']);
   const getRecordTitle = (): ReactElement => {
     switch (record.type) {
       case 'tree-donation':
-        return <p className={styles.top}>{`${getFormattedNumber(i18n.language, record.quantity)} ${t(record.type)}`}</p>;
+        return (
+          <p className={styles.top}>{`${getFormattedNumber(
+            i18n.language,
+            record.quantity
+          )} ${t(record.type)}`}</p>
+        );
       case 'tree-gift':
-        return <p className={styles.top}>{`${getFormattedNumber(i18n.language, record.quantity)} ${t(record.type)}`}</p>;
+        return (
+          <p className={styles.top}>{`${getFormattedNumber(
+            i18n.language,
+            record.quantity
+          )} ${t(record.type)}`}</p>
+        );
       case 'funds-donation':
       case 'bouquet-donation':
       case 'conservation-donation':
         if (record.details.project.length > 42)
-          return <p title={record.details.project} className={styles.top}>{`${record.details.project.substring(0, 42)}...`}</p>;
-        else
-          return <p className={styles.top}>{record.details.project}</p>;
+          return (
+            <p
+              title={record.details.project}
+              className={styles.top}
+            >{`${record.details.project.substring(0, 42)}...`}</p>
+          );
+        else return <p className={styles.top}>{record.details.project}</p>;
       default:
         return <p className={styles.top}>{`${t(record.type)}`}</p>;
     }
   };
   return (
-    <div onClick={() => handleRecordOpen(index)} className={styles.recordHeader}>
+    <div
+      onClick={() => handleRecordOpen(index)}
+      className={styles.recordHeader}
+    >
       <div className={styles.left}>
         {getRecordTitle()}
         <p>{formatDate(record.created)}</p>
@@ -105,9 +131,11 @@ export function RecordHeader({ record, handleRecordOpen, index }: HeaderProps): 
             record.netAmount / 100
           )}
         </p>
-        <p className={`${styles.recordStatus} ${styles[record.status]}`}>{t(record.status)}</p>
+        <p className={`${styles.recordStatus} ${styles[record.status]}`}>
+          {t(record.status)}
+        </p>
       </div>
-    </div >
+    </div>
   );
 }
 
@@ -184,9 +212,17 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('project')}</p>
           {record.projectGuid ? (
-            <a title={record.details.project} href={`/${record.projectGuid}`}>{record.details.project.length > 42 ? record.details.project.substring(0, 42) : record.details.project}</a>
+            <a title={record.details.project} href={`/${record.projectGuid}`}>
+              {record.details.project.length > 42
+                ? record.details.project.substring(0, 42)
+                : record.details.project}
+            </a>
           ) : (
-            <p title={record.details.project}>{record.details.project.length > 42 ? record.details.project.substring(0, 42) + '...' : record.details.project}</p>
+            <p title={record.details.project}>
+              {record.details.project.length > 42
+                ? record.details.project.substring(0, 42) + '...'
+                : record.details.project}
+            </p>
           )}
         </div>
       )}
@@ -213,7 +249,9 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             )}
           </p>
         </div>
-      ) : []}
+      ) : (
+        []
+      )}
       {/* {record.projectGuid && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('projectGuid')}</p>
@@ -278,7 +316,10 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
   );
 }
 
-export const showStatusNote = (record: Payments.PaymentHistoryRecord, t: TFunction): ReactElement => {
+export const showStatusNote = (
+  record: Payments.PaymentHistoryRecord,
+  t: TFunction
+): ReactElement => {
   const showDonationNote = (): string => {
     switch (record.details.method) {
       case 'stripe-sofort':
@@ -288,12 +329,10 @@ export const showStatusNote = (record: Payments.PaymentHistoryRecord, t: TFuncti
       default:
         return '';
     }
-  }
+  };
   switch (record.status) {
     case 'pending':
-      return (
-        <p className={styles.donationNote}>{showDonationNote()}</p>
-      );
+      return <p className={styles.donationNote}>{showDonationNote()}</p>;
     case 'in-dispute':
       return (
         <p className={styles.donationNote}>{t('me:donationNote.in-dispute')}</p>
@@ -301,7 +340,7 @@ export const showStatusNote = (record: Payments.PaymentHistoryRecord, t: TFuncti
     default:
       return <></>;
   }
-}
+};
 
 interface BankDetailsProps {
   recipientBank: Payments.RecipientBank;
@@ -350,11 +389,7 @@ export function BankDetails({ recipientBank }: BankDetailsProps): ReactElement {
       {recipientBank?.isDefault && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('isDefault')}</p>
-          <p>
-            {Number(recipientBank.isDefault) === 0
-              ? t('no')
-              : t('yes')}
-          </p>
+          <p>{Number(recipientBank.isDefault) === 0 ? t('no') : t('yes')}</p>
         </div>
       )}
       {recipientBank?.created && (
@@ -373,12 +408,13 @@ export function BankDetails({ recipientBank }: BankDetailsProps): ReactElement {
   );
 }
 
-
 interface TransferDetailsProps {
   account: Payments.BankAccount;
 }
 
-export function TransferDetails({ account }: TransferDetailsProps): ReactElement {
+export function TransferDetails({
+  account,
+}: TransferDetailsProps): ReactElement {
   const { t, i18n } = useTranslation(['me']);
   return (
     <>
@@ -423,7 +459,9 @@ interface CertificatesProps {
   recordDetails: Payments.PaymentDetails;
 }
 
-export function Certificates({ recordDetails }: CertificatesProps): ReactElement {
+export function Certificates({
+  recordDetails,
+}: CertificatesProps): ReactElement {
   const { t, i18n } = useTranslation(['me']);
   return (
     <>
