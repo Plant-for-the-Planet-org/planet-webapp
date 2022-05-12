@@ -8,7 +8,7 @@ import styles from '../BulkCodes.module.scss';
 import BulkCodesForm from './BulkCodesForm';
 import ProjectSelector from './ProjectSelector';
 import BulkGiftTotal from './BulkGiftTotal';
-import UploadWidget from './UploadWidget';
+import RecipientsUploadForm from './RecipientsUploadForm';
 
 import BulkCodesError from './BulkCodesError';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
@@ -189,7 +189,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             unit={project?.unit}
           />
           {/* TODOO translation and pluralization */}
-          <UploadWidget />
+          <RecipientsUploadForm />
         </div>
 
         <BulkCodesError />
