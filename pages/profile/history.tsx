@@ -11,16 +11,18 @@ import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHand
 
 const { useTranslation } = i18next;
 
-interface Props { }
+interface Props {}
 
-function AccountHistory({ }: Props): ReactElement {
+function AccountHistory({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
   const { token, contextLoaded } = React.useContext(UserPropsContext);
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const [filter, setFilter] = React.useState<string | null>(null);
-  const [paymentHistory, setpaymentHistory] = React.useState<Payments.PaymentHistory | null>(null);
-  const [accountingFilters, setaccountingFilters] = React.useState<Payments.Filters | null>(null);
+  const [paymentHistory, setpaymentHistory] =
+    React.useState<Payments.PaymentHistory | null>(null);
+  const [accountingFilters, setaccountingFilters] =
+    React.useState<Payments.Filters | null>(null);
 
   const { handleError } = React.useContext(ErrorHandlingContext);
 
@@ -28,13 +30,20 @@ function AccountHistory({ }: Props): ReactElement {
     setIsDataLoading(true);
     setProgress(70);
     if (next && paymentHistory?._links?.next) {
-      const newPaymentHistory: Payments.PaymentHistory = await getAuthenticatedRequest(
-        paymentHistory._links.next,
-        token,
-        {},
-        handleError,
-        '/profile'
-      );
+      const newPaymentHistory: Payments.PaymentHistory =
+        await getAuthenticatedRequest(
+          `${
+            filter && accountingFilters
+              ? accountingFilters[filter] +
+                '&' +
+                paymentHistory?._links?.next.split('?').pop()
+              : paymentHistory?._links?.next
+          }`,
+          token,
+          {},
+          handleError,
+          '/profile'
+        );
       setpaymentHistory({
         ...paymentHistory,
         items: [...paymentHistory.items, ...newPaymentHistory.items],
@@ -45,13 +54,14 @@ function AccountHistory({ }: Props): ReactElement {
       setTimeout(() => setProgress(0), 1000);
     } else {
       if (filter === null) {
-        const paymentHistory: Payments.PaymentHistory = await getAuthenticatedRequest(
-          '/app/paymentHistory?limit=15',
-          token,
-          {},
-          handleError,
-          '/profile'
-        );
+        const paymentHistory: Payments.PaymentHistory =
+          await getAuthenticatedRequest(
+            '/app/paymentHistory?limit=15',
+            token,
+            {},
+            handleError,
+            '/profile'
+          );
         setpaymentHistory(paymentHistory);
         setProgress(100);
         setIsDataLoading(false);
@@ -59,9 +69,10 @@ function AccountHistory({ }: Props): ReactElement {
         setaccountingFilters(paymentHistory._filters);
       } else {
         const paymentHistory = await getAuthenticatedRequest(
-          `${filter && accountingFilters
-            ? accountingFilters[filter] + '&limit=15'
-            : '/app/paymentHistory?limit=15'
+          `${
+            filter && accountingFilters
+              ? accountingFilters[filter] + '&limit=15'
+              : '/app/paymentHistory?limit=15'
           }`,
           token,
           {},
