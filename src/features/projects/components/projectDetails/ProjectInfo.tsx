@@ -130,28 +130,28 @@ function ProjectInfo({ project }: Props): ReactElement {
                     </div>
                 )} */}
 
-                {project.employeeCount && (
+                {project.projectMeta.employeeCount && (
                     <div className={styles.projectMoreInfoHalf}>
                         <div className={styles.infoTitle}>
                             {t('manageProjects:employees')}
                         </div>
                         <div className={styles.infoText}>
-                            {project.employeeCount}
+                            {project.projectMeta.employeeCount}
                         </div>
                     </div>
                 )}
 
-                {project.activitySeasons && project.activitySeasons.length > 0 && (
+                {project.projectMeta.activitySeasons && project.projectMeta.activitySeasons.length > 0 && (
                     <div className={styles.projectMoreInfoHalf}>
                         <div className={styles.infoTitle}>
                             {t('manageProjects:plantingSeasons')}
                         </div>
                         <div className={styles.infoText}>
-                            {project.activitySeasons.map((season: any, index: any) => {
+                            {project.projectMeta.activitySeasons.map((season: any, index: any) => {
                                 return (
                                     <React.Fragment key={plantingSeasons[season - 1].title}>
                                         {plantingSeasons[season - 1].title}
-                                        {index === (project.activitySeasons.length - 2) ? ' and ' : index === (project.activitySeasons.length - 1) ? '.' : ', '}
+                                        {index === (project.projectMeta.activitySeasons.length - 2) ? ' and ' : index === (project.projectMeta.activitySeasons.length - 1) ? '.' : ', '}
                                     </React.Fragment>
                                 )
                             })}
@@ -161,13 +161,13 @@ function ProjectInfo({ project }: Props): ReactElement {
 
             </div>
 
-            {project.mainChallenge && (
+            {project.projectMeta.mainChallenge && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
                         {t('manageProjects:mainChallenge')}
                     </div>
                     <div className={styles.infoText}>
-                        {project.mainChallenge}
+                        {project.projectMeta.mainChallenge}
                     </div>
                 </div>
             )}
@@ -179,12 +179,12 @@ function ProjectInfo({ project }: Props): ReactElement {
                         {t('manageProjects:siteOwnership')}
                     </div>
                     {project.siteOwnerType && (
-                        <div className={styles.infoText}>
+                        <div className={styles.infoText} style={{ fontWeight: 'bold' }}>
                             {ownerTypes.map((ownerType: any, index: any) => {
                                 return (
                                     <React.Fragment key={ownerType}>
                                         {t(`manageProjects:${ownerType}`)}
-                                        {index === (ownerTypes.length - 2) ? ' and ' : index === (ownerTypes.length - 1) ? '' : ', '}
+                                        {index === (ownerTypes.length - 2) ? ' and ' : index === (ownerTypes.length - 1) ? '.' : ', '}
                                     </React.Fragment>
                                 )
                             })}
@@ -197,36 +197,36 @@ function ProjectInfo({ project }: Props): ReactElement {
                 </div>
             )}
 
-            {project.degradationCause && (
+            {project.projectMeta.degradationCause && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
                         {t('manageProjects:causeOfDegradation')}
                     </div>
                     <div className={styles.infoText}>
-                        {project.degradationCause}
+                        {project.projectMeta.degradationCause}
                     </div>
                 </div>
             )}
 
 
-            {project.motivation && (
+            {project.projectMeta.motivation && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
                         {t('manageProjects:whyThisSite')}
                     </div>
                     <div className={styles.infoText}>
-                        {project.motivation}
+                        {project.projectMeta.motivation}
                     </div>
                 </div>
             )}
 
-            {project.longTermPlan && (
+            {project.projectMeta.longTermPlan && (
                 <div className={styles.projectMoreInfo}>
                     <div className={styles.infoTitle}>
                         {t('manageProjects:longTermProtection')}
                     </div>
                     <div className={styles.infoText}>
-                        {project.longTermPlan}
+                        {project.projectMeta.longTermPlan}
                     </div>
                 </div>
             )}
