@@ -237,8 +237,10 @@ export default function BasicDetails({
           acceptDonations: false,
           unitCost: 0,
           publish: false,
-          visitorAssistance: false,
-          enablePlantLocations: false,
+          metadata: {
+            visitorAssistance: false,
+            enablePlantLocations: false,
+          },
           currency: 'EUR',
           latitude: 0,
           longitude: 0,
@@ -254,7 +256,7 @@ export default function BasicDetails({
           latitude: 0,
           longitude: 0,
           ecosystems: '',
-          projectMeta: {
+          metadata: {
             ecosystems: {
               label: ready ? t('manageProjects:ecosystems') : '',
               value: null,
@@ -362,6 +364,10 @@ export default function BasicDetails({
             name: data.name,
             slug: data.slug,
             classification: data.classification,
+            metadata: {
+              visitorAssistance: data.visitorAssistance,
+              enablePlantLocations: data.enablePlantLocations,
+            },
             geometry: {
               type: 'Point',
               coordinates: [
@@ -377,8 +383,6 @@ export default function BasicDetails({
               ? parseNumber(i18n.language, data.unitCost)
               : undefined,
             currency: 'EUR',
-            visitorAssistance: data.visitorAssistance,
-            enablePlantLocations: data.enablePlantLocations,
           }
         : {
             purpose: 'conservation',

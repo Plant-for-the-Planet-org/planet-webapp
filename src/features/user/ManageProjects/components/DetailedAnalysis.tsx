@@ -224,24 +224,25 @@ export default function DetailedAnalysis({
     const submitData =
       purpose === 'trees'
         ? {
-            acquisitionYear: data.acquisitionYear.getFullYear(),
-            degradationYear: data.degradationYear.getFullYear(),
-            employeesCount: data.employeesCount,
-            firstTreePlanted: `${data.firstTreePlanted.getFullYear()}-${
-              data.firstTreePlanted.getMonth() + 1
-            }-${data.firstTreePlanted.getDate()}`,
-            plantingSeasons: months,
-            plantingDensity: data.plantingDensity,
-            siteOwnerName: data.siteOwnerName,
-            siteOwnerType: owners,
-            yearAbandoned: data.yearAbandoned.getFullYear()
-              ? data.yearAbandoned.getFullYear()
-              : null,
-
-            // mainChallenge: data.mainChallenge,
-            // degradationCause: data.degradationCause,
-            // longTermPlan: data.longTermPlan,
-            // motivation: data.motivation,
+            metadata: {
+              degradationCause: data.degradationCause,
+              degradationYear: data.degradationYear.getFullYear(),
+              employeesCount: data.employeesCount,
+              acquisitionYear: data.acquisitionYear.getFullYear(),
+              longTermPlan: data.longTermPlan,
+              mainChallenge: data.mainChallenge,
+              motivation: data.motivation,
+              plantingDensity: data.plantingDensity,
+              plantingSeasons: months,
+              siteOwnerName: data.siteOwnerName,
+              siteOwnerType: owners,
+              yearAbandoned: data.yearAbandoned.getFullYear()
+                ? data.yearAbandoned.getFullYear()
+                : null,
+              firstTreePlanted: `${data.firstTreePlanted.getFullYear()}-${
+                data.firstTreePlanted.getMonth() + 1
+              }-${data.firstTreePlanted.getDate()}`,
+            },
           }
         : {
             metadata: {
@@ -257,6 +258,7 @@ export default function DetailedAnalysis({
               motivation: data.motivation,
               longTermPlan: data.longTermPlan,
               benefits: data.benefits,
+              siteOwnerName: data.siteOwnerName,
             },
           };
 
@@ -346,8 +348,8 @@ export default function DetailedAnalysis({
               siteOwnerName: projectDetails.metadata.siteOwnerName,
               landOwnershipType: projectDetails.metadata.landOwnershipType,
               longTermPlan: projectDetails.metadata.longTermPlan,
-
-              // ownershipType: projectDetails.ownershipType,
+              siteOwnerName: projectDetails.metadata.siteOwnerName,
+              // ownershipType: projectDetails.metadata.ownershipType,
 
               motivation: projectDetails.metadata.motivation,
             };
