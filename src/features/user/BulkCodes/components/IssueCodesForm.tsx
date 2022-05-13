@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from 'react';
+import React, { ReactElement, useContext, useState } from 'react';
 import i18next from '../../../../../i18n';
 import { Button, TextField, styled } from 'mui-latest';
 import { useForm, Controller, ControllerRenderProps } from 'react-hook-form';
@@ -25,9 +25,10 @@ interface IssueCodesFormProps {}
 
 const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
-  const { project, planetCashAccount, projectList } = useBulkCode();
+  const { project, planetCashAccount, projectList, bulkMethod } = useBulkCode();
   const { user } = useContext(UserPropsContext);
   const { control, handleSubmit, errors, watch } = useForm();
+  const [localRecipients, setLocalRecipients] = useState<Object[]>([]);
 
   const codeQuantity = watch('codeQuantity', 0);
   const unitsPerCode = watch('unitsPerCode', 0);
@@ -114,56 +115,64 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             )}
           />
 
-          <InlineFormGroup>
-            <div style={{ width: '100%' }}>
-              <Controller
-                name="unitsPerCode"
-                control={control}
-                rules={{ required: true }}
-                render={(props: ControllerRenderProps) => (
-                  <TextField
-                    {...props}
-                    onChange={props.onChange}
-                    value={props.value}
-                    label={t('bulkCodes:unitsPerCode')}
-                    onInput={(e) => {
-                      e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                    }}
-                    error={errors.units}
-                  />
+          {bulkMethod === 'generic' && (
+            <InlineFormGroup>
+              <div style={{ width: '100%' }}>
+                <Controller
+                  name="unitsPerCode"
+                  control={control}
+                  rules={{ required: true }}
+                  render={(props: ControllerRenderProps) => (
+                    <TextField
+                      {...props}
+                      onChange={props.onChange}
+                      value={props.value}
+                      label={t('bulkCodes:unitsPerCode')}
+                      onInput={(e) => {
+                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                      }}
+                      error={errors.units}
+                    />
+                  )}
+                />
+                {errors.units && (
+                  <span className={styles.formErrors}>
+                    {t('bulkCodes:unitsRequired')}
+                  </span>
                 )}
-              />
-              {errors.units && (
-                <span className={styles.formErrors}>
-                  {t('bulkCodes:unitsRequired')}
-                </span>
-              )}
-            </div>
-            <div style={{ width: '100%' }}>
-              <Controller
-                name="codeQuantity"
-                control={control}
-                rules={{ required: true }}
-                render={(props: ControllerRenderProps) => (
-                  <TextField
-                    {...props}
-                    onChange={props.onChange}
-                    value={props.value}
-                    label={t('bulkCodes:totalNumberOfCodes')}
-                    onInput={(e) => {
-                      e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                    }}
-                    error={errors.codeQuantity}
-                  />
+              </div>
+              <div style={{ width: '100%' }}>
+                <Controller
+                  name="codeQuantity"
+                  control={control}
+                  rules={{ required: true }}
+                  render={(props: ControllerRenderProps) => (
+                    <TextField
+                      {...props}
+                      onChange={props.onChange}
+                      value={props.value}
+                      label={t('bulkCodes:totalNumberOfCodes')}
+                      onInput={(e) => {
+                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                      }}
+                      error={errors.codeQuantity}
+                    />
+                  )}
+                />
+                {errors.codeQuantity && (
+                  <span className={styles.formErrors}>
+                    {t('bulkCodes:quantityCodesRequired')}
+                  </span>
                 )}
-              />
-              {errors.codeQuantity && (
-                <span className={styles.formErrors}>
-                  {t('bulkCodes:quantityCodesRequired')}
-                </span>
-              )}
-            </div>
-          </InlineFormGroup>
+              </div>
+            </InlineFormGroup>
+          )}
+          {bulkMethod === 'import' && (
+            <RecipientsUploadForm
+              onRecipientsUploaded={setLocalRecipients}
+              currentRecipients={localRecipients}
+            />
+          )}
           <Controller
             name="occasion"
             control={control}
@@ -189,7 +198,6 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             unit={project?.unit}
           />
           {/* TODOO translation and pluralization */}
-          <RecipientsUploadForm />
         </div>
 
         <BulkCodesError />

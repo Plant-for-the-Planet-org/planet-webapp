@@ -1,16 +1,42 @@
-import { useState, ReactElement } from 'react';
+import { useState, ReactElement, useEffect } from 'react';
 import { parse, ParseResult } from 'papaparse';
 
 import UploadWidget, { UploadStates } from './UploadWidget';
 
-const RecipientsUploadForm = (): ReactElement => {
+interface RecipientsUploadFormProps {
+  onRecipientsUploaded: (recipients: Object[]) => void;
+  currentRecipients: Object[];
+}
+
+const RecipientsUploadForm = ({
+  onRecipientsUploaded,
+  currentRecipients,
+}: RecipientsUploadFormProps): ReactElement => {
   const [status, setStatus] = useState<UploadStates>('empty');
   const [parseError, setParseError] = useState<string | null>(null);
   const [headers, setHeaders] = useState<string[]>([]);
-  const [recipients, setRecipients] = useState<Object[]>([]);
+  const [recipients, setRecipients] = useState<Object[]>(currentRecipients);
 
   const handleStatusChange = (newStatus: UploadStates) => {
     setStatus(newStatus);
+  };
+
+  const checkHeaderValidity = (headers: string[]): boolean => {
+    let isValid = true;
+    const validHeaders = [
+      'recipient_name',
+      'recipient_email',
+      'recipient_notify',
+      'recipient_message',
+      'recipient_occasion',
+      'units',
+    ];
+    for (const validHeader of validHeaders) {
+      if (!headers.includes(validHeader)) {
+        isValid = false;
+      }
+    }
+    return isValid;
   };
 
   const processFileContents = (fileContents: string) => {
@@ -20,26 +46,34 @@ const RecipientsUploadForm = (): ReactElement => {
         if (!results.errors.length) {
           const parsedHeaders = results.meta.fields;
           const parsedData = results.data;
-          if (
-            parsedHeaders &&
-            parsedHeaders.length &&
-            parsedHeaders.includes('units')
-          ) {
-            console.log(parsedHeaders);
-            console.log(parsedData);
-            /*setHeaders(
+          console.log(parsedData, parsedHeaders);
+          if (parsedHeaders && checkHeaderValidity(parsedHeaders)) {
+            setHeaders(
               parsedHeaders.filter((header) => {
                 return [
                   'recipient_name',
                   'recipient_email',
                   'recipient_notify',
                   'recipient_message',
-                  'recipient_occassion',
+                  'recipient_occasion',
                   'units',
                 ].includes(header);
               })
             );
-            parsedData.forEach(() => {}); */
+            setRecipients(
+              parsedData
+                .filter((_data, index) => index !== 0)
+                .map((recipient: any) => {
+                  return {
+                    recipient_name: recipient['recipient_name'],
+                    recipient_email: recipient['recipient_email'],
+                    recipient_notify: recipient['recipient_notify'],
+                    recipient_message: recipient['recipient_message'],
+                    recipient_occasion: recipient['recipient_occasion'],
+                    units: recipient['units'],
+                  };
+                })
+            );
             setParseError(null);
             handleStatusChange('success');
           } else {
@@ -53,6 +87,10 @@ const RecipientsUploadForm = (): ReactElement => {
       },
     });
   };
+
+  useEffect(() => {
+    onRecipientsUploaded(recipients);
+  }, [recipients]);
 
   return (
     <UploadWidget
