@@ -45,21 +45,21 @@
   "insufficientPCashBalance": "Insufficient balance.",
   "addBalanceGeneric": "Please Click here to add funds.",
   "instructionsUploadCSV": {
-	"empty": "Drag and drop / click to select a .csv or .xslx file for upload",
-	"error": "Please check for issues and drag .csv or .xlsx file here to upload",
-	"processing": "Please wait while we analyze your file...",
-	"success": "Continue or drag .csv or .xlsx file here to replace current file." 
+    "empty": "Drag and drop / click to select a .csv or .xslx file for upload",
+    "error": "Please check for issues and drag .csv or .xlsx file here to upload",
+    "processing": "Please wait while we analyze your file...",
+    "success": "Continue or drag .csv or .xlsx file here to replace current file." 
   },
   "statusUploadCSV": {
-	"error": "Error",
-	"success": "File analysis complete" 
+    "error": "Error",
+    "success": "File analysis complete" 
   },
   "errorUploadCSV": {
-	"fileInvalidType": "Only CSV files are permitted",
-	"tooManyFiles": "Please upload only a single CSV file",
-	"fileTooSmall": "The uploaded file seems to be empty",
-	"fileTooLarge": "The uploaded file must be 5MB or less",
-	"unexpectedColumn": "Unexpected column",
-	"generalError": "Something went wrong. Please try after a while" 
+    "fileInvalidType": "Only CSV files are permitted",
+    "tooManyFiles": "Please upload only a single CSV file",
+    "fileTooSmall": "The uploaded file seems to be empty",
+    "fileTooLarge": "The uploaded file must be 5MB or less",
+    "unexpectedColumn": "Unexpected column",
+    "generalError": "Something went wrong. Please try after a while" 
   }
 }
