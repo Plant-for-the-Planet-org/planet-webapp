@@ -1,16 +1,14 @@
 const config = {
   tenantName: 'senatDerWirtschaft',
   tenantURL: 'wald.senat-deutschland.de',
-  languages: ['de', 'en'],
+  languages: ['de','en'],
   fallbackCurrency: 'EUR',
-  tenantGoal: null,
+  tenantGoal:null,
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
-    primaryFontURL:
-      'https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&display=swap',
+    primaryFontURL: "https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&display=swap",
     secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
-    secondaryFontURL:
-      'https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap',
+    secondaryFontURL: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap",
   },
   meta: {
     title: 'Senat Der Wirtschaft',
@@ -49,14 +47,14 @@ const config = {
         onclick: '/all',
         visible: false,
       },
-      me: {
+      me:{
         title: 'me',
         onclick: '/me',
         visible: false,
-      },
-    },
+      }
+    }
   },
-  footerLinks: ['privacy', 'terms', 'imprint', 'contact', 'supportUs'],
+  footerLinks:["privacy","terms","imprint","contact","supportUs"]
 };
 
 export default config;

@@ -5,7 +5,9 @@ import NotFound from '../../../../public/assets/images/NotFound';
 import ProjectLoader from '../../common/ContentLoaders/Projects/ProjectLoader';
 import i18next from '../../../../i18n';
 import styles from './styles/ProjectsContainer.module.scss';
-import { getRequest } from '../../../utils/apiRequests/api';
+import {
+  getRequest,
+} from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
@@ -23,16 +25,13 @@ export default function ProjectsContainer({ profile }: any) {
   const { handleError } = React.useContext(ErrorHandlingContext);
 
   async function loadProjects() {
-    await getRequest(
-      `/app/profiles/${profile.id}/projects`,
-      handleError,
-      undefined,
-      {
-        locale: i18n.language,
+    await getRequest(`/app/profiles/${profile.id}/projects`, handleError, undefined, {
+      locale: i18n.language,
+    }).then(
+      (projects) => {
+        setProjects(projects);
       }
-    ).then((projects) => {
-      setProjects(projects);
-    });
+    );
   }
 
   // This effect is used to get and update UserInfo if the isAuthenticated changes

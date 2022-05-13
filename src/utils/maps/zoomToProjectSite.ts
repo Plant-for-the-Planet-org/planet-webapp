@@ -14,11 +14,10 @@ export default function zoomToProjectSite(
     // decide which paddings to use (for mobile or normal)
     let isPortrait = true;
     if (screen.orientation) {
-      isPortrait =
-        screen.orientation.angle === 0 || screen.orientation.angle === 180;
+      isPortrait = screen.orientation.angle === 0 || screen.orientation.angle === 180;
     } else if (window.orientation) {
       isPortrait = window.orientation === 0 || window.orientation === 180;
-    }
+    }  
     const isMobile = window.innerWidth <= 767 && isPortrait;
     //console.log("zoomToProjectSite", viewport, viewport.width, window.innerWidth, viewport.height, window.innerHeight);
 
@@ -40,21 +39,21 @@ export default function zoomToProjectSite(
       }
     );
     let defaultZoom = 15;
-    if (zoom < defaultZoom) {
+    if(zoom < defaultZoom) {
       defaultZoom = zoom;
     }
-
+    
     const newViewport = {
       ...viewport,
       longitude,
       latitude,
-      zoom: defaultZoom,
+      zoom:defaultZoom,
       transitionDuration: duration,
       transitionInterpolator: new FlyToInterpolator(),
       transitionEasing: d3.easeCubic,
     };
     setViewPort(newViewport);
-    setSiteViewPort({ center: [longitude, latitude], zoom: defaultZoom });
+    setSiteViewPort({center:[longitude,latitude],zoom:defaultZoom});  
   } else {
     const newViewport = {
       ...viewport,

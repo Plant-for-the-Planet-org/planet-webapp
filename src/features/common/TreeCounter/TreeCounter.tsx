@@ -7,7 +7,7 @@ import treeCounterStyles from './TreeCounter.module.scss';
 import i18next from '../../../../i18n';
 import EditIcon from '../../../../public/assets/images/icons/manageProjects/Pencil';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
-import { getFormattedNumber } from '../../../utils/getFormattedNumber';
+import { getFormattedNumber } from '../../../utils/getFormattedNumber'
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
 const { useTranslation } = i18next;
@@ -83,33 +83,19 @@ export default function TpoProfile(props: any) {
       <div className={treeCounterStyles.backgroundCircle} />
       <div className={treeCounterStyles.treeCounterData}>
         <div className={treeCounterStyles.treeCounterDataField}>
-          <h1>
-            {localizedAbbreviatedNumber(
-              i18n.language,
-              Number(props.planted),
-              1
-            )}
-          </h1>
-          <h2>
-            {t('me:treesPlanted', {
-              count: Number(props.planted),
-              treeCount: getFormattedNumber(
-                i18n.language,
-                Number(props.planted)
-              ),
-            })}
-          </h2>
+          <h1>{localizedAbbreviatedNumber(i18n.language, Number(props.planted), 1)}</h1>
+          <h2>{t('me:treesPlanted', {
+                  count: Number(props.planted),
+                  treeCount: getFormattedNumber(
+                    i18n.language,
+                    Number(props.planted)
+                  ),
+                })}</h2>
         </div>
 
         {props.target ? (
           <div className={treeCounterStyles.treeCounterDataField}>
-            <h1>
-              {localizedAbbreviatedNumber(
-                i18n.language,
-                Number(props.target),
-                1
-              )}
-            </h1>
+            <h1>{localizedAbbreviatedNumber(i18n.language, Number(props.target), 1)}</h1>
             <div className={treeCounterStyles.target}>
               <h2
                 className={
@@ -121,8 +107,7 @@ export default function TpoProfile(props: any) {
                 {t('me:target')}
               </h2>
               {props.authenticatedType === 'private' && (
-                <button
-                  id={'treeCounterEdit'}
+                <button id={'treeCounterEdit'}
                   className={treeCounterStyles.editTragetContainer}
                   onClick={() => props.handleAddTargetModalOpen()}
                 >
@@ -134,21 +119,13 @@ export default function TpoProfile(props: any) {
         ) : null}
 
         {props.authenticatedType === 'private' && props.target === 0 && (
-          <button
-            id={'addTarget'}
+          <button id={'addTarget'}
             onClick={() => props.handleAddTargetModalOpen()}
             className={treeCounterStyles.addTargetButton}
           >
-            <p
-              style={{
-                color:
-                  theme === 'theme-light'
-                    ? themeProperties.light.light
-                    : themeProperties.dark.dark,
-              }}
-            >
-              {t('me:addTarget')}{' '}
-            </p>
+            <p style={{color: theme === 'theme-light' ?
+            themeProperties.light.light :
+            themeProperties.dark.dark}}>{t('me:addTarget')} </p>
           </button>
         )}
       </div>

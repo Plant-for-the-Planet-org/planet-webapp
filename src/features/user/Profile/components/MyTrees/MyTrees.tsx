@@ -46,7 +46,9 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
             console.log('error occured :', e);
           });
       } else {
-        getRequest(`/app/profiles/${profile.id}/contributions`)
+        getRequest(
+          `/app/profiles/${profile.id}/contributions`
+        )
           .then((result: any) => {
             setContributions(result);
           })
@@ -64,13 +66,10 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   };
 
   return contributions?.length > 0 && ready ? (
-    <div
-      className={authenticatedType === 'private' ? 'profilePage' : ''}
-      style={{ marginTop: '0px' }}
-    >
+    <div className={authenticatedType === 'private' ? 'profilePage' : ''} style={{ marginTop: '0px' }}>
       {contributions &&
-      Array.isArray(contributions) &&
-      contributions.length !== 0 ? (
+        Array.isArray(contributions) &&
+        contributions.length !== 0 ? (
         <>
           <div
             className={styles.myTreesSection}
@@ -125,8 +124,8 @@ function TreeList({ contribution }: any) {
             <div className={styles.source}>
               {contribution.properties.giver.name
                 ? t('me:receivedFrom', {
-                    name: contribution.properties.giver.name,
-                  })
+                  name: contribution.properties.giver.name,
+                })
                 : t('me:receivedTrees')}
             </div>
           ) : null}
@@ -137,8 +136,8 @@ function TreeList({ contribution }: any) {
             <div className={styles.source}>
               {contribution.properties.recipient
                 ? t('me:giftToGiftee', {
-                    gifteeName: contribution.properties.recipient.name,
-                  })
+                  gifteeName: contribution.properties.recipient.name,
+                })
                 : null}
             </div>
           ) : null}

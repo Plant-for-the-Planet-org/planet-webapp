@@ -13,11 +13,7 @@ interface Props {
 const { useTranslation } = i18next;
 export default function Stats({ tenantScore }: Props): ReactElement {
   const [infoExpanded, setInfoExpanded] = React.useState(null);
-  const { t, i18n, ready } = useTranslation([
-    'leaderboard',
-    'common',
-    'planet',
-  ]);
+  const { t, i18n, ready } = useTranslation(['leaderboard', 'common', 'planet']);
   const [openModal, setModalOpen] = React.useState(false);
   const handleModalClose = () => {
     setModalOpen(false);
@@ -30,12 +26,9 @@ export default function Stats({ tenantScore }: Props): ReactElement {
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <div className={styles.statCard}>
-          <h2 className={styles.statNumber}>
-            {localizedAbbreviatedNumber(i18n.language, Number(63356788), 2)}
-          </h2>
+          <h2 className={styles.statNumber}>{localizedAbbreviatedNumber(i18n.language, Number(63356788), 2)}</h2>
           <h3 className={styles.statText}>{t('planet:treesDonated')}</h3>
-          <button
-            id={'donatedStats'}
+          <button id={'donatedStats'}
             onClick={() => {
               setInfoExpanded('donated');
               setModalOpen(true);
@@ -46,19 +39,9 @@ export default function Stats({ tenantScore }: Props): ReactElement {
           </button>
         </div>
         <div className={styles.statCard}>
-          <h2 className={styles.statNumber}>
-            {' '}
-            {localizedAbbreviatedNumber(
-              i18n.language,
-              Number(77060000),
-              2
-            )}{' '}
-          </h2>
-          <h3 className={styles.statText}>
-            {t('planet:plantedByTPO', { projects: 206 })}
-          </h3>
-          <button
-            id={'plantedStats'}
+          <h2 className={styles.statNumber}> {localizedAbbreviatedNumber(i18n.language, Number(77060000), 2)} </h2>
+          <h3 className={styles.statText}>{t('planet:plantedByTPO', { projects: 206 })}</h3>
+          <button id={'plantedStats'}
             onClick={() => {
               setInfoExpanded('planted');
               setModalOpen(true);
@@ -69,16 +52,9 @@ export default function Stats({ tenantScore }: Props): ReactElement {
           </button>
         </div>
         <div className={styles.statCard}>
-          <h2 className={styles.statNumber}>
-            {localizedAbbreviatedNumber(
-              i18n.language,
-              Number(tenantScore.total),
-              2
-            )}
-          </h2>
+          <h2 className={styles.statNumber}>{localizedAbbreviatedNumber(i18n.language, Number(tenantScore.total), 2)}</h2>
           <h3 className={styles.statText}>{t('planet:plantedGlobally')}</h3>
-          <button
-            id={'globalStats'}
+          <button id={'globalStats'}
             onClick={() => {
               setInfoExpanded('global');
               setModalOpen(true);
@@ -89,15 +65,11 @@ export default function Stats({ tenantScore }: Props): ReactElement {
           </button>
         </div>
         <div className={styles.statCard}>
-          <h2
-            className={styles.statNumber}
-            style={{ color: styles.dangerColor }}
-          >
+          <h2 className={styles.statNumber} style={{ color: styles.dangerColor }}>
             {localizedAbbreviatedNumber(i18n.language, Number(10000000000), 2)}
           </h2>
           <h3 className={styles.statText}>{t('planet:forestLoss')}</h3>
-          <button
-            id={'lossStats'}
+          <button id={'lossStats'}
             onClick={() => {
               setInfoExpanded('loss');
               setModalOpen(true);
@@ -124,7 +96,5 @@ export default function Stats({ tenantScore }: Props): ReactElement {
         </Modal>
       ) : null}
     </div>
-  ) : (
-    <></>
-  );
+  ) : <></>;
 }

@@ -7,15 +7,15 @@ import ApiKey from '../../src/features/user/Settings/ApiKey';
 const { useTranslation } = i18next;
 
 function EditProfilePage(): ReactElement {
-  const { t } = useTranslation('me');
-  return (
-    <UserLayout>
-      <Head>
-        <title>{t('apiKey')}</title>
-      </Head>
-      <ApiKey />
-    </UserLayout>
-  );
+    const { t } = useTranslation('me');
+    return (
+        <UserLayout>
+            <Head>
+                <title>{t('apiKey')}</title>
+            </Head>
+            <ApiKey />
+        </UserLayout>
+    );
 }
 
 export default EditProfilePage;

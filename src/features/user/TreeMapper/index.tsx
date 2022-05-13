@@ -12,13 +12,13 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
-interface Props {}
+interface Props { }
 
 const PlantLocationMap = dynamic(() => import('./components/Map'), {
   loading: () => <p>loading</p>,
 });
 
-function TreeMapper({}: Props): ReactElement {
+function TreeMapper({ }: Props): ReactElement {
   const router = useRouter();
   const { token, contextLoaded } = React.useContext(UserPropsContext);
   const { t } = useTranslation(['treemapper']);
@@ -35,15 +35,9 @@ function TreeMapper({}: Props): ReactElement {
     setProgress(70);
 
     if (next && links?.next) {
-      const response = await getAuthenticatedRequest(
-        links.next,
-        token,
-        {},
+      const response = await getAuthenticatedRequest(links.next, token, {},
         handleError,
-        '/profile',
-        undefined,
-        '1.0.4'
-      );
+        '/profile', undefined, '1.0.4');
       if (response) {
         const newPlantLocations = response?.items;
         for (const itr in newPlantLocations) {

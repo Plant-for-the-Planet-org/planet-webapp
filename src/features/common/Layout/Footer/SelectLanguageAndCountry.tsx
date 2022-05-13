@@ -22,30 +22,28 @@ const config = tenantConfig();
 const { useTranslation } = i18next;
 
 // reduce the allowed languages to the languages listed in the tenants config file
-const selectableLanguages = supportedLanguages.filter((lang) =>
-  config.languages.includes(lang.langCode)
-);
-
+const selectableLanguages = supportedLanguages.filter(lang => config.languages.includes(lang.langCode));
+        
 interface TransitionsModalProps {
-  openModal: boolean;
-  handleModalClose: Function;
-  setLanguage: Function;
-  language: any;
-  setSelectedCurrency: Function;
-  selectedCountry: any;
-  setSelectedCountry: Function;
-  setCurrencyCode?: Function;
+  openModal: boolean,
+  handleModalClose: Function,
+  setLanguage: Function,
+  language: any,
+  setSelectedCurrency: Function,
+  selectedCountry: any,
+  setSelectedCountry: Function,
+  setCurrencyCode?: Function,
 }
 export default function TransitionsModal({
-  openModal,
-  handleModalClose,
-  setLanguage,
-  language,
-  setSelectedCurrency,
-  selectedCountry,
-  setSelectedCountry,
-  setCurrencyCode,
-}: TransitionsModalProps) {
+    openModal,
+    handleModalClose,
+    setLanguage,
+    language,
+    setSelectedCurrency,
+    selectedCountry,
+    setSelectedCountry,
+    setCurrencyCode
+  }: TransitionsModalProps) {
   const [modalLanguage, setModalLanguage] = useState('en');
   const [selectedModalCountry, setSelectedModalCountry] = useState('DE');
 
@@ -71,14 +69,12 @@ export default function TransitionsModal({
     i18n.changeLanguage(modalLanguage);
     window.localStorage.setItem('countryCode', selectedModalCountry);
     setSelectedCountry(selectedModalCountry);
-    const currencyCode = getCountryDataBy(
-      'countryCode',
-      selectedModalCountry
-    ).currencyCode;
+    const currencyCode = getCountryDataBy('countryCode', selectedModalCountry)
+      .currencyCode;
     if (currencyCode) {
       window.localStorage.setItem('currencyCode', currencyCode);
       setSelectedCurrency(currencyCode);
-      if (setCurrencyCode) setCurrencyCode(currencyCode);
+      if (setCurrencyCode) setCurrencyCode(currencyCode)
     }
     handleModalClose();
   }
@@ -130,19 +126,11 @@ export default function TransitionsModal({
             </div>
             {/* modal buttons */}
             <div className={styles.buttonContainer}>
-              <button
-                id={'selLangAndCountryCan'}
-                className={styles.button}
-                onClick={handleModalClose}
-              >
+              <button id={'selLangAndCountryCan'} className={styles.button} onClick={handleModalClose}>
                 <div></div>
                 <p>{t('common:cancel')}</p>
               </button>
-              <button
-                id={'selLangAndCountryOk'}
-                className={styles.button}
-                onClick={handleOKClick}
-              >
+              <button id={'selLangAndCountryOk'}className={styles.button} onClick={handleOKClick}>
                 <div></div>
                 <p>{t('common:ok')}</p>
               </button>
@@ -156,16 +144,14 @@ export default function TransitionsModal({
 
 // Maps the radio buttons for countries
 interface MapCountryProps {
-  value: string;
-  handleChange: Function;
+  value: string,
+  handleChange: Function,
 }
-function MapCountry({ value, handleChange }: MapCountryProps) {
+function MapCountry({value, handleChange}: MapCountryProps) {
   const { t, i18n, ready } = useTranslation(['country']);
   const country = getStoredConfig('country');
-  const priorityCountries = country === value ? [value] : [value, country];
-  const sortedCountriesData = ready
-    ? sortCountriesByTranslation(t, i18n.language, priorityCountries)
-    : {};
+  const priorityCountries = country === value ? [ value ] : [ value, country ];
+  const sortedCountriesData = ready ? sortCountriesByTranslation(t, i18n.language, priorityCountries) : {};
   return ready ? (
     <FormControl component="fieldset">
       <RadioGroup
@@ -180,11 +166,7 @@ function MapCountry({ value, handleChange }: MapCountryProps) {
             key={country.countryCode}
             value={country.countryCode}
             control={<GreenRadio />}
-            label={
-              t('country:' + country.countryCode.toLowerCase()) +
-              ' · ' +
-              country.currencyCode
-            }
+            label={t('country:' + country.countryCode.toLowerCase()) + ' · ' + country.currencyCode}
           />
         ))}
       </RadioGroup>
@@ -194,10 +176,10 @@ function MapCountry({ value, handleChange }: MapCountryProps) {
 
 // Maps the radio buttons for language
 interface MapLanguageProps {
-  value: string;
-  handleChange: Function;
+  value: string,
+  handleChange: Function,
 }
-function MapLanguage({ value, handleChange }: MapLanguageProps) {
+function MapLanguage({value, handleChange}: MapLanguageProps) {
   return (
     <FormControl component="fieldset">
       <RadioGroup

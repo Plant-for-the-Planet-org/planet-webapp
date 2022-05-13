@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -15,13 +19,14 @@
     "jsx": "preserve",
     "types": ["cypress", "cypress-plugin-stripe-elements"]
   },
-  "exclude": ["node_modules"],
+  "exclude": [
+    "node_modules"
+  ],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "./src/**/*",
-    "tenant.config.js",
-    "public/assets"
+    "tenant.config.js", "public/assets"
   ]
 }

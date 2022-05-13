@@ -10,15 +10,14 @@ import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHand
 
 const { useTranslation } = i18next;
 
-interface Props {}
+interface Props { }
 
-function RecurrentDonations({}: Props): ReactElement {
+function RecurrentDonations({ }: Props): ReactElement {
   const { t } = useTranslation(['me']);
   const { token, contextLoaded } = React.useContext(UserPropsContext);
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
-  const [recurrencies, setrecurrencies] =
-    React.useState<Payments.Subscription[]>();
+  const [recurrencies, setrecurrencies] = React.useState<Payments.Subscription[]>();
 
   const { handleError } = React.useContext(ErrorHandlingContext);
 

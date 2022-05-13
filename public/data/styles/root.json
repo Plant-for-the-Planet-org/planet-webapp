@@ -27,8 +27,14 @@
       "paint": {
         "fill-color": {
           "stops": [
-            [0, "#f4f4f4"],
-            [7, "#efefef"]
+            [
+              0,
+              "#f4f4f4"
+            ],
+            [
+              7,
+              "#efefef"
+            ]
           ]
         }
       }
@@ -46,8 +52,14 @@
       "paint": {
         "fill-color": {
           "stops": [
-            [5, "#e5e8e7"],
-            [10, "#ECEDEC"]
+            [
+              5,
+              "#e5e8e7"
+            ],
+            [
+              10,
+              "#ECEDEC"
+            ]
           ]
         }
       }
@@ -62,8 +74,14 @@
       "paint": {
         "fill-color": {
           "stops": [
-            [6, "#ECEEEA"],
-            [11, "#e4e8e4"]
+            [
+              6,
+              "#ECEEEA"
+            ],
+            [
+              11,
+              "#e4e8e4"
+            ]
           ]
         },
         "fill-outline-color": "#E7EAE6"
@@ -79,8 +97,14 @@
       "paint": {
         "fill-color": {
           "stops": [
-            [6, "#ECEEEA"],
-            [11, "#e4e8e4"]
+            [
+              6,
+              "#ECEEEA"
+            ],
+            [
+              11,
+              "#e4e8e4"
+            ]
           ]
         },
         "fill-outline-color": "#E7EAE6"
@@ -96,8 +120,14 @@
       "paint": {
         "fill-color": {
           "stops": [
-            [6, "#ECEEEA"],
-            [11, "#e4e8e4"]
+            [
+              6,
+              "#ECEEEA"
+            ],
+            [
+              11,
+              "#e4e8e4"
+            ]
           ]
         },
         "fill-outline-color": "#E7EAE6"
@@ -119,14 +149,24 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Airport",
-      "filter": ["==", "_symbol", 1],
+      "filter": [
+        "==",
+        "_symbol",
+        1
+      ],
       "minzoom": 9,
       "layout": {},
       "paint": {
         "fill-color": {
           "stops": [
-            [11, "#edede9"],
-            [15, "#efefef"]
+            [
+              11,
+              "#edede9"
+            ],
+            [
+              15,
+              "#efefef"
+            ]
           ]
         }
       }
@@ -136,7 +176,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Airport",
-      "filter": ["==", "_symbol", 0],
+      "filter": [
+        "==",
+        "_symbol",
+        0
+      ],
       "minzoom": 11,
       "layout": {},
       "paint": {
@@ -181,7 +225,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Special area of interest",
-      "filter": ["==", "_symbol", 12],
+      "filter": [
+        "==",
+        "_symbol",
+        12
+      ],
       "minzoom": 14,
       "layout": {
         "visibility": "none"
@@ -196,7 +244,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Special area of interest",
-      "filter": ["==", "_symbol", 15],
+      "filter": [
+        "==",
+        "_symbol",
+        15
+      ],
       "minzoom": 14,
       "layout": {},
       "paint": {
@@ -208,7 +260,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Special area of interest",
-      "filter": ["==", "_symbol", 11],
+      "filter": [
+        "==",
+        "_symbol",
+        11
+      ],
       "minzoom": 14,
       "layout": {},
       "paint": {
@@ -220,7 +276,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Special area of interest",
-      "filter": ["==", "_symbol", 8],
+      "filter": [
+        "==",
+        "_symbol",
+        8
+      ],
       "minzoom": 14,
       "layout": {},
       "paint": {
@@ -232,7 +292,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Special area of interest",
-      "filter": ["==", "_symbol", 1],
+      "filter": [
+        "==",
+        "_symbol",
+        1
+      ],
       "minzoom": 14,
       "layout": {},
       "paint": {
@@ -244,7 +308,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Special area of interest",
-      "filter": ["==", "_symbol", 13],
+      "filter": [
+        "==",
+        "_symbol",
+        13
+      ],
       "minzoom": 14,
       "layout": {},
       "paint": {
@@ -257,7 +325,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Special area of interest",
-      "filter": ["==", "_symbol", 5],
+      "filter": [
+        "==",
+        "_symbol",
+        5
+      ],
       "minzoom": 14,
       "layout": {},
       "paint": {
@@ -269,7 +341,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Special area of interest",
-      "filter": ["==", "_symbol", 4],
+      "filter": [
+        "==",
+        "_symbol",
+        4
+      ],
       "minzoom": 14,
       "layout": {},
       "paint": {
@@ -282,7 +358,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Special area of interest",
-      "filter": ["==", "_symbol", 10],
+      "filter": [
+        "==",
+        "_symbol",
+        10
+      ],
       "minzoom": 14,
       "layout": {},
       "paint": {
@@ -295,7 +375,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Special area of interest",
-      "filter": ["==", "_symbol", 14],
+      "filter": [
+        "==",
+        "_symbol",
+        14
+      ],
       "minzoom": 14,
       "layout": {},
       "paint": {
@@ -307,7 +391,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Special area of interest",
-      "filter": ["==", "_symbol", 0],
+      "filter": [
+        "==",
+        "_symbol",
+        0
+      ],
       "minzoom": 14,
       "layout": {},
       "paint": {
@@ -320,7 +408,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Special area of interest",
-      "filter": ["==", "_symbol", 6],
+      "filter": [
+        "==",
+        "_symbol",
+        6
+      ],
       "minzoom": 14,
       "layout": {},
       "paint": {
@@ -332,7 +424,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Special area of interest",
-      "filter": ["==", "_symbol", 16],
+      "filter": [
+        "==",
+        "_symbol",
+        16
+      ],
       "minzoom": 14,
       "layout": {},
       "paint": {
@@ -344,7 +440,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Special area of interest",
-      "filter": ["==", "_symbol", 7],
+      "filter": [
+        "==",
+        "_symbol",
+        7
+      ],
       "minzoom": 15,
       "layout": {},
       "paint": {
@@ -383,8 +483,14 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [5, 0.5],
-            [7, 0.7]
+            [
+              5,
+              0.5
+            ],
+            [
+              7,
+              0.7
+            ]
           ]
         }
       }
@@ -405,8 +511,14 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [7, 0.7],
-            [11, 0.8]
+            [
+              7,
+              0.7
+            ],
+            [
+              11,
+              0.8
+            ]
           ]
         }
       },
@@ -417,7 +529,11 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Water line",
-      "filter": ["==", "_symbol", 5],
+      "filter": [
+        "==",
+        "_symbol",
+        5
+      ],
       "minzoom": 11,
       "layout": {
         "line-join": "round"
@@ -425,7 +541,10 @@
       "paint": {
         "line-color": "rgba(170,208,237,0.64)",
         "line-width": 0.8,
-        "line-dasharray": [5, 5]
+        "line-dasharray": [
+          5,
+          5
+        ]
       },
       "showProperties": false
     },
@@ -434,7 +553,11 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Water line",
-      "filter": ["==", "_symbol", 2],
+      "filter": [
+        "==",
+        "_symbol",
+        2
+      ],
       "minzoom": 11,
       "layout": {
         "line-cap": "round",
@@ -445,9 +568,18 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 0.7],
-            [14, 0.7],
-            [17, 2]
+            [
+              11,
+              0.7
+            ],
+            [
+              14,
+              0.7
+            ],
+            [
+              17,
+              2
+            ]
           ]
         }
       }
@@ -457,7 +589,11 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Water line",
-      "filter": ["==", "_symbol", 3],
+      "filter": [
+        "==",
+        "_symbol",
+        3
+      ],
       "minzoom": 11,
       "layout": {
         "line-join": "round"
@@ -467,9 +603,18 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 0.7],
-            [14, 0.7],
-            [17, 2]
+            [
+              11,
+              0.7
+            ],
+            [
+              14,
+              0.7
+            ],
+            [
+              17,
+              2
+            ]
           ]
         }
       },
@@ -480,7 +625,11 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water line",
-      "filter": ["==", "_symbol", 3],
+      "filter": [
+        "==",
+        "_symbol",
+        3
+      ],
       "minzoom": 13,
       "layout": {
         "symbol-placement": "line",
@@ -501,7 +650,11 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Water line",
-      "filter": ["==", "_symbol", 1],
+      "filter": [
+        "==",
+        "_symbol",
+        1
+      ],
       "minzoom": 11,
       "layout": {
         "line-cap": "round"
@@ -511,9 +664,18 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 0.8],
-            [14, 0.8],
-            [17, 2]
+            [
+              11,
+              0.8
+            ],
+            [
+              14,
+              0.8
+            ],
+            [
+              17,
+              2
+            ]
           ]
         }
       },
@@ -524,18 +686,34 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Water line",
-      "filter": ["==", "_symbol", 4],
+      "filter": [
+        "==",
+        "_symbol",
+        4
+      ],
       "minzoom": 11,
       "layout": {},
       "paint": {
         "line-color": "rgba(170,208,237,0.64)",
-        "line-dasharray": [7, 3],
+        "line-dasharray": [
+          7,
+          3
+        ],
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 0.8],
-            [14, 0.8],
-            [17, 2]
+            [
+              11,
+              0.8
+            ],
+            [
+              14,
+              0.8
+            ],
+            [
+              17,
+              2
+            ]
           ]
         }
       },
@@ -546,7 +724,11 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Water line",
-      "filter": ["==", "_symbol", 0],
+      "filter": [
+        "==",
+        "_symbol",
+        0
+      ],
       "minzoom": 11,
       "layout": {
         "line-cap": "round"
@@ -556,9 +738,18 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 0.8],
-            [14, 0.8],
-            [17, 2]
+            [
+              11,
+              0.8
+            ],
+            [
+              14,
+              0.8
+            ],
+            [
+              17,
+              2
+            ]
           ]
         }
       },
@@ -594,7 +785,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Water area medium scale",
-      "filter": ["==", "_symbol", 1],
+      "filter": [
+        "==",
+        "_symbol",
+        1
+      ],
       "minzoom": 5,
       "maxzoom": 7,
       "layout": {},
@@ -607,7 +802,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Water area medium scale",
-      "filter": ["==", "_symbol", 0],
+      "filter": [
+        "==",
+        "_symbol",
+        0
+      ],
       "minzoom": 5,
       "maxzoom": 7,
       "layout": {},
@@ -621,7 +820,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Water area large scale",
-      "filter": ["==", "_symbol", 1],
+      "filter": [
+        "==",
+        "_symbol",
+        1
+      ],
       "minzoom": 7,
       "maxzoom": 11,
       "layout": {},
@@ -634,7 +837,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Water area large scale",
-      "filter": ["==", "_symbol", 0],
+      "filter": [
+        "==",
+        "_symbol",
+        0
+      ],
       "minzoom": 7,
       "maxzoom": 11,
       "layout": {},
@@ -648,7 +855,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Water area",
-      "filter": ["==", "_symbol", 7],
+      "filter": [
+        "==",
+        "_symbol",
+        7
+      ],
       "minzoom": 11,
       "layout": {},
       "paint": {
@@ -661,7 +872,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Water area",
-      "filter": ["==", "_symbol", 6],
+      "filter": [
+        "==",
+        "_symbol",
+        6
+      ],
       "minzoom": 11,
       "layout": {},
       "paint": {
@@ -673,7 +888,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Water area",
-      "filter": ["==", "_symbol", 4],
+      "filter": [
+        "==",
+        "_symbol",
+        4
+      ],
       "minzoom": 11,
       "layout": {},
       "paint": {
@@ -685,7 +904,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Water area",
-      "filter": ["==", "_symbol", 3],
+      "filter": [
+        "==",
+        "_symbol",
+        3
+      ],
       "minzoom": 11,
       "layout": {},
       "paint": {
@@ -697,7 +920,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Water area",
-      "filter": ["==", "_symbol", 1],
+      "filter": [
+        "==",
+        "_symbol",
+        1
+      ],
       "minzoom": 11,
       "layout": {},
       "paint": {
@@ -709,7 +936,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Water area",
-      "filter": ["==", "_symbol", 5],
+      "filter": [
+        "==",
+        "_symbol",
+        5
+      ],
       "minzoom": 11,
       "layout": {},
       "paint": {
@@ -722,7 +953,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Special area of interest",
-      "filter": ["==", "_symbol", 2],
+      "filter": [
+        "==",
+        "_symbol",
+        2
+      ],
       "minzoom": 14,
       "layout": {},
       "paint": {
@@ -743,9 +978,18 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [12, 1.5],
-            [14, 2.5],
-            [17, 3]
+            [
+              12,
+              1.5
+            ],
+            [
+              14,
+              2.5
+            ],
+            [
+              17,
+              3
+            ]
           ]
         }
       }
@@ -764,9 +1008,18 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [12, 0.5],
-            [14, 1],
-            [17, 1.5]
+            [
+              12,
+              0.5
+            ],
+            [
+              14,
+              1
+            ],
+            [
+              17,
+              1.5
+            ]
           ]
         }
       }
@@ -776,7 +1029,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Ferry",
-      "filter": ["all", ["==", "_symbol", 1], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          1
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 12,
       "layout": {
         "line-join": "round"
@@ -786,9 +1051,18 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [12, 1.5],
-            [14, 2.5],
-            [17, 3]
+            [
+              12,
+              1.5
+            ],
+            [
+              14,
+              2.5
+            ],
+            [
+              17,
+              3
+            ]
           ]
         }
       }
@@ -798,7 +1072,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Ferry",
-      "filter": ["all", ["==", "_symbol", 1], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          1
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 12,
       "layout": {
         "line-join": "round"
@@ -808,9 +1094,18 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [12, 0.5],
-            [14, 1],
-            [17, 1.5]
+            [
+              12,
+              0.5
+            ],
+            [
+              14,
+              1
+            ],
+            [
+              17,
+              1.5
+            ]
           ]
         }
       }
@@ -820,7 +1115,11 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Special area of interest line",
-      "filter": ["==", "_symbol", 0],
+      "filter": [
+        "==",
+        "_symbol",
+        0
+      ],
       "minzoom": 15,
       "layout": {
         "line-cap": "round",
@@ -831,8 +1130,14 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [15, 0.7],
-            [17, 1.2]
+            [
+              15,
+              0.7
+            ],
+            [
+              17,
+              1.2
+            ]
           ]
         }
       }
@@ -842,7 +1147,11 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Special area of interest line",
-      "filter": ["==", "_symbol", 6],
+      "filter": [
+        "==",
+        "_symbol",
+        6
+      ],
       "minzoom": 15,
       "layout": {
         "line-cap": "round",
@@ -853,8 +1162,14 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [15, 0.7],
-            [17, 1.2]
+            [
+              15,
+              0.7
+            ],
+            [
+              17,
+              1.2
+            ]
           ]
         }
       }
@@ -870,8 +1185,20 @@
         "fill-color": "#dcddde",
         "fill-translate": {
           "stops": [
-            [15, [0, 0]],
-            [18, [2, 2]]
+            [
+              15,
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              18,
+              [
+                2,
+                2
+              ]
+            ]
           ]
         },
         "fill-translate-anchor": "viewport"
@@ -894,7 +1221,11 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Special area of interest line",
-      "filter": ["==", "_symbol", 5],
+      "filter": [
+        "==",
+        "_symbol",
+        5
+      ],
       "minzoom": 15,
       "layout": {
         "line-cap": "round",
@@ -905,8 +1236,14 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [15, 0.7],
-            [17, 1.2]
+            [
+              15,
+              0.7
+            ],
+            [
+              17,
+              1.2
+            ]
           ]
         }
       }
@@ -926,9 +1263,18 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [14, 1.5],
-            [16, 3.3],
-            [18, 4]
+            [
+              14,
+              1.5
+            ],
+            [
+              16,
+              3.3
+            ],
+            [
+              18,
+              4
+            ]
           ]
         }
       }
@@ -938,20 +1284,44 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 10], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          10
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 13,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#E3E5E2",
-        "line-dasharray": [2, 1],
+        "line-dasharray": [
+          2,
+          1
+        ],
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 1.5],
-            [14, 3.3],
-            [18, 8.3]
+            [
+              11,
+              1.5
+            ],
+            [
+              14,
+              3.3
+            ],
+            [
+              18,
+              8.3
+            ]
           ]
         }
       }
@@ -961,7 +1331,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 8], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          8
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 13,
       "layout": {
         "line-cap": "round",
@@ -972,9 +1354,18 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 1.5],
-            [14, 3.3],
-            [18, 8.3]
+            [
+              11,
+              1.5
+            ],
+            [
+              14,
+              3.3
+            ],
+            [
+              18,
+              8.3
+            ]
           ]
         }
       }
@@ -984,7 +1375,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 7], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          7
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 12,
       "layout": {
         "line-cap": "round",
@@ -995,10 +1398,22 @@
         "line-width": {
           "base": 1.4,
           "stops": [
-            [11, 1.5],
-            [14, 4],
-            [16, 6],
-            [18, 17.3]
+            [
+              11,
+              1.5
+            ],
+            [
+              14,
+              4
+            ],
+            [
+              16,
+              6
+            ],
+            [
+              18,
+              17.3
+            ]
           ]
         }
       }
@@ -1008,7 +1423,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 9], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          9
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 15,
       "layout": {
         "line-cap": "round",
@@ -1019,9 +1446,18 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [14, 1.5],
-            [16, 3.3],
-            [18, 4]
+            [
+              14,
+              1.5
+            ],
+            [
+              16,
+              3.3
+            ],
+            [
+              18,
+              4
+            ]
           ]
         }
       }
@@ -1031,7 +1467,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 6], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          6
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 11,
       "layout": {
         "line-cap": "round",
@@ -1042,10 +1490,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 1],
-            [14, 4],
-            [16, 9.6],
-            [18, 17.3]
+            [
+              11,
+              1
+            ],
+            [
+              14,
+              4
+            ],
+            [
+              16,
+              9.6
+            ],
+            [
+              18,
+              17.3
+            ]
           ]
         }
       }
@@ -1055,7 +1515,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 5], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          5
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 11,
       "layout": {
         "line-cap": "round",
@@ -1066,10 +1538,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 2.6],
-            [14, 5.6],
-            [16, 9.6],
-            [18, 17.3]
+            [
+              11,
+              2.6
+            ],
+            [
+              14,
+              5.6
+            ],
+            [
+              16,
+              9.6
+            ],
+            [
+              18,
+              17.3
+            ]
           ]
         }
       }
@@ -1079,7 +1563,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 4], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          4
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 9,
       "layout": {
         "line-cap": "round",
@@ -1090,10 +1586,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [9, 1.5],
-            [14, 7.3],
-            [16, 10.3],
-            [18, 18]
+            [
+              9,
+              1.5
+            ],
+            [
+              14,
+              7.3
+            ],
+            [
+              16,
+              10.3
+            ],
+            [
+              18,
+              18
+            ]
           ]
         }
       }
@@ -1103,7 +1611,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 3], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          3
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 9,
       "layout": {
         "line-cap": "round",
@@ -1114,10 +1634,22 @@
         "line-width": {
           "base": 1,
           "stops": [
-            [9, 1.5],
-            [14, 7.3],
-            [16, 10.3],
-            [18, 18]
+            [
+              9,
+              1.5
+            ],
+            [
+              14,
+              7.3
+            ],
+            [
+              16,
+              10.3
+            ],
+            [
+              18,
+              18
+            ]
           ]
         }
       }
@@ -1127,7 +1659,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 2], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          2
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 7,
       "layout": {
         "line-join": "round",
@@ -1138,10 +1682,22 @@
         "line-width": {
           "base": 1,
           "stops": [
-            [9, 0.3],
-            [14, 8.3],
-            [16, 12.3],
-            [18, 26]
+            [
+              9,
+              0.3
+            ],
+            [
+              14,
+              8.3
+            ],
+            [
+              16,
+              12.3
+            ],
+            [
+              18,
+              26
+            ]
           ]
         }
       }
@@ -1151,7 +1707,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 1], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          1
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 8,
       "layout": {
         "line-join": "round"
@@ -1161,10 +1729,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [8, 0.3],
-            [14, 8.3],
-            [16, 12.3],
-            [18, 26]
+            [
+              8,
+              0.3
+            ],
+            [
+              14,
+              8.3
+            ],
+            [
+              16,
+              12.3
+            ],
+            [
+              18,
+              26
+            ]
           ]
         }
       }
@@ -1174,7 +1754,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 0], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          0
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 7,
       "layout": {
         "line-join": "round"
@@ -1184,10 +1776,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [5, 0.3],
-            [14, 8.3],
-            [16, 12.3],
-            [18, 26]
+            [
+              5,
+              0.3
+            ],
+            [
+              14,
+              8.3
+            ],
+            [
+              16,
+              12.3
+            ],
+            [
+              18,
+              26
+            ]
           ]
         }
       }
@@ -1204,13 +1808,25 @@
       },
       "paint": {
         "line-color": "#FFFFFF",
-        "line-dasharray": [3, 1.5],
+        "line-dasharray": [
+          3,
+          1.5
+        ],
         "line-width": {
           "base": 1.2,
           "stops": [
-            [14, 1.3],
-            [16, 2],
-            [18, 2.3]
+            [
+              14,
+              1.3
+            ],
+            [
+              16,
+              2
+            ],
+            [
+              18,
+              2.3
+            ]
           ]
         }
       }
@@ -1220,7 +1836,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 9], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          9
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 15,
       "layout": {
         "line-cap": "round",
@@ -1228,13 +1856,25 @@
       },
       "paint": {
         "line-color": "#FFFFFF",
-        "line-dasharray": [3, 1.5],
+        "line-dasharray": [
+          3,
+          1.5
+        ],
         "line-width": {
           "base": 1.2,
           "stops": [
-            [14, 1.3],
-            [16, 2],
-            [18, 2.3]
+            [
+              14,
+              1.3
+            ],
+            [
+              16,
+              2
+            ],
+            [
+              18,
+              2.3
+            ]
           ]
         }
       }
@@ -1244,7 +1884,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 10], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          10
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 13,
       "layout": {
         "line-join": "round"
@@ -1254,9 +1906,18 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 0.75],
-            [14, 1.3],
-            [18, 6.3]
+            [
+              11,
+              0.75
+            ],
+            [
+              14,
+              1.3
+            ],
+            [
+              18,
+              6.3
+            ]
           ]
         }
       }
@@ -1266,7 +1927,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 8], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          8
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 13,
       "layout": {
         "line-cap": "round",
@@ -1277,9 +1950,18 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 0.75],
-            [14, 1.3],
-            [18, 6.3]
+            [
+              11,
+              0.75
+            ],
+            [
+              14,
+              1.3
+            ],
+            [
+              18,
+              6.3
+            ]
           ]
         }
       }
@@ -1289,7 +1971,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 7], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          7
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 12,
       "layout": {
         "line-cap": "round",
@@ -1298,17 +1992,35 @@
       "paint": {
         "line-color": {
           "stops": [
-            [12, "#FAFAFA"],
-            [13, "#ffffff"]
+            [
+              12,
+              "#FAFAFA"
+            ],
+            [
+              13,
+              "#ffffff"
+            ]
           ]
         },
         "line-width": {
           "base": 1.4,
           "stops": [
-            [11, 1.1],
-            [14, 2],
-            [16, 4],
-            [18, 15.3]
+            [
+              11,
+              1.1
+            ],
+            [
+              14,
+              2
+            ],
+            [
+              16,
+              4
+            ],
+            [
+              18,
+              15.3
+            ]
           ]
         }
       }
@@ -1318,7 +2030,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 6], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          6
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 11,
       "layout": {
         "line-cap": "round",
@@ -1329,10 +2053,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 0.75],
-            [14, 2],
-            [16, 7.65],
-            [18, 15.3]
+            [
+              11,
+              0.75
+            ],
+            [
+              14,
+              2
+            ],
+            [
+              16,
+              7.65
+            ],
+            [
+              18,
+              15.3
+            ]
           ]
         }
       }
@@ -1342,7 +2078,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 5], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          5
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 11,
       "layout": {
         "line-cap": "round",
@@ -1353,10 +2101,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 1.3],
-            [14, 3.65],
-            [16, 7.65],
-            [18, 15.3]
+            [
+              11,
+              1.3
+            ],
+            [
+              14,
+              3.65
+            ],
+            [
+              16,
+              7.65
+            ],
+            [
+              18,
+              15.3
+            ]
           ]
         }
       }
@@ -1366,7 +2126,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 4], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          4
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 9,
       "layout": {
         "line-cap": "round",
@@ -1377,10 +2149,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [9, 0.75],
-            [14, 5.3],
-            [16, 8.3],
-            [18, 16]
+            [
+              9,
+              0.75
+            ],
+            [
+              14,
+              5.3
+            ],
+            [
+              16,
+              8.3
+            ],
+            [
+              18,
+              16
+            ]
           ]
         }
       }
@@ -1390,7 +2174,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 3], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          3
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 9,
       "layout": {
         "line-cap": "round",
@@ -1401,10 +2197,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [9, 0.75],
-            [14, 5.3],
-            [16, 8.3],
-            [18, 16]
+            [
+              9,
+              0.75
+            ],
+            [
+              14,
+              5.3
+            ],
+            [
+              16,
+              8.3
+            ],
+            [
+              18,
+              16
+            ]
           ]
         }
       }
@@ -1414,7 +2222,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 2], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          2
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 7,
       "layout": {
         "line-join": "round",
@@ -1425,10 +2245,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [9, 0.3],
-            [14, 6.3],
-            [16, 10.3],
-            [18, 24]
+            [
+              9,
+              0.3
+            ],
+            [
+              14,
+              6.3
+            ],
+            [
+              16,
+              10.3
+            ],
+            [
+              18,
+              24
+            ]
           ]
         }
       }
@@ -1438,7 +2270,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 1], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          1
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 8,
       "layout": {
         "line-join": "round"
@@ -1448,10 +2292,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [8, 0.3],
-            [14, 6.3],
-            [16, 10.3],
-            [18, 24]
+            [
+              8,
+              0.3
+            ],
+            [
+              14,
+              6.3
+            ],
+            [
+              16,
+              10.3
+            ],
+            [
+              18,
+              24
+            ]
           ]
         }
       }
@@ -1461,7 +2317,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road",
-      "filter": ["all", ["==", "_symbol", 0], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          0
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 6,
       "layout": {
         "line-join": "round"
@@ -1469,17 +2337,35 @@
       "paint": {
         "line-color": {
           "stops": [
-            [6, "#FAFAFA"],
-            [7, "#ffffff"]
+            [
+              6,
+              "#FAFAFA"
+            ],
+            [
+              7,
+              "#ffffff"
+            ]
           ]
         },
         "line-width": {
           "base": 1.2,
           "stops": [
-            [5, 0.3],
-            [14, 6.3],
-            [16, 10.3],
-            [18, 24]
+            [
+              5,
+              0.3
+            ],
+            [
+              14,
+              6.3
+            ],
+            [
+              16,
+              10.3
+            ],
+            [
+              18,
+              24
+            ]
           ]
         }
       }
@@ -1489,7 +2375,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 10], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          10
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 13,
       "layout": {
         "line-join": "round"
@@ -1497,13 +2395,25 @@
       "paint": {
         "line-color": "#E3E5E2",
         "line-opacity": 0.5,
-        "line-dasharray": [2, 1],
+        "line-dasharray": [
+          2,
+          1
+        ],
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 1.5],
-            [14, 3.3],
-            [18, 8.3]
+            [
+              11,
+              1.5
+            ],
+            [
+              14,
+              3.3
+            ],
+            [
+              18,
+              8.3
+            ]
           ]
         }
       }
@@ -1513,7 +2423,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 8], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          8
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 13,
       "layout": {
         "line-join": "round"
@@ -1524,9 +2446,18 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 1.5],
-            [14, 3.3],
-            [18, 8.3]
+            [
+              11,
+              1.5
+            ],
+            [
+              14,
+              3.3
+            ],
+            [
+              18,
+              8.3
+            ]
           ]
         }
       }
@@ -1536,7 +2467,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 7], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          7
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 12,
       "layout": {
         "line-join": "round"
@@ -1547,10 +2490,22 @@
         "line-width": {
           "base": 1.4,
           "stops": [
-            [11, 1.5],
-            [14, 4],
-            [16, 6],
-            [18, 17.3]
+            [
+              11,
+              1.5
+            ],
+            [
+              14,
+              4
+            ],
+            [
+              16,
+              6
+            ],
+            [
+              18,
+              17.3
+            ]
           ]
         }
       }
@@ -1560,7 +2515,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 9], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          9
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 15,
       "layout": {
         "line-join": "round"
@@ -1571,9 +2538,18 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [14, 1.5],
-            [16, 3.3],
-            [18, 4]
+            [
+              14,
+              1.5
+            ],
+            [
+              16,
+              3.3
+            ],
+            [
+              18,
+              4
+            ]
           ]
         }
       }
@@ -1583,7 +2559,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 6], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          6
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 11,
       "layout": {
         "line-join": "round"
@@ -1594,10 +2582,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 1],
-            [14, 4],
-            [16, 9.65],
-            [18, 17.3]
+            [
+              11,
+              1
+            ],
+            [
+              14,
+              4
+            ],
+            [
+              16,
+              9.65
+            ],
+            [
+              18,
+              17.3
+            ]
           ]
         }
       }
@@ -1607,7 +2607,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 5], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          5
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 11,
       "layout": {
         "line-join": "round"
@@ -1618,10 +2630,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 2.6],
-            [14, 5.65],
-            [16, 9.65],
-            [18, 17.3]
+            [
+              11,
+              2.6
+            ],
+            [
+              14,
+              5.65
+            ],
+            [
+              16,
+              9.65
+            ],
+            [
+              18,
+              17.3
+            ]
           ]
         }
       }
@@ -1631,7 +2655,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 4], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          4
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 9,
       "layout": {
         "line-join": "round"
@@ -1642,10 +2678,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [9, 1.5],
-            [14, 7.3],
-            [16, 10.3],
-            [18, 18]
+            [
+              9,
+              1.5
+            ],
+            [
+              14,
+              7.3
+            ],
+            [
+              16,
+              10.3
+            ],
+            [
+              18,
+              18
+            ]
           ]
         }
       }
@@ -1655,7 +2703,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 3], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          3
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 9,
       "layout": {
         "line-join": "round"
@@ -1666,10 +2726,22 @@
         "line-width": {
           "base": 1,
           "stops": [
-            [9, 1.5],
-            [14, 7.3],
-            [16, 10.3],
-            [18, 18]
+            [
+              9,
+              1.5
+            ],
+            [
+              14,
+              7.3
+            ],
+            [
+              16,
+              10.3
+            ],
+            [
+              18,
+              18
+            ]
           ]
         }
       }
@@ -1679,7 +2751,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 2], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          2
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 7,
       "layout": {
         "line-join": "round"
@@ -1690,10 +2774,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [9, 0.3],
-            [14, 8.3],
-            [16, 14.3],
-            [18, 28]
+            [
+              9,
+              0.3
+            ],
+            [
+              14,
+              8.3
+            ],
+            [
+              16,
+              14.3
+            ],
+            [
+              18,
+              28
+            ]
           ]
         }
       }
@@ -1703,7 +2799,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 1], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          1
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 8,
       "layout": {
         "line-join": "round"
@@ -1714,10 +2822,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [8, 0.3],
-            [14, 8.3],
-            [16, 14.3],
-            [18, 28]
+            [
+              8,
+              0.3
+            ],
+            [
+              14,
+              8.3
+            ],
+            [
+              16,
+              14.3
+            ],
+            [
+              18,
+              28
+            ]
           ]
         }
       }
@@ -1727,7 +2847,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 0], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          0
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 7,
       "layout": {
         "line-join": "round"
@@ -1738,10 +2870,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [5, 0.3],
-            [14, 8.3],
-            [16, 14.3],
-            [18, 28]
+            [
+              5,
+              0.3
+            ],
+            [
+              14,
+              8.3
+            ],
+            [
+              16,
+              14.3
+            ],
+            [
+              18,
+              28
+            ]
           ]
         }
       }
@@ -1751,7 +2895,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 9], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          9
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 15,
       "layout": {
         "line-join": "round"
@@ -1759,13 +2915,25 @@
       "paint": {
         "line-color": "#FFFFFF",
         "line-opacity": 0.5,
-        "line-dasharray": [3, 1.5],
+        "line-dasharray": [
+          3,
+          1.5
+        ],
         "line-width": {
           "base": 1.2,
           "stops": [
-            [14, 1.3],
-            [16, 2],
-            [18, 2.3]
+            [
+              14,
+              1.3
+            ],
+            [
+              16,
+              2
+            ],
+            [
+              18,
+              2.3
+            ]
           ]
         }
       }
@@ -1775,7 +2943,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 10], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          10
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 13,
       "layout": {
         "line-join": "round"
@@ -1786,9 +2966,18 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 0.75],
-            [14, 1.3],
-            [18, 6.3]
+            [
+              11,
+              0.75
+            ],
+            [
+              14,
+              1.3
+            ],
+            [
+              18,
+              6.3
+            ]
           ]
         }
       }
@@ -1798,7 +2987,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 8], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          8
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 13,
       "layout": {
         "line-join": "round"
@@ -1809,9 +3010,18 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 0.75],
-            [14, 1.3],
-            [18, 6.3]
+            [
+              11,
+              0.75
+            ],
+            [
+              14,
+              1.3
+            ],
+            [
+              18,
+              6.3
+            ]
           ]
         }
       }
@@ -1821,7 +3031,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 7], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          7
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 12,
       "layout": {
         "line-join": "round"
@@ -1829,18 +3051,36 @@
       "paint": {
         "line-color": {
           "stops": [
-            [12, "#FAFAFA"],
-            [13, "#ffffff"]
+            [
+              12,
+              "#FAFAFA"
+            ],
+            [
+              13,
+              "#ffffff"
+            ]
           ]
         },
         "line-opacity": 0.5,
         "line-width": {
           "base": 1.4,
           "stops": [
-            [11, 1.1],
-            [14, 2],
-            [16, 4],
-            [18, 15.3]
+            [
+              11,
+              1.1
+            ],
+            [
+              14,
+              2
+            ],
+            [
+              16,
+              4
+            ],
+            [
+              18,
+              15.3
+            ]
           ]
         }
       }
@@ -1850,7 +3090,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 6], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          6
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 11,
       "layout": {
         "line-join": "round"
@@ -1861,10 +3113,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 0.75],
-            [14, 2],
-            [16, 7.65],
-            [18, 15.3]
+            [
+              11,
+              0.75
+            ],
+            [
+              14,
+              2
+            ],
+            [
+              16,
+              7.65
+            ],
+            [
+              18,
+              15.3
+            ]
           ]
         }
       }
@@ -1874,7 +3138,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 5], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          5
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 11,
       "layout": {
         "line-join": "round"
@@ -1885,10 +3161,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [11, 1.3],
-            [14, 3.65],
-            [16, 7.65],
-            [18, 15.3]
+            [
+              11,
+              1.3
+            ],
+            [
+              14,
+              3.65
+            ],
+            [
+              16,
+              7.65
+            ],
+            [
+              18,
+              15.3
+            ]
           ]
         }
       }
@@ -1898,7 +3186,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 4], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          4
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 9,
       "layout": {
         "line-join": "round"
@@ -1909,10 +3209,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [9, 0.75],
-            [14, 5.3],
-            [16, 8.3],
-            [18, 16]
+            [
+              9,
+              0.75
+            ],
+            [
+              14,
+              5.3
+            ],
+            [
+              16,
+              8.3
+            ],
+            [
+              18,
+              16
+            ]
           ]
         }
       }
@@ -1922,7 +3234,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 3], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          3
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 9,
       "layout": {
         "line-join": "round"
@@ -1933,10 +3257,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [9, 0.75],
-            [14, 5.3],
-            [16, 8.3],
-            [18, 16]
+            [
+              9,
+              0.75
+            ],
+            [
+              14,
+              5.3
+            ],
+            [
+              16,
+              8.3
+            ],
+            [
+              18,
+              16
+            ]
           ]
         }
       }
@@ -1946,7 +3282,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 2], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          2
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 7,
       "layout": {
         "line-join": "round"
@@ -1957,10 +3305,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [9, 0.3],
-            [14, 6.3],
-            [16, 12.3],
-            [18, 26]
+            [
+              9,
+              0.3
+            ],
+            [
+              14,
+              6.3
+            ],
+            [
+              16,
+              12.3
+            ],
+            [
+              18,
+              26
+            ]
           ]
         }
       }
@@ -1970,7 +3330,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 1], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          1
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 8,
       "layout": {
         "line-join": "round"
@@ -1981,10 +3353,22 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [8, 0.3],
-            [14, 6.3],
-            [16, 12.3],
-            [18, 26]
+            [
+              8,
+              0.3
+            ],
+            [
+              14,
+              6.3
+            ],
+            [
+              16,
+              12.3
+            ],
+            [
+              18,
+              26
+            ]
           ]
         }
       }
@@ -1994,7 +3378,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Road tunnel",
-      "filter": ["all", ["==", "_symbol", 0], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          0
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 6,
       "layout": {
         "line-join": "round"
@@ -2002,18 +3398,36 @@
       "paint": {
         "line-color": {
           "stops": [
-            [6, "#FAFAFA"],
-            [7, "#ffffff"]
+            [
+              6,
+              "#FAFAFA"
+            ],
+            [
+              7,
+              "#ffffff"
+            ]
           ]
         },
         "line-opacity": 0.5,
         "line-width": {
           "base": 1.2,
           "stops": [
-            [5, 0.3],
-            [14, 6.3],
-            [16, 12.3],
-            [18, 26]
+            [
+              5,
+              0.3
+            ],
+            [
+              14,
+              6.3
+            ],
+            [
+              16,
+              12.3
+            ],
+            [
+              18,
+              26
+            ]
           ]
         }
       }
@@ -2023,7 +3437,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Special area of interest",
-      "filter": ["==", "_symbol", 9],
+      "filter": [
+        "==",
+        "_symbol",
+        9
+      ],
       "minzoom": 14,
       "layout": {},
       "paint": {
@@ -2036,7 +3454,11 @@
       "type": "fill",
       "source": "esri",
       "source-layer": "Special area of interest",
-      "filter": ["==", "_symbol", 3],
+      "filter": [
+        "==",
+        "_symbol",
+        3
+      ],
       "minzoom": 14,
       "layout": {},
       "paint": {
@@ -2049,7 +3471,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Boundary line",
-      "filter": ["all", ["==", "_symbol", 8], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          8
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 9,
       "layout": {
         "line-join": "round"
@@ -2060,9 +3494,18 @@
         "line-width": {
           "base": 1,
           "stops": [
-            [4, 0.65],
-            [14, 7],
-            [17, 7]
+            [
+              4,
+              0.65
+            ],
+            [
+              14,
+              7
+            ],
+            [
+              17,
+              7
+            ]
           ]
         }
       }
@@ -2072,7 +3515,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Boundary line",
-      "filter": ["all", ["==", "_symbol", 8], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          8
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 9,
       "layout": {
         "line-join": "round"
@@ -2082,12 +3537,24 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [1, 0.65],
-            [14, 1.3],
-            [17, 2.65]
+            [
+              1,
+              0.65
+            ],
+            [
+              14,
+              1.3
+            ],
+            [
+              17,
+              2.65
+            ]
           ]
         },
-        "line-dasharray": [7, 5]
+        "line-dasharray": [
+          7,
+          5
+        ]
       }
     },
     {
@@ -2096,7 +3563,19 @@
       "source": "esri",
       "source-layer": "Boundary line",
       "minzoom": 4,
-      "filter": ["all", ["==", "_symbol", 7], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          7
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "layout": {
         "line-join": "round"
       },
@@ -2106,8 +3585,14 @@
         "line-width": {
           "base": 1,
           "stops": [
-            [4, 0.65],
-            [14, 7]
+            [
+              4,
+              0.65
+            ],
+            [
+              14,
+              7
+            ]
           ]
         }
       }
@@ -2119,9 +3604,25 @@
       "source-layer": "Boundary line",
       "filter": [
         "all",
-        ["==", "_symbol", 6],
-        ["!in", "Viz", 3],
-        ["!in", "DisputeID", 8, 16, 90, 96, 0]
+        [
+          "==",
+          "_symbol",
+          6
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ],
+        [
+          "!in",
+          "DisputeID",
+          8,
+          16,
+          90,
+          96,
+          0
+        ]
       ],
       "minzoom": 1,
       "layout": {
@@ -2134,8 +3635,14 @@
         "line-width": {
           "base": 1,
           "stops": [
-            [1, 0.65],
-            [14, 9.3]
+            [
+              1,
+              0.65
+            ],
+            [
+              14,
+              9.3
+            ]
           ]
         }
       }
@@ -2146,7 +3653,19 @@
       "source": "esri",
       "source-layer": "Boundary line",
       "minzoom": 4,
-      "filter": ["all", ["==", "_symbol", 7], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          7
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "layout": {
         "line-join": "round"
       },
@@ -2155,12 +3674,24 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [1, 0.65],
-            [14, 1.3],
-            [17, 2.65]
+            [
+              1,
+              0.65
+            ],
+            [
+              14,
+              1.3
+            ],
+            [
+              17,
+              2.65
+            ]
           ]
         },
-        "line-dasharray": [7, 5]
+        "line-dasharray": [
+          7,
+          5
+        ]
       }
     },
     {
@@ -2170,9 +3701,25 @@
       "source-layer": "Boundary line",
       "filter": [
         "all",
-        ["==", "_symbol", 6],
-        ["!in", "Viz", 3],
-        ["!in", "DisputeID", 8, 16, 90, 96, 0]
+        [
+          "==",
+          "_symbol",
+          6
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ],
+        [
+          "!in",
+          "DisputeID",
+          8,
+          16,
+          90,
+          96,
+          0
+        ]
       ],
       "minzoom": 1,
       "layout": {
@@ -2184,12 +3731,24 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [1, 0.65],
-            [14, 1.3],
-            [17, 2.65]
+            [
+              1,
+              0.65
+            ],
+            [
+              14,
+              1.3
+            ],
+            [
+              17,
+              2.65
+            ]
           ]
         },
-        "line-dasharray": [7, 5]
+        "line-dasharray": [
+          7,
+          5
+        ]
       }
     },
     {
@@ -2197,7 +3756,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Boundary line",
-      "filter": ["all", ["==", "_symbol", 2], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          2
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 10,
       "layout": {
         "line-cap": "round",
@@ -2209,8 +3780,14 @@
         "line-width": {
           "base": 1.2,
           "stops": [
-            [8, 1.3],
-            [14, 2.65]
+            [
+              8,
+              1.3
+            ],
+            [
+              14,
+              2.65
+            ]
           ]
         }
       }
@@ -2220,7 +3797,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Boundary line",
-      "filter": ["all", ["==", "_symbol", 1], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          1
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 4,
       "layout": {
         "line-cap": "round",
@@ -2231,8 +3820,14 @@
         "line-width": {
           "base": 1,
           "stops": [
-            [4, 0.65],
-            [14, 7]
+            [
+              4,
+              0.65
+            ],
+            [
+              14,
+              7
+            ]
           ]
         }
       }
@@ -2242,7 +3837,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Boundary line",
-      "filter": ["all", ["==", "_symbol", 0], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          0
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 1,
       "layout": {
         "line-cap": "round",
@@ -2254,8 +3861,14 @@
         "line-width": {
           "base": 1,
           "stops": [
-            [1, 0.65],
-            [14, 9.3]
+            [
+              1,
+              0.65
+            ],
+            [
+              14,
+              9.3
+            ]
           ]
         }
       }
@@ -2265,7 +3878,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Boundary line",
-      "filter": ["all", ["==", "_symbol", 5], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          5
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 16,
       "layout": {
         "line-cap": "round",
@@ -2273,7 +3898,10 @@
       },
       "paint": {
         "line-color": "#dfe1e2",
-        "line-dasharray": [5, 3]
+        "line-dasharray": [
+          5,
+          3
+        ]
       }
     },
     {
@@ -2281,7 +3909,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Boundary line",
-      "filter": ["all", ["==", "_symbol", 4], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          4
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 16,
       "layout": {
         "line-cap": "round",
@@ -2289,7 +3929,10 @@
       },
       "paint": {
         "line-color": "#dfe1e2",
-        "line-dasharray": [5, 3]
+        "line-dasharray": [
+          5,
+          3
+        ]
       }
     },
     {
@@ -2297,7 +3940,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Boundary line",
-      "filter": ["all", ["==", "_symbol", 3], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          3
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 16,
       "layout": {
         "line-cap": "round",
@@ -2305,7 +3960,10 @@
       },
       "paint": {
         "line-color": "#dfe1e2",
-        "line-dasharray": [5, 3]
+        "line-dasharray": [
+          5,
+          3
+        ]
       }
     },
     {
@@ -2313,19 +3971,40 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Boundary line",
-      "filter": ["all", ["==", "_symbol", 2], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          2
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 9,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#dfe1e2",
-        "line-dasharray": [6, 4],
+        "line-dasharray": [
+          6,
+          4
+        ],
         "line-width": {
           "base": 1.2,
           "stops": [
-            [8, 0.5],
-            [14, 1]
+            [
+              8,
+              0.5
+            ],
+            [
+              14,
+              1
+            ]
           ]
         }
       }
@@ -2335,7 +4014,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Boundary line",
-      "filter": ["all", ["==", "_symbol", 1], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          1
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 7,
       "layout": {
         "line-cap": "round",
@@ -2343,12 +4034,21 @@
       },
       "paint": {
         "line-color": "#e2e5e2",
-        "line-dasharray": [7, 5.3],
+        "line-dasharray": [
+          7,
+          5.3
+        ],
         "line-width": {
           "base": 1,
           "stops": [
-            [7, 0.3],
-            [14, 1.3]
+            [
+              7,
+              0.3
+            ],
+            [
+              14,
+              1.3
+            ]
           ]
         }
       }
@@ -2358,7 +4058,19 @@
       "type": "line",
       "source": "esri",
       "source-layer": "Boundary line",
-      "filter": ["all", ["==", "_symbol", 0], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_symbol",
+          0
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 5,
       "layout": {
         "line-cap": "round",
@@ -2367,12 +4079,21 @@
       },
       "paint": {
         "line-color": "#dfe1e2",
-        "line-dasharray": [7, 5.3],
+        "line-dasharray": [
+          7,
+          5.3
+        ],
         "line-width": {
           "base": 1.2,
           "stops": [
-            [5, 0.7],
-            [14, 1.3]
+            [
+              5,
+              0.7
+            ],
+            [
+              14,
+              1.3
+            ]
           ]
         }
       }
@@ -2382,15 +4103,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water point",
-      "filter": ["==", "_label_class", 0],
+      "filter": [
+        "==",
+        "_label_class",
+        0
+      ],
       "minzoom": 9,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": {
           "stops": [
-            [9, 8.5],
-            [15, 15.5]
+            [
+              9,
+              8.5
+            ],
+            [
+              15,
+              15.5
+            ]
           ]
         },
         "text-letter-spacing": 0.3,
@@ -2411,15 +4144,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water point",
-      "filter": ["==", "_label_class", 7],
+      "filter": [
+        "==",
+        "_label_class",
+        7
+      ],
       "minzoom": 9,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": {
           "stops": [
-            [9, 8.5],
-            [15, 10]
+            [
+              9,
+              8.5
+            ],
+            [
+              15,
+              10
+            ]
           ]
         },
         "text-letter-spacing": 0.1,
@@ -2439,15 +4184,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water point",
-      "filter": ["==", "_label_class", 5],
+      "filter": [
+        "==",
+        "_label_class",
+        5
+      ],
       "minzoom": 9,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": {
           "stops": [
-            [9, 8.5],
-            [15, 10]
+            [
+              9,
+              8.5
+            ],
+            [
+              15,
+              10
+            ]
           ]
         },
         "text-letter-spacing": 0.1,
@@ -2467,15 +4224,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water point",
-      "filter": ["==", "_label_class", 6],
+      "filter": [
+        "==",
+        "_label_class",
+        6
+      ],
       "minzoom": 9,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": {
           "stops": [
-            [9, 8.5],
-            [15, 10]
+            [
+              9,
+              8.5
+            ],
+            [
+              15,
+              10
+            ]
           ]
         },
         "text-letter-spacing": 0.1,
@@ -2495,15 +4264,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water point",
-      "filter": ["==", "_label_class", 4],
+      "filter": [
+        "==",
+        "_label_class",
+        4
+      ],
       "minzoom": 9,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": {
           "stops": [
-            [9, 8.5],
-            [15, 10]
+            [
+              9,
+              8.5
+            ],
+            [
+              15,
+              10
+            ]
           ]
         },
         "text-letter-spacing": 0.13,
@@ -2523,15 +4304,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water point",
-      "filter": ["==", "_label_class", 3],
+      "filter": [
+        "==",
+        "_label_class",
+        3
+      ],
       "minzoom": 9,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": {
           "stops": [
-            [9, 8.5],
-            [15, 10]
+            [
+              9,
+              8.5
+            ],
+            [
+              15,
+              10
+            ]
           ]
         },
         "text-letter-spacing": 0.1,
@@ -2551,15 +4344,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water point",
-      "filter": ["==", "_label_class", 2],
+      "filter": [
+        "==",
+        "_label_class",
+        2
+      ],
       "minzoom": 9,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": {
           "stops": [
-            [9, 8.5],
-            [15, 10]
+            [
+              9,
+              8.5
+            ],
+            [
+              15,
+              10
+            ]
           ]
         },
         "text-letter-spacing": 0.1,
@@ -2579,15 +4384,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water point",
-      "filter": ["==", "_label_class", 1],
+      "filter": [
+        "==",
+        "_label_class",
+        1
+      ],
       "minzoom": 9,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": {
           "stops": [
-            [9, 8.5],
-            [15, 10]
+            [
+              9,
+              8.5
+            ],
+            [
+              15,
+              10
+            ]
           ]
         },
         "text-letter-spacing": 0.1,
@@ -2611,14 +4428,19 @@
       "layout": {
         "symbol-placement": "line",
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": 9,
         "text-letter-spacing": 0.07,
         "text-max-width": 6,
         "text-max-angle": 18,
         "text-field": "{_name_global}",
         "text-padding": 1,
-        "text-offset": [0, -0.5],
+        "text-offset": [
+          0,
+          -0.5
+        ],
         "symbol-spacing": 800
       },
       "paint": {
@@ -2635,7 +4457,9 @@
       "source-layer": "Marine park/label",
       "minzoom": 16,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -2653,10 +4477,16 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water area/label",
-      "filter": ["==", "_label_class", 8],
+      "filter": [
+        "==",
+        "_label_class",
+        8
+      ],
       "minzoom": 11,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.08,
         "text-max-width": 4,
@@ -2676,10 +4506,16 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water area/label",
-      "filter": ["==", "_label_class", 9],
+      "filter": [
+        "==",
+        "_label_class",
+        9
+      ],
       "minzoom": 11,
       "layout": {
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.08,
         "text-max-width": 4,
@@ -2699,12 +4535,18 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water area/label",
-      "filter": ["==", "_label_class", 2],
+      "filter": [
+        "==",
+        "_label_class",
+        2
+      ],
       "minzoom": 11,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1000,
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.13,
         "text-field": "{_name_global}",
@@ -2724,12 +4566,18 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water area/label",
-      "filter": ["==", "_label_class", 7],
+      "filter": [
+        "==",
+        "_label_class",
+        7
+      ],
       "minzoom": 11,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1000,
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.13,
         "text-field": "{_name_global}",
@@ -2749,12 +4597,18 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water area/label",
-      "filter": ["==", "_label_class", 4],
+      "filter": [
+        "==",
+        "_label_class",
+        4
+      ],
       "minzoom": 11,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1000,
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": 10,
         "text-letter-spacing": 0.13,
         "text-field": "{_name_global}",
@@ -2774,10 +4628,16 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water area/label",
-      "filter": ["==", "_label_class", 6],
+      "filter": [
+        "==",
+        "_label_class",
+        6
+      ],
       "minzoom": 11,
       "layout": {
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.13,
         "text-max-width": 4,
@@ -2797,10 +4657,16 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water area/label",
-      "filter": ["==", "_label_class", 3],
+      "filter": [
+        "==",
+        "_label_class",
+        3
+      ],
       "minzoom": 11,
       "layout": {
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": 10,
         "text-letter-spacing": 0.13,
         "text-line-height": 1.15,
@@ -2821,10 +4687,16 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water area/label",
-      "filter": ["==", "_label_class", 1],
+      "filter": [
+        "==",
+        "_label_class",
+        1
+      ],
       "minzoom": 11,
       "layout": {
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": 11,
         "text-letter-spacing": 0.13,
         "text-line-height": 1.15,
@@ -2845,7 +4717,11 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water area/label",
-      "filter": ["==", "_label_class", 0],
+      "filter": [
+        "==",
+        "_label_class",
+        0
+      ],
       "minzoom": 11,
       "layout": {
         "text-size": 9.5,
@@ -2854,7 +4730,9 @@
         "text-field": "{_name_global}",
         "text-padding": 15,
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Italic"]
+        "text-font": [
+          "Ubuntu Italic"
+        ]
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -2868,7 +4746,11 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water area/label",
-      "filter": ["==", "_label_class", 5],
+      "filter": [
+        "==",
+        "_label_class",
+        5
+      ],
       "minzoom": 11,
       "layout": {
         "text-size": 10,
@@ -2877,7 +4759,9 @@
         "text-field": "{_name_global}",
         "text-padding": 15,
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Italic"]
+        "text-font": [
+          "Ubuntu Italic"
+        ]
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -2891,13 +4775,19 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water area large scale/label",
-      "filter": ["==", "_label_class", 1],
+      "filter": [
+        "==",
+        "_label_class",
+        1
+      ],
       "minzoom": 7,
       "maxzoom": 11,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1000,
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": 9,
         "text-letter-spacing": 0.1,
         "text-field": "{_name}",
@@ -2917,11 +4807,17 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Water area large scale/label",
-      "filter": ["==", "_label_class", 0],
+      "filter": [
+        "==",
+        "_label_class",
+        0
+      ],
       "minzoom": 7,
       "maxzoom": 11,
       "layout": {
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.1,
         "text-max-width": 4,
@@ -2949,7 +4845,9 @@
         "text-padding": 15,
         "symbol-avoid-edges": true,
         "text-letter-spacing": 0.08,
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": 9
       },
       "paint": {
@@ -2967,7 +4865,9 @@
       "minzoom": 1,
       "maxzoom": 5,
       "layout": {
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": 9,
         "text-letter-spacing": 0.08,
         "text-max-width": 4,
@@ -2989,7 +4889,9 @@
       "source-layer": "Marine area/label",
       "minzoom": 11,
       "layout": {
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": 10,
         "text-letter-spacing": 0.13,
         "text-max-width": 4,
@@ -3009,11 +4911,17 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Marine waterbody/label",
-      "filter": ["==", "_label_class", 4],
+      "filter": [
+        "==",
+        "_label_class",
+        4
+      ],
       "minzoom": 4,
       "maxzoom": 10,
       "layout": {
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-letter-spacing": 0.12,
         "text-max-width": 4,
         "text-field": "{_name}",
@@ -3021,8 +4929,14 @@
         "symbol-avoid-edges": true,
         "text-size": {
           "stops": [
-            [1, 9],
-            [6, 11]
+            [
+              1,
+              9
+            ],
+            [
+              6,
+              11
+            ]
           ]
         }
       },
@@ -3038,11 +4952,17 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Marine waterbody/label",
-      "filter": ["==", "_label_class", 3],
+      "filter": [
+        "==",
+        "_label_class",
+        3
+      ],
       "minzoom": 4,
       "maxzoom": 10,
       "layout": {
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-letter-spacing": 0.15,
         "text-max-width": 4,
         "text-field": "{_name}",
@@ -3050,8 +4970,14 @@
         "symbol-avoid-edges": true,
         "text-size": {
           "stops": [
-            [1, 9],
-            [6, 11]
+            [
+              1,
+              9
+            ],
+            [
+              6,
+              11
+            ]
           ]
         }
       },
@@ -3067,11 +4993,17 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Marine waterbody/label",
-      "filter": ["==", "_label_class", 2],
+      "filter": [
+        "==",
+        "_label_class",
+        2
+      ],
       "minzoom": 4,
       "maxzoom": 10,
       "layout": {
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-letter-spacing": 0.18,
         "text-line-height": 1.5,
         "text-max-width": 4,
@@ -3080,8 +5012,14 @@
         "symbol-avoid-edges": true,
         "text-size": {
           "stops": [
-            [1, 9],
-            [6, 12]
+            [
+              1,
+              9
+            ],
+            [
+              6,
+              12
+            ]
           ]
         }
       },
@@ -3097,11 +5035,17 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Marine waterbody/label",
-      "filter": ["==", "_label_class", 1],
+      "filter": [
+        "==",
+        "_label_class",
+        1
+      ],
       "minzoom": 3,
       "maxzoom": 10,
       "layout": {
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-letter-spacing": 0.2,
         "text-line-height": 1.5,
         "text-max-width": 4,
@@ -3110,8 +5054,14 @@
         "symbol-avoid-edges": true,
         "text-size": {
           "stops": [
-            [1, 10],
-            [6, 13]
+            [
+              1,
+              10
+            ],
+            [
+              6,
+              13
+            ]
           ]
         }
       },
@@ -3127,11 +5077,17 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Marine waterbody/label",
-      "filter": ["==", "_label_class", 0],
+      "filter": [
+        "==",
+        "_label_class",
+        0
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-letter-spacing": 0.3,
         "text-line-height": 1.6,
         "text-max-width": 4,
@@ -3140,8 +5096,14 @@
         "symbol-avoid-edges": true,
         "text-size": {
           "stops": [
-            [1, 11],
-            [4, 14]
+            [
+              1,
+              11
+            ],
+            [
+              4,
+              14
+            ]
           ]
         }
       },
@@ -3157,18 +5119,35 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Ferry/label",
-      "filter": ["all", ["==", "_label_class", 1], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_label_class",
+          1
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 16,
       "layout": {
         "symbol-placement": "line",
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 8.5,
         "text-letter-spacing": 0.1,
         "text-max-width": 6,
         "text-field": "{_name_global}",
         "text-padding": 5,
-        "text-offset": [0, -0.6],
+        "text-offset": [
+          0,
+          -0.6
+        ],
         "symbol-spacing": 1000
       },
       "paint": {
@@ -3186,13 +5165,18 @@
       "layout": {
         "symbol-placement": "line",
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 8.5,
         "text-letter-spacing": 0.1,
         "text-max-width": 6,
         "text-field": "{_name_global}",
         "text-padding": 5,
-        "text-offset": [0, -0.6],
+        "text-offset": [
+          0,
+          -0.6
+        ],
         "symbol-spacing": 1000
       },
       "paint": {
@@ -3206,13 +5190,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Road tunnel/label",
-      "filter": ["all", ["==", "_label_class", 6], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_label_class",
+          6
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 15,
       "layout": {
         "symbol-placement": "line",
         "symbol-avoid-edges": true,
         "symbol-spacing": 400,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.3,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -3231,13 +5229,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Road tunnel/label",
-      "filter": ["all", ["==", "_label_class", 5], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_label_class",
+          5
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 15,
       "layout": {
         "symbol-placement": "line",
         "symbol-avoid-edges": true,
         "symbol-spacing": 400,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.09,
         "text-max-width": 6,
@@ -3256,13 +5268,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Road tunnel/label",
-      "filter": ["all", ["==", "_label_class", 4], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_label_class",
+          4
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 14,
       "layout": {
         "symbol-placement": "line",
         "symbol-avoid-edges": true,
         "symbol-spacing": 400,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.09,
         "text-max-width": 6,
@@ -3281,13 +5307,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Road tunnel/label",
-      "filter": ["all", ["==", "_label_class", 3], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_label_class",
+          3
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 14,
       "layout": {
         "symbol-placement": "line",
         "symbol-avoid-edges": true,
         "symbol-spacing": 400,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 10.5,
         "text-letter-spacing": 0.09,
         "text-max-width": 6,
@@ -3306,13 +5346,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Road tunnel/label",
-      "filter": ["all", ["==", "_label_class", 2], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_label_class",
+          2
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 14,
       "layout": {
         "symbol-placement": "line",
         "symbol-avoid-edges": true,
         "symbol-spacing": 400,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 10.5,
         "text-letter-spacing": 0.09,
         "text-max-width": 6,
@@ -3331,13 +5385,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Road tunnel/label",
-      "filter": ["all", ["==", "_label_class", 7], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_label_class",
+          7
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 13,
       "layout": {
         "symbol-placement": "line",
         "symbol-avoid-edges": true,
         "symbol-spacing": 400,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 10.5,
         "text-letter-spacing": 0.09,
         "text-max-width": 6,
@@ -3356,13 +5424,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Road tunnel/label",
-      "filter": ["all", ["==", "_label_class", 1], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_label_class",
+          1
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 13,
       "layout": {
         "symbol-placement": "line",
         "symbol-avoid-edges": true,
         "symbol-spacing": 400,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 10.5,
         "text-letter-spacing": 0.09,
         "text-max-width": 6,
@@ -3381,13 +5463,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Road tunnel/label",
-      "filter": ["all", ["==", "_label_class", 0], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_label_class",
+          0
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 13,
       "layout": {
         "symbol-placement": "line",
         "symbol-avoid-edges": true,
         "symbol-spacing": 400,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 10.5,
         "text-letter-spacing": 0.09,
         "text-max-width": 6,
@@ -3408,7 +5504,9 @@
       "source-layer": "Building/label",
       "minzoom": 17,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.08,
         "text-max-width": 6,
@@ -3433,7 +5531,9 @@
         "symbol-placement": "line",
         "symbol-avoid-edges": true,
         "symbol-spacing": 400,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.3,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -3451,13 +5551,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Road/label",
-      "filter": ["all", ["==", "_label_class", 6], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_label_class",
+          6
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 15,
       "layout": {
         "symbol-placement": "line",
         "symbol-avoid-edges": true,
         "symbol-spacing": 400,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.3,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -3475,13 +5589,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Road/label",
-      "filter": ["all", ["==", "_label_class", 5], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_label_class",
+          5
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 15,
       "layout": {
         "symbol-placement": "line",
         "symbol-avoid-edges": true,
         "symbol-spacing": 400,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.09,
         "text-max-width": 6,
@@ -3499,13 +5627,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Road/label",
-      "filter": ["all", ["==", "_label_class", 4], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_label_class",
+          4
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 14,
       "layout": {
         "symbol-placement": "line",
         "symbol-avoid-edges": true,
         "symbol-spacing": 400,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 10,
         "text-letter-spacing": 0.09,
         "text-max-width": 6,
@@ -3522,13 +5664,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Road/label",
-      "filter": ["all", ["==", "_label_class", 3], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_label_class",
+          3
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 14,
       "layout": {
         "symbol-placement": "line",
         "symbol-avoid-edges": true,
         "symbol-spacing": 400,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 10.5,
         "text-letter-spacing": 0.09,
         "text-max-width": 6,
@@ -3545,13 +5701,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Road/label",
-      "filter": ["all", ["==", "_label_class", 2], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_label_class",
+          2
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 14,
       "layout": {
         "symbol-placement": "line",
         "symbol-avoid-edges": true,
         "symbol-spacing": 400,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 10.5,
         "text-letter-spacing": 0.09,
         "text-max-width": 6,
@@ -3568,13 +5738,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Road/label",
-      "filter": ["all", ["==", "_label_class", 75], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_label_class",
+          75
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 13,
       "layout": {
         "symbol-placement": "line",
         "symbol-avoid-edges": true,
         "symbol-spacing": 400,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 10.5,
         "text-letter-spacing": 0.09,
         "text-max-width": 6,
@@ -3592,13 +5776,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Road/label",
-      "filter": ["all", ["==", "_label_class", 1], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_label_class",
+          1
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 13,
       "layout": {
         "symbol-placement": "line",
         "symbol-avoid-edges": true,
         "symbol-spacing": 400,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 10.5,
         "text-letter-spacing": 0.09,
         "text-max-width": 6,
@@ -3615,13 +5813,27 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Road/label",
-      "filter": ["all", ["==", "_label_class", 0], ["!in", "Viz", 3]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_label_class",
+          0
+        ],
+        [
+          "!in",
+          "Viz",
+          3
+        ]
+      ],
       "minzoom": 13,
       "layout": {
         "symbol-placement": "line",
         "symbol-avoid-edges": true,
         "symbol-spacing": 400,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 10.5,
         "text-letter-spacing": 0.09,
         "text-max-width": 6,
@@ -3678,7 +5890,11 @@
           72,
           74
         ],
-        ["!in", "Viz", 3]
+        [
+          "!in",
+          "Viz",
+          3
+        ]
       ],
       "minzoom": 14,
       "layout": {
@@ -3686,14 +5902,19 @@
         "symbol-spacing": 800,
         "text-max-angle": 25,
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 8.5,
         "text-max-width": 6,
         "text-field": "{_name}",
         "icon-image": "Road/Rectangle white black (Alt)/{_len}",
         "icon-rotation-alignment": "viewport",
         "text-rotation-alignment": "viewport",
-        "text-offset": [0, 0.2],
+        "text-offset": [
+          0,
+          0.2
+        ],
         "text-padding": 30
       },
       "paint": {
@@ -3746,7 +5967,11 @@
           71,
           73
         ],
-        ["!in", "Viz", 3]
+        [
+          "!in",
+          "Viz",
+          3
+        ]
       ],
       "minzoom": 14,
       "layout": {
@@ -3754,14 +5979,19 @@
         "symbol-spacing": 800,
         "text-max-angle": 25,
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 8.5,
         "text-max-width": 6,
         "text-field": "{_name}",
         "icon-image": "Road/Rectangle white black/{_len}",
         "icon-rotation-alignment": "viewport",
         "text-rotation-alignment": "viewport",
-        "text-offset": [0, 0.2],
+        "text-offset": [
+          0,
+          0.2
+        ],
         "text-padding": 30
       },
       "paint": {
@@ -3776,7 +6006,9 @@
       "source-layer": "Cemetery/label",
       "minzoom": 16,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -3798,7 +6030,9 @@
       "source-layer": "Freight/label",
       "minzoom": 17,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -3820,7 +6054,9 @@
       "source-layer": "Water and wastewater/label",
       "minzoom": 17,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -3842,7 +6078,9 @@
       "source-layer": "Port/label",
       "minzoom": 17,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -3864,7 +6102,9 @@
       "source-layer": "Industry/label",
       "minzoom": 17,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -3886,7 +6126,9 @@
       "source-layer": "Government/label",
       "minzoom": 17,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -3907,7 +6149,9 @@
       "source-layer": "Finance/label",
       "minzoom": 17,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -3929,7 +6173,9 @@
       "source-layer": "Emergency/label",
       "minzoom": 17,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -3951,7 +6197,9 @@
       "source-layer": "Indigenous/label",
       "minzoom": 17,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -3973,7 +6221,9 @@
       "source-layer": "Military/label",
       "minzoom": 17,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -3995,7 +6245,9 @@
       "source-layer": "Transportation/label",
       "minzoom": 17,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -4017,7 +6269,9 @@
       "source-layer": "Pedestrian/label",
       "minzoom": 17,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -4038,7 +6292,9 @@
       "source-layer": "Beach/label",
       "minzoom": 17,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.08,
         "text-max-width": 6,
@@ -4060,7 +6316,9 @@
       "source-layer": "Golf course/label",
       "minzoom": 17,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -4082,7 +6340,9 @@
       "source-layer": "Zoo/label",
       "minzoom": 15,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -4104,7 +6364,9 @@
       "source-layer": "Retail/label",
       "minzoom": 17,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -4126,7 +6388,9 @@
       "source-layer": "Landmark/label",
       "minzoom": 17,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -4148,7 +6412,9 @@
       "source-layer": "Openspace or forest/label",
       "minzoom": 14,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -4169,7 +6435,9 @@
       "source-layer": "Park or farming/label",
       "minzoom": 14,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -4188,11 +6456,17 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Point of interest",
-      "filter": ["==", "_label_class", 1],
+      "filter": [
+        "==",
+        "_label_class",
+        1
+      ],
       "minzoom": 14,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.08,
         "text-max-width": 6,
@@ -4213,7 +6487,9 @@
       "source-layer": "Education/label",
       "minzoom": 17,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -4235,7 +6511,9 @@
       "source-layer": "Medical/label",
       "minzoom": 17,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9.5,
         "text-letter-spacing": 0.05,
         "text-max-width": 6,
@@ -4257,11 +6535,19 @@
       "source-layer": "Admin1 forest or park/label",
       "minzoom": 9,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": {
           "stops": [
-            [9, 8.5],
-            [12, 9.5]
+            [
+              9,
+              8.5
+            ],
+            [
+              12,
+              9.5
+            ]
           ]
         },
         "text-letter-spacing": 0.05,
@@ -4283,11 +6569,19 @@
       "source-layer": "Admin0 forest or park/label",
       "minzoom": 9,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": {
           "stops": [
-            [9, 8.5],
-            [12, 9.5]
+            [
+              9,
+              8.5
+            ],
+            [
+              12,
+              9.5
+            ]
           ]
         },
         "text-letter-spacing": 0.05,
@@ -4310,11 +6604,19 @@
       "source-layer": "Airport/label",
       "minzoom": 9,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": {
           "stops": [
-            [9, 8.5],
-            [12, 9.5]
+            [
+              9,
+              8.5
+            ],
+            [
+              12,
+              9.5
+            ]
           ]
         },
         "text-letter-spacing": 0.05,
@@ -4335,12 +6637,18 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Admin2 area/label",
-      "filter": ["==", "_label_class", 1],
+      "filter": [
+        "==",
+        "_label_class",
+        1
+      ],
       "minzoom": 9,
       "maxzoom": 11,
       "layout": {
         "text-letter-spacing": 0.2,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9,
         "text-max-width": 6,
         "text-field": "{_name}",
@@ -4360,12 +6668,18 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Admin2 area/label",
-      "filter": ["==", "_label_class", 0],
+      "filter": [
+        "==",
+        "_label_class",
+        0
+      ],
       "minzoom": 9,
       "maxzoom": 11,
       "layout": {
         "text-letter-spacing": 0.2,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 10,
         "text-max-width": 6,
         "text-field": "{_name}",
@@ -4385,11 +6699,17 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Admin1 area/label",
-      "filter": ["==", "_label_class", 5],
+      "filter": [
+        "==",
+        "_label_class",
+        5
+      ],
       "minzoom": 5,
       "maxzoom": 10,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-padding": 1,
@@ -4397,16 +6717,34 @@
         "text-transform": "uppercase",
         "text-size": {
           "stops": [
-            [4, 9],
-            [5, 9],
-            [6, 9.5],
-            [9, 10]
+            [
+              4,
+              9
+            ],
+            [
+              5,
+              9
+            ],
+            [
+              6,
+              9.5
+            ],
+            [
+              9,
+              10
+            ]
           ]
         },
         "text-letter-spacing": {
           "stops": [
-            [4, 0.1],
-            [8, 0.18]
+            [
+              4,
+              0.1
+            ],
+            [
+              8,
+              0.18
+            ]
           ]
         }
       },
@@ -4422,11 +6760,17 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Admin1 area/label",
-      "filter": ["==", "_label_class", 4],
+      "filter": [
+        "==",
+        "_label_class",
+        4
+      ],
       "minzoom": 5,
       "maxzoom": 10,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-padding": 1,
@@ -4434,16 +6778,34 @@
         "text-transform": "uppercase",
         "text-size": {
           "stops": [
-            [4, 9],
-            [5, 9],
-            [6, 9.5],
-            [9, 11.5]
+            [
+              4,
+              9
+            ],
+            [
+              5,
+              9
+            ],
+            [
+              6,
+              9.5
+            ],
+            [
+              9,
+              11.5
+            ]
           ]
         },
         "text-letter-spacing": {
           "stops": [
-            [4, 0.1],
-            [8, 0.18]
+            [
+              4,
+              0.1
+            ],
+            [
+              8,
+              0.18
+            ]
           ]
         }
       },
@@ -4459,11 +6821,17 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Admin1 area/label",
-      "filter": ["==", "_label_class", 3],
+      "filter": [
+        "==",
+        "_label_class",
+        3
+      ],
       "minzoom": 5,
       "maxzoom": 10,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-padding": 1,
@@ -4471,16 +6839,34 @@
         "text-transform": "uppercase",
         "text-size": {
           "stops": [
-            [4, 10],
-            [5, 10],
-            [6, 10.5],
-            [9, 12]
+            [
+              4,
+              10
+            ],
+            [
+              5,
+              10
+            ],
+            [
+              6,
+              10.5
+            ],
+            [
+              9,
+              12
+            ]
           ]
         },
         "text-letter-spacing": {
           "stops": [
-            [4, 0.1],
-            [8, 0.18]
+            [
+              4,
+              0.1
+            ],
+            [
+              8,
+              0.18
+            ]
           ]
         }
       },
@@ -4496,11 +6882,17 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Admin1 area/label",
-      "filter": ["==", "_label_class", 2],
+      "filter": [
+        "==",
+        "_label_class",
+        2
+      ],
       "minzoom": 5,
       "maxzoom": 10,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-padding": 1,
@@ -4508,16 +6900,34 @@
         "text-transform": "uppercase",
         "text-size": {
           "stops": [
-            [4, 10],
-            [5, 10.5],
-            [6, 11],
-            [9, 15]
+            [
+              4,
+              10
+            ],
+            [
+              5,
+              10.5
+            ],
+            [
+              6,
+              11
+            ],
+            [
+              9,
+              15
+            ]
           ]
         },
         "text-letter-spacing": {
           "stops": [
-            [4, 0.1],
-            [8, 0.2]
+            [
+              4,
+              0.1
+            ],
+            [
+              8,
+              0.2
+            ]
           ]
         }
       },
@@ -4533,11 +6943,17 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Admin1 area/label",
-      "filter": ["==", "_label_class", 1],
+      "filter": [
+        "==",
+        "_label_class",
+        1
+      ],
       "minzoom": 5,
       "maxzoom": 10,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-padding": 1,
@@ -4545,16 +6961,34 @@
         "text-transform": "uppercase",
         "text-size": {
           "stops": [
-            [4, 10.5],
-            [5, 11],
-            [6, 11.5],
-            [9, 17]
+            [
+              4,
+              10.5
+            ],
+            [
+              5,
+              11
+            ],
+            [
+              6,
+              11.5
+            ],
+            [
+              9,
+              17
+            ]
           ]
         },
         "text-letter-spacing": {
           "stops": [
-            [4, 0.13],
-            [8, 0.3]
+            [
+              4,
+              0.13
+            ],
+            [
+              8,
+              0.3
+            ]
           ]
         }
       },
@@ -4570,11 +7004,17 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Admin1 area/label",
-      "filter": ["==", "_label_class", 0],
+      "filter": [
+        "==",
+        "_label_class",
+        0
+      ],
       "minzoom": 5,
       "maxzoom": 10,
       "layout": {
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-padding": 1,
@@ -4582,16 +7022,34 @@
         "text-transform": "uppercase",
         "text-size": {
           "stops": [
-            [4, 11],
-            [5, 11.5],
-            [6, 12],
-            [9, 17.5]
+            [
+              4,
+              11
+            ],
+            [
+              5,
+              11.5
+            ],
+            [
+              6,
+              12
+            ],
+            [
+              9,
+              17.5
+            ]
           ]
         },
         "text-letter-spacing": {
           "stops": [
-            [4, 0.13],
-            [8, 0.4]
+            [
+              4,
+              0.13
+            ],
+            [
+              8,
+              0.4
+            ]
           ]
         }
       },
@@ -4607,11 +7065,17 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Point of interest",
-      "filter": ["==", "_label_class", 0],
+      "filter": [
+        "==",
+        "_label_class",
+        0
+      ],
       "minzoom": 17,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9,
         "text-letter-spacing": 0.08,
         "text-max-width": 6,
@@ -4630,17 +7094,26 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Point of interest",
-      "filter": ["==", "_symbol", 2],
+      "filter": [
+        "==",
+        "_symbol",
+        2
+      ],
       "minzoom": 17,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9,
         "text-letter-spacing": 0.04,
         "text-max-width": 6,
         "text-field": "{_name_global}",
         "text-padding": 5,
-        "text-offset": [0, -0.9]
+        "text-offset": [
+          0,
+          -0.9
+        ]
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -4654,17 +7127,26 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Point of interest",
-      "filter": ["==", "_symbol", 3],
+      "filter": [
+        "==",
+        "_symbol",
+        3
+      ],
       "minzoom": 17,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-size": 9,
         "text-letter-spacing": 0.04,
         "text-max-width": 6,
         "text-field": "{_name_global}",
         "text-padding": 5,
-        "text-offset": [0, -0.9]
+        "text-offset": [
+          0,
+          -0.9
+        ]
       },
       "paint": {
         "text-color": "#c3c3c3",
@@ -4682,11 +7164,19 @@
       "maxzoom": 17,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Light"],
+        "text-font": [
+          "Ubuntu Light"
+        ],
         "text-size": {
           "stops": [
-            [10, 10],
-            [16, 13]
+            [
+              10,
+              10
+            ],
+            [
+              16,
+              13
+            ]
           ]
         },
         "text-letter-spacing": 0.08,
@@ -4707,16 +7197,28 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City large scale",
-      "filter": ["==", "_label_class", 5],
+      "filter": [
+        "==",
+        "_label_class",
+        5
+      ],
       "minzoom": 10,
       "maxzoom": 17,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Light"],
+        "text-font": [
+          "Ubuntu Light"
+        ],
         "text-size": {
           "stops": [
-            [10, 10],
-            [16, 13]
+            [
+              10,
+              10
+            ],
+            [
+              16,
+              13
+            ]
           ]
         },
         "text-letter-spacing": 0.08,
@@ -4737,16 +7239,28 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City large scale",
-      "filter": ["==", "_label_class", 4],
+      "filter": [
+        "==",
+        "_label_class",
+        4
+      ],
       "minzoom": 10,
       "maxzoom": 17,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Light"],
+        "text-font": [
+          "Ubuntu Light"
+        ],
         "text-size": {
           "stops": [
-            [10, 10],
-            [16, 15]
+            [
+              10,
+              10
+            ],
+            [
+              16,
+              15
+            ]
           ]
         },
         "text-letter-spacing": 0.09,
@@ -4767,20 +7281,32 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City large scale",
-      "filter": ["==", "_label_class", 3],
+      "filter": [
+        "==",
+        "_label_class",
+        3
+      ],
       "minzoom": 10,
       "maxzoom": 17,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Light"],
+        "text-font": [
+          "Ubuntu Light"
+        ],
         "text-letter-spacing": 0.1,
         "text-max-width": 6,
         "text-field": "{_name_global}",
         "text-padding": 1,
         "text-size": {
           "stops": [
-            [10, 11],
-            [16, 16]
+            [
+              10,
+              11
+            ],
+            [
+              16,
+              16
+            ]
           ]
         },
         "visibility": "none"
@@ -4797,20 +7323,32 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City large scale",
-      "filter": ["==", "_label_class", 2],
+      "filter": [
+        "==",
+        "_label_class",
+        2
+      ],
       "minzoom": 10,
       "maxzoom": 17,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-letter-spacing": 0.1,
         "text-max-width": 6,
         "text-field": "{_name_global}",
         "text-padding": 1,
         "text-size": {
           "stops": [
-            [10, 11],
-            [16, 18.5]
+            [
+              10,
+              11
+            ],
+            [
+              16,
+              18.5
+            ]
           ]
         },
         "visibility": "none"
@@ -4827,20 +7365,32 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City large scale",
-      "filter": ["==", "_label_class", 1],
+      "filter": [
+        "==",
+        "_label_class",
+        1
+      ],
       "minzoom": 10,
       "maxzoom": 17,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-letter-spacing": 0.1,
         "text-max-width": 6,
         "text-field": "{_name_global}",
         "text-padding": 1,
         "text-size": {
           "stops": [
-            [10, 14],
-            [16, 22]
+            [
+              10,
+              14
+            ],
+            [
+              16,
+              22
+            ]
           ]
         },
         "visibility": "none"
@@ -4857,20 +7407,32 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City large scale",
-      "filter": ["==", "_label_class", 0],
+      "filter": [
+        "==",
+        "_label_class",
+        0
+      ],
       "minzoom": 10,
       "maxzoom": 17,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-letter-spacing": 0.1,
         "text-max-width": 6,
         "text-field": "{_name_global}",
         "text-padding": 1,
         "text-size": {
           "stops": [
-            [10, 15],
-            [16, 25]
+            [
+              10,
+              15
+            ],
+            [
+              16,
+              25
+            ]
           ]
         },
         "visibility": "none"
@@ -4887,12 +7449,18 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City small scale",
-      "filter": ["==", "_symbol", 17],
+      "filter": [
+        "==",
+        "_symbol",
+        17
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Light"],
+        "text-font": [
+          "Ubuntu Light"
+        ],
         "text-size": 10,
         "text-max-width": 6,
         "text-field": "{_name}",
@@ -4912,12 +7480,18 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City small scale",
-      "filter": ["==", "_symbol", 15],
+      "filter": [
+        "==",
+        "_symbol",
+        15
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Light"],
+        "text-font": [
+          "Ubuntu Light"
+        ],
         "text-size": 10,
         "text-max-width": 6,
         "text-field": "{_name}",
@@ -4937,12 +7511,18 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City small scale",
-      "filter": ["==", "_symbol", 12],
+      "filter": [
+        "==",
+        "_symbol",
+        12
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Light"],
+        "text-font": [
+          "Ubuntu Light"
+        ],
         "text-size": 10,
         "text-max-width": 6,
         "text-field": "{_name}",
@@ -4962,12 +7542,18 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City small scale",
-      "filter": ["==", "_symbol", 9],
+      "filter": [
+        "==",
+        "_symbol",
+        9
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Light"],
+        "text-font": [
+          "Ubuntu Light"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-padding": 1,
@@ -4987,12 +7573,18 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City small scale",
-      "filter": ["==", "_symbol", 18],
+      "filter": [
+        "==",
+        "_symbol",
+        18
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Light"],
+        "text-font": [
+          "Ubuntu Light"
+        ],
         "text-size": 10,
         "text-max-width": 6,
         "text-field": "{_name}",
@@ -5012,12 +7604,18 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City small scale",
-      "filter": ["==", "_symbol", 14],
+      "filter": [
+        "==",
+        "_symbol",
+        14
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Light"],
+        "text-font": [
+          "Ubuntu Light"
+        ],
         "text-size": 10,
         "text-max-width": 6,
         "text-field": "{_name}",
@@ -5037,12 +7635,18 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City small scale",
-      "filter": ["==", "_symbol", 11],
+      "filter": [
+        "==",
+        "_symbol",
+        11
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Light"],
+        "text-font": [
+          "Ubuntu Light"
+        ],
         "text-size": 10,
         "text-max-width": 6,
         "text-field": "{_name}",
@@ -5062,12 +7666,18 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City small scale",
-      "filter": ["==", "_symbol", 8],
+      "filter": [
+        "==",
+        "_symbol",
+        8
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Light"],
+        "text-font": [
+          "Ubuntu Light"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-letter-spacing": 0.05,
@@ -5087,25 +7697,43 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Admin0 point",
-      "filter": ["==", "_label_class", 5],
+      "filter": [
+        "==",
+        "_label_class",
+        5
+      ],
       "minzoom": 5,
       "maxzoom": 10,
       "layout": {
-        "text-font": ["Ubuntu Bold"],
+        "text-font": [
+          "Ubuntu Bold"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-padding": 1,
         "symbol-avoid-edges": true,
         "text-letter-spacing": {
           "stops": [
-            [5, 0.13],
-            [8, 0.5]
+            [
+              5,
+              0.13
+            ],
+            [
+              8,
+              0.5
+            ]
           ]
         },
         "text-size": {
           "stops": [
-            [5, 10],
-            [10, 12.5]
+            [
+              5,
+              10
+            ],
+            [
+              10,
+              12.5
+            ]
           ]
         },
         "text-transform": "uppercase",
@@ -5123,25 +7751,43 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Admin0 point",
-      "filter": ["==", "_label_class", 4],
+      "filter": [
+        "==",
+        "_label_class",
+        4
+      ],
       "minzoom": 4,
       "maxzoom": 10,
       "layout": {
-        "text-font": ["Ubuntu Bold"],
+        "text-font": [
+          "Ubuntu Bold"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-padding": 1,
         "symbol-avoid-edges": true,
         "text-letter-spacing": {
           "stops": [
-            [4, 0.13],
-            [8, 0.5]
+            [
+              4,
+              0.13
+            ],
+            [
+              8,
+              0.5
+            ]
           ]
         },
         "text-size": {
           "stops": [
-            [4, 10],
-            [10, 12.5]
+            [
+              4,
+              10
+            ],
+            [
+              10,
+              12.5
+            ]
           ]
         },
         "text-transform": "uppercase",
@@ -5159,26 +7805,47 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Admin0 point",
-      "filter": ["==", "_label_class", 3],
+      "filter": [
+        "==",
+        "_label_class",
+        3
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
-        "text-font": ["Ubuntu Bold"],
+        "text-font": [
+          "Ubuntu Bold"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-padding": 1,
         "symbol-avoid-edges": true,
         "text-letter-spacing": {
           "stops": [
-            [2, 0.13],
-            [8, 0.5]
+            [
+              2,
+              0.13
+            ],
+            [
+              8,
+              0.5
+            ]
           ]
         },
         "text-size": {
           "stops": [
-            [2, 8],
-            [4, 10],
-            [10, 16]
+            [
+              2,
+              8
+            ],
+            [
+              4,
+              10
+            ],
+            [
+              10,
+              16
+            ]
           ]
         },
         "text-transform": "uppercase",
@@ -5196,26 +7863,47 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Admin0 point",
-      "filter": ["==", "_label_class", 2],
+      "filter": [
+        "==",
+        "_label_class",
+        2
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
-        "text-font": ["Ubuntu Bold"],
+        "text-font": [
+          "Ubuntu Bold"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-padding": 1,
         "symbol-avoid-edges": true,
         "text-letter-spacing": {
           "stops": [
-            [2, 0.13],
-            [8, 0.5]
+            [
+              2,
+              0.13
+            ],
+            [
+              8,
+              0.5
+            ]
           ]
         },
         "text-size": {
           "stops": [
-            [2, 9],
-            [4, 10],
-            [6, 16]
+            [
+              2,
+              9
+            ],
+            [
+              4,
+              10
+            ],
+            [
+              6,
+              16
+            ]
           ]
         },
         "text-transform": "uppercase",
@@ -5233,7 +7921,11 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Admin0 point",
-      "filter": ["==", "_label_class", 1],
+      "filter": [
+        "==",
+        "_label_class",
+        1
+      ],
       "minzoom": 2,
       "maxzoom": 8,
       "layout": {
@@ -5241,19 +7933,36 @@
         "text-field": "{_name}",
         "text-padding": 1,
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Bold"],
+        "text-font": [
+          "Ubuntu Bold"
+        ],
         "text-line-height": 1.5,
         "text-letter-spacing": {
           "stops": [
-            [2, 0.15],
-            [6, 0.5]
+            [
+              2,
+              0.15
+            ],
+            [
+              6,
+              0.5
+            ]
           ]
         },
         "text-size": {
           "stops": [
-            [2, 9],
-            [4, 10],
-            [6, 16]
+            [
+              2,
+              9
+            ],
+            [
+              4,
+              10
+            ],
+            [
+              6,
+              16
+            ]
           ]
         },
         "text-transform": "uppercase",
@@ -5271,21 +7980,36 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City small scale",
-      "filter": ["==", "_symbol", 16],
+      "filter": [
+        "==",
+        "_symbol",
+        16
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-letter-spacing": 0.05,
         "text-padding": 1,
         "text-size": {
           "stops": [
-            [3, 10],
-            [6, 10.5],
-            [8, 13]
+            [
+              3,
+              10
+            ],
+            [
+              6,
+              10.5
+            ],
+            [
+              8,
+              13
+            ]
           ]
         },
         "visibility": "none"
@@ -5302,21 +8026,36 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City small scale",
-      "filter": ["==", "_symbol", 13],
+      "filter": [
+        "==",
+        "_symbol",
+        13
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-letter-spacing": 0.05,
         "text-padding": 1,
         "text-size": {
           "stops": [
-            [3, 10],
-            [6, 10.5],
-            [8, 13]
+            [
+              3,
+              10
+            ],
+            [
+              6,
+              10.5
+            ],
+            [
+              8,
+              13
+            ]
           ]
         },
         "visibility": "none"
@@ -5333,21 +8072,36 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City small scale",
-      "filter": ["==", "_symbol", 10],
+      "filter": [
+        "==",
+        "_symbol",
+        10
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-letter-spacing": 0.05,
         "text-padding": 1,
         "text-size": {
           "stops": [
-            [3, 10],
-            [6, 10.5],
-            [8, 13]
+            [
+              3,
+              10
+            ],
+            [
+              6,
+              10.5
+            ],
+            [
+              8,
+              13
+            ]
           ]
         },
         "visibility": "none"
@@ -5364,21 +8118,36 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City small scale",
-      "filter": ["==", "_symbol", 7],
+      "filter": [
+        "==",
+        "_symbol",
+        7
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-letter-spacing": 0.05,
         "text-padding": 1,
         "text-size": {
           "stops": [
-            [3, 10],
-            [6, 10.5],
-            [8, 13]
+            [
+              3,
+              10
+            ],
+            [
+              6,
+              10.5
+            ],
+            [
+              8,
+              13
+            ]
           ]
         },
         "visibility": "none"
@@ -5395,21 +8164,36 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City small scale",
-      "filter": ["==", "_symbol", 5],
+      "filter": [
+        "==",
+        "_symbol",
+        5
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-letter-spacing": 0.05,
         "text-padding": 1,
         "text-size": {
           "stops": [
-            [3, 10],
-            [6, 11],
-            [8, 14]
+            [
+              3,
+              10
+            ],
+            [
+              6,
+              11
+            ],
+            [
+              8,
+              14
+            ]
           ]
         },
         "visibility": "none"
@@ -5426,21 +8210,36 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City small scale",
-      "filter": ["==", "_symbol", 2],
+      "filter": [
+        "==",
+        "_symbol",
+        2
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-letter-spacing": 0.05,
         "text-padding": 1,
         "text-size": {
           "stops": [
-            [3, 11],
-            [6, 12],
-            [8, 15]
+            [
+              3,
+              11
+            ],
+            [
+              6,
+              12
+            ],
+            [
+              8,
+              15
+            ]
           ]
         },
         "visibility": "none"
@@ -5457,21 +8256,36 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City small scale",
-      "filter": ["==", "_symbol", 6],
+      "filter": [
+        "==",
+        "_symbol",
+        6
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-letter-spacing": 0.05,
         "text-padding": 1,
         "text-size": {
           "stops": [
-            [3, 10],
-            [6, 11],
-            [8, 14]
+            [
+              3,
+              10
+            ],
+            [
+              6,
+              11
+            ],
+            [
+              8,
+              14
+            ]
           ]
         },
         "visibility": "none"
@@ -5488,21 +8302,36 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City small scale",
-      "filter": ["==", "_symbol", 4],
+      "filter": [
+        "==",
+        "_symbol",
+        4
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-letter-spacing": 0.05,
         "text-padding": 1,
         "text-size": {
           "stops": [
-            [3, 10],
-            [6, 11],
-            [8, 14]
+            [
+              3,
+              10
+            ],
+            [
+              6,
+              11
+            ],
+            [
+              8,
+              14
+            ]
           ]
         },
         "visibility": "none"
@@ -5519,21 +8348,36 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City small scale",
-      "filter": ["==", "_symbol", 3],
+      "filter": [
+        "==",
+        "_symbol",
+        3
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-letter-spacing": 0.05,
         "text-padding": 1,
         "text-size": {
           "stops": [
-            [3, 11],
-            [6, 12],
-            [8, 15]
+            [
+              3,
+              11
+            ],
+            [
+              6,
+              12
+            ],
+            [
+              8,
+              15
+            ]
           ]
         },
         "visibility": "none"
@@ -5550,21 +8394,36 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City small scale",
-      "filter": ["==", "_symbol", 1],
+      "filter": [
+        "==",
+        "_symbol",
+        1
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-letter-spacing": 0.05,
         "text-padding": 1,
         "text-size": {
           "stops": [
-            [3, 11],
-            [6, 12],
-            [8, 15]
+            [
+              3,
+              11
+            ],
+            [
+              6,
+              12
+            ],
+            [
+              8,
+              15
+            ]
           ]
         },
         "visibility": "none"
@@ -5581,21 +8440,36 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "City small scale",
-      "filter": ["==", "_symbol", 0],
+      "filter": [
+        "==",
+        "_symbol",
+        0
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Regular"],
+        "text-font": [
+          "Ubuntu Regular"
+        ],
         "text-max-width": 6,
         "text-field": "{_name}",
         "text-letter-spacing": 0.05,
         "text-padding": 1,
         "text-size": {
           "stops": [
-            [3, 11],
-            [6, 12],
-            [8, 15]
+            [
+              3,
+              11
+            ],
+            [
+              6,
+              12
+            ],
+            [
+              8,
+              15
+            ]
           ]
         },
         "visibility": "none"
@@ -5612,7 +8486,11 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Admin0 point",
-      "filter": ["==", "_label_class", 0],
+      "filter": [
+        "==",
+        "_label_class",
+        0
+      ],
       "minzoom": 2,
       "maxzoom": 6,
       "layout": {
@@ -5620,19 +8498,36 @@
         "text-field": "{_name}",
         "text-padding": 1,
         "symbol-avoid-edges": true,
-        "text-font": ["Ubuntu Bold"],
+        "text-font": [
+          "Ubuntu Bold"
+        ],
         "text-line-height": 1.7,
         "text-letter-spacing": {
           "stops": [
-            [2, 0.3],
-            [5, 0.5]
+            [
+              2,
+              0.3
+            ],
+            [
+              5,
+              0.5
+            ]
           ]
         },
         "text-size": {
           "stops": [
-            [2, 12],
-            [4, 15.5],
-            [5, 18]
+            [
+              2,
+              12
+            ],
+            [
+              4,
+              15.5
+            ],
+            [
+              5,
+              18
+            ]
           ]
         },
         "text-transform": "uppercase",
@@ -5650,16 +8545,36 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Disputed label point",
-      "filter": ["all", ["==", "_label_class", 1], ["in", "DisputeID", 0]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_label_class",
+          1
+        ],
+        [
+          "in",
+          "DisputeID",
+          0
+        ]
+      ],
       "minzoom": 6,
       "layout": {
         "icon-image": "Disputed label point",
         "icon-allow-overlap": true,
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": {
           "stops": [
-            [6, 7],
-            [15, 10]
+            [
+              6,
+              7
+            ],
+            [
+              15,
+              10
+            ]
           ]
         },
         "text-letter-spacing": 0.13,
@@ -5679,17 +8594,37 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Disputed label point",
-      "filter": ["all", ["==", "_label_class", 0], ["in", "DisputeID", 1006]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_label_class",
+          0
+        ],
+        [
+          "in",
+          "DisputeID",
+          1006
+        ]
+      ],
       "minzoom": 2,
       "maxzoom": 10,
       "layout": {
         "icon-image": "Disputed label point",
         "icon-allow-overlap": true,
-        "text-font": ["Ubuntu Italic"],
+        "text-font": [
+          "Ubuntu Italic"
+        ],
         "text-size": {
           "stops": [
-            [2, 8],
-            [6, 9.3]
+            [
+              2,
+              8
+            ],
+            [
+              6,
+              9.3
+            ]
           ]
         },
         "text-letter-spacing": 0.1,
@@ -5709,24 +8644,53 @@
       "type": "symbol",
       "source": "esri",
       "source-layer": "Disputed label point",
-      "filter": ["all", ["==", "_label_class", 2], ["in", "DisputeID", 1021]],
+      "filter": [
+        "all",
+        [
+          "==",
+          "_label_class",
+          2
+        ],
+        [
+          "in",
+          "DisputeID",
+          1021
+        ]
+      ],
       "minzoom": 2,
       "layout": {
         "icon-image": "Disputed label point",
         "icon-allow-overlap": true,
-        "text-font": ["Ubuntu Bold"],
+        "text-font": [
+          "Ubuntu Bold"
+        ],
         "text-size": {
           "stops": [
-            [2, 8],
-            [4, 10],
-            [10, 16]
+            [
+              2,
+              8
+            ],
+            [
+              4,
+              10
+            ],
+            [
+              10,
+              16
+            ]
           ]
         },
         "text-transform": "uppercase",
         "text-letter-spacing": {
           "stops": [
-            [2, 0.13],
-            [8, 0.5]
+            [
+              2,
+              0.13
+            ],
+            [
+              8,
+              0.5
+            ]
           ]
         },
         "text-max-width": 6,

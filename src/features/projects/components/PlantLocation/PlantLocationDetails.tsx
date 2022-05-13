@@ -33,8 +33,9 @@ interface Props {
 export default function PlantLocationDetails({
   plantLocation,
 }: Props): ReactElement {
-  const { setSelectedPl, plantLocations } =
-    React.useContext(ProjectPropsContext);
+  const { setSelectedPl, plantLocations } = React.useContext(
+    ProjectPropsContext
+  );
   const { t, i18n } = useTranslation(['maps']);
   const [treeCount, setTreeCount] = React.useState(1);
   const [plantationArea, setPlantationArea] = React.useState(0);
@@ -81,9 +82,7 @@ export default function PlantLocationDetails({
           if (element.coordinates?.[0]) {
             images.push({
               image: element.coordinates[0].image,
-              description: `${t('sampleTree')} ${
-                element.tag ? '#' + element.tag : ''
-              }`,
+              description: `${t('sampleTree')} ${element.tag? '#'+element.tag:''}`,
             });
           }
         }
@@ -127,36 +126,30 @@ export default function PlantLocationDetails({
         <div className={'singleProjectDetails'}>
           <div className={styles.treeCount}>
             <div>
-              {plantLocation.type === 'multi' && (
-                <>
-                  <span>
-                    {localizedAbbreviatedNumber(
-                      i18n.language,
-                      Number(treeCount),
-                      1
-                    )}{' '}
-                    {t('trees')}
-                  </span>{' '}
-                  (
+            {plantLocation.type === 'multi' && (
+              <>
+                <span>
                   {localizedAbbreviatedNumber(
                     i18n.language,
-                    Number(plantationArea),
-                    3
+                    Number(treeCount),
+                    1
                   )}{' '}
-                  {t('ha')})
-                </>
-              )}
-              {plantLocation.type === 'single' && <span>{t('1Tree')} </span>}
-              {plantLocation.type === 'sample' && (
-                <span>{t('sampleTree')} </span>
-              )}
+                  {t('trees')}
+                </span>{' '}
+                (
+                {localizedAbbreviatedNumber(
+                  i18n.language,
+                  Number(plantationArea),
+                  3
+                )}{' '}
+                {t('ha')})
+              </>
+            )}
+            {plantLocation.type === 'single' && <span>{t('1Tree')} </span>}
+            {plantLocation.type === 'sample' && <span>{t('sampleTree')} </span>}
             </div>
             <div>
-              {plantLocation.hid
-                ? plantLocation.hid.substring(0, 3) +
-                  '-' +
-                  plantLocation.hid.substring(3)
-                : null}
+              {plantLocation.hid?plantLocation.hid.substring(0, 3) + "-" + plantLocation.hid.substring(3):null}
             </div>
           </div>
           {plantLocation.type === 'multi' && sampleTreeImages.length > 0 && (
@@ -267,13 +260,10 @@ export default function PlantLocationDetails({
                           >
                             {spl.scientificName
                               ? spl.scientificName
-                              : spl.scientificSpecies
-                              ? spl.scientificSpecies
-                              : t('unknown')}
+                              : spl.scientificSpecies?spl.scientificSpecies:t('unknown')}
                           </span>
                           <br />
-                          {spl.tag ? `${t('tag')} #${spl.tag} • ` : null}
-                          {spl?.measurements?.height}
+                          {spl.tag?`${t('tag')} #${spl.tag} • `:null}{spl?.measurements?.height}
                           {t('meterHigh')} • {spl?.measurements?.width}
                           {t('cmWide')}
                         </div>
@@ -290,9 +280,7 @@ export default function PlantLocationDetails({
                   <span>
                     {plantLocation.scientificName
                       ? plantLocation.scientificName
-                      : plantLocation.scientificSpecies
-                      ? plantLocation.scientificSpecies
-                      : t('unknown')}
+                      : plantLocation.scientificSpecies?plantLocation.scientificSpecies:t('unknown')}
                   </span>
                 </div>
               </div>
@@ -335,7 +323,7 @@ export default function PlantLocationDetails({
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  {t('treemapper:treeMapper')}
+                 {t('treemapper:treeMapper')}
                 </a>
               </div>
             </div>

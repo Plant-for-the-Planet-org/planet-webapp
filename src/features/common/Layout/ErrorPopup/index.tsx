@@ -27,7 +27,7 @@ export default function ErrorPopup(): ReactElement {
       default:
         return '#f44336';
     }
-  };
+  }
 
   return (
     <>

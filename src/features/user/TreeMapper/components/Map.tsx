@@ -3,15 +3,7 @@ import styles from '../TreeMapper.module.scss';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import i18next from '../../../../../i18n';
 import * as turf from '@turf/turf';
-import MapGL, {
-  FlyToInterpolator,
-  Layer,
-  MapEvent,
-  Marker,
-  NavigationControl,
-  Source,
-  WebMercatorViewport,
-} from 'react-map-gl';
+import MapGL, { FlyToInterpolator, Layer, MapEvent, Marker, NavigationControl, Source, WebMercatorViewport } from 'react-map-gl';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import LayerIcon from '../../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../../public/assets/images/icons/LayerDisabled';
@@ -155,7 +147,7 @@ export default function MyTreesMap({
       };
       setViewPort(newViewport);
     }
-  };
+  }
 
   React.useEffect(() => {
     const promise = getMapStyle('default');
@@ -179,8 +171,8 @@ export default function MyTreesMap({
             geometry: newPl,
             properties: {
               id: pl.id,
-            },
-          };
+            }
+          }
           features.push(newFeature);
           if (pl.type === 'multi') ids.push(`${pl.id}-layer`);
         }
@@ -233,12 +225,10 @@ export default function MyTreesMap({
       onClick={onMapClick}
       interactiveLayerIds={plIds ? plIds : undefined}
       attributionControl={true}
-      mapOptions={{
-        customAttribution:
-          'Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS, Maxar, Earthstar Geographics, CNES/Airbus DS, USDA FSA, Aerogrid, IGN, IGP, and the GIS User Community',
-      }}
+      mapOptions={{ customAttribution: 'Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS, Maxar, Earthstar Geographics, CNES/Airbus DS, USDA FSA, Aerogrid, IGN, IGP, and the GIS User Community' }}
     >
-      {satellite && plIds && <SatelliteLayer beforeId={plIds[0]} />}
+      {satellite && plIds &&
+        <SatelliteLayer beforeId={plIds[0]} />}
       {locations &&
         locations.map((pl: any) => {
           const newPl = pl.geometry;
@@ -264,7 +254,7 @@ export default function MyTreesMap({
                       'fill-opacity': getPolygonColor(pl),
                     }}
                   />
-                  {selectedLocation && selectedLocation.id === pl.id && (
+                  {(selectedLocation && selectedLocation.id === pl.id) && (
                     <Layer
                       key={`${pl.id}-selected`}
                       id={`${pl.id}-selected-layer`}
@@ -313,16 +303,15 @@ export default function MyTreesMap({
                           {viewport.zoom > 14 && (
                             <div
                               key={`${spl.id}-marker`}
-                              className={`${styles.single} ${
-                                spl.id === selectedLocation?.id
-                                  ? styles.singleSelected
-                                  : ''
-                              }`}
+                              className={`${styles.single} ${spl.id === selectedLocation?.id
+                                ? styles.singleSelected
+                                : ''
+                                }`}
                               role="button"
                               tabIndex={0}
                               onClick={() => setselectedLocation(spl)}
-                              // onMouseEnter={() => onHover(spl)}
-                              // onMouseLeave={() => onHoverEnd(spl)}
+                            // onMouseEnter={() => onHover(spl)}
+                            // onMouseLeave={() => onHoverEnd(spl)}
                             />
                           )}
                         </Marker>
@@ -336,9 +325,9 @@ export default function MyTreesMap({
                 key={`${pl.id}-single`}
                 latitude={newPl.coordinates[1]}
                 longitude={newPl.coordinates[0]}
-                // offsetLeft={5}
-                // offsetTop={-16}
-                // style={{ left: '28px' }}
+              // offsetLeft={5}
+              // offsetTop={-16}
+              // style={{ left: '28px' }}
               >
                 {viewport.zoom > 14 && (
                   <div
@@ -346,11 +335,8 @@ export default function MyTreesMap({
                     onClick={() => setselectedLocation(pl)}
                     // onMouseEnter={() => onHover(pl)}
                     // onMouseLeave={() => onHoverEnd(pl)}
-                    className={`${styles.single} ${
-                      pl.id === selectedLocation?.id
-                        ? styles.singleSelected
-                        : ''
-                    }`}
+                    className={`${styles.single} ${pl.id === selectedLocation?.id ? styles.singleSelected : ''
+                      }`}
                     role="button"
                     tabIndex={0}
                   />

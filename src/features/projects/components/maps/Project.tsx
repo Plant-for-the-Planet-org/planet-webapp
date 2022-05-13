@@ -25,7 +25,7 @@ export default function Project({
     rasterData,
     setRasterData,
     isMobile,
-    setSiteViewPort,
+    setSiteViewPort
   } = React.useContext(ProjectPropsContext);
 
   const { handleError } = React.useContext(ErrorHandlingContext);

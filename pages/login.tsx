@@ -11,8 +11,9 @@ function Login({}: Props): ReactElement {
   // if the user is authenticated check if we have slug, and if we do, send user to slug
   // else send user to login flow
 
-  const { user, contextLoaded, loginWithRedirect } =
-    React.useContext(UserPropsContext);
+  const { user, contextLoaded, loginWithRedirect } = React.useContext(
+    UserPropsContext
+  );
 
   React.useEffect(() => {
     async function loadFunction() {

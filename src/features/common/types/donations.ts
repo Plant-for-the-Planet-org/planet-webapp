@@ -10,12 +10,12 @@ export interface contactDetailsProps {
 }
 
 export interface giftDetailsProps {
-  type: String | null;
-  recipientName: String | null;
-  email: String | null;
-  giftMessage: String | null;
-  recipientTreecounter: Number | null;
-  receipients: {} | null;
+  type:String|null;
+  recipientName: String|null;
+  email: String|null;
+  giftMessage: String|null;
+  recipientTreecounter: Number|null;
+  receipients: {}|null;
 }
 
 export interface TreeDonationProps {
@@ -36,14 +36,14 @@ export interface TreeDonationProps {
   setDonationStep: Function;
   giftDetails: giftDetailsProps;
   setGiftDetails: Function;
-  directGift: any;
+  directGift:any,
   setDirectGift: Function;
   paymentType: String;
   setPaymentType: Function;
   isPaymentOptionsLoading: boolean;
-  token: any;
-  donationID: any;
-  setDonationID: Function;
+  token:any;
+  donationID:any;
+  setDonationID:Function;
 }
 
 export interface PaymentDetailsProps {
@@ -60,11 +60,11 @@ export interface PaymentDetailsProps {
   setPaymentType: Function;
   country: string;
   isTaxDeductible: Boolean;
-  token: any;
-  donationID: any;
-  setDonationID: Function;
-  shouldCreateDonation: Boolean;
-  setShouldCreateDonation: Function;
+  token:any;
+  donationID:any;
+  setDonationID:Function;
+  shouldCreateDonation:Boolean;
+  setShouldCreateDonation:Function;
 }
 
 export interface ContactDetailsPageProps {
@@ -78,19 +78,19 @@ export interface ContactDetailsPageProps {
   setIsCompany: Function;
   country: string;
   isTaxDeductible: Boolean;
-  project: Object;
+  project:Object;
 }
 
 export interface ThankYouProps {
-  donationID: any;
+  donationID:any;
   onClose: any;
   paymentType: String | string;
-  redirectStatus: any;
+  redirectStatus:any;
 }
 
 export interface CreateDonationFunctionProps {
-  isTaxDeductible: Boolean | null;
-  country: any;
+  isTaxDeductible:Boolean | null;
+  country:any;
   project: Object;
   treeCount: number;
   treeCost: number;
@@ -100,6 +100,6 @@ export interface CreateDonationFunctionProps {
   isGift: Boolean;
   setIsPaymentProcessing: Function;
   setPaymentError: Function;
-  setDonationID: any;
+  setDonationID:any;
   token: any | null;
 }

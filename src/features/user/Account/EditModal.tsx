@@ -69,7 +69,7 @@ export const EditModal = ({
     };
     if (
       new Date(data.currentPeriodEnd).toDateString() ==
-        new Date(record.currentPeriodEnd).toDateString() ||
+      new Date(record.currentPeriodEnd).toDateString() ||
       bodyToSend.nextBilling === null
     ) {
       delete bodyToSend.nextBilling;

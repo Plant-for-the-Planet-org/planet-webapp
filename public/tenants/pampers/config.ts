@@ -1,9 +1,9 @@
 const config = {
   tenantName: 'pampers',
   tenantURL: 'wald.pampers.de',
-  languages: ['en', 'de'],
+  languages: ['en','de'],
   fallbackCurrency: 'EUR',
-  tenantGoal: 60000,
+  tenantGoal:60000,
   font: {
     primaryFontFamily: '"HarmoniaSansPro",Helvetica,Arial,sans-serif',
     secondaryFontFamily: '"Pampers Script",Helvetica,Arial,sans-serif',
@@ -44,14 +44,14 @@ const config = {
         onclick: '/all',
         visible: false,
       },
-      me: {
+      me:{
         title: 'me',
         onclick: '/me',
         visible: false,
-      },
-    },
+      }
+    }
   },
-  footerLinks: ['privacy', 'terms', 'imprint', 'contact', 'supportUs'],
+  footerLinks:["privacy","terms","imprint","contact","supportUs"]
 };
 
 export default config;

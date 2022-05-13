@@ -13,11 +13,8 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <link rel="dns-prefetch" href="https://a.plant-for-the-planet.org/" />
-          <link
-            rel="preconnect"
-            href="https://fonts.googleapis.com/"
-            crossOrigin="true"
-          />
+          <link rel="preconnect" href="https://fonts.googleapis.com/" crossOrigin="true" />
+
         </Head>
         <body style={{ overscrollBehavior: 'contain' }}>
           <Main />

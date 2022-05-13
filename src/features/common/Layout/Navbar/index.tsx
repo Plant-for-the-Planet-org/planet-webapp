@@ -11,7 +11,7 @@ import getImageUrl from '../../../../utils/getImageURL';
 import { UserPropsContext } from '../UserPropsContext';
 import GetNavBarIcon from './getNavBarIcon';
 import GetSubMenu from './getSubMenu';
-import { lang_path } from '../../../../utils/constants/wpLanguages';
+import { lang_path } from '../../../../utils/constants/wpLanguages'
 // used to detect window resize and return the current width of the window
 const useWidth = () => {
   const [width, setWidth] = React.useState(0); // default width, detect on server.
@@ -35,8 +35,8 @@ export default function NavbarComponent(props: any) {
     yucatan: 'yucatan',
     partners: 'partners',
     changeChocolate: 'change-chocolate',
-    stopTalkingStartPlanting: 'stop-talking-start-planting',
-  };
+    stopTalkingStartPlanting: 'stop-talking-start-planting'
+  }
   const [menu, setMenu] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
   const [mobileWidth, setMobileWidth] = React.useState(false);
@@ -162,13 +162,12 @@ export default function NavbarComponent(props: any) {
               );
             }
             if (link === 'about' && SingleLink.visible) {
-              let aboutOnclick = `${SingleLink.onclick}${
-                (process.env.TENANT === 'planet' ||
+              let aboutOnclick = `${SingleLink.onclick}${(process.env.TENANT === 'planet' ||
                   process.env.TENANT === 'ttc') &&
-                lang_path[i18n.language]
+                  lang_path[i18n.language]
                   ? lang_path[i18n.language]
                   : ''
-              }`;
+                }`;
 
               aboutOnclick = isMobile ? '' : aboutOnclick;
               SingleLink = {
@@ -180,7 +179,7 @@ export default function NavbarComponent(props: any) {
               }
             }
             if (link === 'shop' && mobileWidth) {
-              SingleLink.visible = false;
+              SingleLink.visible = false
             }
             return SingleLink.visible ? (
               <div
@@ -194,7 +193,9 @@ export default function NavbarComponent(props: any) {
                 }
                 key={link}
               >
-                <Link href={isMobile && hasSubMenu ? '' : SingleLink.onclick}>
+                <Link
+                  href={isMobile && hasSubMenu ? '' : SingleLink.onclick}
+                >
                   <div className={`linkContainer`}>
                     <GetNavBarIcon
                       UserIcon={UserIcon}
@@ -233,11 +234,7 @@ export default function NavbarComponent(props: any) {
                         <a
                           key={submenu.title}
                           className={'menuRow'}
-                          href={`https://a.plant-for-the-planet.org/${
-                            lang_path[i18n.language]
-                              ? lang_path[i18n.language]
-                              : 'en'
-                          }/${subMenuPath[submenu.title]}`}
+                          href={`https://a.plant-for-the-planet.org/${lang_path[i18n.language] ? lang_path[i18n.language] : 'en'}/${subMenuPath[submenu.title]}`}
                         >
                           <div
                             style={{

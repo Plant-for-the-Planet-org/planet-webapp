@@ -1,8 +1,8 @@
 {
-  "bulkCodesTitleStep3": "Generate Bulk Codes - Issue Codes",
-  "bulkCodesTitleStep2": "Generate Bulk Codes - Select Project",
+	"bulkCodesTitleStep3": "Generate Bulk Codes - Issue Codes",
+	"bulkCodesTitleStep2": "Generate Bulk Codes - Select Project",
   "bulkCodesTitle": "Generate Bulk Codes - Select Method",
-  "bulkCodes": "Bulk Codes",
+	"bulkCodes": "Bulk Codes",
   "treesPlanted": "Tree Planted",
   "treesPlanted_plural": "Trees Planted",
   "target": "Target",

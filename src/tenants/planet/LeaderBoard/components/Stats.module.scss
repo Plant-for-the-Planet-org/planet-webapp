@@ -2,11 +2,7 @@
 
 .wrapper {
   background-color: $primaryDarkColor;
-  background-image: linear-gradient(
-    to bottom,
-    $primaryDarkColor,
-    $primaryColor
-  );
+  background-image: linear-gradient(to bottom, $primaryDarkColor, $primaryColor);
   display: flex;
   flex-direction: column;
   justify-content: center;

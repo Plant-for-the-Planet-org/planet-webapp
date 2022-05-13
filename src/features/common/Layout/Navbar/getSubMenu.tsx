@@ -8,82 +8,76 @@ import ChangeChocolateIcon from '../../../../../public/assets/images/icons/megaM
 import StopTalkingStartPlantingIcon from '../../../../../public/assets/images/icons/megaMenuIcons/stoptalkingstartplanting';
 
 interface Props {
-  title: any;
+    title: any
 }
 
 function GetSubMenu({ title }: Props): ReactElement {
-  const Overview = () => {
-    return (
-      <div id="overviewButton" className={'link_icon'}>
-        <OverviewIcon />
-      </div>
-    );
-  };
+    const Overview = () => {
+        return (
+            <div id="overviewButton" className={'link_icon'}>
+                <OverviewIcon />
+            </div>
+        )
+    }
 
-  const Partners = () => {
-    return (
-      <div id="overviewButton" className={'link_icon'}>
-        <PartnerIcon />
-      </div>
-    );
-  };
+    const Partners = () => {
+        return (
+            <div id="overviewButton" className={'link_icon'}>
+                <PartnerIcon />
+            </div>
+        )
+    }
 
-  const TrillionTrees = () => {
-    return (
-      <div id="overviewButton" className={'link_icon'}>
-        <TrillionTreesIcon />
-      </div>
-    );
-  };
+    const TrillionTrees = () => {
+        return (
+            <div id="overviewButton" className={'link_icon'} >
+                <TrillionTreesIcon />
+            </div>
+        )
+    }
 
-  const Yucatan = () => {
-    return (
-      <div id="overviewButton" className={'link_icon'}>
-        <YucatanIcon />
-      </div>
-    );
-  };
+    const Yucatan = () => {
+        return (
+            <div id="overviewButton" className={'link_icon'} >
+                <YucatanIcon />
+            </div>
+        )
+    }
 
-  const ChangeChocolate = () => {
-    return (
-      <div id="overviewButton" className={'link_icon'}>
-        <ChangeChocolateIcon />
-      </div>
-    );
-  };
+    const ChangeChocolate = () => {
+        return (
+            <div id="overviewButton" className={'link_icon'} >
+                <ChangeChocolateIcon />
+            </div>
+        )
+    }
 
-  const ChildrenYouth = () => {
-    return (
-      <div id="overviewButton" className={'link_icon'}>
-        <ChildrenYouthIcon />
-      </div>
-    );
-  };
+    const ChildrenYouth = () => {
+        return (
+            <div id="overviewButton" className={'link_icon'} >
+                <ChildrenYouthIcon />
+            </div>
+        )
+    }
 
-  const StopTalkingStartPlanting = () => {
-    return (
-      <div id="overviewButton" className={'link_icon'}>
-        <StopTalkingStartPlantingIcon />
-      </div>
-    );
-  };
+    const StopTalkingStartPlanting = () => {
+        return (
+            <div id="overviewButton" className={'link_icon'} >
+                <StopTalkingStartPlantingIcon />
+            </div>
+        )
+    }
 
-  switch (title) {
-    case 'overview':
-      return <Overview />;
-    case 'childrenAndYouth':
-      return <ChildrenYouth />;
-    case 'trillionTrees':
-      return <TrillionTrees />;
-    case 'yucatan':
-      return <Yucatan />;
-    case 'partners':
-      return <Partners />;
-    case 'changeChocolate':
-      return <ChangeChocolate />;
-    case 'stopTalkingStartPlanting':
-      return <StopTalkingStartPlanting />;
-  }
+    switch (title) {
+        case 'overview': return <Overview />
+        case 'childrenAndYouth': return <ChildrenYouth />
+        case 'trillionTrees': return <TrillionTrees  />
+        case 'yucatan': return <Yucatan />
+        case 'partners': return <Partners />
+        case 'changeChocolate': return <ChangeChocolate />
+        case 'stopTalkingStartPlanting': return <StopTalkingStartPlanting />
+    }
 }
+
 
 export default GetSubMenu;

@@ -41,10 +41,10 @@ const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   loading: () => <p></p>,
 });
 
-interface Props {}
+interface Props { }
 
 const { useTranslation } = i18next;
-export default function RegisterTrees({}: Props) {
+export default function RegisterTrees({ }: Props) {
   const router = useRouter();
   const { user, token, contextLoaded } = React.useContext(UserPropsContext);
   const { t, ready } = useTranslation(['me', 'common']);
@@ -129,8 +129,15 @@ export default function RegisterTrees({}: Props) {
     plantDate: new Date(),
     geometry: {},
   };
-  const { register, handleSubmit, errors, control, reset, setValue, watch } =
-    useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
+  const {
+    register,
+    handleSubmit,
+    errors,
+    control,
+    reset,
+    setValue,
+    watch,
+  } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
 
   const treeCount = watch('treeCount');
 
@@ -156,31 +163,28 @@ export default function RegisterTrees({}: Props) {
           plantDate: new Date(data.plantDate),
           geometry: geometry,
         };
-        postAuthenticatedRequest(
-          `/app/contributions`,
-          submitData,
-          token,
-          handleError
-        ).then((res) => {
-          if (!res.code) {
-            setErrorMessage('');
-            setContributionGUID(res.id);
-            setContributionDetails(res);
-            setIsUploadingData(false);
-            setRegistered(true);
-            // router.push('/c/[id]', `/c/${res.id}`);
-          } else {
-            if (res.code === 404) {
+        postAuthenticatedRequest(`/app/contributions`, submitData, token, handleError).then(
+          (res) => {
+            if (!res.code) {
+              setErrorMessage('');
+              setContributionGUID(res.id);
+              setContributionDetails(res);
               setIsUploadingData(false);
-              setErrorMessage(res.message);
-              setRegistered(false);
+              setRegistered(true);
+              // router.push('/c/[id]', `/c/${res.id}`);
             } else {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-              setRegistered(false);
+              if (res.code === 404) {
+                setIsUploadingData(false);
+                setErrorMessage(res.message);
+                setRegistered(false);
+              } else {
+                setIsUploadingData(false);
+                setErrorMessage(res.message);
+                setRegistered(false);
+              }
             }
           }
-        });
+        );
 
         // handleNext();
       } else {
@@ -192,15 +196,13 @@ export default function RegisterTrees({}: Props) {
   };
 
   async function loadProjects() {
-    await getAuthenticatedRequest(
-      '/app/profile/projects',
-      token,
-      {},
+    await getAuthenticatedRequest('/app/profile/projects', token, {},
       handleError,
-      '/profile'
-    ).then((projects: any) => {
-      setProjects(projects);
-    });
+      '/profile').then(
+        (projects: any) => {
+          setProjects(projects);
+        }
+      );
   }
 
   React.useEffect(() => {
@@ -226,6 +228,7 @@ export default function RegisterTrees({}: Props) {
       <h2 className={'profilePageTitle'}>{t('me:registerTrees')}</h2>
       <div className={styles.registerTreesPage}>
         {!registered ? (
+
           <form onSubmit={handleSubmit(submitRegisterTrees)}>
             <div className={styles.note}>
               <p>{t('me:registerTreesDescription')}</p>
@@ -417,6 +420,7 @@ export default function RegisterTrees({}: Props) {
               </button>
             </div>
           </form>
+
         ) : (
           <SingleContribution {...ContributionProps} />
         )}

@@ -58,11 +58,7 @@ export default function Donate({
 
   React.useEffect(() => {
     async function loadProject() {
-      if (
-        !internalCurrencyCode ||
-        currencyCode !== internalCurrencyCode ||
-        internalLanguage !== i18n.language
-      ) {
+      if (!internalCurrencyCode || currencyCode !== internalCurrencyCode || internalLanguage !== i18n.language) {
         const currency = getStoredCurrency();
         setInternalCurrencyCode(currency);
         setInternalLanguage(i18n.language);

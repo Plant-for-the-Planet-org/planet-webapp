@@ -45,7 +45,7 @@ export default function ProjectsMap(): ReactElement {
     selectedMode,
     hoveredPl,
     setIsPolygonMenuOpen,
-    setFilterOpen,
+    setFilterOpen
   } = React.useContext(ProjectPropsContext);
 
   const { t } = useTranslation(['maps']);
@@ -184,13 +184,13 @@ export default function ProjectsMap(): ReactElement {
         )}
         <ExploreLayers />
         {zoomLevel === 2 && selectedMode === 'location' && (
-          <div
-            onClick={() => setSatellite(!satellite)}
-            className={styles.layerToggle}
-          >
-            {satellite ? <LayerIcon /> : <LayerDisabled />}
-          </div>
-        )}
+            <div
+              onClick={() => setSatellite(!satellite)}
+              className={styles.layerToggle}
+            >
+              {satellite ? <LayerIcon /> : <LayerDisabled />}
+            </div>
+          )}
         <div className={styles.mapNavigation}>
           <NavigationControl showCompass={false} />
         </div>

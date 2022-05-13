@@ -8,7 +8,7 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
-    'plugin:storybook/recommended',
+	'plugin:storybook/recommended',
     // 'airbnb',
   ],
   parser: '@typescript-eslint/parser',
@@ -19,15 +19,15 @@ module.exports = {
     ecmaVersion: 11,
     sourceType: 'module',
   },
-  plugins: ['react', '@typescript-eslint'],
+  plugins: [
+    'react',
+    '@typescript-eslint',
+  ],
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-props-no-spreading': 'off',
     'no-use-before-define': 'off',
-    'react/jsx-filename-extension': [
-      1,
-      { extensions: ['.js', '.jsx', '.tsx'] },
-    ],
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.tsx'] }],
     'react/jsx-indent': 'off',
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
@@ -37,7 +37,7 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 'off',
     'no-empty-pattern': 'off',
     'react/display-name': 'off',
-    'react/no-find-dom-node': 'off',
+    'react/no-find-dom-node': 'off'
   },
   globals: {
     React: 'writable',

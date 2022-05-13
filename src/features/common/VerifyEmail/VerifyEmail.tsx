@@ -15,19 +15,15 @@ function VerifyEmailComponent({}: Props): ReactElement {
   const { loginWithRedirect } = React.useContext(UserPropsContext);
   const { theme } = React.useContext(ThemeContext);
   return ready ? (
-    <div
-      className={styles.verifyEmailSection}
-      style={{
-        backgroundColor:
-          theme === 'theme-light'
-            ? themeProperties.light.light
-            : themeProperties.dark.backgroundColor,
-        color:
-          theme === 'theme-light'
-            ? themeProperties.light.primaryFontColor
-            : themeProperties.dark.primaryFontColor,
-      }}
-    >
+    <div className={styles.verifyEmailSection} 
+    style={{
+      backgroundColor: theme === 'theme-light' ? 
+                       themeProperties.light.light : 
+                       themeProperties.dark.backgroundColor,
+      color: theme === 'theme-light' ? 
+      themeProperties.light.primaryFontColor : 
+      themeProperties.dark.primaryFontColor,}}
+      >
       <VerifyEmailIcon />
       <h2 className={styles.verifyEmailText}>
         {t('common:verifyEmailHeader')}
@@ -45,8 +41,7 @@ function VerifyEmailComponent({}: Props): ReactElement {
             ui_locales: localStorage.getItem('language') || 'en',
           })
         }
-        className={'primaryButton'}
-        style={{ marginTop: '10px' }}
+        className={'primaryButton'} style={{marginTop: '10px'}}
       >
         {t('common:continueToLogin')}
       </button>

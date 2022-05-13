@@ -170,15 +170,13 @@ function DeleteModal({ deleteModalOpen, handledeleteModalClose }: any) {
 
   const handleDeleteAccount = () => {
     setIsUploadingData(true);
-    deleteAuthenticatedRequest('/app/profile', token, handleError).then(
-      (res) => {
-        if (res !== 404) {
-          logoutUser(`${process.env.NEXTAUTH_URL}/`);
-        } else {
-          console.log(res.errorText);
-        }
+    deleteAuthenticatedRequest('/app/profile', token, handleError).then((res) => {
+      if (res !== 404) {
+        logoutUser(`${process.env.NEXTAUTH_URL}/`);
+      } else {
+        console.log(res.errorText);
       }
-    );
+    });
   };
 
   const { theme } = React.useContext(ThemeContext);

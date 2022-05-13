@@ -57,9 +57,8 @@ export default function ProjectSnippet({
         onClick={() => {
           router.replace(`/${project.slug}`);
         }}
-        className={`projectImage ${
-          selectedPl || hoveredPl ? 'projectCollapsed' : ''
-        }`}
+        className={`projectImage ${selectedPl || hoveredPl ? 'projectCollapsed' : ''
+          }`}
       >
         {project.image && typeof project.image !== 'undefined' ? (
           <div
@@ -73,7 +72,9 @@ export default function ProjectSnippet({
 
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
-            {project.classification && t(`donate:${project.classification}`)}
+
+            {project.classification &&
+              t(`donate:${project.classification}`)}
           </div>
           <div className={'projectName'}>
             {truncateString(project.name, 54)}
@@ -100,9 +101,7 @@ export default function ProjectSnippet({
                   )}{' '}
                   {t('common:tree', { count: Number(project.countPlanted) })} •{' '}
                 </>
-              ) : (
-                []
-              )}
+              ) : []}
               <span style={{ fontWeight: 400 }}>
                 {t('country:' + project.country.toLowerCase())}
               </span>
@@ -138,11 +137,7 @@ export default function ProjectSnippet({
                     project.currency,
                     project.unitCost
                   )}{' '}
-                  <span>
-                    {project.purpose === 'conservation'
-                      ? t('donate:perM2')
-                      : t('donate:perTree')}
-                  </span>
+                  <span>{project.purpose === 'conservation' ? t('donate:perM2') : t('donate:perTree')}</span>
                 </div>
               </>
             ) : null}

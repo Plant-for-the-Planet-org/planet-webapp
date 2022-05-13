@@ -1,8 +1,5 @@
 import React, { ReactElement } from 'react';
-import {
-  getAuthenticatedRequest,
-  putAuthenticatedRequest,
-} from '../../../../utils/apiRequests/api';
+import { getAuthenticatedRequest, putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import PlantingLocation from './components/PlantingLocation';
 import styles from './Import.module.scss';
 import i18next from '../../../../../i18n';
@@ -19,11 +16,11 @@ const { useTranslation } = i18next;
 const useStyles = makeStyles({
   root: {
     backgroundColor: 'transparent',
-    padding: '20px 0 5px',
+    padding: '20px 0 5px'
   },
 });
 
-interface Props {}
+interface Props { }
 
 const Map = dynamic(() => import('./components/Map'), {
   loading: () => <p>loading</p>,
@@ -34,19 +31,16 @@ const MapComponent = dynamic(() => import('./components/MapComponent'), {
   loading: () => <p></p>,
 });
 
-export default function ImportData({}: Props): ReactElement {
+export default function ImportData({ }: Props): ReactElement {
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['treemapper']);
   const { token } = React.useContext(UserPropsContext);
 
   // loc_ACxv7uldM1VdKd5cikv3qoF5
   const fetchPlantLocation = async (id: any): Promise<void> => {
-    const result = await getAuthenticatedRequest(
-      `/treemapper/plantLocations/${id}?_scope=extended`,
-      token
-    );
+    const result = await getAuthenticatedRequest(`/treemapper/plantLocations/${id}?_scope=extended`, token);
     setPlantLocation(result);
-  };
+  }
 
   React.useEffect(() => {
     if (router && router.query.loc) {
@@ -67,8 +61,7 @@ export default function ImportData({}: Props): ReactElement {
   const [errorMessage, setErrorMessage] = React.useState('');
   const steps = getSteps();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [plantLocation, setPlantLocation] =
-    React.useState<Treemapper.PlantLocation | null>(null);
+  const [plantLocation, setPlantLocation] = React.useState<Treemapper.PlantLocation | null>(null);
   const [userLang, setUserLang] = React.useState('en');
   const [geoJson, setGeoJson] = React.useState(null);
   const [geoJsonError, setGeoJsonError] = React.useState(false);
@@ -153,7 +146,9 @@ export default function ImportData({}: Props): ReactElement {
       <div className={styles.pageContainer}>
         <div className={styles.listContainer}>
           <div className={styles.pageTitle}>{t('treemapper:importData')}</div>
-          <p>{t('treemapper:importExplanation')}</p>
+          <p>
+            {t('treemapper:importExplanation')}
+          </p>
           <div className={styles.stepperContainer}>
             <Stepper
               activeStep={activeStep}
@@ -163,7 +158,9 @@ export default function ImportData({}: Props): ReactElement {
             >
               {steps.map((label, index) => (
                 <Step key={index}>
-                  <StepLabel>{label}</StepLabel>
+                  <StepLabel>
+                    {label}
+                  </StepLabel>
                 </Step>
               ))}
             </Stepper>
@@ -173,11 +170,7 @@ export default function ImportData({}: Props): ReactElement {
           </div>
         </div>
         <div className={styles.mapContainer}>
-          <MapComponent
-            geoJson={geoJson}
-            setGeoJson={setGeoJson}
-            setActiveMethod={setActiveMethod}
-          />
+          <MapComponent geoJson={geoJson} setGeoJson={setGeoJson} setActiveMethod={setActiveMethod} />
         </div>
       </div>
     </div>

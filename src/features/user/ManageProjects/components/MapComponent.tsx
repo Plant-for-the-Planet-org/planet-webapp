@@ -28,7 +28,7 @@ export default function MapComponent({
   setGeoJson,
   geoJsonError,
   setGeoJsonError,
-  geoLocation,
+  geoLocation
 }: Props): ReactElement {
   const defaultMapCenter = [geoLocation.geoLongitude, geoLocation.geoLatitude];
   const defaultZoom = 1.4;
@@ -53,11 +53,11 @@ export default function MapComponent({
   const [satellite, setSatellite] = React.useState(false);
 
   const RASTER_SOURCE_OPTIONS = {
-    type: 'raster',
-    tiles: [
-      'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    "type": "raster",
+    "tiles": [
+      "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
     ],
-    tileSize: 128,
+    "tileSize": 128
   };
 
   React.useEffect(() => {
@@ -133,19 +133,12 @@ export default function MapComponent({
           width: '100%',
         }}
       >
-        {satellite && (
+        {satellite &&
           <>
-            <Source
-              id="satellite_source"
-              tileJsonSource={RASTER_SOURCE_OPTIONS}
-            />
-            <Layer
-              type="raster"
-              id="satellite_layer"
-              sourceId="satellite_source"
-            />
+            <Source id="satellite_source" tileJsonSource={RASTER_SOURCE_OPTIONS} />
+            <Layer type="raster" id="satellite_layer" sourceId="satellite_source" />
           </>
-        )}
+        }
         <DrawControl
           ref={drawControlRef}
           onDrawCreate={onDrawCreate}
@@ -160,20 +153,10 @@ export default function MapComponent({
           }}
         />
         <div className={styles.layerSwitcher}>
-          <div
-            onClick={() => setSatellite(false)}
-            className={`${styles.layerOption} ${
-              satellite ? '' : styles.active
-            }`}
-          >
+          <div onClick={() => setSatellite(false)} className={`${styles.layerOption} ${satellite ? '' : styles.active}`}>
             Map
           </div>
-          <div
-            onClick={() => setSatellite(true)}
-            className={`${styles.layerOption} ${
-              satellite ? styles.active : ''
-            }`}
-          >
+          <div onClick={() => setSatellite(true)} className={`${styles.layerOption} ${satellite ? styles.active : ''}`}>
             Satellite
           </div>
         </div>

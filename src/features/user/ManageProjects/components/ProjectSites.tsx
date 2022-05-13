@@ -52,7 +52,7 @@ export default function ProjectSites({
   handleReset,
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
-  const { theme } = React.useContext(ThemeContext);
+  const { theme } = React.useContext(ThemeContext)
   const [features, setFeatures] = React.useState([]);
   const { register, handleSubmit, errors, control } = useForm();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
@@ -64,24 +64,24 @@ export default function ProjectSites({
   const useStylesAutoComplete = makeStyles({
     root: {
       color:
-        theme === 'theme-light'
+        theme === "theme-light"
           ? `${themeProperties.light.primaryFontColor} !important`
           : `${themeProperties.dark.primaryFontColor} !important`,
       backgroundColor:
-        theme === 'theme-light'
+        theme === "theme-light"
           ? `${themeProperties.light.backgroundColor} !important`
           : `${themeProperties.dark.backgroundColor} !important`,
     },
     option: {
       // color: '#2F3336',
-      '&:hover': {
+      "&:hover": {
         backgroundColor:
-          theme === 'theme-light'
+          theme === "theme-light"
             ? `${themeProperties.light.backgroundColorDark} !important`
             : `${themeProperties.dark.backgroundColorDark} !important`,
       },
-    },
-  });
+    }
+  })
   const classes = useStylesAutoComplete();
 
   const [geoLocation, setgeoLocation] = React.useState<Object>();
@@ -122,12 +122,13 @@ export default function ProjectSites({
   });
 
   const RASTER_SOURCE_OPTIONS = {
-    type: 'raster',
-    tiles: [
-      'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    "type": "raster",
+    "tiles": [
+      "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
     ],
-    tileSize: 128,
+    "tileSize": 128
   };
+
 
   // React.useEffect(() => {
   //   const promise = getMapStyle('openStreetMap');
@@ -145,14 +146,14 @@ export default function ProjectSites({
   const handleModalClose = () => {
     seteditMode(false);
     setOpenModal(false);
-  };
+  }
 
   const MapProps = {
     geoJson,
     setGeoJson,
     geoJsonError,
     setGeoJsonError,
-    geoLocation,
+    geoLocation
   };
 
   const onSubmit = (data: any) => {
@@ -262,8 +263,8 @@ export default function ProjectSites({
       ).then((result) => {
         const geoLocation = {
           geoLatitude: result.geoLatitude,
-          geoLongitude: result.geoLongitude,
-        };
+          geoLongitude: result.geoLongitude
+        }
         setgeoLocation(geoLocation);
 
         if (result.sites.length > 0) {
@@ -273,7 +274,7 @@ export default function ProjectSites({
       });
   }, [projectGUID]);
 
-  const [siteGUID, setSiteGUID] = React.useState();
+  const [siteGUID, setSiteGUID] = React.useState()
 
   const editSite = (site: any) => {
     const defaultSiteDetails = {
@@ -282,49 +283,31 @@ export default function ProjectSites({
       geometry: {},
     };
     const collection = {
-      type: 'FeatureCollection',
-      features: [
-        {
-          geometry: site.geometry,
-          properties: {},
-          type: 'Feature',
-        },
-      ],
-    };
+      type: "FeatureCollection",
+      features: [{
+        geometry: site.geometry,
+        properties: {},
+        type: "Feature"
+      }]
+    }
     setGeoJson(collection);
     setSiteDetails(defaultSiteDetails);
-    setSiteGUID(site.id);
+    setSiteGUID(site.id)
     seteditMode(true);
     setOpenModal(true);
-  };
+
+  }
 
   const EditProps = {
-    openModal,
-    handleModalClose,
-    changeSiteDetails,
-    siteDetails,
-    errorMessage,
-    status,
-    geoJsonProp: geoJson,
-    ready,
-    projectGUID,
-    setSiteList,
-    token,
-    setFeatures,
-    seteditMode,
-    siteGUID,
-    siteList,
-  };
+    openModal, handleModalClose, changeSiteDetails, siteDetails, errorMessage, status, geoJsonProp: geoJson, ready, projectGUID, setSiteList, token, setFeatures, seteditMode, siteGUID, siteList
+  }
 
   return ready ? (
     <div className={styles.stepContainer}>
-      {editMode && <EditSite {...EditProps} />}
+      {editMode &&
+        <EditSite {...EditProps} />}
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-      >
+      <form onSubmit={(e) => { e.preventDefault() }}>
         <div className={styles.formField}>
           {siteList
             .filter((site) => {
@@ -354,9 +337,7 @@ export default function ProjectSites({
                   <div className={styles.mapboxContainer}>
                     <div className={styles.uploadedMapName}>{site.name}</div>
                     <div className={styles.uploadedMapStatus}>
-                      {status
-                        .find((e) => site.status == e.value)
-                        ?.label.toUpperCase()}
+                      {status.find(e => site.status == e.value)?.label.toUpperCase()}
                     </div>
                     <button
                       id={'trashIconProjS'}
@@ -367,10 +348,9 @@ export default function ProjectSites({
                     >
                       <TrashIcon color={'#000'} />
                     </button>
-                    <div
-                      id={'edit'}
+                    <div id={'edit'}
                       onClick={() => {
-                        editSite(site);
+                        editSite(site)
                       }}
                       className={styles.uploadedMapEditButton}
                     >
@@ -386,15 +366,8 @@ export default function ProjectSites({
                         width: 320,
                       }}
                     >
-                      <Source
-                        id="satellite_source"
-                        tileJsonSource={RASTER_SOURCE_OPTIONS}
-                      />
-                      <Layer
-                        type="raster"
-                        id="satellite_layer"
-                        sourceId="satellite_source"
-                      />
+                      <Source id="satellite_source" tileJsonSource={RASTER_SOURCE_OPTIONS} />
+                      <Layer type="raster" id="satellite_layer" sourceId="satellite_source" />
                       <GeoJSONLayer
                         data={site.geometry}
                         fillPaint={{
@@ -437,14 +410,10 @@ export default function ProjectSites({
                       value={siteDetails.status}
                     >
                       {status.map((option) => (
-                        <MenuItem
-                          key={option.value}
-                          value={option.value}
-                          classes={{
-                            // option: classes.option,
-                            root: classes.root,
-                          }}
-                        >
+                        <MenuItem key={option.value} value={option.value} classes={{
+                          // option: classes.option,
+                          root: classes.root,
+                        }}>
                           {option.label}
                         </MenuItem>
                       ))}
@@ -476,13 +445,12 @@ export default function ProjectSites({
             </button>
           </div>
         ) : (
-          <button
-            id={'manageProjAddSite'}
+          <button id={'manageProjAddSite'}
             onClick={() => {
               setShowForm(true);
               setGeoJson(null);
               setSiteDetails(defaultSiteDetails);
-              setSiteGUID(null);
+              setSiteGUID(null)
               seteditMode(false);
               setOpenModal(false);
             }}
@@ -502,7 +470,10 @@ export default function ProjectSites({
 
         <div className={styles.formField}>
           <div className={`${styles.formFieldHalf}`}>
-            <button onClick={handleBack} className="secondaryButton">
+            <button
+              onClick={handleBack}
+              className="secondaryButton"
+            >
               <BackArrow />
               <p>{t('manageProjects:backToAnalysis')}</p>
             </button>
@@ -512,7 +483,7 @@ export default function ProjectSites({
             <button
               onClick={handleSubmit(uploadProjectSiteNext)}
               className="primaryButton"
-              style={{ minWidth: '240px' }}
+              style={{ minWidth: "240px" }}
               data-test-id="projSitesCont"
             >
               {isUploadingData ? (
@@ -547,22 +518,7 @@ interface EditSiteProps {
   siteList: any;
 }
 
-function EditSite({
-  openModal,
-  handleModalClose,
-  changeSiteDetails,
-  siteDetails,
-  status,
-  geoJsonProp,
-  ready,
-  projectGUID,
-  setSiteList,
-  token,
-  setFeatures,
-  seteditMode,
-  siteGUID,
-  siteList,
-}: EditSiteProps) {
+function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails, status, geoJsonProp, ready, projectGUID, setSiteList, token, setFeatures, seteditMode, siteGUID, siteList }: EditSiteProps) {
   const { theme } = React.useContext(ThemeContext);
   const { t } = useTranslation(['manageProjects']);
   const { register, handleSubmit, errors, control } = useForm();
@@ -575,24 +531,24 @@ function EditSite({
   const useStylesAutoComplete = makeStyles({
     root: {
       color:
-        theme === 'theme-light'
+        theme === "theme-light"
           ? `${themeProperties.light.primaryFontColor} !important`
           : `${themeProperties.dark.primaryFontColor} !important`,
       backgroundColor:
-        theme === 'theme-light'
+        theme === "theme-light"
           ? `${themeProperties.light.backgroundColor} !important`
           : `${themeProperties.dark.backgroundColor} !important`,
     },
     option: {
       // color: '#2F3336',
-      '&:hover': {
+      "&:hover": {
         backgroundColor:
-          theme === 'theme-light'
+          theme === "theme-light"
             ? `${themeProperties.light.backgroundColorDark} !important`
             : `${themeProperties.dark.backgroundColorDark} !important`,
       },
-    },
-  });
+    }
+  })
   const classes = useStylesAutoComplete();
 
   const MapProps = {
@@ -602,8 +558,8 @@ function EditSite({
     setGeoJsonError,
     geoLocation: {
       geoLatitude: 36.96,
-      geoLongitude: -28.5,
-    },
+      geoLongitude: -28.5
+    }
   };
 
   const editProjectSite = (data: any) => {
@@ -617,8 +573,7 @@ function EditSite({
       putAuthenticatedRequest(
         `/app/projects/${projectGUID}/sites/${siteGUID}`,
         submitData,
-        token,
-        handleError
+        token, handleError
       ).then((res) => {
         if (!res.code) {
           const temp = siteList;
@@ -626,7 +581,7 @@ function EditSite({
           temp.find((site, index) => {
             if (site.id === res.id) {
               siteIndex = index;
-              return true;
+              return true
             }
           });
           if (siteIndex !== null) {
@@ -667,13 +622,7 @@ function EditSite({
       }}
     >
       <Fade in={openModal}>
-        <form
-          style={{
-            backgroundColor: 'white',
-            padding: '20px',
-            borderRadius: '10px',
-          }}
-        >
+        <form style={{ backgroundColor: 'white', padding: '20px', borderRadius: '10px' }}>
           <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
             <div className={styles.formField}>
               <div className={styles.formFieldHalf}>
@@ -698,14 +647,10 @@ function EditSite({
                       value={siteDetails.status}
                     >
                       {status.map((option) => (
-                        <MenuItem
-                          key={option.value}
-                          value={option.value}
-                          classes={{
-                            // option: classes.option,
-                            root: classes.root,
-                          }}
-                        >
+                        <MenuItem key={option.value} value={option.value} classes={{
+                          // option: classes.option,
+                          root: classes.root,
+                        }}>
                           {option.label}
                         </MenuItem>
                       ))}
@@ -725,6 +670,7 @@ function EditSite({
             </div>
 
             <Map {...MapProps} />
+
           </div>
 
           {errorMessage && errorMessage !== '' ? (
@@ -735,7 +681,10 @@ function EditSite({
 
           <div className={styles.formField}>
             <div className={`${styles.formFieldHalf}`}>
-              <button onClick={handleModalClose} className="secondaryButton">
+              <button
+                onClick={handleModalClose}
+                className="secondaryButton"
+              >
                 <BackArrow />
                 <p>{t('manageProjects:backToSites')}</p>
               </button>
@@ -745,7 +694,7 @@ function EditSite({
               <button
                 onClick={handleSubmit(editProjectSite)}
                 className="primaryButton"
-                style={{ minWidth: '240px' }}
+                style={{ minWidth: "240px" }}
               >
                 {isUploadingData ? (
                   <div className={styles.spinner}></div>
@@ -758,5 +707,5 @@ function EditSite({
         </form>
       </Fade>
     </Modal>
-  );
+  )
 }

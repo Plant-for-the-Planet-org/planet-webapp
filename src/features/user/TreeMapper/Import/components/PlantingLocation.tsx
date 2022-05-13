@@ -70,10 +70,7 @@ export default function PlantingLocation({
     ],
   };
   const { register, handleSubmit, errors, control, reset, setValue, watch } =
-    useForm({
-      mode: 'onBlur',
-      defaultValues: plantLocation ? plantLocation : defaultValues,
-    });
+    useForm({ mode: 'onBlur', defaultValues: plantLocation ? plantLocation : defaultValues });
 
   const { fields, append, remove, prepend } = useFieldArray({
     control,
@@ -86,7 +83,7 @@ export default function PlantingLocation({
         setProjects(projects);
       }
     );
-  };
+  }
 
   const loadMySpecies = async () => {
     await getAuthenticatedRequest('/treemapper/species', token).then(
@@ -94,7 +91,7 @@ export default function PlantingLocation({
         setMySpecies(species);
       }
     );
-  };
+  }
 
   React.useEffect(() => {
     if (contextLoaded) {
@@ -113,7 +110,7 @@ export default function PlantingLocation({
       } else {
         setGeoJsonError(true);
       }
-    } else if (geoJson?.type && geoJson.type === 'Polygon') {
+    } else if (geoJson?.type && geoJson.type === "Polygon") {
       setGeoJsonError(false);
       setGeoJson(geoJson);
       setActiveMethod('editor');
@@ -174,7 +171,7 @@ export default function PlantingLocation({
     accept: ['.geojson', '.kml'],
     multiple: false,
     onDrop: onDrop,
-    onDropAccepted: () => {},
+    onDropAccepted: () => { },
     onFileDialogCancel: () => setIsUploadingData(false),
   });
 
@@ -191,28 +188,26 @@ export default function PlantingLocation({
         plantProject: data.plantProject,
       };
 
-      postAuthenticatedRequest(
-        `/treemapper/plantLocations`,
-        submitData,
-        token
-      ).then((res: any) => {
-        if (!res.code) {
-          setErrorMessage('');
-          setPlantLocation(res);
-          setIsUploadingData(false);
-          handleNext();
-        } else {
-          if (res.code === 404) {
+      postAuthenticatedRequest(`/treemapper/plantLocations`, submitData, token).then(
+        (res: any) => {
+          if (!res.code) {
+            setErrorMessage('');
+            setPlantLocation(res);
             setIsUploadingData(false);
-            setErrorMessage(res.message);
-          } else if (res.code === 400) {
-            setIsUploadingData(false);
+            handleNext();
           } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
+            if (res.code === 404) {
+              setIsUploadingData(false);
+              setErrorMessage(res.message);
+            } else if (res.code === 400) {
+              setIsUploadingData(false);
+            } else {
+              setIsUploadingData(false);
+              setErrorMessage(res.message);
+            }
           }
         }
-      });
+      );
     } else {
       setGeoJsonError(true);
     }
@@ -228,7 +223,10 @@ export default function PlantingLocation({
               className={styles.fileUploadContainer}
               {...getRootProps()}
             >
-              <button className="primaryButton" style={{ maxWidth: '200px' }}>
+              <button
+                className="primaryButton"
+                style={{ maxWidth: '200px' }}
+              >
                 <input {...getInputProps()} />
                 {isUploadingData ? (
                   <div className={styles.spinner}></div>
@@ -236,9 +234,7 @@ export default function PlantingLocation({
                   t('treemapper:uploadFile')
                 )}
               </button>
-              <p style={{ marginTop: '18px' }}>
-                {t('treemapper:fileFormatKML')}
-              </p>
+              <p style={{ marginTop: '18px' }}>{t('treemapper:fileFormatKML')}</p>
             </label>
           </>
         );
@@ -293,8 +289,8 @@ export default function PlantingLocation({
                 inputRef={register({
                   required: {
                     value: true,
-                    message: t('me:datePlantedRequired'),
-                  },
+                    message: t('me:datePlantedRequired')
+                  }
                 })}
                 name="plantDate"
                 control={control}
@@ -344,12 +340,10 @@ export default function PlantingLocation({
       <div className={styles.formFieldLarge}>
         <div className={styles.importTabs}>
           {importMethods.map((method, index) => (
-            <div
-              key={index}
+            <div key={index}
               onClick={() => setActiveMethod(method)}
-              className={`${styles.importTab} ${
-                activeMethod === method ? styles.active : ''
-              }`}
+              className={`${styles.importTab} ${activeMethod === method ? styles.active : ''
+                }`}
             >
               {t(`treemapper:${method}`)}
             </div>
@@ -361,28 +355,26 @@ export default function PlantingLocation({
         </div>
       </div>
       <div className={styles.formSubTitle}>{t('maps:speciesPlanted')}</div>
-      {mySpecies &&
-        fields.map((item, index) => {
-          return (
-            <PlantedSpecies
-              key={index}
-              index={index}
-              t={t}
-              register={register}
-              remove={remove}
-              setValue={setValue}
-              errors={errors}
-              mySpecies={mySpecies}
-              item={item}
-              control={control}
-            />
-          );
-        })}
+      {mySpecies && fields.map((item, index) => {
+        return (
+          <PlantedSpecies
+            key={index}
+            index={index}
+            t={t}
+            register={register}
+            remove={remove}
+            setValue={setValue}
+            errors={errors}
+            mySpecies={mySpecies}
+            item={item}
+            control={control}
+          />
+        );
+      })}
       <div
         onClick={() => {
           append({
-            otherSpecies: '',
-            treeCount: 0,
+            otherSpecies: "", treeCount: 0
           });
         }}
         className={styles.addSpeciesButton}
@@ -436,25 +428,22 @@ function PlantedSpecies({
         {/* <SpeciesSelect label={t('treemapper:species')} name={`plantedSpecies[${index}].species`} mySpecies={mySpecies} control={control} /> */}
         <MaterialTextField
           inputRef={register({
-            required: index
-              ? false
-              : {
-                  value: true,
-                  message: t('treemapper:atLeastOneSpeciesRequired'),
-                },
+            required: index ? false : {
+              value: true,
+              message: t('treemapper:atLeastOneSpeciesRequired')
+            }
           })}
           label={t('treeSpecies')}
           variant="outlined"
           name={`plantedSpecies[${index}].otherSpecies`}
           defaultValue={item.otherSpecies ? item.otherSpecies : ''}
         />
-        {errors.plantedSpecies &&
-          errors.plantedSpecies[index]?.otherSpecies && (
-            <span className={styles.errorMessage}>
-              {errors.plantedSpecies[index]?.otherSpecies &&
-                errors.plantedSpecies[index]?.otherSpecies.message}
-            </span>
-          )}
+        {errors.plantedSpecies && errors.plantedSpecies[index]?.otherSpecies && (
+          <span className={styles.errorMessage}>
+            {errors.plantedSpecies[index]?.otherSpecies &&
+              errors.plantedSpecies[index]?.otherSpecies.message}
+          </span>
+        )}
       </div>
       <div className={styles.speciesCountField}>
         <MaterialTextField
@@ -462,9 +451,9 @@ function PlantedSpecies({
             required: index
               ? false
               : {
-                  value: true,
-                  message: t('treemapper:treesRequired'),
-                },
+                value: true,
+                message: t('treemapper:treesRequired'),
+              },
             validate: (value: any) => parseInt(value, 10) >= 1,
           })}
           onInput={(e: any) => {

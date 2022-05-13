@@ -12,11 +12,9 @@ const config = {
   // font family and it's property particular to tenant
   font: {
     primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
-    primaryFontURL:
-      'https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&display=swap',
+    primaryFontURL: "https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&display=swap",
     secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
-    secondaryFontURL:
-      'https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap',
+    secondaryFontURL: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap",
   },
   languages: ['en', 'de', 'es', 'fr', 'it', 'pt-BR'],
   header: {
@@ -42,40 +40,39 @@ const config = {
           {
             title: 'overview',
             onclick: 'https://a.plant-for-the-planet.org/',
-            visible: true,
+            visible: true
           },
           {
             title: 'childrenAndYouth',
             onclick: 'https://a.plant-for-the-planet.org/children-youth/',
-            visible: true,
+            visible: true
           },
           {
             title: 'trillionTrees',
             onclick: 'https://a.plant-for-the-planet.org/trillion-trees/',
-            visible: true,
+            visible: true
           },
           {
             title: 'yucatan',
             onclick: 'https://a.plant-for-the-planet.org/yucatan/',
-            visible: true,
+            visible: true
           },
           {
             title: 'partners',
             onclick: 'https://a.plant-for-the-planet.org/partners/',
-            visible: true,
+            visible: true
           },
           {
             title: 'changeChocolate',
             onclick: 'https://a.plant-for-the-planet.org/change-chocolate/',
-            visible: true,
+            visible: true
           },
           {
             title: 'stopTalkingStartPlanting',
-            onclick:
-              'https://a.plant-for-the-planet.org/stop-talking-start-planting/',
-            visible: true,
-          },
-        ],
+            onclick: 'https://a.plant-for-the-planet.org/stop-talking-start-planting/',
+            visible: true
+          }
+        ]
       },
       leaderboard: {
         title: 'leaders',
@@ -93,7 +90,7 @@ const config = {
         onclick: 'https://thegoodshop.org',
         visible: true,
       },
-    },
+    }
   },
   meta: {
     title: 'Plant trees around the world - Plant-for-the-Planet',
@@ -104,20 +101,7 @@ const config = {
     twitterHandle: '@trilliontrees',
     locale: 'en_US',
   },
-  footerLinks: [
-    'shop',
-    'privacy',
-    'terms',
-    'imprint',
-    'contact',
-    'downloads',
-    'annualReports',
-    'team',
-    'jobs',
-    'supportUs',
-    'blogs',
-    'faqs',
-  ],
+  footerLinks:["shop","privacy","terms","imprint","contact","downloads","annualReports","team","jobs","supportUs","blogs", "faqs"],
   manifest: '/tenants/planet/manifest.json',
 };
 export default config;

@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-function Icon(props: any) {
+function Icon(props:any) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -9,7 +9,7 @@ function Icon(props: any) {
       viewBox="0 0 11.175 6.585"
     >
       <path
-        fill={props.color ? props.color : '#87b738'}
+        fill={props.color ? props.color: "#87b738"}
         d="M14.71 6.71a1 1 0 00-1.41 0L8.71 11.3a1 1 0 000 1.41l4.59 4.59a1 1 0 001.41-1.41L10.83 12l3.88-3.88a1 1 0 000-1.41z"
         data-name="Path 3007"
         transform="rotate(-90 4.293 10.71)"
