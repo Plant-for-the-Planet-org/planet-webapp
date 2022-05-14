@@ -7,11 +7,9 @@ export default function ToggleSwitch(props: any) {
     '& .MuiSwitch-switchBase.Mui-checked': {
       color: props.color ? props.color : theme.primaryColor,
     },
-    checked: {},
     track: {
       backgroundColor: '#787878',
     },
-  })(Switch);
     '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
       backgroundColor: props.color ? props.color : theme.primaryColor,
     },
