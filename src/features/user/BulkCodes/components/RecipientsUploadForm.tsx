@@ -2,6 +2,16 @@ import { useState, ReactElement, useEffect } from 'react';
 import { parse, ParseResult } from 'papaparse';
 
 import UploadWidget, { UploadStates } from './UploadWidget';
+import RecipientsTable from './RecipientsTable';
+
+const acceptedHeaders = [
+  'recipient_name',
+  'recipient_email',
+  'recipient_notify',
+  'units',
+  'recipient_message',
+  'recipient_occasion',
+];
 
 interface RecipientsUploadFormProps {
   onRecipientsUploaded: (recipients: Object[]) => void;
@@ -23,16 +33,8 @@ const RecipientsUploadForm = ({
 
   const checkHeaderValidity = (headers: string[]): boolean => {
     let isValid = true;
-    const validHeaders = [
-      'recipient_name',
-      'recipient_email',
-      'recipient_notify',
-      'recipient_message',
-      'recipient_occasion',
-      'units',
-    ];
-    for (const validHeader of validHeaders) {
-      if (!headers.includes(validHeader)) {
+    for (const acceptedHeader of acceptedHeaders) {
+      if (!headers.includes(acceptedHeader)) {
         isValid = false;
       }
     }
@@ -50,14 +52,7 @@ const RecipientsUploadForm = ({
           if (parsedHeaders && checkHeaderValidity(parsedHeaders)) {
             setHeaders(
               parsedHeaders.filter((header) => {
-                return [
-                  'recipient_name',
-                  'recipient_email',
-                  'recipient_notify',
-                  'recipient_message',
-                  'recipient_occasion',
-                  'units',
-                ].includes(header);
+                return acceptedHeaders.includes(header);
               })
             );
             setRecipients(
@@ -93,12 +88,17 @@ const RecipientsUploadForm = ({
   }, [recipients]);
 
   return (
-    <UploadWidget
-      status={status}
-      onStatusChange={handleStatusChange}
-      onFileUploaded={processFileContents}
-      parseError={parseError ? parseError : undefined}
-    />
+    <>
+      <UploadWidget
+        status={status}
+        onStatusChange={handleStatusChange}
+        onFileUploaded={processFileContents}
+        parseError={parseError ? parseError : undefined}
+      />
+      {recipients.length > 0 && (
+        <RecipientsTable headers={acceptedHeaders} recipients={recipients} />
+      )}
+    </>
   );
 };
 
