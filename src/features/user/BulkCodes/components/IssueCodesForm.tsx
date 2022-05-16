@@ -114,7 +114,18 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
               />
             )}
           />
-
+          <Controller
+            name="occasion"
+            control={control}
+            render={({ onChange, value }) => (
+              <TextField
+                onChange={onChange}
+                defaultValue=""
+                value={value}
+                label={t('bulkCodes:occasion')}
+              />
+            )}
+          />
           {bulkMethod === 'generic' && (
             <InlineFormGroup>
               <div style={{ width: '100%' }}>
@@ -173,18 +184,6 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
               currentRecipients={localRecipients}
             />
           )}
-          <Controller
-            name="occasion"
-            control={control}
-            render={({ onChange, value }) => (
-              <TextField
-                onChange={onChange}
-                defaultValue=""
-                value={value}
-                label={t('bulkCodes:occasion')}
-              />
-            )}
-          />
           <BulkGiftTotal
             amount={
               project
