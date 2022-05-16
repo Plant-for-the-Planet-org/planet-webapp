@@ -286,9 +286,7 @@ export default function BasicDetails({
   };
 
   const [acceptDonations, setAcceptDonations] = useState(false);
-  /**
-   * *if project is already had created then user can visit to  other forms using skip button
-   */
+  //if project is already had created then user can visit to  other forms using skip button
   React.useEffect(() => {
     if (projectDetails.id) {
       setSkipButtonVisible(true);
@@ -336,6 +334,7 @@ export default function BasicDetails({
               latitude: projectDetails.geoLatitude,
               longitude: projectDetails.geoLongitude,
               ecosystems: projectDetails?.metadata?.ecosystems,
+              visitorAssistance: projectDetails?.metadata?.visitorAssistance,
             };
       if (projectDetails.geoLongitude && projectDetails.geoLatitude) {
         setProjectCoords([
@@ -404,6 +403,7 @@ export default function BasicDetails({
             currency: 'EUR',
             metadata: {
               ecosystems: data.ecosystems,
+              visitorAssistance: data.visitorAssistance,
             },
           };
 
@@ -736,7 +736,11 @@ export default function BasicDetails({
                       parseNumber(i18n.language, value) > 0 &&
                       parseNumber(i18n.language, value) <= 100,
                   })}
-                  label={t('manageProjects:unitCost')}
+                  label={
+                    projectDetails.purpose === 'trees'
+                      ? t('manageProjects:unitCost')
+                      : t('manageProjects:unitCostConservation')
+                  }
                   variant="outlined"
                   type="number"
                   name="unitCost"

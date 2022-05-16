@@ -251,7 +251,6 @@ export default function DetailedAnalysis({
               areaProtected: data.areaProtected,
               employeesCount: data.employeesCount,
               startingProtectionYear: data.startingProtectionYear.getFullYear(),
-              // ownershipType: data.siteOwnerName,
               landOwnershipType: owners,
               actions: data.actions,
               mainChallenge: data.mainChallenge,
@@ -261,7 +260,7 @@ export default function DetailedAnalysis({
               siteOwnerName: data.siteOwnerName,
             },
           };
-
+    console.log(projectDetails);
     putAuthenticatedRequest(
       `/app/projects/${projectGUID}`,
       submitData,
@@ -292,9 +291,11 @@ export default function DetailedAnalysis({
       const detailedAnalysis =
         purpose === 'trees'
           ? {
-              acquisitionYear: projectDetails.acquisitionYear
+              acquisitionYear: projectDetails.metadata.acquisitionYear
                 ? new Date(
-                    new Date().setFullYear(projectDetails.acquisitionYear)
+                    new Date().setFullYear(
+                      projectDetails.metadata.acquisitionYear
+                    )
                   )
                 : new Date(),
               yearAbandoned: projectDetails.metadata.yearAbandoned
@@ -315,14 +316,14 @@ export default function DetailedAnalysis({
                     )
                   )
                 : new Date(),
-              // degradationCause: projectDetails.projectMeta.degradationCause,
+              degradationCause: projectDetails.metadata.degradationCause,
 
               firstTreePlanted: projectDetails.firstTreePlanted
                 ? new Date(projectDetails.firstTreePlanted)
                 : new Date(),
-              // mainChallenge: projectDetails.projectMeta.mainChallenge,
-              // longTermPlan: projectDetails.projectMeta.longTermPlan,
-              // motivation: projectDetails.projectMeta.motivation,
+              mainChallenge: projectDetails.metadata.mainChallenge,
+              longTermPlan: projectDetails.metadata.longTermPlan,
+              motivation: projectDetails.metadata.motivation,
             }
           : {
               areaProtected: projectDetails.metadata.areaProtected,
@@ -350,7 +351,8 @@ export default function DetailedAnalysis({
               longTermPlan: projectDetails.metadata.longTermPlan,
               siteOwnerName: projectDetails.metadata.siteOwnerName,
               // ownershipType: projectDetails.metadata.ownershipType,
-
+              benefits: projectDetails.metadata.benefits,
+              actions: projectDetails.metadata.actions,
               motivation: projectDetails.metadata.motivation,
             };
 
