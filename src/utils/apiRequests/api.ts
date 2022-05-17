@@ -150,7 +150,8 @@ export async function postAuthenticatedRequest(
   url: any,
   data: any,
   token: any,
-  errorHandler?: Function
+  errorHandler?: Function,
+  headers?: any
 ): Promise<any> {
   if (validateToken(token)) {
     const res = await fetch(process.env.API_ENDPOINT + url, {
@@ -166,6 +167,7 @@ export async function postAuthenticatedRequest(
             ? localStorage.getItem('language')
             : 'en'
         }`,
+        ...(headers ? headers : {}),
       },
     });
     const result = await res.json();
