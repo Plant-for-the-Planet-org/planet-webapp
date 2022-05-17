@@ -59,7 +59,10 @@
     "tooManyFiles": "Please upload only a single CSV file",
     "fileTooSmall": "The uploaded file seems to be empty",
     "fileTooLarge": "The uploaded file must be 5MB or less",
-    "unexpectedColumn": "Unexpected column",
+    "missingColumns": "The uploaded file does not contain the following columns: ",
     "generalError": "Something went wrong. Please try after a while" 
+  },
+  "successUploadCSV": {
+	  "ignoredColumns": "Extra columns in the CSV were ignored"
   }
 }
