@@ -73,9 +73,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             handleError,
             { 'IDEMPOTENCY-KEY': uuidv4() }
           );
-          if (res.status === 200) {
-            router.push(`/profile/history?ref=${res.uid}`);
-          }
+          router.push(`/profile/history?ref=${res.uid}`);
         } catch (err) {
           console.error(err);
         }
