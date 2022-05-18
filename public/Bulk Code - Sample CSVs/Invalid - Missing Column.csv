@@ -1,0 +1,14 @@
+recipient_name,recipient_notify,units
+text - optional,yes/no - optional,number - mandatory
+Robert Lewandowski,yes,10
+Thomas Müller,yes,20
+Alphonso Davies,no,21
+Leroy Sanè,yes,5
+Robert Lewandowski,yes,10
+Thomas Müller,yes,20
+Alphonso Davies,no,21
+Leroy Sanè,yes,5
+Robert Lewandowski,yes,10
+Thomas Müller,yes,20
+Alphonso Davies,no,21
+Leroy Sanè,yes,5
