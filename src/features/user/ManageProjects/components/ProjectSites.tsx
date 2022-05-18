@@ -233,20 +233,37 @@ export default function ProjectSites({
 
   const status = [
     {
-      label: ready ? t('manageProjects:siteStatusPlanting') : '',
-      value: 'planting',
+      label: ready
+        ? projectDetails.purpose === 'trees'
+          ? t('manageProjects:siteStatusPlanting')
+          : t('manageProjects:siteStatusYetprotected')
+        : '',
+      value: projectDetails.purpose === 'trees' ? 'planting' : 'yet protected',
     },
     {
-      label: ready ? t('manageProjects:siteStatusPlanted') : '',
-      value: 'planted',
+      label: ready
+        ? projectDetails.purpose === 'trees'
+          ? t('manageProjects:siteStatusPlanted')
+          : t('manageProjects:siteStatusPartiallyprotected')
+        : '',
+      value:
+        projectDetails.purpose === 'trees' ? 'planted' : 'partially protected',
     },
     {
-      label: ready ? t('manageProjects:siteStatusBarren') : '',
-      value: 'barren',
+      label: ready
+        ? projectDetails.purpose === 'trees'
+          ? t('manageProjects:siteStatusBarren')
+          : t('manageProjects:siteStatusFullyprotected')
+        : '',
+      value: projectDetails.purpose === 'trees' ? 'barren' : 'fully protected',
     },
     {
-      label: ready ? t('manageProjects:siteStatusReforestation') : '',
-      value: 'reforestation',
+      label: ready
+        ? projectDetails.purpose === 'trees'
+          ? t('manageProjects:siteStatusReforestation')
+          : ''
+        : '',
+      value: projectDetails.purpose === 'trees' ? 'reforestation' : '',
     },
   ];
 
@@ -437,48 +454,44 @@ export default function ProjectSites({
                 )}
               </div>
               <div style={{ width: '20px' }}></div>
-              {projectDetails.purpose === 'trees' ? (
-                <div className={styles.formFieldHalf} data-test-id="siteStatus">
-                  <Controller
-                    as={
-                      <MaterialTextField
-                        label={t('manageProjects:siteStatus')}
-                        variant="outlined"
-                        name="status"
-                        onChange={changeSiteDetails}
-                        select
-                        value={siteDetails.status}
-                      >
-                        {status.map((option) => (
-                          <MenuItem
-                            key={option.value}
-                            value={option.value}
-                            classes={{
-                              // option: classes.option,
-                              root: classes.root,
-                            }}
-                          >
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </MaterialTextField>
-                    }
-                    name="status"
-                    rules={{
-                      required: t('manageProjects:selectProjectStatus'),
-                    }}
-                    control={control}
-                    defaultValue={siteDetails.status ? siteDetails.status : ''}
-                  />
-                  {errors.status && (
-                    <span className={styles.formErrors}>
-                      {errors.status.message}
-                    </span>
-                  )}
-                </div>
-              ) : (
-                <></>
-              )}
+              <div className={styles.formFieldHalf} data-test-id="siteStatus">
+                <Controller
+                  as={
+                    <MaterialTextField
+                      label={t('manageProjects:siteStatus')}
+                      variant="outlined"
+                      name="status"
+                      onChange={changeSiteDetails}
+                      select
+                      value={siteDetails.status}
+                    >
+                      {status.map((option) => (
+                        <MenuItem
+                          key={option.value}
+                          value={option.value}
+                          classes={{
+                            // option: classes.option,
+                            root: classes.root,
+                          }}
+                        >
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </MaterialTextField>
+                  }
+                  name="status"
+                  rules={{
+                    required: t('manageProjects:selectProjectStatus'),
+                  }}
+                  control={control}
+                  defaultValue={siteDetails.status ? siteDetails.status : ''}
+                />
+                {errors.status && (
+                  <span className={styles.formErrors}>
+                    {errors.status.message}
+                  </span>
+                )}
+              </div>
             </div>
 
             {geoLocation && <Map {...MapProps} />}
