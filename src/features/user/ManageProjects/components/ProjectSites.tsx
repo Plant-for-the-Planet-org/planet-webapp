@@ -236,7 +236,7 @@ export default function ProjectSites({
       label: ready
         ? projectDetails.purpose === 'trees'
           ? t('manageProjects:siteStatusPlanting')
-          : t('manageProjects:siteStatusYetprotected')
+          : t('manageProjects:siteStatusNotYetprotected')
         : '',
       value: projectDetails.purpose === 'trees' ? 'planting' : 'yet protected',
     },

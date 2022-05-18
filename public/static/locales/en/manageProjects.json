@@ -79,7 +79,7 @@
   "siteStatusPlanted": "Planted",
   "siteStatusBarren": "Barren",
   "siteStatusReforestation": "Reforestation",
-  "siteStatusYetprotected": "Yet protected",
+  "siteStatusNotYetprotected": "Not Yet protected",
   "siteStatusPartiallyprotected": "Partially protected",
   "siteStatusFullyprotected": "Fully protected",
   "siteStatus": "Site Status",
