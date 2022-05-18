@@ -1,4 +1,5 @@
 import React, { ReactElement, useContext, useState } from 'react';
+import axios from 'axios';
 import i18next from '../../../../../i18n';
 import { Button, TextField, styled } from 'mui-latest';
 import { useForm, Controller, ControllerRenderProps } from 'react-hook-form';
@@ -19,6 +20,8 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { v4 as uuidv4 } from 'uuid';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeMethods';
+import { TENANT_ID } from '../../../../utils/constants/environment';
+import getsessionId from '../../../../utils/apiRequests/getSessionId';
 
 const { useTranslation } = i18next;
 
@@ -66,16 +69,30 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
         const token = await getAccessTokenSilently();
 
         try {
-          const res = await postAuthenticatedRequest(
-            '/app/donations',
+          const res = await axios.post(
+            process.env.API_ENDPOINT + '/app/donations',
             cleanedData,
-            token,
-            handleError,
-            { 'IDEMPOTENCY-KEY': uuidv4() }
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                'tenant-key': `${TENANT_ID}`,
+                'X-SESSION-ID': await getsessionId(),
+                Authorization: `Bearer ${token}`,
+                'x-locale': `${
+                  localStorage.getItem('language')
+                    ? localStorage.getItem('language')
+                    : 'en'
+                }`,
+                'IDEMPOTENCY-KEY': uuidv4(),
+              },
+            }
           );
-          router.push(`/profile/history?ref=${res.uid}`);
+          if (res.status === 200) {
+            router.push(`/profile/history?ref=${res.data.uid}`);
+          }
         } catch (err) {
           console.error(err);
+          handleError(err);
         }
       } else {
         throw new Error('Project not selected');
