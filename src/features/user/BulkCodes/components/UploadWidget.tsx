@@ -15,7 +15,7 @@ const { useTranslation } = i18next;
 interface UploadWidgetInterface {
   status: UploadStates;
   onFileUploaded: (fileContents: string) => void;
-  onStatusChange: (newStatus: UploadStates, error?: Object) => void;
+  onStatusChange: (newStatus: UploadStates) => void;
   parseError: FileImportError | null;
   hasIgnoredColumns: boolean;
 }
@@ -50,29 +50,49 @@ const UploadWidget = ({
 
   useEffect(() => {
     if (parseError) {
-      handleError(parseError.type);
+      handleError('parseError', parseError);
     }
   }, [parseError]);
 
-  const handleError = (errorType: string) => {
+  const handleError = (errorType: string, error?: FileImportError) => {
     switch (errorType) {
       case ErrorCode.FileInvalidType:
-        setError({ type: 'fileInvalidType' });
+        setError({
+          type: 'fileInvalidType',
+          message: t('bulkCodes:errorUploadCSV.fileInvalidType'),
+        });
         break;
       case ErrorCode.TooManyFiles:
-        setError({ type: 'tooManyFiles' });
+        setError({
+          type: 'tooManyFiles',
+          message: t('bulkCodes:errorUploadCSV.tooManyFiles'),
+        });
         break;
       case ErrorCode.FileTooLarge:
-        setError({ type: 'fileTooLarge' });
+        setError({
+          type: 'fileTooLarge',
+          message: t('bulkCodes:errorUploadCSV.fileTooLarge'),
+        });
         break;
       case ErrorCode.FileTooSmall:
-        setError({ type: 'fileTooSmall' });
+        setError({
+          type: 'fileTooSmall',
+          message: t('bulkCodes:errorUploadCSV.fileTooSmall'),
+        });
         break;
-      case 'missingColumns':
-        if (parseError) setError({ ...parseError });
+      case 'parseError':
+        if (error) setError({ ...error });
+        else
+          setError({
+            type: 'generalError',
+            message: t('bulkCodes:errorUploadCSV.generalError'),
+          });
         break;
       default:
-        setError({ type: 'generalError' });
+        setError({
+          type: 'generalError',
+          message: t('bulkCodes:errorUploadCSV.generalError'),
+        });
         break;
     }
     onStatusChange('error');
@@ -117,12 +137,9 @@ const UploadWidget = ({
         }
         break;
       case 'error':
-        statusText = `${t(`bulkCodes:statusUploadCSV.${status}`)} - ${t(
-          `bulkCodes:errorUploadCSV.${error?.type}`
-        )}`;
-        if (error && error.type === 'missingColumns' && error.missingColumns) {
-          statusText = statusText.concat(error.missingColumns.join(', '));
-        }
+        statusText = `${t(`bulkCodes:statusUploadCSV.${status}`)} - ${
+          error?.message
+        }`;
         break;
       default:
         return null;

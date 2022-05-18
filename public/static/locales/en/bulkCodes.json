@@ -60,6 +60,10 @@
     "fileTooSmall": "The uploaded file seems to be empty",
     "fileTooLarge": "The uploaded file must be 5MB or less",
     "missingColumns": "The uploaded file does not contain the following columns: ",
+	"noRecipientData": "No recipient data found",
+	"unitsNotProvided": "Units are missing for some recipients",
+	"notifyNotPossible": "Email and name are missing for some recipients that are to be notified",
+	"invalidEmails": "The emails provided are invalid on the following rows: ",
     "generalError": "Something went wrong. Please try after a while" 
   },
   "successUploadCSV": {

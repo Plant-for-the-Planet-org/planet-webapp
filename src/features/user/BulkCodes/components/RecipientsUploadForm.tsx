@@ -1,9 +1,17 @@
 import { useState, ReactElement, useEffect } from 'react';
 import { parse, ParseResult } from 'papaparse';
+import i18next from '../../../../../i18n';
 
 import UploadWidget from './UploadWidget';
 import RecipientsTable from './RecipientsTable';
-import { Recipient, FileImportError, UploadStates } from '../BulkCodesTypes';
+import {
+  Recipient,
+  FileImportError,
+  UploadStates,
+  ExtendedRecipient,
+} from '../BulkCodesTypes';
+
+const { useTranslation } = i18next;
 
 const acceptedHeaders = [
   'recipient_name',
@@ -28,6 +36,7 @@ const RecipientsUploadForm = ({
   const [hasIgnoredColumns, setHasIgnoredColumns] = useState(false);
   const [headers, setHeaders] = useState<string[]>([]);
   const [recipients, setRecipients] = useState<Object[]>(localRecipients);
+  const { t, ready } = useTranslation(['bulkCodes']);
 
   const handleStatusChange = (newStatus: UploadStates) => {
     setStatus(newStatus);
@@ -54,6 +63,85 @@ const RecipientsUploadForm = ({
     };
   };
 
+  const validateRecipients = (
+    recipients: ExtendedRecipient[]
+  ): Recipient[] | false => {
+    //   Check recipient data is present
+    if (!recipients.length) {
+      setParseError({
+        type: 'noRecipientData',
+        message: ready ? t('bulkCodes:errorUploadCSV.noRecipientData') : '',
+      });
+      return false;
+    }
+
+    // Check recipient has "units" field, and this is a number
+    const hasUnits = recipients.every((recipient) => {
+      const units = Number(recipient.units);
+      return Number.isInteger(units) && units > 0;
+    });
+
+    if (!hasUnits) {
+      setParseError({
+        type: 'unitsNotProvided',
+        message: ready ? t('bulkCodes:errorUploadCSV.unitsNotProvided') : '',
+      });
+      return false;
+    }
+
+    // Check that email and name are provided if notify is true
+    const isNotifyPossible = recipients.every((recipient) => {
+      const { recipient_name, recipient_email, recipient_notify } = recipient;
+      return (
+        recipient_notify !== 'yes' ||
+        (recipient_notify === 'yes' &&
+          recipient_name.length &&
+          recipient_email.length)
+      );
+    });
+
+    if (!isNotifyPossible) {
+      setParseError({
+        type: 'notifyNotPossible',
+        message: ready ? t('bulkCodes:errorUploadCSV.notifyNotPossible') : '',
+      });
+      return false;
+    }
+
+    // Check if email is valid
+    const invalidEmailIndexes: number[] = [];
+    recipients.forEach((recipient, index) => {
+      const { recipient_email } = recipient;
+      const emailRegex =
+        /^([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/i;
+      if (!emailRegex.test(recipient_email) && recipient_email.length !== 0)
+        invalidEmailIndexes.push(index + 1);
+    });
+
+    if (invalidEmailIndexes.length > 0) {
+      setParseError({
+        type: 'invalidEmails',
+        message: ready
+          ? `${t(
+              'bulkCodes:errorUploadCSV.invalidEmails'
+            )} ${invalidEmailIndexes.join(', ')}`
+          : '',
+      });
+      return false;
+    }
+
+    return recipients.map((recipient) => {
+      return {
+        recipient_name: recipient['recipient_name'],
+        recipient_email: recipient['recipient_email'],
+        recipient_notify: recipient['recipient_notify'],
+        recipient_message: recipient['recipient_message'],
+        recipient_occasion: recipient['recipient_occasion'],
+        units: recipient['units'],
+      };
+    });
+  };
+
   const processFileContents = (fileContents: string) => {
     parse(fileContents, {
       header: true,
@@ -62,38 +150,40 @@ const RecipientsUploadForm = ({
           const parsedHeaders = results.meta.fields || [];
           const parsedData = results.data;
           const headerValidity = checkHeaderValidity(parsedHeaders);
-          console.log(headerValidity);
           if (headerValidity.isValid) {
             setHeaders(acceptedHeaders);
+
+            // Check if any columns in uploaded csv were ignored
             parsedHeaders.length > 6
               ? setHasIgnoredColumns(true)
               : setHasIgnoredColumns(false);
-            setRecipients(
-              parsedData
-                .filter((_data, index) => index !== 0) //Ignore first row which contains help instructions
-                .map((recipient: any) => {
-                  return {
-                    recipient_name: recipient['recipient_name'],
-                    recipient_email: recipient['recipient_email'],
-                    recipient_notify: recipient['recipient_notify'],
-                    recipient_message: recipient['recipient_message'],
-                    recipient_occasion: recipient['recipient_occasion'],
-                    units: recipient['units'],
-                  };
-                })
+
+            //Ignore first row which contains help instructions
+            const recipients = parsedData.slice(1);
+            const validatedRecipients = validateRecipients(
+              recipients as ExtendedRecipient[]
             );
-            setParseError(null);
-            handleStatusChange('success');
+
+            if (validatedRecipients) {
+              setRecipients(validatedRecipients);
+              setParseError(null);
+              handleStatusChange('success');
+            }
           } else {
             setParseError({
               type: 'missingColumns',
-              missingColumns: headerValidity.missingColumns,
+              message: ready
+                ? `${t(
+                    'bulkCodes:errorUploadCSV.missingColumns'
+                  )} ${headerValidity.missingColumns.join(', ')}`
+                : '',
             });
-            handleStatusChange('error');
           }
         } else {
-          setParseError({ type: 'generalError' });
-          handleStatusChange('error');
+          setParseError({
+            type: 'generalError',
+            message: ready ? t('bulkCodes:errorUploadCSV.generalError') : '',
+          });
         }
       },
     });
