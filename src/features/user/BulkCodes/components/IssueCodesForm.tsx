@@ -100,6 +100,32 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
     }
   };
 
+  const getBulkCodeTotalAmount = () => {
+    if (bulkMethod === BulkCodeMethods.GENERIC) {
+      return project
+        ? `${(project.unitCost * codeQuantity * unitsPerCode).toFixed(2)}`
+        : undefined;
+    } else {
+      let totalUnits = 0;
+      for (let recepients of localRecipients) {
+        totalUnits = totalUnits + recepients.units * 1;
+      }
+      return project ? (totalUnits * project.unitCost).toFixed(2) : undefined;
+    }
+  };
+
+  const getBulkCodeTotalUnits = () => {
+    if (bulkMethod === BulkCodeMethods.GENERIC) {
+      return project ? codeQuantity * unitsPerCode : undefined;
+    } else {
+      let totalUnits = 0;
+      for (let recepients of localRecipients) {
+        totalUnits = totalUnits + recepients.units * 1;
+      }
+      return totalUnits;
+    }
+  };
+
   if (ready) {
     return (
       <BulkCodesForm className="IssueCodesForm">
@@ -181,15 +207,9 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             />
           )}
           <BulkGiftTotal
-            amount={
-              project
-                ? `${(project.unitCost * codeQuantity * unitsPerCode).toFixed(
-                    2
-                  )}`
-                : undefined
-            }
+            amount={getBulkCodeTotalAmount()}
             currency={planetCashAccount?.currency}
-            units={project ? codeQuantity * unitsPerCode : undefined}
+            units={getBulkCodeTotalUnits()}
             unit={project?.unit}
           />
           {/* TODOO translation and pluralization */}
