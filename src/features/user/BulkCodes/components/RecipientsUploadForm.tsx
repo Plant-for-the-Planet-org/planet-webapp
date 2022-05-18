@@ -11,6 +11,8 @@ import {
   ExtendedRecipient,
 } from '../BulkCodesTypes';
 
+import styles from '../BulkCodes.module.scss';
+
 const { useTranslation } = i18next;
 
 const acceptedHeaders = [
@@ -202,6 +204,19 @@ const RecipientsUploadForm = ({
         parseError={parseError}
         hasIgnoredColumns={hasIgnoredColumns}
       />
+      <p className={styles.uploadInstructions}>
+        Please refer to the documentation{' '}
+        <a href="#" className={styles.uploadInstructionLink}>
+          here
+        </a>
+        , and download{' '}
+        <a
+          href="/Bulk Code - Sample CSVs/Valid CSV.csv"
+          className={styles.uploadInstructionLink}
+        >
+          template here
+        </a>
+      </p>
       {recipients.length > 0 && (
         <RecipientsTable headers={headers} recipients={recipients} />
       )}
