@@ -50,3 +50,4 @@ cypress.env.json
 build-storybook.log
 src/stories
 .vscode/settings.json
+.vscode/launch.json
