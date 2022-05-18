@@ -177,7 +177,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
           {bulkMethod === 'import' && (
             <RecipientsUploadForm
               onRecipientsUploaded={setLocalRecipients}
-              currentRecipients={localRecipients}
+              localRecipients={localRecipients}
             />
           )}
           <BulkGiftTotal

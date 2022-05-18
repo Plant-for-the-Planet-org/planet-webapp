@@ -1,8 +1,9 @@
 import { useState, ReactElement, useEffect } from 'react';
 import { parse, ParseResult } from 'papaparse';
 
-import UploadWidget, { UploadStates } from './UploadWidget';
+import UploadWidget from './UploadWidget';
 import RecipientsTable from './RecipientsTable';
+import { Recipient, FileImportError, UploadStates } from '../BulkCodesTypes';
 
 const acceptedHeaders = [
   'recipient_name',
@@ -15,30 +16,42 @@ const acceptedHeaders = [
 
 interface RecipientsUploadFormProps {
   onRecipientsUploaded: (recipients: Object[]) => void;
-  currentRecipients: Object[];
+  localRecipients: Object[];
 }
 
 const RecipientsUploadForm = ({
   onRecipientsUploaded,
-  currentRecipients,
+  localRecipients,
 }: RecipientsUploadFormProps): ReactElement => {
   const [status, setStatus] = useState<UploadStates>('empty');
-  const [parseError, setParseError] = useState<string | null>(null);
+  const [parseError, setParseError] = useState<FileImportError | null>(null);
+  const [hasIgnoredColumns, setHasIgnoredColumns] = useState(false);
   const [headers, setHeaders] = useState<string[]>([]);
-  const [recipients, setRecipients] = useState<Object[]>(currentRecipients);
+  const [recipients, setRecipients] = useState<Object[]>(localRecipients);
 
   const handleStatusChange = (newStatus: UploadStates) => {
     setStatus(newStatus);
+    if (newStatus !== 'success') {
+      console.log('new status', newStatus);
+      setRecipients([]);
+    }
   };
 
-  const checkHeaderValidity = (headers: string[]): boolean => {
+  const checkHeaderValidity = (
+    headers: string[]
+  ): { isValid: boolean; missingColumns: string[] } => {
     let isValid = true;
+    const missingColumns = [];
     for (const acceptedHeader of acceptedHeaders) {
       if (!headers.includes(acceptedHeader)) {
         isValid = false;
+        missingColumns.push(acceptedHeader);
       }
     }
-    return isValid;
+    return {
+      isValid,
+      missingColumns,
+    };
   };
 
   const processFileContents = (fileContents: string) => {
@@ -46,18 +59,18 @@ const RecipientsUploadForm = ({
       header: true,
       complete: (results: ParseResult<unknown>) => {
         if (!results.errors.length) {
-          const parsedHeaders = results.meta.fields;
+          const parsedHeaders = results.meta.fields || [];
           const parsedData = results.data;
-          console.log(parsedData, parsedHeaders);
-          if (parsedHeaders && checkHeaderValidity(parsedHeaders)) {
-            setHeaders(
-              parsedHeaders.filter((header) => {
-                return acceptedHeaders.includes(header);
-              })
-            );
+          const headerValidity = checkHeaderValidity(parsedHeaders);
+          console.log(headerValidity);
+          if (headerValidity.isValid) {
+            setHeaders(acceptedHeaders);
+            parsedHeaders.length > 6
+              ? setHasIgnoredColumns(true)
+              : setHasIgnoredColumns(false);
             setRecipients(
               parsedData
-                .filter((_data, index) => index !== 0)
+                .filter((_data, index) => index !== 0) //Ignore first row which contains help instructions
                 .map((recipient: any) => {
                   return {
                     recipient_name: recipient['recipient_name'],
@@ -72,11 +85,14 @@ const RecipientsUploadForm = ({
             setParseError(null);
             handleStatusChange('success');
           } else {
-            setParseError('unexpectedColumn');
+            setParseError({
+              type: 'missingColumns',
+              missingColumns: headerValidity.missingColumns,
+            });
             handleStatusChange('error');
           }
         } else {
-          setParseError('generalError');
+          setParseError({ type: 'generalError' });
           handleStatusChange('error');
         }
       },
@@ -93,10 +109,11 @@ const RecipientsUploadForm = ({
         status={status}
         onStatusChange={handleStatusChange}
         onFileUploaded={processFileContents}
-        parseError={parseError ? parseError : undefined}
+        parseError={parseError}
+        hasIgnoredColumns={hasIgnoredColumns}
       />
       {recipients.length > 0 && (
-        <RecipientsTable headers={acceptedHeaders} recipients={recipients} />
+        <RecipientsTable headers={headers} recipients={recipients} />
       )}
     </>
   );
