@@ -27,7 +27,6 @@ function FacebookCircularProgress(props: CircularProgressProps) {
     <div style={{ position: 'relative' }}>
       <CircularProgress
         variant="determinate"
-        disableShrink
         size={320}
         thickness={3}
         {...props}
