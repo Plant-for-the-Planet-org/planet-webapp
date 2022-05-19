@@ -238,7 +238,8 @@ export default function ProjectSites({
           ? t('manageProjects:siteStatusPlanting')
           : t('manageProjects:siteStatusNotYetprotected')
         : '',
-      value: projectDetails.purpose === 'trees' ? 'planting' : 'yet protected',
+      value:
+        projectDetails.purpose === 'trees' ? 'planting' : 'not yet protected',
     },
     {
       label: ready
