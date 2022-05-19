@@ -22,6 +22,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeMethods';
 import { TENANT_ID } from '../../../../utils/constants/environment';
 import getsessionId from '../../../../utils/apiRequests/getSessionId';
+import { Recipient } from '../BulkCodesTypes';
 
 const { useTranslation } = i18next;
 
@@ -41,7 +42,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const { getAccessTokenSilently } = useAuth0();
   const { handleError } = useContext(ErrorHandlingContext);
   const { control, handleSubmit, errors, watch } = useForm();
-  const [localRecipients, setLocalRecipients] = useState<Object[]>([]);
+  const [localRecipients, setLocalRecipients] = useState<Recipient[]>([]);
   const [comment, setComment] = useState('');
   const [occasion, setOccasion] = useState('');
 
@@ -49,6 +50,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const unitsPerCode = watch('unitsPerCode', 0);
 
   const onSubmit = async (data) => {
+    const token = await getAccessTokenSilently();
     if (bulkMethod === BulkCodeMethods.GENERIC) {
       if (project) {
         const donationData = {
@@ -65,8 +67,6 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
           },
         };
         const cleanedData = cleanObject(donationData);
-
-        const token = await getAccessTokenSilently();
 
         try {
           const res = await axios.post(
@@ -95,7 +95,73 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
           handleError(err);
         }
       } else {
-        throw new Error('Project not selected');
+        handleError(Error('Project not selected'));
+      }
+    } else {
+      if (project) {
+        // TODO : Add comment and occasion
+
+        let totalUnits = 0;
+        const recipients = [];
+
+        for (let recepients of localRecipients) {
+          totalUnits = totalUnits + parseInt(recepients.units);
+        }
+
+        localRecipients.forEach((recipient) => {
+          const temp = {
+            recipientName: recipient.recipient_name,
+            recipientEmail: recipient.recipient_email,
+            message: recipient.recipient_message,
+            notifyRecipient: recipient.recipient_notify,
+            value: parseInt(recipient.units),
+            // occasion: recipient.recipient_occasion,
+          };
+          recipients.push(temp);
+        });
+
+        const donationData = {
+          purpose: project.purpose,
+          project: project.guid,
+          prePaid: true,
+          treeCount: totalUnits,
+          comment,
+          gift: {
+            type: 'discrete-bulk',
+            occasion,
+            recipients,
+          },
+        };
+
+        const cleanedDonationData = cleanObject(donationData);
+        try {
+          const res = await axios.post(
+            process.env.API_ENDPOINT + '/app/donations',
+            cleanedDonationData,
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                'tenant-key': `${TENANT_ID}`,
+                'X-SESSION-ID': await getsessionId(),
+                Authorization: `Bearer ${token}`,
+                'x-locale': `${
+                  localStorage.getItem('language')
+                    ? localStorage.getItem('language')
+                    : 'en'
+                }`,
+                'IDEMPOTENCY-KEY': uuidv4(),
+              },
+            }
+          );
+          if (res.status === 200) {
+            router.push(`/profile/history?ref=${res.data.uid}`);
+          }
+        } catch (err) {
+          console.error(err);
+          handleError(err);
+        }
+      } else {
+        handleError(Error('Project not selected'));
       }
     }
   };
@@ -227,7 +293,11 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
               !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
             )
           }
-          onClick={handleSubmit(onSubmit)}
+          onClick={
+            bulkMethod === BulkCodeMethods.GENERIC
+              ? handleSubmit(onSubmit)
+              : onSubmit
+          }
         >
           {t('bulkCodes:issueCodes')}
         </Button>
