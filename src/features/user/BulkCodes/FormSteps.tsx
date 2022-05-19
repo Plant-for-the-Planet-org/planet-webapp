@@ -13,6 +13,7 @@ const { useTranslation } = i18next;
 
 const StyledTabs = styled(Tabs)({
   paddingTop: 24,
+  paddingBottom: 24,
   textTransform: 'capitalize',
   minWidth: 200,
   '& .MuiTabs-flexContainer': {
