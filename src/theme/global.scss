@@ -605,7 +605,7 @@ input:-webkit-autofill {
     top: 568px;
   }
   @include smTabletView {
-    width: 100%;
+    // width: 100%;
     margin-left: -49px;
     margin-top: 0px;
     top: 568px;
@@ -620,7 +620,7 @@ input:-webkit-autofill {
   }
 
   @include xlDesktopView {
-    margin-left: -250px;
+    margin-left: 45px;
     
   }
 }
