@@ -69,5 +69,6 @@
   },
   "successUploadCSV": {
 	  "ignoredColumns": "Extra columns in the CSV were ignored"
-  }
+  },
+  "importInstructions": "Please refer to the <1>documentation here</1>, and download<3> </3><4>template here</4>"
 }

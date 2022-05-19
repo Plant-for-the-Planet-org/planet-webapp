@@ -13,7 +13,7 @@ import {
 
 import styles from '../BulkCodes.module.scss';
 
-const { useTranslation } = i18next;
+const { Trans, useTranslation } = i18next;
 
 const acceptedHeaders = [
   'recipient_name',
@@ -216,17 +216,10 @@ const RecipientsUploadForm = ({
         hasIgnoredColumns={hasIgnoredColumns}
       />
       <p className={styles.uploadInstructions}>
-        Please refer to the documentation{' '}
-        <a href="#" className={styles.uploadInstructionLink}>
-          here
-        </a>
-        , and download{' '}
-        <a
-          href="/Bulk Code - Sample CSVs/Valid CSV.csv"
-          className={styles.uploadInstructionLink}
-        >
-          template here
-        </a>
+        <Trans i18nKey="bulkCodes:importInstructions">
+          Please refer to the <a href="#">documentation here</a>, and download{' '}
+          <a href="/Bulk Code - Sample CSVs/Valid CSV.csv">template here</a>
+        </Trans>
       </p>
       {recipients.length > 0 && (
         <RecipientsTable headers={headers} recipients={recipients} />
