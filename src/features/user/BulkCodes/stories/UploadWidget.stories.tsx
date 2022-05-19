@@ -27,7 +27,17 @@ Success.args = {
   status: 'success',
 };
 
+export const SuccessExtraColumns = Template.bind({});
+SuccessExtraColumns.args = {
+  status: 'success',
+  hasIgnoredColumns: true,
+};
+
 export const Error = Template.bind({});
 Error.args = {
   status: 'error',
+  parseError: {
+    type: 'noRecipientData',
+    message: 'No recipient data found',
+  },
 };
