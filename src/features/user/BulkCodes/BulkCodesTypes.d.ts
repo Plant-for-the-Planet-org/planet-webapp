@@ -7,17 +7,27 @@ export interface Recipient {
   recipient_occasion: string;
 }
 
+interface OtherRecipientProperties {
+  [key: string]: string;
+}
+
+type ExtendedRecipient = Recipient & OtherRecipientProperties;
+
 type FileImportErrorCode =
   | 'fileInvalidType'
   | 'fileTooLarge'
   | 'fileTooSmall'
   | 'tooManyFiles'
   | 'missingColumns'
+  | 'noRecipientData'
+  | 'unitsNotProvided'
+  | 'notifyNotPossible'
+  | 'invalidEmails'
   | 'generalError';
 
 export interface FileImportError {
   type: FileImportErrorCode;
-  missingColumns?: string[];
+  message: string;
 }
 
 export type UploadStates = 'empty' | 'processing' | 'success' | 'error';
