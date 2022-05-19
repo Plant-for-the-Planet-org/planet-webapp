@@ -20,6 +20,7 @@ type FileImportErrorCode =
   | 'tooManyFiles'
   | 'missingColumns'
   | 'noRecipientData'
+  | 'tooManyRecipients'
   | 'unitsNotProvided'
   | 'notifyNotPossible'
   | 'invalidEmails'

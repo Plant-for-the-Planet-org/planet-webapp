@@ -24,6 +24,8 @@ const acceptedHeaders = [
   'recipient_occasion',
 ];
 
+const MAX_RECIPIENTS = 1000;
+
 interface RecipientsUploadFormProps {
   onRecipientsUploaded: (recipients: Object[]) => void;
   localRecipients: Object[];
@@ -73,6 +75,15 @@ const RecipientsUploadForm = ({
       setParseError({
         type: 'noRecipientData',
         message: ready ? t('bulkCodes:errorUploadCSV.noRecipientData') : '',
+      });
+      return false;
+    }
+
+    // Check max limit for recipients
+    if (recipients.length > MAX_RECIPIENTS) {
+      setParseError({
+        type: 'tooManyRecipients',
+        message: ready ? t('bulkCodes:errorUploadCSV.tooManyRecipients') : '',
       });
       return false;
     }
