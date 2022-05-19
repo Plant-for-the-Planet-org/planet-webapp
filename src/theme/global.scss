@@ -582,11 +582,7 @@ input:-webkit-autofill {
   padding: 20px;
   box-shadow: rgb(170 170 170 / 20%) 0px 1px 4px;
   border-radius: 10px;
-  @include xsPhoneView{
-    width: 190px;
   }
-
-}
 
 .add-project {
   margin-top: 65px;
@@ -600,14 +596,13 @@ input:-webkit-autofill {
   align-items: center;
   @include xsPhoneView {
     width: 100%;
-    margin-left: 12px;
-    margin-top: 100px;
+    margin-left: -31px;
     top: 568px;
   }
   @include smTabletView {
-    width: 100%;
-    margin-left: -49px;
-    margin-top: 0px;
+    // width: 100%;
+    margin-left: 5px;
+    margin-top: 36px;
     top: 568px;
   }
   @include mdTabletView {
@@ -616,11 +611,11 @@ input:-webkit-autofill {
 
   @include lgLaptopView {
     top: 208px;
-    margin-left: -126px;
+    // margin-left: -126px;
   }
 
   @include xlDesktopView {
-    margin-left: -250px;
+    margin-left: 45px;
     
   }
 }
