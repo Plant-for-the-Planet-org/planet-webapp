@@ -163,14 +163,14 @@ function ProjectInfo({ project }: Props): ReactElement {
 
         {project &&
           project.metadata &&
-          project.metadata.employeeCount &&
-          project.metadata.employeeCount !== 0 && (
+          project.metadata.employeesCount &&
+          project.metadata.employeesCount !== 0 && (
             <div className={styles.projectMoreInfoHalf}>
               <div className={styles.infoTitle}>
                 {t('manageProjects:employees')}
               </div>
               <div className={styles.infoText}>
-                {project.metadata.employeeCount}
+                {project.metadata.employeesCount}
               </div>
             </div>
           )}
