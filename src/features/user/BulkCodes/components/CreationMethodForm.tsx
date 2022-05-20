@@ -12,10 +12,7 @@ import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeMethods';
 
 const { useTranslation } = i18next;
 
-interface CreationMethodFormProps {}
-
-const CreationMethodForm = ({}: // setStep,
-CreationMethodFormProps): ReactElement | null => {
+const CreationMethodForm = (): ReactElement | null => {
   const router = useRouter();
   const {
     bulkMethod,
@@ -55,15 +52,11 @@ CreationMethodFormProps): ReactElement | null => {
           title={option.title}
           subtitle={option.subtitle}
           details={option.details}
-          handleMethodChange={handleMethodChange}
+          handleMethodChange={setMethod}
           isSelected={option.method === method}
           key={index}
         />
       ));
-    };
-
-    const handleMethodChange = (method: typeof bulkMethod) => {
-      setMethod(method);
     };
 
     const handleFormSubmit = () => {
