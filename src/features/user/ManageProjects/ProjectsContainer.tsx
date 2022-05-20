@@ -132,13 +132,17 @@ function SingleProject({ project }: any) {
           {/* {!project.isFeatured && (
             <div className={styles.projectLabel}>🛰 ️TreeMapper</div>
           )} */}
-          {!project.isFeatured && (
+          {project.isFeatured ? (
             <div className={styles.projectLabel}>🌟 {t('common:featured')}</div>
+          ) : (
+            ''
           )}
-          {!project.allowDonations && (
+          {project.allowDonations ? (
             <div className={styles.projectLabel}>
               💸 {t('donate:acceptingDonations')}
             </div>
+          ) : (
+            ''
           )}
         </div>
       </div>
