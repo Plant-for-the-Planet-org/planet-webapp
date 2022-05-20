@@ -12,6 +12,9 @@ const MuiAutocomplete = styled(Autocomplete)((/* { theme } */) => {
     '& .MuiAutocomplete-popupIndicatorOpen': {
       transform: 'none',
     },
+    '& .Mui-disabled .iconFillColor': {
+      fillOpacity: '38%',
+    },
   };
 });
 
