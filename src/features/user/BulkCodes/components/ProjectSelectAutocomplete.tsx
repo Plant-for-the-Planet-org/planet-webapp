@@ -1,9 +1,4 @@
-import React, {
-  ReactElement,
-  useState,
-  useEffect,
-  SyntheticEvent,
-} from 'react';
+import React, { ReactElement, useState, useEffect } from 'react';
 import { Autocomplete, TextField, styled } from 'mui-latest';
 import i18next from '../../../../../i18n';
 
@@ -51,13 +46,19 @@ const ProjectSelectAutocomplete = ({
       <MuiAutocomplete
         popupIcon={SearchIcon({})}
         options={projectList}
-        getOptionLabel={(option: any) => option.name}
-        isOptionEqualToValue={(option: any, value) => option.name === value}
-        //TODOO Have left option as type: any here.
+        getOptionLabel={(option) => (option as Project).name}
+        isOptionEqualToValue={(option, value) =>
+          (option as Project).guid === (value as Project).guid
+        }
         value={localProject}
-        onChange={(event: SyntheticEvent, newValue: unknown) =>
+        onChange={(_event, newValue: unknown) =>
           setLocalProject(newValue as Project | null)
         }
+        renderOption={(props, option) => (
+          <span {...props} key={(option as Project).guid}>
+            {(option as Project).name}
+          </span>
+        )}
         renderInput={(params) => (
           <TextField
             {...params}
