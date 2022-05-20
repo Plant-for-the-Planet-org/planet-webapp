@@ -6,7 +6,6 @@ import React, {
 } from 'react';
 import { Autocomplete, TextField, styled } from 'mui-latest';
 import i18next from '../../../../../i18n';
-// import bulkCodeProjects from '../bulkCodeProjects.json';
 
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import { Project } from '../../../common/Layout/BulkCodeContext';
