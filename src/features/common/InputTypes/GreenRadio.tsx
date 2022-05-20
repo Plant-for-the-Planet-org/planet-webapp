@@ -1,5 +1,5 @@
-import Radio from '@material-ui/core/Radio';
-import { withStyles } from '@material-ui/core/styles';
+import Radio from '@mui/material/Radio';
+import { withStyles } from '@mui/styles';
 
 const GreenRadio = withStyles({
   root: {

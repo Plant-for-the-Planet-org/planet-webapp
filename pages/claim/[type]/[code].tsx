@@ -2,8 +2,8 @@ import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
 import styles from './../../../src/features/user/Profile/styles/RedeemModal.module.scss';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import Close from '../../../public/assets/images/icons/headerIcons/close';
 import i18next from './../../../i18n';
 import tenantConfig from './../../../tenant.config';
@@ -12,12 +12,13 @@ import { getFormattedNumber } from '../../../src/utils/getFormattedNumber';
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import ShareOptions from '../../../src/features/common/ShareOptions/ShareOptions';
+import { styled } from '@mui/material';
 
 const { useTranslation } = i18next;
 
-interface Props { }
+interface Props {}
 
-function ClaimDonation({ }: Props): ReactElement {
+function ClaimDonation({}: Props): ReactElement {
   const { t, i18n, ready } = useTranslation([
     'me',
     'common',
@@ -29,9 +30,8 @@ function ClaimDonation({ }: Props): ReactElement {
 
   const router = useRouter();
 
-  const { user, contextLoaded, loginWithRedirect, token } = React.useContext(
-    UserPropsContext
-  );
+  const { user, contextLoaded, loginWithRedirect, token } =
+    React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
@@ -46,9 +46,8 @@ function ClaimDonation({ }: Props): ReactElement {
   const imageRef = React.createRef();
   const sendRef = () => imageRef;
 
-  const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] = React.useState(
-    false
-  );
+  const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] =
+    React.useState(false);
   const handleTextCopiedSnackbarOpen = () => {
     setTextCopiedSnackbarOpen(true);
   };
@@ -63,9 +62,11 @@ function ClaimDonation({ }: Props): ReactElement {
     setTextCopiedSnackbarOpen(false);
   };
 
-  function Alert(props: AlertProps) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
+  const Alert = styled(MuiAlert)(({theme}) => {
+    return {
+      backgroundColor: theme.palette.primary.main,
+    }
+  })
 
   const [codeRedeemed, setCodeRedeemed] = React.useState(false);
 
@@ -264,13 +265,18 @@ function ClaimDonation({ }: Props): ReactElement {
                 open={textCopiedsnackbarOpen}
                 autoHideDuration={4000}
                 onClose={handleTextCopiedSnackbarClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
               >
-                <Alert
-                  onClose={handleTextCopiedSnackbarClose}
-                  severity="success"
-                >
-                  {t('donate:copiedToClipboard')}
-                </Alert>
+                <div>
+                  <Alert
+                    elevation={6}
+                    variant="filled"
+                    onClose={handleTextCopiedSnackbarClose}
+                    severity="success"
+                  >
+                    {t('donate:copiedToClipboard')}
+                  </Alert>
+                </div>
               </Snackbar>
             </div>
           </>

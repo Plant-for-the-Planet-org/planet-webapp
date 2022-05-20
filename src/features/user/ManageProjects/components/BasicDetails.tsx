@@ -10,7 +10,8 @@ import MapGL, {
   FlyToInterpolator,
 } from 'react-map-gl';
 import * as d3 from 'd3-ease';
-import { makeStyles, MenuItem } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { MenuItem } from '@mui/material';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info';
 import {
   postAuthenticatedRequest,
@@ -24,7 +25,9 @@ import {
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
+import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import GeocoderArcGIS from 'geocoder-arcgis';
 
 const { useTranslation } = i18next;
 
@@ -37,6 +40,7 @@ interface Props {
   setErrorMessage: Function;
   projectGUID: any;
   token: any;
+  purpose: String;
 }
 
 export default function BasicDetails({
@@ -48,6 +52,7 @@ export default function BasicDetails({
   setProjectGUID,
   setErrorMessage,
   projectGUID,
+  purpose,
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
   const EMPTY_STYLE = {
@@ -55,13 +60,18 @@ export default function BasicDetails({
     sources: {},
     layers: [],
   };
+
+  const [skipButtonVisible, setSkipButtonVisible] = React.useState(false);
+
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   // Map setup
-  const { theme } = React.useContext(ThemeContext)
+  const { theme } = React.useContext(ThemeContext);
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
   const mapRef = React.useRef(null);
   const [style, setStyle] = React.useState(EMPTY_STYLE);
+  const [wrongCoordinatesMessage, setWrongCoordinatesMessage] =
+    React.useState(false);
   const [viewport, setViewPort] = React.useState({
     width: 760,
     height: 400,
@@ -69,27 +79,28 @@ export default function BasicDetails({
     longitude: defaultMapCenter[1],
     zoom: defaultZoom,
   });
+  const router = useRouter();
   const useStylesAutoComplete = makeStyles({
     root: {
       color:
-        theme === "theme-light"
+        theme === 'theme-light'
           ? `${themeProperties.light.primaryFontColor} !important`
           : `${themeProperties.dark.primaryFontColor} !important`,
       backgroundColor:
-        theme === "theme-light"
+        theme === 'theme-light'
           ? `${themeProperties.light.backgroundColor} !important`
           : `${themeProperties.dark.backgroundColor} !important`,
     },
     option: {
       // color: '#2F3336',
-      "&:hover": {
+      '&:hover': {
         backgroundColor:
-          theme === "theme-light"
+          theme === 'theme-light'
             ? `${themeProperties.light.backgroundColorDark} !important`
             : `${themeProperties.dark.backgroundColorDark} !important`,
       },
-    }
-  })
+    },
+  });
   const classes = useStylesAutoComplete();
   const { handleError } = React.useContext(ErrorHandlingContext);
 
@@ -151,26 +162,113 @@ export default function BasicDetails({
     },
   ];
 
-  // Default Form Fields
-  const defaultBasicDetails = {
-    name: '',
-    slug: '',
-    classification: {
-      label: ready ? t('manageProjects:projectType') : '',
-      value: null,
+  const ecosystemsType = [
+    {
+      label: ready ? t('manageProjects:tropicalMoistForest') : '',
+      value: 'tropical-moist-forests',
     },
-    countTarget: 0,
-    website: '',
-    description: '',
-    acceptDonations: false,
-    treeCost: 0,
-    publish: false,
-    visitorAssistance: false,
-    enablePlantLocations: false,
-    currency: 'EUR',
-    latitude: 0,
-    longitude: 0,
-  };
+    {
+      label: ready ? t('manageProjects:tropicalDryForests') : '',
+      value: 'tropical-dry-forests',
+    },
+    {
+      label: ready ? t('manageProjects:tropicalConiferousForests') : '',
+      value: 'tropical-coniferous-forests',
+    },
+    {
+      label: ready ? t('manageProjects:tropicalGrasslandsForests') : '',
+      value: 'tropical-grasslands-forests',
+    },
+    {
+      label: ready ? t('manageProjects:temperateBroadleafForests') : '',
+      value: 'temperate-broadleaf-forests',
+    },
+    {
+      label: ready ? t('manageProjects:temperateGrasslandsForests') : '',
+      value: 'temperate-grasslands-forests',
+    },
+    {
+      label: ready ? t('manageProjects:mediterraneanForests') : '',
+      value: 'mediterranean-forests',
+    },
+    {
+      label: ready ? t('manageProjects:mangroves') : '',
+      value: 'mangroves',
+    },
+    {
+      label: ready ? t('manageProjects:deserts') : '',
+      value: 'deserts',
+    },
+    {
+      label: ready ? t('manageProjects:floodedGrasslands') : '',
+      value: 'flooded-grasslands',
+    },
+    {
+      label: ready ? t('manageProjects:montaneGrasslands') : '',
+      value: 'montane-grasslands',
+    },
+    {
+      label: ready ? t('manageProjects:borealForests') : '',
+      value: 'boreal-forests',
+    },
+    {
+      label: ready ? t('manageProjects:tundra') : '',
+      value: 'tundra',
+    },
+    {
+      label: ready ? t('manageProjects:temperateConiferousForests') : '',
+      value: 'temperate-coniferous-forests',
+    },
+  ];
+
+  // Default Form Fields
+  const defaultBasicDetails =
+    purpose === 'trees'
+      ? {
+          name: '',
+          slug: '',
+          classification: {
+            label: ready ? t('manageProjects:projectType') : '',
+            value: null,
+          },
+          countTarget: 0,
+          website: '',
+          description: '',
+          acceptDonations: false,
+          unitCost: 0,
+          publish: false,
+          metadata: {
+            visitorAssistance: false,
+            enablePlantLocations: false,
+          },
+          currency: 'EUR',
+          latitude: 0,
+          longitude: 0,
+        }
+      : {
+          purpose: 'conservation',
+          name: '',
+          slug: '',
+          description: '',
+          acceptDonations: false,
+          unitCost: 0,
+          currency: 'EUR',
+          latitude: 0,
+          longitude: 0,
+          ecosystems: '',
+          metadata: {
+            ecosystems: {
+              label: ready ? t('manageProjects:ecosystems') : '',
+              value: null,
+            },
+            impacts: {
+              benefits: '',
+              ecologicalBenefits: '',
+              socialBenefits: '',
+              coBenefits: '',
+            },
+          },
+        };
 
   const {
     register,
@@ -180,33 +278,64 @@ export default function BasicDetails({
     reset,
     setValue,
     setError,
+    clearErrors,
   } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
 
+  const nextStep = () => {
+    handleNext();
+  };
 
   const [acceptDonations, setAcceptDonations] = useState(false);
+  //if project is already had created then user can visit to  other forms using skip button
+  React.useEffect(() => {
+    if (projectDetails.id) {
+      setSkipButtonVisible(true);
+    }
+  }, [router]);
+
   // const treeCost = watch('treeCost');
 
   React.useEffect(() => {
     if (projectDetails) {
-      const basicDetails = {
-        name: projectDetails.name,
-        slug: projectDetails.slug,
-        classification: projectDetails.classification,
-        countTarget: projectDetails.countTarget,
-        website: projectDetails.website,
-        description: projectDetails.description,
-        acceptDonations: projectDetails.acceptDonations,
-        treeCost: getFormattedNumber(
-          i18n.language,
-          projectDetails.treeCost || 0
-        ),
-        publish: projectDetails.publish,
-        visitorAssistance: projectDetails.visitorAssistance,
-        enablePlantLocations: projectDetails.enablePlantLocations,
-        currency: projectDetails.currency,
-        latitude: projectDetails.geoLatitude,
-        longitude: projectDetails.geoLongitude,
-      };
+      const basicDetails =
+        purpose === 'trees'
+          ? {
+              name: projectDetails.name,
+              slug: projectDetails.slug,
+              classification: projectDetails.classification,
+              countTarget: projectDetails.countTarget,
+              website: projectDetails.website,
+              description: projectDetails.description,
+              acceptDonations: projectDetails.acceptDonations,
+              unitCost: getFormattedNumber(
+                i18n.language,
+                projectDetails.unitCost || 0
+              ),
+
+              visitorAssistance: projectDetails.visitorAssistance,
+              enablePlantLocations: projectDetails.enablePlantLocations,
+              currency: projectDetails.currency,
+              latitude: projectDetails.geoLatitude,
+              longitude: projectDetails.geoLongitude,
+            }
+          : {
+              purpose: projectDetails.purpose,
+              name: projectDetails.name,
+              slug: projectDetails.slug,
+
+              website: projectDetails.website,
+              description: projectDetails.description,
+              acceptDonations: projectDetails.acceptDonations,
+              unitCost: getFormattedNumber(
+                i18n.language,
+                projectDetails.unitCost || 0
+              ),
+              currency: projectDetails.currency,
+              latitude: projectDetails.geoLatitude,
+              longitude: projectDetails.geoLongitude,
+              ecosystems: projectDetails?.metadata?.ecosystems,
+              visitorAssistance: projectDetails?.metadata?.visitorAssistance,
+            };
       if (projectDetails.geoLongitude && projectDetails.geoLatitude) {
         setProjectCoords([
           projectDetails.geoLongitude,
@@ -228,63 +357,67 @@ export default function BasicDetails({
 
   const onSubmit = (data: any) => {
     setIsUploadingData(true);
-    const submitData = {
-      name: data.name,
-      slug: data.slug,
-      classification: data.classification,
-      geometry: {
-        type: 'Point',
-        coordinates: [
-          parseFloat(data.longitude),
-          parseFloat(data.latitude),
-        ],
-      },
-      countTarget: Number(data.countTarget),
-      website: data.website,
-      description: data.description,
-      acceptDonations: data.acceptDonations,
-      treeCost: data.treeCost
-        ? parseNumber(i18n.language, data.treeCost)
-        : undefined,
-      currency: 'EUR',
-      visitorAssistance: data.visitorAssistance,
-      publish: data.publish,
-      enablePlantLocations: data.enablePlantLocations,
-    };
+    const submitData =
+      purpose === 'trees'
+        ? {
+            name: data.name,
+            slug: data.slug,
+            classification: data.classification,
+            metadata: {
+              visitorAssistance: data.visitorAssistance,
+              enablePlantLocations: data.enablePlantLocations,
+            },
+            geometry: {
+              type: 'Point',
+              coordinates: [
+                parseFloat(data.longitude),
+                parseFloat(data.latitude),
+              ],
+            },
+            countTarget: Number(data.countTarget),
+            website: data.website,
+            description: data.description,
+            acceptDonations: data.acceptDonations,
+            unitCost: data.unitCost
+              ? parseNumber(i18n.language, data.unitCost)
+              : undefined,
+            currency: 'EUR',
+          }
+        : {
+            purpose: 'conservation',
+            name: data.name,
+            slug: data.slug,
+            website: data.website,
+            geometry: {
+              type: 'Point',
+              coordinates: [
+                parseFloat(data.longitude),
+                parseFloat(data.latitude),
+              ],
+            },
+            description: data.description,
+            acceptDonations: data.acceptDonations,
+            unitCost: data.unitCost
+              ? parseNumber(i18n.language, data.unitCost)
+              : null,
+            currency: 'EUR',
+            metadata: {
+              ecosystems: data.ecosystems,
+              visitorAssistance: data.visitorAssistance,
+            },
+          };
 
     // Check if GUID is set use update instead of create project
     if (projectGUID) {
       putAuthenticatedRequest(
         `/app/projects/${projectGUID}`,
         submitData,
-        token, handleError
-      ).then((res) => {
-        if (!res.code) {
-          setErrorMessage('');
-          setProjectDetails(res);
-          setIsUploadingData(false);
-          handleNext();
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          } else if (res.code === 400) {
-            setIsUploadingData(false);
-            if (res.errors && res.errors.children) {
-              addServerErrors(res.errors.children, setError);
-            }
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          }
-        }
-      });
-    } else {
-      postAuthenticatedRequest(`/app/projects`, submitData, token, handleError).then(
-        (res) => {
+        token,
+        handleError
+      )
+        .then((res) => {
           if (!res.code) {
             setErrorMessage('');
-            setProjectGUID(res.id);
             setProjectDetails(res);
             setIsUploadingData(false);
             handleNext();
@@ -302,10 +435,49 @@ export default function BasicDetails({
               setErrorMessage(res.message);
             }
           }
-        }
-      );
+        })
+        .catch((err) => {
+          setIsUploadingData(false);
+          setErrorMessage(err);
+        });
+    } else {
+      postAuthenticatedRequest(`/app/projects`, submitData, token, handleError)
+        .then((res) => {
+          if (!res.code) {
+            setErrorMessage('');
+            setProjectGUID(res.id);
+            setProjectDetails(res);
+            router.push(`/profile/projects/${res.id}?type=media`);
+            setIsUploadingData(false);
+          } else {
+            if (res.code === 404) {
+              setIsUploadingData(false);
+              setErrorMessage(res.message);
+            } else if (res.code === 400) {
+              setIsUploadingData(false);
+              if (res.errors && res.errors.children) {
+                addServerErrors(res.errors.children, setError);
+              }
+            } else {
+              setIsUploadingData(false);
+              setErrorMessage(res.message);
+            }
+          }
+        })
+        .catch((err) => {
+          setIsUploadingData(false);
+          setErrorMessage(err);
+        });
     }
   };
+  const geocoder = new GeocoderArcGIS(
+    process.env.ESRI_CLIENT_SECRET
+      ? {
+          client_id: process.env.ESRI_CLIENT_ID,
+          client_secret: process.env.ESRI_CLIENT_SECRET,
+        }
+      : {}
+  );
 
   return ready ? (
     <div className={`${styles.stepContainer} `}>
@@ -332,7 +504,7 @@ export default function BasicDetails({
             )}
           </div>
 
-          <div className={styles.formField} >
+          <div className={styles.formField}>
             <div className={styles.formFieldHalf} data-test-id="slug" id="slug">
               <MaterialTextField
                 inputRef={register({
@@ -346,7 +518,7 @@ export default function BasicDetails({
                 name="slug"
                 InputProps={{
                   startAdornment: (
-                    <p className={styles.inputStartAdornment} >pp.eco/</p>
+                    <p className={styles.inputStartAdornment}>pp.eco/</p>
                   ),
                 }}
               />
@@ -355,87 +527,136 @@ export default function BasicDetails({
               )}
             </div>
             <div style={{ width: '20px' }}></div>
-            <div className={styles.formFieldHalf} data-test-id="classification">
-              <Controller
-                as={
-                  <MaterialTextField
-                    label={t('manageProjects:classification')}
-                    variant="outlined"
-                    select
-                  >
-                    {classifications.map((option) => (
-                      <MenuItem key={option.value} value={option.value} classes={{
-                        // option: classes.option,
-                        root: classes.root,
-                      }} >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </MaterialTextField>
-                }
-                name="classification"
-                rules={{
-                  required: t('manageProjects:classificationValidation'),
-                }}
-                control={control}
-              />
-              {errors.classification && (
-                <span className={styles.formErrors}>
-                  {errors.classification.message}
-                </span>
-              )}
-            </div>
+            {purpose === 'trees' ? (
+              <div
+                className={styles.formFieldHalf}
+                data-test-id="classification"
+              >
+                <Controller
+                  as={
+                    <MaterialTextField
+                      label={t('manageProjects:classification')}
+                      variant="outlined"
+                      select
+                    >
+                      {classifications.map((option) => (
+                        <MenuItem
+                          key={option.value}
+                          value={option.value}
+                          classes={{
+                            // option: classes.option,
+                            root: classes.root,
+                          }}
+                        >
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </MaterialTextField>
+                  }
+                  name="classification"
+                  rules={{
+                    required: t('manageProjects:classificationValidation'),
+                  }}
+                  control={control}
+                />
+                {errors.classification && (
+                  <span className={styles.formErrors}>
+                    {errors.classification.message}
+                  </span>
+                )}
+              </div>
+            ) : (
+              <div className={styles.formFieldHalf}>
+                <Controller
+                  as={
+                    <MaterialTextField
+                      label={t('manageProjects:ecosystems')}
+                      variant="outlined"
+                      select
+                    >
+                      {ecosystemsType.map((option) => (
+                        <MenuItem
+                          key={option.value}
+                          value={option.value}
+                          classes={{
+                            // option: classes.option,
+                            root: classes.root,
+                          }}
+                        >
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </MaterialTextField>
+                  }
+                  name="ecosystems"
+                  rules={{
+                    required: t('manageProjects:ecosystemType'),
+                  }}
+                  control={control}
+                />
+                {errors.ecosystems && (
+                  <span className={styles.formErrors}>
+                    {errors.ecosystems.message}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
 
-          <div className={styles.formField}>
-            <div className={styles.formFieldHalf} data-test-id="target">
-              <MaterialTextField
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: t('manageProjects:countTargetValidation'),
-                  },
-                  validate: (value) => parseInt(value, 10) > 1,
-                })}
-                onInput={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                }}
-                label={t('manageProjects:countTarget')}
-                variant="outlined"
-                name="countTarget"
-                placeholder={'0'}
-              />
-              {errors.countTarget && (
-                <span className={styles.formErrors}>
-                  {errors.countTarget.message
-                    ? errors.countTarget.message
-                    : t('manageProjects:countTargetValidation2')}
-                </span>
-              )}
+          {purpose === 'trees' ? (
+            <div className={styles.formField}>
+              <div className={styles.formFieldHalf} data-test-id="target">
+                <MaterialTextField
+                  inputRef={register({
+                    required: {
+                      value: true,
+                      message: t('manageProjects:countTargetValidation'),
+                    },
+                    validate: (value) => parseInt(value, 10) > 1,
+                  })}
+                  onInput={(e) => {
+                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                  }}
+                  label={t('manageProjects:countTarget')}
+                  variant="outlined"
+                  name="countTarget"
+                  placeholder={'0'}
+                />
+                {errors.countTarget && (
+                  <span className={styles.formErrors}>
+                    {errors.countTarget.message
+                      ? errors.countTarget.message
+                      : t('manageProjects:countTargetValidation2')}
+                  </span>
+                )}
+              </div>
             </div>
-            <div className={styles.formFieldHalf} data-test-id="website">
-              <MaterialTextField
-                label={t('manageProjects:website')}
-                variant="outlined"
-                name="website"
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: t('manageProjects:websiteValidationRequired'),
-                  },
-                  pattern: {
-                    //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
-                    value: /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
-                    message: t('manageProjects:websiteValidationInvalid'),
-                  },
-                })}
-              />
-              {errors.website && (
-                <span className={styles.formErrors}>
-                  {errors.website.message}
-                </span>
-              )}
-            </div>
+          ) : (
+            <></>
+          )}
+          <div className={styles.formFieldHalf} data-test-id="website">
+            <MaterialTextField
+              label={t('manageProjects:website')}
+              variant="outlined"
+              name="website"
+              inputRef={register({
+                required: {
+                  value: true,
+                  message: t('manageProjects:websiteValidationRequired'),
+                },
+                pattern: {
+                  //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
+                  value:
+                    /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
+                  message: t('manageProjects:websiteValidationInvalid'),
+                },
+              })}
+            />
+            {errors.website && (
+              <span className={styles.formErrors}>
+                {errors.website.message}
+              </span>
+            )}
           </div>
 
           <div className={styles.formFieldLarge} data-test-id="aboutProject">
@@ -460,18 +681,27 @@ export default function BasicDetails({
 
           <div className={styles.formField} style={{ minHeight: '80px' }}>
             <div className={`${styles.formFieldHalf}`}>
-              <div className={`${styles.formFieldRadio}`} >
+              <div className={`${styles.formFieldRadio}`}>
                 <label
                   htmlFor="acceptDonations"
-                  style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
                   data-test-id="receiveDonations"
                 >
                   {t('manageProjects:receiveDonations')}
                   <div
-                    style={{ height: '13px', width: '13px', marginLeft: '6px' }}
+                    style={{
+                      height: '13px',
+                      width: '13px',
+                      marginLeft: '6px',
+                      marginBottom: '3px',
+                    }}
                   >
+                    <InfoIcon />
                     <div className={styles.popover}>
-                      <InfoIcon />
                       <div
                         className={styles.popoverContent}
                         style={{ left: '-150px' }}
@@ -511,9 +741,14 @@ export default function BasicDetails({
                       parseNumber(i18n.language, value) > 0 &&
                       parseNumber(i18n.language, value) <= 100,
                   })}
-                  label={t('manageProjects:treeCost')}
+                  label={
+                    projectDetails.purpose === 'trees'
+                      ? t('manageProjects:unitCost')
+                      : t('manageProjects:unitCostConservation')
+                  }
                   variant="outlined"
-                  name="treeCost"
+                  type="number"
+                  name="unitCost"
                   placeholder={'0'}
                   InputProps={{
                     startAdornment: (
@@ -524,10 +759,10 @@ export default function BasicDetails({
                     ),
                   }}
                 />
-                {errors.treeCost && (
+                {errors.unitCost && (
                   <span className={styles.formErrors}>
-                    {errors.treeCost.message
-                      ? errors.treeCost.message
+                    {errors.unitCost.message
+                      ? errors.unitCost.message
                       : t('manageProjects:treeCostValidation')}
                   </span>
                 )}
@@ -535,12 +770,20 @@ export default function BasicDetails({
             ) : null}
           </div>
 
-          <div className={`${styles.formFieldLarge} ${styles.mapboxContainer}`} data-test-id="marker">
-            <p style={{
-              backgroundColor: theme === 'theme-light' ?
-                themeProperties.light.light :
-                themeProperties.dark.dark
-            }}>{t('manageProjects:projectLocation')}</p>
+          <div
+            className={`${styles.formFieldLarge} ${styles.mapboxContainer}`}
+            data-test-id="marker"
+          >
+            <p
+              style={{
+                backgroundColor:
+                  theme === 'theme-light'
+                    ? themeProperties.light.light
+                    : themeProperties.dark.dark,
+              }}
+            >
+              {t('manageProjects:projectLocation')}
+            </p>
             <MapGL
               {...viewport}
               ref={mapRef}
@@ -552,6 +795,26 @@ export default function BasicDetails({
                   latitude: event.lngLat[1],
                   longitude: event.lngLat[0],
                 };
+                geocoder
+                  .reverse(`${latLong.longitude}, ${latLong.latitude}`, {
+                    // longitude,latitude
+                    maxLocations: 10,
+                    distance: 100,
+                  })
+                  .then((result) => {
+                    if (result?.address?.Type === 'Ocean') {
+                      setWrongCoordinatesMessage(true);
+                      setError('latitude', {
+                        message: '',
+                      });
+                    } else {
+                      setWrongCoordinatesMessage(false);
+                      clearErrors('latitude');
+                    }
+                  })
+                  .catch((error) => {
+                    console.log(`error`, error);
+                  });
                 setViewPort({
                   ...viewport,
                   latitude: event.lngLat[1],
@@ -572,10 +835,10 @@ export default function BasicDetails({
                   offsetTop={-16}
                   style={{ left: '28px' }}
                 >
-                  <div className={styles.marker} ></div>
+                  <div className={styles.marker}></div>
                 </Marker>
               ) : null}
-              <div className={styles.mapNavigation} >
+              <div className={styles.mapNavigation}>
                 <NavigationControl showCompass={false} />
               </div>
             </MapGL>
@@ -583,7 +846,10 @@ export default function BasicDetails({
               className={styles.formField}
               style={{ margin: 'auto', marginTop: '-120px' }}
             >
-              <div className={`${styles.formFieldHalf} ${styles.latlongField}`} data-test-id="latitude">
+              <div
+                className={`${styles.formFieldHalf} ${styles.latlongField}`}
+                data-test-id="latitude"
+              >
                 <MaterialTextField
                   inputRef={register({
                     required: true,
@@ -598,18 +864,31 @@ export default function BasicDetails({
                   onInput={(e) => {
                     e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                   }}
-                  InputLabelProps={{ shrink: true, style: { position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: '-6px' } }}
+                  InputLabelProps={{
+                    shrink: true,
+                    style: {
+                      position: 'absolute',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      top: '-6px',
+                    },
+                  }}
                 />
                 {errors.latitude && (
                   <span
                     className={styles.formErrorsAbsolute}
                     style={{ zIndex: 2, textAlign: 'center' }}
                   >
-                    {t('manageProjects:latitudeRequired')}
+                    {wrongCoordinatesMessage
+                      ? t('manageProjects:wrongCoordinates')
+                      : t('manageProjects:latitudeRequired')}
                   </span>
                 )}
               </div>
-              <div className={`${styles.formFieldHalf} ${styles.latlongField}`} data-test-id="longitude">
+              <div
+                className={`${styles.formFieldHalf} ${styles.latlongField}`}
+                data-test-id="longitude"
+              >
                 <MaterialTextField
                   inputRef={register({
                     required: true,
@@ -624,7 +903,15 @@ export default function BasicDetails({
                   onInput={(e) => {
                     e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                   }}
-                  InputLabelProps={{ shrink: true, style: { position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: '-6px' } }}
+                  InputLabelProps={{
+                    shrink: true,
+                    style: {
+                      position: 'absolute',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      top: '-6px',
+                    },
+                  }}
                 />
                 {errors.longitude && (
                   <span
@@ -640,7 +927,11 @@ export default function BasicDetails({
 
           <div className={styles.formFieldLarge} style={{ width: '320px' }}>
             <div className={styles.formFieldRadio}>
-              <label htmlFor="visitorAssistance" style={{ cursor: 'pointer' }} data-test-id="visitorAssistance">
+              <label
+                htmlFor="visitorAssistance"
+                style={{ cursor: 'pointer' }}
+                data-test-id="visitorAssistance"
+              >
                 {t('manageProjects:visitorAssistanceLabel')}
               </label>
               <Controller
@@ -658,9 +949,13 @@ export default function BasicDetails({
             </div>
           </div>
 
-          <div className={styles.formFieldLarge} style={{ width: '320px' }}>
+          {/* <div className={styles.formFieldLarge} style={{ width: '320px' }}>
             <div className={`${styles.formFieldRadio}`}>
-              <label htmlFor={'publish'} style={{ cursor: 'pointer' }} data-test-id="publishProject">
+              <label
+                htmlFor={'publish'}
+                style={{ cursor: 'pointer' }}
+                data-test-id="publishProject"
+              >
                 {t('manageProjects:publishProject')}
               </label>
 
@@ -677,7 +972,8 @@ export default function BasicDetails({
                 )}
               />
             </div>
-          </div>
+          </div> */}
+
           {/* <div className={styles.formFieldLarge} style={{ width: '320px' }}>
             <div className={`${styles.formFieldRadio}`}>
               <label htmlFor={'enablePlantLocations'}>
@@ -715,12 +1011,12 @@ export default function BasicDetails({
             ></input>
           </div> */}
 
-          <div className={`${styles.formFieldHalf}`}>
+          <div className={styles.formField}>
             <button
               id={'basicDetailsCont'}
               onClick={handleSubmit(onSubmit)}
-              className="primaryButton"
-              style={{ minWidth: "240px" }}
+              className="primaryButton custom"
+              style={{ width: '169px', height: '46px' }}
               data-test-id="basicDetailsCont"
             >
               {isUploadingData ? (
@@ -730,6 +1026,29 @@ export default function BasicDetails({
               )}
             </button>
           </div>
+
+          {skipButtonVisible ? (
+            <div
+              className={styles.formField}
+              style={{
+                width: '89px',
+                padding: '15px, 30px, 15px, 30px',
+              }}
+            >
+              <button
+                id={'skip'}
+                className="primaryButton"
+                onClick={nextStep}
+                style={{
+                  width: '89px',
+                }}
+              >
+                {t('manageProjects:skip')}
+              </button>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </form>
     </div>

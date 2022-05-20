@@ -168,6 +168,13 @@
   width: 280px;
   justify-content: space-between;
   align-items: center;
+  margin-top: 10px;
+  button, .custom {
+    margin-left: 350px;
+   @include xsPhoneView {
+     margin-left: 0px !important;
+   }
+  }
 
 }
 .formFieldHalf {
@@ -178,6 +185,12 @@
   div,
   input {
     width: 130px;
+  }
+  button, .backButton {
+    margin-left: 45px;
+    @include xsPhoneView {
+      margin-left: 0px !important;
+    }
   }
 }
 .formFieldLarge {

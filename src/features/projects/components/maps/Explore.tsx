@@ -3,8 +3,7 @@ import styles from '../../styles/ProjectsMap.module.scss';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import ExploreIcon from '../../../../../public/assets/images/icons/ExploreIcon';
 import i18next from '../../../../../i18n';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
+import { Modal, FormGroup, FormControlLabel } from '@mui/material';
 import Switch from '../../../common/InputTypes/ToggleSwitch';
 import {
   Icons,
@@ -17,7 +16,6 @@ import { PluginMapboxGl } from 'layer-manager';
 import { FlyToInterpolator, Layer, Source } from 'react-map-gl';
 import TreeCoverLoss from '../../../../../public/data/layers/tree-cover-loss';
 import { getParams } from '../../../../utils/LayerManagerUtils';
-import { Modal } from '@material-ui/core';
 import ExploreInfoModal from './ExploreInfoModal';
 import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
@@ -243,9 +241,7 @@ export default function Explore({}: Props): ReactElement {
                     }}
                     className={styles.exploreInfo}
                   >
-                    
                     <InfoIcon />
-                    
                   </div>
                 </div>
                 <div className={styles.exploreToggleRow}>
@@ -384,11 +380,8 @@ export default function Explore({}: Props): ReactElement {
 }
 
 const ExploreLayers = () => {
-  const {
-    exploreForests,
-    explorePotential,
-    exploreDeforestation,
-  } = React.useContext(ProjectPropsContext);
+  const { exploreForests, explorePotential, exploreDeforestation } =
+    React.useContext(ProjectPropsContext);
   return (
     <>
       {exploreForests ? (
@@ -408,12 +401,8 @@ const ExploreLayers = () => {
         <LayerManager map={mapRef?.current.getMap()} plugin={PluginMapboxGl}>
           {exploreDeforestation &&
             TreeCoverLoss.map((layer) => {
-              const {
-                id,
-                decodeConfig,
-                timelineConfig,
-                decodeFunction,
-              } = layer;
+              const { id, decodeConfig, timelineConfig, decodeFunction } =
+                layer;
 
               const lSettings = layersSettings[id] || {};
 

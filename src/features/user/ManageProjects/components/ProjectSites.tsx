@@ -8,7 +8,6 @@ import dynamic from 'next/dynamic';
 import { WebMercatorViewport } from 'react-map-gl';
 import ReactMapboxGl, { GeoJSONLayer, Source, Layer } from 'react-mapbox-gl';
 import * as turf from '@turf/turf';
-import { makeStyles, MenuItem } from '@material-ui/core';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import {
   deleteAuthenticatedRequest,
@@ -17,9 +16,8 @@ import {
   putAuthenticatedRequest,
 } from '../../../../utils/apiRequests/api';
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
-import Modal from '@material-ui/core/Modal';
+import { makeStyles } from '@mui/styles';
+import { Fade, Modal, MenuItem } from '@mui/material';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
@@ -37,6 +35,7 @@ interface Props {
   projectGUID: String;
   handleReset: Function;
   token: any;
+  projectDetails: object;
 }
 
 const Map = dynamic(() => import('./MapComponent'), {
@@ -50,9 +49,10 @@ export default function ProjectSites({
   handleNext,
   projectGUID,
   handleReset,
+  projectDetails,
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
-  const { theme } = React.useContext(ThemeContext)
+  const { theme } = React.useContext(ThemeContext);
   const [features, setFeatures] = React.useState([]);
   const { register, handleSubmit, errors, control } = useForm();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
@@ -64,24 +64,24 @@ export default function ProjectSites({
   const useStylesAutoComplete = makeStyles({
     root: {
       color:
-        theme === "theme-light"
+        theme === 'theme-light'
           ? `${themeProperties.light.primaryFontColor} !important`
           : `${themeProperties.dark.primaryFontColor} !important`,
       backgroundColor:
-        theme === "theme-light"
+        theme === 'theme-light'
           ? `${themeProperties.light.backgroundColor} !important`
           : `${themeProperties.dark.backgroundColor} !important`,
     },
     option: {
       // color: '#2F3336',
-      "&:hover": {
+      '&:hover': {
         backgroundColor:
-          theme === "theme-light"
+          theme === 'theme-light'
             ? `${themeProperties.light.backgroundColorDark} !important`
             : `${themeProperties.dark.backgroundColorDark} !important`,
       },
-    }
-  })
+    },
+  });
   const classes = useStylesAutoComplete();
 
   const [geoLocation, setgeoLocation] = React.useState<Object>();
@@ -122,13 +122,12 @@ export default function ProjectSites({
   });
 
   const RASTER_SOURCE_OPTIONS = {
-    "type": "raster",
-    "tiles": [
-      "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    type: 'raster',
+    tiles: [
+      'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
     ],
-    "tileSize": 128
+    tileSize: 128,
   };
-
 
   // React.useEffect(() => {
   //   const promise = getMapStyle('openStreetMap');
@@ -146,14 +145,14 @@ export default function ProjectSites({
   const handleModalClose = () => {
     seteditMode(false);
     setOpenModal(false);
-  }
+  };
 
   const MapProps = {
     geoJson,
     setGeoJson,
     geoJsonError,
     setGeoJsonError,
-    geoLocation
+    geoLocation,
   };
 
   const onSubmit = (data: any) => {
@@ -181,32 +180,37 @@ export default function ProjectSites({
         submitData,
         token,
         handleError
-      ).then((res) => {
-        if (!res.code) {
-          const temp = siteList;
-          const submitData = {
-            id: res.id,
-            name: res.name,
-            geometry: res.geometry,
-            status: res.status,
-          };
-          temp.push(submitData);
-          setSiteList(temp);
-          setGeoJson(null);
-          setFeatures([]);
-          setIsUploadingData(false);
-          setShowForm(false);
-          setErrorMessage('');
-        } else {
-          if (res.code === 404) {
+      )
+        .then((res) => {
+          if (!res.code) {
+            const temp = siteList;
+            const submitData = {
+              id: res.id,
+              name: res.name,
+              geometry: res.geometry,
+              status: res.status,
+            };
+            temp.push(submitData);
+            setSiteList(temp);
+            setGeoJson(null);
+            setFeatures([]);
             setIsUploadingData(false);
-            setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
+            setShowForm(false);
+            setErrorMessage('');
           } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
+            if (res.code === 404) {
+              setIsUploadingData(false);
+              setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
+            } else {
+              setIsUploadingData(false);
+              setErrorMessage(res.message);
+            }
           }
-        }
-      });
+        })
+        .catch((err) => {
+          setIsUploadingData(false);
+          setErrorMessage(err);
+        });
     } else {
       setErrorMessage(ready ? t('manageProjects:polygonRequired') : '');
     }
@@ -234,20 +238,38 @@ export default function ProjectSites({
 
   const status = [
     {
-      label: ready ? t('manageProjects:siteStatusPlanting') : '',
-      value: 'planting',
+      label: ready
+        ? projectDetails.purpose === 'trees'
+          ? t('manageProjects:siteStatusPlanting')
+          : t('manageProjects:siteStatusNotYetprotected')
+        : '',
+      value:
+        projectDetails.purpose === 'trees' ? 'planting' : 'not yet protected',
     },
     {
-      label: ready ? t('manageProjects:siteStatusPlanted') : '',
-      value: 'planted',
+      label: ready
+        ? projectDetails.purpose === 'trees'
+          ? t('manageProjects:siteStatusPlanted')
+          : t('manageProjects:siteStatusPartiallyprotected')
+        : '',
+      value:
+        projectDetails.purpose === 'trees' ? 'planted' : 'partially protected',
     },
     {
-      label: ready ? t('manageProjects:siteStatusBarren') : '',
-      value: 'barren',
+      label: ready
+        ? projectDetails.purpose === 'trees'
+          ? t('manageProjects:siteStatusBarren')
+          : t('manageProjects:siteStatusFullyprotected')
+        : '',
+      value: projectDetails.purpose === 'trees' ? 'barren' : 'fully protected',
     },
     {
-      label: ready ? t('manageProjects:siteStatusReforestation') : '',
-      value: 'reforestation',
+      label: ready
+        ? projectDetails.purpose === 'trees'
+          ? t('manageProjects:siteStatusReforestation')
+          : ''
+        : '',
+      value: projectDetails.purpose === 'trees' ? 'reforestation' : '',
     },
   ];
 
@@ -263,8 +285,8 @@ export default function ProjectSites({
       ).then((result) => {
         const geoLocation = {
           geoLatitude: result.geoLatitude,
-          geoLongitude: result.geoLongitude
-        }
+          geoLongitude: result.geoLongitude,
+        };
         setgeoLocation(geoLocation);
 
         if (result.sites.length > 0) {
@@ -274,7 +296,7 @@ export default function ProjectSites({
       });
   }, [projectGUID]);
 
-  const [siteGUID, setSiteGUID] = React.useState()
+  const [siteGUID, setSiteGUID] = React.useState();
 
   const editSite = (site: any) => {
     const defaultSiteDetails = {
@@ -283,31 +305,50 @@ export default function ProjectSites({
       geometry: {},
     };
     const collection = {
-      type: "FeatureCollection",
-      features: [{
-        geometry: site.geometry,
-        properties: {},
-        type: "Feature"
-      }]
-    }
+      type: 'FeatureCollection',
+      features: [
+        {
+          geometry: site.geometry,
+          properties: {},
+          type: 'Feature',
+        },
+      ],
+    };
+
     setGeoJson(collection);
     setSiteDetails(defaultSiteDetails);
-    setSiteGUID(site.id)
+    setSiteGUID(site.id);
     seteditMode(true);
     setOpenModal(true);
-
-  }
+  };
 
   const EditProps = {
-    openModal, handleModalClose, changeSiteDetails, siteDetails, errorMessage, status, geoJsonProp: geoJson, ready, projectGUID, setSiteList, token, setFeatures, seteditMode, siteGUID, siteList
-  }
+    openModal,
+    handleModalClose,
+    changeSiteDetails,
+    siteDetails,
+    errorMessage,
+    status,
+    geoJsonProp: geoJson,
+    ready,
+    projectGUID,
+    setSiteList,
+    token,
+    setFeatures,
+    seteditMode,
+    siteGUID,
+    siteList,
+  };
 
   return ready ? (
     <div className={styles.stepContainer}>
-      {editMode &&
-        <EditSite {...EditProps} />}
+      {editMode && <EditSite {...EditProps} />}
 
-      <form onSubmit={(e) => { e.preventDefault() }}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+        }}
+      >
         <div className={styles.formField}>
           {siteList
             .filter((site) => {
@@ -337,7 +378,9 @@ export default function ProjectSites({
                   <div className={styles.mapboxContainer}>
                     <div className={styles.uploadedMapName}>{site.name}</div>
                     <div className={styles.uploadedMapStatus}>
-                      {status.find(e => site.status == e.value)?.label.toUpperCase()}
+                      {status
+                        .find((e) => site.status == e.value)
+                        ?.label.toUpperCase()}
                     </div>
                     <button
                       id={'trashIconProjS'}
@@ -348,9 +391,10 @@ export default function ProjectSites({
                     >
                       <TrashIcon color={'#000'} />
                     </button>
-                    <div id={'edit'}
+                    <div
+                      id={'edit'}
                       onClick={() => {
-                        editSite(site)
+                        editSite(site);
                       }}
                       className={styles.uploadedMapEditButton}
                     >
@@ -366,8 +410,15 @@ export default function ProjectSites({
                         width: 320,
                       }}
                     >
-                      <Source id="satellite_source" tileJsonSource={RASTER_SOURCE_OPTIONS} />
-                      <Layer type="raster" id="satellite_layer" sourceId="satellite_source" />
+                      <Source
+                        id="satellite_source"
+                        tileJsonSource={RASTER_SOURCE_OPTIONS}
+                      />
+                      <Layer
+                        type="raster"
+                        id="satellite_layer"
+                        sourceId="satellite_source"
+                      />
                       <GeoJSONLayer
                         data={site.geometry}
                         fillPaint={{
@@ -390,14 +441,25 @@ export default function ProjectSites({
             <div className={styles.formField}>
               <div className={styles.formFieldHalf} data-test-id="siteName">
                 <MaterialTextField
-                  inputRef={register({ required: true })}
+                  inputRef={register({
+                    required: {
+                      value: true,
+                      message: t('manageProjects:siteNameValidation'),
+                    },
+                  })}
                   label={t('manageProjects:siteName')}
                   variant="outlined"
                   name="name"
                   onChange={changeSiteDetails}
                   defaultValue={siteDetails.name}
                 />
+                {errors.name && (
+                  <span className={styles.formErrors}>
+                    {errors.name.message}
+                  </span>
+                )}
               </div>
+              <div style={{ width: '20px' }}></div>
               <div className={styles.formFieldHalf} data-test-id="siteStatus">
                 <Controller
                   as={
@@ -410,17 +472,23 @@ export default function ProjectSites({
                       value={siteDetails.status}
                     >
                       {status.map((option) => (
-                        <MenuItem key={option.value} value={option.value} classes={{
-                          // option: classes.option,
-                          root: classes.root,
-                        }}>
+                        <MenuItem
+                          key={option.value}
+                          value={option.value}
+                          classes={{
+                            // option: classes.option,
+                            root: classes.root,
+                          }}
+                        >
                           {option.label}
                         </MenuItem>
                       ))}
                     </MaterialTextField>
                   }
                   name="status"
-                  rules={{ required: t('manageProjects:selectProjectStatus') }}
+                  rules={{
+                    required: t('manageProjects:selectProjectStatus'),
+                  }}
                   control={control}
                   defaultValue={siteDetails.status ? siteDetails.status : ''}
                 />
@@ -445,12 +513,13 @@ export default function ProjectSites({
             </button>
           </div>
         ) : (
-          <button id={'manageProjAddSite'}
+          <button
+            id={'manageProjAddSite'}
             onClick={() => {
               setShowForm(true);
               setGeoJson(null);
               setSiteDetails(defaultSiteDetails);
-              setSiteGUID(null)
+              setSiteGUID(null);
               seteditMode(false);
               setOpenModal(false);
             }}
@@ -468,12 +537,9 @@ export default function ProjectSites({
           </div>
         ) : null}
 
-        <div className={styles.formField}>
+        <div className={styles.formField} style={{ marginTop: '10px' }}>
           <div className={`${styles.formFieldHalf}`}>
-            <button
-              onClick={handleBack}
-              className="secondaryButton"
-            >
+            <button onClick={handleBack} className="secondaryButton">
               <BackArrow />
               <p>{t('manageProjects:backToAnalysis')}</p>
             </button>
@@ -483,7 +549,7 @@ export default function ProjectSites({
             <button
               onClick={handleSubmit(uploadProjectSiteNext)}
               className="primaryButton"
-              style={{ minWidth: "240px" }}
+              style={{ minWidth: '240px' }}
               data-test-id="projSitesCont"
             >
               {isUploadingData ? (
@@ -491,6 +557,15 @@ export default function ProjectSites({
               ) : (
                 t('manageProjects:saveAndContinue')
               )}
+            </button>
+          </div>
+          <div className={styles.formFieldHalf}>
+            <button
+              onClick={handleNext}
+              className="primaryButton"
+              style={{ width: '89px', marginRight: '40px', marginLeft: '20px' }}
+            >
+              {t('manageProjects:skip')}
             </button>
           </div>
         </div>
@@ -518,7 +593,22 @@ interface EditSiteProps {
   siteList: any;
 }
 
-function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails, status, geoJsonProp, ready, projectGUID, setSiteList, token, setFeatures, seteditMode, siteGUID, siteList }: EditSiteProps) {
+function EditSite({
+  openModal,
+  handleModalClose,
+  changeSiteDetails,
+  siteDetails,
+  status,
+  geoJsonProp,
+  ready,
+  projectGUID,
+  setSiteList,
+  token,
+  setFeatures,
+  seteditMode,
+  siteGUID,
+  siteList,
+}: EditSiteProps) {
   const { theme } = React.useContext(ThemeContext);
   const { t } = useTranslation(['manageProjects']);
   const { register, handleSubmit, errors, control } = useForm();
@@ -531,24 +621,24 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
   const useStylesAutoComplete = makeStyles({
     root: {
       color:
-        theme === "theme-light"
+        theme === 'theme-light'
           ? `${themeProperties.light.primaryFontColor} !important`
           : `${themeProperties.dark.primaryFontColor} !important`,
       backgroundColor:
-        theme === "theme-light"
+        theme === 'theme-light'
           ? `${themeProperties.light.backgroundColor} !important`
           : `${themeProperties.dark.backgroundColor} !important`,
     },
     option: {
       // color: '#2F3336',
-      "&:hover": {
+      '&:hover': {
         backgroundColor:
-          theme === "theme-light"
+          theme === 'theme-light'
             ? `${themeProperties.light.backgroundColorDark} !important`
             : `${themeProperties.dark.backgroundColorDark} !important`,
       },
-    }
-  })
+    },
+  });
   const classes = useStylesAutoComplete();
 
   const MapProps = {
@@ -558,8 +648,8 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
     setGeoJsonError,
     geoLocation: {
       geoLatitude: 36.96,
-      geoLongitude: -28.5
-    }
+      geoLongitude: -28.5,
+    },
   };
 
   const editProjectSite = (data: any) => {
@@ -573,7 +663,8 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
       putAuthenticatedRequest(
         `/app/projects/${projectGUID}/sites/${siteGUID}`,
         submitData,
-        token, handleError
+        token,
+        handleError
       ).then((res) => {
         if (!res.code) {
           const temp = siteList;
@@ -581,7 +672,7 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
           temp.find((site, index) => {
             if (site.id === res.id) {
               siteIndex = index;
-              return true
+              return true;
             }
           });
           if (siteIndex !== null) {
@@ -616,13 +707,18 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
       open={openModal}
       onClose={handleModalClose}
       closeAfterTransition
-      BackdropComponent={Backdrop}
       BackdropProps={{
         timeout: 500,
       }}
     >
       <Fade in={openModal}>
-        <form style={{ backgroundColor: 'white', padding: '20px', borderRadius: '10px' }}>
+        <form
+          style={{
+            backgroundColor: 'white',
+            padding: '20px',
+            borderRadius: '10px',
+          }}
+        >
           <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
             <div className={styles.formField}>
               <div className={styles.formFieldHalf}>
@@ -647,10 +743,14 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
                       value={siteDetails.status}
                     >
                       {status.map((option) => (
-                        <MenuItem key={option.value} value={option.value} classes={{
-                          // option: classes.option,
-                          root: classes.root,
-                        }}>
+                        <MenuItem
+                          key={option.value}
+                          value={option.value}
+                          classes={{
+                            // option: classes.option,
+                            root: classes.root,
+                          }}
+                        >
                           {option.label}
                         </MenuItem>
                       ))}
@@ -670,7 +770,6 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
             </div>
 
             <Map {...MapProps} />
-
           </div>
 
           {errorMessage && errorMessage !== '' ? (
@@ -684,6 +783,7 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
               <button
                 onClick={handleModalClose}
                 className="secondaryButton"
+                style={{ width: '234px' }}
               >
                 <BackArrow />
                 <p>{t('manageProjects:backToSites')}</p>
@@ -694,7 +794,7 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
               <button
                 onClick={handleSubmit(editProjectSite)}
                 className="primaryButton"
-                style={{ minWidth: "240px" }}
+                style={{ minWidth: '240px' }}
               >
                 {isUploadingData ? (
                   <div className={styles.spinner}></div>
@@ -707,5 +807,5 @@ function EditSite({ openModal, handleModalClose, changeSiteDetails, siteDetails,
         </form>
       </Fade>
     </Modal>
-  )
+  );
 }

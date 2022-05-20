@@ -3,20 +3,39 @@
 .mainContainer {
   max-width: 1000px;
   display: flex;
+  flex-direction: column;
   background-color: $backgroundColor;
   > div {
-    background-color: $backgroundColor;
+    background-color: $backgroundBase;
+    padding-left: 0%;
   }
 }
 
 .stepContainer {
-  margin: auto;
+  margin-top: -60px;
+  margin-left: 100px;
   font-family: $primaryFontFamily;
   display: flex;
-  justify-content: center;
-  background-color: $backgroundColor;
+  background-color: $backgroundBase;
   color: $primaryFontColor;
-}
+  @include xsPhoneView{
+    margin-left: -8px;
+    margin-top: 5px;
+    }
+  @include smTabletView {
+    margin-left: -8px;
+    margin-top: 5px;
+    }
+  @include mdTabletView {
+    margin-left: -8px;
+    margin-top: 5px;
+    }
+  @include lgLaptopView {
+    margin-top: -60px;
+    margin-left: 40px;
+    }
+  }
+
 .formFieldRadio {
   width: 100%;
   display: flex;
@@ -50,7 +69,6 @@
   max-width: 320px;
   min-width: 320px;
 }
-
 .latitudeInput {
   width: fit-content !important;
   div {
