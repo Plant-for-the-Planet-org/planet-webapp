@@ -45,7 +45,6 @@ const RecipientsUploadForm = ({
   const handleStatusChange = (newStatus: UploadStates) => {
     setStatus(newStatus);
     if (newStatus !== 'success') {
-      console.log('new status', newStatus);
       setRecipients([]);
     }
   };
