@@ -86,6 +86,22 @@ function ProjectInfo({ project }: Props): ReactElement {
     return `${percentage}%`;
   };
 
+  const addZeroToDate = (val) => {
+    const arr = val.split('-');
+    let newDateArr = [arr[0]];
+    if (arr[1].length === 1) {
+      newDateArr.push(`0${arr[1]}`);
+    } else {
+      newDateArr.push(arr[1]);
+    }
+    if (arr[2].length === 1) {
+      newDateArr.push(`0${arr[2]}`);
+    } else {
+      newDateArr.push(arr[2]);
+    }
+    return newDateArr.join('-');
+  };
+
   return ready ? (
     <div>
       <div className={styles.projectMoreInfoHalfContainer}>
@@ -117,14 +133,18 @@ function ProjectInfo({ project }: Props): ReactElement {
             </div>
           </div>
         )}
-
-        {project.firstTreePlanted && project.firstTreePlanted.date && (
+        {project && project.metadata && project.metadata.firstTreePlanted && (
           <div className={styles.projectMoreInfoHalf}>
             <div className={styles.infoTitle}>
               {t('manageProjects:firstTreePlanted')}
             </div>
             <div className={styles.infoText}>
-              {formatDate(project.firstTreePlanted.date)}
+              {formatDate(
+                project.metadata.firstTreePlanted.split('-')[1].length === 1 ||
+                  project.metadata.firstTreePlanted.split('-')[2].length === 1
+                  ? addZeroToDate(project.metadata.firstTreePlanted)
+                  : project.metadata.firstTreePlanted
+              )}
             </div>
           </div>
         )}

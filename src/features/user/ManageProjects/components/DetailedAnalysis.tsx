@@ -318,8 +318,8 @@ export default function DetailedAnalysis({
                 : new Date(),
               degradationCause: projectDetails.metadata.degradationCause,
 
-              firstTreePlanted: projectDetails.firstTreePlanted
-                ? new Date(projectDetails.firstTreePlanted)
+              firstTreePlanted: projectDetails.metadata.firstTreePlanted
+                ? new Date(projectDetails.metadata.firstTreePlanted)
                 : new Date(),
               mainChallenge: projectDetails.metadata.mainChallenge,
               longTermPlan: projectDetails.metadata.longTermPlan,
