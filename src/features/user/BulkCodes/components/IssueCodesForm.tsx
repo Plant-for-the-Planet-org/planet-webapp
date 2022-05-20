@@ -221,6 +221,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
                   name="unitsPerCode"
                   control={control}
                   rules={{ required: true }}
+                  defaultValue={''}
                   render={(props: ControllerRenderProps) => (
                     <TextField
                       {...props}
@@ -245,6 +246,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
                   name="codeQuantity"
                   control={control}
                   rules={{ required: true }}
+                  defaultValue={''}
                   render={(props: ControllerRenderProps) => (
                     <TextField
                       {...props}
