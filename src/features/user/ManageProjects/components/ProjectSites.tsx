@@ -180,32 +180,37 @@ export default function ProjectSites({
         submitData,
         token,
         handleError
-      ).then((res) => {
-        if (!res.code) {
-          const temp = siteList;
-          const submitData = {
-            id: res.id,
-            name: res.name,
-            geometry: res.geometry,
-            status: res.status,
-          };
-          temp.push(submitData);
-          setSiteList(temp);
-          setGeoJson(null);
-          setFeatures([]);
-          setIsUploadingData(false);
-          setShowForm(false);
-          setErrorMessage('');
-        } else {
-          if (res.code === 404) {
+      )
+        .then((res) => {
+          if (!res.code) {
+            const temp = siteList;
+            const submitData = {
+              id: res.id,
+              name: res.name,
+              geometry: res.geometry,
+              status: res.status,
+            };
+            temp.push(submitData);
+            setSiteList(temp);
+            setGeoJson(null);
+            setFeatures([]);
             setIsUploadingData(false);
-            setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
+            setShowForm(false);
+            setErrorMessage('');
           } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
+            if (res.code === 404) {
+              setIsUploadingData(false);
+              setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
+            } else {
+              setIsUploadingData(false);
+              setErrorMessage(res.message);
+            }
           }
-        }
-      });
+        })
+        .catch((err) => {
+          setIsUploadingData(false);
+          setErrorMessage(err);
+        });
     } else {
       setErrorMessage(ready ? t('manageProjects:polygonRequired') : '');
     }

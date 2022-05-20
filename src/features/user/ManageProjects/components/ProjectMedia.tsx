@@ -73,27 +73,32 @@ export default function ProjectMedia({
       submitData,
       token,
       handleError
-    ).then((res) => {
-      if (!res.code) {
-        let newUploadedImages = [...uploadedImages];
+    )
+      .then((res) => {
+        if (!res.code) {
+          let newUploadedImages = [...uploadedImages];
 
-        if (!newUploadedImages) {
-          newUploadedImages = [];
-        }
-        newUploadedImages.push(res);
-        setUploadedImages(newUploadedImages);
-        setIsUploadingData(false);
-        setErrorMessage('');
-      } else {
-        if (res.code === 404) {
+          if (!newUploadedImages) {
+            newUploadedImages = [];
+          }
+          newUploadedImages.push(res);
+          setUploadedImages(newUploadedImages);
           setIsUploadingData(false);
-          setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
+          setErrorMessage('');
         } else {
-          setIsUploadingData(false);
-          setErrorMessage(res.message);
+          if (res.code === 404) {
+            setIsUploadingData(false);
+            setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
+          } else {
+            setIsUploadingData(false);
+            setErrorMessage(res.message);
+          }
         }
-      }
-    });
+      })
+      .catch((err) => {
+        setIsUploadingData(false);
+        setErrorMessage(err);
+      });
   };
 
   React.useEffect(() => {
@@ -173,22 +178,27 @@ export default function ProjectMedia({
       submitData,
       token,
       handleError
-    ).then((res) => {
-      if (!res.code) {
-        setProjectDetails(res);
-        setIsUploadingData(false);
-        handleNext();
-        setErrorMessage('');
-      } else {
-        if (res.code === 404) {
+    )
+      .then((res) => {
+        if (!res.code) {
+          setProjectDetails(res);
           setIsUploadingData(false);
-          setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
+          handleNext();
+          setErrorMessage('');
         } else {
-          setIsUploadingData(false);
-          setErrorMessage(res.message);
+          if (res.code === 404) {
+            setIsUploadingData(false);
+            setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
+          } else {
+            setIsUploadingData(false);
+            setErrorMessage(res.message);
+          }
         }
-      }
-    });
+      })
+      .catch((err) => {
+        setIsUploadingData(false);
+        setErrorMessage(err);
+      });
   };
 
   React.useEffect(() => {

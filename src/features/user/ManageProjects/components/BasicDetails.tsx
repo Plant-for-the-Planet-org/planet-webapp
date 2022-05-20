@@ -414,55 +414,60 @@ export default function BasicDetails({
         submitData,
         token,
         handleError
-      ).then((res) => {
-        if (!res.code) {
-          setErrorMessage('');
-          setProjectDetails(res);
-          setIsUploadingData(false);
-          handleNext();
-        } else {
-          if (res.code === 404) {
+      )
+        .then((res) => {
+          if (!res.code) {
+            setErrorMessage('');
+            setProjectDetails(res);
             setIsUploadingData(false);
-            setErrorMessage(res.message);
-          } else if (res.code === 400) {
-            setIsUploadingData(false);
-            if (res.errors && res.errors.children) {
-              addServerErrors(res.errors.children, setError);
-            }
+            handleNext();
           } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
+            if (res.code === 404) {
+              setIsUploadingData(false);
+              setErrorMessage(res.message);
+            } else if (res.code === 400) {
+              setIsUploadingData(false);
+              if (res.errors && res.errors.children) {
+                addServerErrors(res.errors.children, setError);
+              }
+            } else {
+              setIsUploadingData(false);
+              setErrorMessage(res.message);
+            }
           }
-        }
-      });
+        })
+        .catch((err) => {
+          setIsUploadingData(false);
+          setErrorMessage(err);
+        });
     } else {
-      postAuthenticatedRequest(
-        `/app/projects`,
-        submitData,
-        token,
-        handleError
-      ).then((res) => {
-        if (!res.code) {
-          setErrorMessage('');
-          setProjectGUID(res.id);
-          setProjectDetails(res);
-          router.push(`/profile/projects/${res.id}?type=media`);
-          setIsUploadingData(false);
-        } else {
-          if (res.code === 404) {
+      postAuthenticatedRequest(`/app/projects`, submitData, token, handleError)
+        .then((res) => {
+          if (!res.code) {
+            setErrorMessage('');
+            setProjectGUID(res.id);
+            setProjectDetails(res);
+            router.push(`/profile/projects/${res.id}?type=media`);
             setIsUploadingData(false);
-            setErrorMessage(res.message);
-          } else if (res.code === 400) {
-            setIsUploadingData(false);
-            if (res.errors && res.errors.children) {
-              addServerErrors(res.errors.children, setError);
-            }
           } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
+            if (res.code === 404) {
+              setIsUploadingData(false);
+              setErrorMessage(res.message);
+            } else if (res.code === 400) {
+              setIsUploadingData(false);
+              if (res.errors && res.errors.children) {
+                addServerErrors(res.errors.children, setError);
+              }
+            } else {
+              setIsUploadingData(false);
+              setErrorMessage(res.message);
+            }
           }
-        }
-      });
+        })
+        .catch((err) => {
+          setIsUploadingData(false);
+          setErrorMessage(err);
+        });
     }
   };
   const geocoder = new GeocoderArcGIS(
