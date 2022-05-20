@@ -16,7 +16,6 @@ export interface SelectorOptionProps {
 const SelectorOptionContainer = styled('div')(({ theme }) => ({
   border: `1px solid ${theme.palette.text.primary}`,
   borderRadius: 9,
-  padding: 24,
   '& input[type="radio"]': {
     display: 'none',
   },
@@ -24,6 +23,7 @@ const SelectorOptionContainer = styled('div')(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: 10,
+    padding: 24,
   },
   '& .optionDetails': {
     margin: '0 24px',
@@ -45,8 +45,8 @@ const SelectorOption = ({
   isSelected = false,
   handleMethodChange,
 }: SelectorOptionProps): ReactElement => {
-  const handleClick = () => {
-    if (handleMethodChange) {
+  const handleChange = () => {
+    if (!isSelected && handleMethodChange) {
       handleMethodChange(method);
     }
   };
@@ -57,13 +57,14 @@ const SelectorOption = ({
 
   const optionClasses = `SelectorOption ${isSelected ? `selected` : null}`;
   return (
-    <SelectorOptionContainer className={optionClasses} onClick={handleClick}>
+    <SelectorOptionContainer className={optionClasses}>
       <input
         type="radio"
         name="method"
         value={method}
         id={method}
         checked={isSelected}
+        onChange={handleChange}
       />
       <label htmlFor={method} className="optionLabel">
         <h2 className="optionTitle">{title}</h2>
