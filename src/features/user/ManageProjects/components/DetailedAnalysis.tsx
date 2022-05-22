@@ -133,7 +133,7 @@ export default function DetailedAnalysis({
   const handleSetPlantingSeasons = (id: any) => {
     const month = plantingSeasons[id];
     const newMonth = month;
-    newMonth.isSet = !month.isSet;
+    newMonth.isSet = true;
     const plantingSeasonsNew = plantingSeasons;
     plantingSeasonsNew[id] = newMonth;
     setPlantingSeasons([...plantingSeasonsNew]);
