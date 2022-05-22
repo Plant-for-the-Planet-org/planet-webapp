@@ -16,7 +16,7 @@ const { useTranslation } = i18next;
 interface Props {}
 
 function ManageSingleProject({}: Props): ReactElement {
-  const { t } = useTranslation(['me', 'manageProjects']);
+  const { t } = useTranslation(['manageProjects', 'common']);
   const [projectGUID, setProjectGUID] = React.useState(null);
   const [ready, setReady] = React.useState(false);
   const router = useRouter();
@@ -79,7 +79,7 @@ function ManageSingleProject({}: Props): ReactElement {
     ready && token && !accessDenied ? (
       <UserLayout>
         <Head>
-          <title>{`${t('edit')} - ${project.name}`}</title>
+          <title>{`${t('common:edit')} - ${project.name}`}</title>
         </Head>
         <div className="profilePage">
           <div className="profilePageHeader">
