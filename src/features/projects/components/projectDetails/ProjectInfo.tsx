@@ -180,7 +180,6 @@ function ProjectInfo({ project }: Props): ReactElement {
                         </div>
                     </div>
                 )} */}
-
         {project &&
           project.metadata &&
           project.metadata.employeesCount &&
@@ -194,6 +193,16 @@ function ProjectInfo({ project }: Props): ReactElement {
               </div>
             </div>
           )}
+        {project && project.metadata && project.metadata.ecosystems ? (
+          <div className={styles.projectMoreInfoHalf}>
+            <div className={styles.infoTitle}>
+              {t('manageProjects:ecosystems')}
+            </div>
+            <div className={styles.infoText}>{project.metadata.ecosystems}</div>
+          </div>
+        ) : (
+          ''
+        )}
 
         {project &&
           project.metadata &&

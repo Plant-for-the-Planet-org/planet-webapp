@@ -103,17 +103,6 @@ export default function DetailedAnalysis({
     { id: 11, title: ready ? t('common:december') : '', isSet: false },
   ]);
 
-  const enSpecies = [
-    {
-      id: 1,
-      label: 'animal 1',
-    },
-    {
-      id: 2,
-      label: 'animal 2',
-    },
-  ];
-
   const addHandler = () => {
     setAddSpecies(true);
   };
@@ -362,6 +351,7 @@ export default function DetailedAnalysis({
             };
 
       // set planting seasons
+
       if (purpose === 'trees') {
         if (
           projectDetails.metadata.plantingSeasons &&
@@ -374,6 +364,7 @@ export default function DetailedAnalysis({
           ) {
             if (projectDetails.metadata.plantingSeasons[i]) {
               const j = projectDetails.metadata.plantingSeasons[i] - 1;
+
               handleSetPlantingSeasons(j);
             }
           }
