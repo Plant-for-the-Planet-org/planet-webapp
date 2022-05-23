@@ -33,8 +33,8 @@
     "tree": "tree",
     "m2": "m²"
   },
-  "unitsPerCode": "Units per Code",
-  "totalNumberOfCodes": "Total Number of Codes",
+  "unitsPerCode": "Units per Code*",
+  "totalNumberOfCodes": "Total Number of Codes*",
   "occasion": "Occasion",
   "total": "Total",
   "chargeConsentText": "By clicking Issue Codes, you agree that above amount will be charged to your account.",
@@ -48,11 +48,11 @@
     "empty": "Drag and drop / click to select a .csv or .xslx file for upload",
     "error": "Please check for issues and drag .csv or .xlsx file here to upload",
     "processing": "Please wait while we analyze your file...",
-    "success": "Continue or drag .csv or .xlsx file here to replace current file." 
+    "success": "Continue or drag .csv or .xlsx file here to replace current file."
   },
   "statusUploadCSV": {
     "error": "Error",
-    "success": "File analysis complete" 
+    "success": "File analysis complete"
   },
   "errorUploadCSV": {
     "fileInvalidType": "Only CSV files are permitted",
@@ -60,15 +60,15 @@
     "fileTooSmall": "The uploaded file seems to be empty",
     "fileTooLarge": "The uploaded file must be 5MB or less",
     "missingColumns": "The uploaded file does not contain the following columns: ",
-	"noRecipientData": "No recipient data found",
-	"tooManyRecipients": "A maximum of 1000 recipients can be processed in one transaction",
-	"unitsNotProvided": "Units are missing for some recipients",
-	"notifyNotPossible": "Email and name are missing for some recipients that are to be notified",
-	"invalidEmails": "The emails provided are invalid on the following rows: ",
-    "generalError": "Something went wrong. Please try after a while" 
+    "noRecipientData": "No recipient data found",
+    "tooManyRecipients": "A maximum of 1000 recipients can be processed in one transaction",
+    "unitsNotProvided": "Units are missing for some recipients",
+    "notifyNotPossible": "Email and name are missing for some recipients that are to be notified",
+    "invalidEmails": "The emails provided are invalid on the following rows: ",
+    "generalError": "Something went wrong. Please try after a while"
   },
   "successUploadCSV": {
-	  "ignoredColumns": "Extra columns in the CSV were ignored"
+    "ignoredColumns": "Extra columns in the CSV were ignored"
   },
   "importInstructions": "Please refer to the <1>documentation here</1>, and download<3> </3><4>template here</4>"
 }
