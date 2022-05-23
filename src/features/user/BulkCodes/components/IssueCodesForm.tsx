@@ -122,8 +122,8 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
         let totalUnits = 0;
         const recipients = [];
 
-        for (let recepients of localRecipients) {
-          totalUnits = totalUnits + parseInt(recepients.units);
+        for (const recipient of localRecipients) {
+          totalUnits = totalUnits + parseInt(recipient.units);
         }
 
         localRecipients.forEach((recipient) => {
@@ -194,8 +194,8 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
         : undefined;
     } else {
       let totalUnits = 0;
-      for (let recepients of localRecipients) {
-        totalUnits = totalUnits + recepients.units * 1;
+      for (const recipient of localRecipients) {
+        totalUnits = totalUnits + Number(recipient.units) * 1;
       }
       return project ? (totalUnits * project.unitCost).toFixed(2) : undefined;
     }
@@ -206,8 +206,8 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
       return project ? codeQuantity * unitsPerCode : undefined;
     } else {
       let totalUnits = 0;
-      for (let recepients of localRecipients) {
-        totalUnits = totalUnits + recepients.units * 1;
+      for (const recipient of localRecipients) {
+        totalUnits = totalUnits + Number(recipient.units) * 1;
       }
       return totalUnits;
     }
