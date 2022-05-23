@@ -1,6 +1,7 @@
 import { TextField } from 'mui-latest';
 import { ReactElement } from 'react';
 import i18next from '../../../../../i18n';
+import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 
 const { useTranslation } = i18next;
 
@@ -12,12 +13,12 @@ interface BulkGiftTotalProps {
 }
 
 const BulkGiftTotal = ({
-  amount,
+  amount = 0,
   currency,
   units,
   unit,
 }: BulkGiftTotalProps): ReactElement | null => {
-  const { t, ready } = useTranslation(['common', 'bulkCodes']);
+  const { t, ready, i18n } = useTranslation(['common', 'bulkCodes']);
 
   const getUnit = (_unit: string, _units?: number) => {
     if (_unit === 'tree') {
@@ -35,7 +36,11 @@ const BulkGiftTotal = ({
         label={t('bulkCodes:total')}
         disabled
         inputProps={{ readOnly: true }}
-        value={`${amount} ${currency} for ${units} ${getUnit(unit, units)}`}
+        value={`${getFormatedCurrency(
+          i18n.language,
+          currency as string,
+          amount
+        )} for ${units} ${getUnit(unit, units)}`}
         helperText={t('bulkCodes:chargeConsentText')}
         // TODOO translation and pluralization
       ></TextField>

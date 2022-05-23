@@ -14,7 +14,7 @@ import RecipientsUploadForm from './RecipientsUploadForm';
 
 import BulkCodesError from './BulkCodesError';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
-import cleanObject from '../../../../utils/cleaObject';
+import cleanObject from '../../../../utils/cleanObject';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useAuth0 } from '@auth0/auth0-react';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
