@@ -229,7 +229,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
                       value={props.value}
                       label={t('bulkCodes:unitsPerCode')}
                       onInput={(e) => {
-                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                        e.target.value = e.target.value.replace(/[^1-9]/g, '');
                       }}
                       error={errors.unitsPerCode}
                     />
@@ -254,7 +254,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
                       value={props.value}
                       label={t('bulkCodes:totalNumberOfCodes')}
                       onInput={(e) => {
-                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                        e.target.value = e.target.value.replace(/[^1-9]/g, '');
                       }}
                       error={errors.codeQuantity}
                     />
