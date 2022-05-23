@@ -62,8 +62,8 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
           gift: {
             type: 'code-bulk',
             occasion,
-            quantity: data.codeQuantity,
-            value: project.unitCost * data.unitsPerCode,
+            numberOfCodes: data.codeQuantity,
+            unitsPerCode: project.unitCost * data.unitsPerCode,
           },
         };
         const cleanedData = cleanObject(donationData);
