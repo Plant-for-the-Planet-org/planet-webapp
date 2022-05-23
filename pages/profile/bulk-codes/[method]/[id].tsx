@@ -67,7 +67,7 @@ export default function BulkCodeIssueCodesPage({}: Props): ReactElement {
         }
       }
     }
-  }, [project, bulkMethod, isReady, planetCashAccount]);
+  }, [isReady, planetCashAccount]);
 
   useEffect(() => {
     checkContext();

@@ -37,7 +37,14 @@ interface IssueCodesFormProps {}
 const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
   const router = useRouter();
-  const { project, planetCashAccount, projectList, bulkMethod } = useBulkCode();
+  const {
+    project,
+    setProject,
+    planetCashAccount,
+    projectList,
+    bulkMethod,
+    setBulkMethod,
+  } = useBulkCode();
   const { user } = useContext(UserPropsContext);
   const { getAccessTokenSilently } = useAuth0();
   const { handleError } = useContext(ErrorHandlingContext);
@@ -49,6 +56,12 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
 
   const codeQuantity = watch('codeQuantity', 0);
   const unitsPerCode = watch('unitsPerCode', 0);
+
+  const resetBulkContext = () => {
+    console.log('Resetting bulk context');
+    setProject(null);
+    setBulkMethod(null);
+  };
 
   const onSubmit = async (data) => {
     const token = await getAccessTokenSilently();
@@ -90,6 +103,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             }
           );
           if (res.status === 200) {
+            resetBulkContext();
             router.push(`/profile/history?ref=${res.data.uid}`);
           }
         } catch (err) {
@@ -158,6 +172,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             }
           );
           if (res.status === 200) {
+            resetBulkContext();
             router.push(`/profile/history?ref=${res.data.uid}`);
           }
         } catch (err) {
