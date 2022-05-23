@@ -45,12 +45,14 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const [localRecipients, setLocalRecipients] = useState<Recipient[]>([]);
   const [comment, setComment] = useState('');
   const [occasion, setOccasion] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const codeQuantity = watch('codeQuantity', 0);
   const unitsPerCode = watch('unitsPerCode', 0);
 
   const onSubmit = async (data) => {
     const token = await getAccessTokenSilently();
+    setIsProcessing(true);
     if (bulkMethod === BulkCodeMethods.GENERIC) {
       if (project) {
         const donationData = {
@@ -91,10 +93,12 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             router.push(`/profile/history?ref=${res.data.uid}`);
           }
         } catch (err) {
+          setIsProcessing(false);
           console.error(err);
           handleError(err);
         }
       } else {
+        setIsProcessing(false);
         handleError(Error('Project not selected'));
       }
     } else {
@@ -157,10 +161,12 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             router.push(`/profile/history?ref=${res.data.uid}`);
           }
         } catch (err) {
+          setIsProcessing(false);
           console.error(err);
           handleError(err);
         }
       } else {
+        setIsProcessing(false);
         handleError(Error('Project not selected'));
       }
     }
@@ -293,7 +299,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             !(
               user.planetCash &&
               !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
-            )
+            ) || isProcessing
           }
           onClick={
             bulkMethod === BulkCodeMethods.GENERIC
@@ -301,7 +307,9 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
               : onSubmit
           }
         >
-          {t('bulkCodes:issueCodes')}
+          {isProcessing
+            ? t('bulkCodes:issuingCodes')
+            : t('bulkCodes:issueCodes')}
         </Button>
       </BulkCodesForm>
     );
