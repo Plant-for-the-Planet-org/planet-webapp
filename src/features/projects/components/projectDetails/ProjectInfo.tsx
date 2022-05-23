@@ -88,7 +88,7 @@ function ProjectInfo({ project }: Props): ReactElement {
 
   const addZeroToDate = (val) => {
     const arr = val.split('-');
-    let newDateArr = [arr[0]];
+    const newDateArr = [arr[0]];
     if (arr[1].length === 1) {
       newDateArr.push(`0${arr[1]}`);
     } else {

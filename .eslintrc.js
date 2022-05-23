@@ -1,5 +1,6 @@
 module.exports = {
   env: {
+    node: true,
     browser: true,
     es2020: true,
   },
@@ -18,16 +19,15 @@ module.exports = {
     ecmaVersion: 11,
     sourceType: 'module',
   },
-  plugins: [
-    'react',
-    '@typescript-eslint',
-    '@emotion'
-  ],
+  plugins: ['react', '@typescript-eslint', '@emotion', 'cypress'],
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-props-no-spreading': 'off',
     'no-use-before-define': 'off',
-    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.tsx'] }],
+    'react/jsx-filename-extension': [
+      1,
+      { extensions: ['.js', '.jsx', '.tsx'] },
+    ],
     'react/jsx-indent': 'off',
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
@@ -38,12 +38,21 @@ module.exports = {
     'no-empty-pattern': 'off',
     'react/display-name': 'off',
     'react/no-find-dom-node': 'off',
-    "@emotion/jsx-import": "error",
-    "@emotion/no-vanilla": "error",
-    "@emotion/import-from-emotion": "error",
-    "@emotion/styled-import": "error"
+    '@emotion/jsx-import': 'error',
+    '@emotion/no-vanilla': 'error',
+    '@emotion/import-from-emotion': 'error',
+    '@emotion/styled-import': 'error',
+    '@typescript-eslint/no-var-requires': 0,
+    'react/prop-types': 'off',
+    'cypress/no-assigning-return-values': 'error',
+    'cypress/no-unnecessary-waiting': 'error',
+    'cypress/assertion-before-screenshot': 'warn',
+    'cypress/no-force': 'warn',
+    'cypress/no-async-tests': 'error',
+    'cypress/no-pause': 'error',
   },
   globals: {
     React: 'writable',
+    cy: true,
   },
 };
