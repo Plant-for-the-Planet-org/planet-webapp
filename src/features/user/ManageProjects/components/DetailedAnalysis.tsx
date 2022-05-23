@@ -133,7 +133,7 @@ export default function DetailedAnalysis({
   const handleSetPlantingSeasons = (id: any) => {
     const month = plantingSeasons[id];
     const newMonth = month;
-    newMonth.isSet = true;
+    newMonth.isSet = !month.isSet;
     const plantingSeasonsNew = plantingSeasons;
     plantingSeasonsNew[id] = newMonth;
     setPlantingSeasons([...plantingSeasonsNew]);
@@ -274,113 +274,119 @@ export default function DetailedAnalysis({
       })
       .catch((err) => {
         setIsUploadingData(false);
-        setErrorMessage(err);
+        setErrorMessage('Internal server error');
       });
   };
 
   // Use Effect to hide error message after 10 seconds
 
   React.useEffect(() => {
+    console.log(projectDetails);
     if (projectDetails) {
       const detailedAnalysis =
         purpose === 'trees'
           ? {
-              acquisitionYear: projectDetails.metadata.acquisitionYear
+              acquisitionYear: projectDetails?.metadata?.acquisitionYear
                 ? new Date(
                     new Date().setFullYear(
-                      projectDetails.metadata.acquisitionYear
+                      projectDetails?.metadata?.acquisitionYear
                     )
                   )
                 : new Date(),
-              yearAbandoned: projectDetails.metadata.yearAbandoned
+              yearAbandoned: projectDetails?.metadata?.yearAbandoned
                 ? new Date(
                     new Date().setFullYear(
-                      projectDetails.metadata.yearAbandoned
+                      projectDetails?.metadata?.yearAbandoned
                     )
                   )
                 : new Date(),
-              plantingSeasons: projectDetails.metadata.plantingSeasons,
-              plantingDensity: projectDetails.metadata.plantingDensity,
-              employeesCount: projectDetails.metadata.employeesCount,
-              siteOwnerName: projectDetails.metadata.siteOwnerName,
-              degradationYear: projectDetails.metadata.degradationYear
+              plantingSeasons: projectDetails.metadata?.plantingSeasons,
+              plantingDensity: projectDetails.metadata?.plantingDensity,
+              employeesCount: projectDetails.metadata?.employeesCount,
+              siteOwnerName: projectDetails.metadata?.siteOwnerName,
+              degradationYear: projectDetails.metadata?.degradationYear
                 ? new Date(
                     new Date().setFullYear(
-                      projectDetails.metadata.degradationYear
+                      projectDetails.metadata?.degradationYear
                     )
                   )
                 : new Date(),
-              degradationCause: projectDetails.metadata.degradationCause,
+              degradationCause: projectDetails.metadata?.degradationCause,
 
-              firstTreePlanted: projectDetails.metadata.firstTreePlanted
-                ? new Date(projectDetails.metadata.firstTreePlanted)
+              firstTreePlanted: projectDetails.metadata?.firstTreePlanted
+                ? new Date(projectDetails.metadata?.firstTreePlanted)
                 : new Date(),
-              mainChallenge: projectDetails.metadata.mainChallenge,
-              longTermPlan: projectDetails.metadata.longTermPlan,
-              motivation: projectDetails.metadata.motivation,
+              mainChallenge: projectDetails.metadata?.mainChallenge,
+              longTermPlan: projectDetails.metadata?.longTermPlan,
+              motivation: projectDetails.metadata?.motivation,
             }
           : {
-              areaProtected: projectDetails.metadata.areaProtected,
-              activitySeasons: projectDetails.metadata.plantingSeasons,
+              areaProtected: projectDetails.metadata?.areaProtected,
+              activitySeasons: projectDetails.metadata?.plantingSeasons,
               startingProtectionYear: projectDetails.metadata
-                .startingProtectionYear
+                ?.startingProtectionYear
                 ? new Date(
                     new Date().setFullYear(
-                      projectDetails.metadata.startingProtectionYear
+                      projectDetails.metadata?.startingProtectionYear
                     )
                   )
                 : new Date(),
-              acquisitionYear: projectDetails.metadata.acquisitionYear
+              acquisitionYear: projectDetails.metadata?.acquisitionYear
                 ? new Date(
                     new Date().setFullYear(
-                      projectDetails.metadata.acquisitionYear
+                      projectDetails.metadata?.acquisitionYear
                     )
                   )
                 : new Date(),
 
-              employeesCount: projectDetails.metadata.employeesCount,
-              mainChallenge: projectDetails.metadata.mainChallenge,
-              siteOwnerName: projectDetails.metadata.siteOwnerName,
-              landOwnershipType: projectDetails.metadata.landOwnershipType,
-              longTermPlan: projectDetails.metadata.longTermPlan,
-              siteOwnerName: projectDetails.metadata.siteOwnerName,
-              // ownershipType: projectDetails.metadata.ownershipType,
-              benefits: projectDetails.metadata.benefits,
-              actions: projectDetails.metadata.actions,
-              motivation: projectDetails.metadata.motivation,
+              employeesCount: projectDetails.metadata?.employeesCount,
+              mainChallenge: projectDetails.metadata?.mainChallenge,
+              siteOwnerName: projectDetails.metadata?.siteOwnerName,
+              landOwnershipType: projectDetails.metadata?.landOwnershipType,
+              longTermPlan: projectDetails.metadata?.longTermPlan,
+              siteOwnerName: projectDetails.metadata?.siteOwnerName,
+              // ownershipType: projectDetails.metadata?.ownershipType,
+              benefits: projectDetails.metadata?.benefits,
+              actions: projectDetails.metadata?.actions,
+              motivation: projectDetails.metadata?.motivation,
             };
 
       // set planting seasons
 
       if (purpose === 'trees') {
         if (
-          projectDetails.metadata.plantingSeasons &&
-          projectDetails.metadata.plantingSeasons.length > 0
+          projectDetails.metadata?.plantingSeasons &&
+          projectDetails.metadata?.plantingSeasons.length > 0
         ) {
+          const newPlantingSeasons = plantingSeasons;
           for (
             let i = 0;
-            i < projectDetails.metadata.plantingSeasons.length;
+            i < projectDetails.metadata?.plantingSeasons.length;
             i++
           ) {
-            if (projectDetails.metadata.plantingSeasons[i]) {
-              const j = projectDetails.metadata.plantingSeasons[i] - 1;
-
-              handleSetPlantingSeasons(j);
+            for (let j = 0; j < newPlantingSeasons.length; j++) {
+              if (
+                newPlantingSeasons[j].id ===
+                projectDetails.metadata?.plantingSeasons[i]
+              ) {
+                newPlantingSeasons[j].isSet = true;
+              }
             }
           }
+          setPlantingSeasons(newPlantingSeasons);
         }
       } else {
         if (
-          projectDetails.metadata.activitySeasons &&
-          projectDetails.metadata.activitySeasons.length > 0
+          projectDetails.metadata?.activitySeasons &&
+          projectDetails.metadata?.activitySeasons.length > 0
         ) {
           for (
             let i = 0;
-            i < projectDetails.metadata.activitySeasons.length;
+            i < projectDetails.metadata?.activitySeasons.length;
             i++
           ) {
-            if (projectDetails.metadata.activitySeasons[i]) {
-              const j = projectDetails.metadata.activitySeasons[i] - 1;
+            if (projectDetails.metadata?.activitySeasons[i]) {
+              const j = projectDetails.metadata?.activitySeasons[i] - 1;
               handleSetPlantingSeasons(j);
             }
           }
@@ -391,19 +397,19 @@ export default function DetailedAnalysis({
 
       if (purpose === 'trees') {
         if (
-          projectDetails.metadata.siteOwnerType &&
-          projectDetails.metadata.siteOwnerType.length > 0
+          projectDetails.metadata?.siteOwnerType &&
+          projectDetails.metadata?.siteOwnerType.length > 0
         ) {
           const newSiteOwners = siteOwners;
           for (
             let i = 0;
-            i < projectDetails.metadata.siteOwnerType.length;
+            i < projectDetails.metadata?.siteOwnerType.length;
             i++
           ) {
             for (let j = 0; j < newSiteOwners.length; j++) {
               if (
                 newSiteOwners[j].value ===
-                projectDetails.metadata.siteOwnerType[i]
+                projectDetails.metadata?.siteOwnerType[i]
               ) {
                 newSiteOwners[j].isSet = true;
               }
@@ -413,19 +419,19 @@ export default function DetailedAnalysis({
         }
       } else {
         if (
-          projectDetails.metadata.landOwnershipType &&
-          projectDetails.metadata.landOwnershipType.length > 0
+          projectDetails.metadata?.landOwnershipType &&
+          projectDetails.metadata?.landOwnershipType.length > 0
         ) {
           const newSiteOwners = siteOwners;
           for (
             let i = 0;
-            i < projectDetails.metadata.landOwnershipType.length;
+            i < projectDetails.metadata?.landOwnershipType.length;
             i++
           ) {
             for (let j = 0; j < newSiteOwners.length; j++) {
               if (
                 newSiteOwners[j].value ===
-                projectDetails.metadata.landOwnershipType[i]
+                projectDetails.metadata?.landOwnershipType[i]
               ) {
                 newSiteOwners[j].isSet = true;
               }
