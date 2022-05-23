@@ -27,7 +27,9 @@ const BulkGiftTotal = ({
           return t('common:tree_plural');
         } else return t('common:tree');
       } else return _unit;
-    } else return _unit;
+    } else if (_unit === 'm2') {
+      return 'm2';
+    } else return 'ha';
   };
 
   if (ready) {
