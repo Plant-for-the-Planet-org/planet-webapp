@@ -127,32 +127,37 @@ function ProjectCertificates({
       submitData,
       token,
       handleError
-    ).then((res) => {
-      if (!res.code) {
-        let newUploadedFiles = uploadedFiles;
+    )
+      .then((res) => {
+        if (!res.code) {
+          let newUploadedFiles = uploadedFiles;
 
-        if (newUploadedFiles === undefined) {
-          newUploadedFiles = [];
-        }
+          if (newUploadedFiles === undefined) {
+            newUploadedFiles = [];
+          }
 
-        newUploadedFiles.push(res);
-        setUploadedFiles(newUploadedFiles);
+          newUploadedFiles.push(res);
+          setUploadedFiles(newUploadedFiles);
 
-        setCertifierName('');
-        setValue('certifierName', '', { shouldDirty: false });
-        setIsUploadingData(false);
-        setShowForm(false);
-        setErrorMessage('');
-      } else {
-        if (res.code === 404) {
+          setCertifierName('');
+          setValue('certifierName', '', { shouldDirty: false });
           setIsUploadingData(false);
-          setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
+          setShowForm(false);
+          setErrorMessage('');
         } else {
-          setIsUploadingData(false);
-          setErrorMessage(res.message);
+          if (res.code === 404) {
+            setIsUploadingData(false);
+            setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
+          } else {
+            setIsUploadingData(false);
+            setErrorMessage(res.message);
+          }
         }
-      }
-    });
+      })
+      .catch((err) => {
+        setIsUploadingData(false);
+        setErrorMessage(err);
+      });
   };
 
   const deleteProjectCertificate = (id: any) => {
@@ -260,34 +265,32 @@ function ProjectCertificates({
             </div>
             <div style={{ width: '20px' }}></div>
             <div className={styles.formFieldHalf}>
-                <LocalizationProvider
-                  dateAdapter={AdapterDateFns}
-                  locale={
-                    localeMapForDate[userLang]
-                      ? localeMapForDate[userLang]
-                      : localeMapForDate['en']
-                  }
-                >
-                  <MuiDatePicker
-                    value={issueDate}
-                    onChange={setIssueDate}
-                    label={t('manageProjects:issueDate')}
-                    name="issueDate"
-                    renderInput={(props) => <MaterialTextField {...props} />}
-                    clearable
-                    disableFuture
-                    inputRef={register({
-                      required: {
-                        value: true,
-                        message: t(
-                          'manageProjects:certificationDateValidation'
-                        ),
-                      },
-                    })}
-                    maxDate={new Date()}
-                    minDate={tenYearsAgo}
-                  />
-                </LocalizationProvider>
+              <LocalizationProvider
+                dateAdapter={AdapterDateFns}
+                locale={
+                  localeMapForDate[userLang]
+                    ? localeMapForDate[userLang]
+                    : localeMapForDate['en']
+                }
+              >
+                <MuiDatePicker
+                  value={issueDate}
+                  onChange={setIssueDate}
+                  label={t('manageProjects:issueDate')}
+                  name="issueDate"
+                  renderInput={(props) => <MaterialTextField {...props} />}
+                  clearable
+                  disableFuture
+                  inputRef={register({
+                    required: {
+                      value: true,
+                      message: t('manageProjects:certificationDateValidation'),
+                    },
+                  })}
+                  maxDate={new Date()}
+                  minDate={tenYearsAgo}
+                />
+              </LocalizationProvider>
               {errors.issueDate && (
                 <span className={styles.formErrors}>
                   {errors.issueDate.message}

@@ -170,11 +170,14 @@ export default function ProjectSites({
   const uploadProjectSite = (data: any) => {
     if (geoJson && geoJson.features.length !== 0) {
       setIsUploadingData(true);
+
       const submitData = {
         name: siteDetails.name,
         geometry: geoJson,
         status: data.status,
       };
+
+      if (!data.name) return;
       postAuthenticatedRequest(
         `/app/projects/${projectGUID}/sites`,
         submitData,
@@ -304,6 +307,7 @@ export default function ProjectSites({
       status: site.status,
       geometry: {},
     };
+
     const collection = {
       type: 'FeatureCollection',
       features: [
