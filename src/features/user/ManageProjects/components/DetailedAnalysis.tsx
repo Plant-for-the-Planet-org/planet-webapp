@@ -380,16 +380,22 @@ export default function DetailedAnalysis({
           projectDetails.metadata?.activitySeasons &&
           projectDetails.metadata?.activitySeasons.length > 0
         ) {
+          const newActivitySeasons = plantingSeasons;
           for (
             let i = 0;
             i < projectDetails.metadata?.activitySeasons.length;
             i++
           ) {
-            if (projectDetails.metadata?.activitySeasons[i]) {
-              const j = projectDetails.metadata?.activitySeasons[i] - 1;
-              handleSetPlantingSeasons(j);
+            for (let j = 0; j < newActivitySeasons.length; j++) {
+              if (
+                newActivitySeasons[j].id ===
+                projectDetails.metadata?.activitySeasons[i]
+              ) {
+                newActivitySeasons[j].isSet = true;
+              }
             }
           }
+          setPlantingSeasons(newActivitySeasons);
         }
       }
 
