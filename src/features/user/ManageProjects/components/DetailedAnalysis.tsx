@@ -281,7 +281,6 @@ export default function DetailedAnalysis({
   // Use Effect to hide error message after 10 seconds
 
   React.useEffect(() => {
-    console.log(projectDetails);
     if (projectDetails) {
       const detailedAnalysis =
         purpose === 'trees'

@@ -193,7 +193,7 @@ function ProjectInfo({ project }: Props): ReactElement {
               </div>
             </div>
           )}
-        {project && project.metadata && project.metadata.ecosystems ? (
+        {/* {project && project.metadata && project.metadata.ecosystems ? (
           <div className={styles.projectMoreInfoHalf}>
             <div className={styles.infoTitle}>
               {t('manageProjects:ecosystems')}
@@ -202,7 +202,7 @@ function ProjectInfo({ project }: Props): ReactElement {
           </div>
         ) : (
           ''
-        )}
+        )} */}
 
         {project &&
           project.metadata &&
