@@ -320,7 +320,8 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
               !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
             ) ||
             isProcessing ||
-            (localRecipients.length === 0 && codeQuantity * unitsPerCode <= 0)
+            (localRecipients.length === 0 &&
+              (codeQuantity <= 0 || unitsPerCode <= 0))
           }
           onClick={
             bulkMethod === BulkCodeMethods.GENERIC
