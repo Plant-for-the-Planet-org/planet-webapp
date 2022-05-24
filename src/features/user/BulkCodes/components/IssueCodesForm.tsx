@@ -48,7 +48,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const { user } = useContext(UserPropsContext);
   const { getAccessTokenSilently } = useAuth0();
   const { handleError } = useContext(ErrorHandlingContext);
-  const { control, handleSubmit, errors, watch } = useForm();
+  const { control, handleSubmit, errors, watch } = useForm({ mode: 'onBlur' });
   const [localRecipients, setLocalRecipients] = useState<Recipient[]>([]);
   const [comment, setComment] = useState('');
   const [occasion, setOccasion] = useState('');
@@ -56,10 +56,6 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
 
   const codeQuantity = watch('codeQuantity', 0);
   const unitsPerCode = watch('unitsPerCode', 0);
-
-  console.log('codeQuantity:', codeQuantity);
-  console.log('unitsPerCode:', unitsPerCode);
-  console.log('recipients:', localRecipients);
 
   const resetBulkContext = () => {
     console.log('Resetting bulk context');
@@ -245,7 +241,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
                 <Controller
                   name="unitsPerCode"
                   control={control}
-                  rules={{ required: true }}
+                  rules={{ required: true, min: 1 }}
                   defaultValue={''}
                   render={(props: ControllerRenderProps) => (
                     <TextField
@@ -256,7 +252,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
                       onInput={(e) => {
                         e.target.value = e.target.value.replace(/[^0-9]/g, '');
                       }}
-                      error={errors.unitsPerCode}
+                      error={errors.unitsPerCode !== undefined}
                     />
                   )}
                 />
@@ -270,7 +266,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
                 <Controller
                   name="codeQuantity"
                   control={control}
-                  rules={{ required: true }}
+                  rules={{ required: true, min: 1 }}
                   defaultValue={''}
                   render={(props: ControllerRenderProps) => (
                     <TextField
@@ -281,7 +277,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
                       onInput={(e) => {
                         e.target.value = e.target.value.replace(/[^0-9]/g, '');
                       }}
-                      error={errors.codeQuantity}
+                      error={errors.codeQuantity !== undefined}
                     />
                   )}
                 />
