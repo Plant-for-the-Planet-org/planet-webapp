@@ -48,7 +48,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const { user } = useContext(UserPropsContext);
   const { getAccessTokenSilently } = useAuth0();
   const { handleError } = useContext(ErrorHandlingContext);
-  const { control, handleSubmit, errors, watch } = useForm();
+  const { control, handleSubmit, errors, watch } = useForm({ mode: 'onBlur' });
   const [localRecipients, setLocalRecipients] = useState<Recipient[]>([]);
   const [comment, setComment] = useState('');
   const [occasion, setOccasion] = useState('');
@@ -241,7 +241,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
                 <Controller
                   name="unitsPerCode"
                   control={control}
-                  rules={{ required: true }}
+                  rules={{ required: true, min: 1 }}
                   defaultValue={''}
                   render={(props: ControllerRenderProps) => (
                     <TextField
@@ -252,7 +252,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
                       onInput={(e) => {
                         e.target.value = e.target.value.replace(/[^0-9]/g, '');
                       }}
-                      error={errors.unitsPerCode}
+                      error={errors.unitsPerCode !== undefined}
                     />
                   )}
                 />
@@ -266,7 +266,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
                 <Controller
                   name="codeQuantity"
                   control={control}
-                  rules={{ required: true }}
+                  rules={{ required: true, min: 1 }}
                   defaultValue={''}
                   render={(props: ControllerRenderProps) => (
                     <TextField
@@ -277,7 +277,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
                       onInput={(e) => {
                         e.target.value = e.target.value.replace(/[^0-9]/g, '');
                       }}
-                      error={errors.codeQuantity}
+                      error={errors.codeQuantity !== undefined}
                     />
                   )}
                 />
@@ -314,7 +314,10 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             !(
               user.planetCash &&
               !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
-            ) || isProcessing
+            ) ||
+            isProcessing ||
+            (localRecipients.length === 0 &&
+              (codeQuantity <= 0 || unitsPerCode <= 0))
           }
           onClick={
             bulkMethod === BulkCodeMethods.GENERIC
