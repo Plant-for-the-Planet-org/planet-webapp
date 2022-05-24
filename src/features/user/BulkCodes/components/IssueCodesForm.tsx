@@ -57,6 +57,10 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const codeQuantity = watch('codeQuantity', 0);
   const unitsPerCode = watch('unitsPerCode', 0);
 
+  console.log('codeQuantity:', codeQuantity);
+  console.log('unitsPerCode:', unitsPerCode);
+  console.log('recipients:', localRecipients);
+
   const resetBulkContext = () => {
     console.log('Resetting bulk context');
     setProject(null);
@@ -314,7 +318,9 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             !(
               user.planetCash &&
               !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
-            ) || isProcessing
+            ) ||
+            isProcessing ||
+            (localRecipients.length === 0 && codeQuantity * unitsPerCode <= 0)
           }
           onClick={
             bulkMethod === BulkCodeMethods.GENERIC
