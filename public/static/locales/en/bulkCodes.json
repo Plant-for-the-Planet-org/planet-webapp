@@ -6,6 +6,7 @@
   "tabSelectProject": "Select Project",
   "tabIssueCodes": "Issue Codes",
   "issueCodes": "Issue Codes",
+  "issuingCodes": "Issuing Codes...",
   "importMethodText": {
     "title": "Import File",
     "subtitle": "Use this method if one of the following criterias match your usecase:",

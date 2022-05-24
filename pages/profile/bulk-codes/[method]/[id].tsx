@@ -45,6 +45,7 @@ export default function BulkCodeIssueCodesPage({}: Props): ReactElement {
               purpose: projectDetails.purpose,
               name: projectDetails.name,
               unit: projectDetails.unit,
+              allowDonations: true,
             };
             setProject(_project);
           }
@@ -67,7 +68,7 @@ export default function BulkCodeIssueCodesPage({}: Props): ReactElement {
         }
       }
     }
-  }, [project, bulkMethod, isReady, planetCashAccount]);
+  }, [isReady, planetCashAccount]);
 
   useEffect(() => {
     checkContext();

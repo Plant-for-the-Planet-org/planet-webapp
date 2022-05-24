@@ -14,7 +14,10 @@ const DashboardGridContainer = styled(Box)(({ theme }) => ({
   marginTop: 80,
   minHeight: '100vh',
   '& .dashboardGrid': {
-    padding: 40,
+    [theme.breakpoints.up(481)]: {
+      padding: 40,
+    },
+    padding: '80px 20px 20px 20px',
     maxWidth: 1060,
     gap: 24,
     alignItems: 'flex-start',

@@ -37,7 +37,14 @@ interface IssueCodesFormProps {}
 const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
   const router = useRouter();
-  const { project, planetCashAccount, projectList, bulkMethod } = useBulkCode();
+  const {
+    project,
+    setProject,
+    planetCashAccount,
+    projectList,
+    bulkMethod,
+    setBulkMethod,
+  } = useBulkCode();
   const { user } = useContext(UserPropsContext);
   const { getAccessTokenSilently } = useAuth0();
   const { handleError } = useContext(ErrorHandlingContext);
@@ -45,12 +52,20 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const [localRecipients, setLocalRecipients] = useState<Recipient[]>([]);
   const [comment, setComment] = useState('');
   const [occasion, setOccasion] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const codeQuantity = watch('codeQuantity', 0);
   const unitsPerCode = watch('unitsPerCode', 0);
 
+  const resetBulkContext = () => {
+    console.log('Resetting bulk context');
+    setProject(null);
+    setBulkMethod(null);
+  };
+
   const onSubmit = async (data) => {
     const token = await getAccessTokenSilently();
+    setIsProcessing(true);
     if (bulkMethod === BulkCodeMethods.GENERIC) {
       if (project) {
         const donationData = {
@@ -88,13 +103,16 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             }
           );
           if (res.status === 200) {
+            resetBulkContext();
             router.push(`/profile/history?ref=${res.data.uid}`);
           }
         } catch (err) {
+          setIsProcessing(false);
           console.error(err);
           handleError(err);
         }
       } else {
+        setIsProcessing(false);
         handleError(Error('Project not selected'));
       }
     } else {
@@ -104,8 +122,8 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
         let totalUnits = 0;
         const recipients = [];
 
-        for (let recepients of localRecipients) {
-          totalUnits = totalUnits + parseInt(recepients.units);
+        for (const recipient of localRecipients) {
+          totalUnits = totalUnits + parseInt(recipient.units);
         }
 
         localRecipients.forEach((recipient) => {
@@ -154,13 +172,16 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             }
           );
           if (res.status === 200) {
+            resetBulkContext();
             router.push(`/profile/history?ref=${res.data.uid}`);
           }
         } catch (err) {
+          setIsProcessing(false);
           console.error(err);
           handleError(err);
         }
       } else {
+        setIsProcessing(false);
         handleError(Error('Project not selected'));
       }
     }
@@ -173,8 +194,8 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
         : undefined;
     } else {
       let totalUnits = 0;
-      for (let recepients of localRecipients) {
-        totalUnits = totalUnits + recepients.units * 1;
+      for (const recipient of localRecipients) {
+        totalUnits = totalUnits + Number(recipient.units) * 1;
       }
       return project ? (totalUnits * project.unitCost).toFixed(2) : undefined;
     }
@@ -185,8 +206,8 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
       return project ? codeQuantity * unitsPerCode : undefined;
     } else {
       let totalUnits = 0;
-      for (let recepients of localRecipients) {
-        totalUnits = totalUnits + recepients.units * 1;
+      for (const recipient of localRecipients) {
+        totalUnits = totalUnits + Number(recipient.units) * 1;
       }
       return totalUnits;
     }
@@ -293,7 +314,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             !(
               user.planetCash &&
               !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
-            )
+            ) || isProcessing
           }
           onClick={
             bulkMethod === BulkCodeMethods.GENERIC
@@ -301,7 +322,9 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
               : onSubmit
           }
         >
-          {t('bulkCodes:issueCodes')}
+          {isProcessing
+            ? t('bulkCodes:issuingCodes')
+            : t('bulkCodes:issueCodes')}
         </Button>
       </BulkCodesForm>
     );

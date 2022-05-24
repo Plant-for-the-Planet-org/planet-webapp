@@ -33,7 +33,7 @@ export interface Project {
   name: string;
   unitCost: number;
   currency: string;
-  unit: string;
+  unit?: string;
   purpose: string;
   allowDonations: boolean;
 }
@@ -163,7 +163,7 @@ export const BulkCodeProvider: FC = ({ children }) => {
                   name: project.properties.name,
                   unitCost: project.properties.unitCost,
                   currency: project.properties.currency,
-                  unit: 'trees',
+                  /* unit: 'trees', */
                   purpose: project.properties.purpose,
                   allowDonations: project.properties.allowDonations,
                 };
