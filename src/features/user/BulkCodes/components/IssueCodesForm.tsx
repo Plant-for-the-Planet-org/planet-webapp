@@ -22,8 +22,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeMethods';
 import { TENANT_ID } from '../../../../utils/constants/environment';
 import getsessionId from '../../../../utils/apiRequests/getSessionId';
+import { handleError as apiResponseError } from '../../../../utils/handleError';
 import { Recipient } from '../BulkCodesTypes';
-
 const { useTranslation } = i18next;
 
 const InlineFormGroup = styled('div')({
@@ -109,7 +109,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
         } catch (err) {
           setIsProcessing(false);
           console.error(err);
-          handleError(err);
+          apiResponseError(err, handleError);
         }
       } else {
         setIsProcessing(false);
