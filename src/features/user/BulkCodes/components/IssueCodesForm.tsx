@@ -78,7 +78,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             type: 'code-bulk',
             occasion,
             numberOfCodes: data.codeQuantity,
-            unitsPerCode: project.unitCost * data.unitsPerCode,
+            unitsPerCode: data.unitsPerCode,
           },
         };
         const cleanedData = cleanObject(donationData);
