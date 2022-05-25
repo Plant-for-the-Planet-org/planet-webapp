@@ -6,7 +6,6 @@ export const handleError = (err, callback) => {
         err.response.data.errors.errors.length > 0
       ) {
         err.response.data.errors.errors.forEach((_err) => {
-          console.log(_err);
           callback(Error(_err));
         });
       }
