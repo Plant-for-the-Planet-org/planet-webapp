@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import styles from './CompleteSignup.module.scss';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
-import { Snackbar,Alert as MuiAlert, MenuItem, styled } from '@mui/material';
+import { Snackbar, Alert as MuiAlert, MenuItem, styled } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
@@ -21,11 +21,11 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 const { Trans, useTranslation } = i18next;
 
-const Alert = styled(MuiAlert)(({theme}) => {
+const Alert = styled(MuiAlert)(({ theme }) => {
   return {
     backgroundColor: theme.palette.primary.main,
-  }
-})
+  };
+});
 
 export default function CompleteSignup() {
   const router = useRouter();
@@ -544,7 +544,6 @@ export default function CompleteSignup() {
             <div className={styles.mainText}>
               <label htmlFor={'terms'} style={{ cursor: 'pointer' }}>
                 <Trans i18nKey="editProfile:termAndCondition">
-                  I agree to the{' '}
                   <a
                     className={styles.termsLink}
                     rel="noopener noreferrer"
