@@ -274,7 +274,7 @@ export default function DetailedAnalysis({
       })
       .catch((err) => {
         setIsUploadingData(false);
-        setErrorMessage('Internal server error');
+        setErrorMessage(err);
       });
   };
 

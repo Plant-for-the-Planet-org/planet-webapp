@@ -60,7 +60,7 @@ const handleApiError = (
       });
     }
     console.error('Error 500: Server Error!');
-    throw new Error('Error 500: Server Error!');
+   
   }
 };
 
@@ -252,9 +252,7 @@ export async function putAuthenticatedRequest(
   errorHandler?: Function
 ): Promise<any> {
   if (validateToken(token)) {
-    try{
-
-      const res = await fetch(process.env.API_ENDPOINT + url, {
+        const res = await fetch(process.env.API_ENDPOINT + url, {
         method: 'PUT',
         body: JSON.stringify(data),
         headers: {
@@ -272,9 +270,7 @@ export async function putAuthenticatedRequest(
       const result = await res.json();
       handleApiError(res.status, errorHandler);
       return result;
-    }catch(err){
-        throw new Error('500')
-    }
+  
   } else {
     if (errorHandler) {
       errorHandler({
