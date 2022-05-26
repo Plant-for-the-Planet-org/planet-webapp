@@ -80,6 +80,7 @@ export default function BasicDetails({
     zoom: defaultZoom,
   });
   const router = useRouter();
+
   const useStylesAutoComplete = makeStyles({
     root: {
       color:
@@ -742,6 +743,7 @@ export default function BasicDetails({
                       parseNumber(i18n.language, value) <= 100,
                   })}
                   label={
+                    router.query.purpose === 'trees' ||
                     projectDetails.purpose === 'trees'
                       ? t('manageProjects:unitCost')
                       : t('manageProjects:unitCostConservation')
