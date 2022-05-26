@@ -109,8 +109,8 @@ function SingleProject({ project }: any) {
         <p className={styles.projectName}>{project.name}</p>
         <p className={styles.projectClassification}>
           {project?.purpose === 'conservation'
-            ? project?.classification
-            : project?.metadata?.ecosystems}{' '}
+            ? project?.metadata?.ecosystems
+            : project.classification}{' '}
           •{' '}
           {project.country === null ? (
             <></>
