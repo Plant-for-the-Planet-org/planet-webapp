@@ -365,7 +365,7 @@ export default function ProjectMedia({
           </div>
         ) : null}
 
-        <div className={styles.formField}>
+        <div className={(styles.formField, styles.mediaButtons)}>
           <div className={`${styles.formFieldHalf}`}>
             <button
               onClick={handleBack}

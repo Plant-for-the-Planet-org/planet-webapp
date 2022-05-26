@@ -19,7 +19,7 @@
   background-color: $backgroundBase;
   color: $primaryFontColor;
   @include xsPhoneView{
-    margin-left: -8px;
+    margin-left: -15px;
     margin-top: 5px;
     }
   @include smTabletView {
@@ -36,6 +36,21 @@
     }
   }
 
+  .reviewContent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0;
+    @include xsPhoneView{
+      margin-left: -54px;
+     }
+  }
+
+ .publishLabel {
+  margin-left: '100px'
+ }
+
 .formFieldRadio {
   width: 100%;
   display: flex;
@@ -50,6 +65,20 @@
   max-width: 320px;
   justify-content: space-between;
   align-items: center;
+}
+
+.reviewButtons{
+  display:flex;
+  margin-top: 30px;
+  @include xsPhoneView{
+    flex-direction: column;
+   }
+}
+
+.mediaButtons {
+  @include xsPhoneView{
+    flex-direction: column;
+  }
 }
 .formFieldHalf {
   margin-top: 24px;

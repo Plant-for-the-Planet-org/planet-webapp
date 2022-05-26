@@ -457,10 +457,7 @@ export default function DetailedAnalysis({
           e.preventDefault();
         }}
       >
-        <div
-          className={`${isUploadingData ? styles.shallowOpacity : ''}`}
-          style={{ marginLeft: '80px' }}
-        >
+        <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
           {purpose === 'trees' ? (
             <div className={styles.formField}>
               <div

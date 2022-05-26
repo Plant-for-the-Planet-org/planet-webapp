@@ -553,7 +553,7 @@ export default function ProjectSites({
             <button
               onClick={handleSubmit(uploadProjectSiteNext)}
               className="primaryButton"
-              style={{ minWidth: '240px' }}
+              style={{ width: '169px' }}
               data-test-id="projSitesCont"
             >
               {isUploadingData ? (
@@ -567,7 +567,7 @@ export default function ProjectSites({
             <button
               onClick={handleNext}
               className="primaryButton"
-              style={{ width: '89px', marginRight: '40px', marginLeft: '20px' }}
+              style={{ width: '89px', marginRight: '40px', marginLeft: '12px' }}
             >
               {t('manageProjects:skip')}
             </button>

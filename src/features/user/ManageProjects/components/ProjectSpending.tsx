@@ -344,7 +344,7 @@ export default function ProjectSpending({
             <button
               onClick={handleBack}
               className="secondaryButton"
-              style={{ width: '234px', height: '46px', marginLeft: '40px' }}
+              style={{ width: '234px', height: '46px' }}
             >
               <BackArrow />
               <p>{t('manageProjects:backToSites')}</p>
