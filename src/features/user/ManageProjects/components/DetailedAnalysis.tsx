@@ -89,18 +89,18 @@ export default function DetailedAnalysis({
   const [errorMessage, setErrorMessage] = React.useState('');
   const { theme } = React.useContext(ThemeContext);
   const [plantingSeasons, setPlantingSeasons] = React.useState([
-    { id: 0, title: ready ? t('common:january') : '', isSet: false },
-    { id: 1, title: ready ? t('common:february') : '', isSet: false },
-    { id: 2, title: ready ? t('common:march') : '', isSet: false },
-    { id: 3, title: ready ? t('common:april') : '', isSet: false },
-    { id: 4, title: ready ? t('common:may') : '', isSet: false },
-    { id: 5, title: ready ? t('common:june') : '', isSet: false },
-    { id: 6, title: ready ? t('common:july') : '', isSet: false },
-    { id: 7, title: ready ? t('common:august') : '', isSet: false },
-    { id: 8, title: ready ? t('common:september') : '', isSet: false },
-    { id: 9, title: ready ? t('common:october') : '', isSet: false },
-    { id: 10, title: ready ? t('common:november') : '', isSet: false },
-    { id: 11, title: ready ? t('common:december') : '', isSet: false },
+    { id: 1, title: ready ? t('common:january') : '', isSet: false },
+    { id: 2, title: ready ? t('common:february') : '', isSet: false },
+    { id: 3, title: ready ? t('common:march') : '', isSet: false },
+    { id: 4, title: ready ? t('common:april') : '', isSet: false },
+    { id: 5, title: ready ? t('common:may') : '', isSet: false },
+    { id: 6, title: ready ? t('common:june') : '', isSet: false },
+    { id: 7, title: ready ? t('common:july') : '', isSet: false },
+    { id: 8, title: ready ? t('common:august') : '', isSet: false },
+    { id: 9, title: ready ? t('common:september') : '', isSet: false },
+    { id: 10, title: ready ? t('common:october') : '', isSet: false },
+    { id: 11, title: ready ? t('common:november') : '', isSet: false },
+    { id: 12, title: ready ? t('common:december') : '', isSet: false },
   ]);
 
   const addHandler = () => {
@@ -131,11 +131,11 @@ export default function DetailedAnalysis({
   const classes = useStylesAutoComplete();
 
   const handleSetPlantingSeasons = (id: any) => {
-    const month = plantingSeasons[id];
+    const month = plantingSeasons[id - 1];
     const newMonth = month;
     newMonth.isSet = !month.isSet;
     const plantingSeasonsNew = plantingSeasons;
-    plantingSeasonsNew[id] = newMonth;
+    plantingSeasonsNew[id - 1] = newMonth;
     setPlantingSeasons([...plantingSeasonsNew]);
   };
 
@@ -750,7 +750,9 @@ export default function DetailedAnalysis({
                   <div
                     className={styles.multiSelectInput}
                     key={month.id}
-                    onClick={() => handleSetPlantingSeasons(month.id)}
+                    onClick={() => {
+                      handleSetPlantingSeasons(month.id);
+                    }}
                   >
                     <div
                       className={`${styles.multiSelectInputCheck} ${
