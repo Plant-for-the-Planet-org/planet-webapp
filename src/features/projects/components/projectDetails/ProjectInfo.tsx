@@ -133,18 +133,29 @@ function ProjectInfo({ project }: Props): ReactElement {
             </div>
           </div>
         )}
-        {project && project.metadata && project.metadata.firstTreePlanted && (
+        {project && project.metadata && project.metadata.acquisitionYear && (
           <div className={styles.projectMoreInfoHalf}>
             <div className={styles.infoTitle}>
               {t('manageProjects:firstTreePlanted')}
             </div>
             <div className={styles.infoText}>
               {formatDate(
-                project.metadata.firstTreePlanted.split('-')[1].length === 1 ||
-                  project.metadata.firstTreePlanted.split('-')[2].length === 1
+                project.metadata.firstTreePlanted?.split('-')[1].length === 1 ||
+                  project.metadata.firstTreePlanted?.split('-')[2].length === 1
                   ? addZeroToDate(project.metadata.firstTreePlanted)
                   : project.metadata.firstTreePlanted
               )}
+            </div>
+          </div>
+        )}
+        {console.log(project.metadata)}
+        {project && project.metadata && project.metadata.acquisitionYear && (
+          <div className={styles.projectMoreInfoHalf}>
+            <div className={styles.infoTitle}>
+              {t('manageProjects:acquisitionYear')}
+            </div>
+            <div className={styles.infoText}>
+              {project.metadata.acquisitionYear}
             </div>
           </div>
         )}
