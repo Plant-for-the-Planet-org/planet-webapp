@@ -743,7 +743,7 @@ export default function DetailedAnalysis({
                 {' '}
                 {purpose === 'trees'
                   ? t('manageProjects:plantingSeasons')
-                  : t('manageProjects:timePeriod')}{' '}
+                  : t('manageProjects:protectionSeasons')}{' '}
               </p>
               {plantingSeasons.map((month) => {
                 return (

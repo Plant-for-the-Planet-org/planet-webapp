@@ -148,7 +148,7 @@ function ProjectInfo({ project }: Props): ReactElement {
             </div>
           </div>
         )}
-        {console.log(project.metadata)}
+
         {project && project.metadata && project.metadata.acquisitionYear && (
           <div className={styles.projectMoreInfoHalf}>
             <div className={styles.infoTitle}>
