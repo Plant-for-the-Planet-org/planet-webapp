@@ -31,13 +31,23 @@ const DownloadCodes = ({ codesUrl }: DownloadCodesProps): ReactElement => {
   }
 
   async function handleClick() {
-    const response = await getRequest<{
-      type: string;
-      numberOfItems: number;
-      items: [];
-    }>(codesUrl, handleError);
-    if (response.items.length) {
-      downloadCSV(response.items, 'codes.csv');
+    try {
+      const response = await getRequest<{
+        type: string;
+        numberOfItems: number;
+        items: [];
+      }>(codesUrl, handleError);
+      if (response) {
+        if (response.items.length) {
+          downloadCSV(response.items, 'codes.csv');
+        } else {
+          handleError(Error(t('downloadCodesGeneralError')));
+        }
+      } else {
+        handleError(Error(t('downloadCodesNetworkError')));
+      }
+    } catch (err) {
+      handleError(Error(t('downloadCodesGeneralError')));
     }
   }
 

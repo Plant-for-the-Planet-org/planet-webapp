@@ -169,6 +169,8 @@
   "taxDeductibleReceipt": "Tax Deductible Receipt",
   "giftCertificate": "Gift Certificate",
   "downloadCodes": "Download Codes",
+  "downloadCodesGeneralError": "Download failed. Please try after some time",
+  "downloadCodesNetworkError": "Unable to fetch codes. Please check your network",
   "paypal-paypal": "Paypal",
   "stripe-": "Stripe",
   "unknown-method": "Unknown",
