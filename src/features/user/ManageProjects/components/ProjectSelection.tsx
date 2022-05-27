@@ -10,7 +10,7 @@ export default function ProjectSelection(): ReactElement {
 
   return ready ? (
     <div className={'add-project-container'}>
-      <div className={'add-project'}>
+      <div className={'add-project project-selection'}>
         <button
           id={'addProjectBut'}
           className={'add-projects-button'}
