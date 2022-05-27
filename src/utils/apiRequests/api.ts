@@ -81,6 +81,11 @@ export async function getAccountInfo(token: any): Promise<any> {
   return response;
 }
 
+function isAbsoluteUrl(url: any) {
+  const pattern = /^https?:\/\//i;
+  return pattern.test(url);
+}
+
 export async function getRequest<T>(
   url: any,
   errorHandler?: Function,
@@ -93,7 +98,10 @@ export async function getRequest<T>(
   const query: any = { ...queryParams, locale: lang };
   const queryString = getQueryString(query);
   const queryStringSuffix = queryString ? '?' + queryString : '';
-  await fetch(`${process.env.API_ENDPOINT}${url}${queryStringSuffix}`, {
+  const fullUrl = isAbsoluteUrl(url)
+    ? url
+    : `${process.env.API_ENDPOINT}${url}${queryStringSuffix}`;
+  await fetch(fullUrl, {
     method: 'GET',
     headers: {
       'tenant-key': `${TENANT_ID}`,
