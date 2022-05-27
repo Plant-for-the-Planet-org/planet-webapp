@@ -312,6 +312,19 @@
       color: $primaryColor;
       font-weight: 700;
     }
+    > .downloadCodesButton {
+      color: $primaryColor;
+      appearance: none;
+      font: inherit;
+      font-weight: 700;
+      text-align: left;
+      cursor: pointer;
+
+      &:focus-visible {
+        border: 2px solid $primaryColor;
+        border-radius: 3px;
+      }
+    }
   }
 }
 .manageDonations {

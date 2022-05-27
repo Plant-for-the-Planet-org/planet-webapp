@@ -5,6 +5,7 @@ import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import i18next from '../../../../../i18n';
 import { TFunction } from 'next-i18next';
+import DownloadCodes from './DownloadCodes';
 
 const { useTranslation } = i18next;
 
@@ -459,6 +460,9 @@ export function Certificates({ recordDetails }: CertificatesProps): ReactElement
             {t('giftCertificate')}
           </a>
         </div>
+      )}
+      {recordDetails?.codesUrl && (
+        <DownloadCodes codesUrl={recordDetails.codesUrl} />
       )}
     </>
   );
