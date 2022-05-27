@@ -646,6 +646,27 @@ input:-webkit-autofill {
   }
 }
 
+.project-selection {
+  display: flex;
+  margin-left: 0px;
+  top : 0px;
+  @include xsPhoneView {
+   top: 491px;
+  }
+  @include smTabletView {
+   top: 505px;
+  }
+  @include mdTabletView {
+    flex-direction: column;
+    margin-left: 265px;
+    top: 160px;
+  }
+  @include lgLaptopView {
+    margin-left: 70px;
+    flex-direction: row;
+  }
+}
+
 
 /* remove updown arrow on input type=number for  Chrome, Safari, Edge, Opera  */ 
 input::-webkit-outer-spin-button,
