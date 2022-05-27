@@ -293,7 +293,6 @@ function ProjectInfo({ project }: Props): ReactElement {
 
             <div className={styles.infoText}>
               {project.metadata.siteOwnerName} since{' '}
-              {project.yearAcquired ? project.yearAcquired : ''}
               {project?.metadata?.acquisitionYear}
             </div>
           </div>
