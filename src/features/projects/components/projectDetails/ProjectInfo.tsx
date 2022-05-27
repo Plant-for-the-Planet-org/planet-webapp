@@ -204,15 +204,11 @@ function ProjectInfo({ project }: Props): ReactElement {
           ''
         )} */}
 
-        {project &&
-          project.metadata &&
-          project.metadata.activitySeasons &&
-          project.metadata.activitySeasons.length > 0 && (
+        {project?.metadata?.activitySeasons &&
+          project?.metadata?.activitySeasons.length > 0 && (
             <div className={styles.projectMoreInfoHalf}>
               <div className={styles.infoTitle}>
-                {project.purpose === 'trees'
-                  ? t('manageProjects:plantingSeasons')
-                  : t('manageProjects:protectionSeasons')}
+                {t('manageProjects:protectionSeasons')}
               </div>
               <div className={styles.infoText}>
                 {project.metadata.activitySeasons.map(
@@ -224,6 +220,32 @@ function ProjectInfo({ project }: Props): ReactElement {
                           ? ' and '
                           : index ===
                             project.metadata.activitySeasons.length - 1
+                          ? '.'
+                          : ', '}
+                      </React.Fragment>
+                    );
+                  }
+                )}
+              </div>
+            </div>
+          )}
+
+        {project?.metadata?.plantingSeasons &&
+          project?.metadata?.plantingSeasons.length > 0 && (
+            <div className={styles.projectMoreInfoHalf}>
+              <div className={styles.infoTitle}>
+                {t('manageProjects:plantingSeasons')}
+              </div>
+              <div className={styles.infoText}>
+                {project.metadata.plantingSeasons.map(
+                  (season: any, index: any) => {
+                    return (
+                      <React.Fragment key={plantingSeasons[season - 1].title}>
+                        {plantingSeasons[season - 1].title}
+                        {index === project.metadata.plantingSeasons.length - 2
+                          ? ' and '
+                          : index ===
+                            project.metadata.plantingSeasons.length - 1
                           ? '.'
                           : ', '}
                       </React.Fragment>
