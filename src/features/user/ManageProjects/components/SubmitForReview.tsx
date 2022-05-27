@@ -160,13 +160,8 @@ function SubmitForReview({
               </button>
               <button
                 onClick={() => submitForReview()}
-                className="primaryButton"
+                className="primaryButton notSubmitReview"
                 data-test-id="submitReview"
-                style={{
-                  width: '180px',
-                  marginLeft: '10px',
-                  marginTop: '20px',
-                }}
               >
                 {isUploadingData ? (
                   <div className={styles.spinner}></div>
@@ -176,12 +171,7 @@ function SubmitForReview({
               </button>
 
               <button
-                className="primaryButton"
-                style={{
-                  width: '150px',
-                  marginLeft: '15px',
-                  marginTop: '20px',
-                }}
+                className="primaryButton notSubmitExit"
                 onClick={() => router.push('/profile/projects')}
               >
                 <p>{t('manageProjects:exit')}</p>
