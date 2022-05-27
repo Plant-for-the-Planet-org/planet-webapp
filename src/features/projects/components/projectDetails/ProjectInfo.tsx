@@ -133,7 +133,7 @@ function ProjectInfo({ project }: Props): ReactElement {
             </div>
           </div>
         )}
-        {project && project.metadata && project.metadata.acquisitionYear && (
+        {project && project.metadata && project.metadata.firstTreePlanted && (
           <div className={styles.projectMoreInfoHalf}>
             <div className={styles.infoTitle}>
               {t('manageProjects:firstTreePlanted')}
@@ -145,17 +145,6 @@ function ProjectInfo({ project }: Props): ReactElement {
                   ? addZeroToDate(project.metadata.firstTreePlanted)
                   : project.metadata.firstTreePlanted
               )}
-            </div>
-          </div>
-        )}
-
-        {project && project.metadata && project.metadata.acquisitionYear && (
-          <div className={styles.projectMoreInfoHalf}>
-            <div className={styles.infoTitle}>
-              {t('manageProjects:acquisitionYear')}
-            </div>
-            <div className={styles.infoText}>
-              {project.metadata.acquisitionYear}
             </div>
           </div>
         )}
@@ -221,7 +210,9 @@ function ProjectInfo({ project }: Props): ReactElement {
           project.metadata.activitySeasons.length > 0 && (
             <div className={styles.projectMoreInfoHalf}>
               <div className={styles.infoTitle}>
-                {t('manageProjects:plantingSeasons')}
+                {project.purpose === 'trees'
+                  ? t('manageProjects:plantingSeasons')
+                  : t('manageProjects:protectionSeasons')}
               </div>
               <div className={styles.infoText}>
                 {project.metadata.activitySeasons.map(
@@ -255,34 +246,37 @@ function ProjectInfo({ project }: Props): ReactElement {
         </div>
       )}
 
-      {project.metadata.siteOwnerName && (
-        <div className={styles.projectMoreInfo}>
-          <div className={styles.infoTitle}>
-            {t('manageProjects:siteOwnership')}
-          </div>
-          {project.metadata.siteOwnerType && (
-            <div className={styles.infoText} style={{ fontWeight: 'bold' }}>
-              {ownerTypes.map((ownerType: any, index: any) => {
-                return (
-                  <React.Fragment key={ownerType}>
-                    {t(`manageProjects:${ownerType}`)}
-                    {index === ownerTypes.length - 2
-                      ? ' and '
-                      : index === ownerTypes.length - 1
-                      ? '.'
-                      : ', '}
-                  </React.Fragment>
-                );
-              })}
+      <div style={{ display: 'flex' }}>
+        {project.metadata.siteOwnerName && (
+          <div className={styles.projectMoreInfo}>
+            <div className={styles.infoTitle}>
+              {t('manageProjects:siteOwnership')}
             </div>
-          )}
+            {project.metadata.siteOwnerType && (
+              <div className={styles.infoText} style={{ fontWeight: 'bold' }}>
+                {ownerTypes.map((ownerType: any, index: any) => {
+                  return (
+                    <React.Fragment key={ownerType}>
+                      {t(`manageProjects:${ownerType}`)}
+                      {index === ownerTypes.length - 2
+                        ? ' and '
+                        : index === ownerTypes.length - 1
+                        ? '.'
+                        : ', '}
+                    </React.Fragment>
+                  );
+                })}
+              </div>
+            )}
 
-          <div className={styles.infoText}>
-            {project.metadata.siteOwnerName} since{' '}
-            {project.yearAcquired ? project.yearAcquired : ''}
+            <div className={styles.infoText}>
+              {project.metadata.siteOwnerName} since{' '}
+              {project.yearAcquired ? project.yearAcquired : ''}
+              {project?.metadata?.acquisitionYear}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {project && project.metadata && project.metadata.degradationCause && (
         <div className={styles.projectMoreInfo}>
