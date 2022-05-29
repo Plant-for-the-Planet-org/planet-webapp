@@ -299,38 +299,38 @@ export default function DetailedAnalysis({
                     )
                   )
                 : new Date(),
-              plantingSeasons: projectDetails.metadata?.plantingSeasons,
-              plantingDensity: projectDetails.metadata?.plantingDensity,
-              employeesCount: projectDetails.metadata?.employeesCount,
-              siteOwnerName: projectDetails.metadata?.siteOwnerName,
-              degradationYear: projectDetails.metadata?.degradationYear
+              plantingSeasons: projectDetails?.metadata?.plantingSeasons,
+              plantingDensity: projectDetails?.metadata?.plantingDensity,
+              employeesCount: projectDetails?.metadata?.employeesCount,
+              siteOwnerName: projectDetails?.metadata?.siteOwnerName,
+              degradationYear: projectDetails?.metadata?.degradationYear
                 ? new Date(
                     new Date().setFullYear(
-                      projectDetails.metadata?.degradationYear
+                      projectDetails?.metadata?.degradationYear
                     )
                   )
                 : new Date(),
-              degradationCause: projectDetails.metadata?.degradationCause,
+              degradationCause: projectDetails?.metadata?.degradationCause,
 
-              firstTreePlanted: projectDetails.metadata?.firstTreePlanted
-                ? new Date(projectDetails.metadata?.firstTreePlanted)
+              firstTreePlanted: projectDetails?.metadata?.firstTreePlanted
+                ? new Date(projectDetails?.metadata?.firstTreePlanted)
                 : new Date(),
-              mainChallenge: projectDetails.metadata?.mainChallenge,
-              longTermPlan: projectDetails.metadata?.longTermPlan,
-              motivation: projectDetails.metadata?.motivation,
+              mainChallenge: projectDetails?.metadata?.mainChallenge,
+              longTermPlan: projectDetails?.metadata?.longTermPlan,
+              motivation: projectDetails?.metadata?.motivation,
             }
           : {
-              areaProtected: projectDetails.metadata?.areaProtected,
-              activitySeasons: projectDetails.metadata?.plantingSeasons,
-              startingProtectionYear: projectDetails.metadata
+              areaProtected: projectDetails?.metadata?.areaProtected,
+              activitySeasons: projectDetails?.metadata?.plantingSeasons,
+              startingProtectionYear: projectDetails?.metadata
                 ?.startingProtectionYear
                 ? new Date(
                     new Date().setFullYear(
-                      projectDetails.metadata?.startingProtectionYear
+                      projectDetails?.metadata?.startingProtectionYear
                     )
                   )
                 : new Date(),
-              acquisitionYear: projectDetails.metadata?.acquisitionYear
+              acquisitionYear: projectDetails?.metadata?.acquisitionYear
                 ? new Date(
                     new Date().setFullYear(
                       projectDetails.metadata?.acquisitionYear
@@ -338,24 +338,24 @@ export default function DetailedAnalysis({
                   )
                 : new Date(),
 
-              employeesCount: projectDetails.metadata?.employeesCount,
-              mainChallenge: projectDetails.metadata?.mainChallenge,
-              siteOwnerName: projectDetails.metadata?.siteOwnerName,
-              landOwnershipType: projectDetails.metadata?.landOwnershipType,
-              longTermPlan: projectDetails.metadata?.longTermPlan,
-              siteOwnerName: projectDetails.metadata?.siteOwnerName,
-              // ownershipType: projectDetails.metadata?.ownershipType,
-              benefits: projectDetails.metadata?.benefits,
-              actions: projectDetails.metadata?.actions,
-              motivation: projectDetails.metadata?.motivation,
+              employeesCount: projectDetails?.metadata?.employeesCount,
+              mainChallenge: projectDetails?.metadata?.mainChallenge,
+              siteOwnerName: projectDetails?.metadata?.siteOwnerName,
+              landOwnershipType: projectDetails?.metadata?.landOwnershipType,
+              longTermPlan: projectDetails?.metadata?.longTermPlan,
+              siteOwnerName: projectDetails?.metadata?.siteOwnerName,
+              // ownershipType: projectDetails?.metadata?.ownershipType,
+              benefits: projectDetails?.metadata?.benefits,
+              actions: projectDetails?.metadata?.actions,
+              motivation: projectDetails?.metadata?.motivation,
             };
 
       // set planting seasons
 
       if (purpose === 'trees') {
         if (
-          projectDetails.metadata?.plantingSeasons &&
-          projectDetails.metadata?.plantingSeasons.length > 0
+          projectDetails?.metadata?.plantingSeasons &&
+          projectDetails?.metadata?.plantingSeasons.length > 0
         ) {
           const newPlantingSeasons = plantingSeasons;
           for (
@@ -366,7 +366,7 @@ export default function DetailedAnalysis({
             for (let j = 0; j < newPlantingSeasons.length; j++) {
               if (
                 newPlantingSeasons[j].id ===
-                projectDetails.metadata?.plantingSeasons[i]
+                projectDetails?.metadata?.plantingSeasons[i]
               ) {
                 newPlantingSeasons[j].isSet = true;
               }
@@ -376,19 +376,19 @@ export default function DetailedAnalysis({
         }
       } else {
         if (
-          projectDetails.metadata?.activitySeasons &&
-          projectDetails.metadata?.activitySeasons.length > 0
+          projectDetails?.metadata?.activitySeasons &&
+          projectDetails?.metadata?.activitySeasons.length > 0
         ) {
           const newActivitySeasons = plantingSeasons;
           for (
             let i = 0;
-            i < projectDetails.metadata?.activitySeasons.length;
+            i < projectDetails?.metadata?.activitySeasons.length;
             i++
           ) {
             for (let j = 0; j < newActivitySeasons.length; j++) {
               if (
                 newActivitySeasons[j].id ===
-                projectDetails.metadata?.activitySeasons[i]
+                projectDetails?.metadata?.activitySeasons[i]
               ) {
                 newActivitySeasons[j].isSet = true;
               }
@@ -402,19 +402,19 @@ export default function DetailedAnalysis({
 
       if (purpose === 'trees') {
         if (
-          projectDetails.metadata?.siteOwnerType &&
-          projectDetails.metadata?.siteOwnerType.length > 0
+          projectDetails?.metadata?.siteOwnerType &&
+          projectDetails?.metadata?.siteOwnerType.length > 0
         ) {
           const newSiteOwners = siteOwners;
           for (
             let i = 0;
-            i < projectDetails.metadata?.siteOwnerType.length;
+            i < projectDetails?.metadata?.siteOwnerType.length;
             i++
           ) {
             for (let j = 0; j < newSiteOwners.length; j++) {
               if (
                 newSiteOwners[j].value ===
-                projectDetails.metadata?.siteOwnerType[i]
+                projectDetails?.metadata?.siteOwnerType[i]
               ) {
                 newSiteOwners[j].isSet = true;
               }
@@ -424,19 +424,19 @@ export default function DetailedAnalysis({
         }
       } else {
         if (
-          projectDetails.metadata?.landOwnershipType &&
-          projectDetails.metadata?.landOwnershipType.length > 0
+          projectDetails?.metadata?.landOwnershipType &&
+          projectDetails?.metadata?.landOwnershipType.length > 0
         ) {
           const newSiteOwners = siteOwners;
           for (
             let i = 0;
-            i < projectDetails.metadata?.landOwnershipType.length;
+            i < projectDetails?.metadata?.landOwnershipType.length;
             i++
           ) {
             for (let j = 0; j < newSiteOwners.length; j++) {
               if (
                 newSiteOwners[j].value ===
-                projectDetails.metadata?.landOwnershipType[i]
+                projectDetails?.metadata?.landOwnershipType[i]
               ) {
                 newSiteOwners[j].isSet = true;
               }
