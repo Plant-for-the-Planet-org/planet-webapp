@@ -160,26 +160,6 @@ function ProjectInfo({ project }: Props): ReactElement {
           </div>
         )}
 
-        {/* {project.survivalRate && (
-                    <div className={styles.projectMoreInfoHalf}>
-                        <div className={styles.infoTitle}>
-                            {t('manageProjects:survivalRate')}
-                            <div style={{ position: 'absolute', width: 'fit-content',top:'0px',right:'18px' }}>
-                                <div className={styles.popover}>
-                                    <InfoIcon />
-                                    <div className={styles.popoverContent} style={{ left: '-160px' }}>
-                                        <p>
-                                            {t('manageProjects:survivalRateInfo')}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={styles.infoText}>
-                            {project.survivalRate} %
-                        </div>
-                    </div>
-                )} */}
         {project &&
           project.metadata &&
           project.metadata.employeesCount &&
@@ -193,16 +173,6 @@ function ProjectInfo({ project }: Props): ReactElement {
               </div>
             </div>
           )}
-        {/* {project && project.metadata && project.metadata.ecosystems ? (
-          <div className={styles.projectMoreInfoHalf}>
-            <div className={styles.infoTitle}>
-              {t('manageProjects:ecosystems')}
-            </div>
-            <div className={styles.infoText}>{project.metadata.ecosystems}</div>
-          </div>
-        ) : (
-          ''
-        )} */}
 
         {project?.metadata?.activitySeasons &&
           project?.metadata?.activitySeasons.length > 0 && (
