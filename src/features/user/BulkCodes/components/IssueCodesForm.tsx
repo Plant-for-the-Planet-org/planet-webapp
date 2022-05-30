@@ -132,7 +132,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             recipientEmail: recipient.recipient_email,
             message: recipient.recipient_message,
             notifyRecipient: recipient.recipient_notify,
-            value: parseInt(recipient.units),
+            units: parseInt(recipient.units),
             // occasion: recipient.recipient_occasion,
           };
           recipients.push(temp);
