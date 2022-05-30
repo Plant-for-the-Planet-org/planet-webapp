@@ -5,6 +5,7 @@ import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import i18next from '../../../../../i18n';
 import { TFunction } from 'next-i18next';
+import DownloadCodes from './DownloadCodes';
 
 const { useTranslation } = i18next;
 
@@ -102,7 +103,7 @@ export function RecordHeader({ record, handleRecordOpen, index }: HeaderProps): 
           {getFormatedCurrency(
             i18n.language,
             record.currency,
-            record.netAmount / 100
+            record.netAmount
           )}
         </p>
         <p className={`${styles.recordStatus} ${styles[record.status]}`}>{t(record.status)}</p>
@@ -151,7 +152,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.paidAmount / 100
+              record.details.paidAmount
             )}
           </p>
         </div>
@@ -163,7 +164,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.totalAmount / 100
+              record.details.totalAmount
             )}
           </p>
         </div>
@@ -197,7 +198,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.refundAmount / 100
+              record.details.refundAmount
             )}
           </p>
         </div>
@@ -209,7 +210,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.unitCost / 100
+              record.details.unitCost
             )}
           </p>
         </div>
@@ -233,7 +234,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.fees.disputeFee / 100
+              record.details.fees.disputeFee
             )}
           </p>
         </div>
@@ -245,7 +246,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.fees.planetFee / 100
+              record.details.fees.planetFee
             )}
           </p>
         </div>
@@ -257,7 +258,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.fees.transactionFee / 100
+              record.details.fees.transactionFee
             )}
           </p>
         </div>
@@ -269,7 +270,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
             {getFormatedCurrency(
               i18n.language,
               record.currency,
-              record.details.fees.transferFee / 100
+              record.details.fees.transferFee
             )}
           </p>
         </div>
@@ -459,6 +460,9 @@ export function Certificates({ recordDetails }: CertificatesProps): ReactElement
             {t('giftCertificate')}
           </a>
         </div>
+      )}
+      {recordDetails?.codesUrl && (
+        <DownloadCodes codesUrl={recordDetails.codesUrl} />
       )}
     </>
   );
