@@ -110,7 +110,7 @@ function SingleProject({ project }: any) {
         <p className={styles.projectClassification}>
           {project?.purpose === 'conservation'
             ? project?.metadata?.ecosystems
-            : project.classification}{' '}
+            : project?.classification}{' '}
           •{' '}
           {project.country === null ? (
             <></>

@@ -149,7 +149,7 @@ function ProjectInfo({ project }: Props): ReactElement {
           </div>
         )}
 
-        {project.plantingDensity && (
+        {project?.plantingDensity && (
           <div className={styles.projectMoreInfoHalf}>
             <div className={styles.infoTitle}>
               {t('manageProjects:plantingDensity')}
@@ -239,12 +239,12 @@ function ProjectInfo({ project }: Props): ReactElement {
       )}
 
       <div style={{ display: 'flex' }}>
-        {project.metadata.siteOwnerName && (
+        {project?.metadata?.siteOwnerName && (
           <div className={styles.projectMoreInfo}>
             <div className={styles.infoTitle}>
               {t('manageProjects:siteOwnership')}
             </div>
-            {project.metadata.siteOwnerType && (
+            {project.metadata?.siteOwnerType && (
               <div className={styles.infoText} style={{ fontWeight: 'bold' }}>
                 {ownerTypes.map((ownerType: any, index: any) => {
                   return (
