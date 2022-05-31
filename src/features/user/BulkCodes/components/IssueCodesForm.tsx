@@ -131,7 +131,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             recipientName: recipient.recipient_name,
             recipientEmail: recipient.recipient_email,
             message: recipient.recipient_message,
-            notifyRecipient: recipient.recipient_notify,
+            notifyRecipient: recipient.recipient_notify === 'yes',
             units: parseInt(recipient.units),
             // occasion: recipient.recipient_occasion,
           };
