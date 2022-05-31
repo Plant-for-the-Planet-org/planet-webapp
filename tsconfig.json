@@ -17,7 +17,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "types": ["cypress", "cypress-plugin-stripe-elements"]
+    "types": [
+      "cypress",
+      "cypress-plugin-stripe-elements"
+    ],
+    "incremental": true
   },
   "exclude": [
     "node_modules"
@@ -27,6 +31,7 @@
     "**/*.ts",
     "**/*.tsx",
     "./src/**/*",
-    "tenant.config.js", "public/assets"
+    "tenant.config.js",
+    "public/assets"
   ]
 }

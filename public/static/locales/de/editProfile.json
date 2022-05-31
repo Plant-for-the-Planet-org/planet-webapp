@@ -30,5 +30,7 @@
   "publicAccount": "Öffentliches Konto",
   "accountPrivacyChangeText": "Um ein Profil-Widget erstellen zu können, musst Du ein öffentliches Konto haben. Wenn Du auf \"Weiter\" klickst, änderst Du Deine Datenschutzeinstellungen auf \"öffentlich\".",
   "continue": "Weiter",
-  "cancel": "Abbrechen"
+  "cancel": "Abbrechen",
+  "termAndCondition": "Ich stimme den <0>Nutzungsbedingungen</0> der Plant-for-the-Planet Plattform zu.",
+  "termAndConditionError": "Bitte stimme den Nutzungsbedingungen zu"
 }

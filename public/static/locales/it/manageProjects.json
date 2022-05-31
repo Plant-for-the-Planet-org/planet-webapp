@@ -21,7 +21,7 @@
   "aboutProjectValidation": "Inserisci Informazioni sul progetto",
   "receiveDonations": "Ricevere donazioni",
   "receiveDonationsInfo": "Attivare una volta completato il profilo del progetto. Plant-for-the-Planet esaminerà il profilo e vi informerà se siete idonei a ricevere donazioni attraverso questa piattaforma. Questo potrebbe richiedere alcune settimane.",
-  "treeCost": "Costo per albero (in EUR)",
+  "unitCost": "Costo per albero (in EUR)",
   "treeCostValidaitonRequired": "Inserire il costo per albero",
   "treeCostValidationInvalid": "Inserire un costo valido per albero",
   "treeCostValidation": "Il costo per albero dovrebbe essere superiore a 0 euro o inferiore a 100 euro",

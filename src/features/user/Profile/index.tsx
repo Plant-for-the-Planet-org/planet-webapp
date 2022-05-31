@@ -28,7 +28,7 @@ function Profile({ userprofile, authenticatedType }: Props): ReactElement {
 
   return (
     <div>
-    {/* TO DO - find solution for this */}
+      {/* TO DO - find solution for this */}
       {/* maybe we use this as edit button */}
       {/* {authenticatedType === 'private' && (
         <button
@@ -41,18 +41,20 @@ function Profile({ userprofile, authenticatedType }: Props): ReactElement {
           <Settings color="white" />
         </button>
       )} */}
-        {/* userinfo section */}
-        <LandingSection
-          imageSrc={
-            process.env.CDN_URL
-              ? `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`
-              : `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`
-          }
-          style={{marginTop:'0px'}}
-        >
-          {/* {settingsModalOpen && (
+      {/* userinfo section */}
+      <LandingSection
+        imageSrc={
+          process.env.CDN_URL
+            ? `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`
+            : `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`
+        }
+        style={{
+          marginTop: '0px',
+        }}
+      >
+        {/* {settingsModalOpen && (
           <SettingsModal
-            userType="tpo"
+            userType="tpo"x
             userprofile={userprofile}
             settingsModalOpen={settingsModalOpen}
             handleSettingsModalClose={handleSettingsModalClose}
@@ -61,54 +63,54 @@ function Profile({ userprofile, authenticatedType }: Props): ReactElement {
             handleEditProfileModalOpen={handleEditProfileModalOpen}
           />
         )} */}
-          {userprofile && (
-            <div className={styles.landingContent}>
-              <TreeCounter
-                handleAddTargetModalOpen={() => {
-                  setAddTargetModalOpen(true);
-                }}
-                authenticatedType={authenticatedType}
-                target={userprofile.score.target}
-                planted={
-                  userprofile.type == 'tpo'
-                    ? userprofile.score.personal
-                    : userprofile.score.personal + userprofile.score.received
-                }
-              />
+        {userprofile && (
+          <div className={styles.landingContent}>
+            <TreeCounter
+              handleAddTargetModalOpen={() => {
+                setAddTargetModalOpen(true);
+              }}
+              authenticatedType={authenticatedType}
+              target={userprofile.score.target}
+              planted={
+                userprofile.type == 'tpo'
+                  ? userprofile.score.personal
+                  : userprofile.score.personal + userprofile.score.received
+              }
+            />
 
-              <h2 className={styles.treeCounterName}>
-                {userprofile.displayName}
-              </h2>
-              {/* user bio */}
-              <div className={styles.treeCounterDescription}>
-                {ready ? (
-                  <ReadMoreReact
-                    key={userprofile.bio || ''}
-                    ideal={120}
-                    readMoreText={t('donate:readMore')}
-                    text={userprofile.bio || ''}
-                  />
-                ) : null}
-              </div>
-              {/* icon for public view */}
-              {authenticatedType === 'public' && (
-                <UserShareAndSupport userprofile={userprofile} />
-              )}
-
-              {/* three icons in a row */}
-              {authenticatedType === 'private' && (
-                <UserProfileOptions userprofile={userprofile} />
-              )}
+            <h2 className={styles.treeCounterName}>
+              {userprofile.displayName}
+            </h2>
+            {/* user bio */}
+            <div className={styles.treeCounterDescription}>
+              {ready ? (
+                <ReadMoreReact
+                  key={userprofile.bio || ''}
+                  ideal={120}
+                  readMoreText={t('donate:readMore')}
+                  text={userprofile.bio || ''}
+                />
+              ) : null}
             </div>
-          )}
-        </LandingSection>
+            {/* icon for public view */}
+            {authenticatedType === 'public' && (
+              <UserShareAndSupport userprofile={userprofile} />
+            )}
 
-        {/* add target modal */}
-        <AddTargetModal
-          userprofile={userprofile}
-          addTargetModalOpen={addTargetModalOpen}
-          handleAddTargetModalClose={() => setAddTargetModalOpen(false)}
-        />
+            {/* three icons in a row */}
+            {authenticatedType === 'private' && (
+              <UserProfileOptions userprofile={userprofile} />
+            )}
+          </div>
+        )}
+      </LandingSection>
+
+      {/* add target modal */}
+      <AddTargetModal
+        userprofile={userprofile}
+        addTargetModalOpen={addTargetModalOpen}
+        handleAddTargetModalClose={() => setAddTargetModalOpen(false)}
+      />
     </div>
   );
 }

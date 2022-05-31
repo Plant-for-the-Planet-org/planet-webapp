@@ -105,6 +105,11 @@
   color: $highlightBackground;
 }
 
+.termsLink{
+  color: $primaryColor;
+  cursor: pointer;
+}
+
 .horizontalLine {
     border-top: 1px solid $primaryColor;
     width: 100%;
@@ -163,6 +168,13 @@
   width: 280px;
   justify-content: space-between;
   align-items: center;
+  margin-top: 10px;
+  button, .custom {
+    margin-left: 350px;
+   @include xsPhoneView {
+     margin-left: 0px !important;
+   }
+  }
 
 }
 .formFieldHalf {
@@ -173,6 +185,12 @@
   div,
   input {
     width: 130px;
+  }
+  button, .backButton {
+    margin-left: 45px;
+    @include xsPhoneView {
+      margin-left: 0px !important;
+    }
   }
 }
 .formFieldLarge {
@@ -260,6 +278,12 @@
   bottom: -18px;
 }
 
+.termsError {
+  font-family: $primaryFontFamily;
+  font-size: $fontXSmall;
+  color: $dangerColor;
+}
+
 :export {
   primaryFontColor: $primaryFontColor;
 }
@@ -273,3 +297,4 @@
     min-height: calc(100vh - 150px);
   }
 }
+

@@ -3,38 +3,47 @@ import { useRouter } from 'next/router';
 import styles from './CompleteSignup.module.scss';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
+import { Snackbar, Alert as MuiAlert, MenuItem, styled } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from '../../../../i18n';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { selectUserType } from '../../../utils/selectUserType';
-import { makeStyles, MenuItem } from '@material-ui/core';
 import { getStoredConfig } from '../../../utils/storeConfig';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
-import GeocoderArcGIS from "geocoder-arcgis";
+import GeocoderArcGIS from 'geocoder-arcgis';
 import { postRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
-const { useTranslation } = i18next;
+const { Trans, useTranslation } = i18next;
+
+const Alert = styled(MuiAlert)(({ theme }) => {
+  return {
+    backgroundColor: theme.palette.primary.main,
+  };
+});
 
 export default function CompleteSignup() {
   const router = useRouter();
-  const { t, ready } = useTranslation(['editProfile', 'donate']);
+  const { i18n, t, ready } = useTranslation(['editProfile', 'donate']);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const [addressSugggestions, setaddressSugggestions] = React.useState([]);
-  const geocoder = new GeocoderArcGIS(process.env.ESRI_CLIENT_SECRET ? {
-    client_id: process.env.ESRI_CLIENT_ID,
-    client_secret: process.env.ESRI_CLIENT_SECRET,
-  } : {});
+  const geocoder = new GeocoderArcGIS(
+    process.env.ESRI_CLIENT_SECRET
+      ? {
+          client_id: process.env.ESRI_CLIENT_ID,
+          client_secret: process.env.ESRI_CLIENT_SECRET,
+        }
+      : {}
+  );
   const suggestAddress = (value) => {
     if (value.length > 3) {
       geocoder
-        .suggest(value, { category: "Address", countryCode: country })
+        .suggest(value, { category: 'Address', countryCode: country })
         .then((result) => {
           const filterdSuggestions = result.suggestions.filter((suggestion) => {
             return !suggestion.isCollection;
@@ -42,20 +51,19 @@ export default function CompleteSignup() {
           setaddressSugggestions(filterdSuggestions);
         })
         .catch(console.log);
-
     }
   };
   const getAddress = (value) => {
     geocoder
-      .findAddressCandidates(value, { outfields: "*" })
+      .findAddressCandidates(value, { outfields: '*' })
       .then((result) => {
-        setValue("address", result.candidates[0].attributes.ShortLabel, {
+        setValue('address', result.candidates[0].attributes.ShortLabel, {
           shouldValidate: true,
         });
-        setValue("city", result.candidates[0].attributes.City, {
+        setValue('city', result.candidates[0].attributes.City, {
           shouldValidate: true,
         });
-        setValue("zipCode", result.candidates[0].attributes.Postal, {
+        setValue('zipCode', result.candidates[0].attributes.Postal, {
           shouldValidate: true,
         });
         setaddressSugggestions([]);
@@ -67,24 +75,24 @@ export default function CompleteSignup() {
   const useStylesAutoComplete = makeStyles({
     root: {
       color:
-        theme === "theme-light"
+        theme === 'theme-light'
           ? `${themeProperties.light.primaryFontColor} !important`
           : `${themeProperties.dark.primaryFontColor} !important`,
       backgroundColor:
-        theme === "theme-light"
+        theme === 'theme-light'
           ? `${themeProperties.light.backgroundColor} !important`
           : `${themeProperties.dark.backgroundColor} !important`,
     },
     option: {
       // color: '#2F3336',
-      "&:hover": {
+      '&:hover': {
         backgroundColor:
-          theme === "theme-light"
+          theme === 'theme-light'
             ? `${themeProperties.light.backgroundColorDark} !important`
             : `${themeProperties.dark.backgroundColorDark} !important`,
       },
-    }
-  })
+    },
+  });
   const classes = useStylesAutoComplete();
 
   const {
@@ -146,7 +154,7 @@ export default function CompleteSignup() {
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
   const [severity, setSeverity] = useState('info');
   const [requestSent, setRequestSent] = useState(false);
-
+  const [acceptTerms, setAcceptTerms] = useState(null);
   const [country, setCountry] = useState('');
   const defaultCountry =
     typeof window !== 'undefined' ? localStorage.getItem('countryCode') : 'DE';
@@ -164,7 +172,8 @@ export default function CompleteSignup() {
   const sendRequest = async (bodyToSend: any) => {
     setRequestSent(true);
     try {
-      const res = await postRequest(`/app/profile`,
+      const res = await postRequest(
+        `/app/profile`,
         bodyToSend,
         handleError,
         '/login'
@@ -180,7 +189,6 @@ export default function CompleteSignup() {
         if (typeof window !== 'undefined') {
           router.push('/t/[id]', `/t/${res.slug}`);
         }
-
       } else {
         setSnackbarMessage(ready ? t('editProfile:profileCreationFailed') : '');
         setSubmit(false);
@@ -195,6 +203,12 @@ export default function CompleteSignup() {
     }
   };
 
+  const handleTermsAndCondition = (value) => {
+    setAcceptTerms(value);
+    if (!value) {
+      setSubmit(false);
+    }
+  };
   const profileTypes = [
     {
       id: 1,
@@ -220,6 +234,10 @@ export default function CompleteSignup() {
   }, [type]);
 
   const createButtonClicked = async (data: any) => {
+    if (!acceptTerms) {
+      handleTermsAndCondition(false);
+      return;
+    }
     setSubmit(true);
     if (contextLoaded && token) {
       const submitData = {
@@ -247,18 +265,25 @@ export default function CompleteSignup() {
           backgroundImage: `url(${process.env.CDN_URL}/media/images/app/bg_layer.jpg)`,
         }}
       >
-        <div className={requestSent ? styles.signupRequestSent : styles.signup}
+        <div
+          className={requestSent ? styles.signupRequestSent : styles.signup}
           style={{
-            backgroundColor: theme === 'theme-light' ?
-              themeProperties.light.light :
-              themeProperties.dark.backgroundColor,
-            color: theme === 'theme-light' ?
-              themeProperties.light.primaryFontColor :
-              themeProperties.dark.primaryFontColor,
-          }}>
+            backgroundColor:
+              theme === 'theme-light'
+                ? themeProperties.light.light
+                : themeProperties.dark.backgroundColor,
+            color:
+              theme === 'theme-light'
+                ? themeProperties.light.primaryFontColor
+                : themeProperties.dark.primaryFontColor,
+          }}
+        >
           {/* header */}
           <div className={styles.header}>
-            <div onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)} className={styles.headerBackIcon}>
+            <div
+              onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)}
+              className={styles.headerBackIcon}
+            >
               <CancelIcon color={styles.primaryFontColor} />
             </div>
             <div className={styles.headerTitle}>
@@ -364,21 +389,22 @@ export default function CompleteSignup() {
                 />
                 {addressSugggestions
                   ? addressSugggestions.length > 0 && (
-                    <div className="suggestions-container">
-                      {addressSugggestions.map((suggestion) => {
-                        return (
-                          <div key={'suggestion' + suggestion_counter++}
-                            onMouseDown={() => {
-                              getAddress(suggestion.text);
-                            }}
-                            className="suggestion"
-                          >
-                            {suggestion.text}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )
+                      <div className="suggestions-container">
+                        {addressSugggestions.map((suggestion) => {
+                          return (
+                            <div
+                              key={'suggestion' + suggestion_counter++}
+                              onMouseDown={() => {
+                                getAddress(suggestion.text);
+                              }}
+                              className="suggestion"
+                            >
+                              {suggestion.text}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )
                   : null}
                 {errors.address && (
                   <span className={styles.formErrors}>
@@ -395,8 +421,8 @@ export default function CompleteSignup() {
                     inputRef={register({ required: true })}
                     defaultValue={
                       getStoredConfig('loc').city === 'T1' ||
-                        getStoredConfig('loc').city === 'XX' ||
-                        getStoredConfig('loc').city === ''
+                      getStoredConfig('loc').city === 'XX' ||
+                      getStoredConfig('loc').city === ''
                         ? ''
                         : getStoredConfig('loc').city
                     }
@@ -419,8 +445,8 @@ export default function CompleteSignup() {
                     })}
                     defaultValue={
                       getStoredConfig('loc').postalCode === 'T1' ||
-                        getStoredConfig('loc').postalCode === 'XX' ||
-                        getStoredConfig('loc').postalCode === ''
+                      getStoredConfig('loc').postalCode === 'XX' ||
+                      getStoredConfig('loc').postalCode === ''
                         ? ''
                         : getStoredConfig('loc').postalCode
                     }
@@ -443,8 +469,8 @@ export default function CompleteSignup() {
               onChange={(country) => setCountry(country)}
               defaultValue={
                 getStoredConfig('loc').countryCode === 'T1' ||
-                  getStoredConfig('loc').countryCode === 'XX' ||
-                  getStoredConfig('loc').countryCode === ''
+                getStoredConfig('loc').countryCode === 'XX' ||
+                getStoredConfig('loc').countryCode === ''
                   ? ''
                   : getStoredConfig('loc').countryCode
               }
@@ -501,17 +527,52 @@ export default function CompleteSignup() {
               control={control}
               inputRef={register()}
               defaultValue={true}
-              render={(props: any) => (
-                <ToggleSwitch
-                  checked={props.value}
-                  onChange={(e: any) => props.onChange(e.target.checked)}
-                  inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  id="getNews"
-                />
-              )}
+              render={(props: any) => {
+                return (
+                  <ToggleSwitch
+                    checked={props.value}
+                    onChange={(e: any) => props.onChange(e.target.checked)}
+                    inputProps={{ 'aria-label': 'secondary checkbox' }}
+                    id="getNews"
+                  />
+                );
+              }}
             />
           </div>
 
+          <div className={styles.isPrivateAccountDiv}>
+            <div className={styles.mainText}>
+              <label htmlFor={'terms'} style={{ cursor: 'pointer' }}>
+                <Trans i18nKey="editProfile:termAndCondition">
+                  <a
+                    className={styles.termsLink}
+                    rel="noopener noreferrer"
+                    href={`https://pp.eco/legal/${i18n.language}/terms`}
+                    target={'_blank'}
+                  >
+                    Terms and Conditions
+                  </a>{' '}
+                  of the Plant-for-the-Planet platform.
+                </Trans>
+              </label>
+            </div>
+
+            <ToggleSwitch
+              checked={acceptTerms}
+              onChange={(e: any) => {
+                handleTermsAndCondition(e.target.checked);
+              }}
+              inputProps={{ 'aria-label': 'secondary checkbox' }}
+              id="terms"
+            />
+          </div>
+          <div>
+            {!acceptTerms && typeof acceptTerms !== 'object' && (
+              <span className={styles.termsError}>
+                {t('editProfile:termAndConditionError')}
+              </span>
+            )}
+          </div>
           <div className={styles.horizontalLine} />
 
           <button
@@ -532,14 +593,16 @@ export default function CompleteSignup() {
           autoHideDuration={2000}
           onClose={handleSnackbarClose}
         >
-          <MuiAlert
-            elevation={6}
-            variant="filled"
-            onClose={handleSnackbarClose}
-            severity={severity}
-          >
-            {snackbarMessage}
-          </MuiAlert>
+          <div>
+            <Alert
+              elevation={6}
+              variant="filled"
+              onClose={handleSnackbarClose}
+              severity={severity}
+            >
+              {snackbarMessage}
+            </Alert>
+          </div>
         </Snackbar>
       </div>
     ) : null;

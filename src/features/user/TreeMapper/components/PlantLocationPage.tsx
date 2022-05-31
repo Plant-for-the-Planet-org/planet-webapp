@@ -13,7 +13,6 @@ import dynamic from 'next/dynamic';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import router, { useRouter } from 'next/router';
-import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import CopyToClipboard from '../../../common/CopyToClipboard';
 
 const { useTranslation } = i18next;

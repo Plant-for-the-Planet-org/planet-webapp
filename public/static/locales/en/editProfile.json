@@ -30,5 +30,7 @@
   "publicAccount": "Public Account",
   "accountPrivacyChangeText": "In order to create a profile widget you need to have a public account. By clicking continue you change your privacy settings to public.",
   "continue": "Continue",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "termAndCondition": "I agree to the <0>Terms and Conditions</0> of the Plant-for-the-Planet platform.",
+  "termAndConditionError": "Please Accept the Terms and Conditions"
 }
