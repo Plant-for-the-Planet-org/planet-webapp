@@ -308,36 +308,42 @@ export default function ProjectMedia({
             <div className={styles.formField}>
               {uploadedImages.map((image, index: any) => {
                 return (
-                  <div key={index} className={styles.formFieldHalf}>
-                    <div className={styles.uploadedImageContainer}>
-                      <img
-                        src={getImageUrl('project', 'medium', image.image)}
-                      />
-                      <div className={styles.uploadedImageOverlay}></div>
+                  <div
+                    key={index}
+                    className={styles.formFieldHalf}
+                    style={{ marginLeft: '10px' }}
+                  >
+                    <div>
+                      <div className={styles.uploadedImageContainer}>
+                        <img
+                          src={getImageUrl('project', 'medium', image.image)}
+                        />
+                        <div className={styles.uploadedImageOverlay}></div>
 
-                      <input
-                        onBlur={(e) => uploadCaption(image.id, index, e)}
-                        type="text"
-                        placeholder={t('manageProjects:addCaption')}
-                        defaultValue={image.description}
-                      />
+                        <input
+                          onBlur={(e) => uploadCaption(image.id, index, e)}
+                          type="text"
+                          placeholder={t('manageProjects:addCaption')}
+                          defaultValue={image.description}
+                        />
 
-                      <div className={styles.uploadedImageButtonContainer}>
-                        <button
-                          id={'DelProjCert'}
-                          onClick={() => deleteProjectCertificate(image.id)}
-                        >
-                          <DeleteIcon />
-                        </button>
-                        <button
-                          id={'setDefaultImg'}
-                          onClick={() => setDefaultImage(image.id, index)}
-                        >
-                          <Star
-                            color={image.isDefault ? '#ECB641' : '#aaa'}
-                            className={image.isDefault ? 'selected' : ''}
-                          />
-                        </button>
+                        <div className={styles.uploadedImageButtonContainer}>
+                          <button
+                            id={'DelProjCert'}
+                            onClick={() => deleteProjectCertificate(image.id)}
+                          >
+                            <DeleteIcon />
+                          </button>
+                          <button
+                            id={'setDefaultImg'}
+                            onClick={() => setDefaultImage(image.id, index)}
+                          >
+                            <Star
+                              color={image.isDefault ? '#ECB641' : '#aaa'}
+                              className={image.isDefault ? 'selected' : ''}
+                            />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
