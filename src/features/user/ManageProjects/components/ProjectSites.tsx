@@ -378,7 +378,11 @@ export default function ProjectSites({
               );
 
               return (
-                <div key={site.id} className={`${styles.formFieldHalf}`}>
+                <div
+                  key={site.id}
+                  className={`${styles.formFieldHalf}`}
+                  style={{ marginLeft: '10px' }}
+                >
                   <div className={styles.mapboxContainer}>
                     <div className={styles.uploadedMapName}>{site.name}</div>
                     <div className={styles.uploadedMapStatus}>
@@ -440,6 +444,7 @@ export default function ProjectSites({
               );
             })}
         </div>
+
         {showForm ? (
           <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
             <div className={styles.formField}>
