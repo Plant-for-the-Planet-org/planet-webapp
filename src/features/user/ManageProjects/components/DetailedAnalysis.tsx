@@ -132,20 +132,20 @@ export default function DetailedAnalysis({
 
   const handleSetPlantingSeasons = (id: any) => {
     const month = plantingSeasons[id - 1];
-    const newMonth = month;
-    newMonth.isSet = !month.isSet;
-    const plantingSeasonsNew = plantingSeasons;
-    plantingSeasonsNew[id - 1] = newMonth;
-    setPlantingSeasons([...plantingSeasonsNew]);
+    const updatedMonth = month;
+    updatedMonth.isSet = !month.isSet;
+    const plantingSeasonsUpdated = plantingSeasons;
+    plantingSeasonsUpdated[id - 1] = updatedMonth;
+    setPlantingSeasons([...plantingSeasonsUpdated]);
   };
 
   const handleSetSiteOwner = (id: any) => {
     const owner = siteOwners[id - 1];
-    const newOwner = owner;
-    newOwner.isSet = !owner.isSet;
-    const newSiteOwners = siteOwners;
-    newSiteOwners[id - 1] = newOwner;
-    setSiteOwners([...newSiteOwners]);
+    const updatedOwner = owner;
+    updatedOwner.isSet = !owner.isSet;
+    const updatedSiteOwners = siteOwners;
+    updatedSiteOwners[id - 1] = updatedOwner;
+    setSiteOwners([...updatedSiteOwners]);
   };
   const router = useRouter();
 
@@ -357,44 +357,44 @@ export default function DetailedAnalysis({
           projectDetails?.metadata?.plantingSeasons &&
           projectDetails?.metadata?.plantingSeasons.length > 0
         ) {
-          const newPlantingSeasons = plantingSeasons;
+          const updatedPlantingSeasons = plantingSeasons;
           for (
             let i = 0;
             i < projectDetails.metadata?.plantingSeasons.length;
             i++
           ) {
-            for (let j = 0; j < newPlantingSeasons.length; j++) {
+            for (let j = 0; j < updatedPlantingSeasons.length; j++) {
               if (
-                newPlantingSeasons[j].id ===
+                updatedPlantingSeasons[j].id ===
                 projectDetails?.metadata?.plantingSeasons[i]
               ) {
-                newPlantingSeasons[j].isSet = true;
+                updatedPlantingSeasons[j].isSet = true;
               }
             }
           }
-          setPlantingSeasons(newPlantingSeasons);
+          setPlantingSeasons(updatedPlantingSeasons);
         }
       } else {
         if (
           projectDetails?.metadata?.activitySeasons &&
           projectDetails?.metadata?.activitySeasons.length > 0
         ) {
-          const newActivitySeasons = plantingSeasons;
+          const updatedActivitySeasons = plantingSeasons;
           for (
             let i = 0;
             i < projectDetails?.metadata?.activitySeasons.length;
             i++
           ) {
-            for (let j = 0; j < newActivitySeasons.length; j++) {
+            for (let j = 0; j < updatedActivitySeasons.length; j++) {
               if (
-                newActivitySeasons[j].id ===
+                updatedActivitySeasons[j].id ===
                 projectDetails?.metadata?.activitySeasons[i]
               ) {
-                newActivitySeasons[j].isSet = true;
+                updatedActivitySeasons[j].isSet = true;
               }
             }
           }
-          setPlantingSeasons(newActivitySeasons);
+          setPlantingSeasons(updatedActivitySeasons);
         }
       }
 
