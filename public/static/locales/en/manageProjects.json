@@ -123,6 +123,7 @@
   "urbanPlanting": "Urban Planting",
   "otherPlanting": "Other Planting",
   "projectType": "Project Type",
+  "protectionSeasons": "Protection Seasons",
   "polygonRequired": "Polygon is required",
   "fileSizeLimit": "File is larger than 10 mb",
   "fileImageOnly": "File type must be image",

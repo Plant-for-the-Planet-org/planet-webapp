@@ -170,11 +170,14 @@ export default function ProjectSites({
   const uploadProjectSite = (data: any) => {
     if (geoJson && geoJson.features.length !== 0) {
       setIsUploadingData(true);
+
       const submitData = {
         name: siteDetails.name,
         geometry: geoJson,
         status: data.status,
       };
+
+      if (!data.name) return;
       postAuthenticatedRequest(
         `/app/projects/${projectGUID}/sites`,
         submitData,
@@ -304,6 +307,7 @@ export default function ProjectSites({
       status: site.status,
       geometry: {},
     };
+
     const collection = {
       type: 'FeatureCollection',
       features: [
@@ -374,7 +378,11 @@ export default function ProjectSites({
               );
 
               return (
-                <div key={site.id} className={`${styles.formFieldHalf}`}>
+                <div
+                  key={site.id}
+                  className={`${styles.formFieldHalf}`}
+                  style={{ marginLeft: '10px' }}
+                >
                   <div className={styles.mapboxContainer}>
                     <div className={styles.uploadedMapName}>{site.name}</div>
                     <div className={styles.uploadedMapStatus}>
@@ -436,6 +444,7 @@ export default function ProjectSites({
               );
             })}
         </div>
+
         {showForm ? (
           <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
             <div className={styles.formField}>
@@ -549,7 +558,7 @@ export default function ProjectSites({
             <button
               onClick={handleSubmit(uploadProjectSiteNext)}
               className="primaryButton"
-              style={{ minWidth: '240px' }}
+              style={{ width: '169px' }}
               data-test-id="projSitesCont"
             >
               {isUploadingData ? (
@@ -563,7 +572,7 @@ export default function ProjectSites({
             <button
               onClick={handleNext}
               className="primaryButton"
-              style={{ width: '89px', marginRight: '40px', marginLeft: '20px' }}
+              style={{ width: '89px', marginRight: '40px', marginLeft: '12px' }}
             >
               {t('manageProjects:skip')}
             </button>
