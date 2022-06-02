@@ -157,6 +157,7 @@ const RecipientsUploadForm = ({
   const processFileContents = (fileContents: string) => {
     parse(fileContents, {
       header: true,
+      skipEmptyLines: 'greedy',
       complete: (results: ParseResult<unknown>) => {
         if (!results.errors.length) {
           const parsedHeaders = results.meta.fields || [];
