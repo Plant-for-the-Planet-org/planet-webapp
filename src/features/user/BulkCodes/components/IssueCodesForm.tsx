@@ -1,7 +1,7 @@
 import React, { ReactElement, useContext, useState } from 'react';
 import axios from 'axios';
 import i18next from '../../../../../i18n';
-import { Button, TextField, styled } from 'mui-latest';
+import { Button, TextField, styled } from '@mui/material';
 import { useForm, Controller, ControllerRenderProps } from 'react-hook-form';
 import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
 import styles from '../BulkCodes.module.scss';

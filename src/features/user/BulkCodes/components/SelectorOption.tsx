@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { styled } from 'mui-latest';
+import { styled } from '@mui/material';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeMethods';
 
 export interface SelectorOptionProps {

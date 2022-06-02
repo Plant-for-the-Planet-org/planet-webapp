@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { Grid, styled } from 'mui-latest';
+import { Grid, styled } from '@mui/material';
 import FormSteps from './FormSteps';
 
 const FormContainer = styled('div')(({ theme }) => ({

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Button } from 'mui-latest';
+import { Button } from '@mui/material';
 // As this is a MUI component, there is no corresponding Button.tsx component file
 
 export default {

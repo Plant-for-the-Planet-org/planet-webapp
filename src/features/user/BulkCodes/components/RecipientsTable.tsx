@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react';
 
-import Paper from 'mui-latest/Paper';
-import Table from 'mui-latest/Table';
-import TableBody from 'mui-latest/TableBody';
-import TableCell from 'mui-latest/TableCell';
-import TableContainer from 'mui-latest/TableContainer';
-import TableHead from 'mui-latest/TableHead';
-import TablePagination from 'mui-latest/TablePagination';
-import TableRow from 'mui-latest/TableRow';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
 
 interface RecipientsTableProps {
   headers: string[];

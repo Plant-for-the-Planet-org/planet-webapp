@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { TextField, styled } from 'mui-latest';
+import { TextField, styled } from '@mui/material';
 import i18next from '../../../../../i18n';
 
 const { useTranslation } = i18next;

@@ -1,7 +1,7 @@
-import { createTheme } from 'mui-latest';
+import { createTheme } from '@mui/material';
 
 // Adding custom variables to theme using module augmentation
-declare module 'mui-latest/styles/createPalette' {
+declare module '@mui/material/styles/createPalette' {
   interface TypeBackground {
     base?: string;
   }

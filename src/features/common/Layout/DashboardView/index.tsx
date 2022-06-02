@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { Box, Grid, ThemeProvider, styled } from 'mui-latest';
+import { Box, Grid, ThemeProvider, styled } from '@mui/material';
 
 import muiThemeNew from '../../../../theme/muiThemeNew';
 

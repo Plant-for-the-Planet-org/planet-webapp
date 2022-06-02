@@ -1,7 +1,7 @@
 import React, { ReactElement, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import i18next from '../../../../../i18n';
-import { Button } from 'mui-latest';
+import { Button } from '@mui/material';
 
 import BulkCodesForm from './BulkCodesForm';
 import SelectorOption, { SelectorOptionProps } from './SelectorOption';

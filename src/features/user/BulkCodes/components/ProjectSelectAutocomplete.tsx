@@ -1,5 +1,5 @@
 import React, { ReactElement, useState, useEffect } from 'react';
-import { Autocomplete, TextField, styled } from 'mui-latest';
+import { Autocomplete, TextField, styled } from '@mui/material';
 import i18next from '../../../../../i18n';
 
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';

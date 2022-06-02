@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import { styled } from 'mui-latest';
+import { styled } from '@mui/material';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 import i18next from '../../../../../i18n';

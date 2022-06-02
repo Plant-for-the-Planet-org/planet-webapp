@@ -1,6 +1,6 @@
 import '../src/theme/global.scss';
 import './storybook.scss';
-import { ThemeProvider as MUIThemeProvider } from 'mui-latest';
+import { ThemeProvider as MUIThemeProvider } from '@mui/material';
 import muiThemeNew from '../src/theme/muiThemeNew';
 import { ThemeProvider } from 'emotion-theming';
 

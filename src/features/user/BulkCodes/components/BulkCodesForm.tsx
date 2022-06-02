@@ -1,4 +1,4 @@
-import { styled } from 'mui-latest';
+import { styled } from '@mui/material';
 
 const BulkCodesForm = styled('form')((/* { theme } */) => ({
   display: 'flex',

@@ -1,4 +1,4 @@
-import { TextField } from 'mui-latest';
+import { TextField } from '@mui/material';
 import { ReactElement } from 'react';
 import i18next from '../../../../../i18n';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';

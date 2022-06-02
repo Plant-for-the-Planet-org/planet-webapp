@@ -1,7 +1,7 @@
 import React, { ReactElement, useContext, useState } from 'react';
 import i18next from '../../../../../i18n';
 import { useRouter } from 'next/router';
-import { Button } from 'mui-latest';
+import { Button } from '@mui/material';
 import {
   useBulkCode,
   // PlanetCashAccount,

@@ -1,4 +1,4 @@
-import { TextField, styled } from 'mui-latest';
+import { TextField, styled } from '@mui/material';
 import { ReactElement } from 'react';
 import i18next from '../../../../../i18n';
 import { SetState } from '../../../common/Layout/BulkCodeContext';
