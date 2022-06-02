@@ -244,20 +244,10 @@ function ProjectInfo({ project }: Props): ReactElement {
             <div className={styles.infoTitle}>
               {t('manageProjects:siteOwnership')}
             </div>
-            {project.metadata?.siteOwnerType && (
-              <div className={styles.infoText} style={{ fontWeight: 'bold' }}>
-                {ownerTypes.map((ownerType: any, index: any) => {
-                  return (
-                    <React.Fragment key={ownerType}>
-                      {t(`manageProjects:${ownerType}`)}
-                      {index === ownerTypes.length - 2
-                        ? ' and '
-                        : index === ownerTypes.length - 1
-                        ? '.'
-                        : ', '}
-                    </React.Fragment>
-                  );
-                })}
+
+            {project?.metadata?.landOwnershipType && (
+              <div className={styles.infoText}>
+                {project?.metadata?.landOwnershipType}
               </div>
             )}
 
