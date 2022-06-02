@@ -1,54 +1,21 @@
-import { createTheme } from '@material-ui/core';
+import { createTheme } from '@mui/material';
+
 import theme from './themeProperties';
 
 const materialTheme = createTheme({
-  overrides: {
-    MuiPickersToolbar: {
-      toolbar: {
-        backgroundColor: theme.primaryColor,
-      },
+  palette: {
+    primary: {
+      main: theme.primaryColor,
     },
-    MuiPickersBasePicker: {
-      pickerView: {
-        backgroundColor: 'white',
-      },
-    },
-    MuiDialogActions: {
-      root: {
-        backgroundColor: 'white',
-      },
-    },
-    MuiPickersCalendarHeader: {
-      switchHeader: {
-        // backgroundColor: lightBlue.A200,
-        // color: "white",
-      },
-    },
-
-    MuiPickersDay: {
-      daySelected: {
-        backgroundColor: theme.primaryColor,
-        '&:hover': {
-          backgroundColor: theme.primaryColor,
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          fontSize: '0.875rem',
+          lineHeight: 1.43,
+          letterSpacing: '0.01071em',
         },
-      },
-      current: {
-        color: theme.primaryColor,
-      },
-    },
-    MuiPickersYear: {
-      yearSelected: {
-        color: theme.primaryColor,
-      },
-    },
-    MuiPickersModal: {
-      dialogAction: {
-        color: theme.primaryColor,
-      },
-    },
-    MuiButton: {
-      label: {
-        color: theme.primaryColor,
       },
     },
   },

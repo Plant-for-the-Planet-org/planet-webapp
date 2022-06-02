@@ -1,4 +1,4 @@
-import CssBaseline from 'mui-latest/CssBaseline';
+import CssBaseline from '@mui/material/CssBaseline';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
 import React from 'react';
@@ -29,6 +29,8 @@ import PlayButton from '../src/features/common/LandingVideo/PlayButton';
 import ErrorHandlingProvider from '../src/features/common/Layout/ErrorHandlingContext';
 import dynamic from 'next/dynamic';
 import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material';
+import materialTheme from '../src/theme/themeStyles';
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -214,35 +216,37 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
               useRefreshTokens={true}
             >
               <ThemeProvider>
-                <CssBaseline />
-                <UserPropsProvider>
-                  <Layout>
-                    <ProjectPropsProvider>
-                      <BulkCodeProvider>
-                        {isMap ? (
-                          <>
-                            {project ? (
-                              <MapLayout />
-                            ) : projects ? (
-                              <MapLayout />
-                            ) : null}
-                            <div
-                              style={
-                                config.tenantName === 'planet' ||
-                                config.tenantName === 'ttc'
-                                  ? {}
-                                  : { display: 'none' }
-                              }
-                            >
-                              <PlayButton setshowVideo={setshowVideo} />
-                            </div>
-                          </>
-                        ) : null}
-                        <Component {...ProjectProps} />
-                      </BulkCodeProvider>
-                    </ProjectPropsProvider>
-                  </Layout>
-                </UserPropsProvider>
+                <MuiThemeProvider theme={materialTheme}>
+                  <CssBaseline />
+                  <UserPropsProvider>
+                    <Layout>
+                      <ProjectPropsProvider>
+                        <BulkCodeProvider>
+                          {isMap ? (
+                            <>
+                              {project ? (
+                                <MapLayout />
+                              ) : projects ? (
+                                <MapLayout />
+                              ) : null}
+                              <div
+                                style={
+                                  config.tenantName === 'planet' ||
+                                  config.tenantName === 'ttc'
+                                    ? {}
+                                    : { display: 'none' }
+                                }
+                              >
+                                <PlayButton setshowVideo={setshowVideo} />
+                              </div>
+                            </>
+                          ) : null}
+                          <Component {...ProjectProps} />
+                        </BulkCodeProvider>
+                      </ProjectPropsProvider>
+                    </Layout>
+                  </UserPropsProvider>
+                </MuiThemeProvider>
               </ThemeProvider>
             </Auth0Provider>
           </div>

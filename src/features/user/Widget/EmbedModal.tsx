@@ -1,10 +1,10 @@
-import { Modal, Snackbar } from '@material-ui/core';
 import React, { ReactElement } from 'react';
+import { Modal, Snackbar, styled } from '@mui/material';
+import MuiAlert from '@mui/material/Alert';
 import styles from './EmbedModal.module.scss';
 import i18next from '../../../../i18n';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useRouter } from 'next/router';
-import MuiAlert from '@material-ui/lab/Alert';
 import { ThemeContext } from '../../../theme/themeContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { TENANT_ID } from '../../../utils/constants/environment';
@@ -16,6 +16,12 @@ interface Props {
 }
 
 const { useTranslation } = i18next;
+
+const Alert = styled(MuiAlert)(({theme}) => {
+  return {
+    backgroundColor: theme.palette.primary.main,
+  }
+})
 
 export default function EmbedModal({
   embedModalOpen,
@@ -154,15 +160,18 @@ export default function EmbedModal({
         open={snackbarOpen}
         autoHideDuration={2000}
         onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <MuiAlert
-          elevation={6}
-          variant="filled"
-          onClose={handleSnackbarClose}
-          severity={severity}
-        >
-          {snackbarMessage}
-        </MuiAlert>
+        <div>
+          <Alert
+            elevation={6}
+            variant="filled"
+            onClose={handleSnackbarClose}
+            severity={severity}
+          >
+            {snackbarMessage}
+          </Alert>
+        </div>
       </Snackbar>
     </>
   );

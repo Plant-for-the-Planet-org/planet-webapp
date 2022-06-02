@@ -218,9 +218,9 @@ export default function History({
                       />
                     )}
                     {showStatusNote(currentRecord, t)}
-                    {(currentRecord.details.donorCertificate ||
-                      currentRecord.details.taxDeductibleReceipt ||
-                      currentRecord.details.giftCertificate) && (
+                    {(currentRecord?.details?.donorCertificate ||
+                      currentRecord?.details?.taxDeductibleReceipt ||
+                      currentRecord?.details?.giftCertificate) && (
                       <>
                         <div className={styles.title}>{t('downloads')}</div>
                         <div className={styles.detailGrid}>

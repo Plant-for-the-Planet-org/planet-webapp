@@ -21,7 +21,7 @@
   "aboutProjectValidation": "Por favor, digite Sobre o projeto",
   "receiveDonations": "Receba Doações",
   "receiveDonationsInfo": "Por favor, ative assim que o perfil do projeto esteja completo. A Plant-for-the-Planet irá então revisar o perfil e informá-lo se você é elegível para receber doações através desta plataforma. Isto pode levar algumas semanas.",
-  "treeCost": "Custo por árvore (em euros)",
+  "unitCost": "Custo por árvore (em euros)",
   "treeCostValidaitonRequired": "Por favor, introduza o custo por árvore",
   "treeCostValidationInvalid": "Por favor, introduza o custo válido por árvore",
   "treeCostValidation": "O custo por árvore deve ser superior a 0 euros ou inferior a 100 euros",

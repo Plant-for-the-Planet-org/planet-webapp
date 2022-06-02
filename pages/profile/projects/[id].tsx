@@ -13,10 +13,10 @@ import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorH
 
 const { useTranslation } = i18next;
 
-interface Props { }
+interface Props {}
 
-function ManageSingleProject({ }: Props): ReactElement {
-  const { t } = useTranslation(['me', 'manageProjects']);
+function ManageSingleProject({}: Props): ReactElement {
+  const { t } = useTranslation(['manageProjects', 'common']);
   const [projectGUID, setProjectGUID] = React.useState(null);
   const [ready, setReady] = React.useState(false);
   const router = useRouter();
@@ -36,9 +36,13 @@ function ManageSingleProject({ }: Props): ReactElement {
 
   useEffect(() => {
     async function loadProject() {
-      getAuthenticatedRequest(`/app/profile/projects/${projectGUID}`, token, {},
+      getAuthenticatedRequest(
+        `/app/profile/projects/${projectGUID}`,
+        token,
+        {},
         handleError,
-        '/profile')
+        '/profile'
+      )
         .then((result) => {
           if (result.status === 401) {
             setAccessDenied(true);
@@ -75,16 +79,24 @@ function ManageSingleProject({ }: Props): ReactElement {
     ready && token && !accessDenied ? (
       <UserLayout>
         <Head>
-          <title>{`${t('edit')} - ${project.name}`}</title>
+          <title>{`${t('common:edit')} - ${project.name}`}</title>
         </Head>
         <div className="profilePage">
           <div className="profilePageHeader">
             <div>
               <div className={'profilePageTitle'}>{project.name}</div>
-              <div style={{ marginBottom: 15 }}>{t('manageProjects:onlyEnglish')}</div>
+              <div style={{ marginBottom: 15 }}>
+                {t('manageProjects:onlyEnglish')}
+              </div>
             </div>
           </div>
-          <ManageProjects GUID={projectGUID} token={token} project={project} />
+          <div style={{ marginTop: '60px' }}>
+            <ManageProjects
+              GUID={projectGUID}
+              token={token}
+              project={project}
+            />
+          </div>
         </div>
       </UserLayout>
     ) : (
