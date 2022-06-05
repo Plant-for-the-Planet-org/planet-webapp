@@ -66,16 +66,35 @@ function ProjectInfo({ project }: Props): ReactElement {
   const [ownerTypes, setOwnerTypes] = React.useState([]);
   React.useEffect(() => {
     if (ready && project.siteOwnerType && project.siteOwnerType.length > 0) {
-      const newSiteOwners = [];
+      const updatedSiteOwners = [];
 
       for (let i = 0; i < project.siteOwnerType.length; i++) {
         const translatedOwnerType = siteOwners.find(
           (element) => element.value === project.siteOwnerType[i]
         );
-        newSiteOwners.push(translatedOwnerType.title);
+        updatedSiteOwners.push(translatedOwnerType.title);
       }
 
-      setOwnerTypes(newSiteOwners);
+      setOwnerTypes(updatedSiteOwners);
+    }
+  }, [ready]);
+
+  React.useEffect(() => {
+    if (
+      ready &&
+      project.metadata.landOwnershipType &&
+      project.metadata.landOwnershipType.length > 0
+    ) {
+      const updatedSiteOwners = [];
+
+      for (let i = 0; i < project.metadata.landOwnershipType.length; i++) {
+        const translatedOwnerType = siteOwners.find(
+          (element) => element.value === project.metadata.landOwnershipType[i]
+        );
+        updatedSiteOwners.push(translatedOwnerType.title);
+      }
+
+      setOwnerTypes(updatedSiteOwners);
     }
   }, [ready]);
 
@@ -239,20 +258,61 @@ function ProjectInfo({ project }: Props): ReactElement {
       )}
 
       <div style={{ display: 'flex' }}>
-        {project?.metadata?.siteOwnerName && (
+        {project?.metadata?.siteOwnerType && (
           <div className={styles.projectMoreInfo}>
             <div className={styles.infoTitle}>
-              {t('manageProjects:siteOwnership')}
+              {t('manageProjects:siteOwnerShip')}
             </div>
-
-            {project?.metadata?.landOwnershipType && (
+            {project?.metadata?.siteOwnerType && (
               <div className={styles.infoText}>
-                {project?.metadata?.landOwnershipType}
+                {ownerTypes.map((ownerType: any, index: any) => {
+                  return (
+                    <React.Fragment key={ownerType}>
+                      {t(`manageProjects:${ownerType}`)}
+                      {index === ownerTypes.length - 2
+                        ? ' and '
+                        : index === ownerTypes.length - 1
+                        ? '.'
+                        : ', '}
+                    </React.Fragment>
+                  );
+                })}
               </div>
             )}
 
             <div className={styles.infoText}>
-              {project.metadata.siteOwnerName} since{' '}
+              {project?.metadata?.siteOwnerName} since{' '}
+              {project?.metadata?.acquisitionYear}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div style={{ display: 'flex' }}>
+        {project?.metadata?.landOwnershipType && (
+          <div className={styles.projectMoreInfo}>
+            <div className={styles.infoTitle}>
+              {t('manageProjects:siteOwnerShip')}
+            </div>
+            {project?.metadata?.landOwnershipType && (
+              <div className={styles.infoText}>
+                {ownerTypes.map((ownerType: any, index: any) => {
+                  return (
+                    <React.Fragment key={ownerType}>
+                      {t(`manageProjects:${ownerType}`)}
+                      {index === ownerTypes.length - 2
+                        ? ' and '
+                        : index === ownerTypes.length - 1
+                        ? '.'
+                        : ', '}
+                    </React.Fragment>
+                  );
+                })}
+              </div>
+            )}
+
+            <div className={styles.infoText}>
+              {project?.metadata?.siteOwnerName} since{' '}
               {project?.metadata?.acquisitionYear}
             </div>
           </div>
