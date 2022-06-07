@@ -105,7 +105,7 @@ function ProjectInfo({ project }: Props): ReactElement {
   return ready ? (
     <div>
       <div className={styles.projectMoreInfoHalfContainer}>
-        {project.yearAbandoned && (
+        {project?.metadata?.yearAbandoned !== 0 && (
           <div className={styles.projectMoreInfoHalf}>
             <div className={styles.infoTitle}>
               {t('manageProjects:abandonment')}
@@ -160,19 +160,16 @@ function ProjectInfo({ project }: Props): ReactElement {
           </div>
         )}
 
-        {project &&
-          project.metadata &&
-          project.metadata.employeesCount &&
-          project.metadata.employeesCount !== 0 && (
-            <div className={styles.projectMoreInfoHalf}>
-              <div className={styles.infoTitle}>
-                {t('manageProjects:employees')}
-              </div>
-              <div className={styles.infoText}>
-                {project.metadata.employeesCount}
-              </div>
+        {project?.metadata?.employeesCount !== 0 && (
+          <div className={styles.projectMoreInfoHalf}>
+            <div className={styles.infoTitle}>
+              {t('manageProjects:employees')}
             </div>
-          )}
+            <div className={styles.infoText}>
+              {project.metadata.employeesCount}
+            </div>
+          </div>
+        )}
 
         {project?.metadata?.activitySeasons &&
           project?.metadata?.activitySeasons.length > 0 && (
