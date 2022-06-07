@@ -261,7 +261,7 @@ function ProjectInfo({ project }: Props): ReactElement {
         {project?.metadata?.siteOwnerType && (
           <div className={styles.projectMoreInfo}>
             <div className={styles.infoTitle}>
-              {t('manageProjects:siteOwnerShip')}
+              {t('manageProjects:siteOwnership')}
             </div>
             {project?.metadata?.siteOwnerType && (
               <div className={styles.infoText}>
@@ -281,7 +281,8 @@ function ProjectInfo({ project }: Props): ReactElement {
             )}
 
             <div className={styles.infoText}>
-              {project?.metadata?.siteOwnerName} since{' '}
+              {project?.metadata?.siteOwnerName}{' '}
+              {project.metadata.acquisitionYear ? 'since ' : <></>}
               {project?.metadata?.acquisitionYear}
             </div>
           </div>
@@ -292,7 +293,7 @@ function ProjectInfo({ project }: Props): ReactElement {
         {project?.metadata?.landOwnershipType && (
           <div className={styles.projectMoreInfo}>
             <div className={styles.infoTitle}>
-              {t('manageProjects:siteOwnerShip')}
+              {t('manageProjects:siteOwnership')}
             </div>
             {project?.metadata?.landOwnershipType && (
               <div className={styles.infoText}>
@@ -312,7 +313,8 @@ function ProjectInfo({ project }: Props): ReactElement {
             )}
 
             <div className={styles.infoText}>
-              {project?.metadata?.siteOwnerName} since{' '}
+              {project?.metadata?.siteOwnerName}
+              {project.metadata.acquisitionYear ? 'since ' : <></>}
               {project?.metadata?.acquisitionYear}
             </div>
           </div>
