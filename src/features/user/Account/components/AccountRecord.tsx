@@ -313,6 +313,18 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
           </p>
         </div>
       )}
+      {record.details?.giftOccasion && (
+        <div className={`${styles.singleDetail} ${styles.fullWidth}`}>
+          <p className={styles.title}>{t('giftOccasion')}</p>
+          <p>{record.details.giftOccasion}</p>
+        </div>
+      )}
+      {record.details?.giftComment && (
+        <div className={`${styles.singleDetail} ${styles.fullWidth}`}>
+          <p className={styles.title}>{t('giftComment')}</p>
+          <p>{record.details.giftComment}</p>
+        </div>
+      )}
     </>
   );
 }

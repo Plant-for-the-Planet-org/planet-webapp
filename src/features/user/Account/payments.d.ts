@@ -18,6 +18,8 @@ declare namespace Payments {
     fees?: Fees;
     recipientBank?: RecipientBank;
     codesUrl?: string;
+    giftOccasion?: string;
+    giftComment?: string;
   }
 
   export interface Fees {

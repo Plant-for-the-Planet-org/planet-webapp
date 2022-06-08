@@ -160,6 +160,8 @@
   "planetFee": "Planet Fee",
   "transactionFee": "Transaction Fee",
   "transferFee": "Transfer Fee",
+  "giftComment": "Comment (Private)",
+  "giftOccasion": "Occasion",
   "open": "Open",
   "downloads": "Downloads",
   "account": "Account",

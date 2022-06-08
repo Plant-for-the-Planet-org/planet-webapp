@@ -305,6 +305,9 @@
     justify-content: flex-start;
     align-items: flex-start;
     width: fit-content;
+    &.fullWidth {
+      grid-column: span 2;
+    }
     > .title {
       font-weight: 700;
     }
@@ -542,6 +545,9 @@
 @include smTabletView {
   .detailGrid {
     grid-template-columns: repeat(2, 1fr);
+    & .singleDetail.fullWidth {
+      grid-column: span 2;
+    }
   }
 }
 @include mdTabletView {
@@ -625,6 +631,9 @@
 
   .detailGrid {
     grid-template-columns: repeat(3, 1fr);
+    & .singleDetail.fullWidth {
+      grid-column: span 3;
+    }
   }
 }
 @include lgLaptopView {
@@ -684,6 +693,9 @@
 
   .detailGrid {
     grid-template-columns: repeat(3, 1fr);
+    & .singleDetail.fullWidth {
+      grid-column: span 3;
+    }
   }
 }
 // Loader for Buttons
