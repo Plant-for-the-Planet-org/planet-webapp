@@ -59,6 +59,13 @@
     display: none;
   } */
 
+.successMessage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
 .formErrors {
   // position: absolute;
   font-family: $primaryFontFamily;

@@ -53,6 +53,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const [comment, setComment] = useState('');
   const [occasion, setOccasion] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const codeQuantity = watch('codeQuantity', 0);
   const unitsPerCode = watch('unitsPerCode', 0);
@@ -104,7 +105,10 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
           );
           if (res.status === 200) {
             resetBulkContext();
-            router.push(`/profile/history?ref=${res.data.uid}`);
+            setIsSubmitted(true);
+            setTimeout(() => {
+              router.push(`/profile/history?ref=${res.data.uid}`);
+            }, 5000);
           }
         } catch (err) {
           setIsProcessing(false);
@@ -173,7 +177,10 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
           );
           if (res.status === 200) {
             resetBulkContext();
-            router.push(`/profile/history?ref=${res.data.uid}`);
+            setIsSubmitted(true);
+            setTimeout(() => {
+              router.push(`/profile/history?ref=${res.data.uid}`);
+            }, 5000);
           }
         } catch (err) {
           setIsProcessing(false);
@@ -214,123 +221,140 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   };
 
   if (ready) {
-    return (
-      <BulkCodesForm className="IssueCodesForm">
-        <div className="inputContainer">
-          <ProjectSelector
-            projectList={projectList || []}
-            project={project}
-            active={false}
-            planetCashAccount={planetCashAccount}
-          />
-          <TextField
-            onChange={(e: React.ChangeEvent<any>) => setComment(e.target.value)}
-            value={comment}
-            label={t('bulkCodes:labelComment')}
-          />
-          <TextField
-            onChange={(e: React.ChangeEvent<any>) =>
-              setOccasion(e.target.value)
-            }
-            value={occasion}
-            label={t('bulkCodes:occasion')}
-          />
-          {bulkMethod === 'generic' && (
-            <InlineFormGroup>
-              <div style={{ width: '100%' }}>
-                <Controller
-                  name="unitsPerCode"
-                  control={control}
-                  rules={{ required: true, min: 1 }}
-                  defaultValue={''}
-                  render={(props: ControllerRenderProps) => (
-                    <TextField
-                      {...props}
-                      onChange={props.onChange}
-                      value={props.value}
-                      label={t('bulkCodes:unitsPerCode')}
-                      onInput={(e) => {
-                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                      }}
-                      error={errors.unitsPerCode !== undefined}
-                    />
-                  )}
-                />
-                {errors.unitsPerCode && (
-                  <span className={styles.formErrors}>
-                    {t('bulkCodes:unitsRequired')}
-                  </span>
-                )}
-              </div>
-              <div style={{ width: '100%' }}>
-                <Controller
-                  name="codeQuantity"
-                  control={control}
-                  rules={{ required: true, min: 1 }}
-                  defaultValue={''}
-                  render={(props: ControllerRenderProps) => (
-                    <TextField
-                      {...props}
-                      onChange={props.onChange}
-                      value={props.value}
-                      label={t('bulkCodes:totalNumberOfCodes')}
-                      onInput={(e) => {
-                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                      }}
-                      error={errors.codeQuantity !== undefined}
-                    />
-                  )}
-                />
-                {errors.codeQuantity && (
-                  <span className={styles.formErrors}>
-                    {t('bulkCodes:quantityCodesRequired')}
-                  </span>
-                )}
-              </div>
-            </InlineFormGroup>
-          )}
-          {bulkMethod === 'import' && (
-            <RecipientsUploadForm
-              onRecipientsUploaded={setLocalRecipients}
-              localRecipients={localRecipients}
+    if (!isSubmitted) {
+      return (
+        <BulkCodesForm className="IssueCodesForm">
+          <div className="inputContainer">
+            <ProjectSelector
+              projectList={projectList || []}
+              project={project}
+              active={false}
+              planetCashAccount={planetCashAccount}
             />
-          )}
-          <BulkGiftTotal
-            amount={getBulkCodeTotalAmount()}
-            currency={planetCashAccount?.currency}
-            units={getBulkCodeTotalUnits()}
-            unit={project?.unit}
-          />
-          {/* TODOO translation and pluralization */}
+            <TextField
+              onChange={(e: React.ChangeEvent<any>) =>
+                setComment(e.target.value)
+              }
+              value={comment}
+              label={t('bulkCodes:labelComment')}
+            />
+            <TextField
+              onChange={(e: React.ChangeEvent<any>) =>
+                setOccasion(e.target.value)
+              }
+              value={occasion}
+              label={t('bulkCodes:occasion')}
+            />
+            {bulkMethod === 'generic' && (
+              <InlineFormGroup>
+                <div style={{ width: '100%' }}>
+                  <Controller
+                    name="unitsPerCode"
+                    control={control}
+                    rules={{ required: true, min: 1 }}
+                    defaultValue={''}
+                    render={(props: ControllerRenderProps) => (
+                      <TextField
+                        {...props}
+                        onChange={props.onChange}
+                        value={props.value}
+                        label={t('bulkCodes:unitsPerCode')}
+                        onInput={(e) => {
+                          e.target.value = e.target.value.replace(
+                            /[^0-9]/g,
+                            ''
+                          );
+                        }}
+                        error={errors.unitsPerCode !== undefined}
+                      />
+                    )}
+                  />
+                  {errors.unitsPerCode && (
+                    <span className={styles.formErrors}>
+                      {t('bulkCodes:unitsRequired')}
+                    </span>
+                  )}
+                </div>
+                <div style={{ width: '100%' }}>
+                  <Controller
+                    name="codeQuantity"
+                    control={control}
+                    rules={{ required: true, min: 1 }}
+                    defaultValue={''}
+                    render={(props: ControllerRenderProps) => (
+                      <TextField
+                        {...props}
+                        onChange={props.onChange}
+                        value={props.value}
+                        label={t('bulkCodes:totalNumberOfCodes')}
+                        onInput={(e) => {
+                          e.target.value = e.target.value.replace(
+                            /[^0-9]/g,
+                            ''
+                          );
+                        }}
+                        error={errors.codeQuantity !== undefined}
+                      />
+                    )}
+                  />
+                  {errors.codeQuantity && (
+                    <span className={styles.formErrors}>
+                      {t('bulkCodes:quantityCodesRequired')}
+                    </span>
+                  )}
+                </div>
+              </InlineFormGroup>
+            )}
+            {bulkMethod === 'import' && (
+              <RecipientsUploadForm
+                onRecipientsUploaded={setLocalRecipients}
+                localRecipients={localRecipients}
+              />
+            )}
+            <BulkGiftTotal
+              amount={getBulkCodeTotalAmount()}
+              currency={planetCashAccount?.currency}
+              units={getBulkCodeTotalUnits()}
+              unit={project?.unit}
+            />
+            {/* TODOO translation and pluralization */}
+          </div>
+
+          <BulkCodesError />
+
+          <Button
+            variant="contained"
+            color="primary"
+            className="formButton"
+            disabled={
+              !(
+                user.planetCash &&
+                !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
+              ) ||
+              isProcessing ||
+              (localRecipients.length === 0 &&
+                (codeQuantity <= 0 || unitsPerCode <= 0))
+            }
+            onClick={
+              bulkMethod === BulkCodeMethods.GENERIC
+                ? handleSubmit(onSubmit)
+                : onSubmit
+            }
+          >
+            {isProcessing
+              ? t('bulkCodes:issuingCodes')
+              : t('bulkCodes:issueCodes')}
+          </Button>
+        </BulkCodesForm>
+      );
+    } else {
+      return (
+        <div className={styles.successMessage}>
+          Your donation was successful. Redirecting you to view donation details
+          shortly...
         </div>
-
-        <BulkCodesError />
-
-        <Button
-          variant="contained"
-          color="primary"
-          className="formButton"
-          disabled={
-            !(
-              user.planetCash &&
-              !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
-            ) ||
-            isProcessing ||
-            (localRecipients.length === 0 &&
-              (codeQuantity <= 0 || unitsPerCode <= 0))
-          }
-          onClick={
-            bulkMethod === BulkCodeMethods.GENERIC
-              ? handleSubmit(onSubmit)
-              : onSubmit
-          }
-        >
-          {isProcessing
-            ? t('bulkCodes:issuingCodes')
-            : t('bulkCodes:issueCodes')}
-        </Button>
-      </BulkCodesForm>
-    );
+      );
+    }
   }
 
   return null;
