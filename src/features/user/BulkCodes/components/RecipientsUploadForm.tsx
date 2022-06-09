@@ -217,8 +217,16 @@ const RecipientsUploadForm = ({
       />
       <p className={styles.uploadInstructions}>
         <Trans i18nKey="bulkCodes:importInstructions">
-          Please refer to the <a href="#">documentation here</a>, and download{' '}
-          <a href="/Bulk Code - Sample CSVs/Valid CSV.csv">template here</a>
+          Please refer to the{' '}
+          <a
+            target="_blank"
+            href="https://plantfortheplanet.notion.site/Bulk-Codes-Public-Documentation-edbcb42b80db415d87245ffc0aecd1e8"
+            rel="noreferrer"
+          >
+            documentation here
+          </a>
+          , and download{' '}
+          <a href="/assets/recipient-upload-sample.csv">template here</a>
         </Trans>
       </p>
       {recipients.length > 0 && (
