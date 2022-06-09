@@ -15,6 +15,7 @@ export interface SelectorOptionProps {
 
 const SelectorOptionContainer = styled('div')(({ theme }) => ({
   border: `1px solid ${theme.palette.text.primary}`,
+  transition: `all .3s ease-in-out`,
   borderRadius: 9,
   '& input[type="radio"]': {
     display: 'none',
@@ -30,6 +31,8 @@ const SelectorOptionContainer = styled('div')(({ theme }) => ({
   },
   '&.selected': {
     borderColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.light,
+    transform: `scale(1.005)`,
   },
   '& .optionTitle': {
     fontSize: theme.typography.h2.fontSize,
