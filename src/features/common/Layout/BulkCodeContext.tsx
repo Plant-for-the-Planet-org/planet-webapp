@@ -53,6 +53,7 @@ interface BulkGiftImportData {
     recipientEmail: string;
     message: string;
     notifyRecipient: boolean;
+    // occasion: string;
   }[];
 }
 

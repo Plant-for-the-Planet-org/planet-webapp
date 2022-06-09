@@ -15,13 +15,13 @@ import styles from '../BulkCodes.module.scss';
 
 const { Trans, useTranslation } = i18next;
 
-const acceptedHeaders = [
+const acceptedHeaders: (keyof Recipient)[] = [
   'recipient_name',
   'recipient_email',
   'recipient_notify',
   'units',
   'recipient_message',
-  'recipient_occasion',
+  /* 'recipient_occasion', */
 ];
 
 const MAX_RECIPIENTS = 1000;
@@ -38,8 +38,10 @@ const RecipientsUploadForm = ({
   const [status, setStatus] = useState<UploadStates>('empty');
   const [parseError, setParseError] = useState<FileImportError | null>(null);
   const [hasIgnoredColumns, setHasIgnoredColumns] = useState(false);
-  const [headers, setHeaders] = useState<string[]>([]);
-  const [recipients, setRecipients] = useState<Object[]>(localRecipients);
+  const [headers, setHeaders] = useState<(keyof Recipient)[]>([]);
+  const [recipients, setRecipients] = useState<Recipient[]>(
+    localRecipients as Recipient[]
+  );
   const { t, ready } = useTranslation(['bulkCodes']);
 
   const handleStatusChange = (newStatus: UploadStates) => {
@@ -148,7 +150,7 @@ const RecipientsUploadForm = ({
         recipient_email: recipient['recipient_email'],
         recipient_notify: recipient['recipient_notify'],
         recipient_message: recipient['recipient_message'],
-        recipient_occasion: recipient['recipient_occasion'],
+        /* recipient_occasion: recipient['recipient_occasion'], */
         units: recipient['units'],
       };
     });

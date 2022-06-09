@@ -20,7 +20,7 @@ Default.args = {
     'recipient_notify',
     'units',
     'recipient_message',
-    'recipient_occasion',
+    /*'recipient_occasion',*/
   ],
   recipients: [
     {
@@ -28,7 +28,7 @@ Default.args = {
       recipient_email: 'robert@example.com',
       recipient_notify: 'yes',
       recipient_message: 'Great work!',
-      recipient_occasion: '30 Goals',
+      /*recipient_occasion: '30 Goals',*/
       units: '10',
     },
     {
@@ -36,7 +36,7 @@ Default.args = {
       recipient_email: 'thomas@example.com',
       recipient_notify: 'yes',
       recipient_message: 'Awesomesauce',
-      recipient_occasion: '10 Goals',
+      /*recipient_occasion: '10 Goals',*/
       units: '20',
     },
     {
@@ -44,7 +44,7 @@ Default.args = {
       recipient_email: 'alphonso@example.com',
       recipient_notify: 'no',
       recipient_message: '',
-      recipient_occasion: '10 Assists',
+      /*recipient_occasion: '10 Assists',*/
       units: '21',
     },
     {
@@ -52,7 +52,7 @@ Default.args = {
       recipient_email: 'leroy@example.com',
       recipient_notify: 'yes',
       recipient_message: 'Fantastic!!',
-      recipient_occasion: '20 Assists',
+      /*recipient_occasion: '20 Assists',*/
       units: '5',
     },
   ],

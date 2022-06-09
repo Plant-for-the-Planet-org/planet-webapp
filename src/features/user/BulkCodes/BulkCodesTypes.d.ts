@@ -4,7 +4,7 @@ export interface Recipient {
   recipient_notify: string;
   units: string;
   recipient_message: string;
-  recipient_occasion: string;
+  // recipient_occasion: string;
 }
 
 interface OtherRecipientProperties {
