@@ -289,7 +289,12 @@ function ProjectInfo({ project }: Props): ReactElement {
                 ) : (
                   <></>
                 )}
-                {project?.metadata?.acquisitionYear ? 'Since ' : <></>}
+                {!project?.metadata?.siteOwnerName &&
+                project?.metadata?.acquisitionYear ? (
+                  'Since '
+                ) : (
+                  <></>
+                )}
                 {project?.metadata?.acquisitionYear}
               </div>
             ) : (
@@ -321,12 +326,27 @@ function ProjectInfo({ project }: Props): ReactElement {
                 })}
               </div>
             )}
-
-            <div className={styles.infoText}>
-              {project?.metadata?.siteOwnerName}
-              {project.metadata.acquisitionYear ? 'since ' : <></>}
-              {project?.metadata?.acquisitionYear}
-            </div>
+            {project?.metadata?.siteOwnerName ||
+            project?.metadata?.acquisitionYear ? (
+              <div className={styles.infoText}>
+                {project?.metadata?.siteOwnerName}{' '}
+                {project?.metadata?.siteOwnerName &&
+                project?.metadata?.acquisitionYear ? (
+                  'since '
+                ) : (
+                  <></>
+                )}
+                {!project?.metadata?.siteOwnerName &&
+                project?.metadata?.acquisitionYear ? (
+                  'Since '
+                ) : (
+                  <></>
+                )}
+                {project?.metadata?.acquisitionYear}
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         )}
       </div>
