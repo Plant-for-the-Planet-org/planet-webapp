@@ -24,6 +24,7 @@ type FileImportErrorCode =
   | 'unitsNotProvided'
   | 'notifyNotPossible'
   | 'invalidEmails'
+  | 'instructionRowError'
   | 'generalError';
 
 export interface FileImportError {

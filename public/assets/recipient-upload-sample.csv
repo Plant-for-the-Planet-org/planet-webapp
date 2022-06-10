@@ -1,5 +1,5 @@
 recipient_name,recipient_email,recipient_notify,recipient_message,units
-text - optional,email - optional,yes/no - optional,text - optional,number - mandatory
+text - optional,email - optional,yes/no - optional,text - optional,number - mandatory, REMOVE THIS ROW
 Robert Lewandowski,robert@example.com,yes,Great work!,10
 Thomas Müller,thomas@example.com,yes,Awesomesauce,20
 Alphonso Davies,alphonso@example.com,no,,21

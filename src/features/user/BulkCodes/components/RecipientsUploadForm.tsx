@@ -173,8 +173,6 @@ const RecipientsUploadForm = ({
               ? setHasIgnoredColumns(true)
               : setHasIgnoredColumns(false);
 
-            //Ignore first row which contains help instructions
-            const recipients = parsedData.slice(1);
             const validatedRecipients = validateRecipients(
               recipients as ExtendedRecipient[]
             );
@@ -195,10 +193,20 @@ const RecipientsUploadForm = ({
             });
           }
         } else {
-          setParseError({
-            type: 'generalError',
-            message: ready ? t('bulkCodes:errorUploadCSV.generalError') : '',
-          });
+          const error = results.errors[0];
+          if (error.row === 0 && error.code === 'TooManyFields') {
+            setParseError({
+              type: 'instructionRowError',
+              message: ready
+                ? t('bulkCodes:errorUploadCSV.instructionRowError')
+                : '',
+            });
+          } else {
+            setParseError({
+              type: 'generalError',
+              message: ready ? t('bulkCodes:errorUploadCSV.generalError') : '',
+            });
+          }
         }
       },
     });
