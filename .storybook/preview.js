@@ -2,7 +2,8 @@ import '../src/theme/global.scss';
 import './storybook.scss';
 import { ThemeProvider as MUIThemeProvider } from '@mui/material';
 import muiThemeNew from '../src/theme/muiThemeNew';
-import { ThemeProvider } from 'emotion-theming';
+import { ThemeProvider } from '@storybook/theming';
+// import { ThemeProvider } from 'emotion-theming';
 
 /*
  * Global decorator to apply the styles to all stories
