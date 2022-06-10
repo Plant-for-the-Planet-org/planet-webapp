@@ -30,6 +30,12 @@ const ProjectSelector = ({
   // const { t, ready } = useTranslation(['common', 'bulkCodes']);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
+  const defaultUnit = (project: Project | null) => {
+    if (project?.purpose === 'conservation') return 'm2';
+
+    return 'tree';
+  };
+
   const fetchPaymentOptions = async (guid: string) => {
     const paymentOptions = await getRequest<{
       currency: string;
@@ -72,7 +78,7 @@ const ProjectSelector = ({
       <UnitCostDisplay
         unitCost={project ? project.unitCost : '-'}
         currency={planetCashAccount ? planetCashAccount.currency : ''}
-        unit={project ? project.unit : '-'}
+        unit={project?.unit ? project.unit : defaultUnit(project)}
       />
     </>
   );

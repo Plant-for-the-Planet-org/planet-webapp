@@ -34,7 +34,7 @@ const UnitCostDisplay = ({
         ></TextField>
         <TextField
           label={t('bulkCodes:unitOfMeasurement')}
-          value={unit}
+          value={t(`bulkCodes:units.${unit}`)}
           inputProps={{ readOnly: true }}
           disabled
         ></TextField>
