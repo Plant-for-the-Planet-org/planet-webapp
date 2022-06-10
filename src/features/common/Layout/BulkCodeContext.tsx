@@ -143,7 +143,7 @@ export const BulkCodeProvider: FC = ({ children }) => {
           _scope: 'map',
           currency: planetCashAccount.currency,
           tenant: TENANT_ID,
-          'filter[purpose]': 'trees,conservation',
+          'filter[purpose]': 'trees',
           locale: i18n.language,
         });
 
