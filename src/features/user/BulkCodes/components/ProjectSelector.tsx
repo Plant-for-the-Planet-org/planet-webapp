@@ -41,7 +41,8 @@ const ProjectSelector = ({
       currency: string;
       unitCost: number;
       purpose: string;
-      // slug: string;
+      id: string;
+      name: string;
       unit: string;
     }>(`/app/paymentOptions/${guid}`, handleError, undefined, {
       country: planetCashAccount?.country || '',
