@@ -554,7 +554,7 @@ export default function DetailedAnalysis({
                     required: {
                       value: true,
                       message: t('manageProjects:validation', {
-                        fieldName: 'Area Protected',
+                        fieldName: t('manageProjects:areaProtected'),
                       }),
                     },
                     validate: (value) => parseInt(value, 10) > 0,
@@ -606,7 +606,7 @@ export default function DetailedAnalysis({
                           required: {
                             value: true,
                             message: t('manageProjects:validation', {
-                              fieldName: 'Date',
+                              fieldName: t('manageProjects:date'),
                             }),
                           },
                         })}
@@ -626,7 +626,7 @@ export default function DetailedAnalysis({
                     control={control}
                     rules={{
                       required: t('manageProjects:validation', {
-                        fieldName: 'Date',
+                        fieldName: t('manageProjects:date'),
                       }),
                     }}
                     // defaultValue=""
@@ -651,7 +651,7 @@ export default function DetailedAnalysis({
                   required: {
                     value: true,
                     message: t('manageProjects:validation', {
-                      fieldName: 'Employee Count',
+                      fieldName: t('manageProjects:employeeCount'),
                     }),
                   },
                   validate: (value) => parseInt(value, 10) > 0,
@@ -720,7 +720,7 @@ export default function DetailedAnalysis({
                   control={control}
                   rules={{
                     required: t('manageProjects:validation', {
-                      fieldName: 'acquisitionYear',
+                      fieldName: t('manageProjects:acquisitionYear'),
                     }),
                   }}
                   // defaultValue=""
