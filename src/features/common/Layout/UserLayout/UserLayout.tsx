@@ -142,9 +142,20 @@ function UserLayout(props: any): ReactElement {
     },
     {
       key: 7,
-      title: t('me:embedWidget'),
-      path: '/profile/widgets',
+      title: t('me:widgets'),
       icon: <WidgetIcon />,
+      subMenu: [
+        {
+          title: t('me:embedWidget'),
+          path: '/profile/widgets',
+          // hideItem: true,
+        },
+        {
+          title: t('me:donationLink'),
+          path: '/profile/donation-link',
+          // hideItem: true,
+        },
+      ],
     },
     {
       key: 8,
