@@ -10,6 +10,7 @@ interface DashboardViewProps {
 }
 
 const DashboardGridContainer = styled(Box)(({ theme }) => ({
+  fontSize: '1rem',
   backgroundColor: theme.palette.background.base,
   marginTop: 80,
   minHeight: '100vh',
