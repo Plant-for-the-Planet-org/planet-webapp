@@ -205,12 +205,15 @@ function ProjectInfo({ project }: Props): ReactElement {
                     return (
                       <React.Fragment key={plantingSeasons[season - 1].title}>
                         {plantingSeasons[season - 1].title}
-                        {index === project.metadata.activitySeasons.length - 2
-                          ? ' and '
-                          : index ===
-                            project.metadata.activitySeasons.length - 1
-                          ? '.'
-                          : ', '}
+                        {index ===
+                        project.metadata.activitySeasons.length - 2 ? (
+                          <> {t('manageProjects:and')} </>
+                        ) : index ===
+                          project.metadata.activitySeasons.length - 1 ? (
+                          '.'
+                        ) : (
+                          ', '
+                        )}
                       </React.Fragment>
                     );
                   }
@@ -231,12 +234,15 @@ function ProjectInfo({ project }: Props): ReactElement {
                     return (
                       <React.Fragment key={plantingSeasons[season - 1].title}>
                         {plantingSeasons[season - 1].title}
-                        {index === project.metadata.plantingSeasons.length - 2
-                          ? ' and '
-                          : index ===
-                            project.metadata.plantingSeasons.length - 1
-                          ? '.'
-                          : ', '}
+                        {index ===
+                        project.metadata.plantingSeasons.length - 2 ? (
+                          <> {t('manageProjects:and')} </>
+                        ) : index ===
+                          project.metadata.plantingSeasons.length - 1 ? (
+                          '.'
+                        ) : (
+                          ', '
+                        )}
                       </React.Fragment>
                     );
                   }
@@ -269,11 +275,13 @@ function ProjectInfo({ project }: Props): ReactElement {
                   return (
                     <React.Fragment key={ownerType}>
                       {t(`manageProjects:${ownerType}`)}
-                      {index === ownerTypes.length - 2
-                        ? ' and '
-                        : index === ownerTypes.length - 1
-                        ? '.'
-                        : ', '}
+                      {index === ownerTypes.length - 2 ? (
+                        <> {t('manageProjects:and')} </>
+                      ) : index === ownerTypes.length - 1 ? (
+                        '.'
+                      ) : (
+                        ', '
+                      )}
                     </React.Fragment>
                   );
                 })}
@@ -285,13 +293,13 @@ function ProjectInfo({ project }: Props): ReactElement {
                 {project?.metadata?.siteOwnerName}{' '}
                 {project?.metadata?.siteOwnerName &&
                 project?.metadata?.acquisitionYear ? (
-                  'since '
+                  <> {t('manageProjects:since')}</>
                 ) : (
                   <></>
                 )}
                 {!project?.metadata?.siteOwnerName &&
                 project?.metadata?.acquisitionYear ? (
-                  'Since '
+                  <> {t('manageProjects:Since')}</>
                 ) : (
                   <></>
                 )}
@@ -316,11 +324,13 @@ function ProjectInfo({ project }: Props): ReactElement {
                   return (
                     <React.Fragment key={ownerType}>
                       {t(`manageProjects:${ownerType}`)}
-                      {index === ownerTypes.length - 2
-                        ? ' and '
-                        : index === ownerTypes.length - 1
-                        ? '.'
-                        : ', '}
+                      {index === ownerTypes.length - 2 ? (
+                        <> {t('manageProjects:and')} </>
+                      ) : index === ownerTypes.length - 1 ? (
+                        '.'
+                      ) : (
+                        ', '
+                      )}
                     </React.Fragment>
                   );
                 })}
@@ -329,19 +339,19 @@ function ProjectInfo({ project }: Props): ReactElement {
             {project?.metadata?.siteOwnerName ||
             project?.metadata?.acquisitionYear ? (
               <div className={styles.infoText}>
-                {project?.metadata?.siteOwnerName}{' '}
+                {project?.metadata?.siteOwnerName}
                 {project?.metadata?.siteOwnerName &&
                 project?.metadata?.acquisitionYear ? (
-                  'since '
+                  <> {t('manageProjects:since')}</>
                 ) : (
                   <></>
                 )}
                 {!project?.metadata?.siteOwnerName &&
                 project?.metadata?.acquisitionYear ? (
-                  'Since '
+                  <> {t('manageProjects:Since')}</>
                 ) : (
                   <></>
-                )}
+                )}{' '}
                 {project?.metadata?.acquisitionYear}
               </div>
             ) : (
