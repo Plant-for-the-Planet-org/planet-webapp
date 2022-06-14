@@ -169,12 +169,12 @@ const RecipientsUploadForm = ({
             setHeaders(acceptedHeaders);
 
             // Check if any columns in uploaded csv were ignored
-            parsedHeaders.length > 6
+            parsedHeaders.length > 5 //To be updated when occasion is added
               ? setHasIgnoredColumns(true)
               : setHasIgnoredColumns(false);
 
             const validatedRecipients = validateRecipients(
-              recipients as ExtendedRecipient[]
+              parsedData as ExtendedRecipient[]
             );
 
             if (validatedRecipients) {
