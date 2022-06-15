@@ -123,6 +123,7 @@
   "urbanPlanting": "Städtische Bepflanzung",
   "otherPlanting": "Andere Pflanzung",
   "projectType": "Projekttyp",
+  "protectionSeasons": "Schutzzeiten",
   "polygonRequired": "Polygon ist erforderlich",
   "fileSizeLimit": "Datei ist größer als 10 MB",
   "fileImageOnly": "Dateityp muss Bild sein",
