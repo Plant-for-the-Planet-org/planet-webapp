@@ -72,5 +72,6 @@
   "successUploadCSV": {
     "ignoredColumns": "Extra columns in the CSV were ignored"
   },
-  "importInstructions": "Please refer to the <2>documentation here</2>, and download<4> </4><5>template here</5>"
+  "importInstructions": "Please refer to the <2>documentation here</2>, and download<4> </4><5>template here</5>",
+  "donationSuccess": "Your donation was successful. Redirecting you to view donation details shortly..."
 }

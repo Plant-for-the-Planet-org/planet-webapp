@@ -1,63 +1,4 @@
 @import '../../../theme/theme';
-// @import './themeCopy';
-
-/* .contentContainer {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-} */
-
-/* .formContainer {
-  // background-color: $backgroundColor;
-  flex: 1;
-  padding: 24px;
-  border-radius: 9px;
-  box-shadow: rgb(170 170 170 / 20%) 0px 1px 4px;
-  max-width: 640px;
-} */
-
-/* .form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: flex-start;
-} */
-
-/* .inputContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-} */
-
-/* .selectorOption {
-  border: 1px solid $primaryFontColor;
-  border-radius: 9px;
-  padding: 20px; */
-
-/* &.selected {
-    border: 1px solid $primaryColor;
-    // border: 1px solid #81ae3f;
-  } */
-
-/* .optionTitle {
-    font-size: $fontLarge;
-    // color: rgba(0, 0, 0, 0.6);
-  } */
-
-/* .optionDetails {
-    margin: 0 20px;
-  } */
-
-/* .optionLabel {
-    // color: rgba(0, 0, 0, 0.87);
-    display: flex;
-    flex-direction: column;
-    gap: 13px;
-  } */
-
-/* input[type='radio'] {
-    display: none;
-  } */
 
 .successMessage {
   display: flex;
@@ -109,4 +50,32 @@
   color: rgba(0, 0, 0, 0.87);
   font-weight: 700;
   text-decoration: underline;
+}
+
+.spinner {
+  border: 2px solid #689f38;
+  border-radius: 50%;
+  border-top: 2px solid transparent;
+  width: 16px !important;
+  height: 16px !important;
+  -webkit-animation: spin 1s linear infinite; /* Safari */
+  animation: spin 1s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

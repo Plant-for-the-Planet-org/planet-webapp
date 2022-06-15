@@ -350,8 +350,8 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
     } else {
       return (
         <div className={styles.successMessage}>
-          Your donation was successful. Redirecting you to view donation details
-          shortly...
+          {t('bulkCodes:donationSuccess')}
+          <span className={styles.spinner}></span>
         </div>
       );
     }
