@@ -34,8 +34,8 @@ const UploadWidget = ({
     onStatusChange('processing');
     const reader = new FileReader();
     reader.readAsText(acceptedFiles[0]);
-    reader.onabort = () => handleError('file reading was aborted');
-    reader.onerror = () => handleError('file reading has failed');
+    reader.onabort = () => handleUploadError('file reading was aborted');
+    reader.onerror = () => handleUploadError('file reading has failed');
     reader.onload = (event: ProgressEvent<FileReader>) => {
       const csv = event.target?.result;
       onFileUploaded(csv as string);
@@ -45,16 +45,16 @@ const UploadWidget = ({
 
   const onDropRejected = useCallback((fileRejections) => {
     const error = fileRejections[0].errors[0].code;
-    handleError(error);
+    handleUploadError(error);
   }, []);
 
   useEffect(() => {
     if (parseError) {
-      handleError('parseError', parseError);
+      handleUploadError('parseError', parseError);
     }
   }, [parseError]);
 
-  const handleError = (errorType: string, error?: FileImportError) => {
+  const handleUploadError = (errorType: string, error?: FileImportError) => {
     switch (errorType) {
       case ErrorCode.FileInvalidType:
         setError({
