@@ -20,10 +20,11 @@ function compareVersion(version: string, range: string) {
     return comparator[op] ? comparator[op](version, n) : (version == n || n !== n);
 }
 
-// check for safari version
+// check for safari version, but not if Android device
 function safari(range: string, userAgent: string) {
   const match = userAgent.match(/version\/(\d+).+?safari/);
-  return match !== null && compareVersion(match[1], range);
+  const matchAndroid = userAgent.match(/android/);
+  return match !== null && matchAndroid == null && compareVersion(match[1], range);
 }
 
 // check for samsung version
