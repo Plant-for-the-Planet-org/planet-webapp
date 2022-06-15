@@ -110,7 +110,7 @@ export default function CompleteSignup() {
     user,
     setUser,
     auth0User,
-    loginWithPopup,
+    loginWithRedirect,
     contextLoaded,
     logoutUser,
     token,

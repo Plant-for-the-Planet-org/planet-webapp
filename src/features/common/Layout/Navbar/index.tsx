@@ -57,7 +57,7 @@ export default function NavbarComponent(props: any) {
     setIsMobile(width < 768);
   }, [width]);
 
-  const { user, setUser, loginWithPopup, logoutUser, auth0Error } =
+  const { user, setUser, loginWithRedirect, logoutUser, auth0Error } =
     React.useContext(UserPropsContext);
 
   // This function controls the path for the user when they click on Me
@@ -69,7 +69,7 @@ export default function NavbarComponent(props: any) {
     } else {
       //----------------- To do - redirect to slug -----------------
       // Currently we cannot do that because we don't know the slug of the user
-      loginWithPopup({
+      loginWithRedirect({
         redirectUri: `${process.env.NEXTAUTH_URL}/login`,
         ui_locales: localStorage.getItem('language') || 'en',
       });

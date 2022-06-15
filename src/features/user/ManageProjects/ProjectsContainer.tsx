@@ -18,7 +18,7 @@ export default function ProjectsContainer({}: any) {
   const [projects, setProjects] = React.useState([]);
   const [loader, setLoader] = React.useState(true);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { user, contextLoaded, loginWithPopup, token } =
+  const { user, contextLoaded, loginWithRedirect, token } =
     React.useContext(UserPropsContext);
 
   async function loadProjects() {

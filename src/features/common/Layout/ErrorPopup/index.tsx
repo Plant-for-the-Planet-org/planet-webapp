@@ -10,7 +10,7 @@ export default function ErrorPopup(): ReactElement {
   const { error, setError } = React.useContext(ErrorHandlingContext);
 
   //   const sendUserToLogin = () => {
-  //     loginWithPopup({
+  //     loginWithRedirect({
   //       redirectUri: `${process.env.NEXTAUTH_URL}/login`,
   //       ui_locales: localStorage.getItem('language') || 'en',
   //     });

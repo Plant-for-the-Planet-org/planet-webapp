@@ -13,7 +13,7 @@ export default function AddProjectType(): ReactElement {
   const router = useRouter();
   const { t } = useTranslation(['donate', 'manageProjects']);
   const [isPurpose, setIsPurpose] = React.useState(false);
-  const { user, contextLoaded, token, loginWithPopup } =
+  const { user, contextLoaded, token, loginWithRedirect } =
     React.useContext(UserPropsContext);
   const [accessDenied, setAccessDenied] = React.useState(false);
   const [setupAccess, setSetupAccess] = React.useState(false);
@@ -43,7 +43,7 @@ export default function AddProjectType(): ReactElement {
           'redirectLink',
           '/profile/projects/add-project/restoration-project'
         );
-        loginWithPopup({
+        loginWithRedirect({
           redirectUri: `${process.env.NEXTAUTH_URL}/login`,
           ui_locales: localStorage.getItem('language') || 'en',
         });
