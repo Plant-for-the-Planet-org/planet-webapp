@@ -34,5 +34,5 @@ function samsung(range: string, userAgent: string) {
 
 export function browserNotCompatible() {
   const userAgent = (window.navigator.userAgent || '').toLowerCase();
-  return safari('<13', userAgent) || samsung('<9', userAgent) || !Object.values || !window.Intl || !window.crypto;
+  return safari('<3', userAgent) || samsung('<9', userAgent) || !Object.values || !window.Intl || !window.crypto;
 }
