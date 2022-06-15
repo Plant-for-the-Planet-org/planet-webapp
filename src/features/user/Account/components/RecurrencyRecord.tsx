@@ -119,7 +119,7 @@ export function RecordHeader({
             <p>{t('pausedUntilResumed')}</p>
           )
         ) : (
-          <p>
+          <span>
             {t('nextOn')}{' '}
             {formatDate(
               new Date(
@@ -127,10 +127,10 @@ export function RecordHeader({
               ).toISOString()
             )}{' '}
             •{' '}
-            <p style={{ textTransform: 'capitalize' }}>
+            <span style={{ textTransform: 'capitalize' }}>
               {t(record?.frequency)}
-            </p>
-          </p>
+            </span>
+          </span>
         )}
       </div>
       <div className={styles.right}>
