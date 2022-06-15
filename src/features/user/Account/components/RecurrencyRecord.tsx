@@ -211,7 +211,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
       )}
       {record?.destination?.type === 'planet-cash' ? (
         <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('project')}</p>
+          <p className={styles.title}>{t('planet-cash')}</p>
           <p>{t('planetCashPayment')}</p>
         </div>
       ) : (
