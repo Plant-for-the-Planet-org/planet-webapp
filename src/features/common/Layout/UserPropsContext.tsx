@@ -12,7 +12,7 @@ export const UserPropsContext = React.createContext({
   token: null,
   isLoading: true,
   isAuthenticated: false,
-  loginWithRedirect: ({}) => {},
+  loginWithPopup: ({}) => {},
   logoutUser: (value: string | undefined) => {},
   auth0User: {},
   auth0Error: {} || undefined,
@@ -22,7 +22,7 @@ function UserPropsProvider({ children }: any): ReactElement {
   const {
     isLoading,
     isAuthenticated,
-    loginWithRedirect,
+    loginWithPopup,
     getAccessTokenSilently,
     logout,
     user,
@@ -68,7 +68,7 @@ function UserPropsProvider({ children }: any): ReactElement {
           // in case of 401 - invalid token: signIn()
           setUser(false);
           setToken(null);
-          loginWithRedirect({
+          loginWithPopup({
             redirectUri: `${process.env.NEXTAUTH_URL}/login`,
             ui_locales: localStorage.getItem('language') || 'en',
           });
@@ -92,7 +92,7 @@ function UserPropsProvider({ children }: any): ReactElement {
         token,
         isLoading,
         isAuthenticated,
-        loginWithRedirect,
+        loginWithPopup,
         logoutUser,
         auth0User: user,
         auth0Error: error,

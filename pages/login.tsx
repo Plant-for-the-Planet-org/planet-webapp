@@ -11,7 +11,7 @@ function Login({}: Props): ReactElement {
   // if the user is authenticated check if we have slug, and if we do, send user to slug
   // else send user to login flow
 
-  const { user, contextLoaded, loginWithRedirect } = React.useContext(
+  const { user, contextLoaded, loginWithPopup } = React.useContext(
     UserPropsContext
   );
 
@@ -36,7 +36,7 @@ function Login({}: Props): ReactElement {
       } else if (user === null) {
         // wait for context to redirect to complete signup
       } else {
-        loginWithRedirect({
+        loginWithPopup({
           redirectUri: `${process.env.NEXTAUTH_URL}/login`,
           ui_locales: localStorage.getItem('language') || 'en',
         });

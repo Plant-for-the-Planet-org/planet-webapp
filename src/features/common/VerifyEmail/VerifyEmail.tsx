@@ -12,7 +12,7 @@ interface Props {}
 function VerifyEmailComponent({}: Props): ReactElement {
   const { t, ready } = useTranslation(['common']);
 
-  const { loginWithRedirect } = React.useContext(UserPropsContext);
+  const { loginWithPopup } = React.useContext(UserPropsContext);
   const { theme } = React.useContext(ThemeContext);
   return ready ? (
     <div className={styles.verifyEmailSection} 
@@ -36,7 +36,7 @@ function VerifyEmailComponent({}: Props): ReactElement {
       <button
         id={'verifyEmail'}
         onClick={() =>
-          loginWithRedirect({
+          loginWithPopup({
             redirectUri: `${process.env.NEXTAUTH_URL}/login`,
             ui_locales: localStorage.getItem('language') || 'en',
           })

@@ -12,12 +12,12 @@ export default function RedeemPopup() {
 
   const [showRedeemPopup, setShowRedeemPopup] = useState(false);
 
-  const { user, contextLoaded, loginWithRedirect } = React.useContext(
+  const { user, contextLoaded, loginWithPopup } = React.useContext(
     UserPropsContext
   );
 
   const sendUserToLogin = () => {
-    loginWithRedirect({
+    loginWithPopup({
       redirectUri: `${process.env.NEXTAUTH_URL}/login`,
       ui_locales: localStorage.getItem('language') || 'en',
     });

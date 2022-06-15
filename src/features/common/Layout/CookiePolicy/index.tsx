@@ -8,7 +8,7 @@ const { useTranslation } = i18next;
 export default function CookiePolicy() {
   const [showCookieNotice, setShowCookieNotice] = useState(false);
   const { t, ready } = useTranslation(['leaderboard']);
-  const { user, contextLoaded, loginWithRedirect } = React.useContext(
+  const { user, contextLoaded, loginWithPopup } = React.useContext(
     UserPropsContext
   );
 

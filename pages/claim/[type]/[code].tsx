@@ -30,7 +30,7 @@ function ClaimDonation({}: Props): ReactElement {
 
   const router = useRouter();
 
-  const { user, contextLoaded, loginWithRedirect, token } =
+  const { user, contextLoaded, loginWithPopup, token } =
     React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
@@ -137,7 +137,7 @@ function ClaimDonation({}: Props): ReactElement {
       // store the claim link in localstorage
       if (routerReady && typeof window !== 'undefined') {
         localStorage.setItem('redirectLink', window.location.href);
-        loginWithRedirect({
+        loginWithPopup({
           redirectUri: `${process.env.NEXTAUTH_URL}/login`,
           ui_locales: localStorage.getItem('language') || 'en',
         });

@@ -13,7 +13,7 @@ export const ErrorHandlingContext = React.createContext({
 function ErrorHandlingProvider({ children }: any): ReactElement {
   const [error, setError] = React.useState<{} | null>(null);
   const router = useRouter();
-  const { setUser, logoutUser, loginWithRedirect } = React.useContext(UserPropsContext);
+  const { setUser, logoutUser, loginWithPopup } = React.useContext(UserPropsContext);
 
   const handleError = (error: any) => {
     setError(error);
@@ -23,7 +23,7 @@ function ErrorHandlingProvider({ children }: any): ReactElement {
         if (error.code === 401) {
           setUser(false);
           logoutUser(`${process.env.NEXTAUTH_URL}/`);
-          loginWithRedirect({
+          loginWithPopup({
             redirectUri: `${process.env.NEXTAUTH_URL}/login`,
             ui_locales: localStorage.getItem('language') || 'en',
           });
