@@ -59,7 +59,6 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const unitsPerCode = watch('unitsPerCode', 0);
 
   const resetBulkContext = () => {
-    console.log('Resetting bulk context');
     setProject(null);
     setBulkMethod(null);
   };
