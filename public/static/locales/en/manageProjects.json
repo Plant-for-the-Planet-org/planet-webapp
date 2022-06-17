@@ -29,7 +29,7 @@
   "treeCostValidaitonRequired": "Please enter cost per tree",
   "treeCostValidationInvalid": "Please enter valid cost per tree",
   "treeCostValidation": "Cost per tree should be more than €0 or lesser than €100",
-  "conservationCostValidation": "Cost per m2 should be more than €0 or lesser than €100",
+  "conservationCostValidation": "Cost per m2 should be more than €0 or lesser than €100.",
   "projectLocation": "Project Location",
   "visitorAssistanceLabel": "I will provide lodging, site access and local transport if a reviewer is sent by Plant-for-the-Planet.",
   "publishProject": "Publish Project",

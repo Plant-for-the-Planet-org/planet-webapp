@@ -29,6 +29,7 @@
   "treeCostValidaitonRequired": "Bitte Kosten pro Baum eingeben",
   "treeCostValidationInvalid": "Bitte gültige Kosten pro Baum eingeben",
   "treeCostValidation": "Die Kosten pro Baum sollten zwischen 0 € und 100 € liegen",
+  "conservationCostValidation": "Die Kosten pro m2 sollten mehr als 0 € oder weniger als 100 € betragen.",
   "projectLocation": "Projektstandort",
   "visitorAssistanceLabel": "Ich sorge für Unterkunft, Zugang zum Standort und lokalen Transport, falls ein Gutachter von Plant-for-the-Planet geschickt wird.",
   "publishProject": "Projekt veröffentlichen",
