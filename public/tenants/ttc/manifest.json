@@ -4,7 +4,7 @@
     "start_url": "/?utm_source=pwa",
     "description": "Together let's plant a Trillion Trees!",
     "categories": ["education"],
-    "display": "standalone",
+    "display": "fullscreen",
     "background_color": "#fff",
     "theme_color": "#68b030",
     "lang": "en",

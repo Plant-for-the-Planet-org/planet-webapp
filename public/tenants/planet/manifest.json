@@ -4,7 +4,7 @@
     "start_url": "/?utm_source=pwa",
     "description": "Plant trees around the world - Plant-for-the-Planet",
     "categories": ["education"],
-    "display": "standalone",
+    "display": "fullscreen",
     "background_color": "#fff",
     "theme_color": "#68b030",
     "lang": "en",
