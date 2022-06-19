@@ -765,7 +765,12 @@ export default function BasicDetails({
                   <span className={styles.formErrors}>
                     {errors.unitCost.message
                       ? errors.unitCost.message
-                      : t('manageProjects:treeCostValidation')}
+                      : t(
+                          router.query.purpose === 'trees' ||
+                            projectDetails.purpose === 'trees'
+                            ? 'manageProjects:treeCostValidation'
+                            : 'manageProjects:conservationCostValidation'
+                        )}
                   </span>
                 )}
               </div>
