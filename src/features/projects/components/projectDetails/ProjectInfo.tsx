@@ -293,13 +293,13 @@ function ProjectInfo({ project }: Props): ReactElement {
                 {project?.metadata?.siteOwnerName}{' '}
                 {project?.metadata?.siteOwnerName &&
                 project?.metadata?.acquisitionYear ? (
-                  <> {t('manageProjects:since')}</>
+                  <> {t('manageProjects:since')} </>
                 ) : (
                   <></>
                 )}
                 {!project?.metadata?.siteOwnerName &&
                 project?.metadata?.acquisitionYear ? (
-                  <> {t('manageProjects:Since')}</>
+                  <> {t('manageProjects:Since')} </>
                 ) : (
                   <></>
                 )}
@@ -342,13 +342,13 @@ function ProjectInfo({ project }: Props): ReactElement {
                 {project?.metadata?.siteOwnerName}
                 {project?.metadata?.siteOwnerName &&
                 project?.metadata?.acquisitionYear ? (
-                  <> {t('manageProjects:since')}</>
+                  <> {t('manageProjects:since')} </>
                 ) : (
                   <></>
                 )}
                 {!project?.metadata?.siteOwnerName &&
                 project?.metadata?.acquisitionYear ? (
-                  <> {t('manageProjects:Since')}</>
+                  <> {t('manageProjects:Since')} </>
                 ) : (
                   <></>
                 )}{' '}
