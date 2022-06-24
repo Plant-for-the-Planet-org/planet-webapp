@@ -1,3 +1,12 @@
+export interface PaymentOptions {
+  currency: string;
+  unitCost: number;
+  purpose: string;
+  id: string;
+  name: string;
+  unit: string;
+}
+
 export interface Recipient {
   recipient_name: string;
   recipient_email: string;

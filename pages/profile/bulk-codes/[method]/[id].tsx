@@ -1,6 +1,7 @@
 import React, { ReactElement, useEffect, useCallback, useContext } from 'react';
 import UserLayout from '../../../../src/features/common/Layout/UserLayout/UserLayout';
 import BulkCodes from '../../../../src/features/user/BulkCodes';
+import { PaymentOptions } from '../../../../src/features/user/BulkCodes/BulkCodesTypes';
 import Head from 'next/head';
 import i18next from '../../../../i18n';
 import { BulkCodeMethods } from '../../../../src/utils/constants/bulkCodeMethods';
@@ -25,26 +26,24 @@ export default function BulkCodeIssueCodesPage({}: Props): ReactElement {
     if (planetCashAccount) {
       if (!project) {
         if (isReady) {
-          const projectDetails = await getRequest<{
-            currency: string;
-            unitCost: number;
-            purpose: string;
-            id: string;
-            name: string;
-            unit: string;
-          }>(`/app/paymentOptions/${query.id}`, handleError, '', {
-            currency: planetCashAccount.country,
-          });
+          const paymentOptions = await getRequest<PaymentOptions>(
+            `/app/paymentOptions/${query.id}`,
+            handleError,
+            '',
+            {
+              currency: planetCashAccount.country,
+            }
+          );
 
-          if (projectDetails) {
+          if (paymentOptions) {
             const _project = {
-              guid: projectDetails.id,
+              guid: paymentOptions.id,
               slug: '',
-              currency: projectDetails.currency,
-              unitCost: projectDetails.unitCost,
-              purpose: projectDetails.purpose,
-              name: projectDetails.name,
-              unit: projectDetails.unit,
+              currency: paymentOptions.currency,
+              unitCost: paymentOptions.unitCost,
+              purpose: paymentOptions.purpose,
+              name: paymentOptions.name,
+              unit: paymentOptions.unit,
               allowDonations: true,
             };
             setProject(_project);

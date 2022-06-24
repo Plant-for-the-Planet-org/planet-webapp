@@ -5,6 +5,7 @@ import {
   Project,
 } from '../../../common/Layout/BulkCodeContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { PaymentOptions } from '../BulkCodesTypes';
 // import i18next from '../../../../../i18n';
 
 import ProjectSelectAutocomplete from './ProjectSelectAutocomplete';
@@ -37,16 +38,14 @@ const ProjectSelector = ({
   };
 
   const fetchPaymentOptions = async (guid: string) => {
-    const paymentOptions = await getRequest<{
-      currency: string;
-      unitCost: number;
-      purpose: string;
-      id: string;
-      name: string;
-      unit: string;
-    }>(`/app/paymentOptions/${guid}`, handleError, undefined, {
-      country: planetCashAccount?.country || '',
-    });
+    const paymentOptions = await getRequest<PaymentOptions>(
+      `/app/paymentOptions/${guid}`,
+      handleError,
+      undefined,
+      {
+        country: planetCashAccount?.country || '',
+      }
+    );
     return paymentOptions;
   };
 
