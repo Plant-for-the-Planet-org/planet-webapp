@@ -105,7 +105,7 @@ declare namespace Payments {
     id: string;
     totalDonated: number;
     amount: number;
-    project: Project;
+    destination: Project;
     method: string;
     needsActivation: boolean;
     firstDonation: FirstDonation;

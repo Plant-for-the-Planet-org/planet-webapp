@@ -86,7 +86,7 @@ export function RecordHeader({
       }}
     >
       <div className={styles.left}>
-        <p className={styles.top}>{record?.project?.name}</p>
+        <p className={styles.top}>{record?.destination?.name}</p>
         {record?.endsAt ? (
           <p>
             {new Date(record?.endsAt) < new Date()
@@ -204,16 +204,16 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
           <p>{formatDate(record.firstDonation.created)}</p>
         </div>
       )}
-      {record?.project.name && (
+      {record?.destination.name && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('project')}</p>
-          {record.project.id ? (
-            <a href={`/${record.project.id}`}>{record.project.name}</a>
+          {record.destination.id ? (
+            <a href={`/${record.destination.id}`}>{record.destination.name}</a>
           ) : (
-            <p>{record.project.name}</p>
+            <p>{record.destination.name}</p>
           )}
           {/* <p style={{ color: themeProperties.primaryColor }}>
-            {record.project.name}
+            {record.destination.name}
           </p> */}
         </div>
       )}
