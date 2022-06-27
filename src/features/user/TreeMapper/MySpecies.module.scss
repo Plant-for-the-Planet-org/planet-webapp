@@ -23,6 +23,15 @@
   font-style: italic;
 }
 
+.formError {
+  font-family: $primaryFontFamily;
+  font-size: $fontXSmall;
+  color: $dangerColor;
+  margin-left: 6px;
+  margin-top: 6px;
+  max-width: 320px;
+}
+
 .deleteButton {
   cursor: pointer;
   position: absolute;

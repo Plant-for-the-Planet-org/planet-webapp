@@ -80,6 +80,7 @@ export default function BasicDetails({
     zoom: defaultZoom,
   });
   const router = useRouter();
+
   const useStylesAutoComplete = makeStyles({
     root: {
       color:
@@ -742,6 +743,7 @@ export default function BasicDetails({
                       parseNumber(i18n.language, value) <= 100,
                   })}
                   label={
+                    router.query.purpose === 'trees' ||
                     projectDetails.purpose === 'trees'
                       ? t('manageProjects:unitCost')
                       : t('manageProjects:unitCostConservation')
@@ -763,7 +765,12 @@ export default function BasicDetails({
                   <span className={styles.formErrors}>
                     {errors.unitCost.message
                       ? errors.unitCost.message
-                      : t('manageProjects:treeCostValidation')}
+                      : t(
+                          router.query.purpose === 'trees' ||
+                            projectDetails.purpose === 'trees'
+                            ? 'manageProjects:treeCostValidation'
+                            : 'manageProjects:conservationCostValidation'
+                        )}
                   </span>
                 )}
               </div>
@@ -1011,7 +1018,7 @@ export default function BasicDetails({
             ></input>
           </div> */}
 
-          <div className={styles.formField}>
+          <div className={(styles.formField, styles.basicDetailButton)}>
             <button
               id={'basicDetailsCont'}
               onClick={handleSubmit(onSubmit)}
@@ -1025,30 +1032,23 @@ export default function BasicDetails({
                 t('manageProjects:saveAndContinue')
               )}
             </button>
+            {skipButtonVisible ? (
+              <div className={(styles.formField, styles.skipBasicButton)}>
+                <button
+                  id={'skip'}
+                  className="primaryButton"
+                  onClick={nextStep}
+                  style={{
+                    width: '89px',
+                  }}
+                >
+                  {t('manageProjects:skip')}
+                </button>
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
-
-          {skipButtonVisible ? (
-            <div
-              className={styles.formField}
-              style={{
-                width: '89px',
-                padding: '15px, 30px, 15px, 30px',
-              }}
-            >
-              <button
-                id={'skip'}
-                className="primaryButton"
-                onClick={nextStep}
-                style={{
-                  width: '89px',
-                }}
-              >
-                {t('manageProjects:skip')}
-              </button>
-            </div>
-          ) : (
-            <></>
-          )}
         </div>
       </form>
     </div>

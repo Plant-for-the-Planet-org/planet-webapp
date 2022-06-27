@@ -89,30 +89,19 @@ export default function DetailedAnalysis({
   const [errorMessage, setErrorMessage] = React.useState('');
   const { theme } = React.useContext(ThemeContext);
   const [plantingSeasons, setPlantingSeasons] = React.useState([
-    { id: 0, title: ready ? t('common:january') : '', isSet: false },
-    { id: 1, title: ready ? t('common:february') : '', isSet: false },
-    { id: 2, title: ready ? t('common:march') : '', isSet: false },
-    { id: 3, title: ready ? t('common:april') : '', isSet: false },
-    { id: 4, title: ready ? t('common:may') : '', isSet: false },
-    { id: 5, title: ready ? t('common:june') : '', isSet: false },
-    { id: 6, title: ready ? t('common:july') : '', isSet: false },
-    { id: 7, title: ready ? t('common:august') : '', isSet: false },
-    { id: 8, title: ready ? t('common:september') : '', isSet: false },
-    { id: 9, title: ready ? t('common:october') : '', isSet: false },
-    { id: 10, title: ready ? t('common:november') : '', isSet: false },
-    { id: 11, title: ready ? t('common:december') : '', isSet: false },
+    { id: 1, title: ready ? t('common:january') : '', isSet: false },
+    { id: 2, title: ready ? t('common:february') : '', isSet: false },
+    { id: 3, title: ready ? t('common:march') : '', isSet: false },
+    { id: 4, title: ready ? t('common:april') : '', isSet: false },
+    { id: 5, title: ready ? t('common:may') : '', isSet: false },
+    { id: 6, title: ready ? t('common:june') : '', isSet: false },
+    { id: 7, title: ready ? t('common:july') : '', isSet: false },
+    { id: 8, title: ready ? t('common:august') : '', isSet: false },
+    { id: 9, title: ready ? t('common:september') : '', isSet: false },
+    { id: 10, title: ready ? t('common:october') : '', isSet: false },
+    { id: 11, title: ready ? t('common:november') : '', isSet: false },
+    { id: 12, title: ready ? t('common:december') : '', isSet: false },
   ]);
-
-  const enSpecies = [
-    {
-      id: 1,
-      label: 'animal 1',
-    },
-    {
-      id: 2,
-      label: 'animal 2',
-    },
-  ];
 
   const addHandler = () => {
     setAddSpecies(true);
@@ -142,21 +131,21 @@ export default function DetailedAnalysis({
   const classes = useStylesAutoComplete();
 
   const handleSetPlantingSeasons = (id: any) => {
-    const month = plantingSeasons[id];
-    const newMonth = month;
-    newMonth.isSet = !month.isSet;
-    const plantingSeasonsNew = plantingSeasons;
-    plantingSeasonsNew[id] = newMonth;
-    setPlantingSeasons([...plantingSeasonsNew]);
+    const month = plantingSeasons[id - 1];
+    const updatedMonth = month;
+    updatedMonth.isSet = !month.isSet;
+    const plantingSeasonsUpdated = plantingSeasons;
+    plantingSeasonsUpdated[id - 1] = updatedMonth;
+    setPlantingSeasons([...plantingSeasonsUpdated]);
   };
 
   const handleSetSiteOwner = (id: any) => {
     const owner = siteOwners[id - 1];
-    const newOwner = owner;
-    newOwner.isSet = !owner.isSet;
-    const newSiteOwners = siteOwners;
-    newSiteOwners[id - 1] = newOwner;
-    setSiteOwners([...newSiteOwners]);
+    const updatedOwner = owner;
+    updatedOwner.isSet = !owner.isSet;
+    const updatedSiteOwners = siteOwners;
+    updatedSiteOwners[id - 1] = updatedOwner;
+    setSiteOwners([...updatedSiteOwners]);
   };
   const router = useRouter();
 
@@ -296,103 +285,116 @@ export default function DetailedAnalysis({
       const detailedAnalysis =
         purpose === 'trees'
           ? {
-              acquisitionYear: projectDetails.metadata.acquisitionYear
+              acquisitionYear: projectDetails?.metadata?.acquisitionYear
                 ? new Date(
                     new Date().setFullYear(
-                      projectDetails.metadata.acquisitionYear
+                      projectDetails?.metadata?.acquisitionYear
                     )
                   )
                 : new Date(),
-              yearAbandoned: projectDetails.metadata.yearAbandoned
+              yearAbandoned: projectDetails?.metadata?.yearAbandoned
                 ? new Date(
                     new Date().setFullYear(
-                      projectDetails.metadata.yearAbandoned
+                      projectDetails?.metadata?.yearAbandoned
                     )
                   )
                 : new Date(),
-              plantingSeasons: projectDetails.metadata.plantingSeasons,
-              plantingDensity: projectDetails.metadata.plantingDensity,
-              employeesCount: projectDetails.metadata.employeesCount,
-              siteOwnerName: projectDetails.metadata.siteOwnerName,
-              degradationYear: projectDetails.metadata.degradationYear
+              plantingSeasons: projectDetails?.metadata?.plantingSeasons,
+              plantingDensity: projectDetails?.metadata?.plantingDensity,
+              employeesCount: projectDetails?.metadata?.employeesCount,
+              siteOwnerName: projectDetails?.metadata?.siteOwnerName,
+              degradationYear: projectDetails?.metadata?.degradationYear
                 ? new Date(
                     new Date().setFullYear(
-                      projectDetails.metadata.degradationYear
+                      projectDetails?.metadata?.degradationYear
                     )
                   )
                 : new Date(),
-              degradationCause: projectDetails.metadata.degradationCause,
+              degradationCause: projectDetails?.metadata?.degradationCause,
 
-              firstTreePlanted: projectDetails.metadata.firstTreePlanted
-                ? new Date(projectDetails.metadata.firstTreePlanted)
+              firstTreePlanted: projectDetails?.metadata?.firstTreePlanted
+                ? new Date(projectDetails?.metadata?.firstTreePlanted)
                 : new Date(),
-              mainChallenge: projectDetails.metadata.mainChallenge,
-              longTermPlan: projectDetails.metadata.longTermPlan,
-              motivation: projectDetails.metadata.motivation,
+              mainChallenge: projectDetails?.metadata?.mainChallenge,
+              longTermPlan: projectDetails?.metadata?.longTermPlan,
+              motivation: projectDetails?.metadata?.motivation,
             }
           : {
-              areaProtected: projectDetails.metadata.areaProtected,
-              activitySeasons: projectDetails.metadata.plantingSeasons,
-              startingProtectionYear: projectDetails.metadata
-                .startingProtectionYear
+              areaProtected: projectDetails?.metadata?.areaProtected,
+              activitySeasons: projectDetails?.metadata?.plantingSeasons,
+              startingProtectionYear: projectDetails?.metadata
+                ?.startingProtectionYear
                 ? new Date(
                     new Date().setFullYear(
-                      projectDetails.metadata.startingProtectionYear
+                      projectDetails?.metadata?.startingProtectionYear
                     )
                   )
                 : new Date(),
-              acquisitionYear: projectDetails.metadata.acquisitionYear
+              acquisitionYear: projectDetails?.metadata?.acquisitionYear
                 ? new Date(
                     new Date().setFullYear(
-                      projectDetails.metadata.acquisitionYear
+                      projectDetails.metadata?.acquisitionYear
                     )
                   )
                 : new Date(),
 
-              employeesCount: projectDetails.metadata.employeesCount,
-              mainChallenge: projectDetails.metadata.mainChallenge,
-              siteOwnerName: projectDetails.metadata.siteOwnerName,
-              landOwnershipType: projectDetails.metadata.landOwnershipType,
-              longTermPlan: projectDetails.metadata.longTermPlan,
-              siteOwnerName: projectDetails.metadata.siteOwnerName,
-              // ownershipType: projectDetails.metadata.ownershipType,
-              benefits: projectDetails.metadata.benefits,
-              actions: projectDetails.metadata.actions,
-              motivation: projectDetails.metadata.motivation,
+              employeesCount: projectDetails?.metadata?.employeesCount,
+              mainChallenge: projectDetails?.metadata?.mainChallenge,
+              siteOwnerName: projectDetails?.metadata?.siteOwnerName,
+              landOwnershipType: projectDetails?.metadata?.landOwnershipType,
+              longTermPlan: projectDetails?.metadata?.longTermPlan,
+              siteOwnerName: projectDetails?.metadata?.siteOwnerName,
+              // ownershipType: projectDetails?.metadata?.ownershipType,
+              benefits: projectDetails?.metadata?.benefits,
+              actions: projectDetails?.metadata?.actions,
+              motivation: projectDetails?.metadata?.motivation,
             };
 
       // set planting seasons
+
       if (purpose === 'trees') {
         if (
-          projectDetails.metadata.plantingSeasons &&
-          projectDetails.metadata.plantingSeasons.length > 0
+          projectDetails?.metadata?.plantingSeasons &&
+          projectDetails?.metadata?.plantingSeasons.length > 0
         ) {
+          const updatedPlantingSeasons = plantingSeasons;
           for (
             let i = 0;
-            i < projectDetails.metadata.plantingSeasons.length;
+            i < projectDetails.metadata?.plantingSeasons.length;
             i++
           ) {
-            if (projectDetails.metadata.plantingSeasons[i]) {
-              const j = projectDetails.metadata.plantingSeasons[i] - 1;
-              handleSetPlantingSeasons(j);
+            for (let j = 0; j < updatedPlantingSeasons.length; j++) {
+              if (
+                updatedPlantingSeasons[j].id ===
+                projectDetails?.metadata?.plantingSeasons[i]
+              ) {
+                updatedPlantingSeasons[j].isSet = true;
+              }
             }
           }
+          setPlantingSeasons(updatedPlantingSeasons);
         }
       } else {
         if (
-          projectDetails.metadata.activitySeasons &&
-          projectDetails.metadata.activitySeasons.length > 0
+          projectDetails?.metadata?.activitySeasons &&
+          projectDetails?.metadata?.activitySeasons.length > 0
         ) {
+          const updatedActivitySeasons = plantingSeasons;
           for (
             let i = 0;
-            i < projectDetails.metadata.activitySeasons.length;
+            i < projectDetails?.metadata?.activitySeasons.length;
             i++
           ) {
-            if (projectDetails.metadata.activitySeasons[i]) {
-              const j = projectDetails.metadata.activitySeasons[i] - 1;
-              handleSetPlantingSeasons(j);
+            for (let j = 0; j < updatedActivitySeasons.length; j++) {
+              if (
+                updatedActivitySeasons[j].id ===
+                projectDetails?.metadata?.activitySeasons[i]
+              ) {
+                updatedActivitySeasons[j].isSet = true;
+              }
             }
           }
+          setPlantingSeasons(updatedActivitySeasons);
         }
       }
 
@@ -400,19 +402,19 @@ export default function DetailedAnalysis({
 
       if (purpose === 'trees') {
         if (
-          projectDetails.metadata.siteOwnerType &&
-          projectDetails.metadata.siteOwnerType.length > 0
+          projectDetails?.metadata?.siteOwnerType &&
+          projectDetails?.metadata?.siteOwnerType.length > 0
         ) {
           const newSiteOwners = siteOwners;
           for (
             let i = 0;
-            i < projectDetails.metadata.siteOwnerType.length;
+            i < projectDetails?.metadata?.siteOwnerType.length;
             i++
           ) {
             for (let j = 0; j < newSiteOwners.length; j++) {
               if (
                 newSiteOwners[j].value ===
-                projectDetails.metadata.siteOwnerType[i]
+                projectDetails?.metadata?.siteOwnerType[i]
               ) {
                 newSiteOwners[j].isSet = true;
               }
@@ -422,19 +424,19 @@ export default function DetailedAnalysis({
         }
       } else {
         if (
-          projectDetails.metadata.landOwnershipType &&
-          projectDetails.metadata.landOwnershipType.length > 0
+          projectDetails?.metadata?.landOwnershipType &&
+          projectDetails?.metadata?.landOwnershipType.length > 0
         ) {
           const newSiteOwners = siteOwners;
           for (
             let i = 0;
-            i < projectDetails.metadata.landOwnershipType.length;
+            i < projectDetails?.metadata?.landOwnershipType.length;
             i++
           ) {
             for (let j = 0; j < newSiteOwners.length; j++) {
               if (
                 newSiteOwners[j].value ===
-                projectDetails.metadata.landOwnershipType[i]
+                projectDetails?.metadata?.landOwnershipType[i]
               ) {
                 newSiteOwners[j].isSet = true;
               }
@@ -455,10 +457,7 @@ export default function DetailedAnalysis({
           e.preventDefault();
         }}
       >
-        <div
-          className={`${isUploadingData ? styles.shallowOpacity : ''}`}
-          style={{ marginLeft: '80px' }}
-        >
+        <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
           {purpose === 'trees' ? (
             <div className={styles.formField}>
               <div
@@ -664,9 +663,10 @@ export default function DetailedAnalysis({
                   e.target.value = e.target.value.replace(/[^0-9]./g, '');
                 }}
               />
-              {errors.employeeCount && (
+
+              {errors.employeesCount && (
                 <span className={styles.formErrors}>
-                  {errors.employeeCount.message}
+                  {errors.employeesCount.message}
                 </span>
               )}
               <div
@@ -741,14 +741,16 @@ export default function DetailedAnalysis({
                 {' '}
                 {purpose === 'trees'
                   ? t('manageProjects:plantingSeasons')
-                  : t('manageProjects:timePeriod')}{' '}
+                  : t('manageProjects:protectionSeasons')}{' '}
               </p>
               {plantingSeasons.map((month) => {
                 return (
                   <div
                     className={styles.multiSelectInput}
                     key={month.id}
-                    onClick={() => handleSetPlantingSeasons(month.id)}
+                    onClick={() => {
+                      handleSetPlantingSeasons(month.id);
+                    }}
                   >
                     <div
                       className={`${styles.multiSelectInputCheck} ${

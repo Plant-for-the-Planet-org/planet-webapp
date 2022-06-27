@@ -19,7 +19,7 @@
   background-color: $backgroundBase;
   color: $primaryFontColor;
   @include xsPhoneView{
-    margin-left: -8px;
+    margin-left: -15px;
     margin-top: 5px;
     }
   @include smTabletView {
@@ -36,6 +36,32 @@
     }
   }
 
+  .reviewContent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0px;
+    margin-top: 0px;
+    @include xsPhoneView {
+      margin-left: -54px;
+    }
+    @include smTabletView {
+      margin-left: -18px;
+    }
+    @include mdTabletView {
+      margin-left: 10px;
+    }
+    @include lgLaptopView {
+      margin-top: -100px;
+    }
+   
+  }
+
+ .publishLabel {
+  margin-left: '100px'
+ }
+
 .formFieldRadio {
   width: 100%;
   display: flex;
@@ -51,6 +77,53 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.skipBasicButton {
+  width: 89px;
+  padding: 15px, 30px, 15px, 30px;
+  margin-left: 10px;
+  margin-top: 0px;
+  @include xsPhoneView {
+    margin-top: 10px;
+  }
+
+}
+
+.reviewButtons{
+  display:flex;
+  margin-top: 30px;
+  @include xsPhoneView {
+    flex-direction: column;
+  }
+  @include smTabletView {
+    flex-direction: column;
+  }
+  @include mdTabletView {
+    flex-direction: row;
+  }
+}
+
+.basicDetailButton {
+  display: flex;
+  @include xsPhoneView{
+    flex-direction: column;
+   }
+ 
+}
+
+.mediaButtons {
+  display:flex;
+  @include xsPhoneView{
+    flex-direction: column;
+  }
+  @include smTabletView {
+    flex-direction: column;
+  } 
+  @include mdTabletView{
+    flex-direction: row;
+  }
+}
+
 .formFieldHalf {
   margin-top: 24px;
   display: flex;

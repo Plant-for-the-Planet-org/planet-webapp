@@ -58,5 +58,7 @@
   "importCSV": "Import CSV",
   "fileFormatCSV": "File (csv)",
   "aliases": "Aliases",
+  "aliasesValidation": "Please enter aliases",
+  "speciesValidation": "Please enter a species",
   "external": "External"
 }

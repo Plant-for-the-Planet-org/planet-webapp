@@ -50,10 +50,7 @@ function SubmitForReview({
             className={styles.formFieldLarge}
             style={{ width: '320px', marginLeft: '138px' }}
           >
-            <div
-              className={`${styles.formFieldRadio}`}
-              style={{ marginLeft: '100px' }}
-            >
+            <div className={`${styles.formFieldRadio} ${styles.publishLabel} `}>
               <label
                 htmlFor={'publish'}
                 style={{ cursor: 'pointer' }}
@@ -115,21 +112,14 @@ function SubmitForReview({
     const [publish, setPublish] = React.useState(projectDetails.publish);
 
     return (
-      <div
-        className={styles.stepContainer}
-        style={{
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
+      <div className={(styles.stepContainer, styles.reviewContent)}>
         <div
           className={styles.formFieldLarge}
           style={{ width: '320px', marginRight: '70px' }}
         >
           <div
             className={`${styles.formFieldRadio}`}
-            style={{ marginLeft: '100px' }}
+            style={{ marginLeft: '100px', marginBottom: '38px' }}
           >
             <label
               htmlFor={'publish'}
@@ -149,7 +139,7 @@ function SubmitForReview({
         </div>
 
         <div>
-          <div className={styles.formFieldLarge}>
+          <div className={(styles.formFieldLarge, styles.reviewImage)}>
             <div style={{ height: '240px', width: '100%' }}>
               <NotReviewed />
             </div>
@@ -160,8 +150,8 @@ function SubmitForReview({
             </p>
           </div>
 
-          <div className={styles.formField}>
-            <div style={{ display: 'flex', marginTop: '30px' }}>
+          <div className={styles.formFields}>
+            <div className={styles.reviewButtons}>
               <button id={'backArrowSubmitR'} style={{ width: '234px' }}>
                 <button onClick={handleBack} className="secondaryButton">
                   <BackArrow />
@@ -170,9 +160,8 @@ function SubmitForReview({
               </button>
               <button
                 onClick={() => submitForReview()}
-                className="primaryButton"
+                className="primaryButton notSubmitReview"
                 data-test-id="submitReview"
-                style={{ width: '180px', marginLeft: '10px' }}
               >
                 {isUploadingData ? (
                   <div className={styles.spinner}></div>
@@ -182,8 +171,7 @@ function SubmitForReview({
               </button>
 
               <button
-                className="primaryButton"
-                style={{ width: '150px', marginLeft: '15px' }}
+                className="primaryButton notSubmitExit"
                 onClick={() => router.push('/profile/projects')}
               >
                 <p>{t('manageProjects:exit')}</p>

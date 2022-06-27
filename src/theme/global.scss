@@ -350,6 +350,7 @@ button {
   }
   .profilePage {
     padding-top: 80px !important;
+    margin-left: -35px
   }
 }
 
@@ -572,6 +573,31 @@ input:-webkit-autofill {
     margin-top: 0px;
   }
  }
+
+.notSubmitReview {
+  width: 180px;
+  margin-left: 10px;
+  margin-top: 20px;
+  @include mdTabletView {
+    margin-top: 12px;
+  }
+  @include lgLaptopView {
+    margin-top: 7px;
+  }
+}
+
+.notSubmitExit {
+  width: 150px;
+  margin-left: 15px;
+  margin-top: 20px;
+  @include mdTabletView {
+    margin-top: 12px;
+  }
+  @include lgLaptopView {
+    margin-top: 7px;
+  }
+}
+
 .add-projects-button {
   background-color: $backgroundColor;
   border: 1px solid #f3f3f3;
@@ -617,6 +643,27 @@ input:-webkit-autofill {
   @include xlDesktopView {
     margin-left: 45px;
     
+  }
+}
+
+.project-selection {
+  display: flex;
+  margin-left: 0px;
+  top : 0px;
+  @include xsPhoneView {
+   top: 491px;
+  }
+  @include smTabletView {
+   top: 505px;
+  }
+  @include mdTabletView {
+    flex-direction: column;
+    margin-left: 265px;
+    top: 160px;
+  }
+  @include lgLaptopView {
+    margin-left: 70px;
+    flex-direction: row;
   }
 }
 
