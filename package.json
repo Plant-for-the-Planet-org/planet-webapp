@@ -11,6 +11,7 @@
     "analyze": "ANALYZE=true npm run build",
     "export": "next export",
     "start": "next start -p $PORT",
+    "heroku-prebuild": "npm install --legacy-peer-deps --force",
     "heroku-postbuild": "npm run build",
     "find:unused": "next-unused",
     "lint": "eslint i18n pages src",
