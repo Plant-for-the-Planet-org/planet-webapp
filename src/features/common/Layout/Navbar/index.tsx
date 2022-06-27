@@ -272,7 +272,7 @@ export default function NavbarComponent(props: any) {
   
   
   return (
-    router.query.map?
+    router.query.map==='true'?
     <></>:
     (<div className={'mainNavContainer'}>
       <div className={'top_nav'}>

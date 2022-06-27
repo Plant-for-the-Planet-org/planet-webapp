@@ -133,7 +133,7 @@ function SingleProjectDetails({}: Props): ReactElement {
         </Modal>
         
         <div className={'projectContainer'}>
-        {router.query.map?<></>:(
+        {router.query.map==='true'?<></>:(
         <button
             id={'backButtonSingleP'}
             style={{
