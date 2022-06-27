@@ -131,8 +131,10 @@ function SingleProjectDetails({}: Props): ReactElement {
             />
           </div>
         </Modal>
+        
         <div className={'projectContainer'}>
-          <button
+        {router.query.map?<></>:(
+        <button
             id={'backButtonSingleP'}
             style={{
               cursor: 'pointer',
@@ -143,7 +145,7 @@ function SingleProjectDetails({}: Props): ReactElement {
             onClick={goBack}
           >
             <BackButton />
-          </button>
+          </button>)}
           <div className={'projectSnippetContainer'}>
             <ProjectSnippet
               keyString={project.id}

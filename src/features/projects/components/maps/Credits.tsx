@@ -4,7 +4,8 @@ import i18next from '../../../../../i18n';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
 import tenantConfig from '../../../../../tenant.config';
 import DarkModeSwitch from '../../../common/Layout/DarkModeSwitch.tsx';
-
+import router from 'next/router';
+import { useRouter } from 'next/router';
 
 const config = tenantConfig();
 
@@ -26,9 +27,10 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
     const handleLanguageModalOpen = () => {
         setLanguageModalOpen(true);
     };
-
+    const router = useRouter();
     return (
-        <>
+         router.query.map==='true'?<></>:(
+            <>
             <div className={styles.lngSwitcher + ' mapboxgl-map'}>
                 {config.darkModeEnabled && <DarkModeSwitch />}
                 <div
@@ -128,6 +130,6 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                 setSelectedCountry={setSelectedCountry}
                 setCurrencyCode={setCurrencyCode}
             />
-        </>
+        </>)
     )
 }

@@ -160,8 +160,10 @@ export default function ProjectsMap(): ReactElement {
     }
   }, [zoomLevel]);
 
+
   return (
-    <div className={styles.mapContainer}>
+
+    <div className={router.query.map?styles.onlymapContainer:styles.mapContainer}>
       <MapGL
         ref={mapRef}
         {...mapState}

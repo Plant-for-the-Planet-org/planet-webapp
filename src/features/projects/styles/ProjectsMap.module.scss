@@ -7,10 +7,17 @@
   left: 0px;
   right: 0px;
   background-color: rgba(70, 168, 221, 0.15);
-  // padding-bottom: 60px;
+  
 }
-
-.mapContainer > div:first-child {
+.onlymapContainer{
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background-color: rgba(70, 168, 221, 0.15);
+}
+.mapContainer > div:first-child,.onlymapContainer > div:first-child {
   height: 100% !important;
   width: 100% !important;
 }
