@@ -30,6 +30,7 @@ import ErrorHandlingProvider from '../src/features/common/Layout/ErrorHandlingCo
 import dynamic from 'next/dynamic';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
+import TenantContextProvider from '../src/features/common/Layout/TenantContext';
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -175,6 +176,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   }, [localShowVideo]);
 
   const { project, projects } = React.useContext(ProjectPropsContext);
+  console.log(router);
 
   if (browserCompatible) {
     return <BrowserNotSupported />;
@@ -216,33 +218,35 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
             >
               <ThemeProvider>
                 <MuiThemeProvider theme={materialTheme}>
-                <CssBaseline />
-                  <UserPropsProvider>
-                    <Layout>
-                      <ProjectPropsProvider>
-                        {isMap ? (
-                          <>
-                            {project ? (
-                              <MapLayout />
-                            ) : projects ? (
-                              <MapLayout />
-                            ) : null}
-                            <div
-                              style={
-                                config.tenantName === 'planet' ||
-                                config.tenantName === 'ttc'
-                                  ? {}
-                                  : { display: 'none' }
-                              }
-                            >
-                              <PlayButton setshowVideo={setshowVideo} />
-                            </div>
-                          </>
-                        ) : null}
-                        <Component {...ProjectProps} />
-                      </ProjectPropsProvider>
-                    </Layout>
-                  </UserPropsProvider>
+                  <CssBaseline />
+                  <TenantContextProvider>
+                    <UserPropsProvider>
+                      <Layout>
+                        <ProjectPropsProvider>
+                          {isMap ? (
+                            <>
+                              {project ? (
+                                <MapLayout />
+                              ) : projects ? (
+                                <MapLayout />
+                              ) : null}
+                              <div
+                                style={
+                                  config.tenantName === 'planet' ||
+                                  config.tenantName === 'ttc'
+                                    ? {}
+                                    : { display: 'none' }
+                                }
+                              >
+                                <PlayButton setshowVideo={setshowVideo} />
+                              </div>
+                            </>
+                          ) : null}
+                          <Component {...ProjectProps} />
+                        </ProjectPropsProvider>
+                      </Layout>
+                    </UserPropsProvider>
+                  </TenantContextProvider>
                 </MuiThemeProvider>
               </ThemeProvider>
             </Auth0Provider>
