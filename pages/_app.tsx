@@ -176,7 +176,6 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   }, [localShowVideo]);
 
   const { project, projects } = React.useContext(ProjectPropsContext);
-  console.log(router);
 
   if (browserCompatible) {
     return <BrowserNotSupported />;

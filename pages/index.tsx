@@ -42,7 +42,6 @@ export default function Donate({
   const { handleError } = React.useContext(ErrorHandlingContext);
   const { i18n } = useTranslation();
   const router = useRouter();
-  console.log(router);
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
   const [directGift, setDirectGift] = React.useState(null);
   const [showdirectGift, setShowDirectGift] = React.useState(true);
