@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { ReactElement, useContext } from 'react';
 
 import { styled } from '@mui/material';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
@@ -19,7 +19,7 @@ const ErrorMessage = styled('span')(({ theme }) => ({
   color: theme.palette.error.main,
 }));
 
-const BulkCodesError = () => {
+const BulkCodesError = (): ReactElement | null => {
   const { t } = useTranslation(['bulkCodes']);
   const { user } = useContext(UserPropsContext);
 

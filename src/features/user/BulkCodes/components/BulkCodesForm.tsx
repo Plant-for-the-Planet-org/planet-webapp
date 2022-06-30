@@ -1,6 +1,6 @@
 import { styled } from '@mui/material';
 
-const BulkCodesForm = styled('form')((/* { theme } */) => ({
+const BulkCodesForm = styled('form')(() => ({
   display: 'flex',
   flexDirection: 'column',
   gap: 24,
