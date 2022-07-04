@@ -91,7 +91,7 @@ export default function History({
             })}
         </div>
         <iframe
-          src={`https://www5.plant-for-the-planet.org/membership-cta/${adSpaceLanguage}/`}
+          src={`https://www5.plant-for-the-planet.org/membership-cta/${adSpaceLanguage}?locale=${i18n.language}`}
           className={styles.topAdSpace}
         />
         <div className={styles.section}>
@@ -163,7 +163,7 @@ export default function History({
               </div>
             </div>
             <iframe
-              src={`https://www5.plant-for-the-planet.org/membership-cta/${adSpaceLanguage}/`}
+              src={`https://www5.plant-for-the-planet.org/membership-cta/${adSpaceLanguage}?locale=${i18n.language}`}
               className={styles.rightAdSpace}
             />
           </div>

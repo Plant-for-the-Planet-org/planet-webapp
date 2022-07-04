@@ -12,7 +12,7 @@ import { TENANT_ID } from '../../src/utils/constants/environment';
 const { useTranslation } = i18next;
 
 function ProfilePage(): ReactElement {
-  const { t } = useTranslation('me');
+  const { t, i18n } = useTranslation('me');
   // External imports
   const router = useRouter();
   const { user, contextLoaded } = React.useContext(UserPropsContext);
@@ -45,8 +45,7 @@ function ProfilePage(): ReactElement {
       {user?.isPrivate === false ? (
         <div className="profilePage" style={{ padding: '0px' }}>
           <iframe
-            src={`${process.env.WIDGET_URL}?user=${user.id
-              }&tenantkey=${TENANT_ID}`}
+            src={`${process.env.WIDGET_URL}?user=${user.id}&tenantkey=${TENANT_ID}&locale=${i18n.language}`}
             className={styles.widgetIFrame}
           />
         </div>
