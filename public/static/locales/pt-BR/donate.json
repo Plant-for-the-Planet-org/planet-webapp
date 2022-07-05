@@ -111,5 +111,6 @@
   "projectType": "Tipo de projeto",
   "conservation": "Conservação",
   "restoration": "Restauração",
-  "filters": "Filtros"
+  "filters": "Filtros",
+  "perM2": "por m²"
 }
