@@ -184,6 +184,7 @@
   "motivationInfo": "Die Motivation für den Schutz dieses speziellen Ökosystems.",
   "hectar": "hektar",
   "validation": "{{fieldName}} ist ungültig",
+  "date": "Datum",
   "plantingDensityValidation": "Bitte gibt die Dichte der Pflanzung ein",
   "onlyEnglish": "Bitte erstelle/bearbeite Projekte nur auf Englisch. Übersetzungen von Projekten werden automatisch von Plant-for-the-Planet verwaltet.",
   "since": "seit",
