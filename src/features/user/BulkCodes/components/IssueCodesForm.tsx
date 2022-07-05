@@ -122,37 +122,24 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
       }
 
       const cleanedData = cleanObject(donationData);
-      try {
-        const res = await axios.post(
-          process.env.API_ENDPOINT + '/app/donations',
-          cleanedData,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              'tenant-key': `${TENANT_ID}`,
-              'X-SESSION-ID': await getsessionId(),
-              Authorization: `Bearer ${token}`,
-              'x-locale': `${
-                localStorage.getItem('language')
-                  ? localStorage.getItem('language')
-                  : 'en'
-              }`,
-              'IDEMPOTENCY-KEY': uuidv4(),
-            },
-          }
-        );
-        if (res.status === 200) {
-          resetBulkContext();
-          setIsSubmitted(true);
-          setTimeout(() => {
-            router.push(`/profile/history?ref=${res.data.uid}`);
-          }, 5000);
+      const res = await postAuthenticatedRequest(
+        `/app/donations`,
+        cleanedData,
+        token,
+        handleError,
+        {
+          'IDEMPOTENCY-KEY': uuidv4(),
         }
-      } catch (err) {
+      );
+      if (!res.code) {
+        resetBulkContext();
+        setIsSubmitted(true);
+        setTimeout(() => {
+          router.push(`/profile/history?ref=${res.uid}`);
+        }, 5000);
+      } else {
         setIsProcessing(false);
-        console.error(err);
-        // apiResponseError(err, handleError);
-        handleError(err);
+        handleError(Error(res.errors.errors[0]));
       }
     } else {
       setIsProcessing(false);
