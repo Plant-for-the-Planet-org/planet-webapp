@@ -63,133 +63,100 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
     setBulkMethod(null);
   };
 
+  const getTotalUnits = (localRecipients: Recipient[]) => {
+    let totalUnits = 0;
+    for (const recipient of localRecipients) {
+      totalUnits = totalUnits + parseInt(recipient.units);
+    }
+    return totalUnits;
+  };
+
+  const getProcessedRecipients = (localRecipients: Recipient[]) => {
+    const recipients = [];
+    localRecipients.forEach((recipient) => {
+      const temp = {
+        recipientName: recipient.recipient_name,
+        recipientEmail: recipient.recipient_email,
+        message: recipient.recipient_message,
+        notifyRecipient: recipient.recipient_notify === 'yes',
+        units: parseInt(recipient.units),
+        // occasion: recipient.recipient_occasion,
+      };
+      recipients.push(temp);
+    });
+    return recipients;
+  };
+
   const onSubmit = async (data) => {
     const token = await getAccessTokenSilently();
     setIsProcessing(true);
-    if (bulkMethod === BulkCodeMethods.GENERIC) {
-      if (project) {
-        const donationData = {
-          purpose: project.purpose,
-          project: project.guid,
-          prePaid: true,
-          comment,
-          quantity: data.codeQuantity * data.unitsPerCode,
-          gift: {
+    if (project) {
+      let donationData = {
+        purpose: project.purpose,
+        project: project.guid,
+        prePaid: true,
+        comment,
+        treeCount: 0,
+        gift: {},
+      };
+      switch (bulkMethod) {
+        case BulkCodeMethods.GENERIC:
+          donationData.treeCount = data.codeQuantity * data.unitsPerCode;
+          donationData.gift = {
             type: 'code-bulk',
             occasion,
             numberOfCodes: data.codeQuantity,
             unitsPerCode: data.unitsPerCode,
-          },
-        };
-        const cleanedData = cleanObject(donationData);
-
-        try {
-          const res = await axios.post(
-            process.env.API_ENDPOINT + '/app/donations',
-            cleanedData,
-            {
-              headers: {
-                'Content-Type': 'application/json',
-                'tenant-key': `${TENANT_ID}`,
-                'X-SESSION-ID': await getsessionId(),
-                Authorization: `Bearer ${token}`,
-                'x-locale': `${
-                  localStorage.getItem('language')
-                    ? localStorage.getItem('language')
-                    : 'en'
-                }`,
-                'IDEMPOTENCY-KEY': uuidv4(),
-              },
-            }
-          );
-          if (res.status === 200) {
-            resetBulkContext();
-            setIsSubmitted(true);
-            setTimeout(() => {
-              router.push(`/profile/history?ref=${res.data.uid}`);
-            }, 5000);
-          }
-        } catch (err) {
-          setIsProcessing(false);
-          console.error(err);
-          apiResponseError(err, handleError);
-        }
-      } else {
-        setIsProcessing(false);
-        handleError(Error('Project not selected'));
-      }
-    } else {
-      if (project) {
-        // TODO : Add comment and occasion
-
-        let totalUnits = 0;
-        const recipients = [];
-
-        for (const recipient of localRecipients) {
-          totalUnits = totalUnits + parseInt(recipient.units);
-        }
-
-        localRecipients.forEach((recipient) => {
-          const temp = {
-            recipientName: recipient.recipient_name,
-            recipientEmail: recipient.recipient_email,
-            message: recipient.recipient_message,
-            notifyRecipient: recipient.recipient_notify === 'yes',
-            units: parseInt(recipient.units),
-            // occasion: recipient.recipient_occasion,
           };
-          recipients.push(temp);
-        });
-
-        const donationData = {
-          purpose: project.purpose,
-          project: project.guid,
-          prePaid: true,
-          treeCount: totalUnits,
-          comment,
-          gift: {
+          break;
+        case BulkCodeMethods.IMPORT:
+          donationData.treeCount = getTotalUnits(localRecipients);
+          donationData.gift = {
             type: 'discrete-bulk',
             occasion,
-            recipients,
-          },
-        };
-
-        const cleanedDonationData = cleanObject(donationData);
-        try {
-          const res = await axios.post(
-            process.env.API_ENDPOINT + '/app/donations',
-            cleanedDonationData,
-            {
-              headers: {
-                'Content-Type': 'application/json',
-                'tenant-key': `${TENANT_ID}`,
-                'X-SESSION-ID': await getsessionId(),
-                Authorization: `Bearer ${token}`,
-                'x-locale': `${
-                  localStorage.getItem('language')
-                    ? localStorage.getItem('language')
-                    : 'en'
-                }`,
-                'IDEMPOTENCY-KEY': uuidv4(),
-              },
-            }
-          );
-          if (res.status === 200) {
-            resetBulkContext();
-            setIsSubmitted(true);
-            setTimeout(() => {
-              router.push(`/profile/history?ref=${res.data.uid}`);
-            }, 5000);
-          }
-        } catch (err) {
-          setIsProcessing(false);
-          console.error(err);
-          handleError(err);
-        }
-      } else {
-        setIsProcessing(false);
-        handleError(Error('Project not selected'));
+            recipients: getProcessedRecipients(localRecipients),
+          };
+          break;
+        default:
+          break;
       }
+
+      const cleanedData = cleanObject(donationData);
+      try {
+        const res = await axios.post(
+          process.env.API_ENDPOINT + '/app/donations',
+          cleanedData,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'tenant-key': `${TENANT_ID}`,
+              'X-SESSION-ID': await getsessionId(),
+              Authorization: `Bearer ${token}`,
+              'x-locale': `${
+                localStorage.getItem('language')
+                  ? localStorage.getItem('language')
+                  : 'en'
+              }`,
+              'IDEMPOTENCY-KEY': uuidv4(),
+            },
+          }
+        );
+        if (res.status === 200) {
+          resetBulkContext();
+          setIsSubmitted(true);
+          setTimeout(() => {
+            router.push(`/profile/history?ref=${res.data.uid}`);
+          }, 5000);
+        }
+      } catch (err) {
+        setIsProcessing(false);
+        console.error(err);
+        // apiResponseError(err, handleError);
+        handleError(err);
+      }
+    } else {
+      setIsProcessing(false);
+      handleError(Error('Project not selected'));
     }
   };
 
