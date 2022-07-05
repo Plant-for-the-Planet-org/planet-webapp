@@ -78,5 +78,18 @@
   "logout": "Sair",
   "featured": "Em destaque",
   "treeMapper": "TreeMapper",
-  "underMaintenance": "Em Manutenção"
+  "overview": "Visão geral",
+  "childrenAndYouth": "Crianças e Jovens",
+  "trillionTrees": "Trilhão de Árvores",
+  "yucatan": "Restauração de Yucatán",
+  "partners": "Parceiros",
+  "changeChocolate": "O Chocolate da Mudança",
+  "stopTalkingStartPlanting": "Pare de falar. Comece a plantar.",
+  "underMaintenance": "Em Manutenção",
+  "notFound": "A página solicitada não foi encontrada.",
+  "unauthorized": "Alguma coisa correu mal. Por favor, tente sair e volte a entrar novamente.",
+  "forbidden": "Não está autorizado a ver esta página!",
+  "internalServerError": "Erro do Servidor Interno - Por favor tente novamente mais tarde!",
+  "validationFailed": "Validação falhou!",
+  "add": "Adicionar"
 }
