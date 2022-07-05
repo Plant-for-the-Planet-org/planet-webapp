@@ -663,9 +663,9 @@ export default function DetailedAnalysis({
                   e.target.value = e.target.value.replace(/[^0-9]./g, '');
                 }}
               />
-              {errors.employeeCount && (
+              {errors.employeesCount && (
                 <span className={styles.formErrors}>
-                  {errors.employeeCount.message}
+                  {errors.employeesCount.message}
                 </span>
               )}
               <div
