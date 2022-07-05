@@ -3,7 +3,6 @@ import treeCounterStyles from './TreeCounter.module.scss';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 
 export default function TpoProfile(props: any) {
-  console.log(parseInt('5'))
   return (
     <div className={`${treeCounterStyles.treeCounter} ${props.planted > 0 ? treeCounterStyles.treeCounterReady : ''}`}>
       <div className={treeCounterStyles.treeCounterDataField}>
