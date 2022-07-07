@@ -3,9 +3,9 @@ import i18next from '../../../../i18n';
 
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from './TabbedView';
-import CreationMethodForm from './components/CreationMethodForm';
-import SelectProjectForm from './components/SelectProjectForm';
-import IssueCodesForm from './components/IssueCodesForm';
+import CreationMethodForm from './forms/CreationMethodForm';
+import SelectProjectForm from './forms/SelectProjectForm';
+import IssueCodesForm from './forms/IssueCodesForm';
 
 interface BulkCodesProps {
   step: 0 | 1 | 2;
@@ -25,7 +25,7 @@ export default function BulkCodes({
       case 1:
         return <SelectProjectForm />;
       case 2:
-        return <IssueCodesForm/>;
+        return <IssueCodesForm />;
       default:
         return <CreationMethodForm />;
     }

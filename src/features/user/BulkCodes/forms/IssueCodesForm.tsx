@@ -1,17 +1,18 @@
 import React, { FormEvent, ReactElement, useContext, useState } from 'react';
 import i18next from '../../../../../i18n';
 import { Button, TextField } from '@mui/material';
-import { useBulkCode, Recipient } from '../../../common/Layout/BulkCodeContext';
+
 import styles from '../BulkCodes.module.scss';
 import { useRouter } from 'next/router';
 
 import BulkCodesForm from './BulkCodesForm';
-import ProjectSelector from './ProjectSelector';
-import BulkGiftTotal from './BulkGiftTotal';
-import RecipientsUploadForm from './RecipientsUploadForm';
-import GenericCodesPartial from './GenericCodesPartial';
+import ProjectSelector from '../components/ProjectSelector';
+import BulkGiftTotal from '../components/BulkGiftTotal';
+import RecipientsUploadForm from '../components/RecipientsUploadForm';
+import GenericCodesPartial from '../components/GenericCodesPartial';
+import BulkCodesError from '../components/BulkCodesError';
 
-import BulkCodesError from './BulkCodesError';
+import { useBulkCode, Recipient } from '../../../common/Layout/BulkCodeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import cleanObject from '../../../../utils/cleanObject';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
