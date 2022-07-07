@@ -27,8 +27,8 @@ const acceptedHeaders: (keyof Recipient)[] = [
 const MAX_RECIPIENTS = 1000;
 
 interface RecipientsUploadFormProps {
-  onRecipientsUploaded: (recipients: Object[]) => void;
-  localRecipients: Object[];
+  onRecipientsUploaded: (recipients: Recipient[]) => void;
+  localRecipients: Recipient[];
 }
 
 const RecipientsUploadForm = ({
