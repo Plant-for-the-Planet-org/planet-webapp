@@ -1,9 +1,7 @@
-import React, { ReactElement, useContext, useState } from 'react';
-import axios from 'axios';
+import React, { FormEvent, ReactElement, useContext, useState } from 'react';
 import i18next from '../../../../../i18n';
-import { Button, TextField, styled } from '@mui/material';
-import { useForm, Controller, ControllerRenderProps } from 'react-hook-form';
-import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
+import { Button, TextField } from '@mui/material';
+import { useBulkCode, Recipient } from '../../../common/Layout/BulkCodeContext';
 import styles from '../BulkCodes.module.scss';
 import { useRouter } from 'next/router';
 
@@ -11,6 +9,7 @@ import BulkCodesForm from './BulkCodesForm';
 import ProjectSelector from './ProjectSelector';
 import BulkGiftTotal from './BulkGiftTotal';
 import RecipientsUploadForm from './RecipientsUploadForm';
+import GenericCodesPartial from './GenericCodesPartial';
 
 import BulkCodesError from './BulkCodesError';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
@@ -20,17 +19,8 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { v4 as uuidv4 } from 'uuid';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeMethods';
-import { TENANT_ID } from '../../../../utils/constants/environment';
-import getsessionId from '../../../../utils/apiRequests/getSessionId';
-import { handleError as apiResponseError } from '../../../../utils/handleError';
-import { Recipient } from '../BulkCodesTypes';
+import { Recipient as LocalRecipient } from '../BulkCodesTypes';
 const { useTranslation } = i18next;
-
-const InlineFormGroup = styled('div')({
-  display: 'flex',
-  justifyContent: 'space-between',
-  columnGap: '10px',
-});
 
 interface IssueCodesFormProps {}
 
@@ -48,31 +38,22 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const { user } = useContext(UserPropsContext);
   const { getAccessTokenSilently } = useAuth0();
   const { handleError } = useContext(ErrorHandlingContext);
-  const { control, handleSubmit, errors, watch } = useForm({ mode: 'onBlur' });
-  const [localRecipients, setLocalRecipients] = useState<Recipient[]>([]);
+  const [localRecipients, setLocalRecipients] = useState<LocalRecipient[]>([]);
   const [comment, setComment] = useState('');
   const [occasion, setOccasion] = useState('');
+  const [codeQuantity, setCodeQuantity] = useState('');
+  const [unitsPerCode, setUnitsPerCode] = useState('');
+
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const codeQuantity = watch('codeQuantity', 0);
-  const unitsPerCode = watch('unitsPerCode', 0);
-
-  const resetBulkContext = () => {
+  const resetBulkContext = (): void => {
     setProject(null);
     setBulkMethod(null);
   };
 
-  const getTotalUnits = (localRecipients: Recipient[]) => {
-    let totalUnits = 0;
-    for (const recipient of localRecipients) {
-      totalUnits = totalUnits + parseInt(recipient.units);
-    }
-    return totalUnits;
-  };
-
-  const getProcessedRecipients = (localRecipients: Recipient[]) => {
-    const recipients = [];
+  const getProcessedRecipients = (): Recipient[] => {
+    const recipients: Recipient[] = [];
     localRecipients.forEach((recipient) => {
       const temp = {
         recipientName: recipient.recipient_name,
@@ -87,11 +68,12 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
     return recipients;
   };
 
-  const onSubmit = async (data) => {
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
     const token = await getAccessTokenSilently();
     setIsProcessing(true);
     if (project) {
-      let donationData = {
+      const donationData = {
         purpose: project.purpose,
         project: project.guid,
         prePaid: true,
@@ -101,20 +83,20 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
       };
       switch (bulkMethod) {
         case BulkCodeMethods.GENERIC:
-          donationData.treeCount = data.codeQuantity * data.unitsPerCode;
+          donationData.treeCount = Number(codeQuantity) * Number(unitsPerCode);
           donationData.gift = {
             type: 'code-bulk',
             occasion,
-            numberOfCodes: data.codeQuantity,
-            unitsPerCode: data.unitsPerCode,
+            numberOfCodes: Number(codeQuantity),
+            unitsPerCode: Number(unitsPerCode),
           };
           break;
         case BulkCodeMethods.IMPORT:
-          donationData.treeCount = getTotalUnits(localRecipients);
+          donationData.treeCount = getTotalUnits();
           donationData.gift = {
             type: 'discrete-bulk',
             occasion,
-            recipients: getProcessedRecipients(localRecipients),
+            recipients: getProcessedRecipients(),
           };
           break;
         default:
@@ -147,27 +129,34 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
     }
   };
 
-  const getBulkCodeTotalAmount = () => {
+  const getTotalAmount = (): number | undefined => {
     if (bulkMethod === BulkCodeMethods.GENERIC) {
       return project
-        ? `${(project.unitCost * codeQuantity * unitsPerCode).toFixed(2)}`
+        ? Math.round(
+            (project.unitCost * Number(codeQuantity) * Number(unitsPerCode) +
+              Number.EPSILON) *
+              100
+          ) / 100
         : undefined;
     } else {
       let totalUnits = 0;
       for (const recipient of localRecipients) {
-        totalUnits = totalUnits + Number(recipient.units) * 1;
+        totalUnits = totalUnits + Number(recipient.units);
       }
-      return project ? (totalUnits * project.unitCost).toFixed(2) : undefined;
+      return project
+        ? Math.round((totalUnits * project.unitCost + Number.EPSILON) * 100) /
+            100
+        : undefined;
     }
   };
 
-  const getBulkCodeTotalUnits = () => {
+  const getTotalUnits = (): number => {
     if (bulkMethod === BulkCodeMethods.GENERIC) {
-      return project ? codeQuantity * unitsPerCode : undefined;
+      return project ? Number(codeQuantity) * Number(unitsPerCode) : 0;
     } else {
       let totalUnits = 0;
       for (const recipient of localRecipients) {
-        totalUnits = totalUnits + Number(recipient.units) * 1;
+        totalUnits = totalUnits + Number(recipient.units);
       }
       return totalUnits;
     }
@@ -176,7 +165,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   if (ready) {
     if (!isSubmitted) {
       return (
-        <BulkCodesForm className="IssueCodesForm">
+        <BulkCodesForm className="IssueCodesForm" onSubmit={handleSubmit}>
           <div className="inputContainer">
             <ProjectSelector
               projectList={projectList || []}
@@ -185,78 +174,22 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
               planetCashAccount={planetCashAccount}
             />
             <TextField
-              onChange={(e: React.ChangeEvent<any>) =>
-                setComment(e.target.value)
-              }
+              onChange={(e) => setComment(e.target.value)}
               value={comment}
               label={t('bulkCodes:labelComment')}
             />
             <TextField
-              onChange={(e: React.ChangeEvent<any>) =>
-                setOccasion(e.target.value)
-              }
+              onChange={(e) => setOccasion(e.target.value)}
               value={occasion}
               label={t('bulkCodes:occasion')}
             />
             {bulkMethod === 'generic' && (
-              <InlineFormGroup>
-                <div style={{ width: '100%' }}>
-                  <Controller
-                    name="unitsPerCode"
-                    control={control}
-                    rules={{ required: true, min: 1 }}
-                    defaultValue={''}
-                    render={(props: ControllerRenderProps) => (
-                      <TextField
-                        {...props}
-                        onChange={props.onChange}
-                        value={props.value}
-                        label={t('bulkCodes:unitsPerCode')}
-                        onInput={(e) => {
-                          e.target.value = e.target.value.replace(
-                            /[^0-9]/g,
-                            ''
-                          );
-                        }}
-                        error={errors.unitsPerCode !== undefined}
-                      />
-                    )}
-                  />
-                  {errors.unitsPerCode && (
-                    <span className={styles.formErrors}>
-                      {t('bulkCodes:unitsRequired')}
-                    </span>
-                  )}
-                </div>
-                <div style={{ width: '100%' }}>
-                  <Controller
-                    name="codeQuantity"
-                    control={control}
-                    rules={{ required: true, min: 1 }}
-                    defaultValue={''}
-                    render={(props: ControllerRenderProps) => (
-                      <TextField
-                        {...props}
-                        onChange={props.onChange}
-                        value={props.value}
-                        label={t('bulkCodes:totalNumberOfCodes')}
-                        onInput={(e) => {
-                          e.target.value = e.target.value.replace(
-                            /[^0-9]/g,
-                            ''
-                          );
-                        }}
-                        error={errors.codeQuantity !== undefined}
-                      />
-                    )}
-                  />
-                  {errors.codeQuantity && (
-                    <span className={styles.formErrors}>
-                      {t('bulkCodes:quantityCodesRequired')}
-                    </span>
-                  )}
-                </div>
-              </InlineFormGroup>
+              <GenericCodesPartial
+                codeQuantity={codeQuantity}
+                unitsPerCode={unitsPerCode}
+                setCodeQuantity={setCodeQuantity}
+                setUnitsPerCode={setUnitsPerCode}
+              />
             )}
             {bulkMethod === 'import' && (
               <RecipientsUploadForm
@@ -265,17 +198,17 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
               />
             )}
             <BulkGiftTotal
-              amount={getBulkCodeTotalAmount()}
+              amount={getTotalAmount()}
               currency={planetCashAccount?.currency}
-              units={getBulkCodeTotalUnits()}
+              units={getTotalUnits()}
               unit={project?.unit}
             />
-            {/* TODOO translation and pluralization */}
           </div>
 
           <BulkCodesError />
 
           <Button
+            type="submit"
             variant="contained"
             color="primary"
             className="formButton"
@@ -286,12 +219,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
               ) ||
               isProcessing ||
               (localRecipients.length === 0 &&
-                (codeQuantity <= 0 || unitsPerCode <= 0))
-            }
-            onClick={
-              bulkMethod === BulkCodeMethods.GENERIC
-                ? handleSubmit(onSubmit)
-                : onSubmit
+                (Number(codeQuantity) <= 0 || Number(unitsPerCode) <= 0))
             }
           >
             {isProcessing

@@ -1,5 +1,5 @@
 import { TextField, styled } from '@mui/material';
-import { ReactElement } from 'react';
+import { ReactElement, useState, FocusEvent } from 'react';
 import i18next from '../../../../../i18n';
 import { SetState } from '../../../common/Layout/BulkCodeContext';
 
@@ -12,43 +12,59 @@ const InlineFormGroup = styled('div')({
 
 interface GenericCodesProps {
   codeQuantity: string;
-  unit: string;
-  occasion: string;
+  unitsPerCode: string;
   setCodeQuantity: SetState<string>;
-  setUnit: SetState<string>;
-  setOccasion: SetState<string>;
+  setUnitsPerCode: SetState<string>;
 }
 
 const GenericCodesPartial = ({
   codeQuantity,
-  unit,
-  occasion,
+  unitsPerCode,
   setCodeQuantity,
-  setUnit,
-  setOccasion,
+  setUnitsPerCode,
 }: GenericCodesProps): ReactElement | null => {
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
+  const [errors, setErrors] = useState({
+    unitsPerCode: false,
+    codeQuantity: false,
+  });
+
+  const handleChange = (value: string, setValue: SetState<string>): void => {
+    value = value.replace(/[^0-9]/g, '');
+    setValue(value);
+  };
+
+  const validateRequiredField = (event: FocusEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    let isError = false;
+    if (!value || Number(value) < 0) isError = true;
+    setErrors({ ...errors, [name]: isError });
+  };
+
   if (ready) {
     return (
-      <>
-        <InlineFormGroup>
-          <TextField
-            value={unit}
-            onChange={(e) => setUnit(e.target.value)}
-            label={t('bulkCodes:unitsPerCode')}
-          ></TextField>
-          <TextField
-            value={codeQuantity}
-            onChange={(e) => setCodeQuantity(e.target.value)}
-            label={t('bulkCodes:totalNumberOfCodes')}
-          ></TextField>
-        </InlineFormGroup>
+      <InlineFormGroup>
         <TextField
-          value={occasion}
-          onChange={(e) => setOccasion(e.target.value)}
-          label={t('bulkCodes:occasion')}
+          value={unitsPerCode}
+          onChange={(e) => handleChange(e.target.value, setUnitsPerCode)}
+          onBlur={validateRequiredField}
+          label={t('bulkCodes:unitsPerCode')}
+          name="unitsPerCode"
+          error={errors.unitsPerCode}
+          helperText={errors.unitsPerCode ? t('bulkCodes:unitsRequired') : ''}
         ></TextField>
-      </>
+        <TextField
+          value={codeQuantity}
+          onChange={(e) => handleChange(e.target.value, setCodeQuantity)}
+          onBlur={validateRequiredField}
+          label={t('bulkCodes:totalNumberOfCodes')}
+          name="codeQuantity"
+          error={errors.codeQuantity}
+          helperText={
+            errors.codeQuantity ? t('bulkCodes:quantityCodesRequired') : ''
+          }
+        ></TextField>
+      </InlineFormGroup>
     );
   }
   return null;

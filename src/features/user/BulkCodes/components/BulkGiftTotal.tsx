@@ -9,14 +9,14 @@ interface BulkGiftTotalProps {
   amount?: number;
   currency?: string;
   units?: number;
-  unit: string;
+  unit?: string;
 }
 
 const BulkGiftTotal = ({
   amount = 0,
   currency,
-  units,
-  unit,
+  units = 0,
+  unit = 'tree',
 }: BulkGiftTotalProps): ReactElement | null => {
   const { t, ready, i18n } = useTranslation(['common', 'bulkCodes']);
 
