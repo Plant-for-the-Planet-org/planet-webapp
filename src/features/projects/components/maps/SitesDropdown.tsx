@@ -4,7 +4,7 @@ import PolygonIcon from '../../../../../public/assets/images/icons/PolygonIcon';
 import styles from '../../styles/ProjectsMap.module.scss';
 import BootstrapInput from '../../../common/InputTypes/BootstrapInput';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
-
+import { useRouter } from 'next/router';
 interface Props {}
 
 export default function SitesDropdown(): ReactElement {
@@ -21,7 +21,7 @@ export default function SitesDropdown(): ReactElement {
     setSelectedSite(event.target.value as string);
     if (isMobile) setIsPolygonMenuOpen(false);
   };
-
+  const router = useRouter();
   return (
     <>
       {geoJson.features.length > 1 && (
@@ -34,13 +34,13 @@ export default function SitesDropdown(): ReactElement {
               onClick={() => {
                 if (!isMobile) setIsPolygonMenuOpen(true);
               }}
-              className={styles.projectSitesButton}
+              className={router.query.map==='true'?styles.embed_projectSitesButton:styles.projectSitesButton}
             >
               <PolygonIcon />
             </div>
           ) : null}
           {isPolygonMenuOpen ? (
-            <div className={styles.dropdownContainer}>
+            <div className={router.query.map==='true'?styles.embed_dropdownContainer:styles.dropdownContainer}>
               <div className={styles.projectSitesDropdown}>
                 <FormControl variant="standard">
                   <div className={styles.polygonIcon}>

@@ -10,7 +10,12 @@
   // padding-bottom: 60px;
   z-index: 12;
 }
-
+.embedContainer{
+  position: absolute;
+  transition: all 0.3s ease-in-out;
+  width: 100vw;
+  z-index: 12;
+}
 .header {
   display: flex;
   flex-direction: row;
@@ -214,8 +219,11 @@
     column-gap: 16px;
   }
 
-  .container {
+  .container,.embedContainer {
     padding-bottom: 0px;
+  }
+  .embedContainer{
+    margin-top: 40vh;
   }
   .projectsContainer {
     padding-bottom: 56px;
@@ -238,6 +246,18 @@
     // padding-bottom: 0px;
     width: fit-content;
     // z-index: 2;
+    bottom: 0px;
+    position: relative;
+    -ms-overflow-style: none;
+    scrollbar-color: transparent transparent;
+    z-index: 2;
+  }
+  .embedContainer {
+    overflow: visible;
+    padding-top: 0px;
+    margin-top: 20px;
+    padding-left:30px;
+    width: fit-content;
     bottom: 0px;
     position: relative;
     -ms-overflow-style: none;
@@ -280,7 +300,11 @@
     display: none;
   }
 }
-
+@media screen and (max-height: 315px), (max-width: 486px) {
+  .embedContainer{
+    margin-top: 180px;
+  }
+}
 :export {
   primaryColor: $primaryColor;
   primaryFontColor: $primaryFontColor;

@@ -9,6 +9,7 @@ import SearchBar from '../components/projects/SearchBar';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
 import Filters from '../components/projects/Filters';
+import { useRouter } from 'next/router';
 
 interface Props {
   projects: any;
@@ -40,7 +41,7 @@ function ProjectsList({
 
   const [selectedTab, setSelectedTab] = React.useState('all');
   const [searchMode, setSearchMode] = React.useState(false);
-
+  const router = useRouter();
   React.useEffect(() => {
     showFeaturedList ? setSelectedTab('featured') : null;
   }, []);
@@ -151,8 +152,8 @@ function ProjectsList({
       <Explore />
       {showProjects ? (
         <div
-          style={{ transform: `translate(0,${scrollY}px)` }}
-          className={'container'}
+          style={{ transform: `translate(0,${scrollY}px)`}}
+          className={router.query.map==='true'?'embedContainer':'container'}
           onTouchMove={(event) => {
             if (isMobile) {
               if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {

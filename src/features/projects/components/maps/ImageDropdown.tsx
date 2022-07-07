@@ -4,6 +4,7 @@ import BootstrapInput from '../../../common/InputTypes/BootstrapInput';
 import styles from '../../styles/VegetationChange.module.scss';
 import sources from '../../../../../public/data/maps/sources.json';
 import SourceIcon from '../../../../../public/assets/images/icons/SourceIcon';
+import { useRouter } from 'next/router';
 
 interface Props {
   selectedYear1: string;
@@ -30,6 +31,7 @@ export default function ImageDropdown({
   setSelectedSource2,
   isMobile,
 }: Props): ReactElement {
+  const router = useRouter();
   const [isSource1MenuOpen, setIsSource1MenuOpen] = React.useState(
     isMobile ? false : true
   );
@@ -58,14 +60,14 @@ export default function ImageDropdown({
 
   return (
     <>
-      <div className={styles.dropdownContainer}>
+      <div className={router.query.map==='true'?styles.embed_dropdownContainer:styles.dropdownContainer}>
         <div className={styles.beforeYear}>
           <FormControl variant="standard">
             <NativeSelect
               id="customized-select-native-1"
               value={selectedYear1}
               onChange={handleChangeYear1}
-              input={<BootstrapInput />}
+              input={<BootstrapInput />} 
             >
               {rasterData.imagery[selectedSource1].map((item: any) => {
                 return (

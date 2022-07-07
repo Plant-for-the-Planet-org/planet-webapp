@@ -98,7 +98,7 @@
   }
 }
 
-.playButton {
+.playButton,.embed_playButton {
   position: fixed;
   right: 55px;
   top: 100px;
@@ -117,6 +117,10 @@
     width: 15px;
   }
 }
+.embed_playButton{
+  right: 125px;
+  top: 50px;
+}
 
 @include smTabletView {
   .playButton {
@@ -128,5 +132,8 @@
     top: 110px;
     right: 125px;
     flex-direction: row;
+  }
+  .embed_playButton{
+    top:50px;
   }
 }
