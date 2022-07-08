@@ -153,7 +153,7 @@ function ProjectsList({
       {showProjects ? (
         <div
           style={{ transform: `translate(0,${scrollY}px)`}}
-          className={router.query.map==='true'?'embedContainer':'container'}
+          className={router.query.embed === 'true'? 'embedContainer': 'container'}
           onTouchMove={(event) => {
             if (isMobile) {
               if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {

@@ -76,12 +76,20 @@ function SingleProjectDetails({}: Props): ReactElement {
     if (selectedPl || hoveredPl) {
       setHoveredPl(null);
       setSelectedPl(null);
-      router.replace('/[p]', `/${project.slug}`);
+        if(router.query.embed === 'true'){
+        router.replace('/[p]', `/${project.slug}/?embed=true`);
+        } else{
+          router.replace('/[p]', `/${project.slug}`);
+        }
     } else {
-      router.replace('/');
+      if(router.query.embed === 'true'){
+        router.replace('/?embed=true');
+        } else{
+          router.replace('/');
+        }
     }
   };
-
+  
   return ready ? (
     <>
       {/* <Explore /> */}
@@ -96,7 +104,7 @@ function SingleProjectDetails({}: Props): ReactElement {
         )}
       <div
         style={{ transform: `translate(0,${scrollY}px)` }}
-        className={router.query.map==='true'?'embedContainer':'container'}
+        className={router.query.embed === 'true'? 'embedContainer': 'container'}
         onTouchMove={(event) => {
           if (isMobile) {
             if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
@@ -133,7 +141,7 @@ function SingleProjectDetails({}: Props): ReactElement {
         </Modal>
         
         <div className={'projectContainer'}>
-        {router.query.map==='true'?<></>:(
+        {router.query.embed ==='true' && router.query.singleproject==='true'? <></>:(
         <button
             id={'backButtonSingleP'}
             style={{

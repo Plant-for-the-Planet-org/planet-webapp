@@ -200,7 +200,7 @@ export default function Explore({}: Props): ReactElement {
     <>
       <div ref={exploreContainerRef}>
         <div
-          className={router.query.map==='true'?styles.embed_exploreButton:styles.exploreButton}
+          className={router.query.embed === 'true'? styles.embed_exploreButton: styles.exploreButton}
           onClick={() => {
             setExploreExpanded(!exploreExpanded);
           }}

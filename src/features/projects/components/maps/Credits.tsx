@@ -29,7 +29,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
     };
     const router = useRouter();
     return (
-         router.query.map==='true'?<></>:(
+         router.query.embed === 'true'?<></>:(
             <>
             <div className={styles.lngSwitcher + ' mapboxgl-map'}>
                 {config.darkModeEnabled && <DarkModeSwitch />}

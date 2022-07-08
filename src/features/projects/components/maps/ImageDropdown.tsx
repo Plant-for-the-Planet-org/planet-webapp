@@ -60,7 +60,7 @@ export default function ImageDropdown({
 
   return (
     <>
-      <div className={router.query.map==='true'?styles.embed_dropdownContainer:styles.dropdownContainer}>
+      <div className={router.query.embed === 'true'? styles.embed_dropdownContainer: styles.dropdownContainer}>
         <div className={styles.beforeYear}>
           <FormControl variant="standard">
             <NativeSelect

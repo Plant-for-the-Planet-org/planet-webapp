@@ -15,7 +15,7 @@ export default function PlayButton({setshowVideo}: Props): ReactElement {
     console.log(router.query);
     const { t } = useTranslation(['common']);
     return (
-        <div title={t('howDoesThisWork')} onClick={()=>setshowVideo(true)} className={router.query.map==='true'?styles.embed_playButton:styles.playButton}>
+        <div title={t('howDoesThisWork')} onClick={()=>setshowVideo(true)} className={router.query.embed === 'true'? styles.embed_playButton: styles.playButton}>
             <PlayIcon/>
         </div>
     )
