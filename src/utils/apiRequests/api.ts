@@ -6,6 +6,7 @@ import { validateToken } from './validateToken';
 // Handle Error responses from API
 const handleApiError = (
   error: any,
+  result: any,
   errorHandler?: Function,
   redirect?: string
 ) => {
@@ -42,14 +43,16 @@ const handleApiError = (
     }
     console.error('Error 403: Forbidden');
   } else if (error === 400) {
-    if (errorHandler) {
-      errorHandler({
-        type: 'error',
-        message: 'validationFailed',
-        redirect: redirect,
-      });
+    if (!result['error_code']) {
+      if (errorHandler) {
+        errorHandler({
+          type: 'error',
+          message: 'validationFailed',
+          redirect: redirect,
+        });
+      }
+      console.error('Error 400: Validation Failed!');
     }
-    console.error('Error 400: Validation Failed!');
   } else if (error === 500) {
     if (errorHandler) {
       errorHandler({
@@ -117,7 +120,7 @@ export async function getRequest<T>(
   })
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
-      handleApiError(res.status, errorHandler, redirect);
+      handleApiError(res.status, result, errorHandler, redirect);
     })
     .catch((err) => console.error(`Unhandled Exception: ${err}`));
   return result as unknown as T;
@@ -149,7 +152,7 @@ export async function getAuthenticatedRequest(
   })
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
-      handleApiError(res.status, errorHandler, redirect);
+      handleApiError(res.status, result, errorHandler, redirect);
     })
     .catch((err) => console.log(`Something went wrong: ${err}`));
   return result;
@@ -180,7 +183,7 @@ export async function postAuthenticatedRequest(
       },
     });
     const result = await res.json();
-    handleApiError(res.status, errorHandler);
+    handleApiError(res.status, result, errorHandler);
     return result;
   } else {
     if (errorHandler) {
@@ -215,7 +218,7 @@ export async function postRequest(
     },
   });
   const result = await res.json();
-  handleApiError(res.status, errorHandler, redirect);
+  handleApiError(res.status, result, errorHandler, redirect);
   return result;
 }
 
@@ -241,7 +244,7 @@ export async function deleteAuthenticatedRequest(
       },
     }).then((res) => {
       result = res.status;
-      handleApiError(res.status, errorHandler);
+      handleApiError(res.status, result, errorHandler);
     });
   } else {
     if (errorHandler) {
@@ -278,7 +281,7 @@ export async function putAuthenticatedRequest(
         },
       });
       const result = await res.json();
-      handleApiError(res.status, errorHandler);
+    handleApiError(res.status, result, errorHandler);
       return result;
   
   } else {
@@ -312,7 +315,7 @@ export async function putRequest(
     },
   });
   const result = await res.json();
-  handleApiError(res.status, errorHandler);
+  handleApiError(res.status, result, errorHandler);
   return result;
 }
 
@@ -326,7 +329,7 @@ export async function getRasterData(
   )
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
-      handleApiError(res.status, errorHandler);
+      handleApiError(res.status, result, errorHandler);
       return result;
     })
     .catch((err) => console.log(`Something went wrong: ${err}`));

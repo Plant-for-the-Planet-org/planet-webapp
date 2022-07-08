@@ -20,13 +20,14 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { v4 as uuidv4 } from 'uuid';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeMethods';
+import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import { Recipient as LocalRecipient } from '../BulkCodesTypes';
 const { useTranslation } = i18next;
 
 interface IssueCodesFormProps {}
 
 const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
-  const { t, ready } = useTranslation(['common', 'bulkCodes']);
+  const { t, ready, i18n } = useTranslation(['common', 'bulkCodes']);
   const router = useRouter();
   const {
     project,
@@ -79,12 +80,11 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
         project: project.guid,
         prePaid: true,
         comment,
-        treeCount: 0,
+        treeCount: getTotalUnits(),
         gift: {},
       };
       switch (bulkMethod) {
         case BulkCodeMethods.GENERIC:
-          donationData.treeCount = Number(codeQuantity) * Number(unitsPerCode);
           donationData.gift = {
             type: 'code-bulk',
             occasion,
@@ -93,7 +93,6 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
           };
           break;
         case BulkCodeMethods.IMPORT:
-          donationData.treeCount = getTotalUnits();
           donationData.gift = {
             type: 'discrete-bulk',
             occasion,
@@ -114,7 +113,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
           'IDEMPOTENCY-KEY': uuidv4(),
         }
       );
-      if (!res.code) {
+      if (res.status === 200) {
         resetBulkContext();
         setIsSubmitted(true);
         setTimeout(() => {
@@ -122,7 +121,36 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
         }, 5000);
       } else {
         setIsProcessing(false);
-        handleError(Error(res.errors.errors[0]));
+        // TODOO - Extract this error handling logic elsewhere
+        if (res['error_code']) {
+          switch (res['error_code']) {
+            case 'planet_cash_insufficient_credit':
+              handleError(
+                Error(
+                  t(`bulkCodes:donationError.${res['error_code']}`, {
+                    availableBalance: getFormatedCurrency(
+                      i18n.language,
+                      planetCashAccount?.currency as string,
+                      res.parameters['available_credit']
+                    ),
+                  })
+                )
+              );
+              break;
+            case 'planet_cash_payment_failure':
+              handleError(
+                Error(
+                  t(`bulkCodes:donationError.${res['error_code']}`, {
+                    reason: res.parameters['reason'],
+                  })
+                )
+              );
+              break;
+            default:
+              handleError(Error(t(`bulkCodes:donationError.default`)));
+              break;
+          }
+        }
       }
     } else {
       setIsProcessing(false);
