@@ -9,6 +9,7 @@ import { ThemeContext } from '../../../theme/themeContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { TENANT_ID } from '../../../utils/constants/environment';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import UserLayout from '../../common/Layout/UserLayout/UserLayout';
 
 interface Props {
   embedModalOpen: boolean;
@@ -67,6 +68,7 @@ export default function EmbedModal({
     const bodyToSend = {
       isPrivate: false,
     };
+    setIsPrivate(false);
     if (contextLoaded && token) {
       try {
         putAuthenticatedRequest(`/app/profile`, bodyToSend, token, handleError)
@@ -75,9 +77,7 @@ export default function EmbedModal({
             setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');
             setEmbedModalOpen(false);
             setIsUploadingData(false);
-            router.push(
-              `${process.env.WIDGET_URL}?user=${user.id}&tenantkey=${TENANT_ID}`
-            );
+            
           })
           .catch((error) => {
             setSeverity('error');
@@ -99,9 +99,9 @@ export default function EmbedModal({
   //     console.log(isPrivate);
   // }, [isPrivate]);
   const { theme } = React.useContext(ThemeContext);
-
   return (
     <>
+    {isPrivate === true ? (
       <Modal
         className={'modalContainer' + ' ' + theme}
         open={embedModalOpen}
@@ -155,7 +155,19 @@ export default function EmbedModal({
             </button>
           </div>
         </div>
-      </Modal>
+      </Modal>) :
+      (
+        <UserLayout>
+        <div className="profilePage" style={{ padding: '0px' }}>
+          <iframe
+            src={`${process.env.WIDGET_URL}?user=${user.id
+              }&tenantkey=${TENANT_ID}`}
+            className={styles.widgetIFrame}
+          />
+        </div>
+      
+    </UserLayout>
+      )}
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={2000}

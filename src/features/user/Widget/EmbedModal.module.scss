@@ -93,6 +93,15 @@
   margin: 5px;
 }
 
+
+.widgetIFrame {
+  min-height: 100vh;
+  width: 100%;
+  padding-top: 30px;
+  padding-left: 0px;
+}
+
+
 // Loader for Buttons
 .spinner {
   border: 2px solid #f3f3f3;
