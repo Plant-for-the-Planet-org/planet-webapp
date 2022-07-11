@@ -13,7 +13,7 @@ import {
   getAuthenticatedRequest,
   getRequest,
 } from '../../../utils/apiRequests/api';
-import { BulkCodeMethods } from '../../../utils/constants/bulkCodeMethods';
+import { BulkCodeMethods } from '../../../utils/constants/bulkCodeConstants';
 import { ErrorHandlingContext } from './ErrorHandlingContext';
 import { UserPropsContext } from './UserPropsContext';
 import { TENANT_ID } from '../../../utils/constants/environment';

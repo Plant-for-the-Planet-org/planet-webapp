@@ -10,7 +10,7 @@ import SelectorOption, {
 import BulkCodesError from '../components/BulkCodesError';
 import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
-import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeMethods';
+import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
 
 const { useTranslation } = i18next;
 

@@ -19,7 +19,7 @@ import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useAuth0 } from '@auth0/auth0-react';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { v4 as uuidv4 } from 'uuid';
-import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeMethods';
+import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import { Recipient as LocalRecipient } from '../BulkCodesTypes';
 const { useTranslation } = i18next;
