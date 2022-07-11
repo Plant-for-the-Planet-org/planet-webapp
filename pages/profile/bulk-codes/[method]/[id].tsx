@@ -22,6 +22,7 @@ export default function BulkCodeIssueCodesPage({}: Props): ReactElement {
   const { project, setProject, bulkMethod, setBulkMethod, planetCashAccount } =
     useBulkCode();
 
+  // Checks context and sets project, bulk method if not already set within context
   const checkContext = useCallback(async () => {
     if (planetCashAccount) {
       if (!project) {
