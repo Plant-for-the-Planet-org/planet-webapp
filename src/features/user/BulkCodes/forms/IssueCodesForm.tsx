@@ -113,7 +113,8 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
           'IDEMPOTENCY-KEY': uuidv4(),
         }
       );
-      if (res.status === 200) {
+      // if request is successful, it will have a uid
+      if (res.uid) {
         resetBulkContext();
         setIsSubmitted(true);
         setTimeout(() => {
