@@ -39,6 +39,7 @@
   "occasion": "Occasion",
   "total": "Total",
   "chargeConsentText": "By clicking Issue Codes, you agree that above amount will be charged to your account.",
+  "projectRequired": "No project is selected",
   "unitsRequired": "Each code should contain at least 1 unit",
   "quantityCodesRequired": "You need to create at least 1 code",
   "featureAvailability": "This feature is available only for partner projects.",

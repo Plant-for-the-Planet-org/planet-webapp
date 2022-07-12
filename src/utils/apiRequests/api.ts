@@ -5,7 +5,7 @@ import { validateToken } from './validateToken';
 
 // Handle Error responses from API
 const handleApiError = (
-  error: any,
+  error: number,
   result: any,
   errorHandler?: Function,
   redirect?: string
@@ -63,7 +63,6 @@ const handleApiError = (
       });
     }
     console.error('Error 500: Server Error!');
-   
   }
 };
 
@@ -265,25 +264,24 @@ export async function putAuthenticatedRequest(
   errorHandler?: Function
 ): Promise<any> {
   if (validateToken(token)) {
-        const res = await fetch(process.env.API_ENDPOINT + url, {
-        method: 'PUT',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json',
-          'tenant-key': `${TENANT_ID}`,
-          'X-SESSION-ID': await getsessionId(),
-          Authorization: `Bearer ${token}`,
-          'x-locale': `${
-            localStorage.getItem('language')
-              ? localStorage.getItem('language')
-              : 'en'
-          }`,
-        },
-      });
-      const result = await res.json();
+    const res = await fetch(process.env.API_ENDPOINT + url, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'tenant-key': `${TENANT_ID}`,
+        'X-SESSION-ID': await getsessionId(),
+        Authorization: `Bearer ${token}`,
+        'x-locale': `${
+          localStorage.getItem('language')
+            ? localStorage.getItem('language')
+            : 'en'
+        }`,
+      },
+    });
+    const result = await res.json();
     handleApiError(res.status, result, errorHandler);
-      return result;
-  
+    return result;
   } else {
     if (errorHandler) {
       errorHandler({

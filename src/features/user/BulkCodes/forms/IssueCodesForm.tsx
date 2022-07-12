@@ -123,39 +123,40 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
       } else {
         setIsProcessing(false);
         // TODOO - Extract this error handling logic elsewhere
-        if (res['error_code']) {
+        if (res['error_type'] === 'payment_error') {
           switch (res['error_code']) {
             case 'planet_cash_insufficient_credit':
-              handleError(
-                Error(
-                  t(`bulkCodes:donationError.${res['error_code']}`, {
-                    availableBalance: getFormatedCurrency(
-                      i18n.language,
-                      planetCashAccount?.currency as string,
-                      res.parameters['available_credit']
-                    ),
-                  })
-                )
-              );
+              handleError({
+                code: 400,
+                message: t(`bulkCodes:donationError.${res['error_code']}`, {
+                  availableBalance: getFormatedCurrency(
+                    i18n.language,
+                    planetCashAccount?.currency as string,
+                    res.parameters['available_credit']
+                  ),
+                }),
+              });
               break;
             case 'planet_cash_payment_failure':
-              handleError(
-                Error(
-                  t(`bulkCodes:donationError.${res['error_code']}`, {
-                    reason: res.parameters['reason'],
-                  })
-                )
-              );
+              handleError({
+                code: 400,
+                message: t(`bulkCodes:donationError.${res['error_code']}`, {
+                  reason: res.parameters['reason'],
+                }),
+              });
               break;
             default:
-              handleError(Error(t(`bulkCodes:donationError.default`)));
+              handleError({
+                code: 400,
+                message: t(`bulkCodes:donationError.default`),
+              });
               break;
           }
         }
       }
     } else {
       setIsProcessing(false);
-      handleError(Error('Project not selected'));
+      handleError({ message: t('bulkCodes:projectRequired') });
     }
   };
 

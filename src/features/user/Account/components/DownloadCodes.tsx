@@ -41,13 +41,13 @@ const DownloadCodes = ({ codesUrl }: DownloadCodesProps): ReactElement => {
         if (response.items.length) {
           downloadCSV(response.items, 'codes.csv');
         } else {
-          handleError(Error(t('downloadCodesGeneralError')));
+          handleError({ message: t('downloadCodesGeneralError') });
         }
       } else {
-        handleError(Error(t('downloadCodesNetworkError')));
+        handleError({ message: t('downloadCodesNetworkError') });
       }
     } catch (err) {
-      handleError(Error(t('downloadCodesGeneralError')));
+      handleError({ message: t('downloadCodesGeneralError') });
     }
   }
 
