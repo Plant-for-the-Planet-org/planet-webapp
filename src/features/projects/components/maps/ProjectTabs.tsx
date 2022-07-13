@@ -17,7 +17,7 @@ export default function ProjectTabs({}: Props): ReactElement {
   );
   return (
     <>
-      <div className={router.query.embed === 'true'? styles.embed_VegetationChangeContainer: styles.VegetationChangeContainer}>
+      <div className={router.query.embed === 'true' ? styles.embed_VegetationChangeContainer: styles.VegetationChangeContainer}>
         <div
           onClick={() => {
             setSelectedMode('location');

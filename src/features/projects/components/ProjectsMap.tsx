@@ -163,7 +163,7 @@ export default function ProjectsMap(): ReactElement {
 
   return (
 
-    <div className={router.query.embed === 'true'? styles.onlymapContainer: styles.mapContainer}>
+    <div className={router.query.embed === 'true' ? styles.onlymapContainer: styles.mapContainer}>
       <MapGL
         ref={mapRef}
         {...mapState}

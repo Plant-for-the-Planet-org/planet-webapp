@@ -102,10 +102,8 @@ export default function NavbarComponent(props: any) {
     }
   }
 
- 
-
   const UserIcon = () => {
-    return user && user.image? (
+    return user && user.image ? (
       <div
         style={{
           backgroundColor: '#fff',
@@ -132,7 +130,7 @@ export default function NavbarComponent(props: any) {
 
   const MenuItems = () => {
     const links = Object.keys(config.header.items);
-    return links? (
+    return links ? (
       <div className={'menuItems'}>
         {links.map((link) => {
           let SingleLink = config.header.items[link];
@@ -269,12 +267,11 @@ export default function NavbarComponent(props: any) {
       <></>
     );
   };
-  
-  
-  return (
-    router.query.embed === 'true'?
-    <></>:
-    (<div className={'mainNavContainer'}>
+
+  return router.query.embed === 'true' ? (
+    <></>
+  ) : (
+    <div className={'mainNavContainer'}>
       <div className={'top_nav'}>
         <div className={'brandLogos'}>
           {config.header?.isSecondaryTenant && (
@@ -326,6 +323,6 @@ export default function NavbarComponent(props: any) {
         </div>
         {ready && <MenuItems />}
       </div>
-    </div>)
+    </div>
   );
 }

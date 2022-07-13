@@ -34,13 +34,13 @@ export default function SitesDropdown(): ReactElement {
               onClick={() => {
                 if (!isMobile) setIsPolygonMenuOpen(true);
               }}
-              className={router.query.embed === 'true'? styles.embed_projectSitesButton: styles.projectSitesButton}
+              className={router.query.embed === 'true' ? styles.embed_projectSitesButton: styles.projectSitesButton}
             >
               <PolygonIcon />
             </div>
           ) : null}
           {isPolygonMenuOpen ? (
-            <div className={router.query.embed === 'true'? styles.embed_dropdownContainer: styles.dropdownContainer}>
+            <div className={router.query.embed === 'true' ? styles.embed_dropdownContainer: styles.dropdownContainer}>
               <div className={styles.projectSitesDropdown}>
                 <FormControl variant="standard">
                   <div className={styles.polygonIcon}>
