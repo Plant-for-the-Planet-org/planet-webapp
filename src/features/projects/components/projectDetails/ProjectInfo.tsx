@@ -66,16 +66,35 @@ function ProjectInfo({ project }: Props): ReactElement {
   const [ownerTypes, setOwnerTypes] = React.useState([]);
   React.useEffect(() => {
     if (ready && project.siteOwnerType && project.siteOwnerType.length > 0) {
-      const newSiteOwners = [];
+      const updatedSiteOwners = [];
 
       for (let i = 0; i < project.siteOwnerType.length; i++) {
         const translatedOwnerType = siteOwners.find(
           (element) => element.value === project.siteOwnerType[i]
         );
-        newSiteOwners.push(translatedOwnerType.title);
+        updatedSiteOwners.push(translatedOwnerType.title);
       }
 
-      setOwnerTypes(newSiteOwners);
+      setOwnerTypes(updatedSiteOwners);
+    }
+  }, [ready]);
+
+  React.useEffect(() => {
+    if (
+      ready &&
+      project.metadata.landOwnershipType &&
+      project.metadata.landOwnershipType.length > 0
+    ) {
+      const updatedSiteOwners = [];
+
+      for (let i = 0; i < project.metadata.landOwnershipType.length; i++) {
+        const translatedOwnerType = siteOwners.find(
+          (element) => element.value === project.metadata.landOwnershipType[i]
+        );
+        updatedSiteOwners.push(translatedOwnerType.title);
+      }
+
+      setOwnerTypes(updatedSiteOwners);
     }
   }, [ready]);
 
@@ -183,12 +202,15 @@ function ProjectInfo({ project }: Props): ReactElement {
                     return (
                       <React.Fragment key={plantingSeasons[season - 1].title}>
                         {plantingSeasons[season - 1].title}
-                        {index === project.metadata.activitySeasons.length - 2
-                          ? ' and '
-                          : index ===
-                            project.metadata.activitySeasons.length - 1
-                          ? '.'
-                          : ', '}
+                        {index ===
+                        project.metadata.activitySeasons.length - 2 ? (
+                          <> {t('manageProjects:and')} </>
+                        ) : index ===
+                          project.metadata.activitySeasons.length - 1 ? (
+                          '.'
+                        ) : (
+                          ', '
+                        )}
                       </React.Fragment>
                     );
                   }
@@ -209,12 +231,15 @@ function ProjectInfo({ project }: Props): ReactElement {
                     return (
                       <React.Fragment key={plantingSeasons[season - 1].title}>
                         {plantingSeasons[season - 1].title}
-                        {index === project.metadata.plantingSeasons.length - 2
-                          ? ' and '
-                          : index ===
-                            project.metadata.plantingSeasons.length - 1
-                          ? '.'
-                          : ', '}
+                        {index ===
+                        project.metadata.plantingSeasons.length - 2 ? (
+                          <> {t('manageProjects:and')} </>
+                        ) : index ===
+                          project.metadata.plantingSeasons.length - 1 ? (
+                          '.'
+                        ) : (
+                          ', '
+                        )}
                       </React.Fragment>
                     );
                   }
@@ -236,32 +261,99 @@ function ProjectInfo({ project }: Props): ReactElement {
       )}
 
       <div style={{ display: 'flex' }}>
-        {project?.metadata?.siteOwnerName && (
+        {project?.metadata?.siteOwnerType && (
           <div className={styles.projectMoreInfo}>
             <div className={styles.infoTitle}>
               {t('manageProjects:siteOwnership')}
             </div>
-            {project.metadata?.siteOwnerType && (
-              <div className={styles.infoText} style={{ fontWeight: 'bold' }}>
+            {project?.metadata?.siteOwnerType && (
+              <div className={styles.infoText}>
                 {ownerTypes.map((ownerType: any, index: any) => {
                   return (
                     <React.Fragment key={ownerType}>
                       {t(`manageProjects:${ownerType}`)}
-                      {index === ownerTypes.length - 2
-                        ? ' and '
-                        : index === ownerTypes.length - 1
-                        ? '.'
-                        : ', '}
+                      {index === ownerTypes.length - 2 ? (
+                        <> {t('manageProjects:and')} </>
+                      ) : index === ownerTypes.length - 1 ? (
+                        '.'
+                      ) : (
+                        ', '
+                      )}
                     </React.Fragment>
                   );
                 })}
               </div>
             )}
+            {project?.metadata?.siteOwnerName ||
+            project?.metadata?.acquisitionYear ? (
+              <div className={styles.infoText}>
+                {project?.metadata?.siteOwnerName}{' '}
+                {project?.metadata?.siteOwnerName &&
+                project?.metadata?.acquisitionYear ? (
+                  <> {t('manageProjects:since')} </>
+                ) : (
+                  <></>
+                )}
+                {!project?.metadata?.siteOwnerName &&
+                project?.metadata?.acquisitionYear ? (
+                  <> {t('manageProjects:Since')} </>
+                ) : (
+                  <></>
+                )}
+                {project?.metadata?.acquisitionYear}
+              </div>
+            ) : (
+              <></>
+            )}
+          </div>
+        )}
+      </div>
 
-            <div className={styles.infoText}>
-              {project.metadata.siteOwnerName} since{' '}
-              {project?.metadata?.acquisitionYear}
+      <div style={{ display: 'flex' }}>
+        {project?.metadata?.landOwnershipType && (
+          <div className={styles.projectMoreInfo}>
+            <div className={styles.infoTitle}>
+              {t('manageProjects:siteOwnership')}
             </div>
+            {project?.metadata?.landOwnershipType && (
+              <div className={styles.infoText}>
+                {ownerTypes.map((ownerType: any, index: any) => {
+                  return (
+                    <React.Fragment key={ownerType}>
+                      {t(`manageProjects:${ownerType}`)}
+                      {index === ownerTypes.length - 2 ? (
+                        <> {t('manageProjects:and')} </>
+                      ) : index === ownerTypes.length - 1 ? (
+                        '.'
+                      ) : (
+                        ', '
+                      )}
+                    </React.Fragment>
+                  );
+                })}
+              </div>
+            )}
+            {project?.metadata?.siteOwnerName ||
+            project?.metadata?.acquisitionYear ? (
+              <div className={styles.infoText}>
+                {project?.metadata?.siteOwnerName}
+                {project?.metadata?.siteOwnerName &&
+                project?.metadata?.acquisitionYear ? (
+                  <> {t('manageProjects:since')} </>
+                ) : (
+                  <></>
+                )}
+                {!project?.metadata?.siteOwnerName &&
+                project?.metadata?.acquisitionYear ? (
+                  <> {t('manageProjects:Since')} </>
+                ) : (
+                  <></>
+                )}{' '}
+                {project?.metadata?.acquisitionYear}
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         )}
       </div>
