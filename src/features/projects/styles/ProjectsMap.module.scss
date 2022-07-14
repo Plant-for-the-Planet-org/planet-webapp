@@ -125,7 +125,6 @@
 .projectSitesButton, .embed_projectSitesButton{
   position: fixed;
   right: 100px;
-  top: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -142,15 +141,28 @@
   }
 }
 
+.projectSitesButton {
+  top: 100px;
+}
+ 
+.embed_projectSitesButton {
+  top: 20px;
+  right: 165px;
+}
+
 .dropdownContainer,.embed_dropdownContainer {
   position: fixed;
-  right: 100px;
-  top: 100px;
   z-index: 11;
 }
 
-.embed_dropdownContainer, .embed_projectSitesButton{
-  top: 50px;
+.dropdownContainer{
+  right: 100px;
+  top: 100px;
+
+}
+
+.embed_dropdownContainer{
+  top: 20px;
   right: 178px;
 }
 
@@ -171,8 +183,6 @@
 
 .exploreButton,.embed_exploreButton{
   position: fixed;
-  right: 10px;
-  top: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -185,8 +195,15 @@
   cursor: pointer;
   z-index: 11;
 }
-.embed_exploreButton{
-  top:50px;
+
+.exploreButton {
+  right: 10px;
+  top: 100px;
+}
+
+.embed_exploreButton {
+  top: 20px;
+  right: 20px;
   flex-direction: row;
 }
 .exploreButton > svg ,.embed_exploreButton > svg{
@@ -428,7 +445,7 @@
   width: 20px;
 }
 
-.exploreExpanded {
+.exploreExpanded, .embed_exploreExpanded {
   position: fixed;
   right: 70px;
   top: 20px;
@@ -576,7 +593,9 @@
   .exploreExpanded {
     top: 110px;
   }
-
+  .embed_exploreExpanded {
+    top: 20px;
+  }
   // .infoExpanded {
   //   top: 100px;
   // }
@@ -584,6 +603,15 @@
   .layerToggle {
     top: 150px;
   }
+
+  .embed_projectSitesButton {
+    right: 120px;
+  }
+
+  .embed_dropdownContainer {
+    right: 120px;  
+  }
+
 }
 
 @include mdTabletView {
@@ -597,7 +625,7 @@
   }
   .projectSitesButton {
     top: 110px;
-    right: 165px;
+    right: 175px;
   }
 
   .dropdownContainer {
@@ -617,6 +645,11 @@
     right: 20px;
     bottom: 125px;
   }
+
+  .embed_dropdownContainer {
+    right: 178px;
+  }
+  
 }
 
 // @include lgLaptopView {
@@ -631,6 +664,10 @@
   }
   .projectControls {
     bottom: 80px;
+  }
+
+  .embed_projectSitesButton, .embed_dropdownContainer {
+    right: 120px;
   }
 }
 
@@ -673,5 +710,8 @@
     top: auto;
     bottom: 30px;
     left: 350px;
+  }
+  .embed_projectSitesButton {
+    right: 165px;
   }
 }

@@ -100,8 +100,6 @@
 
 .playButton,.embed_playButton {
   position: fixed;
-  right: 55px;
-  top: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -117,14 +115,25 @@
     width: 15px;
   }
 }
-.embed_playButton{
+
+.playButton {
+  right: 55px;
+  top: 100px;
+}
+
+.embed_playButton {
   right: 125px;
-  top: 50px;
+  top: 20px;
 }
 
 @include smTabletView {
   .playButton {
     top: 100px;
+  }
+  
+  .embed_playButton{
+    right: 75px;
+    top: 20px;
   }
 }
 @include mdTabletView {
@@ -133,7 +142,17 @@
     right: 125px;
     flex-direction: row;
   }
+  
   .embed_playButton{
-    top:50px;
+    right: 125px;
+    top: 20px;
+  }
+  
+}
+
+@media screen and (max-height: 315px), (max-width: 486px) {
+  .embed_playButton{
+    right: 75px;
+    top: 20px;
   }
 }

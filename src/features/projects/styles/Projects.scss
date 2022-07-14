@@ -2,19 +2,20 @@
 @import './ProjectSnippet.module.scss';
 @import './ProjectDetails.module.scss';
 
-.container {
+.container, .embedContainer {
   position: absolute;
   transition: all 0.3s ease-in-out;
   width: 100vw;
-  margin-top: 50vh;
   // padding-bottom: 60px;
   z-index: 12;
 }
+
+.container{
+  margin-top: 50vh;
+}
+
 .embedContainer{
-  position: absolute;
-  transition: all 0.3s ease-in-out;
-  width: 100vw;
-  z-index: 12;
+  margin-top: 0px;
 }
 .header {
   display: flex;
@@ -238,11 +239,8 @@
     overflow-y: visible;
   }
 
-  .container {
+  .container, .embedContainer {
     overflow: visible;
-    padding-top: 0px;
-    margin-top: 80px;
-    padding-top: 30px;
     // padding-bottom: 0px;
     width: fit-content;
     // z-index: 2;
@@ -252,17 +250,16 @@
     scrollbar-color: transparent transparent;
     z-index: 2;
   }
+
+  .container{
+    margin-top: 80px;
+    padding-top: 30px;
+  }
+
   .embedContainer {
-    overflow: visible;
     padding-top: 0px;
     margin-top: 20px;
-    padding-left:30px;
-    width: fit-content;
-    bottom: 0px;
-    position: relative;
-    -ms-overflow-style: none;
-    scrollbar-color: transparent transparent;
-    z-index: 2;
+    padding-left:20px;
   }
 
   // .container::-webkit-scrollbar {
@@ -302,7 +299,7 @@
 }
 @media screen and (max-height: 315px), (max-width: 486px) {
   .embedContainer{
-    margin-top: 180px;
+    margin-top: 40vh;
   }
 }
 :export {

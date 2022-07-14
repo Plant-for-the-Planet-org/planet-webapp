@@ -222,7 +222,10 @@ export default function Explore({}: Props): ReactElement {
         </div>
         {exploreExpanded ? (
           <>
-            <div className={styles.exploreExpanded}>
+            <div className={
+               router.query.embed === 'true'
+               ? styles.embed_exploreExpanded
+               : styles.exploreExpanded}>
               {/* <div> */}
               <FormGroup style={{ width: '100%' }}>
                 <div className={styles.exploreToggleRow}>
