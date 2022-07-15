@@ -13,7 +13,7 @@ import {
   getAuthenticatedRequest,
   getRequest,
 } from '../../../utils/apiRequests/api';
-import { BulkCodeMethods } from '../../../utils/constants/bulkCodeMethods';
+import { BulkCodeMethods } from '../../../utils/constants/bulkCodeConstants';
 import { ErrorHandlingContext } from './ErrorHandlingContext';
 import { UserPropsContext } from './UserPropsContext';
 import { TENANT_ID } from '../../../utils/constants/environment';
@@ -44,17 +44,19 @@ interface BulkGiftGenericData {
   value: number;
 }
 
-interface BulkGiftImportData {
+export interface Recipient {
+  units: number;
+  recipientName: string;
+  recipientEmail: string;
+  message: string;
+  notifyRecipient: boolean;
+  // occasion: string;
+}
+
+export interface BulkGiftImportData {
   comment?: string;
   occasion: string;
-  recipients: {
-    value: number;
-    recipientName: string;
-    recipientEmail: string;
-    message: string;
-    notifyRecipient: boolean;
-    // occasion: string;
-  }[];
+  recipients: Recipient[];
 }
 
 type BulkGiftData = BulkGiftGenericData | BulkGiftImportData;

@@ -4,11 +4,13 @@ import i18next from '../../../../../i18n';
 import { Button } from '@mui/material';
 
 import BulkCodesForm from './BulkCodesForm';
-import SelectorOption, { SelectorOptionProps } from './SelectorOption';
-import BulkCodesError from './BulkCodesError';
+import SelectorOption, {
+  SelectorOptionProps,
+} from '../components/SelectorOption';
+import BulkCodesError from '../components/BulkCodesError';
 import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
-import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeMethods';
+import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
 
 const { useTranslation } = i18next;
 

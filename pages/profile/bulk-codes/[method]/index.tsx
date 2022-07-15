@@ -5,7 +5,7 @@ import Head from 'next/head';
 import i18next from '../../../../i18n';
 import { useRouter } from 'next/router';
 import { useBulkCode } from '../../../../src/features/common/Layout/BulkCodeContext';
-import { BulkCodeMethods } from '../../../../src/utils/constants/bulkCodeMethods';
+import { BulkCodeMethods } from '../../../../src/utils/constants/bulkCodeConstants';
 
 const { useTranslation } = i18next;
 
@@ -16,6 +16,7 @@ export default function BulkCodeSelectProjectPage({}: Props): ReactElement {
   const { isReady, query } = useRouter();
   const { bulkMethod, setBulkMethod } = useBulkCode();
 
+  // Sets bulk method if not already set within context when page is loaded
   useEffect(() => {
     if (!bulkMethod) {
       if (isReady) {

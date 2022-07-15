@@ -39,6 +39,7 @@
   "occasion": "Occasion",
   "total": "Total",
   "chargeConsentText": "By clicking Issue Codes, you agree that above amount will be charged to your account.",
+  "projectRequired": "No project is selected",
   "unitsRequired": "Each code should contain at least 1 unit",
   "quantityCodesRequired": "You need to create at least 1 code",
   "featureAvailability": "This feature is available only for partner projects.",
@@ -73,5 +74,10 @@
     "ignoredColumns": "Extra columns in the CSV were ignored"
   },
   "importInstructions": "Please refer to the <2>documentation here</2>, and download<4> </4><5>template here</5>",
-  "donationSuccess": "Your donation was successful. Redirecting you to view donation details shortly..."
+  "donationSuccess": "Your donation was successful. Redirecting you to view donation details shortly...",
+  "donationError": {
+    "planet_cash_insufficient_credit": "Available credit = {{availableBalance}}. Please load balance in your PlanetCash account to make this donation.",
+    "default": "Something went wrong. Please try after a while",
+    "planet_cash_payment_failure": "The transaction failed. {{reason}}"
+  }
 }

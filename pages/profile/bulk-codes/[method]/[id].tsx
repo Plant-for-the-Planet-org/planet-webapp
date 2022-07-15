@@ -4,7 +4,7 @@ import BulkCodes from '../../../../src/features/user/BulkCodes';
 import { PaymentOptions } from '../../../../src/features/user/BulkCodes/BulkCodesTypes';
 import Head from 'next/head';
 import i18next from '../../../../i18n';
-import { BulkCodeMethods } from '../../../../src/utils/constants/bulkCodeMethods';
+import { BulkCodeMethods } from '../../../../src/utils/constants/bulkCodeConstants';
 import { useBulkCode } from '../../../../src/features/common/Layout/BulkCodeContext';
 import { ErrorHandlingContext } from '../../../../src/features/common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../../src/utils/apiRequests/api';
@@ -22,6 +22,7 @@ export default function BulkCodeIssueCodesPage({}: Props): ReactElement {
   const { project, setProject, bulkMethod, setBulkMethod, planetCashAccount } =
     useBulkCode();
 
+  // Checks context and sets project, bulk method if not already set within context
   const checkContext = useCallback(async () => {
     if (planetCashAccount) {
       if (!project) {

@@ -9,8 +9,8 @@ import {
 } from '../../../common/Layout/BulkCodeContext';
 
 import BulkCodesForm from './BulkCodesForm';
-import ProjectSelector from './ProjectSelector';
-import BulkCodesError from './BulkCodesError';
+import ProjectSelector from '../components/ProjectSelector';
+import BulkCodesError from '../components/BulkCodesError';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const { useTranslation } = i18next;
