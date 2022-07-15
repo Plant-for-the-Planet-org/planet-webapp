@@ -123,7 +123,7 @@
 
 .embed_playButton {
   right: 125px;
-  top: 20px;
+  top: 30px;
 }
 
 @include smTabletView {
@@ -132,8 +132,8 @@
   }
   
   .embed_playButton{
-    right: 75px;
-    top: 20px;
+    right: 55px;
+    top: 30px;
   }
 }
 @include mdTabletView {
@@ -145,14 +145,14 @@
   
   .embed_playButton{
     right: 125px;
-    top: 20px;
+    top: 30px;
   }
   
 }
 
 @media screen and (max-height: 315px), (max-width: 486px) {
   .embed_playButton{
-    right: 75px;
-    top: 20px;
+    right: 55px;
+    top: 30px;
   }
 }

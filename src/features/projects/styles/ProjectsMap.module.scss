@@ -146,7 +146,7 @@
 }
  
 .embed_projectSitesButton {
-  top: 20px;
+  top: 30px;
   right: 165px;
 }
 
@@ -162,7 +162,7 @@
 }
 
 .embed_dropdownContainer{
-  top: 20px;
+  top: 30px;
   right: 178px;
 }
 
@@ -202,7 +202,7 @@
 }
 
 .embed_exploreButton {
-  top: 20px;
+  top: 30px;
   right: 20px;
   flex-direction: row;
 }
@@ -448,7 +448,6 @@
 .exploreExpanded, .embed_exploreExpanded {
   position: fixed;
   right: 70px;
-  top: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -459,6 +458,14 @@
   border-radius: 9px;
   animation: fade_in_show 0.5s;
   z-index: 12;
+}
+
+.embed_exploreExpanded {
+  top: 30px;
+}
+
+.exploreExpanded {
+  top: 20px;
 }
 
 @keyframes fade_in_show {
@@ -594,7 +601,7 @@
     top: 110px;
   }
   .embed_exploreExpanded {
-    top: 20px;
+    top: 30px;
   }
   // .infoExpanded {
   //   top: 100px;
@@ -605,11 +612,15 @@
   }
 
   .embed_projectSitesButton {
-    right: 120px;
+    right: 100px;
   }
 
   .embed_dropdownContainer {
-    right: 120px;  
+    right: 100px;  
+  }
+  
+  .embed_exploreButton {
+    right: 10px;
   }
 
 }
@@ -647,7 +658,11 @@
   }
 
   .embed_dropdownContainer {
-    right: 178px;
+    right: 165px;
+  }
+
+  .embed_exploreButton {
+    right: 20px;
   }
   
 }
@@ -667,7 +682,7 @@
   }
 
   .embed_projectSitesButton, .embed_dropdownContainer {
-    right: 120px;
+    right: 100px;
   }
 }
 
