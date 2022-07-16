@@ -63,13 +63,13 @@ export default function Donate({
   }, [directGift]);
 
   // Deprecation Notice: This route will be removed in next major version
-  React.useEffect(() => {
-    if (router.query.p) {
-      router.push('/[p]', `/${router.query.p}`, {
-        shallow: true,
-      });
-    }
-  }, [router]);
+  // React.useEffect(() => {
+  //   if (router.query.p) {
+  //     router.push('/[p]', `/${router.query.p}`, {
+  //       shallow: true,
+  //     });
+  //   }
+  // }, [router]);
 
   React.useEffect(() => {
     setShowSingleProject(false);
@@ -78,24 +78,32 @@ export default function Donate({
   }, []);
 
   // Load all projects
+  const { query } = router;
   React.useEffect(() => {
     async function loadProjects() {
       if (
         !internalCurrencyCode ||
         currencyCode !== internalCurrencyCode ||
-        internalLanguage !== i18n.language
+        internalLanguage !== i18n.language ||
+        tenantID
       ) {
         const currency = getStoredCurrency();
         setInternalCurrencyCode(currency);
         setCurrencyCode(currency);
         setInternalLanguage(i18n.language);
-        const projects = await getRequest(`/app/projects`, handleError, '/', {
-          _scope: 'map',
-          currency: currency,
-          tenant: TENANT_ID,
-          'filter[purpose]': 'trees,conservation',
-          locale: i18n.language,
-        });
+        const projects = await getRequest(
+          `/app/projects`,
+          handleError,
+          '/',
+          {
+            _scope: 'map',
+            currency: currency,
+            tenant: tenantID,
+            'filter[purpose]': 'trees,conservation',
+            locale: i18n.language,
+          },
+          tenantID
+        );
         setProjects(projects);
         setProject(null);
         setShowSingleProject(false);
@@ -103,7 +111,7 @@ export default function Donate({
       }
     }
     loadProjects();
-  }, [currencyCode, i18n.language]);
+  }, [tenantID, query.tenant, currencyCode, i18n.language]);
 
   const ProjectsProps = {
     projects: filteredProjects,

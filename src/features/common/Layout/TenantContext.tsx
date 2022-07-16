@@ -1,29 +1,51 @@
 import { createContext, ReactElement, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import i18next from '../../../../i18n';
 
 export const TenantContext = createContext({
-  tenantID: '' || null,
+  tenantID: '',
   setTenantID: (value: string) => '',
 });
 
+const { useTranslation } = i18next;
+
 const TenantContextProvider = ({ children }: any): ReactElement => {
-  const [tenantID, setTenantID] = useState(null);
+  const { i18n } = useTranslation();
+  const [tenantID, setTenantID] = useState('');
+  const [language, setlanguage] = useState(
+    typeof window !== 'undefined' && localStorage.getItem('language')
+      ? localStorage.getItem('language')
+      : 'en'
+  );
   const router = useRouter();
 
-  const getTenantID = (router: {}) => {
-    if (process.env.TENANTID) {
-      return process.env.TENANTID;
-    } else if (router.query.tenant) {
-      return router.query.tenant;
-    } else {
-      return 'ten_NxJq55pm';
+  const { query } = router;
+  useEffect(() => {
+    if (query.locale) {
+      setlanguage(query.locale);
     }
-  };
+  }, [query.locale]);
 
   useEffect(() => {
-    const tenantId = getTenantID(router);
+    if (i18n && i18n.isInitialized) {
+      i18n.changeLanguage(language);
+      localStorage.setItem('language', language);
+    }
+  }, [language, router]);
+
+  useEffect(() => {
+    const getTenantID = (query: {}) => {
+      if (process.env.TENANTID) {
+        return process.env.TENANTID;
+      } else if (query.tenant) {
+        return query.tenant;
+      } else {
+        return 'ten_NxJq55pm';
+      }
+    };
+    const tenantId = getTenantID(query);
     setTenantID(tenantId);
-  }, [router]);
+  }, [query.tenant]);
   return (
     <TenantContext.Provider value={{ tenantID, setTenantID }}>
       {children}

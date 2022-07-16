@@ -87,8 +87,9 @@ export async function getRequest(
   errorHandler?: Function,
   redirect?: string,
   queryParams?: { [key: string]: string },
-  version?: string
-) {
+  version?: string,
+  tenantID?: string
+  ) {
   let result;
   const lang = localStorage.getItem('language') || 'en';
   const query: any = { ...queryParams, locale: lang };
@@ -97,7 +98,7 @@ export async function getRequest(
   await fetch(`${process.env.API_ENDPOINT}${url}${queryStringSuffix}`, {
     method: 'GET',
     headers: {
-      'tenant-key': `${TENANT_ID}`,
+      'tenant-key': `${tenantID ? tenantID : TENANT_ID }`,
       'X-SESSION-ID': await getsessionId(),
       'x-locale': `${
         localStorage.getItem('language')
@@ -109,7 +110,7 @@ export async function getRequest(
   })
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
-      handleApiError(res.status, errorHandler, redirect);
+      // handleApiError(res.status, errorHandler, redirect);
     })
     .catch((err) => console.error(`Unhandled Exception: ${err}`));
   return result;
