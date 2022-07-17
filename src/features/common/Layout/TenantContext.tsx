@@ -32,6 +32,7 @@ const TenantContextProvider = ({ children }: any): ReactElement => {
   useEffect(() => {
     console.log(query.locale, '3');
     console.log(language, 'lang');
+    console.log(i18n, i18n.isInitialized, 'i18n');
     if (i18n && i18n.isInitialized) {
       console.log(language, 'lang inssssside if');
       i18n.changeLanguage(language);
