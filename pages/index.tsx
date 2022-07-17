@@ -79,6 +79,7 @@ export default function Donate({
 
   // Load all projects
   const { query } = router;
+  console.log(tenantID);
   React.useEffect(() => {
     async function loadProjects() {
       if (

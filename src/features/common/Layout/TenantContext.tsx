@@ -20,6 +20,7 @@ const TenantContextProvider = ({ children }: any): ReactElement => {
   const router = useRouter();
 
   const { query } = router;
+  console.log(query, 'query');
   useEffect(() => {
     if (query.locale) {
       setlanguage(query.locale);
