@@ -1,7 +1,6 @@
 import { createContext, ReactElement, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import i18next from '../../../../i18n';
-import { lang } from 'moment';
 
 export const TenantContext = createContext({
   tenantID: '',
@@ -21,20 +20,15 @@ const TenantContextProvider = ({ children }: any): ReactElement => {
   const router = useRouter();
 
   const { query } = router;
-  console.log(query.locale, '1');
+
   useEffect(() => {
-    console.log(query.locale, '2');
     if (query.locale) {
       setlanguage(query.locale);
     }
   }, [query.locale]);
 
   useEffect(() => {
-    console.log(query.locale, '3');
-    console.log(language, 'lang');
-    console.log(i18n, i18n?.isInitialized, 'i18n');
     if (i18n && i18n.isInitialized) {
-      console.log(language, 'lang inssssside if');
       i18n.changeLanguage(language);
       localStorage.setItem('language', language);
     }
