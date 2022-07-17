@@ -37,6 +37,7 @@ const TenantContextProvider = ({ children }: any): ReactElement => {
   useEffect(() => {
     const getTenantID = (query: {}) => {
       if (process.env.TENANTID) {
+        console.log(process.env.TENANID, 'eTect');
         return process.env.TENANTID;
       } else if (query.tenant) {
         return query.tenant;
