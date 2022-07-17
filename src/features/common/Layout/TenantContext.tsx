@@ -31,7 +31,7 @@ const TenantContextProvider = ({ children }: any): ReactElement => {
       i18n.changeLanguage(language);
       localStorage.setItem('language', language);
     }
-  }, [language, router]);
+  }, [language, query.locale]);
 
   useEffect(() => {
     const getTenantID = (query: {}) => {
