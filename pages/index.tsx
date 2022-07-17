@@ -79,9 +79,8 @@ export default function Donate({
 
   // Load all projects
   const { query } = router;
-  console.log(tenantID, 'index tenanID');
+
   React.useEffect(() => {
-    console.log(tenantID, 'index inside useeffect tenanID');
     async function loadProjects() {
       if (
         !internalCurrencyCode ||
@@ -89,7 +88,6 @@ export default function Donate({
         internalLanguage !== i18n.language ||
         tenantID
       ) {
-        console.log(tenantID, ' index nside useeffect  ifelse tenanID');
         const currency = getStoredCurrency();
         setInternalCurrencyCode(currency);
         setCurrencyCode(currency);

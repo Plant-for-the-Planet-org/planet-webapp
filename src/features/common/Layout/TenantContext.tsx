@@ -20,7 +20,7 @@ const TenantContextProvider = ({ children }: any): ReactElement => {
   const router = useRouter();
 
   const { query } = router;
-  console.log(query, 'query');
+
   useEffect(() => {
     if (query.locale) {
       setlanguage(query.locale);
@@ -37,7 +37,6 @@ const TenantContextProvider = ({ children }: any): ReactElement => {
   useEffect(() => {
     const getTenantID = (query: {}) => {
       if (process.env.TENANTID) {
-        console.log(process.env.TENANID, 'eTect');
         return process.env.TENANTID;
       } else if (query.tenant) {
         return query.tenant;
@@ -46,7 +45,7 @@ const TenantContextProvider = ({ children }: any): ReactElement => {
       }
     };
     const tenantId = getTenantID(query);
-    console.log(tenantId, 'in tenant context tenantID');
+
     setTenantID(tenantId);
   }, [query.tenant]);
   return (
