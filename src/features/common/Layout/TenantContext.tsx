@@ -45,6 +45,7 @@ const TenantContextProvider = ({ children }: any): ReactElement => {
       }
     };
     const tenantId = getTenantID(query);
+    console.log(tenantId, 'in tenant context tenantID');
     setTenantID(tenantId);
   }, [query.tenant]);
   return (
