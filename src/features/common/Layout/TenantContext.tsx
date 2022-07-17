@@ -33,6 +33,7 @@ const TenantContextProvider = ({ children }: any): ReactElement => {
     console.log(query.locale, '3');
     console.log(language, 'lang');
     if (i18n && i18n.isInitialized) {
+      console.log(language, 'lang inssssside if');
       i18n.changeLanguage(language);
       localStorage.setItem('language', language);
     }
