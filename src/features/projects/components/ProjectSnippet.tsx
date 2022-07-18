@@ -41,7 +41,7 @@ export default function ProjectSnippet({
   const { token } = React.useContext(UserPropsContext);
   const handleOpen = () => {
     const url = getDonationUrl(project.slug, token);
-    window.location.href = url;
+    window.open(url, '_blank').focus();
   };
 
   return ready ? (
