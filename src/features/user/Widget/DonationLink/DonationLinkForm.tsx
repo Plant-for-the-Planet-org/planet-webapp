@@ -4,6 +4,7 @@ import i18next from '../../../../../i18n';
 
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import InlineFormDisplayGroup from './InlineFormDisplayGroup';
 
 const { useTranslation } = i18next;
 
@@ -35,12 +36,28 @@ const DonationLinkForm = (): ReactElement | null => {
     return (
       <StyledForm>
         <div>Donation Link Form</div>
-        <AutoCompleteCountry
-          label={t('labelCountry')}
-          name="country"
-          defaultValue={country}
-          onChange={setCountry}
-        />
+        <div className="inputContainer">
+          <InlineFormDisplayGroup>
+            <AutoCompleteCountry
+              label={t('labelCountry')}
+              name="country"
+              defaultValue={country}
+              onChange={setCountry}
+            />
+            <AutoCompleteCountry
+              label={t('labelCountry')}
+              name="country"
+              defaultValue={country}
+              onChange={setCountry}
+            />
+          </InlineFormDisplayGroup>
+          <AutoCompleteCountry
+            label={t('labelCountry')}
+            name="country"
+            defaultValue={country}
+            onChange={setCountry}
+          />
+        </div>
       </StyledForm>
     );
   }
