@@ -6,8 +6,7 @@ import i18next from '../../../i18n';
 
 const { useTranslation } = i18next;
 
-interface Props {}
-export default function BulkCodePage({}: Props): ReactElement {
+export default function BulkCodePage(): ReactElement {
   const { t, ready } = useTranslation('me');
   return (
     <UserLayout>

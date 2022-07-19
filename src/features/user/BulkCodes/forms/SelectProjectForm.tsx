@@ -15,9 +15,7 @@ import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const { useTranslation } = i18next;
 
-interface SelectProjectFormProps {}
-
-const SelectProjectForm = ({}: SelectProjectFormProps): ReactElement | null => {
+const SelectProjectForm = (): ReactElement | null => {
   const router = useRouter();
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
   const { method } = router.query;

@@ -11,8 +11,7 @@ import { BulkCodeMethods } from '../../../../src/utils/constants/bulkCodeConstan
 
 const { useTranslation } = i18next;
 
-interface Props {}
-export default function BulkCodeSelectProjectPage({}: Props): ReactElement {
+export default function BulkCodeSelectProjectPage(): ReactElement {
   const { t, ready } = useTranslation('me');
   const router = useRouter();
   const { isReady, query } = useRouter();

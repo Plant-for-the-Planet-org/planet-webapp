@@ -14,8 +14,7 @@ import { useRouter } from 'next/router';
 
 const { useTranslation } = i18next;
 
-interface Props {}
-export default function BulkCodeIssueCodesPage({}: Props): ReactElement {
+export default function BulkCodeIssueCodesPage(): ReactElement {
   const router = useRouter();
   const { isReady, query } = useRouter();
   const { t, ready } = useTranslation('me');
