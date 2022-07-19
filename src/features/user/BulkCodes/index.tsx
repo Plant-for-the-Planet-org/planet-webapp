@@ -7,8 +7,14 @@ import CreationMethodForm from './forms/CreationMethodForm';
 import SelectProjectForm from './forms/SelectProjectForm';
 import IssueCodesForm from './forms/IssueCodesForm';
 
+export enum BulkCodeSteps {
+  SELECT_METHOD = 0,
+  SELECT_PROJECT = 1,
+  ISSUE_CODES = 2,
+}
+
 interface BulkCodesProps {
-  step: 0 | 1 | 2;
+  step: BulkCodeSteps;
 }
 
 const { useTranslation } = i18next;
@@ -20,11 +26,11 @@ export default function BulkCodes({
 
   const renderStep = () => {
     switch (step) {
-      case 0:
+      case BulkCodeSteps.SELECT_METHOD:
         return <CreationMethodForm />;
-      case 1:
+      case BulkCodeSteps.SELECT_PROJECT:
         return <SelectProjectForm />;
-      case 2:
+      case BulkCodeSteps.ISSUE_CODES:
         return <IssueCodesForm />;
       default:
         return <CreationMethodForm />;

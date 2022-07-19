@@ -1,6 +1,8 @@
 import React, { ReactElement, useEffect, useCallback, useContext } from 'react';
 import UserLayout from '../../../../src/features/common/Layout/UserLayout/UserLayout';
-import BulkCodes from '../../../../src/features/user/BulkCodes';
+import BulkCodes, {
+  BulkCodeSteps,
+} from '../../../../src/features/user/BulkCodes';
 import { PaymentOptions } from '../../../../src/features/user/BulkCodes/BulkCodesTypes';
 import Head from 'next/head';
 import i18next from '../../../../i18n';
@@ -79,7 +81,7 @@ export default function BulkCodeIssueCodesPage({}: Props): ReactElement {
       <Head>
         <title>{ready ? t('bulkCodesTitleStep3') : ''}</title>
       </Head>
-      <BulkCodes step={2} />
+      <BulkCodes step={BulkCodeSteps.ISSUE_CODES} />
     </UserLayout>
   );
 }

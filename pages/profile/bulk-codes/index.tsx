@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
-import BulkCodes from '../../../src/features/user/BulkCodes';
+import BulkCodes, { BulkCodeSteps } from '../../../src/features/user/BulkCodes';
 import Head from 'next/head';
 import i18next from '../../../i18n';
 
@@ -14,7 +14,7 @@ export default function BulkCodePage({}: Props): ReactElement {
       <Head>
         <title>{ready ? t('bulkCodesTitle') : ''}</title>
       </Head>
-      <BulkCodes step={0} />
+      <BulkCodes step={BulkCodeSteps.SELECT_METHOD} />
     </UserLayout>
   );
 }

@@ -1,6 +1,8 @@
 import React, { ReactElement, useEffect } from 'react';
 import UserLayout from '../../../../src/features/common/Layout/UserLayout/UserLayout';
-import BulkCodes from '../../../../src/features/user/BulkCodes';
+import BulkCodes, {
+  BulkCodeSteps,
+} from '../../../../src/features/user/BulkCodes';
 import Head from 'next/head';
 import i18next from '../../../../i18n';
 import { useRouter } from 'next/router';
@@ -38,7 +40,7 @@ export default function BulkCodeSelectProjectPage({}: Props): ReactElement {
       <Head>
         <title>{ready ? t('bulkCodesTitleStep2') : ''}</title>
       </Head>
-      <BulkCodes step={1} />
+      <BulkCodes step={BulkCodeSteps.SELECT_PROJECT} />
     </UserLayout>
   );
 }
