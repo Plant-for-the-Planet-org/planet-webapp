@@ -17,6 +17,7 @@ const TenantContextProvider = ({ children }: any): ReactElement => {
       ? localStorage.getItem('language')
       : 'en'
   );
+  console.log(language, '1');
   const router = useRouter();
 
   const { query } = router;
@@ -28,11 +29,15 @@ const TenantContextProvider = ({ children }: any): ReactElement => {
   }, [query.locale]);
 
   console.log(query.locale);
+  console.log(language, '2');
 
   useEffect(() => {
+    console.log(i18n, i18n.isInitialized, 'i18n');
     if (i18n && i18n.isInitialized) {
       i18n.changeLanguage(language);
+      console.log(language, '3');
       localStorage.setItem('language', language);
+      console.log(language, '4');
     }
   }, [language, query.locale, i18n]);
 
