@@ -40,7 +40,7 @@ const TenantContextProvider = ({ children }: any): ReactElement => {
       localStorage.setItem('language', language);
       console.log(language, '4');
     }
-  }, [language, query.locale, i18n]);
+  }, [language, query.locale, i18n.isInitialized]);
 
   useEffect(() => {
     const getTenantID = (query: {}) => {
