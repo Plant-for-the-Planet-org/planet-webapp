@@ -19,6 +19,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
     const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
     const [selectedCountry, setSelectedCountry] = React.useState('DE');
     const [openLanguageModal, setLanguageModalOpen] = React.useState(false);
+    
 
     const handleLanguageModalClose = () => {
         setLanguageModalOpen(false);
@@ -27,11 +28,15 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
         setLanguageModalOpen(true);
     };
     const router = useRouter();
+    const embedVal = router.query.embed === 'true';
+
+  
     return (
-         router.query.embed === 'true' ? <></> : (
             <>
+           
             <div className={styles.lngSwitcher + ' mapboxgl-map'}>
                 {config.darkModeEnabled && <DarkModeSwitch />}
+                {embedVal? null :
                 <div
                     onClick={() => {
                         setLanguageModalOpen(true);
@@ -40,16 +45,18 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                     {`🌐 ${language ? language.toUpperCase() : ''
                         } • ${selectedCurrency}`}
                 </div>
-                {(process.env.TENANT === "ttc" || process.env.TENANT === "planet") ? < a
+                }
+                {(process.env.TENANT === "ttc" || process.env.TENANT === "planet") && (!embedVal)? < a
                     rel="noopener noreferrer"
                     href={`https://www.thegoodshop.org/de/shop/`}
                     target={'_blank'}
                 >
                     {t('common:shop')}
                 </a> : null}
+               
                 {/* {config.statusURL ? <a
                     rel="noopener noreferrer"
-                    href={config.statusURL}
+                    href={config.statusURL} 
                     target={'_blank'}
                 >
                     {t('common:status')}
@@ -57,10 +64,11 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                 <a
                     rel="noopener noreferrer"
                     href={`https://status.pp.eco/`}
-                    target={'_blank'}
+                    target={ embedVal? '_top': '_blank'}
                 >
                     {t('common:status')}
                 </a>
+                { embedVal? null: 
                 <a
                     rel="noopener noreferrer"
                     href={`https://pp.eco/legal/${i18n.language}/imprint`}
@@ -68,6 +76,8 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                 >
                     {t('common:imprint')}
                 </a>
+                }
+                { embedVal? null: 
                 <a
                     rel="noopener noreferrer"
                     href={`https://pp.eco/legal/${i18n.language}/privacy`}
@@ -75,6 +85,8 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                 >
                     {t('common:privacy')}
                 </a>
+                }
+                { embedVal? null: 
                 <a
                     rel="noopener noreferrer"
                     href={`https://pp.eco/legal/${i18n.language}/terms`}
@@ -82,7 +94,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                 >
                     {t('common:terms')}
                 </a>
-
+                }
                 <a
                     style={{
                         display: 'flex',
@@ -109,7 +121,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                         </div>
                     </div>
                 </a>
-
+                { embedVal? null: 
                 <a
                     rel="noopener noreferrer"
                     href="mailto:support@plant-for-the-planet.org"
@@ -117,7 +129,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                 >
                     {t('common:contact')}
                 </a>
-
+                }
             </div>
             <SelectLanguageAndCountry
                 openModal={openLanguageModal}
@@ -130,5 +142,4 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                 setCurrencyCode={setCurrencyCode}
             />
         </>)
-    )
 }
