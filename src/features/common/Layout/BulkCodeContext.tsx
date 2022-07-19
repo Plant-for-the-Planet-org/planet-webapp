@@ -21,6 +21,21 @@ import i18next from '../../../../i18n';
 
 const { useTranslation } = i18next;
 
+interface APISingleProject {
+  type: string;
+  geometry: unknown;
+  properties: {
+    [index: string]: unknown;
+    id: string;
+    name: string;
+    slug: string;
+    allowDonations: boolean;
+    purpose: string;
+    currency: string;
+    unitCost: number;
+  };
+}
+
 export interface PlanetCashAccount {
   guid: string;
   currency: string;
@@ -123,27 +138,18 @@ export const BulkCodeProvider: FC = ({ children }) => {
   const fetchProjectList = useCallback(async () => {
     if (planetCashAccount) {
       try {
-        const fetchedProjects = await getRequest<
-          [
-            {
-              properties: {
-                id: string;
-                name: string;
-                slug: string;
-                allowDonations: boolean;
-                purpose: string;
-                currency: string;
-                unitCost: number;
-              };
-            }
-          ]
-        >(`/app/projects`, handleError, undefined, {
-          _scope: 'map',
-          currency: planetCashAccount.currency,
-          tenant: TENANT_ID,
-          'filter[purpose]': 'trees',
-          locale: i18n.language,
-        });
+        const fetchedProjects = await getRequest<APISingleProject[]>(
+          `/app/projects`,
+          handleError,
+          undefined,
+          {
+            _scope: 'map',
+            currency: planetCashAccount.currency,
+            tenant: TENANT_ID,
+            'filter[purpose]': 'trees',
+            locale: i18n.language,
+          }
+        );
 
         // map fetchedProjects to desired form and setProject
         if (
@@ -162,7 +168,6 @@ export const BulkCodeProvider: FC = ({ children }) => {
                   name: project.properties.name,
                   unitCost: project.properties.unitCost,
                   currency: project.properties.currency,
-                  /* unit: 'trees', */
                   purpose: project.properties.purpose,
                   allowDonations: project.properties.allowDonations,
                 };
