@@ -9,7 +9,7 @@
   "issuingCodes": "Issuing Codes...",
   "importMethodText": {
     "title": "Import File",
-    "subtitle": "Use this method if one of the following criterias match your use case:",
+    "subtitle": "Use this method if one of the following criteria match your use case:",
     "details": [
       "I want to provide the Recipient's name or Email for each code",
       "I want Plant-for-the-Planet to automatically email the recipients once it has been generated (optional)",
@@ -18,7 +18,7 @@
   },
   "genericMethodText": {
     "title": "Create Generic Codes",
-    "subtitle": "Use this method if the following criterias match your use case:",
+    "subtitle": "Use this method if the following criteria matches your use case:",
     "details": [
       "All codes will have the same value",
       "I want to generate a number of code for arbitrary recipients",
