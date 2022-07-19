@@ -23,7 +23,7 @@ const CreationMethodForm = (): ReactElement | null => {
     setBulkGiftData,
     setTotalUnits,
   } = useBulkCode();
-  const [method, setMethod] = useState<typeof bulkMethod>(bulkMethod);
+  const [method, setMethod] = useState<BulkCodeMethods | null>(bulkMethod);
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
   const { user } = useContext(UserPropsContext);
 
