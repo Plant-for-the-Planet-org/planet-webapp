@@ -1,13 +1,14 @@
 import { createContext, ReactElement, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import i18next from '../../../../i18n';
+// import i18next from '../../../../i18n';
+import { useTranslation } from 'react-i18next';
 
 export const TenantContext = createContext({
   tenantID: '',
   setTenantID: (value: string) => '',
 });
 
-const { useTranslation } = i18next;
+// const { useTranslation } = i18next;
 
 const TenantContextProvider = ({ children }: any): ReactElement => {
   const { i18n } = useTranslation();
