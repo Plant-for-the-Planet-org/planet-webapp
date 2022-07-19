@@ -64,10 +64,8 @@ type BulkGiftData = BulkGiftGenericData | BulkGiftImportData;
 export type SetState<T> = Dispatch<SetStateAction<T>>;
 
 interface BulkCodeContextInterface {
-  bulkMethod: BulkCodeMethods.GENERIC | BulkCodeMethods.IMPORT | null;
-  setBulkMethod: SetState<
-    BulkCodeMethods.GENERIC | BulkCodeMethods.IMPORT | null
-  >;
+  bulkMethod: BulkCodeMethods | null;
+  setBulkMethod: SetState<BulkCodeMethods | null>;
   planetCashAccount: PlanetCashAccount | null;
   setPlanetCashAccount: SetState<PlanetCashAccount | null>;
   project: Project | null;
@@ -87,9 +85,7 @@ export const BulkCodeProvider: FC = ({ children }) => {
   const { token, contextLoaded } = useContext(UserPropsContext);
   const { i18n } = useTranslation();
 
-  const [bulkMethod, setBulkMethod] = useState<
-    BulkCodeMethods.GENERIC | BulkCodeMethods.IMPORT | null
-  >(null);
+  const [bulkMethod, setBulkMethod] = useState<BulkCodeMethods | null>(null);
   const [planetCashAccount, setPlanetCashAccount] =
     useState<PlanetCashAccount | null>(null);
   const [project, setProject] = useState<Project | null>(null);
