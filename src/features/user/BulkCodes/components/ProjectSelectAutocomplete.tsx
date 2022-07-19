@@ -47,7 +47,7 @@ const ProjectSelectAutocomplete = ({
   if (ready) {
     return (
       <MuiAutocomplete
-        popupIcon={SearchIcon({})}
+        popupIcon={SearchIcon()}
         options={projectList}
         getOptionLabel={(option) => (option as Project).name}
         isOptionEqualToValue={(option, value) =>
