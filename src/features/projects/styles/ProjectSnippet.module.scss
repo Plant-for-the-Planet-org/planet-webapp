@@ -201,10 +201,11 @@
   font-size: $fontXSmall;
   color: $primaryFontColor;
   margin-top: 6px;
-  font-weight: 400;
+  font-weight: 700;
   text-align: right;
 }
 
 .perTreeCost > span {
   font-family: $primaryFontFamily;
+  font-weight: 400;
 }
