@@ -28,7 +28,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
         setLanguageModalOpen(true);
     };
     const router = useRouter();
-    const embedVal = router.query.embed === 'true';
+    const isEmbed = router.query.embed === 'true';
 
   
     return (
@@ -36,7 +36,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
            
             <div className={styles.lngSwitcher + ' mapboxgl-map'}>
                 {config.darkModeEnabled && <DarkModeSwitch />}
-                {embedVal? null :
+                {isEmbed? null :
                 <div
                     onClick={() => {
                         setLanguageModalOpen(true);
@@ -46,7 +46,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                         } • ${selectedCurrency}`}
                 </div>
                 }
-                {(process.env.TENANT === "ttc" || process.env.TENANT === "planet") && (!embedVal)? < a
+                {(process.env.TENANT === "ttc" || process.env.TENANT === "planet") && (!isEmbed)? < a
                     rel="noopener noreferrer"
                     href={`https://www.thegoodshop.org/de/shop/`}
                     target={'_blank'}
@@ -64,11 +64,11 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                 <a
                     rel="noopener noreferrer"
                     href={`https://status.pp.eco/`}
-                    target={ embedVal? '_top': '_blank'}
+                    target={ isEmbed? '_top': '_blank'}
                 >
                     {t('common:status')}
                 </a>
-                { embedVal? null: 
+                { isEmbed? null: 
                 <a
                     rel="noopener noreferrer"
                     href={`https://pp.eco/legal/${i18n.language}/imprint`}
@@ -77,7 +77,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                     {t('common:imprint')}
                 </a>
                 }
-                { embedVal? null: 
+                { isEmbed? null: 
                 <a
                     rel="noopener noreferrer"
                     href={`https://pp.eco/legal/${i18n.language}/privacy`}
@@ -86,7 +86,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                     {t('common:privacy')}
                 </a>
                 }
-                { embedVal? null: 
+                { isEmbed? null: 
                 <a
                     rel="noopener noreferrer"
                     href={`https://pp.eco/legal/${i18n.language}/terms`}
@@ -121,7 +121,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                         </div>
                     </div>
                 </a>
-                { embedVal? null: 
+                { isEmbed? null: 
                 <a
                     rel="noopener noreferrer"
                     href="mailto:support@plant-for-the-planet.org"
@@ -129,6 +129,17 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
                 >
                     {t('common:contact')}
                 </a>
+                }
+
+                {
+                    isEmbed?
+                    (
+                    <span>
+                        Powered by
+                      <a href="https://www.plant-for-the-planet.org"> Plant-for-the-Planet</a>
+                      </span>
+                      
+                    ): null
                 }
             </div>
             <SelectLanguageAndCountry

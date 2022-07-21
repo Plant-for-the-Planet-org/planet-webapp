@@ -541,6 +541,13 @@
     text-decoration: none;
     color: rgba($primaryFontColor, 0.75);
   }
+  > span {
+    margin-left: 10px;
+    a{
+    text-decoration: none;
+    color: rgba($primaryFontColor, 0.75);
+    }
+  }
 }
 
 .layerSwitcher {
