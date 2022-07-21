@@ -62,7 +62,6 @@ export default function ProjectSites({
   const [errorMessage, setErrorMessage] = React.useState('');
   const [openModal, setOpenModal] = React.useState(false);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { tenantID } = React.useContext(TenantContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
