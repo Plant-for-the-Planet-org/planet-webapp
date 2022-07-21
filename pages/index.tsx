@@ -126,7 +126,7 @@ export default function Donate({
     setShowDirectGift,
     directGift,
   };
-
+  console.log(tenantID);
   return (
     <>
       {initialized ? (
