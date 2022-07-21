@@ -4,6 +4,7 @@ import styles from './RedeemPopup.module.scss';
 import i18next from '../../../../../i18n';
 import tenantConfig from '../../../../../tenant.config';
 import { UserPropsContext } from '../UserPropsContext';
+import { useRouter } from 'next/router';
 
 const { useTranslation } = i18next;
 export default function RedeemPopup() {
@@ -44,7 +45,10 @@ export default function RedeemPopup() {
     localStorage.setItem('redeemPopup', showRedeemPopup);
   }, [showRedeemPopup]);
 
-  return ready && showRedeemPopup ? (
+  const router = useRouter();
+  const isEmbed = router.query.embed === 'true';
+
+  return ready && showRedeemPopup && !isEmbed ? (
     <div className={styles.cookieContainer}>
       <button
         id={'redeemCloseButton'}
