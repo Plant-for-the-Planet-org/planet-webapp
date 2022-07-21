@@ -1,5 +1,5 @@
 // calling this function before window is loaded may cause an error
-export const getDonationUrl = (id: string, token: string | null): string => {
+export const getDonationUrl = (id: string, token: string | null, tenantID : any): string => {
   const country = localStorage.getItem('countryCode');
   const language = localStorage.getItem('language');
   let directGift = localStorage.getItem('directGift');
@@ -12,6 +12,6 @@ export const getDonationUrl = (id: string, token: string | null): string => {
     window.location.href
   }&country=${country}&locale=${language}${
     token ? '&token=' + token : ''
-  }&tenant=${process.env.TENANTID}${directGift ? '&s=' + directGift.id : ''}`;
+  }&tenant=${tenantID}${directGift ? '&s=' + directGift.id : ''}`;
   return sourceUrl;
 };

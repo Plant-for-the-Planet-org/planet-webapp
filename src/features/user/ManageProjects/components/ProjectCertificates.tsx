@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useContext } from 'react';
 import styles from './../StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm } from 'react-hook-form';
@@ -18,6 +18,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import MuiDatePicker from '@mui/lab/MobileDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { TenantContext } from '../../../common/Layout/TenantContext';
 
 const { useTranslation } = i18next;
 
@@ -36,6 +37,7 @@ function ProjectCertificates({
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { tenantID } = React.useContext(TenantContext);
 
   const {
     register,
@@ -81,7 +83,8 @@ function ProjectCertificates({
         token,
         {},
         handleError,
-        '/profile'
+        '/profile',
+        tenantID
       ).then((result) => {
         if (result && result.certificates && result.certificates.length > 0) {
           setShowForm(false);
@@ -126,7 +129,8 @@ function ProjectCertificates({
       `/app/projects/${projectGUID}/certificates`,
       submitData,
       token,
-      handleError
+      handleError,
+      tenantID
     )
       .then((res) => {
         if (!res.code) {
@@ -164,7 +168,8 @@ function ProjectCertificates({
     deleteAuthenticatedRequest(
       `/app/projects/${projectGUID}/certificates/${id}`,
       token,
-      handleError
+      handleError,
+      tenantID
     ).then((res) => {
       if (res !== 404) {
         const uploadedFilesTemp = uploadedFiles.filter(

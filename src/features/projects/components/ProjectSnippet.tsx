@@ -41,7 +41,7 @@ export default function ProjectSnippet({
 
   const { token } = React.useContext(UserPropsContext);
   const handleOpen = () => {
-    const url = getDonationUrl(project.slug, token);
+    const url = getDonationUrl(project.slug, token, tenantID);
     window.location.href = url;
   };
 

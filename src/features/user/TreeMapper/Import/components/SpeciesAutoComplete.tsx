@@ -8,6 +8,7 @@ import { postRequest } from '../../../../../utils/apiRequests/api';
 import { Controller } from 'react-hook-form';
 import { Autocomplete } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { TenantContext } from '../../../../common/Layout/TenantContext';
 
 const config = tenantConfig();
 
@@ -24,6 +25,7 @@ export default function SpeciesSelect(props: {
   >([]);
   const [query, setQuery] = React.useState('');
   const { theme } = React.useContext(ThemeContext);
+  const { tenantID } = React.useContext(TenantContext);
   const useStylesAutoComplete = makeStyles({
     paper: {
       color:
@@ -85,7 +87,7 @@ export default function SpeciesSelect(props: {
 
   const suggestSpecies = (value: any) => {
     if (value.length > 2) {
-      postRequest(`/suggest.php`, { q: value, t: 'species' }).then(
+      postRequest(`/suggest.php`, { q: value, t: 'species' }, tenantID).then(
         (res: any) => {
           if (res && res.length > 0) {
             const species = res.map((item: any) => ({

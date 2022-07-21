@@ -18,6 +18,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import MuiDatePicker from '@mui/lab/MobileDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { TenantContext } from '../../../common/Layout/TenantContext';
 
 const { useTranslation } = i18next;
 
@@ -46,6 +47,7 @@ export default function DetailedAnalysis({
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { tenantID } = React.useContext(TenantContext);
   const [siteOwners, setSiteOwners] = React.useState([
     {
       id: 1,
@@ -254,7 +256,8 @@ export default function DetailedAnalysis({
       `/app/projects/${projectGUID}`,
       submitData,
       token,
-      handleError
+      handleError,
+      tenantID
     )
       .then((res) => {
         if (!res.code) {

@@ -9,6 +9,7 @@ import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { TenantContext } from '../../../common/Layout/TenantContext';
 
 const { useTranslation } = i18next;
 
@@ -27,6 +28,7 @@ export default function AddTargetModal({
   // Internal states
   const [target, setTarget] = React.useState(0);
   const [isLoadingForm, setIsLoading] = React.useState(false);
+  const { tenantID } = React.useContext(TenantContext);
 
   // Function to change target
   const changeTarget = async () => {
@@ -35,7 +37,13 @@ export default function AddTargetModal({
       const bodyToSend = {
         target: !target ? user.score.target : target,
       };
-      putAuthenticatedRequest(`/app/profile`, bodyToSend, token, handleError)
+      putAuthenticatedRequest(
+        `/app/profile`,
+        bodyToSend,
+        token,
+        handleError,
+        tenantID
+      )
         .then((res) => {
           handleAddTargetModalClose();
           const newUserInfo = {

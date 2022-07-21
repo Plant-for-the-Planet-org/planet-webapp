@@ -21,6 +21,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import MuiDatePicker from '@mui/lab/MobileDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { TenantContext } from '../../common/Layout/TenantContext';
 
 // interface EditDonationProps {
 //   editModalOpen
@@ -35,6 +36,7 @@ export const EditModal = ({
   record,
   fetchRecurrentDonations,
 }: any) => {
+  const { tenantID } = React.useContext(TenantContext);
   const [frequency, setFrequency] = React.useState(record?.frequency);
   const { theme } = React.useContext(ThemeContext);
   const [userLang, setUserLang] = React.useState('en');
@@ -85,7 +87,8 @@ export const EditModal = ({
         `/app/subscriptions/${record?.id}?scope=modify`,
         bodyToSend,
         token,
-        handleError
+        handleError,
+        tenantID
       )
         .then((res) => {
           if (res?.status === 'action_required') {

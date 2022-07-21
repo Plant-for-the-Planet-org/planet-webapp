@@ -5,7 +5,7 @@ import {
   FormControlLabel,
   RadioGroup,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   getCountryDataBy,
   sortCountriesByTranslation,
@@ -17,6 +17,7 @@ import GreenRadio from '../../InputTypes/GreenRadio';
 import styles from './SelectLanguageAndCountry.module.scss';
 import i18next from '../../../../../i18n';
 import tenantConfig from '../../../../../tenant.config';
+import { TenantContext } from '../TenantContext';
 
 const config = tenantConfig();
 const { useTranslation } = i18next;
@@ -159,6 +160,7 @@ interface MapCountryProps {
   handleChange: Function;
 }
 function MapCountry({ value, handleChange }: MapCountryProps) {
+  const { tenantID } = useContext(TenantContext);
   const { t, i18n, ready } = useTranslation(['country']);
   const country = getStoredConfig('country');
   const priorityCountries = country === value ? [value] : [value, country];

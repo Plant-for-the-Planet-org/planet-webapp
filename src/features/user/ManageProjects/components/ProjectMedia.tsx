@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import styles from '../StepForm.module.scss';
@@ -15,6 +15,7 @@ import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { TenantContext } from '../../../common/Layout/TenantContext';
 
 const { useTranslation } = i18next;
 
@@ -37,6 +38,7 @@ export default function ProjectMedia({
   projectGUID,
   handleReset,
 }: Props): ReactElement {
+  const { tenantID } = React.useContext(TenantContext);
   const { t, i18n, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
@@ -54,7 +56,8 @@ export default function ProjectMedia({
         token,
         {},
         handleError,
-        '/profile'
+        '/profile',
+        tenantID
       ).then((result) => {
         setUploadedImages(result.images);
       });
@@ -72,7 +75,8 @@ export default function ProjectMedia({
       `/app/projects/${projectGUID}/images`,
       submitData,
       token,
-      handleError
+      handleError,
+      tenantID
     )
       .then((res) => {
         if (!res.code) {
@@ -155,7 +159,8 @@ export default function ProjectMedia({
     deleteAuthenticatedRequest(
       `/app/projects/${projectGUID}/images/${id}`,
       token,
-      handleError
+      handleError,
+      tenantID
     ).then((res) => {
       if (res !== 404) {
         const uploadedFilesTemp = uploadedImages.filter(
@@ -177,7 +182,8 @@ export default function ProjectMedia({
       `/app/projects/${projectGUID}`,
       submitData,
       token,
-      handleError
+      handleError,
+      tenantID
     )
       .then((res) => {
         if (!res.code) {
@@ -216,7 +222,8 @@ export default function ProjectMedia({
       `/app/projects/${projectGUID}/images/${id}`,
       submitData,
       token,
-      handleError
+      handleError,
+      tenantID
     ).then((res) => {
       if (!res.code) {
         const tempUploadedData = uploadedImages;
@@ -248,7 +255,8 @@ export default function ProjectMedia({
       `/app/projects/${projectGUID}/images/${id}`,
       submitData,
       token,
-      handleError
+      handleError,
+      tenantID
     ).then((res) => {
       if (!res.code) {
         const tempUploadedData = uploadedImages;

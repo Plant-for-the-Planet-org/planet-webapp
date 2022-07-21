@@ -13,6 +13,7 @@ import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsC
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import ShareOptions from '../../../src/features/common/ShareOptions/ShareOptions';
 import { styled } from '@mui/material';
+import { TenantContext } from '../../../src/features/common/Layout/TenantContext';
 
 const { useTranslation } = i18next;
 
@@ -30,6 +31,7 @@ function ClaimDonation({}: Props): ReactElement {
 
   const router = useRouter();
 
+  const { tenantID } = React.useContext(TenantContext);
   const { user, contextLoaded, loginWithRedirect, token } =
     React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
@@ -62,11 +64,11 @@ function ClaimDonation({}: Props): ReactElement {
     setTextCopiedSnackbarOpen(false);
   };
 
-  const Alert = styled(MuiAlert)(({theme}) => {
+  const Alert = styled(MuiAlert)(({ theme }) => {
     return {
       backgroundColor: theme.palette.primary.main,
-    }
-  })
+    };
+  });
 
   const [codeRedeemed, setCodeRedeemed] = React.useState(false);
 
@@ -99,7 +101,8 @@ function ClaimDonation({}: Props): ReactElement {
         `/api/v1.3/${userLang}/validateCode`,
         submitData,
         token,
-        handleError
+        handleError,
+        tenantID
       ).then((res) => {
         if (res.code === 401) {
           setErrorMessage(res.message);
@@ -157,7 +160,8 @@ function ClaimDonation({}: Props): ReactElement {
         `/api/v1.3/${userLang}/convertCode`,
         submitData,
         token,
-        handleError
+        handleError,
+        tenantID
       ).then((res) => {
         if (res.code === 401) {
           setErrorMessage(res.message);

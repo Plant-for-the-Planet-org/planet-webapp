@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Tabs, Tab, ThemeProvider } from '@mui/material';
 import BasicDetails from './components/BasicDetails';
 import styles from './StepForm.module.scss';
@@ -16,10 +16,12 @@ import { useRouter } from 'next/router';
 import i18next from '../../../../i18n';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import materialTheme from '../../../theme/themeStyles';
+import { TenantContext } from '../../common/Layout/TenantContext';
 
 const { useTranslation } = i18next;
 
 export default function ManageProjects({ GUID, token, project }: any) {
+  const { tenantID } = useContext(TenantContext);
   const { t, i18n, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const router = useRouter();
@@ -138,7 +140,8 @@ export default function ManageProjects({ GUID, token, project }: any) {
       `/app/projects/${projectGUID}`,
       submitData,
       token,
-      handleError
+      handleError,
+      tenantID
     ).then((res) => {
       if (!res.code) {
         setProjectDetails(res);
@@ -164,7 +167,8 @@ export default function ManageProjects({ GUID, token, project }: any) {
       `/app/projects/${projectGUID}`,
       submitData,
       token,
-      handleError
+      handleError,
+      tenantID
     ).then((res) => {
       if (!res.code) {
         setProjectDetails(res);
@@ -190,7 +194,8 @@ export default function ManageProjects({ GUID, token, project }: any) {
         token,
         {},
         handleError,
-        '/profile'
+        '/profile',
+        tenantID
       ).then((result) => {
         setProjectDetails(result);
       });

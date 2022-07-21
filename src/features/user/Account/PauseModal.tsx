@@ -19,6 +19,7 @@ import {
 import MuiCalenderPicker from '@mui/lab/CalendarPicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { TenantContext } from '../../common/Layout/TenantContext';
 
 export const PauseModal = ({
   pauseModalOpen,
@@ -26,6 +27,7 @@ export const PauseModal = ({
   record,
   fetchRecurrentDonations,
 }: any) => {
+  const { tenantID } = React.useContext(TenantContext);
   const { theme } = React.useContext(ThemeContext);
   const { token } = React.useContext(UserPropsContext);
   const [option, setoption] = React.useState();
@@ -64,7 +66,8 @@ export const PauseModal = ({
       `/app/subscriptions/${record.id}?scope=pause`,
       bodyToSend,
       token,
-      handleError
+      handleError,
+      tenantID
     )
       .then((res) => {
         handlePauseModalClose();

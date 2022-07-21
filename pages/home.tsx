@@ -7,6 +7,7 @@ import tenantConfig from '../tenant.config';
 import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
 import { getRequest } from '../src/utils/apiRequests/api';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
+import { TenantContext } from '../src/features/common/Layout/TenantContext';
 
 const config = tenantConfig();
 
@@ -16,7 +17,7 @@ interface Props {
 
 export default function Home(initialized: Props) {
   const router = useRouter();
-
+  const { tenantID } = React.useContext(TenantContext);
   const [leaderboard, setLeaderboard] = React.useState(null);
   const [tenantScore, setTenantScore] = React.useState(null);
   const { handleError } = React.useContext(ErrorHandlingContext);
@@ -26,7 +27,8 @@ export default function Home(initialized: Props) {
       const newTenantScore = await getRequest(
         `/app/tenantScore`,
         handleError,
-        '/'
+        '/',
+        tenantID
       );
       setTenantScore(newTenantScore);
     }
@@ -38,7 +40,8 @@ export default function Home(initialized: Props) {
       const newLeaderBoard = await getRequest(
         `/app/leaderboard`,
         handleError,
-        '/'
+        '/',
+        tenantID
       );
       setLeaderboard(newLeaderBoard);
     }

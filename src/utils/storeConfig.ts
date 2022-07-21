@@ -1,8 +1,8 @@
 import getsessionId from './apiRequests/getSessionId';
 import countriesData from '../utils/countryCurrency/countriesData.json';
-import { TENANT_ID } from './constants/environment';
 
-export async function storeConfig() {
+
+export async function storeConfig(tenantId) {
   let userLang;
   if (localStorage) {
     userLang = localStorage.getItem('language') || 'en';
@@ -11,7 +11,7 @@ export async function storeConfig() {
   }
   await fetch(`${process.env.API_ENDPOINT}/app/config`, {
     headers: {
-      'tenant-key': `${TENANT_ID}`,
+      'tenant-key': `${tenantId}`,
       'X-SESSION-ID': await getsessionId(),
     },
   })

@@ -1,7 +1,7 @@
 import CssBaseline from '@mui/material/CssBaseline';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
-import React from 'react';
+import React, { useContext } from 'react';
 import TagManager from 'react-gtm-module';
 import Router from 'next/router';
 import { Auth0Provider } from '@auth0/auth0-react';
@@ -30,7 +30,9 @@ import ErrorHandlingProvider from '../src/features/common/Layout/ErrorHandlingCo
 import dynamic from 'next/dynamic';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
-import TenantContextProvider from '../src/features/common/Layout/TenantContext';
+import TenantContextProvider, {
+  TenantContext,
+} from '../src/features/common/Layout/TenantContext';
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -88,6 +90,7 @@ const onRedirectCallback = (appState: any) => {
 };
 
 export default function PlanetWeb({ Component, pageProps, err }: any) {
+  const { tenantID } = useContext(TenantContext);
   const router = useRouter();
   const [isMap, setIsMap] = React.useState(false);
   const [currencyCode, setCurrencyCode] = React.useState('');
@@ -108,7 +111,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   const [initialized, setInitialized] = React.useState(false);
 
   React.useEffect(() => {
-    storeConfig();
+    storeConfig(tenantID);
   }, []);
   React.useEffect(() => {
     i18next.initPromise.then(() => setInitialized(true));

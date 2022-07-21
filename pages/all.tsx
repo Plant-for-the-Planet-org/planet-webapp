@@ -1,10 +1,9 @@
-import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useContext } from 'react';
 import LeaderBoard from '../src/tenants/planet/LeaderBoard';
 import tenantConfig from '../tenant.config';
 import { getRequest } from '../src/utils/apiRequests/api';
 import GetLeaderboardMeta from './../src/utils/getMetaTags/GetLeaderboardMeta';
-import { TENANT_ID } from '../src/utils/constants/environment';
+import { TenantContext } from '../src/features/common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 const config = tenantConfig();
 
@@ -13,16 +12,17 @@ interface Props {
 }
 
 export default function Home({ initialized }: Props) {
-  const router = useRouter();
+  const { tenantID } = useContext(TenantContext);
   const [leaderboard, setLeaderboard] = React.useState(null);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     async function loadLeaderboard() {
       const newLeaderboard = await getRequest(
-        `/app/leaderboard/${TENANT_ID}`,
+        `/app/leaderboard/${tenantID}`,
         handleError,
         '/'
+        tenantID
       );
       setLeaderboard(newLeaderboard);
     }
@@ -34,9 +34,10 @@ export default function Home({ initialized }: Props) {
   React.useEffect(() => {
     async function loadTenantScore() {
       const newTenantScore = await getRequest(
-        `/app/tenantScore/${TENANT_ID}`,
+        `/app/tenantScore/${tenantID}`,
         handleError,
-        '/'
+        '/',
+        tenantID
       );
       setTenantScore(newTenantScore);
     }

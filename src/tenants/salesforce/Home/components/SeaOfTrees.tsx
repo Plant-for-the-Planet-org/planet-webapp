@@ -5,10 +5,12 @@ import { getRequest } from '../../../../utils/apiRequests/api';
 import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/SeaOfTrees.module.scss';
+import { TenantContext } from '../../../../features/common/Layout/TenantContext';
 
 export default function SeaOfTrees() {
   const projectID = 'proj_7gmlF7Q8aL65V7j7AG9NW8Yy';
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { tenantID } = React.useContext(TenantContext);
 
   const [project, setProject] = useState(null);
   useEffect(() => {
@@ -21,7 +23,9 @@ export default function SeaOfTrees() {
         {
           _scope: 'extended',
           currency: currencyCode,
-        }
+        },
+        undefined,
+        tenantID
       );
       setProject(project);
     }

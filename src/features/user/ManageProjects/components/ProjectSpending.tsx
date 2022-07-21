@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useContext, useState } from 'react';
 import styles from './../StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
@@ -18,6 +18,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import MuiDatePicker from '@mui/lab/MobileDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { TenantContext } from '../../../common/Layout/TenantContext';
 
 const { useTranslation } = i18next;
 
@@ -49,7 +50,7 @@ export default function ProjectSpending({
     setValue,
     control,
   } = useForm({ mode: 'all' });
-
+  const { tenantID } = useContext(TenantContext);
   const [amount, setAmount] = React.useState(0);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -111,7 +112,8 @@ export default function ProjectSpending({
       `/app/projects/${projectGUID}/expenses`,
       submitData,
       token,
-      handleError
+      handleError,
+      tenantID
     )
       .then((res) => {
         if (!res.code) {
@@ -145,7 +147,8 @@ export default function ProjectSpending({
     deleteAuthenticatedRequest(
       `/app/projects/${projectGUID}/expenses/${id}`,
       token,
-      handleError
+      handleError,
+      tenantID
     ).then((res) => {
       if (res !== 404) {
         const uploadedFilesTemp = uploadedFiles.filter(
@@ -165,7 +168,8 @@ export default function ProjectSpending({
         token,
         {},
         handleError,
-        '/profile'
+        '/profile',
+        tenantID
       ).then((result) => {
         if (result?.expenses && result.expenses.length > 0) {
           setShowForm(false);

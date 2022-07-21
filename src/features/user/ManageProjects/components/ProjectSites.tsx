@@ -22,6 +22,7 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { TenantContext } from '../../../common/Layout/TenantContext';
 
 const { useTranslation } = i18next;
 
@@ -51,6 +52,7 @@ export default function ProjectSites({
   handleReset,
   projectDetails,
 }: Props): ReactElement {
+  const { tenantID } = React.useContext(TenantContext);
   const { t, i18n, ready } = useTranslation(['manageProjects']);
   const { theme } = React.useContext(ThemeContext);
   const [features, setFeatures] = React.useState([]);
@@ -60,6 +62,7 @@ export default function ProjectSites({
   const [errorMessage, setErrorMessage] = React.useState('');
   const [openModal, setOpenModal] = React.useState(false);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { tenantID } = React.useContext(TenantContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -182,7 +185,8 @@ export default function ProjectSites({
         `/app/projects/${projectGUID}/sites`,
         submitData,
         token,
-        handleError
+        handleError,
+        tenantID
       )
         .then((res) => {
           if (!res.code) {
@@ -229,7 +233,8 @@ export default function ProjectSites({
     deleteAuthenticatedRequest(
       `/app/projects/${projectGUID}/sites/${id}`,
       token,
-      handleError
+      handleError,
+      tenantID
     ).then((res) => {
       if (res !== 404) {
         const siteListTemp = siteList.filter((item) => item.id !== id);
@@ -284,7 +289,8 @@ export default function ProjectSites({
         token,
         {},
         handleError,
-        '/profile'
+        '/profile',
+        tenantID
       ).then((result) => {
         const geoLocation = {
           geoLatitude: result.geoLatitude,
@@ -618,6 +624,7 @@ function EditSite({
   siteGUID,
   siteList,
 }: EditSiteProps) {
+  const { tenantID } = React.useContext(TenantContext);
   const { theme } = React.useContext(ThemeContext);
   const { t } = useTranslation(['manageProjects']);
   const { register, handleSubmit, errors, control } = useForm();
@@ -673,7 +680,8 @@ function EditSite({
         `/app/projects/${projectGUID}/sites/${siteGUID}`,
         submitData,
         token,
-        handleError
+        handleError,
+        tenantID
       ).then((res) => {
         if (!res.code) {
           const temp = siteList;

@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useContext } from 'react';
 import i18next from '../../i18n';
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgressBar';
@@ -7,17 +7,20 @@ import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import Recurrency from '../../src/features/user/Account/Recurrency';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
+import { TenantContext } from '../../src/features/common/Layout/TenantContext';
 
 const { useTranslation } = i18next;
 
-interface Props { }
+interface Props {}
 
-function RecurrentDonations({ }: Props): ReactElement {
+function RecurrentDonations({}: Props): ReactElement {
+  const { tenantID } = useContext(TenantContext);
   const { t } = useTranslation(['me']);
   const { token, contextLoaded } = React.useContext(UserPropsContext);
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
-  const [recurrencies, setrecurrencies] = React.useState<Payments.Subscription[]>();
+  const [recurrencies, setrecurrencies] =
+    React.useState<Payments.Subscription[]>();
 
   const { handleError } = React.useContext(ErrorHandlingContext);
 
@@ -29,7 +32,8 @@ function RecurrentDonations({ }: Props): ReactElement {
       token,
       {},
       handleError,
-      '/profile'
+      '/profile',
+      tenantID
     );
     if (recurrencies && Array.isArray(recurrencies)) {
       const activeRecurrencies = recurrencies?.filter(

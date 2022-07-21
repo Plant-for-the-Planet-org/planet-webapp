@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useContext } from 'react';
 import { Modal, Snackbar, styled } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import styles from './EmbedModal.module.scss';
@@ -7,7 +7,7 @@ import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../theme/themeContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
-import { TENANT_ID } from '../../../utils/constants/environment';
+import { TenantContext } from '../../common/Layout/TenantContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 interface Props {
@@ -17,16 +17,17 @@ interface Props {
 
 const { useTranslation } = i18next;
 
-const Alert = styled(MuiAlert)(({theme}) => {
+const Alert = styled(MuiAlert)(({ theme }) => {
   return {
     backgroundColor: theme.palette.primary.main,
-  }
-})
+  };
+});
 
 export default function EmbedModal({
   embedModalOpen,
   setEmbedModalOpen,
 }: Props) {
+  const { tenantID } = useContext(TenantContext);
   const { t, ready } = useTranslation(['editProfile']);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const [isPrivate, setIsPrivate] = React.useState(false);
@@ -69,14 +70,20 @@ export default function EmbedModal({
     };
     if (contextLoaded && token) {
       try {
-        putAuthenticatedRequest(`/app/profile`, bodyToSend, token, handleError)
+        putAuthenticatedRequest(
+          `/app/profile`,
+          bodyToSend,
+          token,
+          handleError,
+          tenantID
+        )
           .then((res) => {
             setSeverity('success');
             setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');
             setEmbedModalOpen(false);
             setIsUploadingData(false);
             router.push(
-              `${process.env.WIDGET_URL}?user=${user.id}&tenantkey=${TENANT_ID}`
+              `${process.env.WIDGET_URL}?user=${user.id}&tenantkey=${tenantID}`
             );
           })
           .catch((error) => {

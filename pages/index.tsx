@@ -7,7 +7,6 @@ import { getRequest } from '../src/utils/apiRequests/api';
 import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
 import Credits from '../src/features/projects/components/maps/Credits';
 import Filters from '../src/features/projects/components/projects/Filters';
-import { TENANT_ID } from '../src/utils/constants/environment';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 import DirectGift from '../src/features/donations/components/DirectGift';
 import i18next from '../i18n';

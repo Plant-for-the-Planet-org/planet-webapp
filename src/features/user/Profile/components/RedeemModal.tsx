@@ -16,6 +16,7 @@ import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import ShareOptions from '../../../common/ShareOptions/ShareOptions';
 import { styled } from '@mui/material';
+import { TenantContext } from '../../../common/Layout/TenantContext';
 
 const { useTranslation } = i18next;
 export default function RedeemModal({
@@ -37,7 +38,7 @@ export default function RedeemModal({
   const { handleError } = React.useContext(ErrorHandlingContext);
   const imageRef = React.createRef();
   const sendRef = () => imageRef;
-
+  const { tenantID } = React.useContext(TenantContext);
   const [errorMessage, setErrorMessage] = React.useState();
   const [codeValidated, setCodeValidated] = React.useState(false);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
@@ -61,11 +62,11 @@ export default function RedeemModal({
     setTextCopiedSnackbarOpen(false);
   };
 
-  const Alert = styled(MuiAlert)(({theme}) => {
+  const Alert = styled(MuiAlert)(({ theme }) => {
     return {
       backgroundColor: theme.palette.primary.main,
-    }
-  })
+    };
+  });
 
   const { register, handleSubmit, errors, getValues } = useForm({
     mode: 'onBlur',
@@ -82,7 +83,8 @@ export default function RedeemModal({
       postAuthenticatedRequest(
         `/api/v1.3/${userLang}/validateCode`,
         submitData,
-        token
+        token,
+        tenantID
       ).then((res) => {
         if (res.code === 401) {
           setErrorMessage(res.message);
@@ -112,7 +114,8 @@ export default function RedeemModal({
         `/api/v1.3/${userLang}/convertCode`,
         submitData,
         token,
-        handleError
+        handleError,
+        tenantID
       ).then((res) => {
         if (res.code === 401) {
           setErrorMessage(res.message);
@@ -250,8 +253,8 @@ export default function RedeemModal({
             >
               <div>
                 <Alert
-                elevation={6}
-                variant="filled"
+                  elevation={6}
+                  variant="filled"
                   onClose={handleTextCopiedSnackbarClose}
                   severity="success"
                 >

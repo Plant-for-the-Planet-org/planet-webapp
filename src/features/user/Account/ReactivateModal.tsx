@@ -7,6 +7,7 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { CircularProgress, Modal, Fade } from '@mui/material';
+import { TenantContext } from '../../common/Layout/TenantContext';
 
 export const ReactivateModal = ({
   reactivateModalOpen,
@@ -14,6 +15,7 @@ export const ReactivateModal = ({
   record,
   fetchRecurrentDonations,
 }: any) => {
+  const { tenantID } = React.useContext(TenantContext);
   const [disabled, setDisabled] = React.useState(false);
   const { theme } = React.useContext(ThemeContext);
   const { token } = React.useContext(UserPropsContext);
@@ -31,7 +33,8 @@ export const ReactivateModal = ({
       `/app/subscriptions/${record.id}?scope=reactivate`,
       bodyToSend,
       token,
-      handleError
+      handleError,
+      tenantID
     )
       .then((res) => {
         handleReactivateModalClose();

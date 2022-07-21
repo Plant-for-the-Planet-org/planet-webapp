@@ -19,6 +19,7 @@ import {
 import MuiCalenderPicker from '@mui/lab/CalendarPicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { TenantContext } from '../../common/Layout/TenantContext';
 
 export const CancelModal = ({
   cancelModalOpen,
@@ -26,6 +27,7 @@ export const CancelModal = ({
   record,
   fetchRecurrentDonations,
 }: any) => {
+  const { tenantID } = React.useContext(TenantContext);
   const { theme } = React.useContext(ThemeContext);
   const { token } = React.useContext(UserPropsContext);
   const [option, setoption] = React.useState('cancelImmediately');
@@ -57,7 +59,8 @@ export const CancelModal = ({
       `/app/subscriptions/${record.id}?scope=cancel`,
       bodyToSend,
       token,
-      handleError
+      handleError,
+      tenantID
     )
       .then((res) => {
         handleCancelModalClose();
@@ -147,17 +150,17 @@ export const CancelModal = ({
               </RadioGroup>
               {showCalender ? (
                 <>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                      <MuiCalenderPicker
-                        date={date}
-                        onChange={(value) => {
-                          setdate(value);
-                        }}
-                        minDate={
-                          new Date(new Date().valueOf() + 1000 * 3600 * 24)
-                        }
-                      />
-                    </LocalizationProvider>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <MuiCalenderPicker
+                      date={date}
+                      onChange={(value) => {
+                        setdate(value);
+                      }}
+                      minDate={
+                        new Date(new Date().valueOf() + 1000 * 3600 * 24)
+                      }
+                    />
+                  </LocalizationProvider>
                 </>
               ) : (
                 []

@@ -9,13 +9,14 @@ import Profile from '../../src/features/user/Profile';
 import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees';
 import ProjectsContainer from '../../src/features/user/Profile/ProjectsContainer';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
+import { TenantContext } from '../../src/features/common/Layout/TenantContext';
 
 function User(): ReactElement {
   // External imports
   const router = useRouter();
   const { user, contextLoaded, token } = React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
-
+  const { tenantID } = React.useContext(TenantContext);
   // Internal states
   const [profile, setProfile] = React.useState<null | Object>();
   const [authenticatedType, setAuthenticatedType] = React.useState('');
@@ -25,7 +26,8 @@ function User(): ReactElement {
     const profileData = await getRequest(
       `/app/profiles/${id}`,
       handleError,
-      '/'
+      '/',
+      tenantID
     );
     setProfile(profileData);
     setAuthenticatedType('public');

@@ -10,12 +10,14 @@ import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayou
 import Head from 'next/head';
 import i18next from '../../../i18n';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
+import { TenantContext } from '../../../src/features/common/Layout/TenantContext';
 
 const { useTranslation } = i18next;
 
 interface Props {}
 
 function ManageSingleProject({}: Props): ReactElement {
+  const { tenantID } = React.useContext(TenantContext);
   const { t } = useTranslation(['manageProjects', 'common']);
   const [projectGUID, setProjectGUID] = React.useState(null);
   const [ready, setReady] = React.useState(false);
@@ -41,7 +43,8 @@ function ManageSingleProject({}: Props): ReactElement {
         token,
         {},
         handleError,
-        '/profile'
+        '/profile',
+        tenantID
       )
         .then((result) => {
           if (result.status === 401) {

@@ -21,6 +21,7 @@ import flatten from 'geojson-flatten';
 import MuiDatePicker from '@mui/lab/MobileDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { TenantContext } from '../../../../common/Layout/TenantContext';
 
 const { useTranslation } = i18next;
 
@@ -50,7 +51,7 @@ export default function PlantingLocation({
   setActiveMethod,
 }: Props): ReactElement {
   const { user, token, contextLoaded } = React.useContext(UserPropsContext);
-
+  const { tenantID } = React.useContext(TenantContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
   const importMethods = ['import', 'editor'];
@@ -81,15 +82,17 @@ export default function PlantingLocation({
   });
 
   const loadProjects = async () => {
-    await getAuthenticatedRequest('/app/profile/projects', token).then(
-      (projects: any) => {
-        setProjects(projects);
-      }
-    );
+    await getAuthenticatedRequest(
+      '/app/profile/projects',
+      token,
+      tenantID
+    ).then((projects: any) => {
+      setProjects(projects);
+    });
   };
 
   const loadMySpecies = async () => {
-    await getAuthenticatedRequest('/treemapper/species', token).then(
+    await getAuthenticatedRequest('/treemapper/species', token, tenantID).then(
       (species: any) => {
         setMySpecies(species);
       }
@@ -194,7 +197,8 @@ export default function PlantingLocation({
       postAuthenticatedRequest(
         `/treemapper/plantLocations`,
         submitData,
-        token
+        token,
+        tenantID
       ).then((res: any) => {
         if (!res.code) {
           setErrorMessage('');

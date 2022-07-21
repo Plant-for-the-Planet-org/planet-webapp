@@ -3,7 +3,7 @@ import { MenuItem } from '@mui/material';
 import * as d3 from 'd3-ease';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import MapGL, {
   FlyToInterpolator,
@@ -28,6 +28,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import MuiDatePicker from '@mui/lab/MobileDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { TenantContext } from '../../common/Layout/TenantContext';
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   ssr: false,
@@ -39,6 +40,7 @@ interface Props {}
 const { useTranslation } = i18next;
 export default function RegisterTrees({}: Props) {
   const router = useRouter();
+  const { tenantID } = useContext(TenantContext);
   const { user, token, contextLoaded } = React.useContext(UserPropsContext);
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {
@@ -153,7 +155,8 @@ export default function RegisterTrees({}: Props) {
           `/app/contributions`,
           submitData,
           token,
-          handleError
+          handleError,
+          tenantID
         ).then((res) => {
           if (!res.code) {
             setErrorMessage('');
@@ -190,7 +193,8 @@ export default function RegisterTrees({}: Props) {
       token,
       {},
       handleError,
-      '/profile'
+      '/profile',
+      tenantID
     ).then((projects: any) => {
       setProjects(projects);
     });

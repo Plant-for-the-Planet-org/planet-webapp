@@ -18,6 +18,7 @@ import { ThemeContext } from '../../../theme/themeContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { postRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { TenantContext } from '../../common/Layout/TenantContext';
 
 const { Trans, useTranslation } = i18next;
 
@@ -29,6 +30,7 @@ const Alert = styled(MuiAlert)(({ theme }) => {
 
 export default function CompleteSignup() {
   const router = useRouter();
+  const { tenantID } = React.useContext(TenantContext);
   const { i18n, t, ready } = useTranslation(['editProfile', 'donate']);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const [addressSugggestions, setaddressSugggestions] = React.useState([]);
@@ -176,7 +178,8 @@ export default function CompleteSignup() {
         `/app/profile`,
         bodyToSend,
         handleError,
-        '/login'
+        '/login',
+        tenantID
       );
       setRequestSent(false);
       if (res) {

@@ -16,6 +16,7 @@ import Image from 'next/image';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
+import { TenantContext } from '../../../../../src/features/common/Layout/TenantContext';
 
 interface Props {
   leaderboard: any;
@@ -29,7 +30,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const { t, i18n, ready } = useTranslation(['leaderboard', 'common']);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const [users, setUsers] = React.useState([]);
-
+  const { tenantID } = React.useContext(TenantContext);
   const { theme } = React.useContext(ThemeContext);
   const useStylesAutoComplete = makeStyles({
     paper: {
@@ -67,10 +68,12 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const classes = useStylesAutoComplete();
 
   async function fetchUsers(query: any) {
-    postRequest('/suggest.php', { q: query }, handleError).then((res) => {
-      const result = res.filter((item) => item.type !== 'competition');
-      setUsers(result);
-    });
+    postRequest('/suggest.php', { q: query }, handleError, tenantID).then(
+      (res) => {
+        const result = res.filter((item) => item.type !== 'competition');
+        setUsers(result);
+      }
+    );
   }
   const imageErrorSrc =
     'https://cdn.planetapp.workers.dev/development/logo/svg/planet.svg';

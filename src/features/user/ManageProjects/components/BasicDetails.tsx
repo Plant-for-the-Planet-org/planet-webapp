@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useContext, useState } from 'react';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
 import i18next from './../../../../../i18n';
@@ -28,6 +28,7 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
+import { TenantContext } from '../../../common/Layout/TenantContext';
 
 const { useTranslation } = i18next;
 
@@ -70,6 +71,7 @@ export default function BasicDetails({
   const defaultZoom = 1.4;
   const mapRef = React.useRef(null);
   const [style, setStyle] = React.useState(EMPTY_STYLE);
+  const { tenantID } = React.useContext(TenantContext);
   const [wrongCoordinatesMessage, setWrongCoordinatesMessage] =
     React.useState(false);
   const [viewport, setViewPort] = React.useState({
@@ -414,7 +416,8 @@ export default function BasicDetails({
         `/app/projects/${projectGUID}`,
         submitData,
         token,
-        handleError
+        handleError,
+        tenantID
       )
         .then((res) => {
           if (!res.code) {
@@ -442,7 +445,13 @@ export default function BasicDetails({
           setErrorMessage(err);
         });
     } else {
-      postAuthenticatedRequest(`/app/projects`, submitData, token, handleError)
+      postAuthenticatedRequest(
+        `/app/projects`,
+        submitData,
+        token,
+        handleError,
+        tenantID
+      )
         .then((res) => {
           if (!res.code) {
             setErrorMessage('');

@@ -10,6 +10,7 @@ import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
 import { getAllPlantLocations } from '../src/utils/maps/plantLocations';
 import i18next from '../i18n';
+import { TenantContext } from '../src/features/common/Layout/TenantContext';
 
 const { useTranslation } = i18next;
 
@@ -30,6 +31,7 @@ export default function Donate({
   const [open, setOpen] = React.useState(false);
   const { theme } = React.useContext(ThemeContext);
   const { i18n } = useTranslation();
+  const { tenantID } = React.useContext(TenantContext);
   const {
     project,
     setProject,
@@ -74,7 +76,9 @@ export default function Donate({
             _scope: 'extended',
             currency: currency,
             locale: i18n.language,
-          }
+          },
+          undefined,
+          tenantID
         );
         setProject(project);
         setShowSingleProject(true);

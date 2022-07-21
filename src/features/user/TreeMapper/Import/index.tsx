@@ -18,6 +18,7 @@ import SampleTrees from './components/SampleTrees';
 import ReviewSubmit from './components/ReviewSubmit';
 import dynamic from 'next/dynamic';
 import theme from '../../../../theme/themeProperties';
+import { TenantContext } from '../../../common/Layout/TenantContext';
 
 const { useTranslation } = i18next;
 
@@ -52,12 +53,13 @@ export default function ImportData({}: Props): ReactElement {
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['treemapper']);
   const { token } = React.useContext(UserPropsContext);
-
+  const { tenantID } = React.useContext(TenantContext);
   // loc_ACxv7uldM1VdKd5cikv3qoF5
   const fetchPlantLocation = async (id: any): Promise<void> => {
     const result = await getAuthenticatedRequest(
       `/treemapper/plantLocations/${id}?_scope=extended`,
-      token
+      token,
+      tenantID
     );
     setPlantLocation(result);
   };

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { useContext } from 'react';
 import LazyLoad from 'react-lazyload';
 import i18next from '../../../../i18n';
 import NotFound from '../../../../public/assets/images/NotFound';
@@ -10,10 +10,12 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './ProjectsContainer.module.scss';
 import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
+import { TenantContext } from '../../common/Layout/TenantContext';
 
 const { useTranslation } = i18next;
 
 export default function ProjectsContainer({}: any) {
+  const { tenantID } = useContext(TenantContext);
   const { t, ready } = useTranslation(['donate', 'manageProjects']);
   const [projects, setProjects] = React.useState([]);
   const [loader, setLoader] = React.useState(true);
@@ -28,7 +30,8 @@ export default function ProjectsContainer({}: any) {
         token,
         {},
         handleError,
-        '/profile'
+        '/profile',
+        tenantID
       ).then((projects) => {
         setProjects(projects);
         setLoader(false);
