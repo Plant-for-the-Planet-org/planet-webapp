@@ -147,23 +147,21 @@
  
 .embed_projectSitesButton {
   top: 30px;
-  right: 165px;
 }
 
 .dropdownContainer,.embed_dropdownContainer {
   position: fixed;
   z-index: 11;
+  right: 100px;
 }
 
 .dropdownContainer{
-  right: 100px;
   top: 100px;
 
 }
 
 .embed_dropdownContainer{
   top: 30px;
-  right: 178px;
 }
 
 .projectSitesDropdown, .embed_projectSitesButton {
@@ -187,6 +185,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  right: 10px;
   padding: 9px;
   background: $backgroundColor;
   box-shadow: 0px 3px 6px #00000029;
@@ -197,13 +196,11 @@
 }
 
 .exploreButton {
-  right: 10px;
   top: 100px;
 }
 
 .embed_exploreButton {
   top: 30px;
-  right: 20px;
   flex-direction: row;
 }
 .exploreButton > svg ,.embed_exploreButton > svg{
@@ -618,17 +615,9 @@
     top: 150px;
   }
 
-  .embed_projectSitesButton {
-    right: 100px;
-  }
 
-  .embed_dropdownContainer {
-    right: 100px;  
-  }
+
   
-  .embed_exploreButton {
-    right: 10px;
-  }
 
 }
 
@@ -643,6 +632,9 @@
   }
   .projectSitesButton {
     top: 110px;
+  }
+
+  .projectSitesButton, .embed_projectSitesButton {
     right: 175px;
   }
 
@@ -654,7 +646,6 @@
 
   .exploreButton {
     top: 110px;
-    right: 20px;
     flex-direction: row;
   }
 
@@ -668,7 +659,7 @@
     right: 165px;
   }
 
-  .embed_exploreButton {
+  .exploreButton ,.embed_exploreButton {
     right: 20px;
   }
   
@@ -688,9 +679,7 @@
     bottom: 80px;
   }
 
-  .embed_projectSitesButton, .embed_dropdownContainer {
-    right: 100px;
-  }
+ 
 }
 
 // Popover
@@ -733,7 +722,5 @@
     bottom: 30px;
     left: 350px;
   }
-  .embed_projectSitesButton {
-    right: 165px;
-  }
+  
 }
