@@ -27,6 +27,8 @@ function User(): ReactElement {
       `/app/profiles/${id}`,
       handleError,
       '/',
+      undefined,
+      undefined,
       tenantID
     );
     setProfile(profileData);

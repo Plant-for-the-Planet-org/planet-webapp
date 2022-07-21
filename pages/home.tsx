@@ -28,6 +28,8 @@ export default function Home(initialized: Props) {
         `/app/tenantScore`,
         handleError,
         '/',
+        undefined,
+        undefined,
         tenantID
       );
       setTenantScore(newTenantScore);
@@ -41,6 +43,8 @@ export default function Home(initialized: Props) {
         `/app/leaderboard`,
         handleError,
         '/',
+        undefined,
+        undefined,
         tenantID
       );
       setLeaderboard(newLeaderBoard);

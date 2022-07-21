@@ -21,7 +21,9 @@ export default function Home({ initialized }: Props) {
       const newLeaderboard = await getRequest(
         `/app/leaderboard/${tenantID}`,
         handleError,
-        '/'
+        '/',
+        undefined,
+        undefined,
         tenantID
       );
       setLeaderboard(newLeaderboard);
@@ -37,6 +39,8 @@ export default function Home({ initialized }: Props) {
         `/app/tenantScore/${tenantID}`,
         handleError,
         '/',
+        undefined,
+        undefined,
         tenantID
       );
       setTenantScore(newTenantScore);

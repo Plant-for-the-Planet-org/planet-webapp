@@ -102,6 +102,7 @@ export default function Donate({
             'filter[purpose]': 'trees,conservation',
             locale: i18n.language,
           },
+          undefined,
           tenantID
         );
         setProjects(projects);
@@ -126,7 +127,7 @@ export default function Donate({
     setShowDirectGift,
     directGift,
   };
-  console.log(tenantID);
+
   return (
     <>
       {initialized ? (

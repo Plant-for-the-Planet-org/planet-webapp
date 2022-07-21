@@ -28,6 +28,8 @@ async function loadPublicUserData(
     `/app/profiles/${router.query.id}`,
     handleError,
     '/',
+    undefined,
+    undefined,
     tenantID
   );
   if (newProfile.type !== 'tpo') {
