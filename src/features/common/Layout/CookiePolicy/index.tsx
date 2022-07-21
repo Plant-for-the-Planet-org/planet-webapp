@@ -3,7 +3,6 @@ import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './CookiePolicy.module.scss';
 import i18next from '../../../../../i18n';
 import { UserPropsContext } from '../UserPropsContext';
-import { useRouter } from 'next/router';
 
 const { useTranslation } = i18next;
 export default function CookiePolicy() {
@@ -32,11 +31,9 @@ export default function CookiePolicy() {
     localStorage.setItem('cookieNotice', showCookieNotice);
   }, [showCookieNotice]);
 
-  const router = useRouter();
-  const isEmbed = router.query.embed === 'true';
 
 
-  return ready && showCookieNotice && !isEmbed? (
+  return ready && showCookieNotice ? (
     <div className={styles.cookieContainer}>
       <button
         id={'cookieCloseButton'}

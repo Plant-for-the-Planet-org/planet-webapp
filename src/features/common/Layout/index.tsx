@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import theme from '../../../theme/theme';
 import { useTheme } from '../../../theme/themeContext';
@@ -9,6 +10,10 @@ import RedeemPopup from './RedeemPopup';
 
 export default function Layout(props: any) {
   const { theme: themeType } = useTheme();
+  
+  const router = useRouter();
+  const isEmbed = router.query.embed === 'true';
+  
   return (
     <>
       <Header />
@@ -23,8 +28,12 @@ export default function Layout(props: any) {
 
         <div>
           <div className={'notificationContainer'}>
+            { isEmbed? null :
+            <>
             <CookiePolicy />
             <RedeemPopup />
+            </>
+            }
             <ErrorPopup />
           </div>
         </div>
