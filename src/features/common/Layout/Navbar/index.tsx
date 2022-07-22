@@ -268,9 +268,7 @@ export default function NavbarComponent(props: any) {
     );
   };
 
-  return router.query.embed === 'true' ? (
-    <></>
-  ) : (
+  return (
     <div className={'mainNavContainer'}>
       <div className={'top_nav'}>
         <div className={'brandLogos'}>

@@ -10,10 +10,10 @@ import RedeemPopup from './RedeemPopup';
 
 export default function Layout(props: any) {
   const { theme: themeType } = useTheme();
-  
+
   const router = useRouter();
   const isEmbed = router.query.embed === 'true';
-  
+
   return (
     <>
       <Header />
@@ -21,24 +21,20 @@ export default function Layout(props: any) {
         {theme}
       </style>
       <div className={`${themeType}`}>
-        <Navbar theme={themeType} />
-        <div>
-          {props.children}
-        </div>
+        {!isEmbed && <Navbar theme={themeType} />}
+        <div>{props.children}</div>
 
         <div>
           <div className={'notificationContainer'}>
-            { isEmbed? null :
-            <>
-            <CookiePolicy />
-            <RedeemPopup />
-            </>
-            }
+            {!isEmbed && (
+              <>
+                <CookiePolicy />
+                <RedeemPopup />
+              </>
+            )}
             <ErrorPopup />
           </div>
         </div>
-
-
       </div>
     </>
   );

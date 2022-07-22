@@ -1,15 +1,7 @@
 @import '../../../theme/theme';
 
-.mapContainer {
-  position: fixed;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  background-color: rgba(70, 168, 221, 0.15);
-  
-}
-.onlymapContainer{
+.mapContainer,
+.onlymapContainer {
   position: fixed;
   top: 0px;
   bottom: 0px;
@@ -17,7 +9,9 @@
   right: 0px;
   background-color: rgba(70, 168, 221, 0.15);
 }
-.mapContainer > div:first-child,.onlymapContainer > div:first-child {
+
+.mapContainer > div:first-child,
+.onlymapContainer > div:first-child {
   height: 100% !important;
   width: 100% !important;
 }
@@ -122,7 +116,8 @@
   padding-left: 20px;
 }
 
-.projectSitesButton, .embed_projectSitesButton{
+.projectSitesButton,
+.embed_projectSitesButton {
   position: fixed;
   right: 100px;
   display: flex;
@@ -144,27 +139,28 @@
 .projectSitesButton {
   top: 100px;
 }
- 
+
 .embed_projectSitesButton {
   top: 30px;
 }
 
-.dropdownContainer,.embed_dropdownContainer {
+.dropdownContainer,
+.embed_dropdownContainer {
   position: fixed;
   z-index: 11;
   right: 100px;
 }
 
-.dropdownContainer{
+.dropdownContainer {
   top: 100px;
-
 }
 
-.embed_dropdownContainer{
+.embed_dropdownContainer {
   top: 30px;
 }
 
-.projectSitesDropdown, .embed_projectSitesButton {
+.projectSitesDropdown,
+.embed_projectSitesButton {
   z-index: 100;
 }
 
@@ -179,7 +175,8 @@
   height: 100%;
 }
 
-.exploreButton,.embed_exploreButton{
+.exploreButton,
+.embed_exploreButton {
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -203,11 +200,13 @@
   top: 30px;
   flex-direction: row;
 }
-.exploreButton > svg ,.embed_exploreButton > svg{
+.exploreButton > svg,
+.embed_exploreButton > svg {
   width: 17px;
 }
 
-.exploreButton > svg > path ,.embed_exploreButton > svg > path{
+.exploreButton > svg > path,
+.embed_exploreButton > svg > path {
   fill: $primaryFontColor;
 }
 
@@ -442,7 +441,8 @@
   width: 20px;
 }
 
-.exploreExpanded, .embed_exploreExpanded {
+.exploreExpanded,
+.embed_exploreExpanded {
   position: fixed;
   right: 70px;
   display: flex;
@@ -540,9 +540,9 @@
   }
   > span {
     margin-left: 10px;
-    a{
-    text-decoration: none;
-    color: rgba($primaryFontColor, 0.75);
+    a {
+      text-decoration: none;
+      color: rgba($primaryFontColor, 0.75);
     }
   }
 }
@@ -597,7 +597,7 @@
   .dropdownContainer {
     top: 100px;
   }
-  
+
   .exploreButton {
     top: 100px;
   }
@@ -614,11 +614,6 @@
   .layerToggle {
     top: 150px;
   }
-
-
-
-  
-
 }
 
 @include mdTabletView {
@@ -634,7 +629,8 @@
     top: 110px;
   }
 
-  .projectSitesButton, .embed_projectSitesButton {
+  .projectSitesButton,
+  .embed_projectSitesButton {
     right: 175px;
   }
 
@@ -642,7 +638,6 @@
     top: 110px;
     right: 165px;
   }
-  
 
   .exploreButton {
     top: 110px;
@@ -659,10 +654,10 @@
     right: 165px;
   }
 
-  .exploreButton ,.embed_exploreButton {
+  .exploreButton,
+  .embed_exploreButton {
     right: 20px;
   }
-  
 }
 
 // @include lgLaptopView {
@@ -678,8 +673,6 @@
   .projectControls {
     bottom: 80px;
   }
-
- 
 }
 
 // Popover
@@ -722,5 +715,4 @@
     bottom: 30px;
     left: 350px;
   }
-  
 }
