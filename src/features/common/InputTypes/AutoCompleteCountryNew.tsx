@@ -28,6 +28,7 @@ const MuiAutocomplete = styled(Autocomplete)((/* { theme } */) => {
     '& .Mui-disabled .iconFillColor': {
       fillOpacity: '38%',
     },
+    flexBasis: '50%'
   };
 });
 

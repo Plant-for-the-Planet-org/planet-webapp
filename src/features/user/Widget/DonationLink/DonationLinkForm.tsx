@@ -1,11 +1,12 @@
 import { ReactElement, useContext, useState } from 'react';
-import { styled } from '@mui/material';
+import { Autocomplete, styled, TextField } from '@mui/material';
 import i18next from '../../../../../i18n';
 
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from './InlineFormDisplayGroup';
-
+import ProjectSelector from '../../BulkCodes/components/ProjectSelector';
+import supportedLanguages from '../../../../utils/language/supportedLanguages.json';
 const { useTranslation } = i18next;
 
 // TODOO - refactor code for reuse?
@@ -30,8 +31,13 @@ const DonationLinkForm = (): ReactElement | null => {
   const [country, setCountry] = useState(
     contextLoaded ? user.country : undefined
   );
+  const [Languages, setLanguage ] = useState(
+    {
+      "langCode": "en",
+      "languageName": "English"
+    }
+  );
   const { t, ready } = useTranslation(['donationLink']);
-
   if (ready) {
     return (
       <StyledForm>
@@ -44,11 +50,19 @@ const DonationLinkForm = (): ReactElement | null => {
               defaultValue={country}
               onChange={setCountry}
             />
-            <AutoCompleteCountry
-              label={t('labelCountry')}
-              name="country"
-              defaultValue={country}
-              onChange={setCountry}
+            <Autocomplete
+              id="Languages"
+              options={supportedLanguages}
+              getOptionLabel={(option) => `${option.langCode} - ${option.languageName}`}
+              isOptionEqualToValue={(option, value) =>
+                (option.langCode === value.langCode)
+              }
+              value={Languages}
+              renderInput={(params) => (
+                <TextField {...params} label="Language" placeholder="Languages" />
+              )}
+              sx={{ width: '50%' }}
+              onChange={(event,newLan)=>setLanguage(newLan)}
             />
           </InlineFormDisplayGroup>
           <AutoCompleteCountry
@@ -57,6 +71,7 @@ const DonationLinkForm = (): ReactElement | null => {
             defaultValue={country}
             onChange={setCountry}
           />
+          {/* <ProjectSelector projectList={[]} project={null} planetCashAccount={null}/>   */}
         </div>
       </StyledForm>
     );
