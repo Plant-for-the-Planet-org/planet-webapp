@@ -1,12 +1,14 @@
-import { ReactElement, useContext, useState } from 'react';
+import { ReactElement, useContext, useState, useCallback, useEffect } from 'react';
 import { Autocomplete, styled, TextField } from '@mui/material';
 import i18next from '../../../../../i18n';
-
+import  { ProjectPropsContext } from '../../../../features/common/Layout/ProjectPropsContext'
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from './InlineFormDisplayGroup';
-import ProjectSelector from '../../BulkCodes/components/ProjectSelector';
 import supportedLanguages from '../../../../utils/language/supportedLanguages.json';
+import React from 'react';
+import { getRequest } from '../../../../utils/apiRequests/api';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 const { useTranslation } = i18next;
 
 // TODOO - refactor code for reuse?
@@ -38,6 +40,28 @@ const DonationLinkForm = (): ReactElement | null => {
     }
   );
   const { t, ready } = useTranslation(['donationLink']);
+  const { handleError } = useContext(ErrorHandlingContext);
+  const { projects, setProjects } = useContext(ProjectPropsContext);
+  const [localProject, setLocalProject] = useState(null);
+  
+    // Load all projects
+      async function fetchProjectList() {
+        
+          const projects = await getRequest(
+            `/app/projects`,
+            handleError,
+            undefined,
+            {
+              _scope: 'default',
+            }
+          );
+          setProjects(projects);
+      }
+    
+
+    useEffect(() => {
+      fetchProjectList();
+    }, []);
   if (ready) {
     return (
       <StyledForm>
@@ -65,13 +89,20 @@ const DonationLinkForm = (): ReactElement | null => {
               onChange={(event,newLan)=>setLanguage(newLan)}
             />
           </InlineFormDisplayGroup>
-          <AutoCompleteCountry
-            label={t('labelCountry')}
-            name="country"
-            defaultValue={country}
-            onChange={setCountry}
+          <Autocomplete
+            id="Projects"
+            options={projects}
+            getOptionLabel={(option) => option.name}
+            defaultValue='Project Name'
+            isOptionEqualToValue={(option, value) =>
+              (option.id === value.id)
+            }
+            value={localProject}
+            renderInput={(params) => (
+              <TextField {...params} label="Project Name" placeholder="Project Name" />
+            )}
+            onChange={(event,newProject)=>setLocalProject(newProject)}
           />
-          {/* <ProjectSelector projectList={[]} project={null} planetCashAccount={null}/>   */}
         </div>
       </StyledForm>
     );
