@@ -55,7 +55,10 @@ const DonationLinkForm = (): ReactElement | null => {
               _scope: 'default',
             }
           );
-          setProjects(projects);
+          if(projects){
+          setProjects(projects); }  else {
+          setProjects([]);
+          }
       }
     
 
