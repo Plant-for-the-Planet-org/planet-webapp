@@ -108,7 +108,7 @@ export default function BulkCodes({
         });
       }
     }
-  }, [user]);
+  }, [contextLoaded, user]);
 
   const renderStep = () => {
     switch (step) {
