@@ -78,6 +78,7 @@
   "donationError": {
     "planet_cash_insufficient_credit": "Available credit = {{availableBalance}}. Please load balance in your PlanetCash account to make this donation.",
     "default": "Something went wrong. Please try after a while",
-    "planet_cash_payment_failure": "The transaction failed. {{reason}}"
+    "planet_cash_payment_failure": "The transaction failed. {{reason}}",
+    "planet_cash_invalid_project": "You cannot make a donation to the selected project."
   }
 }

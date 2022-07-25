@@ -66,7 +66,14 @@ export default function BulkCodes({
           setProjectList(
             // Filter projects which allow donations, and store only required values in context
             fetchedProjects
-              .filter((project) => project.properties.allowDonations)
+              .filter((project) => {
+                return (
+                  project.properties.allowDonations &&
+                  (planetCashAccount.currency !== 'CHF' ||
+                    (planetCashAccount.currency === 'CHF' &&
+                      project.properties.slug === 'yucatan'))
+                );
+              })
               .map((project) => {
                 return {
                   guid: project.properties.id,
