@@ -7,11 +7,14 @@ import CreationMethodForm from './forms/CreationMethodForm';
 import SelectProjectForm from './forms/SelectProjectForm';
 import IssueCodesForm from './forms/IssueCodesForm';
 
-import { useBulkCode } from '../../common/Layout/BulkCodeContext';
+import {
+  useBulkCode,
+  APISingleProject,
+} from '../../common/Layout/BulkCodeContext';
 import { TENANT_ID } from '../../../utils/constants/environment';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../utils/apiRequests/api';
-import { APISingleProject } from '../../common/Layout/BulkCodeContext';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 
 export enum BulkCodeSteps {
   SELECT_METHOD = 0,
@@ -29,8 +32,14 @@ export default function BulkCodes({
   step,
 }: BulkCodesProps): ReactElement | null {
   const { t, ready, i18n } = useTranslation(['bulkCodes']);
-  const { planetCashAccount, projectList, setProjectList } = useBulkCode();
+  const {
+    planetCashAccount,
+    setPlanetCashAccount,
+    projectList,
+    setProjectList,
+  } = useBulkCode();
   const { handleError } = useContext(ErrorHandlingContext);
+  const { contextLoaded, user } = useContext(UserPropsContext);
 
   const fetchProjectList = useCallback(async () => {
     if (planetCashAccount && !projectList) {
@@ -80,6 +89,19 @@ export default function BulkCodes({
   useEffect(() => {
     fetchProjectList();
   }, [fetchProjectList]);
+
+  useEffect(() => {
+    if (contextLoaded && !planetCashAccount) {
+      const userPlanetCash = user.planetCash;
+      if (userPlanetCash) {
+        setPlanetCashAccount({
+          guid: userPlanetCash.account,
+          country: userPlanetCash.country,
+          currency: userPlanetCash.currency,
+        });
+      }
+    }
+  }, [user]);
 
   const renderStep = () => {
     switch (step) {
