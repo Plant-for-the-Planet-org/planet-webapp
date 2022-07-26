@@ -3,6 +3,7 @@ import React, { ReactElement } from 'react';
 import { Marker, Popup } from 'react-map-gl';
 import PopupProject from '../PopupProject';
 import styles from '../../styles/ProjectsMap.module.scss';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 interface Props {
   searchedProject: Array<Object>;
@@ -23,6 +24,7 @@ export default function Markers({
   const [open, setOpen] = React.useState(false);
   const buttonRef = React.useRef(null);
   const popupRef = React.useRef(null);
+  const { embed } = React.useContext( ParamsContext )
 
   const handleOpen = () => {
     setOpen(true);
@@ -30,6 +32,7 @@ export default function Markers({
   const handleClose = () => {
     setOpen(false);
   };
+  // console.log("markers",embed);
   return (
     <>
       {searchedProject.map((projectMarker: any, index: any) => (
@@ -46,16 +49,30 @@ export default function Markers({
                 ? styles.conservationMarker
                 : ''
               }`}
-            onClick={() =>
+            onClick={() =>{
+              if( embed === 'true') {
+                router.push('/[p]', `/${projectMarker.properties.slug}/?embed=true`, {
+                  shallow: true,
+                })
+                // console.log("markers after click",embed);
+              } else {
+
               router.push('/[p]', `/${projectMarker.properties.slug}`, {
                 shallow: true,
               })
-            }
-            onKeyPress={() =>
+              }
+            }}
+            onKeyPress={() =>{
+              if( embed === 'true') {
+                router.push('/[p]', `/${projectMarker.properties.slug}/?embed=true`, {
+                  shallow: true,
+                })
+              } else {
               router.push('/[p]', `/${projectMarker.properties.slug}`, {
                 shallow: true,
               })
-            }
+              }
+            }}
             role="button"
             tabIndex={0}
             onMouseOver={() => {
@@ -102,11 +119,17 @@ export default function Markers({
                 }
               }
             }}
-            onKeyPress={() =>
+            onKeyPress={() =>{
+               if( embed === 'true') {
+                router.push('/[p]', `/${popupData.project.properties.slug}/?embed=true`, {
+                  shallow: true,
+                })
+              } else {
               router.push('/[p]', `/${popupData.project.properties.slug}`, {
                 shallow: true,
               })
-            }
+              }
+            }}
             role="button"
             tabIndex={0}
             onMouseLeave={() => {

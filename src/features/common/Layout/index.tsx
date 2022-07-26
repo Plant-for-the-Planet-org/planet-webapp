@@ -7,12 +7,11 @@ import ErrorPopup from './ErrorPopup';
 import Header from './Header';
 import Navbar from './Navbar';
 import RedeemPopup from './RedeemPopup';
+import { ParamsContext } from './QueryParamsContext';
 
 export default function Layout(props: any) {
   const { theme: themeType } = useTheme();
-  
-  const router = useRouter();
-  const isEmbed = router.query.embed === 'true';
+  const { embed } = React.useContext( ParamsContext );
   
   return (
     <>
@@ -28,7 +27,7 @@ export default function Layout(props: any) {
 
         <div>
           <div className={'notificationContainer'}>
-            { isEmbed? null :
+            { embed === 'true' ? null :
             <>
             <CookiePolicy />
             <RedeemPopup />

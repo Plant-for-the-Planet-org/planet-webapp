@@ -16,6 +16,7 @@ import Explore from '../components/maps/Explore';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import ProjectTabs from '../components/maps/ProjectTabs';
 import PlantLocationDetails from '../components/PlantLocation/PlantLocationDetails';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
   ssr: false,
@@ -50,6 +51,7 @@ function SingleProjectDetails({}: Props): ReactElement {
   const isMobile = screenWidth <= 768;
   const [scrollY, setScrollY] = React.useState(0);
   const [rating, setRating] = React.useState<number | null>(2);
+  const { embed,singleProject } = React.useContext(ParamsContext);
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
   if (progressPercentage > 100) {
@@ -71,18 +73,19 @@ function SingleProjectDetails({}: Props): ReactElement {
   const ProjectProps = {
     plantLocation: hoveredPl ? hoveredPl : selectedPl,
   };
-
+  // console.log("single project",embed);
+  // console.log("query",router);
   const goBack = () => {
     if (selectedPl || hoveredPl) {
       setHoveredPl(null);
       setSelectedPl(null);
-        if(router.query.embed === 'true'){
+        if(embed === 'true'){
         router.replace('/[p]', `/${project.slug}/?embed=true`);
         } else{
           router.replace('/[p]', `/${project.slug}`);
         }
     } else {
-      if(router.query.embed === 'true'){
+      if(embed === 'true'){
         router.replace('/?embed=true');
         } else{
           router.replace('/');
@@ -104,7 +107,7 @@ function SingleProjectDetails({}: Props): ReactElement {
         )}
       <div
         style={{ transform: `translate(0,${scrollY}px)` }}
-        className={router.query.embed === 'true' ? 'embedContainer': 'container'}
+        className={embed === 'true' ? 'embedContainer': 'container'}
         onTouchMove={(event) => {
           if (isMobile) {
             if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
@@ -141,7 +144,7 @@ function SingleProjectDetails({}: Props): ReactElement {
         </Modal>
         
         <div className={'projectContainer'}>
-        {router.query.embed ==='true' && router.query.singleproject==='true'? <></>:(
+        {embed ==='true' && singleProject==='true'? <></>:(
         <button
             id={'backButtonSingleP'}
             style={{

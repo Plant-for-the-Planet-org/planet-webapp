@@ -5,6 +5,7 @@ import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLangua
 import tenantConfig from '../../../../../tenant.config';
 import DarkModeSwitch from '../../../common/Layout/DarkModeSwitch.tsx';
 import { useRouter } from 'next/router';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 const config = tenantConfig();
 
@@ -28,8 +29,10 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
         setLanguageModalOpen(true);
     };
     const router = useRouter();
-    const isEmbed = router.query.embed === 'true';
+    const { embed } = React.useContext(ParamsContext);
 
+    const isEmbed = embed === 'true';
+    
   
     return (
             <>

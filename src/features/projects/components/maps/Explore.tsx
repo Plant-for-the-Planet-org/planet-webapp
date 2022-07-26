@@ -22,6 +22,7 @@ import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 interface Props {}
 
@@ -96,7 +97,7 @@ export default function Explore({}: Props): ReactElement {
       ...timelineConfig,
       ...getParams(decodeConfig, lSettings.decodeParams),
     };
-
+  
     return {
       id,
       slug: id,
@@ -196,12 +197,15 @@ export default function Explore({}: Props): ReactElement {
   //   }
   // }, [exploreExpanded]);
 
+    
+  const { embed } = React.useContext(ParamsContext);
+
   return (
     <>
       <div ref={exploreContainerRef}>
         <div
           className={
-            router.query.embed === 'true'
+            embed === 'true'
               ? styles.embed_exploreButton
               : styles.exploreButton
           }
@@ -223,7 +227,7 @@ export default function Explore({}: Props): ReactElement {
         {exploreExpanded ? (
           <>
             <div className={
-               router.query.embed === 'true'
+              embed === 'true'
                ? styles.embed_exploreExpanded
                : styles.exploreExpanded}>
               {/* <div> */}

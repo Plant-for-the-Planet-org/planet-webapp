@@ -30,6 +30,7 @@ import ErrorHandlingProvider from '../src/features/common/Layout/ErrorHandlingCo
 import dynamic from 'next/dynamic';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
+import QueryParamsProvider, { ParamsContext } from '../src/features/common/Layout/QueryParamsContext';
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -151,6 +152,10 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
 
   const [localShowVideo, setLocalShowVideo] = React.useState(false);
 
+  const { embed, setEmbed, singleProject, setSingleProject} = React.useContext(ParamsContext);
+  // console.log(embed,setEmbed);
+
+
   React.useEffect(() => {
     if (router.pathname === '/') {
       if (typeof window !== 'undefined') {
@@ -217,7 +222,8 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
               <ThemeProvider>
                 <MuiThemeProvider theme={materialTheme}>
                 <CssBaseline />
-                  <UserPropsProvider>
+                  <QueryParamsProvider>
+                    <UserPropsProvider>
                     <Layout>
                       <ProjectPropsProvider>
                         {isMap ? (
@@ -243,12 +249,13 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
                       </ProjectPropsProvider>
                     </Layout>
                   </UserPropsProvider>
-                </MuiThemeProvider>
-              </ThemeProvider>
-            </Auth0Provider>
-          </div>
+                </QueryParamsProvider>
+              </MuiThemeProvider>
+            </ThemeProvider>
+          </Auth0Provider>
         </div>
-      </ErrorHandlingProvider>
+      </div>
+    </ErrorHandlingProvider>
     );
   }
 }

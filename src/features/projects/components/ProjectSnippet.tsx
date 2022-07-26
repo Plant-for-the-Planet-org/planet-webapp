@@ -10,6 +10,7 @@ import { truncateString } from '../../../utils/getTruncatedString';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -25,6 +26,7 @@ export default function ProjectSnippet({
 }: Props): ReactElement {
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
+  const { embed } = React.useContext(ParamsContext);
 
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
@@ -56,7 +58,7 @@ export default function ProjectSnippet({
       ) : null}
       <div
        onClick={() => {
-          if(router.query.embed === 'true'){
+          if(embed === 'true'){
           router.replace(`/${project.slug}/?embed=true`);
           } else {
             router.replace(`/${project.slug}`);

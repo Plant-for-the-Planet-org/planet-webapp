@@ -5,6 +5,7 @@ import styles from '../../styles/VegetationChange.module.scss';
 import sources from '../../../../../public/data/maps/sources.json';
 import SourceIcon from '../../../../../public/assets/images/icons/SourceIcon';
 import { useRouter } from 'next/router';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 interface Props {
   selectedYear1: string;
@@ -58,9 +59,11 @@ export default function ImageDropdown({
     if (isMobile) setIsSource2MenuOpen(false);
   };
 
+  const { embed } = React.useContext( ParamsContext );
+
   return (
     <>
-      <div className={router.query.embed === 'true' ? styles.embed_dropdownContainer: styles.dropdownContainer}>
+      <div className={embed === 'true' ? styles.embed_dropdownContainer: styles.dropdownContainer}>
         <div className={styles.beforeYear}>
           <FormControl variant="standard">
             <NativeSelect
