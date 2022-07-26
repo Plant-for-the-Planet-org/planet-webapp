@@ -63,6 +63,7 @@ export default function BulkCodes({
           Array.isArray(fetchedProjects) &&
           fetchedProjects.length > 0
         ) {
+          const allowedCHFProjects = ['yucatan'];
           setProjectList(
             // Filter projects which allow donations, and store only required values in context
             fetchedProjects
@@ -71,7 +72,7 @@ export default function BulkCodes({
                   project.properties.allowDonations &&
                   (planetCashAccount.currency !== 'CHF' ||
                     (planetCashAccount.currency === 'CHF' &&
-                      project.properties.slug === 'yucatan'))
+                      allowedCHFProjects.includes(project.properties.slug)))
                 );
               })
               .map((project) => {
