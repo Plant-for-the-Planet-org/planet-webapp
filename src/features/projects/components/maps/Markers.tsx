@@ -32,7 +32,7 @@ export default function Markers({
   const handleClose = () => {
     setOpen(false);
   };
-  // console.log("markers",embed);
+ 
   return (
     <>
       {searchedProject.map((projectMarker: any, index: any) => (
@@ -50,28 +50,17 @@ export default function Markers({
                 : ''
               }`}
             onClick={() =>{
-              if( embed === 'true') {
-                router.push('/[p]', `/${projectMarker.properties.slug}/?embed=true`, {
-                  shallow: true,
-                })
-                // console.log("markers after click",embed);
-              } else {
 
-              router.push('/[p]', `/${projectMarker.properties.slug}`, {
-                shallow: true,
-              })
-              }
+                router.push(`/${projectMarker.properties.slug}/${embed === 'true' ? '?embed=true': ''}`, undefined, {
+                  shallow: true,
+               })
+              
             }}
             onKeyPress={() =>{
-              if( embed === 'true') {
-                router.push('/[p]', `/${projectMarker.properties.slug}/?embed=true`, {
+                router.push(`/${projectMarker.properties.slug}/${embed === 'true' ? '?embed=true': ''}`, undefined, {
                   shallow: true,
-                })
-              } else {
-              router.push('/[p]', `/${projectMarker.properties.slug}`, {
-                shallow: true,
               })
-              }
+              
             }}
             role="button"
             tabIndex={0}
@@ -104,31 +93,28 @@ export default function Markers({
           offsetTop={-15}
           tipSize={0}
         >
+        
           <div
             className={styles.popupProject}
             onClick={(event) => {
               if (event.target !== buttonRef.current) {
                 if (!popupRef.current) {
-                  router.push('/[p]', `/${popupData.project.properties.slug}`, {
+                  router.push(`/${popupData.project.properties.slug}/${embed === 'true' ? '?embed=true': ''}`, undefined, {
                     shallow: true,
                   });
                 } else if (!popupRef.current.contains(event.target)) {
-                  router.push('/[p]', `/${popupData.project.properties.slug}`, {
+                  router.push(`/${popupData.project.properties.slug}/${embed === 'true' ? '?embed=true': ''}`, undefined, {
                     shallow: true,
                   });
                 }
               }
             }}
-            onKeyPress={() =>{
-               if( embed === 'true') {
-                router.push('/[p]', `/${popupData.project.properties.slug}/?embed=true`, {
+            onKeyPress={() =>
+               {
+                router.push(`/${popupData.project.properties.slug}/${embed === 'true' ? '?embed=true': ''}`, undefined, {
                   shallow: true,
-                })
-              } else {
-              router.push('/[p]', `/${popupData.project.properties.slug}`, {
-                shallow: true,
-              })
-              }
+                });
+              
             }}
             role="button"
             tabIndex={0}

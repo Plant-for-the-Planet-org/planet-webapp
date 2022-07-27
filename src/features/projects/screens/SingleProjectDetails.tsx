@@ -73,23 +73,15 @@ function SingleProjectDetails({}: Props): ReactElement {
   const ProjectProps = {
     plantLocation: hoveredPl ? hoveredPl : selectedPl,
   };
-  // console.log("single project",embed);
-  // console.log("query",router);
+ 
   const goBack = () => {
     if (selectedPl || hoveredPl) {
       setHoveredPl(null);
       setSelectedPl(null);
-        if(embed === 'true'){
-        router.replace('/[p]', `/${project.slug}/?embed=true`);
-        } else{
-          router.replace('/[p]', `/${project.slug}`);
-        }
+      router.push(`/${project.slug}/${embed === 'true' ? '?embed=true': ''}`);
+       
     } else {
-      if(embed === 'true'){
-        router.replace('/?embed=true');
-        } else{
-          router.replace('/');
-        }
+        router.replace(`/${embed === 'true' ? '?embed=true': ''}`);
     }
   };
   

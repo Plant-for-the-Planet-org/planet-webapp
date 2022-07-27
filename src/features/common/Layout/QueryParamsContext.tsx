@@ -3,9 +3,7 @@ import { useRouter } from 'next/router';
 import { string } from 'prop-types';
 export const ParamsContext = createContext({
     embed: string||undefined,
-    singleProject : string||undefined,
-    setEmbed: (value: string) => '',
-    setSingleProject: (value: string) => ''
+    singleProject : string||undefined
 });
 
 
@@ -24,9 +22,7 @@ const QueryParamsProvider =({children}: any) => {
     return(
     <ParamsContext.Provider value={{
         embed,
-        singleProject,
-        setEmbed,
-        setSingleProject
+        singleProject
     }}>
         {children}
     </ParamsContext.Provider>

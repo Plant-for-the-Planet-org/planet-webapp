@@ -152,8 +152,6 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
 
   const [localShowVideo, setLocalShowVideo] = React.useState(false);
 
-  const { embed, setEmbed, singleProject, setSingleProject} = React.useContext(ParamsContext);
-  // console.log(embed,setEmbed);
 
 
   React.useEffect(() => {

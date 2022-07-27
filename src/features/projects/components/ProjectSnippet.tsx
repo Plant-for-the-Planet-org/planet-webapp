@@ -58,11 +58,7 @@ export default function ProjectSnippet({
       ) : null}
       <div
        onClick={() => {
-          if(embed === 'true'){
-          router.replace(`/${project.slug}/?embed=true`);
-          } else {
-            router.replace(`/${project.slug}`);
-          }
+          router.replace(`/${project.slug}/${embed === 'true' ? '?embed=true': ''}`);
         }}
         className={`projectImage ${selectedPl || hoveredPl ? 'projectCollapsed' : ''
           }`}
