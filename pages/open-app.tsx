@@ -1,10 +1,7 @@
 import Footer from '../src/features/common/Layout/Footer';
-import i18next from '../i18n';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'next-i18next';
 
 export default function OpenApp() {
-
   const { t, ready } = useTranslation(['common']);
 
   const styles = {
@@ -13,16 +10,16 @@ export default function OpenApp() {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection:'column',
-    color: 'var(--primary-font-color)'
-  }
+    flexDirection: 'column',
+    color: 'var(--primary-font-color)',
+  };
 
   return ready ? (
     <>
       <div style={styles}>
-        <h2 >{t('common:opening_native_app')}</h2>
+        <h2>{t('common:opening_native_app')}</h2>
       </div>
-      <Footer/>
+      <Footer />
     </>
   ) : null;
 }

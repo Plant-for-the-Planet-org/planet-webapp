@@ -1,3 +1,5 @@
+const { i18n } = require('./next-i18next.config');
+
 const withPlugins = require('next-compose-plugins');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
@@ -131,6 +133,7 @@ module.exports = withPlugins([[withBundleAnalyzer]], {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+  i18n,
   async redirects() {
     return [
       {

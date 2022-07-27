@@ -1,10 +1,9 @@
 import React, { ReactElement } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './ErrorPopup.module.scss';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../ErrorHandlingContext';
 
-const { useTranslation } = i18next;
 export default function ErrorPopup(): ReactElement {
   const { t, ready } = useTranslation(['common']);
   const { error, setError } = React.useContext(ErrorHandlingContext);
@@ -27,7 +26,7 @@ export default function ErrorPopup(): ReactElement {
       default:
         return '#f44336';
     }
-  }
+  };
 
   return (
     <>

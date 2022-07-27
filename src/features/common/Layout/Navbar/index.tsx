@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import Me from '../../../../../public/assets/images/navigation/Me';
 import MeSelected from '../../../../../public/assets/images/navigation/MeSelected';
 import tenantConfig from '../../../../../tenant.config';
@@ -24,7 +24,7 @@ const useWidth = () => {
   }, [handleResize]);
   return width;
 };
-const { useTranslation } = i18next;
+
 const config = tenantConfig();
 export default function NavbarComponent(props: any) {
   const { t, ready, i18n } = useTranslation(['common']);

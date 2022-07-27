@@ -5,7 +5,7 @@ import styles from './../../../src/features/user/Profile/styles/RedeemModal.modu
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import Close from '../../../public/assets/images/icons/headerIcons/close';
-import i18next from './../../../i18n';
+import { useTranslation } from 'next-i18next';
 import tenantConfig from './../../../tenant.config';
 import LandingSection from '../../../src/features/common/Layout/LandingSection';
 import { getFormattedNumber } from '../../../src/utils/getFormattedNumber';
@@ -13,8 +13,6 @@ import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsC
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import ShareOptions from '../../../src/features/common/ShareOptions/ShareOptions';
 import { styled } from '@mui/material';
-
-const { useTranslation } = i18next;
 
 interface Props {}
 
@@ -62,11 +60,11 @@ function ClaimDonation({}: Props): ReactElement {
     setTextCopiedSnackbarOpen(false);
   };
 
-  const Alert = styled(MuiAlert)(({theme}) => {
+  const Alert = styled(MuiAlert)(({ theme }) => {
     return {
       backgroundColor: theme.palette.primary.main,
-    }
-  })
+    };
+  });
 
   const [codeRedeemed, setCodeRedeemed] = React.useState(false);
 

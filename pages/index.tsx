@@ -10,9 +10,7 @@ import Filters from '../src/features/projects/components/projects/Filters';
 import { TENANT_ID } from '../src/utils/constants/environment';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 import DirectGift from '../src/features/donations/components/DirectGift';
-import i18next from '../i18n';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   initialized: Boolean;
@@ -38,6 +36,7 @@ export default function Donate({
   } = React.useContext(ProjectPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const { i18n } = useTranslation();
+  console.log(i18n.language);
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
   const [directGift, setDirectGift] = React.useState(null);
@@ -77,23 +76,22 @@ export default function Donate({
   // Load all projects
   React.useEffect(() => {
     async function loadProjects() {
-      if (!internalCurrencyCode || currencyCode !== internalCurrencyCode || internalLanguage !== i18n.language) {
+      if (
+        !internalCurrencyCode ||
+        currencyCode !== internalCurrencyCode ||
+        internalLanguage !== i18n.language
+      ) {
         const currency = getStoredCurrency();
         setInternalCurrencyCode(currency);
         setCurrencyCode(currency);
         setInternalLanguage(i18n.language);
-        const projects = await getRequest(
-          `/app/projects`,
-          handleError,
-          '/',
-          {
-            _scope: 'map',
-            currency: currency,
-            tenant: TENANT_ID,
-            'filter[purpose]': 'trees,conservation',
-            locale: i18n.language,
-          }
-        );
+        const projects = await getRequest(`/app/projects`, handleError, '/', {
+          _scope: 'map',
+          currency: currency,
+          tenant: TENANT_ID,
+          'filter[purpose]': 'trees,conservation',
+          locale: i18n.language,
+        });
         setProjects(projects);
         setProject(null);
         setShowSingleProject(false);

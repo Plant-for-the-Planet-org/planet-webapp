@@ -10,7 +10,6 @@ import '../src/theme/global.scss';
 import './../src/features/projects/styles/Projects.scss';
 import './../src/features/common/Layout/Navbar/Navbar.scss';
 import ThemeProvider from '../src/theme/themeContext';
-import i18next from '../i18n';
 import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
@@ -30,6 +29,7 @@ import ErrorHandlingProvider from '../src/features/common/Layout/ErrorHandlingCo
 import dynamic from 'next/dynamic';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
+import { appWithTranslation, useTranslation } from 'next-i18next';
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -86,13 +86,14 @@ const onRedirectCallback = (appState: any) => {
   if (appState) Router.replace(appState?.returnTo || '/');
 };
 
-export default function PlanetWeb({ Component, pageProps, err }: any) {
+function PlanetWeb({ Component, pageProps, err }: any) {
   const router = useRouter();
   const [isMap, setIsMap] = React.useState(false);
   const [currencyCode, setCurrencyCode] = React.useState('');
   const [browserCompatible, setBrowserCompatible] = React.useState(false);
 
   const config = tenantConfig();
+  const { i18n } = useTranslation();
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -110,7 +111,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     storeConfig();
   }, []);
   React.useEffect(() => {
-    i18next.initPromise.then(() => setInitialized(true));
+    i18n.init().then(() => setInitialized(true));
   }, []);
 
   React.useEffect(() => {
@@ -216,7 +217,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
             >
               <ThemeProvider>
                 <MuiThemeProvider theme={materialTheme}>
-                <CssBaseline />
+                  <CssBaseline />
                   <UserPropsProvider>
                     <Layout>
                       <ProjectPropsProvider>
@@ -252,3 +253,5 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     );
   }
 }
+
+export default appWithTranslation(PlanetWeb);
