@@ -43,8 +43,7 @@ export default function ProjectSnippet({
   const { token } = React.useContext(UserPropsContext);
   const handleOpen = () => {
     const url = getDonationUrl(project.slug, token);
-      window.location.href = url;
-    
+    embed === 'true' ? window.open(url, '_top').focus(): window.location.href = url;
   };
 
   return ready ? (
@@ -58,7 +57,7 @@ export default function ProjectSnippet({
       ) : null}
       <div
        onClick={() => {
-          router.replace(`/${project.slug}/${embed === 'true' ? '?embed=true': ''}`);
+          router.push(`/${project.slug}/${embed === 'true' ? '?embed=true': ''}`);
         }}
         className={`projectImage ${selectedPl || hoveredPl ? 'projectCollapsed' : ''
           }`}
