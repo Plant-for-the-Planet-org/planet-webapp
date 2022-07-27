@@ -31,8 +31,6 @@ export default function CookiePolicy() {
     localStorage.setItem('cookieNotice', showCookieNotice);
   }, [showCookieNotice]);
 
-
-
   return ready && showCookieNotice ? (
     <div className={styles.cookieContainer}>
       <button

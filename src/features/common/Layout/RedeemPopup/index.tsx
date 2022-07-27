@@ -44,7 +44,6 @@ export default function RedeemPopup() {
     localStorage.setItem('redeemPopup', showRedeemPopup);
   }, [showRedeemPopup]);
 
-
   return ready && showRedeemPopup ? (
     <div className={styles.cookieContainer}>
       <button
