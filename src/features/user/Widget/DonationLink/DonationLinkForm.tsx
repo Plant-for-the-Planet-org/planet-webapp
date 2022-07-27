@@ -9,6 +9,7 @@ import supportedLanguages from '../../../../utils/language/supportedLanguages.js
 import React from 'react';
 import { getRequest } from '../../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import ProjectSelectAutocomplete from '../../BulkCodes/components/ProjectSelectAutocomplete';
 const { useTranslation } = i18next;
 
 // TODOO - refactor code for reuse?
@@ -41,22 +42,35 @@ const DonationLinkForm = (): ReactElement | null => {
   );
   const { t, ready } = useTranslation(['donationLink']);
   const { handleError } = useContext(ErrorHandlingContext);
-  const { projects, setProjects } = useContext(ProjectPropsContext);
-  const [localProject, setLocalProject] = useState(null);
+  const { projects, setProjects, project } = useContext(ProjectPropsContext);
   
     // Load all projects
       async function fetchProjectList() {
         
-          const projects = await getRequest(
-            `/app/projects`,
+          const projectsList = await getRequest<
+          [
+            {
+              properties: {
+                id: string;
+                name: string;
+                slug: string;
+                allowDonations: boolean;
+                purpose: string;
+                currency: string;
+                unitCost: number;
+              };
+            }
+          ]
+        >
+            (`/app/projects`,
             handleError,
             undefined,
             {
               _scope: 'default',
             }
           );
-          if(projects){
-          setProjects(projects); }  else {
+          if(projectsList){
+          setProjects(projectsList); }  else {
           setProjects([]);
           }
       }
@@ -65,6 +79,7 @@ const DonationLinkForm = (): ReactElement | null => {
     useEffect(() => {
       fetchProjectList();
     }, []);
+
   if (ready) {
     return (
       <StyledForm>
@@ -92,20 +107,11 @@ const DonationLinkForm = (): ReactElement | null => {
               onChange={(event,newLan)=>setLanguage(newLan)}
             />
           </InlineFormDisplayGroup>
-          <Autocomplete
-            id="Projects"
-            options={projects}
-            getOptionLabel={(option) => option.name}
-            defaultValue='Project Name'
-            isOptionEqualToValue={(option, value) =>
-              (option.id === value.id)
-            }
-            value={localProject}
-            renderInput={(params) => (
-              <TextField {...params} label="Project Name" placeholder="Project Name" />
-            )}
-            onChange={(event,newProject)=>setLocalProject(newProject)}
-          />
+           <ProjectSelectAutocomplete
+            project={project}
+            projectList={projects || []}
+            customIcon = {false}
+            />
         </div>
       </StyledForm>
     );

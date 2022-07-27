@@ -1,7 +1,6 @@
 import React, { ReactElement, useState, useEffect } from 'react';
 import { Autocomplete, TextField, styled } from '@mui/material';
 import i18next from '../../../../../i18n';
-
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import { Project } from '../../../common/Layout/BulkCodeContext';
 
@@ -22,7 +21,8 @@ interface ProjectSelectAutocompleteProps {
   projectList: Project[];
   project: Project | null;
   handleProjectChange?: (project: Project | null) => void;
-  active: boolean;
+  active?: boolean;
+  customIcon?: boolean;
 }
 
 const ProjectSelectAutocomplete = ({
@@ -30,6 +30,7 @@ const ProjectSelectAutocomplete = ({
   project,
   handleProjectChange,
   active = true,
+  customIcon = false
 }: ProjectSelectAutocompleteProps): ReactElement | null => {
   const [localProject, setLocalProject] = useState<Project | null>(project);
   const { t, ready } = useTranslation(['bulkCodes']);
@@ -47,7 +48,7 @@ const ProjectSelectAutocomplete = ({
   if (ready) {
     return (
       <MuiAutocomplete
-        popupIcon={SearchIcon({})}
+        popupIcon={customIcon? SearchIcon({}): undefined}
         options={projectList}
         getOptionLabel={(option) => (option as Project).name}
         isOptionEqualToValue={(option, value) =>

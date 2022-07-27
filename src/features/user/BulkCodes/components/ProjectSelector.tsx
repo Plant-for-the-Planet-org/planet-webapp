@@ -74,6 +74,7 @@ const ProjectSelector = ({
         project={project}
         projectList={projectList || []}
         active={active}
+        customIcon={true}
       />
       <UnitCostDisplay
         unitCost={project ? project.unitCost : '-'}
