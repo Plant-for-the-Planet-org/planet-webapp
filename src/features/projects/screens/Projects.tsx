@@ -10,7 +10,7 @@ import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
 import Filters from '../components/projects/Filters';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
-import { useRouter } from 'next/router';
+
 
 interface Props {
   projects: any;
@@ -42,7 +42,6 @@ function ProjectsList({
 
   const [selectedTab, setSelectedTab] = React.useState('all');
   const [searchMode, setSearchMode] = React.useState(false);
-  const router = useRouter();
   React.useEffect(() => {
     showFeaturedList ? setSelectedTab('featured') : null;
   }, []);

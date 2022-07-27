@@ -51,7 +51,7 @@ function SingleProjectDetails({}: Props): ReactElement {
   const isMobile = screenWidth <= 768;
   const [scrollY, setScrollY] = React.useState(0);
   const [rating, setRating] = React.useState<number | null>(2);
-  const { embed,singleProject } = React.useContext(ParamsContext);
+  const { embed, singleProject } = React.useContext(ParamsContext);
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
   if (progressPercentage > 100) {
