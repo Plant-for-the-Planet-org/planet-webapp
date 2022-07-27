@@ -66,6 +66,7 @@
   "donationAmountRequired": "Donation Amount Required",
   "frequencyRequired": "Frequency Required",
   "project": "Project Name",
+  "planetCashPayment": "PlanetCash Payment",
   "method": "Payment Method",
   "treeCost": "Cost Per Tree",
   "treeCount": "Tree Count",

@@ -94,9 +94,10 @@ declare namespace Payments {
     _filters: Filters;
   }
 
-  export interface Project {
+  export interface Destination {
     id: string;
-    name: string;
+    name?: string;
+    type: string;
   }
 
   export interface FirstDonation {
@@ -108,7 +109,7 @@ declare namespace Payments {
     id: string;
     totalDonated: number;
     amount: number;
-    project: Project;
+    destination: Destination;
     method: string;
     needsActivation: boolean;
     firstDonation: FirstDonation;

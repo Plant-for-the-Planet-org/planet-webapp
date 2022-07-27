@@ -27,6 +27,7 @@ export default function ImageSlider({
   React.useEffect(() => {
     images.forEach((image: any) => {
       const imageURL = loadImageSource(image.image);
+
       projectImages.push({
         content: () => (
           <div
@@ -58,6 +59,7 @@ export default function ImageSlider({
         loop={true}
       />
     );
-  }, []);
+  }, [images]);
+
   return <>{slider}</>;
 }

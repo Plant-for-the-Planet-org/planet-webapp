@@ -29,7 +29,7 @@
   "treeCostValidaitonRequired": "Please enter cost per tree",
   "treeCostValidationInvalid": "Please enter valid cost per tree",
   "treeCostValidation": "Cost per tree should be more than €0 or lesser than €100",
-  "conservationCostValidation": "Cost per m2 should be more than €0 or lesser than €100",
+  "conservationCostValidation": "Cost per m2 should be more than €0 or lesser than €100.",
   "projectLocation": "Project Location",
   "visitorAssistanceLabel": "I will provide lodging, site access and local transport if a reviewer is sent by Plant-for-the-Planet.",
   "publishProject": "Publish Project",
@@ -184,6 +184,10 @@
   "motivationInfo": "The motivation behind protecting this specific ecosystem.",
   "hectar": "hectar",
   "validation": "{{fieldName}} is Invalid",
+  "date": "Date",
   "plantingDensityValidation": "Please enter Planting Density",
-  "onlyEnglish": "Please create/edit projects in English only. Translations of Projects are managed automatically by Plant-for-the-Planet."
+  "onlyEnglish": "Please create/edit projects in English only. Translations of Projects are managed automatically by Plant-for-the-Planet.",
+  "since": "since",
+  "Since": "Since",
+  "and": "and"
 }
