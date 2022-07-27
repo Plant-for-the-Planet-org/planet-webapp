@@ -91,20 +91,13 @@ export default function Donate({
         setInternalCurrencyCode(currency);
         setCurrencyCode(currency);
         setInternalLanguage(i18n.language);
-        const projects = await getRequest(
-          `/app/projects`,
-          handleError,
-          '/',
-          {
-            _scope: 'map',
-            currency: currency,
-            tenant: tenantID,
-            'filter[purpose]': 'trees,conservation',
-            locale: i18n.language,
-          },
-          undefined,
-          tenantID
-        );
+        const projects = await getRequest(`/app/projects`, handleError, '/', {
+          _scope: 'map',
+          currency: currency,
+          tenant: tenantID,
+          'filter[purpose]': 'trees,conservation',
+          locale: i18n.language,
+        });
         setProjects(projects);
         setProject(null);
         setShowSingleProject(false);
