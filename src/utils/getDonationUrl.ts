@@ -9,7 +9,7 @@ export const getDonationUrl = (id: string, token: string | null): string => {
   const sourceUrl = `${
     process.env.NEXT_PUBLIC_DONATION_URL
   }/?to=${id}&callback_url=${
-    window.location.href
+    window.top.location.href
   }&country=${country}&locale=${language}${
     token ? '&token=' + token : ''
   }&tenant=${process.env.TENANTID}${directGift ? '&s=' + directGift.id : ''}`;
