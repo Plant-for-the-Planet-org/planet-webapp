@@ -16,7 +16,7 @@ export default function ErrorPopup(): ReactElement {
   //     });
   //   };
 
-  const getErrorColor = (errorType: string): string => {
+  const getErrorColor = (errorType: string | undefined): string => {
     switch (errorType) {
       case 'error':
         return '#f44336';
@@ -27,7 +27,7 @@ export default function ErrorPopup(): ReactElement {
       default:
         return '#f44336';
     }
-  }
+  };
 
   return (
     <>

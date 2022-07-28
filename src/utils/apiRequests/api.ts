@@ -5,7 +5,8 @@ import { validateToken } from './validateToken';
 
 // Handle Error responses from API
 const handleApiError = (
-  error: any,
+  error: number,
+  result: any,
   errorHandler?: Function,
   redirect?: string
 ) => {
@@ -42,14 +43,16 @@ const handleApiError = (
     }
     console.error('Error 403: Forbidden');
   } else if (error === 400) {
-    if (errorHandler) {
-      errorHandler({
-        type: 'error',
-        message: 'validationFailed',
-        redirect: redirect,
-      });
+    if (!result['error_code']) {
+      if (errorHandler) {
+        errorHandler({
+          type: 'error',
+          message: 'validationFailed',
+          redirect: redirect,
+        });
+      }
+      console.error('Error 400: Validation Failed!');
     }
-    console.error('Error 400: Validation Failed!');
   } else if (error === 500) {
     if (errorHandler) {
       errorHandler({
@@ -60,7 +63,6 @@ const handleApiError = (
       });
     }
     console.error('Error 500: Server Error!');
-   
   }
 };
 
@@ -82,7 +84,12 @@ export async function getAccountInfo(token: any): Promise<any> {
   return response;
 }
 
-export async function getRequest(
+function isAbsoluteUrl(url: any) {
+  const pattern = /^https?:\/\//i;
+  return pattern.test(url);
+}
+
+export async function getRequest<T>(
   url: any,
   errorHandler?: Function,
   redirect?: string,
@@ -93,8 +100,11 @@ export async function getRequest(
   const lang = localStorage.getItem('language') || 'en';
   const query: any = { ...queryParams, locale: lang };
   const queryString = getQueryString(query);
-  const queryStringSuffix = queryString ? '?' + queryString : ''
-  await fetch(`${process.env.API_ENDPOINT}${url}${queryStringSuffix}`, {
+  const queryStringSuffix = queryString ? '?' + queryString : '';
+  const fullUrl = isAbsoluteUrl(url)
+    ? url
+    : `${process.env.API_ENDPOINT}${url}${queryStringSuffix}`;
+  await fetch(fullUrl, {
     method: 'GET',
     headers: {
       'tenant-key': `${TENANT_ID}`,
@@ -109,10 +119,10 @@ export async function getRequest(
   })
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
-      handleApiError(res.status, errorHandler, redirect);
+      handleApiError(res.status, result, errorHandler, redirect);
     })
     .catch((err) => console.error(`Unhandled Exception: ${err}`));
-  return result;
+  return result as unknown as T;
 }
 
 export async function getAuthenticatedRequest(
@@ -128,7 +138,7 @@ export async function getAuthenticatedRequest(
   const lang = localStorage.getItem('language') || 'en';
   const query: any = { ...queryParams };
   const queryString = getQueryString(query);
-  const queryStringSuffix = queryString ? '?' + queryString : ''
+  const queryStringSuffix = queryString ? '?' + queryString : '';
   await fetch(`${process.env.API_ENDPOINT}${url}${queryStringSuffix}`, {
     method: 'GET',
     headers: {
@@ -141,7 +151,7 @@ export async function getAuthenticatedRequest(
   })
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
-      handleApiError(res.status, errorHandler, redirect);
+      handleApiError(res.status, result, errorHandler, redirect);
     })
     .catch((err) => console.log(`Something went wrong: ${err}`));
   return result;
@@ -151,7 +161,8 @@ export async function postAuthenticatedRequest(
   url: any,
   data: any,
   token: any,
-  errorHandler?: Function
+  errorHandler?: Function,
+  headers?: any
 ): Promise<any> {
   if (validateToken(token)) {
     const res = await fetch(process.env.API_ENDPOINT + url, {
@@ -167,10 +178,11 @@ export async function postAuthenticatedRequest(
             ? localStorage.getItem('language')
             : 'en'
         }`,
+        ...(headers ? headers : {}),
       },
     });
     const result = await res.json();
-    handleApiError(res.status, errorHandler);
+    handleApiError(res.status, result, errorHandler);
     return result;
   } else {
     if (errorHandler) {
@@ -205,7 +217,7 @@ export async function postRequest(
     },
   });
   const result = await res.json();
-  handleApiError(res.status, errorHandler, redirect);
+  handleApiError(res.status, result, errorHandler, redirect);
   return result;
 }
 
@@ -231,7 +243,7 @@ export async function deleteAuthenticatedRequest(
       },
     }).then((res) => {
       result = res.status;
-      handleApiError(res.status, errorHandler);
+      handleApiError(res.status, result, errorHandler);
     });
   } else {
     if (errorHandler) {
@@ -252,25 +264,24 @@ export async function putAuthenticatedRequest(
   errorHandler?: Function
 ): Promise<any> {
   if (validateToken(token)) {
-        const res = await fetch(process.env.API_ENDPOINT + url, {
-        method: 'PUT',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json',
-          'tenant-key': `${TENANT_ID}`,
-          'X-SESSION-ID': await getsessionId(),
-          Authorization: `Bearer ${token}`,
-          'x-locale': `${
-            localStorage.getItem('language')
-              ? localStorage.getItem('language')
-              : 'en'
-          }`,
-        },
-      });
-      const result = await res.json();
-      handleApiError(res.status, errorHandler);
-      return result;
-  
+    const res = await fetch(process.env.API_ENDPOINT + url, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'tenant-key': `${TENANT_ID}`,
+        'X-SESSION-ID': await getsessionId(),
+        Authorization: `Bearer ${token}`,
+        'x-locale': `${
+          localStorage.getItem('language')
+            ? localStorage.getItem('language')
+            : 'en'
+        }`,
+      },
+    });
+    const result = await res.json();
+    handleApiError(res.status, result, errorHandler);
+    return result;
   } else {
     if (errorHandler) {
       errorHandler({
@@ -302,7 +313,7 @@ export async function putRequest(
     },
   });
   const result = await res.json();
-  handleApiError(res.status, errorHandler);
+  handleApiError(res.status, result, errorHandler);
   return result;
 }
 
@@ -316,7 +327,7 @@ export async function getRasterData(
   )
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
-      handleApiError(res.status, errorHandler);
+      handleApiError(res.status, result, errorHandler);
       return result;
     })
     .catch((err) => console.log(`Something went wrong: ${err}`));

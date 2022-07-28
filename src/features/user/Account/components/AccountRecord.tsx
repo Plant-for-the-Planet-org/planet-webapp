@@ -5,6 +5,7 @@ import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import i18next from '../../../../../i18n';
 import { TFunction } from 'next-i18next';
+import DownloadCodes from './DownloadCodes';
 
 const { useTranslation } = i18next;
 
@@ -312,6 +313,18 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
           </p>
         </div>
       )}
+      {record.details?.giftOccasion && (
+        <div className={`${styles.singleDetail} ${styles.fullWidth}`}>
+          <p className={styles.title}>{t('giftOccasion')}</p>
+          <p>{record.details.giftOccasion}</p>
+        </div>
+      )}
+      {record.details?.giftComment && (
+        <div className={`${styles.singleDetail} ${styles.fullWidth}`}>
+          <p className={styles.title}>{t('giftComment')}</p>
+          <p>{record.details.giftComment}</p>
+        </div>
+      )}
     </>
   );
 }
@@ -497,6 +510,9 @@ export function Certificates({
             {t('giftCertificate')}
           </a>
         </div>
+      )}
+      {recordDetails?.codesUrl && (
+        <DownloadCodes codesUrl={recordDetails.codesUrl} />
       )}
     </>
   );

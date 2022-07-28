@@ -1,0 +1,2 @@
+recipient_name,recipient_email,recipient_notify,recipient_message,recipient_occasion,units
+text - optional,email - optional,yes/no - optional,text - optional,text - optional,number - mandatory
