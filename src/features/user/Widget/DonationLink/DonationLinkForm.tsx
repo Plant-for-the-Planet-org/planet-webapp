@@ -69,6 +69,7 @@ const DonationLinkForm = (): ReactElement | null => {
               _scope: 'default',
             }
           );
+          
           if(projectsList){
           setProjects(projectsList); }  else {
           setProjects([]);
@@ -78,7 +79,7 @@ const DonationLinkForm = (): ReactElement | null => {
 
     useEffect(() => {
       fetchProjectList();
-    }, []);
+    }, [projects]);
 
   if (ready) {
     return (
@@ -103,6 +104,11 @@ const DonationLinkForm = (): ReactElement | null => {
               renderInput={(params) => (
                 <TextField {...params} label="Language" placeholder="Languages" />
               )}
+              renderOption={(props, option) => (
+                <span {...props} key={option.langCode}>
+                  { `${option.langCode} - ${option.languageName}`}
+                </span>
+              )}
               sx={{ width: '50%' }}
               onChange={(event,newLan)=>setLanguage(newLan)}
             />
@@ -111,6 +117,7 @@ const DonationLinkForm = (): ReactElement | null => {
             project={project}
             projectList={projects || []}
             customIcon = {false}
+            active={true}
             />
         </div>
       </StyledForm>
