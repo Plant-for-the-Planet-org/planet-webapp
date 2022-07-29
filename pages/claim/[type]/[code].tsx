@@ -211,13 +211,15 @@ function ClaimDonation({}: Props): ReactElement {
                     />
                   </div>
                   <div className={styles.donationCount}>
-                    {t('redeem:myPlantedTreesByOrg', {
-                      count: getFormattedNumber(
-                        i18n.language,
-                        Number(validCodeData.treeCount)
-                      ),
-                      tpoName: validCodeData.tpos[0].tpoName,
-                    })}
+                    {validCodeData.tpos?.length > 0 &&
+                      t('redeem:myPlantedTreesByOrg', {
+                        count: Number(validCodeData.treeCount),
+                        formattedNumber: getFormattedNumber(
+                          i18n.language,
+                          Number(validCodeData.treeCount)
+                        ),
+                        tpoName: validCodeData.tpos[0]?.tpoName,
+                      })}
                     <p className={styles.donationTenant}>
                       {t('donate:plantTreesAtURL', { url: config.tenantURL })}
                     </p>
@@ -236,13 +238,15 @@ function ClaimDonation({}: Props): ReactElement {
                     />
                   </div>
                   <p className={styles.tempDonationCount}>
-                    {t('redeem:myPlantedTreesByOrg', {
-                      count: getFormattedNumber(
-                        i18n.language,
-                        Number(validCodeData.treeCount)
-                      ),
-                      tpoName: validCodeData.tpos[0].tpoName,
-                    })}
+                    {validCodeData.tpos?.length > 0 &&
+                      t('redeem:myPlantedTreesByOrg', {
+                        count: Number(validCodeData.treeCount),
+                        formattedNumber: getFormattedNumber(
+                          i18n.language,
+                          Number(validCodeData.treeCount)
+                        ),
+                        tpoName: validCodeData.tpos[0]?.tpoName,
+                      })}
                   </p>
                   <p className={styles.tempDonationTenant}>
                     {t('donate:plantTreesAtURL', { url: config.tenantURL })}
@@ -300,10 +304,12 @@ function ClaimDonation({}: Props): ReactElement {
                   </span>
                 </div>
 
-                <div className={styles.plantedBy}>
-                  <span>{t('common:plantedBy')}</span>
-                  <p>{validCodeData.tpos[0].tpoName}</p>
-                </div>
+                {validCodeData.tpos?.length > 0 && (
+                  <div className={styles.plantedBy}>
+                    <span>{t('common:plantedBy')}</span>
+                    <p>{validCodeData.tpos[0].tpoName}</p>
+                  </div>
+                )}
 
                 <div
                   onClick={() => redeemCode(code, type)}
