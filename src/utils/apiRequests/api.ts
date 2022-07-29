@@ -43,7 +43,7 @@ const handleApiError = (
     }
     console.error('Error 403: Forbidden');
   } else if (error === 400) {
-    if (!result['error_code']) {
+    if (!result || !result['error_code']) {
       if (errorHandler) {
         errorHandler({
           type: 'error',
