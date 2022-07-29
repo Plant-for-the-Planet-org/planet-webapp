@@ -24,7 +24,7 @@ export default function Markers({
   const [open, setOpen] = React.useState(false);
   const buttonRef = React.useRef(null);
   const popupRef = React.useRef(null);
-  const { embed } = React.useContext( ParamsContext )
+  const { embed, callbackUrl } = React.useContext(ParamsContext);
 
   const handleOpen = () => {
     setOpen(true);
@@ -32,7 +32,7 @@ export default function Markers({
   const handleClose = () => {
     setOpen(false);
   };
- 
+
   return (
     <>
       {searchedProject.map((projectMarker: any, index: any) => (
@@ -45,22 +45,44 @@ export default function Markers({
           style={{ left: '28px' }}
         >
           <div
-            className={`${styles.marker} ${projectMarker.properties.purpose === 'conservation'
+            className={`${styles.marker} ${
+              projectMarker.properties.purpose === 'conservation'
                 ? styles.conservationMarker
                 : ''
-              }`}
-            onClick={() =>{
-
-                router.push(`/${projectMarker.properties.slug}/${embed === 'true' ? '?embed=true': ''}`, undefined, {
+            }`}
+            onClick={() => {
+              router.push(
+                `/${projectMarker.properties.slug}/${
+                  embed === 'true'
+                    ? `${
+                        callbackUrl != undefined
+                          ? `?embed=true&callback=${callbackUrl}`
+                          : '?embed=true'
+                      }`
+                    : ''
+                }`,
+                undefined,
+                {
                   shallow: true,
-               })
-              
+                }
+              );
             }}
-            onKeyPress={() =>{
-                router.push(`/${projectMarker.properties.slug}/${embed === 'true' ? '?embed=true': ''}`, undefined, {
+            onKeyPress={() => {
+              router.push(
+                `/${projectMarker.properties.slug}/${
+                  embed === 'true'
+                    ? `${
+                        callbackUrl != undefined
+                          ? `?embed=true&callback=${callbackUrl}`
+                          : '?embed=true'
+                      }`
+                    : ''
+                }`,
+                undefined,
+                {
                   shallow: true,
-              })
-              
+                }
+              );
             }}
             role="button"
             tabIndex={0}
@@ -77,7 +99,7 @@ export default function Markers({
             onMouseLeave={() => {
               clearTimeout(timer);
             }}
-            onFocus={() => { }}
+            onFocus={() => {}}
           />
         </Marker>
       ))}
@@ -93,28 +115,61 @@ export default function Markers({
           offsetTop={-15}
           tipSize={0}
         >
-        
           <div
             className={styles.popupProject}
             onClick={(event) => {
               if (event.target !== buttonRef.current) {
                 if (!popupRef.current) {
-                  router.push(`/${popupData.project.properties.slug}/${embed === 'true' ? '?embed=true': ''}`, undefined, {
-                    shallow: true,
-                  });
+                  router.push(
+                    `/${popupData.project.properties.slug}/${
+                      embed === 'true'
+                        ? `${
+                            callbackUrl != undefined
+                              ? `?embed=true&callback=${callbackUrl}`
+                              : '?embed=true'
+                          }`
+                        : ''
+                    }`,
+                    undefined,
+                    {
+                      shallow: true,
+                    }
+                  );
                 } else if (!popupRef.current.contains(event.target)) {
-                  router.push(`/${popupData.project.properties.slug}/${embed === 'true' ? '?embed=true': ''}`, undefined, {
-                    shallow: true,
-                  });
+                  router.push(
+                    `/${popupData.project.properties.slug}/${
+                      embed === 'true'
+                        ? `${
+                            callbackUrl != undefined
+                              ? `?embed=true&callback=${callbackUrl}`
+                              : '?embed=true'
+                          }`
+                        : ''
+                    }`,
+                    undefined,
+                    {
+                      shallow: true,
+                    }
+                  );
                 }
               }
             }}
-            onKeyPress={() =>
-               {
-                router.push(`/${popupData.project.properties.slug}/${embed === 'true' ? '?embed=true': ''}`, undefined, {
+            onKeyPress={() => {
+              router.push(
+                `/${popupData.project.properties.slug}/${
+                  embed === 'true'
+                    ? `${
+                        callbackUrl != undefined
+                          ? `?embed=true&callback=${callbackUrl}`
+                          : '?embed=true'
+                      }`
+                    : ''
+                }`,
+                undefined,
+                {
                   shallow: true,
-                });
-              
+                }
+              );
             }}
             role="button"
             tabIndex={0}
