@@ -88,7 +88,7 @@ export default function RedeemModal({
           setErrorMessage(res.message);
           setIsUploadingData(false);
         } else if (res.status === 'error') {
-          setErrorMessage(res.errorText);
+          setErrorMessage(res.errorText || t('me:wentWrong'));
           setIsUploadingData(false);
         } else if (res.status === 'success') {
           setCode(data.code);
@@ -117,8 +117,8 @@ export default function RedeemModal({
         if (res.code === 401) {
           setErrorMessage(res.message);
           setIsUploadingData(false);
-        } else if (res.response.status === 'error') {
-          setErrorMessage(res.errorText);
+        } else if (!res.response || res.response.status === 'error') {
+          setErrorMessage(res.errorText || t('me:wentWrong'));
           setIsUploadingData(false);
         } else if (res.response.status === 'success') {
           setCodeRedeemed(true);
@@ -285,6 +285,9 @@ export default function RedeemModal({
                   </div>
                 )}
 
+                {errorMessage && (
+                  <span className={styles.formErrors}>{errorMessage}</span>
+                )}
                 <button
                   id={'redeemModalCont'}
                   onClick={handleSubmit(redeemCode)}

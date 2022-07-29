@@ -105,7 +105,7 @@ function ClaimDonation({}: Props): ReactElement {
           setErrorMessage(res.message);
           setIsUploadingData(false);
         } else if (res.status === 'error') {
-          setErrorMessage(res.errorText);
+          setErrorMessage(res.errorText || t('me:wentWrong'));
           setIsUploadingData(false);
         } else if (res.status === 'success') {
           setCodeValidated(true);
@@ -162,8 +162,8 @@ function ClaimDonation({}: Props): ReactElement {
         if (res.code === 401) {
           setErrorMessage(res.message);
           setIsUploadingData(false);
-        } else if (res.response.status === 'error') {
-          setErrorMessage(res.errorText);
+        } else if (!res.response || res.response.status === 'error') {
+          setErrorMessage(res.errorText || t('me:wentWrong'));
           setIsUploadingData(false);
         } else if (res.response.status === 'success') {
           setCodeRedeemed(true);
