@@ -2,6 +2,7 @@ import React, { ReactElement, useContext } from 'react';
 
 import { styled } from '@mui/material';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { getDonationUrl } from '../../../../utils/getDonationUrl';
 
 import i18next from '../../../../../i18n';
 const { useTranslation } = i18next;
@@ -21,7 +22,7 @@ const ErrorMessage = styled('span')(({ theme }) => ({
 
 const BulkCodesError = (): ReactElement | null => {
   const { t } = useTranslation(['bulkCodes']);
-  const { user } = useContext(UserPropsContext);
+  const { user, token } = useContext(UserPropsContext);
 
   const GetDisableBulkCodesReason = () => {
     // TODO - Translations
@@ -30,15 +31,12 @@ const BulkCodesError = (): ReactElement | null => {
         return <ErrorMessage>{t('planetCashDisabled')}</ErrorMessage>;
       } else if (Object.keys(user.planetCash).length > 0) {
         if (user.planetCash.balance + user.planetCash.creditLimit <= 0) {
+          const donationUrl = getDonationUrl('planetcash', token);
           return (
             <div>
               <ErrorMessage>{t('insufficientPCashBalance')}</ErrorMessage>
               &nbsp;
-              <a
-                target="_blank"
-                href={`${process.env.NEXT_PUBLIC_DONATION_URL}/?to=${user.planetCash.account}&step=donate`}
-                rel="noopener noreferrer"
-              >
+              <a target="_blank" href={donationUrl} rel="noopener noreferrer">
                 <AddBalanceLink>{t('addBalanceGeneric')}</AddBalanceLink>
               </a>
             </div>
