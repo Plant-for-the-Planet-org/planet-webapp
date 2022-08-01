@@ -97,7 +97,7 @@ export default function Explore({}: Props): ReactElement {
       ...timelineConfig,
       ...getParams(decodeConfig, lSettings.decodeParams),
     };
-  
+
     return {
       id,
       slug: id,
@@ -169,9 +169,21 @@ export default function Explore({}: Props): ReactElement {
       };
       // setMapState(newMapState);
       setViewPort(newViewport);
-      router.push('/', undefined, {
-        shallow: true,
-      });
+      router.push(
+        `/${
+          embed === 'true'
+            ? `${
+                callbackUrl != undefined
+                  ? `?embed=true&callback=${callbackUrl}`
+                  : '?embed=true'
+              }`
+            : ''
+        }`,
+        undefined,
+        {
+          shallow: true,
+        }
+      );
     }
   };
 
@@ -197,17 +209,14 @@ export default function Explore({}: Props): ReactElement {
   //   }
   // }, [exploreExpanded]);
 
-    
-  const { embed } = React.useContext(ParamsContext);
+  const { embed, callbackUrl } = React.useContext(ParamsContext);
 
   return (
     <>
       <div ref={exploreContainerRef}>
         <div
           className={
-            embed === 'true'
-              ? styles.embed_exploreButton
-              : styles.exploreButton
+            embed === 'true' ? styles.embed_exploreButton : styles.exploreButton
           }
           onClick={() => {
             setExploreExpanded(!exploreExpanded);
@@ -226,10 +235,13 @@ export default function Explore({}: Props): ReactElement {
         </div>
         {exploreExpanded ? (
           <>
-            <div className={
-              embed === 'true'
-               ? styles.embed_exploreExpanded
-               : styles.exploreExpanded}>
+            <div
+              className={
+                embed === 'true'
+                  ? styles.embed_exploreExpanded
+                  : styles.exploreExpanded
+              }
+            >
               {/* <div> */}
               <FormGroup style={{ width: '100%' }}>
                 <div className={styles.exploreToggleRow}>
