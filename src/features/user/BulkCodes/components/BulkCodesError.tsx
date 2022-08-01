@@ -36,7 +36,7 @@ const BulkCodesError = (): ReactElement | null => {
             <div>
               <ErrorMessage>{t('insufficientPCashBalance')}</ErrorMessage>
               &nbsp;
-              <a target="_blank" href={donationUrl} rel="noopener noreferrer">
+              <a href={donationUrl}>
                 <AddBalanceLink>{t('addBalanceGeneric')}</AddBalanceLink>
               </a>
             </div>
