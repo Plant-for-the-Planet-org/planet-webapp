@@ -31,7 +31,7 @@ import dynamic from 'next/dynamic';
 import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
-import QueryParamsProvider, { ParamsContext } from '../src/features/common/Layout/QueryParamsContext';
+import QueryParamsProvider from '../src/features/common/Layout/QueryParamsContext';
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -153,8 +153,6 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
 
   const [localShowVideo, setLocalShowVideo] = React.useState(false);
 
-
-
   React.useEffect(() => {
     if (router.pathname === '/') {
       if (typeof window !== 'undefined') {
@@ -220,45 +218,43 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
             >
               <ThemeProvider>
                 <MuiThemeProvider theme={materialTheme}>
-                <CssBaseline />
+                  <CssBaseline />
                   <QueryParamsProvider>
                     <UserPropsProvider>
-                  <CssBaseline />
-                  <UserPropsProvider>
-                    <Layout>
-                      <ProjectPropsProvider>
-                        <BulkCodeProvider>
-                          {isMap ? (
-                            <>
-                              {project ? (
-                                <MapLayout />
-                              ) : projects ? (
-                                <MapLayout />
-                              ) : null}
-                              <div
-                                style={
-                                  config.tenantName === 'planet' ||
-                                  config.tenantName === 'ttc'
-                                    ? {}
-                                    : { display: 'none' }
-                                }
-                              >
-                                <PlayButton setshowVideo={setshowVideo} />
-                              </div>
-                            </>
-                          ) : null}
-                          <Component {...ProjectProps} />
-                        </BulkCodeProvider>
-                      </ProjectPropsProvider>
-                    </Layout>
-                  </UserPropsProvider>
-                </QueryParamsProvider>
-              </MuiThemeProvider>
-            </ThemeProvider>
-          </Auth0Provider>
+                      <Layout>
+                        <ProjectPropsProvider>
+                          <BulkCodeProvider>
+                            {isMap ? (
+                              <>
+                                {project ? (
+                                  <MapLayout />
+                                ) : projects ? (
+                                  <MapLayout />
+                                ) : null}
+                                <div
+                                  style={
+                                    config.tenantName === 'planet' ||
+                                    config.tenantName === 'ttc'
+                                      ? {}
+                                      : { display: 'none' }
+                                  }
+                                >
+                                  <PlayButton setshowVideo={setshowVideo} />
+                                </div>
+                              </>
+                            ) : null}
+                            <Component {...ProjectProps} />
+                          </BulkCodeProvider>
+                        </ProjectPropsProvider>
+                      </Layout>
+                    </UserPropsProvider>
+                  </QueryParamsProvider>
+                </MuiThemeProvider>
+              </ThemeProvider>
+            </Auth0Provider>
+          </div>
         </div>
-      </div>
-    </ErrorHandlingProvider>
+      </ErrorHandlingProvider>
     );
   }
 }
