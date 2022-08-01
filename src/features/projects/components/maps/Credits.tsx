@@ -20,57 +20,22 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
   const [selectedCountry, setSelectedCountry] = React.useState('DE');
   const [openLanguageModal, setLanguageModalOpen] = React.useState(false);
 
-    const handleLanguageModalClose = () => {
-        setLanguageModalOpen(false);
-    };
-    const handleLanguageModalOpen = () => {
-        setLanguageModalOpen(true);
-    };
-    
-    const { embed } = React.useContext(ParamsContext);
-
-    const isEmbed = embed === 'true';
-    
-  
-    return (
-            <>
-           
-            <div className={styles.lngSwitcher + ' mapboxgl-map'}>
-                {config.darkModeEnabled && <DarkModeSwitch />}
-                {isEmbed? null :
-                <div
-                    onClick={() => {
-                        setLanguageModalOpen(true);
-                    }}
-                >
-                    {`🌐 ${language ? language.toUpperCase() : ''
-                        } • ${selectedCurrency}`}
-                </div>
-                }
-                {(process.env.TENANT === "ttc" || process.env.TENANT === "planet") && (!isEmbed)? < a
-                    rel="noopener noreferrer"
-                    href={`https://www.thegoodshop.org/de/shop/`}
-                    target={'_blank'}
-                >
-                    {t('common:shop')}
-                </a> : null}
-               
-                {/* {config.statusURL ? <a
-=======
   const handleLanguageModalClose = () => {
     setLanguageModalOpen(false);
   };
   const handleLanguageModalOpen = () => {
     setLanguageModalOpen(true);
   };
-  const router = useRouter();
-  const isEmbed = router.query.embed === 'true';
+
+  const { embed } = React.useContext(ParamsContext);
+
+  const isEmbed = embed === 'true';
 
   return (
     <>
       <div className={styles.lngSwitcher + ' mapboxgl-map'}>
         {config.darkModeEnabled && <DarkModeSwitch />}
-        {!isEmbed && (
+        {isEmbed ? null : (
           <div
             onClick={() => {
               setLanguageModalOpen(true);
@@ -82,24 +47,16 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
           </div>
         )}
         {(process.env.TENANT === 'ttc' || process.env.TENANT === 'planet') &&
-          !isEmbed && (
-            <a
-              rel="noopener noreferrer"
-              href={`https://www.thegoodshop.org/de/shop/`}
-              target={'_blank'}
-            >
-              {t('common:shop')}
-            </a>
-          )}
+        !isEmbed ? (
+          <a
+            rel="noopener noreferrer"
+            href={`https://www.thegoodshop.org/de/shop/`}
+            target={'_blank'}
+          >
+            {t('common:shop')}
+          </a>
+        ) : null}
 
-        {/* {config.statusURL ? <a
->>>>>>> 5857db3a7b55fb73f391921bfd158f5caf8b5269
-                    rel="noopener noreferrer"
-                    href={config.statusURL} 
-                    target={'_blank'}
-                >
-                    {t('common:status')}
-                </a> : null} */}
         <a
           rel="noopener noreferrer"
           href={`https://status.pp.eco/`}

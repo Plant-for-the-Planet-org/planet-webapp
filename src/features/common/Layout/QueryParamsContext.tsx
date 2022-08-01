@@ -29,7 +29,6 @@ const QueryParamsProvider: FC = ({ children }) => {
     setEmbed(router.query.embed);
     setSingleProject(router.query.singleproject);
     setCallbackUrl(router.query.callback);
-    // console.log(router.query);
   }, [router]);
 
   return (
