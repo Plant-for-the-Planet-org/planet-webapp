@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import i18next from '../../../../i18n';
 import BackButton from '../../../../public/assets/images/icons/BackButton';
 import TransactionListLoader from '../../../../public/assets/images/icons/TransactionListLoader';
@@ -66,6 +66,18 @@ export default function History({
         ? paymentHistory?.items[selectedRecord]
         : null;
   }
+
+  useEffect(() => {
+    const { ref } = router.query;
+    if (ref) {
+      const _refIndex = paymentHistory?.items?.findIndex(
+        (item) => item.reference === ref
+      );
+      if (typeof _refIndex === 'number' && _refIndex !== -1) {
+        handleRecordOpen(_refIndex);
+      }
+    }
+  }, [paymentHistory]);
 
   const adSpaceLanguage = i18n.language === 'de' ? 'de' : 'en';
 
