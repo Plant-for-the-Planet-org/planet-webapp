@@ -305,31 +305,12 @@
     justify-content: flex-start;
     align-items: flex-start;
     width: fit-content;
-    &.fullWidth {
-      grid-column: span 2;
-    }
     > .title {
       font-weight: 700;
     }
     > a {
       color: $primaryColor;
       font-weight: 700;
-    }
-    > .downloadCodesButton {
-      color: $primaryColor;
-      appearance: none;
-      font: inherit;
-      font-weight: 700;
-      text-align: left;
-      cursor: pointer;
-      display: flex;
-      gap: 5px;
-      align-items: center;
-
-      &:focus-visible {
-        border: 2px solid $primaryColor;
-        border-radius: 3px;
-      }
     }
   }
 }
@@ -548,9 +529,6 @@
 @include smTabletView {
   .detailGrid {
     grid-template-columns: repeat(2, 1fr);
-    & .singleDetail.fullWidth {
-      grid-column: span 2;
-    }
   }
 }
 @include mdTabletView {
@@ -634,9 +612,6 @@
 
   .detailGrid {
     grid-template-columns: repeat(3, 1fr);
-    & .singleDetail.fullWidth {
-      grid-column: span 3;
-    }
   }
 }
 @include lgLaptopView {
@@ -696,9 +671,6 @@
 
   .detailGrid {
     grid-template-columns: repeat(3, 1fr);
-    & .singleDetail.fullWidth {
-      grid-column: span 3;
-    }
   }
 }
 // Loader for Buttons
@@ -710,11 +682,6 @@
   height: 16px !important;
   -webkit-animation: spin 1s linear infinite; /* Safari */
   animation: spin 1s linear infinite;
-}
-
-.spinner--primary {
-  border: 2px solid #689f38;
-  border-top: 2px solid transparent;
 }
 
 @-webkit-keyframes spin {

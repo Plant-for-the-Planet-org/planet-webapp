@@ -17,10 +17,7 @@
     "lint": "eslint i18n pages src",
     "lint:errors": "eslint i18n pages src --quiet",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
-    "chromatic": "npx chromatic --exit-zero-on-changes"
+    "cypress:run": "cypress run"
   },
   "engines": {
     "node": "14.x",
@@ -52,7 +49,6 @@
     "@sentry/node": "^6.19.2",
     "@sentry/webpack-plugin": "^1.18.3",
     "@turf/turf": "^5.1.6",
-    "@types/papaparse": "^5.3.2",
     "@types/react-gtm-module": "^2.0.1",
     "@types/react-lazyload": "^2.6.0",
     "d3-ease": "^2.0.0",
@@ -100,14 +96,6 @@
     "vizzuality-components": "^3.0.3"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^6.5.8",
-    "@storybook/addon-essentials": "^6.5.8",
-    "@storybook/addon-interactions": "^6.5.8",
-    "@storybook/addon-links": "^6.5.8",
-    "@storybook/builder-webpack5": "^6.5.8",
-    "@storybook/manager-webpack5": "^6.5.8",
-    "@storybook/react": "^6.5.8",
-    "@storybook/testing-library": "^0.0.11",
     "@emotion/babel-plugin": "^11.9.2",
     "@emotion/eslint-plugin": "^11.7.0",
     "@types/d3-ease": "^1.0.9",
@@ -120,8 +108,6 @@
     "@typescript-eslint/parser": "^4.1.1",
     "axios": "^0.21.1",
     "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
-    "chromatic": "^6.5.4",
     "cross-env": "^7.0.2",
     "cypress": "^8.5.0",
     "cypress-plugin-stripe-elements": "^1.0.2",
@@ -136,8 +122,6 @@
     "eslint-plugin-react-hooks": "^4.1.2",
     "next-unused": "0.0.6",
     "prettier": "^2.0.5",
-    "storybook-addon-next": "^1.6.6",
-    "typescript": "^4.3.2",
-    "webpack": "^5.72.0"
+    "typescript": "^4.3.2"
   }
 }

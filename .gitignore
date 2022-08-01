@@ -44,10 +44,3 @@ cypress.env.json
 /cypress/videos
 /cypress/screenshots
 /cypress/integration/examples
-
-# storybook
-/storybook-static
-build-storybook.log
-src/stories
-.vscode/settings.json
-.vscode/launch.json

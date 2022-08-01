@@ -135,19 +135,12 @@ function UserLayout(props: any): ReactElement {
     },
     {
       key: 6,
-      title: t('me:bulkCodes'),
-      path: '/profile/bulk-codes',
-      icon: <MapIcon />,
-      hasRelatedLinks: true,
-    },
-    {
-      key: 7,
       title: t('me:embedWidget'),
       path: '/profile/widgets',
       icon: <WidgetIcon />,
     },
     {
-      key: 8,
+      key: 7,
       title: t('me:settings'),
       icon: <SettingsIcon />,
       subMenu: [
@@ -190,11 +183,6 @@ function UserLayout(props: any): ReactElement {
             setactiveLink(link.path);
             setActiveSubMenu(subMenuItem.path);
           }
-        } else if (
-          link.hasRelatedLinks &&
-          router.router?.asPath.includes(link.path)
-        ) {
-          setactiveLink(link.path);
         }
       }
     }
@@ -239,25 +227,18 @@ function UserLayout(props: any): ReactElement {
                 <button className={styles.navlinkTitle}>{t('close')}</button>
               </div>
             </div>
-            {navLinks
-              .filter((links) => {
-                if (!user.planetCash) {
-                  return links.key !== 6;
-                }
-                return links;
-              })
-              .map((link: any, index: any) => (
-                <NavLink
-                  link={link}
-                  setactiveLink={setactiveLink}
-                  activeLink={activeLink}
-                  activeSubMenu={activeSubMenu}
-                  setActiveSubMenu={setActiveSubMenu}
-                  user={user}
-                  key={index}
-                  closeMenu={() => setIsMenuOpen(false)}
-                />
-              ))}
+            {navLinks.map((link: any, index: any) => (
+              <NavLink
+                link={link}
+                setactiveLink={setactiveLink}
+                activeLink={activeLink}
+                activeSubMenu={activeSubMenu}
+                setActiveSubMenu={setActiveSubMenu}
+                user={user}
+                key={index}
+                closeMenu={() => setIsMenuOpen(false)}
+              />
+            ))}
           </>
         </div>
 

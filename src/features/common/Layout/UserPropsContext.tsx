@@ -2,13 +2,12 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
-import { User } from '../types/user';
 
 interface Props {}
 
 export const UserPropsContext = React.createContext({
-  user: false || ({} as User) || null,
-  setUser: (value: boolean | User | null) => {},
+  user: false || {} || null,
+  setUser: (value: boolean | object | null) => {},
   contextLoaded: false,
   token: null,
   isLoading: true,
