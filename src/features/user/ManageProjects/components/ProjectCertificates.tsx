@@ -15,9 +15,9 @@ import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import MuiDatePicker from '@mui/lab/MobileDatePicker';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 const { useTranslation } = i18next;
 

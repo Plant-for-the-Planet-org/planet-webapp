@@ -18,9 +18,9 @@ import getCurrencySymbolByCode from '../../../utils/countryCurrency/getCurrencyS
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
-import MuiDatePicker from '@mui/lab/MobileDatePicker';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 // interface EditDonationProps {
 //   editModalOpen
