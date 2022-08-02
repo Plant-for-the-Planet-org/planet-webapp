@@ -16,9 +16,9 @@ import {
   FormControlLabel,
 } from '@mui/material';
 
-import MuiCalenderPicker from '@mui/lab/CalendarPicker';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { CalendarPicker as MuiCalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 export const PauseModal = ({
   pauseModalOpen,
@@ -150,7 +150,7 @@ export const PauseModal = ({
             {showCalender ? (
               <>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <MuiCalenderPicker
+                  <MuiCalendarPicker
                     date={date}
                     onChange={(value) => {
                       setdate(value);
