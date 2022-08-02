@@ -28,16 +28,6 @@ const Layout: FC = ({ children }) => {
 
         <div>
           <div className={'notificationContainer'}>
-<<<<<<< Updated upstream
-            {embed === 'true' ? null : (
-              <>
-                <CookiePolicy />
-                <RedeemPopup />
-              </>
-            )}
-
-=======
->>>>>>> Stashed changes
             {!isEmbed && (
               <>
                 <CookiePolicy />
