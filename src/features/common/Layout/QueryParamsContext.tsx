@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  FC,
-  ReactElement,
-  useEffect,
-  useState,
-} from 'react';
+import React, { createContext, FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 type QueryParamType = string | undefined | string[];

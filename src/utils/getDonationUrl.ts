@@ -11,21 +11,13 @@ export const getDonationUrl = (
   if (directGift) {
     directGift = JSON.parse(directGift);
   }
-  const sourceUrl =
-    embed === 'true'
-      ? `${process.env.NEXT_PUBLIC_DONATION_URL}/?to=${id}&embed=${embed}&${
-          callbackUrl != undefined ? `callback_url=${callbackUrl}` : ''
-        }&country=${country}&locale=${language}${
-          token ? '&token=' + token : ''
-        }&tenant=${process.env.TENANTID}${
-          directGift ? '&s=' + directGift.id : ''
-        }`
-      : `${process.env.NEXT_PUBLIC_DONATION_URL}/?to=${id}&callback_url=${
-          window.location.href
-        }&country=${country}&locale=${language}${
-          token ? '&token=' + token : ''
-        }&tenant=${process.env.TENANTID}${
-          directGift ? '&s=' + directGift.id : ''
-        }`;
+
+  const callback_url = embed === 'true' ? callbackUrl : window.location.href;
+
+  const sourceUrl = `${process.env.NEXT_PUBLIC_DONATION_URL}/?to=${id}&${
+    callback_url !== undefined && `callback_url=${callback_url}`
+  }&country=${country}&locale=${language}${
+    token ? '&token=' + token : ''
+  }&tenant=${process.env.TENANTID}${directGift ? '&s=' + directGift.id : ''}`;
   return sourceUrl;
 };

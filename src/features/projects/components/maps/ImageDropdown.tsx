@@ -33,6 +33,8 @@ export default function ImageDropdown({
   isMobile,
 }: Props): ReactElement {
   const router = useRouter();
+  const { embed } = React.useContext(ParamsContext);
+
   const [isSource1MenuOpen, setIsSource1MenuOpen] = React.useState(
     isMobile ? false : true
   );
@@ -59,18 +61,22 @@ export default function ImageDropdown({
     if (isMobile) setIsSource2MenuOpen(false);
   };
 
-  const { embed } = React.useContext( ParamsContext );
-
   return (
     <>
-      <div className={embed === 'true' ? styles.embed_dropdownContainer: styles.dropdownContainer}>
+      <div
+        className={
+          embed === 'true'
+            ? styles.embed_dropdownContainer
+            : styles.dropdownContainer
+        }
+      >
         <div className={styles.beforeYear}>
           <FormControl variant="standard">
             <NativeSelect
               id="customized-select-native-1"
               value={selectedYear1}
               onChange={handleChangeYear1}
-              input={<BootstrapInput />} 
+              input={<BootstrapInput />}
             >
               {rasterData.imagery[selectedSource1].map((item: any) => {
                 return (

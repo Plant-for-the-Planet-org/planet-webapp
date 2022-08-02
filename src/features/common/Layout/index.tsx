@@ -28,6 +28,7 @@ const Layout: FC = ({ children }) => {
 
         <div>
           <div className={'notificationContainer'}>
+<<<<<<< Updated upstream
             {embed === 'true' ? null : (
               <>
                 <CookiePolicy />
@@ -35,6 +36,8 @@ const Layout: FC = ({ children }) => {
               </>
             )}
 
+=======
+>>>>>>> Stashed changes
             {!isEmbed && (
               <>
                 <CookiePolicy />

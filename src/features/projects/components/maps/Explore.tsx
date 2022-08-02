@@ -63,6 +63,7 @@ export default function Explore({}: Props): ReactElement {
   const router = useRouter();
 
   const { theme } = React.useContext(ThemeContext);
+  const { embed, callbackUrl } = React.useContext(ParamsContext);
 
   const handleModalClose = () => {
     setModalOpen(false);
@@ -208,8 +209,6 @@ export default function Explore({}: Props): ReactElement {
   //     setMapState({ ...mapState, dragPan: true });
   //   }
   // }, [exploreExpanded]);
-
-  const { embed, callbackUrl } = React.useContext(ParamsContext);
 
   return (
     <>
