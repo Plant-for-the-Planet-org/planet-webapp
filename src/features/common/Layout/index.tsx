@@ -1,5 +1,4 @@
-import { useRouter } from 'next/router';
-import React from 'react';
+import React, { FC } from 'react';
 import theme from '../../../theme/theme';
 import { useTheme } from '../../../theme/themeContext';
 import CookiePolicy from './CookiePolicy';
@@ -8,10 +7,11 @@ import Header from './Header';
 import Navbar from './Navbar';
 import RedeemPopup from './RedeemPopup';
 import { ParamsContext } from './QueryParamsContext';
+import { useRouter } from 'next/router';
 
-export default function Layout(props: any) {
+const Layout: FC = ({ children }) => {
   const { theme: themeType } = useTheme();
-  const { embed } = React.useContext( ParamsContext );
+  const { embed } = React.useContext(ParamsContext);
 
   const router = useRouter();
   const isEmbed = router.query.embed === 'true';
@@ -24,17 +24,16 @@ export default function Layout(props: any) {
       </style>
       <div className={`${themeType}`}>
         {!isEmbed && <Navbar theme={themeType} />}
-        <div>{props.children}</div>
+        <div>{children}</div>
 
         <div>
           <div className={'notificationContainer'}>
-
-            { embed === 'true' ? null :
-            <>
-            <CookiePolicy />
-            <RedeemPopup />
-            </>
-            }
+            {embed === 'true' ? null : (
+              <>
+                <CookiePolicy />
+                <RedeemPopup />
+              </>
+            )}
 
             {!isEmbed && (
               <>
@@ -42,11 +41,13 @@ export default function Layout(props: any) {
                 <RedeemPopup />
               </>
             )}
-            
+
             <ErrorPopup />
           </div>
         </div>
       </div>
     </>
   );
-}
+};
+
+export default Layout;
