@@ -1,21 +1,42 @@
 import { useRouter } from 'next/router';
-import React, { ReactElement } from 'react';
+import React, {
+  createContext,
+  SetStateAction,
+  useState,
+  Dispatch,
+  FC,
+} from 'react';
 import { UserPropsContext } from './UserPropsContext';
 
-interface Props { }
+type SetState<T> = Dispatch<SetStateAction<T>>;
 
-export const ErrorHandlingContext = React.createContext({
-  error: null,
-  setError: () => { },
-  handleError: ({ }) => { },
-});
+export interface ErrorInterface {
+  type?: 'error' | 'warning' | 'info';
+  message: string;
+  redirect?: string;
+  code?: number;
+}
 
-function ErrorHandlingProvider({ children }: any): ReactElement {
-  const [error, setError] = React.useState<{} | null>(null);
+interface ErrorHandlingContextInterface {
+  error: ErrorInterface | null;
+  setError: SetState<ErrorInterface | null>;
+  handleError: (error: ErrorInterface) => void;
+}
+
+export const ErrorHandlingContext =
+  createContext<ErrorHandlingContextInterface>({
+    error: null,
+    setError: () => {},
+    handleError: () => {},
+  });
+
+const ErrorHandlingProvider: FC = ({ children }) => {
+  const [error, setError] = useState<ErrorInterface | null>(null);
   const router = useRouter();
-  const { setUser, logoutUser, loginWithRedirect } = React.useContext(UserPropsContext);
+  const { setUser, logoutUser, loginWithRedirect } =
+    React.useContext(UserPropsContext);
 
-  const handleError = (error: any) => {
+  const handleError = (error: ErrorInterface) => {
     setError(error);
     setTimeout(() => {
       setError(null);
@@ -44,6 +65,6 @@ function ErrorHandlingProvider({ children }: any): ReactElement {
       {children}
     </ErrorHandlingContext.Provider>
   );
-}
+};
 
 export default ErrorHandlingProvider;
