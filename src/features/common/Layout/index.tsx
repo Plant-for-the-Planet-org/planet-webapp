@@ -7,14 +7,12 @@ import Header from './Header';
 import Navbar from './Navbar';
 import RedeemPopup from './RedeemPopup';
 import { ParamsContext } from './QueryParamsContext';
-import { useRouter } from 'next/router';
 
 const Layout: FC = ({ children }) => {
   const { theme: themeType } = useTheme();
   const { embed } = React.useContext(ParamsContext);
 
-  const router = useRouter();
-  const isEmbed = router.query.embed === 'true';
+  const isEmbed = embed === 'true';
 
   return (
     <>

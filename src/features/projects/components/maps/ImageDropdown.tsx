@@ -4,7 +4,6 @@ import BootstrapInput from '../../../common/InputTypes/BootstrapInput';
 import styles from '../../styles/VegetationChange.module.scss';
 import sources from '../../../../../public/data/maps/sources.json';
 import SourceIcon from '../../../../../public/assets/images/icons/SourceIcon';
-import { useRouter } from 'next/router';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 interface Props {
@@ -32,7 +31,6 @@ export default function ImageDropdown({
   setSelectedSource2,
   isMobile,
 }: Props): ReactElement {
-  const router = useRouter();
   const { embed } = React.useContext(ParamsContext);
 
   const [isSource1MenuOpen, setIsSource1MenuOpen] = React.useState(
