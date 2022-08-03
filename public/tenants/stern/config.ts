@@ -1,15 +1,15 @@
 const config = {
   tenantName: 'stern',
   tenantURL: 'baeume.stern.de',
-  languages: ['de','en'],
+  languages: ['de', 'en'],
   fallbackCurrency: 'EUR',
-  tenantGoal:null,
-  showUNDecadeLogo:true,
+  tenantGoal: null,
+  showUNDecadeLogo: true,
   font: {
-    primaryFontFamily: '"Raleway",Helvetica,Arial,sans-serif',
-    primaryFontURL: "https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&display=swap",
-    secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
-    secondaryFontURL: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap",
+    primaryFontFamily:
+      '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
+    secondaryFontFamily:
+      '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
   },
   meta: {
     title: 'Stern ❤️ Baeume',
@@ -44,14 +44,14 @@ const config = {
         onclick: '/all',
         visible: false,
       },
-      me:{
+      me: {
         title: 'me',
         onclick: '/me',
         visible: false,
-      }
-    }
+      },
+    },
   },
-  footerLinks:["privacy","terms","imprint","contact","supportUs"]
+  footerLinks: ['privacy', 'terms', 'imprint', 'contact', 'supportUs'],
 };
 
 export default config;
