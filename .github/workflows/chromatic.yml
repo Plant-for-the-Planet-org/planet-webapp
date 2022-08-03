@@ -9,7 +9,6 @@ on:
     branches:
       - develop
       - main
-      - feature/upgrade-to-mui-5
       - feature/bulk-code-generation
 # List of jobs
 jobs:

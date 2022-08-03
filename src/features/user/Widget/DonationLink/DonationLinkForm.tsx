@@ -161,7 +161,6 @@ const DonationLinkForm = (): ReactElement | null => {
             handleProjectChange={handleProjectChange}
             project={project}
             projectList={projects || []}
-            customIcon={false}
             active={true}
           />
           <div>Support my TreeCounter</div>

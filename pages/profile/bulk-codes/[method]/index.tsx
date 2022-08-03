@@ -1,6 +1,8 @@
 import React, { ReactElement, useEffect } from 'react';
 import UserLayout from '../../../../src/features/common/Layout/UserLayout/UserLayout';
-import BulkCodes from '../../../../src/features/user/BulkCodes';
+import BulkCodes, {
+  BulkCodeSteps,
+} from '../../../../src/features/user/BulkCodes';
 import Head from 'next/head';
 import i18next from '../../../../i18n';
 import { useRouter } from 'next/router';
@@ -9,8 +11,7 @@ import { BulkCodeMethods } from '../../../../src/utils/constants/bulkCodeConstan
 
 const { useTranslation } = i18next;
 
-interface Props {}
-export default function BulkCodeSelectProjectPage({}: Props): ReactElement {
+export default function BulkCodeSelectProjectPage(): ReactElement {
   const { t, ready } = useTranslation('me');
   const router = useRouter();
   const { isReady, query } = useRouter();
@@ -38,7 +39,7 @@ export default function BulkCodeSelectProjectPage({}: Props): ReactElement {
       <Head>
         <title>{ready ? t('bulkCodesTitleStep2') : ''}</title>
       </Head>
-      <BulkCodes step={1} />
+      <BulkCodes step={BulkCodeSteps.SELECT_PROJECT} />
     </UserLayout>
   );
 }

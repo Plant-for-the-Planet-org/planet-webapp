@@ -125,6 +125,12 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
         // TODOO - Extract this error handling logic elsewhere
         if (res['error_type'] === 'payment_error') {
           switch (res['error_code']) {
+            case 'planet_cash_invalid_project':
+              handleError({
+                code: 400,
+                message: t(`bulkCodes:donationError.${res['error_code']}`),
+              });
+              break;
             case 'planet_cash_insufficient_credit':
               handleError({
                 code: 400,

@@ -25,11 +25,12 @@ const SelectorOptionContainer = styled('div')(({ theme }) => ({
     flexDirection: 'column',
     gap: 10,
     padding: 24,
+    cursor: `pointer`,
   },
   '& .optionDetails': {
     margin: '0 24px',
   },
-  '&.selected': {
+  '&.selected, &:hover': {
     borderColor: theme.palette.primary.main,
     backgroundColor: theme.palette.primary.light,
     transform: `scale(1.005)`,

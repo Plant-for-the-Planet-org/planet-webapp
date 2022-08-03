@@ -22,7 +22,6 @@ interface ProjectSelectAutocompleteProps {
   project: Project | null;
   handleProjectChange?: (project: Project | null) => void;
   active?: boolean;
-  customIcon?: boolean;
 }
 
 const ProjectSelectAutocomplete = ({
@@ -30,7 +29,6 @@ const ProjectSelectAutocomplete = ({
   project,
   handleProjectChange,
   active = true,
-  customIcon = false
 }: ProjectSelectAutocompleteProps): ReactElement | null => {
   const [localProject, setLocalProject] = useState<Project | null>(project);
   const { t, ready } = useTranslation(['bulkCodes']);
@@ -48,7 +46,7 @@ const ProjectSelectAutocomplete = ({
   if (ready) {
     return (
       <MuiAutocomplete
-        popupIcon={customIcon? SearchIcon({}): undefined}
+        popupIcon={SearchIcon()}
         options={projectList}
         getOptionLabel={(option) => (option as Project).name}
         isOptionEqualToValue={(option, value) =>
