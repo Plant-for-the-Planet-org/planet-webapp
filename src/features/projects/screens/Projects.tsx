@@ -9,6 +9,8 @@ import SearchBar from '../components/projects/SearchBar';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
 import Filters from '../components/projects/Filters';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+
 
 interface Props {
   projects: any;
@@ -40,7 +42,6 @@ function ProjectsList({
 
   const [selectedTab, setSelectedTab] = React.useState('all');
   const [searchMode, setSearchMode] = React.useState(false);
-
   React.useEffect(() => {
     showFeaturedList ? setSelectedTab('featured') : null;
   }, []);
@@ -146,13 +147,15 @@ function ProjectsList({
     ) : null;
   };
 
+  const { embed } = React.useContext( ParamsContext );
+
   return ready ? (
     <>
       <Explore />
       {showProjects ? (
         <div
-          style={{ transform: `translate(0,${scrollY}px)` }}
-          className={'container'}
+          style={{ transform: `translate(0,${scrollY}px)`}}
+          className={embed === 'true' ? 'embedContainer': 'container'}
           onTouchMove={(event) => {
             if (isMobile) {
               if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {

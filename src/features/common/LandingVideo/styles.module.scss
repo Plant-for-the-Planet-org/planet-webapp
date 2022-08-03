@@ -98,14 +98,13 @@
   }
 }
 
-.playButton {
+.playButton,.embed_playButton {
   position: fixed;
-  right: 55px;
-  top: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  right: 55px;
   padding: 9px;
   background: $backgroundColor;
   box-shadow: 0px 3px 6px #00000029;
@@ -118,9 +117,21 @@
   }
 }
 
+.playButton {
+  top: 100px;
+}
+
+.embed_playButton {
+  top: 30px;
+}
+
 @include smTabletView {
   .playButton {
     top: 100px;
+  }
+  
+  .embed_playButton{
+    top: 30px;
   }
 }
 @include mdTabletView {
@@ -129,4 +140,12 @@
     right: 125px;
     flex-direction: row;
   }
+  
+  .embed_playButton{
+    right: 125px;
+    top: 30px;
+  }
+  
 }
+
+

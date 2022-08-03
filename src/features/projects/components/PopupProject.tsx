@@ -7,6 +7,8 @@ import { truncateString } from '../../../utils/getTruncatedString';
 import { useRouter } from 'next/router';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+
 
 const { useTranslation } = i18next;
 interface Props {
@@ -29,7 +31,7 @@ export default function PopupProject({
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const { token } = React.useContext(UserPropsContext);
-
+  const { embed } = React.useContext(ParamsContext);
 
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
@@ -42,7 +44,7 @@ export default function PopupProject({
 
   const handleDonationOpen = () => {
     const url = getDonationUrl(project.properties.slug, token);
-    window.location.href = url;
+    embed === 'true' ? window.open(url, '_top'): window.location.href = url;
   };
 
   return ready ? (
