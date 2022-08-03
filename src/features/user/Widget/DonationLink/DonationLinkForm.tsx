@@ -59,8 +59,9 @@ const DonationLinkForm = (): ReactElement | null => {
   const { handleError } = useContext(ErrorHandlingContext);
   const { projects, setProjects, project } = useContext(ProjectPropsContext);
   const [localProject, setLocalProject] = useState<Project | null>(null);
-  const [isSupport, setIsSupport] = useState<boolean>(false);
+  const [isSupport, setIsSupport] = useState<boolean>(!user.isPrivate);
   const [isCopied, setIsCopied] = useState<boolean>(false);
+  const [isTesting, setIsTesting] = useState<boolean>(false);
   // Load all projects
   async function fetchProjectList() {
     const projectsList = await getRequest<
@@ -93,9 +94,10 @@ const DonationLinkForm = (): ReactElement | null => {
   }, [projects]);
 
   const handleChange = () => {
-    const url = `${
-      process.env.NEXT_PUBLIC_DONATION_URL
-    }?country=${country}&locale=${Languages.langCode}${
+    const link = isTesting
+      ? 'http://paydev.pp.eco/'
+      : process.env.NEXT_PUBLIC_DONATION_URL;
+    const url = `${link}?country=${country}&locale=${Languages.langCode}${
       localProject == null
         ? ''
         : `&to=${localProject.name.split(/\W+/).join('-').toLowerCase()}`
@@ -165,11 +167,19 @@ const DonationLinkForm = (): ReactElement | null => {
           />
           <div>Support my TreeCounter</div>
           <Switch
-            checked={!user.isPrivate}
+            checked={isSupport}
             onChange={() => {
               setIsSupport(!isSupport);
             }}
             disabled={user.isPrivate}
+          />
+          <div>Testing Mode</div>
+          <Switch
+            checked={isTesting}
+            onChange={() => {
+              setIsTesting(!isTesting);
+            }}
+            disabled={false}
           />
           <div>Your Donation Link URL</div>
           <TextField
