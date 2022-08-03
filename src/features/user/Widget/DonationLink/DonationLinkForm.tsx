@@ -5,7 +5,15 @@ import {
   useCallback,
   useEffect,
 } from 'react';
-import { Autocomplete, styled, Switch, TextField } from '@mui/material';
+import {
+  Alert,
+  Autocomplete,
+  Button,
+  Snackbar,
+  styled,
+  Switch,
+  TextField,
+} from '@mui/material';
 import i18next from '../../../../../i18n';
 import { ProjectPropsContext } from '../../../../features/common/Layout/ProjectPropsContext';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
@@ -46,12 +54,13 @@ const DonationLinkForm = (): ReactElement | null => {
     langCode: 'en',
     languageName: 'English',
   });
-  const [donationUrl, setDonationUrl] = useState<String>('');
+  const [donationUrl, setDonationUrl] = useState<string>('');
   const { t, ready } = useTranslation(['donationLink']);
   const { handleError } = useContext(ErrorHandlingContext);
   const { projects, setProjects, project } = useContext(ProjectPropsContext);
   const [localProject, setLocalProject] = useState<Project | null>(null);
   const [isSupport, setIsSupport] = useState<boolean>(false);
+  const [isCopied, setIsCopied] = useState<boolean>(false);
   // Load all projects
   async function fetchProjectList() {
     const projectsList = await getRequest<
@@ -103,6 +112,11 @@ const DonationLinkForm = (): ReactElement | null => {
     handleChange();
   });
 
+  const setTextCopiedClipboard = () => {
+    navigator.clipboard.writeText(donationUrl);
+    setIsCopied(!isCopied);
+  };
+
   if (ready) {
     return (
       <StyledForm>
@@ -152,7 +166,7 @@ const DonationLinkForm = (): ReactElement | null => {
           />
           <div>Support my TreeCounter</div>
           <Switch
-            checked={isSupport}
+            checked={!user.isPrivate}
             onChange={() => {
               setIsSupport(!isSupport);
             }}
@@ -167,6 +181,53 @@ const DonationLinkForm = (): ReactElement | null => {
             value={donationUrl}
             onChange={handleChange}
           />
+          <Button
+            id={'Preview'}
+            variant="contained"
+            color="primary"
+            size="small"
+            fullWidth={false}
+            style={{
+              maxWidth: '200px',
+              marginTop: '24px',
+              marginLeft: 'auto',
+            }}
+            onClick={() => window.open(donationUrl, '_blank')}
+          >
+            Preview
+          </Button>
+          <Button
+            id={'Copy'}
+            variant="contained"
+            color="primary"
+            size="small"
+            fullWidth={false}
+            style={{
+              maxWidth: '200px',
+              marginTop: '24px',
+              marginLeft: 'auto',
+            }}
+            onClick={() => setTextCopiedClipboard()}
+          >
+            Copy
+          </Button>
+          <Snackbar
+            open={isCopied}
+            autoHideDuration={4000}
+            onClose={setTextCopiedClipboard}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          >
+            <div>
+              <Alert
+                elevation={6}
+                variant="filled"
+                onClose={setTextCopiedClipboard}
+                severity="success"
+              >
+                {t('donate:Copied To Clipboard')}
+              </Alert>
+            </div>
+          </Snackbar>
         </div>
       </StyledForm>
     );
