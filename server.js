@@ -47,6 +47,7 @@ if (!dev && cluster.isMaster) {
         if (proto === 'https') {
           res.set({
             'Strict-Transport-Security': 'max-age=31557600', // one-year
+            /* Code below is commented out to allow embedding of the site in an iframe */
             // 'X-Frame-Options': 'DENY',
             // 'Content-Security-Policy': 'frame-ancestors \'none\'',
           });
