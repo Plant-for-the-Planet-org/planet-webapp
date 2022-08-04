@@ -123,7 +123,9 @@ export default function ProjectSnippet({
           <div
             className={'projectTPOName'}
             onClick={() => {
-              router.push(`/t/${project.tpo.slug}`);
+              embed === 'true'
+                ? window.open(`/t/${project.tpo.slug}`, '_top')
+                : router.push(`/t/${project.tpo.slug}`);
             }}
           >
             {t('common:by', {
