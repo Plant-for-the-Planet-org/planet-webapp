@@ -1,0 +1,18 @@
+.singleFormGroup{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.formHeader {
+    font-size: 18px;
+    color: #2f3336;
+    font-weight: 700;
+}
+.formButtonContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 24px 0px 0px;
+    gap: 10px;
+    margin-left: auto;
+}

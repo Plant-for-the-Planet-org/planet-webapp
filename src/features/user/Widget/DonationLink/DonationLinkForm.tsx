@@ -27,6 +27,7 @@ import ProjectSelectAutocomplete from '../../BulkCodes/components/ProjectSelectA
 import { Project } from '../../../common/Layout/BulkCodeContext';
 import { TENANT_ID } from '../../../../utils/constants/environment';
 const { useTranslation } = i18next;
+import styles from './DonationLinkForm.module.scss';
 
 // TODOO - refactor code for reuse?
 const StyledForm = styled('form')((/* { theme } */) => ({
@@ -55,13 +56,14 @@ const DonationLinkForm = (): ReactElement | null => {
     languageName: 'English',
   });
   const [donationUrl, setDonationUrl] = useState<string>('');
-  const { t, ready } = useTranslation(['donationLink']);
+  const { t, ready } = useTranslation(['donationLink', 'donate']);
   const { handleError } = useContext(ErrorHandlingContext);
   const { projects, setProjects, project } = useContext(ProjectPropsContext);
   const [localProject, setLocalProject] = useState<Project | null>(null);
   const [isSupport, setIsSupport] = useState<boolean>(!user.isPrivate);
   const [isCopied, setIsCopied] = useState<boolean>(false);
   const [isTesting, setIsTesting] = useState<boolean>(false);
+  const [isProjectSelected, setIsProjectSelected] = useState<boolean>(false);
   // Load all projects
   async function fetchProjectList() {
     const projectsList = await getRequest<
@@ -108,6 +110,7 @@ const DonationLinkForm = (): ReactElement | null => {
 
   const handleProjectChange = async (project: Project | null) => {
     setLocalProject(project);
+    setIsProjectSelected(!isProjectSelected);
   };
 
   useEffect(() => {
@@ -122,121 +125,132 @@ const DonationLinkForm = (): ReactElement | null => {
   if (ready) {
     return (
       <StyledForm>
-        <div>Donation Link Form</div>
         <div className="inputContainer">
-          <div>Set the country and language</div>
-          <InlineFormDisplayGroup>
-            <AutoCompleteCountry
-              label={t('labelCountry')}
-              name="country"
-              defaultValue={country}
-              onChange={setCountry}
+          <div className={styles.singleFormGroup}>
+            <div className={styles.formHeader}>
+              {t('donationLink:countryLanguageTitle')}
+            </div>
+            <InlineFormDisplayGroup>
+              <AutoCompleteCountry
+                label={t('donationLink:labelCountry')}
+                name="country"
+                defaultValue={country}
+                onChange={setCountry}
+              />
+              <Autocomplete
+                id={t('donationLink:labelLanguages')}
+                options={supportedLanguages}
+                getOptionLabel={(option) =>
+                  `${option.langCode} - ${option.languageName}`
+                }
+                isOptionEqualToValue={(option, value) =>
+                  option.langCode === value.langCode
+                }
+                value={Languages}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Language"
+                    placeholder={t('donationLink:Languages')}
+                  />
+                )}
+                renderOption={(props, option) => (
+                  <span {...props} key={option.langCode}>
+                    {`${option.langCode} - ${option.languageName}`}
+                  </span>
+                )}
+                sx={{ width: '50%' }}
+                onChange={(event, newLan) => setLanguage(newLan)}
+              />
+            </InlineFormDisplayGroup>
+          </div>
+          <div className={styles.singleFormGroup}>
+            <div className={styles.formHeader}>
+              {t('donationLink:projectTitle')}
+            </div>
+            <ProjectSelectAutocomplete
+              handleProjectChange={handleProjectChange}
+              project={project}
+              projectList={projects || []}
+              active={true}
             />
-            <Autocomplete
-              id="Languages"
-              options={supportedLanguages}
-              getOptionLabel={(option) =>
-                `${option.langCode} - ${option.languageName}`
-              }
-              isOptionEqualToValue={(option, value) =>
-                option.langCode === value.langCode
-              }
-              value={Languages}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Language"
-                  placeholder="Languages"
-                />
-              )}
-              renderOption={(props, option) => (
-                <span {...props} key={option.langCode}>
-                  {`${option.langCode} - ${option.languageName}`}
-                </span>
-              )}
-              sx={{ width: '50%' }}
-              onChange={(event, newLan) => setLanguage(newLan)}
+          </div>
+          <InlineFormDisplayGroup>
+            <div className={styles.formHeader}>
+              {t('donationLink:treeCounterTitle')}
+            </div>
+            <Switch
+              checked={isSupport}
+              onChange={() => {
+                setIsSupport(!isSupport);
+              }}
+              disabled={user.isPrivate}
             />
           </InlineFormDisplayGroup>
-          <div>Set your Project</div>
-          <ProjectSelectAutocomplete
-            handleProjectChange={handleProjectChange}
-            project={project}
-            projectList={projects || []}
-            active={true}
-          />
-          <div>Support my TreeCounter</div>
-          <Switch
-            checked={isSupport}
-            onChange={() => {
-              setIsSupport(!isSupport);
-            }}
-            disabled={user.isPrivate}
-          />
-          <div>Testing Mode</div>
-          <Switch
-            checked={isTesting}
-            onChange={() => {
-              setIsTesting(!isTesting);
-            }}
-            disabled={false}
-          />
-          <div>Your Donation Link URL</div>
-          <TextField
-            id="outlined-read-only-input"
-            InputProps={{
-              readOnly: true,
-            }}
-            value={donationUrl}
-            onChange={handleChange}
-          />
-          <Button
-            id={'Preview'}
-            variant="contained"
-            color="primary"
-            size="small"
-            fullWidth={false}
-            style={{
-              maxWidth: '200px',
-              marginTop: '24px',
-              marginLeft: 'auto',
-            }}
-            onClick={() => window.open(donationUrl, '_blank')}
-          >
-            Preview
-          </Button>
-          <Button
-            id={'Copy'}
-            variant="contained"
-            color="primary"
-            size="small"
-            fullWidth={false}
-            style={{
-              maxWidth: '200px',
-              marginTop: '24px',
-              marginLeft: 'auto',
-            }}
-            onClick={() => setTextCopiedClipboard()}
-          >
-            Copy
-          </Button>
-          <Snackbar
-            open={isCopied}
-            autoHideDuration={4000}
-            onClose={setTextCopiedClipboard}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-          >
-            <div>
-              <Alert
-                elevation={6}
-                variant="filled"
-                onClose={setTextCopiedClipboard}
-                severity="success"
-              >
-                {t('donate:Copied To Clipboard')}
-              </Alert>
+          <InlineFormDisplayGroup>
+            <div className={styles.formHeader}>
+              {t('donationLink:testingTitle')}
             </div>
-          </Snackbar>
+            <Switch
+              checked={isTesting}
+              onChange={() => {
+                setIsTesting(!isTesting);
+              }}
+              disabled={false}
+            />
+          </InlineFormDisplayGroup>
+          <div className={styles.singleFormGroup}>
+            <div className={styles.formHeader}>
+              {t('donationLink:urlTitle')}
+            </div>
+            <TextField
+              id="outlined-read-only-input"
+              InputProps={{
+                readOnly: true,
+              }}
+              value={donationUrl}
+              onChange={handleChange}
+            />
+          </div>
+          <div className={styles.formButtonContainer}>
+            <Button
+              id={'Preview'}
+              variant="contained"
+              color="primary"
+              fullWidth={false}
+              onClick={() => window.open(donationUrl, '_blank')}
+              disabled={isProjectSelected}
+            >
+              {t('donationLink:preview')}
+            </Button>
+            <Button
+              id={'Copy'}
+              variant="outlined"
+              color="primary"
+              fullWidth={false}
+              onClick={() => setTextCopiedClipboard()}
+              disabled={isProjectSelected}
+            >
+              {t('donationLink:copy')}
+            </Button>
+            <Snackbar
+              open={isCopied}
+              autoHideDuration={4000}
+              onClose={setTextCopiedClipboard}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+              <div>
+                <Alert
+                  elevation={6}
+                  variant="filled"
+                  onClose={setTextCopiedClipboard}
+                  severity="success"
+                >
+                  {t('donate:Copied To Clipboard')}
+                </Alert>
+              </div>
+            </Snackbar>
+          </div>
         </div>
       </StyledForm>
     );
