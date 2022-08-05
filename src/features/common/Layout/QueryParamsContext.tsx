@@ -29,29 +29,25 @@ const QueryParamsProvider: FC = ({ children }) => {
   const { query } = router;
 
   useEffect(() => {
-    setEmbed(router.query.embed);
+    if (query.embed) setEmbed(query.embed);
   }, [query.embed]);
 
   useEffect(() => {
-    setSingleProject(query.singleProject);
+    if (query.singleProject) setSingleProject(query.singleProject);
   }, [query.singleProject]);
 
   useEffect(() => {
-    setCallbackUrl(query.callback);
+    if (query.callback) setCallbackUrl(query.callback);
   }, [query.callback]);
 
   useEffect(() => {
-    if (query.locale) {
-      setLanguage(query.locale);
-    } else {
-      setLanguage(localStorage.getItem('language'));
-    }
+    if (query.locale) setLanguage(query.locale);
   }, [query.locale]);
 
   useEffect(() => {
-    if (i18n && i18n.isInitialized) {
+    if (i18n && i18n.isInitialized && language) {
       i18n.changeLanguage(language as string);
-      localStorage.setItem('language', language as string);
+      /* localStorage.setItem('language', language as string); */ //not needed as i18n handles setting the local storage
     }
   }, [language, i18n.isInitialized]);
 
