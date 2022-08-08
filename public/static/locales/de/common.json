@@ -91,5 +91,7 @@
   "forbidden": "Du bist nicht berechtigt, diese Seite zu sehen!",
   "internalServerError": "Interner Serverfehler - Bitte versuche es später noch einmal!",
   "validationFailed": "Prüfung fehlgeschlagen!",
-  "add": "Hinzufügen"
+  "add": "Hinzufügen",
+  "poweredBy": "Powered by",
+  "pftp": "Plant-for-the-Planet"
 }
