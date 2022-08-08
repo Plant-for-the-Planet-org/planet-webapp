@@ -10,12 +10,16 @@ export interface ParamsContextType {
   showBackIcon: QueryParamType;
   callbackUrl: QueryParamType;
   language: QueryParamType;
+  showProjectDetails: QueryParamType;
+  showProjectList: QueryParamType;
 }
 export const ParamsContext = createContext<ParamsContextType>({
   embed: undefined,
   showBackIcon: undefined,
   callbackUrl: undefined,
   language: undefined,
+  showProjectDetails: undefined,
+  showProjectList: undefined,
 });
 
 const QueryParamsProvider: FC = ({ children }) => {
@@ -25,6 +29,10 @@ const QueryParamsProvider: FC = ({ children }) => {
   const [showBackIcon, setShowBackIcon] = useState<QueryParamType>(undefined);
   const [callbackUrl, setCallbackUrl] = useState<QueryParamType>(undefined);
   const [language, setLanguage] = useState<QueryParamType>(undefined);
+  const [showProjectDetails, setShowProjectDetails] =
+    useState<QueryParamType>(undefined);
+  const [showProjectList, setShowProjectList] =
+    useState<QueryParamType>(undefined);
   const router = useRouter();
   const { query } = router;
 
@@ -45,6 +53,14 @@ const QueryParamsProvider: FC = ({ children }) => {
   }, [query.locale]);
 
   useEffect(() => {
+    if (query.project_details) setShowProjectDetails(query.project_details);
+  }, [query.project_details]);
+
+  useEffect(() => {
+    if (query.project_list) setShowProjectList(query.project_list);
+  }, [query.project_list]);
+
+  useEffect(() => {
     if (i18n && i18n.isInitialized && language) {
       i18n.changeLanguage(language as string);
       /* localStorage.setItem('language', language as string); */ //not needed as i18n handles setting the local storage
@@ -58,6 +74,8 @@ const QueryParamsProvider: FC = ({ children }) => {
         showBackIcon,
         callbackUrl,
         language,
+        showProjectDetails,
+        showProjectList,
       }}
     >
       {children}
