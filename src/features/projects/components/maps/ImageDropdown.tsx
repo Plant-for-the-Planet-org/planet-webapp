@@ -31,7 +31,7 @@ export default function ImageDropdown({
   setSelectedSource2,
   isMobile,
 }: Props): ReactElement {
-  const { embed } = React.useContext(ParamsContext);
+  const { embed, showProjectDetails } = React.useContext(ParamsContext);
 
   const [isSource1MenuOpen, setIsSource1MenuOpen] = React.useState(
     isMobile ? false : true
@@ -59,15 +59,16 @@ export default function ImageDropdown({
     if (isMobile) setIsSource2MenuOpen(false);
   };
 
+  const containerClasses =
+    embed !== 'true'
+      ? styles.dropdownContainer
+      : showProjectDetails === 'false'
+      ? `${styles.embed_dropdownContainer} ${styles['no-project-details']}`
+      : styles.embed_dropdownContainer;
+
   return (
     <>
-      <div
-        className={
-          embed === 'true'
-            ? styles.embed_dropdownContainer
-            : styles.dropdownContainer
-        }
-      >
+      <div className={containerClasses}>
         <div className={styles.beforeYear}>
           <FormControl variant="standard">
             <NativeSelect

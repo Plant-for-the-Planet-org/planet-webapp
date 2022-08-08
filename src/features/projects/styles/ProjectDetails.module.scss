@@ -79,6 +79,11 @@
   overflow-x: hidden;
   overflow-y: hidden;
   position: relative;
+  transition: transform 0.5s ease-in-out;
+
+  &.mobile-hidden {
+    transform: translateY(60vh);
+  }
 }
 
 .projectContainer::-webkit-scrollbar {
