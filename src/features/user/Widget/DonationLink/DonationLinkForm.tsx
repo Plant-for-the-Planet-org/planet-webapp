@@ -21,13 +21,17 @@ import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from './InlineFormDisplayGroup';
 import supportedLanguages from '../../../../utils/language/supportedLanguages.json';
 import React from 'react';
-import { getRequest } from '../../../../utils/apiRequests/api';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import ProjectSelectAutocomplete from '../../BulkCodes/components/ProjectSelectAutocomplete';
 import { Project } from '../../../common/Layout/BulkCodeContext';
 import { TENANT_ID } from '../../../../utils/constants/environment';
 const { useTranslation } = i18next;
 import styles from './DonationLinkForm.module.scss';
+import CopyToClipboard from '../../../common/CopyToClipboard';
+import ProjectsList from '../../../projects/screens/Projects';
+import {
+  MuiAutocomplete,
+  StyledAutoCompleteOption,
+} from '../../../common/InputTypes/AutoCompleteTheme';
 
 // TODOO - refactor code for reuse?
 const StyledForm = styled('form')((/* { theme } */) => ({
@@ -46,7 +50,13 @@ const StyledForm = styled('form')((/* { theme } */) => ({
   },
 }));
 
-const DonationLinkForm = (): ReactElement | null => {
+interface DonationLinkFormProps {
+  projectsList: Project[] | null;
+}
+
+const DonationLinkForm = ({
+  projectsList,
+}: DonationLinkFormProps): ReactElement | null => {
   const { user, contextLoaded } = useContext(UserPropsContext);
   const [country, setCountry] = useState(
     contextLoaded ? user.country : undefined
@@ -57,43 +67,12 @@ const DonationLinkForm = (): ReactElement | null => {
   });
   const [donationUrl, setDonationUrl] = useState<string>('');
   const { t, ready } = useTranslation(['donationLink', 'donate']);
-  const { handleError } = useContext(ErrorHandlingContext);
-  const { projects, setProjects, project } = useContext(ProjectPropsContext);
   const [localProject, setLocalProject] = useState<Project | null>(null);
   const [isSupport, setIsSupport] = useState<boolean>(!user.isPrivate);
   const [isCopied, setIsCopied] = useState<boolean>(false);
   const [isTesting, setIsTesting] = useState<boolean>(false);
   const [isProjectSelected, setIsProjectSelected] = useState<boolean>(false);
   // Load all projects
-  async function fetchProjectList() {
-    const projectsList = await getRequest<
-      [
-        {
-          properties: {
-            id: string;
-            name: string;
-            slug: string;
-            allowDonations: boolean;
-            purpose: string;
-            currency: string;
-            unitCost: number;
-          };
-        }
-      ]
-    >(`/app/projects`, handleError, undefined, {
-      _scope: 'default',
-    });
-
-    if (projectsList) {
-      setProjects(projectsList);
-    } else {
-      setProjects([]);
-    }
-  }
-
-  useEffect(() => {
-    fetchProjectList();
-  }, [projects]);
 
   const handleChange = () => {
     const link = isTesting
@@ -115,12 +94,12 @@ const DonationLinkForm = (): ReactElement | null => {
 
   useEffect(() => {
     handleChange();
-  });
+  }, [country, Languages, localProject, isSupport, isTesting]);
 
-  const setTextCopiedClipboard = () => {
-    navigator.clipboard.writeText(donationUrl);
-    setIsCopied(!isCopied);
-  };
+  // const setTextCopiedClipboard = () => {
+  //   navigator.clipboard.writeText(donationUrl);
+  //   setIsCopied(!isCopied);
+  // };
 
   if (ready) {
     return (
@@ -137,7 +116,7 @@ const DonationLinkForm = (): ReactElement | null => {
                 defaultValue={country}
                 onChange={setCountry}
               />
-              <Autocomplete
+              <MuiAutocomplete
                 id={t('donationLink:labelLanguages')}
                 options={supportedLanguages}
                 getOptionLabel={(option) =>
@@ -155,11 +134,11 @@ const DonationLinkForm = (): ReactElement | null => {
                   />
                 )}
                 renderOption={(props, option) => (
-                  <span {...props} key={option.langCode}>
-                    {`${option.langCode} - ${option.languageName}`}
-                  </span>
+                  <StyledAutoCompleteOption {...props} key={option.langCode}>
+                    <span>{`${option.langCode}`}</span>
+                    {`- ${option.languageName}`}
+                  </StyledAutoCompleteOption>
                 )}
-                sx={{ width: '50%' }}
                 onChange={(event, newLan) => setLanguage(newLan)}
               />
             </InlineFormDisplayGroup>
@@ -170,8 +149,8 @@ const DonationLinkForm = (): ReactElement | null => {
             </div>
             <ProjectSelectAutocomplete
               handleProjectChange={handleProjectChange}
-              project={project}
-              projectList={projects || []}
+              project={localProject}
+              projectList={projectsList || []}
               active={true}
             />
           </div>
@@ -203,14 +182,17 @@ const DonationLinkForm = (): ReactElement | null => {
             <div className={styles.formHeader}>
               {t('donationLink:urlTitle')}
             </div>
-            <TextField
-              id="outlined-read-only-input"
-              InputProps={{
-                readOnly: true,
-              }}
-              value={donationUrl}
-              onChange={handleChange}
-            />
+            <InlineFormDisplayGroup>
+              <TextField
+                id="outlined-read-only-input"
+                InputProps={{
+                  readOnly: true,
+                }}
+                value={donationUrl}
+                onChange={handleChange}
+              />
+              <CopyToClipboard isButton={true} text={donationUrl} />
+            </InlineFormDisplayGroup>
           </div>
           <div className={styles.formButtonContainer}>
             <Button
@@ -223,7 +205,7 @@ const DonationLinkForm = (): ReactElement | null => {
             >
               {t('donationLink:preview')}
             </Button>
-            <Button
+            {/* <Button
               id={'Copy'}
               variant="outlined"
               color="primary"
@@ -243,13 +225,13 @@ const DonationLinkForm = (): ReactElement | null => {
                 <Alert
                   elevation={6}
                   variant="filled"
-                  onClose={setTextCopiedClipboard}
+                   onClose={setTextCopiedClipboard}
                   severity="success"
                 >
                   {t('donate:Copied To Clipboard')}
                 </Alert>
               </div>
-            </Snackbar>
+            </Snackbar> */}
           </div>
         </div>
       </StyledForm>

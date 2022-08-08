@@ -1,11 +1,12 @@
 /* eslint-disable no-use-before-define */
 import { useState, useContext, ReactElement } from 'react';
-import { Autocomplete, TextField, styled } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import React from 'react';
 import tenantConfig from '../../../../tenant.config';
 import i18next from '../../../../i18n';
 import { ThemeContext } from '../../../theme/themeContext';
 import themeProperties from '../../../theme/themeProperties';
+import { MuiAutocomplete, StyledAutoCompleteOption } from './AutoCompleteTheme';
 
 const config = tenantConfig();
 const { useTranslation } = i18next;
@@ -21,23 +22,6 @@ function countryToFlag(isoCode: string) {
         )
     : isoCode;
 }
-
-const MuiAutocomplete = styled(Autocomplete)((/* { theme } */) => {
-  return {
-    width: '100%',
-    '& .Mui-disabled .iconFillColor': {
-      fillOpacity: '38%',
-    },
-    flexBasis: '50%'
-  };
-});
-
-const StyledCountryOption = styled('li')({
-  '& span': {
-    marginRight: 10,
-    fontSize: 18,
-  },
-});
 
 interface CountrySelectProps {
   label: React.ReactNode;
@@ -111,12 +95,12 @@ export default function CountrySelect({
       renderOption={(props, option) => {
         const countryCode = (option as CountryType).code;
         return (
-          <StyledCountryOption {...props} key={countryCode}>
+          <StyledAutoCompleteOption {...props} key={countryCode}>
             <span>{countryToFlag(countryCode)}</span>
             {name === 'editProfile'
               ? t(`country:${countryCode.toLowerCase()}`)
               : t(`country:${countryCode.toLowerCase()}`) + ' ' + countryCode}
-          </StyledCountryOption>
+          </StyledAutoCompleteOption>
         );
       }}
       onChange={(_event, newValue: unknown) => {
