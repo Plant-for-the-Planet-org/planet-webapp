@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import dynamic from 'next/dynamic';
+import { Button } from '@mui/material';
 import ProjectLoader from '../../common/ContentLoaders/Projects/ProjectLoader';
 import i18next from '../../../../i18n/';
 import LazyLoad from 'react-lazyload';
@@ -32,6 +33,7 @@ function ProjectsList({
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 767;
   const [scrollY, setScrollY] = React.useState(0);
+  const [hideSidebar, setHideSidebar] = React.useState(false);
   const { t, ready } = useTranslation(['donate', 'country']);
 
   const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
@@ -149,15 +151,29 @@ function ProjectsList({
     ) : null;
   };
 
-  const { embed } = React.useContext(ParamsContext);
+  const toggleSidebar = () => {
+    setHideSidebar(!hideSidebar);
+  };
+
+  const { embed, showProjectList } = React.useContext(ParamsContext);
+  const isEmbed = embed === 'true';
 
   return ready ? (
     <>
       <Explore />
+      {isEmbed && isMobile && showProjectList === undefined && (
+        <Button
+          onClick={toggleSidebar}
+          variant={hideSidebar ? 'outlined' : 'contained'}
+          className="toggleButton"
+        >
+          {hideSidebar ? 'Show Project List' : 'Hide Project List'}
+        </Button>
+      )}
       {showProjects ? (
         <div
           style={{ transform: `translate(0,${scrollY}px)` }}
-          className={embed === 'true' ? 'embedContainer' : 'container'}
+          className={isEmbed ? 'embedContainer' : 'container'}
           onTouchMove={(event) => {
             if (isMobile) {
               if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
@@ -168,68 +184,78 @@ function ProjectsList({
             }
           }}
         >
-          <div className="sidebar">
+          {!(isEmbed && showProjectList === 'false') && (
             <div
-              className={'header'}
-              style={isMobile ? { height: '66px', paddingTop: '16px' } : {}}
+              className={`sidebar ${
+                isMobile && hideSidebar && showProjectList !== 'true'
+                  ? 'mobile-hidden'
+                  : ''
+              }`}
             >
-              {isMobile ? <div className={'dragBar'}></div> : null}
-              {searchMode ? (
-                <SearchBar
-                  setSearchValue={setSearchValue}
-                  setSearchMode={setSearchMode}
-                  searchValue={searchValue}
-                  searchRef={searchRef}
-                />
-              ) : (
-                <Header
-                  showFeaturedList={showFeaturedList}
-                  setSelectedTab={setSelectedTab}
-                  selectedTab={selectedTab}
-                  setSearchMode={setSearchMode}
-                  projects={projects}
-                />
-              )}
-            </div>
-            {/* till here is header */}
-            <div className={'projectsContainer'}>
-              {trottledSearchValue !== '' ? (
-                searchProjectResults && searchProjectResults.length > 0 ? (
-                  searchProjectResults.map((project: any) => (
-                    <ProjectSnippet
-                      key={project.properties.id}
-                      project={project.properties}
-                      editMode={false}
-                    />
-                  ))
-                ) : (
-                  <NoProjectFound />
-                )
-              ) : selectedTab === 'all' ? (
-                allProjects && allProjects.length > 0 ? (
-                  allProjects.map((project: any) => (
-                    <ProjectSnippet
-                      key={project.properties.id}
-                      project={project.properties}
-                      editMode={false}
-                    />
-                  ))
-                ) : (
-                  <NoProjectFound />
-                )
-              ) : featuredProjects && featuredProjects.length > 0 ? (
-                featuredProjects.map((project: any) => (
-                  <ProjectSnippet
-                    key={project.properties.id}
-                    project={project.properties}
-                    editMode={false}
+              <div
+                className={'header'}
+                style={isMobile ? { height: '66px', paddingTop: '16px' } : {}}
+              >
+                {isMobile && (!hideSidebar || showProjectList === 'true') && (
+                  <div className={'dragBar'}></div>
+                )}
+                {searchMode ? (
+                  <SearchBar
+                    setSearchValue={setSearchValue}
+                    setSearchMode={setSearchMode}
+                    searchValue={searchValue}
+                    searchRef={searchRef}
                   />
-                ))
-              ) : (
-                <NoProjectFound />
-              )}
+                ) : (
+                  <Header
+                    showFeaturedList={showFeaturedList}
+                    setSelectedTab={setSelectedTab}
+                    selectedTab={selectedTab}
+                    setSearchMode={setSearchMode}
+                    projects={projects}
+                  />
+                )}
+              </div>
+              {/* till here is header */}
+              <div className={'projectsContainer'}>
+                {trottledSearchValue !== '' ? (
+                  searchProjectResults && searchProjectResults.length > 0 ? (
+                    searchProjectResults.map((project: any) => (
+                      <ProjectSnippet
+                        key={project.properties.id}
+                        project={project.properties}
+                        editMode={false}
+                      />
+                    ))
+                  ) : (
+                    <NoProjectFound />
+                  )
+                ) : selectedTab === 'all' ? (
+                  allProjects && allProjects.length > 0 ? (
+                    allProjects.map((project: any) => (
+                      <ProjectSnippet
+                        key={project.properties.id}
+                        project={project.properties}
+                        editMode={false}
+                      />
+                    ))
+                  ) : (
+                    <NoProjectFound />
+                  )
+                ) : featuredProjects && featuredProjects.length > 0 ? (
+                  featuredProjects.map((project: any) => (
+                    <ProjectSnippet
+                      key={project.properties.id}
+                      project={project.properties}
+                      editMode={false}
+                    />
+                  ))
+                ) : (
+                  <NoProjectFound />
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       ) : null}
     </>
