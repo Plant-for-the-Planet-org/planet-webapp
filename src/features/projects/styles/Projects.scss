@@ -284,9 +284,9 @@
   }
 
   .container {
-    padding-left: 24px;
+    padding-left: 14px;
     margin-top: 80px;
-    padding-top: 30px;
+    padding-top: 20px;
   }
 
   .embedContainer {
@@ -295,13 +295,13 @@
     padding-left: 14px;
     height: 100vh;
     overflow-y: scroll;
+  }
 
-    .sidebar {
-      padding: 10px;
+  .sidebar {
+    padding: 10px;
 
-      .mobile-hidden {
-        height: auto;
-      }
+    .mobile-hidden {
+      height: auto;
     }
   }
 
