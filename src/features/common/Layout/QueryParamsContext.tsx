@@ -7,13 +7,13 @@ const { useTranslation } = i18next;
 type QueryParamType = string | undefined | string[] | null;
 export interface ParamsContextType {
   embed: QueryParamType;
-  singleProject: QueryParamType;
+  showBackIcon: QueryParamType;
   callbackUrl: QueryParamType;
   language: QueryParamType;
 }
 export const ParamsContext = createContext<ParamsContextType>({
   embed: undefined,
-  singleProject: undefined,
+  showBackIcon: undefined,
   callbackUrl: undefined,
   language: undefined,
 });
@@ -22,7 +22,7 @@ const QueryParamsProvider: FC = ({ children }) => {
   const { i18n } = useTranslation();
 
   const [embed, setEmbed] = useState<QueryParamType>(undefined);
-  const [singleProject, setSingleProject] = useState<QueryParamType>(undefined);
+  const [showBackIcon, setShowBackIcon] = useState<QueryParamType>(undefined);
   const [callbackUrl, setCallbackUrl] = useState<QueryParamType>(undefined);
   const [language, setLanguage] = useState<QueryParamType>(undefined);
   const router = useRouter();
@@ -33,8 +33,8 @@ const QueryParamsProvider: FC = ({ children }) => {
   }, [query.embed]);
 
   useEffect(() => {
-    if (query.singleProject) setSingleProject(query.singleProject);
-  }, [query.singleProject]);
+    if (query.back_icon) setShowBackIcon(query.back_icon);
+  }, [query.back_icon]);
 
   useEffect(() => {
     if (query.callback) setCallbackUrl(query.callback);
@@ -55,7 +55,7 @@ const QueryParamsProvider: FC = ({ children }) => {
     <ParamsContext.Provider
       value={{
         embed,
-        singleProject,
+        showBackIcon,
         callbackUrl,
         language,
       }}

@@ -51,7 +51,7 @@ function SingleProjectDetails({}: Props): ReactElement {
   const isMobile = screenWidth <= 768;
   const [scrollY, setScrollY] = React.useState(0);
   const [rating, setRating] = React.useState<number | null>(2);
-  const { embed, singleProject, callbackUrl } = React.useContext(ParamsContext);
+  const { embed, showBackIcon, callbackUrl } = React.useContext(ParamsContext);
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
   if (progressPercentage > 100) {
@@ -155,7 +155,7 @@ function SingleProjectDetails({}: Props): ReactElement {
         </Modal>
 
         <div className={'projectContainer'}>
-          {embed === 'true' && singleProject === 'true' ? (
+          {embed === 'true' && showBackIcon === 'false' ? (
             <></>
           ) : (
             <button
