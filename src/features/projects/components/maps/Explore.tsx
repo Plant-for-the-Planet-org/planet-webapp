@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import ExploreIcon from '../../../../../public/assets/images/icons/ExploreIcon';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { Modal, FormGroup, FormControlLabel } from '@mui/material';
 import Switch from '../../../common/InputTypes/ToggleSwitch';
 import {
@@ -57,7 +57,6 @@ export default function Explore({}: Props): ReactElement {
     exploreProjects,
   } = React.useContext(ProjectPropsContext);
 
-  const { useTranslation } = i18next;
   const { t } = useTranslation(['maps']);
   const router = useRouter();
 

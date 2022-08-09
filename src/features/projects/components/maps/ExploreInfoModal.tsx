@@ -1,10 +1,8 @@
 import React, { ReactElement } from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import OpenLink from '../../../../../public/assets/images/icons/OpenLink';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
-
-const { useTranslation } = i18next;
 
 interface Props {
   infoRef: any;
@@ -60,7 +58,9 @@ function ExploreInfoModal({
                   <div></div>
                   <p>{t('maps:high')}</p>
                 </div>
-                <p className={styles.restorationInfo}>{t('maps:restorationInfo')}</p>
+                <p className={styles.restorationInfo}>
+                  {t('maps:restorationInfo')}
+                </p>
                 <a
                   href="https://science.sciencemag.org/content/365/6448/76"
                   target="_blank"
@@ -117,4 +117,6 @@ function ExploreInfoModal({
   );
 }
 
-export default React.forwardRef((props: Props, ref) => <ExploreInfoModal {...props} />);
+export default React.forwardRef((props: Props, ref) => (
+  <ExploreInfoModal {...props} />
+));

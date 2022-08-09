@@ -6,9 +6,7 @@ import { useRouter } from 'next/router';
 import styles from '../../styles/PlantLocation.module.scss';
 import * as turf from '@turf/turf';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
-import i18next from '../../../../../i18n';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'next-i18next';
 
 interface Props {}
 
@@ -21,7 +19,7 @@ export default function PlantLocations({}: Props): ReactElement {
     setSelectedPl,
     setHoveredPl,
     viewport,
-    satellite
+    satellite,
   } = React.useContext(ProjectPropsContext);
 
   const { i18n, t } = useTranslation(['maps', 'common']);
@@ -85,7 +83,7 @@ export default function PlantLocations({}: Props): ReactElement {
 
   const getDateDiff = (pl: any) => {
     const today = new Date();
-    const plantationDate = new Date(pl.plantDate?.substr(0,10));
+    const plantationDate = new Date(pl.plantDate?.substr(0, 10));
     const differenceInTime = today.getTime() - plantationDate.getTime();
     const differenceInDays = differenceInTime / (1000 * 3600 * 24);
     if (differenceInDays < 1) {
@@ -161,13 +159,13 @@ export default function PlantLocations({}: Props): ReactElement {
                           'text-font': ['Ubuntu Regular'],
                         }}
                         paint={{
-                          'text-color': satellite? '#ffffff':'#2f3336',
+                          'text-color': satellite ? '#ffffff' : '#2f3336',
                         }}
                       />
                     )}
                   </Source>
                   {pl &&
-                  pl.id === selectedPl?.id &&
+                    pl.id === selectedPl?.id &&
                     pl.samplePlantLocations &&
                     pl.samplePlantLocations
                       .filter((item: any) => {

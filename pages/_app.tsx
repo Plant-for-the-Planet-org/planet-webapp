@@ -30,6 +30,7 @@ import dynamic from 'next/dynamic';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
 import { appWithTranslation, useTranslation } from 'next-i18next';
+import i18next from 'next-i18next';
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),

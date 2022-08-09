@@ -10,9 +10,7 @@ import PlantLocations from './maps/PlantLocations';
 import { useRouter } from 'next/router';
 import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
-import i18next from '../../../../i18n';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'next-i18next';
 
 export default function ProjectsMap(): ReactElement {
   const router = useRouter();
@@ -45,7 +43,7 @@ export default function ProjectsMap(): ReactElement {
     selectedMode,
     hoveredPl,
     setIsPolygonMenuOpen,
-    setFilterOpen
+    setFilterOpen,
   } = React.useContext(ProjectPropsContext);
 
   const { t } = useTranslation(['maps']);
@@ -184,13 +182,13 @@ export default function ProjectsMap(): ReactElement {
         )}
         <ExploreLayers />
         {zoomLevel === 2 && selectedMode === 'location' && (
-            <div
-              onClick={() => setSatellite(!satellite)}
-              className={styles.layerToggle}
-            >
-              {satellite ? <LayerIcon /> : <LayerDisabled />}
-            </div>
-          )}
+          <div
+            onClick={() => setSatellite(!satellite)}
+            className={styles.layerToggle}
+          >
+            {satellite ? <LayerIcon /> : <LayerDisabled />}
+          </div>
+        )}
         <div className={styles.mapNavigation}>
           <NavigationControl showCompass={false} />
         </div>

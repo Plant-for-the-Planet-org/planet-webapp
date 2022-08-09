@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import dynamic from 'next/dynamic';
 import ProjectLoader from '../../common/ContentLoaders/Projects/ProjectLoader';
-import i18next from '../../../../i18n/';
+import { useTranslation } from 'next-i18next';
 import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../public/assets/images/NotFound';
 import Header from '../components/projects/Header';
@@ -17,7 +17,6 @@ interface Props {
   setsearchedProjects: any;
 }
 
-const { useTranslation } = i18next;
 const ProjectSnippet = dynamic(() => import('../components/ProjectSnippet'), {
   loading: () => <ProjectLoader />,
 });
@@ -121,9 +120,10 @@ function ProjectsList({
     }
   }
 
-  const allProjects = React.useMemo(() => getProjects(projects, 'all'), [
-    projects,
-  ]);
+  const allProjects = React.useMemo(
+    () => getProjects(projects, 'all'),
+    [projects]
+  );
 
   const searchProjectResults = React.useMemo(
     () => getSearchProjects(projects, trottledSearchValue),
@@ -140,7 +140,9 @@ function ProjectsList({
       <div className={'projectNotFound'}>
         <LazyLoad>
           <NotFound className={'projectNotFoundImage'} />
-          <h5 style={{ color: 'var(--primary-font-color' }}>{t('donate:noProjectsFound')}</h5>
+          <h5 style={{ color: 'var(--primary-font-color' }}>
+            {t('donate:noProjectsFound')}
+          </h5>
         </LazyLoad>
       </div>
     ) : null;
@@ -187,34 +189,41 @@ function ProjectsList({
           </div>
           {/* till here is header */}
           <div className={'projectsContainer'}>
-            {trottledSearchValue !== '' ?
-              searchProjectResults && searchProjectResults.length > 0 ?
+            {trottledSearchValue !== '' ? (
+              searchProjectResults && searchProjectResults.length > 0 ? (
                 searchProjectResults.map((project: any) => (
                   <ProjectSnippet
                     key={project.properties.id}
                     project={project.properties}
                     editMode={false}
-                  /> )
-                ) : (<NoProjectFound />)
-            : selectedTab === 'all' ?
-              allProjects && allProjects.length > 0  ?
+                  />
+                ))
+              ) : (
+                <NoProjectFound />
+              )
+            ) : selectedTab === 'all' ? (
+              allProjects && allProjects.length > 0 ? (
                 allProjects.map((project: any) => (
                   <ProjectSnippet
                     key={project.properties.id}
                     project={project.properties}
                     editMode={false}
-                  /> )
-                ) : (<NoProjectFound />)
-            : 
-              featuredProjects  && featuredProjects.length > 0  ?
-                featuredProjects.map((project: any) => (
-                  <ProjectSnippet
-                    key={project.properties.id}
-                    project={project.properties}
-                    editMode={false}
-                  /> )
-                ) : (<NoProjectFound />)
-          }
+                  />
+                ))
+              ) : (
+                <NoProjectFound />
+              )
+            ) : featuredProjects && featuredProjects.length > 0 ? (
+              featuredProjects.map((project: any) => (
+                <ProjectSnippet
+                  key={project.properties.id}
+                  project={project.properties}
+                  editMode={false}
+                />
+              ))
+            ) : (
+              <NoProjectFound />
+            )}
           </div>
         </div>
       ) : null}
