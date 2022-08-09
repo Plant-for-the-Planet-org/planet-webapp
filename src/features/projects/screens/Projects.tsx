@@ -33,7 +33,7 @@ function ProjectsList({
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 767;
   const [scrollY, setScrollY] = React.useState(0);
-  const [hideSidebar, setHideSidebar] = React.useState(false);
+  const [hideSidebar, setHideSidebar] = React.useState(true);
   const { t, ready } = useTranslation(['donate', 'country']);
 
   const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
