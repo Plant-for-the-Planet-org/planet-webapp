@@ -16,10 +16,16 @@ import {
   FormControlLabel,
 } from '@mui/material';
 
+<<<<<<< HEAD
 import MuiCalenderPicker from '@mui/lab/CalendarPicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { TenantContext } from '../../common/Layout/TenantContext';
+=======
+import { CalendarPicker as MuiCalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+>>>>>>> develop
 
 export const CancelModal = ({
   cancelModalOpen,
@@ -151,7 +157,11 @@ export const CancelModal = ({
               {showCalender ? (
                 <>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
+<<<<<<< HEAD
                     <MuiCalenderPicker
+=======
+                    <MuiCalendarPicker
+>>>>>>> develop
                       date={date}
                       onChange={(value) => {
                         setdate(value);

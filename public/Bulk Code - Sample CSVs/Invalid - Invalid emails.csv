@@ -1,0 +1,14 @@
+recipient_name,recipient_email,recipient_notify,recipient_message,recipient_occasion,units
+text - optional,email - optional,yes/no - optional,text - optional,text - optional,number - mandatory
+Robert Lewandowski,robert,yes,Great work!,30 Goals,10
+Thomas Müller,@example.com,yes,Awesomesauce,10 Goals,20
+Alphonso Davies,alphonso@example.com,no,,10 Assists,21
+Leroy Sanè,leroy@example.com,yes,Fantastic!!,20 Assists,5
+Robert Lewandowski,robertexample.com,yes,Great work!,30 Goals,10
+Thomas Müller,thomas@example.com,yes,Awesomesauce,10 Goals,20
+Alphonso Davies,,no,,10 Assists,21
+Leroy Sanè,leroy@example.com,yes,Fantastic!!,20 Assists,5
+Robert Lewandowski,robert@example.com,yes,Great work!,30 Goals,10
+Thomas Müller,thomas@example.com,yes,Awesomesauce,10 Goals,20
+Alphonso Davies,alphonso@example.com,no,,10 Assists,21
+Leroy Sanè,leroy@example.com,yes,Fantastic!!,20 Assists,5

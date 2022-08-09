@@ -1,0 +1,78 @@
+{
+  "bulkCodesTitle": "Bulk-Codes ausgeben",
+  "bulkCodesDescription1": "Mit PlanetCash kannst du Tausende von Codes auf einmal erzeugen.",
+  "bulkCodesDescription2": "Mit dieser Funktion kannst du Codes für benutzerdefinierte Zertifikate, Geschenkkarten, Spenden im Namen von Nutzern und einlösbare Codes erstellen, die du mit deinen Produkten verknüpfen kannst.",
+  "tabCreationMethod": "Herstellungsmethode",
+  "tabSelectProject": "Projekt aussuchen",
+  "tabIssueCodes": "Codes ausgeben",
+  "issueCodes": "Codes ausgeben",
+  "issuingCodes": "Codes ausgeben...",
+  "importMethodText": {
+    "title": "Importieren",
+    "subtitle": "Verwende diese Methode, wenn eines der folgenden Kriterien auf deinen Anwendungsfall zutrifft:",
+    "details": ["Ich möchte für jeden Code den Namen des Empfängers oder seine E-Mail-Adresse angeben.", "Ich möchte, dass Plant-for-the-Planet nach der Erstellung automatisch eine E-Mail an die Empfänger sendet (optional).", "Ich möchte Codes für verschiedene Zahlen von Bäumen vergeben."]
+  },
+  "genericMethodText": {
+    "title": "Generische Codes erstellen",
+    "subtitle": "Verwende diese Methode, wenn die folgenden Kriterien auf deinen Anwendungsfall zutreffen:",
+    "details": ["Alle Codes werden den gleichen Wert haben.", "Ich möchte eine Reihe von Codes für beliebige Empfänger generieren.", "Namen und E-Mail-Adressen können nicht mit dem Code verknüpft werden."]
+  },
+  "projectName": "Projektname",
+  "costPerUnit": "Kosten pro Einheit",
+  "labelComment": "Kommentar [Privat]",
+  "unitOfMeasurement": "Maßeinheit",
+  "units": {
+    "ha": "ha",
+    "tree": "Baum",
+    "m2": "m²"
+  },
+  "unitsPerCode": "Einheiten pro Code*",
+  "totalNumberOfCodes": "Gesamtzahl der Codes*",
+  "occasion": "Anlass",
+  "total": "Insgesamt",
+  "chargeConsentText": "Indem du auf Codes ausgeben klickst, erklärst du dich damit einverstanden, dass der oben genannte Betrag von deinem Konto abgebucht wird.",
+  "projectRequired": "Es wurde kein Projekt ausgewählt.",
+  "unitsPerCodeRequired": "Jeder Code sollte mindestens eine Einheit enthalten.",
+  "codeQuantityRequired": "Du musst mindestens einen Code erstellen.",
+  "unitsPerCodeInvalidRange": "Ein Code kann bis zu 1000 Einheiten enthalten.",
+  "codeQuantityInvalidRange": "Es können maximal 5000 Codes erstellt werden.",
+  "featureAvailability": "Diese Funktion ist nur für Partnerprojekte verfügbar.",
+  "planetCashDisabled": "PlanetCash ist nicht aktiviert. Bitte aktiviere PlanetCash, um diese Funktion zu nutzen.",
+  "insufficientPCashBalance": "Unzureichendes Guthaben",
+  "addBalanceGeneric": "Bitte klicke hier, um Guthaben hinzuzufügen.",
+  "instructionsUploadCSV": {
+    "empty": "Drag & Drop / Klicke zur Auswahl einer .csv-Datei zum Hochladen.",
+    "error": "Bitte prüfe etwaige Probleme und ziehe die .csv-Datei zum Hochladen hierher.",
+    "processing": "Bitte warte, während wir deine Datei analysieren...",
+    "success": "Weiter oder ziehe eine .csv-Datei hierher, um die aktuelle Datei zu ersetzen."
+  },
+  "statusUploadCSV": {
+    "error": "Fehler",
+    "success": "Dateianalyse abgeschlossen"
+  },
+  "errorUploadCSV": {
+    "fileInvalidType": "Nur CSV-Dateien sind zulässig",
+    "tooManyFiles": "Bitte lade nur eine einzige CSV-Datei hoch.",
+    "fileTooSmall": "Die hochgeladene Datei scheint leer zu sein",
+    "fileTooLarge": "Die hochgeladene Datei darf höchstens 5 MB groß sein.",
+    "missingColumns": "In der hochgeladenen Datei fehlen die folgenden Spalten: ",
+    "noRecipientData": "Keine Empfängerdaten gefunden.",
+    "tooManyRecipients": "Maximal 1000 Empfänger können in einer Transaktion verarbeitet werden.",
+    "unitsNotProvided": "Einheiten fehlen oder sind ungültig bei einigen Empfängern.",
+    "notifyNotPossible": "E-Mail und Name fehlen bei einigen Empfängern, die benachrichtigt werden sollen.",
+    "instructionRowError": "In der 1. Zeile ist ein Fehler aufgetreten. Bitte prüfe, ob du die Anweisungen gelöscht hast oder ob zusätzliche Daten vorhanden sind.",
+    "invalidEmails": "Die angegebenen E-Mails sind in den folgenden Zeilen ungültig:",
+    "generalError": "Es ist ein Fehler aufgetreten. Bitte versuche es nach einer Weile erneut."
+  },
+  "successUploadCSV": {
+    "ignoredColumns": "Zusätzliche Spalten in der CSV-Datei wurden ignoriert"
+  },
+  "importInstructions": "Bitte lese die <2>Dokumentation hier</2>, und lade die<4> </4><5>Vorlage hier</5> herunter.",
+  "donationSuccess": "Deine Spende war erfolgreich. Du wirst in Kürze zur Anzeige der Spendendetails weitergeleitet...",
+  "donationError": {
+    "planet_cash_insufficient_credit": "Verfügbares Guthaben = {{availableBalance}}. Bitte lade Guthaben auf dein PlanetCash-Konto auf, um diese Spende zu tätigen.",
+    "default": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es nach einer Weile erneut.",
+    "planet_cash_payment_failure": "Die Transaktion ist fehlgeschlagen. {{reason}}",
+    "planet_cash_invalid_project": "Du kannst für das ausgewählte Projekt nicht spenden."
+  }
+}

@@ -18,10 +18,16 @@ import tj from '@mapbox/togeojson';
 import gjv from 'geojson-validation';
 import flatten from 'geojson-flatten';
 
+<<<<<<< HEAD
 import MuiDatePicker from '@mui/lab/MobileDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { TenantContext } from '../../../../common/Layout/TenantContext';
+=======
+import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+>>>>>>> develop
 
 const { useTranslation } = i18next;
 

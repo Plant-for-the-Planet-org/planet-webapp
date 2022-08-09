@@ -2,13 +2,28 @@
 @import './ProjectSnippet.module.scss';
 @import './ProjectDetails.module.scss';
 
-.container {
+.container, .embedContainer {
   position: absolute;
   transition: all 0.3s ease-in-out;
   width: 100vw;
-  margin-top: 50vh;
   // padding-bottom: 60px;
   z-index: 12;
+}
+
+.container{
+  margin-top: 50vh;
+}
+
+.embedContainer {
+  margin-top: 0px;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.embedContainer::-webkit-scrollbar {
+  display: none;
 }
 
 .header {
@@ -214,8 +229,11 @@
     column-gap: 16px;
   }
 
-  .container {
+  .container,.embedContainer {
     padding-bottom: 0px;
+  }
+  .embedContainer{
+    margin-top: 40vh;
   }
   .projectsContainer {
     padding-bottom: 56px;
@@ -230,11 +248,8 @@
     overflow-y: visible;
   }
 
-  .container {
+  .container, .embedContainer {
     overflow: visible;
-    padding-top: 0px;
-    margin-top: 80px;
-    padding-top: 30px;
     // padding-bottom: 0px;
     width: fit-content;
     // z-index: 2;
@@ -243,6 +258,24 @@
     -ms-overflow-style: none;
     scrollbar-color: transparent transparent;
     z-index: 2;
+  }
+
+  .container {
+    padding-left: 24px;
+    margin-top: 80px;
+    padding-top: 30px;
+  }
+
+  .embedContainer {
+    padding-top: 20px;
+    margin-top: 0px;
+    padding-left: 14px;
+    height: 100vh;
+    overflow-y: scroll;
+
+    .sidebar {
+      padding: 10px;
+    }
   }
 
   // .container::-webkit-scrollbar {
@@ -280,7 +313,11 @@
     display: none;
   }
 }
-
+@media screen and (max-height: 315px), (max-width: 486px) {
+  .embedContainer{
+    margin-top: 40vh;
+  }
+}
 :export {
   primaryColor: $primaryColor;
   primaryFontColor: $primaryFontColor;

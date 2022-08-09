@@ -15,10 +15,16 @@ import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
+<<<<<<< HEAD
 import MuiDatePicker from '@mui/lab/MobileDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { TenantContext } from '../../../common/Layout/TenantContext';
+=======
+import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+>>>>>>> develop
 
 const { useTranslation } = i18next;
 
@@ -557,7 +563,7 @@ export default function DetailedAnalysis({
                     required: {
                       value: true,
                       message: t('manageProjects:validation', {
-                        fieldName: 'Area Protected',
+                        fieldName: t('manageProjects:areaProtected'),
                       }),
                     },
                     validate: (value) => parseInt(value, 10) > 0,
@@ -609,7 +615,7 @@ export default function DetailedAnalysis({
                           required: {
                             value: true,
                             message: t('manageProjects:validation', {
-                              fieldName: 'Date',
+                              fieldName: t('manageProjects:date'),
                             }),
                           },
                         })}
@@ -629,7 +635,7 @@ export default function DetailedAnalysis({
                     control={control}
                     rules={{
                       required: t('manageProjects:validation', {
-                        fieldName: 'Date',
+                        fieldName: t('manageProjects:date'),
                       }),
                     }}
                     // defaultValue=""
@@ -654,7 +660,7 @@ export default function DetailedAnalysis({
                   required: {
                     value: true,
                     message: t('manageProjects:validation', {
-                      fieldName: 'Employee Count',
+                      fieldName: t('manageProjects:employeeCount'),
                     }),
                   },
                   validate: (value) => parseInt(value, 10) > 0,
@@ -666,9 +672,9 @@ export default function DetailedAnalysis({
                   e.target.value = e.target.value.replace(/[^0-9]./g, '');
                 }}
               />
-              {errors.employeeCount && (
+              {errors.employeesCount && (
                 <span className={styles.formErrors}>
-                  {errors.employeeCount.message}
+                  {errors.employeesCount.message}
                 </span>
               )}
               <div
@@ -723,7 +729,7 @@ export default function DetailedAnalysis({
                   control={control}
                   rules={{
                     required: t('manageProjects:validation', {
-                      fieldName: 'acquisitionYear',
+                      fieldName: t('manageProjects:acquisitionYear'),
                     }),
                   }}
                   // defaultValue=""

@@ -3,12 +3,21 @@ import tenantConfig from '../../tenant.config';
 import theme from './themeProperties';
 const config = tenantConfig();
 
-const { light, dark, fontSizes, primaryColor, primaryDarkColor } = theme;
+const {
+  light,
+  dark,
+  fontSizes,
+  primaryColor,
+  primaryDarkColor,
+  defaultFontFamily,
+} = theme;
 
 const globalStyles = css.global`
   :root {
-    --primary-font-family: ${config!.font.primaryFontFamily};
-    --secondary-font-family: ${config!.font.secondaryFontFamily};
+    --primary-font-family: ${config.font.primaryFontFamily ||
+    defaultFontFamily};
+    --secondary-font-family: ${config.font.secondaryFontFamily ||
+    defaultFontFamily};
     --font-xx-extra-small: ${fontSizes.fontXXSmall};
     --font-x-extra-small: ${fontSizes.fontXSmall};
     --font-small: ${fontSizes.fontSmall};

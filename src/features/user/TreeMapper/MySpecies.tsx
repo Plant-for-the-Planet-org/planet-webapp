@@ -25,6 +25,7 @@ export default function MySpecies({}: Props): ReactElement {
   const { handleError } = React.useContext(ErrorHandlingContext);
   const [species, setSpecies] = React.useState<any[]>([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
+<<<<<<< HEAD
   const { tenantID } = React.useContext(TenantContext);
 
   const { register, handleSubmit, errors, control, getValues } = useForm();
@@ -43,6 +44,27 @@ export default function MySpecies({}: Props): ReactElement {
       `/treemapper/species/${id}`,
       token,
       tenantID
+=======
+
+  const defaultMySpeciesValue = {
+    aliases: '',
+  };
+
+  const { register, handleSubmit, errors, control, getValues } = useForm({
+    mode: 'onBlur',
+    defaultValues: defaultMySpeciesValue,
+  });
+
+  const fetchMySpecies = async () => {
+    const result = await getAuthenticatedRequest('/treemapper/species', token);
+    setSpecies(result);
+  };
+
+  const deleteSpecies = async (id: number) => {
+    const result = await deleteAuthenticatedRequest(
+      `/treemapper/species/${id}`,
+      token
+>>>>>>> develop
     );
     fetchMySpecies();
   };
@@ -60,8 +82,12 @@ export default function MySpecies({}: Props): ReactElement {
       `/treemapper/species`,
       data,
       token,
+<<<<<<< HEAD
       handleError,
       tenantID
+=======
+      handleError
+>>>>>>> develop
     );
     fetchMySpecies();
     setIsUploadingData(false);
@@ -78,6 +104,7 @@ export default function MySpecies({}: Props): ReactElement {
       <h2 className={'profilePageTitle'}>{t('me:mySpecies')}</h2>
       <form onSubmit={handleSubmit(addSpecies)}>
         <div className={styles.addSpecies}>
+<<<<<<< HEAD
           <SpeciesSelect
             label={t('treemapper:species')}
             name={`scientificSpecies`}
@@ -92,6 +119,44 @@ export default function MySpecies({}: Props): ReactElement {
             style={{ width: '300px' }}
             variant="outlined"
           />
+=======
+          <div>
+            <SpeciesSelect
+              label={t('treemapper:species')}
+              name={`scientificSpecies`}
+              width="300px"
+              control={control}
+            />
+            {errors.scientificSpecies && (
+              <span className={styles.formError}>
+                {errors.scientificSpecies.message}
+              </span>
+            )}
+          </div>
+          <div>
+            <MaterialTextField
+              label={t('treemapper:aliases')}
+              name={`aliases`}
+              inputRef={register({
+                required: {
+                  value: true,
+                  message: t('treemapper:aliasesValidation'),
+                },
+              })}
+              type={'text'}
+              style={{ width: '300px' }}
+              variant="outlined"
+            />
+            <div>
+              {errors.aliases && (
+                <span className={styles.formError}>
+                  {errors.aliases.message}
+                </span>
+              )}
+            </div>
+          </div>
+
+>>>>>>> develop
           <MaterialButton
             id="addSpecies"
             onClick={handleSubmit(addSpecies)}

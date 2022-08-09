@@ -9,7 +9,7 @@ export async function storeConfig(tenantId) {
   } else {
     userLang = 'en';
   }
-  await fetch(`${process.env.API_ENDPOINT}/app/config`, {
+  await fetch(`${process.env.CONFIG_URL}`, {
     headers: {
       'tenant-key': `${tenantId}`,
       'X-SESSION-ID': await getsessionId(),

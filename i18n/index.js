@@ -14,6 +14,7 @@ export default new NextI18Next({
   debug: false,
   otherLanguages: config.languages, // list all languages here
   detection: {
+<<<<<<< HEAD
     // check if language is cached in cookies, if not check local storage,
     // last retrieve from browser language
     order: ['localStorage', 'cookie', 'navigator'],
@@ -24,6 +25,15 @@ export default new NextI18Next({
 
     // cache the language in cookies and local storage
     //remove language cookie from cookie to reanable this language cookie add cookie string to caches aaray and also uncomment the lookupCookie key
+=======
+    // check if language is cached in local storage, otherwise retrieve from browser language
+    order: ['localStorage', 'navigator'],
+
+    // next-i18next by default searches for the 'next-i18next' cookie, local storage key on server requests
+    lookupLocalStorage: 'language',
+
+    // cache the language local storage
+>>>>>>> develop
     caches: ['localStorage'],
   },
   react: {

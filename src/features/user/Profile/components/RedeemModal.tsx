@@ -90,7 +90,7 @@ export default function RedeemModal({
           setErrorMessage(res.message);
           setIsUploadingData(false);
         } else if (res.status === 'error') {
-          setErrorMessage(res.errorText);
+          setErrorMessage(res.errorText || t('me:wentWrong'));
           setIsUploadingData(false);
         } else if (res.status === 'success') {
           setCode(data.code);
@@ -120,8 +120,8 @@ export default function RedeemModal({
         if (res.code === 401) {
           setErrorMessage(res.message);
           setIsUploadingData(false);
-        } else if (res.response.status === 'error') {
-          setErrorMessage(res.errorText);
+        } else if (!res.response || res.response.status === 'error') {
+          setErrorMessage(res.errorText || t('me:wentWrong'));
           setIsUploadingData(false);
         } else if (res.response.status === 'success') {
           setCodeRedeemed(true);
@@ -192,14 +192,15 @@ export default function RedeemModal({
                   />
                 </div>
                 <div className={styles.donationCount}>
-                  {t('redeem:myPlantedTreesByOrg', {
-                    count: Number(validCodeData.treeCount),
-                    formattedNumber: getFormattedNumber(
-                      i18n.language,
-                      Number(validCodeData.treeCount)
-                    ),
-                    tpoName: validCodeData.tpos[0].tpoName,
-                  })}
+                  {validCodeData.tpos?.length > 0 &&
+                    t('redeem:myPlantedTreesByOrg', {
+                      count: Number(validCodeData.treeCount),
+                      formattedNumber: getFormattedNumber(
+                        i18n.language,
+                        Number(validCodeData.treeCount)
+                      ),
+                      tpoName: validCodeData.tpos[0]?.tpoName,
+                    })}
                   <p className={styles.donationTenant}>
                     {t('donate:plantTreesAtURL', { url: config.tenantURL })}
                   </p>
@@ -218,14 +219,15 @@ export default function RedeemModal({
                   />
                 </div>
                 <p className={styles.tempDonationCount}>
-                  {t('redeem:myPlantedTreesByOrg', {
-                    count: Number(validCodeData.treeCount),
-                    formattedNumber: getFormattedNumber(
-                      i18n.language,
-                      Number(validCodeData.treeCount)
-                    ),
-                    tpoName: validCodeData.tpos[0].tpoName,
-                  })}
+                  {validCodeData.tpos?.length > 0 &&
+                    t('redeem:myPlantedTreesByOrg', {
+                      count: Number(validCodeData.treeCount),
+                      formattedNumber: getFormattedNumber(
+                        i18n.language,
+                        Number(validCodeData.treeCount)
+                      ),
+                      tpoName: validCodeData.tpos[0]?.tpoName,
+                    })}
                 </p>
                 <p className={styles.tempDonationTenant}>
                   {t('donate:plantTreesAtURL', { url: config.tenantURL })}
@@ -279,11 +281,16 @@ export default function RedeemModal({
                   </span>
                 </div>
 
-                <div className={styles.plantedBy}>
-                  <span>{t('common:plantedBy')}</span>
-                  <p>{validCodeData.tpos[0].tpoName}</p>
-                </div>
+                {validCodeData.tpos?.length > 0 && (
+                  <div className={styles.plantedBy}>
+                    <span>{t('common:plantedBy')}</span>
+                    <p>{validCodeData.tpos[0]?.tpoName}</p>
+                  </div>
+                )}
 
+                {errorMessage && (
+                  <span className={styles.formErrors}>{errorMessage}</span>
+                )}
                 <button
                   id={'redeemModalCont'}
                   onClick={handleSubmit(redeemCode)}

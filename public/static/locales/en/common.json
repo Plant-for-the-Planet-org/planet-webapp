@@ -91,5 +91,7 @@
   "forbidden": "You are not allowed to view this page!",
   "internalServerError": "Internal Server Error - Please try again later!",
   "validationFailed": "Validation Failed!",
-  "add": "Add"
+  "add": "Add",
+  "poweredBy": "Powered by",
+  "pftp": "Plant-for-the-Planet"
 }

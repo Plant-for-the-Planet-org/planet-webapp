@@ -38,7 +38,7 @@ export default function EmbedModal({
   const router = useRouter();
   // This effect is used to get and update UserInfo if the isAuthenticated changes
 
-  const { user, contextLoaded, token } = React.useContext(UserPropsContext);
+  const { user, setUser, contextLoaded, token } = React.useContext(UserPropsContext);
 
   React.useEffect(() => {
     if (user && user.isPrivate) {
@@ -82,9 +82,13 @@ export default function EmbedModal({
             setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');
             setEmbedModalOpen(false);
             setIsUploadingData(false);
+<<<<<<< HEAD
             router.push(
               `${process.env.WIDGET_URL}?user=${user.id}&tenantkey=${tenantID}`
             );
+=======
+            setUser(res);
+>>>>>>> develop
           })
           .catch((error) => {
             setSeverity('error');

@@ -5,13 +5,17 @@ import themeProperties from '../../../../../theme/themeProperties';
 import tenantConfig from '../../../../../../tenant.config';
 import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
 import { postRequest } from '../../../../../utils/apiRequests/api';
-import { Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { Autocomplete } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+<<<<<<< HEAD
 import { TenantContext } from '../../../../common/Layout/TenantContext';
+=======
+import i18next from '../../../../../../i18n';
+>>>>>>> develop
 
 const config = tenantConfig();
-
+const { useTranslation } = i18next;
 export default function SpeciesSelect(props: {
   label: React.ReactNode;
   name: string;
@@ -24,6 +28,7 @@ export default function SpeciesSelect(props: {
     SpeciesType[]
   >([]);
   const [query, setQuery] = React.useState('');
+  const { t } = useTranslation(['treemapper']);
   const { theme } = React.useContext(ThemeContext);
   const { tenantID } = React.useContext(TenantContext);
   const useStylesAutoComplete = makeStyles({
@@ -59,6 +64,8 @@ export default function SpeciesSelect(props: {
     },
   });
   const classes = useStylesAutoComplete();
+
+  const { errors } = useForm({ mode: 'onBlur' });
 
   const [value, setValue] = React.useState<string>();
 
@@ -163,6 +170,9 @@ export default function SpeciesSelect(props: {
           )}
         />
       )}
+      rules={{
+        required: t('treemapper:speciesValidation'),
+      }}
     />
   );
 }

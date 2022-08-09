@@ -28,11 +28,16 @@ import UserPropsProvider from '../src/features/common/Layout/UserPropsContext';
 import PlayButton from '../src/features/common/LandingVideo/PlayButton';
 import ErrorHandlingProvider from '../src/features/common/Layout/ErrorHandlingContext';
 import dynamic from 'next/dynamic';
+import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
+<<<<<<< HEAD
 import TenantContextProvider, {
   TenantContext,
 } from '../src/features/common/Layout/TenantContext';
+=======
+import QueryParamsProvider from '../src/features/common/Layout/QueryParamsContext';
+>>>>>>> develop
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -221,6 +226,7 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
               <ThemeProvider>
                 <MuiThemeProvider theme={materialTheme}>
                   <CssBaseline />
+<<<<<<< HEAD
                   <TenantContextProvider>
                     <UserPropsProvider>
                       <Layout>
@@ -249,6 +255,38 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
                       </Layout>
                     </UserPropsProvider>
                   </TenantContextProvider>
+=======
+                  <QueryParamsProvider>
+                    <UserPropsProvider>
+                      <Layout>
+                        <ProjectPropsProvider>
+                          <BulkCodeProvider>
+                            {isMap ? (
+                              <>
+                                {project ? (
+                                  <MapLayout />
+                                ) : projects ? (
+                                  <MapLayout />
+                                ) : null}
+                                <div
+                                  style={
+                                    config.tenantName === 'planet' ||
+                                    config.tenantName === 'ttc'
+                                      ? {}
+                                      : { display: 'none' }
+                                  }
+                                >
+                                  <PlayButton setshowVideo={setshowVideo} />
+                                </div>
+                              </>
+                            ) : null}
+                            <Component {...ProjectProps} />
+                          </BulkCodeProvider>
+                        </ProjectPropsProvider>
+                      </Layout>
+                    </UserPropsProvider>
+                  </QueryParamsProvider>
+>>>>>>> develop
                 </MuiThemeProvider>
               </ThemeProvider>
             </Auth0Provider>
