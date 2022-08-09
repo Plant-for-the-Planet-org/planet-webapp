@@ -83,6 +83,9 @@
 
   &.mobile-hidden {
     transform: translateY(60vh);
+    max-height: 0;
+    padding: 0;
+    overflow: hidden;
   }
 }
 

@@ -53,11 +53,13 @@ const QueryParamsProvider: FC = ({ children }) => {
   }, [query.locale]);
 
   useEffect(() => {
-    if (query.project_details) setShowProjectDetails(query.project_details);
+    if (query.project_details === 'true' || query.project_details === 'false')
+      setShowProjectDetails(query.project_details);
   }, [query.project_details]);
 
   useEffect(() => {
-    if (query.project_list) setShowProjectList(query.project_list);
+    if (query.project_list === 'true' || query.project_list === 'false')
+      setShowProjectList(query.project_list);
   }, [query.project_list]);
 
   useEffect(() => {

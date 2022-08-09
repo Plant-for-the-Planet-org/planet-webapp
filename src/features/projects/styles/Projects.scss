@@ -26,6 +26,8 @@
 
     &.mobile-hidden {
       transform: translateY(60vh);
+      max-height: 0;
+      overflow: hidden;
     }
   }
 }
@@ -52,6 +54,12 @@
   border-radius: 13px 13px 0px 0px;
   height: 50px;
   width: 100%;
+  overflow: hidden;
+
+  &.header--mobile {
+    height: 66px;
+    padding-top: 16px;
+  }
 }
 
 .headerText {

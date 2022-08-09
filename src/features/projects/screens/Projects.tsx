@@ -32,8 +32,10 @@ function ProjectsList({
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 767;
+  const { embed, showProjectList } = React.useContext(ParamsContext);
+  const isEmbed = embed === 'true';
   const [scrollY, setScrollY] = React.useState(0);
-  const [hideSidebar, setHideSidebar] = React.useState(true);
+  const [hideSidebar, setHideSidebar] = React.useState(isEmbed);
   const { t, ready } = useTranslation(['donate', 'country']);
 
   const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
@@ -155,9 +157,6 @@ function ProjectsList({
     setHideSidebar(!hideSidebar);
   };
 
-  const { embed, showProjectList } = React.useContext(ParamsContext);
-  const isEmbed = embed === 'true';
-
   return ready ? (
     <>
       <Explore />
@@ -192,10 +191,7 @@ function ProjectsList({
                   : ''
               }`}
             >
-              <div
-                className={'header'}
-                style={isMobile ? { height: '66px', paddingTop: '16px' } : {}}
-              >
+              <div className={`header ${isMobile ? 'header--mobile' : ''}`}>
                 {isMobile && (!hideSidebar || showProjectList === 'true') && (
                   <div className={'dragBar'}></div>
                 )}
