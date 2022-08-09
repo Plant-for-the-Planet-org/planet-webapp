@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import dynamic from 'next/dynamic';
-import { Button } from '@mui/material';
+import MuiButton from '../../common/InputTypes/MuiButton';
 import ProjectLoader from '../../common/ContentLoaders/Projects/ProjectLoader';
 import i18next from '../../../../i18n/';
 import LazyLoad from 'react-lazyload';
@@ -162,13 +162,13 @@ function ProjectsList({
     <>
       <Explore />
       {isEmbed && isMobile && showProjectList === undefined && (
-        <Button
+        <MuiButton
           onClick={toggleSidebar}
           variant={hideSidebar ? 'outlined' : 'contained'}
           className="toggleButton"
         >
           {hideSidebar ? 'Show Project List' : 'Hide Project List'}
-        </Button>
+        </MuiButton>
       )}
       {showProjects ? (
         <div

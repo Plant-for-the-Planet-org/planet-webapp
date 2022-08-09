@@ -1,5 +1,5 @@
 import Modal from '@mui/material/Modal';
-import Button from '@mui/material/Button';
+import MuiButton from '../../common/InputTypes/MuiButton';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React, { ReactElement, useState, useContext } from 'react';
@@ -125,7 +125,7 @@ function SingleProjectDetails({}: Props): ReactElement {
           </>
         )}
       {isEmbed && isMobile && showProjectDetails === undefined && (
-        <Button
+        <MuiButton
           onClick={toggleProjectContainer}
           variant={hideProjectContainer ? 'outlined' : 'contained'}
           className="toggleButton"
@@ -133,7 +133,7 @@ function SingleProjectDetails({}: Props): ReactElement {
           {hideProjectContainer
             ? 'Show Project Details'
             : 'Hide Project Details'}
-        </Button>
+        </MuiButton>
       )}
       <div
         style={{ transform: `translate(0,${scrollY}px)` }}
