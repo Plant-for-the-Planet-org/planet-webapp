@@ -153,7 +153,7 @@
   width: 100%;
   padding-left: 16px;
   padding-right: 16px;
-  padding-bottom: 16px;
+  padding-bottom: 100px;
   height: auto;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -258,7 +258,7 @@
     margin-top: 40vh;
   }
   .projectsContainer {
-    padding-bottom: 56px;
+    padding-bottom: 80px;
   }
 }
 
@@ -298,7 +298,7 @@
   }
 
   .sidebar {
-    padding: 10px;
+    padding: 10px 10px 0;
 
     .mobile-hidden {
       height: auto;
