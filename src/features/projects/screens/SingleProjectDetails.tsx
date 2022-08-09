@@ -13,7 +13,6 @@ import ExpandIcon from '../../../../public/assets/images/icons/ExpandIcon';
 import ProjectInfo from '../components/projectDetails/ProjectInfo';
 import ProjectSnippet from '../components/ProjectSnippet';
 import SitesDropdown from '../components/maps/SitesDropdown';
-import Explore from '../components/maps/Explore';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import ProjectTabs from '../components/maps/ProjectTabs';
 import PlantLocationDetails from '../components/PlantLocation/PlantLocationDetails';
@@ -51,8 +50,6 @@ function SingleProjectDetails({}: Props): ReactElement {
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
   const [scrollY, setScrollY] = useState(0);
-  const [rating, setRating] = useState<number | null>(2);
-  const [hideProjectContainer, setHideProjectContainer] = useState(true);
   const { embed, showBackIcon, callbackUrl, showProjectDetails } =
     useContext(ParamsContext);
   const isEmbed = embed === 'true';
