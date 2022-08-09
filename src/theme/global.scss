@@ -269,10 +269,6 @@ video {
   cursor: pointer;
 }
 
-
-
-
-
 .secondaryButton {
   background-image: none;
   background-color: $backgroundColorDark;
@@ -335,8 +331,7 @@ button {
 }
 
 @include xsPhoneView {
-
-.notificationContainer {
+  .notificationContainer {
     position: fixed;
     display: flex;
     flex-direction: column;
@@ -350,7 +345,7 @@ button {
   }
   .profilePage {
     padding-top: 80px !important;
-    margin-left: -35px
+    margin-left: -35px;
   }
 }
 
@@ -535,19 +530,19 @@ input:-webkit-autofill {
   width: max-content;
 }
 
-.tab-flow{
+.tab-flow {
   display: flex;
- }
+}
 
-@include xsPhoneView{
-  .project-form-flow{
+@include xsPhoneView {
+  .project-form-flow {
     flex-direction: column;
   }
-  .tab-flow{
+  .tab-flow {
     max-width: 90vw;
     justify-content: center;
   }
-  .primaryButton{
+  .primaryButton {
     margin-left: 0px;
   }
 }
@@ -557,22 +552,21 @@ input:-webkit-autofill {
     flex-direction: column;
     margin-top: 10px;
   }
- }
+}
 
- @include mdTabletView{
+@include mdTabletView {
   .project-form-flow {
     flex-direction: column;
     margin-top: 0px;
   }
-  
- }
+}
 
- @include lgLaptopView {
+@include lgLaptopView {
   .project-form-flow {
     flex-direction: row;
     margin-top: 0px;
   }
- }
+}
 
 .notSubmitReview {
   width: 180px;
@@ -608,7 +602,7 @@ input:-webkit-autofill {
   padding: 20px;
   box-shadow: rgb(170 170 170 / 20%) 0px 1px 4px;
   border-radius: 10px;
-  }
+}
 
 .add-project {
   margin-top: 65px;
@@ -642,19 +636,18 @@ input:-webkit-autofill {
 
   @include xlDesktopView {
     margin-left: 45px;
-    
   }
 }
 
 .project-selection {
   display: flex;
   margin-left: 0px;
-  top : 0px;
+  top: 0px;
   @include xsPhoneView {
-   top: 491px;
+    top: 491px;
   }
   @include smTabletView {
-   top: 505px;
+    top: 505px;
   }
   @include mdTabletView {
     flex-direction: column;
@@ -667,8 +660,7 @@ input:-webkit-autofill {
   }
 }
 
-
-/* remove updown arrow on input type=number for  Chrome, Safari, Edge, Opera  */ 
+/* remove updown arrow on input type=number for  Chrome, Safari, Edge, Opera  */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -676,10 +668,9 @@ input::-webkit-inner-spin-button {
 }
 
 /* remove updown arrow on input type=number for  Firefox */
-input[type=number] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
-
 
 .add-project-title {
   font-size: $fontSixteen;
@@ -696,10 +687,6 @@ input[type=number] {
     gap: 16px;
   }
 }
-
-
-
-
 
 .tab-flow {
   text-transform: capitalize !important;
@@ -729,7 +716,7 @@ input[type=number] {
 
       > .MuiButtonBase-root {
         padding-bottom: 0%;
-        align-items:baseline;
+        align-items: baseline;
 
         > .MuiTab-wrapper:active {
           color: $primaryColor;
@@ -737,7 +724,7 @@ input[type=number] {
         }
         > .MuiTab-wrapper {
           align-items: flex-start;
-          font-family: Raleway;
+          font-family: $primaryFontFamily;
           font-weight: 600;
           font-size: 14px;
           position: static;

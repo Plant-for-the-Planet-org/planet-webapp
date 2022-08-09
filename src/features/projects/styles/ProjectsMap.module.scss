@@ -1,16 +1,17 @@
 @import '../../../theme/theme';
 
-.mapContainer {
+.mapContainer,
+.onlymapContainer {
   position: fixed;
   top: 0px;
   bottom: 0px;
   left: 0px;
   right: 0px;
   background-color: rgba(70, 168, 221, 0.15);
-  // padding-bottom: 60px;
 }
 
-.mapContainer > div:first-child {
+.mapContainer > div:first-child,
+.onlymapContainer > div:first-child {
   height: 100% !important;
   width: 100% !important;
 }
@@ -115,10 +116,10 @@
   padding-left: 20px;
 }
 
-.projectSitesButton {
+.projectSitesButton,
+.embed_projectSitesButton {
   position: fixed;
   right: 100px;
-  top: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -135,14 +136,31 @@
   }
 }
 
-.dropdownContainer {
-  position: fixed;
-  right: 100px;
+.projectSitesButton {
   top: 100px;
-  z-index: 11;
 }
 
-.projectSitesDropdown {
+.embed_projectSitesButton {
+  top: 30px;
+}
+
+.dropdownContainer,
+.embed_dropdownContainer {
+  position: fixed;
+  z-index: 11;
+  right: 100px;
+}
+
+.dropdownContainer {
+  top: 100px;
+}
+
+.embed_dropdownContainer {
+  top: 30px;
+}
+
+.projectSitesDropdown,
+.embed_projectSitesButton {
   z-index: 100;
 }
 
@@ -157,14 +175,14 @@
   height: 100%;
 }
 
-.exploreButton {
+.exploreButton,
+.embed_exploreButton {
   position: fixed;
-  right: 10px;
-  top: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  right: 10px;
   padding: 9px;
   background: $backgroundColor;
   box-shadow: 0px 3px 6px #00000029;
@@ -173,11 +191,22 @@
   cursor: pointer;
   z-index: 11;
 }
-.exploreButton > svg {
+
+.exploreButton {
+  top: 100px;
+}
+
+.embed_exploreButton {
+  top: 30px;
+  flex-direction: row;
+}
+.exploreButton > svg,
+.embed_exploreButton > svg {
   width: 17px;
 }
 
-.exploreButton > svg > path {
+.exploreButton > svg > path,
+.embed_exploreButton > svg > path {
   fill: $primaryFontColor;
 }
 
@@ -412,10 +441,10 @@
   width: 20px;
 }
 
-.exploreExpanded {
+.exploreExpanded,
+.embed_exploreExpanded {
   position: fixed;
   right: 70px;
-  top: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -426,6 +455,14 @@
   border-radius: 9px;
   animation: fade_in_show 0.5s;
   z-index: 12;
+}
+
+.embed_exploreExpanded {
+  top: 30px;
+}
+
+.exploreExpanded {
+  top: 20px;
 }
 
 @keyframes fade_in_show {
@@ -501,6 +538,13 @@
     text-decoration: none;
     color: rgba($primaryFontColor, 0.75);
   }
+  > span {
+    margin-left: 10px;
+    a {
+      text-decoration: none;
+      color: rgba($primaryFontColor, 0.75);
+    }
+  }
 }
 
 .layerSwitcher {
@@ -557,11 +601,12 @@
   .exploreButton {
     top: 100px;
   }
-
   .exploreExpanded {
     top: 110px;
   }
-
+  .embed_exploreExpanded {
+    top: 30px;
+  }
   // .infoExpanded {
   //   top: 100px;
   // }
@@ -582,7 +627,11 @@
   }
   .projectSitesButton {
     top: 110px;
-    right: 165px;
+  }
+
+  .projectSitesButton,
+  .embed_projectSitesButton {
+    right: 175px;
   }
 
   .dropdownContainer {
@@ -592,7 +641,6 @@
 
   .exploreButton {
     top: 110px;
-    right: 20px;
     flex-direction: row;
   }
 
@@ -600,6 +648,15 @@
     top: auto;
     right: 20px;
     bottom: 125px;
+  }
+
+  .embed_dropdownContainer {
+    right: 165px;
+  }
+
+  .exploreButton,
+  .embed_exploreButton {
+    right: 20px;
   }
 }
 

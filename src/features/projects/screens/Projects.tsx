@@ -9,6 +9,7 @@ import SearchBar from '../components/projects/SearchBar';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
 import Filters from '../components/projects/Filters';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 interface Props {
   projects: any;
@@ -40,7 +41,6 @@ function ProjectsList({
 
   const [selectedTab, setSelectedTab] = React.useState('all');
   const [searchMode, setSearchMode] = React.useState(false);
-
   React.useEffect(() => {
     showFeaturedList ? setSelectedTab('featured') : null;
   }, []);
@@ -121,9 +121,10 @@ function ProjectsList({
     }
   }
 
-  const allProjects = React.useMemo(() => getProjects(projects, 'all'), [
-    projects,
-  ]);
+  const allProjects = React.useMemo(
+    () => getProjects(projects, 'all'),
+    [projects]
+  );
 
   const searchProjectResults = React.useMemo(
     () => getSearchProjects(projects, trottledSearchValue),
@@ -140,11 +141,15 @@ function ProjectsList({
       <div className={'projectNotFound'}>
         <LazyLoad>
           <NotFound className={'projectNotFoundImage'} />
-          <h5 style={{ color: 'var(--primary-font-color' }}>{t('donate:noProjectsFound')}</h5>
+          <h5 style={{ color: 'var(--primary-font-color' }}>
+            {t('donate:noProjectsFound')}
+          </h5>
         </LazyLoad>
       </div>
     ) : null;
   };
+
+  const { embed } = React.useContext(ParamsContext);
 
   return ready ? (
     <>
@@ -152,7 +157,7 @@ function ProjectsList({
       {showProjects ? (
         <div
           style={{ transform: `translate(0,${scrollY}px)` }}
-          className={'container'}
+          className={embed === 'true' ? 'embedContainer' : 'container'}
           onTouchMove={(event) => {
             if (isMobile) {
               if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
@@ -163,58 +168,67 @@ function ProjectsList({
             }
           }}
         >
-          <div
-            className={'header'}
-            style={isMobile ? { height: '66px', paddingTop: '16px' } : {}}
-          >
-            {isMobile ? <div className={'dragBar'}></div> : null}
-            {searchMode ? (
-              <SearchBar
-                setSearchValue={setSearchValue}
-                setSearchMode={setSearchMode}
-                searchValue={searchValue}
-                searchRef={searchRef}
-              />
-            ) : (
-              <Header
-                showFeaturedList={showFeaturedList}
-                setSelectedTab={setSelectedTab}
-                selectedTab={selectedTab}
-                setSearchMode={setSearchMode}
-                projects={projects}
-              />
-            )}
-          </div>
-          {/* till here is header */}
-          <div className={'projectsContainer'}>
-            {trottledSearchValue !== '' ?
-              searchProjectResults && searchProjectResults.length > 0 ?
-                searchProjectResults.map((project: any) => (
-                  <ProjectSnippet
-                    key={project.properties.id}
-                    project={project.properties}
-                    editMode={false}
-                  /> )
-                ) : (<NoProjectFound />)
-            : selectedTab === 'all' ?
-              allProjects && allProjects.length > 0  ?
-                allProjects.map((project: any) => (
-                  <ProjectSnippet
-                    key={project.properties.id}
-                    project={project.properties}
-                    editMode={false}
-                  /> )
-                ) : (<NoProjectFound />)
-            : 
-              featuredProjects  && featuredProjects.length > 0  ?
+          <div className="sidebar">
+            <div
+              className={'header'}
+              style={isMobile ? { height: '66px', paddingTop: '16px' } : {}}
+            >
+              {isMobile ? <div className={'dragBar'}></div> : null}
+              {searchMode ? (
+                <SearchBar
+                  setSearchValue={setSearchValue}
+                  setSearchMode={setSearchMode}
+                  searchValue={searchValue}
+                  searchRef={searchRef}
+                />
+              ) : (
+                <Header
+                  showFeaturedList={showFeaturedList}
+                  setSelectedTab={setSelectedTab}
+                  selectedTab={selectedTab}
+                  setSearchMode={setSearchMode}
+                  projects={projects}
+                />
+              )}
+            </div>
+            {/* till here is header */}
+            <div className={'projectsContainer'}>
+              {trottledSearchValue !== '' ? (
+                searchProjectResults && searchProjectResults.length > 0 ? (
+                  searchProjectResults.map((project: any) => (
+                    <ProjectSnippet
+                      key={project.properties.id}
+                      project={project.properties}
+                      editMode={false}
+                    />
+                  ))
+                ) : (
+                  <NoProjectFound />
+                )
+              ) : selectedTab === 'all' ? (
+                allProjects && allProjects.length > 0 ? (
+                  allProjects.map((project: any) => (
+                    <ProjectSnippet
+                      key={project.properties.id}
+                      project={project.properties}
+                      editMode={false}
+                    />
+                  ))
+                ) : (
+                  <NoProjectFound />
+                )
+              ) : featuredProjects && featuredProjects.length > 0 ? (
                 featuredProjects.map((project: any) => (
                   <ProjectSnippet
                     key={project.properties.id}
                     project={project.properties}
                     editMode={false}
-                  /> )
-                ) : (<NoProjectFound />)
-          }
+                  />
+                ))
+              ) : (
+                <NoProjectFound />
+              )}
+            </div>
           </div>
         </div>
       ) : null}
