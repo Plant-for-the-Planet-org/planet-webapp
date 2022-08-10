@@ -17,11 +17,11 @@ interface Props {
 
 const { useTranslation } = i18next;
 
-const Alert = styled(MuiAlert)(({theme}) => {
+const Alert = styled(MuiAlert)(({ theme }) => {
   return {
     backgroundColor: theme.palette.primary.main,
-  }
-})
+  };
+});
 
 export default function EmbedModal({
   embedModalOpen,
@@ -37,7 +37,8 @@ export default function EmbedModal({
   const router = useRouter();
   // This effect is used to get and update UserInfo if the isAuthenticated changes
 
-  const { user, setUser, contextLoaded, token } = React.useContext(UserPropsContext);
+  const { user, setUser, contextLoaded, token } =
+    React.useContext(UserPropsContext);
 
   React.useEffect(() => {
     if (user && user.isPrivate) {

@@ -1,16 +1,14 @@
-import Head from 'next/head'
-import React, { ReactElement } from 'react'
-import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout'
-import i18next from '../../../i18n'
+import Head from 'next/head';
+import React, { ReactElement } from 'react';
+import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
+import i18next from '../../../i18n';
 import ImportData from '../../../src/features/user/TreeMapper/Import';
 
 const { useTranslation } = i18next;
 
-interface Props {
+interface Props {}
 
-}
-
-export default function Import({ }: Props): ReactElement {
+export default function Import({}: Props): ReactElement {
   const { t } = useTranslation('treemapper');
   return (
     <UserLayout>
@@ -19,5 +17,5 @@ export default function Import({ }: Props): ReactElement {
       </Head>
       <ImportData />
     </UserLayout>
-  )
+  );
 }

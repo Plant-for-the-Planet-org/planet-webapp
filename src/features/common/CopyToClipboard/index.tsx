@@ -8,11 +8,11 @@ import { styled } from '@mui/material/styles';
 import i18next from '../../../../i18n';
 const { useTranslation } = i18next;
 
-const Alert = styled(MuiAlert)(({theme}) => {
+const Alert = styled(MuiAlert)(({ theme }) => {
   return {
     backgroundColor: theme.palette.primary.main,
-  }
-})
+  };
+});
 
 interface Props {
   text: any;
@@ -59,7 +59,12 @@ export default function CopyToClipboard({
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <div>
-          <Alert elevation={6} variant="filled" onClose={handleClose} severity="success">
+          <Alert
+            elevation={6}
+            variant="filled"
+            onClose={handleClose}
+            severity="success"
+          >
             {t('copiedToClipboard')}
           </Alert>
         </div>

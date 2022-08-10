@@ -21,7 +21,7 @@ export default function SitesDropdown(): ReactElement {
     setSelectedSite(event.target.value as string);
     if (isMobile) setIsPolygonMenuOpen(false);
   };
-  const { embed } = React.useContext( ParamsContext );
+  const { embed } = React.useContext(ParamsContext);
   return (
     <>
       {geoJson.features.length > 1 && (
@@ -34,13 +34,23 @@ export default function SitesDropdown(): ReactElement {
               onClick={() => {
                 if (!isMobile) setIsPolygonMenuOpen(true);
               }}
-              className={embed === 'true' ? styles.embed_projectSitesButton: styles.projectSitesButton}
+              className={
+                embed === 'true'
+                  ? styles.embed_projectSitesButton
+                  : styles.projectSitesButton
+              }
             >
               <PolygonIcon />
             </div>
           ) : null}
           {isPolygonMenuOpen ? (
-            <div className={embed === 'true' ? styles.embed_dropdownContainer: styles.dropdownContainer}>
+            <div
+              className={
+                embed === 'true'
+                  ? styles.embed_dropdownContainer
+                  : styles.dropdownContainer
+              }
+            >
               <div className={styles.projectSitesDropdown}>
                 <FormControl variant="standard">
                   <div className={styles.polygonIcon}>

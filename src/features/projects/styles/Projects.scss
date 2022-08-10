@@ -2,7 +2,8 @@
 @import './ProjectSnippet.module.scss';
 @import './ProjectDetails.module.scss';
 
-.container, .embedContainer {
+.container,
+.embedContainer {
   position: absolute;
   transition: all 0.3s ease-in-out;
   width: 100vw;
@@ -10,7 +11,7 @@
   z-index: 12;
 }
 
-.container{
+.container {
   margin-top: 50vh;
 }
 
@@ -229,10 +230,11 @@
     column-gap: 16px;
   }
 
-  .container,.embedContainer {
+  .container,
+  .embedContainer {
     padding-bottom: 0px;
   }
-  .embedContainer{
+  .embedContainer {
     margin-top: 40vh;
   }
   .projectsContainer {
@@ -248,7 +250,8 @@
     overflow-y: visible;
   }
 
-  .container, .embedContainer {
+  .container,
+  .embedContainer {
     overflow: visible;
     // padding-bottom: 0px;
     width: fit-content;
@@ -314,7 +317,7 @@
   }
 }
 @media screen and (max-height: 315px), (max-width: 486px) {
-  .embedContainer{
+  .embedContainer {
     margin-top: 40vh;
   }
 }
