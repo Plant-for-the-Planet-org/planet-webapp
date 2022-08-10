@@ -98,7 +98,8 @@
   }
 }
 
-.playButton,.embed_playButton {
+.playButton,
+.embed_playButton {
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -112,8 +113,13 @@
   line-height: 16px;
   cursor: pointer;
   z-index: 11;
+
   > svg {
     width: 15px;
+  }
+
+  &.playButton--reduce-right-offset {
+    right: 10px;
   }
 }
 
@@ -129,23 +135,27 @@
   .playButton {
     top: 100px;
   }
-  
-  .embed_playButton{
+
+  .embed_playButton {
     top: 30px;
   }
 }
 @include mdTabletView {
-  .playButton {
-    top: 110px;
+  .playButton,
+  .embed_playButton {
     right: 125px;
     flex-direction: row;
+
+    &.playButton--reduce-right-offset {
+      right: 20px;
+    }
   }
-  
-  .embed_playButton{
-    right: 125px;
+
+  .playButton {
+    top: 110px;
+  }
+
+  .embed_playButton {
     top: 30px;
   }
-  
 }
-
-
