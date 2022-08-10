@@ -9,7 +9,7 @@
 
 .treeCounterData {
   position: absolute;
-  top:0px;
+  top: 0px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -40,7 +40,6 @@
   text-align: center;
   font-size: $fontSmall;
   padding-left: 25px;
-  
 }
 
 .targetText {
@@ -77,12 +76,12 @@
 .addTargetButton {
   margin: 20px 0px;
   background-color: $highlightBackground;
-  opacity:0.8;
+  opacity: 0.8;
   padding: 10px 20px;
-  border-radius: 10px; 
+  border-radius: 10px;
 }
 
-.addTargetButton:hover{
+.addTargetButton:hover {
   cursor: pointer;
 }
 .addTargetButton > p {

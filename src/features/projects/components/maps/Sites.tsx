@@ -23,7 +23,7 @@ export default function Sites({}: Props): ReactElement {
     rasterData,
     satellite,
     setSiteViewPort,
-    plantLocationsLoaded
+    plantLocationsLoaded,
   } = React.useContext(ProjectPropsContext);
 
   React.useEffect(() => {
@@ -35,7 +35,7 @@ export default function Sites({}: Props): ReactElement {
       setSiteViewPort,
       4000
     );
-  }, [selectedSite,selectedMode]);
+  }, [selectedSite, selectedMode]);
 
   return (
     <>

@@ -2,8 +2,10 @@ import React from 'react';
 
 function CancelIcon(props: any) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"
-    width={props.width ? props.width :  null}
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 320 512"
+      width={props.width ? props.width : null}
     >
       <path
         className="iconFillColor"

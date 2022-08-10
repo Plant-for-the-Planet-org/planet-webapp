@@ -98,7 +98,8 @@
   }
 }
 
-.playButton,.embed_playButton {
+.playButton,
+.embed_playButton {
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -129,8 +130,8 @@
   .playButton {
     top: 100px;
   }
-  
-  .embed_playButton{
+
+  .embed_playButton {
     top: 30px;
   }
 }
@@ -140,12 +141,9 @@
     right: 125px;
     flex-direction: row;
   }
-  
-  .embed_playButton{
+
+  .embed_playButton {
     right: 125px;
     top: 30px;
   }
-  
 }
-
-
