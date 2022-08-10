@@ -2,20 +2,20 @@ import defaultStyle from '../../../public/data/styles/root.json';
 import openStreetMap from '../../../public/data/styles/OpenStreetMap.json';
 
 export default async function getMapStyle(style: any) {
-    if (style === 'default') {
-      const result = await fetchTiles(
-        defaultStyle,
-        'https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer'
-      );
-      return result;
-    } else if (style === 'openStreetMap') {
-      const result = await fetchTiles(
-        openStreetMap,
-        'https://basemaps.arcgis.com/arcgis/rest/services/OpenStreetMap_v2/VectorTileServer'
-      );
-      return result;
-    } else {
-     return null;
+  if (style === 'default') {
+    const result = await fetchTiles(
+      defaultStyle,
+      'https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer'
+    );
+    return result;
+  } else if (style === 'openStreetMap') {
+    const result = await fetchTiles(
+      openStreetMap,
+      'https://basemaps.arcgis.com/arcgis/rest/services/OpenStreetMap_v2/VectorTileServer'
+    );
+    return result;
+  } else {
+    return null;
   }
 }
 

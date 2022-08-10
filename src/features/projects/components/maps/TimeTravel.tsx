@@ -8,14 +8,8 @@ import ZoomButtons from './ZoomButtons';
 interface Props {}
 
 export default function TimeTravel({}: Props): ReactElement {
-  const {
-    mapRef,
-    geoJson,
-    rasterData,
-    isMobile,
-    siteViewPort,
-    selectedMode
-  } = React.useContext(ProjectPropsContext);
+  const { mapRef, geoJson, rasterData, isMobile, siteViewPort, selectedMode } =
+    React.useContext(ProjectPropsContext);
 
   const [before, setBefore] = React.useState();
   const [after, setAfter] = React.useState();
@@ -40,7 +34,7 @@ export default function TimeTravel({}: Props): ReactElement {
         center: center,
         zoom: zoom,
         dragPan: true,
-        scrollZoom:false,
+        scrollZoom: false,
       });
 
       before.on('load', () => {
@@ -53,7 +47,7 @@ export default function TimeTravel({}: Props): ReactElement {
         center: center,
         zoom: zoom,
         dragPan: true,
-        scrollZoom:false,
+        scrollZoom: false,
       });
 
       after.on('load', () => {
@@ -78,16 +72,16 @@ export default function TimeTravel({}: Props): ReactElement {
         orientation: 'vertical', // Optional. Sets the orientation of swiper to horizontal or vertical, defaults to vertical
       });
 
-      // syncMove(before, mapRef?.current?.getMap()); 
+      // syncMove(before, mapRef?.current?.getMap());
     }
   }, []);
 
   React.useEffect(() => {
-    if(before){
+    if (before) {
       before.setCenter(siteViewPort.center);
       before.setZoom(siteViewPort.zoom);
     }
-  },[selectedMode, geoJson]);
+  }, [selectedMode, geoJson]);
 
   React.useEffect(() => {
     function loadLayers() {
@@ -452,122 +446,122 @@ export default function TimeTravel({}: Props): ReactElement {
         });
       }
 
-          // ESRI
-    if (selectedSource1 === 'esri') {
-      rasterData.imagery.esri.map((year: any) => {
-        if (year.year === selectedYear1) {
-          if (!before.getSource(`before-imagery-esri-${year.year}`)) {
-            before.addSource(`before-imagery-esri-${year.year}`, {
-              type: 'raster',
-              tiles: [`${year.raster}`],
-              tileSize: 256,
-              attribution: 'layer attribution',
-            });
-          }
-          if (!before.getLayer(`before-imagery-esri-${year.year}-layer`)) {
-            before.addLayer({
-              id: `before-imagery-esri-${year.year}-layer`,
-              type: 'raster',
-              source: `before-imagery-esri-${year.year}`,
-            });
-          }
+      // ESRI
+      if (selectedSource1 === 'esri') {
+        rasterData.imagery.esri.map((year: any) => {
+          if (year.year === selectedYear1) {
+            if (!before.getSource(`before-imagery-esri-${year.year}`)) {
+              before.addSource(`before-imagery-esri-${year.year}`, {
+                type: 'raster',
+                tiles: [`${year.raster}`],
+                tileSize: 256,
+                attribution: 'layer attribution',
+              });
+            }
+            if (!before.getLayer(`before-imagery-esri-${year.year}-layer`)) {
+              before.addLayer({
+                id: `before-imagery-esri-${year.year}-layer`,
+                type: 'raster',
+                source: `before-imagery-esri-${year.year}`,
+              });
+            }
 
-          if (!before.getSource(`project-polygon-esri-${year.year}`)) {
-            before.addSource(`project-polygon-esri-${year.year}`, {
-              type: 'geojson',
-              data: geoJson,
-            });
-          }
+            if (!before.getSource(`project-polygon-esri-${year.year}`)) {
+              before.addSource(`project-polygon-esri-${year.year}`, {
+                type: 'geojson',
+                data: geoJson,
+              });
+            }
 
-          if (!before.getLayer(`project-polygon-layer-esri-${year.year}`)) {
-            before.addLayer({
-              id: `project-polygon-layer-esri-${year.year}`,
-              type: 'line',
-              source: `project-polygon-esri-${year.year}`,
-              layout: {},
-              paint: {
-                'line-color': '#fff',
-                'line-width': 4,
-              },
-            });
+            if (!before.getLayer(`project-polygon-layer-esri-${year.year}`)) {
+              before.addLayer({
+                id: `project-polygon-layer-esri-${year.year}`,
+                type: 'line',
+                source: `project-polygon-esri-${year.year}`,
+                layout: {},
+                paint: {
+                  'line-color': '#fff',
+                  'line-width': 4,
+                },
+              });
+            }
+          } else {
+            if (before.getLayer(`project-polygon-layer-esri-${year.year}`)) {
+              before.removeLayer(`project-polygon-layer-esri-${year.year}`);
+            }
+            if (before.getLayer(`before-imagery-esri-${year.year}-layer`)) {
+              before.removeLayer(`before-imagery-esri-${year.year}-layer`);
+            }
           }
-        } else {
+        });
+      } else {
+        rasterData.imagery.esri.map((year: any) => {
           if (before.getLayer(`project-polygon-layer-esri-${year.year}`)) {
             before.removeLayer(`project-polygon-layer-esri-${year.year}`);
           }
           if (before.getLayer(`before-imagery-esri-${year.year}-layer`)) {
             before.removeLayer(`before-imagery-esri-${year.year}-layer`);
           }
-        }
-      });
-    } else {
-      rasterData.imagery.esri.map((year: any) => {
-        if (before.getLayer(`project-polygon-layer-esri-${year.year}`)) {
-          before.removeLayer(`project-polygon-layer-esri-${year.year}`);
-        }
-        if (before.getLayer(`before-imagery-esri-${year.year}-layer`)) {
-          before.removeLayer(`before-imagery-esri-${year.year}-layer`);
-        }
-      });
-    }
+        });
+      }
 
-    if (selectedSource2 === 'esri') {
-      rasterData.imagery.esri.map((year: any) => {
-        if (year.year === selectedYear2) {
-          if (!after.getSource(`after-imagery-esri-${year.year}`)) {
-            after.addSource(`after-imagery-esri-${year.year}`, {
-              type: 'raster',
-              tiles: [`${year.raster}`],
-              tileSize: 256,
-              attribution: 'layer attribution',
-            });
-          }
-          if (!after.getLayer(`after-imagery-esri-${year.year}-layer`)) {
-            after.addLayer({
-              id: `after-imagery-esri-${year.year}-layer`,
-              type: 'raster',
-              source: `after-imagery-esri-${year.year}`,
-            });
-          }
+      if (selectedSource2 === 'esri') {
+        rasterData.imagery.esri.map((year: any) => {
+          if (year.year === selectedYear2) {
+            if (!after.getSource(`after-imagery-esri-${year.year}`)) {
+              after.addSource(`after-imagery-esri-${year.year}`, {
+                type: 'raster',
+                tiles: [`${year.raster}`],
+                tileSize: 256,
+                attribution: 'layer attribution',
+              });
+            }
+            if (!after.getLayer(`after-imagery-esri-${year.year}-layer`)) {
+              after.addLayer({
+                id: `after-imagery-esri-${year.year}-layer`,
+                type: 'raster',
+                source: `after-imagery-esri-${year.year}`,
+              });
+            }
 
-          if (!after.getSource(`project-polygon-esri-${year.year}`)) {
-            after.addSource(`project-polygon-esri-${year.year}`, {
-              type: 'geojson',
-              data: geoJson,
-            });
-          }
+            if (!after.getSource(`project-polygon-esri-${year.year}`)) {
+              after.addSource(`project-polygon-esri-${year.year}`, {
+                type: 'geojson',
+                data: geoJson,
+              });
+            }
 
-          if (!after.getLayer(`project-polygon-layer-esri-${year.year}`)) {
-            after.addLayer({
-              id: `project-polygon-layer-esri-${year.year}`,
-              type: 'line',
-              source: `project-polygon-esri-${year.year}`,
-              layout: {},
-              paint: {
-                'line-color': '#fff',
-                'line-width': 4,
-              },
-            });
+            if (!after.getLayer(`project-polygon-layer-esri-${year.year}`)) {
+              after.addLayer({
+                id: `project-polygon-layer-esri-${year.year}`,
+                type: 'line',
+                source: `project-polygon-esri-${year.year}`,
+                layout: {},
+                paint: {
+                  'line-color': '#fff',
+                  'line-width': 4,
+                },
+              });
+            }
+          } else {
+            if (after.getLayer(`project-polygon-layer-esri-${year.year}`)) {
+              after.removeLayer(`project-polygon-layer-esri-${year.year}`);
+            }
+            if (after.getLayer(`after-imagery-esri-${year.year}-layer`)) {
+              after.removeLayer(`after-imagery-esri-${year.year}-layer`);
+            }
           }
-        } else {
+        });
+      } else {
+        rasterData.imagery.esri.map((year: any) => {
           if (after.getLayer(`project-polygon-layer-esri-${year.year}`)) {
             after.removeLayer(`project-polygon-layer-esri-${year.year}`);
           }
           if (after.getLayer(`after-imagery-esri-${year.year}-layer`)) {
             after.removeLayer(`after-imagery-esri-${year.year}-layer`);
           }
-        }
-      });
-    } else {
-      rasterData.imagery.esri.map((year: any) => {
-        if (after.getLayer(`project-polygon-layer-esri-${year.year}`)) {
-          after.removeLayer(`project-polygon-layer-esri-${year.year}`);
-        }
-        if (after.getLayer(`after-imagery-esri-${year.year}-layer`)) {
-          after.removeLayer(`after-imagery-esri-${year.year}-layer`);
-        }
-      });
-    }
+        });
+      }
     }
     if (before && after) {
       try {
@@ -601,12 +595,19 @@ export default function TimeTravel({}: Props): ReactElement {
   };
   return (
     <>
-      {selectedMode === 'imagery'&&<ImageDropdown {...imageDropdownProps} />}
-      <div style={selectedMode === 'imagery'? {visibility:"visible"}:{visibility:"hidden"}} id="comparison-container">
+      {selectedMode === 'imagery' && <ImageDropdown {...imageDropdownProps} />}
+      <div
+        style={
+          selectedMode === 'imagery'
+            ? { visibility: 'visible' }
+            : { visibility: 'hidden' }
+        }
+        id="comparison-container"
+      >
         <div className="comparison-map" id="before"></div>
         <div className="comparison-map" id="after"></div>
       </div>
-      {selectedMode === 'imagery'&&<ZoomButtons map={before}/>}
+      {selectedMode === 'imagery' && <ZoomButtons map={before} />}
     </>
   );
 }

@@ -11,18 +11,13 @@ interface Props {
 }
 
 export default function PlayButton({ setshowVideo }: Props): ReactElement {
-  
   const { embed } = React.useContext(ParamsContext);
   const { t } = useTranslation(['common']);
   return (
     <div
       title={t('howDoesThisWork')}
       onClick={() => setshowVideo(true)}
-      className={
-        embed === 'true'
-          ? styles.embed_playButton
-          : styles.playButton
-      }
+      className={embed === 'true' ? styles.embed_playButton : styles.playButton}
     >
       <PlayIcon />
     </div>

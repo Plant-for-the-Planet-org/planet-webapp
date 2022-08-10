@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement } from 'react';
 import Donate from '../../../../../public/assets/images/navigation/Donate';
 import DonateSelected from '../../../../../public/assets/images/navigation/DonateSelected';
 import Globe from '../../../../../public/assets/images/navigation/Globe';
@@ -8,79 +8,111 @@ import LeaderboardSelected from '../../../../../public/assets/images/navigation/
 import LeafSelected from '../../../../../public/assets/images/navigation/LeafSelected';
 import Leaf from '../../../../../public/assets/images/navigation/Leaf';
 import themeProperties from '../../../../theme/themeProperties';
-import ShopIcon from '../../../../../public/assets/images/navigation/ShopIcon'
+import ShopIcon from '../../../../../public/assets/images/navigation/ShopIcon';
 
 interface Props {
-    mainKey: any;
-    router: any;
-    item: any;
+  mainKey: any;
+  router: any;
+  item: any;
 }
 
 function GetNavBarIcon({ mainKey, router, item }: Props): ReactElement {
-
-    const HomeLink = () => {
-        return (
-            <button id={'homeIcon'} className={`link_icon ${router.pathname === item.onclick ? 'active_icon' : ''}`}>
-                {router.pathname === item.onclick ? (
-                    <GlobeSelected color={themeProperties.primaryColor} />
-                ) : (
-                    <Globe color={themeProperties.light.primaryFontColor} />
-                )}
-            </button>
-        )
-    }
-    const DonateLink = () => {
-        return (
-            <button id={'donateIcon'} className={`link_icon ${router.pathname === item.onclick || router.pathname === "/[p]" ? 'active_icon' : ''}`}>
-                {router.pathname === item.onclick || router.pathname === "/[p]" ? (
-                    <DonateSelected color={themeProperties.primaryColor} />
-                ) : (
-                    <Donate color={themeProperties.light.primaryFontColor} />
-                )}
-            </button>
-        )
-    }
-    const AboutUsLink = () => {
-        return (
-            <button id={'aboutIcon'} className={`link_icon ${router.pathname === item.onclick ? 'active_icon' : ''}`}>
-                {router.pathname === item.onclick ? (
-                    <LeafSelected color={themeProperties.primaryColor} />
-                ) : (
-                    <Leaf color={themeProperties.light.primaryFontColor} />
-                )}
-            </button>
-        )
-    }
-    const LeadersLink = () => {
-        return (
-            <button id={'leaderIcon'} className={`link_icon ${router.pathname === item.onclick ? 'active_icon' : ''}`}>
-                {router.pathname === item.onclick ? (
-                    <LeaderboardSelected color={themeProperties.primaryColor} />
-                ) : (
-                    <Leaderboard color={themeProperties.light.primaryFontColor} />
-                )}
-            </button>
-        )
-    }
-    const ShopLink = () => {
-        return (
-            <button id={'shopIcon'} className={`link_icon ${router.pathname === item.onclick ? 'active_icon' : ''}`}>
-                {router.pathname === item.onclick ? (
-                    <ShopIcon color={themeProperties.primaryColor} />
-                ) : (
-                    <ShopIcon color={themeProperties.light.primaryFontColor} />
-                )}
-            </button>
-        )
-    }
-    switch (mainKey) {
-        case 'home': return <HomeLink />;
-        case 'donate': return <DonateLink />;
-        case 'about': return <AboutUsLink />;
-        case 'leaderboard': return <LeadersLink />;
-        case 'shop': return <ShopLink />;
-        default: <></>;
-    }
+  const HomeLink = () => {
+    return (
+      <button
+        id={'homeIcon'}
+        className={`link_icon ${
+          router.pathname === item.onclick ? 'active_icon' : ''
+        }`}
+      >
+        {router.pathname === item.onclick ? (
+          <GlobeSelected color={themeProperties.primaryColor} />
+        ) : (
+          <Globe color={themeProperties.light.primaryFontColor} />
+        )}
+      </button>
+    );
+  };
+  const DonateLink = () => {
+    return (
+      <button
+        id={'donateIcon'}
+        className={`link_icon ${
+          router.pathname === item.onclick || router.pathname === '/[p]'
+            ? 'active_icon'
+            : ''
+        }`}
+      >
+        {router.pathname === item.onclick || router.pathname === '/[p]' ? (
+          <DonateSelected color={themeProperties.primaryColor} />
+        ) : (
+          <Donate color={themeProperties.light.primaryFontColor} />
+        )}
+      </button>
+    );
+  };
+  const AboutUsLink = () => {
+    return (
+      <button
+        id={'aboutIcon'}
+        className={`link_icon ${
+          router.pathname === item.onclick ? 'active_icon' : ''
+        }`}
+      >
+        {router.pathname === item.onclick ? (
+          <LeafSelected color={themeProperties.primaryColor} />
+        ) : (
+          <Leaf color={themeProperties.light.primaryFontColor} />
+        )}
+      </button>
+    );
+  };
+  const LeadersLink = () => {
+    return (
+      <button
+        id={'leaderIcon'}
+        className={`link_icon ${
+          router.pathname === item.onclick ? 'active_icon' : ''
+        }`}
+      >
+        {router.pathname === item.onclick ? (
+          <LeaderboardSelected color={themeProperties.primaryColor} />
+        ) : (
+          <Leaderboard color={themeProperties.light.primaryFontColor} />
+        )}
+      </button>
+    );
+  };
+  const ShopLink = () => {
+    return (
+      <button
+        id={'shopIcon'}
+        className={`link_icon ${
+          router.pathname === item.onclick ? 'active_icon' : ''
+        }`}
+      >
+        {router.pathname === item.onclick ? (
+          <ShopIcon color={themeProperties.primaryColor} />
+        ) : (
+          <ShopIcon color={themeProperties.light.primaryFontColor} />
+        )}
+      </button>
+    );
+  };
+  switch (mainKey) {
+    case 'home':
+      return <HomeLink />;
+    case 'donate':
+      return <DonateLink />;
+    case 'about':
+      return <AboutUsLink />;
+    case 'leaderboard':
+      return <LeadersLink />;
+    case 'shop':
+      return <ShopLink />;
+    default:
+      <></>;
+  }
 }
 
-export default GetNavBarIcon
+export default GetNavBarIcon;

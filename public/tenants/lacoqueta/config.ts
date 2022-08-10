@@ -3,12 +3,14 @@ const config = {
   tenantURL: 'forest.lacoquetakids.com',
   languages: ['en'],
   fallbackCurrency: 'GBP',
-  tenantGoal:1000000,
+  tenantGoal: 1000000,
   font: {
     primaryFontFamily: '"Libre Baskerville",Helvetica,Arial,serif',
-    primaryFontURL: 'https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap',
+    primaryFontURL:
+      'https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap',
     secondaryFontFamily: '"Open Sans",Helvetica,Arial,sans-serif',
-    secondaryFontURL: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap",
+    secondaryFontURL:
+      'https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap',
   },
   meta: {
     title: 'La Coqueta ❤️ Trees',
@@ -46,14 +48,14 @@ const config = {
         onclick: '/all',
         visible: false,
       },
-      me:{
+      me: {
         title: 'me',
         onclick: '/me',
         visible: false,
-      }
-    }
+      },
+    },
   },
-  footerLinks:["privacy","terms","imprint","contact","supportUs"]
+  footerLinks: ['privacy', 'terms', 'imprint', 'contact', 'supportUs'],
 };
 
 export default config;
