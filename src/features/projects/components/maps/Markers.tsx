@@ -42,7 +42,6 @@ export default function Markers({
           longitude={projectMarker.geometry.coordinates[0]}
           offsetLeft={5}
           offsetTop={-16}
-          style={{ left: '28px' }}
         >
           <div
             className={`${styles.marker} ${
