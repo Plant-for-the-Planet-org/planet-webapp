@@ -58,13 +58,10 @@
   }
 }
 
-.backArrowVideoT{
+.backArrowVideoT {
   transform: rotate(270deg);
   margin-left: 12px;
 }
-.backArrowVideoT > svg > path{
+.backArrowVideoT > svg > path {
   fill: $primaryFontColor;
 }
-
-
-

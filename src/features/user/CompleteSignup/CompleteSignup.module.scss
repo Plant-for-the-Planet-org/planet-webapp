@@ -1,13 +1,13 @@
 @import './../../../theme/theme';
 
 // entire page
-.signUpPage{
+.signUpPage {
   min-height: 100vh;
-  display:flex;
+  display: flex;
   position: relative;
-  background-size:cover;
-  display:flex;
-  flex-direction:column;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
   // min-height: calc(100vh - 150px);
 }
@@ -26,7 +26,7 @@
   justify-content: center;
   border-radius: 8px;
   align-self: center;
-  padding:20px;
+  padding: 20px;
   overflow-y: auto;
   // min-height: calc(100vh - 150px);
   z-index: 100;
@@ -35,7 +35,7 @@
 // when request sent, opacity low
 .signupRequestSent {
   background-color: $light;
-  position:absolute;
+  position: absolute;
   border: 0px;
   min-width: 320px;
   max-width: 420px;
@@ -45,7 +45,7 @@
   justify-content: center;
   border-radius: 8px;
   align-self: center;
-  padding:20px 20px;
+  padding: 20px 20px;
   margin-top: 100px;
 }
 
@@ -99,45 +99,44 @@
 }
 
 .isPrivateAccountText {
-    margin-top: 6px;
+  margin-top: 6px;
   font-family: $primaryFontFamily;
   font-size: $fontXSmall;
   color: $highlightBackground;
 }
 
-.termsLink{
+.termsLink {
   color: $primaryColor;
   cursor: pointer;
 }
 
 .horizontalLine {
-    border-top: 1px solid $primaryColor;
-    width: 100%;
-    // height: 1px;
-    opacity: 0.5;
-    margin: 20px 0px;
+  border-top: 1px solid $primaryColor;
+  width: 100%;
+  // height: 1px;
+  opacity: 0.5;
+  margin: 20px 0px;
 }
 
 :export {
-    primaryColor: $primaryColor;
-    light: $light;
-    dark: $dark;
-    primaryFontColor: $primaryFontColor;
-    dividerColor: $dividerColor;
-  }  
+  primaryColor: $primaryColor;
+  light: $light;
+  dark: $dark;
+  primaryFontColor: $primaryFontColor;
+  dividerColor: $dividerColor;
+}
 
-
-.profileTypesContainer{
+.profileTypesContainer {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
-  :nth-child(odd){
+  :nth-child(odd) {
     margin-right: 20px;
   }
 }
-.profileTypes{
+.profileTypes {
   padding: 14px;
   border: 1px solid $dividerColor;
   border-radius: 10px;
@@ -148,16 +147,15 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
 }
-.profileTypesSelected{
+.profileTypesSelected {
   border: solid 1px $primaryColor;
   color: $primaryColor;
   font-weight: bold;
 }
-
 
 // Form Styles
 
@@ -169,13 +167,13 @@
   justify-content: space-between;
   align-items: center;
   margin-top: 10px;
-  button, .custom {
+  button,
+  .custom {
     margin-left: 350px;
-   @include xsPhoneView {
-     margin-left: 0px !important;
-   }
+    @include xsPhoneView {
+      margin-left: 0px !important;
+    }
   }
-
 }
 .formFieldHalf {
   margin-top: 24px;
@@ -186,7 +184,8 @@
   input {
     width: 130px;
   }
-  button, .backButton {
+  button,
+  .backButton {
     margin-left: 45px;
     @include xsPhoneView {
       margin-left: 0px !important;
@@ -203,8 +202,8 @@
   position: relative;
 }
 
-@include smTabletView{
-  .profileTypes{
+@include smTabletView {
+  .profileTypes {
     width: 180px;
     min-width: 180px;
   }
@@ -216,7 +215,6 @@
     input {
       width: 180px;
     }
-    
   }
   .formFieldLarge {
     width: 380px;
@@ -224,24 +222,32 @@
 }
 
 // Loader for Buttons
-.spinner{
+.spinner {
   border: 2px solid #f3f3f3;
   border-radius: 50%;
   border-top: 2px solid transparent;
-  width: 16px!important;
-  height: 16px!important;
+  width: 16px !important;
+  height: 16px !important;
   -webkit-animation: spin 1s linear infinite; /* Safari */
   animation: spin 1s linear infinite;
 }
 
 @-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 // save button
@@ -253,7 +259,11 @@
   padding-right: 24px;
   display: flex;
   justify-content: center;
-  background-image: linear-gradient(103deg, $primaryColor 5%, $primaryDarkColor 116%);
+  background-image: linear-gradient(
+    103deg,
+    $primaryColor 5%,
+    $primaryDarkColor 116%
+  );
   align-items: center;
   font-weight: bold;
   color: $light;
@@ -291,10 +301,9 @@
 // for mobile view
 @media only screen and (max-width: 768px) {
   .signup {
-      min-height: calc(100vh - 150px);
+    min-height: calc(100vh - 150px);
   }
   .signUpPage {
     min-height: calc(100vh - 150px);
   }
 }
-

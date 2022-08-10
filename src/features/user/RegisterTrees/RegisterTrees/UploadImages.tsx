@@ -123,7 +123,10 @@ export default function UploadImages({
                   />
                   {/* <div className={styles.uploadedImageOverlay}></div> */}
                   <div className={styles.uploadedImageButtonContainer}>
-                    <button id={'uploadImgDelIcon'} onClick={() => deleteContributionImage(image.id)}>
+                    <button
+                      id={'uploadImgDelIcon'}
+                      onClick={() => deleteContributionImage(image.id)}
+                    >
                       <DeleteIcon />
                     </button>
                   </div>
@@ -142,7 +145,7 @@ export default function UploadImages({
           <button
             onClick={uploadPhotos}
             className="primaryButton"
-            style={{ maxWidth: "200px" }}
+            style={{ maxWidth: '200px' }}
           >
             <input {...getInputProps()} />
             {isUploadingData ? (
@@ -155,5 +158,7 @@ export default function UploadImages({
         </label>
       </div>
     </>
-  ) : <></>;
+  ) : (
+    <></>
+  );
 }
