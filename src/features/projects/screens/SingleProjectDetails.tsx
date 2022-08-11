@@ -16,6 +16,7 @@ import Explore from '../components/maps/Explore';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import ProjectTabs from '../components/maps/ProjectTabs';
 import PlantLocationDetails from '../components/PlantLocation/PlantLocationDetails';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
   ssr: false,
@@ -50,6 +51,7 @@ function SingleProjectDetails({}: Props): ReactElement {
   const isMobile = screenWidth <= 768;
   const [scrollY, setScrollY] = React.useState(0);
   const [rating, setRating] = React.useState<number | null>(2);
+  const { embed, singleProject, callbackUrl } = React.useContext(ParamsContext);
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
   if (progressPercentage > 100) {
@@ -76,9 +78,29 @@ function SingleProjectDetails({}: Props): ReactElement {
     if (selectedPl || hoveredPl) {
       setHoveredPl(null);
       setSelectedPl(null);
-      router.replace('/[p]', `/${project.slug}`);
+      router.push(
+        `/${project.slug}/${
+          embed === 'true'
+            ? `${
+                callbackUrl != undefined
+                  ? `?embed=true&callback=${callbackUrl}`
+                  : '?embed=true'
+              }`
+            : ''
+        }`
+      );
     } else {
-      router.replace('/');
+      router.replace(
+        `/${
+          embed === 'true'
+            ? `${
+                callbackUrl != undefined
+                  ? `?embed=true&callback=${callbackUrl}`
+                  : '?embed=true'
+              }`
+            : ''
+        }`
+      );
     }
   };
 
@@ -96,7 +118,7 @@ function SingleProjectDetails({}: Props): ReactElement {
         )}
       <div
         style={{ transform: `translate(0,${scrollY}px)` }}
-        className={'container'}
+        className={embed === 'true' ? 'embedContainer' : 'container'}
         onTouchMove={(event) => {
           if (isMobile) {
             if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
@@ -131,19 +153,24 @@ function SingleProjectDetails({}: Props): ReactElement {
             />
           </div>
         </Modal>
+
         <div className={'projectContainer'}>
-          <button
-            id={'backButtonSingleP'}
-            style={{
-              cursor: 'pointer',
-              width: 'fit-content',
-              position: 'absolute',
-              zIndex: 3333,
-            }}
-            onClick={goBack}
-          >
-            <BackButton />
-          </button>
+          {embed === 'true' && singleProject === 'true' ? (
+            <></>
+          ) : (
+            <button
+              id={'backButtonSingleP'}
+              style={{
+                cursor: 'pointer',
+                width: 'fit-content',
+                position: 'absolute',
+                zIndex: 3333,
+              }}
+              onClick={goBack}
+            >
+              <BackButton />
+            </button>
+          )}
           <div className={'projectSnippetContainer'}>
             <ProjectSnippet
               keyString={project.id}

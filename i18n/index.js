@@ -14,16 +14,14 @@ export default new NextI18Next({
   debug: false,
   otherLanguages: config.languages, // list all languages here
   detection: {
-    // check if language is cached in cookies, if not check local storage,
-    // last retrieve from browser language
-    order: ['cookie', 'localStorage', 'navigator'],
+    // check if language is cached in local storage, otherwise retrieve from browser language
+    order: ['localStorage', 'navigator'],
 
-    // next-i18next by default searches for the 'next-i18next' cookie on server requests
-    lookupCookie: 'language',
+    // next-i18next by default searches for the 'next-i18next' cookie, local storage key on server requests
     lookupLocalStorage: 'language',
 
-    // cache the language in cookies and local storage
-    caches: ['cookie', 'localStorage'],
+    // cache the language local storage
+    caches: ['localStorage'],
   },
   react: {
     // trigger a rerender when language is changed

@@ -1,12 +1,13 @@
 import React, { ReactElement, Ref } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
-import i18next from '../../../../i18n/'
+import i18next from '../../../../i18n/';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
 import { useRouter } from 'next/router';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -29,7 +30,7 @@ export default function PopupProject({
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const { token } = React.useContext(UserPropsContext);
-
+  const { embed } = React.useContext(ParamsContext);
 
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
@@ -42,14 +43,14 @@ export default function PopupProject({
 
   const handleDonationOpen = () => {
     const url = getDonationUrl(project.properties.slug, token);
-    window.location.href = url;
+    embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
 
   return ready ? (
     <>
       <div className={'projectImage'}>
         {project.properties.image &&
-          typeof project.properties.image !== 'undefined' ? (
+        typeof project.properties.image !== 'undefined' ? (
           <div
             className={'projectImageFile'}
             style={{
@@ -77,14 +78,24 @@ export default function PopupProject({
           style={{ width: progressPercentage }}
         />
       </div>
-      <div className={'projectInfo'} style={{ padding: '16px', backgroundColor: 'var(--background-color)' }}>
+      <div
+        className={'projectInfo'}
+        style={{ padding: '16px', backgroundColor: 'var(--background-color)' }}
+      >
         <div className={'projectData'}>
           <div className={'targetLocation'}>
             <div className={'target'}>
               {project.properties.purpose === 'trees' && (
                 <>
-                  {localizedAbbreviatedNumber(i18n.language, Number(project.properties.countPlanted), 1)}{' '}
-                  {t('common:tree', { count: Number(project.properties.countPlanted) })} •{' '}
+                  {localizedAbbreviatedNumber(
+                    i18n.language,
+                    Number(project.properties.countPlanted),
+                    1
+                  )}{' '}
+                  {t('common:tree', {
+                    count: Number(project.properties.countPlanted),
+                  })}{' '}
+                  •{' '}
                 </>
               )}
               <span style={{ fontWeight: 400 }}>
@@ -94,7 +105,7 @@ export default function PopupProject({
           </div>
           <div className={'projectTPOName'}>
             {t('common:by', {
-              tpoName: project.properties.tpo.name
+              tpoName: project.properties.tpo.name,
             })}
           </div>
         </div>
@@ -102,7 +113,12 @@ export default function PopupProject({
           <div className={'projectCost'}>
             {project.properties.unitCost ? (
               <>
-                <button id={`ProjPopDonate${project.id}`} ref={buttonRef} onClick={handleDonationOpen} className={'donateButton'}>
+                <button
+                  id={`ProjPopDonate${project.id}`}
+                  ref={buttonRef}
+                  onClick={handleDonationOpen}
+                  className={'donateButton'}
+                >
                   {t('common:donate')}
                 </button>
                 <div className={'perTreeCost'}>
@@ -111,7 +127,11 @@ export default function PopupProject({
                     project.properties.currency,
                     project.properties.unitCost
                   )}{' '}
-                  <span>{project.properties.purpose === 'conservation' ? t('donate:perM2') : t('donate:perTree')}</span>
+                  <span>
+                    {project.properties.purpose === 'conservation'
+                      ? t('donate:perM2')
+                      : t('donate:perTree')}
+                  </span>
                 </div>
               </>
             ) : null}
@@ -119,5 +139,7 @@ export default function PopupProject({
         )}
       </div>
     </>
-  ) : <></>;
+  ) : (
+    <></>
+  );
 }

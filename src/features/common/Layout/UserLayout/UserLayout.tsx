@@ -8,6 +8,7 @@ import DonateIcon from '../../../../../public/assets/images/icons/Sidebar/Donate
 import GlobeIcon from '../../../../../public/assets/images/icons/Sidebar/Globe';
 import LogoutIcon from '../../../../../public/assets/images/icons/Sidebar/LogoutIcon';
 import MapIcon from '../../../../../public/assets/images/icons/Sidebar/MapIcon';
+import GiftIcon from '../../../../../public/assets/images/icons/Sidebar/GiftIcon';
 import SettingsIcon from '../../../../../public/assets/images/icons/Sidebar/SettingsIcon';
 import UserIcon from '../../../../../public/assets/images/icons/Sidebar/UserIcon';
 import WidgetIcon from '../../../../../public/assets/images/icons/Sidebar/Widget';
@@ -137,7 +138,7 @@ function UserLayout(props: any): ReactElement {
       key: 6,
       title: t('me:bulkCodes'),
       path: '/profile/bulk-codes',
-      icon: <MapIcon />,
+      icon: <GiftIcon />,
       hasRelatedLinks: true,
     },
     {
