@@ -4,7 +4,7 @@ import LeaderBoard from '../src/tenants/planet/LeaderBoard';
 import tenantConfig from '../tenant.config';
 import { getRequest } from '../src/utils/apiRequests/api';
 import GetLeaderboardMeta from './../src/utils/getMetaTags/GetLeaderboardMeta';
-import { TENANT_ID } from '../src/utils/constants/environment';
+import { ParamsContext } from '../src/features/common/Layout/QueryParamsContext';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 const config = tenantConfig();
 
@@ -15,12 +15,13 @@ interface Props {
 export default function Home({ initialized }: Props) {
   const router = useRouter();
   const [leaderboard, setLeaderboard] = React.useState(null);
+  const { tenantID } = React.useContext(ParamsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     async function loadLeaderboard() {
       const newLeaderboard = await getRequest(
-        `/app/leaderboard/${TENANT_ID}`,
+        `/app/leaderboard/${tenantID}`,
         handleError,
         '/'
       );
@@ -34,7 +35,7 @@ export default function Home({ initialized }: Props) {
   React.useEffect(() => {
     async function loadTenantScore() {
       const newTenantScore = await getRequest(
-        `/app/tenantScore/${TENANT_ID}`,
+        `/app/tenantScore/${tenantID}`,
         handleError,
         '/'
       );

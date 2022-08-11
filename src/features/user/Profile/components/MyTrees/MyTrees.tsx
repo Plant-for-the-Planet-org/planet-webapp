@@ -11,6 +11,7 @@ import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
+import { ParamsContext } from '../../../../common/Layout/QueryParamsContext';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
@@ -28,6 +29,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   const { t, i18n, ready } = useTranslation(['country', 'me']);
   const [contributions, setContributions] = React.useState();
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { tenantID } = React.useContext(ParamsContext);
 
   React.useEffect(() => {
     async function loadFunction() {
@@ -47,7 +49,12 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
           });
       } else {
         getRequest(
-          `/app/profiles/${profile.id}/contributions`
+          `/app/profiles/${profile.id}/contributions`,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          tenantID
         )
           .then((result: any) => {
             setContributions(result);
@@ -66,10 +73,13 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   };
 
   return contributions?.length > 0 && ready ? (
-    <div className={authenticatedType === 'private' ? 'profilePage' : ''} style={{ marginTop: '0px' }}>
+    <div
+      className={authenticatedType === 'private' ? 'profilePage' : ''}
+      style={{ marginTop: '0px' }}
+    >
       {contributions &&
-        Array.isArray(contributions) &&
-        contributions.length !== 0 ? (
+      Array.isArray(contributions) &&
+      contributions.length !== 0 ? (
         <>
           <div
             className={styles.myTreesSection}
@@ -124,8 +134,8 @@ function TreeList({ contribution }: any) {
             <div className={styles.source}>
               {contribution.properties.giver.name
                 ? t('me:receivedFrom', {
-                  name: contribution.properties.giver.name,
-                })
+                    name: contribution.properties.giver.name,
+                  })
                 : t('me:receivedTrees')}
             </div>
           ) : null}
@@ -136,8 +146,8 @@ function TreeList({ contribution }: any) {
             <div className={styles.source}>
               {contribution.properties.recipient
                 ? t('me:giftToGiftee', {
-                  gifteeName: contribution.properties.recipient.name,
-                })
+                    gifteeName: contribution.properties.recipient.name,
+                  })
                 : null}
             </div>
           ) : null}

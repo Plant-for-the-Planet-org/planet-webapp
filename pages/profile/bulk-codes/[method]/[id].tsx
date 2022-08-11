@@ -11,6 +11,7 @@ import { useBulkCode } from '../../../../src/features/common/Layout/BulkCodeCont
 import { ErrorHandlingContext } from '../../../../src/features/common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../../src/utils/apiRequests/api';
 import { useRouter } from 'next/router';
+import { ParamsContext } from '../../../../src/features/common/Layout/QueryParamsContext';
 
 const { useTranslation } = i18next;
 
@@ -19,6 +20,7 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
   const { isReady, query } = useRouter();
   const { t, ready } = useTranslation('me');
   const { handleError } = useContext(ErrorHandlingContext);
+  const { tenantID } = React.useContext(ParamsContext);
 
   const { project, setProject, bulkMethod, setBulkMethod, planetCashAccount } =
     useBulkCode();
@@ -34,7 +36,9 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
             '',
             {
               currency: planetCashAccount.country,
-            }
+            },
+            undefined,
+            tenantID
           );
 
           if (paymentOptions) {

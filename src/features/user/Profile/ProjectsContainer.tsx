@@ -5,10 +5,9 @@ import NotFound from '../../../../public/assets/images/NotFound';
 import ProjectLoader from '../../common/ContentLoaders/Projects/ProjectLoader';
 import i18next from '../../../../i18n';
 import styles from './styles/ProjectsContainer.module.scss';
-import {
-  getRequest,
-} from '../../../utils/apiRequests/api';
+import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 const { useTranslation } = i18next;
 
@@ -23,15 +22,21 @@ export default function ProjectsContainer({ profile }: any) {
   const { t, ready, i18n } = useTranslation(['donate', 'manageProjects']);
   const [projects, setProjects] = React.useState([]);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { tenantID } = React.useContext(ParamsContext);
 
   async function loadProjects() {
-    await getRequest(`/app/profiles/${profile.id}/projects`, handleError, undefined, {
-      locale: i18n.language,
-    }).then(
-      (projects) => {
-        setProjects(projects);
-      }
-    );
+    await getRequest(
+      `/app/profiles/${profile.id}/projects`,
+      handleError,
+      undefined,
+      {
+        locale: i18n.language,
+      },
+      undefined,
+      tenantID
+    ).then((projects) => {
+      setProjects(projects);
+    });
   }
 
   // This effect is used to get and update UserInfo if the isAuthenticated changes

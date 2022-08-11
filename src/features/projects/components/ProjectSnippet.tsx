@@ -33,6 +33,7 @@ export default function ProjectSnippet({
     : '';
 
   const { selectedPl, hoveredPl } = React.useContext(ProjectPropsContext);
+  const { tenantID } = React.useContext(ParamsContext);
 
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
@@ -42,7 +43,13 @@ export default function ProjectSnippet({
 
   const { token } = React.useContext(UserPropsContext);
   const handleOpen = () => {
-    const url = getDonationUrl(project.slug, token, embed, callbackUrl);
+    const url = getDonationUrl(
+      project.slug,
+      token,
+      embed,
+      callbackUrl,
+      tenantID
+    );
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
 

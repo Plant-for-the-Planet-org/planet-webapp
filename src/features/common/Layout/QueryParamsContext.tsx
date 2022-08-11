@@ -10,12 +10,14 @@ export interface ParamsContextType {
   singleProject: QueryParamType;
   callbackUrl: QueryParamType;
   language: QueryParamType;
+  tenantID: QueryParamType;
 }
 export const ParamsContext = createContext<ParamsContextType>({
   embed: undefined,
   singleProject: undefined,
   callbackUrl: undefined,
   language: undefined,
+  tenantID: '',
 });
 
 const QueryParamsProvider: FC = ({ children }) => {
@@ -25,6 +27,7 @@ const QueryParamsProvider: FC = ({ children }) => {
   const [singleProject, setSingleProject] = useState<QueryParamType>(undefined);
   const [callbackUrl, setCallbackUrl] = useState<QueryParamType>(undefined);
   const [language, setLanguage] = useState<QueryParamType>(undefined);
+  const [tenantID, setTenantID] = useState<QueryParamType>('');
   const router = useRouter();
   const { query } = router;
 
@@ -51,6 +54,21 @@ const QueryParamsProvider: FC = ({ children }) => {
     }
   }, [language, i18n.isInitialized]);
 
+  useEffect(() => {
+    const getTenantId = (query: {}) => {
+      if (process.env.TENANTID) {
+        return process.env.TENANTID;
+      } else if (query.tenant) {
+        return query.tenant;
+      } else {
+        return 'ten_NxJq55pm';
+      }
+    };
+
+    const tenantId = getTenantId(query);
+    setTenantID(tenantId);
+  }, [query.tenant]);
+
   return (
     <ParamsContext.Provider
       value={{
@@ -58,6 +76,7 @@ const QueryParamsProvider: FC = ({ children }) => {
         singleProject,
         callbackUrl,
         language,
+        tenantID,
       }}
     >
       {children}

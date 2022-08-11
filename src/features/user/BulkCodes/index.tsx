@@ -11,7 +11,7 @@ import {
   useBulkCode,
   APISingleProject,
 } from '../../common/Layout/BulkCodeContext';
-import { TENANT_ID } from '../../../utils/constants/environment';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
@@ -40,6 +40,7 @@ export default function BulkCodes({
   } = useBulkCode();
   const { handleError } = useContext(ErrorHandlingContext);
   const { contextLoaded, user } = useContext(UserPropsContext);
+  const { tenantID } = React.useContext(ParamsContext);
 
   const fetchProjectList = useCallback(async () => {
     if (planetCashAccount && !projectList) {
@@ -51,7 +52,7 @@ export default function BulkCodes({
           {
             _scope: 'map',
             currency: planetCashAccount.currency,
-            tenant: TENANT_ID,
+            tenant: tenantID,
             'filter[purpose]': 'trees',
             locale: i18n.language,
           }

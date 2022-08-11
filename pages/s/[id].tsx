@@ -2,12 +2,14 @@ import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import { getRequest } from '../../src/utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
+import { ParamsContext } from '../../src/features/common/Layout/QueryParamsContext';
 
-interface Props { }
+interface Props {}
 
-export default function DirectGift({ }: Props): ReactElement {
+export default function DirectGift({}: Props): ReactElement {
   const router = useRouter();
   const { handleError } = React.useContext(ErrorHandlingContext);
+
   //   const [profile, setProfile] = React.useState(null);
   React.useEffect(() => {
     if (router && router.query.id) {
@@ -18,10 +20,14 @@ export default function DirectGift({ }: Props): ReactElement {
 }
 
 async function loadPublicUserData(router: any, handleError: Function) {
+  const { tenantID } = React.useContext(ParamsContext);
   const newProfile = await getRequest(
     `/app/profiles/${router.query.id}`,
     handleError,
-    '/'
+    '/',
+    undefined,
+    undefined,
+    tenantID
   );
   if (newProfile.type !== 'tpo') {
     localStorage.setItem(

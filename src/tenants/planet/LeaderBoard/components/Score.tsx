@@ -16,6 +16,7 @@ import Image from 'next/image';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
+import { ParamsContext } from '../../../../features/common/Layout/QueryParamsContext';
 
 interface Props {
   leaderboard: any;
@@ -28,6 +29,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const leaderboardData = leaderboard.leaderboard;
   const { t, i18n, ready } = useTranslation(['leaderboard', 'common']);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { tenantID } = React.useContext(ParamsContext);
   const [users, setUsers] = React.useState([]);
 
   const { theme } = React.useContext(ThemeContext);

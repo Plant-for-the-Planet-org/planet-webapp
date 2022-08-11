@@ -1,3 +1,4 @@
+import { te } from 'date-fns/locale';
 import { TENANT_ID } from '../constants/environment';
 import { getQueryString } from './getQueryString';
 import getsessionId from './getSessionId';
@@ -94,7 +95,8 @@ export async function getRequest<T>(
   errorHandler?: Function,
   redirect?: string,
   queryParams?: { [key: string]: string },
-  version?: string
+  version?: string,
+  tenantID?: string
 ) {
   let result;
   const lang = localStorage.getItem('language') || 'en';
@@ -107,7 +109,7 @@ export async function getRequest<T>(
   await fetch(fullUrl, {
     method: 'GET',
     headers: {
-      'tenant-key': `${TENANT_ID}`,
+      'tenant-key': `${tenantID}`,
       'X-SESSION-ID': await getsessionId(),
       'x-locale': `${
         localStorage.getItem('language')

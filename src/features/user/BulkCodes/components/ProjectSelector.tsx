@@ -10,7 +10,7 @@ import { PaymentOptions } from '../BulkCodesTypes';
 
 import ProjectSelectAutocomplete from './ProjectSelectAutocomplete';
 import UnitCostDisplay from './UnitCostDisplay';
-
+import { ParamContext } from '../../../common/Layout/QueryParamsContext';
 // const { useTranslation } = i18next;
 
 interface ProjectSelectorProps {
@@ -30,6 +30,7 @@ const ProjectSelector = ({
 }: ProjectSelectorProps): ReactElement | null => {
   // const { t, ready } = useTranslation(['common', 'bulkCodes']);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { tenantID } = React.useContext(ParamContext);
 
   const defaultUnit = (project: Project | null) => {
     if (project?.purpose === 'conservation') return 'm2';
@@ -44,7 +45,9 @@ const ProjectSelector = ({
       undefined,
       {
         country: planetCashAccount?.country || '',
-      }
+      },
+      undefined,
+      tenantID
     );
     return paymentOptions;
   };

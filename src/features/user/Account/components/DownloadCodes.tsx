@@ -3,7 +3,7 @@ import i18next from '../../../../../i18n';
 import { getRequest } from '../../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { unparse } from 'papaparse';
-
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import styles from '../AccountHistory.module.scss';
 
 const { useTranslation } = i18next;
@@ -17,6 +17,7 @@ const DownloadCodes = ({ codesUrl }: DownloadCodesProps): ReactElement => {
   const [isDownloading, setIsDownloading] = useState(false);
 
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { tenantID } = React.useContext(ParamsContext);
 
   function downloadCSV(data: [], filename: string) {
     const csv = unparse(data);
@@ -39,7 +40,7 @@ const DownloadCodes = ({ codesUrl }: DownloadCodesProps): ReactElement => {
         type: string;
         numberOfItems: number;
         items: [];
-      }>(codesUrl, handleError);
+      }>(codesUrl, handleError, undefined, undefined, undefined, tenantID);
       if (response) {
         if (response.items.length) {
           downloadCSV(response.items, 'codes.csv');
