@@ -69,13 +69,15 @@ export default function History({
 
   useEffect(() => {
     const { ref } = router.query;
-    if (ref) {
-      const _refIndex = paymentHistory?.items?.findIndex(
-        (item) => item.reference === ref
-      );
-      if (typeof _refIndex === 'number' && _refIndex !== -1) {
-        handleRecordOpen(_refIndex);
+    let refIndex = 0;
+    if (paymentHistory?.items && paymentHistory.items.length > 0) {
+      if (ref) {
+        const _refIndex = paymentHistory?.items?.findIndex(
+          (item) => item.reference === ref
+        );
+        _refIndex && _refIndex !== -1 && (refIndex = _refIndex);
       }
+      handleRecordOpen(refIndex);
     }
   }, [paymentHistory]);
 
