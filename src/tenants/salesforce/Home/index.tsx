@@ -5,9 +5,9 @@ import LeaderBoard from './components/LeaderBoardSection';
 import GrowingImpact from './components/GrowingImpact';
 import SeaOfTrees from './components/SeaOfTrees';
 import ContentSection from './components/ContentSection';
-import ClimateAction from "./components/ClimateAction";
-import Social from "./components/Social";
-import React from "react";
+import ClimateAction from './components/ClimateAction';
+import Social from './components/Social';
+import React from 'react';
 import tenantConfig from '../../../../tenant.config';
 
 const config = tenantConfig();

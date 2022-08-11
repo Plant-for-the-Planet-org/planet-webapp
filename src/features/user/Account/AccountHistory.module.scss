@@ -305,12 +305,31 @@
     justify-content: flex-start;
     align-items: flex-start;
     width: fit-content;
+    &.fullWidth {
+      grid-column: span 2;
+    }
     > .title {
       font-weight: 700;
     }
     > a {
       color: $primaryColor;
       font-weight: 700;
+    }
+    > .downloadCodesButton {
+      color: $primaryColor;
+      appearance: none;
+      font: inherit;
+      font-weight: 700;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+
+      &:focus-visible {
+        border: 2px solid $primaryColor;
+        border-radius: 3px;
+      }
     }
   }
 }
@@ -529,36 +548,21 @@
 @include smTabletView {
   .detailGrid {
     grid-template-columns: repeat(2, 1fr);
+    & .singleDetail.fullWidth {
+      grid-column: span 2;
+    }
   }
 }
 @include mdTabletView {
   .rightAdSpace {
     display: block;
   }
-}
 
-.record {
-  -webkit-transition: max-height 1s;
-  -moz-transition: max-height 1s;
-  -ms-transition: max-height 1s;
-  -o-transition: max-height 1s;
-  transition: max-height 1s;
-  overflow: hidden;
-  // "height: 0" not work with css transitions
-  max-height: 121px;
-}
-
-@include lgLaptopView {
-  .filterContent {
-    display: flex;
-  }
-
-  .topAdSpace {
+  .modalContainer {
     display: none;
   }
 
   .accountHistory {
-    width: 70%;
     > .historyList {
       width: 100%;
       > .record.selected {
@@ -593,30 +597,7 @@
     }
   }
 
-  .filterContainer {
-    width: 30%;
-    display: flex;
-  }
-
-  .filterRow {
-    display: none;
-  }
-
-  .modal {
-    display: none;
-  }
-
-  .modalContainer {
-    display: none;
-  }
-
-  .detailGrid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-@include lgLaptopView {
   .recurrency {
-    width: 70%;
     > .recurrencyList {
       width: 100%;
       > .record.selected {
@@ -651,6 +632,56 @@
       }
     }
   }
+}
+
+.record {
+  -webkit-transition: max-height 1s;
+  -moz-transition: max-height 1s;
+  -ms-transition: max-height 1s;
+  -o-transition: max-height 1s;
+  transition: max-height 1s;
+  overflow: hidden;
+  // "height: 0" not work with css transitions
+  max-height: 121px;
+}
+
+@include lgLaptopView {
+  .filterContent {
+    display: flex;
+  }
+
+  .topAdSpace {
+    display: none;
+  }
+
+  .accountHistory {
+    width: 70%;
+  }
+
+  .filterContainer {
+    width: 30%;
+    display: flex;
+  }
+
+  .filterRow {
+    display: none;
+  }
+
+  .modal {
+    display: none;
+  }
+
+  .detailGrid {
+    grid-template-columns: repeat(3, 1fr);
+    & .singleDetail.fullWidth {
+      grid-column: span 3;
+    }
+  }
+}
+@include lgLaptopView {
+  .recurrency {
+    width: 70%;
+  }
 
   .filterContainer {
     width: 100%;
@@ -665,12 +696,11 @@
     display: none;
   }
 
-  .modalContainer {
-    display: none;
-  }
-
   .detailGrid {
     grid-template-columns: repeat(3, 1fr);
+    & .singleDetail.fullWidth {
+      grid-column: span 3;
+    }
   }
 }
 // Loader for Buttons
@@ -682,6 +712,11 @@
   height: 16px !important;
   -webkit-animation: spin 1s linear infinite; /* Safari */
   animation: spin 1s linear infinite;
+}
+
+.spinner--primary {
+  border: 2px solid #689f38;
+  border-top: 2px solid transparent;
 }
 
 @-webkit-keyframes spin {

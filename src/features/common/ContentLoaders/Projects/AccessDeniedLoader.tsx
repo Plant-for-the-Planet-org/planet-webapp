@@ -1,19 +1,32 @@
-import React, { ReactElement } from 'react'
-import AccessDenied from '../../../../../public/assets/images/icons/manageProjects/AccessDenied'
+import React, { ReactElement } from 'react';
+import AccessDenied from '../../../../../public/assets/images/icons/manageProjects/AccessDenied';
 
-interface Props {
-    
-}
+interface Props {}
 
 function AccessDeniedLoader({}: Props): ReactElement {
-    return (
-        <div
-        style={{height:'100vh',display:'flex',justifyContent:'center',alignItems:'center',flexDirection:'column'}}
+  return (
+    <div
+      style={{
+        height: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+      }}
+    >
+      <AccessDenied width={'320px'} height={'229px'} />
+      <h2
+        style={{
+          marginTop: '24px',
+          fontWeight: 'bold',
+          fontSize: '30px',
+          color: 'var(--primary-font-color)',
+        }}
       >
-          <AccessDenied width={'320px'} height={'229px'} />
-          <h2 style={{marginTop:'24px',fontWeight:'bold',fontSize:'30px', color: 'var(--primary-font-color)'}}>You don’t have access to this page</h2>
-      </div>
-    )
+        You don’t have access to this page
+      </h2>
+    </div>
+  );
 }
 
-export default AccessDeniedLoader
+export default AccessDeniedLoader;

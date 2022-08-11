@@ -22,6 +22,7 @@ import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 interface Props {}
 
@@ -62,6 +63,7 @@ export default function Explore({}: Props): ReactElement {
   const router = useRouter();
 
   const { theme } = React.useContext(ThemeContext);
+  const { embed, callbackUrl } = React.useContext(ParamsContext);
 
   const handleModalClose = () => {
     setModalOpen(false);
@@ -168,9 +170,21 @@ export default function Explore({}: Props): ReactElement {
       };
       // setMapState(newMapState);
       setViewPort(newViewport);
-      router.push('/', undefined, {
-        shallow: true,
-      });
+      router.push(
+        `/${
+          embed === 'true'
+            ? `${
+                callbackUrl != undefined
+                  ? `?embed=true&callback=${callbackUrl}`
+                  : '?embed=true'
+              }`
+            : ''
+        }`,
+        undefined,
+        {
+          shallow: true,
+        }
+      );
     }
   };
 
@@ -200,7 +214,9 @@ export default function Explore({}: Props): ReactElement {
     <>
       <div ref={exploreContainerRef}>
         <div
-          className={styles.exploreButton}
+          className={
+            embed === 'true' ? styles.embed_exploreButton : styles.exploreButton
+          }
           onClick={() => {
             setExploreExpanded(!exploreExpanded);
           }}
@@ -218,7 +234,13 @@ export default function Explore({}: Props): ReactElement {
         </div>
         {exploreExpanded ? (
           <>
-            <div className={styles.exploreExpanded}>
+            <div
+              className={
+                embed === 'true'
+                  ? styles.embed_exploreExpanded
+                  : styles.exploreExpanded
+              }
+            >
               {/* <div> */}
               <FormGroup style={{ width: '100%' }}>
                 <div className={styles.exploreToggleRow}>

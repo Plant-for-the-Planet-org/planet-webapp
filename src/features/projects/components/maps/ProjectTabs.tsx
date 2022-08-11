@@ -5,18 +5,25 @@ import ResearchIcon from '../../../../../public/assets/images/icons/ResearchIcon
 import SatelliteIcon from '../../../../../public/assets/images/icons/SatelliteIcon';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import styles from '../../styles/VegetationChange.module.scss';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 interface Props {}
 
 export default function ProjectTabs({}: Props): ReactElement {
+  const { embed } = React.useContext(ParamsContext);
   const { useTranslation } = i18next;
   const { i18n, t } = useTranslation(['maps']);
-  const { selectedMode, setSelectedMode, rasterData } = React.useContext(
-    ProjectPropsContext
-  );
+  const { selectedMode, setSelectedMode, rasterData } =
+    React.useContext(ProjectPropsContext);
   return (
     <>
-      <div className={styles.VegetationChangeContainer}>
+      <div
+        className={
+          embed === 'true'
+            ? styles.embed_VegetationChangeContainer
+            : styles.VegetationChangeContainer
+        }
+      >
         <div
           onClick={() => {
             setSelectedMode('location');

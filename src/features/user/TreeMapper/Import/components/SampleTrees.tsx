@@ -1,9 +1,7 @@
 import React, { ReactElement } from 'react';
 import styles from '../Import.module.scss';
 import { useDropzone } from 'react-dropzone';
-import {
-  postAuthenticatedRequest,
-} from '../../../../../utils/apiRequests/api';
+import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
 import i18next from '../../../../../../i18n';
 import { useForm, useFieldArray } from 'react-hook-form';
@@ -33,7 +31,9 @@ export default function SampleTrees({
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [uploadIndex, setUploadIndex] = React.useState(0);
   const [uploadStatus, setUploadStatus] = React.useState<string[]>([]);
-  const [sampleTrees, setSampleTrees] = React.useState<Treemapper.SamplePlantLocation[]>([]);
+  const [sampleTrees, setSampleTrees] = React.useState<
+    Treemapper.SamplePlantLocation[]
+  >([]);
   const onDrop = React.useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: any) => {
       const reader = new FileReader();
@@ -88,7 +88,11 @@ export default function SampleTrees({
     const newStatus = [...uploadStatus];
     newStatus[index] = 'uploading';
     setUploadStatus(newStatus);
-    const res = await postAuthenticatedRequest(`/treemapper/plantLocations`, sampleTree, token);
+    const res = await postAuthenticatedRequest(
+      `/treemapper/plantLocations`,
+      sampleTree,
+      token
+    );
     if (!res.code) {
       setErrorMessage('');
       const newSampleTrees = [...sampleTrees];
@@ -116,14 +120,14 @@ export default function SampleTrees({
       setIsUploadingData(true);
       for (const [index, sampleTree] of data.sampleTrees.entries()) {
         const samplePl = {
-          type: "sample",
-          captureMode: "external",
+          type: 'sample',
+          captureMode: 'external',
           geometry: {
             coordinates: [
               Number(sampleTree.longitude),
-              Number(sampleTree.latitude)
+              Number(sampleTree.latitude),
             ],
-            type: "Point"
+            type: 'Point',
           },
           plantDate: new Date(sampleTree.plantingDate).toISOString(),
           registrationDate: new Date().toISOString(),
@@ -134,7 +138,7 @@ export default function SampleTrees({
           tag: sampleTree.treeTag,
           otherSpecies: sampleTree.otherSpecies,
           parent: plantLocation.id,
-        }
+        };
         await uploadSampleTree(samplePl, index);
       }
       setIsUploadingData(false);
@@ -146,11 +150,39 @@ export default function SampleTrees({
     accept: ['.csv'],
     multiple: false,
     onDrop: onDrop,
-    onDropAccepted: () => { },
+    onDropAccepted: () => {},
     onFileDialogCancel: () => setIsUploadingData(false),
   });
 
-  const csvTemplate = [['plantingDate', 'treeTag', 'height', 'diameter', 'otherSpecies', 'latitude', 'longitude'], ["Date format - DD/MM/YYYY", "text", "height in meters", "diameter in centimeters", "Scientific Species", "valid coordinate", "valid coordinate"], [new Date().toLocaleDateString('en-US'), 'test', '1', '10', 'Sample Name', '26.78590', '92.04986']];
+  const csvTemplate = [
+    [
+      'plantingDate',
+      'treeTag',
+      'height',
+      'diameter',
+      'otherSpecies',
+      'latitude',
+      'longitude',
+    ],
+    [
+      'Date format - DD/MM/YYYY',
+      'text',
+      'height in meters',
+      'diameter in centimeters',
+      'Scientific Species',
+      'valid coordinate',
+      'valid coordinate',
+    ],
+    [
+      new Date().toLocaleDateString('en-US'),
+      'test',
+      '1',
+      '10',
+      'Sample Name',
+      '26.78590',
+      '92.04986',
+    ],
+  ];
   const csv = Papa.unparse(csvTemplate);
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const url = window.URL.createObjectURL(blob);
@@ -158,7 +190,11 @@ export default function SampleTrees({
     <>
       <div className={styles.formFieldLarge}>
         {t('treemapper:downloadExplanation')}
-        <a href={url} download="Sample CSV Template" className={styles.downloadLink}>
+        <a
+          href={url}
+          download="Sample CSV Template"
+          className={styles.downloadLink}
+        >
           {t('treemapper:downloadCSVTemplate')}
         </a>
       </div>
@@ -169,10 +205,7 @@ export default function SampleTrees({
           className={styles.fileUploadContainer}
           {...getRootProps()}
         >
-          <button
-            className="primaryButton"
-            style={{ maxWidth: '200px' }}
-          >
+          <button className="primaryButton" style={{ maxWidth: '200px' }}>
             <input {...getInputProps()} />
             {isUploadingData ? (
               <div className={styles.spinner}></div>
@@ -184,23 +217,24 @@ export default function SampleTrees({
         </label>
       </div>
       <div className={styles.sampleTreeContainer}>
-        {fields && fields.map((item, index) => {
-          return (
-            <SampleTreeCard
-              key={item.id}
-              index={index}
-              register={register}
-              remove={remove}
-              getValues={getValues}
-              control={control}
-              userLang={userLang}
-              setValue={setValue}
-              item={item}
-              plantLocation={plantLocation}
-              errors={errors}
-            />
-          );
-        })}
+        {fields &&
+          fields.map((item, index) => {
+            return (
+              <SampleTreeCard
+                key={item.id}
+                index={index}
+                register={register}
+                remove={remove}
+                getValues={getValues}
+                control={control}
+                userLang={userLang}
+                setValue={setValue}
+                item={item}
+                plantLocation={plantLocation}
+                errors={errors}
+              />
+            );
+          })}
       </div>
 
       <div
@@ -217,17 +251,13 @@ export default function SampleTrees({
         }}
         className={styles.addSpeciesButton}
       >
-        {fields.length === 0 ?
-          t('treemapper:addSampleTree')
-          :
-          t('treemapper:addAnotherSampleTree')}
+        {fields.length === 0
+          ? t('treemapper:addSampleTree')
+          : t('treemapper:addAnotherSampleTree')}
       </div>
       <div className={`${styles.formField}`}>
         <div className={styles.formFieldHalf}>
-          <button
-            onClick={handleSubmit(onSubmit)}
-            className="primaryButton"
-          >
+          <button onClick={handleSubmit(onSubmit)} className="primaryButton">
             {isUploadingData ? (
               <div className={styles.spinner}></div>
             ) : (
@@ -236,10 +266,7 @@ export default function SampleTrees({
           </button>
         </div>
         <div className={styles.formFieldHalf}>
-          <button
-            onClick={() => handleNext()}
-            className="secondaryButton"
-          >
+          <button onClick={() => handleNext()} className="secondaryButton">
             {isUploadingData ? (
               <div className={styles.spinner}></div>
             ) : (

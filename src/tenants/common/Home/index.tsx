@@ -22,36 +22,47 @@ export default function About({ leaderboard, tenantScore }: Props) {
   const descriptionRef = React.useRef(null);
   React.useEffect(() => {
     if (descriptionRef.current !== null) {
-      descriptionRef.current.innerHTML = t(`tenants:${config.tenantName}.description`);
+      descriptionRef.current.innerHTML = t(
+        `tenants:${config.tenantName}.description`
+      );
     }
   }, [ready]);
 
   return ready ? (
     <main>
-      <LandingSection
-        imageSrc={config.meta.image}>
+      <LandingSection imageSrc={config.meta.image}>
         <div style={{ marginTop: '120px' }} />
-        {tenantScore
-          && (
-            <TreeCounter
-              target={config.tenantGoal}
-              planted={tenantScore.total}
-            />
-          )}
+        {tenantScore && (
+          <TreeCounter target={config.tenantGoal} planted={tenantScore.total} />
+        )}
 
-        <p className={styles.publicUserDescription} style={{ fontWeight: 'bold', marginBottom: '0px' }}>
+        <p
+          className={styles.publicUserDescription}
+          style={{ fontWeight: 'bold', marginBottom: '0px' }}
+        >
           {t(`tenants:${config.tenantName}.title`)}
         </p>
 
         {config.home.descriptionTitle && (
-          <p className={styles.publicUserDescription} style={{ fontWeight: 'bold', marginBottom: '0px' }}>
+          <p
+            className={styles.publicUserDescription}
+            style={{ fontWeight: 'bold', marginBottom: '0px' }}
+          >
             {t(`tenants:${config.tenantName}.descriptionTitle`)}
           </p>
         )}
-        <p ref={descriptionRef} className={styles.publicUserDescription} style={{ marginTop: '8px' }}></p>
+        <p
+          ref={descriptionRef}
+          className={styles.publicUserDescription}
+          style={{ marginTop: '8px' }}
+        ></p>
         <div style={{ marginBottom: '60px' }} />
       </LandingSection>
-      {leaderboard && (leaderboard.mostDonated.length > 0 || leaderboard.mostRecent.length > 0) && <LeaderBoard leaderboard={leaderboard} />}
+      {leaderboard &&
+        (leaderboard.mostDonated.length > 0 ||
+          leaderboard.mostRecent.length > 0) && (
+          <LeaderBoard leaderboard={leaderboard} />
+        )}
       <Footer />
     </main>
   ) : null;

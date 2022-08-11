@@ -12,9 +12,8 @@ export default function RedeemPopup() {
 
   const [showRedeemPopup, setShowRedeemPopup] = useState(false);
 
-  const { user, contextLoaded, loginWithRedirect } = React.useContext(
-    UserPropsContext
-  );
+  const { user, contextLoaded, loginWithRedirect } =
+    React.useContext(UserPropsContext);
 
   const sendUserToLogin = () => {
     loginWithRedirect({
