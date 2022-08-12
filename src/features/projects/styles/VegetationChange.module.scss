@@ -145,7 +145,12 @@
   .embed_VegetationChangeContainer {
     top: 30px;
     left: 400px;
+
+    &.no-project-details {
+      left: 24px;
+    }
   }
+
   .dropdownContainer {
     padding: 0 20px 0 400px;
     top: 160px;
@@ -153,6 +158,10 @@
   .embed_dropdownContainer {
     padding: 0 20px 0 400px;
     top: 80px;
+
+    &.no-project-details {
+      padding-left: 24px;
+    }
   }
 }
 

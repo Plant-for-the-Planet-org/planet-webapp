@@ -72,13 +72,21 @@
   flex-direction: column;
   background-color: $backgroundColor;
   width: 100%;
-  // padding-bottom: 76px;
+  padding-bottom: 100px;
   height: auto;
   border-top-right-radius: 13px;
   border-top-left-radius: 13px;
   overflow-x: hidden;
   overflow-y: hidden;
   position: relative;
+  transition: transform 0.5s ease-in-out;
+
+  &.mobile-hidden {
+    transform: translateY(60vh);
+    max-height: 0;
+    padding: 0;
+    overflow: hidden;
+  }
 }
 
 .projectContainer::-webkit-scrollbar {
@@ -259,13 +267,17 @@
   .container {
     padding-bottom: 0px;
   }
+
+  .projectContainer {
+    padding-bottom: 80px;
+  }
 }
 
 @include mdTabletView {
   .container {
     padding-top: 0px;
     width: fit-content;
-    padding-left: 24px;
+    padding-left: 14px;
     margin-top: 0px;
   }
 
@@ -274,8 +286,8 @@
   }
 
   .projectContainer {
-    margin-top: 0px;
     width: 360px;
+    margin: 10px;
     padding-bottom: 16px;
     min-height: calc(100vh - 100px);
     background-color: transparent;
