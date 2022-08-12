@@ -134,6 +134,10 @@
   svg {
     width: 20px;
   }
+
+  &.projectSitesButton--reduce-right-offset {
+    right: 60px;
+  }
 }
 
 .projectSitesButton {
@@ -149,6 +153,10 @@
   position: fixed;
   z-index: 11;
   right: 100px;
+
+  &.dropdownContainer--reduce-right-offset {
+    right: 60px;
+  }
 }
 
 .dropdownContainer {
@@ -632,11 +640,23 @@
   .projectSitesButton,
   .embed_projectSitesButton {
     right: 175px;
+
+    &.projectSitesButton--reduce-right-offset {
+      right: 70px;
+    }
+  }
+
+  .dropdownContainer,
+  .embed_dropdownContainer {
+    right: 165px;
+
+    &.dropdownContainer--reduce-right-offset {
+      right: 70px;
+    }
   }
 
   .dropdownContainer {
     top: 110px;
-    right: 165px;
   }
 
   .exploreButton {
@@ -648,10 +668,6 @@
     top: auto;
     right: 20px;
     bottom: 125px;
-  }
-
-  .embed_dropdownContainer {
-    right: 165px;
   }
 
   .exploreButton,
