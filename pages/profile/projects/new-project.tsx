@@ -43,10 +43,7 @@ export default function AddProjectType(): ReactElement {
           'redirectLink',
           '/profile/projects/add-project/restoration-project'
         );
-        loginWithRedirect({
-          redirectUri: `${process.env.NEXTAUTH_URL}/login`,
-          ui_locales: localStorage.getItem('language') || 'en',
-        });
+        loginWithRedirect(`${process.env.NEXTAUTH_URL}/login`, localStorage.getItem('language') || 'en');
       }
     }
   }, [contextLoaded]);

@@ -44,10 +44,7 @@ const ErrorHandlingProvider: FC = ({ children }) => {
         if (error.code === 401) {
           setUser(false);
           logoutUser(`${process.env.NEXTAUTH_URL}/`);
-          loginWithRedirect({
-            redirectUri: `${process.env.NEXTAUTH_URL}/login`,
-            ui_locales: localStorage.getItem('language') || 'en',
-          });
+          loginWithRedirect(`${process.env.NEXTAUTH_URL}/login`, localStorage.getItem('language') || 'en');
         } else {
           router.push(error.redirect);
         }

@@ -89,10 +89,7 @@ function ClaimDonation(): ReactElement {
       // store the claim link in localstorage
       if (typeof window !== 'undefined') {
         localStorage.setItem('redirectLink', window.location.href);
-        loginWithRedirect({
-          redirectUri: `${process.env.NEXTAUTH_URL}/login`,
-          ui_locales: localStorage.getItem('language') || 'en',
-        });
+        loginWithRedirect(`${process.env.NEXTAUTH_URL}/login`, localStorage.getItem('language') || 'en');
       }
     }
   }, [contextLoaded, user]);

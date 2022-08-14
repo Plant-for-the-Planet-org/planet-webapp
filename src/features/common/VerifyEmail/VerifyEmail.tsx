@@ -40,10 +40,7 @@ function VerifyEmailComponent({}: Props): ReactElement {
       <button
         id={'verifyEmail'}
         onClick={() =>
-          loginWithRedirect({
-            redirectUri: `${process.env.NEXTAUTH_URL}/login`,
-            ui_locales: localStorage.getItem('language') || 'en',
-          })
+          loginWithRedirect(`${process.env.NEXTAUTH_URL}/login`, localStorage.getItem('language') || 'en')
         }
         className={'primaryButton'}
         style={{ marginTop: '10px' }}

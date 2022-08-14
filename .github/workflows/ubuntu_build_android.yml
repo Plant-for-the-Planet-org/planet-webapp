@@ -1,0 +1,110 @@
+name: Android build on Ubuntu
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+
+      - name: Upgrade npm to latest version
+        run: sudo npm i -g npm@latest
+
+      - name: Check versions
+        run: |
+          echo "Node version:"
+          node --version
+          echo "NPM version:"
+          npm --version
+          echo "Java version:"
+          java -version
+          echo "PATH:"
+          echo $PATH
+          echo "ANDROID_HOME:"
+          echo $ANDROID_HOME
+          echo "Bash version:"
+          bash -version
+
+      - name: Caching node modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-planet-webapp-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-planet-webapp-
+
+      - name: Install npm
+        run: npm install --legacy-peer-deps
+
+      - name: Setting Environment Variables
+        env:
+          MAPBOXGL_ACCESS_TOKEN: ${{ secrets.MAPBOXGL_ACCESS_TOKEN }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: |
+          echo "MAPBOXGL_ACCESS_TOKEN=$MAPBOXGL_ACCESS_TOKEN" >> .env
+          echo "API_ENDPOINT=app.plant-for-the-planet.org" >> .env
+          echo "CDN_URL=cdn.plant-for-the-planet.org" >> .env
+          echo "SCHEME=https" >> .env
+          echo "CONFIG_URL=https://app.plant-for-the-planet.org/app/config" >> .env
+          echo "AUTH0_CUSTOM_DOMAIN=accounts.plant-for-the-planet.org" >> .env
+          echo "AUTH0_CLIENT_ID=6MME4DhfTZes2myvI0NXgWqGSIZdy0IH" >> .env
+          echo "NEXTAUTH_URL=org.pftp.app://www1.plant-for-the-planet.org" >> .env
+          echo "NEXT_PUBLIC_FEATURED_LIST=false" >> .env
+          echo "NEXT_PUBLIC_SENTRY_DSN=https://a1329275d6a4485e8e25a20859c0c642@o78291.ingest.sentry.io/5433504" >> .env
+          echo "SENTRY_ORG=plant-for-the-planet" >> .env
+          echo "SENTRY_PROJECT=app-20-next" >> .env
+          echo "SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN" >> .env
+          echo "TENANT=planet" >> .env
+          echo "TENANTID=ten_NxJq55pm" >> .env
+          echo "SITE_IMAGERY_API_URL=https://raster.plant-for-the-planet.org" >> .env
+          echo "WIDGET_URL=https://widgets.plant-for-the-planet.org" >> .env
+          echo "NEXT_PUBLIC_DONATION_URL=https://donate.plant-for-the-planet.org" >> .env
+          cp .env .env.production
+
+      - name: Capacitor build
+        run: npm run build-mobile
+
+      - name: Preparing Android build
+        env:
+          android_release_password: ${{ secrets.ANDROID_RELEASE_PASSWORD }}
+        run: |
+          # prepare local.properties
+          echo "MYAPP_RELEASE_STORE_PASSWORD=$android_release_password" > android/local.properties
+          echo "MYAPP_RELEASE_KEY_PASSWORD=$android_release_password" >> android/local.properties
+
+      - name: Caching Gradle dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-planet-webapp-${{ hashFiles('android/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-planet-webapp-
+
+      - name: Android Build
+        run: ./gradlew assembleRelease --stacktrace --no-daemon
+        working-directory: ./android
+
+      - name: Prepare Android APK for upload
+        run: |
+          upload_file=Planet-`echo $GITHUB_REF | awk '{split($0,a,"/"); print a[3]}'`.apk
+          echo "upload_file=$upload_file" >> $GITHUB_ENV
+          mkdir -p uploads
+          mv android/app/build/outputs/apk/release/app-release.apk uploads/$upload_file
+
+      # depends on existence of upload file at uploads/$upload_file
+      - name: Upload Android APK to Browserstack
+        env:
+          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        run: |
+          curl -u "planetit1:$BROWSERSTACK_ACCESS_KEY" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@uploads/$upload_file"
+          curl -u "planetit1:$BROWSERSTACK_ACCESS_KEY" -X POST "https://api-cloud.browserstack.com/app-automate/upload" -F "file=@uploads/$upload_file"

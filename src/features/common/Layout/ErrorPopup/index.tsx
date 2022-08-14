@@ -9,13 +9,6 @@ export default function ErrorPopup(): ReactElement {
   const { t, ready } = useTranslation(['common']);
   const { error, setError } = React.useContext(ErrorHandlingContext);
 
-  //   const sendUserToLogin = () => {
-  //     loginWithRedirect({
-  //       redirectUri: `${process.env.NEXTAUTH_URL}/login`,
-  //       ui_locales: localStorage.getItem('language') || 'en',
-  //     });
-  //   };
-
   const getErrorColor = (errorType: string | undefined): string => {
     switch (errorType) {
       case 'error':

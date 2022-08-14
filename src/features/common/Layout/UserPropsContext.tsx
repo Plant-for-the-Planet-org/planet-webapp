@@ -1,4 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
+import { App, URLOpenListenerEvent } from '@capacitor/app';
+import { Browser } from "@capacitor/browser";
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
@@ -13,8 +15,8 @@ export const UserPropsContext = React.createContext({
   token: null,
   isLoading: true,
   isAuthenticated: false,
-  loginWithRedirect: ({}) => {},
-  logoutUser: (value: string | undefined) => {},
+  loginWithRedirect: (redirectUri: string | undefined, ui_locales: string | undefined) => {},
+  logoutUser: (returnUrl: string | undefined) => {},
   auth0User: {},
   auth0Error: {} || undefined,
 });
@@ -23,8 +25,10 @@ function UserPropsProvider({ children }: any): ReactElement {
   const {
     isLoading,
     isAuthenticated,
-    loginWithRedirect,
+    buildAuthorizeUrl,
     getAccessTokenSilently,
+    handleRedirectCallback,
+    buildLogoutUrl,
     logout,
     user,
     error,
@@ -32,8 +36,37 @@ function UserPropsProvider({ children }: any): ReactElement {
 
   const router = useRouter();
   const [contextLoaded, setContextLoaded] = React.useState(false);
-  const [token, setToken] = React.useState(null);
+  const [token, setToken] = React.useState<string | null>(null);
   const [profile, setUser] = React.useState<boolean | User | null>(false);
+
+  React.useEffect(() => {
+    App.addListener('appUrlOpen', async (event: URLOpenListenerEvent) => {
+      // console.log("event.url", event.url)
+      // Example url: org.pftp.app://www1.plant-for-the-planet.org/login?code=***&state=***
+      //if (event.url.includes('state') && (event.url.includes('code') || event.url.includes('error'))) {
+      await handleRedirectCallback(event.url).then(() => {
+        const slug = event.url.split('planet.org').pop();
+        // console.log("event.slug", slug)
+        if (slug && typeof window !== 'undefined') {
+            router.push(slug);
+        }
+      }).catch((error) => {
+        // console.error("handleRedirectCallback failed", error)
+        setUser(null);
+        setToken(null);
+        logout({ localOnly: true });
+        if (typeof window !== 'undefined') {
+          if (error && error.error_description === '401') {
+            router.push('/verify-email');
+          } else {
+            router.push('/');
+          }
+        }
+      });
+      //}
+      await Browser.close();
+    });
+  }, [handleRedirectCallback]);
 
   React.useEffect(() => {
     async function loadToken() {
@@ -45,10 +78,35 @@ function UserPropsProvider({ children }: any): ReactElement {
       else setContextLoaded(true);
   }, [isLoading, isAuthenticated]);
 
+  const loginWithRedirect = (
+    redirectUri: string | undefined = `${process.env.NEXTAUTH_URL}/login`,
+    ui_locales: string | undefined = localStorage.getItem('language') || 'en',
+  ) => {
+    const doLogin = async () => {
+      // console.log("redirectUri", redirectUri)
+      const url = await buildAuthorizeUrl({
+        redirectUri: redirectUri,
+        ui_locales: ui_locales,
+      });
+      await Browser.open({ url, windowName: "_self" });
+    }
+    doLogin()
+  }
+
   const logoutUser = (
     returnUrl: string | undefined = `${process.env.NEXTAUTH_URL}/`
   ) => {
-    logout({ returnTo: returnUrl });
+    setUser(null);
+    setToken(null);
+    const doLogout = async () => {
+      // console.log("returnUrl", returnUrl)
+      await Browser.open({
+        url: buildLogoutUrl({ returnTo: returnUrl }),
+        windowName: "_self",
+      });
+      logout({ localOnly: true });
+    }
+    doLogout()
   };
 
   async function loadUser() {
@@ -68,10 +126,7 @@ function UserPropsProvider({ children }: any): ReactElement {
         // in case of 401 - invalid token: signIn()
         setUser(false);
         setToken(null);
-        loginWithRedirect({
-          redirectUri: `${process.env.NEXTAUTH_URL}/login`,
-          ui_locales: localStorage.getItem('language') || 'en',
-        });
+        loginWithRedirect(`${process.env.NEXTAUTH_URL}/login`, localStorage.getItem('language') || 'en');
       } else {
         // any other error
       }

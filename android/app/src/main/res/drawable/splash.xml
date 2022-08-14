@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <item android:drawable="@drawable/ic_loadingscreen" />
+  <item android:drawable="@drawable/ic_planet_logo"
+      android:right="180dp"
+      android:top="0dp"
+      android:bottom="0dp"
+      android:gravity="center"
+      />
+  <item android:drawable="@drawable/ic_unep_logo"
+      android:left="180dp"
+      android:top="0dp"
+      android:bottom="0dp"
+      android:gravity="center"
+      />
+
+</layer-list>

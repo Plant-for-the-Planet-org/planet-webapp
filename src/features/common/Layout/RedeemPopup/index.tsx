@@ -16,10 +16,7 @@ export default function RedeemPopup() {
     React.useContext(UserPropsContext);
 
   const sendUserToLogin = () => {
-    loginWithRedirect({
-      redirectUri: `${process.env.NEXTAUTH_URL}/login`,
-      ui_locales: localStorage.getItem('language') || 'en',
-    });
+    loginWithRedirect(`${process.env.NEXTAUTH_URL}/login`, localStorage.getItem('language') || 'en')
   };
 
   React.useEffect(() => {
