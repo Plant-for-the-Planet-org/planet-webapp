@@ -22,6 +22,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import { Recipient as LocalRecipient } from '../BulkCodesTypes';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 const { useTranslation } = i18next;
 
 interface IssueCodesFormProps {}
@@ -38,6 +39,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
     setBulkMethod,
   } = useBulkCode();
   const { user } = useContext(UserPropsContext);
+  const { tenantID } = useContext(ParamsContext);
   const { getAccessTokenSilently } = useAuth0();
   const { handleError } = useContext(ErrorHandlingContext);
   const [localRecipients, setLocalRecipients] = useState<LocalRecipient[]>([]);
@@ -111,7 +113,8 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
         handleError,
         {
           'IDEMPOTENCY-KEY': uuidv4(),
-        }
+        },
+        tenantID
       );
       // if request is successful, it will have a uid
       if (res.uid) {

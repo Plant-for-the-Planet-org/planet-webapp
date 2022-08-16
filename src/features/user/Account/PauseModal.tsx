@@ -19,6 +19,7 @@ import {
 import { CalendarPicker as MuiCalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 export const PauseModal = ({
   pauseModalOpen,
@@ -37,6 +38,7 @@ export const PauseModal = ({
 
   const { t, i18n, ready } = useTranslation(['me']);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { tenantID } = React.useContext(ParamsContext);
 
   React.useEffect(() => {
     setdate(
@@ -64,7 +66,8 @@ export const PauseModal = ({
       `/app/subscriptions/${record.id}?scope=pause`,
       bodyToSend,
       token,
-      handleError
+      handleError,
+      tenantID
     )
       .then((res) => {
         handlePauseModalClose();

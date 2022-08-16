@@ -8,6 +8,7 @@ import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
+import { ParamsContext } from '../../src/features/common/Layout/QueryParamsContext';
 
 const { useTranslation } = i18next;
 
@@ -16,6 +17,7 @@ interface Props {}
 function AccountHistory({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
   const { token, contextLoaded } = React.useContext(UserPropsContext);
+  const { tenantID } = React.useContext(ParamsContext);
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const [filter, setFilter] = React.useState<string | null>(null);
@@ -42,7 +44,10 @@ function AccountHistory({}: Props): ReactElement {
           token,
           {},
           handleError,
-          '/profile'
+          '/profile',
+          undefined,
+          undefined,
+          tenantID
         );
       setpaymentHistory({
         ...paymentHistory,
@@ -60,7 +65,10 @@ function AccountHistory({}: Props): ReactElement {
             token,
             {},
             handleError,
-            '/profile'
+            '/profile',
+            undefined,
+            undefined,
+            tenantID
           );
         setpaymentHistory(paymentHistory);
         setProgress(100);
@@ -77,7 +85,10 @@ function AccountHistory({}: Props): ReactElement {
           token,
           {},
           handleError,
-          '/profile'
+          '/profile',
+          undefined,
+          undefined,
+          tenantID
         );
         setpaymentHistory(paymentHistory);
         setProgress(100);

@@ -16,6 +16,7 @@ import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import ShareOptions from '../../../common/ShareOptions/ShareOptions';
 import { styled } from '@mui/material';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 const { useTranslation } = i18next;
 export default function RedeemModal({
@@ -35,6 +36,7 @@ export default function RedeemModal({
   const { user, contextLoaded, token, setUser } =
     React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { tenantID } = React.useContext(ParamsContext);
   const imageRef = React.createRef();
   const sendRef = () => imageRef;
 
@@ -82,7 +84,9 @@ export default function RedeemModal({
       postAuthenticatedRequest(
         `/api/v1.3/${userLang}/validateCode`,
         submitData,
-        token
+        token,
+        undefined,
+        tenantID
       ).then((res) => {
         if (res.code === 401) {
           setErrorMessage(res.message);
@@ -112,7 +116,9 @@ export default function RedeemModal({
         `/api/v1.3/${userLang}/convertCode`,
         submitData,
         token,
-        handleError
+        handleError,
+        undefined,
+        tenantID
       ).then((res) => {
         if (res.code === 401) {
           setErrorMessage(res.message);

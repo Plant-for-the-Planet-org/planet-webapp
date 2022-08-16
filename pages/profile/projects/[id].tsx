@@ -10,6 +10,7 @@ import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayou
 import Head from 'next/head';
 import i18next from '../../../i18n';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
+import { ParamsContext } from '../../../src/features/common/Layout/QueryParamsContext';
 
 const { useTranslation } = i18next;
 
@@ -25,6 +26,7 @@ function ManageSingleProject({}: Props): ReactElement {
   const [project, setProject] = React.useState({});
 
   const { user, contextLoaded, token } = React.useContext(UserPropsContext);
+  const { tenantID } = React.useContext(ParamsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
   useEffect(() => {
@@ -41,7 +43,10 @@ function ManageSingleProject({}: Props): ReactElement {
         token,
         {},
         handleError,
-        '/profile'
+        '/profile',
+        undefined,
+        undefined,
+        tenantID
       )
         .then((result) => {
           if (result.status === 401) {

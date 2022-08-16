@@ -18,22 +18,24 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 const { useTranslation } = i18next;
 
 interface Props {}
 
-const Alert = styled(MuiAlert)(({theme}) => {
+const Alert = styled(MuiAlert)(({ theme }) => {
   return {
     backgroundColor: theme.palette.primary.main,
-  }
-})
+  };
+});
 
 export default function EditProfile({}: Props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const { user, setUser, token, contextLoaded } =
     React.useContext(UserPropsContext);
+  const { tenantID } = React.useContext(ParamsContext);
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { t, ready } = useTranslation(['editProfile', 'donate']);
@@ -182,7 +184,8 @@ export default function EditProfile({}: Props) {
               `/app/profile`,
               bodyToSend,
               token,
-              handleError
+              handleError,
+              tenantID
             )
               .then((res) => {
                 const newUserInfo = { ...user, image: res.image };
@@ -223,7 +226,13 @@ export default function EditProfile({}: Props) {
     }
     if (contextLoaded && token) {
       try {
-        putAuthenticatedRequest(`/app/profile`, bodyToSend, token, handleError)
+        putAuthenticatedRequest(
+          `/app/profile`,
+          bodyToSend,
+          token,
+          handleError,
+          tenantID
+        )
           .then((res) => {
             console.log(res);
             if (res.code !== 400) {

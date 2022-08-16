@@ -39,7 +39,10 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
           token,
           {},
           handleError,
-          '/profile'
+          '/profile',
+          undefined,
+          undefined,
+          tenantID
         )
           .then((result: any) => {
             setContributions(result);

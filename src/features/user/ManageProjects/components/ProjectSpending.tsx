@@ -18,6 +18,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 const { useTranslation } = i18next;
 
@@ -40,6 +41,7 @@ export default function ProjectSpending({
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { tenantID } = React.useContext(ParamsContext);
   const {
     register,
     handleSubmit,
@@ -111,7 +113,9 @@ export default function ProjectSpending({
       `/app/projects/${projectGUID}/expenses`,
       submitData,
       token,
-      handleError
+      handleError,
+      undefined,
+      tenantID
     )
       .then((res) => {
         if (!res.code) {
@@ -145,7 +149,8 @@ export default function ProjectSpending({
     deleteAuthenticatedRequest(
       `/app/projects/${projectGUID}/expenses/${id}`,
       token,
-      handleError
+      handleError,
+      tenantID
     ).then((res) => {
       if (res !== 404) {
         const uploadedFilesTemp = uploadedFiles.filter(
@@ -165,7 +170,10 @@ export default function ProjectSpending({
         token,
         {},
         handleError,
-        '/profile'
+        '/profile',
+        undefined,
+        undefined,
+        tenantID
       ).then((result) => {
         if (result?.expenses && result.expenses.length > 0) {
           setShowForm(false);

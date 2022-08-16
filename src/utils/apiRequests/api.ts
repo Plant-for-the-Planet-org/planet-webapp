@@ -68,11 +68,11 @@ const handleApiError = (
 };
 
 //  API call to private /profile endpoint
-export async function getAccountInfo(token: any): Promise<any> {
+export async function getAccountInfo(token: any, tenantID: any): Promise<any> {
   const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
     method: 'GET',
     headers: {
-      'tenant-key': `${TENANT_ID}`,
+      'tenant-key': `${tenantID}`,
       'X-SESSION-ID': await getsessionId(),
       Authorization: `Bearer ${token}`,
       'x-locale': `${
@@ -134,7 +134,8 @@ export async function getAuthenticatedRequest(
   errorHandler?: Function,
   redirect?: string,
   queryParams?: { [key: string]: string },
-  version?: string
+  version?: string,
+  tenantID: any
 ): Promise<any> {
   let result = {};
   const lang = localStorage.getItem('language') || 'en';
@@ -144,7 +145,7 @@ export async function getAuthenticatedRequest(
   await fetch(`${process.env.API_ENDPOINT}${url}${queryStringSuffix}`, {
     method: 'GET',
     headers: {
-      'tenant-key': `${TENANT_ID}`,
+      'tenant-key': `${tenantID}`,
       'X-SESSION-ID': await getsessionId(),
       Authorization: `Bearer ${token}`,
       'x-locale': `${lang}`,
@@ -164,7 +165,8 @@ export async function postAuthenticatedRequest(
   data: any,
   token: any,
   errorHandler?: Function,
-  headers?: any
+  headers?: any,
+  tenantID: any
 ): Promise<any> {
   if (validateToken(token)) {
     const res = await fetch(process.env.API_ENDPOINT + url, {
@@ -172,7 +174,7 @@ export async function postAuthenticatedRequest(
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
-        'tenant-key': `${TENANT_ID}`,
+        'tenant-key': `${tenantID}`,
         'X-SESSION-ID': await getsessionId(),
         Authorization: `Bearer ${token}`,
         'x-locale': `${
@@ -202,14 +204,15 @@ export async function postRequest(
   url: any,
   data: any,
   errorHandler?: Function,
-  redirect?: string
+  redirect?: string,
+  tenantID: any
 ): Promise<any> {
   const res = await fetch(process.env.API_ENDPOINT + url, {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json',
-      'tenant-key': `${TENANT_ID}`,
+      'tenant-key': `${tenantID}`,
       'X-SESSION-ID': await getsessionId(),
       'x-locale': `${
         localStorage.getItem('language')
@@ -226,7 +229,8 @@ export async function postRequest(
 export async function deleteAuthenticatedRequest(
   url: any,
   token: any,
-  errorHandler?: Function
+  errorHandler?: Function,
+  tenantID: any
 ): Promise<any> {
   let result;
   if (validateToken(token)) {
@@ -234,7 +238,7 @@ export async function deleteAuthenticatedRequest(
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'tenant-key': `${TENANT_ID}`,
+        'tenant-key': `${tenantID}`,
         'X-SESSION-ID': await getsessionId(),
         Authorization: `Bearer ${token}`,
         'x-locale': `${
@@ -263,7 +267,8 @@ export async function putAuthenticatedRequest(
   url: any,
   data: any,
   token: any,
-  errorHandler?: Function
+  errorHandler?: Function,
+  tenantID: any
 ): Promise<any> {
   if (validateToken(token)) {
     const res = await fetch(process.env.API_ENDPOINT + url, {
@@ -271,7 +276,7 @@ export async function putAuthenticatedRequest(
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
-        'tenant-key': `${TENANT_ID}`,
+        'tenant-key': `${tenantID}`,
         'X-SESSION-ID': await getsessionId(),
         Authorization: `Bearer ${token}`,
         'x-locale': `${
@@ -298,14 +303,15 @@ export async function putAuthenticatedRequest(
 export async function putRequest(
   url: any,
   data: any,
-  errorHandler?: Function
+  errorHandler?: Function,
+  tenantID: any
 ): Promise<any> {
   const res = await fetch(process.env.API_ENDPOINT + url, {
     method: 'PUT',
     body: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json',
-      'tenant-key': `${TENANT_ID}`,
+      'tenant-key': `${tenantID}`,
       'X-SESSION-ID': await getsessionId(),
       'x-locale': `${
         localStorage.getItem('language')

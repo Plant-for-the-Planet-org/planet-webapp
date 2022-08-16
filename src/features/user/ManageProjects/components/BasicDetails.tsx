@@ -28,6 +28,7 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 const { useTranslation } = i18next;
 
@@ -66,6 +67,7 @@ export default function BasicDetails({
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   // Map setup
   const { theme } = React.useContext(ThemeContext);
+  const { tenantID } = React.useContext(ParamsContext);
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
   const mapRef = React.useRef(null);
@@ -414,7 +416,8 @@ export default function BasicDetails({
         `/app/projects/${projectGUID}`,
         submitData,
         token,
-        handleError
+        handleError,
+        tenantID
       )
         .then((res) => {
           if (!res.code) {
@@ -442,7 +445,14 @@ export default function BasicDetails({
           setErrorMessage(err);
         });
     } else {
-      postAuthenticatedRequest(`/app/projects`, submitData, token, handleError)
+      postAuthenticatedRequest(
+        `/app/projects`,
+        submitData,
+        token,
+        handleError,
+        undefined,
+        tenantID
+      )
         .then((res) => {
           if (!res.code) {
             setErrorMessage('');

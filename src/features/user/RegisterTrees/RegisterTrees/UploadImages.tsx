@@ -9,6 +9,7 @@ import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import i18next from '../../../../../i18n';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { ParamContext } from '../../../common/Layout/QueryParamsContext/';
 
 interface Props {
   contribution: any;
@@ -40,6 +41,7 @@ export default function UploadImages({
     });
   }, []);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { tenantID } = React.useContext(ParamContext);
 
   // React.useEffect(() => {
   //   // Fetch images of the project
@@ -56,7 +58,9 @@ export default function UploadImages({
       `/app/contributions/${contributionGUID}/images`,
       submitData,
       token,
-      handleError
+      handleError,
+      undefined,
+      tenantID
     )
       .then((res) => {
         if (!res.code) {
@@ -92,7 +96,8 @@ export default function UploadImages({
     deleteAuthenticatedRequest(
       `/app/contributions/${contributionGUID}/images/${id}`,
       token,
-      handleError
+      handleError,
+      tenantID
     ).then((res) => {
       if (res !== 404) {
         const uploadedImagesTemp = uploadedImages;
@@ -123,7 +128,10 @@ export default function UploadImages({
                   />
                   {/* <div className={styles.uploadedImageOverlay}></div> */}
                   <div className={styles.uploadedImageButtonContainer}>
-                    <button id={'uploadImgDelIcon'} onClick={() => deleteContributionImage(image.id)}>
+                    <button
+                      id={'uploadImgDelIcon'}
+                      onClick={() => deleteContributionImage(image.id)}
+                    >
                       <DeleteIcon />
                     </button>
                   </div>
@@ -142,7 +150,7 @@ export default function UploadImages({
           <button
             onClick={uploadPhotos}
             className="primaryButton"
-            style={{ maxWidth: "200px" }}
+            style={{ maxWidth: '200px' }}
           >
             <input {...getInputProps()} />
             {isUploadingData ? (
@@ -155,5 +163,7 @@ export default function UploadImages({
         </label>
       </div>
     </>
-  ) : <></>;
+  ) : (
+    <></>
+  );
 }

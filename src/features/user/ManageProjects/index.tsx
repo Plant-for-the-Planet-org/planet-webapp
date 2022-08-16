@@ -16,6 +16,7 @@ import { useRouter } from 'next/router';
 import i18next from '../../../../i18n';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import materialTheme from '../../../theme/themeStyles';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 const { useTranslation } = i18next;
 
@@ -43,7 +44,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
   const [projectDetails, setProjectDetails] = React.useState(
     project ? project : {}
   );
-
+  const { tenantID } = React.useContext(ParamsContext);
   const formRouteHandler = (val) => {
     if (router.query.purpose) return;
     switch (val) {
@@ -138,7 +139,8 @@ export default function ManageProjects({ GUID, token, project }: any) {
       `/app/projects/${projectGUID}`,
       submitData,
       token,
-      handleError
+      handleError,
+      tenantID
     ).then((res) => {
       if (!res.code) {
         setProjectDetails(res);
@@ -164,7 +166,8 @@ export default function ManageProjects({ GUID, token, project }: any) {
       `/app/projects/${projectGUID}`,
       submitData,
       token,
-      handleError
+      handleError,
+      tenantID
     ).then((res) => {
       if (!res.code) {
         setProjectDetails(res);
@@ -190,7 +193,10 @@ export default function ManageProjects({ GUID, token, project }: any) {
         token,
         {},
         handleError,
-        '/profile'
+        '/profile',
+        undefined,
+        undefined,
+        tenantID
       ).then((result) => {
         setProjectDetails(result);
       });

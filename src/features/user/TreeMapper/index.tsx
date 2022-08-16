@@ -9,16 +9,17 @@ import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import TopProgressBar from '../../common/ContentLoaders/TopProgressBar';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 const { useTranslation } = i18next;
 
-interface Props { }
+interface Props {}
 
 const PlantLocationMap = dynamic(() => import('./components/Map'), {
   loading: () => <p>loading</p>,
 });
 
-function TreeMapper({ }: Props): ReactElement {
+function TreeMapper({}: Props): ReactElement {
   const router = useRouter();
   const { token, contextLoaded } = React.useContext(UserPropsContext);
   const { t } = useTranslation(['treemapper']);
@@ -29,15 +30,23 @@ function TreeMapper({ }: Props): ReactElement {
   const [location, setLocation] = React.useState(null);
   const [links, setLinks] = React.useState();
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { tenantID } = React.useContext(ParamsContext);
 
   async function fetchTreemapperData(next = false) {
     setIsDataLoading(true);
     setProgress(70);
 
     if (next && links?.next) {
-      const response = await getAuthenticatedRequest(links.next, token, {},
+      const response = await getAuthenticatedRequest(
+        links.next,
+        token,
+        {},
         handleError,
-        '/profile', undefined, '1.0.4');
+        '/profile',
+        undefined,
+        '1.0.4',
+        tenantID
+      );
       if (response) {
         const newPlantLocations = response?.items;
         for (const itr in newPlantLocations) {
@@ -71,7 +80,8 @@ function TreeMapper({ }: Props): ReactElement {
         handleError,
         '/profile',
         undefined,
-        '1.0.4'
+        '1.0.4',
+        tenantID
       );
       if (response) {
         const plantLocations = response?.items;

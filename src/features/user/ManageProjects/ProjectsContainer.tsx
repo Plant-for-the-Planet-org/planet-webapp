@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { useContext } from 'react';
 import LazyLoad from 'react-lazyload';
 import i18next from '../../../../i18n';
 import NotFound from '../../../../public/assets/images/NotFound';
@@ -10,6 +10,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './ProjectsContainer.module.scss';
 import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 const { useTranslation } = i18next;
 
@@ -20,6 +21,7 @@ export default function ProjectsContainer({}: any) {
   const { handleError } = React.useContext(ErrorHandlingContext);
   const { user, contextLoaded, loginWithRedirect, token } =
     React.useContext(UserPropsContext);
+  const { tenantID } = useContext(ParamsContext);
 
   async function loadProjects() {
     if (user) {
@@ -28,7 +30,10 @@ export default function ProjectsContainer({}: any) {
         token,
         {},
         handleError,
-        '/profile'
+        '/profile',
+        undefined,
+        undefined,
+        tenantID
       ).then((projects) => {
         setProjects(projects);
         setLoader(false);

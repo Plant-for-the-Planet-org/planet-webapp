@@ -13,6 +13,7 @@ import SpeciesSelect from './Import/components/SpeciesAutoComplete';
 import styles from './MySpecies.module.scss';
 import { useForm } from 'react-hook-form';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 const { useTranslation } = i18next;
 
@@ -24,6 +25,7 @@ export default function MySpecies({}: Props): ReactElement {
   const { handleError } = React.useContext(ErrorHandlingContext);
   const [species, setSpecies] = React.useState<any[]>([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
+  const { tenantID } = React.useContext(ParamsContext);
 
   const defaultMySpeciesValue = {
     aliases: '',
@@ -35,14 +37,25 @@ export default function MySpecies({}: Props): ReactElement {
   });
 
   const fetchMySpecies = async () => {
-    const result = await getAuthenticatedRequest('/treemapper/species', token);
+    const result = await getAuthenticatedRequest(
+      '/treemapper/species',
+      token,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      tenantID
+    );
     setSpecies(result);
   };
 
   const deleteSpecies = async (id: number) => {
     const result = await deleteAuthenticatedRequest(
       `/treemapper/species/${id}`,
-      token
+      token,
+      undefined,
+      tenantID
     );
     fetchMySpecies();
   };
@@ -60,7 +73,9 @@ export default function MySpecies({}: Props): ReactElement {
       `/treemapper/species`,
       data,
       token,
-      handleError
+      handleError,
+      undefined,
+      tenantID
     );
     fetchMySpecies();
     setIsUploadingData(false);

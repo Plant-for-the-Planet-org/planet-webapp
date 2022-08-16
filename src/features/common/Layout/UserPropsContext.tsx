@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
 import { User } from '../types/user';
+import { ParamsContext } from '../Layout/QueryParamsContext';
 
 interface Props {}
 
@@ -34,6 +35,7 @@ function UserPropsProvider({ children }: any): ReactElement {
   const [contextLoaded, setContextLoaded] = React.useState(false);
   const [token, setToken] = React.useState(null);
   const [profile, setUser] = React.useState<boolean | object | null>(false);
+  const { tenantID } = React.useContext(ParamsContext);
 
   React.useEffect(() => {
     async function loadToken() {
@@ -55,7 +57,7 @@ function UserPropsProvider({ children }: any): ReactElement {
     async function loadUser() {
       setContextLoaded(false);
       try {
-        const res = await getAccountInfo(token);
+        const res = await getAccountInfo(token, tenantID);
         if (res.status === 200) {
           const resJson = await res.json();
           setUser(resJson);

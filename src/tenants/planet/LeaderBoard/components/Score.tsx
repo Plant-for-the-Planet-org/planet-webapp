@@ -69,7 +69,13 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const classes = useStylesAutoComplete();
 
   async function fetchUsers(query: any) {
-    postRequest('/suggest.php', { q: query }, handleError).then((res) => {
+    postRequest(
+      '/suggest.php',
+      { q: query },
+      handleError,
+      undefined,
+      tenantID
+    ).then((res) => {
       const result = res.filter((item) => item.type !== 'competition');
       setUsers(result);
     });

@@ -7,8 +7,8 @@ import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../theme/themeContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
-import { TENANT_ID } from '../../../utils/constants/environment';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { ParamContext } from '../../common/Layout/QueryParamsContext';
 
 interface Props {
   embedModalOpen: boolean;
@@ -17,11 +17,11 @@ interface Props {
 
 const { useTranslation } = i18next;
 
-const Alert = styled(MuiAlert)(({theme}) => {
+const Alert = styled(MuiAlert)(({ theme }) => {
   return {
     backgroundColor: theme.palette.primary.main,
-  }
-})
+  };
+});
 
 export default function EmbedModal({
   embedModalOpen,
@@ -34,10 +34,12 @@ export default function EmbedModal({
   const [severity, setSeverity] = React.useState('success');
   const [snackbarMessage, setSnackbarMessage] = React.useState('OK');
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const { tenantID } = React.useContext(ParamContext);
   const router = useRouter();
   // This effect is used to get and update UserInfo if the isAuthenticated changes
 
-  const { user, setUser, contextLoaded, token } = React.useContext(UserPropsContext);
+  const { user, setUser, contextLoaded, token } =
+    React.useContext(UserPropsContext);
 
   React.useEffect(() => {
     if (user && user.isPrivate) {
@@ -69,7 +71,13 @@ export default function EmbedModal({
     };
     if (contextLoaded && token) {
       try {
-        putAuthenticatedRequest(`/app/profile`, bodyToSend, token, handleError)
+        putAuthenticatedRequest(
+          `/app/profile`,
+          bodyToSend,
+          token,
+          handleError,
+          tenantID
+        )
           .then((res) => {
             setSeverity('success');
             setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');

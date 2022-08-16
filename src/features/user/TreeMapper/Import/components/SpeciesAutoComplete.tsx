@@ -9,6 +9,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { Autocomplete } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import i18next from '../../../../../../i18n';
+import { ParamsContext } from '../../../../common/Layout/QueryParamsContext';
 
 const config = tenantConfig();
 const { useTranslation } = i18next;
@@ -26,6 +27,7 @@ export default function SpeciesSelect(props: {
   const [query, setQuery] = React.useState('');
   const { t } = useTranslation(['treemapper']);
   const { theme } = React.useContext(ThemeContext);
+  const { tenantID } = React.useContext(ParamsContext);
   const useStylesAutoComplete = makeStyles({
     paper: {
       color:
@@ -89,18 +91,22 @@ export default function SpeciesSelect(props: {
 
   const suggestSpecies = (value: any) => {
     if (value.length > 2) {
-      postRequest(`/suggest.php`, { q: value, t: 'species' }).then(
-        (res: any) => {
-          if (res && res.length > 0) {
-            const species = res.map((item: any) => ({
-              id: item.id,
-              name: item.name,
-              scientificName: item.scientificName,
-            }));
-            setspeciesSuggestion(species);
-          }
+      postRequest(
+        `/suggest.php`,
+        { q: value, t: 'species' },
+        undefined,
+        undefined,
+        tenantID
+      ).then((res: any) => {
+        if (res && res.length > 0) {
+          const species = res.map((item: any) => ({
+            id: item.id,
+            name: item.name,
+            scientificName: item.scientificName,
+          }));
+          setspeciesSuggestion(species);
         }
-      );
+      });
     }
   };
 

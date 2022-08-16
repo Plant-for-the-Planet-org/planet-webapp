@@ -44,6 +44,11 @@ export default function Donate({
   const [directGift, setDirectGift] = React.useState(null);
   const [showdirectGift, setShowDirectGift] = React.useState(true);
   const [internalLanguage, setInternalLanguage] = React.useState('');
+  const [fixedTenantID, setFixedTenantID] = React.useState(false);
+
+  React.useEffect(() => {
+    if (tenantID) setFixedTenantID(true);
+  }, [tenantID]);
 
   React.useEffect(() => {
     const getdirectGift = localStorage.getItem('directGift');
@@ -81,31 +86,32 @@ export default function Donate({
       if (
         !internalCurrencyCode ||
         currencyCode !== internalCurrencyCode ||
-        internalLanguage !== i18n.language ||
-        tenantID
-      ) {
-        const currency = getStoredCurrency();
-        setInternalCurrencyCode(currency);
-        setCurrencyCode(currency);
-        setInternalLanguage(i18n.language);
-        const projects = await getRequest(
-          `/app/projects`,
-          handleError,
-          '/',
+        internalLanguage !== i18n.language
+      )
+        if (fixedTenantID) {
           {
-            _scope: 'map',
-            currency: currency,
-            tenant: tenantID,
-            'filter[purpose]': 'trees,conservation',
-            locale: i18n.language,
-          },
-          tenantID
-        );
-        setProjects(projects);
-        setProject(null);
-        setShowSingleProject(false);
-        setZoomLevel(1);
-      }
+            const currency = getStoredCurrency();
+            setInternalCurrencyCode(currency);
+            setCurrencyCode(currency);
+            setInternalLanguage(i18n.language);
+            const projects = await getRequest(
+              `/app/projects`,
+              handleError,
+              '/',
+              {
+                _scope: 'map',
+                currency: currency,
+                tenant: tenantID,
+                'filter[purpose]': 'trees,conservation',
+                locale: i18n.language,
+              }
+            );
+            setProjects(projects);
+            setProject(null);
+            setShowSingleProject(false);
+            setZoomLevel(1);
+          }
+        }
     }
     loadProjects();
   }, [tenantID, currencyCode, i18n.language]);

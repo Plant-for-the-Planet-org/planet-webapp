@@ -21,6 +21,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 // interface EditDonationProps {
 //   editModalOpen
@@ -46,6 +47,7 @@ export const EditModal = ({
     });
   const { token } = React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { tenantID } = React.useContext(ParamsContext);
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
       const userLang = localStorage.getItem('language');
@@ -85,7 +87,8 @@ export const EditModal = ({
         `/app/subscriptions/${record?.id}?scope=modify`,
         bodyToSend,
         token,
-        handleError
+        handleError,
+        tenantID
       )
         .then((res) => {
           if (res?.status === 'action_required') {

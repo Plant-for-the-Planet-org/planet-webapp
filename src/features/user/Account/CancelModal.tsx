@@ -19,6 +19,7 @@ import {
 import { CalendarPicker as MuiCalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 export const CancelModal = ({
   cancelModalOpen,
@@ -34,6 +35,7 @@ export const CancelModal = ({
   const [disabled, setDisabled] = React.useState(false);
   const { t, i18n, ready } = useTranslation(['me']);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { tenantID } = React.useContext(ParamsContext);
 
   React.useEffect(() => {
     setDisabled(false);
@@ -57,7 +59,8 @@ export const CancelModal = ({
       `/app/subscriptions/${record.id}?scope=cancel`,
       bodyToSend,
       token,
-      handleError
+      handleError,
+      tenantID
     )
       .then((res) => {
         handleCancelModalClose();

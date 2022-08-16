@@ -28,6 +28,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   ssr: false,
@@ -40,6 +41,7 @@ const { useTranslation } = i18next;
 export default function RegisterTrees({}: Props) {
   const router = useRouter();
   const { user, token, contextLoaded } = React.useContext(UserPropsContext);
+  const { tenantID } = React.useContext(ParamsContext);
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {
     version: 8,
@@ -153,7 +155,9 @@ export default function RegisterTrees({}: Props) {
           `/app/contributions`,
           submitData,
           token,
-          handleError
+          handleError,
+          undefined,
+          tenantID
         ).then((res) => {
           if (!res.code) {
             setErrorMessage('');
@@ -190,7 +194,10 @@ export default function RegisterTrees({}: Props) {
       token,
       {},
       handleError,
-      '/profile'
+      '/profile',
+      undefined,
+      undefined,
+      tenantID
     ).then((projects: any) => {
       setProjects(projects);
     });

@@ -21,6 +21,7 @@ import flatten from 'geojson-flatten';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { ParamsContext } from '../../../../common/Layout/QueryParamsContext';
 
 const { useTranslation } = i18next;
 
@@ -56,6 +57,7 @@ export default function PlantingLocation({
   const importMethods = ['import', 'editor'];
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [mySpecies, setMySpecies] = React.useState(null);
+  const { tenantID } = React.useContext(ParamsContext);
 
   const { t, ready } = useTranslation(['treemapper', 'common', 'maps']);
   const defaultValues = {
@@ -81,19 +83,33 @@ export default function PlantingLocation({
   });
 
   const loadProjects = async () => {
-    await getAuthenticatedRequest('/app/profile/projects', token).then(
-      (projects: any) => {
-        setProjects(projects);
-      }
-    );
+    await getAuthenticatedRequest(
+      '/app/profile/projects',
+      token,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      tenantID
+    ).then((projects: any) => {
+      setProjects(projects);
+    });
   };
 
   const loadMySpecies = async () => {
-    await getAuthenticatedRequest('/treemapper/species', token).then(
-      (species: any) => {
-        setMySpecies(species);
-      }
-    );
+    await getAuthenticatedRequest(
+      '/treemapper/species',
+      token,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      tenantID
+    ).then((species: any) => {
+      setMySpecies(species);
+    });
   };
 
   React.useEffect(() => {
@@ -194,7 +210,10 @@ export default function PlantingLocation({
       postAuthenticatedRequest(
         `/treemapper/plantLocations`,
         submitData,
-        token
+        token,
+        undefined,
+        undefined,
+        tenantID
       ).then((res: any) => {
         if (!res.code) {
           setErrorMessage('');

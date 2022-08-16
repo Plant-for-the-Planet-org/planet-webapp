@@ -7,17 +7,20 @@ import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import Recurrency from '../../src/features/user/Account/Recurrency';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
+import { ParamsContext } from '../../src/features/common/Layout/QueryParamsContext';
 
 const { useTranslation } = i18next;
 
-interface Props { }
+interface Props {}
 
-function RecurrentDonations({ }: Props): ReactElement {
+function RecurrentDonations({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
   const { token, contextLoaded } = React.useContext(UserPropsContext);
+  const { tenantID } = React.useContext(ParamsContext);
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
-  const [recurrencies, setrecurrencies] = React.useState<Payments.Subscription[]>();
+  const [recurrencies, setrecurrencies] =
+    React.useState<Payments.Subscription[]>();
 
   const { handleError } = React.useContext(ErrorHandlingContext);
 
@@ -29,7 +32,10 @@ function RecurrentDonations({ }: Props): ReactElement {
       token,
       {},
       handleError,
-      '/profile'
+      '/profile',
+      undefined,
+      undefined,
+      tenantID
     );
     if (recurrencies && Array.isArray(recurrencies)) {
       const activeRecurrencies = recurrencies?.filter(

@@ -22,6 +22,7 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 const { useTranslation } = i18next;
 
@@ -60,6 +61,7 @@ export default function ProjectSites({
   const [errorMessage, setErrorMessage] = React.useState('');
   const [openModal, setOpenModal] = React.useState(false);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { tenantID } = React.useContext(ParamsContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -182,7 +184,9 @@ export default function ProjectSites({
         `/app/projects/${projectGUID}/sites`,
         submitData,
         token,
-        handleError
+        handleError,
+        undefined,
+        tenantID
       )
         .then((res) => {
           if (!res.code) {
@@ -229,7 +233,8 @@ export default function ProjectSites({
     deleteAuthenticatedRequest(
       `/app/projects/${projectGUID}/sites/${id}`,
       token,
-      handleError
+      handleError,
+      tenantID
     ).then((res) => {
       if (res !== 404) {
         const siteListTemp = siteList.filter((item) => item.id !== id);
@@ -284,7 +289,10 @@ export default function ProjectSites({
         token,
         {},
         handleError,
-        '/profile'
+        '/profile',
+        undefined,
+        undefined,
+        tenantID
       ).then((result) => {
         const geoLocation = {
           geoLatitude: result.geoLatitude,
@@ -673,7 +681,8 @@ function EditSite({
         `/app/projects/${projectGUID}/sites/${siteGUID}`,
         submitData,
         token,
-        handleError
+        handleError,
+        tenantID2
       ).then((res) => {
         if (!res.code) {
           const temp = siteList;
