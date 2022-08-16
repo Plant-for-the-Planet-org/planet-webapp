@@ -20,11 +20,29 @@
   /* Hide scrollbar for IE, Edge and Firefox */
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+
+  .sidebar {
+    transition: transform 0.5s ease-in-out;
+
+    &.mobile-hidden {
+      transform: translateY(60vh);
+      max-height: 0;
+      overflow: hidden;
+    }
+  }
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .embedContainer::-webkit-scrollbar {
   display: none;
+}
+
+.MuiButton-root.toggleButton {
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
 }
 
 .header {
@@ -36,6 +54,12 @@
   border-radius: 13px 13px 0px 0px;
   height: 50px;
   width: 100%;
+  overflow: hidden;
+
+  &.header--mobile {
+    height: 66px;
+    padding-top: 16px;
+  }
 }
 
 .headerText {
@@ -133,7 +157,7 @@
   width: 100%;
   padding-left: 16px;
   padding-right: 16px;
-  padding-bottom: 16px;
+  padding-bottom: 100px;
   height: auto;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -238,7 +262,7 @@
     margin-top: 40vh;
   }
   .projectsContainer {
-    padding-bottom: 56px;
+    padding-bottom: 80px;
   }
 }
 
@@ -264,9 +288,9 @@
   }
 
   .container {
-    padding-left: 24px;
+    padding-left: 14px;
     margin-top: 80px;
-    padding-top: 30px;
+    padding-top: 20px;
   }
 
   .embedContainer {
@@ -275,9 +299,13 @@
     padding-left: 14px;
     height: 100vh;
     overflow-y: scroll;
+  }
 
-    .sidebar {
-      padding: 10px;
+  .sidebar {
+    padding: 10px 10px 0;
+
+    .mobile-hidden {
+      height: auto;
     }
   }
 

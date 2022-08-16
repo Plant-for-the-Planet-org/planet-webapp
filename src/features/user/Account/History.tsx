@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useContext, useEffect } from 'react';
 import i18next from '../../../../i18n';
 import BackButton from '../../../../public/assets/images/icons/BackButton';
 import TransactionListLoader from '../../../../public/assets/images/icons/TransactionListLoader';
@@ -13,6 +13,7 @@ import AccountRecord, {
 } from './components/AccountRecord';
 import styles from './AccountHistory.module.scss';
 import { useRouter } from 'next/router';
+import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 
 const { useTranslation } = i18next;
 
@@ -38,6 +39,7 @@ export default function History({
     null
   );
   const [openModal, setOpenModal] = React.useState(false);
+  const { isMobile } = useContext(ProjectPropsContext);
   const router = useRouter();
 
   const handleRecordOpen = (index: number) => {
@@ -69,13 +71,15 @@ export default function History({
 
   useEffect(() => {
     const { ref } = router.query;
-    if (ref) {
-      const _refIndex = paymentHistory?.items?.findIndex(
-        (item) => item.reference === ref
-      );
-      if (typeof _refIndex === 'number' && _refIndex !== -1) {
-        handleRecordOpen(_refIndex);
+    let refIndex = !isMobile ? 0 : undefined;
+    if (paymentHistory?.items && paymentHistory.items.length > 0) {
+      if (ref) {
+        const _refIndex = paymentHistory?.items?.findIndex(
+          (item) => item.reference === ref
+        );
+        _refIndex && _refIndex !== -1 && (refIndex = _refIndex);
       }
+      if (refIndex !== undefined) handleRecordOpen(refIndex);
     }
   }, [paymentHistory]);
 

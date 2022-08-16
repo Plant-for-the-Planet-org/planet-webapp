@@ -1,5 +1,6 @@
 import { FormControl, NativeSelect } from '@mui/material';
 import React, { ReactElement } from 'react';
+import { useRouter } from 'next/router';
 import PolygonIcon from '../../../../../public/assets/images/icons/PolygonIcon';
 import styles from '../../styles/ProjectsMap.module.scss';
 import BootstrapInput from '../../../common/InputTypes/BootstrapInput';
@@ -16,12 +17,28 @@ export default function SitesDropdown(): ReactElement {
     isPolygonMenuOpen,
     setIsPolygonMenuOpen,
   } = React.useContext(ProjectPropsContext);
+  const { embed } = React.useContext(ParamsContext);
+  const { pathname } = useRouter();
 
   const handleChangeSite = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSelectedSite(event.target.value as string);
     if (isMobile) setIsPolygonMenuOpen(false);
   };
-  const { embed } = React.useContext(ParamsContext);
+
+  const dropdownContainerClasses = `${
+    embed === 'true' ? styles.embed_dropdownContainer : styles.dropdownContainer
+  } ${
+    pathname === '/[p]' ? styles['dropdownContainer--reduce-right-offset'] : ''
+  }`;
+
+  const projectSitesButtonClasses = `${
+    embed === 'true'
+      ? styles.embed_projectSitesButton
+      : styles.projectSitesButton
+  } ${
+    pathname === '/[p]' ? styles['projectSitesButton--reduce-right-offset'] : ''
+  }`;
+
   return (
     <>
       {geoJson.features.length > 1 && (
@@ -34,23 +51,13 @@ export default function SitesDropdown(): ReactElement {
               onClick={() => {
                 if (!isMobile) setIsPolygonMenuOpen(true);
               }}
-              className={
-                embed === 'true'
-                  ? styles.embed_projectSitesButton
-                  : styles.projectSitesButton
-              }
+              className={projectSitesButtonClasses}
             >
               <PolygonIcon />
             </div>
           ) : null}
           {isPolygonMenuOpen ? (
-            <div
-              className={
-                embed === 'true'
-                  ? styles.embed_dropdownContainer
-                  : styles.dropdownContainer
-              }
-            >
+            <div className={dropdownContainerClasses}>
               <div className={styles.projectSitesDropdown}>
                 <FormControl variant="standard">
                   <div className={styles.polygonIcon}>

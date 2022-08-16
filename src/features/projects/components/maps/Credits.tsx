@@ -136,10 +136,10 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
 
         {isEmbed && (
           <span>
-            {t('common:poweredBy')}
+            Powered by
             <a href="https://www.plant-for-the-planet.org" target="_top">
               {' '}
-              {t('common:pftp')}
+              Plant-for-the-Planet
             </a>
           </span>
         )}

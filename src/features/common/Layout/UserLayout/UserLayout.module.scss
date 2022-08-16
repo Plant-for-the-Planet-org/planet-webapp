@@ -12,6 +12,7 @@
   }
   @include xsPhoneView {
     padding-left: 0;
+    margin-left: 0;
     & .hamburgerIcon {
       display: block;
       position: fixed;

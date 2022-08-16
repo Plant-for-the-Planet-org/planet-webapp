@@ -113,8 +113,13 @@
   line-height: 16px;
   cursor: pointer;
   z-index: 11;
+
   > svg {
     width: 15px;
+  }
+
+  &.playButton--reduce-right-offset {
+    right: 10px;
   }
 }
 
@@ -136,14 +141,21 @@
   }
 }
 @include mdTabletView {
-  .playButton {
-    top: 110px;
+  .playButton,
+  .embed_playButton {
     right: 125px;
     flex-direction: row;
+
+    &.playButton--reduce-right-offset {
+      right: 20px;
+    }
+  }
+
+  .playButton {
+    top: 110px;
   }
 
   .embed_playButton {
-    right: 125px;
     top: 30px;
   }
 }
