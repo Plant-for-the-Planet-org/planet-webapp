@@ -9,7 +9,7 @@ import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import i18next from '../../../../../i18n';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { ParamContext } from '../../../common/Layout/QueryParamsContext/';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 interface Props {
   contribution: any;
@@ -41,7 +41,7 @@ export default function UploadImages({
     });
   }, []);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { tenantID } = React.useContext(ParamContext);
+  const { tenantID } = React.useContext(ParamsContext);
 
   // React.useEffect(() => {
   //   // Fetch images of the project
