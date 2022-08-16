@@ -3,7 +3,20 @@
     "title": "Manage Payouts",
     "description": "Keep your payout information updated (e.g. schedule, bank details) to facilitate smooth payouts",
     "tabPayoutSchedule": "Payout Schedule",
-    "tabBankDetails": "Bank Details"
+    "tabBankDetails": "Bank Details",
+    "payoutInformation1": "Payouts are processed automatically every year, or when an organization collects 30,000 EUR or its equivalent in other currency.",
+    "payoutInformation2": "Payouts are issued by Plant-for-the-Planet Foundation and its sister organizations eg: Plant-for-the-Planet US, Plant-for-the-Planet Switzerland etc.",
+    "payoutInformation3": "You can adjust the payout schedule and receive frequent payouts as long as you meet the 1,500 EUR minimum amount criteria.",
+    "supportInformation": "If you have an exceptional case, please contact<1></1><2>support@plant-for-the-planet.org</2>.",
+    "labelPaymentFrequency": "Payment Frequency",
+    "scheduleFrequencies": {
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "semi-annual": "Semi-Annual",
+      "annual": "Annual",
+      "manual": "Manual"
+    },
+    "labelMinimumAmount": "Minimum Payout Amount (Euro Equivalent)"
   },
   "managePayoutsTitleStep2": "Manage Payouts - Bank Details",
   "managePayoutsTitleStep1": "Manage Payouts - Schedule",
