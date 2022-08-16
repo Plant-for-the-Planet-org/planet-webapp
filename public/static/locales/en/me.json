@@ -1,7 +1,12 @@
 {
+  "managePayouts": {
+    "title": "Manage Payouts",
+    "description": "Keep your payout information updated (e.g. schedule, bank details) to facilitate smooth payouts",
+    "tabPayoutSchedule": "Payout Schedule",
+    "tabBankDetails": "Bank Details"
+  },
   "managePayoutsTitleStep2": "Manage Payouts - Bank Details",
   "managePayoutsTitleStep1": "Manage Payouts - Schedule",
-  "managePayouts": "Manage Payouts",
   "treesPlanted": "Tree Planted",
   "treesPlanted_plural": "Trees Planted",
   "bulkCodesTitleStep3": "Generate Bulk Codes - Issue Codes",
