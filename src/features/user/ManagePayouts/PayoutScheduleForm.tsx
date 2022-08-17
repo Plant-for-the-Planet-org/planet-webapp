@@ -1,25 +1,30 @@
-import {
-  Button,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
-  TextField,
-} from '@mui/material';
-import { ReactElement, useState } from 'react';
+import { ReactElement } from 'react';
+import { useForm } from 'react-hook-form';
+import { Button, MenuItem, TextField } from '@mui/material';
+import ReactHookFormSelect from './ReactHookFormSelect';
 import StyledForm from '../../common/Layout/StyledForm';
 import i18n from '../../../../i18n';
 
 const { useTranslation, Trans } = i18n;
 
+type FormData = {
+  payoutMinAmount: string;
+  scheduleFrequency: string;
+};
+
 const PayoutScheduleForm = (): ReactElement | null => {
   const { t, ready } = useTranslation('me');
-  const [scheduleFrequency, setScheduleFrequency] = useState('annual');
-  const [payoutMinAmount, setPayoutMinAmount] = useState('');
+  const { register, handleSubmit, errors, control } = useForm<FormData>({
+    mode: 'onBlur',
+  });
+
+  const onSubmit = (data: FormData) => {
+    console.log(data);
+  };
 
   if (ready) {
     return (
-      <StyledForm>
+      <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <p>{t('managePayouts.payoutInformation1')}</p>
         <p>{t('managePayouts.payoutInformation2')}</p>
         <p>{t('managePayouts.payoutInformation3')}</p>
@@ -33,42 +38,48 @@ const PayoutScheduleForm = (): ReactElement | null => {
           </Trans>
         </p>
         <div className="inputContainer">
-          <FormControl>
-            <InputLabel id="payment-frequency-label">
-              {t('managePayouts.labelScheduleFrequency')}
-            </InputLabel>
-            <Select
-              label={t('managePayouts.labelScheduleFrequency')}
-              labelId="payment-frequency-label"
-              id="payment-frequency"
-              value={scheduleFrequency}
-              onChange={(e) => setScheduleFrequency(e.target.value)}
-            >
-              <MenuItem value="monthly">
-                {t('managePayouts.scheduleFrequencies.monthly')}
-              </MenuItem>
-              <MenuItem value="quarterly">
-                {t('managePayouts.scheduleFrequencies.quarterly')}
-              </MenuItem>
-              <MenuItem value="semi-annual">
-                {t('managePayouts.scheduleFrequencies.semi-annual')}
-              </MenuItem>
-              <MenuItem value="annual">
-                {t('managePayouts.scheduleFrequencies.annual')}
-              </MenuItem>
-              <MenuItem value="manual">
-                {t('managePayouts.scheduleFrequencies.manual')}
-              </MenuItem>
-            </Select>
-          </FormControl>
+          <ReactHookFormSelect
+            name="scheduleFrequency"
+            label={t('managePayouts.labelScheduleFrequency')}
+            control={control}
+            defaultValue="annual"
+          >
+            <MenuItem value="monthly">
+              {t('managePayouts.scheduleFrequencies.monthly')}
+            </MenuItem>
+            <MenuItem value="quarterly">
+              {t('managePayouts.scheduleFrequencies.quarterly')}
+            </MenuItem>
+            <MenuItem value="semi-annual">
+              {t('managePayouts.scheduleFrequencies.semi-annual')}
+            </MenuItem>
+            <MenuItem value="annual">
+              {t('managePayouts.scheduleFrequencies.annual')}
+            </MenuItem>
+            <MenuItem value="manual">
+              {t('managePayouts.scheduleFrequencies.manual')}
+            </MenuItem>
+          </ReactHookFormSelect>
           <TextField
             label={t('managePayouts.labelPayoutMinAmount')}
-            value={payoutMinAmount}
-            onChange={(e) => setPayoutMinAmount(e.target.value)}
+            name="payoutMinAmount"
+            inputRef={register({
+              required: t('managePayouts.errors.payoutMinAmountRequired'),
+            })}
+            error={errors.payoutMinAmount !== undefined}
+            helperText={
+              errors.payoutMinAmount && errors.payoutMinAmount.message
+            }
           ></TextField>
         </div>
-        <Button variant="contained" color="primary" className="formButton">
+        <Button
+          variant="contained"
+          color="primary"
+          className="formButton"
+          type="submit"
+        >
           Continue
+          {/* TODOO - update button text and add to translation file */}
         </Button>
       </StyledForm>
     );
