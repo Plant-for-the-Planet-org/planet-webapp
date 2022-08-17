@@ -55,7 +55,7 @@ const QueryParamsProvider: FC = ({ children }) => {
   }, [language, i18n.isInitialized]);
 
   useEffect(() => {
-    const getTenantId = (query: string) => {
+    const getTenantId = (id: string) => {
       if (process.env.TENANTID) {
         return process.env.TENANTID;
       } else if (id) {
