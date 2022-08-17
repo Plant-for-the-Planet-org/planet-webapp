@@ -66,6 +66,7 @@ const QueryParamsProvider: FC = ({ children }) => {
     };
     console.log(query, '2');
     const id = query.tenant;
+    console.log(id, 'id');
     const tenantId = getTenantId(id);
     console.log(tenantId, '3');
     setTenantID(tenantId);
