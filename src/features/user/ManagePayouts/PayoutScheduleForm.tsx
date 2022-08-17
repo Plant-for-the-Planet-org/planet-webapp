@@ -35,10 +35,10 @@ const PayoutScheduleForm = (): ReactElement | null => {
         <div className="inputContainer">
           <FormControl>
             <InputLabel id="payment-frequency-label">
-              {t('managePayouts.labelPaymentFrequency')}
+              {t('managePayouts.labelScheduleFrequency')}
             </InputLabel>
             <Select
-              label={t('managePayouts.labelPaymentFrequency')}
+              label={t('managePayouts.labelScheduleFrequency')}
               labelId="payment-frequency-label"
               id="payment-frequency"
               value={scheduleFrequency}
@@ -62,7 +62,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
             </Select>
           </FormControl>
           <TextField
-            label={t('managePayouts.labelMinimumAmount')}
+            label={t('managePayouts.labelPayoutMinAmount')}
             value={payoutMinAmount}
             onChange={(e) => setPayoutMinAmount(e.target.value)}
           ></TextField>
