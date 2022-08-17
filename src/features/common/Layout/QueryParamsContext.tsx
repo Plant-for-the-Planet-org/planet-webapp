@@ -55,17 +55,18 @@ const QueryParamsProvider: FC = ({ children }) => {
   }, [language, i18n.isInitialized]);
 
   useEffect(() => {
-    const getTenantId = (query: {}) => {
+    const getTenantId = (query: string) => {
       if (process.env.TENANTID) {
         return process.env.TENANTID;
-      } else if (query.tenant) {
-        return query.tenant;
+      } else if (id) {
+        return id;
       } else {
         return 'ten_NxJq55pm';
       }
     };
     console.log(query, '2');
-    const tenantId = getTenantId(query);
+    const id = query.tenant;
+    const tenantId = getTenantId(id);
     console.log(tenantId, '3');
     setTenantID(tenantId);
   }, [query, query.tenant]);
