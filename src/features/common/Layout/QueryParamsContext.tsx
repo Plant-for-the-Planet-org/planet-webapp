@@ -30,7 +30,7 @@ const QueryParamsProvider: FC = ({ children }) => {
   const [tenantID, setTenantID] = useState<QueryParamType>('');
   const router = useRouter();
   const { query } = router;
-  console.log(tenantID, '1');
+
   useEffect(() => {
     if (query.embed) setEmbed(query.embed);
   }, [query.embed]);
@@ -53,25 +53,24 @@ const QueryParamsProvider: FC = ({ children }) => {
       /* localStorage.setItem('language', language as string); */ //not needed as i18n handles setting the local storage
     }
   }, [language, i18n.isInitialized]);
-
+  console.log(tenantID, '1');
   useEffect(() => {
-    const getTenantId = (id: string) => {
+    console.log(query, '2');
+    const getTenantId = (query: {}) => {
       if (process.env.TENANTID) {
         return process.env.TENANTID;
-      } else if (id) {
-        return id;
+      } else if (query.tenant) {
+        return query.tenant;
       } else {
         return 'ten_NxJq55pm';
       }
     };
-    console.log(query, '2');
-    const id = query.tenant;
-    console.log(id, 'id');
-    const tenantId = getTenantId(id);
-    console.log(tenantId, '3');
+    console.log(query, '3');
+    const tenantId = getTenantId(query);
+    console.log(tenantId, '4');
     setTenantID(tenantId);
-  }, [query, query.tenant]);
-
+  }, [query.tenant]);
+  console.log(tenantID, '5');
   return (
     <ParamsContext.Provider
       value={{
