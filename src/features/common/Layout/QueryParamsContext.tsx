@@ -30,7 +30,7 @@ const QueryParamsProvider: FC = ({ children }) => {
   const [tenantID, setTenantID] = useState<QueryParamType>('');
   const router = useRouter();
   const { query } = router;
-
+  console.log(tenantID, '1');
   useEffect(() => {
     if (query.embed) setEmbed(query.embed);
   }, [query.embed]);
@@ -66,6 +66,7 @@ const QueryParamsProvider: FC = ({ children }) => {
     };
 
     const tenantId = getTenantId(query);
+    console.log(tenantId, '2');
     setTenantID(tenantId);
   }, [query, query.tenant]);
 
