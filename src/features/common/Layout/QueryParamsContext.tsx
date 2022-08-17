@@ -67,7 +67,7 @@ const QueryParamsProvider: FC = ({ children }) => {
 
     const tenantId = getTenantId(query);
     setTenantID(tenantId);
-  }, [query.tenant]);
+  }, [query, query.tenant]);
 
   return (
     <ParamsContext.Provider
