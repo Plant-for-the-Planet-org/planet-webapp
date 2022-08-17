@@ -64,9 +64,9 @@ const QueryParamsProvider: FC = ({ children }) => {
         return 'ten_NxJq55pm';
       }
     };
-
+    console.log(query, '2');
     const tenantId = getTenantId(query);
-    console.log(tenantId, '2');
+    console.log(tenantId, '3');
     setTenantID(tenantId);
   }, [query, query.tenant]);
 
