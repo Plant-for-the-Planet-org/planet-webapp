@@ -60,13 +60,13 @@ const QueryParamsProvider: FC = ({ children }) => {
         return process.env.TENANTID;
       } else if (query.tenant) {
         return query.tenant;
-      } else {
+      } else if (!process.env.TENANTID && !query.tenant && router.isReady) {
         return 'ten_NxJq55pm';
       }
     };
     const tenantId = getTenantId(query);
     setTenantID(tenantId);
-  }, [query.tenant, process.env.TENANTID]);
+  }, [router.isReady, query.tenant, process.env.TENANTID]);
 
   return (
     <ParamsContext.Provider
