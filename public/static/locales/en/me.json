@@ -27,8 +27,8 @@
     "labelBic": "BIC / SWIFT*",
     "labelBranchCode": "Branch Code",
     "errors": {
-      "scheduleFrequency": "Payment frequency is required",
-      "payoutMinAmount": "Minimum payout amount is required",
+      "scheduleFrequencyRequired": "Payment frequency is required",
+      "payoutMinAmountRequired": "Minimum payout amount is required",
       "bankNameRequired": "Bank name is required.",
       "bankAddressRequired": "Bank address is required.",
       "holderNameRequired": "Holder name is required.",

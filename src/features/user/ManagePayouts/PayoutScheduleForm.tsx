@@ -7,6 +7,14 @@ import i18n from '../../../../i18n';
 
 const { useTranslation, Trans } = i18n;
 
+const paymentFrequencies = [
+  'monthly',
+  'quarterly',
+  'semi-annual',
+  'annual',
+  'manual',
+];
+
 type FormData = {
   payoutMinAmount: string;
   scheduleFrequency: string;
@@ -20,6 +28,16 @@ const PayoutScheduleForm = (): ReactElement | null => {
 
   const onSubmit = (data: FormData) => {
     console.log(data);
+  };
+
+  const renderPaymentFrequencyOptions = () => {
+    return paymentFrequencies.map((frequency, index) => {
+      return (
+        <MenuItem value={frequency} key={index}>
+          {t(`managePayouts.scheduleFrequencies.${frequency}`)}
+        </MenuItem>
+      );
+    });
   };
 
   if (ready) {
@@ -43,22 +61,15 @@ const PayoutScheduleForm = (): ReactElement | null => {
             label={t('managePayouts.labelScheduleFrequency')}
             control={control}
             defaultValue="annual"
+            rules={{
+              required: t('managePayouts.errors.scheduleFrequencyRequired'),
+            }}
+            error={errors.scheduleFrequency !== undefined}
+            helperText={
+              errors.scheduleFrequency && errors.scheduleFrequency.message
+            }
           >
-            <MenuItem value="monthly">
-              {t('managePayouts.scheduleFrequencies.monthly')}
-            </MenuItem>
-            <MenuItem value="quarterly">
-              {t('managePayouts.scheduleFrequencies.quarterly')}
-            </MenuItem>
-            <MenuItem value="semi-annual">
-              {t('managePayouts.scheduleFrequencies.semi-annual')}
-            </MenuItem>
-            <MenuItem value="annual">
-              {t('managePayouts.scheduleFrequencies.annual')}
-            </MenuItem>
-            <MenuItem value="manual">
-              {t('managePayouts.scheduleFrequencies.manual')}
-            </MenuItem>
+            {renderPaymentFrequencyOptions()}
           </ReactHookFormSelect>
           <TextField
             label={t('managePayouts.labelPayoutMinAmount')}
