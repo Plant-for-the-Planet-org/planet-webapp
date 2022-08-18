@@ -136,11 +136,26 @@ function UserLayout(props: any): ReactElement {
     },
     {
       key: 6,
+      title: t('me:planetcash.menuTitle'),
+      icon: <DonateIcon />,
+      subMenu: [
+        {
+          title: t('me:planetcash.submenuTitle'),
+          path: '/profile/planetcash',
+        },
+        {
+          title: t('me:bulkCodes'),
+          path: '/profile/bulk-codes',
+        },
+      ],
+    },
+    /* {
+      key: 6,
       title: t('me:bulkCodes'),
       path: '/profile/bulk-codes',
       icon: <GiftIcon />,
       hasRelatedLinks: true,
-    },
+    }, */
     {
       key: 7,
       title: t('me:embedWidget'),
@@ -240,25 +255,18 @@ function UserLayout(props: any): ReactElement {
                 <button className={styles.navlinkTitle}>{t('close')}</button>
               </div>
             </div>
-            {navLinks
-              .filter((links) => {
-                if (!user.planetCash) {
-                  return links.key !== 6;
-                }
-                return links;
-              })
-              .map((link: any, index: any) => (
-                <NavLink
-                  link={link}
-                  setactiveLink={setactiveLink}
-                  activeLink={activeLink}
-                  activeSubMenu={activeSubMenu}
-                  setActiveSubMenu={setActiveSubMenu}
-                  user={user}
-                  key={index}
-                  closeMenu={() => setIsMenuOpen(false)}
-                />
-              ))}
+            {navLinks.map((link: any, index: any) => (
+              <NavLink
+                link={link}
+                setactiveLink={setactiveLink}
+                activeLink={activeLink}
+                activeSubMenu={activeSubMenu}
+                setActiveSubMenu={setActiveSubMenu}
+                user={user}
+                key={index}
+                closeMenu={() => setIsMenuOpen(false)}
+              />
+            ))}
           </>
         </div>
 

@@ -1,4 +1,9 @@
 {
+  "planetcash": {
+    "menuTitle": "PlanetCash",
+    "submenuTitle": "Account",
+    "title": "PlanetCash"
+  },
   "treesPlanted": "Tree Planted",
   "treesPlanted_plural": "Trees Planted",
   "bulkCodesTitleStep3": "Generate Bulk Codes - Issue Codes",
