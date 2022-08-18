@@ -49,7 +49,10 @@ const PayoutScheduleForm = (): ReactElement | null => {
         <p>
           <Trans i18nKey="managePayouts:supportInformation">
             If you have an exceptional case, please contact{' '}
-            <a href="mailto:support@plant-for-the-planet.org">
+            <a
+              className="planet-links"
+              href="mailto:support@plant-for-the-planet.org"
+            >
               support@plant-for-the-planet.org
             </a>
             .
