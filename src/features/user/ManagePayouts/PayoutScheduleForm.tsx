@@ -74,6 +74,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
           <TextField
             label={t('managePayouts.labelPayoutMinAmount')}
             name="payoutMinAmount"
+            placeholder={t('managePayouts.placeholders.payoutMinAmount')}
             inputRef={register({
               required: t('managePayouts.errors.payoutMinAmountRequired'),
             })}

@@ -52,6 +52,7 @@ const BankDetailsForm = (): ReactElement | null => {
             inputRef={register({
               required: t('managePayouts.errors.bankNameRequired'),
             })}
+            placeholder={t('managePayouts.placeholders.bankName')}
             error={errors.bankName !== undefined}
             helperText={errors.bankName && errors.bankName.message}
           ></TextField>
@@ -60,6 +61,7 @@ const BankDetailsForm = (): ReactElement | null => {
             maxRows={4}
             label={t('managePayouts.labelBankAddress')}
             name="bankAddress"
+            placeholder={t('managePayouts.placeholders.bankAddress')}
             inputRef={register({
               required: t('managePayouts.errors.bankAddressRequired'),
             })}
@@ -69,6 +71,7 @@ const BankDetailsForm = (): ReactElement | null => {
           <TextField
             label={t('managePayouts.labelHolderName')}
             name="holderName"
+            placeholder={t('managePayouts.placeholders.holderName')}
             inputRef={register({
               required: t('managePayouts.errors.holderNameRequired'),
             })}
@@ -80,6 +83,7 @@ const BankDetailsForm = (): ReactElement | null => {
             maxRows={4}
             label={t('managePayouts.labelHolderAddress')}
             name="holderAddress"
+            placeholder={t('managePayouts.placeholders.holderAddress')}
             inputRef={register({
               required: t('managePayouts.errors.holderAddressRequired'),
             })}
@@ -123,6 +127,7 @@ const BankDetailsForm = (): ReactElement | null => {
             maxRows={4}
             label={t('managePayouts.labelRemarks')}
             name="remarks"
+            placeholder={t('managePayouts.placeholders.remarks')}
             inputRef={register}
           ></TextField>
         </div>

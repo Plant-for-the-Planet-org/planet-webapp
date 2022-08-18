@@ -35,6 +35,14 @@
       "holderAddressRequired": "Holder address is required.",
       "accountNumberRequired": "Account number is required.",
       "bicRequired": "BIC / SWIFT code is required."
+    },
+    "placeholders": {
+      "payoutMinAmount": "Should be at least €1500 (or equivalent)",
+      "bankName": "e.g. Century Bank LLC",
+      "bankAddress": "e.g. 1 West St, Hamington Way, MA, 10311, USA",
+      "holderName": "e.g. John Doe",
+      "holderAddress": "e.g. 21 Penn Avenue, MA 10317 USA",
+      "remarks": "e.g. Please include ref acct=1237 on the transfer."
     }
   },
   "managePayoutsTitleStep2": "Manage Payouts - Bank Details",
