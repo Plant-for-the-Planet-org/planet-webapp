@@ -74,16 +74,12 @@ export default function RedeemModal({
   async function validateCode(data: any) {
     setIsUploadingData(true);
     const submitData = {
-      type: 'gift',
+      // type: 'gift',
       code: data.code,
     };
     if (contextLoaded && user) {
       const userLang = localStorage.getItem('language') || 'en';
-      postAuthenticatedRequest(
-        `/api/v1.3/${userLang}/validateCode`,
-        submitData,
-        token
-      ).then((res) => {
+      postAuthenticatedRequest(`/app/redeem`, submitData, token).then((res) => {
         if (res.code === 401) {
           setErrorMessage(res.message);
           setIsUploadingData(false);
@@ -103,7 +99,7 @@ export default function RedeemModal({
   async function redeemCode() {
     setIsUploadingData(true);
     const submitData = {
-      type: 'gift',
+      // type: 'gift',
       code: code,
     };
     if (contextLoaded && user) {

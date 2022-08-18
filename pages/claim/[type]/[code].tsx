@@ -62,11 +62,11 @@ function ClaimDonation({}: Props): ReactElement {
     setTextCopiedSnackbarOpen(false);
   };
 
-  const Alert = styled(MuiAlert)(({theme}) => {
+  const Alert = styled(MuiAlert)(({ theme }) => {
     return {
       backgroundColor: theme.palette.primary.main,
-    }
-  })
+    };
+  });
 
   const [codeRedeemed, setCodeRedeemed] = React.useState(false);
 
@@ -96,7 +96,7 @@ function ClaimDonation({}: Props): ReactElement {
     if (contextLoaded && user) {
       const userLang = localStorage.getItem('language') || 'en';
       postAuthenticatedRequest(
-        `/api/v1.3/${userLang}/validateCode`,
+        `/app/redeem`,
         submitData,
         token,
         handleError
