@@ -83,6 +83,7 @@ function UserPropsProvider({ children }: any): ReactElement {
       }
       setContextLoaded(true);
     }
+    console.log("==> router.isReady from userPropsContext", router.isReady)
     if (token && router.isReady && tenantID) loadUser();
   }, [token, router.isReady, tenantID]);
 

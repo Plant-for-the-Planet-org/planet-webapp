@@ -1,4 +1,4 @@
-import React, { createContext, FC, useEffect, useState } from 'react';
+import React, { createContext, FC, useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import i18next from '../../../../i18n';
 
@@ -54,19 +54,29 @@ const QueryParamsProvider: FC = ({ children }) => {
     }
   }, [language, i18n.isInitialized]);
 
-  useEffect(() => {
-    const getTenantId = (query: {}) => {
+  const getTenantId = useCallback((query: {}) => {
+    console.log("==> router.isReady from queryParamsContext", router.isReady)
+    if(router.isReady){
       if (process.env.TENANTID) {
+        console.log("==>", "reached process.env.TENANTID")
         return process.env.TENANTID;
       } else if (query.tenant) {
+        console.log("==>", "reached query.tenant")
         return query.tenant;
-      } else if (!process.env.TENANTID && !query.tenant && router.isReady) {
+      } else if (!process.env.TENANTID && !query.tenant) {
+        console.log("==>", "reached constant")
         return 'ten_NxJq55pm';
-      }
-    };
-    const tenantId = getTenantId(query);
-    setTenantID(tenantId);
+      } else return null;
+    }
   }, [router.isReady, query.tenant, process.env.TENANTID]);
+
+  useEffect(() => {
+    const tenantId = getTenantId(query);
+    if(tenantId !== null){
+      setTenantID(tenantId);
+      console.log("==>", tenantId)
+    }
+  }, [getTenantId]);
 
   return (
     <ParamsContext.Provider
