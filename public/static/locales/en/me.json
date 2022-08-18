@@ -1,52 +1,9 @@
 {
   "managePayouts": {
-    "title": "Manage Payouts",
-    "description": "Keep your payout information updated (e.g. schedule, bank details) to facilitate smooth payouts",
-    "tabPayoutSchedule": "Payout Schedule",
-    "tabBankDetails": "Bank Details",
-    "payoutInformation1": "Payouts are processed automatically every year, or when an organization collects 30,000 EUR or its equivalent in other currency.",
-    "payoutInformation2": "Payouts are issued by Plant-for-the-Planet Foundation and its sister organizations eg: Plant-for-the-Planet US, Plant-for-the-Planet Switzerland etc.",
-    "payoutInformation3": "You can adjust the payout schedule and receive frequent payouts as long as you meet the 1,500 EUR minimum amount criteria.",
-    "supportInformation": "If you have an exceptional case, please contact<1></1><2>support@plant-for-the-planet.org</2>.",
-    "labelScheduleFrequency": "Payment Frequency*",
-    "scheduleFrequencies": {
-      "monthly": "Monthly",
-      "quarterly": "Quarterly",
-      "semi-annual": "Semi-Annual",
-      "annual": "Annual",
-      "manual": "Manual"
-    },
-    "labelPayoutMinAmount": "Minimum Payout Amount (Euro Equivalent)*",
-    "labelBankName": "Bank Name*",
-    "labelBankAddress": "Bank Address*",
-    "labelHolderName": "Name of Account Holder*",
-    "labelHolderAddress": "Address of Account Holder*",
-    "labelRemarks": "Additional Details",
-    "labelAccountNumber": "IBAN / Account Number*",
-    "labelRoutingNumber": "ABA / Routing Number (US Only)",
-    "labelBic": "BIC / SWIFT*",
-    "labelBranchCode": "Branch Code",
-    "errors": {
-      "scheduleFrequencyRequired": "Payment frequency is required",
-      "payoutMinAmountRequired": "Minimum payout amount is required",
-      "bankNameRequired": "Bank name is required.",
-      "bankAddressRequired": "Bank address is required.",
-      "holderNameRequired": "Holder name is required.",
-      "holderAddressRequired": "Holder address is required.",
-      "accountNumberRequired": "Account number is required.",
-      "bicRequired": "BIC / SWIFT code is required."
-    },
-    "placeholders": {
-      "payoutMinAmount": "Should be at least €1500 (or equivalent)",
-      "bankName": "e.g. Century Bank LLC",
-      "bankAddress": "e.g. 1 West St, Hamington Way, MA, 10311, USA",
-      "holderName": "e.g. John Doe",
-      "holderAddress": "e.g. 21 Penn Avenue, MA 10317 USA",
-      "remarks": "e.g. Please include ref acct=1237 on the transfer."
-    }
+    "menuText": "Manage Payouts",
+    "titleStep2": "Manage Payouts - Bank Details",
+    "titleStep1": "Manage Payouts - Schedule"
   },
-  "managePayoutsTitleStep2": "Manage Payouts - Bank Details",
-  "managePayoutsTitleStep1": "Manage Payouts - Schedule",
   "treesPlanted": "Tree Planted",
   "treesPlanted_plural": "Trees Planted",
   "bulkCodesTitleStep3": "Generate Bulk Codes - Issue Codes",

@@ -21,18 +21,18 @@ interface ManagePayoutsProps {
 export default function ManagePayouts({
   step,
 }: ManagePayoutsProps): ReactElement | null {
-  const { t, ready } = useTranslation('me');
+  const { t, ready } = useTranslation('managePayouts');
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
 
   useEffect(() => {
     if (ready) {
       setTabConfig([
         {
-          label: t('managePayouts.tabPayoutSchedule'),
+          label: t('tabPayoutSchedule'),
           link: '/profile/payouts',
         },
         {
-          label: t('managePayouts.tabBankDetails'),
+          label: t('tabBankDetails'),
           link: '/profile/payouts/bank-details',
         },
       ]);
@@ -52,10 +52,7 @@ export default function ManagePayouts({
   };
 
   return ready ? (
-    <DashboardView
-      title={t('managePayouts.title')}
-      subtitle={<p>{t('managePayouts.description')}</p>}
-    >
+    <DashboardView title={t('title')} subtitle={<p>{t('description')}</p>}>
       <TabbedView step={step} tabItems={tabConfig}>
         {renderStep()}
       </TabbedView>

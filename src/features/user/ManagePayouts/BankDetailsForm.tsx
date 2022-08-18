@@ -33,7 +33,7 @@ type FormData = {
 };
 
 const BankDetailsForm = (): ReactElement | null => {
-  const { t, ready } = useTranslation('me');
+  const { t, ready } = useTranslation('managePayouts');
   const { register, handleSubmit, errors } = useForm<FormData>({
     mode: 'onBlur',
   });
@@ -47,33 +47,33 @@ const BankDetailsForm = (): ReactElement | null => {
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <div className="inputContainer">
           <TextField
-            label={t('managePayouts.labelBankName')}
+            label={t('labels.bankName')}
             name="bankName"
             inputRef={register({
-              required: t('managePayouts.errors.bankNameRequired'),
+              required: t('errors.bankNameRequired'),
             })}
-            placeholder={t('managePayouts.placeholders.bankName')}
+            placeholder={t('placeholders.bankName')}
             error={errors.bankName !== undefined}
             helperText={errors.bankName && errors.bankName.message}
           ></TextField>
           <TextField
             multiline
             maxRows={4}
-            label={t('managePayouts.labelBankAddress')}
+            label={t('labels.bankAddress')}
             name="bankAddress"
-            placeholder={t('managePayouts.placeholders.bankAddress')}
+            placeholder={t('placeholders.bankAddress')}
             inputRef={register({
-              required: t('managePayouts.errors.bankAddressRequired'),
+              required: t('errors.bankAddressRequired'),
             })}
             error={errors.bankAddress !== undefined}
             helperText={errors.bankAddress && errors.bankAddress.message}
           ></TextField>
           <TextField
-            label={t('managePayouts.labelHolderName')}
+            label={t('labels.holderName')}
             name="holderName"
-            placeholder={t('managePayouts.placeholders.holderName')}
+            placeholder={t('placeholders.holderName')}
             inputRef={register({
-              required: t('managePayouts.errors.holderNameRequired'),
+              required: t('errors.holderNameRequired'),
             })}
             error={errors.holderName !== undefined}
             helperText={errors.holderName && errors.holderName.message}
@@ -81,43 +81,43 @@ const BankDetailsForm = (): ReactElement | null => {
           <TextField
             multiline
             maxRows={4}
-            label={t('managePayouts.labelHolderAddress')}
+            label={t('labels.holderAddress')}
             name="holderAddress"
-            placeholder={t('managePayouts.placeholders.holderAddress')}
+            placeholder={t('placeholders.holderAddress')}
             inputRef={register({
-              required: t('managePayouts.errors.holderAddressRequired'),
+              required: t('errors.holderAddressRequired'),
             })}
             error={errors.holderAddress !== undefined}
             helperText={errors.holderAddress && errors.holderAddress.message}
           ></TextField>
           <InlineFormGroup>
             <TextField
-              label={t('managePayouts.labelAccountNumber')}
+              label={t('labels.accountNumber')}
               name="accountNumber"
               inputRef={register({
-                required: t('managePayouts.errors.accountNumberRequired'),
+                required: t('errors.accountNumberRequired'),
               })}
               error={errors.accountNumber !== undefined}
               helperText={errors.accountNumber && errors.accountNumber.message}
             ></TextField>
             <TextField
-              label={t('managePayouts.labelRoutingNumber')}
+              label={t('labels.routingNumber')}
               name="routingNumber"
               inputRef={register}
             ></TextField>
           </InlineFormGroup>
           <InlineFormGroup>
             <TextField
-              label={t('managePayouts.labelBic')}
+              label={t('labels.bic')}
               name="bic"
               inputRef={register({
-                required: t('managePayouts.errors.bicRequired'),
+                required: t('errors.bicRequired'),
               })}
               error={errors.bic !== undefined}
               helperText={errors.bic && errors.bic.message}
             ></TextField>
             <TextField
-              label={t('managePayouts.labelBranchCode')}
+              label={t('labels.branchCode')}
               name="branchCode"
               inputRef={register}
             ></TextField>
@@ -125,9 +125,9 @@ const BankDetailsForm = (): ReactElement | null => {
           <TextField
             multiline
             maxRows={4}
-            label={t('managePayouts.labelRemarks')}
+            label={t('labels.remarks')}
             name="remarks"
-            placeholder={t('managePayouts.placeholders.remarks')}
+            placeholder={t('placeholders.remarks')}
             inputRef={register}
           ></TextField>
         </div>

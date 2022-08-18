@@ -11,7 +11,7 @@ export default function PayoutPage(): ReactElement {
   return (
     <UserLayout>
       <Head>
-        <title>{ready ? t('managePayoutsTitleStep1') : ''}</title>
+        <title>{ready ? t('managePayouts.titleStep1') : ''}</title>
       </Head>
       <ManagePayouts step={0} />
     </UserLayout>

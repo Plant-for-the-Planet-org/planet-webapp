@@ -21,7 +21,7 @@ type FormData = {
 };
 
 const PayoutScheduleForm = (): ReactElement | null => {
-  const { t, ready } = useTranslation('me');
+  const { t, ready } = useTranslation('managePayouts');
   const { register, handleSubmit, errors, control } = useForm<FormData>({
     mode: 'onBlur',
   });
@@ -34,7 +34,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
     return paymentFrequencies.map((frequency, index) => {
       return (
         <MenuItem value={frequency} key={index}>
-          {t(`managePayouts.scheduleFrequencies.${frequency}`)}
+          {t(`scheduleFrequencies.${frequency}`)}
         </MenuItem>
       );
     });
@@ -43,11 +43,11 @@ const PayoutScheduleForm = (): ReactElement | null => {
   if (ready) {
     return (
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
-        <p>{t('managePayouts.payoutInformation1')}</p>
-        <p>{t('managePayouts.payoutInformation2')}</p>
-        <p>{t('managePayouts.payoutInformation3')}</p>
+        <p>{t('payoutInformation1')}</p>
+        <p>{t('payoutInformation2')}</p>
+        <p>{t('payoutInformation3')}</p>
         <p>
-          <Trans i18nKey="me:managePayouts.supportInformation">
+          <Trans i18nKey="managePayouts:supportInformation">
             If you have an exceptional case, please contact{' '}
             <a href="mailto:support@plant-for-the-planet.org">
               support@plant-for-the-planet.org
@@ -58,11 +58,11 @@ const PayoutScheduleForm = (): ReactElement | null => {
         <div className="inputContainer">
           <ReactHookFormSelect
             name="scheduleFrequency"
-            label={t('managePayouts.labelScheduleFrequency')}
+            label={t('labels.scheduleFrequency')}
             control={control}
             defaultValue="annual"
             rules={{
-              required: t('managePayouts.errors.scheduleFrequencyRequired'),
+              required: t('errors.scheduleFrequencyRequired'),
             }}
             error={errors.scheduleFrequency !== undefined}
             helperText={
@@ -72,11 +72,11 @@ const PayoutScheduleForm = (): ReactElement | null => {
             {renderPaymentFrequencyOptions()}
           </ReactHookFormSelect>
           <TextField
-            label={t('managePayouts.labelPayoutMinAmount')}
+            label={t('labels.payoutMinAmount')}
             name="payoutMinAmount"
-            placeholder={t('managePayouts.placeholders.payoutMinAmount')}
+            placeholder={t('placeholders.payoutMinAmount')}
             inputRef={register({
-              required: t('managePayouts.errors.payoutMinAmountRequired'),
+              required: t('errors.payoutMinAmountRequired'),
             })}
             error={errors.payoutMinAmount !== undefined}
             helperText={
