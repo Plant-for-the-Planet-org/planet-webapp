@@ -70,9 +70,11 @@ const QueryParamsProvider: FC = ({ children }) => {
     const id = query.tenant;
     console.log(id, '4');
     if (id) {
+      console.log(id, '5');
       const tenantId = getTenantId(id);
+      console.log(id, '6');
       setTenantID(tenantId);
-      console.log(tenantId, '5');
+      console.log(tenantId, '7');
     }
   }, [router.query.tenant]);
 
