@@ -70,7 +70,7 @@ const QueryParamsProvider: FC = ({ children }) => {
     console.log(tenantId, '4');
     setTenantID(tenantId);
   }, [query.tenant]);
-  console.log(tenantID, '5');
+  console.log(tenantID, 'main');
   return (
     <ParamsContext.Provider
       value={{
