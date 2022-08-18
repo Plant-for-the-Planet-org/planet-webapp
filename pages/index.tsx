@@ -11,6 +11,7 @@ import { ParamsContext } from '../src/features/common/Layout/QueryParamsContext'
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 import DirectGift from '../src/features/donations/components/DirectGift';
 import i18next from '../i18n';
+import { query } from 'express';
 
 const { useTranslation } = i18next;
 
@@ -48,7 +49,9 @@ export default function Donate({
 
   React.useEffect(() => {
     if (tenantID) setFixedTenantID(true);
-  }, [tenantID]);
+  }, [tenantID, router.query.tenant]);
+
+  console.log(router.query.tenant, 'coool');
 
   React.useEffect(() => {
     const getdirectGift = localStorage.getItem('directGift');

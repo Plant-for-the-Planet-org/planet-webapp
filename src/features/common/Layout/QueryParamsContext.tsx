@@ -54,22 +54,28 @@ const QueryParamsProvider: FC = ({ children }) => {
     }
   }, [language, i18n.isInitialized]);
   console.log(tenantID, '1');
+
   useEffect(() => {
     console.log(query, '2');
-    const getTenantId = (query: {}) => {
+    const getTenantId = (tenantId: string) => {
       if (process.env.TENANTID) {
         return process.env.TENANTID;
-      } else if (query.tenant) {
-        return query.tenant;
+      } else if (tenantId) {
+        return tenantId;
       } else {
         return 'ten_NxJq55pm';
       }
     };
-    console.log(query, '3');
-    const tenantId = getTenantId(query);
-    console.log(tenantId, '4');
-    setTenantID(tenantId);
-  }, [query.tenant]);
+    console.log(query.tenant, '3');
+    const id = query.tenant;
+    console.log(id, '4');
+    if (id) {
+      const tenantId = getTenantId(id);
+      setTenantID(tenantId);
+      console.log(tenantId, '5');
+    }
+  }, [router.query.tenant]);
+
   console.log(tenantID, 'main');
   return (
     <ParamsContext.Provider
