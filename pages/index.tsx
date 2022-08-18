@@ -115,7 +115,7 @@ export default function Donate({
         }
     }
     loadProjects();
-  }, [tenantID, fixedTenantID, currencyCode, i18n.language]);
+  }, [tenantID, currencyCode, i18n.language]);
 
   const ProjectsProps = {
     projects: filteredProjects,

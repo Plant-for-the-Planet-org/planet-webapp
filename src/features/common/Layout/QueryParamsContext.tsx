@@ -53,33 +53,21 @@ const QueryParamsProvider: FC = ({ children }) => {
       /* localStorage.setItem('language', language as string); */ //not needed as i18n handles setting the local storage
     }
   }, [language, i18n.isInitialized]);
-  console.log(tenantID, '1');
 
   useEffect(() => {
-    console.log(query, '2');
-    const getTenantId = (tenantId: string) => {
+    const getTenantId = (query: {}) => {
       if (process.env.TENANTID) {
         return process.env.TENANTID;
-      } else if (tenantId) {
-        return tenantId;
+      } else if (query.tenant) {
+        return query.tenant;
       } else {
         return 'ten_NxJq55pm';
       }
     };
-    console.log(query.tenant, '3');
-    const id = query.tenant;
-    console.log(id, '4');
-    if (id) {
-      console.log(id, '5');
-      const tenantId = getTenantId(id);
-      console.log(id, '6');
-      console.log(tenantId, '7');
-      setTenantID(tenantId);
-      console.log(tenantId, '8');
-    }
-  }, [router.query, query.tenant, tenantID]);
+    const tenantId = getTenantId(query);
+    setTenantID(tenantId);
+  }, [query.tenant]);
 
-  console.log(tenantID, 'main');
   return (
     <ParamsContext.Provider
       value={{
