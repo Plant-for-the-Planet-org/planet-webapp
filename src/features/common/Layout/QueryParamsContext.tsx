@@ -55,16 +55,12 @@ const QueryParamsProvider: FC = ({ children }) => {
   }, [language, i18n.isInitialized]);
 
   const getTenantId = useCallback((query: {}) => {
-    console.log("==> router.isReady from queryParamsContext", router.isReady)
     if(router.isReady){
       if (process.env.TENANTID) {
-        console.log("==>", "reached process.env.TENANTID")
         return process.env.TENANTID;
       } else if (query.tenant) {
-        console.log("==>", "reached query.tenant")
         return query.tenant;
       } else if (!process.env.TENANTID && !query.tenant) {
-        console.log("==>", "reached constant")
         return 'ten_NxJq55pm';
       } else return null;
     }
@@ -74,7 +70,6 @@ const QueryParamsProvider: FC = ({ children }) => {
     const tenantId = getTenantId(query);
     if(tenantId !== null){
       setTenantID(tenantId);
-      console.log("==>", tenantId)
     }
   }, [getTenantId]);
 
