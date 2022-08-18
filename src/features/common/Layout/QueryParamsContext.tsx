@@ -73,10 +73,11 @@ const QueryParamsProvider: FC = ({ children }) => {
       console.log(id, '5');
       const tenantId = getTenantId(id);
       console.log(id, '6');
-      setTenantID(tenantId);
       console.log(tenantId, '7');
+      setTenantID(tenantId);
+      console.log(tenantId, '8');
     }
-  }, [router.query.tenant]);
+  }, [router.query, query.tenant]);
 
   console.log(tenantID, 'main');
   return (

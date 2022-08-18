@@ -49,7 +49,7 @@ export default function Donate({
 
   React.useEffect(() => {
     if (tenantID) setFixedTenantID(true);
-  }, [tenantID, router.query.tenant]);
+  }, [tenantID]);
 
   React.useEffect(() => {
     const getdirectGift = localStorage.getItem('directGift');
