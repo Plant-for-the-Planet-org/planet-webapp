@@ -136,11 +136,11 @@ function UserLayout(props: any): ReactElement {
     },
     {
       key: 6,
-      title: t('me:planetcash.menuTitle'),
+      title: t('me:planetcash.menuText'),
       icon: <DonateIcon />,
       subMenu: [
         {
-          title: t('me:planetcash.submenuTitle'),
+          title: t('me:planetcash.submenuText'),
           path: '/profile/planetcash',
         },
         {

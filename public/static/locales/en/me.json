@@ -1,7 +1,7 @@
 {
   "planetcash": {
-    "menuTitle": "PlanetCash",
-    "submenuTitle": "Account",
+    "menuText": "PlanetCash",
+    "submenuText": "My PlanetCash",
     "title": "PlanetCash"
   },
   "treesPlanted": "Tree Planted",
