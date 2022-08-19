@@ -63,10 +63,10 @@ const QueryParamsProvider: FC = ({ children }) => {
   const getTenantId = useCallback(
     (query: {}) => {
       if (router.isReady) {
-        if (process.env.TENANTID) {
-          return process.env.TENANTID;
-        } else if (query.tenant) {
+        if (query.tenant) {
           return query.tenant;
+        } else if (process.env.TENANTID) {
+          return process.env.TENANTID;
         } else if (!process.env.TENANTID && !query.tenant) {
           return 'ten_NxJq55pm';
         } else return null;
