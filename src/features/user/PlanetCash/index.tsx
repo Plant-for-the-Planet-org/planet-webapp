@@ -37,7 +37,17 @@ export default function PlanetCash({
   }, [ready]);
 
   return ready ? (
-    <DashboardView title={t('title')} subtitle={<p>{t('description')}</p>}>
+    <DashboardView
+      title={t('title')}
+      subtitle={
+        <p>
+          {t('description')}{' '}
+          <a className="planet-links" href="" target="_blank">
+            {t('termsText')}
+          </a>
+        </p>
+      }
+    >
       <TabbedView step={step} tabItems={tabConfig}>
         Step {step}
       </TabbedView>
