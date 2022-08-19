@@ -1,14 +1,10 @@
 /* eslint-disable no-use-before-define */
-import { useState, useContext, ReactElement } from 'react';
-import { Autocomplete, TextField } from '@mui/material';
+import { useState, ReactElement, useEffect } from 'react';
+import { TextField } from '@mui/material';
 import React from 'react';
-import tenantConfig from '../../../../tenant.config';
 import i18next from '../../../../i18n';
-import { ThemeContext } from '../../../theme/themeContext';
-import themeProperties from '../../../theme/themeProperties';
 import { MuiAutocomplete, StyledAutoCompleteOption } from './AutoCompleteTheme';
 
-const config = tenantConfig();
 const { useTranslation } = i18next;
 
 // ISO 3166-1 alpha-2
@@ -38,8 +34,6 @@ export default function CountrySelect({
 }: CountrySelectProps): ReactElement | null {
   const { t, ready } = useTranslation(['country']);
 
-  const { theme } = useContext(ThemeContext);
-
   // This value is an object with keys - code, label and phone
   // This has to be passed to the component as default value
   const [selectedCountry, setSelectedCountry] = useState<CountryType | null>(
@@ -67,7 +61,7 @@ export default function CountrySelect({
     }
   }, [selectedCountry]);
 
-  if (ready) {
+  useEffect(() => {
     countries.sort((a, b) => {
       const nameA = t(`country:${a.code.toLowerCase()}`);
       const nameB = t(`country:${b.code.toLowerCase()}`);
@@ -79,7 +73,7 @@ export default function CountrySelect({
       }
       return 0;
     });
-  }
+  }, [ready]);
 
   return selectedCountry && ready ? (
     <MuiAutocomplete

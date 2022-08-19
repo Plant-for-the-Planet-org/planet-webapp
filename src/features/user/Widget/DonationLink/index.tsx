@@ -5,35 +5,44 @@ import { getRequest } from '../../../../utils/apiRequests/api';
 import DashboardView from '../../../common/Layout/DashboardView';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import DonationLinkForm from './DonationLinkForm';
-import SingleColumnView from './SingleColumnView';
+import SingleColumnView from '../../../common/Layout/DashboardView/SingleColumnView';
+import { Project, SingleProject } from '../../../common/types/project';
 
 const { useTranslation } = i18next;
 
 export default function DonationLink(): ReactElement | null {
   const { handleError } = useContext(ErrorHandlingContext);
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState<Project[] | null>(null);
 
   async function fetchProjectList() {
-    const projectsList = await getRequest<
-      [
-        {
-          properties: {
-            id: string;
-            name: string;
-            slug: string;
-            allowDonations: boolean;
-            purpose: string;
-            currency: string;
-            unitCost: number;
+    const projectsList = await getRequest<SingleProject>(
+      `/app/projects`,
+      handleError,
+      undefined,
+      {
+        _scope: 'default',
+        'filter[purpose]': 'trees,conservation',
+      }
+    );
+    if (
+      projectsList &&
+      Array.isArray(projectsList) &&
+      projectsList.length > 0
+    ) {
+      setProjects(
+        projectsList.map((project) => {
+          return {
+            guid: project.id,
+            slug: project.slug,
+            name: project.name,
+            unitCost: project.unitCost,
+            currency: project.currency,
+            purpose: project.purpose,
+            allowDonations: project.allowDonations,
           };
-        }
-      ]
-    >(`/app/projects`, handleError, undefined, {
-      _scope: 'default',
-    });
-
-    setProjects(projectsList);
-    console.log(projects);
+        })
+      );
+    }
   }
 
   useEffect(() => {

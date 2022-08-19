@@ -2,11 +2,11 @@ import { Autocomplete, styled } from '@mui/material';
 
 const MuiAutocomplete = styled(Autocomplete)((/* { theme } */) => {
   return {
-    // width: '50%',
+    width: '100%',
     '& .Mui-disabled .iconFillColor': {
       fillOpacity: '38%',
     },
-    flexBasis: '50%',
+    flex: '1',
   };
 });
 

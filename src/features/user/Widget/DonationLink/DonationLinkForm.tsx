@@ -1,37 +1,21 @@
-import {
-  ReactElement,
-  useContext,
-  useState,
-  useCallback,
-  useEffect,
-} from 'react';
-import {
-  Alert,
-  Autocomplete,
-  Button,
-  Snackbar,
-  styled,
-  Switch,
-  TextField,
-} from '@mui/material';
+import { ReactElement, useContext, useState, useEffect } from 'react';
+import { Button, styled, Switch, TextField } from '@mui/material';
 import i18next from '../../../../../i18n';
-import { ProjectPropsContext } from '../../../../features/common/Layout/ProjectPropsContext';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
-import InlineFormDisplayGroup from './InlineFormDisplayGroup';
+import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import supportedLanguages from '../../../../utils/language/supportedLanguages.json';
 import React from 'react';
 import ProjectSelectAutocomplete from '../../BulkCodes/components/ProjectSelectAutocomplete';
-import { Project } from '../../../common/Layout/BulkCodeContext';
 import { TENANT_ID } from '../../../../utils/constants/environment';
 const { useTranslation } = i18next;
 import styles from './DonationLinkForm.module.scss';
 import CopyToClipboard from '../../../common/CopyToClipboard';
-import ProjectsList from '../../../projects/screens/Projects';
 import {
   MuiAutocomplete,
   StyledAutoCompleteOption,
 } from '../../../common/InputTypes/AutoCompleteTheme';
+import { Project } from '../../../common/types/project';
 
 // TODOO - refactor code for reuse?
 const StyledForm = styled('form')((/* { theme } */) => ({
@@ -50,8 +34,20 @@ const StyledForm = styled('form')((/* { theme } */) => ({
   },
 }));
 
+const MuiTextField = styled(TextField)(() => {
+  return {
+    flex: '1',
+    minWidth: 240,
+  };
+});
+
 interface DonationLinkFormProps {
   projectsList: Project[] | null;
+}
+
+interface LanguageType {
+  langCode: string;
+  languageName: string;
 }
 
 const DonationLinkForm = ({
@@ -69,19 +65,18 @@ const DonationLinkForm = ({
   const { t, ready } = useTranslation(['donationLink', 'donate']);
   const [localProject, setLocalProject] = useState<Project | null>(null);
   const [isSupport, setIsSupport] = useState<boolean>(!user.isPrivate);
-  const [isCopied, setIsCopied] = useState<boolean>(false);
   const [isTesting, setIsTesting] = useState<boolean>(false);
   const [isProjectSelected, setIsProjectSelected] = useState<boolean>(false);
-  // Load all projects
 
-  const handleChange = () => {
+  const handleUrlChange = () => {
     const link = isTesting
       ? 'http://paydev.pp.eco/'
       : process.env.NEXT_PUBLIC_DONATION_URL;
-    const url = `${link}?country=${country}&locale=${Languages.langCode}${
-      localProject == null
-        ? ''
-        : `&to=${localProject.name.split(/\W+/).join('-').toLowerCase()}`
+
+    const selectedLanguage = Languages ? `&locale=${Languages.langCode}` : '';
+
+    const url = `${link}?country=${country}${selectedLanguage}${
+      localProject == null ? '' : `&to=${localProject.slug}`
     }&tenant=${TENANT_ID}${isSupport ? `&s=${user.slug}` : ''}
     `;
     setDonationUrl(url);
@@ -89,23 +84,18 @@ const DonationLinkForm = ({
 
   const handleProjectChange = async (project: Project | null) => {
     setLocalProject(project);
-    setIsProjectSelected(!isProjectSelected);
+    setIsProjectSelected(project == null);
   };
 
   useEffect(() => {
-    handleChange();
+    handleUrlChange();
   }, [country, Languages, localProject, isSupport, isTesting]);
-
-  // const setTextCopiedClipboard = () => {
-  //   navigator.clipboard.writeText(donationUrl);
-  //   setIsCopied(!isCopied);
-  // };
 
   if (ready) {
     return (
       <StyledForm>
         <div className="inputContainer">
-          <div className={styles.singleFormGroup}>
+          <div className={styles.formSection}>
             <div className={styles.formHeader}>
               {t('donationLink:countryLanguageTitle')}
             </div>
@@ -117,33 +107,44 @@ const DonationLinkForm = ({
                 onChange={setCountry}
               />
               <MuiAutocomplete
-                id={t('donationLink:labelLanguages')}
+                id="language"
                 options={supportedLanguages}
                 getOptionLabel={(option) =>
-                  `${option.langCode} - ${option.languageName}`
+                  `${(option as LanguageType).langCode} - ${
+                    (option as LanguageType).languageName
+                  }`
                 }
                 isOptionEqualToValue={(option, value) =>
-                  option.langCode === value.langCode
+                  (option as LanguageType).langCode ===
+                  (value as LanguageType).langCode
                 }
                 value={Languages}
                 renderInput={(params) => (
                   <TextField
                     {...params}
+                    name="languagedropdown"
                     label="Language"
                     placeholder={t('donationLink:Languages')}
                   />
                 )}
                 renderOption={(props, option) => (
-                  <StyledAutoCompleteOption {...props} key={option.langCode}>
-                    <span>{`${option.langCode}`}</span>
-                    {`- ${option.languageName}`}
+                  <StyledAutoCompleteOption
+                    {...props}
+                    key={(option as LanguageType).langCode}
+                  >
+                    <span>{`${(option as LanguageType).langCode}`}</span>
+                    {`- ${(option as LanguageType).languageName}`}
                   </StyledAutoCompleteOption>
                 )}
-                onChange={(event, newLan) => setLanguage(newLan)}
+                onChange={(event, newLan) => {
+                  if (newLan) {
+                    setLanguage(newLan as LanguageType);
+                  }
+                }}
               />
             </InlineFormDisplayGroup>
           </div>
-          <div className={styles.singleFormGroup}>
+          <div className={styles.formSection}>
             <div className={styles.formHeader}>
               {t('donationLink:projectTitle')}
             </div>
@@ -159,6 +160,8 @@ const DonationLinkForm = ({
               {t('donationLink:treeCounterTitle')}
             </div>
             <Switch
+              id="treeCounter"
+              name="treeCounter"
               checked={isSupport}
               onChange={() => {
                 setIsSupport(!isSupport);
@@ -171,6 +174,8 @@ const DonationLinkForm = ({
               {t('donationLink:testingTitle')}
             </div>
             <Switch
+              id="testing"
+              name="testing"
               checked={isTesting}
               onChange={() => {
                 setIsTesting(!isTesting);
@@ -178,25 +183,27 @@ const DonationLinkForm = ({
               disabled={false}
             />
           </InlineFormDisplayGroup>
-          <div className={styles.singleFormGroup}>
+          <div className={styles.formSection}>
             <div className={styles.formHeader}>
               {t('donationLink:urlTitle')}
             </div>
             <InlineFormDisplayGroup>
-              <TextField
-                id="outlined-read-only-input"
+              <MuiTextField
+                id="donation-url"
+                name="donation-url"
                 InputProps={{
                   readOnly: true,
                 }}
                 value={donationUrl}
-                onChange={handleChange}
+                onChange={handleUrlChange}
               />
               <CopyToClipboard isButton={true} text={donationUrl} />
             </InlineFormDisplayGroup>
           </div>
           <div className={styles.formButtonContainer}>
             <Button
-              id={'Preview'}
+              id="Preview"
+              name="Preview"
               variant="contained"
               color="primary"
               fullWidth={false}
@@ -205,33 +212,6 @@ const DonationLinkForm = ({
             >
               {t('donationLink:preview')}
             </Button>
-            {/* <Button
-              id={'Copy'}
-              variant="outlined"
-              color="primary"
-              fullWidth={false}
-              onClick={() => setTextCopiedClipboard()}
-              disabled={isProjectSelected}
-            >
-              {t('donationLink:copy')}
-            </Button>
-            <Snackbar
-              open={isCopied}
-              autoHideDuration={4000}
-              onClose={setTextCopiedClipboard}
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-            >
-              <div>
-                <Alert
-                  elevation={6}
-                  variant="filled"
-                   onClose={setTextCopiedClipboard}
-                  severity="success"
-                >
-                  {t('donate:Copied To Clipboard')}
-                </Alert>
-              </div>
-            </Snackbar> */}
           </div>
         </div>
       </StyledForm>
