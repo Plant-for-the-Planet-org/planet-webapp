@@ -55,7 +55,12 @@ export default function PlanetCash({
       subtitle={
         <p>
           {t('description')}{' '}
-          <a className="planet-links" href="" target="_blank">
+          <a
+            className="planet-links"
+            href="https://www.plant-for-the-planet.org/terms-and-conditions/"
+            target="_blank"
+            rel="noreferrer"
+          >
             {t('termsText')}
           </a>
         </p>
