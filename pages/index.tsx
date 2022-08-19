@@ -88,7 +88,7 @@ export default function Donate({
         !internalCurrencyCode ||
         currencyCode !== internalCurrencyCode ||
         internalLanguage !== i18n.language
-      )
+      ) {
         if (fixedTenantID) {
           {
             const currency = getStoredCurrency();
@@ -113,9 +113,10 @@ export default function Donate({
             setZoomLevel(1);
           }
         }
+      }
     }
     loadProjects();
-  }, [tenantID, currencyCode, i18n.language]);
+  }, [tenantID, fixedTenantID, currencyCode, i18n.language]);
 
   const ProjectsProps = {
     projects: filteredProjects,

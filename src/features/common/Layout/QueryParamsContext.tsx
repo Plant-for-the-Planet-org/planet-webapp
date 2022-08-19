@@ -1,4 +1,10 @@
-import React, { createContext, FC, useCallback, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  FC,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { useRouter } from 'next/router';
 import i18next from '../../../../i18n';
 
@@ -53,22 +59,25 @@ const QueryParamsProvider: FC = ({ children }) => {
       /* localStorage.setItem('language', language as string); */ //not needed as i18n handles setting the local storage
     }
   }, [language, i18n.isInitialized]);
-
-  const getTenantId = useCallback((query: {}) => {
-    if(router.isReady){
-      if (process.env.TENANTID) {
-        return process.env.TENANTID;
-      } else if (query.tenant) {
-        return query.tenant;
-      } else if (!process.env.TENANTID && !query.tenant) {
-        return 'ten_NxJq55pm';
-      } else return null;
-    }
-  }, [router.isReady, query.tenant, process.env.TENANTID]);
+  // ten_NxJq55pm
+  const getTenantId = useCallback(
+    (query: {}) => {
+      if (router.isReady) {
+        if (process.env.TENANTID) {
+          return process.env.TENANTID;
+        } else if (query.tenant) {
+          return query.tenant;
+        } else if (!process.env.TENANTID && !query.tenant) {
+          return 'ten_V5svhr0d';
+        } else return null;
+      }
+    },
+    [router.isReady, query.tenant, process.env.TENANTID]
+  );
 
   useEffect(() => {
     const tenantId = getTenantId(query);
-    if(tenantId !== null){
+    if (tenantId !== null) {
       setTenantID(tenantId);
     }
   }, [getTenantId]);
