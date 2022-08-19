@@ -3,6 +3,8 @@ import i18next from '../../../../i18n';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
+import Account from './screens/Account';
+import Transactions from './screens/Transactions';
 
 export enum PlanetCashTabs {
   ACCOUNT = 0,
@@ -20,6 +22,17 @@ export default function PlanetCash({
 }: PlanetCashProps): ReactElement | null {
   const { t, ready } = useTranslation('planetcash');
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
+
+  const renderStep = () => {
+    switch (step) {
+      case PlanetCashTabs.ACCOUNT:
+        return <Account />;
+      case PlanetCashTabs.TRANSACTIONS:
+        return <Transactions />;
+      default:
+        return <Account />;
+    }
+  };
 
   useEffect(() => {
     if (ready) {
@@ -49,7 +62,7 @@ export default function PlanetCash({
       }
     >
       <TabbedView step={step} tabItems={tabConfig}>
-        Step {step}
+        {renderStep()}
       </TabbedView>
     </DashboardView>
   ) : null;
