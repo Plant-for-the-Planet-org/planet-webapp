@@ -2,7 +2,8 @@
   "planetcash": {
     "menuText": "PlanetCash",
     "submenuText": "My PlanetCash",
-    "title": "PlanetCash"
+    "titleAccount": "PlanetCash - Account",
+    "titleTransactions": "PlanetCash - Transaction"
   },
   "treesPlanted": "Tree Planted",
   "treesPlanted_plural": "Trees Planted",

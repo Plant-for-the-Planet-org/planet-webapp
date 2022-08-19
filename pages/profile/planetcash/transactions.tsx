@@ -8,14 +8,14 @@ import i18next from '../../../i18n';
 
 const { useTranslation } = i18next;
 
-export default function PlanetCashPage(): ReactElement {
+export default function PlanetCashTransactionsPage(): ReactElement {
   const { t, ready } = useTranslation('me');
   return (
     <UserLayout>
       <Head>
-        <title>{ready ? t('planetcash.titleAccount') : ''}</title>
+        <title>{ready ? t('planetcash.titleTransactions') : ''}</title>
       </Head>
-      <PlanetCash step={PlanetCashTabs.ACCOUNT} />
+      <PlanetCash step={PlanetCashTabs.TRANSACTIONS} />
     </UserLayout>
   );
 }
