@@ -1,7 +1,7 @@
 {
   "planetcash": {
-    "menuTitle": "PlanetCash",
-    "submenuTitle": "Account",
+    "menuText": "PlanetCash",
+    "submenuText": "Account",
     "title": "PlanetCash"
   },
   "managePayouts": {
