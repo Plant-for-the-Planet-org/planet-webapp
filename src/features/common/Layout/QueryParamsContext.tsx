@@ -59,7 +59,7 @@ const QueryParamsProvider: FC = ({ children }) => {
       /* localStorage.setItem('language', language as string); */ //not needed as i18n handles setting the local storage
     }
   }, [language, i18n.isInitialized]);
-  // ten_NxJq55pm
+
   const getTenantId = useCallback(
     (query: {}) => {
       if (router.isReady) {
@@ -68,7 +68,7 @@ const QueryParamsProvider: FC = ({ children }) => {
         } else if (query.tenant) {
           return query.tenant;
         } else if (!process.env.TENANTID && !query.tenant) {
-          return 'ten_V5svhr0d';
+          return 'ten_NxJq55pm';
         } else return null;
       }
     },
