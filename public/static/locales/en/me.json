@@ -4,6 +4,11 @@
     "submenuTitle": "Account",
     "title": "PlanetCash"
   },
+  "managePayouts": {
+    "menuText": "Manage Payouts",
+    "titleStep2": "Manage Payouts - Bank Details",
+    "titleStep1": "Manage Payouts - Schedule"
+  },
   "treesPlanted": "Tree Planted",
   "treesPlanted_plural": "Trees Planted",
   "bulkCodesTitleStep3": "Generate Bulk Codes - Issue Codes",
