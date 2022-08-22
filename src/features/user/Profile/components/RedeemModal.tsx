@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import styles from '../styles/RedeemModal.module.scss';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
