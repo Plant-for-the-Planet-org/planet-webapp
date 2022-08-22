@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from '../styles/RedeemModal.module.scss';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
@@ -16,6 +16,7 @@ import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import ShareOptions from '../../../common/ShareOptions/ShareOptions';
 import { styled } from '@mui/material';
+import { style } from '@mui/system';
 
 const { useTranslation } = i18next;
 export default function RedeemModal({
@@ -41,7 +42,7 @@ export default function RedeemModal({
   const [errorMessage, setErrorMessage] = React.useState();
   const [codeValidated, setCodeValidated] = React.useState(false);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [validCodeData, setValidCodeData] = React.useState();
+  const [validCodeData, setValidCodeData] = React.useState('');
   const [codeRedeemed, setCodeRedeemed] = React.useState(false);
   const [code, setCode] = React.useState();
   const [inputCode, setInputCode] = React.useState('');
@@ -81,12 +82,15 @@ export default function RedeemModal({
       const userLang = localStorage.getItem('language') || 'en';
       postAuthenticatedRequest(`/app/redeem`, submitData, token).then((res) => {
         if (res.code === 401) {
-          setErrorMessage(res.message);
+          setErrorMessage(res.error_code);
           setIsUploadingData(false);
-        } else if (res.status === 'error') {
-          setErrorMessage(res.errorText || t('me:wentWrong'));
+        } else if (res.error_code === 'invalid_code') {
+          setErrorMessage(res.error_code);
           setIsUploadingData(false);
-        } else if (res.status === 'success') {
+        } else if (res.error_code === 'already_redeemed') {
+          setErrorMessage(res.error_code || t('me:wentWrong'));
+          setIsUploadingData(false);
+        } else if (res.status === 'redeemed') {
           setCode(data.code);
           setCodeValidated(true);
           setValidCodeData(res);
@@ -312,7 +316,6 @@ export default function RedeemModal({
                       },
                     })}
                     onChange={(event) => {
-                      console.log(event.target.value);
                       event.target.value.startsWith('pp.eco/c/')
                         ? setInputCode(
                             event.target.value.replace('pp.eco/c/', '')
@@ -326,13 +329,14 @@ export default function RedeemModal({
                     variant="outlined"
                   />
                 </div>
+
                 {errors.code && (
                   <span className={styles.formErrors}>
                     {errors.code.message}
                   </span>
                 )}
 
-                {errorMessage && (
+                {errorMessage && !errors.code && !isUploadingData && (
                   <span className={styles.formErrors}>{errorMessage}</span>
                 )}
                 <button

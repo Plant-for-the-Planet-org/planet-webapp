@@ -104,10 +104,12 @@ function ClaimDonation({}: Props): ReactElement {
         if (res.code === 401) {
           setErrorMessage(res.message);
           setIsUploadingData(false);
-        } else if (res.status === 'error') {
-          setErrorMessage(res.errorText || t('me:wentWrong'));
+        } else if (res.error_code === 'already_redeemed') {
+          setErrorMessage(res.error_code || t('me:wentWrong'));
           setIsUploadingData(false);
-        } else if (res.status === 'success') {
+        } else if (res.error_code === 'invalid_code') {
+          setErrorMessage(res.error_code);
+        } else if (res.status === 'redeemed') {
           setCodeValidated(true);
           setValidCodeData(res);
           setIsUploadingData(false);
