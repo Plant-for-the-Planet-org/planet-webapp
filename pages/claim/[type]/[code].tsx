@@ -94,7 +94,6 @@ function ClaimDonation({}: Props): ReactElement {
       code: code,
     };
     if (contextLoaded && user) {
-      const userLang = localStorage.getItem('language') || 'en';
       postAuthenticatedRequest(
         `/app/redeem`,
         submitData,

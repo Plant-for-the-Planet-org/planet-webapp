@@ -16,7 +16,6 @@ import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import ShareOptions from '../../../common/ShareOptions/ShareOptions';
 import { styled } from '@mui/material';
-import { style } from '@mui/system';
 
 const { useTranslation } = i18next;
 export default function RedeemModal({
@@ -79,7 +78,6 @@ export default function RedeemModal({
       code: data.code,
     };
     if (contextLoaded && user) {
-      const userLang = localStorage.getItem('language') || 'en';
       postAuthenticatedRequest(`/app/redeem`, submitData, token).then((res) => {
         if (res.code === 401) {
           setErrorMessage(res.error_code);
