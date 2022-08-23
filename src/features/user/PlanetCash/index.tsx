@@ -15,10 +15,12 @@ const { useTranslation } = i18next;
 
 interface PlanetCashProps {
   step: PlanetCashTabs;
+  setProgress?: (progress: number) => void;
 }
 
 export default function PlanetCash({
   step,
+  setProgress,
 }: PlanetCashProps): ReactElement | null {
   const { t, ready } = useTranslation('planetcash');
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
@@ -28,7 +30,7 @@ export default function PlanetCash({
       case PlanetCashTabs.ACCOUNT:
         return <Account />;
       case PlanetCashTabs.TRANSACTIONS:
-        return <Transactions />;
+        return <Transactions setProgress={setProgress} />;
       default:
         return <Account />;
     }
