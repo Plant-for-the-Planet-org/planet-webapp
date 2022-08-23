@@ -301,8 +301,9 @@
 @media only screen and (max-width: 768px) {
   .signup {
     min-height: calc(100vh - 150px);
+    padding-bottom: 40px;
   }
   .signUpPage {
-    min-height: calc(100vh - 150px);
+    min-height: 100vh;
   }
 }
