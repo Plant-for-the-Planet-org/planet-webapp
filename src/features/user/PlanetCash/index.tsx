@@ -44,6 +44,7 @@ export default function PlanetCash({
         {
           label: t('tabTransactions'),
           link: '/profile/planetcash/transactions',
+          hasList: true,
         },
       ]);
     }
@@ -66,7 +67,11 @@ export default function PlanetCash({
         </p>
       }
     >
-      <TabbedView step={step} tabItems={tabConfig}>
+      <TabbedView
+        step={step}
+        tabItems={tabConfig}
+        isShowingList={tabConfig[step]?.hasList}
+      >
         {renderStep()}
       </TabbedView>
     </DashboardView>
