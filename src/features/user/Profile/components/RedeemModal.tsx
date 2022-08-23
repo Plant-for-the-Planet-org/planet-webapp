@@ -5,6 +5,7 @@ import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import i18next from '../../../../../i18n';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useForm } from 'react-hook-form';
+import React from 'react';
 import Close from '../../../../../public/assets/images/icons/headerIcons/close';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
