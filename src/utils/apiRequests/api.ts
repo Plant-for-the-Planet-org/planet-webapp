@@ -135,7 +135,7 @@ export async function getAuthenticatedRequest(
   redirect?: string,
   queryParams?: { [key: string]: string },
   version?: string,
-  tenantID: any
+  tenantID?: any
 ): Promise<any> {
   let result = {};
   const lang = localStorage.getItem('language') || 'en';

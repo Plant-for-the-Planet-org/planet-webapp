@@ -135,6 +135,7 @@ function ProjectsList({
     () => getProjects(projects, 'featured'),
     [projects]
   );
+  const { embed } = React.useContext(ParamsContext);
 
   const NoProjectFound = (props: any) => {
     return ready ? (
@@ -148,8 +149,6 @@ function ProjectsList({
       </div>
     ) : null;
   };
-
-  const { embed } = React.useContext(ParamsContext);
 
   return ready ? (
     <>

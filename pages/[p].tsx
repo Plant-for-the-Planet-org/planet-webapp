@@ -13,7 +13,6 @@ import i18next from '../i18n';
 import { ParamsContext } from '../src/features/common/Layout/QueryParamsContext';
 
 const { useTranslation } = i18next;
-
 interface Props {
   initialized: boolean;
   currencyCode: string;
@@ -86,17 +85,18 @@ export default function Donate({
         setZoomLevel(2);
       }
     }
-    if (router.query.p) {
+    if (router.query.p && tenantID) {
       loadProject();
     }
-  }, [router.query.p, currencyCode, i18n.language]);
+  }, [tenantID, router.query.p, currencyCode, i18n.language]);
 
   React.useEffect(() => {
     async function loadPl() {
       setPlantLocationsLoaded(false);
       const newPlantLocations = await getAllPlantLocations(
         project.id,
-        handleError
+        handleError,
+        tenantID
       );
       setPlantLocations(newPlantLocations);
       setPlantLocationsLoaded(true);

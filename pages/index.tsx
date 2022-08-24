@@ -13,8 +13,6 @@ import DirectGift from '../src/features/donations/components/DirectGift';
 import i18next from '../i18n';
 import { query } from 'express';
 
-const { useTranslation } = i18next;
-
 interface Props {
   initialized: Boolean;
   currencyCode: any;
@@ -39,17 +37,13 @@ export default function Donate({
   } = React.useContext(ProjectPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const { tenantID } = React.useContext(ParamsContext);
+  const { useTranslation } = i18next;
   const { i18n } = useTranslation();
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
   const [directGift, setDirectGift] = React.useState(null);
   const [showdirectGift, setShowDirectGift] = React.useState(true);
   const [internalLanguage, setInternalLanguage] = React.useState('');
-  const [fixedTenantID, setFixedTenantID] = React.useState(false);
-
-  React.useEffect(() => {
-    if (tenantID) setFixedTenantID(true);
-  }, [tenantID]);
 
   React.useEffect(() => {
     const getdirectGift = localStorage.getItem('directGift');
@@ -87,36 +81,39 @@ export default function Donate({
       if (
         !internalCurrencyCode ||
         currencyCode !== internalCurrencyCode ||
-        internalLanguage !== i18n.language
+        internalLanguage !== i18n.language ||
+        tenantID
       ) {
-        if (fixedTenantID) {
-          {
-            const currency = getStoredCurrency();
-            setInternalCurrencyCode(currency);
-            setCurrencyCode(currency);
-            setInternalLanguage(i18n.language);
-            const projects = await getRequest(
-              `/app/projects`,
-              handleError,
-              '/',
-              {
-                _scope: 'map',
-                currency: currency,
-                tenant: tenantID,
-                'filter[purpose]': 'trees,conservation',
-                locale: i18n.language,
-              }
-            );
-            setProjects(projects);
-            setProject(null);
-            setShowSingleProject(false);
-            setZoomLevel(1);
-          }
+        {
+          const currency = getStoredCurrency();
+          setInternalCurrencyCode(currency);
+          setCurrencyCode(currency);
+          setInternalLanguage(i18n.language);
+          const projects = await getRequest(
+            `/app/projects`,
+            handleError,
+            '/',
+            {
+              _scope: 'map',
+              currency: currency,
+              tenant: tenantID,
+              'filter[purpose]': 'trees,conservation',
+              locale: i18n.language,
+            },
+            undefined,
+            tenantID
+          );
+          setProjects(projects);
+          setProject(null);
+          setShowSingleProject(false);
+          setZoomLevel(1);
         }
       }
     }
-    loadProjects();
-  }, [tenantID, fixedTenantID, currencyCode, i18n.language]);
+    if (tenantID) {
+      loadProjects();
+    }
+  }, [tenantID, currencyCode, i18n.language]);
 
   const ProjectsProps = {
     projects: filteredProjects,

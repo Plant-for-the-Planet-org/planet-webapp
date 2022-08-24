@@ -3,7 +3,7 @@ import * as d3 from 'd3-ease';
 import * as turf from '@turf/turf';
 import { getRequest } from '../apiRequests/api';
 import { ParamsContext } from '../../features/common/Layout/QueryParamsContext';
-import { useContext } from 'react';
+
 
 export function zoomToPlantLocation(
   geoJson: Object,
@@ -52,10 +52,10 @@ export function zoomToPlantLocation(
 
 export async function getAllPlantLocations(
   project: string,
-  handleError: Function
+  handleError: Function,
+  tenantID: string
 ) {
-  const {tenantID} = useContext(ParamsContext)
-  const result = await getRequest(
+    const result = await getRequest(
     `/app/plantLocations/${project}`,
     handleError,
     '/',

@@ -86,6 +86,7 @@ export default function RedeemModal({
         submitData,
         token,
         undefined,
+        undefined,
         tenantID
       ).then((res) => {
         if (res.code === 401) {
