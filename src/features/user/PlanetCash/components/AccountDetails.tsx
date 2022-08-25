@@ -1,19 +1,27 @@
 import { ReactElement } from 'react';
-import { PlanetCash } from '../../../common/types/user';
+import { styled } from '@mui/material';
+
+const ListItem = styled('div')(({ theme }) => ({
+  backgroundColor: theme.palette.background.default,
+  padding: 24,
+  borderRadius: 9,
+  boxShadow: theme.shadows[1],
+  width: '100%',
+}));
 
 interface AccountDetailsProps {
-  planetCash: PlanetCash;
+  account: PlanetCash.Account;
 }
 
-const AccountDetails = ({ planetCash }: AccountDetailsProps): ReactElement => {
+const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
   return (
-    <div>
-      <p>{planetCash.currency} PlanetCash Account</p>
-      <p>{planetCash.account}</p>
-      <p>Balance: {planetCash.balance}</p>
-      <p>Debit: {planetCash.debit || 0}</p>
-      <p>Credit: {planetCash.creditLimit}</p>
-    </div>
+    <ListItem>
+      <p>{account.currency} PlanetCash Account</p>
+      <p>{account.id}</p>
+      <p>Balance: {account.balance}</p>
+      <p>Debit: {account.debit || 0}</p>
+      <p>Credit: {account.creditLimit}</p>
+    </ListItem>
   );
 };
 

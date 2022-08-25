@@ -15,7 +15,7 @@ export default function PlanetCashPage(): ReactElement {
       <Head>
         <title>{ready ? t('planetcash.titleAccount') : ''}</title>
       </Head>
-      <PlanetCash step={PlanetCashTabs.ACCOUNT} />
+      <PlanetCash step={PlanetCashTabs.ACCOUNTS} />
     </UserLayout>
   );
 }

@@ -3,11 +3,11 @@ import i18next from '../../../../i18n';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
-import Account from './screens/Account';
+import Accounts from './screens/Accounts';
 import Transactions from './screens/Transactions';
 
 export enum PlanetCashTabs {
-  ACCOUNT = 0,
+  ACCOUNTS = 0,
   TRANSACTIONS = 1,
 }
 
@@ -27,12 +27,12 @@ export default function PlanetCash({
 
   const renderStep = () => {
     switch (step) {
-      case PlanetCashTabs.ACCOUNT:
-        return <Account />;
+      case PlanetCashTabs.ACCOUNTS:
+        return <Accounts />;
       case PlanetCashTabs.TRANSACTIONS:
         return <Transactions setProgress={setProgress} />;
       default:
-        return <Account />;
+        return <Accounts />;
     }
   };
 
@@ -42,6 +42,7 @@ export default function PlanetCash({
         {
           label: t('tabAccount'),
           link: '/profile/planetcash',
+          hasList: true,
         },
         {
           label: t('tabTransactions'),
