@@ -8,6 +8,7 @@ const FormContainer = styled('div')(({ theme }) => ({
   padding: 24,
   borderRadius: 9,
   boxShadow: theme.shadows[1],
+  alignItems: 'flex-end',
   '&.formContainer--list': {
     backgroundColor: 'inherit',
     boxShadow: 'none',

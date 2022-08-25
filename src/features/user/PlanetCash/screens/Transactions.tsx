@@ -1,12 +1,15 @@
 import { ReactElement, useContext, useState, useEffect } from 'react';
-
+import i18next from '../../../../../i18n';
 import AccountRecord from '../../Account/components/AccountRecord';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
+import { Button } from '@mui/material';
 
 import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+
+const { useTranslation } = i18next;
 
 interface TransactionsProps {
   setProgress?: (progress: number) => void;
@@ -15,9 +18,10 @@ interface TransactionsProps {
 const Transactions = ({
   setProgress,
 }: TransactionsProps): ReactElement | null => {
+  const { t } = useTranslation('me');
   const { token, contextLoaded } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
-  const [transactionList, setTransactionList] =
+  const [transactionHistory, setTransactionHistory] =
     useState<Payments.PaymentHistory | null>(null);
   const [selectedRecord, setSelectedRecord] = useState<number | null>(null);
   const [isDataLoading, setIsDataLoading] = useState(false);
@@ -33,19 +37,39 @@ const Transactions = ({
     }
   };
 
-  const fetchTransactions = async () => {
+  const fetchTransactions = async (next = false) => {
     setIsDataLoading(true);
     setProgress && setProgress(70);
 
-    const transactions: Payments.PaymentHistory = await getAuthenticatedRequest(
-      `/app/paymentHistory?filter=planet-cash&limit=15`,
-      token,
-      {},
-      handleError,
-      '/profile/planetcash'
-    );
+    const nextPage =
+      next && transactionHistory?._links?.next
+        ? transactionHistory._links.next.split('?').pop()
+        : undefined;
 
-    setTransactionList(transactions);
+    const apiUrl =
+      next && transactionHistory?._links?.next
+        ? `/app/paymentHistory?filter=planet-cash&limit=15&${nextPage}`
+        : `/app/paymentHistory?filter=planet-cash&limit=15`;
+
+    const newTransactionHistory: Payments.PaymentHistory =
+      await getAuthenticatedRequest(
+        apiUrl,
+        token,
+        {},
+        handleError,
+        '/profile/planetcash'
+      );
+
+    if (transactionHistory) {
+      setTransactionHistory({
+        ...transactionHistory,
+        items: [...transactionHistory.items, ...newTransactionHistory.items],
+        _links: newTransactionHistory._links,
+      });
+    } else {
+      setTransactionHistory(newTransactionHistory);
+    }
+
     setIsDataLoading(false);
     if (setProgress) {
       setProgress(100);
@@ -57,15 +81,15 @@ const Transactions = ({
     if (contextLoaded && token) fetchTransactions();
   }, [contextLoaded, token]);
 
-  return !transactionList && isDataLoading ? (
+  return !transactionHistory && isDataLoading ? (
     <>
       <TransactionListLoader />
       <TransactionListLoader />
       <TransactionListLoader />
     </>
-  ) : transactionList && transactionList.items.length > 0 ? (
+  ) : transactionHistory && transactionHistory.items.length > 0 ? (
     <>
-      {transactionList.items.map((record, index) => {
+      {transactionHistory.items.map((record, index) => {
         return (
           <AccountRecord
             key={index}
@@ -73,22 +97,31 @@ const Transactions = ({
             index={index}
             selectedRecord={selectedRecord}
             record={record}
-            paymentHistory={transactionList}
+            paymentHistory={transactionHistory}
           />
         );
       })}
+      {transactionHistory._links.next && (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => fetchTransactions(true)}
+        >
+          {t('loadMore')}
+        </Button>
+      )}
       {isModalOpen && selectedRecord !== null && (
         <AccountRecord
           isModal={true}
           handleRecordToggle={handleRecordToggle}
           selectedRecord={selectedRecord}
-          paymentHistory={transactionList}
-          record={transactionList.items[selectedRecord]}
+          paymentHistory={transactionHistory}
+          record={transactionHistory.items[selectedRecord]}
         />
       )}
     </>
   ) : (
-    transactionList && <TransactionsNotFound />
+    transactionHistory && <TransactionsNotFound />
   );
 };
 
