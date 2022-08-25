@@ -12,19 +12,24 @@ interface TransactionsProps {
   setProgress?: (progress: number) => void;
 }
 
-const Transactions = ({ setProgress }: TransactionsProps): ReactElement => {
+const Transactions = ({
+  setProgress,
+}: TransactionsProps): ReactElement | null => {
   const { token, contextLoaded } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
   const [transactionList, setTransactionList] =
     useState<Payments.PaymentHistory | null>(null);
   const [selectedRecord, setSelectedRecord] = useState<number | null>(null);
   const [isDataLoading, setIsDataLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleRecordToggle = (index: number) => {
-    if (selectedRecord === index) {
+  const handleRecordToggle = (index: number | undefined): void => {
+    if (selectedRecord === index || index === undefined) {
       setSelectedRecord(null);
+      setIsModalOpen(false);
     } else {
       setSelectedRecord(index);
+      setIsModalOpen(true);
     }
   };
 
@@ -58,13 +63,13 @@ const Transactions = ({ setProgress }: TransactionsProps): ReactElement => {
       <TransactionListLoader />
       <TransactionListLoader />
     </>
-  ) : transactionList ? (
+  ) : transactionList && transactionList.items.length > 0 ? (
     <>
-      {transactionList?.items.map((record, index) => {
+      {transactionList.items.map((record, index) => {
         return (
           <AccountRecord
             key={index}
-            handleRecordOpen={handleRecordToggle}
+            handleRecordToggle={handleRecordToggle}
             index={index}
             selectedRecord={selectedRecord}
             record={record}
@@ -72,9 +77,18 @@ const Transactions = ({ setProgress }: TransactionsProps): ReactElement => {
           />
         );
       })}
+      {isModalOpen && selectedRecord !== null && (
+        <AccountRecord
+          isModal={true}
+          handleRecordToggle={handleRecordToggle}
+          selectedRecord={selectedRecord}
+          paymentHistory={transactionList}
+          record={transactionList.items[selectedRecord]}
+        />
+      )}
     </>
   ) : (
-    <TransactionsNotFound />
+    transactionList && <TransactionsNotFound />
   );
 };
 
