@@ -6,5 +6,7 @@
   "validateCode": "Validate Code",
   "enterRedeemCode": "Please enter a code to redeem",
   "validating": "Validating",
-  "invalidType": "Invalid type, please check the link again"
+  "invalidType": "Invalid type, please check the link again",
+  "successfullyRedeemed": "Successfully Redeemed",
+  "exitToProfile": "Exit to Profile"
 }

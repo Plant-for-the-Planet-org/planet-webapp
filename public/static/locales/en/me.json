@@ -231,5 +231,7 @@
   "apiKeyMessage1": "API Key is like a digital password that allows you to act as your profile in any application. It also allows applications to donate on your behalf, use PlanetCash and view transactions.",
   "apiKeyMessage2": "Once you generate an API Key, we will require a two factor authentication for your login. This you’ll be able to setup next time you log in.",
   "apiKeyMessage3": "Regenerating an API Key will invalidate your existing API Key immediately.",
-  "regenerateKey": "Regenerate Key"
+  "regenerateKey": "Regenerate Key",
+  "alreadyRedeemed": "The code has already been redeemed",
+  "invalidCode": "This code is invalid"
 }

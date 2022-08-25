@@ -16,6 +16,7 @@ import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import ShareOptions from '../../../common/ShareOptions/ShareOptions';
 import { styled } from '@mui/material';
+import { useEffect } from 'react';
 
 const { useTranslation } = i18next;
 export default function RedeemModal({
@@ -43,6 +44,8 @@ export default function RedeemModal({
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [validCodeData, setValidCodeData] = React.useState('');
   const [codeRedeemed, setCodeRedeemed] = React.useState(false);
+  const [afterValidateCodeButton, setAfterValidateCodeButton] =
+    React.useState(false);
   const [code, setCode] = React.useState();
   const [inputCode, setInputCode] = React.useState('');
   const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] =
@@ -79,14 +82,11 @@ export default function RedeemModal({
     };
     if (contextLoaded && user) {
       postAuthenticatedRequest(`/app/redeem`, submitData, token).then((res) => {
-        if (res.code === 401) {
-          setErrorMessage(res.error_code);
+        if (res.error_code === 'already_redeemed') {
+          setErrorMessage(t('me:alreadyRedeemed'));
           setIsUploadingData(false);
         } else if (res.error_code === 'invalid_code') {
-          setErrorMessage(res.error_code);
-          setIsUploadingData(false);
-        } else if (res.error_code === 'already_redeemed') {
-          setErrorMessage(res.error_code || t('me:wentWrong'));
+          setErrorMessage(t('me:invalidCode'));
           setIsUploadingData(false);
         } else if (res.status === 'redeemed') {
           setCode(data.code);
@@ -136,10 +136,19 @@ export default function RedeemModal({
     }
   }
 
+  useEffect(() => {
+    if (errorMessage || validCodeData) {
+      setAfterValidateCodeButton(true);
+    }
+  }, [errorMessage, validCodeData]);
+
   const closeRedeem = () => {
     setCodeValidated(false);
     setCodeRedeemed(false);
     handleRedeemModalClose();
+    setAfterValidateCodeButton(false);
+    setInputCode('');
+    setErrorMessage('');
   };
 
   const contactDetails = {
@@ -264,15 +273,23 @@ export default function RedeemModal({
           <div className={styles.modal}>
             {codeValidated && validCodeData ? (
               <>
-                <div className={styles.codeTreeCount}>
+                <div
+                  className={styles.codeTreeCount}
+                  style={{ fontSize: '2rem' }}
+                >
                   {getFormattedNumber(
                     i18n.language,
-                    Number(validCodeData.treeCount)
+                    Number(validCodeData.units)
                   )}
                   <span>
                     {t('common:tree', {
-                      count: Number(validCodeData.treeCount),
+                      count: Number(validCodeData.units),
                     })}
+                  </span>
+                </div>
+                <div>
+                  <span className={styles.codeTreeCount}>
+                    {t('redeem:successfullyRedeemed')}
                   </span>
                 </div>
 
@@ -286,18 +303,22 @@ export default function RedeemModal({
                 {errorMessage && (
                   <span className={styles.formErrors}>{errorMessage}</span>
                 )}
-                <button
-                  id={'redeemModalCont'}
-                  onClick={handleSubmit(redeemCode)}
-                  className="primaryButton"
-                  style={{ maxWidth: '200px', marginTop: '24px' }}
-                >
-                  {isUploadingData ? (
-                    <div className={styles.spinner}></div>
-                  ) : (
-                    t('redeem:addToMyTrees')
-                  )}
-                </button>
+                {afterValidateCodeButton ? (
+                  <button
+                    id={'redeemModalCont'}
+                    onClick={closeRedeem}
+                    className="primaryButton"
+                    style={{ maxWidth: '150px', marginTop: '24px' }}
+                  >
+                    {isUploadingData ? (
+                      <div className={styles.spinner}></div>
+                    ) : (
+                      t('redeem:exitToProfile')
+                    )}
+                  </button>
+                ) : (
+                  ''
+                )}
               </>
             ) : (
               <>
@@ -305,50 +326,66 @@ export default function RedeemModal({
                 <div className={styles.note}>
                   <p>{t('me:redeemDescription')}</p>
                 </div>
-                <div className={styles.inputField}>
-                  <MaterialTextField
-                    inputRef={register({
-                      required: {
-                        value: true,
-                        message: t('redeem:enterRedeemCode'),
-                      },
-                    })}
-                    onChange={(event) => {
-                      event.target.value.startsWith('pp.eco/c/')
-                        ? setInputCode(
-                            event.target.value.replace('pp.eco/c/', '')
-                          )
-                        : setInputCode(event.target.value);
-                    }}
-                    value={inputCode}
-                    name={'code'}
-                    placeholder="XAD-1SA-5F1-A"
-                    label=""
-                    variant="outlined"
-                  />
-                </div>
+                {!afterValidateCodeButton && (
+                  <div className={styles.inputField}>
+                    <MaterialTextField
+                      inputRef={register({
+                        required: {
+                          value: true,
+                          message: t('redeem:enterRedeemCode'),
+                        },
+                      })}
+                      onChange={(event) => {
+                        event.target.value.startsWith('pp.eco/c/')
+                          ? setInputCode(
+                              event.target.value.replace('pp.eco/c/', '')
+                            )
+                          : setInputCode(event.target.value);
+                      }}
+                      value={inputCode}
+                      name={'code'}
+                      placeholder="XAD-1SA-5F1-A"
+                      label=""
+                      variant="outlined"
+                    />
+                  </div>
+                )}
 
                 {errors.code && (
                   <span className={styles.formErrors}>
                     {errors.code.message}
                   </span>
                 )}
-
                 {errorMessage && !errors.code && !isUploadingData && (
                   <span className={styles.formErrors}>{errorMessage}</span>
                 )}
-                <button
-                  id={'validateCodeRedeem'}
-                  onClick={handleSubmit(validateCode)}
-                  className="primaryButton"
-                  style={{ maxWidth: '200px', marginTop: '24px' }}
-                >
-                  {isUploadingData ? (
-                    <div className={styles.spinner}></div>
-                  ) : (
-                    t('redeem:validateCode')
-                  )}
-                </button>
+                {!afterValidateCodeButton ? (
+                  <button
+                    id={'validateCodeRedeem'}
+                    onClick={handleSubmit(validateCode)}
+                    className="primaryButton"
+                    style={{ maxWidth: '200px', marginTop: '24px' }}
+                  >
+                    {isUploadingData ? (
+                      <div className={styles.spinner}></div>
+                    ) : (
+                      t('redeem:validateCode')
+                    )}
+                  </button>
+                ) : (
+                  <button
+                    id={'redeemModalCont'}
+                    onClick={closeRedeem}
+                    className="primaryButton"
+                    style={{ maxWidth: '150px', marginTop: '24px' }}
+                  >
+                    {isUploadingData ? (
+                      <div className={styles.spinner}></div>
+                    ) : (
+                      t('redeem:exitToProfile')
+                    )}
+                  </button>
+                )}
               </>
             )}
           </div>
