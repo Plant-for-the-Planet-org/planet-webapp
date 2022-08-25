@@ -4,7 +4,7 @@ import { Tab, Tabs } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { TabItem } from './TabbedViewTypes';
 
-interface FormStepsProps {
+interface TabStepsProps {
   step: number;
   tabItems: TabItem[];
 }
@@ -28,10 +28,10 @@ const StyledTab = styled(Tab)({
   padding: '0 16px',
 });
 
-export default function FormSteps({
+export default function TabSteps({
   step = 0,
   tabItems = [],
-}: FormStepsProps): ReactElement | null {
+}: TabStepsProps): ReactElement | null {
   const router = useRouter();
 
   const handleTabChange = (event: SyntheticEvent) => {

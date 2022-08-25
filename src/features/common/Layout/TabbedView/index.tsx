@@ -1,15 +1,15 @@
 import { ReactElement } from 'react';
 import { Grid, styled } from '@mui/material';
-import FormSteps from './FormSteps';
+import TabSteps from './TabSteps';
 import { TabItem } from './TabbedViewTypes';
 
-const FormContainer = styled('div')(({ theme }) => ({
+const TabContainer = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   padding: 24,
   borderRadius: 9,
   boxShadow: theme.shadows[1],
   alignItems: 'flex-end',
-  '&.formContainer--list': {
+  '&.tabContainer--list': {
     backgroundColor: 'inherit',
     boxShadow: 'none',
     padding: 0,
@@ -39,15 +39,15 @@ export default function TabbedView({
         item
         xs={12}
         md={3}
-        component={() => <FormSteps step={step} tabItems={tabItems} />}
+        component={() => <TabSteps step={step} tabItems={tabItems} />}
       ></Grid>
       <Grid
         item
         xs={12}
         md={9}
-        component={FormContainer}
+        component={TabContainer}
         className={
-          isShowingList ? 'formContainer--list' : 'formContainer--singular'
+          isShowingList ? 'tabContainer--list' : 'tabContainer--singular'
         }
       >
         {children}
