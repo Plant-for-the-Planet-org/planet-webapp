@@ -8,5 +8,6 @@
   "validating": "Validating",
   "invalidType": "Invalid type, please check the link again",
   "successfullyRedeemed": "Successfully Redeemed",
-  "exitToProfile": "Exit to Profile"
+  "exitToProfile": "Exit to Profile",
+  "redeemCode": "Redeem Code"
 }

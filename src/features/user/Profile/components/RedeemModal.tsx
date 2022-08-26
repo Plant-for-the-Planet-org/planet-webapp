@@ -369,7 +369,7 @@ export default function RedeemModal({
                     {isUploadingData ? (
                       <div className={styles.spinner}></div>
                     ) : (
-                      t('redeem:validateCode')
+                      t('redeem:redeemCode')
                     )}
                   </button>
                 ) : (
