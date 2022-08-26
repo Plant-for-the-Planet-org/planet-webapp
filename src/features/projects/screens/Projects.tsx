@@ -139,7 +139,6 @@ function ProjectsList({
     () => getProjects(projects, 'featured'),
     [projects]
   );
-  const { embed } = React.useContext(ParamsContext);
 
   const NoProjectFound = (props: any) => {
     return ready ? (
@@ -154,13 +153,10 @@ function ProjectsList({
     ) : null;
   };
 
-<<<<<<< HEAD
-=======
   const toggleSidebar = () => {
     setHideSidebar(!hideSidebar);
   };
 
->>>>>>> develop
   return ready ? (
     <>
       <Explore />

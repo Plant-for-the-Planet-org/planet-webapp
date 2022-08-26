@@ -81,7 +81,6 @@ export default function Donate({
       if (
         !internalCurrencyCode ||
         currencyCode !== internalCurrencyCode ||
-<<<<<<< HEAD
         internalLanguage !== i18n.language ||
         tenantID
       ) {
@@ -109,25 +108,6 @@ export default function Donate({
           setShowSingleProject(false);
           setZoomLevel(1);
         }
-=======
-        internalLanguage !== i18n.language
-      ) {
-        const currency = getStoredCurrency();
-        setInternalCurrencyCode(currency);
-        setCurrencyCode(currency);
-        setInternalLanguage(i18n.language);
-        const projects = await getRequest(`/app/projects`, handleError, '/', {
-          _scope: 'map',
-          currency: currency,
-          tenant: TENANT_ID,
-          'filter[purpose]': 'trees,conservation',
-          locale: i18n.language,
-        });
-        setProjects(projects);
-        setProject(null);
-        setShowSingleProject(false);
-        setZoomLevel(1);
->>>>>>> develop
       }
     }
     if (tenantID) {

@@ -16,24 +16,18 @@ export interface ParamsContextType {
   showBackIcon: QueryParamType;
   callbackUrl: QueryParamType;
   language: QueryParamType;
-<<<<<<< HEAD
   tenantID: QueryParamType;
-=======
   showProjectDetails: QueryParamType;
   showProjectList: QueryParamType;
->>>>>>> develop
 }
 export const ParamsContext = createContext<ParamsContextType>({
   embed: undefined,
   showBackIcon: undefined,
   callbackUrl: undefined,
   language: undefined,
-<<<<<<< HEAD
   tenantID: '',
-=======
   showProjectDetails: undefined,
   showProjectList: undefined,
->>>>>>> develop
 });
 
 const QueryParamsProvider: FC = ({ children }) => {
@@ -43,14 +37,12 @@ const QueryParamsProvider: FC = ({ children }) => {
   const [showBackIcon, setShowBackIcon] = useState<QueryParamType>(undefined);
   const [callbackUrl, setCallbackUrl] = useState<QueryParamType>(undefined);
   const [language, setLanguage] = useState<QueryParamType>(undefined);
-<<<<<<< HEAD
   const [tenantID, setTenantID] = useState<QueryParamType>('');
-=======
   const [showProjectDetails, setShowProjectDetails] =
     useState<QueryParamType>(undefined);
   const [showProjectList, setShowProjectList] =
     useState<QueryParamType>(undefined);
->>>>>>> develop
+
   const router = useRouter();
   const { query } = router;
 
@@ -116,12 +108,9 @@ const QueryParamsProvider: FC = ({ children }) => {
         showBackIcon,
         callbackUrl,
         language,
-<<<<<<< HEAD
         tenantID,
-=======
         showProjectDetails,
         showProjectList,
->>>>>>> develop
       }}
     >
       {children}
