@@ -51,7 +51,6 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
             console.log('error occured :', e);
           });
       } else {
-<<<<<<< HEAD
         getRequest(
           `/app/profiles/${profile.id}/contributions`,
           undefined,
@@ -60,9 +59,6 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
           undefined,
           tenantID
         )
-=======
-        getRequest(`/app/profiles/${profile.id}/contributions`)
->>>>>>> develop
           .then((result: any) => {
             setContributions(result);
           })

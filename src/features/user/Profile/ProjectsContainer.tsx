@@ -31,13 +31,9 @@ export default function ProjectsContainer({ profile }: any) {
       undefined,
       {
         locale: i18n.language,
-<<<<<<< HEAD
       },
       undefined,
       tenantID
-=======
-      }
->>>>>>> develop
     ).then((projects) => {
       setProjects(projects);
     });

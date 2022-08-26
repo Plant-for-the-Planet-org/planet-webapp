@@ -44,12 +44,8 @@ function TreeMapper({}: Props): ReactElement {
         handleError,
         '/profile',
         undefined,
-<<<<<<< HEAD
         '1.0.4',
         tenantID
-=======
-        '1.0.4'
->>>>>>> develop
       );
       if (response) {
         const newPlantLocations = response?.items;
