@@ -13,27 +13,44 @@ const { useTranslation } = i18next;
 type QueryParamType = string | undefined | string[] | null;
 export interface ParamsContextType {
   embed: QueryParamType;
-  singleProject: QueryParamType;
+  showBackIcon: QueryParamType;
   callbackUrl: QueryParamType;
   language: QueryParamType;
+<<<<<<< HEAD
   tenantID: QueryParamType;
+=======
+  showProjectDetails: QueryParamType;
+  showProjectList: QueryParamType;
+>>>>>>> develop
 }
 export const ParamsContext = createContext<ParamsContextType>({
   embed: undefined,
-  singleProject: undefined,
+  showBackIcon: undefined,
   callbackUrl: undefined,
   language: undefined,
+<<<<<<< HEAD
   tenantID: '',
+=======
+  showProjectDetails: undefined,
+  showProjectList: undefined,
+>>>>>>> develop
 });
 
 const QueryParamsProvider: FC = ({ children }) => {
   const { i18n } = useTranslation();
 
   const [embed, setEmbed] = useState<QueryParamType>(undefined);
-  const [singleProject, setSingleProject] = useState<QueryParamType>(undefined);
+  const [showBackIcon, setShowBackIcon] = useState<QueryParamType>(undefined);
   const [callbackUrl, setCallbackUrl] = useState<QueryParamType>(undefined);
   const [language, setLanguage] = useState<QueryParamType>(undefined);
+<<<<<<< HEAD
   const [tenantID, setTenantID] = useState<QueryParamType>('');
+=======
+  const [showProjectDetails, setShowProjectDetails] =
+    useState<QueryParamType>(undefined);
+  const [showProjectList, setShowProjectList] =
+    useState<QueryParamType>(undefined);
+>>>>>>> develop
   const router = useRouter();
   const { query } = router;
 
@@ -42,8 +59,8 @@ const QueryParamsProvider: FC = ({ children }) => {
   }, [query.embed]);
 
   useEffect(() => {
-    if (query.singleProject) setSingleProject(query.singleProject);
-  }, [query.singleProject]);
+    if (query.back_icon) setShowBackIcon(query.back_icon);
+  }, [query.back_icon]);
 
   useEffect(() => {
     if (query.callback) setCallbackUrl(query.callback);
@@ -52,6 +69,16 @@ const QueryParamsProvider: FC = ({ children }) => {
   useEffect(() => {
     if (query.locale) setLanguage(query.locale);
   }, [query.locale]);
+
+  useEffect(() => {
+    if (query.project_details === 'true' || query.project_details === 'false')
+      setShowProjectDetails(query.project_details);
+  }, [query.project_details]);
+
+  useEffect(() => {
+    if (query.project_list === 'true' || query.project_list === 'false')
+      setShowProjectList(query.project_list);
+  }, [query.project_list]);
 
   useEffect(() => {
     if (i18n && i18n.isInitialized && language) {
@@ -86,10 +113,15 @@ const QueryParamsProvider: FC = ({ children }) => {
     <ParamsContext.Provider
       value={{
         embed,
-        singleProject,
+        showBackIcon,
         callbackUrl,
         language,
+<<<<<<< HEAD
         tenantID,
+=======
+        showProjectDetails,
+        showProjectList,
+>>>>>>> develop
       }}
     >
       {children}

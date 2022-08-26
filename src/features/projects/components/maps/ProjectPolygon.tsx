@@ -12,18 +12,20 @@ export default function ProjectPolygon({ id, geoJson }: Props): ReactElement {
 
   return (
     <>
-        <Source id={id ? id : 'singleProject'} type="geojson" data={geoJson}>
-          <Layer
-            id={id ? id : 'polygonOutline'}
-            type="line"
-            source={id ? id : 'singleProject'}
-            paint={{
-              'line-color': satellite ? '#ffffff' : '#007A49',
-              'line-width': 4,
-            }}
-            layout={{ visibility: selectedMode !== 'imagery' ? 'visible' : 'none' }}
-          />
-        </Source>
+      <Source id={id ? id : 'singleProject'} type="geojson" data={geoJson}>
+        <Layer
+          id={id ? id : 'polygonOutline'}
+          type="line"
+          source={id ? id : 'singleProject'}
+          paint={{
+            'line-color': satellite ? '#ffffff' : '#007A49',
+            'line-width': 4,
+          }}
+          layout={{
+            visibility: selectedMode !== 'imagery' ? 'visible' : 'none',
+          }}
+        />
+      </Source>
     </>
   );
 }

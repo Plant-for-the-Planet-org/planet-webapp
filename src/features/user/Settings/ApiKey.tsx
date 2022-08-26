@@ -23,7 +23,10 @@ export default function ApiKey({}: any) {
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [apiKey, setApiKey] = React.useState('');
   const [isApiKeyVisible, setIsApiKeyVisible] = React.useState(false);
+<<<<<<< HEAD
   const { tenantID } = React.useContext(ParamsContext);
+=======
+>>>>>>> develop
 
   const handleVisibilityChange = () => {
     setIsApiKeyVisible(!isApiKeyVisible);
@@ -35,11 +38,15 @@ export default function ApiKey({}: any) {
       '/app/profile/apiKey',
       token,
       {},
+<<<<<<< HEAD
       handleError,
       undefined,
       undefined,
       undefined,
       tenantID
+=======
+      handleError
+>>>>>>> develop
     );
     if (res) {
       setApiKey(res.apiKey);
@@ -53,8 +60,12 @@ export default function ApiKey({}: any) {
       '/app/profile/apiKey',
       undefined,
       token,
+<<<<<<< HEAD
       handleError,
       tenantID
+=======
+      handleError
+>>>>>>> develop
     );
     if (res) {
       setApiKey(res.apiKey);

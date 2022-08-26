@@ -25,6 +25,7 @@ export default function DeleteProfile({}: any) {
 
   const handleDeleteAccount = () => {
     setIsUploadingData(true);
+<<<<<<< HEAD
     deleteAuthenticatedRequest(
       '/app/profile',
       token,
@@ -35,8 +36,17 @@ export default function DeleteProfile({}: any) {
         logoutUser(`${process.env.NEXTAUTH_URL}/`);
       } else {
         console.log(res.errorText);
+=======
+    deleteAuthenticatedRequest('/app/profile', token, handleError).then(
+      (res) => {
+        if (res !== 404) {
+          logoutUser(`${process.env.NEXTAUTH_URL}/`);
+        } else {
+          console.log(res.errorText);
+        }
+>>>>>>> develop
       }
-    });
+    );
   };
 
   const { theme } = React.useContext(ThemeContext);

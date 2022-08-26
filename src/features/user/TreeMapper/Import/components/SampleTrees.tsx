@@ -32,7 +32,10 @@ export default function SampleTrees({
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [uploadIndex, setUploadIndex] = React.useState(0);
   const [uploadStatus, setUploadStatus] = React.useState<string[]>([]);
+<<<<<<< HEAD
   const { tenantID } = React.useContext(ParamsContext);
+=======
+>>>>>>> develop
   const [sampleTrees, setSampleTrees] = React.useState<
     Treemapper.SamplePlantLocation[]
   >([]);
@@ -93,10 +96,14 @@ export default function SampleTrees({
     const res = await postAuthenticatedRequest(
       `/treemapper/plantLocations`,
       sampleTree,
+<<<<<<< HEAD
       token,
       undefined,
       undefined,
       tenantID
+=======
+      token
+>>>>>>> develop
     );
     if (!res.code) {
       setErrorMessage('');

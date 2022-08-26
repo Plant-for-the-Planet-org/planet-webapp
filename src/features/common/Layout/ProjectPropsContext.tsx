@@ -70,14 +70,14 @@ export const ProjectPropsContext = React.createContext({
   setHoveredPl: (value: {}) => {},
   isPolygonMenuOpen: false,
   setIsPolygonMenuOpen: (value: boolean) => {},
-  siteViewPort: null || {}, 
-  setSiteViewPort:(value: {}) => {},
-  filteredProjects:null || [],
-  setFilteredProjects:(value: []) => {},
-  filtersOpen:false,
-  setFilterOpen:(value:boolean) => {},
-  purpose:'trees',
-  setPurpose:(value:string) => {},
+  siteViewPort: null || {},
+  setSiteViewPort: (value: {}) => {},
+  filteredProjects: null || [],
+  setFilteredProjects: (value: []) => {},
+  filtersOpen: false,
+  setFilterOpen: (value: boolean) => {},
+  purpose: 'trees',
+  setPurpose: (value: string) => {},
   plantLocationsLoaded: false,
   setPlantLocationsLoaded: (value: boolean) => {},
 });
@@ -107,7 +107,7 @@ function ProjectPropsProvider({ children }: any): ReactElement {
   const [satellite, setSatellite] = React.useState(false);
   const [filteredProjects, setFilteredProjects] = React.useState(null);
   const [filtersOpen, setFilterOpen] = React.useState(false);
-  const[purpose, setPurpose] = React.useState('trees')
+  const [purpose, setPurpose] = React.useState('trees');
   const [plantLocationsLoaded, setPlantLocationsLoaded] = React.useState(false);
 
   const mapRef = React.useRef(null);
@@ -148,22 +148,22 @@ function ProjectPropsProvider({ children }: any): ReactElement {
   const [siteViewPort, setSiteViewPort] = React.useState(null);
 
   React.useEffect(() => {
-    if(typeof window !== 'undefined') {
-      if(window.innerWidth > 767) {
+    if (typeof window !== 'undefined') {
+      if (window.innerWidth > 767) {
         setIsMobile(false);
       } else {
         setIsMobile(true);
+      }
     }
-  }
   });
 
   React.useEffect(() => {
-    if(isMobile) {
+    if (isMobile) {
       setIsPolygonMenuOpen(false);
     } else {
       setIsPolygonMenuOpen(true);
     }
-  },[isMobile]);
+  }, [isMobile]);
 
   const updateWidth = () => {
     setWindowSize(window.innerWidth);
@@ -284,7 +284,7 @@ function ProjectPropsProvider({ children }: any): ReactElement {
         setIsPolygonMenuOpen,
         siteViewPort,
         setSiteViewPort,
-        filteredProjects, 
+        filteredProjects,
         setFilteredProjects,
         filtersOpen,
         setFilterOpen,

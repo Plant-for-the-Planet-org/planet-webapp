@@ -66,7 +66,7 @@ export default function NavbarComponent(props: any) {
   async function gotoUserPage() {
     if (user) {
       if (typeof window !== 'undefined') {
-        router.push(`/t/${user.slug}`);
+        router.push(`/profile`);
       }
     } else {
       //----------------- To do - redirect to slug -----------------
