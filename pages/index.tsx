@@ -11,7 +11,6 @@ import { ParamsContext } from '../src/features/common/Layout/QueryParamsContext'
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 import DirectGift from '../src/features/donations/components/DirectGift';
 import i18next from '../i18n';
-import { query } from 'express';
 
 interface Props {
   initialized: Boolean;

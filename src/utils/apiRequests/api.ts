@@ -1,5 +1,4 @@
-import { te } from 'date-fns/locale';
-import { TENANT_ID } from '../constants/environment';
+
 import { getQueryString } from './getQueryString';
 import getsessionId from './getSessionId';
 import { validateToken } from './validateToken';
@@ -68,7 +67,7 @@ const handleApiError = (
 };
 
 //  API call to private /profile endpoint
-export async function getAccountInfo(token: any, tenantID: any): Promise<any> {
+export async function getAccountInfo(token: any, tenantID: string): Promise<any> {
   const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
     method: 'GET',
     headers: {
@@ -135,7 +134,7 @@ export async function getAuthenticatedRequest(
   redirect?: string,
   queryParams?: { [key: string]: string },
   version?: string,
-  tenantID?: any
+  tenantID?: string
 ): Promise<any> {
   let result = {};
   const lang = localStorage.getItem('language') || 'en';
@@ -166,7 +165,7 @@ export async function postAuthenticatedRequest(
   token: any,
   errorHandler?: Function,
   headers?: any,
-  tenantID: any
+  tenantID?: string
 ): Promise<any> {
   if (validateToken(token)) {
     const res = await fetch(process.env.API_ENDPOINT + url, {
@@ -205,7 +204,7 @@ export async function postRequest(
   data: any,
   errorHandler?: Function,
   redirect?: string,
-  tenantID: any
+  tenantID?: string
 ): Promise<any> {
   const res = await fetch(process.env.API_ENDPOINT + url, {
     method: 'POST',
@@ -230,7 +229,7 @@ export async function deleteAuthenticatedRequest(
   url: any,
   token: any,
   errorHandler?: Function,
-  tenantID: any
+  tenantID?: string
 ): Promise<any> {
   let result;
   if (validateToken(token)) {
@@ -268,7 +267,7 @@ export async function putAuthenticatedRequest(
   data: any,
   token: any,
   errorHandler?: Function,
-  tenantID: any
+  tenantID?: string
 ): Promise<any> {
   if (validateToken(token)) {
     const res = await fetch(process.env.API_ENDPOINT + url, {
@@ -304,7 +303,7 @@ export async function putRequest(
   url: any,
   data: any,
   errorHandler?: Function,
-  tenantID: any
+  tenantID?: string
 ): Promise<any> {
   const res = await fetch(process.env.API_ENDPOINT + url, {
     method: 'PUT',
