@@ -23,11 +23,11 @@ const { useTranslation } = i18next;
 
 interface Props {}
 
-const Alert = styled(MuiAlert)(({theme}) => {
+const Alert = styled(MuiAlert)(({ theme }) => {
   return {
     backgroundColor: theme.palette.primary.main,
-  }
-})
+  };
+});
 
 export default function EditProfile({}: Props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);

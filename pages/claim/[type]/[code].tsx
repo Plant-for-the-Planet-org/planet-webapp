@@ -62,11 +62,11 @@ function ClaimDonation({}: Props): ReactElement {
     setTextCopiedSnackbarOpen(false);
   };
 
-  const Alert = styled(MuiAlert)(({theme}) => {
+  const Alert = styled(MuiAlert)(({ theme }) => {
     return {
       backgroundColor: theme.palette.primary.main,
-    }
-  })
+    };
+  });
 
   const [codeRedeemed, setCodeRedeemed] = React.useState(false);
 

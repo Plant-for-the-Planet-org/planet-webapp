@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { useRouter } from 'next/router';
 import i18next from '../../../../../i18n';
 import LocationIcon from '../../../../../public/assets/images/icons/LocationIcon';
 import ResearchIcon from '../../../../../public/assets/images/icons/ResearchIcon';
@@ -10,15 +11,23 @@ import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 interface Props {}
 
 export default function ProjectTabs({}: Props): ReactElement {
-  const { embed } = React.useContext( ParamsContext );
+  const { embed, showProjectDetails } = React.useContext(ParamsContext);
+  const { pathname } = useRouter();
   const { useTranslation } = i18next;
   const { i18n, t } = useTranslation(['maps']);
-  const { selectedMode, setSelectedMode, rasterData } = React.useContext(
-    ProjectPropsContext
-  );
+  const { selectedMode, setSelectedMode, rasterData } =
+    React.useContext(ProjectPropsContext);
+
+  const containerClasses =
+    embed !== 'true'
+      ? styles.VegetationChangeContainer
+      : pathname === '/[p]' && showProjectDetails === 'false'
+      ? `${styles.embed_VegetationChangeContainer} ${styles['no-project-details']}`
+      : styles.embed_VegetationChangeContainer;
+
   return (
     <>
-      <div className={embed === 'true' ? styles.embed_VegetationChangeContainer: styles.VegetationChangeContainer}>
+      <div className={containerClasses}>
         <div
           onClick={() => {
             setSelectedMode('location');

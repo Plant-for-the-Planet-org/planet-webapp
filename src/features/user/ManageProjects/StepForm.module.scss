@@ -18,49 +18,48 @@
   display: flex;
   background-color: $backgroundBase;
   color: $primaryFontColor;
-  @include xsPhoneView{
+  @include xsPhoneView {
     margin-left: -15px;
     margin-top: 5px;
-    }
+  }
   @include smTabletView {
     margin-left: -8px;
     margin-top: 5px;
-    }
+  }
   @include mdTabletView {
     margin-left: -8px;
     margin-top: 5px;
-    }
+  }
   @include lgLaptopView {
     margin-top: -60px;
     margin-left: 40px;
-    }
   }
+}
 
-  .reviewContent{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-left: 0px;
-    margin-top: 0px;
-    @include xsPhoneView {
-      margin-left: -54px;
-    }
-    @include smTabletView {
-      margin-left: -18px;
-    }
-    @include mdTabletView {
-      margin-left: 10px;
-    }
-    @include lgLaptopView {
-      margin-top: -100px;
-    }
-   
+.reviewContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0px;
+  margin-top: 0px;
+  @include xsPhoneView {
+    margin-left: -54px;
   }
+  @include smTabletView {
+    margin-left: -18px;
+  }
+  @include mdTabletView {
+    margin-left: 10px;
+  }
+  @include lgLaptopView {
+    margin-top: -100px;
+  }
+}
 
- .publishLabel {
-  margin-left: '100px'
- }
+.publishLabel {
+  margin-left: '100px';
+}
 
 .formFieldRadio {
   width: 100%;
@@ -86,11 +85,10 @@
   @include xsPhoneView {
     margin-top: 10px;
   }
-
 }
 
-.reviewButtons{
-  display:flex;
+.reviewButtons {
+  display: flex;
   margin-top: 30px;
   @include xsPhoneView {
     flex-direction: column;
@@ -105,21 +103,20 @@
 
 .basicDetailButton {
   display: flex;
-  @include xsPhoneView{
+  @include xsPhoneView {
     flex-direction: column;
-   }
- 
+  }
 }
 
 .mediaButtons {
-  display:flex;
-  @include xsPhoneView{
+  display: flex;
+  @include xsPhoneView {
     flex-direction: column;
   }
   @include smTabletView {
     flex-direction: column;
-  } 
-  @include mdTabletView{
+  }
+  @include mdTabletView {
     flex-direction: row;
   }
 }
@@ -456,7 +453,7 @@
     z-index: 999;
     right: 5%;
     > svg {
-      path{
+      path {
         fill: $primaryFontColor;
       }
       height: 12px;
@@ -590,13 +587,13 @@
       transition-duration: 0.4s;
       transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
       svg {
-        path{
+        path {
           fill: $primaryFontColor;
         }
       }
-      svg .selected{
-        path{
-          fill: '#ECB641'
+      svg .selected {
+        path {
+          fill: '#ECB641';
         }
       }
       &:hover {
