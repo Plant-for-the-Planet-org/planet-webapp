@@ -64,6 +64,7 @@ export default function ProjectSnippet({
       ) : null}
       <div
         onClick={() => {
+          console.log('i ran');
           router.push(
             `/${project.slug}/${
               embed === 'true'
@@ -72,7 +73,7 @@ export default function ProjectSnippet({
                       ? `?embed=true&callback=${callbackUrl}`
                       : '?embed=true'
                   }`
-                : ''
+                : `?tenant=${tenantID}`
             }`
           );
         }}

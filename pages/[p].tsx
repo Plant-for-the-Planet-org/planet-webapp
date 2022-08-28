@@ -30,6 +30,7 @@ export default function Donate({
   const [open, setOpen] = React.useState(false);
   const { theme } = React.useContext(ThemeContext);
   const { tenantID } = React.useContext(ParamsContext);
+  const [tenantSingleProject, setTenantSingleProject] = React.useState(false);
   const { i18n } = useTranslation();
   const {
     project,
@@ -41,6 +42,10 @@ export default function Donate({
     hoveredPl,
     setPlantLocationsLoaded,
   } = React.useContext(ProjectPropsContext);
+
+  React.useEffect(() => {
+    if (tenantID) setTenantSingleProject(true);
+  }, [tenantID]);
 
   React.useEffect(() => {
     setZoomLevel(2);
@@ -62,7 +67,7 @@ export default function Donate({
         !internalCurrencyCode ||
         currencyCode !== internalCurrencyCode ||
         internalLanguage !== i18n.language ||
-        tenantID
+        tenantSingleProject
       ) {
         const currency = getStoredCurrency();
         setInternalCurrencyCode(currency);
@@ -85,10 +90,10 @@ export default function Donate({
         setZoomLevel(2);
       }
     }
-    if (router.query.p && tenantID) {
+    if (router.query.p && tenantSingleProject) {
       loadProject();
     }
-  }, [tenantID, router.query.p, currencyCode, i18n.language]);
+  }, [tenantSingleProject, router.query.p, currencyCode, i18n.language]);
 
   React.useEffect(() => {
     async function loadPl() {

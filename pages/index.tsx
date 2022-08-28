@@ -40,9 +40,14 @@ export default function Donate({
   const { i18n } = useTranslation();
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
+  const [fixTenant, setFixTenant] = React.useState(false);
   const [directGift, setDirectGift] = React.useState(null);
   const [showdirectGift, setShowDirectGift] = React.useState(true);
   const [internalLanguage, setInternalLanguage] = React.useState('');
+
+  React.useEffect(() => {
+    if (tenantID) setFixTenant(true);
+  }, [tenantID]);
 
   React.useEffect(() => {
     const getdirectGift = localStorage.getItem('directGift');
@@ -81,7 +86,7 @@ export default function Donate({
         !internalCurrencyCode ||
         currencyCode !== internalCurrencyCode ||
         internalLanguage !== i18n.language ||
-        tenantID
+        fixTenant
       ) {
         {
           const currency = getStoredCurrency();
@@ -109,10 +114,10 @@ export default function Donate({
         }
       }
     }
-    if (tenantID) {
+    if (fixTenant) {
       loadProjects();
     }
-  }, [tenantID, currencyCode, i18n.language]);
+  }, [fixTenant, currencyCode, i18n.language]);
 
   const ProjectsProps = {
     projects: filteredProjects,

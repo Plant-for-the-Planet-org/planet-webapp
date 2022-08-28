@@ -50,7 +50,7 @@ function SingleProjectDetails({}: Props): ReactElement {
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
   const [scrollY, setScrollY] = useState(0);
-  const { embed, showBackIcon, callbackUrl, showProjectDetails } =
+  const { tenantID, embed, showBackIcon, callbackUrl, showProjectDetails } =
     useContext(ParamsContext);
   const isEmbed = embed === 'true';
   const [hideProjectContainer, setHideProjectContainer] = useState(isEmbed);
@@ -105,7 +105,7 @@ function SingleProjectDetails({}: Props): ReactElement {
                   ? `?embed=true&callback=${callbackUrl}`
                   : '?embed=true'
               }`
-            : ''
+            : `?tenant=${tenantID}`
         }`
       );
     }
