@@ -18,7 +18,7 @@
 
 // the white form
 .signup {
-  margin-top: 100px;
+  top: calc(100px + env(safe-area-inset-top));
   margin-bottom: 0;
   border: 0px;
   min-width: 320px;

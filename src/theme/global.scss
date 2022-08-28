@@ -185,13 +185,13 @@ video {
 
 .comparison-map {
   position: fixed;
-  top: 0;
+  top: env(safe-area-inset-top);
   bottom: 0;
   width: 100%;
 }
 
 .mapboxgl-compare {
-  top: 0;
+  top: env(safe-area-inset-top);
   position: fixed;
 }
 
@@ -344,7 +344,7 @@ button {
     border-radius: 0px;
   }
   .profilePage {
-    padding-top: 80px !important;
+    padding-top: calc(80px + env(safe-area-inset-top)) !important;
   }
 }
 
@@ -389,7 +389,7 @@ button {
 
 .topLoader {
   position: fixed;
-  top: 0;
+  top: env(safe-area-inset-top);
   width: 100%;
   height: 5px;
   z-index: 1031;

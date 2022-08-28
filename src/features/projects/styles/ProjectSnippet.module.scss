@@ -13,7 +13,7 @@
 
 .projectEditBlock {
   position: absolute;
-  top: 12px;
+  top: calc(12px + env(safe-area-inset-top));
   right: 12px;
   background-color: $backgroundColor;
   border-radius: 50%;

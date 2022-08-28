@@ -124,20 +124,20 @@
 }
 
 .playButton {
-  top: 100px;
+  top: calc(100px + env(safe-area-inset-top));
 }
 
 .embed_playButton {
-  top: 30px;
+  top: calc(30px + env(safe-area-inset-top));
 }
 
 @include smTabletView {
   .playButton {
-    top: 100px;
+    top: calc(100px + env(safe-area-inset-top));
   }
 
   .embed_playButton {
-    top: 30px;
+    top: calc(30px + env(safe-area-inset-top));
   }
 }
 @include mdTabletView {
@@ -152,10 +152,10 @@
   }
 
   .playButton {
-    top: 110px;
+    top: calc(110px + env(safe-area-inset-top));
   }
 
   .embed_playButton {
-    top: 30px;
+    top: calc(30px + env(safe-area-inset-top));
   }
 }

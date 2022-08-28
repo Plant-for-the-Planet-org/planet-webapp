@@ -2,7 +2,7 @@
 
 .filtersContainer {
   position: fixed;
-  top: 20px;
+  top: calc(20px + env(safe-area-inset-top));
   left: 10px;
   display: flex;
   flex-direction: row;
@@ -91,13 +91,13 @@
 
 @include smTabletView {
   .filtersContainer {
-    top: 100px;
+    top: calc(100px + env(safe-area-inset-top));
   }
 }
 
 @include mdTabletView {
   .filtersContainer {
-    top: 110px;
+    top: calc(110px + env(safe-area-inset-top));
     left: 400px;
   }
 }

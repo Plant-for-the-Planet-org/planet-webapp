@@ -16,7 +16,7 @@
     & .hamburgerIcon {
       display: block;
       position: fixed;
-      top: 100px;
+      top: calc(100px + env(safe-area-inset-top));
       left: 20px;
       z-index: 10;
       height: 42px;
@@ -53,11 +53,11 @@
 .sidebar {
   width: 109px;
   position: fixed;
-  top: 80px;
+  top: calc(80px + env(safe-area-inset-top));
   left: 0px;
   display: flex;
   flex-direction: column;
-  height: calc(100% - 80px);
+  height: calc(100% - 80px - env(safe-area-inset-top));
   overflow-y: scroll;
   justify-content: space-between;
   box-shadow: rgba(150, 150, 150, $alpha: 0.2) 0px 0px 4px;
@@ -84,7 +84,7 @@
     }
   }
   @include smTabletView {
-    top: 80px;
+    top: calc(80px + env(safe-area-inset-top));
     & .closeMenu {
       display: none;
     }

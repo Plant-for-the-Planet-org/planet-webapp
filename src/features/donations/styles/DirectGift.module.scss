@@ -3,7 +3,7 @@
 .giftContainer {
   position: fixed;
   display: flex;
-  top: 100px;
+  top: calc(100px + env(safe-area-inset-top));
   left: 0;
   right: 0;
   width: fit-content;

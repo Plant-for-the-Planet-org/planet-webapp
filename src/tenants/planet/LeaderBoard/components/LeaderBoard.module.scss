@@ -9,7 +9,7 @@
   padding-top: 50px;
   padding-bottom: 0px;
   position: relative;
-  margin-top: 60px;
+  margin-top: calc(60px + env(safe-area-inset-top));
 }
 
 .leaderBoard {
@@ -159,7 +159,7 @@
     display: none;
   }
   .leaderBoardSection {
-    margin-top: 60px;
+    margin-top: calc(60px + env(safe-area-inset-top));
   }
 }
 

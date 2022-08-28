@@ -11,7 +11,7 @@
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.12);
   z-index: 1030;
   position: fixed;
-  top: 0;
+  top: env(safe-area-inset-top);
 }
 .top_nav {
   justify-content: center;
@@ -106,7 +106,7 @@
 .subMenu {
   position: relative;
   .subMenuItems {
-    top: 78px;
+    top: calc(78px + env(safe-area-inset-top));
     left: -5px;
     position: absolute;
     height: 330px;
@@ -219,7 +219,7 @@
     }
   }
   .subMenuItems {
-    top: 68px !important;
+    top: calc(68px + env(safe-area-inset-top)) !important;
     left: -120px !important;
   }
 }

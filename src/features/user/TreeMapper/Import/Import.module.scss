@@ -249,7 +249,7 @@
 
 .mapContainer {
   position: fixed;
-  top: 0;
+  top: env(safe-area-inset-top);
   bottom: 50vh;
   left: 0;
   right: 0;

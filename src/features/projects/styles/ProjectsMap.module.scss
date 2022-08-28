@@ -3,7 +3,7 @@
 .mapContainer,
 .onlymapContainer {
   position: fixed;
-  top: 0px;
+  top: env(safe-area-inset-top);
   bottom: 0px;
   left: 0px;
   right: 0px;
@@ -70,7 +70,7 @@
   align-items: center;
   position: absolute;
   right: 10px;
-  top: 150px;
+  top: calc(150px + env(safe-area-inset-top));
 }
 
 .projectControls {
@@ -81,7 +81,7 @@
   margin-right: auto;
   text-align: center;
   bottom: auto;
-  top: 30px;
+  top: calc(30px + env(safe-area-inset-top));
   width: max-content;
   height: 30px;
   padding: 5px 20px;
@@ -141,11 +141,11 @@
 }
 
 .projectSitesButton {
-  top: 100px;
+  top: calc(100px + env(safe-area-inset-top));
 }
 
 .embed_projectSitesButton {
-  top: 30px;
+  top: calc(30px + env(safe-area-inset-top));
 }
 
 .dropdownContainer,
@@ -160,11 +160,11 @@
 }
 
 .dropdownContainer {
-  top: 100px;
+  top: calc(100px + env(safe-area-inset-top));
 }
 
 .embed_dropdownContainer {
-  top: 30px;
+  top: calc(30px + env(safe-area-inset-top));
 }
 
 .projectSitesDropdown,
@@ -201,11 +201,11 @@
 }
 
 .exploreButton {
-  top: 100px;
+  top: calc(100px + env(safe-area-inset-top));
 }
 
 .embed_exploreButton {
-  top: 30px;
+  top: calc(30px + env(safe-area-inset-top));
   flex-direction: row;
 }
 .exploreButton > svg,
@@ -279,7 +279,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  top: 0;
+  top: env(safe-area-inset-top);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -441,7 +441,7 @@
 .infoClose {
   position: absolute;
   right: 15px;
-  top: 15px;
+  top: calc(15px + env(safe-area-inset-top));
   cursor: pointer;
 }
 
@@ -466,11 +466,11 @@
 }
 
 .embed_exploreExpanded {
-  top: 30px;
+  top: calc(30px + env(safe-area-inset-top));
 }
 
 .exploreExpanded {
-  top: 20px;
+  top: calc(20px + env(safe-area-inset-top));
 }
 
 @keyframes fade_in_show {
@@ -560,7 +560,7 @@
   flex-direction: row;
   position: absolute;
   right: 20px;
-  top: 100px;
+  top: calc(100px + env(safe-area-inset-top));
   border-radius: 8px !important;
   overflow: hidden;
   box-shadow: 0px 3px 6px #00000029;
@@ -599,28 +599,28 @@
 
 @include smTabletView {
   .projectSitesButton {
-    top: 100px;
+    top: calc(100px + env(safe-area-inset-top));
   }
 
   .dropdownContainer {
-    top: 100px;
+    top: calc(100px + env(safe-area-inset-top));
   }
 
   .exploreButton {
-    top: 100px;
+    top: calc(100px + env(safe-area-inset-top));
   }
   .exploreExpanded {
-    top: 110px;
+    top: calc(110px + env(safe-area-inset-top));
   }
   .embed_exploreExpanded {
-    top: 30px;
+    top: calc(30px + env(safe-area-inset-top));
   }
   // .infoExpanded {
-  //   top: 100px;
+  //   top: calc(100px + env(safe-area-inset-top));
   // }
 
   .layerToggle {
-    top: 150px;
+    top: calc(150px + env(safe-area-inset-top));
   }
 }
 
@@ -631,10 +631,10 @@
   }
 
   .exploreExpanded {
-    top: 110px;
+    top: calc(110px + env(safe-area-inset-top));
   }
   .projectSitesButton {
-    top: 110px;
+    top: calc(110px + env(safe-area-inset-top));
   }
 
   .projectSitesButton,
@@ -656,11 +656,11 @@
   }
 
   .dropdownContainer {
-    top: 110px;
+    top: calc(110px + env(safe-area-inset-top));
   }
 
   .exploreButton {
-    top: 110px;
+    top: calc(110px + env(safe-area-inset-top));
     flex-direction: row;
   }
 
