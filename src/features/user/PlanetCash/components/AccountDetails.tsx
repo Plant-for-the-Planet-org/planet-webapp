@@ -63,7 +63,7 @@ const AccountDetails = ({
   account,
   updateAccount,
 }: AccountDetailsProps): ReactElement => {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation('planetcash');
   const { token } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
 
@@ -91,7 +91,10 @@ const AccountDetails = ({
       <Grid container item component="header" className="accountHeader">
         <Grid container item xs={12} sm={8} className="accountHeaderLeft">
           <Grid item component="h2" className="accountTitle" xs={12}>
-            {account.currency} PlanetCash Account ({account.country})
+            {t('accountTitleText', {
+              currency: account.currency,
+              country: account.country,
+            })}
           </Grid>
           <Grid item xs={12}>
             {account.id}
@@ -114,7 +117,7 @@ const AccountDetails = ({
               className="test"
               href={addBalanceLink}
             >
-              Add Balance
+              {t('addBalanceButton')}
             </Grid>
           )}
         </Grid>
@@ -122,11 +125,11 @@ const AccountDetails = ({
       <Grid item component={Divider} />
       <Grid container item className="accountDetails">
         <Grid item component={SingleDetail} xs={6} md={4}>
-          <h3 className="detailTitle">Account Holder</h3>
+          <h3 className="detailTitle">{t('Account Holder')}</h3>
           <div className="detailInfo">{account.ownerName}</div>
         </Grid>
         <Grid item component={SingleDetail} xs={6} md={4}>
-          <h3 className="detailTitle">Donation Balance</h3>
+          <h3 className="detailTitle">{t('Donation Balance')}</h3>
           <div className="detailInfo">
             {getFormatedCurrency(
               i18n.language,
@@ -136,7 +139,7 @@ const AccountDetails = ({
           </div>
         </Grid>
         <Grid item component={SingleDetail} xs={6} md={4}>
-          <h3 className="detailTitle">Donation Credit</h3>
+          <h3 className="detailTitle">{t('Donation Credit')}</h3>
           <div className="detailInfo">
             {getFormatedCurrency(
               i18n.language,
@@ -147,13 +150,12 @@ const AccountDetails = ({
         </Grid>
         <Grid item xs={12}>
           {account.isActive ? (
-            <Button onClick={handleDeactivate}>Deactivate</Button>
+            <Button onClick={handleDeactivate}>
+              {t('deactivateAccountButton')}
+            </Button>
           ) : (
             <p>
-              <em>
-                This account is inactive. To activate this account, please
-                deactivate your active account first.
-              </em>
+              <em>{t('accountInactiveHelpText')}</em>
             </p>
           )}
         </Grid>

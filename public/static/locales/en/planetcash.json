@@ -3,5 +3,12 @@
   "description": "PlanetCash is a developer friendly tool that extends the Plant-for-the-Planet Platform with APIs and built in tools. PlanetCash balance is a donation to Plant-for-the-Planet that can be dedicated by the donor to different projects on the platform.",
   "termsText": "Terms of Use",
   "tabAccount": "Account",
-  "tabTransactions": "Transactions"
+  "tabTransactions": "Transactions",
+  "accountTitleText": "{{currency}} PlanetCash Account ({{country}})",
+  "addBalanceButton": "Add Balance",
+  "labelAccountHolder": "Account Holder",
+  "labelDonationBalance": "Donation Balance",
+  "labelCreditBalance": "Donation Credit",
+  "deactivateAccountButton": "Deactivate",
+  "accountInactiveHelpText": "This account is inactive. To activate this account, please deactivate your active account first."
 }
