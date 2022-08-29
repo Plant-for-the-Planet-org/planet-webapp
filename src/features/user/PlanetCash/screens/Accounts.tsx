@@ -11,16 +11,29 @@ const Accounts = (): ReactElement => {
   const [accounts, setAccounts] = useState<PlanetCash.Account[] | null>(null);
 
   const fetchAccounts = async () => {
-    const accounts = await getAuthenticatedRequest(
+    const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
       `/app/planetCash`,
       token,
       {},
       handleError
     );
-    setAccounts(accounts);
+    const sortedAccounts = sortAccountsByActive(accounts);
+    setAccounts(sortedAccounts);
   };
 
-  const updateAccount = (accountToUpdate: PlanetCash.Account) => {
+  const sortAccountsByActive = (
+    accounts: PlanetCash.Account[]
+  ): PlanetCash.Account[] => {
+    return accounts.sort((accountA, accountB) => {
+      if (accountA.isActive === accountB.isActive) {
+        return 0;
+      } else {
+        return accountA.isActive ? -1 : 1;
+      }
+    });
+  };
+
+  const updateAccount = (accountToUpdate: PlanetCash.Account): void => {
     const updatedAccounts = accounts?.map((account) =>
       account.id === accountToUpdate.id ? accountToUpdate : account
     );

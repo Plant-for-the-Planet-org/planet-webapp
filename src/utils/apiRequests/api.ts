@@ -125,7 +125,7 @@ export async function getRequest<T>(
   return result as unknown as T;
 }
 
-export async function getAuthenticatedRequest(
+export async function getAuthenticatedRequest<T>(
   url: any,
   token: any,
   header: any = null,
@@ -133,7 +133,7 @@ export async function getAuthenticatedRequest(
   redirect?: string,
   queryParams?: { [key: string]: string },
   version?: string
-): Promise<any> {
+): Promise<T> {
   let result = {};
   const lang = localStorage.getItem('language') || 'en';
   const query: any = { ...queryParams };
@@ -154,7 +154,7 @@ export async function getAuthenticatedRequest(
       handleApiError(res.status, result, errorHandler, redirect);
     })
     .catch((err) => console.log(`Something went wrong: ${err}`));
-  return result;
+  return result as unknown as T;
 }
 
 export async function postAuthenticatedRequest(
