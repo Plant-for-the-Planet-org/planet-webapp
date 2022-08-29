@@ -77,6 +77,9 @@ const muiThemeNew = createTheme({
           fontSize: 'inherit',
           fontWeight: 700,
         },
+        textWarning: {
+          color: '#e74c3c',
+        },
       },
     },
     MuiTextField: {

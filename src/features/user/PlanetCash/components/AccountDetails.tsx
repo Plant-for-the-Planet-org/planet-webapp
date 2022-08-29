@@ -45,6 +45,9 @@ const AccountDetailsGrid = styled('article')(({ theme }) => ({
   '& .accountDetails': {
     rowGap: 20,
   },
+  '& .helpText': {
+    fontStyle: 'italic',
+  },
 }));
 
 const SingleDetail = styled('div')(({ theme }) => ({
@@ -55,11 +58,13 @@ const SingleDetail = styled('div')(({ theme }) => ({
 }));
 
 interface AccountDetailsProps {
+  isPlanetCashActive: boolean;
   account: PlanetCash.Account;
   updateAccount: (account: PlanetCash.Account) => void;
 }
 
 const AccountDetails = ({
+  isPlanetCashActive,
   account,
   updateAccount,
 }: AccountDetailsProps): ReactElement => {
@@ -70,21 +75,50 @@ const AccountDetails = ({
   const addBalanceLink = getDonationUrl('planetcash', token);
 
   const handleDeactivate = async () => {
-    const updatedAccount = await postAuthenticatedRequest(
+    const res = await postAuthenticatedRequest(
       `/app/planetCash/${account.id}/deactivate`,
       {},
       token,
       handleError
     );
-    if (updatedAccount) {
-      updateAccount(updatedAccount);
+    if (res && !res['error_code']) {
+      updateAccount(res);
+    }
+  };
+
+  const handleActivate = async () => {
+    const res = await postAuthenticatedRequest(
+      `/app/planetCash/${account.id}/activate`,
+      {},
+      token,
+      handleError
+    );
+    if (res) {
+      if (!res['error_code']) {
+        updateAccount(res);
+      } else {
+        switch (res['error_code']) {
+          case 'active_account_exists':
+            handleError({
+              code: 400,
+              message: t(`accountError.${res['error_code']}`),
+            });
+            break;
+          default:
+            handleError({
+              code: 400,
+              message: t(`accountError.default`),
+            });
+            break;
+        }
+      }
     }
   };
 
   return (
     <Grid
       container
-      className="accountDetailsGrid"
+      className="accountDetails"
       component={AccountDetailsGrid}
       direction="column"
     >
@@ -150,13 +184,15 @@ const AccountDetails = ({
         </Grid>
         <Grid item xs={12}>
           {account.isActive ? (
-            <Button onClick={handleDeactivate}>
+            <Button onClick={handleDeactivate} color="warning">
               {t('deactivateAccountButton')}
             </Button>
+          ) : isPlanetCashActive ? (
+            <p className="helpText">{t('accountInactiveHelpText')}</p>
           ) : (
-            <p>
-              <em>{t('accountInactiveHelpText')}</em>
-            </p>
+            <Button onClick={handleActivate}>
+              {t('activateAccountButton')}
+            </Button>
           )}
         </Grid>
       </Grid>

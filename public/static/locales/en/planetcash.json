@@ -10,5 +10,9 @@
   "labelDonationBalance": "Donation Balance",
   "labelCreditBalance": "Donation Credit",
   "deactivateAccountButton": "Deactivate",
-  "accountInactiveHelpText": "This account is inactive. To activate this account, please deactivate your active account first."
+  "activateAccountButton": "Activate",
+  "accountInactiveHelpText": "This account is inactive. To activate this account, please deactivate your active account first.",
+  "accountError": {
+    "active_account_exists": "An active account already exists. Deactivate that account before activating another account."
+  }
 }

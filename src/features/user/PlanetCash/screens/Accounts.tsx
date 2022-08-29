@@ -9,6 +9,7 @@ const Accounts = (): ReactElement => {
   const { token, contextLoaded } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
   const [accounts, setAccounts] = useState<PlanetCash.Account[] | null>(null);
+  const [isPlanetCashActive, setIsPlanetCashActive] = useState(false);
 
   const fetchAccounts = async () => {
     const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
@@ -18,6 +19,7 @@ const Accounts = (): ReactElement => {
       handleError
     );
     const sortedAccounts = sortAccountsByActive(accounts);
+    setIsPlanetCashActive(accounts.some((account) => account.isActive));
     setAccounts(sortedAccounts);
   };
 
@@ -37,7 +39,12 @@ const Accounts = (): ReactElement => {
     const updatedAccounts = accounts?.map((account) =>
       account.id === accountToUpdate.id ? accountToUpdate : account
     );
-    if (updatedAccounts) setAccounts(updatedAccounts);
+    if (updatedAccounts) {
+      setAccounts(updatedAccounts);
+      setIsPlanetCashActive(
+        updatedAccounts.some((account) => account.isActive)
+      );
+    }
   };
 
   useEffect(() => {
@@ -52,6 +59,7 @@ const Accounts = (): ReactElement => {
             account={account}
             key={index}
             updateAccount={updateAccount}
+            isPlanetCashActive={isPlanetCashActive}
           />
         );
       })}
