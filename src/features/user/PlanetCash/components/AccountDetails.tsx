@@ -1,7 +1,9 @@
-import { ReactElement } from 'react';
+import { ReactElement, useContext } from 'react';
 import { styled, Grid, Button, Divider } from '@mui/material';
-import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import i18next from '../../../../../i18n';
+import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
+import { getDonationUrl } from '../../../../utils/getDonationUrl';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const { useTranslation } = i18next;
 
@@ -56,6 +58,10 @@ interface AccountDetailsProps {
 
 const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
   const { t, i18n } = useTranslation();
+  const { token } = useContext(UserPropsContext);
+
+  const addBalanceLink = getDonationUrl('planetcash', token);
+
   return (
     <Grid
       container
@@ -87,6 +93,7 @@ const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
               variant="contained"
               size="small"
               className="test"
+              href={addBalanceLink}
             >
               Add Balance
             </Grid>
