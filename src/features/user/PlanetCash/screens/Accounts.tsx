@@ -20,6 +20,13 @@ const Accounts = (): ReactElement => {
     setAccounts(accounts);
   };
 
+  const updateAccount = (accountToUpdate: PlanetCash.Account) => {
+    const updatedAccounts = accounts?.map((account) =>
+      account.id === accountToUpdate.id ? accountToUpdate : account
+    );
+    if (updatedAccounts) setAccounts(updatedAccounts);
+  };
+
   useEffect(() => {
     if (contextLoaded && token) fetchAccounts();
   }, [contextLoaded, token]);
@@ -27,7 +34,13 @@ const Accounts = (): ReactElement => {
   return accounts && accounts.length > 0 ? (
     <>
       {accounts?.map((account, index) => {
-        return <AccountDetails account={account} key={index} />;
+        return (
+          <AccountDetails
+            account={account}
+            key={index}
+            updateAccount={updateAccount}
+          />
+        );
       })}
     </>
   ) : (

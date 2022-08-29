@@ -1,9 +1,11 @@
 import { ReactElement, useContext } from 'react';
 import { styled, Grid, Button, Divider } from '@mui/material';
 import i18next from '../../../../../i18n';
+import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18next;
 
@@ -54,13 +56,30 @@ const SingleDetail = styled('div')(({ theme }) => ({
 
 interface AccountDetailsProps {
   account: PlanetCash.Account;
+  updateAccount: (account: PlanetCash.Account) => void;
 }
 
-const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
+const AccountDetails = ({
+  account,
+  updateAccount,
+}: AccountDetailsProps): ReactElement => {
   const { t, i18n } = useTranslation();
   const { token } = useContext(UserPropsContext);
+  const { handleError } = useContext(ErrorHandlingContext);
 
   const addBalanceLink = getDonationUrl('planetcash', token);
+
+  const handleDeactivate = async () => {
+    const updatedAccount = await postAuthenticatedRequest(
+      `/app/planetCash/${account.id}/deactivate`,
+      {},
+      token,
+      handleError
+    );
+    if (updatedAccount) {
+      updateAccount(updatedAccount);
+    }
+  };
 
   return (
     <Grid
@@ -128,7 +147,7 @@ const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
         </Grid>
         <Grid item xs={12}>
           {account.isActive ? (
-            <Button>Deactivate</Button>
+            <Button onClick={handleDeactivate}>Deactivate</Button>
           ) : (
             <p>
               <em>
