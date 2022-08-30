@@ -1,4 +1,4 @@
-import { ReactElement, useState, useEffect } from 'react';
+import { ReactElement, useState, useEffect, useContext } from 'react';
 import i18next from '../../../../i18n';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
@@ -6,6 +6,9 @@ import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import CreateAccount from './screens/CreateAccount';
 import Accounts from './screens/Accounts';
 import Transactions from './screens/Transactions';
+import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 export enum PlanetCashTabs {
   CREATE_ACCOUNT = 0,
@@ -26,17 +29,55 @@ export default function PlanetCash({
 }: PlanetCashProps): ReactElement | null {
   const { t, ready } = useTranslation('planetcash');
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
+  const { token, contextLoaded } = useContext(UserPropsContext);
+  const { handleError } = useContext(ErrorHandlingContext);
+  const [accounts, setAccounts] = useState<PlanetCash.Account[] | null>(null);
+  const [isPlanetCashActive, setIsPlanetCashActive] = useState(false);
+
+  const fetchAccounts = async () => {
+    const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
+      `/app/planetCash`,
+      token,
+      {},
+      handleError
+    );
+    const sortedAccounts = sortAccountsByActive(accounts);
+    setIsPlanetCashActive(accounts.some((account) => account.isActive));
+    setAccounts(sortedAccounts);
+  };
+
+  const sortAccountsByActive = (
+    accounts: PlanetCash.Account[]
+  ): PlanetCash.Account[] => {
+    return accounts.sort((accountA, accountB) => {
+      if (accountA.isActive === accountB.isActive) {
+        return 0;
+      } else {
+        return accountA.isActive ? -1 : 1;
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (contextLoaded && token) fetchAccounts();
+  }, [contextLoaded, token]);
 
   const renderStep = () => {
     switch (step) {
+      case PlanetCashTabs.TRANSACTIONS:
+        return <Transactions setProgress={setProgress} />;
       case PlanetCashTabs.CREATE_ACCOUNT:
         return <CreateAccount />;
       case PlanetCashTabs.ACCOUNTS:
-        return <Accounts />;
-      case PlanetCashTabs.TRANSACTIONS:
-        return <Transactions setProgress={setProgress} />;
       default:
-        return <Accounts />;
+        return (
+          <Accounts
+            accounts={accounts}
+            setAccounts={setAccounts}
+            isPlanetCashActive={isPlanetCashActive}
+            setIsPlanetCashActive={setIsPlanetCashActive}
+          />
+        );
     }
   };
 
