@@ -3,12 +3,14 @@ import i18next from '../../../../i18n';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
+import CreateAccount from './screens/CreateAccount';
 import Accounts from './screens/Accounts';
 import Transactions from './screens/Transactions';
 
 export enum PlanetCashTabs {
-  ACCOUNTS = 0,
-  TRANSACTIONS = 1,
+  CREATE_ACCOUNT = 0,
+  ACCOUNTS = 1,
+  TRANSACTIONS = 2,
 }
 
 const { useTranslation } = i18next;
@@ -27,6 +29,8 @@ export default function PlanetCash({
 
   const renderStep = () => {
     switch (step) {
+      case PlanetCashTabs.CREATE_ACCOUNT:
+        return <CreateAccount />;
       case PlanetCashTabs.ACCOUNTS:
         return <Accounts />;
       case PlanetCashTabs.TRANSACTIONS:
@@ -39,6 +43,10 @@ export default function PlanetCash({
   useEffect(() => {
     if (ready) {
       setTabConfig([
+        {
+          label: t('tabCreateAccount'),
+          link: '/profile/planetcash/new',
+        },
         {
           label: t('tabAccount'),
           link: '/profile/planetcash',
