@@ -1,7 +1,8 @@
 import { ReactElement } from 'react';
+import CreateAccountForm from '../components/CreateAccountForm';
 
 const CreateAccount = (): ReactElement => {
-  return <div>Create Account</div>;
+  return <CreateAccountForm />;
 };
 
 export default CreateAccount;
