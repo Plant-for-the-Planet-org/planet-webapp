@@ -12,7 +12,7 @@ const Container = styled('div')(({ theme }) => ({
 const NoPlanetCashAccount = (): ReactElement => {
   return (
     <Container>
-      <p>Create an account</p>
+      <p>No account found. Create an account (Temp Text)</p>
     </Container>
   );
 };
