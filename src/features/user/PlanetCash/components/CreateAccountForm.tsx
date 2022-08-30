@@ -1,8 +1,11 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useState, useContext, FormEvent } from 'react';
 import { Button } from '@mui/material';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
 import StyledForm from '../../../common/Layout/StyledForm';
 import i18n from '../../../../../i18n';
+import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 const { useTranslation } = i18n;
 
@@ -15,9 +18,18 @@ const allowedCountries = [
 const CreateAccountForm = (): ReactElement | null => {
   const { t, ready } = useTranslation('planetcash');
   const [country, setCountry] = useState<string | undefined>(undefined);
+  const { token } = useContext(UserPropsContext);
+  const { handleError } = useContext(ErrorHandlingContext);
 
-  const onSubmit = () => {
-    console.log(country);
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = { country: country, activate: true };
+    const res = await postAuthenticatedRequest(
+      '/app/planetCash',
+      data,
+      token,
+      handleError
+    );
   };
 
   if (ready) {
@@ -33,11 +45,9 @@ const CreateAccountForm = (): ReactElement | null => {
             countries={allowedCountries}
           />
         </div>
-        <div className="formInstructions">
-          <p>{t('planetCashTerms1')}</p>
-          <p>{t('planetCashTerms2')}</p>
-          <p>{t('planetCashTerms3')}</p>
-        </div>
+        <p>{t('planetCashTerms1')}</p>
+        <p>{t('planetCashTerms2')}</p>
+        <p>{t('planetCashTerms3')}</p>
         <Button
           variant="contained"
           color="primary"
