@@ -9,5 +9,8 @@
   "invalidType": "Invalid type, please check the link again",
   "successfullyRedeemed": "Successfully Redeemed",
   "exitToProfile": "Exit to Profile",
-  "redeemCode": "Redeem Code"
+  "redeemCode": "Redeem Code",
+  "alreadyRedeemed": "The code has already been redeemed",
+  "invalidCode": "This code is invalid",
+  "redeemAnotherCode": "Redeem Another Code"
 }

@@ -6,7 +6,7 @@
   border: 0px;
   border-radius: 8px;
   padding: 30px 56px;
-  max-width: 80vw;
+  max-width: 90vw;
   min-width: 320px;
   overflow: hidden;
   outline: none;
@@ -14,10 +14,27 @@
   flex-direction: column;
   align-items: center;
   color: $primaryFontColor;
+  
   >h4{
     font-weight: bold;
     color: $primaryFontColor;
   }
+}
+
+.crossButtonDiv {
+  display: flex;
+  position: relative;
+  width: 100%;
+  justify-content: center;
+}
+
+.crossButton {
+  width: 15px;
+  margin-left: 10px;
+  position: absolute;
+  cursor: pointer;
+  right: -34px;
+  top: -17px
 }
 
 .modalFinal{

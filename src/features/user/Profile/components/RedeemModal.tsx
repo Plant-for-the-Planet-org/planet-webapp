@@ -17,6 +17,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import ShareOptions from '../../../common/ShareOptions/ShareOptions';
 import { styled } from '@mui/material';
 import { useEffect } from 'react';
+import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 
 const { useTranslation } = i18next;
 export default function RedeemModal({
@@ -33,7 +34,7 @@ export default function RedeemModal({
 
   const config = tenantConfig();
 
-  const { user, contextLoaded, token, setUser } =
+  const { user, contextLoaded, token, loadUser } =
     React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const imageRef = React.createRef();
@@ -44,8 +45,6 @@ export default function RedeemModal({
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [validCodeData, setValidCodeData] = React.useState('');
   const [codeRedeemed, setCodeRedeemed] = React.useState(false);
-  const [afterValidateCodeButton, setAfterValidateCodeButton] =
-    React.useState(false);
   const [code, setCode] = React.useState();
   const [inputCode, setInputCode] = React.useState('');
   const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] =
@@ -64,6 +63,11 @@ export default function RedeemModal({
     setTextCopiedSnackbarOpen(false);
   };
 
+  const handleAnotherCode = () => {
+    setErrorMessage('');
+    setInputCode('');
+  };
+
   const Alert = styled(MuiAlert)(({ theme }) => {
     return {
       backgroundColor: theme.palette.primary.main,
@@ -74,7 +78,7 @@ export default function RedeemModal({
     mode: 'onBlur',
   });
 
-  async function validateCode(data: any) {
+  async function redeemCode(data: any) {
     setIsUploadingData(true);
     const submitData = {
       // type: 'gift',
@@ -83,70 +87,64 @@ export default function RedeemModal({
     if (contextLoaded && user) {
       postAuthenticatedRequest(`/app/redeem`, submitData, token).then((res) => {
         if (res.error_code === 'already_redeemed') {
-          setErrorMessage(t('me:alreadyRedeemed'));
+          setErrorMessage(t('redeem:alreadyRedeemed'));
           setIsUploadingData(false);
         } else if (res.error_code === 'invalid_code') {
-          setErrorMessage(t('me:invalidCode'));
+          setErrorMessage(t('redeem:invalidCode'));
           setIsUploadingData(false);
         } else if (res.status === 'redeemed') {
           setCode(data.code);
           setCodeValidated(true);
           setValidCodeData(res);
+          loadUser();
           setIsUploadingData(false);
         }
       });
     }
   }
 
-  async function redeemCode() {
-    setIsUploadingData(true);
-    const submitData = {
-      // type: 'gift',
-      code: code,
-    };
-    if (contextLoaded && user) {
-      const userLang = localStorage.getItem('language') || 'en';
-      postAuthenticatedRequest(
-        `/api/v1.3/${userLang}/convertCode`,
-        submitData,
-        token,
-        handleError
-      ).then((res) => {
-        if (res.code === 401) {
-          setErrorMessage(res.message);
-          setIsUploadingData(false);
-        } else if (!res.response || res.response.status === 'error') {
-          setErrorMessage(res.errorText || t('me:wentWrong'));
-          setIsUploadingData(false);
-        } else if (res.response.status === 'success') {
-          setCodeRedeemed(true);
-          setIsUploadingData(false);
-          setCodeValidated(false);
-          const newUser = {
-            ...user,
-            score: {
-              personal: res.schemata.treecounter.countPersonal,
-              received: res.schemata.treecounter.countReceived,
-              target: res.schemata.treecounter.countTarget,
-            },
-          };
-          setUser(newUser);
-        }
-      });
-    }
-  }
-
-  useEffect(() => {
-    if (errorMessage || validCodeData) {
-      setAfterValidateCodeButton(true);
-    }
-  }, [errorMessage, validCodeData]);
+  // async function redeemCode() {
+  //   setIsUploadingData(true);
+  //   const submitData = {
+  //     // type: 'gift',
+  //     code: code,
+  //   };
+  //   if (contextLoaded && user) {
+  //     const userLang = localStorage.getItem('language') || 'en';
+  //     postAuthenticatedRequest(
+  //       `/api/v1.3/${userLang}/convertCode`,
+  //       submitData,
+  //       token,
+  //       handleError
+  //     ).then((res) => {
+  //       if (res.code === 401) {
+  //         setErrorMessage(res.message);
+  //         setIsUploadingData(false);
+  //       } else if (!res.response || res.response.status === 'error') {
+  //         setErrorMessage(res.errorText || t('me:wentWrong'));
+  //         setIsUploadingData(false);
+  //       } else if (res.response.status === 'success') {
+  //         setCodeRedeemed(true);
+  //         setIsUploadingData(false);
+  //         setCodeValidated(false);
+  //         const newUser = {
+  //           ...user,
+  //           score: {
+  //             personal: res.schemata.treecounter.countPersonal,
+  //             received: res.schemata.treecounter.countReceived,
+  //             target: res.schemata.treecounter.countTarget,
+  //           },
+  //         };
+  //         setUser(newUser);
+  //       }
+  //     });
+  //   }
+  // }
 
   const closeRedeem = () => {
     setCodeValidated(false);
     setCodeRedeemed(false);
     handleRedeemModalClose();
-    setAfterValidateCodeButton(false);
     setInputCode('');
     setErrorMessage('');
   };
@@ -287,7 +285,14 @@ export default function RedeemModal({
                     })}
                   </span>
                 </div>
-                <div>
+                <div style={{ position: 'relative' }}>
+                  <button
+                    className={styles.crossButton}
+                    style={{ top: '-57px', right: '-57px' }}
+                    onClick={closeRedeem}
+                  >
+                    <CancelIcon color={styles.primaryFontColor} />
+                  </button>
                   <span className={styles.codeTreeCount}>
                     {t('redeem:successfullyRedeemed')}
                   </span>
@@ -303,30 +308,20 @@ export default function RedeemModal({
                 {errorMessage && (
                   <span className={styles.formErrors}>{errorMessage}</span>
                 )}
-                {afterValidateCodeButton ? (
-                  <button
-                    id={'redeemModalCont'}
-                    onClick={closeRedeem}
-                    className="primaryButton"
-                    style={{ maxWidth: '150px', marginTop: '24px' }}
-                  >
-                    {isUploadingData ? (
-                      <div className={styles.spinner}></div>
-                    ) : (
-                      t('redeem:exitToProfile')
-                    )}
-                  </button>
-                ) : (
-                  ''
-                )}
               </>
             ) : (
               <>
-                <h4>{t('me:redeem')}</h4>
+                <div className={styles.crossButtonDiv}>
+                  <h4 style={{ fontWeight: '700' }}>{t('me:redeem')}</h4>
+                  <button className={styles.crossButton} onClick={closeRedeem}>
+                    <CancelIcon color={styles.primaryFontColor} />
+                  </button>
+                </div>
+
                 <div className={styles.note}>
                   <p>{t('me:redeemDescription')}</p>
                 </div>
-                {!afterValidateCodeButton && (
+                {!errorMessage && (
                   <div className={styles.inputField}>
                     <MaterialTextField
                       inputRef={register({
@@ -350,7 +345,6 @@ export default function RedeemModal({
                     />
                   </div>
                 )}
-
                 {errors.code && (
                   <span className={styles.formErrors}>
                     {errors.code.message}
@@ -359,30 +353,25 @@ export default function RedeemModal({
                 {errorMessage && !errors.code && !isUploadingData && (
                   <span className={styles.formErrors}>{errorMessage}</span>
                 )}
-                {!afterValidateCodeButton ? (
+
+                {errorMessage && (
                   <button
-                    id={'validateCodeRedeem'}
-                    onClick={handleSubmit(validateCode)}
-                    className="primaryButton"
-                    style={{ maxWidth: '200px', marginTop: '24px' }}
+                    className="primaryButton redeemAnotherCode"
+                    onClick={handleAnotherCode}
+                  >
+                    {t('redeem:redeemAnotherCode')}
+                  </button>
+                )}
+                {!errorMessage && (
+                  <button
+                    id={'redeemCodeModal'}
+                    onClick={handleSubmit(redeemCode)}
+                    className="primaryButton redeemCode"
                   >
                     {isUploadingData ? (
                       <div className={styles.spinner}></div>
                     ) : (
                       t('redeem:redeemCode')
-                    )}
-                  </button>
-                ) : (
-                  <button
-                    id={'redeemModalCont'}
-                    onClick={closeRedeem}
-                    className="primaryButton"
-                    style={{ maxWidth: '150px', marginTop: '24px' }}
-                  >
-                    {isUploadingData ? (
-                      <div className={styles.spinner}></div>
-                    ) : (
-                      t('redeem:exitToProfile')
                     )}
                   </button>
                 )}
