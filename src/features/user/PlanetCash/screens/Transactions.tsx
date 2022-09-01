@@ -2,12 +2,12 @@ import { ReactElement, useContext, useState, useEffect } from 'react';
 import i18next from '../../../../../i18n';
 import AccountRecord from '../../Account/components/AccountRecord';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
-import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
 import { Button } from '@mui/material';
 
 import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import NoTransactionsFound from '../components/NoTransactionsFound';
 
 const { useTranslation } = i18next;
 
@@ -121,7 +121,7 @@ const Transactions = ({
       )}
     </>
   ) : (
-    transactionHistory && <TransactionsNotFound />
+    transactionHistory && <NoTransactionsFound />
   );
 };
 
