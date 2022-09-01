@@ -16,7 +16,7 @@ const allowedCountries = [
 ];
 
 const CreateAccountForm = (): ReactElement | null => {
-  const { t, ready } = useTranslation('planetcash');
+  const { t, ready } = useTranslation(['planetcash', 'country']);
   const [country, setCountry] = useState<string | undefined>(undefined);
   const { token } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
@@ -30,6 +30,42 @@ const CreateAccountForm = (): ReactElement | null => {
       token,
       handleError
     );
+    if (res.id) {
+      // account creation is successful
+      // update accounts
+      // show success message
+      // go to accounts tab
+    } else {
+      if (res['error_type'] === 'planet_cash_account_error') {
+        switch (res['error_code']) {
+          case 'duplicate_account':
+            handleError({
+              code: 400,
+              message: t(`accountError.${res['error_code']}`, {
+                country: t(`country:${country?.toLowerCase()}`),
+              }),
+            });
+            break;
+          case 'active_account_exists':
+            handleError({
+              code: 400,
+              message: t(`accountError.${res['error_code']}`),
+            });
+            break;
+          default:
+            handleError({
+              code: 400,
+              message: t(`accountError.default`),
+            });
+            break;
+        }
+      } else {
+        handleError({
+          code: 400,
+          message: t(`accountError.default`),
+        });
+      }
+    }
   };
 
   if (ready) {
