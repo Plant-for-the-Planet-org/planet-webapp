@@ -6,6 +6,7 @@ import i18n from '../../../../../i18n';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { useRouter } from 'next/router';
 
 const { useTranslation } = i18n;
 
@@ -20,6 +21,7 @@ const CreateAccountForm = (): ReactElement | null => {
   const [country, setCountry] = useState<string | undefined>(undefined);
   const { token } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
+  const router = useRouter();
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -35,6 +37,7 @@ const CreateAccountForm = (): ReactElement | null => {
       // update accounts
       // show success message
       // go to accounts tab
+      router.push('/profile/planetcash');
     } else {
       if (res['error_type'] === 'planet_cash_account_error') {
         switch (res['error_code']) {
