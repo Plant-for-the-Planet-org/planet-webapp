@@ -197,7 +197,7 @@ const DonationLinkForm = ({
           {isTesting && (
             <h6>
               You can test donation flow using cards at
-              <a href="https://stripe.com/docs/testing" target="_blank">
+              <a href="https://stripe.com/docs/testing" target="_blank" rel="noreferrer">
                 {' '}
                 stripe
               </a>{' '}
