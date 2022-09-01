@@ -68,6 +68,12 @@ export default function RedeemModal({
     setInputCode('');
   };
 
+  const afterSuccessfulOfOneCode = () => {
+    setErrorMessage('');
+    setInputCode('');
+    setCodeValidated(false);
+  };
+
   const Alert = styled(MuiAlert)(({ theme }) => {
     return {
       backgroundColor: theme.palette.primary.main,
@@ -297,6 +303,13 @@ export default function RedeemModal({
                     {t('redeem:successfullyRedeemed')}
                   </span>
                 </div>
+
+                <button
+                  className="primaryButton redeemAnotherCode"
+                  onClick={afterSuccessfulOfOneCode}
+                >
+                  {t('redeem:redeemAnotherCode')}
+                </button>
 
                 {validCodeData.tpos?.length > 0 && (
                   <div className={styles.plantedBy}>
