@@ -16,7 +16,15 @@ const allowedCountries = [
   { code: 'US', label: 'United States', phone: '1' },
 ];
 
-const CreateAccountForm = (): ReactElement | null => {
+interface Props {
+  accounts: PlanetCash.Account[] | null;
+  isPlanetCashActive: boolean;
+}
+
+const CreateAccountForm = ({
+  accounts,
+  isPlanetCashActive,
+}: Props): ReactElement | null => {
   const { t, ready } = useTranslation(['planetcash', 'country']);
   const [country, setCountry] = useState<string | undefined>(undefined);
   const { token } = useContext(UserPropsContext);
@@ -25,7 +33,7 @@ const CreateAccountForm = (): ReactElement | null => {
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = { country: country, activate: true };
+    const data = { country: country, activate: !isPlanetCashActive };
     const res = await postAuthenticatedRequest(
       '/app/planetCash',
       data,
@@ -34,7 +42,6 @@ const CreateAccountForm = (): ReactElement | null => {
     );
     if (res.id) {
       // account creation is successful
-      // update accounts
       // show success message
       // go to accounts tab
       router.push('/profile/planetcash');

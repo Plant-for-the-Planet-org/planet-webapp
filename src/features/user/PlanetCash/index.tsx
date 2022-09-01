@@ -67,7 +67,12 @@ export default function PlanetCash({
       case PlanetCashTabs.TRANSACTIONS:
         return <Transactions setProgress={setProgress} />;
       case PlanetCashTabs.CREATE_ACCOUNT:
-        return <CreateAccount />;
+        return (
+          <CreateAccount
+            isPlanetCashActive={isPlanetCashActive}
+            accounts={accounts}
+          />
+        );
       case PlanetCashTabs.ACCOUNTS:
       default:
         return (
