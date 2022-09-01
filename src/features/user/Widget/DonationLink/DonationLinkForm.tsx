@@ -165,10 +165,11 @@ const DonationLinkForm = ({
               active={true}
             />
           </div>
+          <div className={styles.formHeader}>
+            {t('donationLink:treeCounterTitle')}
+          </div>
           <InlineFormDisplayGroup>
-            <div className={styles.formHeader}>
-              {t('donationLink:treeCounterTitle')}
-            </div>
+            <h6>Tree Donations from this link would be gift to my Profile.</h6>
             <Switch
               id="treeCounter"
               name="treeCounter"
@@ -193,6 +194,15 @@ const DonationLinkForm = ({
               disabled={false}
             />
           </InlineFormDisplayGroup>
+          {isTesting && (
+            <h6>
+              You can test donation flow using cards at
+              <a href="https://stripe.com/docs/testing" target="_blank">
+                {' '}
+                stripe
+              </a>{' '}
+            </h6>
+          )}
           <div className={styles.formSection}>
             <div className={styles.formHeader}>
               {t('donationLink:urlTitle')}
