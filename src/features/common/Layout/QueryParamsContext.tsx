@@ -95,7 +95,21 @@ const QueryParamsProvider: FC = ({ children }) => {
   );
 
   useEffect(() => {
-    const tenantId = getTenantId(query);
+    if (query.tenant) {
+      localStorage.setItem('tenantID', query.tenant);
+      setTenantID(query.tenant);
+    }
+  }, [query.tenant]);
+
+  useEffect(() => {
+    let tenantId;
+    const tenantIDFromLocalStorage = localStorage.getItem('tenantID');
+    if (!!tenantIDFromLocalStorage) {
+      tenantId = tenantIDFromLocalStorage;
+    } else {
+      tenantId = getTenantId(query);
+    }
+
     if (tenantId !== null) {
       setTenantID(tenantId);
     }

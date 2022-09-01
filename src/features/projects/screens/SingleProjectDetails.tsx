@@ -105,7 +105,7 @@ function SingleProjectDetails({}: Props): ReactElement {
                   ? `?embed=true&callback=${callbackUrl}`
                   : '?embed=true'
               }`
-            : `?tenant=${tenantID}`
+            : ``
         }`
       );
     }

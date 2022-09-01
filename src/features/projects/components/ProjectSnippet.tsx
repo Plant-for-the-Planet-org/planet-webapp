@@ -73,7 +73,7 @@ export default function ProjectSnippet({
                       ? `?embed=true&callback=${callbackUrl}`
                       : '?embed=true'
                   }`
-                : `?tenant=${tenantID}`
+                : ``
             }`
           );
         }}
