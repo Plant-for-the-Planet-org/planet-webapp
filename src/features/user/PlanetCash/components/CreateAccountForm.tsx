@@ -9,20 +9,13 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { useRouter } from 'next/router';
 
 const { useTranslation } = i18n;
-
-const allowedCountries = [
-  { code: 'DE', label: 'Germany', phone: '49' },
-  { code: 'ES', label: 'Spain', phone: '34' },
-  { code: 'US', label: 'United States', phone: '1' },
-];
-
 interface Props {
-  accounts: PlanetCash.Account[] | null;
   isPlanetCashActive: boolean;
+  allowedCountries: { code: string; label: string; phone: string }[];
 }
 
 const CreateAccountForm = ({
-  accounts,
+  allowedCountries,
   isPlanetCashActive,
 }: Props): ReactElement | null => {
   const { t, ready } = useTranslation(['planetcash', 'country']);
@@ -86,7 +79,7 @@ const CreateAccountForm = ({
           <AutoCompleteCountry
             label={t('labelCountry')}
             name="country"
-            defaultValue={'DE'}
+            defaultValue={allowedCountries[0].code}
             onChange={setCountry}
             countries={allowedCountries}
           />
