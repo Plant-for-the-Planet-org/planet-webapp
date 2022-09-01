@@ -11,8 +11,8 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 export enum PlanetCashTabs {
-  CREATE_ACCOUNT = 0,
-  ACCOUNTS = 1,
+  ACCOUNTS = 0,
+  CREATE_ACCOUNT = 1,
   TRANSACTIONS = 2,
 }
 
@@ -85,13 +85,13 @@ export default function PlanetCash({
     if (ready) {
       setTabConfig([
         {
-          label: t('tabCreateAccount'),
-          link: '/profile/planetcash/new',
-        },
-        {
-          label: t('tabAccount'),
+          label: t('tabAccounts'),
           link: '/profile/planetcash',
           hasList: true,
+        },
+        {
+          label: t('tabCreateAccount'),
+          link: '/profile/planetcash/new',
         },
         {
           label: t('tabTransactions'),
