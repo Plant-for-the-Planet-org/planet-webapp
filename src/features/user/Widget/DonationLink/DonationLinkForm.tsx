@@ -58,8 +58,8 @@ const DonationLinkForm = ({
     contextLoaded ? user.country : undefined
   );
   const [Languages, setLanguage] = useState({
-    langCode: 'en',
-    languageName: 'English',
+    langCode: '',
+    languageName: 'Automatic Selection',
   });
   const [donationUrl, setDonationUrl] = useState<string>('');
   const { t, ready } = useTranslation(['donationLink', 'donate']);
@@ -73,7 +73,10 @@ const DonationLinkForm = ({
       ? 'http://paydev.pp.eco/'
       : process.env.NEXT_PUBLIC_DONATION_URL;
 
-    const selectedLanguage = Languages ? `&locale=${Languages.langCode}` : '';
+    const selectedLanguage =
+      Languages && Languages.langCode != ''
+        ? `&locale=${Languages.langCode}`
+        : '';
 
     const url = `${link}?country=${country}${selectedLanguage}${
       localProject == null ? '' : `&to=${localProject.slug}`
@@ -90,6 +93,13 @@ const DonationLinkForm = ({
   useEffect(() => {
     handleUrlChange();
   }, [country, Languages, localProject, isSupport, isTesting]);
+
+  useEffect(() => {
+    supportedLanguages.push({
+      langCode: '',
+      languageName: 'Automatic Selection',
+    });
+  }, []);
 
   if (ready) {
     return (
@@ -110,7 +120,7 @@ const DonationLinkForm = ({
                 id="language"
                 options={supportedLanguages}
                 getOptionLabel={(option) =>
-                  `${(option as LanguageType).langCode} - ${
+                  `${(option as LanguageType).langCode}  ${
                     (option as LanguageType).languageName
                   }`
                 }
@@ -133,7 +143,7 @@ const DonationLinkForm = ({
                     key={(option as LanguageType).langCode}
                   >
                     <span>{`${(option as LanguageType).langCode}`}</span>
-                    {`- ${(option as LanguageType).languageName}`}
+                    {` ${(option as LanguageType).languageName}`}
                   </StyledAutoCompleteOption>
                 )}
                 onChange={(event, newLan) => {
