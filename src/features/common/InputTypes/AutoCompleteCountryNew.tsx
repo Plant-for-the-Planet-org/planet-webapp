@@ -56,7 +56,7 @@ export default function CountrySelect({
     }
   }, []);
 
-  // Set contact details everytime value changes
+  // Set country everytime value changes
   React.useEffect(() => {
     if (selectedCountry) {
       onChange(selectedCountry.code);
