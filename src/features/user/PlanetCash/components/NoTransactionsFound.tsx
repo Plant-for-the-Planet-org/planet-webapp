@@ -1,21 +1,12 @@
 import { ReactElement } from 'react';
-import { styled } from '@mui/material';
+import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
-
-const Container = styled('div')(() => ({
-  display: 'flex',
-  flexDirection: 'column',
-  height: 160,
-  width: '100%',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
 
 const NoTransactionsFound = (): ReactElement => {
   return (
-    <Container>
+    <CenteredContainer>
       <TransactionsNotFound />
-    </Container>
+    </CenteredContainer>
   );
 };
 

@@ -15,6 +15,7 @@
   "activateAccountButton": "Activate",
   "accountInactiveHelpText": "This account is inactive and cannot be used to make donations. To activate this account, please deactivate your active account first.",
   "createPlanetCashButton": "Create Planet Cash",
+  "accountQuotaReachedText": "You cannot create more accounts as you have exhausted your account quota.",
   "labelCountry": "Country",
   "planetCashTerms1": "By clicking \"Create PlanetCash Account\", I agree to the Terms and Conditions of Plant-for-the-Planet and PlanetCash.",
   "planetCashTerms2": "I understand that PlanetCash donations are non-refundable, and unallocated payments will be auto allocated to projects on the Platform after six months of a Payment.",

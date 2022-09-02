@@ -1,7 +1,11 @@
 import { ReactElement, useState, useEffect } from 'react';
 import CreateAccountForm from '../components/CreateAccountForm';
+import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { CountryType } from '../../../common/types/country';
+import i18next from '../../../../../i18n';
+
+const { useTranslation } = i18next;
 
 const initialAllowedCountries: CountryType[] = [
   { code: 'DE', label: 'Germany', phone: '49' },
@@ -14,6 +18,7 @@ const CreateAccount = (): ReactElement | null => {
     CountryType[] | null
   >(null);
   const { accounts, isPlanetCashActive } = usePlanetCash();
+  const { t, ready } = useTranslation('planetcash');
 
   useEffect(() => {
     if (accounts && accounts.length) {
@@ -32,10 +37,9 @@ const CreateAccount = (): ReactElement | null => {
         isPlanetCashActive={isPlanetCashActive}
       />
     ) : (
-      <div>
-        You cannot create more accounts as you already have {accounts.length}{' '}
-        accounts.
-      </div>
+      <CenteredContainer>
+        {ready && t('accountQuotaReachedText')}
+      </CenteredContainer>
     );
   }
 
