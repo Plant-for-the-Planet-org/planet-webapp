@@ -97,7 +97,7 @@ const Transactions = ({
             index={index}
             selectedRecord={selectedRecord}
             record={record}
-            paymentHistory={transactionHistory}
+            isPlanetCash={true}
           />
         );
       })}
@@ -115,8 +115,8 @@ const Transactions = ({
           isModal={true}
           handleRecordToggle={handleRecordToggle}
           selectedRecord={selectedRecord}
-          paymentHistory={transactionHistory}
           record={transactionHistory.items[selectedRecord]}
+          isPlanetCash={true}
         />
       )}
     </>

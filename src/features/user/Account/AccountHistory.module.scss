@@ -108,6 +108,12 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  & .incoming {
+    color: $primaryColor;
+  }
+  & .outgoing {
+    color: #e74c3c;
+  }
   > .left {
     display: flex;
     flex-direction: column;

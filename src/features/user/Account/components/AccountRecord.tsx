@@ -14,7 +14,7 @@ interface CommonProps {
   handleRecordToggle: (index: number | undefined) => void;
   selectedRecord: number | null;
   record: Payments.PaymentHistoryRecord;
-  paymentHistory: Payments.PaymentHistory;
+  isPlanetCash?: boolean;
 }
 
 interface ModalProps extends CommonProps {
@@ -33,8 +33,8 @@ export default function AccountRecord({
   handleRecordToggle,
   index = undefined,
   selectedRecord,
+  isPlanetCash = false,
   record,
-  // paymentHistory,
   isModal = false,
 }: Props): ReactElement {
   const { t } = useTranslation(['me']);
@@ -61,6 +61,7 @@ export default function AccountRecord({
             record={record}
             handleRecordToggle={!isModal ? handleRecordToggle : undefined}
             index={index}
+            isPlanetCash={isPlanetCash}
           />
           {(isModal || index === selectedRecord) && (
             <div className={styles.divider} />
@@ -102,12 +103,14 @@ interface HeaderProps {
   record: Payments.PaymentHistoryRecord;
   handleRecordToggle?: (index: number | undefined) => void;
   index?: number;
+  isPlanetCash?: boolean;
 }
 
 export function RecordHeader({
   record,
   handleRecordToggle,
   index,
+  isPlanetCash = false,
 }: HeaderProps): ReactElement {
   const { t, i18n } = useTranslation(['me']);
   const getRecordTitle = (): ReactElement => {
@@ -141,6 +144,13 @@ export function RecordHeader({
         return <p className={styles.top}>{`${t(record.type)}`}</p>;
     }
   };
+  const netAmountStatus =
+    record.status === 'refunded' || !isPlanetCash
+      ? ''
+      : record.purpose === 'planet-cash'
+      ? 'incoming'
+      : 'outgoing';
+
   return (
     <div
       onClick={handleRecordToggle && (() => handleRecordToggle(index))}
@@ -151,7 +161,8 @@ export function RecordHeader({
         <p>{formatDate(record.created)}</p>
       </div>
       <div className={styles.right}>
-        <p className={styles.top}>
+        <p className={`${styles.top} ${styles[netAmountStatus]}`}>
+          {netAmountStatus === 'outgoing' && '-'}
           {getFormatedCurrency(
             i18n.language,
             record.currency,
