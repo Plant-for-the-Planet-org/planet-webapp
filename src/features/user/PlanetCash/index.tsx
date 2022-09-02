@@ -1,4 +1,10 @@
-import { ReactElement, useState, useEffect, useContext } from 'react';
+import {
+  ReactElement,
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+} from 'react';
 import i18next from '../../../../i18n';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
@@ -9,6 +15,7 @@ import Transactions from './screens/Transactions';
 import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
 
 export enum PlanetCashTabs {
   ACCOUNTS = 0,
@@ -21,39 +28,42 @@ const { useTranslation } = i18next;
 interface PlanetCashProps {
   step: PlanetCashTabs;
   setProgress?: (progress: number) => void;
+  shouldReload?: boolean;
 }
 
 export default function PlanetCash({
   step,
   setProgress,
+  shouldReload = false,
 }: PlanetCashProps): ReactElement | null {
   const { t, ready } = useTranslation('planetcash');
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   const { token, contextLoaded } = useContext(UserPropsContext);
+  const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
   const { handleError } = useContext(ErrorHandlingContext);
-  const [accounts, setAccounts] = useState<PlanetCash.Account[] | null>(null);
-  const [isPlanetCashActive, setIsPlanetCashActive] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
 
-  const fetchAccounts = async () => {
-    setIsDataLoading(true);
-    setProgress && setProgress(70);
-    const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
-      `/app/planetCash`,
-      token,
-      {},
-      handleError
-    );
-    const sortedAccounts = sortAccountsByActive(accounts);
-    setIsPlanetCashActive(accounts.some((account) => account.isActive));
-    setAccounts(sortedAccounts);
-    setIsDataLoading(false);
+  const fetchAccounts = useCallback(async () => {
+    if (!accounts || shouldReload) {
+      setIsDataLoading(true);
+      setProgress && setProgress(70);
+      const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
+        `/app/planetCash`,
+        token,
+        {},
+        handleError
+      );
+      const sortedAccounts = sortAccountsByActive(accounts);
+      setIsPlanetCashActive(accounts.some((account) => account.isActive));
+      setAccounts(sortedAccounts);
+      setIsDataLoading(false);
 
-    if (setProgress) {
-      setProgress(100);
-      setTimeout(() => setProgress(0), 1000);
+      if (setProgress) {
+        setProgress(100);
+        setTimeout(() => setProgress(0), 1000);
+      }
     }
-  };
+  }, [shouldReload]);
 
   const sortAccountsByActive = (
     accounts: PlanetCash.Account[]
@@ -76,23 +86,10 @@ export default function PlanetCash({
       case PlanetCashTabs.TRANSACTIONS:
         return <Transactions setProgress={setProgress} />;
       case PlanetCashTabs.CREATE_ACCOUNT:
-        return (
-          <CreateAccount
-            isPlanetCashActive={isPlanetCashActive}
-            accounts={accounts}
-          />
-        );
+        return <CreateAccount />;
       case PlanetCashTabs.ACCOUNTS:
       default:
-        return (
-          <Accounts
-            accounts={accounts}
-            setAccounts={setAccounts}
-            isPlanetCashActive={isPlanetCashActive}
-            setIsPlanetCashActive={setIsPlanetCashActive}
-            isDataLoading={isDataLoading}
-          />
-        );
+        return <Accounts isDataLoading={isDataLoading} />;
     }
   };
 

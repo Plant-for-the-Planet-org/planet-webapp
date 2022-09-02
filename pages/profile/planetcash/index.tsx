@@ -24,7 +24,11 @@ export default function PlanetCashPage(): ReactElement {
         <Head>
           <title>{ready ? t('planetcash.titleAccount') : ''}</title>
         </Head>
-        <PlanetCash step={PlanetCashTabs.ACCOUNTS} setProgress={setProgress} />
+        <PlanetCash
+          step={PlanetCashTabs.ACCOUNTS}
+          setProgress={setProgress}
+          shouldReload={true}
+        />
       </UserLayout>
     </>
   );

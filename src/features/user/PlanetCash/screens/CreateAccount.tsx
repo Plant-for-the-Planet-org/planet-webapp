@@ -1,5 +1,6 @@
 import { ReactElement, useState, useEffect } from 'react';
 import CreateAccountForm from '../components/CreateAccountForm';
+import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { CountryType } from '../../../common/types/country';
 
 const initialAllowedCountries: CountryType[] = [
@@ -8,11 +9,11 @@ const initialAllowedCountries: CountryType[] = [
   { code: 'US', label: 'United States', phone: '1' },
 ];
 
-const CreateAccount = ({
+const CreateAccount = (): ReactElement | null => {
   const [allowedCountries, setAllowedCountries] = useState<
     CountryType[] | null
-}: Props): ReactElement | null => {
-  const [allowedCountries, setAllowedCountries] = useState<any>(null);
+  >(null);
+  const { accounts, isPlanetCashActive } = usePlanetCash();
 
   useEffect(() => {
     if (accounts && accounts.length) {
