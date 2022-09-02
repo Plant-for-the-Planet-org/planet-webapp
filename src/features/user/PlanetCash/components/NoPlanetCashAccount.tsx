@@ -1,5 +1,9 @@
 import { ReactElement } from 'react';
-import { styled } from '@mui/material';
+import { Button, styled } from '@mui/material';
+import i18next from '../../../../../i18n';
+import { useRouter } from 'next/router';
+
+const { useTranslation } = i18next;
 
 const Container = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -7,14 +11,35 @@ const Container = styled('div')(({ theme }) => ({
   borderRadius: 9,
   boxShadow: theme.shadows[1],
   width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 24,
+  textAlign: 'center',
+  alignItems: 'center',
+  justifyContent: 'space-around',
+  fontSize: '1rem',
 }));
 
-const NoPlanetCashAccount = (): ReactElement => {
-  return (
-    <Container>
-      <p>No account found. Create an account (Temp Text)</p>
-    </Container>
-  );
+const NoPlanetCashAccount = (): ReactElement | null => {
+  const { t, ready } = useTranslation('planetcash');
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push('/profile/planetcash/new');
+  };
+
+  if (ready) {
+    return (
+      <Container>
+        <p>{t('noAccountsText')}</p>
+        <Button variant="contained" color="primary" onClick={handleClick}>
+          {t('createPlanetCashButton')}
+        </Button>
+      </Container>
+    );
+  }
+
+  return null;
 };
 
 export default NoPlanetCashAccount;
