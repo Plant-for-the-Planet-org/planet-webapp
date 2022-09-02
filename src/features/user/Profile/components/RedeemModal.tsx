@@ -16,13 +16,21 @@ import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import ShareOptions from '../../../common/ShareOptions/ShareOptions';
 import { styled } from '@mui/material';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
+import { UserProfile } from '../../../../../src/types/Interface';
 
 const { useTranslation } = i18next;
+
+interface RedeemModal {
+  redeemModalOpen: boolean;
+  handleRedeemModalClose: boolean;
+  userprofile: UserProfile;
+}
+
 export default function RedeemModal({
   redeemModalOpen,
   handleRedeemModalClose,
   userprofile,
-}: any) {
+}: RedeemModal) {
   const { t, i18n, ready } = useTranslation([
     'me',
     'common',

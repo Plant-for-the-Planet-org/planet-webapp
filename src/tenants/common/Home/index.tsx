@@ -14,7 +14,7 @@ const { useTranslation } = i18next;
 interface Props {
   leaderboard: any;
   tenantScore: any;
-  updateTenantScore: any;
+  updateTenantScore: string;
 }
 
 export default function About({
