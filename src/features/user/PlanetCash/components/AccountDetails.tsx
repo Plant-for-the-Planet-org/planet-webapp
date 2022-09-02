@@ -16,6 +16,10 @@ const AccountDetailsGrid = styled('article')(({ theme }) => ({
   borderRadius: 9,
   width: '100%',
   boxShadow: theme.shadows[1],
+  '&.accountDetails--inactive': {
+    opacity: '80%',
+    backgroundColor: theme.palette.grey[200],
+  },
   '& .accountHeader': {
     rowGap: 16,
   },
@@ -25,6 +29,7 @@ const AccountDetailsGrid = styled('article')(({ theme }) => ({
   '& .accountHeaderRight': {
     gap: 16,
     justifyContent: 'space-between',
+    alignItems: 'center',
     [theme.breakpoints.up('sm')]: {
       flexDirection: 'column',
       alignItems: 'flex-end',
@@ -35,9 +40,6 @@ const AccountDetailsGrid = styled('article')(({ theme }) => ({
     color: theme.palette.primary.main,
     fontWeight: theme.typography.fontWeightBold,
     textAlign: 'right',
-  },
-  '& .test': {
-    width: 'fit-content',
   },
   '& .accountTitle': {
     fontWeight: theme.typography.fontWeightBold,
@@ -118,7 +120,9 @@ const AccountDetails = ({
   return (
     <Grid
       container
-      className="accountDetails"
+      className={`accountDetails ${
+        !account.isActive ? 'accountDetails--inactive' : ''
+      }`}
       component={AccountDetailsGrid}
       direction="column"
     >
@@ -148,7 +152,6 @@ const AccountDetails = ({
               component={Button}
               variant="contained"
               size="small"
-              className="test"
               href={addBalanceLink}
             >
               {t('addBalanceButton')}
