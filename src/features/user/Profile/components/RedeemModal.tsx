@@ -16,7 +16,6 @@ import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import ShareOptions from '../../../common/ShareOptions/ShareOptions';
 import { styled } from '@mui/material';
-import { useEffect } from 'react';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 
 const { useTranslation } = i18next;
@@ -36,7 +35,6 @@ export default function RedeemModal({
 
   const { user, contextLoaded, token, loadUser } =
     React.useContext(UserPropsContext);
-  const { handleError } = React.useContext(ErrorHandlingContext);
   const imageRef = React.createRef();
   const sendRef = () => imageRef;
 
