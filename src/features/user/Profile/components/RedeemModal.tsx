@@ -13,7 +13,6 @@ import tenantConfig from '../../../../../tenant.config';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import ShareOptions from '../../../common/ShareOptions/ShareOptions';
 import { styled } from '@mui/material';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
@@ -82,7 +81,8 @@ export default function RedeemModal({
     mode: 'onBlur',
   });
 
-  async function redeemCode(data: any) {
+  async function redeemCode(data: string) {
+    console.log(data);
     setIsUploadingData(true);
     const submitData = {
       // type: 'gift',
