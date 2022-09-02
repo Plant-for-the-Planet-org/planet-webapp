@@ -1,6 +1,6 @@
 import { Autocomplete, styled } from '@mui/material';
 
-const MuiAutocomplete = styled(Autocomplete)((/* { theme } */) => {
+const MuiAutoComplete = styled(Autocomplete)((/* { theme } */) => {
   return {
     width: '100%',
     '& .Mui-disabled .iconFillColor': {
@@ -17,4 +17,4 @@ const StyledAutoCompleteOption = styled('li')({
   },
 });
 
-export { MuiAutocomplete, StyledAutoCompleteOption };
+export { MuiAutoComplete, StyledAutoCompleteOption };

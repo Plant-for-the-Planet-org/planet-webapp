@@ -12,10 +12,11 @@ const { useTranslation } = i18next;
 import styles from './DonationLinkForm.module.scss';
 import CopyToClipboard from '../../../common/CopyToClipboard';
 import {
-  MuiAutocomplete,
+  MuiAutoComplete,
   StyledAutoCompleteOption,
-} from '../../../common/InputTypes/AutoCompleteTheme';
+} from '../../../common/InputTypes/MuiAutoComplete';
 import { Project } from '../../../common/types/project';
+import { allCountries } from '../../../../utils/constants/countries';
 
 // TODOO - refactor code for reuse?
 const StyledForm = styled('form')((/* { theme } */) => ({
@@ -54,9 +55,7 @@ const DonationLinkForm = ({
   projectsList,
 }: DonationLinkFormProps): ReactElement | null => {
   const { user, contextLoaded } = useContext(UserPropsContext);
-  const [country, setCountry] = useState(
-    contextLoaded ? user.country : undefined
-  );
+  const [country, setCountry] = useState('auto');
   const [Languages, setLanguage] = useState({
     langCode: '',
     languageName: 'Automatic Selection',
@@ -75,12 +74,14 @@ const DonationLinkForm = ({
 
     const selectedLanguage =
       Languages && Languages.langCode != ''
-        ? `&locale=${Languages.langCode}`
+        ? `locale=${Languages.langCode}&`
         : '';
 
-    const url = `${link}?country=${country}${selectedLanguage}${
-      localProject == null ? '' : `&to=${localProject.slug}`
-    }&tenant=${TENANT_ID}${isSupport ? `&s=${user.slug}` : ''}
+    const selectedCountry = country !== 'auto' ? `country=${country}&` : '';
+
+    const url = `${link}?${selectedCountry}${selectedLanguage}${
+      localProject == null ? '' : `to=${localProject.slug}&`
+    }tenant=${TENANT_ID}${isSupport ? `&s=${user.slug}` : ''}
     `;
     setDonationUrl(url);
   };
@@ -99,6 +100,11 @@ const DonationLinkForm = ({
       langCode: '',
       languageName: 'Automatic Selection',
     });
+    allCountries.push({
+      code: 'auto',
+      label: 'Automatic Selection',
+      phone: '',
+    });
   }, []);
 
   if (ready) {
@@ -113,10 +119,11 @@ const DonationLinkForm = ({
               <AutoCompleteCountry
                 label={t('donationLink:labelCountry')}
                 name="country"
-                defaultValue={country}
+                defaultValue={'auto'}
                 onChange={setCountry}
+                countries={allCountries}
               />
-              <MuiAutocomplete
+              <MuiAutoComplete
                 id="language"
                 options={supportedLanguages}
                 getOptionLabel={(option) =>
@@ -197,7 +204,11 @@ const DonationLinkForm = ({
           {isTesting && (
             <h6>
               You can test donation flow using cards at
-              <a href="https://stripe.com/docs/testing" target="_blank" rel="noreferrer">
+              <a
+                href="https://stripe.com/docs/testing"
+                target="_blank"
+                rel="noreferrer"
+              >
                 {' '}
                 stripe
               </a>{' '}
