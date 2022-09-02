@@ -56,8 +56,8 @@ const DonationLinkForm = ({
 }: DonationLinkFormProps): ReactElement | null => {
   const { user, contextLoaded } = useContext(UserPropsContext);
   const [country, setCountry] = useState('auto');
-  const [Languages, setLanguage] = useState({
-    langCode: '',
+  const [Languages, setLanguage] = useState<LanguageType>({
+    langCode: 'auto',
     languageName: 'Automatic Selection',
   });
   const [donationUrl, setDonationUrl] = useState<string>('');
@@ -66,6 +66,7 @@ const DonationLinkForm = ({
   const [isSupport, setIsSupport] = useState<boolean>(!user.isPrivate);
   const [isTesting, setIsTesting] = useState<boolean>(false);
   const [isProjectSelected, setIsProjectSelected] = useState<boolean>(false);
+  const [isUpdated, setIsUpdated] = useState<boolean>(false);
 
   const handleUrlChange = () => {
     const link = isTesting
@@ -73,7 +74,7 @@ const DonationLinkForm = ({
       : process.env.NEXT_PUBLIC_DONATION_URL;
 
     const selectedLanguage =
-      Languages && Languages.langCode != ''
+      Languages && Languages.langCode != 'auto'
         ? `locale=${Languages.langCode}&`
         : '';
 
@@ -96,18 +97,25 @@ const DonationLinkForm = ({
   }, [country, Languages, localProject, isSupport, isTesting]);
 
   useEffect(() => {
-    supportedLanguages.push({
-      langCode: '',
+    const autoLanguage = {
+      langCode: 'auto',
       languageName: 'Automatic Selection',
-    });
-    allCountries.push({
+    };
+    if (!supportedLanguages.find((obj2) => obj2.langCode === 'auto'))
+      supportedLanguages.push(autoLanguage as LanguageType);
+
+    const autoCountry = {
       code: 'auto',
       label: 'Automatic Selection',
       phone: '',
-    });
+    };
+    if (!allCountries.find((obj2) => obj2.code === 'auto')) {
+      allCountries.push(autoCountry);
+    }
+    setIsUpdated(true);
   }, []);
 
-  if (ready) {
+  if (isUpdated && ready) {
     return (
       <StyledForm>
         <div className="inputContainer">
@@ -127,9 +135,7 @@ const DonationLinkForm = ({
                 id="language"
                 options={supportedLanguages}
                 getOptionLabel={(option) =>
-                  `${(option as LanguageType).langCode}  ${
-                    (option as LanguageType).languageName
-                  }`
+                  `${(option as LanguageType).languageName}`
                 }
                 isOptionEqualToValue={(option, value) =>
                   (option as LanguageType).langCode ===
@@ -149,7 +155,9 @@ const DonationLinkForm = ({
                     {...props}
                     key={(option as LanguageType).langCode}
                   >
-                    <span>{`${(option as LanguageType).langCode}`}</span>
+                    {(option as LanguageType).langCode !== 'auto' && (
+                      <span>{`${(option as LanguageType).langCode}`}</span>
+                    )}
                     {` ${(option as LanguageType).languageName}`}
                   </StyledAutoCompleteOption>
                 )}
