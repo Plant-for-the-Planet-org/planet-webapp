@@ -1,4 +1,5 @@
 import { ReactElement } from 'react';
+import AccountListLoader from '../../../../../public/assets/images/icons/AccountListLoader';
 import AccountDetails from '../components/AccountDetails';
 import NoPlanetCashAccount from '../components/NoPlanetCashAccount';
 
@@ -7,14 +8,16 @@ interface AccountsProps {
   setAccounts: (accounts: PlanetCash.Account[]) => void;
   isPlanetCashActive: boolean;
   setIsPlanetCashActive: (isPlanetCashActive: boolean) => void;
+  isDataLoading: boolean;
 }
 
 const Accounts = ({
   accounts,
   isPlanetCashActive,
+  isDataLoading,
   setAccounts,
   setIsPlanetCashActive,
-}: AccountsProps): ReactElement => {
+}: AccountsProps): ReactElement | null => {
   const updateAccount = (accountToUpdate: PlanetCash.Account): void => {
     const updatedAccounts = accounts?.map((account) =>
       account.id === accountToUpdate.id ? accountToUpdate : account
@@ -27,7 +30,19 @@ const Accounts = ({
     }
   };
 
-  return accounts && accounts.length > 0 ? (
+  /* return (
+    <>
+      <AccountListLoader />
+      <AccountListLoader />
+    </>
+  ); */
+
+  return !accounts && isDataLoading ? (
+    <>
+      <AccountListLoader />
+      <AccountListLoader />
+    </>
+  ) : accounts && accounts.length > 0 ? (
     <>
       {accounts?.map((account, index) => {
         return (
@@ -41,7 +56,7 @@ const Accounts = ({
       })}
     </>
   ) : (
-    <NoPlanetCashAccount />
+    accounts && <NoPlanetCashAccount />
   );
 };
 

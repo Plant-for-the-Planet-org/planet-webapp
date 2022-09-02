@@ -33,8 +33,10 @@ export default function PlanetCash({
   const { handleError } = useContext(ErrorHandlingContext);
   const [accounts, setAccounts] = useState<PlanetCash.Account[] | null>(null);
   const [isPlanetCashActive, setIsPlanetCashActive] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(false);
 
   const fetchAccounts = async () => {
+    setIsDataLoading(true);
     setProgress && setProgress(70);
     const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
       `/app/planetCash`,
@@ -45,6 +47,8 @@ export default function PlanetCash({
     const sortedAccounts = sortAccountsByActive(accounts);
     setIsPlanetCashActive(accounts.some((account) => account.isActive));
     setAccounts(sortedAccounts);
+    setIsDataLoading(false);
+
     if (setProgress) {
       setProgress(100);
       setTimeout(() => setProgress(0), 1000);
@@ -86,6 +90,7 @@ export default function PlanetCash({
             setAccounts={setAccounts}
             isPlanetCashActive={isPlanetCashActive}
             setIsPlanetCashActive={setIsPlanetCashActive}
+            isDataLoading={isDataLoading}
           />
         );
     }
