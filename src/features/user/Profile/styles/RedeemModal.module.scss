@@ -14,12 +14,12 @@
   flex-direction: column;
   align-items: center;
   color: $primaryFontColor;
-  
-  >h4{
+  > h4 {
     font-weight: bold;
     color: $primaryFontColor;
   }
 }
+
 
 .crossButtonDiv {
   display: flex;
@@ -37,7 +37,10 @@
   top: -17px
 }
 
-.modalFinal{
+
+
+.modalFinal {
+
   background-color: $backgroundColor;
   border: 0px;
   border-radius: 8px;
@@ -90,7 +93,7 @@
   }
 }
 
-.formErrors{
+.formErrors {
   font-family: $primaryFontFamily;
   font-size: $fontSmall;
   color: $dangerColor;
@@ -100,7 +103,7 @@
   text-align: center;
 }
 
-.codeTreeCount{
+.codeTreeCount {
   font-size: fontXXXLarge;
   font-weight: bold;
   display: flex;
@@ -114,7 +117,7 @@
   }
 }
 
-.plantedBy{
+.plantedBy {
   color: $primaryFontColor;
   text-align: center;
   > span {
@@ -124,7 +127,6 @@
     font-weight: bold;
   }
 }
-
 
 .header {
   display: flex;
@@ -149,7 +151,6 @@
   color: $primaryFontColor;
   margin-left: 10px;
 }
-
 
 .thankyouImageContainer {
   display: flex;
@@ -182,8 +183,7 @@
   justify-content: center;
 }
 
-
-.tempDonationCount{
+.tempDonationCount {
   font-size: 130px;
   font-weight: 600;
   text-align: center;
@@ -194,8 +194,7 @@
   font-variant-ligatures: none;
 }
 
-
-.tempDonationTenant{
+.tempDonationTenant {
   font-size: 75px;
   font-weight: 400;
   font-style: italic;
@@ -287,12 +286,10 @@
   }
 }
 
-
 @include smTabletView {
-
-.speedDialButton:focus {
-  outline: none;
-}
+  .speedDialButton:focus {
+    outline: none;
+  }
   .container {
     width: 412px;
   }
@@ -316,12 +313,12 @@
   white-space: pre-line;
 }
 
-.thankyouImageHeader p h1{
+.thankyouImageHeader p h1 {
   font-size: 34px;
   font-weight: bolder;
 }
 
-.tempthankyouImageHeader{
+.tempthankyouImageHeader {
   font-size: 100px;
   font-weight: 600;
   text-align: center;
@@ -336,7 +333,7 @@
   font-size: 150px;
 }
 
-.shareOptions{
+.shareOptions {
   > div {
     z-index: 2000;
     top: 0px;

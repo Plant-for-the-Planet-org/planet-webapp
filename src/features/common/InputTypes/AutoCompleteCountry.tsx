@@ -1,9 +1,8 @@
 /* eslint-disable no-use-before-define */
-import { Autocomplete } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React from 'react';
 import tenantConfig from '../../../../tenant.config';
-import MaterialTextField from './MaterialTextField';
 import i18next from '../../../../i18n';
 import { ThemeContext } from '../../../theme/themeContext';
 import themeProperties from '../../../theme/themeProperties';
@@ -151,10 +150,9 @@ export default function CountrySelect(props: {
       }}
       defaultValue={value.label}
       renderInput={(params) => (
-        <MaterialTextField
+        <TextField
           {...params}
           label={props.label}
-          variant="outlined"
           className={classes.root}
           inputProps={{
             ...params.inputProps,

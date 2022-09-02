@@ -10,7 +10,10 @@ interface Props {
   tenantScore: any;
 }
 
-export default function index({ leaderboard, tenantScore }: Props): ReactElement {
+export default function index({
+  leaderboard,
+  tenantScore,
+}: Props): ReactElement {
   const blockedCountries = [
     'CK',
     'TH',
@@ -50,14 +53,14 @@ export default function index({ leaderboard, tenantScore }: Props): ReactElement
     'SY',
   ];
 
-  const userCountry = typeof window !== 'undefined' ? localStorage.getItem('countryCode') : 'DE'
+  const userCountry =
+    typeof window !== 'undefined' ? localStorage.getItem('countryCode') : 'DE';
 
   return (
     <div>
       <Score leaderboard={leaderboard} />
 
       {tenantScore && <Stats tenantScore={tenantScore} />}
-
 
       <Stories />
 
