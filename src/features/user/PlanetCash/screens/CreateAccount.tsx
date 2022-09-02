@@ -1,20 +1,16 @@
 import { ReactElement, useState, useEffect } from 'react';
 import CreateAccountForm from '../components/CreateAccountForm';
+import { CountryType } from '../../../common/types/country';
 
-interface Props {
-  accounts: PlanetCash.Account[] | null;
-  isPlanetCashActive: boolean;
-}
-
-const initialAllowedCountries = [
+const initialAllowedCountries: CountryType[] = [
   { code: 'DE', label: 'Germany', phone: '49' },
   { code: 'ES', label: 'Spain', phone: '34' },
   { code: 'US', label: 'United States', phone: '1' },
 ];
 
 const CreateAccount = ({
-  accounts,
-  isPlanetCashActive,
+  const [allowedCountries, setAllowedCountries] = useState<
+    CountryType[] | null
 }: Props): ReactElement | null => {
   const [allowedCountries, setAllowedCountries] = useState<any>(null);
 

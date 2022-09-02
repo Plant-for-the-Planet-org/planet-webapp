@@ -4,6 +4,7 @@ import { TextField } from '@mui/material';
 import React from 'react';
 import i18next from '../../../../i18n';
 import { MuiAutoComplete, StyledAutoCompleteOption } from './MuiAutoComplete';
+import { CountryType } from '../types/country';
 
 const { useTranslation } = i18next;
 
@@ -115,12 +116,6 @@ export default function CountrySelect({
       )}
     />
   ) : null;
-}
-
-interface CountryType {
-  code: string;
-  label: string;
-  phone: string;
 }
 
 // From https://bitbucket.org/atlassian/atlaskit-mk-2/raw/4ad0e56649c3e6c973e226b7efaeb28cb240ccb0/packages/core/select/src/data/countries.js
