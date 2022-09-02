@@ -23,7 +23,7 @@ const Accounts = ({ isDataLoading }: AccountsProps): ReactElement | null => {
     }
   };
 
-  return !accounts && isDataLoading ? (
+  return isDataLoading ? (
     <>
       <AccountListLoader />
       <AccountListLoader />
