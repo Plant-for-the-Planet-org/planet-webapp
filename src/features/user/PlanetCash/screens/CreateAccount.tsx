@@ -21,7 +21,7 @@ const CreateAccount = (): ReactElement | null => {
   const { t, ready } = useTranslation('planetcash');
 
   useEffect(() => {
-    if (accounts && accounts.length) {
+    if (accounts) {
       const accountCountryCodes = accounts.map((account) => account.country);
       const newAllowedCountries = initialAllowedCountries.filter(
         (country) => !accountCountryCodes.includes(country.code)
