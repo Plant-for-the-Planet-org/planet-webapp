@@ -1,10 +1,10 @@
 import React, { ReactElement, useState } from 'react';
+import TopProgressBar from '../../../src/features/common/ContentLoaders/TopProgressBar';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import PlanetCash, {
   PlanetCashTabs,
 } from '../../../src/features/user/PlanetCash';
-import TopProgressBar from '../../../src/features/common/ContentLoaders/TopProgressBar';
 import i18next from '../../../i18n';
 
 const { useTranslation } = i18next;

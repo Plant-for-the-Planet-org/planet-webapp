@@ -35,6 +35,7 @@ export default function PlanetCash({
   const [isPlanetCashActive, setIsPlanetCashActive] = useState(false);
 
   const fetchAccounts = async () => {
+    setProgress && setProgress(70);
     const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
       `/app/planetCash`,
       token,
@@ -44,6 +45,10 @@ export default function PlanetCash({
     const sortedAccounts = sortAccountsByActive(accounts);
     setIsPlanetCashActive(accounts.some((account) => account.isActive));
     setAccounts(sortedAccounts);
+    if (setProgress) {
+      setProgress(100);
+      setTimeout(() => setProgress(0), 1000);
+    }
   };
 
   const sortAccountsByActive = (
