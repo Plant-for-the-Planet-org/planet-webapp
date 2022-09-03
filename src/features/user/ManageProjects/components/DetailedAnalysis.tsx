@@ -161,6 +161,7 @@ export default function DetailedAnalysis({
           yearAbandoned: '',
           firstTreePlanted: '',
           plantingDensity: '',
+          maxPlantingDensity: '',
           employeesCount: '',
           mainChallenge: '',
           siteOwnerType: '',
@@ -222,6 +223,7 @@ export default function DetailedAnalysis({
               mainChallenge: data.mainChallenge,
               motivation: data.motivation,
               plantingDensity: data.plantingDensity,
+              maxPlantingDensity: data.maxPlantingDensity,
               plantingSeasons: months,
               siteOwnerName: data.siteOwnerName,
               siteOwnerType: owners,
@@ -301,6 +303,7 @@ export default function DetailedAnalysis({
                 : new Date(),
               plantingSeasons: projectDetails?.metadata?.plantingSeasons,
               plantingDensity: projectDetails?.metadata?.plantingDensity,
+              maxPlantingDensity: projectDetails?.metadata?.maxPlantingDensity,
               employeesCount: projectDetails?.metadata?.employeesCount,
               siteOwnerName: projectDetails?.metadata?.siteOwnerName,
               degradationYear: projectDetails?.metadata?.degradationYear
@@ -779,49 +782,94 @@ export default function DetailedAnalysis({
 
           {purpose === 'trees' ? (
             <div className={styles.formField}>
-              <div
-                className={styles.formFieldHalf}
-                data-test-id="plantingDensity"
-              >
-                {/* Integer - the planting density expressed in trees per ha */}
-                <MaterialTextField
-                  label={t('manageProjects:plantingDensity')}
-                  variant="outlined"
-                  name="plantingDensity"
-                  inputRef={register({
-                    required: {
-                      value: true,
-                      message: t('manageProjects:plantingDensityValidation'),
-                    },
-                    validate: (value) => parseInt(value, 10) > 1,
-                  })}
-                  onInput={(e) => {
-                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                  }}
-                  InputProps={{
-                    endAdornment: (
-                      <p
-                        className={styles.inputEndAdornment}
-                        style={{
-                          marginLeft: '4px',
-                          width: '100%',
-                          textAlign: 'right',
-                          fontSize: '14px',
-                        }}
-                      >
-                        {t('manageProjects:treePerHa')}
-                      </p>
-                    ),
-                  }}
-                />
-                {errors.plantingDensity && (
-                  <span className={styles.formErrors}>
-                    {errors.plantingDensity.message}
-                  </span>
-                )}
+              <div style={{ display: 'flex' }}>
+                <div
+                  className={styles.formFieldHalf}
+                  data-test-id="plantingDensity"
+                >
+                  {/* Integer - the planting density expressed in trees per ha */}
+                  <MaterialTextField
+                    label={t('manageProjects:plantingDensity')}
+                    variant="outlined"
+                    name="plantingDensity"
+                    inputRef={register({
+                      required: {
+                        value: true,
+                        message: t('manageProjects:plantingDensityValidation'),
+                      },
+                      validate: (value) => parseInt(value, 10) > 1,
+                    })}
+                    onInput={(e) => {
+                      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                    }}
+                    InputProps={{
+                      endAdornment: (
+                        <p
+                          className={styles.inputEndAdornment}
+                          style={{
+                            marginLeft: '4px',
+                            width: '100%',
+                            textAlign: 'right',
+                            fontSize: '14px',
+                          }}
+                        >
+                          {t('manageProjects:treePerHa')}
+                        </p>
+                      ),
+                    }}
+                  />
+                  {errors.plantingDensity && (
+                    <span className={styles.formErrors}>
+                      {errors.plantingDensity.message}
+                    </span>
+                  )}
+                </div>
+                <div style={{ width: '20px' }}></div>
+                <div
+                  className={styles.formFieldHalf}
+                  data-test-id="maxPlantingDensity"
+                >
+                  <MaterialTextField
+                    label={t('manageProjects:maxPlantingDensity')}
+                    variant="outlined"
+                    name="maxPlantingDensity"
+                    inputRef={register({
+                      required: {
+                        value: true,
+                        message: t(
+                          'manageProjects:maxPlantingDensityValidation'
+                        ),
+                      },
+                    })}
+                    onInput={(e) => {
+                      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                    }}
+                    InputProps={{
+                      endAdornment: (
+                        <p
+                          className={styles.inputEndAdornment}
+                          style={{
+                            marginLeft: '4px',
+                            width: '100%',
+                            textAlign: 'right',
+                            fontSize: '14px',
+                          }}
+                        >
+                          {' '}
+                          {t('manageProjects:treePerHa')}
+                        </p>
+                      ),
+                    }}
+                  />
+                  {errors.maxPlantingDensity && (
+                    <span className={styles.formErrors}>
+                      {errors.maxPlantingDensity.message}
+                    </span>
+                  )}
+                </div>
               </div>
               <div style={{ width: '20px' }}></div>
-              <div className={styles.formFieldHalf}>
+              <div className={styles.formFieldLarge} style={{ width: '100%' }}>
                 <LocalizationProvider
                   dateAdapter={AdapterDateFns}
                   locale={
