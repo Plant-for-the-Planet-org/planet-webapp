@@ -17,6 +17,7 @@ import {
 } from '../../../common/InputTypes/MuiAutoComplete';
 import { Project } from '../../../common/types/project';
 import { allCountries } from '../../../../utils/constants/countries';
+import CustomizedSnackbars from './CustomSnackBar';
 
 // TODOO - refactor code for reuse?
 const StyledForm = styled('form')((/* { theme } */) => ({
@@ -66,7 +67,8 @@ const DonationLinkForm = ({
   const [isSupport, setIsSupport] = useState<boolean>(!user.isPrivate);
   const [isTesting, setIsTesting] = useState<boolean>(false);
   const [isProjectSelected, setIsProjectSelected] = useState<boolean>(false);
-  const [isUpdated, setIsUpdated] = useState<boolean>(false);
+  const [isArrayUpdated, setIsArrayUpdated] = useState<boolean>(false);
+  const [isLinkUpdated, setIsLinkUpdated] = useState<boolean>(false);
 
   const handleUrlChange = () => {
     const link = isTesting
@@ -85,6 +87,7 @@ const DonationLinkForm = ({
     }tenant=${TENANT_ID}${isSupport ? `&s=${user.slug}` : ''}
     `;
     setDonationUrl(url);
+    setIsLinkUpdated(true);
   };
 
   const handleProjectChange = async (project: Project | null) => {
@@ -112,10 +115,14 @@ const DonationLinkForm = ({
     if (!allCountries.find((obj2) => obj2.code === 'auto')) {
       allCountries.unshift(autoCountry);
     }
-    setIsUpdated(true);
+    setIsArrayUpdated(true);
   }, []);
 
-  if (isUpdated && ready) {
+  const handleSnackbarClose = () => {
+    setIsLinkUpdated(!isLinkUpdated);
+  };
+
+  if (isArrayUpdated && ready) {
     return (
       <StyledForm>
         <div className="inputContainer">
@@ -242,6 +249,13 @@ const DonationLinkForm = ({
               <CopyToClipboard isButton={true} text={donationUrl} />
             </InlineFormDisplayGroup>
           </div>
+          {isLinkUpdated && (
+            <CustomizedSnackbars
+              SnackBartext="Link has been updated"
+              isVisible={isLinkUpdated}
+              handleClose={handleSnackbarClose}
+            />
+          )}
           <div className={styles.formButtonContainer}>
             <Button
               id="Preview"
