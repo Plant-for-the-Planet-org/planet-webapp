@@ -1,5 +1,5 @@
 import { ReactElement, useState, useContext, FormEvent } from 'react';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
 import StyledForm from '../../../common/Layout/StyledForm';
 import i18next from '../../../../../i18n';
@@ -21,6 +21,7 @@ const CreateAccountForm = ({
 }: Props): ReactElement | null => {
   const { t, ready } = useTranslation(['planetcash', 'country']);
   const [country, setCountry] = useState<string | undefined>(undefined);
+  const [isProcessing, setIsProcessing] = useState(false);
   const { token } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
   const router = useRouter();
@@ -28,6 +29,7 @@ const CreateAccountForm = ({
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = { country: country, activate: !isPlanetCashActive };
+    setIsProcessing(true);
     const res = await postAuthenticatedRequest(
       '/app/planetCash',
       data,
@@ -40,6 +42,7 @@ const CreateAccountForm = ({
       // go to accounts tab
       router.push('/profile/planetcash');
     } else {
+      setIsProcessing(false);
       if (res['error_type'] === 'planet_cash_account_error') {
         switch (res['error_code']) {
           case 'duplicate_account':
@@ -93,8 +96,13 @@ const CreateAccountForm = ({
           color="primary"
           className="formButton"
           type="submit"
+          disabled={isProcessing}
         >
-          {t('createPlanetCashButton')}
+          {isProcessing ? (
+            <CircularProgress color="primary" size={24} />
+          ) : (
+            t('createPlanetCashButton')
+          )}
         </Button>
       </StyledForm>
     );

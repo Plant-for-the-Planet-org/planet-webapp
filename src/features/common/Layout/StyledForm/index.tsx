@@ -11,6 +11,7 @@ const StyledForm = styled('form')(({ theme }) => ({
   alignItems: 'flex-start',
   '& .formButton': {
     marginTop: 24,
+    minWidth: 150,
   },
   '& .inputContainer': {
     display: 'flex',
