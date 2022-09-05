@@ -105,7 +105,6 @@ export default function CountrySelect({
           setSelectedCountry(newValue as CountryType | null);
         }
       }}
-      defaultValue={selectedCountry.label}
       renderInput={(params) => (
         <TextField
           {...params}
