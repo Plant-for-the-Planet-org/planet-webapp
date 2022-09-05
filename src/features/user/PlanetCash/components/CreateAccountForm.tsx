@@ -36,14 +36,14 @@ const CreateAccountForm = ({
       token,
       handleError
     );
-    if (res.id) {
+    if (res?.id) {
       // account creation is successful
       // show success message
       // go to accounts tab
       router.push('/profile/planetcash');
     } else {
       setIsProcessing(false);
-      if (res['error_type'] === 'planet_cash_account_error') {
+      if (res && res['error_type'] === 'planet_cash_account_error') {
         switch (res['error_code']) {
           case 'duplicate_account':
             handleError({
@@ -66,11 +66,6 @@ const CreateAccountForm = ({
             });
             break;
         }
-      } else {
-        handleError({
-          code: 400,
-          message: t(`accountError.default`),
-        });
       }
     }
   };

@@ -165,25 +165,39 @@ export async function postAuthenticatedRequest(
   headers?: any
 ): Promise<any> {
   if (validateToken(token)) {
-    const res = await fetch(process.env.API_ENDPOINT + url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'tenant-key': `${TENANT_ID}`,
-        'X-SESSION-ID': await getsessionId(),
-        Authorization: `Bearer ${token}`,
-        'x-locale': `${
-          localStorage.getItem('language')
-            ? localStorage.getItem('language')
-            : 'en'
-        }`,
-        ...(headers ? headers : {}),
-      },
-    });
-    const result = await res.json();
-    handleApiError(res.status, result, errorHandler);
-    return result;
+    try {
+      const res = await fetch(process.env.API_ENDPOINT + url, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+          'tenant-key': `${TENANT_ID}`,
+          'X-SESSION-ID': await getsessionId(),
+          Authorization: `Bearer ${token}`,
+          'x-locale': `${
+            localStorage.getItem('language')
+              ? localStorage.getItem('language')
+              : 'en'
+          }`,
+          ...(headers ? headers : {}),
+        },
+      });
+      const result = await res.json();
+      handleApiError(res.status, result, errorHandler);
+      return result;
+    } catch (err) {
+      // Fetch API only throws errors for network errors
+      console.log(
+        'Could not reach the server. Please check your internet connection.'
+      );
+      if (errorHandler) {
+        errorHandler({
+          type: 'error',
+          message: 'connectionError',
+        });
+      }
+      return null;
+    }
   } else {
     if (errorHandler) {
       errorHandler({
