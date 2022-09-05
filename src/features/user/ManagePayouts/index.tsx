@@ -6,12 +6,14 @@ import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 
 import PayoutScheduleForm from './PayoutScheduleForm';
 import BankDetailsForm from './BankDetailsForm';
+import Overview from './Overview';
 
 const { useTranslation } = i18next;
 
 export enum ManagePayoutSteps {
-  PAYOUT_SCHEDULE = 0,
-  BANK_DETAILS = 1,
+  OVERVIEW = 0,
+  PAYOUT_SCHEDULE = 1,
+  ADD_BANK_DETAILS = 2,
 }
 
 interface ManagePayoutsProps {
@@ -28,12 +30,16 @@ export default function ManagePayouts({
     if (ready) {
       setTabConfig([
         {
-          label: t('tabPayoutSchedule'),
+          label: t('tabOverview'),
           link: '/profile/payouts',
         },
         {
+          label: t('tabPayoutSchedule'),
+          link: '/profile/payouts/schedule',
+        },
+        {
           label: t('tabBankDetails'),
-          link: '/profile/payouts/bank-details',
+          link: '/profile/payouts/add-bank-details',
         },
       ]);
     }
@@ -43,11 +49,11 @@ export default function ManagePayouts({
     switch (step) {
       case ManagePayoutSteps.PAYOUT_SCHEDULE:
         return <PayoutScheduleForm />;
-      case ManagePayoutSteps.BANK_DETAILS:
+      case ManagePayoutSteps.ADD_BANK_DETAILS:
         return <BankDetailsForm />;
+      case ManagePayoutSteps.OVERVIEW:
       default:
-        return <PayoutScheduleForm />;
-        break;
+        return <Overview />;
     }
   };
 

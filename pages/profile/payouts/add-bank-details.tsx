@@ -8,14 +8,14 @@ import i18next from '../../../i18n';
 
 const { useTranslation } = i18next;
 
-export default function OverviewPage(): ReactElement {
+export default function PayoutBankDetailsPage(): ReactElement {
   const { t, ready } = useTranslation('me');
   return (
     <UserLayout>
       <Head>
-        <title>{ready ? t('managePayouts.titleOverview') : ''}</title>
+        <title>{ready ? t('managePayouts.titleAddBankDetails') : ''}</title>
       </Head>
-      <ManagePayouts step={ManagePayoutSteps.OVERVIEW} />
+      <ManagePayouts step={ManagePayoutSteps.ADD_BANK_DETAILS} />
     </UserLayout>
   );
 }

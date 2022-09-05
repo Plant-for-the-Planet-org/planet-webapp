@@ -1,8 +1,9 @@
 {
   "managePayouts": {
     "menuText": "Manage Payouts",
-    "titleStep2": "Manage Payouts - Bank Details",
-    "titleStep1": "Manage Payouts - Schedule"
+    "titleOverview": "Manage Payouts - Overview",
+    "titleAddBankDetails": "Manage Payouts - Add Bank Details",
+    "titlePayoutSchedule": "Manage Payouts - Schedule Payouts"
   },
   "treesPlanted": "Tree Planted",
   "treesPlanted_plural": "Trees Planted",
