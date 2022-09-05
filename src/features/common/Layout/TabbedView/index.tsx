@@ -17,6 +17,10 @@ const TabContainer = styled('div')(({ theme }) => ({
     flexDirection: 'column',
     gap: 16,
     fontSize: '0.875rem',
+    alignItems: 'center',
+    '& .loadingButton': {
+      minWidth: 150,
+    },
   },
 }));
 

@@ -2,7 +2,7 @@ import { ReactElement, useContext, useState, useEffect } from 'react';
 import i18next from '../../../../../i18n';
 import AccountRecord from '../../Account/components/AccountRecord';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 
 import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
@@ -106,8 +106,14 @@ const Transactions = ({
           variant="contained"
           color="primary"
           onClick={() => fetchTransactions(true)}
+          disabled={isDataLoading}
+          className="loadingButton"
         >
-          {t('loadMore')}
+          {isDataLoading ? (
+            <CircularProgress color="primary" size={24} />
+          ) : (
+            t('loadMore')
+          )}
         </Button>
       )}
       {isModalOpen && selectedRecord !== null && (
