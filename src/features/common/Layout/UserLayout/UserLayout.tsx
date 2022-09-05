@@ -138,6 +138,7 @@ function UserLayout(props: any): ReactElement {
       key: 6,
       title: t('me:planetcash.menuText'),
       icon: <PlanetCashIcon />,
+      flag: t('me:new'),
       subMenu: [
         {
           title: t('me:planetcash.submenuText'),
