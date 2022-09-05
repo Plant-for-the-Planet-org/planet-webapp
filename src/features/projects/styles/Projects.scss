@@ -237,7 +237,7 @@
 
 .dragBar {
   position: absolute;
-  top: calc(12px + env(safe-area-inset-top));
+  top: 12px;
   left: 0;
   right: 0;
   margin: auto;
