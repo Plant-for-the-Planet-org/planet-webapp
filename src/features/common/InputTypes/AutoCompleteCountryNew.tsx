@@ -67,6 +67,8 @@ export default function CountrySelect({
     countries.sort((a, b) => {
       const nameA = t(`country:${a.code.toLowerCase()}`);
       const nameB = t(`country:${b.code.toLowerCase()}`);
+      if (a.code === 'auto') return -1;
+      if (b.code === 'auto') return 1;
       if (nameA > nameB) {
         return 1;
       }

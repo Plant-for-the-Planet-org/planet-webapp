@@ -54,7 +54,7 @@ interface LanguageType {
 const DonationLinkForm = ({
   projectsList,
 }: DonationLinkFormProps): ReactElement | null => {
-  const { user, contextLoaded } = useContext(UserPropsContext);
+  const { user } = useContext(UserPropsContext);
   const [country, setCountry] = useState('auto');
   const [Languages, setLanguage] = useState<LanguageType>({
     langCode: 'auto',
@@ -102,7 +102,7 @@ const DonationLinkForm = ({
       languageName: 'Automatic Selection',
     };
     if (!supportedLanguages.find((obj2) => obj2.langCode === 'auto'))
-      supportedLanguages.push(autoLanguage as LanguageType);
+      supportedLanguages.unshift(autoLanguage as LanguageType);
 
     const autoCountry = {
       code: 'auto',
@@ -110,7 +110,7 @@ const DonationLinkForm = ({
       phone: '',
     };
     if (!allCountries.find((obj2) => obj2.code === 'auto')) {
-      allCountries.push(autoCountry);
+      allCountries.unshift(autoCountry);
     }
     setIsUpdated(true);
   }, []);
