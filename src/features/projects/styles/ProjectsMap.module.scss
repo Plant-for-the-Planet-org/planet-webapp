@@ -470,7 +470,7 @@
 }
 
 .exploreExpanded {
-  top: calc(20px + env(safe-area-inset-top));
+  top: calc(100px + env(safe-area-inset-top));
 }
 
 @keyframes fade_in_show {
@@ -610,7 +610,7 @@
     top: calc(100px + env(safe-area-inset-top));
   }
   .exploreExpanded {
-    top: calc(110px + env(safe-area-inset-top));
+    top: calc(100px + env(safe-area-inset-top));
   }
   .embed_exploreExpanded {
     top: calc(30px + env(safe-area-inset-top));
@@ -630,9 +630,6 @@
     padding-bottom: 0px;
   }
 
-  .exploreExpanded {
-    top: calc(110px + env(safe-area-inset-top));
-  }
   .projectSitesButton {
     top: calc(110px + env(safe-area-inset-top));
   }
@@ -662,6 +659,12 @@
   .exploreButton {
     top: calc(110px + env(safe-area-inset-top));
     flex-direction: row;
+  }
+  .exploreExpanded {
+    top: calc(110px + env(safe-area-inset-top));
+  }
+  .embed_exploreExpanded {
+    top: calc(30px + env(safe-area-inset-top));
   }
 
   .layerToggle {
