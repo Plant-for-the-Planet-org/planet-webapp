@@ -1,7 +1,7 @@
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import i18next from '../../../../../i18n';
-import { ReactElement, useState } from 'react';
+import { ReactElement } from 'react';
 import styled from '@emotion/styled';
 
 interface SnackBarProps {
