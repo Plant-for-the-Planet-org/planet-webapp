@@ -23,11 +23,10 @@ export default function CustomizedSnackbars({
   handleClose,
 }: SnackBarProps): ReactElement | null {
   const { t } = useTranslation(['donationLink']);
-  const [open, setIsOpen] = useState<boolean>(isVisible);
   return (
     <>
       <Snackbar
-        open={open}
+        open={isVisible}
         autoHideDuration={3000}
         onClose={handleClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
