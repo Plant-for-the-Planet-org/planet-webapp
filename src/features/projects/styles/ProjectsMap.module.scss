@@ -470,7 +470,7 @@
 }
 
 .exploreExpanded {
-  top: 20px;
+  top: 100px;
 }
 
 @keyframes fade_in_show {
@@ -610,7 +610,7 @@
     top: 100px;
   }
   .exploreExpanded {
-    top: 110px;
+    top: 100px;
   }
   .embed_exploreExpanded {
     top: 30px;
@@ -630,9 +630,6 @@
     padding-bottom: 0px;
   }
 
-  .exploreExpanded {
-    top: 110px;
-  }
   .projectSitesButton {
     top: 110px;
   }
@@ -662,6 +659,12 @@
   .exploreButton {
     top: 110px;
     flex-direction: row;
+  }
+  .exploreExpanded {
+    top: 110px;
+  }
+  .embed_exploreExpanded {
+    top: 30px;
   }
 
   .layerToggle {
