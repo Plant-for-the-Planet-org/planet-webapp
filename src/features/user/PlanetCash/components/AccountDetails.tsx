@@ -162,11 +162,11 @@ const AccountDetails = ({
       <Grid item component={Divider} />
       <Grid container item className="accountDetails">
         <Grid item component={SingleDetail} xs={6} md={4}>
-          <h3 className="detailTitle">{t('Account Holder')}</h3>
+          <h3 className="detailTitle">{t('labelAccountHolder')}</h3>
           <div className="detailInfo">{account.ownerName}</div>
         </Grid>
         <Grid item component={SingleDetail} xs={6} md={4}>
-          <h3 className="detailTitle">{t('Donation Balance')}</h3>
+          <h3 className="detailTitle">{t('labelBalance')}</h3>
           <div className="detailInfo">
             {getFormatedCurrency(
               i18n.language,
@@ -175,16 +175,18 @@ const AccountDetails = ({
             )}
           </div>
         </Grid>
-        <Grid item component={SingleDetail} xs={6} md={4}>
-          <h3 className="detailTitle">{t('Donation Credit')}</h3>
-          <div className="detailInfo">
-            {getFormatedCurrency(
-              i18n.language,
-              account.currency,
-              account.creditLimit / 100
-            )}
-          </div>
-        </Grid>
+        {account.creditLimit > 0 && (
+          <Grid item component={SingleDetail} xs={6} md={4}>
+            <h3 className="detailTitle">{t('labelCreditLimit')}</h3>
+            <div className="detailInfo">
+              {getFormatedCurrency(
+                i18n.language,
+                account.currency,
+                account.creditLimit / 100
+              )}
+            </div>
+          </Grid>
+        )}
         <Grid item xs={12}>
           {account.isActive ? (
             <Button onClick={handleDeactivate} color="warning">
