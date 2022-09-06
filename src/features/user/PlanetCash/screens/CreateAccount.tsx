@@ -8,9 +8,9 @@ import i18next from '../../../../../i18n';
 const { useTranslation } = i18next;
 
 const initialAllowedCountries: CountryType[] = [
-  { code: 'DE' },
-  { code: 'ES' },
-  { code: 'US' },
+  { code: 'DE', currency: 'EUR' },
+  { code: 'ES', currency: 'EUR' },
+  { code: 'US', currency: 'USD' },
 ];
 
 const CreateAccount = (): ReactElement | null => {

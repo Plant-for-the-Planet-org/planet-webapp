@@ -84,20 +84,26 @@ export default function CountrySelect({
       id="country-select"
       options={countries}
       value={selectedCountry}
-      getOptionLabel={(option) =>
-        t(`country:${(option as CountryType).code.toLowerCase()}`)
-      }
+      getOptionLabel={(option) => {
+        const { code: countryCode, currency } = option as CountryType;
+        const label =
+          (currency ? `(${currency}) ` : '') +
+          t(`country:${countryCode.toLowerCase()}`);
+        return label;
+      }}
       isOptionEqualToValue={(option, value) =>
         (option as CountryType).code === (value as CountryType).code
       }
       renderOption={(props, option) => {
-        const countryCode = (option as CountryType).code;
+        const { code: countryCode, currency } = option as CountryType;
+        const displayedOption =
+          (currency ? `(${currency}) ` : '') +
+          t(`country:${countryCode.toLowerCase()}`) +
+          (name !== 'editProfile' ? ` ${countryCode}` : '');
         return (
           <StyledAutoCompleteOption {...props} key={countryCode}>
             <span>{countryToFlag(countryCode)}</span>
-            {name === 'editProfile'
-              ? t(`country:${countryCode.toLowerCase()}`)
-              : t(`country:${countryCode.toLowerCase()}`) + ' ' + countryCode}
+            {displayedOption}
           </StyledAutoCompleteOption>
         );
       }}
