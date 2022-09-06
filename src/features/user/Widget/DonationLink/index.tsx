@@ -21,7 +21,7 @@ export default function DonationLink(): ReactElement | null {
       undefined,
       {
         _scope: 'default',
-        'filter[purpose]': 'trees,conservation',
+        'filter[purpose]': 'trees,restoration',
       }
     );
     if (
@@ -30,17 +30,19 @@ export default function DonationLink(): ReactElement | null {
       projectsList.length > 0
     ) {
       setProjects(
-        projectsList.map((project) => {
-          return {
-            guid: project.id,
-            slug: project.slug,
-            name: project.name,
-            unitCost: project.unitCost,
-            currency: project.currency,
-            purpose: project.purpose,
-            allowDonations: project.allowDonations,
-          };
-        })
+        projectsList
+          .filter((project) => project.allowDonations)
+          .map((project) => {
+            return {
+              guid: project.id,
+              slug: project.slug,
+              name: project.name,
+              unitCost: project.unitCost,
+              currency: project.currency,
+              purpose: project.purpose,
+              allowDonations: project.allowDonations,
+            };
+          })
       );
     }
   }
