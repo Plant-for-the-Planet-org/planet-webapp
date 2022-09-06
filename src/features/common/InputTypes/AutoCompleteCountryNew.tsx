@@ -4,7 +4,8 @@ import { TextField } from '@mui/material';
 import React from 'react';
 import i18next from '../../../../i18n';
 import { MuiAutoComplete, StyledAutoCompleteOption } from './MuiAutoComplete';
-import { CountryType, allCountries } from '../../../utils/constants/countries';
+import { allCountries } from '../../../utils/constants/countries';
+import { CountryType } from '../types/countries';
 const { useTranslation } = i18next;
 
 // ISO 3166-1 alpha-2
@@ -67,8 +68,11 @@ export default function CountrySelect({
     countries.sort((a, b) => {
       const nameA = t(`country:${a.code.toLowerCase()}`);
       const nameB = t(`country:${b.code.toLowerCase()}`);
+
+      //Automatic Selection option is always at first position
       if (a.code === 'auto') return -1;
       if (b.code === 'auto') return 1;
+
       if (nameA > nameB) {
         return 1;
       }

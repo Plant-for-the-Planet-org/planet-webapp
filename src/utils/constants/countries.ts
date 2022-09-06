@@ -1,8 +1,4 @@
-export interface CountryType {
-  code: string;
-  label: string;
-  phone: string;
-}
+import { CountryType } from '../../features/common/types/countries';
 
 export const allCountries: CountryType[] = [
   { code: 'AD', label: 'Andorra', phone: '376' },

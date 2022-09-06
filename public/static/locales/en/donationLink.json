@@ -14,5 +14,7 @@
   "treeCounterSubtitle":"Tree donations via this link support my profile directly",
   "testingModeSubtitle1": "To test, use the link that is now displayed. This is for testing only, for the correct link to share you need to turn off the Testing Mode.",
   "testingModeSubtitle2": "You can test donation flow using cards at",
-  "SnackBartext":"Link has been updated"
+  "SnackBartext":"Link has been updated",
+  "treeCounterPrivateAccountSubtitle":"To support your profile, you must set it to public within the account settings.",
+  "automaticSelection": "Automatic Selection"
 }

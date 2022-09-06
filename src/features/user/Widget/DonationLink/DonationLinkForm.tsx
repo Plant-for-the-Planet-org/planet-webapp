@@ -17,7 +17,7 @@ import {
 } from '../../../common/InputTypes/MuiAutoComplete';
 import { Project } from '../../../common/types/project';
 import { allCountries } from '../../../../utils/constants/countries';
-import CustomizedSnackbars from './CustomSnackBar';
+import CustomizedSnackbars from './CustomizedSnackbars';
 
 // TODOO - refactor code for reuse?
 const StyledForm = styled('form')((/* { theme } */) => ({
@@ -66,7 +66,6 @@ const DonationLinkForm = ({
   const [localProject, setLocalProject] = useState<Project | null>(null);
   const [isSupport, setIsSupport] = useState<boolean>(!user.isPrivate);
   const [isTesting, setIsTesting] = useState<boolean>(false);
-  const [isProjectSelected, setIsProjectSelected] = useState<boolean>(false);
   const [isArrayUpdated, setIsArrayUpdated] = useState<boolean>(false);
   const [isLinkUpdated, setIsLinkUpdated] = useState<boolean>(false);
 
@@ -92,7 +91,6 @@ const DonationLinkForm = ({
 
   const handleProjectChange = async (project: Project | null) => {
     setLocalProject(project);
-    setIsProjectSelected(project == null);
   };
 
   useEffect(() => {
@@ -102,14 +100,14 @@ const DonationLinkForm = ({
   useEffect(() => {
     const autoLanguage = {
       langCode: 'auto',
-      languageName: 'Automatic Selection',
+      languageName: `${t('donationLink:automaticSelection')}`,
     };
     if (!supportedLanguages.find((obj2) => obj2.langCode === 'auto'))
       supportedLanguages.unshift(autoLanguage as LanguageType);
 
     const autoCountry = {
       code: 'auto',
-      label: 'Automatic Selection',
+      label: `${t('donationLink:automaticSelection')}`,
       phone: '',
     };
     if (!allCountries.find((obj2) => obj2.code === 'auto')) {
@@ -201,6 +199,9 @@ const DonationLinkForm = ({
               }}
               disabled={user.isPrivate}
             />
+            {user.isPrivate && (
+              <h6>{t('donationLink:treeCounterPrivateAccountSubtitle')}</h6>
+            )}
           </InlineFormDisplayGroup>
           <InlineFormDisplayGroup>
             <div className={styles.formHeader}>
@@ -222,6 +223,7 @@ const DonationLinkForm = ({
               <h6>
                 {t('donationLink:testingModeSubtitle2')}
                 <a
+                  className="planet-links"
                   href="https://stripe.com/docs/testing"
                   target="_blank"
                   rel="noreferrer"
@@ -251,7 +253,7 @@ const DonationLinkForm = ({
           </div>
           {isLinkUpdated && (
             <CustomizedSnackbars
-              SnackBartext="Link has been updated"
+              snackBarText={t('donationLink:Link has been updated')}
               isVisible={isLinkUpdated}
               handleClose={handleSnackbarClose}
             />
@@ -264,7 +266,6 @@ const DonationLinkForm = ({
               color="primary"
               fullWidth={false}
               onClick={() => window.open(donationUrl, '_blank')}
-              disabled={isProjectSelected}
             >
               {t('donationLink:preview')}
             </Button>

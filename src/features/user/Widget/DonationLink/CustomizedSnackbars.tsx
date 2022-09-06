@@ -1,15 +1,13 @@
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import i18next from '../../../../../i18n';
 import { ReactElement } from 'react';
-import styled from '@emotion/styled';
+import { styled } from '@mui/material/styles';
 
 interface SnackBarProps {
-  SnackBartext: String;
+  snackBarText: String;
   isVisible: boolean;
   handleClose: () => void;
 }
-const { useTranslation } = i18next;
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -18,11 +16,10 @@ const Alert = styled(MuiAlert)(({ theme }) => {
 });
 
 export default function CustomizedSnackbars({
-  SnackBartext,
+  snackBarText,
   isVisible,
   handleClose,
 }: SnackBarProps): ReactElement | null {
-  const { t } = useTranslation(['donationLink']);
   return (
     <>
       <Snackbar
@@ -38,7 +35,7 @@ export default function CustomizedSnackbars({
             onClose={handleClose}
             severity="success"
           >
-            {t(`donationLink:${SnackBartext}`)}
+            {snackBarText}
           </Alert>
         </div>
       </Snackbar>
