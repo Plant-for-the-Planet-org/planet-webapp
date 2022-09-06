@@ -71,7 +71,7 @@ const DonationLinkForm = ({
 
   const handleUrlChange = () => {
     const link = isTesting
-      ? 'http://paydev.pp.eco/'
+      ? process.env.NEXT_TESTING_DONATION_URL
       : process.env.NEXT_PUBLIC_DONATION_URL;
 
     const selectedLanguage =
