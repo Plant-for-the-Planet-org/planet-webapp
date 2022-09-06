@@ -1,7 +1,8 @@
 {
   "title": "PlanetCash",
   "description": "PlanetCash is a developer friendly tool that extends the Plant-for-the-Planet Platform with APIs and built in tools. PlanetCash balance is a contribution to Plant-for-the-Planet that can be dedicated by the donor to different projects on the platform.",
-  "termsText": "Terms of Use",
+  "termsText": "View Terms & Conditions.",
+  "learnMoreText": "Learn more about PlanetCash.",
   "tabAccounts": "Accounts",
   "tabCreateAccount": "Create Account",
   "tabTransactions": "Transactions",

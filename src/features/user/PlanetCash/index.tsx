@@ -122,6 +122,15 @@ export default function PlanetCash({
           {t('description')}{' '}
           <a
             className="planet-links"
+            href="https://www.plant-for-the-planet.org/planetcash/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            {t('learnMoreText')}
+          </a>
+          <br />
+          <a
+            className="planet-links"
             href="https://www.plant-for-the-planet.org/terms-and-conditions/"
             target="_blank"
             rel="noreferrer"
