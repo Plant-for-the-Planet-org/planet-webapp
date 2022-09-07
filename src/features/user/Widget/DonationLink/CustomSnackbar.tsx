@@ -3,8 +3,8 @@ import MuiAlert from '@mui/material/Alert';
 import { ReactElement } from 'react';
 import { styled } from '@mui/material/styles';
 
-interface SnackBarProps {
-  snackBarText: String;
+interface SnackbarProps {
+  snackbarText: String;
   isVisible: boolean;
   handleClose: () => void;
 }
@@ -15,11 +15,11 @@ const Alert = styled(MuiAlert)(({ theme }) => {
   };
 });
 
-export default function CustomizedSnackbars({
-  snackBarText,
+export default function CustomSnackbar({
+  snackbarText,
   isVisible,
   handleClose,
-}: SnackBarProps): ReactElement | null {
+}: SnackbarProps): ReactElement | null {
   return (
     <>
       <Snackbar
@@ -35,7 +35,7 @@ export default function CustomizedSnackbars({
             onClose={handleClose}
             severity="success"
           >
-            {snackBarText}
+            {snackbarText}
           </Alert>
         </div>
       </Snackbar>

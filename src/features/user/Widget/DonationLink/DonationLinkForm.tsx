@@ -17,7 +17,7 @@ import {
 } from '../../../common/InputTypes/MuiAutoComplete';
 import { Project } from '../../../common/types/project';
 import { allCountries } from '../../../../utils/constants/countries';
-import CustomizedSnackbars from './CustomizedSnackbars';
+import CustomSnackbar from './CustomSnackbar';
 
 // TODOO - refactor code for reuse?
 const StyledForm = styled('form')((/* { theme } */) => ({
@@ -62,7 +62,7 @@ const DonationLinkForm = ({
     languageName: 'Automatic Selection',
   });
   const [donationUrl, setDonationUrl] = useState<string>('');
-  const { t, ready } = useTranslation(['donationLink', 'donate']);
+  const { t, ready } = useTranslation(['donationLink', 'country']);
   const [localProject, setLocalProject] = useState<Project | null>(null);
   const [isSupport, setIsSupport] = useState<boolean>(!user.isPrivate);
   const [isTesting, setIsTesting] = useState<boolean>(false);
@@ -107,7 +107,7 @@ const DonationLinkForm = ({
 
     const autoCountry = {
       code: 'auto',
-      label: `${t('donationLink:automaticSelection')}`,
+      label: `${t('country:auto')}`,
       phone: '',
     };
     if (!allCountries.find((obj2) => obj2.code === 'auto')) {
@@ -117,7 +117,7 @@ const DonationLinkForm = ({
   }, []);
 
   const handleSnackbarClose = () => {
-    setIsLinkUpdated(!isLinkUpdated);
+    setIsLinkUpdated(false);
   };
 
   if (isArrayUpdated && ready) {
@@ -151,8 +151,8 @@ const DonationLinkForm = ({
                   <TextField
                     {...params}
                     name="languagedropdown"
-                    label="Language"
-                    placeholder={t('donationLink:Languages')}
+                    label={t('donationLink:labelLanguages')}
+                    placeholder={t('donationLink:languages')}
                   />
                 )}
                 renderOption={(props, option) => (
@@ -166,9 +166,9 @@ const DonationLinkForm = ({
                     {` ${(option as LanguageType).languageName}`}
                   </StyledAutoCompleteOption>
                 )}
-                onChange={(event, newLan) => {
-                  if (newLan) {
-                    setLanguage(newLan as LanguageType);
+                onChange={(event, newLang) => {
+                  if (newLang) {
+                    setLanguage(newLang as LanguageType);
                   }
                 }}
               />
@@ -185,24 +185,26 @@ const DonationLinkForm = ({
               active={true}
             />
           </div>
-          <div className={styles.formHeader}>
-            {t('donationLink:treeCounterTitle')}
+          <div className={styles.formSection}>
+            <div className={styles.formHeader}>
+              {t('donationLink:treeCounterTitle')}
+            </div>
+            <InlineFormDisplayGroup>
+              <h6>{t('donationLink:treeCounterSubtitle')}</h6>
+              <Switch
+                id="treeCounter"
+                name="treeCounter"
+                checked={isSupport}
+                onChange={() => {
+                  setIsSupport(!isSupport);
+                }}
+                disabled={user.isPrivate}
+              />
+              {user.isPrivate && (
+                <h6>{t('donationLink:treeCounterPrivateAccountSubtitle')}</h6>
+              )}
+            </InlineFormDisplayGroup>
           </div>
-          <InlineFormDisplayGroup>
-            <h6>{t('donationLink:treeCounterSubtitle')}</h6>
-            <Switch
-              id="treeCounter"
-              name="treeCounter"
-              checked={isSupport}
-              onChange={() => {
-                setIsSupport(!isSupport);
-              }}
-              disabled={user.isPrivate}
-            />
-            {user.isPrivate && (
-              <h6>{t('donationLink:treeCounterPrivateAccountSubtitle')}</h6>
-            )}
-          </InlineFormDisplayGroup>
           <InlineFormDisplayGroup>
             <div className={styles.formHeader}>
               {t('donationLink:testingTitle')}
@@ -221,14 +223,13 @@ const DonationLinkForm = ({
             <>
               <h6> {t('donationLink:testingModeSubtitle1')}</h6>
               <h6>
-                {t('donationLink:testingModeSubtitle2')}
+                {t('donationLink:testingModeSubtitle2')}{' '}
                 <a
                   className="planet-links"
                   href="https://stripe.com/docs/testing"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  {' '}
                   stripe
                 </a>{' '}
               </h6>
@@ -252,8 +253,8 @@ const DonationLinkForm = ({
             </InlineFormDisplayGroup>
           </div>
           {isLinkUpdated && (
-            <CustomizedSnackbars
-              snackBarText={t('donationLink:Link has been updated')}
+            <CustomSnackbar
+              snackbarText={t('donationLink:linkUpdatedMessage')}
               isVisible={isLinkUpdated}
               handleClose={handleSnackbarClose}
             />

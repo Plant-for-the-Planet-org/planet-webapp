@@ -69,7 +69,7 @@ export default function CountrySelect({
       const nameA = t(`country:${a.code.toLowerCase()}`);
       const nameB = t(`country:${b.code.toLowerCase()}`);
 
-      //Automatic Selection option is always at first position
+      //Automatic Selection option is always at first position (if present)
       if (a.code === 'auto') return -1;
       if (b.code === 'auto') return 1;
 
