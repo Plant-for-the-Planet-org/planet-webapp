@@ -18,6 +18,7 @@ export default function DeleteProfile({}: any) {
   };
   const { handleError } = React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
+  const [isSubscription, setIsSubscription] = React.useState(false);
 
   const [canDeleteAccount, setcanDeleteAccount] = React.useState(false);
 
@@ -25,10 +26,12 @@ export default function DeleteProfile({}: any) {
     setIsUploadingData(true);
     deleteAuthenticatedRequest('/app/profile', token, handleError).then(
       (res) => {
-        if (res !== 404) {
-          logoutUser(`${process.env.NEXTAUTH_URL}/`);
-        } else {
+        if (res == 400) {
+          setIsSubscription(true);
+        } else if (res == 404) {
           console.log(res.errorText);
+        } else {
+          logoutUser(`${process.env.NEXTAUTH_URL}/`);
         }
       }
     );
@@ -69,11 +72,18 @@ export default function DeleteProfile({}: any) {
         <p className={styles.deleteConsent}>
           {t('common:deleteAccountConsent')}
         </p>
+
+        <h5>
+          {' '}
+          Before proceeding, make sure you've deleted all subscriptions before .
+        </h5>
         <p className={styles.deleteModalWarning}>
           {t('common:deleteIrreversible', {
             email: user.email,
           })}
         </p>
+
+        {isSubscription && <h5>Please cancel your Subscription first</h5>}
 
         <div className={styles.deleteButtonContainer}>
           {canDeleteAccount ? (
@@ -85,7 +95,7 @@ export default function DeleteProfile({}: any) {
                 color: styles.light,
               }}
             >
-              {isUploadingData ? (
+              {isUploadingData && !isSubscription ? (
                 <div className={'spinner'}></div>
               ) : (
                 t('common:delete')
