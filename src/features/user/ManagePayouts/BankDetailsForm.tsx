@@ -21,6 +21,7 @@ const InlineFormGroup = styled('div')({
 });
 
 type FormData = {
+  payoutMinAmount: string;
   bankName: string;
   bankAddress: string;
   holderName: string;
@@ -46,6 +47,18 @@ const BankDetailsForm = (): ReactElement | null => {
     return (
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <div className="inputContainer">
+          <TextField
+            label={t('labels.payoutMinAmount')}
+            name="payoutMinAmount"
+            placeholder={t('placeholders.payoutMinAmount')}
+            inputRef={register({
+              required: t('errors.payoutMinAmountRequired'),
+            })}
+            error={errors.payoutMinAmount !== undefined}
+            helperText={
+              errors.payoutMinAmount && errors.payoutMinAmount.message
+            }
+          ></TextField>
           <TextField
             label={t('labels.bankName')}
             name="bankName"
@@ -137,8 +150,7 @@ const BankDetailsForm = (): ReactElement | null => {
           className="formButton"
           type="submit"
         >
-          Continue
-          {/* TODOO - update button text and add to translation file */}
+          {t('saveButton')}
         </Button>
       </StyledForm>
     );

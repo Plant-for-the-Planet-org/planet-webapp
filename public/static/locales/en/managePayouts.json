@@ -45,5 +45,6 @@
     "holderName": "e.g. John Doe",
     "holderAddress": "e.g. 21 Penn Avenue, MA 10317 USA",
     "remarks": "e.g. Please include ref acct=1237 on the transfer."
-  }
+  },
+  "saveButton": "Save"
 }

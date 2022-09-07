@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, MenuItem, TextField } from '@mui/material';
+import { Button, MenuItem } from '@mui/material';
 import ReactHookFormSelect from './ReactHookFormSelect';
 import StyledForm from '../../common/Layout/StyledForm';
 import i18n from '../../../../i18n';
@@ -16,13 +16,12 @@ const paymentFrequencies = [
 ];
 
 type FormData = {
-  payoutMinAmount: string;
   scheduleFrequency: string;
 };
 
 const PayoutScheduleForm = (): ReactElement | null => {
   const { t, ready } = useTranslation('managePayouts');
-  const { register, handleSubmit, errors, control } = useForm<FormData>({
+  const { handleSubmit, errors, control } = useForm<FormData>({
     mode: 'onBlur',
   });
 
@@ -74,18 +73,6 @@ const PayoutScheduleForm = (): ReactElement | null => {
           >
             {renderPaymentFrequencyOptions()}
           </ReactHookFormSelect>
-          <TextField
-            label={t('labels.payoutMinAmount')}
-            name="payoutMinAmount"
-            placeholder={t('placeholders.payoutMinAmount')}
-            inputRef={register({
-              required: t('errors.payoutMinAmountRequired'),
-            })}
-            error={errors.payoutMinAmount !== undefined}
-            helperText={
-              errors.payoutMinAmount && errors.payoutMinAmount.message
-            }
-          ></TextField>
         </div>
         <Button
           variant="contained"
@@ -93,8 +80,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
           className="formButton"
           type="submit"
         >
-          Continue
-          {/* TODOO - update button text and add to translation file */}
+          {t('saveButton')}
         </Button>
       </StyledForm>
     );
