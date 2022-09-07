@@ -1,6 +1,6 @@
-import { ReactElement, useContext } from 'react';
+import { ReactElement, useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, MenuItem } from '@mui/material';
+import { Button, MenuItem, CircularProgress } from '@mui/material';
 import ReactHookFormSelect from './ReactHookFormSelect';
 import StyledForm from '../../common/Layout/StyledForm';
 import i18n from '../../../../i18n';
@@ -25,6 +25,7 @@ type FormData = {
 
 const PayoutScheduleForm = (): ReactElement | null => {
   const { t, ready } = useTranslation('managePayouts');
+  const [isProcessing, setIsProcessing] = useState(false);
   const { token, user, setUser } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
   const { handleSubmit, errors, control } = useForm<FormData>({
@@ -32,6 +33,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
   });
 
   const onSubmit = async (data: FormData) => {
+    setIsProcessing(true);
     const res = await putAuthenticatedRequest<User>(
       '/app/profile',
       { scheduleFrequency: data.scheduleFrequency },
@@ -42,6 +44,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
       setUser(res);
       //TODOO - show snackbar for success
     }
+    setIsProcessing(false);
   };
 
   const renderPaymentFrequencyOptions = () => {
@@ -94,8 +97,13 @@ const PayoutScheduleForm = (): ReactElement | null => {
           color="primary"
           className="formButton"
           type="submit"
+          disabled={isProcessing}
         >
-          {t('saveButton')}
+          {isProcessing ? (
+            <CircularProgress color="primary" size={24} />
+          ) : (
+            t('saveButton')
+          )}
         </Button>
       </StyledForm>
     );
