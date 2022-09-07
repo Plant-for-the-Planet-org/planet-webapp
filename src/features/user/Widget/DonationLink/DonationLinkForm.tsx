@@ -85,8 +85,8 @@ const DonationLinkForm = ({
       localProject == null ? '' : `to=${localProject.slug}&`
     }tenant=${TENANT_ID}${isSupport ? `&s=${user.slug}` : ''}
     `;
+    if (donationUrl.length > 0) setIsLinkUpdated(true);
     setDonationUrl(url);
-    setIsLinkUpdated(true);
   };
 
   const handleProjectChange = async (project: Project | null) => {
