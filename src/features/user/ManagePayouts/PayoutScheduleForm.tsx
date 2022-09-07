@@ -1,18 +1,20 @@
-import { ReactElement } from 'react';
+import { ReactElement, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, MenuItem } from '@mui/material';
 import ReactHookFormSelect from './ReactHookFormSelect';
 import StyledForm from '../../common/Layout/StyledForm';
 import i18n from '../../../../i18n';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { User } from '../../common/types/user';
 
 const { useTranslation, Trans } = i18n;
 
 const paymentFrequencies = [
+  'manual',
   'monthly',
   'quarterly',
-  'semi-annual',
-  'annual',
-  'manual',
+  'semiannually',
+  'annually',
 ];
 
 type FormData = {
@@ -21,6 +23,8 @@ type FormData = {
 
 const PayoutScheduleForm = (): ReactElement | null => {
   const { t, ready } = useTranslation('managePayouts');
+  const { token, user, setUser } = useContext(UserPropsContext);
+  const { handleError } = useContext(ErrorHandlingContext);
   const { handleSubmit, errors, control } = useForm<FormData>({
     mode: 'onBlur',
   });
@@ -62,7 +66,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
             name="scheduleFrequency"
             label={t('labels.scheduleFrequency')}
             control={control}
-            defaultValue="annual"
+            defaultValue={user.scheduleFrequency}
             rules={{
               required: t('errors.scheduleFrequencyRequired'),
             }}

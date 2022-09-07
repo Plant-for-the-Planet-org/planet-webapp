@@ -45,4 +45,5 @@ export interface User {
   locale: string;
   hasLogoLicense: boolean | null;
   tin: string | null;
+  scheduleFrequency: string | null;
 }

@@ -33,7 +33,7 @@ function UserPropsProvider({ children }: any): ReactElement {
   const router = useRouter();
   const [contextLoaded, setContextLoaded] = React.useState(false);
   const [token, setToken] = React.useState(null);
-  const [profile, setUser] = React.useState<boolean | object | null>(false);
+  const [profile, setUser] = React.useState<boolean | User | null>(false);
 
   React.useEffect(() => {
     async function loadToken() {

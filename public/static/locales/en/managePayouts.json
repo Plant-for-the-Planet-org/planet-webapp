@@ -11,8 +11,8 @@
   "scheduleFrequencies": {
     "monthly": "Monthly",
     "quarterly": "Quarterly",
-    "semi-annual": "Semi-Annual",
-    "annual": "Annual",
+    "semiannually": "Semi-Annual",
+    "annually": "Annual",
     "manual": "Manual"
   },
   "labels": {
