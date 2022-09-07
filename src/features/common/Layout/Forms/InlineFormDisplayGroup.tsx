@@ -6,6 +6,10 @@ const InlineFormDisplayGroup = styled('div')({
   gap: '16px',
   alignItems: 'center',
   flexWrap: 'wrap',
+
+  '@media(max-width: 481px)': {
+    flexDirection: 'column',
+  },
 });
 
 export default InlineFormDisplayGroup;

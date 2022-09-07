@@ -71,7 +71,7 @@ const DonationLinkForm = ({
 
   const handleUrlChange = () => {
     const link = isTesting
-      ? process.env.NEXT_TESTING_DONATION_URL
+      ? process.env.NEXT_PUBLIC_TEST_DONATION_URL
       : process.env.NEXT_PUBLIC_DONATION_URL;
 
     const selectedLanguage =
