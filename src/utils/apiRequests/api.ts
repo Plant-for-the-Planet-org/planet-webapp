@@ -257,12 +257,12 @@ export async function deleteAuthenticatedRequest(
   return result;
 }
 
-export async function putAuthenticatedRequest(
+export async function putAuthenticatedRequest<T>(
   url: any,
   data: any,
   token: any,
   errorHandler?: Function
-): Promise<any> {
+): Promise<T | undefined> {
   if (validateToken(token)) {
     const res = await fetch(process.env.API_ENDPOINT + url, {
       method: 'PUT',
@@ -281,7 +281,7 @@ export async function putAuthenticatedRequest(
     });
     const result = await res.json();
     handleApiError(res.status, result, errorHandler);
-    return result;
+    return result as unknown as T;
   } else {
     if (errorHandler) {
       errorHandler({

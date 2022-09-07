@@ -5,6 +5,8 @@ import ReactHookFormSelect from './ReactHookFormSelect';
 import StyledForm from '../../common/Layout/StyledForm';
 import i18n from '../../../../i18n';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { User } from '../../common/types/user';
 
 const { useTranslation, Trans } = i18n;
@@ -29,8 +31,17 @@ const PayoutScheduleForm = (): ReactElement | null => {
     mode: 'onBlur',
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
+  const onSubmit = async (data: FormData) => {
+    const res = await putAuthenticatedRequest<User>(
+      '/app/profile',
+      { scheduleFrequency: data.scheduleFrequency },
+      token,
+      handleError
+    );
+    if (res?.id && res.id.length > 0) {
+      setUser(res);
+      //TODOO - show snackbar for success
+    }
   };
 
   const renderPaymentFrequencyOptions = () => {
