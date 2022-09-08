@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import i18next from '../../i18n';
+import { useTranslation } from 'next-i18next';
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgressBar';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
@@ -8,16 +8,15 @@ import Head from 'next/head';
 import Recurrency from '../../src/features/user/Account/Recurrency';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 
-const { useTranslation } = i18next;
+interface Props {}
 
-interface Props { }
-
-function RecurrentDonations({ }: Props): ReactElement {
+function RecurrentDonations({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
   const { token, contextLoaded } = React.useContext(UserPropsContext);
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
-  const [recurrencies, setrecurrencies] = React.useState<Payments.Subscription[]>();
+  const [recurrencies, setrecurrencies] =
+    React.useState<Payments.Subscription[]>();
 
   const { handleError } = React.useContext(ErrorHandlingContext);
 
