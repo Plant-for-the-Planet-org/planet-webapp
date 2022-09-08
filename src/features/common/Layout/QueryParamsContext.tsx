@@ -104,7 +104,7 @@ const QueryParamsProvider: FC = ({ children }) => {
   useEffect(() => {
     let tenantId;
     const tenantIDFromLocalStorage = localStorage.getItem('tenantID');
-    if (!!tenantIDFromLocalStorage) {
+    if (tenantIDFromLocalStorage) {
       tenantId = tenantIDFromLocalStorage;
     } else {
       tenantId = getTenantId(query);
