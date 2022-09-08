@@ -7,12 +7,11 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import styles from './../StepForm.module.scss';
 import Dropzone from 'react-dropzone';
 import tj from '@mapbox/togeojson';
-import i18next from './../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import WebMercatorViewport from '@math.gl/web-mercator';
 import gjv from 'geojson-validation';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 
-const { useTranslation } = i18next;
 interface Props {
   geoJson: any;
   setGeoJson: Function;
@@ -28,7 +27,7 @@ export default function MapComponent({
   setGeoJson,
   geoJsonError,
   setGeoJsonError,
-  geoLocation
+  geoLocation,
 }: Props): ReactElement {
   const defaultMapCenter = [geoLocation.geoLongitude, geoLocation.geoLatitude];
   const defaultZoom = 1.4;
@@ -53,11 +52,11 @@ export default function MapComponent({
   const [satellite, setSatellite] = React.useState(false);
 
   const RASTER_SOURCE_OPTIONS = {
-    "type": "raster",
-    "tiles": [
-      "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    type: 'raster',
+    tiles: [
+      'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
     ],
-    "tileSize": 128
+    tileSize: 128,
   };
 
   React.useEffect(() => {
@@ -133,12 +132,19 @@ export default function MapComponent({
           width: '100%',
         }}
       >
-        {satellite &&
+        {satellite && (
           <>
-            <Source id="satellite_source" tileJsonSource={RASTER_SOURCE_OPTIONS} />
-            <Layer type="raster" id="satellite_layer" sourceId="satellite_source" />
+            <Source
+              id="satellite_source"
+              tileJsonSource={RASTER_SOURCE_OPTIONS}
+            />
+            <Layer
+              type="raster"
+              id="satellite_layer"
+              sourceId="satellite_source"
+            />
           </>
-        }
+        )}
         <DrawControl
           ref={drawControlRef}
           onDrawCreate={onDrawCreate}
@@ -153,10 +159,20 @@ export default function MapComponent({
           }}
         />
         <div className={styles.layerSwitcher}>
-          <div onClick={() => setSatellite(false)} className={`${styles.layerOption} ${satellite ? '' : styles.active}`}>
+          <div
+            onClick={() => setSatellite(false)}
+            className={`${styles.layerOption} ${
+              satellite ? '' : styles.active
+            }`}
+          >
             Map
           </div>
-          <div onClick={() => setSatellite(true)} className={`${styles.layerOption} ${satellite ? styles.active : ''}`}>
+          <div
+            onClick={() => setSatellite(true)}
+            className={`${styles.layerOption} ${
+              satellite ? styles.active : ''
+            }`}
+          >
             Satellite
           </div>
         </div>

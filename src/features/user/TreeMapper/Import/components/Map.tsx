@@ -1,9 +1,17 @@
 import React, { ReactElement } from 'react';
 import styles from '../../TreeMapper.module.scss';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
-import i18next from '../../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import * as turf from '@turf/turf';
-import MapGL, { FlyToInterpolator, Layer, MapEvent, Marker, NavigationControl, Source, WebMercatorViewport } from 'react-map-gl';
+import MapGL, {
+  FlyToInterpolator,
+  Layer,
+  MapEvent,
+  Marker,
+  NavigationControl,
+  Source,
+  WebMercatorViewport,
+} from 'react-map-gl';
 import { localizedAbbreviatedNumber } from '../../../../../utils/getFormattedNumber';
 import LayerIcon from '../../../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../../../public/assets/images/icons/LayerDisabled';
@@ -12,13 +20,11 @@ import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
 import SatelliteLayer from '../../../../projects/components/maps/SatelliteLayer';
 
-interface Props {
-}
+interface Props {}
 
-export default function MyTreesMap({
-}: Props): ReactElement {
+export default function MyTreesMap({}: Props): ReactElement {
   const router = useRouter();
-  const { useTranslation } = i18next;
+
   const { i18n, t } = useTranslation('me');
 
   const { isMobile } = React.useContext(ProjectPropsContext);
@@ -58,7 +64,10 @@ export default function MyTreesMap({
       scrollZoom={false}
       onViewportChange={_onViewportChange}
       attributionControl={true}
-      mapOptions={{ customAttribution: 'Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS, Maxar, Earthstar Geographics, CNES/Airbus DS, USDA FSA, Aerogrid, IGN, IGP, and the GIS User Community' }}
+      mapOptions={{
+        customAttribution:
+          'Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS, Maxar, Earthstar Geographics, CNES/Airbus DS, USDA FSA, Aerogrid, IGN, IGP, and the GIS User Community',
+      }}
     >
       {satellite && <SatelliteLayer />}
       <div

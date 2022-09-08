@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import styles from '../StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import {
   deleteAuthenticatedRequest,
@@ -15,8 +15,6 @@ import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
 
 interface Props {
   handleNext: Function;

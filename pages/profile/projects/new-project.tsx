@@ -1,4 +1,4 @@
-import i18next from '../../../i18n';
+import { useTranslation } from 'next-i18next';
 import React, { ReactElement } from 'react';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
 import { useRouter } from 'next/router';
@@ -9,7 +9,6 @@ import Footer from '../../../src/features/common/Layout/Footer';
 import Head from 'next/head';
 
 export default function AddProjectType(): ReactElement {
-  const { useTranslation } = i18next;
   const router = useRouter();
   const { t } = useTranslation(['donate', 'manageProjects']);
   const [isPurpose, setIsPurpose] = React.useState(false);

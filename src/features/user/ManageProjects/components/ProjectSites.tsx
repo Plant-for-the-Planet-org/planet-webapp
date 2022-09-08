@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import styles from './../StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { Controller, useForm } from 'react-hook-form';
-import i18next from './../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import dynamic from 'next/dynamic';
 import { WebMercatorViewport } from 'react-map-gl';
@@ -22,8 +22,6 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
 
 const MapStatic = ReactMapboxGl({
   interactive: false,

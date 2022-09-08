@@ -3,7 +3,7 @@ import styles from '../styles/RedeemModal.module.scss';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import i18next from '../../../../../i18n';
+
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useForm } from 'react-hook-form';
 import Close from '../../../../../public/assets/images/icons/headerIcons/close';
@@ -17,7 +17,6 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import ShareOptions from '../../../common/ShareOptions/ShareOptions';
 import { styled } from '@mui/material';
 
-const { useTranslation } = i18next;
 export default function RedeemModal({
   redeemModalOpen,
   handleRedeemModalClose,
@@ -61,11 +60,11 @@ export default function RedeemModal({
     setTextCopiedSnackbarOpen(false);
   };
 
-  const Alert = styled(MuiAlert)(({theme}) => {
+  const Alert = styled(MuiAlert)(({ theme }) => {
     return {
       backgroundColor: theme.palette.primary.main,
-    }
-  })
+    };
+  });
 
   const { register, handleSubmit, errors, getValues } = useForm({
     mode: 'onBlur',
@@ -250,8 +249,8 @@ export default function RedeemModal({
             >
               <div>
                 <Alert
-                elevation={6}
-                variant="filled"
+                  elevation={6}
+                  variant="filled"
                   onClose={handleTextCopiedSnackbarClose}
                   severity="success"
                 >

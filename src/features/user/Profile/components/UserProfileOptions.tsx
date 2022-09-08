@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import React from 'react';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import Redeem from '../../../../../public/assets/images/icons/userProfileIcons/Redeem';
 import Share from '../../../../../public/assets/images/icons/userProfileIcons/Share';
@@ -37,7 +37,7 @@ const socialIconAnimate = {
   },
   // }
 };
-const { useTranslation } = i18next;
+
 export default function UserProfileOptions({ userprofile }: any) {
   const router = useRouter();
   const { t, ready } = useTranslation(['me']);

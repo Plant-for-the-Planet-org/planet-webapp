@@ -3,10 +3,8 @@ import styles from '../AccountHistory.module.scss';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { TFunction } from 'next-i18next';
-
-const { useTranslation } = i18next;
 
 interface Props {
   handleRecordOpen: Function;

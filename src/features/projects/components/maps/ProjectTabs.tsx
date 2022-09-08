@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import LocationIcon from '../../../../../public/assets/images/icons/LocationIcon';
 import ResearchIcon from '../../../../../public/assets/images/icons/ResearchIcon';
 import SatelliteIcon from '../../../../../public/assets/images/icons/SatelliteIcon';
@@ -9,11 +9,9 @@ import styles from '../../styles/VegetationChange.module.scss';
 interface Props {}
 
 export default function ProjectTabs({}: Props): ReactElement {
-  const { useTranslation } = i18next;
   const { i18n, t } = useTranslation(['maps']);
-  const { selectedMode, setSelectedMode, rasterData } = React.useContext(
-    ProjectPropsContext
-  );
+  const { selectedMode, setSelectedMode, rasterData } =
+    React.useContext(ProjectPropsContext);
   return (
     <>
       <div className={styles.VegetationChangeContainer}>

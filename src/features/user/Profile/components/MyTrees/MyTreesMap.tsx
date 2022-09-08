@@ -11,7 +11,7 @@ import {
   getFormattedNumber,
   getFormattedRoundedNumber,
 } from '../../../../../utils/getFormattedNumber';
-import i18next from '../../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
@@ -33,7 +33,6 @@ export default function MyTreesMap({
   contributions,
   authenticatedType,
 }: Props): ReactElement {
-  const { useTranslation } = i18next;
   const { i18n, t } = useTranslation('me');
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;
@@ -44,7 +43,7 @@ export default function MyTreesMap({
     zoom: [defaultZoom],
   });
   const [geoJson, setGeoJson] = React.useState();
-  const {theme} = React.useContext(ThemeContext)
+  const { theme } = React.useContext(ThemeContext);
 
   const [style, setStyle] = React.useState({
     version: 8,
@@ -91,10 +90,7 @@ export default function MyTreesMap({
       key = item.properties.id;
     });
     return (
-      <Marker
-        key={key}
-        coordinates={coordinates}
-        anchor="bottom">
+      <Marker key={key} coordinates={coordinates} anchor="bottom">
         <div
           onMouseOver={() => {
             setContributionInfo(null);
@@ -182,7 +178,15 @@ export default function MyTreesMap({
           <>
             <div className={styles.contributionInfo}>
               <div key={contributionInfo.properties.id} className={styles.tree}>
-                <div className={styles.dateRow} style={{backgroundColor: theme === 'theme-light' ? themeProperties.light.light : themeProperties.dark.backgroundColorDark}}>
+                <div
+                  className={styles.dateRow}
+                  style={{
+                    backgroundColor:
+                      theme === 'theme-light'
+                        ? themeProperties.light.light
+                        : themeProperties.dark.backgroundColorDark,
+                  }}
+                >
                   {formatDate(contributionInfo.properties.plantDate)}
                 </div>
                 <div className={styles.treeRow}>

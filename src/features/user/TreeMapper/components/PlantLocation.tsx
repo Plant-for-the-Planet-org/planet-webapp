@@ -1,13 +1,11 @@
 import React, { ReactElement } from 'react';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import styles from '../TreeMapper.module.scss';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import * as turf from '@turf/turf';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import TreeIcon from '../../../../../public/assets/images/icons/TreeIcon';
 import { useRouter } from 'next/router';
-
-const { useTranslation } = i18next;
 
 interface Props {
   location: Object;
@@ -15,7 +13,6 @@ interface Props {
   locations: Object;
   selectedLocation: string;
   setselectedLocation: Function;
-
 }
 
 function PlantLocation({
@@ -63,20 +60,31 @@ function PlantLocation({
       <div className={styles.locationHeader}>
         <div className={styles.left}>
           <p className={styles.treeCount}>
-              {`${location.hid?location.hid.substring(0, 3) + "-" + location.hid.substring(3):null} ${location.type === 'multi'?'• '+localizedAbbreviatedNumber(
-                  i18n.language,
-                  Number(plantationArea),
-                  2
-                ) + 'ha':location.tag? '• '+location.tag:''}`}
+            {`${
+              location.hid
+                ? location.hid.substring(0, 3) + '-' + location.hid.substring(3)
+                : null
+            } ${
+              location.type === 'multi'
+                ? '• ' +
+                  localizedAbbreviatedNumber(
+                    i18n.language,
+                    Number(plantationArea),
+                    2
+                  ) +
+                  'ha'
+                : location.tag
+                ? '• ' + location.tag
+                : ''
+            }`}
           </p>
-          <p className={styles.date}>
-             {formatDate(location.registrationDate)}
-          </p>
+          <p className={styles.date}>{formatDate(location.registrationDate)}</p>
         </div>
         <div className={styles.right}>
-          <div className={styles.status}>{location.type === 'multi' && treeCount
-              ? `${treeCount}`
-              : `1`}<TreeIcon/></div>
+          <div className={styles.status}>
+            {location.type === 'multi' && treeCount ? `${treeCount}` : `1`}
+            <TreeIcon />
+          </div>
           <div className={styles.mode}>{t(location.captureStatus)}</div>
         </div>
       </div>

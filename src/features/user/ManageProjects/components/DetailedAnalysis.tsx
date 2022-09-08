@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import styles from './../StepForm.module.scss';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import ProjectCertificates from './ProjectCertificates';
@@ -18,8 +18,6 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import MuiDatePicker from '@mui/lab/MobileDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-
-const { useTranslation } = i18next;
 
 interface Props {
   handleNext: Function;

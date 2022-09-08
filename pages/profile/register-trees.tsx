@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import dynamic from 'next/dynamic';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
+import { useTranslation } from 'next-i18next';
 
 interface Props {}
 

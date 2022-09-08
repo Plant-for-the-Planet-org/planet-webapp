@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { Controller, useForm, useFieldArray } from 'react-hook-form';
 import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
 import styles from '../Import.module.scss';
-import i18next from '../../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
 import { useDropzone } from 'react-dropzone';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
@@ -21,8 +21,6 @@ import flatten from 'geojson-flatten';
 import MuiDatePicker from '@mui/lab/MobileDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-
-const { useTranslation } = i18next;
 
 interface Props {
   handleNext: () => void;

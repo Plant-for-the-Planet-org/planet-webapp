@@ -13,11 +13,9 @@ import {
 } from '../../../utils/apiRequests/api';
 import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import materialTheme from '../../../theme/themeStyles';
-
-const { useTranslation } = i18next;
 
 export default function ManageProjects({ GUID, token, project }: any) {
   const { t, i18n, ready } = useTranslation(['manageProjects']);

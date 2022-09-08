@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import getImageUrl from '../../../../utils/getImageURL';
 import styles from '../TreeMapper.module.scss';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import TreeIcon from '../../../../../public/assets/images/icons/TreeIcon';
 import {
@@ -14,8 +14,6 @@ import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import router, { useRouter } from 'next/router';
 import CopyToClipboard from '../../../common/CopyToClipboard';
-
-const { useTranslation } = i18next;
 
 interface Props {
   setselectedLocation: Function;
@@ -66,7 +64,7 @@ export default function PlantLocationPage({
     router.replace('/profile/treemapper');
   };
 
-  const handleEditButton = () => { };
+  const handleEditButton = () => {};
 
   const DetailProps = {
     location,
@@ -135,8 +133,9 @@ export function LocationDetails({
           if (element.coordinates?.[0]) {
             images.push({
               image: element.coordinates[0].image,
-              description: `${t('maps:sampleTree')} ${element.tag ? '#' + element.tag : ''
-                }`,
+              description: `${t('maps:sampleTree')} ${
+                element.tag ? '#' + element.tag : ''
+              }`,
             });
           }
         }
@@ -184,11 +183,11 @@ export function LocationDetails({
             <p className={styles.title}>
               {t('coordinates')} <CopyToClipboard text={text} />
             </p>
-            <div className={styles.value}>
-              {text}
-            </div>
+            <div className={styles.value}>{text}</div>
           </div>
-        ) : []}
+        ) : (
+          []
+        )}
         {/* <div className={styles.singleDetail}>
           <p className={styles.title}>{t('guid')}</p>
           <div className={styles.value}>{location.id}</div>
@@ -247,9 +246,10 @@ export function LocationDetails({
                       {species.treeCount}{' '}
                       {species.scientificName
                         ? species.scientificName
-                        : species.otherSpecies && species.otherSpecies !== 'Unknown'
-                          ? species.otherSpecies :
-                          t('maps:unknown')}
+                        : species.otherSpecies &&
+                          species.otherSpecies !== 'Unknown'
+                        ? species.otherSpecies
+                        : t('maps:unknown')}
                     </p>
                   );
                 })}
@@ -272,9 +272,10 @@ export function LocationDetails({
                     >
                       {spl.scientificName
                         ? spl.scientificName
-                        : spl.scientificSpecies && spl.scientificSpecies !== 'Unknown'
-                          ? spl.scientificSpecies
-                          : t('maps:unknown')}
+                        : spl.scientificSpecies &&
+                          spl.scientificSpecies !== 'Unknown'
+                        ? spl.scientificSpecies
+                        : t('maps:unknown')}
                     </span>
                     <br />
                     {spl.tag ? `${t('maps:tag')} #${spl.tag} • ` : null}
