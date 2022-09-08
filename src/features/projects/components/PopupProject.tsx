@@ -30,7 +30,7 @@ export default function PopupProject({
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const { token } = React.useContext(UserPropsContext);
-  const { embed } = React.useContext(ParamsContext);
+  const { embed, tenantID } = React.useContext(ParamsContext);
 
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
@@ -42,7 +42,13 @@ export default function PopupProject({
   const projectDetails = project.properties;
 
   const handleDonationOpen = () => {
-    const url = getDonationUrl(project.properties.slug, token);
+    const url = getDonationUrl(
+      project.properties.slug,
+      token,
+      undefined,
+      undefined,
+      tenantID
+    );
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
 
