@@ -11,6 +11,8 @@ import { TENANT_ID } from '../src/utils/constants/environment';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 import DirectGift from '../src/features/donations/components/DirectGift';
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import nextI18NextConfig from '../next-i18next.config';
 
 interface Props {
   initialized: Boolean;
@@ -137,3 +139,29 @@ export default function Donate({
     </>
   );
 }
+
+export const getServerSideProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'common',
+          'country',
+          'donate',
+          'editProfile',
+          'leaderboard',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'redeem',
+          'registerTrees',
+          'tenants',
+          'treemapper',
+        ],
+        nextI18NextConfig
+      )),
+    },
+  };
+};

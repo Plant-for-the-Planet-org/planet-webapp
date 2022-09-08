@@ -30,7 +30,7 @@ import dynamic from 'next/dynamic';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
 import { appWithTranslation, useTranslation } from 'next-i18next';
-import i18next from 'next-i18next';
+import nextI18NextConfig from '../next-i18next.config';
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -112,8 +112,10 @@ function PlanetWeb({ Component, pageProps, err }: any) {
     storeConfig();
   }, []);
   React.useEffect(() => {
-    i18n.init().then(() => setInitialized(true));
-  }, []);
+    if (i18n?.isInitialized) {
+      setInitialized(true);
+    }
+  }, [i18n.isInitialized]);
 
   React.useEffect(() => {
     if (
@@ -255,4 +257,4 @@ function PlanetWeb({ Component, pageProps, err }: any) {
   }
 }
 
-export default appWithTranslation(PlanetWeb);
+export default appWithTranslation(PlanetWeb, nextI18NextConfig);

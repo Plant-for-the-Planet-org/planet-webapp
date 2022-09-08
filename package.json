@@ -5,6 +5,7 @@
   "cacheDirectories": [
     ".next/cache"
   ],
+  
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -18,6 +19,7 @@
     "lint:errors": "eslint i18n pages src --quiet",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run"
+    
   },
   "engines": {
     "node": "14.x",
