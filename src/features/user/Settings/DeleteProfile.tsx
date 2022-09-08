@@ -7,6 +7,8 @@ import { deleteAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { ThemeContext } from '../../../theme/themeContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import CustomModal from '../../common/Layout/CustomModal';
+import router from 'next/router';
 
 const { useTranslation } = i18next;
 
@@ -18,8 +20,7 @@ export default function DeleteProfile({}: any) {
   };
   const { handleError } = React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [isSubscription, setIsSubscription] = React.useState(false);
-
+  const [isModalOpen, setisModalOpen] = React.useState(false); //true when subscriptions are present
   const [canDeleteAccount, setcanDeleteAccount] = React.useState(false);
 
   const handleDeleteAccount = () => {
@@ -27,7 +28,8 @@ export default function DeleteProfile({}: any) {
     deleteAuthenticatedRequest('/app/profile', token, handleError).then(
       (res) => {
         if (res == 400) {
-          setIsSubscription(true);
+          setIsUploadingData(false);
+          setisModalOpen(true);
         } else if (res == 404) {
           console.log(res.errorText);
         } else {
@@ -37,9 +39,16 @@ export default function DeleteProfile({}: any) {
     );
   };
 
-  const { theme } = React.useContext(ThemeContext);
+  const handleSubscriptions = () => {
+    setisModalOpen(false);
+    router.push('/profile/recurrency');
+  };
 
-  return (
+  const closeModal = () => {
+    setisModalOpen(false);
+  };
+
+  return !isModalOpen ? (
     <div className="profilePage">
       <p className={'profilePageTitle'}> {t('common:deleteAccount')}</p>
       <div className={styles.deleteModal}>
@@ -72,18 +81,14 @@ export default function DeleteProfile({}: any) {
         <p className={styles.deleteConsent}>
           {t('common:deleteAccountConsent')}
         </p>
-
-        <h5>
-          {' '}
-          Before proceeding, make sure you've deleted all subscriptions before .
-        </h5>
+        <br />
+        <br />
+        <b> Before proceeding, make sure you've cancelled all subscriptions.</b>
         <p className={styles.deleteModalWarning}>
           {t('common:deleteIrreversible', {
             email: user.email,
           })}
         </p>
-
-        {isSubscription && <h5>Please cancel your Subscription first</h5>}
 
         <div className={styles.deleteButtonContainer}>
           {canDeleteAccount ? (
@@ -95,7 +100,7 @@ export default function DeleteProfile({}: any) {
                 color: styles.light,
               }}
             >
-              {isUploadingData && !isSubscription ? (
+              {isUploadingData ? (
                 <div className={'spinner'}></div>
               ) : (
                 t('common:delete')
@@ -112,5 +117,14 @@ export default function DeleteProfile({}: any) {
         </div>
       </div>
     </div>
+  ) : (
+    <CustomModal
+      isOpen={isModalOpen}
+      onClick1={handleSubscriptions}
+      onClick2={closeModal}
+      buttonTitle={'Continue'}
+      modalTitle={t('common:modalTitle')}
+      modalSubtitle={t('common:modalSubtitle')}
+    />
   );
 }

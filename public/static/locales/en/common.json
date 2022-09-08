@@ -91,5 +91,7 @@
   "forbidden": "You are not allowed to view this page!",
   "internalServerError": "Internal Server Error - Please try again later!",
   "validationFailed": "Validation Failed!",
-  "add": "Add"
+  "add": "Add",
+  "modalTitle": "Cancel all subscriptions to proceed",
+  "modalSubtitle": "Please cancel your subscriptions first"
 }
