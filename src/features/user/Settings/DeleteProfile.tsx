@@ -45,6 +45,7 @@ export default function DeleteProfile({}: any) {
 
   const closeModal = () => {
     setisModalOpen(false);
+    setcanDeleteAccount(false);
   };
 
   return !isModalOpen ? (
