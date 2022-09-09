@@ -1,8 +1,9 @@
 import { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, TextField, styled } from '@mui/material';
+import { Button, TextField, MenuItem, styled } from '@mui/material';
 import StyledForm from '../../common/Layout/StyledForm';
 import i18n from '../../../../i18n';
+import ReactHookFormSelect from './ReactHookFormSelect';
 
 const { useTranslation } = i18n;
 
@@ -21,6 +22,7 @@ const InlineFormGroup = styled('div')({
 });
 
 type FormData = {
+  currency: string;
   payoutMinAmount: string;
   bankName: string;
   bankAddress: string;
@@ -33,9 +35,17 @@ type FormData = {
   remarks: string;
 };
 
+const minPayoutAmounts = {
+  Default: undefined,
+  CHF: 1500,
+  CZK: 1500,
+  EUR: 1500,
+  USD: 1500,
+};
+
 const BankDetailsForm = (): ReactElement | null => {
   const { t, ready } = useTranslation('managePayouts');
-  const { register, handleSubmit, errors } = useForm<FormData>({
+  const { register, handleSubmit, errors, control } = useForm<FormData>({
     mode: 'onBlur',
   });
 
@@ -43,10 +53,29 @@ const BankDetailsForm = (): ReactElement | null => {
     console.log(data);
   };
 
+  const renderCurrencyOptions = () => {
+    return Object.keys(minPayoutAmounts).map((currency, index) => {
+      return (
+        <MenuItem value={currency} key={index}>
+          {currency}
+        </MenuItem>
+      );
+    });
+  };
+
   if (ready) {
     return (
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <div className="inputContainer">
+          <ReactHookFormSelect
+            name="currency"
+            label={t('labels.currency')}
+            control={control}
+            helperText={t('helperText.currency')}
+            defaultValue={'Default'}
+          >
+            {renderCurrencyOptions()}
+          </ReactHookFormSelect>
           <TextField
             label={t('labels.payoutMinAmount')}
             name="payoutMinAmount"
@@ -71,6 +100,7 @@ const BankDetailsForm = (): ReactElement | null => {
           ></TextField>
           <TextField
             multiline
+            minRows={2}
             maxRows={4}
             label={t('labels.bankAddress')}
             name="bankAddress"
@@ -93,6 +123,7 @@ const BankDetailsForm = (): ReactElement | null => {
           ></TextField>
           <TextField
             multiline
+            minRows={2}
             maxRows={4}
             label={t('labels.holderAddress')}
             name="holderAddress"
@@ -137,10 +168,12 @@ const BankDetailsForm = (): ReactElement | null => {
           </InlineFormGroup>
           <TextField
             multiline
+            minRows={2}
             maxRows={4}
             label={t('labels.remarks')}
             name="remarks"
             placeholder={t('placeholders.remarks')}
+            helperText={t('helperText.remarks')}
             inputRef={register}
           ></TextField>
         </div>
