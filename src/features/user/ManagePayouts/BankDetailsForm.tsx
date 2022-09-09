@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, TextField, MenuItem, styled } from '@mui/material';
 import StyledForm from '../../common/Layout/StyledForm';
@@ -35,15 +35,11 @@ type FormData = {
   remarks: string;
 };
 
-const minPayoutAmounts = {
-  Default: undefined,
-  CHF: 1500,
-  CZK: 1500,
-  EUR: 1500,
-  USD: 1500,
-};
+interface Props {
+  payoutMinAmounts: { [key: string]: number } | null;
+}
 
-const BankDetailsForm = (): ReactElement | null => {
+const BankDetailsForm = ({ payoutMinAmounts }: Props): ReactElement | null => {
   const { t, ready } = useTranslation('managePayouts');
   const { register, handleSubmit, errors, control } = useForm<FormData>({
     mode: 'onBlur',
@@ -53,15 +49,21 @@ const BankDetailsForm = (): ReactElement | null => {
     console.log(data);
   };
 
-  const renderCurrencyOptions = () => {
-    return Object.keys(minPayoutAmounts).map((currency, index) => {
+  const renderCurrencyOptions = useCallback(() => {
+    const currencyOptions = [{ label: t('defaultCurrency'), value: 'default' }];
+    if (payoutMinAmounts) {
+      Object.keys(payoutMinAmounts).forEach((currency) =>
+        currencyOptions.push({ label: currency, value: currency })
+      );
+    }
+    return currencyOptions.map((option, index) => {
       return (
-        <MenuItem value={currency} key={index}>
-          {currency}
+        <MenuItem value={option.value} key={index}>
+          {option.label}
         </MenuItem>
       );
     });
-  };
+  }, [payoutMinAmounts]);
 
   if (ready) {
     return (
@@ -72,7 +74,7 @@ const BankDetailsForm = (): ReactElement | null => {
             label={t('labels.currency')}
             control={control}
             helperText={t('helperText.currency')}
-            defaultValue={'Default'}
+            defaultValue={'default'}
           >
             {renderCurrencyOptions()}
           </ReactHookFormSelect>

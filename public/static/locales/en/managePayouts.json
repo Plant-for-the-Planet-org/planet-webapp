@@ -2,7 +2,7 @@
   "title": "Manage Payouts",
   "description": "Keep your payout information updated (e.g. schedule, bank details) to facilitate smooth payouts",
   "tabPayoutSchedule": "Payout Schedule",
-  "tabBankDetails": "Bank Details",
+  "tabAddBankDetails": "Add Bank Details",
   "tabOverview": "Overview",
   "payoutInformation1": "Payouts are processed automatically every year, or when an organization collects 30,000 EUR or its equivalent in other currency.",
   "payoutInformation2": "Payouts are issued by Plant-for-the-Planet Foundation and its sister organizations eg: Plant-for-the-Planet US, Plant-for-the-Planet Switzerland etc.",
@@ -15,6 +15,7 @@
     "annually": "Annual",
     "manual": "Manual"
   },
+  "defaultCurrency": "Default",
   "labels": {
     "currency": "Currency",
     "scheduleFrequency": "Payment Frequency*",
