@@ -1,8 +1,6 @@
-import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import React from 'react';
 import i18next from '../../../../../i18n';
-import { ThemeContext } from '../../../../theme/themeContext';
 import styles from './CustomModal.module.scss';
 
 interface Props {
@@ -24,8 +22,7 @@ export default function CustomModal({
   modalTitle,
   modalSubtitle,
 }: Props) {
-  const { t } = useTranslation(['common']);
-  const { theme } = React.useContext(ThemeContext);
+  const { t } = useTranslation(['editProfile']);
   return (
     <Modal open={isOpen} hideBackdrop className={'modalContainer'}>
       <div className={styles.modal}>

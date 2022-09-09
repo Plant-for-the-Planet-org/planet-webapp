@@ -4,7 +4,6 @@ import i18next from '../../../../i18n';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../common/InputTypes/AnimatedButton';
 import { deleteAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { ThemeContext } from '../../../theme/themeContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import CustomModal from '../../common/Layout/CustomModal';
@@ -83,7 +82,7 @@ export default function DeleteProfile({}: any) {
         </p>
         <br />
         <br />
-        <b> Before proceeding, make sure you've cancelled all subscriptions.</b>
+        <b>{t('common:deleteCondition')}</b>
         <p className={styles.deleteModalWarning}>
           {t('common:deleteIrreversible', {
             email: user.email,
