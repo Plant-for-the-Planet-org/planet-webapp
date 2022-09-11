@@ -45,7 +45,7 @@ export default function PopupProject({
     const url = getDonationUrl(
       project.properties.slug,
       token,
-      undefined,
+      embed,
       undefined,
       tenantID
     );
