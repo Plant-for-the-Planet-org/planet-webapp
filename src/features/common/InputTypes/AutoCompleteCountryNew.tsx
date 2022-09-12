@@ -69,6 +69,11 @@ export default function CountrySelect({
     countries.sort((a, b) => {
       const nameA = t(`country:${a.code.toLowerCase()}`);
       const nameB = t(`country:${b.code.toLowerCase()}`);
+
+      //Automatic Selection option is always at first position (if present)
+      if (a.code === 'auto') return -1;
+      if (b.code === 'auto') return 1;
+
       if (nameA > nameB) {
         return 1;
       }
@@ -99,10 +104,14 @@ export default function CountrySelect({
         const displayedOption =
           (currency ? `(${currency}) ` : '') +
           t(`country:${countryCode.toLowerCase()}`) +
-          (name !== 'editProfile' ? ` ${countryCode}` : '');
+          (!(name == 'editProfile' || countryCode === 'auto')
+            ? ` ${countryCode}`
+            : '');
         return (
           <StyledAutoCompleteOption {...props} key={countryCode}>
-            <span>{countryToFlag(countryCode)}</span>
+            {countryCode !== 'auto' && (
+              <span>{countryToFlag(countryCode)}</span>
+            )}
             {displayedOption}
           </StyledAutoCompleteOption>
         );

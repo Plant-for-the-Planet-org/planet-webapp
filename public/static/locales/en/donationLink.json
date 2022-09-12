@@ -1,0 +1,20 @@
+{
+  "donationLinkTitle": "Create Your Donation Link",
+  "donationLinkDescription": "Build the Donation Link to work according to your needs, to give your donors a smooth experience. Use Preview to see how the final result will work.",
+  "labelCountry": "Country",
+  "labelLanguages": "Language",
+  "countryLanguageTitle": "Set the Country and Language",
+  "projectTitle": "Set your Project",
+  "treeCounterTitle": "Support my TreeCounter",
+  "testingTitle": "Testing Mode",
+  "urlTitle": "Your Donation Link URL",
+  "languages": "Languages",
+  "preview": "Preview",
+  "copy": "Copy",
+  "treeCounterSubtitle": "Tree donations via this link support my profile directly",
+  "testingModeSubtitle1": "To test, use the link that is now displayed. This is for testing only, for the correct link to share you need to turn off the Testing Mode.",
+  "testingModeSubtitle2": "You can test donation flow using cards at",
+  "linkUpdatedMessage": "Link has been updated",
+  "treeCounterPrivateAccountSubtitle": "To support your profile, you must set it to public within the account settings.",
+  "automaticSelection": "Automatic Selection"
+}
