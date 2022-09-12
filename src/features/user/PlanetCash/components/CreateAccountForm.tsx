@@ -1,6 +1,7 @@
 import { ReactElement, useState, useContext, FormEvent } from 'react';
 import { Button, CircularProgress } from '@mui/material';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
+import CustomSnackbar from '../../Widget/DonationLink/CustomSnackbar';
 import StyledForm from '../../../common/Layout/StyledForm';
 import i18next from '../../../../../i18n';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
@@ -22,6 +23,7 @@ const CreateAccountForm = ({
   const { t, ready } = useTranslation(['planetcash', 'country']);
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isAccountCreated, setIsAccountCreated] = useState(false);
   const { token } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
   const router = useRouter();
@@ -37,10 +39,12 @@ const CreateAccountForm = ({
       handleError
     );
     if (res?.id) {
-      // account creation is successful
       // show success message
+      setIsAccountCreated(true);
       // go to accounts tab
-      router.push('/profile/planetcash');
+      setTimeout(() => {
+        router.push('/profile/planetcash');
+      }, 3000);
     } else {
       setIsProcessing(false);
       if (res && res['error_type'] === 'planet_cash_account_error') {
@@ -70,36 +74,49 @@ const CreateAccountForm = ({
     }
   };
 
+  const closeSnackbar = () => {
+    setIsAccountCreated(false);
+  };
+
   if (ready) {
     return (
-      <StyledForm onSubmit={onSubmit}>
-        <h2 className="formTitle">{t('createAccountTitleText')}</h2>
-        <div className="inputContainer">
-          <AutoCompleteCountry
-            label={t('labelCountry')}
-            name="country"
-            defaultValue={allowedCountries[0].code}
-            onChange={setCountry}
-            countries={allowedCountries}
+      <>
+        <StyledForm onSubmit={onSubmit}>
+          <h2 className="formTitle">{t('createAccountTitleText')}</h2>
+          <div className="inputContainer">
+            <AutoCompleteCountry
+              label={t('labelCountry')}
+              name="country"
+              defaultValue={allowedCountries[0].code}
+              onChange={setCountry}
+              countries={allowedCountries}
+            />
+          </div>
+          <p>{t('planetCashTerms1')}</p>
+          <p>{t('planetCashTerms2')}</p>
+          <p>{t('planetCashTerms3')}</p>
+          <Button
+            variant="contained"
+            color="primary"
+            className="formButton"
+            type="submit"
+            disabled={isProcessing}
+          >
+            {isProcessing ? (
+              <CircularProgress color="primary" size={24} />
+            ) : (
+              t('createPlanetCashButton')
+            )}
+          </Button>
+        </StyledForm>
+        {isAccountCreated && (
+          <CustomSnackbar
+            snackbarText={t('accountCreationSuccess')}
+            isVisible={isAccountCreated}
+            handleClose={closeSnackbar}
           />
-        </div>
-        <p>{t('planetCashTerms1')}</p>
-        <p>{t('planetCashTerms2')}</p>
-        <p>{t('planetCashTerms3')}</p>
-        <Button
-          variant="contained"
-          color="primary"
-          className="formButton"
-          type="submit"
-          disabled={isProcessing}
-        >
-          {isProcessing ? (
-            <CircularProgress color="primary" size={24} />
-          ) : (
-            t('createPlanetCashButton')
-          )}
-        </Button>
-      </StyledForm>
+        )}
+      </>
     );
   }
   return null;

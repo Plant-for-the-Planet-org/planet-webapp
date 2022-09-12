@@ -18,6 +18,7 @@
   "noAccountsText": "You don't seem to have created a PlanetCash account yet.",
   "createPlanetCashButton": "Create Planet Cash Account",
   "accountQuotaReachedText": "You cannot create more accounts as you have exhausted your account quota.",
+  "accountCreationSuccess": "Your PlanetCash account was successfully created",
   "labelCountry": "Country",
   "planetCashTerms1": "By clicking \"Create PlanetCash Account\", I agree to the Terms and Conditions of Plant-for-the-Planet and PlanetCash.",
   "planetCashTerms2": "I understand that PlanetCash donations are non-refundable, and unallocated payments will be auto allocated to projects on the Platform after six months of a Payment.",
