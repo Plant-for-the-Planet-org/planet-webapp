@@ -4,8 +4,9 @@ import { TextField } from '@mui/material';
 import React from 'react';
 import i18next from '../../../../i18n';
 import { MuiAutoComplete, StyledAutoCompleteOption } from './MuiAutoComplete';
+import { CountryType } from '../types/country';
 import { allCountries } from '../../../utils/constants/countries';
-import { CountryType } from '../types/countries';
+
 const { useTranslation } = i18next;
 
 // ISO 3166-1 alpha-2
@@ -88,22 +89,30 @@ export default function CountrySelect({
       id="country-select"
       options={countries}
       value={selectedCountry}
-      getOptionLabel={(option) =>
-        t(`country:${(option as CountryType).code.toLowerCase()}`)
-      }
+      getOptionLabel={(option) => {
+        const { code: countryCode, currency } = option as CountryType;
+        const label =
+          (currency ? `(${currency}) ` : '') +
+          t(`country:${countryCode.toLowerCase()}`);
+        return label;
+      }}
       isOptionEqualToValue={(option, value) =>
         (option as CountryType).code === (value as CountryType).code
       }
       renderOption={(props, option) => {
-        const countryCode = (option as CountryType).code;
+        const { code: countryCode, currency } = option as CountryType;
+        const displayedOption =
+          (currency ? `(${currency}) ` : '') +
+          t(`country:${countryCode.toLowerCase()}`) +
+          (!(name == 'editProfile' || countryCode === 'auto')
+            ? ` ${countryCode}`
+            : '');
         return (
           <StyledAutoCompleteOption {...props} key={countryCode}>
             {countryCode !== 'auto' && (
               <span>{countryToFlag(countryCode)}</span>
             )}
-            {name === 'editProfile' || countryCode === 'auto'
-              ? t(`country:${countryCode.toLowerCase()}`)
-              : t(`country:${countryCode.toLowerCase()}`) + ' ' + countryCode}
+            {displayedOption}
           </StyledAutoCompleteOption>
         );
       }}
@@ -112,7 +121,6 @@ export default function CountrySelect({
           setSelectedCountry(newValue as CountryType | null);
         }
       }}
-      defaultValue={selectedCountry.label}
       renderInput={(params) => (
         <TextField
           {...params}

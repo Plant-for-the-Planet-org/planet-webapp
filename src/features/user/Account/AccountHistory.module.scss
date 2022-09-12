@@ -33,6 +33,8 @@
     width: 100%;
     color: $primaryFontColor;
     overflow: hidden;
+    padding: 5px; //allow item box shadow to show
+    margin: -5px; //correct alignment due to padding
     // box-shadow: rgba(170, 170, 170, $alpha: 0.2) 0px 1px 4px;
     .notFound {
       display: flex;
@@ -47,20 +49,7 @@
     }
     > .record {
       cursor: pointer;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      padding: 20px 20px 10px 20px;
-      background-color: $backgroundColor;
       margin-bottom: 16px;
-      &:hover {
-        background-color: $backgroundColorDark;
-      }
-      > .detailContainer {
-        display: none;
-      }
     }
   }
 }
@@ -93,6 +82,8 @@
     width: 100%;
     color: $primaryFontColor;
     overflow: hidden;
+    padding: 5px;
+    margin: -5px;
     // box-shadow: rgba(170, 170, 170, $alpha: 0.2) 0px 1px 4px;
     .notFound {
       display: flex;
@@ -106,21 +97,8 @@
       }
     }
     > .record {
-      // cursor: pointer;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      padding: 20px 20px 10px 20px;
       margin-bottom: 16px;
-      background-color: $backgroundColor;
-      &:hover {
-        background-color: $backgroundColorDark;
-      }
-      > .detailContainer {
-        display: none;
-      }
+      cursor: auto;
     }
   }
 }
@@ -130,6 +108,12 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  & .incoming {
+    color: $primaryColor;
+  }
+  & .outgoing {
+    color: #e74c3c;
+  }
   > .left {
     display: flex;
     flex-direction: column;
@@ -367,6 +351,7 @@
   margin-top: 20px;
   flex: 1;
 }
+.recordModal,
 .modalContainer {
   display: flex;
   position: fixed;
@@ -558,6 +543,7 @@
     display: block;
   }
 
+  .recordModal,
   .modalContainer {
     display: none;
   }
@@ -635,6 +621,19 @@
 }
 
 .record {
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 24px;
+  background-color: $backgroundColor;
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
+    0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+  &:hover {
+    background-color: $backgroundColorDark;
+  }
   -webkit-transition: max-height 1s;
   -moz-transition: max-height 1s;
   -ms-transition: max-height 1s;
@@ -643,6 +642,18 @@
   overflow: hidden;
   // "height: 0" not work with css transitions
   max-height: 121px;
+  > .detailContainer {
+    display: none;
+  }
+  &.selected {
+    background-color: $backgroundColorDark;
+    border-radius: 10px;
+    max-height: 1000px;
+    color: $primaryFontColor;
+    > .detailContainer {
+      display: flex;
+    }
+  }
 }
 
 @include lgLaptopView {

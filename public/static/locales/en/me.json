@@ -1,5 +1,12 @@
 {
   "donationLinkTitle": "Build Donation Link",
+  "planetcash": {
+    "menuText": "PlanetCash",
+    "submenuText": "My PlanetCash",
+    "titleAccount": "PlanetCash - Accounts",
+    "titleTransactions": "PlanetCash - Transactions",
+    "titleCreateAccount": "PlanetCash - Create Account"
+  },
   "treesPlanted": "Tree Planted",
   "treesPlanted_plural": "Trees Planted",
   "bulkCodesTitleStep3": "Generate Bulk Codes - Issue Codes",
