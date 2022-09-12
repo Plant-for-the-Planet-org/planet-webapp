@@ -11,6 +11,7 @@ import {
   Fade,
   InputAdornment,
   Autocomplete,
+  SxProps,
 } from '@mui/material';
 import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import { ThemeContext } from '../../../theme/themeContext';
@@ -21,6 +22,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import themeProperties from '../../../theme/themeProperties';
 
 // interface EditDonationProps {
 //   editModalOpen
@@ -28,6 +30,20 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 //   record: Object;
 //   // seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
 // }
+
+const dialogSx: SxProps = {
+  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
+    backgroundColor: themeProperties.primaryColor,
+    color: '#fff',
+  },
+
+  '& .MuiPickersDay-dayWithMargin': {
+    '&:hover': {
+      backgroundColor: themeProperties.primaryColor,
+      color: '#fff',
+    },
+  },
+};
 
 export const EditModal = ({
   editModalOpen,
@@ -238,6 +254,9 @@ export const EditModal = ({
                               ? record.endsAt
                               : new Date('2100-01-01')
                           }
+                          DialogProps={{
+                            sx: dialogSx,
+                          }}
                         />
                       )}
                       name="currentPeriodEnd"
