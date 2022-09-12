@@ -1,4 +1,4 @@
-import { ReactElement, useCallback } from 'react';
+import { ChangeEvent, ReactElement, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, TextField, MenuItem, styled } from '@mui/material';
 import StyledForm from '../../common/Layout/StyledForm';
@@ -41,9 +41,28 @@ interface Props {
 
 const BankDetailsForm = ({ payoutMinAmounts }: Props): ReactElement | null => {
   const { t, ready } = useTranslation('managePayouts');
-  const { register, handleSubmit, errors, control } = useForm<FormData>({
-    mode: 'onBlur',
-  });
+  const { register, handleSubmit, errors, control, watch, getValues } =
+    useForm<FormData>({
+      mode: 'onBlur',
+    });
+  const currency = watch('currency', 'default');
+
+  const handlePayoutChange = (e: ChangeEvent<HTMLInputElement>) => {
+    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+  };
+
+  const validateMinPayout = useCallback(
+    (value: string) => {
+      if (payoutMinAmounts) {
+        const minAmount = payoutMinAmounts[currency];
+        return (
+          parseInt(value) >= minAmount ||
+          t('errors.payoutMinAmountTooLow', { currency, minAmount })
+        );
+      }
+    },
+    [payoutMinAmounts, currency]
+  );
 
   const onSubmit = (data: FormData) => {
     console.log(data);
@@ -78,18 +97,28 @@ const BankDetailsForm = ({ payoutMinAmounts }: Props): ReactElement | null => {
           >
             {renderCurrencyOptions()}
           </ReactHookFormSelect>
-          <TextField
-            label={t('labels.payoutMinAmount')}
-            name="payoutMinAmount"
-            placeholder={t('placeholders.payoutMinAmount')}
-            inputRef={register({
-              required: t('errors.payoutMinAmountRequired'),
-            })}
-            error={errors.payoutMinAmount !== undefined}
-            helperText={
-              errors.payoutMinAmount && errors.payoutMinAmount.message
-            }
-          ></TextField>
+          {currency !== 'default' && payoutMinAmounts !== null && (
+            <TextField
+              label={t('labels.payoutMinAmount')}
+              name="payoutMinAmount"
+              placeholder={t('placeholders.payoutMinAmount', {
+                currency,
+                minAmount: payoutMinAmounts[currency],
+              })}
+              onChange={handlePayoutChange}
+              inputRef={register({
+                valueAsNumber: true,
+                required: t('errors.payoutMinAmountRequired'),
+                validate: {
+                  isLow: validateMinPayout,
+                },
+              })}
+              error={errors.payoutMinAmount !== undefined}
+              helperText={
+                errors.payoutMinAmount && errors.payoutMinAmount.message
+              }
+            ></TextField>
+          )}
           <TextField
             label={t('labels.bankName')}
             name="bankName"
