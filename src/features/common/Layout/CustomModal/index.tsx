@@ -5,8 +5,8 @@ import styles from './CustomModal.module.scss';
 
 interface Props {
   isOpen: boolean;
-  onClick1: () => void;
-  onClick2: () => void;
+  handleContinue: () => void;
+  handleCancel: () => void;
   buttonTitle: string;
   modalTitle: string;
   modalSubtitle: string;
@@ -16,8 +16,8 @@ const { useTranslation } = i18next;
 
 export default function CustomModal({
   isOpen,
-  onClick1,
-  onClick2,
+  handleContinue,
+  handleCancel,
   buttonTitle,
   modalTitle,
   modalSubtitle,
@@ -40,14 +40,14 @@ export default function CustomModal({
           <button
             id={'Continue'}
             className={styles.continueButton}
-            onClick={onClick1}
+            onClick={handleContinue}
           >
             {buttonTitle}
           </button>
           <button
             id={'Cancel'}
             className={styles.cancelButton}
-            onClick={onClick2}
+            onClick={handleCancel}
           >
             {t('editProfile:cancel')}
           </button>

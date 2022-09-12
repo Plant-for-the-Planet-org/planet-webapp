@@ -120,8 +120,8 @@ export default function DeleteProfile({}: any) {
   ) : (
     <CustomModal
       isOpen={isModalOpen}
-      onClick1={handleSubscriptions}
-      onClick2={closeModal}
+      handleContinue={handleSubscriptions}
+      handleCancel={closeModal}
       buttonTitle={t('common:showSubscriptions')}
       modalTitle={t('common:modalTitle')}
       modalSubtitle={t('common:modalSubtitle')}
