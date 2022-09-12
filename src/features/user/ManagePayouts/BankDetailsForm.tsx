@@ -1,9 +1,26 @@
-import { ChangeEvent, ReactElement, useCallback } from 'react';
+import {
+  ChangeEvent,
+  ReactElement,
+  useCallback,
+  useContext,
+  useState,
+} from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, TextField, MenuItem, styled } from '@mui/material';
+import {
+  Button,
+  TextField,
+  MenuItem,
+  styled,
+  CircularProgress,
+} from '@mui/material';
 import StyledForm from '../../common/Layout/StyledForm';
 import i18n from '../../../../i18n';
 import ReactHookFormSelect from './ReactHookFormSelect';
+import cleanObject from '../../../utils/cleanObject';
+import { postAuthenticatedRequest } from '../../../utils/apiRequests/api';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { useRouter } from 'next/router';
 
 const { useTranslation } = i18n;
 
@@ -23,7 +40,7 @@ const InlineFormGroup = styled('div')({
 
 type FormData = {
   currency: string;
-  payoutMinAmount: string;
+  payoutMinAmount?: number;
   bankName: string;
   bankAddress: string;
   holderName: string;
@@ -41,11 +58,14 @@ interface Props {
 
 const BankDetailsForm = ({ payoutMinAmounts }: Props): ReactElement | null => {
   const { t, ready } = useTranslation('managePayouts');
-  const { register, handleSubmit, errors, control, watch, getValues } =
-    useForm<FormData>({
-      mode: 'onBlur',
-    });
+  const { register, handleSubmit, errors, control, watch } = useForm<FormData>({
+    mode: 'onBlur',
+  });
   const currency = watch('currency', 'default');
+  const { token } = useContext(UserPropsContext);
+  const { handleError } = useContext(ErrorHandlingContext);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const router = useRouter();
 
   const handlePayoutChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.target.value = e.target.value.replace(/[^0-9]/g, '');
@@ -64,8 +84,61 @@ const BankDetailsForm = ({ payoutMinAmounts }: Props): ReactElement | null => {
     [payoutMinAmounts, currency]
   );
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
+  const onSubmit = async (data: FormData) => {
+    setIsProcessing(true);
+    const accountData = cleanObject({
+      ...data,
+      currency: data.currency === 'default' ? '' : data.currency,
+    });
+    const res = await postAuthenticatedRequest(
+      '/app/accounts',
+      accountData,
+      token,
+      handleError
+    );
+    if (res?.id) {
+      // show success message
+      // go to accounts tab
+      setTimeout(() => {
+        router.push('/profile/overview');
+      }, 3000);
+    } else {
+      setIsProcessing(false);
+      if (res && res['error_type'] === 'account_error') {
+        switch (res['error_code']) {
+          case 'min_amount_range':
+            handleError({
+              code: 400,
+              message: t(`accountError.${res['error_code']}`, {
+                ...res.parameters,
+              }),
+            });
+            break;
+          case 'account_duplicate':
+            handleError({
+              code: 400,
+              message: t(`accountError.${res['error_code']}`, {
+                currency: res.parameters.currency
+                  ? res.parameters.currency
+                  : t('defaultCurrency'),
+              }),
+            });
+            break;
+          case 'min_amount_forbidden':
+            handleError({
+              code: 400,
+              message: t(`accountError.${res['error_code']}`),
+            });
+            break;
+          default:
+            handleError({
+              code: 400,
+              message: t(`accountError.default`),
+            });
+            break;
+        }
+      }
+    }
   };
 
   const renderCurrencyOptions = useCallback(() => {
@@ -213,8 +286,13 @@ const BankDetailsForm = ({ payoutMinAmounts }: Props): ReactElement | null => {
           color="primary"
           className="formButton"
           type="submit"
+          disabled={isProcessing}
         >
-          {t('saveButton')}
+          {isProcessing ? (
+            <CircularProgress color="primary" size={24} />
+          ) : (
+            t('saveButton')
+          )}
         </Button>
       </StyledForm>
     );

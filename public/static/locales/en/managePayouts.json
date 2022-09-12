@@ -53,5 +53,11 @@
     "currency": "Select “Default” if this is your standard bank account, if you need to provide special details for a currency please select it here and provide the details. We will also use the standard minimum amounts for a payout.",
     "remarks": "Provide additional details, for example Intermediary Bank Details, PCs (Purpose Codes) or other References here."
   },
-  "saveButton": "Save"
+  "saveButton": "Save",
+  "accountError": {
+    "min_amount_range": "The minimum payout amount must be at least {{currency}} {{min}}.",
+    "min_amount_forbidden": "You may not specify a payout minimum amount for the default account.",
+    "account_duplicate": "There is already a {{currency}} account",
+    "default": "Something went wrong while creating an account. Please try after a while."
+  }
 }
