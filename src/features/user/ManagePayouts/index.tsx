@@ -9,9 +9,13 @@ import i18next from '../../../../i18n';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
-import { getRequest } from '../../../utils/apiRequests/api';
+import {
+  getAuthenticatedRequest,
+  getRequest,
+} from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { usePayouts } from '../../common/Layout/PayoutsContext';
 import PayoutScheduleForm from './PayoutScheduleForm';
 import BankDetailsForm from './BankDetailsForm';
 import Overview from './Overview';
@@ -28,32 +32,57 @@ interface ManagePayoutsProps {
   step: number;
 }
 
-interface PayoutMinAmounts {
-  [key: string]: number;
-}
-
 export default function ManagePayouts({
   step,
 }: ManagePayoutsProps): ReactElement | null {
   const { t, ready } = useTranslation('managePayouts');
   const { handleError } = useContext(ErrorHandlingContext);
+  const { token, contextLoaded } = useContext(UserPropsContext);
+  const { accounts, setAccounts, payoutMinAmounts, setPayoutMinAmounts } =
+    usePayouts();
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
-  const [payoutMinAmounts, setPayoutMinAmounts] =
-    useState<PayoutMinAmounts | null>(null);
 
   const fetchPayoutMinAmounts = useCallback(async () => {
-    const res = await getRequest<PayoutMinAmounts>(
-      '/app/payoutMinAmounts',
-      handleError
-    );
-    if (res && !res['error_code']) {
-      setPayoutMinAmounts(res);
+    if (!payoutMinAmounts) {
+      try {
+        const res = await getRequest<Payouts.PayoutMinAmounts>(
+          '/app/payoutMinAmounts',
+          handleError
+        );
+        if (res && !res['error_code']) {
+          setPayoutMinAmounts(res);
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   }, []);
 
   useEffect(() => {
     if (step === ManagePayoutSteps.ADD_BANK_DETAILS) fetchPayoutMinAmounts();
   }, [step]);
+
+  const fetchAccounts = useCallback(async () => {
+    if (!accounts) {
+      try {
+        const res = await getAuthenticatedRequest<Payouts.BankAccount[]>(
+          `/app/accounts`,
+          token,
+          {},
+          handleError
+        );
+        if (res && res.length > 0) {
+          setAccounts(res);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (contextLoaded && token) fetchAccounts();
+  }, [contextLoaded, token]);
 
   useEffect(() => {
     if (ready) {
