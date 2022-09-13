@@ -252,7 +252,6 @@ export async function deleteAuthenticatedRequest(
         message: 'unauthorized',
       });
     }
-    s;
     console.error('Error 401: You are not Authorized!');
   }
   return result;

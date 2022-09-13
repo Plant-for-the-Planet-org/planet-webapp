@@ -26,7 +26,7 @@ export default function DeleteProfile({}: any) {
     setIsUploadingData(true);
     deleteAuthenticatedRequest('/app/profile', token, handleError).then(
       (res) => {
-        if (res.error_type === 'account_error') {
+        if (res.error_code === 'active_subscriptions') {
           setIsUploadingData(false);
           setisModalOpen(true);
         } else if (res == 404) {
