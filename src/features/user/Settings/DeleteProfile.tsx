@@ -26,7 +26,7 @@ export default function DeleteProfile({}: any) {
     setIsUploadingData(true);
     deleteAuthenticatedRequest('/app/profile', token, handleError).then(
       (res) => {
-        if (res == 400) {
+        if (res.error_type === 'account_error') {
           setIsUploadingData(false);
           setisModalOpen(true);
         } else if (res == 404) {
@@ -38,6 +38,7 @@ export default function DeleteProfile({}: any) {
     );
   };
 
+  const deleteAccount = () => {};
   const handleSubscriptions = () => {
     setisModalOpen(false);
     router.push('/profile/recurrency');

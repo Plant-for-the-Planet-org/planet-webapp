@@ -241,8 +241,8 @@ export async function deleteAuthenticatedRequest(
             : 'en'
         }`,
       },
-    }).then((res) => {
-      result = res.status;
+    }).then(async (res) => {
+      result = res.status === 400 ? await res.json() : res.status;
       handleApiError(res.status, result, errorHandler);
     });
   } else {
@@ -252,6 +252,7 @@ export async function deleteAuthenticatedRequest(
         message: 'unauthorized',
       });
     }
+    s;
     console.error('Error 401: You are not Authorized!');
   }
   return result;
