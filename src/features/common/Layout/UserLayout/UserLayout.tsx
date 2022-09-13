@@ -147,6 +147,7 @@ function UserLayout(props: any): ReactElement {
         {
           title: t('me:bulkCodes'),
           path: '/profile/bulk-codes',
+          flag: t('me:beta'),
         },
       ],
     },
@@ -457,6 +458,7 @@ function NavLink({
                 }}
               >
                 {subLink.title}
+                {subLink.flag && <span>{subLink.flag}</span>}
               </div>
             );
           }
