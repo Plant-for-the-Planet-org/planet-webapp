@@ -38,7 +38,6 @@ export default function DeleteProfile({}: any) {
     );
   };
 
-  const deleteAccount = () => {};
   const handleSubscriptions = () => {
     setisModalOpen(false);
     router.push('/profile/recurrency');
