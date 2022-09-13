@@ -8,7 +8,7 @@ import DonateIcon from '../../../../../public/assets/images/icons/Sidebar/Donate
 import GlobeIcon from '../../../../../public/assets/images/icons/Sidebar/Globe';
 import LogoutIcon from '../../../../../public/assets/images/icons/Sidebar/LogoutIcon';
 import MapIcon from '../../../../../public/assets/images/icons/Sidebar/MapIcon';
-import GiftIcon from '../../../../../public/assets/images/icons/Sidebar/GiftIcon';
+import PlanetCashIcon from '../../../../../public/assets/images/icons/Sidebar/PlanetCashIcon';
 import SettingsIcon from '../../../../../public/assets/images/icons/Sidebar/SettingsIcon';
 import UserIcon from '../../../../../public/assets/images/icons/Sidebar/UserIcon';
 import WidgetIcon from '../../../../../public/assets/images/icons/Sidebar/Widget';
@@ -137,16 +137,43 @@ function UserLayout(props: any): ReactElement {
     },
     {
       key: 6,
+      title: t('me:planetcash.menuText'),
+      icon: <PlanetCashIcon />,
+      flag: t('me:new'),
+      subMenu: [
+        {
+          title: t('me:planetcash.submenuText'),
+          path: '/profile/planetcash',
+        },
+        {
+          title: t('me:bulkCodes'),
+          path: '/profile/bulk-codes',
+        },
+      ],
+    },
+    /* {
+      key: 6,
       title: t('me:bulkCodes'),
       path: '/profile/bulk-codes',
       icon: <GiftIcon />,
       hasRelatedLinks: true,
-    },
+    }, */
     {
       key: 7,
-      title: t('me:embedWidget'),
-      path: '/profile/widgets',
+      title: t('me:widgets'),
       icon: <WidgetIcon />,
+      subMenu: [
+        {
+          title: t('me:embedWidget'),
+          path: '/profile/widgets',
+          // hideItem: true,
+        },
+        {
+          title: t('me:donationLink'),
+          path: '/profile/donation-link',
+          // hideItem: true,
+        },
+      ],
     },
     {
       key: 8,
@@ -241,25 +268,18 @@ function UserLayout(props: any): ReactElement {
                 <button className={styles.navlinkTitle}>{t('close')}</button>
               </div>
             </div>
-            {navLinks
-              .filter((links) => {
-                if (!user.planetCash) {
-                  return links.key !== 6;
-                }
-                return links;
-              })
-              .map((link: any, index: any) => (
-                <NavLink
-                  link={link}
-                  setactiveLink={setactiveLink}
-                  activeLink={activeLink}
-                  activeSubMenu={activeSubMenu}
-                  setActiveSubMenu={setActiveSubMenu}
-                  user={user}
-                  key={index}
-                  closeMenu={() => setIsMenuOpen(false)}
-                />
-              ))}
+            {navLinks.map((link: any, index: any) => (
+              <NavLink
+                link={link}
+                setactiveLink={setactiveLink}
+                activeLink={activeLink}
+                activeSubMenu={activeSubMenu}
+                setActiveSubMenu={setActiveSubMenu}
+                user={user}
+                key={index}
+                closeMenu={() => setIsMenuOpen(false)}
+              />
+            ))}
           </>
         </div>
 

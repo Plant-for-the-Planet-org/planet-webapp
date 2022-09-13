@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from './CompleteSignup.module.scss';
-import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
-import { Snackbar, Alert as MuiAlert, MenuItem, styled } from '@mui/material';
+import { Snackbar, Alert as MuiAlert, MenuItem, styled, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
@@ -26,6 +25,12 @@ const Alert = styled(MuiAlert)(({ theme }) => {
     backgroundColor: theme.palette.primary.main,
   };
 });
+
+const WideTextField = styled(TextField)(() => {
+  return {
+    width: "100%"
+  }
+})
 
 export default function CompleteSignup() {
   const router = useRouter();
@@ -292,9 +297,8 @@ export default function CompleteSignup() {
           </div>
 
           {/* type of account buttons */}
-          <MaterialTextField
+          <WideTextField
             label={t('editProfile:iamA')}
-            variant="outlined"
             select
             defaultValue={profileTypes[0].value}
           >
@@ -311,13 +315,12 @@ export default function CompleteSignup() {
                 {option.title}
               </MenuItem>
             ))}
-          </MaterialTextField>
+          </WideTextField>
 
           <div className={styles.formField}>
             <div className={styles.formFieldHalf}>
-              <MaterialTextField
+              <WideTextField
                 label={t('donate:firstName')}
-                variant="outlined"
                 inputRef={register({ required: true })}
                 name={'firstname'}
                 defaultValue={auth0User.given_name ? auth0User.given_name : ''}
@@ -330,9 +333,8 @@ export default function CompleteSignup() {
             </div>
 
             <div className={styles.formFieldHalf}>
-              <MaterialTextField
+              <WideTextField
                 label={t('donate:lastName')}
-                variant="outlined"
                 inputRef={register({ required: true })}
                 name={'lastname'}
                 defaultValue={
@@ -349,11 +351,10 @@ export default function CompleteSignup() {
 
           {type !== 'individual' ? (
             <div className={styles.formFieldLarge}>
-              <MaterialTextField
+              <WideTextField
                 label={t('editProfile:profileName', {
                   type: selectUserType(type, t),
                 })}
-                variant="outlined"
                 inputRef={register({ required: true })}
                 name={'name'}
               />
@@ -366,10 +367,9 @@ export default function CompleteSignup() {
           ) : null}
 
           <div className={styles.formFieldLarge}>
-            <MaterialTextField
+            <WideTextField
               defaultValue={auth0User.email}
               label={t('donate:email')}
-              variant="outlined"
               disabled
             />
           </div>
@@ -377,9 +377,8 @@ export default function CompleteSignup() {
           {type === 'tpo' ? (
             <>
               <div className={styles.formFieldLarge}>
-                <MaterialTextField
+                <WideTextField
                   label={t('donate:address')}
-                  variant="outlined"
                   inputRef={register({ required: true })}
                   name={'address'}
                   onChange={(event) => {
@@ -415,9 +414,8 @@ export default function CompleteSignup() {
 
               <div className={styles.formField}>
                 <div className={styles.formFieldHalf}>
-                  <MaterialTextField
+                  <WideTextField
                     label={t('donate:city')}
-                    variant="outlined"
                     inputRef={register({ required: true })}
                     defaultValue={
                       getStoredConfig('loc').city === 'T1' ||
@@ -435,9 +433,8 @@ export default function CompleteSignup() {
                   )}
                 </div>
                 <div className={styles.formFieldHalf}>
-                  <MaterialTextField
+                  <WideTextField
                     label={t('donate:zipCode')}
-                    variant="outlined"
                     name="zipCode"
                     inputRef={register({
                       pattern: postalRegex,

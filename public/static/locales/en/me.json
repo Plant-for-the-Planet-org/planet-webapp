@@ -5,6 +5,14 @@
     "titleAddBankDetails": "Manage Payouts - Add Bank Details",
     "titlePayoutSchedule": "Manage Payouts - Schedule Payouts"
   },
+  "donationLinkTitle": "Build Donation Link",
+  "planetcash": {
+    "menuText": "PlanetCash",
+    "submenuText": "My PlanetCash",
+    "titleAccount": "PlanetCash - Accounts",
+    "titleTransactions": "PlanetCash - Transactions",
+    "titleCreateAccount": "PlanetCash - Create Account"
+  },
   "treesPlanted": "Tree Planted",
   "treesPlanted_plural": "Trees Planted",
   "bulkCodesTitleStep3": "Generate Bulk Codes - Issue Codes",
@@ -55,6 +63,7 @@
   "filters": "Filters",
   "registeredTrees": "Registered Trees",
   "embedWidget": "Create Widget",
+  "donationLink": "Create Donation Link",
   "tree-donation": "Tree Donation",
   "tree-gift": "Tree Gift",
   "tree-cash": "TreeCash",
