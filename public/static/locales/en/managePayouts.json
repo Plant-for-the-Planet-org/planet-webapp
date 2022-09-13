@@ -57,8 +57,9 @@
   "accountError": {
     "min_amount_range": "The minimum payout amount must be at least {{currency}} {{min}}.",
     "min_amount_forbidden": "You may not specify a payout minimum amount for the default account.",
-    "account_duplicate": "There is already a {{currency}} account",
+    "account_duplicate": "There is already a {{currency}} account.",
     "default": "Something went wrong while creating an account. Please try after a while."
   },
-  "accountCreationSuccess": "Your account details were successfully saved"
+  "accountCreationSuccess": "Your account details were successfully saved.",
+  "scheduleSaveSuccess": "Your payout schedule was successfully saved."
 }

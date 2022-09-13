@@ -8,6 +8,7 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { User } from '../../common/types/user';
+import CustomSnackbar from '../../common/CustomSnackbar';
 
 const { useTranslation, Trans } = i18n;
 
@@ -26,13 +27,14 @@ type FormData = {
 const PayoutScheduleForm = (): ReactElement | null => {
   const { t, ready } = useTranslation('managePayouts');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   const { token, user, setUser } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
   const { handleSubmit, errors, control } = useForm<FormData>({
     mode: 'onBlur',
   });
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: FormData): Promise<void> => {
     setIsProcessing(true);
     const res = await putAuthenticatedRequest<User>(
       '/app/profile',
@@ -42,12 +44,12 @@ const PayoutScheduleForm = (): ReactElement | null => {
     );
     if (res?.id && res.id.length > 0) {
       setUser(res);
-      //TODOO - show snackbar for success
+      setIsSaved(true);
     }
     setIsProcessing(false);
   };
 
-  const renderPaymentFrequencyOptions = () => {
+  const renderPaymentFrequencyOptions = (): ReactElement[] => {
     return paymentFrequencies.map((frequency, index) => {
       return (
         <MenuItem value={frequency} key={index}>
@@ -57,55 +59,68 @@ const PayoutScheduleForm = (): ReactElement | null => {
     });
   };
 
+  const closeSnackbar = (): void => {
+    setIsSaved(false);
+  };
+
   if (ready) {
     return (
-      <StyledForm onSubmit={handleSubmit(onSubmit)}>
-        <p>{t('payoutInformation1')}</p>
-        <p>{t('payoutInformation2')}</p>
-        <p>{t('payoutInformation3')}</p>
-        <p>
-          <Trans i18nKey="managePayouts:supportInformation">
-            If you have an exceptional case, please contact{' '}
-            <a
-              className="planet-links"
-              href="mailto:support@plant-for-the-planet.org"
+      <>
+        <StyledForm onSubmit={handleSubmit(onSubmit)}>
+          <p>{t('payoutInformation1')}</p>
+          <p>{t('payoutInformation2')}</p>
+          <p>{t('payoutInformation3')}</p>
+          <p>
+            <Trans i18nKey="managePayouts:supportInformation">
+              If you have an exceptional case, please contact{' '}
+              <a
+                className="planet-links"
+                href="mailto:support@plant-for-the-planet.org"
+              >
+                support@plant-for-the-planet.org
+              </a>
+              .
+            </Trans>
+          </p>
+          <div className="inputContainer">
+            <ReactHookFormSelect
+              name="scheduleFrequency"
+              label={t('labels.scheduleFrequency')}
+              control={control}
+              defaultValue={user.scheduleFrequency}
+              rules={{
+                required: t('errors.scheduleFrequencyRequired'),
+              }}
+              error={errors.scheduleFrequency !== undefined}
+              helperText={
+                errors.scheduleFrequency && errors.scheduleFrequency.message
+              }
             >
-              support@plant-for-the-planet.org
-            </a>
-            .
-          </Trans>
-        </p>
-        <div className="inputContainer">
-          <ReactHookFormSelect
-            name="scheduleFrequency"
-            label={t('labels.scheduleFrequency')}
-            control={control}
-            defaultValue={user.scheduleFrequency}
-            rules={{
-              required: t('errors.scheduleFrequencyRequired'),
-            }}
-            error={errors.scheduleFrequency !== undefined}
-            helperText={
-              errors.scheduleFrequency && errors.scheduleFrequency.message
-            }
+              {renderPaymentFrequencyOptions()}
+            </ReactHookFormSelect>
+          </div>
+          <Button
+            variant="contained"
+            color="primary"
+            className="formButton"
+            type="submit"
+            disabled={isProcessing}
           >
-            {renderPaymentFrequencyOptions()}
-          </ReactHookFormSelect>
-        </div>
-        <Button
-          variant="contained"
-          color="primary"
-          className="formButton"
-          type="submit"
-          disabled={isProcessing}
-        >
-          {isProcessing ? (
-            <CircularProgress color="primary" size={24} />
-          ) : (
-            t('saveButton')
-          )}
-        </Button>
-      </StyledForm>
+            {isProcessing ? (
+              <CircularProgress color="primary" size={24} />
+            ) : (
+              t('saveButton')
+            )}
+          </Button>
+        </StyledForm>
+        {isSaved && (
+          <CustomSnackbar
+            snackbarText={t('scheduleSaveSuccess')}
+            isVisible={isSaved}
+            handleClose={closeSnackbar}
+          />
+        )}
+      </>
     );
   }
   return null;
