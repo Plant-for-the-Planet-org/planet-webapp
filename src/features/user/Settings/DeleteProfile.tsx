@@ -8,6 +8,11 @@ import { ThemeContext } from '../../../theme/themeContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
+<<<<<<< HEAD
+=======
+const { useTranslation } = i18next;
+
+>>>>>>> develop
 export default function DeleteProfile({}: any) {
   const { user, token, logoutUser } = React.useContext(UserPropsContext);
   const { t, ready } = useTranslation(['me', 'common', 'editProfile']);

@@ -10,6 +10,7 @@ import { truncateString } from '../../../utils/getTruncatedString';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 interface Props {
   project: any;
@@ -24,6 +25,7 @@ export default function ProjectSnippet({
 }: Props): ReactElement {
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
+  const { embed, callbackUrl } = React.useContext(ParamsContext);
 
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
@@ -39,8 +41,8 @@ export default function ProjectSnippet({
 
   const { token } = React.useContext(UserPropsContext);
   const handleOpen = () => {
-    const url = getDonationUrl(project.slug, token);
-    window.location.href = url;
+    const url = getDonationUrl(project.slug, token, embed, callbackUrl);
+    embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
 
   return ready ? (
@@ -54,7 +56,17 @@ export default function ProjectSnippet({
       ) : null}
       <div
         onClick={() => {
-          router.replace(`/${project.slug}`);
+          router.push(
+            `/${project.slug}/${
+              embed === 'true'
+                ? `${
+                    callbackUrl != undefined
+                      ? `?embed=true&callback=${callbackUrl}`
+                      : '?embed=true'
+                  }`
+                : ''
+            }`
+          );
         }}
         className={`projectImage ${
           selectedPl || hoveredPl ? 'projectCollapsed' : ''
@@ -110,7 +122,9 @@ export default function ProjectSnippet({
           <div
             className={'projectTPOName'}
             onClick={() => {
-              router.push(`/t/${project.tpo.slug}`);
+              embed === 'true'
+                ? window.open(`/t/${project.tpo.slug}`, '_top')
+                : router.push(`/t/${project.tpo.slug}`);
             }}
           >
             {t('common:by', {

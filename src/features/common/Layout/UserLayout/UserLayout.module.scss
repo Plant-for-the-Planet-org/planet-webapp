@@ -6,14 +6,13 @@
   position: relative;
   display: flex;
   padding-left: 60px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: $primaryFontFamily;
   & .hamburgerIcon {
     display: none;
   }
   @include xsPhoneView {
     padding-left: 0;
+    margin-left: 0;
     & .hamburgerIcon {
       display: block;
       position: fixed;
@@ -67,9 +66,7 @@
   z-index: 100;
   background-color: $backgroundColor;
   color: $primaryFontColor;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: $primaryFontFamily;
   @include xsPhoneView {
     width: 300px;
     & .navlink {
@@ -177,12 +174,19 @@
 .navlinkSubMenu {
   padding: 16px 20px;
   text-align: left;
-
-  justify-content: space-between;
+  justify-content: flex-start;
+  align-items: center;
   padding-left: 56px;
   &:hover {
     cursor: pointer;
     background-color: $backgroundColorDark;
+  }
+  span {
+    background-color: $primaryColor;
+    color: $light;
+    padding: 4px 8px;
+    margin-left: 8px;
+    border-radius: 4px;
   }
 }
 

@@ -1,6 +1,10 @@
 import React, { ReactElement } from 'react';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
+<<<<<<< HEAD
 import { useTranslation } from 'next-i18next';
+=======
+import i18next from '../../../../../i18n/';
+>>>>>>> develop
 
 interface Props {
   showFeaturedList: any;

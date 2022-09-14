@@ -1,7 +1,8 @@
 import Modal from '@mui/material/Modal';
+import MuiButton from '../../common/InputTypes/MuiButton';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState, useContext } from 'react';
 import ReactPlayer from 'react-player/lazy';
 import ReadMoreReact from 'read-more-react';
 import BackButton from '../../../../public/assets/images/icons/BackButton';
@@ -12,10 +13,10 @@ import ExpandIcon from '../../../../public/assets/images/icons/ExpandIcon';
 import ProjectInfo from '../components/projectDetails/ProjectInfo';
 import ProjectSnippet from '../components/ProjectSnippet';
 import SitesDropdown from '../components/maps/SitesDropdown';
-import Explore from '../components/maps/Explore';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import ProjectTabs from '../components/maps/ProjectTabs';
 import PlantLocationDetails from '../components/PlantLocation/PlantLocationDetails';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
   ssr: false,
@@ -43,12 +44,16 @@ function SingleProjectDetails({}: Props): ReactElement {
     selectedPl,
     setHoveredPl,
     setSelectedPl,
-  } = React.useContext(ProjectPropsContext);
+  } = useContext(ProjectPropsContext);
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
-  const [scrollY, setScrollY] = React.useState(0);
-  const [rating, setRating] = React.useState<number | null>(2);
+  const [scrollY, setScrollY] = useState(0);
+  const { embed, showBackIcon, callbackUrl, showProjectDetails } =
+    useContext(ParamsContext);
+  const isEmbed = embed === 'true';
+  const [hideProjectContainer, setHideProjectContainer] = useState(isEmbed);
+
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
   if (progressPercentage > 100) {
@@ -67,6 +72,10 @@ function SingleProjectDetails({}: Props): ReactElement {
     setModalOpen(true);
   };
 
+  const toggleProjectContainer = () => {
+    setHideProjectContainer(!hideProjectContainer);
+  };
+
   const ProjectProps = {
     plantLocation: hoveredPl ? hoveredPl : selectedPl,
   };
@@ -75,9 +84,29 @@ function SingleProjectDetails({}: Props): ReactElement {
     if (selectedPl || hoveredPl) {
       setHoveredPl(null);
       setSelectedPl(null);
-      router.replace('/[p]', `/${project.slug}`);
+      router.push(
+        `/${project.slug}/${
+          isEmbed
+            ? `${
+                callbackUrl != undefined
+                  ? `?embed=true&callback=${callbackUrl}`
+                  : '?embed=true'
+              }`
+            : ''
+        }`
+      );
     } else {
-      router.replace('/');
+      router.replace(
+        `/${
+          isEmbed
+            ? `${
+                callbackUrl != undefined
+                  ? `?embed=true&callback=${callbackUrl}`
+                  : '?embed=true'
+              }`
+            : ''
+        }`
+      );
     }
   };
 
@@ -93,9 +122,20 @@ function SingleProjectDetails({}: Props): ReactElement {
             <TimeTravel />
           </>
         )}
+      {isEmbed && isMobile && showProjectDetails === undefined && (
+        <MuiButton
+          onClick={toggleProjectContainer}
+          variant={hideProjectContainer ? 'outlined' : 'contained'}
+          className="toggleButton"
+        >
+          {hideProjectContainer
+            ? 'Show Project Details'
+            : 'Hide Project Details'}
+        </MuiButton>
+      )}
       <div
         style={{ transform: `translate(0,${scrollY}px)` }}
-        className={'container'}
+        className={isEmbed ? 'embedContainer' : 'container'}
         onTouchMove={(event) => {
           if (isMobile) {
             if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
@@ -130,88 +170,103 @@ function SingleProjectDetails({}: Props): ReactElement {
             />
           </div>
         </Modal>
-        <div className={'projectContainer'}>
-          <button
-            id={'backButtonSingleP'}
-            style={{
-              cursor: 'pointer',
-              width: 'fit-content',
-              position: 'absolute',
-              zIndex: 3333,
-            }}
-            onClick={goBack}
-          >
-            <BackButton />
-          </button>
-          <div className={'projectSnippetContainer'}>
-            <ProjectSnippet
-              keyString={project.id}
-              project={project}
-              editMode={false}
-            />
-          </div>
-          {hoveredPl || selectedPl ? (
-            <PlantLocationDetails {...ProjectProps} />
-          ) : (
-            <div className={'singleProjectDetails'}>
-              <div className={'projectCompleteInfo'}>
-                <div className={'projectDescription'}>
-                  <div className={'infoTitle'}>{t('donate:aboutProject')}</div>
-                  <ReadMoreReact
-                    key={project.description || ''}
-                    min={300}
-                    ideal={350}
-                    max={400}
-                    readMoreText={t('donate:readMore')}
-                    text={project.description || ''}
-                  />
-                </div>
 
-                <div className={'projectInfoProperties'}>
-                  {ReactPlayer.canPlay(project.videoUrl) ? (
-                    <ReactPlayer
-                      className={'projectVideoContainer'}
-                      width="100%"
-                      height="220px"
-                      loop={true}
-                      light={true}
-                      controls={true}
-                      config={{
-                        youtube: {
-                          playerVars: { autoPlay: 1 },
-                        },
-                      }}
-                      url={project.videoUrl}
+        {!(isEmbed && showProjectDetails === 'false') && (
+          <div
+            className={`projectContainer ${
+              isMobile && hideProjectContainer && showProjectDetails !== 'true'
+                ? 'mobile-hidden'
+                : ''
+            }`}
+          >
+            {isEmbed && showBackIcon === 'false' ? (
+              <></>
+            ) : (
+              <button
+                id={'backButtonSingleP'}
+                style={{
+                  cursor: 'pointer',
+                  width: 'fit-content',
+                  position: 'absolute',
+                  zIndex: 3333,
+                }}
+                onClick={goBack}
+              >
+                <BackButton />
+              </button>
+            )}
+            <div className={'projectSnippetContainer'}>
+              <ProjectSnippet
+                keyString={project.id}
+                project={project}
+                editMode={false}
+              />
+            </div>
+            {hoveredPl || selectedPl ? (
+              <PlantLocationDetails {...ProjectProps} />
+            ) : (
+              <div className={'singleProjectDetails'}>
+                <div className={'projectCompleteInfo'}>
+                  <div className={'projectDescription'}>
+                    <div className={'infoTitle'}>
+                      {t('donate:aboutProject')}
+                    </div>
+                    <ReadMoreReact
+                      key={project.description || ''}
+                      min={300}
+                      ideal={350}
+                      max={400}
+                      readMoreText={t('donate:readMore')}
+                      text={project.description || ''}
                     />
-                  ) : null}
-                  <div className={'projectImageSliderContainer'}>
-                    <button
-                      id={'expandButton'}
-                      onClick={handleModalOpen}
-                      className={'modalOpen'}
-                    >
-                      <ExpandIcon color="#fff" />
-                    </button>
-                    {project?.images?.length > 0 && !openModal ? (
-                      <ImageSlider
-                        images={project.images}
-                        height={233}
-                        imageSize="medium"
-                        type="project"
+                  </div>
+
+                  <div className={'projectInfoProperties'}>
+                    {ReactPlayer.canPlay(project.videoUrl) ? (
+                      <ReactPlayer
+                        className={'projectVideoContainer'}
+                        width="100%"
+                        height="220px"
+                        loop={true}
+                        light={true}
+                        controls={true}
+                        config={{
+                          youtube: {
+                            playerVars: { autoPlay: 1 },
+                          },
+                        }}
+                        url={project.videoUrl}
                       />
                     ) : null}
-                  </div>
-                  <ProjectInfo project={project} />
-                  {/*  {financialReports? <FinancialReports financialReports={financialReports} /> : null}
+                    <div className={'projectImageSliderContainer'}>
+                      <button
+                        id={'expandButton'}
+                        onClick={handleModalOpen}
+                        className={'modalOpen'}
+                      >
+                        <ExpandIcon color="#fff" />
+                      </button>
+                      {project?.images?.length > 0 && !openModal ? (
+                        <ImageSlider
+                          images={project.images}
+                          height={233}
+                          imageSize="medium"
+                          type="project"
+                        />
+                      ) : null}
+                    </div>
+                    <ProjectInfo project={project} />
+                    {/*  {financialReports? <FinancialReports financialReports={financialReports} /> : null}
                     {species ? <PlantSpecies species={species} /> : null }
                     {co2 ? (<CarbonCaptured co2={co2} />) : null} */}
 
-                  <ProjectContactDetails project={project} />
+                    <ProjectContactDetails project={project} />
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </div>
     </>
   ) : (

@@ -1,0 +1,81 @@
+@import '../../../theme/theme';
+
+.successMessage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.formErrors {
+  // position: absolute;
+  font-family: $primaryFontFamily;
+  font-size: $fontXSmall;
+  color: $dangerColor;
+  margin-left: 6px;
+  margin-top: 6px;
+  max-width: 320px;
+}
+
+.uploadWidget {
+  background: #f2f2f7;
+  border: 1px solid #689f38;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  padding: 15px 12px;
+  gap: 0.5rem;
+  color: #2f3336;
+  text-align: center;
+
+  svg {
+    height: 24px;
+  }
+
+  &__statusText {
+    &--error {
+      color: #e53935;
+    }
+    &--success {
+      color: #689f38;
+    }
+  }
+
+  &--error {
+    border: 1px solid #e53935;
+  }
+}
+
+.uploadInstructions a {
+  color: rgba(0, 0, 0, 0.87);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.spinner {
+  border: 2px solid #689f38;
+  border-radius: 50%;
+  border-top: 2px solid transparent;
+  width: 16px !important;
+  height: 16px !important;
+  -webkit-animation: spin 1s linear infinite; /* Safari */
+  animation: spin 1s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

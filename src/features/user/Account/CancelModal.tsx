@@ -16,9 +16,9 @@ import {
   FormControlLabel,
 } from '@mui/material';
 
-import MuiCalenderPicker from '@mui/lab/CalendarPicker';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { CalendarPicker as MuiCalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 export const CancelModal = ({
   cancelModalOpen,
@@ -147,17 +147,17 @@ export const CancelModal = ({
               </RadioGroup>
               {showCalender ? (
                 <>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                      <MuiCalenderPicker
-                        date={date}
-                        onChange={(value) => {
-                          setdate(value);
-                        }}
-                        minDate={
-                          new Date(new Date().valueOf() + 1000 * 3600 * 24)
-                        }
-                      />
-                    </LocalizationProvider>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <MuiCalendarPicker
+                      date={date}
+                      onChange={(value) => {
+                        setdate(value);
+                      }}
+                      minDate={
+                        new Date(new Date().valueOf() + 1000 * 3600 * 24)
+                      }
+                    />
+                  </LocalizationProvider>
                 </>
               ) : (
                 []

@@ -1,18 +1,17 @@
+<<<<<<< HEAD
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'next-i18next';
 import BackButton from '../../../../public/assets/images/icons/BackButton';
+=======
+import React, { ReactElement, useContext, useEffect } from 'react';
+import i18next from '../../../../i18n';
+>>>>>>> develop
 import TransactionListLoader from '../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../public/assets/images/icons/TransactionsNotFound';
-import AccountRecord, {
-  BankDetails,
-  Certificates,
-  DetailsComponent,
-  RecordHeader,
-  showStatusNote,
-  TransferDetails,
-} from './components/AccountRecord';
+import AccountRecord from './components/AccountRecord';
 import styles from './AccountHistory.module.scss';
 import { useRouter } from 'next/router';
+import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 
 interface Props {
   filter: string | null;
@@ -35,35 +34,37 @@ export default function History({
   const [selectedRecord, setSelectedRecord] = React.useState<number | null>(
     null
   );
-  const [openModal, setOpenModal] = React.useState(false);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const { isMobile } = useContext(ProjectPropsContext);
   const router = useRouter();
 
-  const handleRecordOpen = (index: number) => {
-    if (selectedRecord === index) {
+  const handleRecordToggle = (index: number | undefined) => {
+    if (selectedRecord === index || index === undefined) {
       setSelectedRecord(null);
-      setOpenModal(false);
+      setIsModalOpen(false);
     } else {
       setSelectedRecord(index);
-      setOpenModal(true);
+      setIsModalOpen(true);
     }
   };
 
-  const handleClose = () => {
-    setOpenModal(false);
-    setSelectedRecord(null);
-  };
-
-  const handleSetFilter = (id: any) => {
+  const handleSetFilter = (id: string) => {
     setFilter(id);
   };
 
-  let currentRecord: Payments.PaymentHistoryRecord | null = null;
-  if (paymentHistory && Array.isArray(paymentHistory?.items)) {
-    currentRecord =
-      selectedRecord !== null && Number.isInteger(selectedRecord)
-        ? paymentHistory?.items[selectedRecord]
-        : null;
-  }
+  useEffect(() => {
+    const { ref } = router.query;
+    let refIndex = !isMobile ? 0 : undefined;
+    if (paymentHistory?.items && paymentHistory.items.length > 0) {
+      if (ref) {
+        const _refIndex = paymentHistory?.items?.findIndex(
+          (item) => item.reference === ref
+        );
+        _refIndex && _refIndex !== -1 && (refIndex = _refIndex);
+      }
+      if (refIndex !== undefined) handleRecordToggle(refIndex);
+    }
+  }, [paymentHistory]);
 
   const adSpaceLanguage = i18n.language === 'de' ? 'de' : 'en';
 
@@ -110,11 +111,11 @@ export default function History({
               ) : (
                 paymentHistory &&
                 Array.isArray(paymentHistory?.items) &&
-                paymentHistory?.items?.map((record: any, index: number) => {
+                paymentHistory?.items?.map((record, index) => {
                   return (
                     <AccountRecord
                       key={index}
-                      handleRecordOpen={handleRecordOpen}
+                      handleRecordToggle={handleRecordToggle}
                       index={index}
                       selectedRecord={selectedRecord}
                       record={record}
@@ -166,60 +167,17 @@ export default function History({
             />
           </div>
         </div>
-        {openModal && (
-          <div className={styles.modalContainer}>
-            <>
-              <div
-                onClick={() => {
-                  handleClose();
-                }}
-                className={styles.closeRecord}
-              >
-                <BackButton />
-              </div>
-              {currentRecord ? (
-                <>
-                  <RecordHeader
-                    record={currentRecord}
-                    handleRecordOpen={handleRecordOpen}
-                  />
-                  <div className={styles.divider}></div>
-                  <div className={styles.detailContainer}>
-                    <div className={styles.detailGrid}>
-                      <DetailsComponent record={currentRecord} />
-                    </div>
-                    {currentRecord?.details?.recipientBank && (
-                      <>
-                        <div className={styles.title}>{t('bankDetails')}</div>
-                        <div className={styles.detailGrid}>
-                          <BankDetails
-                            recipientBank={currentRecord.details.recipientBank}
-                          />
-                        </div>
-                      </>
-                    )}
-                    {currentRecord.details?.account && (
-                      <TransferDetails
-                        account={currentRecord.details.account}
-                      />
-                    )}
-                    {showStatusNote(currentRecord, t)}
-                    {(currentRecord?.details?.donorCertificate ||
-                      currentRecord?.details?.taxDeductibleReceipt ||
-                      currentRecord?.details?.giftCertificate) && (
-                      <>
-                        <div className={styles.title}>{t('downloads')}</div>
-                        <div className={styles.detailGrid}>
-                          <Certificates recordDetails={currentRecord.details} />
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </>
-              ) : null}
-            </>
-          </div>
-        )}
+        {isModalOpen &&
+          paymentHistory?.items.length &&
+          selectedRecord !== null && (
+            <AccountRecord
+              isModal={true}
+              handleRecordToggle={handleRecordToggle}
+              selectedRecord={selectedRecord}
+              paymentHistory={paymentHistory}
+              record={paymentHistory.items[selectedRecord]}
+            />
+          )}
       </div>
     </div>
   );

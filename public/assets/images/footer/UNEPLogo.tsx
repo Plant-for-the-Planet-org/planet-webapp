@@ -1,8 +1,9 @@
-import React from "react";
+import React from 'react';
 
 function UNEPLogo(props) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" 
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
       width="65"
       height="65"
       viewBox="0 0 226.77 164.94"

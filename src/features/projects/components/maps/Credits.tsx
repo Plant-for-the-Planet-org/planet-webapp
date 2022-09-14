@@ -4,6 +4,7 @@ import { useTranslation } from 'next-i18next';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
 import tenantConfig from '../../../../../tenant.config';
 import DarkModeSwitch from '../../../common/Layout/DarkModeSwitch.tsx';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 const config = tenantConfig();
 
@@ -25,18 +26,27 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
     setLanguageModalOpen(true);
   };
 
+  const { embed } = React.useContext(ParamsContext);
+
+  const isEmbed = embed === 'true';
+
   return (
     <>
       <div className={styles.lngSwitcher + ' mapboxgl-map'}>
         {config.darkModeEnabled && <DarkModeSwitch />}
-        <div
-          onClick={() => {
-            setLanguageModalOpen(true);
-          }}
-        >
-          {`🌐 ${language ? language.toUpperCase() : ''} • ${selectedCurrency}`}
-        </div>
-        {process.env.TENANT === 'ttc' || process.env.TENANT === 'planet' ? (
+        {isEmbed ? null : (
+          <div
+            onClick={() => {
+              setLanguageModalOpen(true);
+            }}
+          >
+            {`🌐 ${
+              language ? language.toUpperCase() : ''
+            } • ${selectedCurrency}`}
+          </div>
+        )}
+        {(process.env.TENANT === 'ttc' || process.env.TENANT === 'planet') &&
+        !isEmbed ? (
           <a
             rel="noopener noreferrer"
             href={`https://www.thegoodshop.org/de/shop/`}
@@ -45,42 +55,41 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
             {t('common:shop')}
           </a>
         ) : null}
-        {/* {config.statusURL ? <a
-                    rel="noopener noreferrer"
-                    href={config.statusURL}
-                    target={'_blank'}
-                >
-                    {t('common:status')}
-                </a> : null} */}
+
         <a
           rel="noopener noreferrer"
           href={`https://status.pp.eco/`}
-          target={'_blank'}
+          target={isEmbed ? '_top' : '_blank'}
         >
           {t('common:status')}
         </a>
-        <a
-          rel="noopener noreferrer"
-          href={`https://pp.eco/legal/${i18n.language}/imprint`}
-          target={'_blank'}
-        >
-          {t('common:imprint')}
-        </a>
-        <a
-          rel="noopener noreferrer"
-          href={`https://pp.eco/legal/${i18n.language}/privacy`}
-          target={'_blank'}
-        >
-          {t('common:privacy')}
-        </a>
-        <a
-          rel="noopener noreferrer"
-          href={`https://pp.eco/legal/${i18n.language}/terms`}
-          target={'_blank'}
-        >
-          {t('common:terms')}
-        </a>
-
+        {!isEmbed && (
+          <a
+            rel="noopener noreferrer"
+            href={`https://pp.eco/legal/${i18n.language}/imprint`}
+            target={'_blank'}
+          >
+            {t('common:imprint')}
+          </a>
+        )}
+        {!isEmbed && (
+          <a
+            rel="noopener noreferrer"
+            href={`https://pp.eco/legal/${i18n.language}/privacy`}
+            target={'_blank'}
+          >
+            {t('common:privacy')}
+          </a>
+        )}
+        {!isEmbed && (
+          <a
+            rel="noopener noreferrer"
+            href={`https://pp.eco/legal/${i18n.language}/terms`}
+            target={'_blank'}
+          >
+            {t('common:terms')}
+          </a>
+        )}
         <a
           style={{
             display: 'flex',
@@ -114,14 +123,25 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
             </div>
           </div>
         </a>
+        {!isEmbed && (
+          <a
+            rel="noopener noreferrer"
+            href="mailto:support@plant-for-the-planet.org"
+            target={'_blank'}
+          >
+            {t('common:contact')}
+          </a>
+        )}
 
-        <a
-          rel="noopener noreferrer"
-          href="mailto:support@plant-for-the-planet.org"
-          target={'_blank'}
-        >
-          {t('common:contact')}
-        </a>
+        {isEmbed && (
+          <span>
+            Powered by
+            <a href="https://www.plant-for-the-planet.org" target="_top">
+              {' '}
+              Plant-for-the-Planet
+            </a>
+          </span>
+        )}
       </div>
       <SelectLanguageAndCountry
         openModal={openLanguageModal}

@@ -4,6 +4,7 @@ import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayou
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 
+
 interface Props {}
 export default function Register({}: Props): ReactElement {
   const { t } = useTranslation('me');

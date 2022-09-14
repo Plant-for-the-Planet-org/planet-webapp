@@ -12,6 +12,7 @@ import { UserPropsContext } from '../UserPropsContext';
 import GetNavBarIcon from './getNavBarIcon';
 import GetSubMenu from './getSubMenu';
 import { lang_path } from '../../../../utils/constants/wpLanguages';
+import { ParamsContext } from '../QueryParamsContext';
 
 // used to detect window resize and return the current width of the window
 const useWidth = () => {
@@ -41,6 +42,7 @@ export default function NavbarComponent(props: any) {
   const [menu, setMenu] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
   const [mobileWidth, setMobileWidth] = React.useState(false);
+  const { embed } = React.useContext(ParamsContext);
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       if (window.innerWidth > 767) {
@@ -64,7 +66,7 @@ export default function NavbarComponent(props: any) {
   async function gotoUserPage() {
     if (user) {
       if (typeof window !== 'undefined') {
-        router.push(`/t/${user.slug}`);
+        router.push(`/profile`);
       }
     } else {
       //----------------- To do - redirect to slug -----------------
@@ -267,8 +269,9 @@ export default function NavbarComponent(props: any) {
       <></>
     );
   };
-
-  return (
+  return embed === 'true' ? (
+    <></>
+  ) : (
     <div className={'mainNavContainer'}>
       <div className={'top_nav'}>
         <div className={'brandLogos'}>

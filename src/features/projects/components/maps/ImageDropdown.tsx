@@ -4,6 +4,7 @@ import BootstrapInput from '../../../common/InputTypes/BootstrapInput';
 import styles from '../../styles/VegetationChange.module.scss';
 import sources from '../../../../../public/data/maps/sources.json';
 import SourceIcon from '../../../../../public/assets/images/icons/SourceIcon';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 interface Props {
   selectedYear1: string;
@@ -30,6 +31,8 @@ export default function ImageDropdown({
   setSelectedSource2,
   isMobile,
 }: Props): ReactElement {
+  const { embed, showProjectDetails } = React.useContext(ParamsContext);
+
   const [isSource1MenuOpen, setIsSource1MenuOpen] = React.useState(
     isMobile ? false : true
   );
@@ -56,9 +59,16 @@ export default function ImageDropdown({
     if (isMobile) setIsSource2MenuOpen(false);
   };
 
+  const containerClasses =
+    embed !== 'true'
+      ? styles.dropdownContainer
+      : showProjectDetails === 'false'
+      ? `${styles.embed_dropdownContainer} ${styles['no-project-details']}`
+      : styles.embed_dropdownContainer;
+
   return (
     <>
-      <div className={styles.dropdownContainer}>
+      <div className={containerClasses}>
         <div className={styles.beforeYear}>
           <FormControl variant="standard">
             <NativeSelect

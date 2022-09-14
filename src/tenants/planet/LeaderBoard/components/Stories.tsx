@@ -5,6 +5,11 @@ import { lang_path } from '../../../../utils/constants/wpLanguages';
 
 interface Props {}
 
+<<<<<<< HEAD
+=======
+interface Props {}
+
+>>>>>>> develop
 export default function Stories({}: Props): ReactElement {
   const { i18n, t, ready } = useTranslation(['planet']);
   return (

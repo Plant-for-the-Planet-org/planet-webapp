@@ -10,6 +10,11 @@ import { useTranslation } from 'next-i18next';
 
 const config = tenantConfig();
 
+<<<<<<< HEAD
+=======
+const { useTranslation } = i18next;
+
+>>>>>>> develop
 export default function SocialShareContainer({ userprofile, type }: any) {
   const { t, ready } = useTranslation(['donate', 'me']);
   const [currentHover, setCurrentHover] = React.useState(-1);

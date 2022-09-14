@@ -1,20 +1,32 @@
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
 import LocationIcon from '../../../../../public/assets/images/icons/LocationIcon';
 import ResearchIcon from '../../../../../public/assets/images/icons/ResearchIcon';
 import SatelliteIcon from '../../../../../public/assets/images/icons/SatelliteIcon';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import styles from '../../styles/VegetationChange.module.scss';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 interface Props {}
 
 export default function ProjectTabs({}: Props): ReactElement {
+  const { embed, showProjectDetails } = React.useContext(ParamsContext);
+  const { pathname } = useRouter();
   const { i18n, t } = useTranslation(['maps']);
   const { selectedMode, setSelectedMode, rasterData } =
     React.useContext(ProjectPropsContext);
+
+  const containerClasses =
+    embed !== 'true'
+      ? styles.VegetationChangeContainer
+      : pathname === '/[p]' && showProjectDetails === 'false'
+      ? `${styles.embed_VegetationChangeContainer} ${styles['no-project-details']}`
+      : styles.embed_VegetationChangeContainer;
+
   return (
     <>
-      <div className={styles.VegetationChangeContainer}>
+      <div className={containerClasses}>
         <div
           onClick={() => {
             setSelectedMode('location');

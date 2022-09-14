@@ -10,6 +10,11 @@ import TopProgressBar from '../../common/ContentLoaders/TopProgressBar';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
+<<<<<<< HEAD
+=======
+const { useTranslation } = i18next;
+
+>>>>>>> develop
 interface Props {}
 
 const PlantLocationMap = dynamic(() => import('./components/Map'), {

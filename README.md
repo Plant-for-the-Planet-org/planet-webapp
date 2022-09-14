@@ -1,3 +1,4 @@
+
 <br/>
 <br/>
 <img src="./documentation/screenshots/PFP.png" alt="PFP Page." align="center">
@@ -29,6 +30,7 @@
 
 </p>
 
+[![CodeFactor](https://www.codefactor.io/repository/github/plant-for-the-planet-org/planet-webapp/badge)](https://www.codefactor.io/repository/github/plant-for-the-planet-org/planet-webapp)
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Plant-for-the-Planet-org/planet-webapp/tree/main)
 
 

@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import dynamic from 'next/dynamic';
+import MuiButton from '../../common/InputTypes/MuiButton';
 import ProjectLoader from '../../common/ContentLoaders/Projects/ProjectLoader';
 import { useTranslation } from 'next-i18next';
 import LazyLoad from 'react-lazyload';
@@ -9,6 +10,7 @@ import SearchBar from '../components/projects/SearchBar';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
 import Filters from '../components/projects/Filters';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 interface Props {
   projects: any;
@@ -29,7 +31,10 @@ function ProjectsList({
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 767;
+  const { embed, showProjectList } = React.useContext(ParamsContext);
+  const isEmbed = embed === 'true';
   const [scrollY, setScrollY] = React.useState(0);
+  const [hideSidebar, setHideSidebar] = React.useState(isEmbed);
   const { t, ready } = useTranslation(['donate', 'country']);
 
   const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
@@ -39,7 +44,6 @@ function ProjectsList({
 
   const [selectedTab, setSelectedTab] = React.useState('all');
   const [searchMode, setSearchMode] = React.useState(false);
-
   React.useEffect(() => {
     showFeaturedList ? setSelectedTab('featured') : null;
   }, []);
@@ -148,13 +152,26 @@ function ProjectsList({
     ) : null;
   };
 
+  const toggleSidebar = () => {
+    setHideSidebar(!hideSidebar);
+  };
+
   return ready ? (
     <>
       <Explore />
+      {isEmbed && isMobile && showProjectList === undefined && (
+        <MuiButton
+          onClick={toggleSidebar}
+          variant={hideSidebar ? 'outlined' : 'contained'}
+          className="toggleButton"
+        >
+          {hideSidebar ? 'Show Project List' : 'Hide Project List'}
+        </MuiButton>
+      )}
       {showProjects ? (
         <div
           style={{ transform: `translate(0,${scrollY}px)` }}
-          className={'container'}
+          className={isEmbed ? 'embedContainer' : 'container'}
           onTouchMove={(event) => {
             if (isMobile) {
               if (event.targetTouches[0].clientY < (screenHeight * 2) / 8) {
@@ -165,6 +182,7 @@ function ProjectsList({
             }
           }}
         >
+<<<<<<< HEAD
           <div
             className={'header'}
             style={isMobile ? { height: '66px', paddingTop: '16px' } : {}}
@@ -225,6 +243,77 @@ function ProjectsList({
               <NoProjectFound />
             )}
           </div>
+=======
+          {!(isEmbed && showProjectList === 'false') && (
+            <div
+              className={`sidebar ${
+                isMobile && hideSidebar && showProjectList !== 'true'
+                  ? 'mobile-hidden'
+                  : ''
+              }`}
+            >
+              <div className={`header ${isMobile ? 'header--mobile' : ''}`}>
+                {isMobile && (!hideSidebar || showProjectList === 'true') && (
+                  <div className={'dragBar'}></div>
+                )}
+                {searchMode ? (
+                  <SearchBar
+                    setSearchValue={setSearchValue}
+                    setSearchMode={setSearchMode}
+                    searchValue={searchValue}
+                    searchRef={searchRef}
+                  />
+                ) : (
+                  <Header
+                    showFeaturedList={showFeaturedList}
+                    setSelectedTab={setSelectedTab}
+                    selectedTab={selectedTab}
+                    setSearchMode={setSearchMode}
+                    projects={projects}
+                  />
+                )}
+              </div>
+              {/* till here is header */}
+              <div className={'projectsContainer'}>
+                {trottledSearchValue !== '' ? (
+                  searchProjectResults && searchProjectResults.length > 0 ? (
+                    searchProjectResults.map((project: any) => (
+                      <ProjectSnippet
+                        key={project.properties.id}
+                        project={project.properties}
+                        editMode={false}
+                      />
+                    ))
+                  ) : (
+                    <NoProjectFound />
+                  )
+                ) : selectedTab === 'all' ? (
+                  allProjects && allProjects.length > 0 ? (
+                    allProjects.map((project: any) => (
+                      <ProjectSnippet
+                        key={project.properties.id}
+                        project={project.properties}
+                        editMode={false}
+                      />
+                    ))
+                  ) : (
+                    <NoProjectFound />
+                  )
+                ) : featuredProjects && featuredProjects.length > 0 ? (
+                  featuredProjects.map((project: any) => (
+                    <ProjectSnippet
+                      key={project.properties.id}
+                      project={project.properties}
+                      editMode={false}
+                    />
+                  ))
+                ) : (
+                  <NoProjectFound />
+                )}
+              </div>
+            </div>
+          )}
+>>>>>>> develop
         </div>
       ) : null}
     </>

@@ -98,14 +98,14 @@
   }
 }
 
-.playButton {
+.playButton,
+.embed_playButton {
   position: fixed;
-  right: 55px;
-  top: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  right: 55px;
   padding: 9px;
   background: $backgroundColor;
   box-shadow: 0px 3px 6px #00000029;
@@ -113,20 +113,49 @@
   line-height: 16px;
   cursor: pointer;
   z-index: 11;
+
   > svg {
     width: 15px;
   }
+
+  &.playButton--reduce-right-offset {
+    right: 10px;
+  }
+}
+
+.playButton {
+  top: 100px;
+}
+
+.embed_playButton {
+  top: 30px;
 }
 
 @include smTabletView {
   .playButton {
     top: 100px;
   }
+
+  .embed_playButton {
+    top: 30px;
+  }
 }
 @include mdTabletView {
-  .playButton {
-    top: 110px;
+  .playButton,
+  .embed_playButton {
     right: 125px;
     flex-direction: row;
+
+    &.playButton--reduce-right-offset {
+      right: 20px;
+    }
+  }
+
+  .playButton {
+    top: 110px;
+  }
+
+  .embed_playButton {
+    top: 30px;
   }
 }

@@ -6,6 +6,7 @@ import BlackTree from '../../../../../public/assets/images/icons/project/BlackTr
 import Email from '../../../../../public/assets/images/icons/project/Email';
 import Location from '../../../../../public/assets/images/icons/project/Location';
 import WorldWeb from '../../../../../public/assets/images/icons/project/WorldWeb';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 interface Props {
   project: Object;
@@ -13,7 +14,7 @@ interface Props {
 
 function ProjectContactDetails({ project }: Props): ReactElement {
   const { t, ready } = useTranslation(['donate']);
-
+  const { embed } = React.useContext(ParamsContext);
   const contactAddress =
     project.tpo && project.tpo.address
       ? (project.tpo.address.address
@@ -83,12 +84,16 @@ function ProjectContactDetails({ project }: Props): ReactElement {
     <div className={styles.projectMoreInfo}>
       <div className={styles.infoTitle}>{t('donate:contactDetails')}</div>
       <Link prefetch={false} href="/t/[id]" as={`/t/${contactDetails[0].link}`}>
-        <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
-          {contactDetails[0].icon}
-          <span style={{ marginLeft: '16px', flexGrow: 1, cursor: 'pointer' }}>
-            {contactDetails[0].text}
-          </span>
-        </div>
+        <a target={embed === 'true' ? '_top' : null}>
+          <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
+            {contactDetails[0].icon}
+            <span
+              style={{ marginLeft: '16px', flexGrow: 1, cursor: 'pointer' }}
+            >
+              {contactDetails[0].text}
+            </span>
+          </div>
+        </a>
       </Link>
 
       {contactDetails.slice(1).map((contact) => {

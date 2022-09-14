@@ -8,6 +8,7 @@ import DonateIcon from '../../../../../public/assets/images/icons/Sidebar/Donate
 import GlobeIcon from '../../../../../public/assets/images/icons/Sidebar/Globe';
 import LogoutIcon from '../../../../../public/assets/images/icons/Sidebar/LogoutIcon';
 import MapIcon from '../../../../../public/assets/images/icons/Sidebar/MapIcon';
+import PlanetCashIcon from '../../../../../public/assets/images/icons/Sidebar/PlanetCashIcon';
 import SettingsIcon from '../../../../../public/assets/images/icons/Sidebar/SettingsIcon';
 import UserIcon from '../../../../../public/assets/images/icons/Sidebar/UserIcon';
 import WidgetIcon from '../../../../../public/assets/images/icons/Sidebar/Widget';
@@ -133,12 +134,47 @@ function UserLayout(props: any): ReactElement {
     },
     {
       key: 6,
-      title: t('me:embedWidget'),
-      path: '/profile/widgets',
-      icon: <WidgetIcon />,
+      title: t('me:planetcash.menuText'),
+      icon: <PlanetCashIcon />,
+      flag: t('me:new'),
+      subMenu: [
+        {
+          title: t('me:planetcash.submenuText'),
+          path: '/profile/planetcash',
+        },
+        {
+          title: t('me:bulkCodes'),
+          path: '/profile/bulk-codes',
+          flag: t('me:beta'),
+        },
+      ],
     },
+    /* {
+      key: 6,
+      title: t('me:bulkCodes'),
+      path: '/profile/bulk-codes',
+      icon: <GiftIcon />,
+      hasRelatedLinks: true,
+    }, */
     {
       key: 7,
+      title: t('me:widgets'),
+      icon: <WidgetIcon />,
+      subMenu: [
+        {
+          title: t('me:embedWidget'),
+          path: '/profile/widgets',
+          // hideItem: true,
+        },
+        {
+          title: t('me:donationLink'),
+          path: '/profile/donation-link',
+          // hideItem: true,
+        },
+      ],
+    },
+    {
+      key: 8,
       title: t('me:settings'),
       icon: <SettingsIcon />,
       subMenu: [
@@ -181,6 +217,11 @@ function UserLayout(props: any): ReactElement {
             setactiveLink(link.path);
             setActiveSubMenu(subMenuItem.path);
           }
+        } else if (
+          link.hasRelatedLinks &&
+          router.router?.asPath.includes(link.path)
+        ) {
+          setactiveLink(link.path);
         }
       }
     }
@@ -415,6 +456,7 @@ function NavLink({
                 }}
               >
                 {subLink.title}
+                {subLink.flag && <span>{subLink.flag}</span>}
               </div>
             );
           }
