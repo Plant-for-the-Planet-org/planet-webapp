@@ -90,6 +90,7 @@ export default function ManagePayouts({
         {
           label: t('tabOverview'),
           link: '/profile/payouts',
+          hasList: true,
         },
         {
           label: t('tabPayoutSchedule'),
@@ -111,13 +112,17 @@ export default function ManagePayouts({
         return <BankDetailsForm payoutMinAmounts={payoutMinAmounts} />;
       case ManagePayoutSteps.OVERVIEW:
       default:
-        return <Overview />;
+        return <Overview isDataLoading={false} />;
     }
   };
 
   return ready ? (
     <DashboardView title={t('title')} subtitle={<p>{t('description')}</p>}>
-      <TabbedView step={step} tabItems={tabConfig}>
+      <TabbedView
+        step={step}
+        tabItems={tabConfig}
+        isShowingList={tabConfig[step]?.hasList}
+      >
         {renderStep()}
       </TabbedView>
     </DashboardView>
