@@ -16,7 +16,7 @@ import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import ShareOptions from '../../../common/ShareOptions/ShareOptions';
 import { styled } from '@mui/material';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
-import { UserProfile } from '../../../../../src/types/Interface';
+import { UserProfile } from '../../../common/types/redeem';
 
 const { useTranslation } = i18next;
 
@@ -40,7 +40,7 @@ export default function RedeemModal({
 
   const config = tenantConfig();
 
-  const { user, contextLoaded, token, loadUser } =
+  const { user, contextLoaded, token, setUser, loadUser } =
     React.useContext(UserPropsContext);
   const imageRef = React.createRef();
   const sendRef = () => imageRef;
@@ -90,7 +90,6 @@ export default function RedeemModal({
   });
 
   async function redeemCode(data: string) {
-    console.log(data);
     setIsUploadingData(true);
     const submitData = {
       // type: 'gift',
@@ -311,22 +310,11 @@ export default function RedeemModal({
                 </div>
 
                 <button
-                  className="primaryButton redeemAnotherCode"
+                  className={`primaryButton ${styles.redeemCode}`}
                   onClick={afterSuccessfulOfOneCode}
                 >
                   {t('redeem:redeemAnotherCode')}
                 </button>
-
-                {validCodeData.tpos?.length > 0 && (
-                  <div className={styles.plantedBy}>
-                    <span>{t('common:plantedBy')}</span>
-                    <p>{validCodeData.tpos[0]?.tpoName}</p>
-                  </div>
-                )}
-
-                {errorMessage && (
-                  <span className={styles.formErrors}>{errorMessage}</span>
-                )}
               </>
             ) : (
               <>
@@ -385,7 +373,7 @@ export default function RedeemModal({
                   <button
                     id={'redeemCodeModal'}
                     onClick={handleSubmit(redeemCode)}
-                    className="primaryButton redeemCode"
+                    className={`primaryButton ${styles.redeemCode}`}
                   >
                     {isUploadingData ? (
                       <div className={styles.spinner}></div>

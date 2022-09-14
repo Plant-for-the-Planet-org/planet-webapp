@@ -269,25 +269,6 @@ video {
   cursor: pointer;
 }
 
-.combineButton {
-  display: flex;
-}
-
-.exitToProfile{
-  max-width: 150px;
-  margin-top: 24px;
- }
-
-.redeemCode {
-  max-width: 200px;
-  margin-top: 24px;
-}
-
-.redeemAnotherCode{
-  max-width: 220px;
-  margin-top: 24px;
-}
-
 .secondaryButton {
   background-image: none;
   background-color: $backgroundColorDark;
