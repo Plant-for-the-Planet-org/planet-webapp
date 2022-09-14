@@ -172,7 +172,7 @@ const BankDetailsForm = ({ payoutMinAmounts }: Props): ReactElement | null => {
           <div className="inputContainer">
             <ReactHookFormSelect
               name="currency"
-              label={t('labels.currency')}
+              label={t('labels.currency') + '*'}
               control={control}
               helperText={t('helperText.currency')}
               defaultValue={'default'}
@@ -181,7 +181,7 @@ const BankDetailsForm = ({ payoutMinAmounts }: Props): ReactElement | null => {
             </ReactHookFormSelect>
             {currency !== 'default' && payoutMinAmounts !== null && (
               <TextField
-                label={t('labels.payoutMinAmount')}
+                label={t('labels.payoutMinAmount') + '*'}
                 name="payoutMinAmount"
                 placeholder={t('placeholders.payoutMinAmount', {
                   currency,
@@ -202,7 +202,7 @@ const BankDetailsForm = ({ payoutMinAmounts }: Props): ReactElement | null => {
               ></TextField>
             )}
             <TextField
-              label={t('labels.bankName')}
+              label={t('labels.bankName') + '*'}
               name="bankName"
               inputRef={register({
                 required: t('errors.bankNameRequired'),
@@ -215,7 +215,7 @@ const BankDetailsForm = ({ payoutMinAmounts }: Props): ReactElement | null => {
               multiline
               minRows={2}
               maxRows={4}
-              label={t('labels.bankAddress')}
+              label={t('labels.bankAddress') + '*'}
               name="bankAddress"
               placeholder={t('placeholders.bankAddress')}
               inputRef={register({
@@ -225,7 +225,7 @@ const BankDetailsForm = ({ payoutMinAmounts }: Props): ReactElement | null => {
               helperText={errors.bankAddress && errors.bankAddress.message}
             ></TextField>
             <TextField
-              label={t('labels.holderName')}
+              label={t('labels.holderName') + '*'}
               name="holderName"
               placeholder={t('placeholders.holderName')}
               inputRef={register({
@@ -238,7 +238,7 @@ const BankDetailsForm = ({ payoutMinAmounts }: Props): ReactElement | null => {
               multiline
               minRows={2}
               maxRows={4}
-              label={t('labels.holderAddress')}
+              label={t('labels.holderAddress') + '*'}
               name="holderAddress"
               placeholder={t('placeholders.holderAddress')}
               inputRef={register({
@@ -249,7 +249,7 @@ const BankDetailsForm = ({ payoutMinAmounts }: Props): ReactElement | null => {
             ></TextField>
             <InlineFormGroup>
               <TextField
-                label={t('labels.accountNumber')}
+                label={t('labels.accountNumber') + '*'}
                 name="accountNumber"
                 inputRef={register({
                   required: t('errors.accountNumberRequired'),
@@ -267,7 +267,7 @@ const BankDetailsForm = ({ payoutMinAmounts }: Props): ReactElement | null => {
             </InlineFormGroup>
             <InlineFormGroup>
               <TextField
-                label={t('labels.bic')}
+                label={t('labels.bic') + '*'}
                 name="bic"
                 inputRef={register({
                   required: t('errors.bicRequired'),

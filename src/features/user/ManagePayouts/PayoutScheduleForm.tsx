@@ -85,7 +85,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
           <div className="inputContainer">
             <ReactHookFormSelect
               name="scheduleFrequency"
-              label={t('labels.scheduleFrequency')}
+              label={t('labels.scheduleFrequency') + '*'}
               control={control}
               defaultValue={user.scheduleFrequency}
               rules={{
