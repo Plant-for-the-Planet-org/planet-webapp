@@ -15,7 +15,7 @@ const Overview = ({ isDataLoading }: Props): ReactElement | null => {
     <BankAccountLoader />
   ) : accounts && accounts.length > 0 ? (
     <>
-      {accounts?.map((account, index) => {
+      {accounts.map((account, index) => {
         return <BankAccountDetails account={account} key={index} />;
       })}
     </>
