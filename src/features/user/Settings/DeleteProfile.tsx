@@ -4,9 +4,10 @@ import i18next from '../../../../i18n';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../common/InputTypes/AnimatedButton';
 import { deleteAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { ThemeContext } from '../../../theme/themeContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import CustomModal from '../../common/Layout/CustomModal';
+import router from 'next/router';
 
 const { useTranslation } = i18next;
 
@@ -18,25 +19,36 @@ export default function DeleteProfile({}: any) {
   };
   const { handleError } = React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-
+  const [isModalOpen, setisModalOpen] = React.useState(false); //true when subscriptions are present
   const [canDeleteAccount, setcanDeleteAccount] = React.useState(false);
 
   const handleDeleteAccount = () => {
     setIsUploadingData(true);
     deleteAuthenticatedRequest('/app/profile', token, handleError).then(
       (res) => {
-        if (res !== 404) {
-          logoutUser(`${process.env.NEXTAUTH_URL}/`);
-        } else {
+        if (res.error_code === 'active_subscriptions') {
+          setIsUploadingData(false);
+          setisModalOpen(true);
+        } else if (res == 404) {
           console.log(res.errorText);
+        } else {
+          logoutUser(`${process.env.NEXTAUTH_URL}/`);
         }
       }
     );
   };
 
-  const { theme } = React.useContext(ThemeContext);
+  const handleSubscriptions = () => {
+    setisModalOpen(false);
+    router.push('/profile/recurrency');
+  };
 
-  return (
+  const closeModal = () => {
+    setisModalOpen(false);
+    setcanDeleteAccount(false);
+  };
+
+  return !isModalOpen ? (
     <div className="profilePage">
       <p className={'profilePageTitle'}> {t('common:deleteAccount')}</p>
       <div className={styles.deleteModal}>
@@ -69,6 +81,9 @@ export default function DeleteProfile({}: any) {
         <p className={styles.deleteConsent}>
           {t('common:deleteAccountConsent')}
         </p>
+        <br />
+        <br />
+        <b>{t('common:deleteCondition')}</b>
         <p className={styles.deleteModalWarning}>
           {t('common:deleteIrreversible', {
             email: user.email,
@@ -102,5 +117,14 @@ export default function DeleteProfile({}: any) {
         </div>
       </div>
     </div>
+  ) : (
+    <CustomModal
+      isOpen={isModalOpen}
+      handleContinue={handleSubscriptions}
+      handleCancel={closeModal}
+      buttonTitle={t('common:showSubscriptions')}
+      modalTitle={t('common:modalTitle')}
+      modalSubtitle={t('common:modalSubtitle')}
+    />
   );
 }
