@@ -8,7 +8,7 @@ import i18next from '../../../i18n';
 
 const { useTranslation } = i18next;
 
-export default function PayoutPage(): ReactElement {
+export default function PayoutSchedulePage(): ReactElement {
   const { t, ready } = useTranslation('me');
   return (
     <UserLayout>
