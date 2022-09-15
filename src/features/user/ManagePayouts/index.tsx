@@ -30,10 +30,12 @@ export enum ManagePayoutSteps {
 
 interface ManagePayoutsProps {
   step: number;
+  setProgress?: (progress: number) => void;
 }
 
 export default function ManagePayouts({
   step,
+  setProgress,
 }: ManagePayoutsProps): ReactElement | null {
   const { t, ready } = useTranslation('managePayouts');
   const { handleError } = useContext(ErrorHandlingContext);
@@ -41,6 +43,7 @@ export default function ManagePayouts({
   const { accounts, setAccounts, payoutMinAmounts, setPayoutMinAmounts } =
     usePayouts();
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
+  const [isDataLoading, setIsDataLoading] = useState(false);
 
   const fetchPayoutMinAmounts = useCallback(async () => {
     if (!payoutMinAmounts) {
@@ -64,6 +67,8 @@ export default function ManagePayouts({
 
   const fetchAccounts = useCallback(async () => {
     if (!accounts) {
+      setIsDataLoading(true);
+      setProgress && setProgress(70);
       try {
         const res = await getAuthenticatedRequest<Payouts.BankAccount[]>(
           `/app/accounts`,
@@ -76,6 +81,11 @@ export default function ManagePayouts({
         }
       } catch (err) {
         console.log(err);
+      }
+      setIsDataLoading(false);
+      if (setProgress) {
+        setProgress(100);
+        setTimeout(() => setProgress(0), 1000);
       }
     }
   }, []);
@@ -112,7 +122,7 @@ export default function ManagePayouts({
         return <BankDetailsForm payoutMinAmounts={payoutMinAmounts} />;
       case ManagePayoutSteps.OVERVIEW:
       default:
-        return <Overview isDataLoading={false} />;
+        return <Overview isDataLoading={isDataLoading} />;
     }
   };
 
