@@ -16,7 +16,6 @@ import {
 import StyledForm from '../../common/Layout/StyledForm';
 import i18n from '../../../../i18n';
 import ReactHookFormSelect from './ReactHookFormSelect';
-import cleanObject from '../../../utils/cleanObject';
 import { postAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
@@ -88,11 +87,12 @@ const BankDetailsForm = ({ payoutMinAmounts }: Props): ReactElement | null => {
 
   const onSubmit = async (data: FormData): Promise<void> => {
     setIsProcessing(true);
-    const accountData = cleanObject({
+    // TODOO - send clean object??
+    const accountData = {
       ...data,
       currency: data.currency === 'default' ? '' : data.currency,
       holderType: 'individual', //TODOO - remove this if not needed, or update form if necessary
-    });
+    };
     const res = await postAuthenticatedRequest(
       '/app/accounts',
       accountData,
