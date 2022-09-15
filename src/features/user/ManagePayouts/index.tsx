@@ -65,7 +65,7 @@ export default function ManagePayouts({
   }, []);
 
   useEffect(() => {
-    if (step === ManagePayoutSteps.ADD_BANK_DETAILS) fetchPayoutMinAmounts();
+    if (!payoutMinAmounts) fetchPayoutMinAmounts();
   }, [step]);
 
   const fetchAccounts = useCallback(async () => {
