@@ -63,5 +63,7 @@
   "accountCreationSuccess": "Your account details were successfully saved.",
   "scheduleSaveSuccess": "Your payout schedule was successfully saved.",
   "editAccountButton": "Edit Account",
-  "accountTitleText": "Transfer for {{currency}}"
+  "accountTitleText": "Transfer for {{currency}}",
+  "addBankDetailsButton": "Add Bank Details",
+  "noBankAccountText": "You haven't added any bank details yet."
 }

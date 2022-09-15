@@ -1,7 +1,8 @@
 import { ReactElement } from 'react';
 import BankAccountLoader from '../../../../public/assets/images/icons/BankAccountLoader';
-import { usePayouts } from '../../common/Layout/PayoutsContext';
 import BankAccountDetails from './components/BankAccountDetails';
+import NoBankAccount from './components/NoBankAccount';
+import { usePayouts } from '../../common/Layout/PayoutsContext';
 
 interface Props {
   isDataLoading: boolean;
@@ -11,10 +12,7 @@ const Overview = ({ isDataLoading = false }: Props): ReactElement | null => {
   const { accounts } = usePayouts();
 
   return isDataLoading ? (
-    <>
-      <BankAccountLoader />
-      <BankAccountLoader />
-    </>
+    <BankAccountLoader />
   ) : accounts && accounts.length > 0 ? (
     <>
       {accounts?.map((account, index) => {
@@ -28,7 +26,7 @@ const Overview = ({ isDataLoading = false }: Props): ReactElement | null => {
       })}
     </>
   ) : (
-    accounts && <div>No accounts found</div>
+    <NoBankAccount />
   );
 };
 
