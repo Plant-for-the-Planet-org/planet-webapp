@@ -1,6 +1,7 @@
 import { ReactElement } from 'react';
 import { styled, Grid, Button, Divider } from '@mui/material';
 import i18next from '../../../../../i18n';
+import Link from 'next/link';
 
 const { useTranslation } = i18next;
 
@@ -127,7 +128,12 @@ const BankAccountDetails = ({
           <div className="detailInfo">{account.remarks || '-'}</div>
         </Grid>
         <Grid item xs={12}>
-          <Button onClick={handleEdit}>{t('editAccountButton')}</Button>
+          <Link
+            href={`/profile/payouts/edit-bank-details/${account.id}`}
+            passHref
+          >
+            <Button>{t('editAccountButton')}</Button>
+          </Link>
         </Grid>
       </Grid>
     </Grid>
