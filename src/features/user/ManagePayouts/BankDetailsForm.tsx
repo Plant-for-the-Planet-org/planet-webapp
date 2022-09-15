@@ -54,12 +54,24 @@ type FormData = {
 
 interface Props {
   payoutMinAmounts: { [key: string]: number } | null;
+  account?: Payouts.BankAccount;
 }
 
-const BankDetailsForm = ({ payoutMinAmounts }: Props): ReactElement | null => {
+const extractFormValues = (account: Payouts.BankAccount): FormData => {
+  const { currency } = account;
+  const { ['id']: _, ...accountWithoutId } = account;
+  account.currency = currency || 'default';
+  return accountWithoutId as FormData;
+};
+
+const BankDetailsForm = ({
+  payoutMinAmounts,
+  account,
+}: Props): ReactElement | null => {
   const { t, ready } = useTranslation('managePayouts');
   const { register, handleSubmit, errors, control, watch } = useForm<FormData>({
     mode: 'onBlur',
+    defaultValues: account ? extractFormValues(account) : {},
   });
   const currency = watch('currency', 'default');
   const { token } = useContext(UserPropsContext);

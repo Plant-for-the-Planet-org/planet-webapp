@@ -19,6 +19,7 @@ import { usePayouts } from '../../common/Layout/PayoutsContext';
 import PayoutScheduleForm from './PayoutScheduleForm';
 import BankDetailsForm from './BankDetailsForm';
 import Overview from './Overview';
+import EditBankAccount from './EditBankAccount';
 
 const { useTranslation } = i18next;
 
@@ -31,11 +32,13 @@ export enum ManagePayoutSteps {
 interface ManagePayoutsProps {
   step: number;
   setProgress?: (progress: number) => void;
+  isEdit?: boolean;
 }
 
 export default function ManagePayouts({
   step,
   setProgress,
+  isEdit,
 }: ManagePayoutsProps): ReactElement | null {
   const { t, ready } = useTranslation('managePayouts');
   const { handleError } = useContext(ErrorHandlingContext);
@@ -100,7 +103,7 @@ export default function ManagePayouts({
         {
           label: t('tabOverview'),
           link: '/profile/payouts',
-          hasList: true,
+          hasList: !isEdit,
         },
         {
           label: t('tabPayoutSchedule'),
@@ -121,6 +124,11 @@ export default function ManagePayouts({
       case ManagePayoutSteps.ADD_BANK_DETAILS:
         return <BankDetailsForm payoutMinAmounts={payoutMinAmounts} />;
       case ManagePayoutSteps.OVERVIEW:
+        return isEdit ? (
+          <EditBankAccount />
+        ) : (
+          <Overview isDataLoading={isDataLoading} />
+        );
       default:
         return <Overview isDataLoading={isDataLoading} />;
     }

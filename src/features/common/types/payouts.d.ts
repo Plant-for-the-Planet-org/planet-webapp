@@ -5,7 +5,7 @@ declare namespace Payouts {
     payoutMinAmount: number;
     bankName: string;
     bankAddress: string;
-    routingNumber: string | null;
+    routingNumber: string;
     bic: string;
     branchCode: string | null;
     holderName: string;

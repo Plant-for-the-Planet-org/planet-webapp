@@ -16,7 +16,7 @@ export default function EditBankDetailsPage(): ReactElement {
       <Head>
         <title>{ready ? t('managePayouts.titleEditBankDetails') : ''}</title>
       </Head>
-      <ManagePayouts step={ManagePayoutSteps.OVERVIEW} />
+      <ManagePayouts step={ManagePayoutSteps.OVERVIEW} isEdit={true} />
     </UserLayout>
   );
 }
