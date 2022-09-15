@@ -8,7 +8,7 @@ interface Props {
   isDataLoading: boolean;
 }
 
-const Overview = ({ isDataLoading = false }: Props): ReactElement | null => {
+const Overview = ({ isDataLoading }: Props): ReactElement | null => {
   const { accounts } = usePayouts();
 
   return isDataLoading ? (
@@ -16,13 +16,7 @@ const Overview = ({ isDataLoading = false }: Props): ReactElement | null => {
   ) : accounts && accounts.length > 0 ? (
     <>
       {accounts?.map((account, index) => {
-        return (
-          <BankAccountDetails
-            account={account}
-            key={index}
-            /* updateAccount={updateAccount} */
-          />
-        );
+        return <BankAccountDetails account={account} key={index} />;
       })}
     </>
   ) : (
