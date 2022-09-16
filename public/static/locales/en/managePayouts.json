@@ -39,7 +39,8 @@
     "holderNameRequired": "Holder name is required.",
     "holderAddressRequired": "Holder address is required.",
     "accountNumberRequired": "Account number is required.",
-    "bicRequired": "BIC / SWIFT code is required."
+    "bicRequired": "BIC / SWIFT code is required.",
+    "noAccountFound": "No account was retrieved"
   },
   "placeholders": {
     "payoutMinAmount": "Should be at least {{currency}} {{minAmount}}",
@@ -61,6 +62,7 @@
     "default": "Something went wrong while creating an account. Please try after a while."
   },
   "accountCreationSuccess": "Your account details were successfully saved.",
+  "accountUpdationSuccess": "Your account details were successfully updated.",
   "scheduleSaveSuccess": "Your payout schedule was successfully saved.",
   "editAccountButton": "Edit Account",
   "accountTitleText": "Transfer for {{currency}}",
