@@ -6,5 +6,10 @@
   "validateCode": "Validate Code",
   "enterRedeemCode": "Please enter a code to redeem",
   "validating": "Validating",
-  "invalidType": "Invalid type, please check the link again"
+  "invalidType": "Invalid type, please check the link again",
+  "redeeming": "Redeeming:",
+  "invalidCode": "This code is invalid.",
+  "alreadyRedeemed": "The code has already been redeemed",
+  "redeemCode":"Redeem Code",
+  "successfullyRedeemed": "Successfully Redeemed"
 }

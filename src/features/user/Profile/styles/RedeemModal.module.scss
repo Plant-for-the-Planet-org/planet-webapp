@@ -20,6 +20,14 @@
   }
 }
 
+.cancelIcon {
+  width: 1rem;
+  cursor: pointer;
+  position: relative;
+  bottom: 15px;
+  left: 8rem
+}
+
 .modalFinal {
   background-color: $backgroundColor;
   border: 0px;
