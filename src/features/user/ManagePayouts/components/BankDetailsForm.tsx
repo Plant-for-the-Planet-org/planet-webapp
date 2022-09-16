@@ -60,7 +60,7 @@ interface Props {
 const extractFormValues = (account: Payouts.BankAccount): FormData => {
   const { currency } = account;
   const { ['id']: _, ...accountWithoutId } = account;
-  account.currency = currency || 'default';
+  accountWithoutId.currency = currency || 'default';
   return accountWithoutId as FormData;
 };
 

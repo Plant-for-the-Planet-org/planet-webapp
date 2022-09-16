@@ -34,7 +34,7 @@ const EditBankAccount = (): ReactElement | null => {
     }
   }, [accounts, query.id]);
 
-  return accountToEdit !== null && ready ? (
+  return accountToEdit !== null && payoutMinAmounts && ready ? (
     <>
       <FormHeader>
         <Link href="/profile/payouts" passHref>
