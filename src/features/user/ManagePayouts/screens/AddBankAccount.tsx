@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import i18next from '../../../../../i18n';
 import BankDetailsForm, { FormData } from '../components/BankDetailsForm';
 import CustomSnackbar from '../../../common/CustomSnackbar';
+import { isApiCustomError } from '../../../common/types/errors';
 
 const { useTranslation } = i18next;
 
@@ -31,13 +32,13 @@ const AddBankAccount = (): ReactElement | null => {
       currency: data.currency === 'default' ? '' : data.currency,
       holderType: 'individual', //TODOO - remove this if not needed, or update form if necessary
     };
-    const res = await postAuthenticatedRequest(
+    const res = await postAuthenticatedRequest<Payouts.BankAccount>(
       '/app/accounts',
       accountData,
       token,
       handleError
     );
-    if (res?.id) {
+    if (res?.id && !isApiCustomError(res)) {
       // update accounts in context
       if (accounts) {
         setAccounts([...accounts, res]);
@@ -52,7 +53,7 @@ const AddBankAccount = (): ReactElement | null => {
       }, 3000);
     } else {
       setIsProcessing(false);
-      if (res && res['error_type'] === 'account_error') {
+      if (isApiCustomError(res) && res['error_type'] === 'account_error') {
         switch (res['error_code']) {
           case 'min_amount_range':
             handleError({
@@ -66,7 +67,7 @@ const AddBankAccount = (): ReactElement | null => {
             handleError({
               code: 400,
               message: t(`accountError.${res['error_code']}`, {
-                currency: res.parameters.currency
+                currency: res.parameters?.currency
                   ? res.parameters.currency
                   : t('defaultCurrency').toLowerCase(),
               }),

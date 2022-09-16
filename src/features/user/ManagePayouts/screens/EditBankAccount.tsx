@@ -54,11 +54,11 @@ const EditBankAccount = (): ReactElement | null => {
       token,
       handleError
     );
-    if (res?.id) {
+    if (res?.id && !isApiCustomError(res)) {
       // update accounts in context
       if (accounts) {
         const updatedAccounts = accounts.map((account) => {
-          return account.id === res.id ? (res as Payouts.BankAccount) : account;
+          return account.id === res.id ? res : account;
         });
         setAccounts(updatedAccounts);
       }

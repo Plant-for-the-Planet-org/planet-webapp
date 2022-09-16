@@ -9,6 +9,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { User } from '../../../common/types/user';
 import CustomSnackbar from '../../../common/CustomSnackbar';
+import { isApiCustomError } from '../../../common/types/errors';
 
 const { useTranslation, Trans } = i18n;
 
@@ -42,7 +43,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
       token,
       handleError
     );
-    if (res?.id && res.id.length > 0) {
+    if (res?.id && !isApiCustomError(res)) {
       setUser(res);
       setIsSaved(true);
     }
