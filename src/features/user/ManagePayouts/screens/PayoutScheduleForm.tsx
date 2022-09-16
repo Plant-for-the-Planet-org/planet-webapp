@@ -9,7 +9,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { User } from '../../../common/types/user';
 import CustomSnackbar from '../../../common/CustomSnackbar';
-import { isApiCustomError } from '../../../common/types/errors';
+import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 
 const { useTranslation, Trans } = i18n;
 

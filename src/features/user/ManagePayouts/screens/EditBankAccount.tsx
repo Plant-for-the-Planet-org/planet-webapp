@@ -10,7 +10,7 @@ import BankDetailsForm, { FormData } from '../components/BankDetailsForm';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
-import { isApiCustomError } from '../../../common/types/errors';
+import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 
 const { useTranslation } = i18next;
 

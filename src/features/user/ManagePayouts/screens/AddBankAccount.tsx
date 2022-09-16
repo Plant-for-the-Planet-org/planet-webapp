@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import i18next from '../../../../../i18n';
 import BankDetailsForm, { FormData } from '../components/BankDetailsForm';
 import CustomSnackbar from '../../../common/CustomSnackbar';
-import { isApiCustomError } from '../../../common/types/errors';
+import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 
 const { useTranslation } = i18next;
 

@@ -1,4 +1,4 @@
-import { ApiCustomError } from '../../features/common/types/errors';
+import { ApiCustomError } from '../../features/common/types/apiErrors';
 import { TENANT_ID } from '../constants/environment';
 import { getQueryString } from './getQueryString';
 import getsessionId from './getSessionId';
