@@ -1,14 +1,14 @@
 import { ReactElement, useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, MenuItem, CircularProgress } from '@mui/material';
-import ReactHookFormSelect from './ReactHookFormSelect';
-import StyledForm from '../../common/Layout/StyledForm';
-import i18n from '../../../../i18n';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { User } from '../../common/types/user';
-import CustomSnackbar from '../../common/CustomSnackbar';
+import ReactHookFormSelect from '../components/ReactHookFormSelect';
+import StyledForm from '../../../common/Layout/StyledForm';
+import i18n from '../../../../../i18n';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { User } from '../../../common/types/user';
+import CustomSnackbar from '../../../common/CustomSnackbar';
 
 const { useTranslation, Trans } = i18n;
 

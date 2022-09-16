@@ -1,11 +1,11 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { styled } from '@mui/material/styles';
-import i18next from '../../../../i18n';
+import i18next from '../../../../../i18n';
 import Link from 'next/link';
-import BankDetailsForm from './BankDetailsForm';
-import BackArrow from '../../../../public/assets/images/icons/headerIcons/BackArrow';
-import { usePayouts } from '../../common/Layout/PayoutsContext';
+import BankDetailsForm from '../components/BankDetailsForm';
+import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
+import { usePayouts } from '../../../common/Layout/PayoutsContext';
 
 const { useTranslation } = i18next;
 

@@ -13,14 +13,14 @@ import {
   styled,
   CircularProgress,
 } from '@mui/material';
-import StyledForm from '../../common/Layout/StyledForm';
-import i18n from '../../../../i18n';
+import StyledForm from '../../../common/Layout/StyledForm';
+import i18n from '../../../../../i18n';
 import ReactHookFormSelect from './ReactHookFormSelect';
-import { postAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useRouter } from 'next/router';
-import CustomSnackbar from '../../common/CustomSnackbar';
+import CustomSnackbar from '../../../common/CustomSnackbar';
 
 const { useTranslation } = i18n;
 

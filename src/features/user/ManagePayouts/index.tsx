@@ -16,10 +16,10 @@ import {
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { usePayouts } from '../../common/Layout/PayoutsContext';
-import PayoutScheduleForm from './PayoutScheduleForm';
-import BankDetailsForm from './BankDetailsForm';
-import Overview from './Overview';
-import EditBankAccount from './EditBankAccount';
+import PayoutScheduleForm from './screens/PayoutScheduleForm';
+import Overview from './screens/Overview';
+import EditBankAccount from './screens/EditBankAccount';
+import AddBankAccount from './screens/AddBankAccount';
 
 const { useTranslation } = i18next;
 
@@ -122,7 +122,7 @@ export default function ManagePayouts({
       case ManagePayoutSteps.PAYOUT_SCHEDULE:
         return <PayoutScheduleForm />;
       case ManagePayoutSteps.ADD_BANK_DETAILS:
-        return <BankDetailsForm payoutMinAmounts={payoutMinAmounts} />;
+        return <AddBankAccount />;
       case ManagePayoutSteps.OVERVIEW:
         return isEdit ? (
           <EditBankAccount />

@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
-import BankAccountLoader from '../../../../public/assets/images/icons/BankAccountLoader';
-import BankAccountDetails from './components/BankAccountDetails';
-import NoBankAccount from './components/NoBankAccount';
-import { usePayouts } from '../../common/Layout/PayoutsContext';
+import BankAccountLoader from '../../../../../public/assets/images/icons/BankAccountLoader';
+import BankAccountDetails from '../components/BankAccountDetails';
+import NoBankAccount from '../components/NoBankAccount';
+import { usePayouts } from '../../../common/Layout/PayoutsContext';
 
 interface Props {
   isDataLoading: boolean;
