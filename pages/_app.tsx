@@ -31,7 +31,6 @@ import dynamic from 'next/dynamic';
 import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
-import QueryParamsProvider from '../src/features/common/Layout/QueryParamsContext';
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -95,6 +94,30 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
   const [browserCompatible, setBrowserCompatible] = React.useState(false);
 
   const config = tenantConfig();
+
+  // const fetchInterceptor = () => {
+  //   const { fetch: originalFetch } = window;
+  //   window.fetch = async (...args) => {
+  //     let [resource, config] = args;
+  //     console.log(tenantID);
+  //     if (config && config.headers) {
+  //       config.headers['tenant-key'] = localStorage.getItem('tenantID');
+  //     }
+
+  //     // request interceptor starts
+  //     // resource = 'https://jsonplaceholder.typicode.com/todos/2';
+  //     // request interceptor ends
+
+  //     const response = await originalFetch(resource, config);
+
+  //     // response interceptor here
+  //     return response;
+  //   };
+  // };
+
+  // React.useEffect(() => {
+  //   fetchInterceptor();
+  // }, []);
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
