@@ -107,7 +107,12 @@ export default function RedeemModal({
           setCode(data.code);
           setCodeValidated(true);
           setValidCodeData(res);
-          loadUser();
+          if (res.units > 0) {
+            const cloneUser = { ...user };
+            cloneUser.score.received = cloneUser.score.received + res.units;
+            setUser(cloneUser);
+          }
+
           setIsUploadingData(false);
         }
       });
