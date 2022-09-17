@@ -24,7 +24,6 @@ const ReedemCode = () => {
   const [code, setCode] = useState('');
   const [errorMessage, setErrorMessage] = useState();
   const [redeemedCodeData, setRedeemedCodeData] = useState();
-  const [routerReady, setRouterReady] = useState(false);
 
   const router = useRouter();
 
@@ -37,7 +36,11 @@ const ReedemCode = () => {
   useEffect(() => {
     if (contextLoaded) {
       if (!user) {
-        router.push('/login');
+        localStorage.setItem(
+          'redirectLink',
+          `profile/redeem/${router.query.code}`
+        );
+        router.push(`/login`);
       }
     }
   }, [contextLoaded, user, router]);
@@ -46,17 +49,14 @@ const ReedemCode = () => {
     if (router && router.query.code) {
       const codeFromUrl = router.query.code;
       setCode(codeFromUrl);
-      setRouterReady(true);
     }
   }, [router]);
 
   useEffect(() => {
-    if (contextLoaded && user) {
-      if (routerReady && code) {
-        redeemingCode(code);
-      }
+    if (contextLoaded && user && router && router.query.code) {
+      redeemingCode(router.query.code);
     }
-  }, [user, contextLoaded]);
+  }, [user, contextLoaded, router]);
 
   async function redeemingCode(code: string) {
     const submitData = {
