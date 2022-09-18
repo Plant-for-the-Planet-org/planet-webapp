@@ -111,18 +111,17 @@ export default function PlantLocationPage({
       <br />
       {species && (
         <>
-          <b>Sample Tree</b>
+          <b>{t('treemapper:sampleTreeTitle')}</b>
           <div className={styles.sampleTreesContainer}>
-            {species.map((tree, index) => (
-              <div className={styles.singleTree} key={tree.id}>
-                <p>
-                  {index + 1} .{' '}
-                  <u>
-                    <i>{tree.aliases}</i>
-                  </u>
-                </p>
-              </div>
-            ))}
+            <ol>
+              {species.map((tree) => (
+                <div className={styles.singleTree} key={tree.id}>
+                  <li>
+                    <u>{tree.aliases}</u>
+                  </li>
+                </div>
+              ))}
+            </ol>
           </div>
         </>
       )}
