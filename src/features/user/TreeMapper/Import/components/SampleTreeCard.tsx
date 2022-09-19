@@ -5,13 +5,28 @@ import styles from '../Import.module.scss';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
 import { Controller } from 'react-hook-form';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
-import { InputAdornment, MenuItem } from '@mui/material';
+import { InputAdornment, MenuItem, SxProps } from '@mui/material';
 
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import themeProperties from '../../../../../theme/themeProperties';
 
 const { useTranslation } = i18next;
+
+const dialogSx: SxProps = {
+  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
+    backgroundColor: themeProperties.primaryColor,
+    color: '#fff',
+  },
+
+  '& .MuiPickersDay-dayWithMargin': {
+    '&:hover': {
+      backgroundColor: themeProperties.primaryColor,
+      color: '#fff',
+    },
+  },
+};
 
 interface Props {
   index: number;
@@ -96,6 +111,9 @@ export default function SampleTreeCard({
                     renderInput={(props) => <MaterialTextField {...props} />}
                     disableFuture
                     inputFormat="MMMM d, yyyy"
+                    DialogProps={{
+                      sx: dialogSx,
+                    }}
                   />
                 )}
                 name={`sampleTrees[${index}].plantingDate`}
