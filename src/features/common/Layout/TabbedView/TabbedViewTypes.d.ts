@@ -3,4 +3,5 @@ export interface TabItem {
   link: string;
   disabled?: boolean;
   hasList?: boolean;
+  step: number | string;
 }

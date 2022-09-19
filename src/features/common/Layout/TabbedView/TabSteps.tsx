@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import { TabItem } from './TabbedViewTypes';
 
 interface TabStepsProps {
-  step: number;
+  step: number | string;
   tabItems: TabItem[];
 }
 
@@ -49,6 +49,7 @@ export default function TabSteps({
           label={tabItem.label}
           data-link={tabItem.link}
           disabled={tabItem.disabled}
+          value={tabItem.step}
         />
       );
     });

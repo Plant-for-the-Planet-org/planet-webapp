@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { Grid, styled } from '@mui/material';
 import TabSteps from './TabSteps';
 import { TabItem } from './TabbedViewTypes';
@@ -26,17 +26,22 @@ const TabContainer = styled('div')(({ theme }) => ({
 
 interface TabbedViewProps {
   children: React.ReactNode;
-  step: number;
+  step: number | string;
   tabItems: TabItem[];
-  isShowingList?: boolean;
 }
 
 export default function TabbedView({
   children,
   step,
   tabItems,
-  isShowingList,
 }: TabbedViewProps): ReactElement {
+  const [isShowingList, setIsShowingList] = useState(false);
+
+  useEffect(() => {
+    const currentTab = tabItems.find((tabItem) => step === tabItem.step);
+    setIsShowingList(currentTab?.hasList || false);
+  }, [step, tabItems]);
+
   return (
     <Grid container className="TabbedView">
       <Grid
