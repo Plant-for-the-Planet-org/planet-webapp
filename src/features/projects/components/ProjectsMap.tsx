@@ -161,6 +161,17 @@ export default function ProjectsMap(): ReactElement {
     }
   }, [zoomLevel]);
 
+  React.useEffect(() => {
+    if (embed === 'true') {
+      const newViewport = {
+        ...viewport,
+        latitude: 36.96,
+        longitude: 0,
+      };
+      setViewPort(newViewport);
+    }
+  }, [embed, router]);
+
   return (
     <div
       className={
