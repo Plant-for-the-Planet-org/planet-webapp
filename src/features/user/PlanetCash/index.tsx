@@ -16,6 +16,7 @@ import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
+import { useRouter } from 'next/router';
 
 export enum PlanetCashTabs {
   ACCOUNTS = 'accounts',
@@ -40,6 +41,7 @@ export default function PlanetCash({
   const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
   const { handleError } = useContext(ErrorHandlingContext);
   const [isDataLoading, setIsDataLoading] = useState(false);
+  const router = useRouter();
 
   const fetchAccounts = useCallback(async () => {
     if (!accounts) {
@@ -51,6 +53,7 @@ export default function PlanetCash({
         {},
         handleError
       );
+      redirectIfNeeded(accounts);
       const sortedAccounts = sortAccountsByActive(accounts);
       setIsPlanetCashActive(accounts.some((account) => account.isActive));
       setAccounts(sortedAccounts);
@@ -62,6 +65,29 @@ export default function PlanetCash({
       }
     }
   }, [accounts]);
+
+  // Redirect routes based on whether at least one account is created.
+  // Prevents multiple account creation.
+  const redirectIfNeeded = useCallback(
+    (accounts) => {
+      switch (step) {
+        case PlanetCashTabs.CREATE_ACCOUNT:
+          if (accounts.length) {
+            router.push('/profile/planetcash');
+          }
+          break;
+        case PlanetCashTabs.ACCOUNTS:
+        case PlanetCashTabs.TRANSACTIONS:
+          if (!accounts.length) {
+            router.push('/profile/planetcash/new');
+          }
+          break;
+        default:
+          break;
+      }
+    },
+    [step]
+  );
 
   const sortAccountsByActive = (
     accounts: PlanetCash.Account[]
