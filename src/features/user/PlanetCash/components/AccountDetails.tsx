@@ -14,6 +14,7 @@ const AccountDetailsGrid = styled('article')(({ theme }) => ({
   borderRadius: 9,
   width: '100%',
   boxShadow: theme.shadows[1],
+  fontSize: '0.875rem',
   '&.accountDetails--inactive': {
     opacity: '80%',
     backgroundColor: theme.palette.grey[200],

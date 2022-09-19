@@ -132,13 +132,11 @@ export default function PlanetCash({
           {
             label: t('tabAccounts'),
             link: '/profile/planetcash',
-            hasList: true,
             step: PlanetCashTabs.ACCOUNTS,
           },
           {
             label: t('tabTransactions'),
             link: '/profile/planetcash/transactions',
-            hasList: true,
             step: PlanetCashTabs.TRANSACTIONS,
           },
         ]);
