@@ -1,5 +1,5 @@
 import React, { ReactElement, useContext, useEffect, useState } from 'react';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { getRequest } from '../../../../utils/apiRequests/api';
 
 import DashboardView from '../../../common/Layout/DashboardView';
@@ -7,8 +7,6 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import DonationLinkForm from './DonationLinkForm';
 import SingleColumnView from '../../../common/Layout/DashboardView/SingleColumnView';
 import { Project, SingleProject } from '../../../common/types/project';
-
-const { useTranslation } = i18next;
 
 export default function DonationLink(): ReactElement | null {
   const { handleError } = useContext(ErrorHandlingContext);

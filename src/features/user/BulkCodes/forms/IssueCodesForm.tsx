@@ -1,5 +1,5 @@
 import React, { FormEvent, ReactElement, useContext, useState } from 'react';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { Button, TextField } from '@mui/material';
 
 import styles from '../BulkCodes.module.scss';
@@ -22,7 +22,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import { Recipient as LocalRecipient } from '../BulkCodesTypes';
-const { useTranslation } = i18next;
 
 interface IssueCodesFormProps {}
 

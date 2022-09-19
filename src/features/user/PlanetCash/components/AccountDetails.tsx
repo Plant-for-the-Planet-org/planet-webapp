@@ -1,13 +1,11 @@
 import { ReactElement, useContext } from 'react';
 import { styled, Grid, Button, Divider } from '@mui/material';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
 
 const AccountDetailsGrid = styled('article')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,

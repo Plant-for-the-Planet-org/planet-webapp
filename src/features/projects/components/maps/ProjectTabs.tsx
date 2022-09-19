@@ -13,7 +13,7 @@ interface Props {}
 export default function ProjectTabs({}: Props): ReactElement {
   const { embed, showProjectDetails } = React.useContext(ParamsContext);
   const { pathname } = useRouter();
-  const { i18n, t } = useTranslation(['maps']);
+  const { t } = useTranslation(['maps']);
   const { selectedMode, setSelectedMode, rasterData } =
     React.useContext(ProjectPropsContext);
 

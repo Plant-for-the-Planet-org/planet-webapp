@@ -40,10 +40,9 @@ export const EditModal = ({
   const [userLang, setUserLang] = React.useState('en');
   const [disabled, setDisabled] = React.useState(false);
   const { t, i18n } = useTranslation(['me']);
-  const { register, handleSubmit, errors, setValue, control, getValues } =
-    useForm({
-      mode: 'all',
-    });
+  const { register, handleSubmit, errors, control } = useForm({
+    mode: 'all',
+  });
   const { token } = React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
   React.useEffect(() => {
@@ -94,7 +93,7 @@ export const EditModal = ({
           handleEditModalClose();
           fetchRecurrentDonations();
         })
-        .catch((err) => console.log('Error editing recurring donation.'));
+        .catch(() => console.log('Error editing recurring donation.'));
     } else {
       handleEditModalClose();
     }

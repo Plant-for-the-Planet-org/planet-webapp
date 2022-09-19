@@ -34,12 +34,11 @@ const ImageSlider = dynamic(
 
 function SingleProjectDetails({}: Props): ReactElement {
   const router = useRouter();
-  const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
+  const { t, ready } = useTranslation(['donate', 'common', 'country']);
   const {
     project,
     geoJson,
     rasterData,
-    selectedMode,
     hoveredPl,
     selectedPl,
     setHoveredPl,

@@ -65,12 +65,12 @@ export default function TimeTravel({}: Props): ReactElement {
       // );
 
       // A selector or reference to HTML element
-      const container = '#comparison-container';
+      // const container = '#comparison-container';
 
-      const compare = new MapboxCompare(before, after, container, {
-        mousemove: false, // Optional. Set to true to enable swiping during cursor movement.
-        orientation: 'vertical', // Optional. Sets the orientation of swiper to horizontal or vertical, defaults to vertical
-      });
+      // const compare = new MapboxCompare(before, after, container, {
+      //   mousemove: false, // Optional. Set to true to enable swiping during cursor movement.
+      //   orientation: 'vertical', // Optional. Sets the orientation of swiper to horizontal or vertical, defaults to vertical
+      // });
 
       // syncMove(before, mapRef?.current?.getMap());
     }

@@ -3,7 +3,6 @@ import styles from '../../styles/Filters.module.scss';
 import { useTranslation } from 'next-i18next';
 import { FormControlLabel, FormGroup } from '@mui/material';
 import Switch from '../../../common/InputTypes/ToggleSwitch';
-import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 
 interface Props {}
@@ -68,9 +67,9 @@ export default function Filters({}: Props): ReactElement {
     }
   }, [projects]);
 
-  const handlePurposeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPurpose({ ...purpose, [event.target.name]: event.target.checked });
-  };
+  // const handlePurposeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setPurpose({ ...purpose, [event.target.name]: event.target.checked });
+  // };
 
   const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setType({ ...type, [event.target.name]: event.target.checked });

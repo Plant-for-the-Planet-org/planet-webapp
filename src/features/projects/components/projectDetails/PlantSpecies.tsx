@@ -11,7 +11,7 @@ interface Props {
 }
 
 function PlantSpecies({ species }: Props): ReactElement {
-  const { t, ready } = useTranslation(['maps']);
+  const { t } = useTranslation(['maps']);
   return (
     <div className={styles.projectMoreInfo}>
       <div className={styles.infoTitle}>

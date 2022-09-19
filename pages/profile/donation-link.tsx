@@ -4,8 +4,6 @@ import DonationLink from '../../src/features/user/Widget/DonationLink';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 
-
-
 interface Props {}
 export default function DonationLinkPage({}: Props): ReactElement {
   const { t, ready } = useTranslation('me');

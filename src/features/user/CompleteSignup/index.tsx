@@ -2,12 +2,18 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from './CompleteSignup.module.scss';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
-import { Snackbar, Alert as MuiAlert, MenuItem, styled, TextField } from '@mui/material';
+import {
+  Snackbar,
+  Alert as MuiAlert,
+  MenuItem,
+  styled,
+  TextField,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 import { useForm, Controller } from 'react-hook-form';
-import i18next from '../../../../i18n';
+import { useTranslation, Trans } from 'next-i18next';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { selectUserType } from '../../../utils/selectUserType';
 import { getStoredConfig } from '../../../utils/storeConfig';
@@ -18,8 +24,6 @@ import GeocoderArcGIS from 'geocoder-arcgis';
 import { postRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
-const { Trans, useTranslation } = i18next;
-
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
     backgroundColor: theme.palette.primary.main,
@@ -28,9 +32,9 @@ const Alert = styled(MuiAlert)(({ theme }) => {
 
 const WideTextField = styled(TextField)(() => {
   return {
-    width: "100%"
-  }
-})
+    width: '100%',
+  };
+});
 
 export default function CompleteSignup() {
   const router = useRouter();
@@ -100,26 +104,11 @@ export default function CompleteSignup() {
   });
   const classes = useStylesAutoComplete();
 
-  const {
-    register,
-    handleSubmit,
-    errors,
-    control,
-    reset,
-    setValue,
-    watch,
-    getValues,
-  } = useForm({ mode: 'onBlur' });
+  const { register, handleSubmit, errors, control, reset, setValue, watch } =
+    useForm({ mode: 'onBlur' });
 
-  const {
-    user,
-    setUser,
-    auth0User,
-    loginWithRedirect,
-    contextLoaded,
-    logoutUser,
-    token,
-  } = React.useContext(UserPropsContext);
+  const { user, setUser, auth0User, contextLoaded, logoutUser, token } =
+    React.useContext(UserPropsContext);
 
   const isPrivate = watch('isPrivate');
   const [submit, setSubmit] = React.useState(false);
@@ -161,8 +150,8 @@ export default function CompleteSignup() {
   const [requestSent, setRequestSent] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(null);
   const [country, setCountry] = useState('');
-  const defaultCountry =
-    typeof window !== 'undefined' ? localStorage.getItem('countryCode') : 'DE';
+  // const defaultCountry =
+  //   typeof window !== 'undefined' ? localStorage.getItem('countryCode') : 'DE';
 
   const [postalRegex, setPostalRegex] = React.useState(
     COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal

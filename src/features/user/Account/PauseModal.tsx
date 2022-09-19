@@ -35,7 +35,7 @@ export const PauseModal = ({
   );
   const [disabled, setDisabled] = React.useState(false);
 
-  const { t, i18n, ready } = useTranslation(['me']);
+  const { t } = useTranslation(['me']);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
@@ -66,11 +66,11 @@ export const PauseModal = ({
       token,
       handleError
     )
-      .then((res) => {
+      .then(() => {
         handlePauseModalClose();
         fetchRecurrentDonations();
       })
-      .catch((err) => {
+      .catch(() => {
         console.log('Error pausing recurring donation.');
       });
   };

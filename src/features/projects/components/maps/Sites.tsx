@@ -1,9 +1,6 @@
-import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 import zoomToProjectSite from '../../../../utils/maps/zoomToProjectSite';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
-import PlantLocations from './PlantLocations';
-import ProjectPolygon from './ProjectPolygon';
 import SatelliteLayer from './SatelliteLayer';
 import VegetationChange from './VegetationChange';
 
@@ -15,10 +12,6 @@ export default function Sites({}: Props): ReactElement {
     setViewPort,
     geoJson,
     selectedSite,
-    isMobile,
-    mapState,
-    setMapState,
-    mapRef,
     selectedMode,
     rasterData,
     satellite,

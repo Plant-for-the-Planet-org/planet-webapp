@@ -6,7 +6,6 @@ import styles from '../../styles/ProjectsMap.module.scss';
 import BootstrapInput from '../../../common/InputTypes/BootstrapInput';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-interface Props {}
 
 export default function SitesDropdown(): ReactElement {
   const {

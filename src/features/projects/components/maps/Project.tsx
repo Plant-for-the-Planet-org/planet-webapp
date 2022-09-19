@@ -24,7 +24,6 @@ export default function Project({
     siteExists,
     rasterData,
     setRasterData,
-    isMobile,
     setSiteViewPort,
   } = React.useContext(ProjectPropsContext);
 

@@ -32,7 +32,7 @@ export const CancelModal = ({
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState(new Date());
   const [disabled, setDisabled] = React.useState(false);
-  const { t, i18n, ready } = useTranslation(['me']);
+  const { t } = useTranslation(['me']);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
@@ -59,11 +59,11 @@ export const CancelModal = ({
       token,
       handleError
     )
-      .then((res) => {
+      .then(() => {
         handleCancelModalClose();
         fetchRecurrentDonations();
       })
-      .catch((err) => {
+      .catch(() => {
         console.log('Error cancelling recurring donations.');
       });
   };

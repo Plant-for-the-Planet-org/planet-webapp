@@ -138,7 +138,7 @@ function ProjectsList({
     [projects]
   );
 
-  const NoProjectFound = (props: any) => {
+  const NoProjectFound = () => {
     return ready ? (
       <div className={'projectNotFound'}>
         <LazyLoad>

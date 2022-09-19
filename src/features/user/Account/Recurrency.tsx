@@ -12,7 +12,6 @@ import RecurrencyRecord, {
 import { PauseModal } from './PauseModal';
 import { CancelModal } from './CancelModal';
 import { ReactivateModal } from './ReactivateModal';
-import { useRouter } from 'next/router';
 import { EditModal } from './EditModal';
 
 interface Props {
@@ -26,7 +25,7 @@ export default function Recurrency({
   recurrencies,
   fetchRecurrentDonations,
 }: Props): ReactElement {
-  const { t, i18n } = useTranslation(['me']);
+  const { t } = useTranslation(['me']);
   const [selectedRecord, setSelectedRecord] = React.useState<number | null>(0);
   const [openModal, setOpenModal] = React.useState(false);
   const [editModalOpen, seteditModalOpen] = React.useState(false);
@@ -34,7 +33,6 @@ export default function Recurrency({
   const [cancelModalOpen, setcancelModalOpen] = React.useState(false);
   const [reactivateModalOpen, setreactivateModalOpen] = React.useState(false);
   const [currentRecord, setCurrentRecord] = React.useState<number>(0);
-  const router = useRouter();
 
   // React.useEffect(() => {
   //   fetchRecurrentDonations();

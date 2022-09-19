@@ -1,10 +1,8 @@
 import { TextField, styled } from '@mui/material';
 import { ReactElement, useState, FocusEvent } from 'react';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { SetState } from '../../../common/Layout/BulkCodeContext';
 import { BulkCodeLimits } from '../../../../utils/constants/bulkCodeConstants';
-
-const { useTranslation } = i18next;
 
 const InlineFormGroup = styled('div')({
   display: 'flex',

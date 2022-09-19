@@ -1,12 +1,10 @@
 import React, { ReactElement, useState } from 'react';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { getRequest } from '../../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { unparse } from 'papaparse';
 
 import styles from '../AccountHistory.module.scss';
-
-const { useTranslation } = i18next;
 
 interface DownloadCodesProps {
   codesUrl: string;

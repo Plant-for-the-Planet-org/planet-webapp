@@ -16,8 +16,7 @@ export default function ProjectsContainer({}: any) {
   const [projects, setProjects] = React.useState([]);
   const [loader, setLoader] = React.useState(true);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { user, contextLoaded, loginWithRedirect, token } =
-    React.useContext(UserPropsContext);
+  const { user, contextLoaded, token } = React.useContext(UserPropsContext);
 
   async function loadProjects() {
     if (user) {
@@ -91,7 +90,7 @@ function SingleProject({ project }: any) {
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
     : '';
-  const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
+  const { t, i18n } = useTranslation(['donate', 'common', 'country']);
   return (
     <div className={styles.singleProject} key={project.id}>
       {ImageSource ? (

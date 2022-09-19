@@ -30,7 +30,6 @@ export default function RecurrencyRecord({
   setcancelDonation,
   setreactivateDonation,
 }: Props): ReactElement {
-  const { t, i18n } = useTranslation(['me']);
   return (
     <div
       key={index}

@@ -10,7 +10,6 @@ import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import { useRouter } from 'next/router';
 import { makeStyles } from '@mui/styles';
-import { MenuItem, Grid } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
@@ -42,7 +41,7 @@ export default function DetailedAnalysis({
   handleReset,
   purpose,
 }: Props): ReactElement {
-  const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
+  const { t, ready } = useTranslation(['manageProjects', 'common']);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const [siteOwners, setSiteOwners] = React.useState([
     {
@@ -101,9 +100,9 @@ export default function DetailedAnalysis({
     { id: 12, title: ready ? t('common:december') : '', isSet: false },
   ]);
 
-  const addHandler = () => {
-    setAddSpecies(true);
-  };
+  // const addHandler = () => {
+  //   setAddSpecies(true);
+  // };
 
   const useStylesAutoComplete = makeStyles({
     root: {

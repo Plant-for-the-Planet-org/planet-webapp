@@ -18,7 +18,7 @@ export const ReactivateModal = ({
   const { theme } = React.useContext(ThemeContext);
   const { token } = React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { t, i18n, ready } = useTranslation(['me']);
+  const { t } = useTranslation(['me']);
   const bodyToSend = {};
 
   React.useEffect(() => {
@@ -33,11 +33,11 @@ export const ReactivateModal = ({
       token,
       handleError
     )
-      .then((res) => {
+      .then(() => {
         handleReactivateModalClose();
         fetchRecurrentDonations();
       })
-      .catch((err) => {
+      .catch(() => {
         console.log('Error reactivating recurring donation');
       });
   };
