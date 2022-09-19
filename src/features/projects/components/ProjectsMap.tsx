@@ -50,7 +50,7 @@ export default function ProjectsMap(): ReactElement {
   } = React.useContext(ProjectPropsContext);
 
   const { t } = useTranslation(['maps']);
-  const { embed, showProjectList } = React.useContext(ParamsContext);
+  const { embed } = React.useContext(ParamsContext);
   //Map
   const _onStateChange = (state: any) => setMapState({ ...state });
   const _onViewportChange = (view: any) => setViewPort({ ...view });
@@ -170,7 +170,7 @@ export default function ProjectsMap(): ReactElement {
       };
       setViewPort(newViewport);
     }
-  }, [showProjectList, router]);
+  }, [embed, router]);
 
   return (
     <div
