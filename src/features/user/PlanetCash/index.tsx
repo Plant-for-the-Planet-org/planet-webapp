@@ -18,9 +18,9 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
 
 export enum PlanetCashTabs {
-  ACCOUNTS = 0,
-  CREATE_ACCOUNT = 1,
-  TRANSACTIONS = 2,
+  ACCOUNTS = 'accounts',
+  CREATE_ACCOUNT = 'create_account',
+  TRANSACTIONS = 'transactions',
 }
 
 const { useTranslation } = i18next;
@@ -28,13 +28,11 @@ const { useTranslation } = i18next;
 interface PlanetCashProps {
   step: PlanetCashTabs;
   setProgress?: (progress: number) => void;
-  shouldReload?: boolean;
 }
 
 export default function PlanetCash({
   step,
   setProgress,
-  shouldReload = false,
 }: PlanetCashProps): ReactElement | null {
   const { t, ready } = useTranslation('planetcash');
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
@@ -44,7 +42,7 @@ export default function PlanetCash({
   const [isDataLoading, setIsDataLoading] = useState(false);
 
   const fetchAccounts = useCallback(async () => {
-    if (!accounts || shouldReload) {
+    if (!accounts) {
       setIsDataLoading(true);
       setProgress && setProgress(70);
       const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
@@ -63,7 +61,7 @@ export default function PlanetCash({
         setTimeout(() => setProgress(0), 1000);
       }
     }
-  }, [shouldReload]);
+  }, [accounts]);
 
   const sortAccountsByActive = (
     accounts: PlanetCash.Account[]
@@ -94,25 +92,32 @@ export default function PlanetCash({
   };
 
   useEffect(() => {
-    if (ready) {
-      setTabConfig([
-        {
-          label: t('tabAccounts'),
-          link: '/profile/planetcash',
-          hasList: true,
-        },
-        {
-          label: t('tabCreateAccount'),
-          link: '/profile/planetcash/new',
-        },
-        {
-          label: t('tabTransactions'),
-          link: '/profile/planetcash/transactions',
-          hasList: true,
-        },
-      ]);
+    if (ready && accounts) {
+      if (!accounts.length) {
+        setTabConfig([
+          {
+            label: t('tabCreateAccount'),
+            link: '/profile/planetcash/new',
+            step: PlanetCashTabs.CREATE_ACCOUNT,
+          },
+        ]);
+      } else
+        setTabConfig([
+          {
+            label: t('tabAccounts'),
+            link: '/profile/planetcash',
+            hasList: true,
+            step: PlanetCashTabs.ACCOUNTS,
+          },
+          {
+            label: t('tabTransactions'),
+            link: '/profile/planetcash/transactions',
+            hasList: true,
+            step: PlanetCashTabs.TRANSACTIONS,
+          },
+        ]);
     }
-  }, [ready]);
+  }, [ready, accounts]);
 
   return ready ? (
     <DashboardView
@@ -140,11 +145,7 @@ export default function PlanetCash({
         </p>
       }
     >
-      <TabbedView
-        step={step}
-        tabItems={tabConfig}
-        isShowingList={tabConfig[step]?.hasList}
-      >
+      <TabbedView step={step} tabItems={tabConfig}>
         {renderStep()}
       </TabbedView>
     </DashboardView>
