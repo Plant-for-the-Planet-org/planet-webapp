@@ -9,19 +9,7 @@ interface AccountsProps {
 }
 
 const Accounts = ({ isDataLoading }: AccountsProps): ReactElement | null => {
-  const { accounts, isPlanetCashActive, setAccounts, setIsPlanetCashActive } =
-    usePlanetCash();
-  const updateAccount = (accountToUpdate: PlanetCash.Account): void => {
-    const updatedAccounts = accounts?.map((account) =>
-      account.id === accountToUpdate.id ? accountToUpdate : account
-    );
-    if (updatedAccounts) {
-      setAccounts(updatedAccounts);
-      setIsPlanetCashActive(
-        updatedAccounts.some((account) => account.isActive)
-      );
-    }
-  };
+  const { accounts } = usePlanetCash();
 
   return isDataLoading ? (
     <>
@@ -31,14 +19,7 @@ const Accounts = ({ isDataLoading }: AccountsProps): ReactElement | null => {
   ) : accounts && accounts.length > 0 ? (
     <>
       {accounts?.map((account, index) => {
-        return (
-          <AccountDetails
-            account={account}
-            key={index}
-            updateAccount={updateAccount}
-            isPlanetCashActive={isPlanetCashActive}
-          />
-        );
+        return <AccountDetails account={account} key={index} />;
       })}
     </>
   ) : (

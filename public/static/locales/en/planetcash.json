@@ -14,7 +14,7 @@
   "labelCreditLimit": "Credit Limit",
   "deactivateAccountButton": "Deactivate",
   "activateAccountButton": "Activate",
-  "accountInactiveHelpText": "This account is inactive and cannot be used to make contributions. To activate this account, please deactivate your active account first.",
+  "accountInactiveHelpText": "This account is inactive and cannot be used to make contributions. To activate this account, please contact support@plant-for-the-planet.org.",
   "noAccountsText": "You don't seem to have created a PlanetCash account yet.",
   "createPlanetCashButton": "Create Planet Cash Account",
   "accountQuotaReachedText": "You cannot create more accounts as you have exhausted your account quota.",
