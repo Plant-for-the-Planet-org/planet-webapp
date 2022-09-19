@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
 import { useTranslation } from 'next-i18next';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 export default function ProjectsMap(): ReactElement {
   const router = useRouter();
