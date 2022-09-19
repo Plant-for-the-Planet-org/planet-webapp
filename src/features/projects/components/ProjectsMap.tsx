@@ -162,7 +162,7 @@ export default function ProjectsMap(): ReactElement {
   }, [zoomLevel]);
 
   React.useEffect(() => {
-    if (showProjectList === 'false') {
+    if (embed === 'true' && showProjectList === 'false') {
       const newViewport = {
         ...viewport,
         latitude: 36.96,
