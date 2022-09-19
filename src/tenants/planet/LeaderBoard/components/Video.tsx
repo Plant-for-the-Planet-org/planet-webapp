@@ -1,19 +1,11 @@
 import React, { ReactElement } from 'react';
 import styles from './Video.module.scss';
-<<<<<<< HEAD
 import { useTranslation } from 'next-i18next';
-=======
-import i18next from '../../../../../i18n';
->>>>>>> develop
 import ReactPlayer from 'react-player/lazy';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 
 interface Props {}
 
-<<<<<<< HEAD
-=======
-const { useTranslation } = i18next;
->>>>>>> develop
 function Video({}: Props): ReactElement {
   const { t, ready } = useTranslation(['leaderboard', 'common']);
 

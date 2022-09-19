@@ -15,11 +15,6 @@ interface Props {
   setEmbedModalOpen: Function;
 }
 
-<<<<<<< HEAD
-=======
-const { useTranslation } = i18next;
-
->>>>>>> develop
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
     backgroundColor: theme.palette.primary.main,

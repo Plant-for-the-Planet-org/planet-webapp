@@ -1,17 +1,8 @@
 import React, { ReactElement } from 'react';
-<<<<<<< HEAD
 import { useTranslation } from 'next-i18next';
 import UnderMaintenanceImage from '../../../../../public/assets/images/icons/UnderMaintenance';
 import styles from './UnderMaintenance.module.scss';
 
-=======
-import i18next from '../../../../../i18n';
-import UnderMaintenanceImage from '../../../../../public/assets/images/icons/UnderMaintenance';
-import styles from './UnderMaintenance.module.scss';
-
-const { useTranslation } = i18next;
-
->>>>>>> develop
 interface Props {}
 
 export default function UnderMaintenance({}: Props): ReactElement {

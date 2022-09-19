@@ -21,25 +21,10 @@ export default function ApiKey({}: any) {
   const [apiKey, setApiKey] = React.useState('');
   const [isApiKeyVisible, setIsApiKeyVisible] = React.useState(false);
 
-<<<<<<< HEAD
   const handleVisibilityChange = () => {
     setIsApiKeyVisible(!isApiKeyVisible);
   };
 
-=======
-export default function ApiKey({}: any) {
-  const { token, contextLoaded } = React.useContext(UserPropsContext);
-  const { t } = useTranslation(['me']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [apiKey, setApiKey] = React.useState('');
-  const [isApiKeyVisible, setIsApiKeyVisible] = React.useState(false);
-
-  const handleVisibilityChange = () => {
-    setIsApiKeyVisible(!isApiKeyVisible);
-  };
-
->>>>>>> develop
   const getApiKey = async () => {
     setIsUploadingData(true);
     const res = await getAuthenticatedRequest(

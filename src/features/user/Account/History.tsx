@@ -1,11 +1,5 @@
-<<<<<<< HEAD
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'next-i18next';
-import BackButton from '../../../../public/assets/images/icons/BackButton';
-=======
-import React, { ReactElement, useContext, useEffect } from 'react';
-import i18next from '../../../../i18n';
->>>>>>> develop
 import TransactionListLoader from '../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../public/assets/images/icons/TransactionsNotFound';
 import AccountRecord from './components/AccountRecord';

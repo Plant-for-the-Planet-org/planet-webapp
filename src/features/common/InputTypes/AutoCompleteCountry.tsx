@@ -3,12 +3,7 @@ import { Autocomplete, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React from 'react';
 import tenantConfig from '../../../../tenant.config';
-<<<<<<< HEAD
-import MaterialTextField from './MaterialTextField';
 import { useTranslation } from 'next-i18next';
-=======
-import i18next from '../../../../i18n';
->>>>>>> develop
 import { ThemeContext } from '../../../theme/themeContext';
 import themeProperties from '../../../theme/themeProperties';
 

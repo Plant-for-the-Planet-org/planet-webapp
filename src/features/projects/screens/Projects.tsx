@@ -9,7 +9,6 @@ import Header from '../components/projects/Header';
 import SearchBar from '../components/projects/SearchBar';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
-import Filters from '../components/projects/Filters';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 interface Props {
@@ -182,68 +181,6 @@ function ProjectsList({
             }
           }}
         >
-<<<<<<< HEAD
-          <div
-            className={'header'}
-            style={isMobile ? { height: '66px', paddingTop: '16px' } : {}}
-          >
-            {isMobile ? <div className={'dragBar'}></div> : null}
-            {searchMode ? (
-              <SearchBar
-                setSearchValue={setSearchValue}
-                setSearchMode={setSearchMode}
-                searchValue={searchValue}
-                searchRef={searchRef}
-              />
-            ) : (
-              <Header
-                showFeaturedList={showFeaturedList}
-                setSelectedTab={setSelectedTab}
-                selectedTab={selectedTab}
-                setSearchMode={setSearchMode}
-                projects={projects}
-              />
-            )}
-          </div>
-          {/* till here is header */}
-          <div className={'projectsContainer'}>
-            {trottledSearchValue !== '' ? (
-              searchProjectResults && searchProjectResults.length > 0 ? (
-                searchProjectResults.map((project: any) => (
-                  <ProjectSnippet
-                    key={project.properties.id}
-                    project={project.properties}
-                    editMode={false}
-                  />
-                ))
-              ) : (
-                <NoProjectFound />
-              )
-            ) : selectedTab === 'all' ? (
-              allProjects && allProjects.length > 0 ? (
-                allProjects.map((project: any) => (
-                  <ProjectSnippet
-                    key={project.properties.id}
-                    project={project.properties}
-                    editMode={false}
-                  />
-                ))
-              ) : (
-                <NoProjectFound />
-              )
-            ) : featuredProjects && featuredProjects.length > 0 ? (
-              featuredProjects.map((project: any) => (
-                <ProjectSnippet
-                  key={project.properties.id}
-                  project={project.properties}
-                  editMode={false}
-                />
-              ))
-            ) : (
-              <NoProjectFound />
-            )}
-          </div>
-=======
           {!(isEmbed && showProjectList === 'false') && (
             <div
               className={`sidebar ${
@@ -313,7 +250,6 @@ function ProjectsList({
               </div>
             </div>
           )}
->>>>>>> develop
         </div>
       ) : null}
     </>
