@@ -171,6 +171,7 @@ function UserLayout(props: any): ReactElement {
         {
           title: t('me:donationLink'),
           path: '/profile/donation-link',
+          flag: t('me:new'),
           // hideItem: true,
         },
       ],
