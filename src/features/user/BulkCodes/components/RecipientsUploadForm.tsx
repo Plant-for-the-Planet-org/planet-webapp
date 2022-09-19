@@ -1,6 +1,6 @@
 import { useState, ReactElement, useEffect } from 'react';
 import { parse, ParseResult } from 'papaparse';
-import { useTranslation } from 'next-i18next';
+import { useTranslation, Trans } from 'next-i18next';
 
 import UploadWidget from './UploadWidget';
 import RecipientsTable from './RecipientsTable';
