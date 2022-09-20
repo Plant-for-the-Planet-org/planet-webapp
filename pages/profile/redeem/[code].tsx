@@ -3,15 +3,17 @@ import CancelIcon from '../../../public/assets/images/icons/CancelIcon';
 import styles from '../../../src/features/user/Profile/styles/RedeemModal.module.scss';
 import i18next from './../../../i18n';
 import { getFormattedNumber } from '../../../src/utils/getFormattedNumber';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, FC } from 'react';
 import { useRouter } from 'next/router';
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
 import CircularProgress from '@mui/material/CircularProgress';
 
+type RedeemCodeType = string | undefined | null;
+
 const { useTranslation } = i18next;
-const ReedemCode = () => {
+const ReedemCode: FC = () => {
   const { t, i18n, ready } = useTranslation([
     'me',
     'common',
@@ -21,9 +23,9 @@ const ReedemCode = () => {
   const { user, contextLoaded, token } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
 
-  const [code, setCode] = useState('');
-  const [errorMessage, setErrorMessage] = useState();
-  const [redeemedCodeData, setRedeemedCodeData] = useState();
+  const [code, setCode] = useState<RedeemCodeType>('');
+  const [errorMessage, setErrorMessage] = useState<RedeemCodeType>('');
+  const [redeemedCodeData, setRedeemedCodeData] = useState<RedeemCodeType>();
 
   const router = useRouter();
 
