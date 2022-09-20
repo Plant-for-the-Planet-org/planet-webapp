@@ -11,7 +11,7 @@
   "addBalanceButton": "Add Balance",
   "labelAccountHolder": "Account Holder",
   "labelBalance": "Balance",
-  "labelCreditLimit": "Credit Limit",
+  "labelCreditLimit": "Limit",
   "deactivateAccountButton": "Deactivate",
   "activateAccountButton": "Activate",
   "accountInactiveHelpText": "This account is inactive and cannot be used to make contributions. To activate this account, please contact support@plant-for-the-planet.org.",
