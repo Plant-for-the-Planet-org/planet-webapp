@@ -170,7 +170,7 @@ export default function ProjectsMap(): ReactElement {
       };
       setViewPort(newViewport);
     }
-  }, [showProjectList, router]);
+  }, [showProjectList]);
 
   return (
     <div
