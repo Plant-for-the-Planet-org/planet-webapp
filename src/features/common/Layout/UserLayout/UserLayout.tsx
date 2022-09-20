@@ -79,7 +79,7 @@ function UserLayout(props: any): ReactElement {
         {
           title: t('me:managePayouts.menuText'),
           path: '/profile/payouts',
-          // hideItem: !(user?.type === 'tpo'), //uncomment later, only for dev
+          hideItem: !(user?.type === 'tpo'),
         },
         // Localize with translations if you ever activate this!!
         // {
