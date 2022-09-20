@@ -20,6 +20,7 @@ import PayoutScheduleForm from './screens/PayoutScheduleForm';
 import Overview from './screens/Overview';
 import EditBankAccount from './screens/EditBankAccount';
 import AddBankAccount from './screens/AddBankAccount';
+import { useRouter } from 'next/router';
 
 const { useTranslation } = i18next;
 
@@ -41,8 +42,9 @@ export default function ManagePayouts({
   isEdit,
 }: ManagePayoutsProps): ReactElement | null {
   const { t, ready } = useTranslation('managePayouts');
+  const router = useRouter();
   const { handleError } = useContext(ErrorHandlingContext);
-  const { token, contextLoaded } = useContext(UserPropsContext);
+  const { token, contextLoaded, user } = useContext(UserPropsContext);
   const { accounts, setAccounts, payoutMinAmounts, setPayoutMinAmounts } =
     usePayouts();
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
@@ -65,8 +67,8 @@ export default function ManagePayouts({
   }, []);
 
   useEffect(() => {
-    if (!payoutMinAmounts) fetchPayoutMinAmounts();
-  }, [step]);
+    if (!payoutMinAmounts && user.type === 'tpo') fetchPayoutMinAmounts();
+  }, [step, user]);
 
   const fetchAccounts = useCallback(async () => {
     if (!accounts) {
@@ -94,11 +96,15 @@ export default function ManagePayouts({
   }, []);
 
   useEffect(() => {
-    if (contextLoaded && token) fetchAccounts();
-  }, [contextLoaded, token]);
+    if (user.type === 'tpo') {
+      if (contextLoaded && token) fetchAccounts();
+    } else {
+      router.push('/profile');
+    }
+  }, [contextLoaded, token, user]);
 
   useEffect(() => {
-    if (ready) {
+    if (ready && user.type === 'tpo') {
       setTabConfig([
         {
           label: t('tabOverview'),
@@ -115,7 +121,7 @@ export default function ManagePayouts({
         },
       ]);
     }
-  }, [ready]);
+  }, [ready, user]);
 
   const renderStep = () => {
     switch (step) {
@@ -134,7 +140,7 @@ export default function ManagePayouts({
     }
   };
 
-  return ready ? (
+  return ready && tabConfig.length > 0 ? (
     <DashboardView title={t('title')} subtitle={<p>{t('description')}</p>}>
       <TabbedView
         step={step}
