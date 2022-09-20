@@ -88,7 +88,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
               name="scheduleFrequency"
               label={t('labels.scheduleFrequency') + '*'}
               control={control}
-              defaultValue={user.scheduleFrequency}
+              defaultValue={user.scheduleFrequency || 'manual'}
               rules={{
                 required: t('errors.scheduleFrequencyRequired'),
               }}
