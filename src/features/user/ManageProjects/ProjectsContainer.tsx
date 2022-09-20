@@ -56,7 +56,7 @@ export default function ProjectsContainer({}: any) {
           </div>
         </div>
       </div>
-      <div>
+      <div className={styles.headerCTAs}>
         <Link href="/profile/projects/new-project">
           <button
             // id={'addProjectBut'}
@@ -64,6 +64,14 @@ export default function ProjectsContainer({}: any) {
             style={{ width: '175px', marginTop: '20px', marginLeft: '10px' }}
           >
             {t('manageProjects:addProject')}
+          </button>
+        </Link>
+        <Link href="/profile/payouts">
+          <button
+            className="primaryButton"
+            style={{ width: '175px', marginTop: '20px', marginLeft: '10px' }}
+          >
+            {t('manageProjects:managePayoutsButton')}
           </button>
         </Link>
       </div>
