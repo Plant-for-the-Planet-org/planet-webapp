@@ -1,8 +1,8 @@
 declare namespace Payouts {
   export interface BankAccount {
     id: string;
-    currency?: string;
-    payoutMinAmount: number;
+    currency: string | null;
+    payoutMinAmount: number | null;
     bankName: string;
     bankAddress: string;
     routingNumber: string;

@@ -68,5 +68,6 @@
   "accountTitleText": "Transfer for {{currency}}",
   "addBankDetailsButton": "Add Bank Details",
   "noBankAccountText": "You haven't added any bank details yet.",
-  "editBankAccountTitle": "Edit Account"
+  "editBankAccountTitle": "Edit Account",
+  "minPayoutText": "Min. Payout: {{amount}}"
 }

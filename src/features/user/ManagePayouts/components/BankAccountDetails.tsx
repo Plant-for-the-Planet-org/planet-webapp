@@ -1,10 +1,12 @@
 import { ReactElement } from 'react';
 import { styled, Grid, Button, Divider } from '@mui/material';
+import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import i18next from '../../../../../i18n';
 import Link from 'next/link';
 
 const { useTranslation } = i18next;
 
+// TODOO - See if something can be made common between accounts of Manage Accounts and Planet Cash
 const AccountDetailsGrid = styled('article')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   padding: 24,
@@ -12,26 +14,13 @@ const AccountDetailsGrid = styled('article')(({ theme }) => ({
   borderRadius: 9,
   width: '100%',
   boxShadow: theme.shadows[1],
-  /* '&.accountDetails--inactive': {
-    opacity: '80%',
-    backgroundColor: theme.palette.grey[200],
-  },
   '& .accountHeader': {
+    justifyContent: 'space-between',
     rowGap: 16,
   },
-  '& .accountHeaderLeft': {
-    gap: 16,
-  },
   '& .accountHeaderRight': {
-    gap: 16,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    [theme.breakpoints.up('sm')]: {
-      flexDirection: 'column',
-      alignItems: 'flex-end',
-      justifyContent: 'center',
-    },
-  }, */
+    justifyContent: 'flex-end',
+  },
   '& .balance': {
     color: theme.palette.primary.main,
     fontWeight: theme.typography.fontWeightBold,
@@ -43,9 +32,6 @@ const AccountDetailsGrid = styled('article')(({ theme }) => ({
   '& .accountDetails': {
     rowGap: 20,
   },
-  /* '& .helpText': {
-    fontStyle: 'italic',
-  }, */
 }));
 
 const SingleDetail = styled('div')(({ theme }) => ({
@@ -62,11 +48,7 @@ interface BankAccountDetailsProps {
 const BankAccountDetails = ({
   account,
 }: BankAccountDetailsProps): ReactElement => {
-  const { t } = useTranslation('managePayouts');
-
-  const handleEdit = () => {
-    window.alert('Editing account');
-  };
+  const { t, i18n } = useTranslation('managePayouts');
 
   const renderAccountTitle = () => {
     const { currency } = account;
@@ -85,9 +67,23 @@ const BankAccountDetails = ({
       direction="column"
     >
       <Grid container item component="header" className="accountHeader">
-        <Grid item component="h2" className="accountTitle" xs={12}>
-          {renderAccountTitle()}
+        <Grid container item xs={6} sm={8} className="accountHeaderLeft">
+          <Grid item component="h2" className="accountTitle">
+            {renderAccountTitle()}
+          </Grid>
         </Grid>
+        {account.currency !== null && account.payoutMinAmount !== null && (
+          <Grid container item xs={6} sm={4} className="accountHeaderRight">
+            {t('minPayoutText', {
+              amount: getFormatedCurrency(
+                i18n.language,
+                account.currency,
+                account.payoutMinAmount,
+                true
+              ),
+            })}
+          </Grid>
+        )}
       </Grid>
       <Grid item component={Divider} />
       <Grid container item className="accountDetails" columnSpacing={2}>
