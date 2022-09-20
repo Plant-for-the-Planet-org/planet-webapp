@@ -63,6 +63,8 @@ export default function PlanetCash({
         setProgress(100);
         setTimeout(() => setProgress(0), 1000);
       }
+    } else {
+      redirectIfNeeded(accounts);
     }
   }, [accounts]);
 
