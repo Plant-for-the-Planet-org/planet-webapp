@@ -108,7 +108,7 @@ export default function RedeemModal({
       }}
     >
       <Fade in={redeemModalOpen}>
-        <div className={styles.modal}>
+        <div className={`${styles.modal} ${styles.fixModal}`}>
           {isCodeRedeemed && validCodeData ? (
             // after successful redeeemed code
             <>
@@ -126,7 +126,7 @@ export default function RedeemModal({
               <div className={styles.crossButtonDiv}>
                 <button
                   className={styles.crossButton}
-                  style={{ top: '-57px', right: '-34px' }}
+                  style={{ top: '-85px', right: '-34px' }}
                   onClick={closeRedeem}
                 >
                   <CancelIcon color={styles.primaryFontColor} />
@@ -148,7 +148,11 @@ export default function RedeemModal({
             <>
               <div className={styles.crossButtonDiv}>
                 <h4 style={{ fontWeight: '700' }}>{t('me:redeem')}</h4>
-                <button className={styles.crossButton} onClick={closeRedeem}>
+                <button
+                  className={styles.crossButton}
+                  onClick={closeRedeem}
+                  style={{ top: errorMessage ? '-39px' : '-17px' }}
+                >
                   <CancelIcon color={styles.primaryFontColor} />
                 </button>
               </div>

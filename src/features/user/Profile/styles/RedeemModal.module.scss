@@ -20,6 +20,15 @@
   }
 }
 
+.fixModal {
+  max-height: 279px;
+  max-width: 400px;
+  min-height: 262px;
+  min-width: 400px;
+  align-items: center;
+  justify-content: center;
+}
+
 
 .crossButtonDiv {
   display: flex;
@@ -107,7 +116,7 @@
 }
 
 .codeTreeCount {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   display: flex;
   flex-direction: row;
