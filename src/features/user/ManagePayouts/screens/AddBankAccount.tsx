@@ -8,6 +8,7 @@ import i18next from '../../../../../i18n';
 import BankDetailsForm, { FormData } from '../components/BankDetailsForm';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
+import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 
 const { useTranslation } = i18next;
 
@@ -29,7 +30,7 @@ const AddBankAccount = (): ReactElement | null => {
     // TODOO - send clean object??
     const accountData = {
       ...data,
-      currency: data.currency === 'default' ? '' : data.currency,
+      currency: data.currency === PayoutCurrency.DEFAULT ? '' : data.currency,
       holderType: 'individual', //TODOO - remove this if not needed, or update form if necessary
     };
     const res = await postAuthenticatedRequest<Payouts.BankAccount>(

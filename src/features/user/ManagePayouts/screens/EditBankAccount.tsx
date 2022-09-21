@@ -11,6 +11,7 @@ import BackArrow from '../../../../../public/assets/images/icons/headerIcons/Bac
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
+import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 
 const { useTranslation } = i18next;
 
@@ -45,7 +46,7 @@ const EditBankAccount = (): ReactElement | null => {
     // TODOO - send clean object??
     const accountData = {
       ...data,
-      currency: data.currency === 'default' ? '' : data.currency,
+      currency: data.currency === PayoutCurrency.DEFAULT ? '' : data.currency,
       holderType: 'individual', //TODOO - remove this if not needed, or update form if necessary
     };
     const res = await putAuthenticatedRequest<Payouts.BankAccount>(

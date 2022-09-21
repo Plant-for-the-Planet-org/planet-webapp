@@ -10,6 +10,7 @@ import {
 import StyledForm from '../../../common/Layout/StyledForm';
 import i18next from '../../../../../i18n';
 import ReactHookFormSelect from './ReactHookFormSelect';
+import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 
 const { useTranslation } = i18next;
 
@@ -51,7 +52,7 @@ interface Props {
 const extractFormValues = (account: Payouts.BankAccount): FormData => {
   const { currency } = account;
   const { ['id']: _, ...accountWithoutId } = account;
-  accountWithoutId.currency = currency || 'default';
+  accountWithoutId.currency = currency || PayoutCurrency.DEFAULT;
   return accountWithoutId as FormData;
 };
 
@@ -66,7 +67,7 @@ const BankDetailsForm = ({
     mode: 'onBlur',
     defaultValues: account ? extractFormValues(account) : {},
   });
-  const currency = watch('currency', 'default');
+  const currency = watch('currency', PayoutCurrency.DEFAULT);
 
   const handlePayoutChange = (e: ChangeEvent<HTMLInputElement>): void => {
     e.target.value = e.target.value.replace(/[^0-9]/g, '');
@@ -90,7 +91,9 @@ const BankDetailsForm = ({
   };
 
   const renderCurrencyOptions = useCallback((): ReactElement[] => {
-    const currencyOptions = [{ label: t('defaultCurrency'), value: 'default' }];
+    const currencyOptions: { label: string; value: string }[] = [
+      { label: t('defaultCurrency'), value: PayoutCurrency.DEFAULT },
+    ];
     if (payoutMinAmounts) {
       Object.keys(payoutMinAmounts).forEach((currency) =>
         currencyOptions.push({ label: currency, value: currency })
@@ -114,11 +117,11 @@ const BankDetailsForm = ({
             label={t('labels.currency') + '*'}
             control={control}
             helperText={t('helperText.currency')}
-            defaultValue={'default'}
+            defaultValue={PayoutCurrency.DEFAULT}
           >
             {renderCurrencyOptions()}
           </ReactHookFormSelect>
-          {currency !== 'default' && payoutMinAmounts !== null && (
+          {currency !== PayoutCurrency.DEFAULT && payoutMinAmounts !== null && (
             <TextField
               label={t('labels.payoutMinAmount') + '*'}
               name="payoutMinAmount"

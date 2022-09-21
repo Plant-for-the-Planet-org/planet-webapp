@@ -10,19 +10,20 @@ import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { User } from '../../../common/types/user';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
+import { PaymentFrequencies } from '../../../../utils/constants/payoutConstants';
 
 const { useTranslation, Trans } = i18n;
 
 const paymentFrequencies = [
-  'manual',
-  'monthly',
-  'quarterly',
-  'semiannually',
-  'annually',
+  PaymentFrequencies.MANUAL,
+  PaymentFrequencies.MONTHLY,
+  PaymentFrequencies.QUARTERLY,
+  PaymentFrequencies.SEMIANNUAL,
+  PaymentFrequencies.ANNUAL,
 ];
 
 type FormData = {
-  scheduleFrequency: string;
+  scheduleFrequency: PaymentFrequencies;
 };
 
 const PayoutScheduleForm = (): ReactElement | null => {
@@ -88,7 +89,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
               name="scheduleFrequency"
               label={t('labels.scheduleFrequency') + '*'}
               control={control}
-              defaultValue={user.scheduleFrequency || 'manual'}
+              defaultValue={user.scheduleFrequency || PaymentFrequencies.MANUAL}
               rules={{
                 required: t('errors.scheduleFrequencyRequired'),
               }}

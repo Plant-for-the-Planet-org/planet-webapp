@@ -1,3 +1,5 @@
+import { PaymentFrequencies } from '../../../utils/constants/payoutConstants';
+
 // TO CHECK WITH JORGO - WHAT PARAMETERS ARE PRESENT, AND WHAT IS THEIR TYPE?
 export interface PlanetCash {
   account: string;
@@ -45,5 +47,5 @@ export interface User {
   locale: string;
   hasLogoLicense: boolean | null;
   tin: string | null;
-  scheduleFrequency: string | null;
+  scheduleFrequency: PaymentFrequencies | null;
 }
