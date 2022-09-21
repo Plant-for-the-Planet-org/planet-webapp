@@ -17,7 +17,6 @@ export const UserPropsContext = React.createContext({
   logoutUser: (value: string | undefined) => {},
   auth0User: {},
   auth0Error: {} || undefined,
-  loadUser: () => {},
 });
 
 function UserPropsProvider({ children }: any): ReactElement {
@@ -99,7 +98,6 @@ function UserPropsProvider({ children }: any): ReactElement {
         logoutUser,
         auth0User: user,
         auth0Error: error,
-        loadUser,
       }}
     >
       {children}

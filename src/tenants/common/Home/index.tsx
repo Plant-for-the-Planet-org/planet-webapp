@@ -14,14 +14,9 @@ const { useTranslation } = i18next;
 interface Props {
   leaderboard: any;
   tenantScore: any;
-  updateTenantScore: string;
 }
 
-export default function About({
-  leaderboard,
-  tenantScore,
-  updateTenantScore,
-}: Props) {
+export default function About({ leaderboard, tenantScore }: Props) {
   const { t, i18n, ready } = useTranslation(['tenants']);
 
   const descriptionRef = React.useRef(null);
@@ -38,11 +33,7 @@ export default function About({
       <LandingSection imageSrc={config.meta.image}>
         <div style={{ marginTop: '120px' }} />
         {tenantScore && (
-          <TreeCounter
-            target={config.tenantGoal}
-            planted={tenantScore.total}
-            updateTenantScore={updateTenantScore}
-          />
+          <TreeCounter target={config.tenantGoal} planted={tenantScore.total} />
         )}
 
         <p
