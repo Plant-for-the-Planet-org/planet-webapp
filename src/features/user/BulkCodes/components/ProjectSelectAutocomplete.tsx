@@ -1,7 +1,6 @@
 import React, { ReactElement, useState, useEffect } from 'react';
 import { Autocomplete, TextField, styled } from '@mui/material';
 import i18next from '../../../../../i18n';
-
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import { Project } from '../../../common/Layout/BulkCodeContext';
 
@@ -22,7 +21,7 @@ interface ProjectSelectAutocompleteProps {
   projectList: Project[];
   project: Project | null;
   handleProjectChange?: (project: Project | null) => void;
-  active: boolean;
+  active?: boolean;
 }
 
 const ProjectSelectAutocomplete = ({
