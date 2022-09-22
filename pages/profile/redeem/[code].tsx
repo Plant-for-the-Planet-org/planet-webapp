@@ -9,8 +9,13 @@ import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsC
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
 import CircularProgress from '@mui/material/CircularProgress';
+import MaterialTextField from '../../../src/features/common/InputTypes/MaterialTextField';
+import { useForm } from 'react-hook-form';
 
-type RedeemCodeType = string | undefined | null;
+type RedeemCodeType = string | boolean | undefined | null;
+type FormInput = {
+  code: string | null;
+};
 
 const { useTranslation } = i18next;
 const ReedemCode: FC = () => {
@@ -24,14 +29,36 @@ const ReedemCode: FC = () => {
   const { handleError } = useContext(ErrorHandlingContext);
 
   const [code, setCode] = useState<RedeemCodeType>('');
+  const [inputCode, setInputCode] = useState<RedeemCodeType>('');
   const [errorMessage, setErrorMessage] = useState<RedeemCodeType>('');
-  const [redeemedCodeData, setRedeemedCodeData] = useState<RedeemCodeType>();
+  const [redeemedCodeData, setRedeemedCodeData] = useState<{
+    units: string | undefined;
+  }>();
+  const [openInputTextFieldModal, setOpenTextFieldModal] =
+    useState<RedeemCodeType>(false);
 
   const router = useRouter();
+  const { register } = useForm<FormInput>({
+    mode: 'onBlur',
+  });
 
   const closeRedeemModal = () => {
     if (typeof window !== 'undefined') {
       router.push('/profile');
+    }
+  };
+
+  const handleCode = () => {
+    setOpenTextFieldModal(true);
+    setRedeemedCodeData('');
+    setErrorMessage('');
+    setInputCode('');
+  };
+
+  const changeRouteCode = () => {
+    if (router.query.code && inputCode) {
+      router.push(`/profile/redeem/${inputCode}`);
+      setOpenTextFieldModal(false);
     }
   };
 
@@ -58,12 +85,13 @@ const ReedemCode: FC = () => {
     if (contextLoaded && user && router && router.query.code) {
       redeemingCode(router.query.code);
     }
-  }, [user, contextLoaded, router]);
+  }, [user, contextLoaded, router.query.code]);
 
-  async function redeemingCode(code: string) {
+  async function redeemingCode(data: FormInput) {
     const submitData = {
-      code: code,
+      code: data,
     };
+
     if (contextLoaded && user) {
       postAuthenticatedRequest(
         `/app/redeem`,
@@ -81,56 +109,124 @@ const ReedemCode: FC = () => {
       });
     }
   }
-
+  console.log(redeemedCodeData);
   return ready ? (
-    <LandingSection>
-      {redeemedCodeData ? (
-        <div className={styles.modal} style={{ paddingBottom: '10px' }}>
+    openInputTextFieldModal ? (
+      <LandingSection>
+        <div
+          className={`${styles.modal} ${styles.modalFix}`}
+          style={{ justifyContent: 'center', paddingBottom: '55px' }}
+        >
           <button className={styles.cancelIcon} onClick={closeRedeemModal}>
             <CancelIcon />
           </button>
-          <div className={styles.codeTreeCount} style={{ marginTop: '-34px' }}>
-            <div style={{ fontSize: '2rem' }}>
+          <h4 style={{ fontWeight: 'bold' }}>{t('redeem:redeem')}</h4>
+          <div className={styles.note}>
+            <p>{t('redeem:redeemDescription')}</p>
+          </div>
+          <div className={styles.inputField}>
+            <MaterialTextField
+              inputRef={register({
+                required: {
+                  value: true,
+                  message: t('redeem:enterRedeemCode'),
+                },
+              })}
+              onChange={(event) => setInputCode(event.target.value)}
+              value={inputCode}
+              name={'code'}
+              placeholder="XAD-1SA-5F1-A"
+              label=""
+              variant="outlined"
+            />
+          </div>
+
+          <div style={{ marginTop: '20px' }}>
+            <button className="primaryButton" onClick={changeRouteCode}>
+              {t('redeem:redeemCode')}
+            </button>
+          </div>
+        </div>
+      </LandingSection>
+    ) : (
+      <LandingSection>
+        {redeemedCodeData ? (
+          <div
+            className={`${styles.modal} ${styles.modalFix}`}
+            style={{ justifyContent: 'center' }}
+          >
+            <button
+              className={styles.cancelIcon}
+              onClick={closeRedeemModal}
+              style={{ top: redeemedCodeData ? '-20px' : '-11px' }}
+            >
+              <CancelIcon />
+            </button>
+            <div
+              className={styles.codeTreeCount}
+              style={{ marginTop: '-34px', fontSize: '38px' }}
+            >
               {getFormattedNumber(
                 i18n.language,
                 Number(redeemedCodeData.units)
               )}
+
+              <span>
+                {t('common:trees', { count: Number(redeemedCodeData.units) })}
+              </span>
             </div>
-            <span>
-              {t('common:trees', { count: Number(redeemedCodeData.units) })}
-            </span>
+            <div
+              className={styles.codeTreeCount}
+              style={{ marginBottom: '14px' }}
+            >
+              <span>{t('redeem:successfullyRedeemed')}</span>
+            </div>
+            <div>
+              <button
+                className="primaryButton"
+                onClick={handleCode}
+                style={{ marginTop: '10px' }}
+              >
+                {t('redeem:redeemAnotherCode')}
+              </button>
+            </div>
           </div>
-          <div
-            className={styles.codeTreeCount}
-            style={{ marginBottom: '14px' }}
-          >
-            <span>{t('redeem:successfullyRedeemed')}</span>
-          </div>
-        </div>
-      ) : (
-        <div className={styles.modal} style={{ paddingBottom: '45px' }}>
-          <button className={styles.cancelIcon} onClick={closeRedeemModal}>
-            <CancelIcon />
-          </button>
-          <div style={{ marginBottom: '10px', fontWeight: 'bold' }}>
-            {errorMessage ? (
-              <div>{code}</div>
-            ) : (
+        ) : (
+          <div className={`${styles.modal} ${styles.modalFix}`}>
+            <button className={styles.cancelIcon} onClick={closeRedeemModal}>
+              <CancelIcon />
+            </button>
+            <div style={{ fontWeight: 'bold' }}>
+              {errorMessage ? (
+                <div>{code}</div>
+              ) : (
+                <div>
+                  {t('redeem:redeeming')} {code}
+                </div>
+              )}
+            </div>
+            <div className={styles.errorAndSpinnerDiv}>
+              {errorMessage ? (
+                <span className={styles.formErrors}>{errorMessage}</span>
+              ) : (
+                <CircularProgress />
+              )}
+            </div>
+            {errorMessage && (
               <div>
-                {t('redeem:redeeming')} {code}
+                <button
+                  className="primaryButton"
+                  onClick={handleCode}
+                  style={{ marginTop: '10px' }}
+                >
+                  {t('redeem:redeemAnotherCode')}
+                </button>
               </div>
             )}
           </div>
-          <div style={{ marginBottom: '10px', marginTop: '7px' }}>
-            {errorMessage ? (
-              <span className={styles.formErrors}>{errorMessage}</span>
-            ) : (
-              <CircularProgress color="success" />
-            )}
-          </div>
-        </div>
-      )}
-    </LandingSection>
+        )}
+      </LandingSection>
+    )
   ) : (
     <></>
   );

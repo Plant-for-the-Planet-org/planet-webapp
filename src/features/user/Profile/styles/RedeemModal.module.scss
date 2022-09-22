@@ -20,12 +20,25 @@
   }
 }
 
+.modalFix {
+  max-height: 279px;
+  max-width: 400px;
+  min-height: 225px;
+  min-width: 438px;
+}
+
+.errorAndSpinnerDiv {
+  justify-content: center;
+  margin-top: 10px;
+}
+
 .cancelIcon {
   width: 1rem;
   cursor: pointer;
   position: relative;
   bottom: 15px;
-  left: 8rem
+  left: 11rem;
+  top: -11px
 }
 
 .modalFinal {
@@ -100,7 +113,7 @@
   align-items: baseline;
   color: $primaryColor;
   > span {
-    font-size: 20px;
+    font-size: 25px;
     margin-left: 6px;
   }
 }

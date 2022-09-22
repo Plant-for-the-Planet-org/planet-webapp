@@ -11,5 +11,8 @@
   "invalidCode": "This code is invalid.",
   "alreadyRedeemed": "The code has already been redeemed",
   "redeemCode":"Redeem Code",
-  "successfullyRedeemed": "Successfully Redeemed"
+  "redeem": "Redeem",
+  "redeemDescription": "Redeem your tree voucher and other codes.",
+  "successfullyRedeemed": "Successfully Redeemed",
+  "redeemAnotherCode": "Redeem Another Code"
 }
