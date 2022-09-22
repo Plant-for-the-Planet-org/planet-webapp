@@ -92,6 +92,15 @@ const Transactions = ({
       fetchTransactions();
   }, [contextLoaded, token, accounts]);
 
+  useEffect(() => {
+    // Cleanup function to reset state and address Warning: Can't perform a React state update on an unmounted component.
+    return () => {
+      setSelectedRecord(null);
+      setIsDataLoading(false);
+      setIsModalOpen(false);
+    };
+  }, []);
+
   return !transactionHistory && isDataLoading ? (
     <>
       <TransactionListLoader />
