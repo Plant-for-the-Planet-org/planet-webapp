@@ -16,11 +16,12 @@ import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
+import { useRouter } from 'next/router';
 
 export enum PlanetCashTabs {
-  ACCOUNTS = 0,
-  CREATE_ACCOUNT = 1,
-  TRANSACTIONS = 2,
+  ACCOUNTS = 'accounts',
+  CREATE_ACCOUNT = 'create_account',
+  TRANSACTIONS = 'transactions',
 }
 
 const { useTranslation } = i18next;
@@ -28,13 +29,11 @@ const { useTranslation } = i18next;
 interface PlanetCashProps {
   step: PlanetCashTabs;
   setProgress?: (progress: number) => void;
-  shouldReload?: boolean;
 }
 
 export default function PlanetCash({
   step,
   setProgress,
-  shouldReload = false,
 }: PlanetCashProps): ReactElement | null {
   const { t, ready } = useTranslation('planetcash');
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
@@ -42,9 +41,10 @@ export default function PlanetCash({
   const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
   const { handleError } = useContext(ErrorHandlingContext);
   const [isDataLoading, setIsDataLoading] = useState(false);
+  const router = useRouter();
 
   const fetchAccounts = useCallback(async () => {
-    if (!accounts || shouldReload) {
+    if (!accounts) {
       setIsDataLoading(true);
       setProgress && setProgress(70);
       const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
@@ -53,6 +53,7 @@ export default function PlanetCash({
         {},
         handleError
       );
+      redirectIfNeeded(accounts);
       const sortedAccounts = sortAccountsByActive(accounts);
       setIsPlanetCashActive(accounts.some((account) => account.isActive));
       setAccounts(sortedAccounts);
@@ -62,8 +63,33 @@ export default function PlanetCash({
         setProgress(100);
         setTimeout(() => setProgress(0), 1000);
       }
+    } else {
+      redirectIfNeeded(accounts);
     }
-  }, [shouldReload]);
+  }, [accounts]);
+
+  // Redirect routes based on whether at least one account is created.
+  // Prevents multiple account creation.
+  const redirectIfNeeded = useCallback(
+    (accounts) => {
+      switch (step) {
+        case PlanetCashTabs.CREATE_ACCOUNT:
+          if (accounts.length) {
+            router.push('/profile/planetcash');
+          }
+          break;
+        case PlanetCashTabs.ACCOUNTS:
+        case PlanetCashTabs.TRANSACTIONS:
+          if (!accounts.length) {
+            router.push('/profile/planetcash/new');
+          }
+          break;
+        default:
+          break;
+      }
+    },
+    [step]
+  );
 
   const sortAccountsByActive = (
     accounts: PlanetCash.Account[]
@@ -94,25 +120,30 @@ export default function PlanetCash({
   };
 
   useEffect(() => {
-    if (ready) {
-      setTabConfig([
-        {
-          label: t('tabAccounts'),
-          link: '/profile/planetcash',
-          hasList: true,
-        },
-        {
-          label: t('tabCreateAccount'),
-          link: '/profile/planetcash/new',
-        },
-        {
-          label: t('tabTransactions'),
-          link: '/profile/planetcash/transactions',
-          hasList: true,
-        },
-      ]);
+    if (ready && accounts) {
+      if (!accounts.length) {
+        setTabConfig([
+          {
+            label: t('tabCreateAccount'),
+            link: '/profile/planetcash/new',
+            step: PlanetCashTabs.CREATE_ACCOUNT,
+          },
+        ]);
+      } else
+        setTabConfig([
+          {
+            label: t('tabAccounts'),
+            link: '/profile/planetcash',
+            step: PlanetCashTabs.ACCOUNTS,
+          },
+          {
+            label: t('tabTransactions'),
+            link: '/profile/planetcash/transactions',
+            step: PlanetCashTabs.TRANSACTIONS,
+          },
+        ]);
     }
-  }, [ready]);
+  }, [ready, accounts]);
 
   return ready ? (
     <DashboardView
@@ -140,11 +171,7 @@ export default function PlanetCash({
         </p>
       }
     >
-      <TabbedView
-        step={step}
-        tabItems={tabConfig}
-        isShowingList={tabConfig[step]?.hasList}
-      >
+      <TabbedView step={step} tabItems={tabConfig}>
         {renderStep()}
       </TabbedView>
     </DashboardView>
