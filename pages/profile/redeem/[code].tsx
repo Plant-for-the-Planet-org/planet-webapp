@@ -1,16 +1,16 @@
-import LandingSection from '../../../src/features/common/Layout/LandingSection';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
+import { useState, useEffect, useContext, FC } from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
 import CancelIcon from '../../../public/assets/images/icons/CancelIcon';
+import LandingSection from '../../../src/features/common/Layout/LandingSection';
 import styles from '../../../src/features/user/Profile/styles/RedeemModal.module.scss';
 import i18next from './../../../i18n';
 import { getFormattedNumber } from '../../../src/utils/getFormattedNumber';
-import { useState, useEffect, useContext, FC } from 'react';
-import { useRouter } from 'next/router';
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
-import CircularProgress from '@mui/material/CircularProgress';
 import MaterialTextField from '../../../src/features/common/InputTypes/MaterialTextField';
-import { useForm } from 'react-hook-form';
 
 type RedeemCodeType = string | boolean | undefined | null;
 type FormInput = {
@@ -59,6 +59,9 @@ const ReedemCode: FC = () => {
     if (router.query.code && inputCode) {
       router.push(`/profile/redeem/${inputCode}`);
       setOpenTextFieldModal(false);
+    }
+    if (router.query.code && inputCode) {
+      redeemingCode(router.query.code);
     }
   };
 
@@ -112,7 +115,7 @@ const ReedemCode: FC = () => {
 
   return ready ? (
     openInputTextFieldModal ? (
-      // for input of redeem code
+      // to input  redeem code
       <LandingSection>
         <div className={styles.modal}>
           <button className={styles.cancelIcon} onClick={closeRedeemModal}>
