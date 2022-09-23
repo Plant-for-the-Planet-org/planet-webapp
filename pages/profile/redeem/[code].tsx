@@ -109,14 +109,12 @@ const ReedemCode: FC = () => {
       });
     }
   }
-  console.log(redeemedCodeData);
+
   return ready ? (
     openInputTextFieldModal ? (
+      // for input of redeem code
       <LandingSection>
-        <div
-          className={`${styles.modal} ${styles.modalFix}`}
-          style={{ justifyContent: 'center', paddingBottom: '55px' }}
-        >
+        <div className={styles.modal}>
           <button className={styles.cancelIcon} onClick={closeRedeemModal}>
             <CancelIcon />
           </button>
@@ -141,7 +139,7 @@ const ReedemCode: FC = () => {
             />
           </div>
 
-          <div style={{ marginTop: '20px' }}>
+          <div>
             <button className="primaryButton" onClick={changeRouteCode}>
               {t('redeem:redeemCode')}
             </button>
@@ -149,23 +147,15 @@ const ReedemCode: FC = () => {
         </div>
       </LandingSection>
     ) : (
+      //after successful redeem
       <LandingSection>
         {redeemedCodeData ? (
-          <div
-            className={`${styles.modal} ${styles.modalFix}`}
-            style={{ justifyContent: 'center' }}
-          >
-            <button
-              className={styles.cancelIcon}
-              onClick={closeRedeemModal}
-              style={{ top: redeemedCodeData ? '-20px' : '-11px' }}
-            >
+          <div className={styles.modal}>
+            <button className={styles.cancelIcon} onClick={closeRedeemModal}>
               <CancelIcon />
             </button>
-            <div
-              className={styles.codeTreeCount}
-              style={{ marginTop: '-34px', fontSize: '38px' }}
-            >
+
+            <div className={styles.codeTreeCount}>
               {getFormattedNumber(
                 i18n.language,
                 Number(redeemedCodeData.units)
@@ -175,24 +165,19 @@ const ReedemCode: FC = () => {
                 {t('common:trees', { count: Number(redeemedCodeData.units) })}
               </span>
             </div>
-            <div
-              className={styles.codeTreeCount}
-              style={{ marginBottom: '14px' }}
-            >
+
+            <div className={styles.codeTreeCount}>
               <span>{t('redeem:successfullyRedeemed')}</span>
             </div>
             <div>
-              <button
-                className="primaryButton"
-                onClick={handleCode}
-                style={{ marginTop: '10px' }}
-              >
+              <button className="primaryButton" onClick={handleCode}>
                 {t('redeem:redeemAnotherCode')}
               </button>
             </div>
           </div>
         ) : (
-          <div className={`${styles.modal} ${styles.modalFix}`}>
+          // if redeem code is invalid and  redeem process failed
+          <div className={styles.modal}>
             <button className={styles.cancelIcon} onClick={closeRedeemModal}>
               <CancelIcon />
             </button>
@@ -214,11 +199,7 @@ const ReedemCode: FC = () => {
             </div>
             {errorMessage && (
               <div>
-                <button
-                  className="primaryButton"
-                  onClick={handleCode}
-                  style={{ marginTop: '10px' }}
-                >
+                <button className="primaryButton" onClick={handleCode}>
                   {t('redeem:redeemAnotherCode')}
                 </button>
               </div>

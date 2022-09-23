@@ -5,9 +5,9 @@
   background-color: $backgroundColor;
   border: 0px;
   border-radius: 8px;
-  padding: 30px 56px;
+  padding: 30px 56px 49px;
   max-width: 80vw;
-  min-width: 320px;
+  min-width: 427px;
   overflow: hidden;
   outline: none;
   display: flex;
@@ -18,14 +18,12 @@
     font-weight: bold;
     color: $primaryFontColor;
   }
-}
-
-.modalFix {
-  max-height: 279px;
-  max-width: 400px;
-  min-height: 225px;
-  min-width: 438px;
-}
+  >div {
+    >button{
+      margin-top: 20px;
+    }
+  }
+ }
 
 .errorAndSpinnerDiv {
   justify-content: center;
@@ -105,7 +103,7 @@
 }
 
 .codeTreeCount {
-  font-size: fontXXXLarge;
+  font-size: 2rem;
   font-weight: bold;
   display: flex;
   flex-direction: row;
