@@ -121,6 +121,8 @@ export default function PlantLocationDetails({
     }
   };
 
+  console.log(plantLocation);
+
   return (
     <>
       {plantLocation && (
@@ -254,6 +256,9 @@ export default function PlantLocationDetails({
                   {t('sampleTrees')} (
                   {plantLocation?.samplePlantLocations?.length})
                 </div>
+                <h4>
+                  <b>{t('latestMeasurements')}</b>
+                </h4>
                 {plantLocation.samplePlantLocations &&
                   plantLocation.samplePlantLocations.map(
                     (spl: any, index: number) => {
@@ -272,10 +277,12 @@ export default function PlantLocationDetails({
                               : t('unknown')}
                           </span>
                           <br />
-                          {spl.tag ? `${t('tag')} #${spl.tag} • ` : null}
-                          {spl?.measurements?.height}
-                          {t('meterHigh')} • {spl?.measurements?.width}
-                          {t('cmWide')}
+                          {spl.status !== 'dead'
+                            ? `${spl.tag ? `${t('tag')} #${spl.tag} • ` : ''}
+                          ${spl?.measurements?.height}
+                          ${t('meterHigh')} • ${spl?.measurements?.width}
+                          ${t('cmWide')}`
+                            : ` ${spl?.status} • ${spl?.statusReason}`}
                         </div>
                       );
                     }
