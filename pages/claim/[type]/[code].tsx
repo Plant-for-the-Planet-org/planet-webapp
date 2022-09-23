@@ -72,6 +72,9 @@ function ClaimDonation(): ReactElement {
       router.push(`/claim/gift/${inputCode}`);
       setOpenInputCodeModal(false);
     }
+    if (router.query.code && inputCode) {
+      redeemingCode(router.query.code);
+    }
   };
 
   const closeRedeem = () => {
