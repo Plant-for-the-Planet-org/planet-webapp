@@ -120,9 +120,6 @@ export default function PlantLocationDetails({
       }
     }
   };
-
-  console.log(plantLocation);
-
   return (
     <>
       {plantLocation && (
@@ -203,7 +200,6 @@ export default function PlantLocationDetails({
                   </div>
                 )}
             </div>
-
             {plantLocation.type === 'multi' && (
               <div className={styles.singleDetail}>
                 <div className={styles.detailTitle}>
@@ -249,7 +245,6 @@ export default function PlantLocationDetails({
                 })}
               </div>
             )}
-
             {plantLocation.type === 'multi' && (
               <div className={styles.singleDetail}>
                 <div className={styles.detailTitle}>
@@ -308,11 +303,17 @@ export default function PlantLocationDetails({
               plantLocation.type === 'single') &&
               plantLocation.measurements && (
                 <div className={styles.singleDetail}>
-                  <div className={styles.detailTitle}>{t('measurements')}</div>
+                  <div className={styles.detailTitle}>
+                    {t('latestMeasurements')}
+                  </div>
                   <div className={styles.detailValue}>
-                    {plantLocation?.measurements?.height}
-                    {t('meterHigh')} • {plantLocation?.measurements?.width}
-                    {t('cmWide')}
+                    {plantLocation.status !== 'dead'
+                      ? `${plantLocation?.measurements?.height}
+                            ${t('meterHigh')} • ${
+                          plantLocation?.measurements?.width
+                        }
+                            ${t('cmWide')}`
+                      : ` ${plantLocation?.status} • ${plantLocation?.statusReason}`}
                   </div>
                 </div>
               )}
