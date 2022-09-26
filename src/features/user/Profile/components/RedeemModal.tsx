@@ -5,7 +5,7 @@ import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import i18next from '../../../../../i18n';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useForm } from 'react-hook-form';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
@@ -21,28 +21,23 @@ interface RedeemModal {
 type FormData = {
   code: string;
 };
+
 export default function RedeemModal({
   redeemModalOpen,
   handleRedeemModalClose,
-}: RedeemModal) {
+}: RedeemModal): ReactElement | null {
   const { t, i18n, ready } = useTranslation([
     'me',
     'common',
     'donate',
     'redeem',
   ]);
-
   const { user, contextLoaded, token, setUser } =
     React.useContext(UserPropsContext);
-
   const [errorMessage, setErrorMessage] = React.useState('');
-
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [validCodeData, setValidCodeData] = React.useState<{} | undefined>();
-  const [codeRedeemed, setCodeRedeemed] = React.useState(false);
   const [isCodeRedeemed, setIsCodeRedeemed] = React.useState(false);
-
-  const [code, setCode] = React.useState<string | undefined>();
   const [inputCode, setInputCode] = React.useState('');
 
   const handleAnotherCode = () => {
@@ -69,10 +64,8 @@ export default function RedeemModal({
           setErrorMessage(t('redeem:invalidCode'));
           setIsUploadingData(false);
         } else if (res.status === 'redeemed') {
-          setCode(data.code);
           setIsCodeRedeemed(true);
           setValidCodeData(res);
-          console.log(res);
           if (res.units > 0) {
             const cloneUser = { ...user };
             cloneUser.score.received = cloneUser.score.received + res.units;
@@ -87,7 +80,6 @@ export default function RedeemModal({
 
   const closeRedeem = () => {
     setIsCodeRedeemed(false);
-    setCodeRedeemed(false);
     handleRedeemModalClose();
     setInputCode('');
     setErrorMessage('');
