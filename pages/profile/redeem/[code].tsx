@@ -11,10 +11,11 @@ import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsC
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
 import MaterialTextField from '../../../src/features/common/InputTypes/MaterialTextField';
+import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
 
 type RedeemCodeType = string | boolean | undefined | null;
 type FormInput = {
-  code: string | null;
+  code: string | string[] | null;
 };
 
 const { useTranslation } = i18next;
@@ -31,9 +32,8 @@ const ReedemCode: FC = () => {
   const [code, setCode] = useState<RedeemCodeType>('');
   const [inputCode, setInputCode] = useState<RedeemCodeType>('');
   const [errorMessage, setErrorMessage] = useState<RedeemCodeType>('');
-  const [redeemedCodeData, setRedeemedCodeData] = useState<{
-    units: string | undefined;
-  }>();
+  const [redeemedCodeData, setRedeemedCodeData] =
+    useState<RedeemedCodeData | null>();
   const [openInputTextFieldModal, setOpenTextFieldModal] =
     useState<RedeemCodeType>(false);
 
@@ -61,7 +61,8 @@ const ReedemCode: FC = () => {
       setOpenTextFieldModal(false);
     }
     if (router.query.code && inputCode) {
-      redeemingCode(router.query.code);
+      const codeFromUrl = router.query.code;
+      redeemingCode(codeFromUrl);
     }
   };
 
