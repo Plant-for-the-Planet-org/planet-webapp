@@ -41,7 +41,7 @@
   "yearOfAbandonment": "Approx. year of Abandonment",
   "firstTreePlanted": "First tree planted",
   "plantingDensity": "Planting Density",
-  "maxPlantingDensity": "Maximum Planting Density",
+  "maxPlantingDensity": "Max Planting Density (optional)",
   "employeeCount": "Employee Count",
   "endangeredSpeciesValidation": "Not a Valid Input",
   "endangeredSpecies": "Endangered Species",

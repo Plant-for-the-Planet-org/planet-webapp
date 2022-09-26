@@ -179,8 +179,21 @@
   font-size: $fontSmall;
   color: $primaryFontColor;
   display: flex;
-  flex-direction: row;
+  flex-direction:row;
   justify-content: space-between;
+}
+
+.infoTextMaxDensity {
+  padding-right: 51px;
+  display:flex;
+  flex-direction: row;
+  >div{
+    margin-left: 1px;
+  }
+  >h4 {
+    width: 104px;
+    margin-left: 4px;
+  }
 }
 
 .infoTextButton {

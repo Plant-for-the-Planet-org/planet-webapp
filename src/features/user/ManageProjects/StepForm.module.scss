@@ -36,6 +36,18 @@
   }
 }
 
+.inputEndAdornment {
+  margin-left: 4px;
+  width: 100%;
+  text-align: right;
+  font-size: 14px;
+}
+
+.hyphen {
+  font-size: 40px;
+  margin-top: 16px
+}
+
 .reviewContent {
   display: flex;
   flex-direction: column;

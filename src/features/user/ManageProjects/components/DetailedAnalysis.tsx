@@ -10,7 +10,6 @@ import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import { useRouter } from 'next/router';
 import { makeStyles } from '@mui/styles';
-import { MenuItem, Grid } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
@@ -804,15 +803,7 @@ export default function DetailedAnalysis({
                     }}
                     InputProps={{
                       endAdornment: (
-                        <p
-                          className={styles.inputEndAdornment}
-                          style={{
-                            marginLeft: '4px',
-                            width: '100%',
-                            textAlign: 'right',
-                            fontSize: '14px',
-                          }}
-                        >
+                        <p className={styles.inputEndAdornment}>
                           {t('manageProjects:treePerHa')}
                         </p>
                       ),
@@ -824,7 +815,7 @@ export default function DetailedAnalysis({
                     </span>
                   )}
                 </div>
-                <div style={{ width: '20px' }}></div>
+                <div className={styles.hyphen}>-</div>
                 <div
                   className={styles.formFieldHalf}
                   data-test-id="maxPlantingDensity"
@@ -834,27 +825,14 @@ export default function DetailedAnalysis({
                     variant="outlined"
                     name="maxPlantingDensity"
                     inputRef={register({
-                      required: {
-                        value: true,
-                        message: t(
-                          'manageProjects:maxPlantingDensityValidation'
-                        ),
-                      },
+                      required: false,
                     })}
                     onInput={(e) => {
                       e.target.value = e.target.value.replace(/[^0-9]/g, '');
                     }}
                     InputProps={{
                       endAdornment: (
-                        <p
-                          className={styles.inputEndAdornment}
-                          style={{
-                            marginLeft: '4px',
-                            width: '100%',
-                            textAlign: 'right',
-                            fontSize: '14px',
-                          }}
-                        >
+                        <p className={styles.inputEndAdornment}>
                           {' '}
                           {t('manageProjects:treePerHa')}
                         </p>
