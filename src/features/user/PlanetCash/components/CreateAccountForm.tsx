@@ -7,6 +7,7 @@ import i18next from '../../../../../i18n';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { CountryType } from '../../../common/types/country';
 import { useRouter } from 'next/router';
 
@@ -21,6 +22,7 @@ const CreateAccountForm = ({
   isPlanetCashActive,
 }: Props): ReactElement | null => {
   const { t, ready } = useTranslation(['planetcash', 'country']);
+  const { setAccounts } = usePlanetCash();
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
@@ -39,12 +41,13 @@ const CreateAccountForm = ({
       handleError
     );
     if (res?.id) {
-      // show success message
+      // show success message and update accounts in context
       setIsAccountCreated(true);
+      setAccounts([res]);
       // go to accounts tab
       setTimeout(() => {
         router.push('/profile/planetcash');
-      }, 3000);
+      }, 1000);
     } else {
       setIsProcessing(false);
       if (res && res['error_type'] === 'planet_cash_account_error') {

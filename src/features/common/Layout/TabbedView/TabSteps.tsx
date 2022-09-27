@@ -1,11 +1,16 @@
-import React, { ReactElement, SyntheticEvent } from 'react';
+import React, {
+  ReactElement,
+  SyntheticEvent,
+  useEffect,
+  useState,
+} from 'react';
 import { useRouter } from 'next/router';
 import { Tab, Tabs } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { TabItem } from './TabbedViewTypes';
 
 interface TabStepsProps {
-  step: number;
+  step: number | string;
   tabItems: TabItem[];
 }
 
@@ -33,6 +38,7 @@ export default function TabSteps({
   tabItems = [],
 }: TabStepsProps): ReactElement | null {
   const router = useRouter();
+  const [isStepFound, setIsStepFound] = useState(false);
 
   const handleTabChange = (event: SyntheticEvent) => {
     if (event.currentTarget instanceof HTMLButtonElement) {
@@ -40,6 +46,12 @@ export default function TabSteps({
       router.push(targetLink);
     }
   };
+
+  useEffect(() => {
+    // sets value for Tabs component only if the specified step is within the list of tabs
+    if (tabItems)
+      setIsStepFound(tabItems.some((tabItem) => tabItem.step === step));
+  }, [step, tabItems]);
 
   const renderTabs = () => {
     return tabItems.map((tabItem, index) => {
@@ -49,6 +61,7 @@ export default function TabSteps({
           label={tabItem.label}
           data-link={tabItem.link}
           disabled={tabItem.disabled}
+          value={tabItem.step}
         />
       );
     });
@@ -58,8 +71,8 @@ export default function TabSteps({
     <StyledTabs
       orientation="vertical"
       variant="scrollable"
-      aria-label="form-steps"
-      value={step}
+      aria-label="form-step"
+      value={isStepFound ? step : false}
       TabIndicatorProps={{ children: <span /> }}
       onChange={handleTabChange}
     >

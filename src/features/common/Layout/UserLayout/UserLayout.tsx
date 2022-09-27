@@ -148,6 +148,7 @@ function UserLayout(props: any): ReactElement {
         {
           title: t('me:bulkCodes'),
           path: '/profile/bulk-codes',
+          flag: t('me:beta'),
         },
       ],
     },
@@ -171,6 +172,7 @@ function UserLayout(props: any): ReactElement {
         {
           title: t('me:donationLink'),
           path: '/profile/donation-link',
+          flag: t('me:new'),
           // hideItem: true,
         },
       ],
@@ -458,6 +460,7 @@ function NavLink({
                 }}
               >
                 {subLink.title}
+                {subLink.flag && <span>{subLink.flag}</span>}
               </div>
             );
           }
