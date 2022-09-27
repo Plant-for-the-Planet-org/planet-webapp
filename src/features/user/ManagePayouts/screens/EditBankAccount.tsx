@@ -9,6 +9,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import BankDetailsForm, { FormData } from '../components/BankDetailsForm';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import CustomSnackbar from '../../../common/CustomSnackbar';
+import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
@@ -20,6 +21,7 @@ const FormHeader = styled('div')(({ theme }) => ({
   alignItems: 'center',
   gap: 16,
   marginBottom: 24,
+  width: '100%',
   '& .formTitle': {
     color: theme.palette.text.secondary,
     fontSize: theme.typography.h2.fontSize,
@@ -123,7 +125,7 @@ const EditBankAccount = (): ReactElement | null => {
   }, [accounts, router.query.id]);
 
   return accountToEdit !== null && payoutMinAmounts && ready ? (
-    <>
+    <CenteredContainer>
       <FormHeader>
         <Link href="/profile/payouts" passHref>
           <a>
@@ -145,7 +147,7 @@ const EditBankAccount = (): ReactElement | null => {
           handleClose={closeSnackbar}
         />
       )}
-    </>
+    </CenteredContainer>
   ) : null;
 };
 

@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import i18next from '../../../../../i18n';
 import BankDetailsForm, { FormData } from '../components/BankDetailsForm';
 import CustomSnackbar from '../../../common/CustomSnackbar';
+import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 
@@ -90,7 +91,7 @@ const AddBankAccount = (): ReactElement | null => {
   };
 
   return payoutMinAmounts ? (
-    <>
+    <CenteredContainer>
       <BankDetailsForm
         payoutMinAmounts={payoutMinAmounts}
         handleSave={handleSaveAccount}
@@ -103,7 +104,7 @@ const AddBankAccount = (): ReactElement | null => {
           handleClose={closeSnackbar}
         />
       )}
-    </>
+    </CenteredContainer>
   ) : null;
 };
 

@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Button, MenuItem, CircularProgress } from '@mui/material';
 import ReactHookFormSelect from '../components/ReactHookFormSelect';
 import StyledForm from '../../../common/Layout/StyledForm';
+import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import i18n from '../../../../../i18n';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
@@ -67,7 +68,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
 
   if (ready) {
     return (
-      <>
+      <CenteredContainer>
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
           <p>{t('payoutInformation1')}</p>
           <p>{t('payoutInformation2')}</p>
@@ -122,7 +123,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
             handleClose={closeSnackbar}
           />
         )}
-      </>
+      </CenteredContainer>
     );
   }
   return null;
