@@ -27,11 +27,9 @@ const AddBankAccount = (): ReactElement | null => {
 
   const handleSaveAccount = async (data: FormData) => {
     setIsProcessing(true);
-    // TODOO - send clean object??
     const accountData = {
       ...data,
       currency: data.currency === PayoutCurrency.DEFAULT ? '' : data.currency,
-      holderType: 'individual', //TODOO - remove this if not needed, or update form if necessary
     };
     const res = await postAuthenticatedRequest<Payouts.BankAccount>(
       '/app/accounts',
