@@ -142,7 +142,7 @@ export default function ManagePayouts({
     }
   };
 
-  return ready && tabConfig.length > 0 ? (
+  return ready ? (
     <DashboardView title={t('title')} subtitle={<p>{t('description')}</p>}>
       <TabbedView step={step} tabItems={tabConfig}>
         {renderStep()}
