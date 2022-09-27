@@ -18,9 +18,28 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+<<<<<<< HEAD
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+=======
+import { SxProps } from '@mui/material';
+import themeProperties from '../../../../theme/themeProperties';
+>>>>>>> develop
 
 const { useTranslation } = i18next;
+
+const dialogSx: SxProps = {
+  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
+    backgroundColor: themeProperties.primaryColor,
+    color: '#fff',
+  },
+
+  '& .MuiPickersDay-dayWithMargin': {
+    '&:hover': {
+      backgroundColor: themeProperties.primaryColor,
+      color: '#fff',
+    },
+  },
+};
 
 interface Props {
   projectGUID: String;
@@ -297,6 +316,9 @@ function ProjectCertificates({
                   })}
                   maxDate={new Date()}
                   minDate={tenYearsAgo}
+                  DialogProps={{
+                    sx: dialogSx,
+                  }}
                 />
               </LocalizationProvider>
               {errors.issueDate && (

@@ -117,7 +117,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
         tenantID
       );
       // if request is successful, it will have a uid
-      if (res.uid) {
+      if (res?.uid) {
         resetBulkContext();
         setIsSubmitted(true);
         setTimeout(() => {
@@ -126,7 +126,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
       } else {
         setIsProcessing(false);
         // TODOO - Extract this error handling logic elsewhere
-        if (res['error_type'] === 'payment_error') {
+        if (res && res['error_type'] === 'payment_error') {
           switch (res['error_code']) {
             case 'planet_cash_invalid_project':
               handleError({

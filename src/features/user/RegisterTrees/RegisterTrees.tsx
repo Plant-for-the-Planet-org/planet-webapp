@@ -1,4 +1,4 @@
-import { MenuItem } from '@mui/material';
+import { MenuItem, SxProps } from '@mui/material';
 
 import * as d3 from 'd3-ease';
 import dynamic from 'next/dynamic';
@@ -29,11 +29,26 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import themeProperties from '../../../theme/themeProperties';
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   ssr: false,
   loading: () => <p></p>,
 });
+
+const dialogSx: SxProps = {
+  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
+    backgroundColor: themeProperties.primaryColor,
+    color: '#fff',
+  },
+
+  '& .MuiPickersDay-dayWithMargin': {
+    '&:hover': {
+      backgroundColor: themeProperties.primaryColor,
+      color: '#fff',
+    },
+  },
+};
 
 interface Props {}
 
@@ -278,6 +293,9 @@ export default function RegisterTrees({}: Props) {
                         minDate={new Date(new Date().setFullYear(1950))}
                         inputFormat="MMMM d, yyyy"
                         maxDate={new Date()}
+                        DialogProps={{
+                          sx: dialogSx,
+                        }}
                       />
                     )}
                     name="plantDate"

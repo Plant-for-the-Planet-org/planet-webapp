@@ -18,9 +18,28 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+<<<<<<< HEAD
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+=======
+import { SxProps } from '@mui/material';
+import themeProperties from '../../../../theme/themeProperties';
+>>>>>>> develop
 
 const { useTranslation } = i18next;
+
+const yearDialogSx: SxProps = {
+  '& .PrivatePickersYear-yearButton': {
+    '&:hover': {
+      backgroundColor: themeProperties.primaryColor,
+      color: '#fff',
+    },
+
+    '&.Mui-selected': {
+      backgroundColor: `${themeProperties.primaryColor} !important`,
+      color: '#fff',
+    },
+  },
+};
 
 interface Props {
   handleNext: Function;
@@ -256,6 +275,9 @@ export default function ProjectSpending({
                         disableFuture
                         minDate={fiveYearsAgo}
                         maxDate={new Date()}
+                        DialogProps={{
+                          sx: yearDialogSx,
+                        }}
                       />
                     )}
                     defaultValue={new Date()}

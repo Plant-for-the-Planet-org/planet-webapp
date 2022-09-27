@@ -485,6 +485,7 @@ input:-webkit-autofill {
 .suggestions-container {
   position: absolute;
   z-index: 10;
+  margin-top: 57px;
   color: $primaryFontColor;
   background-color: $backgroundColorDark;
   max-height: 200px;

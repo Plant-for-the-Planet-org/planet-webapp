@@ -35,7 +35,12 @@ const ImageSlider = dynamic(
 
 function SingleProjectDetails({}: Props): ReactElement {
   const router = useRouter();
-  const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
+  const { t, i18n, ready } = useTranslation([
+    'donate',
+    'common',
+    'country',
+    'maps',
+  ]);
   const {
     project,
     geoJson,
@@ -130,8 +135,8 @@ function SingleProjectDetails({}: Props): ReactElement {
           className="toggleButton"
         >
           {hideProjectContainer
-            ? 'Show Project Details'
-            : 'Hide Project Details'}
+            ? t('maps:showProjectDetails')
+            : t('maps:hideProjectDetails')}
         </MuiButton>
       )}
       <div

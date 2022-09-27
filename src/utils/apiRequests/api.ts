@@ -126,7 +126,7 @@ export async function getRequest<T>(
   return result as unknown as T;
 }
 
-export async function getAuthenticatedRequest(
+export async function getAuthenticatedRequest<T>(
   url: any,
   token: any,
   header: any = null,
@@ -135,7 +135,8 @@ export async function getAuthenticatedRequest(
   queryParams?: { [key: string]: string },
   version?: string,
   tenantID?: string
-): Promise<any> {
+): Promise<T> {
+
   let result = {};
   const lang = localStorage.getItem('language') || 'en';
   const query: any = { ...queryParams };
@@ -156,7 +157,7 @@ export async function getAuthenticatedRequest(
       handleApiError(res.status, result, errorHandler, redirect);
     })
     .catch((err) => console.log(`Something went wrong: ${err}`));
-  return result;
+  return result as unknown as T;
 }
 
 export async function postAuthenticatedRequest(
@@ -168,25 +169,39 @@ export async function postAuthenticatedRequest(
   tenantID?: string
 ): Promise<any> {
   if (validateToken(token)) {
-    const res = await fetch(process.env.API_ENDPOINT + url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'tenant-key': `${tenantID}`,
-        'X-SESSION-ID': await getsessionId(),
-        Authorization: `Bearer ${token}`,
-        'x-locale': `${
-          localStorage.getItem('language')
-            ? localStorage.getItem('language')
-            : 'en'
-        }`,
-        ...(headers ? headers : {}),
-      },
-    });
-    const result = await res.json();
-    handleApiError(res.status, result, errorHandler);
-    return result;
+    try {
+      const res = await fetch(process.env.API_ENDPOINT + url, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+          'tenant-key': `${TENANT_ID}`,
+          'X-SESSION-ID': await getsessionId(),
+          Authorization: `Bearer ${token}`,
+          'x-locale': `${
+            localStorage.getItem('language')
+              ? localStorage.getItem('language')
+              : 'en'
+          }`,
+          ...(headers ? headers : {}),
+        },
+      });
+      const result = await res.json();
+      handleApiError(res.status, result, errorHandler);
+      return result;
+    } catch (err) {
+      // Fetch API only throws errors for network errors
+      console.log(
+        'Could not reach the server. Please check your internet connection.'
+      );
+      if (errorHandler) {
+        errorHandler({
+          type: 'error',
+          message: 'connectionError',
+        });
+      }
+      return null;
+    }
   } else {
     if (errorHandler) {
       errorHandler({
@@ -246,8 +261,8 @@ export async function deleteAuthenticatedRequest(
             : 'en'
         }`,
       },
-    }).then((res) => {
-      result = res.status;
+    }).then(async (res) => {
+      result = res.status === 400 ? await res.json() : res.status;
       handleApiError(res.status, result, errorHandler);
     });
   } else {
