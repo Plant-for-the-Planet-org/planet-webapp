@@ -3,7 +3,7 @@ import TopProgressBar from '../../../src/features/common/ContentLoaders/TopProgr
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import ManagePayouts, {
-  ManagePayoutSteps,
+  ManagePayoutTabs,
 } from '../../../src/features/user/ManagePayouts';
 import i18next from '../../../i18n';
 
@@ -25,7 +25,7 @@ export default function OverviewPage(): ReactElement {
           <title>{ready ? t('managePayouts.titleOverview') : ''}</title>
         </Head>
         <ManagePayouts
-          step={ManagePayoutSteps.OVERVIEW}
+          step={ManagePayoutTabs.OVERVIEW}
           setProgress={setProgress}
         />
       </UserLayout>

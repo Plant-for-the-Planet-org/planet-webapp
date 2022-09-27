@@ -24,14 +24,14 @@ import { useRouter } from 'next/router';
 
 const { useTranslation } = i18next;
 
-export enum ManagePayoutSteps {
-  OVERVIEW = 0,
-  PAYOUT_SCHEDULE = 1,
-  ADD_BANK_DETAILS = 2,
+export enum ManagePayoutTabs {
+  OVERVIEW = 'overview',
+  PAYOUT_SCHEDULE = 'payout_schedule',
+  ADD_BANK_DETAILS = 'add_bank_details',
 }
 
 interface ManagePayoutsProps {
-  step: number;
+  step: ManagePayoutTabs;
   setProgress?: (progress: number) => void;
   isEdit?: boolean;
 }
@@ -109,15 +109,17 @@ export default function ManagePayouts({
         {
           label: t('tabOverview'),
           link: '/profile/payouts',
-          hasList: !isEdit,
+          step: ManagePayoutTabs.OVERVIEW,
         },
         {
           label: t('tabPayoutSchedule'),
           link: '/profile/payouts/schedule',
+          step: ManagePayoutTabs.PAYOUT_SCHEDULE,
         },
         {
           label: t('tabAddBankDetails'),
           link: '/profile/payouts/add-bank-details',
+          step: ManagePayoutTabs.ADD_BANK_DETAILS,
         },
       ]);
     }
@@ -125,11 +127,11 @@ export default function ManagePayouts({
 
   const renderStep = () => {
     switch (step) {
-      case ManagePayoutSteps.PAYOUT_SCHEDULE:
+      case ManagePayoutTabs.PAYOUT_SCHEDULE:
         return <PayoutScheduleForm />;
-      case ManagePayoutSteps.ADD_BANK_DETAILS:
+      case ManagePayoutTabs.ADD_BANK_DETAILS:
         return <AddBankAccount />;
-      case ManagePayoutSteps.OVERVIEW:
+      case ManagePayoutTabs.OVERVIEW:
         return isEdit ? (
           <EditBankAccount />
         ) : (
@@ -142,11 +144,7 @@ export default function ManagePayouts({
 
   return ready && tabConfig.length > 0 ? (
     <DashboardView title={t('title')} subtitle={<p>{t('description')}</p>}>
-      <TabbedView
-        step={step}
-        tabItems={tabConfig}
-        isShowingList={tabConfig[step]?.hasList}
-      >
+      <TabbedView step={step} tabItems={tabConfig}>
         {renderStep()}
       </TabbedView>
     </DashboardView>

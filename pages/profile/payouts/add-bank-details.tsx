@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import ManagePayouts, {
-  ManagePayoutSteps,
+  ManagePayoutTabs,
 } from '../../../src/features/user/ManagePayouts';
 import i18next from '../../../i18n';
 
@@ -15,7 +15,7 @@ export default function AddBankDetailsPage(): ReactElement {
       <Head>
         <title>{ready ? t('managePayouts.titleAddBankDetails') : ''}</title>
       </Head>
-      <ManagePayouts step={ManagePayoutSteps.ADD_BANK_DETAILS} />
+      <ManagePayouts step={ManagePayoutTabs.ADD_BANK_DETAILS} />
     </UserLayout>
   );
 }

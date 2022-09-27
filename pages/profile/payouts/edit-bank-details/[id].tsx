@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import UserLayout from '../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import ManagePayouts, {
-  ManagePayoutSteps,
+  ManagePayoutTabs,
 } from '../../../../src/features/user/ManagePayouts';
 import i18next from '../../../../i18n';
 
@@ -16,7 +16,7 @@ export default function EditBankDetailsPage(): ReactElement {
       <Head>
         <title>{ready ? t('managePayouts.titleEditBankDetails') : ''}</title>
       </Head>
-      <ManagePayouts step={ManagePayoutSteps.OVERVIEW} isEdit={true} />
+      <ManagePayouts step={ManagePayoutTabs.OVERVIEW} isEdit={true} />
     </UserLayout>
   );
 }
