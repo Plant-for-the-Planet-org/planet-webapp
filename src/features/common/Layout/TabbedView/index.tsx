@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { Grid, styled } from '@mui/material';
 import TabSteps from './TabSteps';
 import { TabItem } from './TabbedViewTypes';
@@ -29,13 +29,29 @@ export default function TabbedView({
   step,
   tabItems,
 }: TabbedViewProps): ReactElement {
+  const [isStepFound, setIsStepFound] = useState(false);
+  const [stepToRender, setStepToRender] = useState<string | number | false>(
+    false
+  );
+
+  useEffect(() => {
+    // sets value for Tabs component only if the specified step is within the list of tabs
+    if (tabItems && tabItems.length > 0)
+      setIsStepFound(tabItems.some((tabItem) => tabItem.step === step));
+  }, [step, tabItems]);
+
+  useEffect(() => {
+    setStepToRender(step);
+  }, [isStepFound]);
+
+  console.log('Render tabbed view');
   return (
     <Grid container className="TabbedView">
       <Grid
         item
         xs={12}
         md={3}
-        component={() => <TabSteps step={step} tabItems={tabItems} />}
+        component={() => <TabSteps step={stepToRender} tabItems={tabItems} />}
       ></Grid>
       <Grid
         item
