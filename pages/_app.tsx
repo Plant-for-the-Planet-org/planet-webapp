@@ -97,30 +97,6 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
 
   const config = tenantConfig();
 
-  // const fetchInterceptor = () => {
-  //   const { fetch: originalFetch } = window;
-  //   window.fetch = async (...args) => {
-  //     let [resource, config] = args;
-  //     console.log(tenantID);
-  //     if (config && config.headers) {
-  //       config.headers['tenant-key'] = localStorage.getItem('tenantID');
-  //     }
-
-  //     // request interceptor starts
-  //     // resource = 'https://jsonplaceholder.typicode.com/todos/2';
-  //     // request interceptor ends
-
-  //     const response = await originalFetch(resource, config);
-
-  //     // response interceptor here
-  //     return response;
-  //   };
-  // };
-
-  // React.useEffect(() => {
-  //   fetchInterceptor();
-  // }, []);
-
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
   };
