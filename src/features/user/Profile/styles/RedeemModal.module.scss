@@ -5,7 +5,7 @@
   background-color: $backgroundColor;
   border: 0px;
   border-radius: 8px;
-  padding: 30px 56px;
+  padding: 20px 56px;
   max-width: 90vw;
   min-width: 320px;
   overflow: hidden;
@@ -21,30 +21,27 @@
 }
 
 .fixModal {
-  max-height: 279px;
+  max-height: 260px;
   max-width: 400px;
-  min-height: 262px;
+  min-height: 260px;
   min-width: 400px;
   align-items: center;
   justify-content: center;
-}
+  padding-top: 30px;
+  position: relative;
+ }
 
 
 .crossButtonDiv {
-  display: flex;
-  position: relative;
-  width: 100%;
-  justify-content: center;
+ position:absolute;
+ left: 362px;
+ top: 13px
 }
 
 .crossButton {
   width: 15px;
-  margin-left: 10px;
-  position: absolute;
   cursor: pointer;
-  right: -34px;
-  top: -17px
-}
+ }
 
 .redeemCode{
   margin-top: 24px;
@@ -67,7 +64,7 @@
 }
 
 .inputField {
-  margin-top: 20px;
+  margin-top: 10px;
   min-width: 208px;
 }
 

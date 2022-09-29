@@ -100,113 +100,103 @@ export default function RedeemModal({
       }}
     >
       <Fade in={redeemModalOpen}>
-        <div className={`${styles.modal} ${styles.fixModal}`}>
-          {isCodeRedeemed && validCodeData ? (
-            // after successful redeeemed code
-            <>
-              <div
-                className={styles.codeTreeCount}
-                style={{ fontSize: '2rem' }}
-              >
-                {getFormattedNumber(i18n.language, Number(validCodeData.units))}
-                <span>
-                  {t('common:tree', {
-                    count: Number(validCodeData.units),
-                  })}
-                </span>
-              </div>
-              <div className={styles.crossButtonDiv}>
-                <button
-                  className={styles.crossButton}
-                  style={{ top: '-85px', right: '-34px' }}
-                  onClick={closeRedeem}
-                >
-                  <CancelIcon color={styles.primaryFontColor} />
-                </button>
-                <span className={styles.codeTreeCount}>
-                  {t('redeem:successfullyRedeemed')}
-                </span>
-              </div>
+        {isCodeRedeemed && validCodeData ? (
+          // after successful redeeemed code
+          <div className={`${styles.modal} ${styles.fixModal}`}>
+            <div className={styles.crossButtonDiv}>
+              <button className={styles.crossButton} onClick={closeRedeem}>
+                <CancelIcon color={styles.primaryFontColor} />
+              </button>
+            </div>
+            <div className={styles.codeTreeCount} style={{ fontSize: '2rem' }}>
+              {getFormattedNumber(i18n.language, Number(validCodeData.units))}
+              <span>
+                {t('common:tree', {
+                  count: Number(validCodeData.units),
+                })}
+              </span>
+            </div>
 
+            <span className={styles.codeTreeCount}>
+              {t('redeem:successfullyRedeemed')}
+            </span>
+
+            <button
+              className={`primaryButton ${styles.redeemCode}`}
+              onClick={handleAnotherCode}
+            >
+              {t('redeem:redeemAnotherCode')}
+            </button>
+          </div>
+        ) : (
+          // input redeem modal
+          <div className={`${styles.modal} ${styles.fixModal}`}>
+            <div className={styles.crossButtonDiv}>
+              <button className={styles.crossButton} onClick={closeRedeem}>
+                <CancelIcon color={styles.primaryFontColor} />
+              </button>
+            </div>
+
+            <h4 style={{ fontWeight: '700' }}>{t('me:redeem')}</h4>
+
+            <div className={styles.note}>
+              <p>{t('me:redeemDescription')}</p>
+            </div>
+
+            {!errorMessage && (
+              <div className={styles.inputField}>
+                <MaterialTextField
+                  inputRef={register({
+                    required: {
+                      value: true,
+                      message: t('redeem:enterRedeemCode'),
+                    },
+                  })}
+                  onChange={(event) => {
+                    event.target.value.startsWith('pp.eco/c/')
+                      ? setInputCode(
+                          event.target.value.replace('pp.eco/c/', '')
+                        )
+                      : setInputCode(event.target.value);
+                  }}
+                  value={inputCode}
+                  name={'code'}
+                  placeholder="XAD-1SA-5F1-A"
+                  label=""
+                  variant="outlined"
+                />
+              </div>
+            )}
+            {errors.code && (
+              <span className={styles.formErrors}>{errors.code.message}</span>
+            )}
+            {errorMessage && !errors.code && !isUploadingData && (
+              <span className={styles.formErrors}>{errorMessage}</span>
+            )}
+
+            {errorMessage && (
               <button
                 className={`primaryButton ${styles.redeemCode}`}
                 onClick={handleAnotherCode}
               >
                 {t('redeem:redeemAnotherCode')}
               </button>
-            </>
-          ) : (
-            // input redeem modal
-            <>
-              <div className={styles.crossButtonDiv}>
-                <h4 style={{ fontWeight: '700' }}>{t('me:redeem')}</h4>
-                <button
-                  className={styles.crossButton}
-                  onClick={closeRedeem}
-                  style={{ top: errorMessage ? '-39px' : '-17px' }}
-                >
-                  <CancelIcon color={styles.primaryFontColor} />
-                </button>
-              </div>
-
-              <div className={styles.note}>
-                <p>{t('me:redeemDescription')}</p>
-              </div>
-              {!errorMessage && (
-                <div className={styles.inputField}>
-                  <MaterialTextField
-                    inputRef={register({
-                      required: {
-                        value: true,
-                        message: t('redeem:enterRedeemCode'),
-                      },
-                    })}
-                    onChange={(event) => {
-                      event.target.value.startsWith('pp.eco/c/')
-                        ? setInputCode(
-                            event.target.value.replace('pp.eco/c/', '')
-                          )
-                        : setInputCode(event.target.value);
-                    }}
-                    value={inputCode}
-                    name={'code'}
-                    placeholder="XAD-1SA-5F1-A"
-                    label=""
-                    variant="outlined"
-                  />
-                </div>
-              )}
-              {errors.code && (
-                <span className={styles.formErrors}>{errors.code.message}</span>
-              )}
-              {errorMessage && !errors.code && !isUploadingData && (
-                <span className={styles.formErrors}>{errorMessage}</span>
-              )}
-
-              {errorMessage && (
-                <button
-                  className={`primaryButton ${styles.redeemCode}`}
-                  onClick={handleAnotherCode}
-                >
-                  {t('redeem:redeemAnotherCode')}
-                </button>
-              )}
-              {!errorMessage && (
-                <button
-                  id={'redeemCodeModal'}
-                  onClick={handleSubmit(redeemCode)}
-                  className={`primaryButton ${styles.redeemCode}`}
-                >
-                  {isUploadingData ? (
-                    <div className={styles.spinner}></div>
-                  ) : (
-                    t('redeem:redeemCode')
-                  )}
-                </button>
-              )}
-            </>
-          )}
-        </div>
+            )}
+            {!errorMessage && (
+              <button
+                id={'redeemCodeModal'}
+                onClick={handleSubmit(redeemCode)}
+                className={`primaryButton ${styles.redeemCode}`}
+              >
+                {isUploadingData ? (
+                  <div className={styles.spinner}></div>
+                ) : (
+                  t('redeem:redeemCode')
+                )}
+              </button>
+            )}
+          </div>
+        )}
       </Fade>
     </Modal>
   ) : null;
