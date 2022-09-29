@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import AppleIcon from '../../../../../public/assets/images/footer/AppStore';
-import GooglePlayIcon from '../../../../../public/assets/images/footer/GooglePlay';
+import React, { ReactElement, useEffect, useState } from 'react';
 import UNEPLogo from '../../../../../public/assets/images/footer/UNEPLogo';
 import World from '../../../../../public/assets/images/footer/World';
 import getLanguageName from '../../../../utils/language/getLanguageName';
@@ -15,7 +13,7 @@ import DarkModeSwitch from '../DarkModeSwitch.tsx';
 const { useTranslation } = i18next;
 
 // let styles = require('./Footer.module.css');
-export default function Footer() {
+export default function Footer(): ReactElement | null {
   const { t, i18n, ready } = useTranslation(['common']);
   const config = tenantConfig();
 
