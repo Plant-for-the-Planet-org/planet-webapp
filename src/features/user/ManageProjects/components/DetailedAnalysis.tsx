@@ -10,6 +10,7 @@ import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import { useRouter } from 'next/router';
 import { makeStyles } from '@mui/styles';
+import { SxProps } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
@@ -17,9 +18,36 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { style } from '@mui/system';
 
 const { useTranslation } = i18next;
+
+const dialogSx: SxProps = {
+  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
+    backgroundColor: themeProperties.primaryColor,
+    color: '#fff',
+  },
+
+  '& .MuiPickersDay-dayWithMargin': {
+    '&:hover': {
+      backgroundColor: themeProperties.primaryColor,
+      color: '#fff',
+    },
+  },
+};
+
+const yearDialogSx: SxProps = {
+  '& .PrivatePickersYear-yearButton': {
+    '&:hover': {
+      backgroundColor: themeProperties.primaryColor,
+      color: '#fff',
+    },
+
+    '&.Mui-selected': {
+      backgroundColor: `${themeProperties.primaryColor} !important`,
+      color: '#fff',
+    },
+  },
+};
 
 interface Props {
   handleNext: Function;
@@ -486,6 +514,9 @@ export default function DetailedAnalysis({
                         disableFuture
                         minDate={new Date(new Date().setFullYear(1950))}
                         maxDate={new Date()}
+                        DialogProps={{
+                          sx: yearDialogSx,
+                        }}
                       />
                     )}
                     name="yearAbandoned"
@@ -525,6 +556,9 @@ export default function DetailedAnalysis({
                         minDate={new Date(new Date().setFullYear(1950))}
                         inputFormat="d MMMM yyyy"
                         maxDate={new Date()}
+                        DialogProps={{
+                          sx: dialogSx,
+                        }}
                       />
                     )}
                     name="firstTreePlanted"
@@ -597,6 +631,9 @@ export default function DetailedAnalysis({
                         minDate={new Date(new Date().setFullYear(1950))}
                         views={['year']}
                         maxDate={new Date()}
+                        DialogProps={{
+                          sx: yearDialogSx,
+                        }}
                       />
                     )}
                     name="startingProtectionYear"
@@ -678,6 +715,9 @@ export default function DetailedAnalysis({
                       minDate={new Date(new Date().setFullYear(1950))}
                       views={['year']}
                       maxDate={new Date()}
+                      DialogProps={{
+                        sx: yearDialogSx,
+                      }}
                     />
                   )}
                   name="acquisitionYear"
@@ -831,6 +871,9 @@ export default function DetailedAnalysis({
                         disableFuture
                         minDate={new Date(new Date().setFullYear(1950))}
                         maxDate={new Date()}
+                        DialogProps={{
+                          sx: yearDialogSx,
+                        }}
                       />
                     )}
                     name="degradationYear"

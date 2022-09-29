@@ -14,11 +14,27 @@ import {
   Fade,
   Modal,
   FormControlLabel,
+  styled,
 } from '@mui/material';
 
-import { CalendarPicker as MuiCalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
+import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import themeProperties from '../../../theme/themeProperties';
+
+const MuiCalendarPicker = styled(CalendarPicker)({
+  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
+    backgroundColor: themeProperties.primaryColor,
+    color: '#fff',
+  },
+
+  '& .MuiPickersDay-dayWithMargin': {
+    '&:hover': {
+      backgroundColor: themeProperties.primaryColor,
+      color: '#fff',
+    },
+  },
+});
 
 export const PauseModal = ({
   pauseModalOpen,

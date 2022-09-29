@@ -44,6 +44,7 @@ const muiThemeNew = createTheme({
     },
     h2: {
       fontSize: '1.5rem',
+      fontWeight: 700,
     },
     button: {
       fontSize: '1.125rem',
@@ -65,6 +66,19 @@ const muiThemeNew = createTheme({
           borderRadius: 28,
           textTransform: 'capitalize',
           padding: '12px 30px',
+        },
+        containedSizeSmall: {
+          padding: '5px 10px',
+          borderRadius: 14,
+        },
+        text: {
+          padding: 0,
+          borderRadius: 0,
+          fontSize: 'inherit',
+          fontWeight: 700,
+        },
+        textWarning: {
+          color: '#e74c3c',
         },
       },
     },

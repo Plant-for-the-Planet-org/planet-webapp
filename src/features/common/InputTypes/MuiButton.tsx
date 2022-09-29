@@ -4,7 +4,7 @@ import themeProperties from '../../../theme/themeProperties';
 // replace styles here with theme when consolidating the Mui Themes. Use theme palette etc.
 const MuiButton = styled(Button)({
   '&.MuiButton-root': {
-    textTransform: 'capitalize',
+    textTransform: 'none',
     borderRadius: 28,
     fontWeight: 600,
   },
