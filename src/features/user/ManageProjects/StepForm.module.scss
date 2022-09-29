@@ -99,6 +99,17 @@
   }
 }
 
+.skipDetailAnalysis {
+  width: 89px;
+  margin-right: 45px;
+}
+
+.saveAndContinueDetailAnalysis {
+  width:169px;
+  height: 46px;
+  margin-right: 20px;
+}
+
 .reviewButtons {
   display: flex;
   margin-top: 30px;
@@ -150,6 +161,10 @@
   flex-wrap: wrap;
   max-width: 320px;
   min-width: 320px;
+}
+
+.formFieldFix {
+  position: relative;
 }
 .latitudeInput {
   width: fit-content !important;
@@ -723,6 +738,7 @@
     text-align: center;
     border: 2px solid $primaryColor;
     display: none;
+    left: -290px
   }
   &:hover,
   &:active {
@@ -731,6 +747,13 @@
       display: block;
     }
   }
+}
+
+.infoIconDiv {
+  position: absolute;
+  top: -9px;
+  right: -292px;
+  width:fit-content
 }
 
 // white modal

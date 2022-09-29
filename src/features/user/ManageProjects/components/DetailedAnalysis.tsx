@@ -17,6 +17,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { style } from '@mui/system';
 
 const { useTranslation } = i18next;
 
@@ -462,10 +463,7 @@ export default function DetailedAnalysis({
         <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
           {purpose === 'trees' ? (
             <div className={styles.formField}>
-              <div
-                className={styles.formFieldHalf}
-                style={{ position: 'relative' }}
-              >
+              <div className={`${styles.formFieldHalf} ${styles.formFieldFix}`}>
                 <LocalizationProvider
                   dateAdapter={AdapterDateFns}
                   locale={
@@ -495,20 +493,10 @@ export default function DetailedAnalysis({
                     defaultValue={new Date()}
                   />
                 </LocalizationProvider>
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '-9px',
-                    right: '16px',
-                    width: 'fit-content',
-                  }}
-                >
+                <div className={styles.infoIconDiv}>
                   <div className={styles.popover}>
                     <InfoIcon />
-                    <div
-                      className={styles.popoverContent}
-                      style={{ left: '-290px' }}
-                    >
+                    <div className={styles.popoverContent}>
                       <p>{t('manageProjects:yearAbandonedInfo')}</p>
                     </div>
                   </div>
@@ -547,10 +535,7 @@ export default function DetailedAnalysis({
             </div>
           ) : (
             <div className={styles.formField}>
-              <div
-                className={styles.formFieldHalf}
-                style={{ position: 'relative' }}
-              >
+              <div className={`${styles.formFieldHalf} ${styles.formFieldFix}`}>
                 <MaterialTextField
                   inputRef={register({
                     required: {
@@ -572,20 +557,10 @@ export default function DetailedAnalysis({
                     {errors.areaProtected.message}
                   </span>
                 )}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '-9px',
-                    right: '16px',
-                    width: 'fit-content',
-                  }}
-                >
+                <div className={styles.infoIconDiv}>
                   <div className={styles.popover}>
                     <InfoIcon />
-                    <div
-                      className={styles.popoverContent}
-                      style={{ left: '-290px' }}
-                    >
+                    <div className={styles.popoverContent}>
                       <p>{t('manageProjects:areaProtectedInfo')}</p>
                     </div>
                   </div>
@@ -644,10 +619,7 @@ export default function DetailedAnalysis({
           )}
 
           <div className={styles.formField}>
-            <div
-              className={styles.formFieldHalf}
-              style={{ position: 'relative' }}
-            >
+            <div className={`${styles.formFieldHalf} ${styles.formFieldFix}`}>
               <MaterialTextField
                 inputRef={register({
                   required: {
@@ -670,20 +642,10 @@ export default function DetailedAnalysis({
                   {errors.employeesCount.message}
                 </span>
               )}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '-9px',
-                  right: '16px',
-                  width: 'fit-content',
-                }}
-              >
+              <div className={styles.infoIconDiv}>
                 <div className={styles.popover}>
                   <InfoIcon />
-                  <div
-                    className={styles.popoverContent}
-                    style={{ left: '-290px' }}
-                  >
+                  <div className={styles.popoverContent}>
                     <p>{t('manageProjects:employeesCountInfo')}</p>
                   </div>
                 </div>
@@ -879,10 +841,7 @@ export default function DetailedAnalysis({
               </div>
             </div>
           ) : (
-            <div
-              className={styles.formFieldLarge}
-              style={{ position: 'relative' }}
-            >
+            <div className={`${styles.formFieldLarge} ${styles.formFieldFix}`}>
               <MaterialTextField
                 inputRef={register({
                   maxLength: {
@@ -898,10 +857,7 @@ export default function DetailedAnalysis({
             </div>
           )}
           {purpose === 'trees' ? (
-            <div
-              className={styles.formFieldLarge}
-              style={{ position: 'relative' }}
-            >
+            <div className={`${styles.formFieldLarge} ${styles.formFieldFix}`}>
               <MaterialTextField
                 label={t('manageProjects:causeOfDegradation')}
                 variant="outlined"
@@ -919,30 +875,17 @@ export default function DetailedAnalysis({
                   {errors.degradationCause.message}
                 </span>
               )}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '-9px',
-                  right: '16px',
-                  width: 'fit-content',
-                }}
-              >
+              <div className={styles.infoIconDiv}>
                 <div className={styles.popover}>
                   <InfoIcon />
-                  <div
-                    className={styles.popoverContent}
-                    style={{ left: '-290px' }}
-                  >
+                  <div className={styles.popoverContent}>
                     <p>{t('manageProjects:max300Chars')}</p>
                   </div>
                 </div>
               </div>
             </div>
           ) : (
-            <div
-              className={styles.formFieldLarge}
-              style={{ position: 'relative' }}
-            >
+            <div className={`${styles.formFieldLarge} ${styles.formFieldFix}`}>
               <MaterialTextField
                 label={t('manageProjects:conservationImpacts')}
                 variant="outlined"
@@ -964,10 +907,7 @@ export default function DetailedAnalysis({
           )}
 
           <div className={styles.formField}>
-            <div
-              className={styles.formFieldHalf}
-              style={{ position: 'relative' }}
-            >
+            <div className={`${styles.formFieldHalf} ${styles.formFieldFix}`}>
               {/* the main challenge the project is facing (max. 300 characters) */}
               <MaterialTextField
                 inputRef={register({
@@ -986,20 +926,10 @@ export default function DetailedAnalysis({
                   {errors.mainChallenge.message}
                 </span>
               )}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '-9px',
-                  right: '16px',
-                  width: 'fit-content',
-                }}
-              >
+              <div className={styles.infoIconDiv}>
                 <div className={styles.popover}>
                   <InfoIcon />
-                  <div
-                    className={styles.popoverContent}
-                    style={{ left: '-290px' }}
-                  >
+                  <div className={styles.popoverContent}>
                     <p>{t('manageProjects:mainChallengeInfo')}</p>
                     <br />
                     <p>{t('manageProjects:max300Chars')}</p>
@@ -1008,10 +938,7 @@ export default function DetailedAnalysis({
               </div>
             </div>
             <div style={{ width: '20px' }}></div>
-            <div
-              className={styles.formFieldHalf}
-              style={{ position: 'relative' }}
-            >
+            <div className={`${styles.formFieldHalf} ${styles.formFieldFix}`}>
               {/* the reason this project has been created (max. 300 characters) */}
               <MaterialTextField
                 inputRef={register({
@@ -1030,20 +957,10 @@ export default function DetailedAnalysis({
                   {errors.motivation.message}
                 </span>
               )}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '-9px',
-                  right: '16px',
-                  width: 'fit-content',
-                }}
-              >
+              <div className={styles.infoIconDiv}>
                 <div className={styles.popover}>
                   <InfoIcon />
-                  <div
-                    className={styles.popoverContent}
-                    style={{ left: '-290px' }}
-                  >
+                  <div className={styles.popoverContent}>
                     <p>{t('manageProjects:max300Chars')}</p>
                   </div>
                 </div>
@@ -1090,10 +1007,7 @@ export default function DetailedAnalysis({
             </div>
           </div>
 
-          <div
-            className={styles.formFieldLarge}
-            style={{ position: 'relative' }}
-          >
+          <div className={`${styles.formFieldLarge} ${styles.formFieldFix}`}>
             <MaterialTextField
               label={t('manageProjects:ownerName')}
               variant="outlined"
@@ -1102,10 +1016,7 @@ export default function DetailedAnalysis({
             />
           </div>
 
-          <div
-            className={styles.formFieldLarge}
-            style={{ position: 'relative' }}
-          >
+          <div className={`${styles.formFieldLarge} ${styles.formFieldFix}`}>
             <MaterialTextField
               label={t('manageProjects:longTermPlan')}
               variant="outlined"
@@ -1139,11 +1050,7 @@ export default function DetailedAnalysis({
 
           <div className={styles.formFieldLarge} style={{ marginTop: '48px' }}>
             <div className={`${styles.formFieldHalf}`}>
-              <button
-                onClick={handleBack}
-                className="secondaryButton backButton"
-                style={{ width: '234px', height: '46px' }}
-              >
+              <button onClick={handleBack} className="secondaryButton">
                 <BackArrow />
                 <p>{t('manageProjects:backToMedia')}</p>
               </button>
@@ -1152,12 +1059,7 @@ export default function DetailedAnalysis({
             <div className={styles.formFieldHalf}>
               <button
                 onClick={handleSubmit(onSubmit)}
-                className="primaryButton"
-                style={{
-                  width: '169px',
-                  height: '46px',
-                  marginRight: '20px',
-                }}
+                className={`primaryButton ${styles.saveAndContinueDetailAnalysis}`}
                 data-test-id="detailAnalysisCont"
               >
                 {isUploadingData ? (
@@ -1169,8 +1071,7 @@ export default function DetailedAnalysis({
             </div>
             <div className={`${styles.formFieldHalf}`}>
               <button
-                className="primaryButton"
-                style={{ width: '89px', marginRight: '45px' }}
+                className={`primaryButton ${styles.skipDetailAnalysis}`}
                 onClick={handleNext}
               >
                 {t('manageProjects:skip')}
