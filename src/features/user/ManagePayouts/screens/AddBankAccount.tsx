@@ -31,6 +31,8 @@ const AddBankAccount = (): ReactElement | null => {
     const accountData = {
       ...data,
       currency: data.currency === PayoutCurrency.DEFAULT ? '' : data.currency,
+      payoutMinAmount:
+        data.currency === PayoutCurrency.DEFAULT ? '' : data.payoutMinAmount,
     };
     const res = await postAuthenticatedRequest<Payouts.BankAccount>(
       '/app/accounts',

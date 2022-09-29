@@ -48,6 +48,8 @@ const EditBankAccount = (): ReactElement | null => {
     const accountData = {
       ...data,
       currency: data.currency === PayoutCurrency.DEFAULT ? '' : data.currency,
+      payoutMinAmount:
+        data.currency === PayoutCurrency.DEFAULT ? '' : data.payoutMinAmount,
     };
     const res = await putAuthenticatedRequest<Payouts.BankAccount>(
       `/app/accounts/${accountToEdit?.id}`,
