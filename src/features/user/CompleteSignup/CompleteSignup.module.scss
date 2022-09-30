@@ -24,6 +24,7 @@
   min-width: 320px;
   max-width: 420px;
   display: flex;
+  gap: 24px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -55,7 +56,6 @@
   flex-direction: row;
   align-items: center;
   width: 100%;
-  margin-bottom: 10px;
 }
 
 .headerBackIcon {
@@ -81,14 +81,12 @@
 }
 
 // private account div
-.isPrivateAccountDiv {
+.inlineToggleGroup {
   display: flex;
   flex-direction: row;
   align-items: center;
   width: 100%;
   justify-content: space-between;
-  margin: 10px 5px 6px 5px;
-  padding: 0px 10px;
 }
 
 .mainText {
@@ -116,7 +114,7 @@
   width: 100%;
   // height: 1px;
   opacity: 0.5;
-  margin: 20px 0px;
+  margin: 0px;
 }
 
 :export {
