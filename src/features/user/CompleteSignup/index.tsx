@@ -133,7 +133,7 @@ export default function CompleteSignup(): ReactElement | null {
       if (token) {
         if (user && user.slug) {
           if (typeof window !== 'undefined') {
-            // router.push(`/t/${user.slug}`);
+            router.push(`/t/${user.slug}`);
           }
         }
       } else {
@@ -261,13 +261,13 @@ export default function CompleteSignup(): ReactElement | null {
   };
 
   if (
-    !contextLoaded /*||
-    (contextLoaded && token) && user */ ||
+    !contextLoaded ||
+    (contextLoaded && token && user) ||
     (contextLoaded && !token)
   ) {
     return null;
   }
-  if (contextLoaded && token /*  && user === null */) {
+  if (contextLoaded && token && user === null) {
     return ready ? (
       <div
         className={styles.signupPage}
