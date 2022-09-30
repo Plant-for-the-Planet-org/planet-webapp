@@ -48,7 +48,6 @@ export default function PlantLocationPage({
 }: Props): ReactElement {
   const router = useRouter();
   const { t, i18n } = useTranslation('treemapper');
-  const { token } = React.useContext(UserPropsContext);
 
   const handleBackButton = () => {
     if (location.type === 'sample') {
@@ -306,8 +305,8 @@ export function LocationDetails({
                     ) : (
                       ''
                     )}
-                    {[...spl.history].reverse().map((h) => (
-                      <p>
+                    {[...spl.history].reverse().map((h, index) => (
+                      <p key={index}>
                         {h.created.substring(0, 10)} : {h?.measurements?.height}
                         {t('maps:meterHigh')} • {h?.measurements?.width}
                         {t('maps:cmWide')}
