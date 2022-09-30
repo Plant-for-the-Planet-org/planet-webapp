@@ -1,22 +1,25 @@
 @import './../../../theme/theme';
 
 // entire page
-.signUpPage {
-  min-height: 100vh;
+.signupPage {
+  height: 100vh;
   display: flex;
   position: relative;
   background-size: cover;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  // min-height: calc(100vh - 150px);
+}
+
+.signupContainer {
+  display: flex;
+  justify-content: center;
 }
 
 // the white form
 .signup {
-  top: 100px;
-  margin-bottom: 60px;
-  position: absolute;
+  margin-top: 100px;
+  margin-bottom: 0;
   border: 0px;
   min-width: 320px;
   max-width: 420px;
@@ -27,7 +30,6 @@
   border-radius: 8px;
   align-self: center;
   padding: 20px;
-  // min-height: calc(100vh - 150px);
   z-index: 100;
 }
 
@@ -297,13 +299,9 @@
   primaryFontColor: $primaryFontColor;
 }
 
-// for mobile view
-@media only screen and (max-width: 768px) {
-  .signup {
-    min-height: calc(100vh - 150px);
-    padding-bottom: 40px;
-  }
-  .signUpPage {
-    min-height: 100vh;
+// FOR WIDER SCREENS
+@include smTabletView {
+  .signupContainer {
+    margin-bottom: 60px;
   }
 }

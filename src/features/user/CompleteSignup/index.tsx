@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from './CompleteSignup.module.scss';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
-import { Snackbar, Alert as MuiAlert, MenuItem, styled, TextField } from '@mui/material';
+import {
+  Snackbar,
+  Alert as MuiAlert,
+  MenuItem,
+  styled,
+  TextField,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
@@ -28,9 +34,9 @@ const Alert = styled(MuiAlert)(({ theme }) => {
 
 const WideTextField = styled(TextField)(() => {
   return {
-    width: "100%"
-  }
-})
+    width: '100%',
+  };
+});
 
 export default function CompleteSignup() {
   const router = useRouter();
@@ -265,324 +271,328 @@ export default function CompleteSignup() {
   if (contextLoaded && token /*  && user === null */) {
     return ready ? (
       <div
-        className={styles.signUpPage}
+        className={styles.signupPage}
         style={{
           backgroundImage: `url(${process.env.CDN_URL}/media/images/app/bg_layer.jpg)`,
         }}
       >
-        <div
-          className={requestSent ? styles.signupRequestSent : styles.signup}
-          style={{
-            backgroundColor:
-              theme === 'theme-light'
-                ? themeProperties.light.light
-                : themeProperties.dark.backgroundColor,
-            color:
-              theme === 'theme-light'
-                ? themeProperties.light.primaryFontColor
-                : themeProperties.dark.primaryFontColor,
-          }}
-        >
-          {/* header */}
-          <div className={styles.header}>
-            <div
-              onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)}
-              className={styles.headerBackIcon}
-            >
-              <CancelIcon color={styles.primaryFontColor} />
-            </div>
-            <div className={styles.headerTitle}>
-              {t('editProfile:signUpText')}
-            </div>
-          </div>
-
-          {/* type of account buttons */}
-          <WideTextField
-            label={t('editProfile:iamA')}
-            select
-            defaultValue={profileTypes[0].value}
+        <div className={styles.signupContainer}>
+          <div
+            className={requestSent ? styles.signupRequestSent : styles.signup}
+            style={{
+              backgroundColor:
+                theme === 'theme-light'
+                  ? themeProperties.light.light
+                  : themeProperties.dark.backgroundColor,
+              color:
+                theme === 'theme-light'
+                  ? themeProperties.light.primaryFontColor
+                  : themeProperties.dark.primaryFontColor,
+            }}
           >
-            {profileTypes.map((option) => (
-              <MenuItem
-                key={option.value}
-                value={option.value}
-                onClick={() => setAccountType(option.value)}
-                classes={{
-                  // option: classes.option,
-                  root: classes.root,
-                }}
+            {/* header */}
+            <div className={styles.header}>
+              <div
+                onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)}
+                className={styles.headerBackIcon}
               >
-                {option.title}
-              </MenuItem>
-            ))}
-          </WideTextField>
-
-          <div className={styles.formField}>
-            <div className={styles.formFieldHalf}>
-              <WideTextField
-                label={t('donate:firstName')}
-                inputRef={register({ required: true })}
-                name={'firstname'}
-                defaultValue={auth0User.given_name ? auth0User.given_name : ''}
-              />
-              {errors.firstname && (
-                <span className={styles.formErrors}>
-                  {t('donate:firstNameRequired')}
-                </span>
-              )}
+                <CancelIcon color={styles.primaryFontColor} />
+              </div>
+              <div className={styles.headerTitle}>
+                {t('editProfile:signUpText')}
+              </div>
             </div>
 
-            <div className={styles.formFieldHalf}>
-              <WideTextField
-                label={t('donate:lastName')}
-                inputRef={register({ required: true })}
-                name={'lastname'}
-                defaultValue={
-                  auth0User.family_name ? auth0User.family_name : ''
-                }
-              />
-              {errors.lastname && (
-                <span className={styles.formErrors}>
-                  {t('donate:lastNameRequired')}
-                </span>
-              )}
-            </div>
-          </div>
-
-          {type !== 'individual' ? (
-            <div className={styles.formFieldLarge}>
-              <WideTextField
-                label={t('editProfile:profileName', {
-                  type: selectUserType(type, t),
-                })}
-                inputRef={register({ required: true })}
-                name={'name'}
-              />
-              {errors.name && (
-                <span className={styles.formErrors}>
-                  {t('editProfile:nameValidation')}
-                </span>
-              )}
-            </div>
-          ) : null}
-
-          <div className={styles.formFieldLarge}>
+            {/* type of account buttons */}
             <WideTextField
-              defaultValue={auth0User.email}
-              label={t('donate:email')}
-              disabled
-            />
-          </div>
-
-          {type === 'tpo' ? (
-            <>
-              <div className={styles.formFieldLarge}>
-                <WideTextField
-                  label={t('donate:address')}
-                  inputRef={register({ required: true })}
-                  name={'address'}
-                  onChange={(event) => {
-                    suggestAddress(event.target.value);
+              label={t('editProfile:iamA')}
+              select
+              defaultValue={profileTypes[0].value}
+            >
+              {profileTypes.map((option) => (
+                <MenuItem
+                  key={option.value}
+                  value={option.value}
+                  onClick={() => setAccountType(option.value)}
+                  classes={{
+                    // option: classes.option,
+                    root: classes.root,
                   }}
-                  onBlur={() => setaddressSugggestions([])}
+                >
+                  {option.title}
+                </MenuItem>
+              ))}
+            </WideTextField>
+
+            <div className={styles.formField}>
+              <div className={styles.formFieldHalf}>
+                <WideTextField
+                  label={t('donate:firstName')}
+                  inputRef={register({ required: true })}
+                  name={'firstname'}
+                  defaultValue={
+                    auth0User.given_name ? auth0User.given_name : ''
+                  }
                 />
-                {addressSugggestions
-                  ? addressSugggestions.length > 0 && (
-                      <div className="suggestions-container">
-                        {addressSugggestions.map((suggestion) => {
-                          return (
-                            <div
-                              key={'suggestion' + suggestion_counter++}
-                              onMouseDown={() => {
-                                getAddress(suggestion.text);
-                              }}
-                              className="suggestion"
-                            >
-                              {suggestion.text}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )
-                  : null}
-                {errors.address && (
+                {errors.firstname && (
                   <span className={styles.formErrors}>
-                    {t('donate:addressRequired')}
+                    {t('donate:firstNameRequired')}
                   </span>
                 )}
               </div>
 
-              <div className={styles.formField}>
-                <div className={styles.formFieldHalf}>
-                  <WideTextField
-                    label={t('donate:city')}
-                    inputRef={register({ required: true })}
-                    defaultValue={
-                      getStoredConfig('loc').city === 'T1' ||
-                      getStoredConfig('loc').city === 'XX' ||
-                      getStoredConfig('loc').city === ''
-                        ? ''
-                        : getStoredConfig('loc').city
-                    }
-                    name={'city'}
-                  />
-                  {errors.city && (
-                    <span className={styles.formErrors}>
-                      {t('donate:cityRequired')}
-                    </span>
-                  )}
-                </div>
-                <div className={styles.formFieldHalf}>
-                  <WideTextField
-                    label={t('donate:zipCode')}
-                    name="zipCode"
-                    inputRef={register({
-                      pattern: postalRegex,
-                      required: true,
-                    })}
-                    defaultValue={
-                      getStoredConfig('loc').postalCode === 'T1' ||
-                      getStoredConfig('loc').postalCode === 'XX' ||
-                      getStoredConfig('loc').postalCode === ''
-                        ? ''
-                        : getStoredConfig('loc').postalCode
-                    }
-                  />
-                  {errors.zipCode && (
-                    <span className={styles.formErrors}>
-                      {t('donate:zipCodeAlphaNumValidation')}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </>
-          ) : null}
-
-          <div className={styles.formFieldLarge}>
-            <AutoCompleteCountry
-              inputRef={null}
-              label={t('donate:country')}
-              name="country"
-              onChange={(country) => setCountry(country)}
-              defaultValue={
-                getStoredConfig('loc').countryCode === 'T1' ||
-                getStoredConfig('loc').countryCode === 'XX' ||
-                getStoredConfig('loc').countryCode === ''
-                  ? ''
-                  : getStoredConfig('loc').countryCode
-              }
-            />
-            {errors.country && (
-              <span className={styles.formErrors}>
-                {t('donate:countryRequired')}
-              </span>
-            )}
-          </div>
-
-          <div className={styles.isPrivateAccountDiv}>
-            <div>
-              <label
-                htmlFor="isPrivate"
-                className={styles.mainText}
-                style={{ cursor: 'pointer' }}
-              >
-                {t('editProfile:privateAccount')}
-              </label>{' '}
-              <br />
-              {isPrivate && (
-                <label className={styles.isPrivateAccountText}>
-                  {t('editProfile:privateAccountTxt')}
-                </label>
-              )}
-            </div>
-            <Controller
-              name="isPrivate"
-              id="isPrivate"
-              control={control}
-              inputRef={register()}
-              defaultValue={false}
-              render={(props: any) => (
-                <ToggleSwitch
-                  checked={props.value}
-                  onChange={(e: any) => props.onChange(e.target.checked)}
-                  inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  id="isPrivate"
+              <div className={styles.formFieldHalf}>
+                <WideTextField
+                  label={t('donate:lastName')}
+                  inputRef={register({ required: true })}
+                  name={'lastname'}
+                  defaultValue={
+                    auth0User.family_name ? auth0User.family_name : ''
+                  }
                 />
-              )}
-            />
-          </div>
-
-          <div className={styles.isPrivateAccountDiv}>
-            <div className={styles.mainText}>
-              <label htmlFor={'getNews'} style={{ cursor: 'pointer' }}>
-                {t('editProfile:subscribe')}
-              </label>
+                {errors.lastname && (
+                  <span className={styles.formErrors}>
+                    {t('donate:lastNameRequired')}
+                  </span>
+                )}
+              </div>
             </div>
-            <Controller
-              name="getNews"
-              id="getNews"
-              control={control}
-              inputRef={register()}
-              defaultValue={true}
-              render={(props: any) => {
-                return (
+
+            {type !== 'individual' ? (
+              <div className={styles.formFieldLarge}>
+                <WideTextField
+                  label={t('editProfile:profileName', {
+                    type: selectUserType(type, t),
+                  })}
+                  inputRef={register({ required: true })}
+                  name={'name'}
+                />
+                {errors.name && (
+                  <span className={styles.formErrors}>
+                    {t('editProfile:nameValidation')}
+                  </span>
+                )}
+              </div>
+            ) : null}
+
+            <div className={styles.formFieldLarge}>
+              <WideTextField
+                defaultValue={auth0User.email}
+                label={t('donate:email')}
+                disabled
+              />
+            </div>
+
+            {type === 'tpo' ? (
+              <>
+                <div className={styles.formFieldLarge}>
+                  <WideTextField
+                    label={t('donate:address')}
+                    inputRef={register({ required: true })}
+                    name={'address'}
+                    onChange={(event) => {
+                      suggestAddress(event.target.value);
+                    }}
+                    onBlur={() => setaddressSugggestions([])}
+                  />
+                  {addressSugggestions
+                    ? addressSugggestions.length > 0 && (
+                        <div className="suggestions-container">
+                          {addressSugggestions.map((suggestion) => {
+                            return (
+                              <div
+                                key={'suggestion' + suggestion_counter++}
+                                onMouseDown={() => {
+                                  getAddress(suggestion.text);
+                                }}
+                                className="suggestion"
+                              >
+                                {suggestion.text}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )
+                    : null}
+                  {errors.address && (
+                    <span className={styles.formErrors}>
+                      {t('donate:addressRequired')}
+                    </span>
+                  )}
+                </div>
+
+                <div className={styles.formField}>
+                  <div className={styles.formFieldHalf}>
+                    <WideTextField
+                      label={t('donate:city')}
+                      inputRef={register({ required: true })}
+                      defaultValue={
+                        getStoredConfig('loc').city === 'T1' ||
+                        getStoredConfig('loc').city === 'XX' ||
+                        getStoredConfig('loc').city === ''
+                          ? ''
+                          : getStoredConfig('loc').city
+                      }
+                      name={'city'}
+                    />
+                    {errors.city && (
+                      <span className={styles.formErrors}>
+                        {t('donate:cityRequired')}
+                      </span>
+                    )}
+                  </div>
+                  <div className={styles.formFieldHalf}>
+                    <WideTextField
+                      label={t('donate:zipCode')}
+                      name="zipCode"
+                      inputRef={register({
+                        pattern: postalRegex,
+                        required: true,
+                      })}
+                      defaultValue={
+                        getStoredConfig('loc').postalCode === 'T1' ||
+                        getStoredConfig('loc').postalCode === 'XX' ||
+                        getStoredConfig('loc').postalCode === ''
+                          ? ''
+                          : getStoredConfig('loc').postalCode
+                      }
+                    />
+                    {errors.zipCode && (
+                      <span className={styles.formErrors}>
+                        {t('donate:zipCodeAlphaNumValidation')}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </>
+            ) : null}
+
+            <div className={styles.formFieldLarge}>
+              <AutoCompleteCountry
+                inputRef={null}
+                label={t('donate:country')}
+                name="country"
+                onChange={(country) => setCountry(country)}
+                defaultValue={
+                  getStoredConfig('loc').countryCode === 'T1' ||
+                  getStoredConfig('loc').countryCode === 'XX' ||
+                  getStoredConfig('loc').countryCode === ''
+                    ? ''
+                    : getStoredConfig('loc').countryCode
+                }
+              />
+              {errors.country && (
+                <span className={styles.formErrors}>
+                  {t('donate:countryRequired')}
+                </span>
+              )}
+            </div>
+
+            <div className={styles.isPrivateAccountDiv}>
+              <div>
+                <label
+                  htmlFor="isPrivate"
+                  className={styles.mainText}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {t('editProfile:privateAccount')}
+                </label>{' '}
+                <br />
+                {isPrivate && (
+                  <label className={styles.isPrivateAccountText}>
+                    {t('editProfile:privateAccountTxt')}
+                  </label>
+                )}
+              </div>
+              <Controller
+                name="isPrivate"
+                id="isPrivate"
+                control={control}
+                inputRef={register()}
+                defaultValue={false}
+                render={(props: any) => (
                   <ToggleSwitch
                     checked={props.value}
                     onChange={(e: any) => props.onChange(e.target.checked)}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
-                    id="getNews"
+                    id="isPrivate"
                   />
-                );
-              }}
-            />
-          </div>
-
-          <div className={styles.isPrivateAccountDiv}>
-            <div className={styles.mainText}>
-              <label htmlFor={'terms'} style={{ cursor: 'pointer' }}>
-                <Trans i18nKey="editProfile:termAndCondition">
-                  <a
-                    className={styles.termsLink}
-                    rel="noopener noreferrer"
-                    href={`https://pp.eco/legal/${i18n.language}/terms`}
-                    target={'_blank'}
-                  >
-                    Terms and Conditions
-                  </a>{' '}
-                  of the Plant-for-the-Planet platform.
-                </Trans>
-              </label>
+                )}
+              />
             </div>
 
-            <ToggleSwitch
-              checked={acceptTerms}
-              onChange={(e: any) => {
-                handleTermsAndCondition(e.target.checked);
-              }}
-              inputProps={{ 'aria-label': 'secondary checkbox' }}
-              id="terms"
-            />
-          </div>
-          <div>
-            {!acceptTerms && typeof acceptTerms !== 'object' && (
-              <span className={styles.termsError}>
-                {t('editProfile:termAndConditionError')}
-              </span>
-            )}
-          </div>
-          <div className={styles.horizontalLine} />
+            <div className={styles.isPrivateAccountDiv}>
+              <div className={styles.mainText}>
+                <label htmlFor={'getNews'} style={{ cursor: 'pointer' }}>
+                  {t('editProfile:subscribe')}
+                </label>
+              </div>
+              <Controller
+                name="getNews"
+                id="getNews"
+                control={control}
+                inputRef={register()}
+                defaultValue={true}
+                render={(props: any) => {
+                  return (
+                    <ToggleSwitch
+                      checked={props.value}
+                      onChange={(e: any) => props.onChange(e.target.checked)}
+                      inputProps={{ 'aria-label': 'secondary checkbox' }}
+                      id="getNews"
+                    />
+                  );
+                }}
+              />
+            </div>
 
-          <button
-            id={'signupCreate'}
-            className={styles.saveButton}
-            onClick={handleSubmit(createButtonClicked)}
-          >
-            {submit ? (
-              <div className={styles.spinner}></div>
-            ) : (
-              t('editProfile:createAccount')
-            )}
-          </button>
+            <div className={styles.isPrivateAccountDiv}>
+              <div className={styles.mainText}>
+                <label htmlFor={'terms'} style={{ cursor: 'pointer' }}>
+                  <Trans i18nKey="editProfile:termAndCondition">
+                    <a
+                      className={styles.termsLink}
+                      rel="noopener noreferrer"
+                      href={`https://pp.eco/legal/${i18n.language}/terms`}
+                      target={'_blank'}
+                    >
+                      Terms and Conditions
+                    </a>{' '}
+                    of the Plant-for-the-Planet platform.
+                  </Trans>
+                </label>
+              </div>
+
+              <ToggleSwitch
+                checked={acceptTerms}
+                onChange={(e: any) => {
+                  handleTermsAndCondition(e.target.checked);
+                }}
+                inputProps={{ 'aria-label': 'secondary checkbox' }}
+                id="terms"
+              />
+            </div>
+            <div>
+              {!acceptTerms && typeof acceptTerms !== 'object' && (
+                <span className={styles.termsError}>
+                  {t('editProfile:termAndConditionError')}
+                </span>
+              )}
+            </div>
+            <div className={styles.horizontalLine} />
+
+            <button
+              id={'signupCreate'}
+              className={styles.saveButton}
+              onClick={handleSubmit(createButtonClicked)}
+            >
+              {submit ? (
+                <div className={styles.spinner}></div>
+              ) : (
+                t('editProfile:createAccount')
+              )}
+            </button>
+          </div>
         </div>
         {/* snackbar */}
         <Snackbar
