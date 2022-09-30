@@ -299,10 +299,20 @@ export function LocationDetails({
                         : t('maps:unknown')}
                     </span>
                     <br />
-                    {spl.tag ? `${t('maps:tag')} #${spl.tag} • ` : null}
-                    {spl?.measurements?.height}
-                    {t('maps:meterHigh')} • {spl?.measurements?.width}
-                    {t('maps:cmWide')}
+                    {spl.status === 'dead' ? (
+                      <p>
+                        {spl?.status} • {spl?.statusReason}
+                      </p>
+                    ) : (
+                      ''
+                    )}
+                    {[...spl.history].reverse().map((h) => (
+                      <p>
+                        {h.created.substring(0, 10)} : {h?.measurements?.height}
+                        {t('maps:meterHigh')} • {h?.measurements?.width}
+                        {t('maps:cmWide')}
+                      </p>
+                    ))}
                   </div>
                 );
               })}
