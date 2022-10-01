@@ -79,41 +79,47 @@ const QueryParamsProvider: FC = ({ children }) => {
     }
   }, [language, i18n.isInitialized]);
 
-  const getTenantId = useCallback(
-    (query: {}) => {
-      if (router.isReady) {
-        if (query.tenant) {
-          return query.tenant;
-        } else if (process.env.TENANTID) {
-          return process.env.TENANTID;
-        } else if (!process.env.TENANTID && !query.tenant) {
-          return 'ten_NxJq55pm';
-        } else return null;
-      }
-    },
-    [router.isReady, query.tenant, process.env.TENANTID]
-  );
-
   useEffect(() => {
     if (query.tenant) {
-      localStorage.setItem('tenantID', query.tenant);
       setTenantID(query.tenant);
     }
   }, [query.tenant]);
 
-  useEffect(() => {
-    let tenantId;
-    const tenantIDFromLocalStorage = localStorage.getItem('tenantID');
-    if (tenantIDFromLocalStorage) {
-      tenantId = tenantIDFromLocalStorage;
-    } else {
-      tenantId = getTenantId(query);
-    }
+  // const getTenantId = useCallback(
+  //   (query: {}) => {
+  //     if (router.isReady) {
+  //       if (query.tenant) {
+  //         return query.tenant;
+  //       } else if (process.env.TENANTID) {
+  //         return process.env.TENANTID;
+  //       } else if (!process.env.TENANTID && !query.tenant) {
+  //         return 'ten_NxJq55pm';
+  //       } else return null;
+  //     }
+  //   },
+  //   [router.isReady, query.tenant, process.env.TENANTID]
+  // );
 
-    if (tenantId !== null) {
-      setTenantID(tenantId);
-    }
-  }, [getTenantId]);
+  // useEffect(() => {
+  //   if (query.tenant) {
+  //     localStorage.setItem('tenantID', query.tenant);
+  //     setTenantID(query.tenant);
+  //   }
+  // }, [query.tenant]);
+
+  // useEffect(() => {
+  //   let tenantId;
+  //   const tenantIDFromLocalStorage = localStorage.getItem('tenantID');
+  //   if (tenantIDFromLocalStorage) {
+  //     tenantId = tenantIDFromLocalStorage;
+  //   } else {
+  //     tenantId = getTenantId(query);
+  //   }
+
+  //   if (tenantId !== null) {
+  //     setTenantID(tenantId);
+  //   }
+  // }, [getTenantId]);
 
   return (
     <ParamsContext.Provider

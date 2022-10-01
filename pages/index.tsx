@@ -10,6 +10,7 @@ import Filters from '../src/features/projects/components/projects/Filters';
 import { ParamsContext } from '../src/features/common/Layout/QueryParamsContext';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 import DirectGift from '../src/features/donations/components/DirectGift';
+import { DEFAULT_TENANT } from '../src/utils/constants/environment';
 import i18next from '../i18n';
 
 interface Props {
@@ -40,14 +41,9 @@ export default function Donate({
   const { i18n } = useTranslation();
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
-  const [fixTenant, setFixTenant] = React.useState(false);
   const [directGift, setDirectGift] = React.useState(null);
   const [showdirectGift, setShowDirectGift] = React.useState(true);
   const [internalLanguage, setInternalLanguage] = React.useState('');
-
-  React.useEffect(() => {
-    if (tenantID) setFixTenant(true);
-  }, [tenantID]);
 
   React.useEffect(() => {
     const getdirectGift = localStorage.getItem('directGift');
@@ -86,7 +82,7 @@ export default function Donate({
         !internalCurrencyCode ||
         currencyCode !== internalCurrencyCode ||
         internalLanguage !== i18n.language ||
-        fixTenant
+        tenantID
       ) {
         {
           const currency = getStoredCurrency();
@@ -100,7 +96,7 @@ export default function Donate({
             {
               _scope: 'map',
               currency: currency,
-              tenant: tenantID,
+              tenant: tenantID || DEFAULT_TENANT,
               'filter[purpose]': 'trees,conservation',
               locale: i18n.language,
             },
@@ -114,10 +110,10 @@ export default function Donate({
         }
       }
     }
-    if (fixTenant) {
+    if (tenantID || DEFAULT_TENANT) {
       loadProjects();
     }
-  }, [fixTenant, currencyCode, i18n.language]);
+  }, [DEFAULT_TENANT, tenantID, currencyCode, i18n.language]);
 
   const ProjectsProps = {
     projects: filteredProjects,

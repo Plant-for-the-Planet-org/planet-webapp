@@ -2,6 +2,12 @@
 import { getQueryString } from './getQueryString';
 import getsessionId from './getSessionId';
 import { validateToken } from './validateToken';
+import { DEFAULT_TENANT } from '../../../src/utils/constants/environment'
+
+
+const getTenantID = (paramTenant) => {
+  return undefined || paramTenant || DEFAULT_TENANT
+}
 
 // Handle Error responses from API
 const handleApiError = (
@@ -105,10 +111,10 @@ export async function getRequest<T>(
   const fullUrl = isAbsoluteUrl(url)
     ? url
     : `${process.env.API_ENDPOINT}${url}${queryStringSuffix}`;
-  await fetch(fullUrl, {
+    await fetch(fullUrl, {
     method: 'GET',
     headers: {
-      'tenant-key': `${tenantID}`,
+      'tenant-key': getTenantID(tenantID),
       'X-SESSION-ID': await getsessionId(),
       'x-locale': `${
         localStorage.getItem('language')
@@ -145,7 +151,7 @@ export async function getAuthenticatedRequest<T>(
   await fetch(`${process.env.API_ENDPOINT}${url}${queryStringSuffix}`, {
     method: 'GET',
     headers: {
-      'tenant-key': `${tenantID}`,
+      'tenant-key': getTenantID(tenantID),
       'X-SESSION-ID': await getsessionId(),
       Authorization: `Bearer ${token}`,
       'x-locale': `${lang}`,
@@ -175,7 +181,7 @@ export async function postAuthenticatedRequest(
         body: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json',
-          'tenant-key': `${TENANT_ID}`,
+          'tenant-key': getTenantID(tenantID),
           'X-SESSION-ID': await getsessionId(),
           Authorization: `Bearer ${token}`,
           'x-locale': `${
@@ -226,7 +232,7 @@ export async function postRequest(
     body: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json',
-      'tenant-key': `${tenantID}`,
+      'tenant-key': getTenantID(tenantID),
       'X-SESSION-ID': await getsessionId(),
       'x-locale': `${
         localStorage.getItem('language')
@@ -252,7 +258,7 @@ export async function deleteAuthenticatedRequest(
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'tenant-key': `${tenantID}`,
+        'tenant-key': getTenantID(tenantID),
         'X-SESSION-ID': await getsessionId(),
         Authorization: `Bearer ${token}`,
         'x-locale': `${
@@ -290,7 +296,7 @@ export async function putAuthenticatedRequest(
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
-        'tenant-key': `${tenantID}`,
+        'tenant-key': getTenantID(tenantID),
         'X-SESSION-ID': await getsessionId(),
         Authorization: `Bearer ${token}`,
         'x-locale': `${
@@ -325,7 +331,7 @@ export async function putRequest(
     body: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json',
-      'tenant-key': `${tenantID}`,
+      'tenant-key': getTenantID(tenantID),
       'X-SESSION-ID': await getsessionId(),
       'x-locale': `${
         localStorage.getItem('language')

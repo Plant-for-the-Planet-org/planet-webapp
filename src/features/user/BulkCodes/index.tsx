@@ -14,6 +14,7 @@ import {
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../utils/apiRequests/api';
+import { DEFAULT_TENANT } from '../../../utils/constants/environment';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 
 export enum BulkCodeSteps {
@@ -52,7 +53,7 @@ export default function BulkCodes({
           {
             _scope: 'map',
             currency: planetCashAccount.currency,
-            tenant: tenantID,
+            tenant: tenantID || DEFAULT_TENANT,
             'filter[purpose]': 'trees',
             locale: i18n.language,
           }
