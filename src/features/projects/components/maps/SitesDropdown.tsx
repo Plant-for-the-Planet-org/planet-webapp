@@ -6,6 +6,7 @@ import styles from '../../styles/ProjectsMap.module.scss';
 import BootstrapInput from '../../../common/InputTypes/BootstrapInput';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import { SingleProjectGeojson } from '../../../../features/common/types/project';
 interface Props {}
 
 export default function SitesDropdown(): ReactElement {
@@ -22,7 +23,7 @@ export default function SitesDropdown(): ReactElement {
   const router = useRouter();
 
   const handleChangeSite = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setSelectedSite(event.target.value as string);
+    setSelectedSite(event.target.value as number);
 
     router.push(
       `/${project.slug}/?site=${
@@ -80,13 +81,15 @@ export default function SitesDropdown(): ReactElement {
                     onChange={handleChangeSite}
                     input={<BootstrapInput />}
                   >
-                    {geoJson?.features.map((site: any, index: any) => {
-                      return (
-                        <option key={index} value={index}>
-                          {site.properties.name}
-                        </option>
-                      );
-                    })}
+                    {geoJson?.features.map(
+                      (site: SingleProjectGeojson, index: number) => {
+                        return (
+                          <option key={index} value={index}>
+                            {site.properties.name}
+                          </option>
+                        );
+                      }
+                    )}
                   </NativeSelect>
                 </FormControl>
               </div>

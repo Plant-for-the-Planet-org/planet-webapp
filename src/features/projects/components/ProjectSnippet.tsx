@@ -11,6 +11,10 @@ import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import {
+  SingleProjectGeojson,
+  SinglePlantLocation,
+} from '../../../../src/features/common/types/project';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -57,8 +61,8 @@ export default function ProjectSnippet({
   React.useEffect(() => {
     //for selecting one of the site of project based on routers site query param
     if (geoJson) {
-      const siteIndex = geoJson?.features.findIndex(
-        (singleSite: any, index: number) =>
+      const siteIndex: number = geoJson?.features.findIndex(
+        (singleSite: SingleProjectGeojson) =>
           router.query.site === singleSite?.properties.name
       );
       setSelectedSite(siteIndex);
@@ -68,11 +72,12 @@ export default function ProjectSnippet({
   React.useEffect(() => {
     //for selecting one of the plant location in a particular site of the project based on routers ploc query param
     if (router.query.ploc && plantLocations) {
-      const singlePlantLocation = plantLocations.find(
-        (dataOfSinglePlantLocation) => {
-          return router.query.ploc === dataOfSinglePlantLocation?.hid;
-        }
-      );
+      const singlePlantLocation: SinglePlantLocation | undefined =
+        plantLocations.find(
+          (dataOfSinglePlantLocation: SinglePlantLocation) => {
+            return router.query.ploc === dataOfSinglePlantLocation?.hid;
+          }
+        );
 
       setSelectedPl(singlePlantLocation);
     }
