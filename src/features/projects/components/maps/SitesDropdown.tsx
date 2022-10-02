@@ -19,12 +19,12 @@ export default function SitesDropdown(): ReactElement {
     setIsPolygonMenuOpen,
   } = React.useContext(ProjectPropsContext);
   const { embed } = React.useContext(ParamsContext);
-  const { pathname, push } = useRouter();
+  const router = useRouter();
 
   const handleChangeSite = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSelectedSite(event.target.value as string);
 
-    push(
+    router.push(
       `/${project.slug}/?site=${
         geoJson.features[event.target.value].properties.name
       }`
@@ -35,7 +35,9 @@ export default function SitesDropdown(): ReactElement {
   const dropdownContainerClasses = `${
     embed === 'true' ? styles.embed_dropdownContainer : styles.dropdownContainer
   } ${
-    pathname === '/[p]' ? styles['dropdownContainer--reduce-right-offset'] : ''
+    router.pathname === '/[p]'
+      ? styles['dropdownContainer--reduce-right-offset']
+      : ''
   }`;
 
   const projectSitesButtonClasses = `${
@@ -43,7 +45,9 @@ export default function SitesDropdown(): ReactElement {
       ? styles.embed_projectSitesButton
       : styles.projectSitesButton
   } ${
-    pathname === '/[p]' ? styles['projectSitesButton--reduce-right-offset'] : ''
+    router.pathname === '/[p]'
+      ? styles['projectSitesButton--reduce-right-offset']
+      : ''
   }`;
 
   return (
