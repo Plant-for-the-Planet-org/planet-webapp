@@ -32,7 +32,15 @@ export default function ProjectSnippet({
     ? getImageUrl('project', 'medium', project.image)
     : '';
 
-  const { selectedPl, hoveredPl } = React.useContext(ProjectPropsContext);
+  const {
+    geoJson,
+    selectedPl,
+    hoveredPl,
+    setSelectedSite,
+    setSelectedPl,
+    selectedSite,
+    plantLocations,
+  } = React.useContext(ProjectPropsContext);
 
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
@@ -46,6 +54,30 @@ export default function ProjectSnippet({
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
 
+  React.useEffect(() => {
+    //for selecting one of the site of project based on routers site query param
+    if (geoJson) {
+      const siteIndex = geoJson?.features.findIndex(
+        (singleSite: any, index: number) =>
+          router.query.site === singleSite?.properties.name
+      );
+      setSelectedSite(siteIndex);
+    }
+  }, [setSelectedSite, geoJson]);
+
+  React.useEffect(() => {
+    //for selecting one of the plant location in a particular site of the project based on routers ploc query param
+    if (router.query.ploc && plantLocations) {
+      const singlePlantLocation = plantLocations.find(
+        (dataOfSinglePlantLocation) => {
+          return router.query.ploc === dataOfSinglePlantLocation?.hid;
+        }
+      );
+
+      setSelectedPl(singlePlantLocation);
+    }
+  }, [router.query.ploc, plantLocations, setSelectedPl]);
+
   return ready ? (
     <div className={'singleProject'} key={keyString}>
       {editMode ? (
@@ -58,7 +90,7 @@ export default function ProjectSnippet({
       <div
         onClick={() => {
           router.push(
-            `/${project.slug}/${
+            `/${project.slug}/?site=${selectedSite}${
               embed === 'true'
                 ? `${
                     callbackUrl != undefined

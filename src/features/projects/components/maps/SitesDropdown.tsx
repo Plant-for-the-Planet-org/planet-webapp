@@ -11,6 +11,7 @@ interface Props {}
 export default function SitesDropdown(): ReactElement {
   const {
     geoJson,
+    project,
     selectedSite,
     setSelectedSite,
     isMobile,
@@ -18,13 +19,19 @@ export default function SitesDropdown(): ReactElement {
     setIsPolygonMenuOpen,
   } = React.useContext(ProjectPropsContext);
   const { embed } = React.useContext(ParamsContext);
-  const { pathname } = useRouter();
+  const { pathname, push } = useRouter();
 
   const handleChangeSite = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSelectedSite(event.target.value as string);
+
+    push(
+      `/${project.slug}/?site=${
+        geoJson.features[event.target.value].properties.name
+      }`
+    );
+
     if (isMobile) setIsPolygonMenuOpen(false);
   };
-
   const dropdownContainerClasses = `${
     embed === 'true' ? styles.embed_dropdownContainer : styles.dropdownContainer
   } ${
@@ -69,7 +76,7 @@ export default function SitesDropdown(): ReactElement {
                     onChange={handleChangeSite}
                     input={<BootstrapInput />}
                   >
-                    {geoJson.features.map((site: any, index: any) => {
+                    {geoJson?.features.map((site: any, index: any) => {
                       return (
                         <option key={index} value={index}>
                           {site.properties.name}
