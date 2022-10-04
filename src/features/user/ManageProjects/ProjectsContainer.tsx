@@ -61,16 +61,12 @@ export default function ProjectsContainer({}: any) {
           <button
             // id={'addProjectBut'}
             className="primaryButton"
-            style={{ width: '175px', marginTop: '20px', marginLeft: '10px' }}
           >
             {t('manageProjects:addProject')}
           </button>
         </Link>
         <Link href="/profile/payouts">
-          <button
-            className="primaryButton"
-            style={{ width: '175px', marginTop: '20px', marginLeft: '10px' }}
-          >
+          <button className="primaryButton">
             {t('manageProjects:managePayoutsButton')}
           </button>
         </Link>
