@@ -44,7 +44,6 @@ export default function TabbedView({
     setStepToRender(step);
   }, [isStepFound]);
 
-  console.log('Render tabbed view');
   return (
     <Grid container className="TabbedView">
       <Grid

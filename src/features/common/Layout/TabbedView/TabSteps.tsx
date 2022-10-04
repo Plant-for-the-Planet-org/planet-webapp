@@ -32,11 +32,7 @@ export default function TabSteps({
   step = 0,
   tabItems = [],
 }: TabStepsProps): ReactElement | null {
-  console.log('Render tab steps');
-
   const router = useRouter();
-
-  console.log(step, tabItems);
 
   const handleTabChange = (event: SyntheticEvent) => {
     if (event.currentTarget instanceof HTMLButtonElement) {
