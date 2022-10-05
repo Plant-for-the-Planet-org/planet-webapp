@@ -348,6 +348,9 @@
   .embedContainer {
     margin-top: 40vh;
   }
+  .MuiButton-root.toggleButton {
+    bottom: 62px;
+  }
 }
 :export {
   primaryColor: $primaryColor;
