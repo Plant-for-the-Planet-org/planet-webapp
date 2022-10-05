@@ -51,13 +51,13 @@
     margin-top: 0;
     margin-bottom: -19px;
     margin-right: 126px;
-  };
+  }
   @include smTabletView {
     writing-mode: vertical-rl; 
     margin-top: 0;
     margin-bottom: -19px;
     margin-right: 126px;    
-  };
+  }
   @include mdTabletView {
     writing-mode: horizontal-tb;
     margin-top: 14px;
@@ -70,7 +70,7 @@
  display: flex;
  @include xsPhoneView {
    flex-direction: column;
- };
+ }
  @include smTabletView {
   flex-direction: column;
 }
