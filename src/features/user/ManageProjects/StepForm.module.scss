@@ -45,7 +45,39 @@
 
 .hyphen {
   font-size: 40px;
-  margin-top: 16px
+  margin-top: 16px;
+  @include xsPhoneView {
+    writing-mode: vertical-rl; 
+    margin-top: 0;
+    margin-bottom: -19px;
+    margin-right: 126px;
+  };
+  @include smTabletView {
+    writing-mode: vertical-rl; 
+    margin-top: 0;
+    margin-bottom: -19px;
+    margin-right: 126px;    
+  };
+  @include mdTabletView {
+    writing-mode: horizontal-tb;
+    margin-top: 14px;
+    margin-bottom: 0;
+    margin-right: 0; 
+  }
+  
+}
+.density {
+ display: flex;
+ @include xsPhoneView {
+   flex-direction: column;
+ };
+ @include smTabletView {
+  flex-direction: column;
+}
+@include mdTabletView {
+  flex-direction: row;
+}
+
 }
 
 .reviewContent {
@@ -87,7 +119,8 @@
   max-width: 320px;
   justify-content: space-between;
   align-items: center;
-}
+ }
+
 
 .skipBasicButton {
   width: 89px;
@@ -754,6 +787,11 @@
   top: -9px;
   right: -292px;
   width:fit-content
+}
+
+.causeOfDegradation {
+  position: absolute;
+  right: 13px;
 }
 
 // white modal

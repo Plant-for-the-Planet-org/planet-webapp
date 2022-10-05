@@ -131,9 +131,7 @@ export default function DetailedAnalysis({
     { id: 12, title: ready ? t('common:december') : '', isSet: false },
   ]);
 
-  const addHandler = () => {
-    setAddSpecies(true);
-  };
+  const [minDensity, setMinDensity] = React.useState(0);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -219,8 +217,10 @@ export default function DetailedAnalysis({
           motivation: '',
         };
 
-  const { register, handleSubmit, errors, control, reset, setValue, watch } =
-    useForm({ mode: 'onBlur', defaultValues: defaultDetailedAnalysis });
+  const { register, handleSubmit, errors, control, reset } = useForm({
+    mode: 'onBlur',
+    defaultValues: defaultDetailedAnalysis,
+  });
 
   const owners = [];
   for (let i = 0; i < siteOwners.length; i++) {
@@ -236,6 +236,12 @@ export default function DetailedAnalysis({
       months.push(j);
     }
   }
+  // for validating maxplanting density value > planting density value
+  React.useEffect(() => {
+    if (router.query.type === 'detail-analysis') {
+      setMinDensity(projectDetails.metadata.plantingDensity);
+    }
+  }, [router.query.type]);
 
   const onSubmit = (data: any) => {
     setIsUploadingData(true);
@@ -380,7 +386,6 @@ export default function DetailedAnalysis({
               actions: projectDetails?.metadata?.actions,
               motivation: projectDetails?.metadata?.motivation,
             };
-
       // set planting seasons
 
       if (purpose === 'trees') {
@@ -480,6 +485,7 @@ export default function DetailedAnalysis({
       reset(detailedAnalysis);
     }
   }, [projectDetails]);
+
   return ready ? (
     <div className={styles.stepContainer}>
       {' '}
@@ -783,7 +789,7 @@ export default function DetailedAnalysis({
 
           {purpose === 'trees' ? (
             <div className={styles.formField}>
-              <div style={{ display: 'flex' }}>
+              <div className={styles.density}>
                 <div
                   className={styles.formFieldHalf}
                   data-test-id="plantingDensity"
@@ -801,6 +807,7 @@ export default function DetailedAnalysis({
                       validate: (value) => parseInt(value, 10) > 1,
                     })}
                     onInput={(e) => {
+                      setMinDensity(e.target.value);
                       e.target.value = e.target.value.replace(/[^0-9]/g, '');
                     }}
                     InputProps={{
@@ -827,6 +834,10 @@ export default function DetailedAnalysis({
                     variant="outlined"
                     name="maxPlantingDensity"
                     inputRef={register({
+                      min: {
+                        value: minDensity,
+                        message: t('manageProjects:errorForMaxPlantingDensity'),
+                      },
                       required: false,
                     })}
                     onInput={(e) => {
@@ -918,7 +929,8 @@ export default function DetailedAnalysis({
                   {errors.degradationCause.message}
                 </span>
               )}
-              <div className={styles.infoIconDiv}>
+
+              <div className={styles.causeOfDegradation}>
                 <div className={styles.popover}>
                   <InfoIcon />
                   <div className={styles.popoverContent}>

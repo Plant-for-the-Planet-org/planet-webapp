@@ -191,5 +191,6 @@
   "onlyEnglish": "Please create/edit projects in English only. Translations of Projects are managed automatically by Plant-for-the-Planet.",
   "since": "since",
   "Since": "Since",
-  "and": "and"
+  "and": "and",
+  "errorForMaxPlantingDensity": "This value should be greater than planting density"
 }

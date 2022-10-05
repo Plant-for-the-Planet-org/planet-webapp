@@ -316,7 +316,6 @@ export default function RedeemModal({
                       },
                     })}
                     onChange={(event) => {
-                      console.log(event.target.value);
                       event.target.value.startsWith('pp.eco/c/')
                         ? setInputCode(
                             event.target.value.replace('pp.eco/c/', '')
