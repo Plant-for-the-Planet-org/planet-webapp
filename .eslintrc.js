@@ -38,6 +38,12 @@ module.exports = {
       1,
       { extensions: ['.js', '.jsx', '.tsx'] },
     ],
+    'react/no-unknown-property': [
+      2,
+      {
+        ignore: ['jsx', 'global'],
+      },
+    ],
     'react/jsx-indent': 'off',
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
