@@ -32,6 +32,12 @@ module.exports = {
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
     'react/jsx-no-literals': 'off',
+    'react/no-unknown-property': [
+      2,
+      {
+        ignore: ['jsx'],
+      },
+    ],
     '@typescript-eslint/ban-types': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-empty-function': 'off',
