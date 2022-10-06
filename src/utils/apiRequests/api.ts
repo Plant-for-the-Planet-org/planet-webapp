@@ -1,4 +1,4 @@
-
+import { ApiCustomError } from '../../features/common/types/apiErrors';
 import { getQueryString } from './getQueryString';
 import getsessionId from './getSessionId';
 import { validateToken } from './validateToken';
@@ -167,14 +167,15 @@ export async function getAuthenticatedRequest<T>(
   return result as unknown as T;
 }
 
-export async function postAuthenticatedRequest(
+
+export async function postAuthenticatedRequest<T>(
   tenantID?: string,
   url: any,
   data: any,
   token: any,
   errorHandler?: Function,
   headers?: any
-): Promise<any> {
+): Promise<T | ApiCustomError | null> {
   if (validateToken(token)) {
     try {
       const res = await fetch(process.env.API_ENDPOINT + url, {
@@ -195,7 +196,7 @@ export async function postAuthenticatedRequest(
       });
       const result = await res.json();
       handleApiError(res.status, result, errorHandler);
-      return result;
+      return result as unknown as T | ApiCustomError;
     } catch (err) {
       // Fetch API only throws errors for network errors
       console.log(
@@ -284,13 +285,14 @@ export async function deleteAuthenticatedRequest(
   return result;
 }
 
-export async function putAuthenticatedRequest(
+
+export async function putAuthenticatedRequest<T>(
   tenantID?: string,
   url: any,
   data: any,
   token: any,
   errorHandler?: Function
-): Promise<any> {
+): Promise<T | ApiCustomError | undefined> {
   if (validateToken(token)) {
     const res = await fetch(process.env.API_ENDPOINT + url, {
       method: 'PUT',
@@ -309,7 +311,7 @@ export async function putAuthenticatedRequest(
     });
     const result = await res.json();
     handleApiError(res.status, result, errorHandler);
-    return result;
+    return result as unknown as T | ApiCustomError;
   } else {
     if (errorHandler) {
       errorHandler({
