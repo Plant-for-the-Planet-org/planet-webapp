@@ -192,5 +192,6 @@
   "since": "since",
   "Since": "Since",
   "and": "and",
-  "errorForMaxPlantingDensity": "This value should be greater than planting density"
+  "errorForMaxPlantingDensity": "This value should be greater than planting density",
+  "managePayoutsButton": "Manage Payouts"
 }
