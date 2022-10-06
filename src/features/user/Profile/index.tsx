@@ -77,7 +77,6 @@ function Profile({ userprofile, authenticatedType }: Props): ReactElement {
                   : userprofile.score.personal + userprofile.score.received
               }
             />
-
             <h2 className={styles.treeCounterName}>
               {userprofile.displayName}
             </h2>
@@ -96,7 +95,6 @@ function Profile({ userprofile, authenticatedType }: Props): ReactElement {
             {authenticatedType === 'public' && (
               <UserShareAndSupport userprofile={userprofile} />
             )}
-
             {/* three icons in a row */}
             {authenticatedType === 'private' && (
               <UserProfileOptions userprofile={userprofile} />

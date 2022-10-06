@@ -14,6 +14,7 @@ import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorH
 import ShareOptions from '../../../src/features/common/ShareOptions/ShareOptions';
 import { styled } from '@mui/material';
 import { ParamsContext } from '../../../src/features/common/Layout/QueryParamsContext';
+import CancelIcon from '../../../public/assets/images/icons/CancelIcon';
 
 const { useTranslation } = i18next;
 
@@ -89,28 +90,26 @@ function ClaimDonation({}: Props): ReactElement {
     }
   }, [router]);
 
-  async function validateCode(code: any, type: any) {
+  async function redeemCode(code: string) {
     setIsUploadingData(true);
     const submitData = {
-      type: type,
+      // type: type,
       code: code,
     };
     if (contextLoaded && user) {
-      const userLang = localStorage.getItem('language') || 'en';
       postAuthenticatedRequest(
-        tenantID,
-        `/api/v1.3/${userLang}/validateCode`,
+        `/app/redeem`,
         submitData,
         token,
         handleError
       ).then((res) => {
-        if (res.code === 401) {
-          setErrorMessage(res.message);
+        if (res.error_code === 'already_redeemed') {
+          setErrorMessage(t('redeem:alreadyRedeemed'));
           setIsUploadingData(false);
-        } else if (res.status === 'error') {
-          setErrorMessage(res.errorText || t('me:wentWrong'));
+        } else if (res.error_code === 'invalid_code') {
+          setErrorMessage(t('redeem:invalidCode'));
           setIsUploadingData(false);
-        } else if (res.status === 'success') {
+        } else if (res.status === 'redeemed') {
           setCodeValidated(true);
           setValidCodeData(res);
           setIsUploadingData(false);
@@ -128,8 +127,8 @@ function ClaimDonation({}: Props): ReactElement {
     // From here user can go back to home by clicking X
     if (contextLoaded && user) {
       // validate code
-      if (routerReady && code && type) {
-        validateCode(code, type);
+      if (routerReady && code) {
+        redeemCode(code);
       }
     }
 
@@ -147,36 +146,6 @@ function ClaimDonation({}: Props): ReactElement {
       }
     }
   }, [contextLoaded, user, code]);
-
-  async function redeemCode(code: any, type: any) {
-    setIsUploadingData(true);
-    const submitData = {
-      type: type,
-      code: code,
-    };
-    if (contextLoaded && user) {
-      const userLang = localStorage.getItem('language') || 'en';
-      postAuthenticatedRequest(
-        tenantID,
-        `/api/v1.3/${userLang}/convertCode`,
-        submitData,
-        token,
-        handleError
-      ).then((res) => {
-        if (res.code === 401) {
-          setErrorMessage(res.message);
-          setIsUploadingData(false);
-        } else if (!res.response || res.response.status === 'error') {
-          setErrorMessage(res.errorText || t('me:wentWrong'));
-          setIsUploadingData(false);
-        } else if (res.response.status === 'success') {
-          setCodeRedeemed(true);
-          setIsUploadingData(false);
-          setCodeValidated(false);
-        }
-      });
-    }
-  }
 
   const closeRedeem = () => {
     setCodeValidated(false);
@@ -292,61 +261,58 @@ function ClaimDonation({}: Props): ReactElement {
           <div className={styles.modal}>
             {codeValidated && validCodeData ? (
               <>
-                {errorMessage && (
-                  <span className={styles.formErrors}>{errorMessage}</span>
-                )}
+                <div style={{ position: 'relative', left: '108px' }}>
+                  <button className={styles.crossButton}>
+                    <CancelIcon />
+                  </button>
+                </div>
 
                 <div className={styles.codeTreeCount}>
                   {getFormattedNumber(
                     i18n.language,
-                    Number(validCodeData.treeCount)
+                    Number(validCodeData.units)
                   )}
                   <span>
                     {t('common:tree', {
-                      count: Number(validCodeData.treeCount),
+                      count: Number(validCodeData.units),
                     })}
                   </span>
                 </div>
 
-                {validCodeData.tpos?.length > 0 && (
-                  <div className={styles.plantedBy}>
-                    <span>{t('common:plantedBy')}</span>
-                    <p>{validCodeData.tpos[0].tpoName}</p>
-                  </div>
-                )}
-
-                <div
-                  onClick={() => redeemCode(code, type)}
-                  className="primaryButton"
-                  style={{ maxWidth: '200px', marginTop: '24px' }}
-                >
-                  {isUploadingData ? (
-                    <div className={styles.spinner}></div>
-                  ) : (
-                    t('redeem:addToMyTrees')
-                  )}
+                <div className={styles.codeTreeCount}>
+                  <span>{t('redeem:successfullyRedeemed')}</span>
                 </div>
               </>
             ) : (
               <>
-                <div>
-                  {t('redeem:validating')} {code}
+                <div style={{ position: 'relative', left: '108px' }}>
+                  <button className={styles.crossButton} onClick={closeRedeem}>
+                    <CancelIcon />
+                  </button>
                 </div>
-
-                {errorMessage && (
-                  <span className={styles.formErrors}>{errorMessage}</span>
+                {errorMessage ? (
+                  <div style={{ fontWeight: 'bold' }}>{code}</div>
+                ) : (
+                  <div style={{ fontWeight: 'bold' }}>
+                    {t('redeem:redeeming')} {code}
+                  </div>
                 )}
-                <div
-                  onClick={() => validateCode(code, type)}
-                  className="primaryButton"
-                  style={{ maxWidth: '200px', marginTop: '24px' }}
-                >
-                  {isUploadingData ? (
-                    <div className={styles.spinner}></div>
-                  ) : (
-                    t('redeem:validateCode')
-                  )}
-                </div>
+
+                {errorMessage ? (
+                  <span className={styles.formErrors}>{errorMessage}</span>
+                ) : (
+                  <div
+                    onClick={() => redeemCode(code)}
+                    className="primaryButton"
+                    style={{ maxWidth: '200px', marginTop: '24px' }}
+                  >
+                    {isUploadingData ? (
+                      <div className={styles.spinner}></div>
+                    ) : (
+                      t('redeem:redeemCode')
+                    )}
+                  </div>
+                )}
               </>
             )}
           </div>

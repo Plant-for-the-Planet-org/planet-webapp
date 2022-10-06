@@ -5,6 +5,13 @@
   "addToMyTrees": "Add to my trees",
   "validateCode": "Validate Code",
   "enterRedeemCode": "Please enter a code to redeem",
-  "validating": "Validating",
-  "invalidType": "Invalid type, please check the link again"
+  "invalidType": "Invalid type, please check the link again",
+  "successfullyRedeemed": "Successfully Redeemed",
+  "exitToProfile": "Exit to Profile",
+  "redeemCode": "Redeem Code",
+  "alreadyRedeemed": "The code has already been redeemed",
+  "invalidCode": "This code is invalid",
+  "redeemAnotherCode": "Redeem Another Code",
+  "redeeming": "Redeeming:"
 }
+
