@@ -45,7 +45,7 @@ module.exports = {
     'react/no-unknown-property': [
       2,
       {
-        ignore: ['jsx'],
+        ignore: ['jsx', 'global'],
       },
     ],
     '@typescript-eslint/ban-types': 'off',
