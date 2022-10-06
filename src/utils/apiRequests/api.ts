@@ -2,11 +2,12 @@
 import { getQueryString } from './getQueryString';
 import getsessionId from './getSessionId';
 import { validateToken } from './validateToken';
-import { DEFAULT_TENANT } from '../../../src/utils/constants/environment'
+import { DEFAULT_TENANT_ID } from '../../../src/utils/constants/environment'
+ 
+type paramTenant = string | undefined
 
-
-const getTenantID = (paramTenant) => {
-  return undefined || paramTenant || DEFAULT_TENANT
+export const getTenantID = (paramTenant:paramTenant) : paramTenant => {
+  return process.env.TENANTID || paramTenant || DEFAULT_TENANT_ID
 }
 
 // Handle Error responses from API
@@ -77,7 +78,7 @@ export async function getAccountInfo(token: any, tenantID: string): Promise<any>
   const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
     method: 'GET',
     headers: {
-      'tenant-key': `${tenantID}`,
+      'tenant-key': getTenantID(tenantID),
       'X-SESSION-ID': await getsessionId(),
       Authorization: `Bearer ${token}`,
       'x-locale': `${
@@ -96,12 +97,12 @@ function isAbsoluteUrl(url: any) {
 }
 
 export async function getRequest<T>(
+  tenantID?: string,
   url: any,
   errorHandler?: Function,
   redirect?: string,
   queryParams?: { [key: string]: string },
-  version?: string,
-  tenantID?: string
+  version?: string
 ) {
   let result;
   const lang = localStorage.getItem('language') || 'en';
@@ -133,14 +134,14 @@ export async function getRequest<T>(
 }
 
 export async function getAuthenticatedRequest<T>(
+  tenantID?: string,
   url: any,
   token: any,
   header: any = null,
   errorHandler?: Function,
   redirect?: string,
   queryParams?: { [key: string]: string },
-  version?: string,
-  tenantID?: string
+  version?: string
 ): Promise<T> {
 
   let result = {};
@@ -167,12 +168,12 @@ export async function getAuthenticatedRequest<T>(
 }
 
 export async function postAuthenticatedRequest(
+  tenantID?: string,
   url: any,
   data: any,
   token: any,
   errorHandler?: Function,
-  headers?: any,
-  tenantID?: string
+  headers?: any
 ): Promise<any> {
   if (validateToken(token)) {
     try {
@@ -221,11 +222,11 @@ export async function postAuthenticatedRequest(
 }
 
 export async function postRequest(
+  tenantID?: string,
   url: any,
   data: any,
   errorHandler?: Function,
-  redirect?: string,
-  tenantID?: string
+  redirect?: string
 ): Promise<any> {
   const res = await fetch(process.env.API_ENDPOINT + url, {
     method: 'POST',
@@ -247,10 +248,10 @@ export async function postRequest(
 }
 
 export async function deleteAuthenticatedRequest(
+  tenantID?: string,
   url: any,
   token: any,
-  errorHandler?: Function,
-  tenantID?: string
+  errorHandler?: Function
 ): Promise<any> {
   let result;
   if (validateToken(token)) {
@@ -284,11 +285,11 @@ export async function deleteAuthenticatedRequest(
 }
 
 export async function putAuthenticatedRequest(
+  tenantID?: string,
   url: any,
   data: any,
   token: any,
-  errorHandler?: Function,
-  tenantID?: string
+  errorHandler?: Function
 ): Promise<any> {
   if (validateToken(token)) {
     const res = await fetch(process.env.API_ENDPOINT + url, {
@@ -321,10 +322,10 @@ export async function putAuthenticatedRequest(
 }
 
 export async function putRequest(
+  tenantID?: string,
   url: any,
   data: any,
-  errorHandler?: Function,
-  tenantID?: string
+  errorHandler?: Function
 ): Promise<any> {
   const res = await fetch(process.env.API_ENDPOINT + url, {
     method: 'PUT',

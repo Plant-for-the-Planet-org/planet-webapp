@@ -167,12 +167,11 @@ export default function RegisterTrees({}: Props) {
           geometry: geometry,
         };
         postAuthenticatedRequest(
+          tenantID,
           `/app/contributions`,
           submitData,
           token,
-          handleError,
-          undefined,
-          tenantID
+          handleError
         ).then((res) => {
           if (!res.code) {
             setErrorMessage('');
@@ -205,14 +204,12 @@ export default function RegisterTrees({}: Props) {
 
   async function loadProjects() {
     await getAuthenticatedRequest(
+      tenantID,
       '/app/profile/projects',
       token,
       {},
       handleError,
-      '/profile',
-      undefined,
-      undefined,
-      tenantID
+      '/profile'
     ).then((projects: any) => {
       setProjects(projects);
     });

@@ -413,11 +413,11 @@ export default function BasicDetails({
     // Check if GUID is set use update instead of create project
     if (projectGUID) {
       putAuthenticatedRequest(
+        tenantID,
         `/app/projects/${projectGUID}`,
         submitData,
         token,
-        handleError,
-        tenantID
+        handleError
       )
         .then((res) => {
           if (!res.code) {
@@ -446,12 +446,11 @@ export default function BasicDetails({
         });
     } else {
       postAuthenticatedRequest(
+        tenantID,
         `/app/projects`,
         submitData,
         token,
-        handleError,
-        undefined,
-        tenantID
+        handleError
       )
         .then((res) => {
           if (!res.code) {

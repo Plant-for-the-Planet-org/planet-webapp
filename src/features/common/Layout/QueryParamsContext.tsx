@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  FC,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { createContext, FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import i18next from '../../../../i18n';
 
@@ -16,7 +10,7 @@ export interface ParamsContextType {
   showBackIcon: QueryParamType;
   callbackUrl: QueryParamType;
   language: QueryParamType;
-  tenantID: QueryParamType;
+  tenantID: string | undefined;
   showProjectDetails: QueryParamType;
   showProjectList: QueryParamType;
 }
@@ -25,7 +19,7 @@ export const ParamsContext = createContext<ParamsContextType>({
   showBackIcon: undefined,
   callbackUrl: undefined,
   language: undefined,
-  tenantID: '',
+  tenantID: undefined,
   showProjectDetails: undefined,
   showProjectList: undefined,
 });
@@ -37,7 +31,7 @@ const QueryParamsProvider: FC = ({ children }) => {
   const [showBackIcon, setShowBackIcon] = useState<QueryParamType>(undefined);
   const [callbackUrl, setCallbackUrl] = useState<QueryParamType>(undefined);
   const [language, setLanguage] = useState<QueryParamType>(undefined);
-  const [tenantID, setTenantID] = useState<QueryParamType>('');
+  const [tenantID, setTenantID] = useState<string | undefined>(undefined);
   const [showProjectDetails, setShowProjectDetails] =
     useState<QueryParamType>(undefined);
   const [showProjectList, setShowProjectList] =
@@ -84,42 +78,6 @@ const QueryParamsProvider: FC = ({ children }) => {
       setTenantID(query.tenant);
     }
   }, [query.tenant]);
-
-  // const getTenantId = useCallback(
-  //   (query: {}) => {
-  //     if (router.isReady) {
-  //       if (query.tenant) {
-  //         return query.tenant;
-  //       } else if (process.env.TENANTID) {
-  //         return process.env.TENANTID;
-  //       } else if (!process.env.TENANTID && !query.tenant) {
-  //         return 'ten_NxJq55pm';
-  //       } else return null;
-  //     }
-  //   },
-  //   [router.isReady, query.tenant, process.env.TENANTID]
-  // );
-
-  // useEffect(() => {
-  //   if (query.tenant) {
-  //     localStorage.setItem('tenantID', query.tenant);
-  //     setTenantID(query.tenant);
-  //   }
-  // }, [query.tenant]);
-
-  // useEffect(() => {
-  //   let tenantId;
-  //   const tenantIDFromLocalStorage = localStorage.getItem('tenantID');
-  //   if (tenantIDFromLocalStorage) {
-  //     tenantId = tenantIDFromLocalStorage;
-  //   } else {
-  //     tenantId = getTenantId(query);
-  //   }
-
-  //   if (tenantId !== null) {
-  //     setTenantID(tenantId);
-  //   }
-  // }, [getTenantId]);
 
   return (
     <ParamsContext.Provider

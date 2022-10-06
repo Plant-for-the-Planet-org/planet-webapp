@@ -26,14 +26,13 @@ export default function ProjectsContainer({ profile }: any) {
 
   async function loadProjects() {
     await getRequest(
+      tenantID,
       `/app/profiles/${profile.id}/projects`,
       handleError,
       undefined,
       {
         locale: i18n.language,
-      },
-      undefined,
-      tenantID
+      }
     ).then((projects) => {
       setProjects(projects);
     });

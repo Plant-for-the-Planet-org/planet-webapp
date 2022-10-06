@@ -28,14 +28,12 @@ function RecurrentDonations({}: Props): ReactElement {
     setIsDataLoading(true);
     setProgress(70);
     const recurrencies: Payments.Subscription[] = await getAuthenticatedRequest(
+      tenantID,
       '/app/subscriptions',
       token,
       {},
       handleError,
-      '/profile',
-      undefined,
-      undefined,
-      tenantID
+      '/profile'
     );
     if (recurrencies && Array.isArray(recurrencies)) {
       const activeRecurrencies = recurrencies?.filter(

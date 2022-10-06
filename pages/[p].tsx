@@ -5,7 +5,7 @@ import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsC
 import Credits from '../src/features/projects/components/maps/Credits';
 import SingleProjectDetails from '../src/features/projects/screens/SingleProjectDetails';
 import { ThemeContext } from '../src/theme/themeContext';
-import { getRequest } from '../src/utils/apiRequests/api';
+import { getRequest, getTenantID } from '../src/utils/apiRequests/api';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
 import { getAllPlantLocations } from '../src/utils/maps/plantLocations';
@@ -30,7 +30,7 @@ export default function Donate({
   const [open, setOpen] = React.useState(false);
   const { theme } = React.useContext(ThemeContext);
   const { tenantID } = React.useContext(ParamsContext);
-  const [tenantSingleProject, setTenantSingleProject] = React.useState(false);
+
   const { i18n } = useTranslation();
   const {
     project,
@@ -42,10 +42,6 @@ export default function Donate({
     hoveredPl,
     setPlantLocationsLoaded,
   } = React.useContext(ProjectPropsContext);
-
-  React.useEffect(() => {
-    if (tenantID) setTenantSingleProject(true);
-  }, [tenantID]);
 
   React.useEffect(() => {
     setZoomLevel(2);
@@ -62,18 +58,20 @@ export default function Donate({
   const { handleError } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
+    const resultantTenantID = getTenantID(tenantID);
     async function loadProject() {
       if (
         !internalCurrencyCode ||
         currencyCode !== internalCurrencyCode ||
         internalLanguage !== i18n.language ||
-        tenantSingleProject
+        resultantTenantID
       ) {
         const currency = getStoredCurrency();
         setInternalCurrencyCode(currency);
         setInternalLanguage(i18n.language);
         setCurrencyCode(currency);
         const project = await getRequest(
+          tenantID,
           `/app/projects/${router.query.p}`,
           handleError,
           '/',
@@ -81,27 +79,25 @@ export default function Donate({
             _scope: 'extended',
             currency: currency,
             locale: i18n.language,
-          },
-          undefined,
-          tenantID
+          }
         );
         setProject(project);
         setShowSingleProject(true);
         setZoomLevel(2);
       }
     }
-    if (router.query.p && tenantSingleProject) {
+    if (resultantTenantID) {
       loadProject();
     }
-  }, [tenantSingleProject, router.query.p, currencyCode, i18n.language]);
+  }, [router.query.p, currencyCode, i18n.language]);
 
   React.useEffect(() => {
     async function loadPl() {
       setPlantLocationsLoaded(false);
       const newPlantLocations = await getAllPlantLocations(
+        tenantID,
         project.id,
-        handleError,
-        tenantID
+        handleError
       );
       setPlantLocations(newPlantLocations);
       setPlantLocationsLoaded(true);

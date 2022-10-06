@@ -99,32 +99,20 @@ export default function PlantingLocation({
 
   const loadProjects = async () => {
     await getAuthenticatedRequest(
+      tenantID,
       '/app/profile/projects',
-      token,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      tenantID
+      token
     ).then((projects: any) => {
       setProjects(projects);
     });
   };
 
   const loadMySpecies = async () => {
-    await getAuthenticatedRequest(
-      '/treemapper/species',
-      token,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      tenantID
-    ).then((species: any) => {
-      setMySpecies(species);
-    });
+    await getAuthenticatedRequest(tenantID, '/treemapper/species', token).then(
+      (species: any) => {
+        setMySpecies(species);
+      }
+    );
   };
 
   React.useEffect(() => {
@@ -223,12 +211,10 @@ export default function PlantingLocation({
       };
 
       postAuthenticatedRequest(
+        tenantID,
         `/treemapper/plantLocations`,
         submitData,
-        token,
-        undefined,
-        undefined,
-        tenantID
+        token
       ).then((res: any) => {
         if (!res.code) {
           setErrorMessage('');

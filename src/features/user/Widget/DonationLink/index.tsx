@@ -7,15 +7,18 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import DonationLinkForm from './DonationLinkForm';
 import SingleColumnView from '../../../common/Layout/DashboardView/SingleColumnView';
 import { Project, SingleProject } from '../../../common/types/project';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 const { useTranslation } = i18next;
 
 export default function DonationLink(): ReactElement | null {
   const { handleError } = useContext(ErrorHandlingContext);
+  const { tenantID } = useContext(ParamsContext);
   const [projects, setProjects] = useState<Project[] | null>(null);
 
   async function fetchProjectList() {
     const projectsList = await getRequest<SingleProject>(
+      tenantID,
       `/app/projects`,
       handleError,
       undefined,

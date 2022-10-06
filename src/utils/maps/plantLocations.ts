@@ -3,8 +3,6 @@ import * as d3 from 'd3-ease';
 import * as turf from '@turf/turf';
 import { getRequest } from '../apiRequests/api';
 
-
-
 export function zoomToPlantLocation(
   geoJson: Object,
   viewport: Object,
@@ -56,14 +54,14 @@ export async function getAllPlantLocations(
   tenantID: string
 ) {
     const result = await getRequest(
+      tenantID,
     `/app/plantLocations/${project}`,
     handleError,
     '/',
     {
       _scope: 'extended',
     },
-    '1.0.4',
-    tenantID
+    '1.0.4'
   );
   if (result) {
     return result;

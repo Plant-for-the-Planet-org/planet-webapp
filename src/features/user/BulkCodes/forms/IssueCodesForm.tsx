@@ -107,14 +107,14 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
 
       const cleanedData = cleanObject(donationData);
       const res = await postAuthenticatedRequest(
+        tenantID,
         `/app/donations`,
         cleanedData,
         token,
         handleError,
         {
           'IDEMPOTENCY-KEY': uuidv4(),
-        },
-        tenantID
+        }
       );
       // if request is successful, it will have a uid
       if (res?.uid) {

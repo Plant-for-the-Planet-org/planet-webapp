@@ -10,9 +10,10 @@ import Filters from '../src/features/projects/components/projects/Filters';
 import { ParamsContext } from '../src/features/common/Layout/QueryParamsContext';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 import DirectGift from '../src/features/donations/components/DirectGift';
-import { DEFAULT_TENANT } from '../src/utils/constants/environment';
+import { getTenantID } from '../src/utils/apiRequests/api';
 import i18next from '../i18n';
 
+const { useTranslation } = i18next;
 interface Props {
   initialized: Boolean;
   currencyCode: any;
@@ -37,7 +38,6 @@ export default function Donate({
   } = React.useContext(ProjectPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const { tenantID } = React.useContext(ParamsContext);
-  const { useTranslation } = i18next;
   const { i18n } = useTranslation();
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
@@ -77,12 +77,13 @@ export default function Donate({
 
   // Load all projects
   React.useEffect(() => {
+    const resultantTenantID = getTenantID(tenantID);
     async function loadProjects() {
       if (
         !internalCurrencyCode ||
         currencyCode !== internalCurrencyCode ||
         internalLanguage !== i18n.language ||
-        tenantID
+        resultantTenantID
       ) {
         {
           const currency = getStoredCurrency();
@@ -90,18 +91,17 @@ export default function Donate({
           setCurrencyCode(currency);
           setInternalLanguage(i18n.language);
           const projects = await getRequest(
+            tenantID,
             `/app/projects`,
             handleError,
             '/',
             {
               _scope: 'map',
               currency: currency,
-              tenant: tenantID || DEFAULT_TENANT,
+              tenant: resultantTenantID,
               'filter[purpose]': 'trees,conservation',
               locale: i18n.language,
-            },
-            undefined,
-            tenantID
+            }
           );
           setProjects(projects);
           setProject(null);
@@ -110,10 +110,10 @@ export default function Donate({
         }
       }
     }
-    if (tenantID || DEFAULT_TENANT) {
+    if (resultantTenantID) {
       loadProjects();
     }
-  }, [DEFAULT_TENANT, tenantID, currencyCode, i18n.language]);
+  }, [tenantID, currencyCode, i18n.language]);
 
   const ProjectsProps = {
     projects: filteredProjects,

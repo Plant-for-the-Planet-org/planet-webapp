@@ -12,6 +12,7 @@ import { Button, CircularProgress } from '@mui/material';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import NoTransactionsFound from '../components/NoTransactionsFound';
 
@@ -27,6 +28,7 @@ const Transactions = ({
   const { t } = useTranslation('me');
   const { token, contextLoaded } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
+  const { tenantID } = useContext(ParamsContext);
   const { accounts } = usePlanetCash();
   const [transactionHistory, setTransactionHistory] =
     useState<Payments.PaymentHistory | null>(null);
@@ -61,6 +63,7 @@ const Transactions = ({
 
       const newTransactionHistory: Payments.PaymentHistory =
         await getAuthenticatedRequest(
+          tenantID,
           apiUrl,
           token,
           {},

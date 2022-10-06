@@ -26,12 +26,10 @@ export default function Home(initialized: Props) {
   React.useEffect(() => {
     async function loadTenantScore() {
       const newTenantScore = await getRequest(
+        tenantID,
         `/app/tenantScore`,
         handleError,
-        '/',
-        undefined,
-        undefined,
-        tenantID
+        '/'
       );
       setTenantScore(newTenantScore);
     }
@@ -41,12 +39,10 @@ export default function Home(initialized: Props) {
   React.useEffect(() => {
     async function loadLeaderboard() {
       const newLeaderBoard = await getRequest(
+        tenantID,
         `/app/leaderboard`,
         handleError,
-        '/',
-        undefined,
-        undefined,
-        tenantID
+        '/'
       );
       setLeaderboard(newLeaderBoard);
     }

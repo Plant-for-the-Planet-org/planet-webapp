@@ -72,11 +72,11 @@ export const CancelModal = ({
           : null, // if custom-date is cancellationType
     };
     putAuthenticatedRequest(
+      tenantID,
       `/app/subscriptions/${record.id}?scope=cancel`,
       bodyToSend,
       token,
-      handleError,
-      tenantID
+      handleError
     )
       .then((res) => {
         handleCancelModalClose();

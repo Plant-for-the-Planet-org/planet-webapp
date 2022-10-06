@@ -181,12 +181,11 @@ export default function ProjectSites({
 
       if (!data.name) return;
       postAuthenticatedRequest(
+        tenantID,
         `/app/projects/${projectGUID}/sites`,
         submitData,
         token,
-        handleError,
-        undefined,
-        tenantID
+        handleError
       )
         .then((res) => {
           if (!res.code) {
@@ -231,10 +230,10 @@ export default function ProjectSites({
   const deleteProjectSite = (id: any) => {
     setIsUploadingData(true);
     deleteAuthenticatedRequest(
+      tenantID,
       `/app/projects/${projectGUID}/sites/${id}`,
       token,
-      handleError,
-      tenantID
+      handleError
     ).then((res) => {
       if (res !== 404) {
         const siteListTemp = siteList.filter((item) => item.id !== id);
@@ -285,14 +284,12 @@ export default function ProjectSites({
     // Fetch sites of the project
     if (projectGUID)
       getAuthenticatedRequest(
+        tenantID,
         `/app/profile/projects/${projectGUID}?_scope=sites`,
         token,
         {},
         handleError,
-        '/profile',
-        undefined,
-        undefined,
-        tenantID
+        '/profile'
       ).then((result) => {
         const geoLocation = {
           geoLatitude: result.geoLatitude,
@@ -634,7 +631,7 @@ function EditSite({
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { handleError } = React.useContext(ErrorHandlingContext);
-
+  const { tenantID } = React.useContext(ParamsContext);
   const useStylesAutoComplete = makeStyles({
     root: {
       color:
@@ -678,11 +675,11 @@ function EditSite({
         status: data.status,
       };
       putAuthenticatedRequest(
+        tenantID,
         `/app/projects/${projectGUID}/sites/${siteGUID}`,
         submitData,
         token,
-        handleError,
-        tenantID2
+        handleError
       ).then((res) => {
         if (!res.code) {
           const temp = siteList;

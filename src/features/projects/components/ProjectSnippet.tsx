@@ -26,14 +26,13 @@ export default function ProjectSnippet({
 }: Props): ReactElement {
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
-  const { embed, callbackUrl } = React.useContext(ParamsContext);
+  const { embed, callbackUrl, tenantID } = React.useContext(ParamsContext);
 
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
     : '';
 
   const { selectedPl, hoveredPl } = React.useContext(ProjectPropsContext);
-  const { tenantID } = React.useContext(ParamsContext);
 
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
@@ -64,7 +63,6 @@ export default function ProjectSnippet({
       ) : null}
       <div
         onClick={() => {
-          console.log('i ran');
           router.push(
             `/${project.slug}/${
               embed === 'true'

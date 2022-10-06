@@ -38,11 +38,11 @@ export default function AddTargetModal({
         target: !target ? user.score.target : target,
       };
       putAuthenticatedRequest(
+        tenantID,
         `/app/profile`,
         bodyToSend,
         token,
-        handleError,
-        tenantID
+        handleError
       )
         .then((res) => {
           handleAddTargetModalClose();

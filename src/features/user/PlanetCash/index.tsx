@@ -14,6 +14,7 @@ import Accounts from './screens/Accounts';
 import Transactions from './screens/Transactions';
 import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
 import { useRouter } from 'next/router';
@@ -38,6 +39,7 @@ export default function PlanetCash({
   const { t, ready } = useTranslation('planetcash');
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   const { token, contextLoaded } = useContext(UserPropsContext);
+  const { tenantID } = useContext(ParamsContext);
   const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
   const { handleError } = useContext(ErrorHandlingContext);
   const [isDataLoading, setIsDataLoading] = useState(false);
@@ -48,6 +50,7 @@ export default function PlanetCash({
       setIsDataLoading(true);
       setProgress && setProgress(70);
       const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
+        tenantID,
         `/app/planetCash`,
         token,
         {},

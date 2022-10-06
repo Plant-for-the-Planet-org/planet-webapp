@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement, useEffect } from 'react';
-import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
+import { getTenantID } from '../../src/utils/apiRequests/api';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import EmbedModal from '../../src/features/user/Widget/EmbedModal';
@@ -14,9 +14,10 @@ const { useTranslation } = i18next;
 function ProfilePage(): ReactElement {
   const { t } = useTranslation('me');
   // External imports
-  const router = useRouter();
+
   const { user, contextLoaded } = React.useContext(UserPropsContext);
   const { tenantID } = React.useContext(ParamsContext);
+  const resultantTenantID = getTenantID(tenantID);
 
   // Internal states
   const [profile, setProfile] = React.useState<null | Object>();
@@ -46,7 +47,7 @@ function ProfilePage(): ReactElement {
       {user?.isPrivate === false ? (
         <div className="profilePage" style={{ padding: '0px' }}>
           <iframe
-            src={`${process.env.WIDGET_URL}?user=${user.id}&tenantkey=${tenantID}`}
+            src={`${process.env.WIDGET_URL}?user=${user.id}&tenantkey=${resultantTenantID}`}
             className={styles.widgetIFrame}
           />
         </div>

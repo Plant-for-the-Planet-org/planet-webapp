@@ -1,3 +1,4 @@
+import {getTenantID} from "../../src/utils/apiRequests/api" 
 // calling this function before window is loaded may cause an error
 export const getDonationUrl = (
   id: string,
@@ -19,6 +20,6 @@ export const getDonationUrl = (
     callback_url !== undefined ? '&callback_url=' + callback_url : ''
   }&country=${country}&locale=${language}${
     token ? '&token=' + token : ''
-  }&tenant=${tenantID}${directGift ? '&s=' + directGift.id : ''}`;
+  }&tenant=${getTenantID(tenantID)}${directGift ? '&s=' + directGift.id : ''}`;
   return sourceUrl;
 };

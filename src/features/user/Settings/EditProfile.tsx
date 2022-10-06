@@ -181,11 +181,11 @@ export default function EditProfile({}: Props) {
             handleSnackbarOpen();
 
             putAuthenticatedRequest(
+              tenantID,
               `/app/profile`,
               bodyToSend,
               token,
-              handleError,
-              tenantID
+              handleError
             )
               .then((res) => {
                 const newUserInfo = { ...user, image: res.image };
@@ -227,11 +227,11 @@ export default function EditProfile({}: Props) {
     if (contextLoaded && token) {
       try {
         putAuthenticatedRequest(
+          tenantID,
           `/app/profile`,
           bodyToSend,
           token,
-          handleError,
-          tenantID
+          handleError
         )
           .then((res) => {
             console.log(res);

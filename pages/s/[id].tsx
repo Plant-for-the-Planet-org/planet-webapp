@@ -22,12 +22,10 @@ export default function DirectGift({}: Props): ReactElement {
 async function loadPublicUserData(router: any, handleError: Function) {
   const { tenantID } = React.useContext(ParamsContext);
   const newProfile = await getRequest(
+    tenantID,
     `/app/profiles/${router.query.id}`,
     handleError,
-    '/',
-    undefined,
-    undefined,
-    tenantID
+    '/'
   );
   if (newProfile.type !== 'tpo') {
     localStorage.setItem(

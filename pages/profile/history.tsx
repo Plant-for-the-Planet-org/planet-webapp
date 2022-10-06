@@ -34,6 +34,7 @@ function AccountHistory({}: Props): ReactElement {
     if (next && paymentHistory?._links?.next) {
       const newPaymentHistory: Payments.PaymentHistory =
         await getAuthenticatedRequest(
+          tenantID,
           `${
             filter && accountingFilters
               ? accountingFilters[filter] +
@@ -44,10 +45,7 @@ function AccountHistory({}: Props): ReactElement {
           token,
           {},
           handleError,
-          '/profile',
-          undefined,
-          undefined,
-          tenantID
+          '/profile'
         );
       setpaymentHistory({
         ...paymentHistory,
@@ -61,14 +59,12 @@ function AccountHistory({}: Props): ReactElement {
       if (filter === null) {
         const paymentHistory: Payments.PaymentHistory =
           await getAuthenticatedRequest(
+            tenantID,
             '/app/paymentHistory?limit=15',
             token,
             {},
             handleError,
-            '/profile',
-            undefined,
-            undefined,
-            tenantID
+            '/profile'
           );
         setpaymentHistory(paymentHistory);
         setProgress(100);
@@ -77,6 +73,7 @@ function AccountHistory({}: Props): ReactElement {
         setaccountingFilters(paymentHistory._filters);
       } else {
         const paymentHistory = await getAuthenticatedRequest(
+          tenantID,
           `${
             filter && accountingFilters
               ? accountingFilters[filter] + '&limit=15'
@@ -85,10 +82,7 @@ function AccountHistory({}: Props): ReactElement {
           token,
           {},
           handleError,
-          '/profile',
-          undefined,
-          undefined,
-          tenantID
+          '/profile'
         );
         setpaymentHistory(paymentHistory);
         setProgress(100);

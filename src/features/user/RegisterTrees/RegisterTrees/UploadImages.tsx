@@ -55,12 +55,11 @@ export default function UploadImages({
       description: '',
     };
     postAuthenticatedRequest(
+      tenantID,
       `/app/contributions/${contributionGUID}/images`,
       submitData,
       token,
-      handleError,
-      undefined,
-      tenantID
+      handleError
     )
       .then((res) => {
         if (!res.code) {
@@ -94,10 +93,10 @@ export default function UploadImages({
 
   const deleteContributionImage = (id: any) => {
     deleteAuthenticatedRequest(
+      tenantID,
       `/app/contributions/${contributionGUID}/images/${id}`,
       token,
-      handleError,
-      tenantID
+      handleError
     ).then((res) => {
       if (res !== 404) {
         const uploadedImagesTemp = uploadedImages;

@@ -35,14 +35,12 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
     async function loadFunction() {
       if (authenticatedType === 'private' && token) {
         getAuthenticatedRequest(
+          tenantID,
           `/app/profile/contributions`,
           token,
           {},
           handleError,
-          '/profile',
-          undefined,
-          undefined,
-          tenantID
+          '/profile'
         )
           .then((result: any) => {
             setContributions(result);
@@ -51,14 +49,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
             console.log('error occured :', e);
           });
       } else {
-        getRequest(
-          `/app/profiles/${profile.id}/contributions`,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          tenantID
-        )
+        getRequest(tenantID, `/app/profiles/${profile.id}/contributions`)
           .then((result: any) => {
             setContributions(result);
           })

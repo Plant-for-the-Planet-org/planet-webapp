@@ -52,14 +52,12 @@ export default function ProjectMedia({
     // Fetch images of the project
     if (projectGUID && token)
       getAuthenticatedRequest(
+        tenantID,
         `/app/profile/projects/${projectGUID}?_scope=images`,
         token,
         {},
         handleError,
-        '/profile',
-        undefined,
-        undefined,
-        tenantID
+        '/profile'
       ).then((result) => {
         setUploadedImages(result.images);
       });
@@ -74,12 +72,11 @@ export default function ProjectMedia({
       isDefault: false,
     };
     postAuthenticatedRequest(
+      tenantID,
       `/app/projects/${projectGUID}/images`,
       submitData,
       token,
-      handleError,
-      undefined,
-      tenantID
+      handleError
     )
       .then((res) => {
         if (!res.code) {
@@ -160,10 +157,10 @@ export default function ProjectMedia({
 
   const deleteProjectCertificate = (id: any) => {
     deleteAuthenticatedRequest(
+      tenantID,
       `/app/projects/${projectGUID}/images/${id}`,
       token,
-      handleError,
-      tenantID
+      handleError
     ).then((res) => {
       if (res !== 404) {
         const uploadedFilesTemp = uploadedImages.filter(
@@ -182,11 +179,11 @@ export default function ProjectMedia({
       videoUrl: data.youtubeURL,
     };
     putAuthenticatedRequest(
+      tenantID,
       `/app/projects/${projectGUID}`,
       submitData,
       token,
-      handleError,
-      tenantID
+      handleError
     )
       .then((res) => {
         if (!res.code) {
@@ -222,11 +219,11 @@ export default function ProjectMedia({
       isDefault: true,
     };
     putAuthenticatedRequest(
+      tenantID,
       `/app/projects/${projectGUID}/images/${id}`,
       submitData,
       token,
-      handleError,
-      tenantID
+      handleError
     ).then((res) => {
       if (!res.code) {
         const tempUploadedData = uploadedImages;
@@ -255,11 +252,11 @@ export default function ProjectMedia({
       description: e.target.value,
     };
     putAuthenticatedRequest(
+      tenantID,
       `/app/projects/${projectGUID}/images/${id}`,
       submitData,
       token,
-      handleError,
-      tenantID
+      handleError
     ).then((res) => {
       if (!res.code) {
         const tempUploadedData = uploadedImages;

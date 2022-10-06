@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from './CompleteSignup.module.scss';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
-import { Snackbar, Alert as MuiAlert, MenuItem, styled, TextField } from '@mui/material';
+import {
+  Snackbar,
+  Alert as MuiAlert,
+  MenuItem,
+  styled,
+  TextField,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
@@ -29,9 +35,9 @@ const Alert = styled(MuiAlert)(({ theme }) => {
 
 const WideTextField = styled(TextField)(() => {
   return {
-    width: "100%"
-  }
-})
+    width: '100%',
+  };
+});
 
 export default function CompleteSignup() {
   const router = useRouter();
@@ -180,11 +186,11 @@ export default function CompleteSignup() {
     setRequestSent(true);
     try {
       const res = await postRequest(
+        tenantID,
         `/app/profile`,
         bodyToSend,
         handleError,
-        '/login',
-        tenantID
+        '/login'
       );
       setRequestSent(false);
       if (res) {

@@ -25,12 +25,10 @@ function User(): ReactElement {
   // Loads the public user profile
   async function loadPublicProfile(id: any) {
     const profileData = await getRequest(
+      tenantID,
       `/app/profiles/${id}`,
       handleError,
-      '/',
-      undefined,
-      undefined,
-      tenantID
+      '/'
     );
     setProfile(profileData);
     setAuthenticatedType('public');

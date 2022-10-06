@@ -72,11 +72,11 @@ export default function EmbedModal({
     if (contextLoaded && token) {
       try {
         putAuthenticatedRequest(
+          tenantID,
           `/app/profile`,
           bodyToSend,
           token,
-          handleError,
-          tenantID
+          handleError
         )
           .then((res) => {
             setSeverity('success');

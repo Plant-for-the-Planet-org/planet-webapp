@@ -79,11 +79,11 @@ export const PauseModal = ({
           : null, // only if pauseType='custom-date'
     };
     putAuthenticatedRequest(
+      tenantID,
       `/app/subscriptions/${record.id}?scope=pause`,
       bodyToSend,
       token,
-      handleError,
-      tenantID
+      handleError
     )
       .then((res) => {
         handlePauseModalClose();

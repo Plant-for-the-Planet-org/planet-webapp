@@ -38,14 +38,13 @@ function TreeMapper({}: Props): ReactElement {
 
     if (next && links?.next) {
       const response = await getAuthenticatedRequest(
+        tenantID,
         links.next,
         token,
         {},
         handleError,
         '/profile',
-        undefined,
-        '1.0.4',
-        tenantID
+        '1.0.4'
       );
       if (response) {
         const newPlantLocations = response?.items;

@@ -91,12 +91,10 @@ export default function SampleTrees({
     newStatus[index] = 'uploading';
     setUploadStatus(newStatus);
     const res = await postAuthenticatedRequest(
+      tenantID,
       `/treemapper/plantLocations`,
       sampleTree,
-      token,
-      undefined,
-      undefined,
-      tenantID
+      token
     );
     if (!res.code) {
       setErrorMessage('');

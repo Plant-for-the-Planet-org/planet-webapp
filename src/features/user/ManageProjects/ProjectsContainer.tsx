@@ -26,14 +26,12 @@ export default function ProjectsContainer({}: any) {
   async function loadProjects() {
     if (user) {
       await getAuthenticatedRequest(
+        tenantID,
         '/app/profile/projects?version=1.2',
         token,
         {},
         handleError,
-        '/profile',
-        undefined,
-        undefined,
-        tenantID
+        '/profile'
       ).then((projects) => {
         setProjects(projects);
         setLoader(false);

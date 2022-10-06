@@ -82,12 +82,10 @@ export default function RedeemModal({
     if (contextLoaded && user) {
       const userLang = localStorage.getItem('language') || 'en';
       postAuthenticatedRequest(
+        tenantID,
         `/api/v1.3/${userLang}/validateCode`,
         submitData,
-        token,
-        undefined,
-        undefined,
-        tenantID
+        token
       ).then((res) => {
         if (res.code === 401) {
           setErrorMessage(res.message);
@@ -114,12 +112,11 @@ export default function RedeemModal({
     if (contextLoaded && user) {
       const userLang = localStorage.getItem('language') || 'en';
       postAuthenticatedRequest(
+        tenantID,
         `/api/v1.3/${userLang}/convertCode`,
         submitData,
         token,
-        handleError,
-        undefined,
-        tenantID
+        handleError
       ).then((res) => {
         if (res.code === 401) {
           setErrorMessage(res.message);

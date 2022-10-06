@@ -31,14 +31,13 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
       if (!project) {
         if (isReady) {
           const paymentOptions = await getRequest<PaymentOptions>(
+            tenantID,
             `/app/paymentOptions/${query.id}`,
             handleError,
             '',
             {
               currency: planetCashAccount.country,
-            },
-            undefined,
-            tenantID
+            }
           );
 
           if (paymentOptions) {

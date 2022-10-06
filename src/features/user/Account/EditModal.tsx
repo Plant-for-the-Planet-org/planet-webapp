@@ -100,11 +100,11 @@ export const EditModal = ({
 
     if (Object.keys(bodyToSend).length !== 0) {
       putAuthenticatedRequest(
+        tenantID,
         `/app/subscriptions/${record?.id}?scope=modify`,
         bodyToSend,
         token,
-        handleError,
-        tenantID
+        handleError
       )
         .then((res) => {
           if (res?.status === 'action_required') {

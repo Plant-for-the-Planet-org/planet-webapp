@@ -21,16 +21,11 @@ interface Props {
 
 export default function PopupProject({
   project,
-  open,
-  handleOpen,
-  handleClose,
   buttonRef,
-  popupRef,
 }: Props): ReactElement {
-  const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const { token } = React.useContext(UserPropsContext);
-  const { embed, tenantID } = React.useContext(ParamsContext);
+  const { embed, tenantID, callbackUrl } = React.useContext(ParamsContext);
 
   const ImageSource = project.properties.image
     ? getImageUrl('project', 'medium', project.properties.image)
@@ -39,14 +34,12 @@ export default function PopupProject({
     (project.properties.countPlanted / project.properties.countTarget) * 100 +
     '%';
 
-  const projectDetails = project.properties;
-
   const handleDonationOpen = () => {
     const url = getDonationUrl(
       project.properties.slug,
       token,
       embed,
-      undefined,
+      callbackUrl,
       tenantID
     );
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);

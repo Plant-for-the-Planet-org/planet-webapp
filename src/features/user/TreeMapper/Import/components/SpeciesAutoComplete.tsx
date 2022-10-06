@@ -91,22 +91,18 @@ export default function SpeciesSelect(props: {
 
   const suggestSpecies = (value: any) => {
     if (value.length > 2) {
-      postRequest(
-        `/suggest.php`,
-        { q: value, t: 'species' },
-        undefined,
-        undefined,
-        tenantID
-      ).then((res: any) => {
-        if (res && res.length > 0) {
-          const species = res.map((item: any) => ({
-            id: item.id,
-            name: item.name,
-            scientificName: item.scientificName,
-          }));
-          setspeciesSuggestion(species);
+      postRequest(tenantID, `/suggest.php`, { q: value, t: 'species' }).then(
+        (res: any) => {
+          if (res && res.length > 0) {
+            const species = res.map((item: any) => ({
+              id: item.id,
+              name: item.name,
+              scientificName: item.scientificName,
+            }));
+            setspeciesSuggestion(species);
+          }
         }
-      });
+      );
     }
   };
 

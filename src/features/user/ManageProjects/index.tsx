@@ -136,11 +136,11 @@ export default function ManageProjects({ GUID, token, project }: any) {
       reviewRequested: true,
     };
     putAuthenticatedRequest(
+      tenantID,
       `/app/projects/${projectGUID}`,
       submitData,
       token,
-      handleError,
-      tenantID
+      handleError
     ).then((res) => {
       if (!res.code) {
         setProjectDetails(res);
@@ -163,11 +163,11 @@ export default function ManageProjects({ GUID, token, project }: any) {
       publish: val,
     };
     putAuthenticatedRequest(
+      tenantID,
       `/app/projects/${projectGUID}`,
       submitData,
       token,
-      handleError,
-      tenantID
+      handleError
     ).then((res) => {
       if (!res.code) {
         setProjectDetails(res);
@@ -189,14 +189,12 @@ export default function ManageProjects({ GUID, token, project }: any) {
     // Fetch details of the project
     if (projectGUID && token)
       getAuthenticatedRequest(
+        tenantID,
         `/app/profile/projects/${projectGUID}`,
         token,
         {},
         handleError,
-        '/profile',
-        undefined,
-        undefined,
-        tenantID
+        '/profile'
       ).then((result) => {
         setProjectDetails(result);
       });

@@ -33,14 +33,11 @@ export default function ApiKey({}: any) {
   const getApiKey = async () => {
     setIsUploadingData(true);
     const res = await getAuthenticatedRequest(
+      tenantID,
       '/app/profile/apiKey',
       token,
       {},
-      handleError,
-      undefined,
-      undefined,
-      undefined,
-      tenantID
+      handleError
     );
     if (res) {
       setApiKey(res.apiKey);
@@ -51,11 +48,11 @@ export default function ApiKey({}: any) {
   const regenerateApiKey = async () => {
     setIsUploadingData(true);
     const res = await putAuthenticatedRequest(
+      tenantID,
       '/app/profile/apiKey',
       undefined,
       token,
-      handleError,
-      tenantID
+      handleError
     );
     if (res) {
       setApiKey(res.apiKey);

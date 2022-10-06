@@ -1,6 +1,3 @@
-export const TENANT_ID = process.env.TENANTID
-  ? process.env.TENANTID
-  : 'ten_NxJq55pm';
 export const TENANT = process.env.TENANT ? process.env.TENANT : 'planet';
 
-export const DEFAULT_TENANT = "ten_NxJq55pm"
+export const DEFAULT_TENANT_ID = "ten_NxJq55pm"

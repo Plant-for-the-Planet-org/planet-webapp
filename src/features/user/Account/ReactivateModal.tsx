@@ -30,11 +30,11 @@ export const ReactivateModal = ({
   const reactivateDonation = () => {
     setDisabled(true);
     putAuthenticatedRequest(
+      tenantID,
       `/app/subscriptions/${record.id}?scope=reactivate`,
       bodyToSend,
       token,
-      handleError,
-      tenantID
+      handleError
     )
       .then((res) => {
         handleReactivateModalClose();

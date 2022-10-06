@@ -38,24 +38,18 @@ export default function MySpecies({}: Props): ReactElement {
 
   const fetchMySpecies = async () => {
     const result = await getAuthenticatedRequest(
+      tenantID,
       '/treemapper/species',
-      token,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      tenantID
+      token
     );
     setSpecies(result);
   };
 
   const deleteSpecies = async (id: number) => {
     const result = await deleteAuthenticatedRequest(
+      tenantID,
       `/treemapper/species/${id}`,
-      token,
-      undefined,
-      tenantID
+      token
     );
     fetchMySpecies();
   };
@@ -70,12 +64,11 @@ export default function MySpecies({}: Props): ReactElement {
       scientificSpecies: species.scientificSpecies.id,
     };
     const result = await postAuthenticatedRequest(
+      tenantID,
       `/treemapper/species`,
       data,
       token,
-      handleError,
-      undefined,
-      tenantID
+      handleError
     );
     fetchMySpecies();
     setIsUploadingData(false);

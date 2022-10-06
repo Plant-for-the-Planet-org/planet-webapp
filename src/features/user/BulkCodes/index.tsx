@@ -14,7 +14,7 @@ import {
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../utils/apiRequests/api';
-import { DEFAULT_TENANT } from '../../../utils/constants/environment';
+import { getTenantID } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 
 export enum BulkCodeSteps {
@@ -42,18 +42,20 @@ export default function BulkCodes({
   const { handleError } = useContext(ErrorHandlingContext);
   const { contextLoaded, user } = useContext(UserPropsContext);
   const { tenantID } = React.useContext(ParamsContext);
+  const resultantTenantID = getTenantID(tenantID);
 
   const fetchProjectList = useCallback(async () => {
     if (planetCashAccount && !projectList) {
       try {
         const fetchedProjects = await getRequest<APISingleProject[]>(
+          tenantID,
           `/app/projects`,
           handleError,
           undefined,
           {
             _scope: 'map',
             currency: planetCashAccount.currency,
-            tenant: tenantID || DEFAULT_TENANT,
+            tenant: resultantTenantID,
             'filter[purpose]': 'trees',
             locale: i18n.language,
           }

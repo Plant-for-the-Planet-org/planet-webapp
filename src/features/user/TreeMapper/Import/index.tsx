@@ -1,8 +1,5 @@
 import React, { ReactElement } from 'react';
-import {
-  getAuthenticatedRequest,
-  putAuthenticatedRequest,
-} from '../../../../utils/apiRequests/api';
+import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import PlantingLocation from './components/PlantingLocation';
 import styles from './Import.module.scss';
 import i18next from '../../../../../i18n';
@@ -58,14 +55,9 @@ export default function ImportData({}: Props): ReactElement {
   // loc_ACxv7uldM1VdKd5cikv3qoF5
   const fetchPlantLocation = async (id: any): Promise<void> => {
     const result = await getAuthenticatedRequest(
+      tenantID,
       `/treemapper/plantLocations/${id}?_scope=extended`,
-      token,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      tenantID
+      token
     );
     setPlantLocation(result);
   };

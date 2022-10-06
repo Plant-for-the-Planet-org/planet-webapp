@@ -6,6 +6,7 @@ import { getRequest } from '../src/utils/apiRequests/api';
 import GetLeaderboardMeta from './../src/utils/getMetaTags/GetLeaderboardMeta';
 import { ParamsContext } from '../src/features/common/Layout/QueryParamsContext';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
+import { getTenantID } from '../src/utils/apiRequests/api';
 const config = tenantConfig();
 
 interface Props {
@@ -18,10 +19,12 @@ export default function Home({ initialized }: Props) {
   const { tenantID } = React.useContext(ParamsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
+  const resultantTenantID = getTenantID(tenantID);
   React.useEffect(() => {
     async function loadLeaderboard() {
       const newLeaderboard = await getRequest(
-        `/app/leaderboard/${tenantID}`,
+        tenantID,
+        `/app/leaderboard/${resultantTenantID}`,
         handleError,
         '/'
       );
@@ -35,7 +38,8 @@ export default function Home({ initialized }: Props) {
   React.useEffect(() => {
     async function loadTenantScore() {
       const newTenantScore = await getRequest(
-        `/app/tenantScore/${tenantID}`,
+        tenantID,
+        `/app/tenantScore/${resultantTenantID}`,
         handleError,
         '/'
       );

@@ -126,12 +126,11 @@ export default function ProjectSpending({
     };
 
     postAuthenticatedRequest(
+      tenantID,
       `/app/projects/${projectGUID}/expenses`,
       submitData,
       token,
-      handleError,
-      undefined,
-      tenantID
+      handleError
     )
       .then((res) => {
         if (!res.code) {
@@ -163,10 +162,10 @@ export default function ProjectSpending({
   const deleteProjectSpending = (id: any) => {
     setIsUploadingData(true);
     deleteAuthenticatedRequest(
+      tenantID,
       `/app/projects/${projectGUID}/expenses/${id}`,
       token,
-      handleError,
-      tenantID
+      handleError
     ).then((res) => {
       if (res !== 404) {
         const uploadedFilesTemp = uploadedFiles.filter(
@@ -182,14 +181,12 @@ export default function ProjectSpending({
     // Fetch spending of the project
     if (projectGUID && token)
       getAuthenticatedRequest(
+        tenantID,
         `/app/profile/projects/${projectGUID}?_scope=expenses`,
         token,
         {},
         handleError,
-        '/profile',
-        undefined,
-        undefined,
-        tenantID
+        '/profile'
       ).then((result) => {
         if (result?.expenses && result.expenses.length > 0) {
           setShowForm(false);

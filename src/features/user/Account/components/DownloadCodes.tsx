@@ -40,7 +40,7 @@ const DownloadCodes = ({ codesUrl }: DownloadCodesProps): ReactElement => {
         type: string;
         numberOfItems: number;
         items: [];
-      }>(codesUrl, handleError, undefined, undefined, undefined, tenantID);
+      }>(tenantID, codesUrl, handleError);
       if (response) {
         if (response.items.length) {
           downloadCSV(response.items, 'codes.csv');

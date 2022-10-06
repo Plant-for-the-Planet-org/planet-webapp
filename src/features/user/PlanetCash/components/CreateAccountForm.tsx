@@ -6,6 +6,7 @@ import StyledForm from '../../../common/Layout/StyledForm';
 import i18next from '../../../../../i18n';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { CountryType } from '../../../common/types/country';
@@ -27,6 +28,7 @@ const CreateAccountForm = ({
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
   const { token } = useContext(UserPropsContext);
+  const { tenantID } = useContext(ParamsContext);
   const { handleError } = useContext(ErrorHandlingContext);
   const router = useRouter();
 
@@ -35,6 +37,7 @@ const CreateAccountForm = ({
     const data = { country: country, activate: !isPlanetCashActive };
     setIsProcessing(true);
     const res = await postAuthenticatedRequest(
+      tenantID,
       '/app/planetCash',
       data,
       token,

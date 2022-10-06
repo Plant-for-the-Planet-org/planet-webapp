@@ -39,14 +39,12 @@ function ManageSingleProject({}: Props): ReactElement {
   useEffect(() => {
     async function loadProject() {
       getAuthenticatedRequest(
+        tenantID,
         `/app/profile/projects/${projectGUID}`,
         token,
         {},
         handleError,
-        '/profile',
-        undefined,
-        undefined,
-        tenantID
+        '/profile'
       )
         .then((result) => {
           if (result.status === 401) {

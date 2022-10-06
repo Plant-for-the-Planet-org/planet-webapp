@@ -4,7 +4,6 @@ import i18next from '../../../../../i18n';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import LeaderboardLoader from '../../../../features/common/ContentLoaders/LeaderboardLoader';
 import MaterialTextField from '../../../../features/common/InputTypes/MaterialTextField';
-import { getRequest, postRequest } from '../../../../utils/apiRequests/api';
 import Link from 'next/link';
 import getImageUrl from '../../../../utils/getImageURL';
 import { Autocomplete } from '@mui/material';
@@ -12,7 +11,6 @@ import { makeStyles } from '@mui/styles';
 import tenantConfig from '../../../../../tenant.config';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import getRandomImage from '../../../../utils/getRandomImage';
-import Image from 'next/image';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
@@ -69,16 +67,12 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const classes = useStylesAutoComplete();
 
   async function fetchUsers(query: any) {
-    postRequest(
-      '/suggest.php',
-      { q: query },
-      handleError,
-      undefined,
-      tenantID
-    ).then((res) => {
-      const result = res.filter((item) => item.type !== 'competition');
-      setUsers(result);
-    });
+    postRequest(tenantID, '/suggest.php', { q: query }, handleError).then(
+      (res) => {
+        const result = res.filter((item) => item.type !== 'competition');
+        setUsers(result);
+      }
+    );
   }
   const imageErrorSrc =
     'https://cdn.planetapp.workers.dev/development/logo/svg/planet.svg';

@@ -95,14 +95,12 @@ function ProjectCertificates({
     // Fetch certificates of the project
     if (projectGUID && token) {
       getAuthenticatedRequest(
+        tenantID,
         `/app/profile/projects/${projectGUID}?_scope=certificates`,
         token,
         {},
         handleError,
-        '/profile',
-        undefined,
-        undefined,
-        tenantID
+        '/profile'
       ).then((result) => {
         if (result && result.certificates && result.certificates.length > 0) {
           setShowForm(false);
@@ -144,12 +142,11 @@ function ProjectCertificates({
     };
 
     postAuthenticatedRequest(
+      tenantID,
       `/app/projects/${projectGUID}/certificates`,
       submitData,
       token,
-      handleError,
-      undefined,
-      tenantID
+      handleError
     )
       .then((res) => {
         if (!res.code) {
@@ -185,10 +182,10 @@ function ProjectCertificates({
 
   const deleteProjectCertificate = (id: any) => {
     deleteAuthenticatedRequest(
+      tenantID,
       `/app/projects/${projectGUID}/certificates/${id}`,
       token,
-      handleError,
-      tenantID
+      handleError
     ).then((res) => {
       if (res !== 404) {
         const uploadedFilesTemp = uploadedFiles.filter(

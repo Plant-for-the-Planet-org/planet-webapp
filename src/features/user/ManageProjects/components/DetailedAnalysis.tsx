@@ -281,11 +281,11 @@ export default function DetailedAnalysis({
           };
 
     putAuthenticatedRequest(
+      tenantID,
       `/app/projects/${projectGUID}`,
       submitData,
       token,
-      handleError,
-      tenantID
+      handleError
     )
       .then((res) => {
         if (!res.code) {
