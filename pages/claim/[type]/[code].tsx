@@ -2,15 +2,15 @@ import React, { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
-import styles from './../../../src/features/user/Profile/styles/RedeemModal.module.scss';
-import MaterialTextField from '../../../src/features/common/InputTypes/MaterialTextField';
 import i18next from './../../../i18n';
 import LandingSection from '../../../src/features/common/Layout/LandingSection';
-import { getFormattedNumber } from '../../../src/utils/getFormattedNumber';
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
-import CancelIcon from '../../../public/assets/images/icons/CancelIcon';
-import CircularProgress from '@mui/material/CircularProgress';
+import {
+  SuccessfullyRedeemed,
+  InputRedeemCode,
+  RedeemCodeFailed,
+} from '../../../src/features/common/RedeemMicro/RedeemCode';
 
 const { useTranslation } = i18next;
 
@@ -21,12 +21,7 @@ type FormInput = {
 };
 
 function ClaimDonation(): ReactElement {
-  const { t, i18n, ready } = useTranslation([
-    'me',
-    'common',
-    'donate',
-    'redeem',
-  ]);
+  const { t, ready } = useTranslation(['redeem']);
 
   const router = useRouter();
   const { register } = useForm<FormInput>({ mode: 'onBlur' });
@@ -138,104 +133,31 @@ function ClaimDonation(): ReactElement {
     <LandingSection>
       {openInputCodeModal ? (
         // for input of redeem code
-        <>
-          <div className={styles.modal}>
-            <button className={styles.cancelIcon} onClick={closeRedeem}>
-              <CancelIcon />
-            </button>
-
-            <div style={{ fontWeight: 'bold' }}>{t('redeem:redeem')}</div>
-            <div className={styles.note}>{t('redeem:redeemDescription')}</div>
-            <div className={styles.inputField}>
-              <MaterialTextField
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: t('redeem:enterRedeemCode'),
-                  },
-                })}
-                onChange={(event) => {
-                  setInputCode(event.target.value);
-                }}
-                value={inputCode}
-                name={'code'}
-                placeholder="XAD-1SA-5F1-A"
-                label=""
-                variant="outlined"
-              />
-            </div>
-            <div>
-              <button className={'primaryButton'} onClick={changeRouteCode}>
-                {t('redeem:redeemCode')}
-              </button>
-            </div>
-          </div>
-        </>
+        <InputRedeemCode
+          setInputCode={setInputCode}
+          inputCode={inputCode}
+          changeRouteCode={changeRouteCode}
+          closeRedeem={closeRedeem}
+        />
       ) : (
         //after successful redeem
-        <div className={styles.modal}>
+        <>
           {redeemedCodeData ? (
-            <>
-              <button className={styles.cancelIcon} onClick={closeRedeem}>
-                <CancelIcon />
-              </button>
-
-              <div className={styles.codeTreeCount}>
-                {getFormattedNumber(
-                  i18n.language,
-                  Number(redeemedCodeData.units)
-                )}
-                <span>
-                  {t('common:tree', {
-                    count: Number(redeemedCodeData.units),
-                  })}
-                </span>
-              </div>
-
-              <div className={styles.codeTreeCount}>
-                <span>{t('redeem:successfullyRedeemed')}</span>
-              </div>
-
-              <div>
-                <button className="primaryButton" onClick={redeemAnotherCode}>
-                  {t('redeem:redeemAnotherCode')}
-                </button>
-              </div>
-            </>
+            <SuccessfullyRedeemed
+              redeemedCodeData={redeemedCodeData}
+              redeemAnotherCode={redeemAnotherCode}
+              closeRedeem={closeRedeem}
+            />
           ) : (
             // if redeem code is invalid and  redeem process failed
-            <>
-              <div className={styles.cancelIcon} onClick={closeRedeem}>
-                <CancelIcon />
-              </div>
-              {errorMessage ? (
-                <div style={{ fontWeight: 'bold' }}>{code}</div>
-              ) : (
-                <div style={{ fontWeight: 'bold' }}>
-                  {t('redeem:redeeming')} {code}
-                </div>
-              )}
-
-              {errorMessage && (
-                <div>
-                  <span className={styles.formErrors}>{errorMessage}</span>
-                </div>
-              )}
-
-              {!errorMessage ? (
-                <div style={{ marginTop: '10px' }}>
-                  <CircularProgress />
-                </div>
-              ) : (
-                <div>
-                  <button className="primaryButton" onClick={redeemAnotherCode}>
-                    {t('redeem:redeemAnotherCode')}
-                  </button>
-                </div>
-              )}
-            </>
+            <RedeemCodeFailed
+              errorMessage={errorMessage}
+              code={code}
+              redeemAnotherCode={redeemAnotherCode}
+              closeRedeem={closeRedeem}
+            />
           )}
-        </div>
+        </>
       )}
     </LandingSection>
   ) : (
