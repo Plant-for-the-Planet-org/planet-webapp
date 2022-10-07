@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import { TabItem } from './TabbedViewTypes';
 
 interface TabStepsProps {
-  step: number;
+  step: number | string | false;
   tabItems: TabItem[];
 }
 
@@ -49,6 +49,7 @@ export default function TabSteps({
           label={tabItem.label}
           data-link={tabItem.link}
           disabled={tabItem.disabled}
+          value={tabItem.step}
         />
       );
     });
@@ -58,7 +59,7 @@ export default function TabSteps({
     <StyledTabs
       orientation="vertical"
       variant="scrollable"
-      aria-label="form-steps"
+      aria-label="form-step"
       value={step}
       TabIndicatorProps={{ children: <span /> }}
       onChange={handleTabChange}

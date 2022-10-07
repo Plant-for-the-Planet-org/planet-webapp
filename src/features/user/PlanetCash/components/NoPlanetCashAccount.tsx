@@ -1,3 +1,5 @@
+// Currently Unused
+
 import { ReactElement } from 'react';
 import { Button, styled } from '@mui/material';
 import i18next from '../../../../../i18n';

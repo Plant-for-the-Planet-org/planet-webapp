@@ -1,4 +1,11 @@
 {
+  "managePayouts": {
+    "menuText": "Manage Payouts",
+    "titleOverview": "Manage Payouts - Overview",
+    "titleAddBankDetails": "Manage Payouts - Add Bank Details",
+    "titlePayoutSchedule": "Manage Payouts - Schedule Payouts",
+    "titleEditBankDetails": "Manage Payouts - Edit Bank Details"
+  },
   "donationLinkTitle": "Build Donation Link",
   "planetcash": {
     "menuText": "PlanetCash",

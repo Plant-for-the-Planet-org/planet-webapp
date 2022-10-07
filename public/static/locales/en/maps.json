@@ -41,5 +41,9 @@
   "today": "Today",
   "yesterday": "Yesterday",
   "clickForDetails": "Click for Details",
-  "treeMapper": "TreeMapper"
+  "treeMapper": "TreeMapper",
+  "showProjectList": "Show Project List",
+  "showProjectDetails": "Show Project Details",
+  "hideProjectList": "Hide Project List",
+  "hideProjectDetails": "Hide Project Details"
 }

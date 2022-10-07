@@ -76,11 +76,12 @@ function UserLayout(props: any): ReactElement {
           path: '/profile/recurrency',
           // hideItem: true,
         },
+        {
+          title: t('me:managePayouts.menuText'),
+          path: '/profile/payouts',
+          hideItem: !(user?.type === 'tpo'),
+        },
         // Localize with translations if you ever activate this!!
-        // {
-        //   title: 'Payouts',
-        //   path: '/profile/payouts', // Only for Tpos
-        // },
         // {
         //   title: 'Payment Methods',
         //   path: '/profile/payment-methods',
@@ -171,6 +172,7 @@ function UserLayout(props: any): ReactElement {
         {
           title: t('me:donationLink'),
           path: '/profile/donation-link',
+          flag: t('me:new'),
           // hideItem: true,
         },
       ],

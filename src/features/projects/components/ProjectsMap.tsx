@@ -50,7 +50,7 @@ export default function ProjectsMap(): ReactElement {
   } = React.useContext(ProjectPropsContext);
 
   const { t } = useTranslation(['maps']);
-  const { embed } = React.useContext(ParamsContext);
+  const { embed, showProjectList } = React.useContext(ParamsContext);
   //Map
   const _onStateChange = (state: any) => setMapState({ ...state });
   const _onViewportChange = (view: any) => setViewPort({ ...view });
@@ -160,6 +160,17 @@ export default function ProjectsMap(): ReactElement {
       setShowDetails({ ...showDetails, show: false });
     }
   }, [zoomLevel]);
+
+  React.useEffect(() => {
+    if (embed === 'true' && showProjectList === 'false') {
+      const newViewport = {
+        ...viewport,
+        latitude: 36.96,
+        longitude: 0,
+      };
+      setViewPort(newViewport);
+    }
+  }, [showProjectList]);
 
   return (
     <div

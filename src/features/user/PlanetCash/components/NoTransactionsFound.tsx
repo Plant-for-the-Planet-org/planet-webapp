@@ -4,7 +4,7 @@ import TransactionsNotFound from '../../../../../public/assets/images/icons/Tran
 
 const NoTransactionsFound = (): ReactElement => {
   return (
-    <CenteredContainer>
+    <CenteredContainer className="CenteredContainer--small">
       <TransactionsNotFound />
     </CenteredContainer>
   );

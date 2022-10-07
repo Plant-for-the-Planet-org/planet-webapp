@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useState, useEffect } from 'react';
 import TopProgressBar from '../../../src/features/common/ContentLoaders/TopProgressBar';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
@@ -13,6 +13,13 @@ export default function PlanetCashPage(): ReactElement {
   const { t, ready } = useTranslation('me');
   const [progress, setProgress] = useState(0);
 
+  useEffect(() => {
+    // Cleanup function to reset state and address Warning: Can't perform a React state update on an unmounted component.
+    return () => {
+      setProgress(0);
+    };
+  }, []);
+
   return (
     <>
       {progress > 0 && (
@@ -24,11 +31,7 @@ export default function PlanetCashPage(): ReactElement {
         <Head>
           <title>{ready ? t('planetcash.titleAccount') : ''}</title>
         </Head>
-        <PlanetCash
-          step={PlanetCashTabs.ACCOUNTS}
-          setProgress={setProgress}
-          shouldReload={true}
-        />
+        <PlanetCash step={PlanetCashTabs.ACCOUNTS} setProgress={setProgress} />
       </UserLayout>
     </>
   );
