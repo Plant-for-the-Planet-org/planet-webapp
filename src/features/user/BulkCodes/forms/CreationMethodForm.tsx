@@ -11,6 +11,7 @@ import BulkCodesError from '../components/BulkCodesError';
 import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
+import CenteredContainer from '../../../common/Layout/CenteredContainer';
 
 const { useTranslation } = i18next;
 
@@ -75,26 +76,28 @@ const CreationMethodForm = (): ReactElement | null => {
     };
 
     return (
-      <BulkCodesForm className="CreationMethodForm">
-        <div className="inputContainer">{renderSelectorOptions()}</div>
+      <CenteredContainer>
+        <BulkCodesForm className="CreationMethodForm">
+          <div className="inputContainer">{renderSelectorOptions()}</div>
 
-        <BulkCodesError />
+          <BulkCodesError />
 
-        <Button
-          variant="contained"
-          color="primary"
-          className="formButton"
-          disabled={
-            !(
-              user.planetCash &&
-              !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
-            ) || method === null
-          }
-          onClick={handleFormSubmit}
-        >
-          {t('common:continue')}
-        </Button>
-      </BulkCodesForm>
+          <Button
+            variant="contained"
+            color="primary"
+            className="formButton"
+            disabled={
+              !(
+                user.planetCash &&
+                !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
+              ) || method === null
+            }
+            onClick={handleFormSubmit}
+          >
+            {t('common:continue')}
+          </Button>
+        </BulkCodesForm>
+      </CenteredContainer>
     );
   }
   return null;

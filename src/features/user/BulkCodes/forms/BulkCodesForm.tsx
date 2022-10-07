@@ -1,6 +1,7 @@
 import { styled } from '@mui/material';
 
 const BulkCodesForm = styled('form')(() => ({
+  width: '100%',
   display: 'flex',
   flexDirection: 'column',
   gap: 24,

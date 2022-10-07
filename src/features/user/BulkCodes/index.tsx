@@ -1,8 +1,14 @@
-import React, { ReactElement, useEffect, useCallback, useContext } from 'react';
+import React, {
+  ReactElement,
+  useEffect,
+  useCallback,
+  useContext,
+  useState,
+} from 'react';
 import i18next from '../../../../i18n';
 
 import DashboardView from '../../common/Layout/DashboardView';
-import TabbedView from './TabbedView';
+import TabbedView from '../../common/Layout/TabbedView';
 import CreationMethodForm from './forms/CreationMethodForm';
 import SelectProjectForm from './forms/SelectProjectForm';
 import IssueCodesForm from './forms/IssueCodesForm';
@@ -15,11 +21,12 @@ import { TENANT_ID } from '../../../utils/constants/environment';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 
 export enum BulkCodeSteps {
-  SELECT_METHOD = 0,
-  SELECT_PROJECT = 1,
-  ISSUE_CODES = 2,
+  SELECT_METHOD = 'select_method',
+  SELECT_PROJECT = 'select_project',
+  ISSUE_CODES = 'issue_codes',
 }
 
 interface BulkCodesProps {
@@ -37,9 +44,36 @@ export default function BulkCodes({
     setPlanetCashAccount,
     projectList,
     setProjectList,
+    bulkMethod,
+    project,
   } = useBulkCode();
   const { handleError } = useContext(ErrorHandlingContext);
   const { contextLoaded, user } = useContext(UserPropsContext);
+  const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
+
+  useEffect(() => {
+    if (ready) {
+      setTabConfig([
+        {
+          label: t('bulkCodes:tabCreationMethod'),
+          link: '/profile/bulk-codes',
+          step: BulkCodeSteps.SELECT_METHOD,
+        },
+        {
+          label: t('bulkCodes:tabSelectProject'),
+          link: `/profile/bulk-codes/${bulkMethod}`,
+          step: BulkCodeSteps.SELECT_PROJECT,
+          disabled: bulkMethod === null,
+        },
+        {
+          label: t('bulkCodes:tabIssueCodes'),
+          link: `/profile/bulk-codes/${bulkMethod}/${project?.guid}`,
+          step: BulkCodeSteps.ISSUE_CODES,
+          disabled: bulkMethod === null || project === null,
+        },
+      ]);
+    }
+  }, [ready, bulkMethod, project]);
 
   const fetchProjectList = useCallback(async () => {
     if (planetCashAccount && !projectList) {
@@ -135,7 +169,9 @@ export default function BulkCodes({
         </p>
       }
     >
-      <TabbedView step={step}>{renderStep()}</TabbedView>
+      <TabbedView step={step} tabItems={tabConfig}>
+        {renderStep()}
+      </TabbedView>
     </DashboardView>
   ) : null;
 }
