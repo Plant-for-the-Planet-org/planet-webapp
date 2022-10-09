@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
 import i18next from './../../../i18n';
@@ -8,7 +7,6 @@ import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsC
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import {
   SuccessfullyRedeemed,
-  InputRedeemCode,
   RedeemCodeFailed,
 } from '../../../src/features/common/RedeemMicro/RedeemCode';
 import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
@@ -27,45 +25,26 @@ function ClaimDonation(): ReactElement {
   const { handleError } = React.useContext(ErrorHandlingContext);
 
   const [errorMessage, setErrorMessage] = React.useState<ClaimCode1>('');
-  const [inputCode, setInputCode] = React.useState<ClaimCode1>('');
   const [code, setCode] = React.useState<string | string[] | null>('');
-  const [type, setType] = React.useState('');
   const [redeemedCodeData, setRedeemedCodeData] = React.useState<
     RedeemedCodeData | undefined
   >(undefined);
-  const [openInputCodeModal, setOpenInputCodeModal] =
-    React.useState<boolean>(false);
 
   React.useEffect(() => {
     if (router && router.query.type && router.query.code) {
-      if (
-        router.query.type !== 'donation' &&
-        router.query.type !== 'donor' &&
-        router.query.type !== 'gift'
-      ) {
+      if (router.query.type !== 'donation' && router.query.type !== 'gift') {
         setErrorMessage(ready ? t('redeem:invalidType') : '');
-      } else {
         setCode(router.query.code);
-        setType(router.query.type);
+      } else {
         setErrorMessage('');
       }
     }
-  }, [router]);
+  }, [router, router.query.type, ready]);
   const redeemAnotherCode = () => {
-    setOpenInputCodeModal(true);
+    router.push(`/profile/redeem/${code}?inputCode=${true}`);
+
     setRedeemedCodeData(undefined);
     setErrorMessage('');
-    setInputCode('');
-  };
-
-  const changeRouteCode = () => {
-    if (router.query.code && inputCode) {
-      router.push(`/claim/gift/${inputCode}`);
-      setOpenInputCodeModal(false);
-    }
-    if (router.query.code && inputCode) {
-      redeemingCode(router.query.code);
-    }
   };
 
   const closeRedeem = () => {
@@ -95,8 +74,12 @@ function ClaimDonation(): ReactElement {
       });
     }
   }
-
-  // Check if the user is logged in or not.
+  React.useEffect(() => {
+    if (router.query.code) {
+      setCode(router.query.code);
+    }
+  }, [router.query.code]);
+  // // Check if the user is logged in or not.
   React.useEffect(() => {
     // If the user is logged in -
     // Validate the code automatically
@@ -105,8 +88,8 @@ function ClaimDonation(): ReactElement {
     // From here user can go back to home by clicking X
     if (contextLoaded && user) {
       // validate code
-      if (code && type) {
-        redeemingCode(code);
+      if (ready && router.query.type && router.query.code) {
+        redeemingCode(router.query.code);
       }
     }
 
@@ -127,34 +110,23 @@ function ClaimDonation(): ReactElement {
 
   return ready ? (
     <LandingSection>
-      {openInputCodeModal ? (
-        // for input of redeem code
-        <InputRedeemCode
-          setInputCode={setInputCode}
-          inputCode={inputCode}
-          changeRouteCode={changeRouteCode}
-          closeRedeem={closeRedeem}
-        />
-      ) : (
-        //after successful redeem
-        <>
-          {redeemedCodeData ? (
-            <SuccessfullyRedeemed
-              redeemedCodeData={redeemedCodeData}
-              redeemAnotherCode={redeemAnotherCode}
-              closeRedeem={closeRedeem}
-            />
-          ) : (
-            // if redeem code is invalid and  redeem process failed
-            <RedeemCodeFailed
-              errorMessage={errorMessage}
-              code={code}
-              redeemAnotherCode={redeemAnotherCode}
-              closeRedeem={closeRedeem}
-            />
-          )}
-        </>
-      )}
+      <>
+        {redeemedCodeData ? (
+          <SuccessfullyRedeemed
+            redeemedCodeData={redeemedCodeData}
+            redeemAnotherCode={redeemAnotherCode}
+            closeRedeem={closeRedeem}
+          />
+        ) : (
+          // if redeem code is invalid and  redeem process failed
+          <RedeemCodeFailed
+            errorMessage={errorMessage}
+            code={code}
+            redeemAnotherCode={redeemAnotherCode}
+            closeRedeem={closeRedeem}
+          />
+        )}
+      </>
     </LandingSection>
   ) : (
     <></>

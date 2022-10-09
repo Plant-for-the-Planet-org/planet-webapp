@@ -19,14 +19,12 @@ const ReedemCode: FC = () => {
   const { user, contextLoaded, token } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
 
-  const [code, setCode] = useState<ClaimCode1>('');
+  const [code, setCode] = useState<string | string[] | null>('');
   const [inputCode, setInputCode] = useState<ClaimCode1>('');
   const [errorMessage, setErrorMessage] = useState<ClaimCode1>('');
   const [redeemedCodeData, setRedeemedCodeData] = useState<
     RedeemedCodeData | undefined
   >(undefined);
-  const [openInputTextFieldModal, setOpenTextFieldModal] =
-    useState<boolean>(false);
 
   const router = useRouter();
 
@@ -37,19 +35,17 @@ const ReedemCode: FC = () => {
   };
 
   const handleCode = () => {
+    router.push(`/profile/redeem/${code}?inputCode=${true}`);
     setErrorMessage('');
     setRedeemedCodeData(undefined);
-    setOpenTextFieldModal(true);
     setInputCode('');
   };
 
   const changeRouteCode = () => {
-    if (router.query.code && inputCode) {
-      router.push(`/profile/redeem/${inputCode}`);
-      const codeFromUrl = router.query.code;
-      redeemingCode(codeFromUrl);
-      setOpenTextFieldModal(false);
-    }
+    router.push(`/profile/redeem/${inputCode}?inputCode=${false}`);
+
+    const codeFromUrl = router.query.code;
+    redeemingCode(codeFromUrl);
   };
 
   useEffect(() => {
@@ -66,8 +62,7 @@ const ReedemCode: FC = () => {
 
   useEffect(() => {
     if (router && router.query.code) {
-      const codeFromUrl = router.query.code;
-      setCode(codeFromUrl);
+      setCode(router.query.code);
     }
   }, [router]);
 
@@ -101,7 +96,7 @@ const ReedemCode: FC = () => {
   }
 
   return ready ? (
-    openInputTextFieldModal ? (
+    router.query.inputCode === 'true' ? (
       // to input  redeem code
       <LandingSection>
         <InputRedeemCode
