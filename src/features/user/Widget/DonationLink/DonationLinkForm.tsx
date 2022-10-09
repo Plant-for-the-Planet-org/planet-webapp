@@ -17,7 +17,7 @@ import {
 } from '../../../common/InputTypes/MuiAutoComplete';
 import { Project } from '../../../common/types/project';
 import { allCountries } from '../../../../utils/constants/countries';
-import CustomSnackbar from './CustomSnackbar';
+import CustomSnackbar from '../../../common/CustomSnackbar';
 
 // TODOO - refactor code for reuse?
 const StyledForm = styled('form')((/* { theme } */) => ({
