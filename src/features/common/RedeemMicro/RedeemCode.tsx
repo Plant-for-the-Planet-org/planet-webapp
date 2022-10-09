@@ -6,27 +6,46 @@ import styles from '../../../../src/features/user/Profile/styles/RedeemModal.mod
 import i18next from '../../../../i18n';
 import MaterialTextField from '../InputTypes/MaterialTextField';
 import CircularProgress from '@mui/material/CircularProgress';
+import { RedeemedCodeData } from '../types/redeem';
 
 const { useTranslation } = i18next;
 
-// export interface RedeemCodeData {
+export interface InputRedeemCode {
+  setInputCode: React.Dispatch<React.SetStateAction<string | null>>;
+  inputCode: string | null;
+  changeRouteCode: () => void;
+  closeRedeem: () => void;
+}
 
-// }
+export interface RedeemCodeFailed {
+  errorMessage: string | null;
+  code: string | string[] | null;
+  redeemAnotherCode: () => void;
+  closeRedeem: () => void;
+}
+
+export interface SuccessfullyRedeemed {
+  redeemedCodeData: RedeemedCodeData | undefined;
+  redeemAnotherCode: () => void;
+  closeRedeem: () => void;
+}
 
 export const InputRedeemCode = ({
   setInputCode,
   inputCode,
   changeRouteCode,
   closeRedeem,
-}): ReactElement => {
-  const { register } = useForm({ mode: 'onBlur' });
+}: InputRedeemCode): ReactElement => {
+  const { register, errors } = useForm({ mode: 'onBlur' });
   const { t } = useTranslation(['redeem']);
 
   return (
-    <div className={styles.modal}>
-      <button className={styles.cancelIcon} onClick={closeRedeem}>
-        <CancelIcon />
-      </button>
+    <div className={styles.routeRedeemModal}>
+      <div className={styles.crossDiv}>
+        <button className={styles.crossWidth} onClick={closeRedeem}>
+          <CancelIcon />
+        </button>
+      </div>
 
       <div style={{ fontWeight: 'bold' }}>{t('redeem:redeem')}</div>
       <div className={styles.note}>{t('redeem:redeemDescription')}</div>
@@ -48,44 +67,14 @@ export const InputRedeemCode = ({
           variant="outlined"
         />
       </div>
-      <div>
+
+      {errors.code && (
+        <span className={styles.formErrors}>{errors.code.message}</span>
+      )}
+
+      <div style={{ paddingTop: '30px' }}>
         <button className={'primaryButton'} onClick={changeRouteCode}>
           {t('redeem:redeemCode')}
-        </button>
-      </div>
-    </div>
-  );
-};
-
-export const SuccessfullyRedeemed = ({
-  redeemedCodeData,
-  redeemAnotherCode,
-  closeRedeem,
-}): ReactElement => {
-  const { t, i18n } = useTranslation(['common', 'redeem']);
-
-  return (
-    <div className={styles.modal}>
-      <button className={styles.cancelIcon} onClick={closeRedeem}>
-        <CancelIcon />
-      </button>
-
-      <div className={styles.codeTreeCount}>
-        {getFormattedNumber(i18n.language, Number(redeemedCodeData.units))}
-        <span>
-          {t('common:tree', {
-            count: Number(redeemedCodeData.units),
-          })}
-        </span>
-      </div>
-
-      <div className={styles.codeTreeCount}>
-        <span>{t('redeem:successfullyRedeemed')}</span>
-      </div>
-
-      <div>
-        <button className="primaryButton" onClick={redeemAnotherCode}>
-          {t('redeem:redeemAnotherCode')}
         </button>
       </div>
     </div>
@@ -97,18 +86,20 @@ export const RedeemCodeFailed = ({
   code,
   redeemAnotherCode,
   closeRedeem,
-}) => {
+}: RedeemCodeFailed): ReactElement => {
   const { t } = useTranslation(['redeem']);
 
   return (
-    <div className={styles.modal}>
-      <div className={styles.cancelIcon} onClick={closeRedeem}>
-        <CancelIcon />
+    <div className={styles.routeRedeemModal}>
+      <div className={styles.crossDiv}>
+        <button className={styles.crossWidth} onClick={closeRedeem}>
+          <CancelIcon />
+        </button>
       </div>
       {errorMessage ? (
-        <div style={{ fontWeight: 'bold' }}>{code}</div>
+        <div className={styles.RedeemTitle}>{code}</div>
       ) : (
-        <div style={{ fontWeight: 'bold' }}>
+        <div className={styles.RedeemTitle}>
           {t('redeem:redeeming')} {code}
         </div>
       )}
@@ -120,16 +111,53 @@ export const RedeemCodeFailed = ({
       )}
 
       {!errorMessage ? (
-        <div style={{ marginTop: '10px' }}>
+        <div className={styles.redeemAnotherCodeDiv}>
           <CircularProgress />
         </div>
       ) : (
-        <div>
+        <div className={styles.redeemAnotherCodeDiv}>
           <button className="primaryButton" onClick={redeemAnotherCode}>
             {t('redeem:redeemAnotherCode')}
           </button>
         </div>
       )}
+    </div>
+  );
+};
+
+export const SuccessfullyRedeemed = ({
+  redeemedCodeData,
+  redeemAnotherCode,
+  closeRedeem,
+}: SuccessfullyRedeemed): ReactElement => {
+  const { t, i18n } = useTranslation(['common', 'redeem']);
+
+  return (
+    <div className={styles.routeRedeemModal}>
+      <div className={styles.crossDiv}>
+        <button className={styles.crossWidth} onClick={closeRedeem}>
+          <CancelIcon />
+        </button>
+      </div>
+
+      <div className={styles.codeTreeCount}>
+        {getFormattedNumber(i18n.language, Number(redeemedCodeData?.units))}
+        <span>
+          {t('common:tree', {
+            count: Number(redeemedCodeData?.units),
+          })}
+        </span>
+      </div>
+
+      <div className={styles.codeTreeCount}>
+        <span>{t('redeem:successfullyRedeemed')}</span>
+      </div>
+
+      <div className={styles.redeemAnotherCodeDiv}>
+        <button className="primaryButton" onClick={redeemAnotherCode}>
+          {t('redeem:redeemAnotherCode')}
+        </button>
+      </div>
     </div>
   );
 };

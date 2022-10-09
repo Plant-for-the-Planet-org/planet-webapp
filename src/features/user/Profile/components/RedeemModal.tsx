@@ -138,7 +138,7 @@ export default function RedeemModal({
             <>
               <h4 style={{ fontWeight: '700' }}>{t('me:redeem')}</h4>
               <div className={styles.note}>
-                <p>{t('me:redeemDescription')}</p>
+                <p>{t('redeem:redeemDescription')}</p>
               </div>
               {!errorMessage && (
                 <div className={styles.inputField}>

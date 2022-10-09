@@ -20,7 +20,7 @@
   }
   >div {
     >button{
-      margin-top: 20px;
+      margin-top: 6px;
     }
   }
  }
@@ -30,45 +30,79 @@
     max-width: 80vw;
     min-width: 427px;
  }
+ 
+ .errorAndSpinnerDiv {
+   justify-content: center;
+   margin-top: 10px;
+ }
+ 
+ .cancelIcon {
+   width: 1rem;
+   cursor: pointer;
+   position: relative;
+   bottom: 15px;
+   left: 11rem;
+   top: -11px
+  }
 
-.errorAndSpinnerDiv {
-  justify-content: center;
-  margin-top: 10px;
-}
+  .fixModal {
+    max-width: 400px;
+    min-height: 260px;
+    min-width: 400px;
+    align-items: center;
+    justify-content: center;
+    padding-top: 30px;
+    position: relative;
+   }
 
-.cancelIcon {
-  width: 1rem;
-  cursor: pointer;
-  position: relative;
-  bottom: 15px;
-  left: 11rem;
-  top: -11px
-}
+  .crossButtonDiv {
+    position:absolute;
+    left: 362px;
+    top: 13px
+   }
+   
+  .crossButton {
+     width: 15px;
+     cursor: pointer;
+    }
+   
+  .redeemCode{
+     margin-top: 24px;
+   }
 
-.fixModal {
-  max-width: 400px;
-  min-height: 260px;
-  min-width: 400px;
+ .routeRedeemModal {
+  background-color: $backgroundColor;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 30px;
+  border: 0px;
+  outline: none;
+  border-radius: 8px;
   position: relative;
+  max-width: 400px;
+  min-height: 275px;
+  min-width: 438px;
+  padding: 20px 56px;
  }
 
-
-.crossButtonDiv {
- position:absolute;
- left: 362px;
- top: 13px
+.crossDiv {
+  position: absolute;
+  top: 11px;
+  left: 400px;
 }
 
-.crossButton {
-  width: 15px;
-  cursor: pointer;
- }
+.crossWidth {
+  width: 17px;
+}
 
-.redeemCode{
-  margin-top: 24px;
+
+.redeemAnotherCodeDiv {
+  margin-top: 12px;
+}
+
+.RedeemTitle {
+  font-weight: bold;
 }
 
 

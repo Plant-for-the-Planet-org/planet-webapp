@@ -11,33 +11,30 @@ import {
   InputRedeemCode,
   RedeemCodeFailed,
 } from '../../../src/features/common/RedeemMicro/RedeemCode';
+import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
 
 const { useTranslation } = i18next;
 
-type ClaimCode = string | boolean | null | undefined;
-
-type FormInput = {
-  code: string;
-};
+export type ClaimCode1 = string | null;
 
 function ClaimDonation(): ReactElement {
   const { t, ready } = useTranslation(['redeem']);
 
   const router = useRouter();
-  const { register } = useForm<FormInput>({ mode: 'onBlur' });
+
   const { user, contextLoaded, loginWithRedirect, token } =
     React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
-  const [errorMessage, setErrorMessage] = React.useState<ClaimCode>('');
-  const [inputCode, setInputCode] = React.useState<ClaimCode>('');
-  const [code, setCode] = React.useState<ClaimCode>('');
-  const [type, setType] = React.useState();
-  const [redeemedCodeData, setRedeemedCodeData] = React.useState<{
-    units: string;
-  }>();
+  const [errorMessage, setErrorMessage] = React.useState<ClaimCode1>('');
+  const [inputCode, setInputCode] = React.useState<ClaimCode1>('');
+  const [code, setCode] = React.useState<string | string[] | null>('');
+  const [type, setType] = React.useState('');
+  const [redeemedCodeData, setRedeemedCodeData] = React.useState<
+    RedeemedCodeData | undefined
+  >(undefined);
   const [openInputCodeModal, setOpenInputCodeModal] =
-    React.useState<ClaimCode>(false);
+    React.useState<boolean>(false);
 
   React.useEffect(() => {
     if (router && router.query.type && router.query.code) {
@@ -54,10 +51,9 @@ function ClaimDonation(): ReactElement {
       }
     }
   }, [router]);
-
   const redeemAnotherCode = () => {
     setOpenInputCodeModal(true);
-    setRedeemedCodeData('');
+    setRedeemedCodeData(undefined);
     setErrorMessage('');
     setInputCode('');
   };
@@ -78,7 +74,7 @@ function ClaimDonation(): ReactElement {
     }
   };
 
-  async function redeemingCode(code: FormInput) {
+  async function redeemingCode(code: string | string[]): Promise<void> {
     const submitData = {
       code: code,
     };
@@ -88,7 +84,7 @@ function ClaimDonation(): ReactElement {
         submitData,
         token,
         handleError
-      ).then((res) => {
+      ).then((res: any) => {
         if (res.error_code === 'invalid_code') {
           setErrorMessage(t('redeem:invalidCode'));
         } else if (res.error_code === 'already_redeemed') {
