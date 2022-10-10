@@ -185,22 +185,6 @@
   grid-template-columns: 1fr;
 }
 
-.sampleTreesContainer{
-  display: flex;
-  gap: 20px;
-  padding-top: 20px;
-  flex-direction: column;
-}
-
-.singleTree{
-  li{
-    margin-top: 5px;
-    u{
-      font-style: italic;
-    }
-  }
-}
-
 .singleDetail {
   display: flex;
   flex-direction: column;

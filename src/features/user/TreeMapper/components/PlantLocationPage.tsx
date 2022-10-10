@@ -14,8 +14,6 @@ import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import router, { useRouter } from 'next/router';
 import CopyToClipboard from '../../../common/CopyToClipboard';
-import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const { useTranslation } = i18next;
 
@@ -48,9 +46,6 @@ export default function PlantLocationPage({
 }: Props): ReactElement {
   const router = useRouter();
   const { t, i18n } = useTranslation('treemapper');
-  const [species, setSpecies] = React.useState([]);
-  const { token } = React.useContext(UserPropsContext);
-
   const handleBackButton = () => {
     if (location.type === 'sample') {
       for (const i in plantLocations) {
@@ -77,16 +72,6 @@ export default function PlantLocationPage({
     location,
     setselectedLocation,
   };
-
-  const fetchSpecies = async () => {
-    const result = await getAuthenticatedRequest('/treemapper/species', token);
-    setSpecies(result);
-  };
-
-  React.useEffect(() => {
-    fetchSpecies();
-  }, []);
-
   return (
     <div className={styles.locationDetails}>
       <div className={styles.pullUpContainer}>
@@ -107,24 +92,6 @@ export default function PlantLocationPage({
       </div>
 
       <LocationDetails {...DetailProps} />
-      <br />
-      <br />
-      {species && (
-        <>
-          <b>{t('treemapper:sampleTreeTitle')}</b>
-          <div className={styles.sampleTreesContainer}>
-            <ol>
-              {species.map((tree) => (
-                <div className={styles.singleTree} key={tree.id}>
-                  <li>
-                    <u>{tree.aliases}</u>
-                  </li>
-                </div>
-              ))}
-            </ol>
-          </div>
-        </>
-      )}
     </div>
   );
 }
