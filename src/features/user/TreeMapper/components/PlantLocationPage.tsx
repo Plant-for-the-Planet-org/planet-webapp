@@ -48,6 +48,7 @@ export default function PlantLocationPage({
 }: Props): ReactElement {
   const router = useRouter();
   const { t, i18n } = useTranslation('treemapper');
+  const [species, setSpecies] = React.useState([]);
   const { token } = React.useContext(UserPropsContext);
 
   const handleBackButton = () => {
@@ -76,6 +77,16 @@ export default function PlantLocationPage({
     location,
     setselectedLocation,
   };
+
+  const fetchSpecies = async () => {
+    const result = await getAuthenticatedRequest('/treemapper/species', token);
+    setSpecies(result);
+  };
+
+  React.useEffect(() => {
+    fetchSpecies();
+  }, []);
+
   return (
     <div className={styles.locationDetails}>
       <div className={styles.pullUpContainer}>
@@ -98,6 +109,22 @@ export default function PlantLocationPage({
       <LocationDetails {...DetailProps} />
       <br />
       <br />
+      {species && (
+        <>
+          <b>{t('treemapper:sampleTreeTitle')}</b>
+          <div className={styles.sampleTreesContainer}>
+            <ol>
+              {species.map((tree) => (
+                <div className={styles.singleTree} key={tree.id}>
+                  <li>
+                    <u>{tree.aliases}</u>
+                  </li>
+                </div>
+              ))}
+            </ol>
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -114,8 +141,6 @@ export function LocationDetails({
   const { t, i18n, ready } = useTranslation(['treemapper', 'maps']);
   const [sampleTreeImages, setSampleTreeImages] = React.useState([]);
   const coordinateRef = React.useRef(null);
-  const [species, setSpecies] = React.useState([]);
-  const { token } = React.useContext(UserPropsContext);
 
   const text = `${location?.deviceLocation?.coordinates.map(
     (coord: any, index: number) => {
@@ -155,16 +180,6 @@ export function LocationDetails({
       setSampleTreeImages([]);
     }
   }, [location, ready]);
-
-  const fetchSpecies = async () => {
-    const result = await getAuthenticatedRequest('/treemapper/species', token);
-    setSpecies(result);
-  };
-
-  React.useEffect(() => {
-    fetchSpecies();
-  }, []);
-
   return (
     <>
       {location.type === 'multi' && sampleTreeImages.length > 0 && (
@@ -277,8 +292,7 @@ export function LocationDetails({
             </div>
           </div>
         )}
-        {((location.type === 'multi' && location.captureMode === 'on-site') ||
-          species.length) && (
+        {location.type === 'multi' && location.captureMode === 'on-site' && (
           <div className={styles.singleDetail}>
             <p className={styles.title}>{t('maps:sampleTree')}</p>
             {/* <div className={styles.value}> */}
@@ -316,24 +330,7 @@ export function LocationDetails({
                   </div>
                 );
               })}
-            {species && (
-              <div className={styles.sampleTreesContainer}>
-                {species.map((tree, index) => (
-                  <div className={styles.singleTree} key={tree?.id}>
-                    <h5>
-                      {location?.samplePlantLocations?.length
-                        ? index + 1 + location?.samplePlantLocations?.length
-                        : index + 1}{' '}
-                      .{' '}
-                      <u>
-                        <i>{tree.aliases}</i>
-                      </u>
-                    </h5>
-                    <p>{tree.scientificName}</p>
-                  </div>
-                ))}
-              </div>
-            )}
+            {/* </div> */}
           </div>
         )}
       </div>

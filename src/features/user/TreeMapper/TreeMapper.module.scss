@@ -187,13 +187,15 @@
 
 .sampleTreesContainer{
   display: flex;
-  gap: 10px;
+  gap: 20px;
+  padding-top: 20px;
   flex-direction: column;
+}
 
-
-  .singleTree{
-    
-    p {
+.singleTree{
+  li{
+    margin-top: 5px;
+    u{
       font-style: italic;
     }
   }
