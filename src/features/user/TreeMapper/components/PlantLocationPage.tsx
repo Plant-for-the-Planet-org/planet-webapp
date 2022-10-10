@@ -259,47 +259,50 @@ export function LocationDetails({
             </div>
           </div>
         )}
-        {location.type === 'multi' && location.captureMode === 'on-site' && (
-          <div className={styles.singleDetail}>
-            <p className={styles.title}>{t('maps:sampleTree')}</p>
-            {/* <div className={styles.value}> */}
-            {location.samplePlantLocations &&
-              location.samplePlantLocations.map((spl: any, index: number) => {
-                return (
-                  <div key={index} className={styles.value}>
-                    {index + 1}.{' '}
-                    <span
-                      onClick={() => setselectedLocation(spl)}
-                      className={styles.link}
-                    >
-                      {spl.scientificName
-                        ? spl.scientificName
-                        : spl.scientificSpecies &&
-                          spl.scientificSpecies !== 'Unknown'
-                        ? spl.scientificSpecies
-                        : t('maps:unknown')}
-                    </span>
-                    <br />
-                    {spl.status === 'dead' ? (
-                      <p>
-                        {spl?.status} • {spl?.statusReason}
-                      </p>
-                    ) : (
-                      ''
-                    )}
-                    {[...spl.history].reverse().map((h, index) => (
-                      <p key={index}>
-                        {h.created.substring(0, 10)} : {h?.measurements?.height}
-                        {t('maps:meterHigh')} • {h?.measurements?.width}
-                        {t('maps:cmWide')}
-                      </p>
-                    ))}
-                  </div>
-                );
-              })}
-            {/* </div> */}
-          </div>
-        )}
+        {location.type === 'multi' &&
+          location.captureMode === 'on-site' &&
+          location.samplePlantLocations.length > 0 && (
+            <div className={styles.singleDetail}>
+              <p className={styles.title}>{t('maps:sampleTree')}</p>
+              {/* <div className={styles.value}> */}
+              {location.samplePlantLocations &&
+                location.samplePlantLocations.map((spl: any, index: number) => {
+                  return (
+                    <div key={index} className={styles.value}>
+                      {index + 1}.{' '}
+                      <span
+                        onClick={() => setselectedLocation(spl)}
+                        className={styles.link}
+                      >
+                        {spl.scientificName
+                          ? spl.scientificName
+                          : spl.scientificSpecies &&
+                            spl.scientificSpecies !== 'Unknown'
+                          ? spl.scientificSpecies
+                          : t('maps:unknown')}
+                      </span>
+                      <br />
+                      {spl.status === 'dead' ? (
+                        <p>
+                          {spl?.status} • {spl?.statusReason}
+                        </p>
+                      ) : (
+                        ''
+                      )}
+                      {[...spl.history].reverse().map((h, index) => (
+                        <p key={index}>
+                          {h.created.substring(0, 10)} :{' '}
+                          {h?.measurements?.height}
+                          {t('maps:meterHigh')} • {h?.measurements?.width}
+                          {t('maps:cmWide')}
+                        </p>
+                      ))}
+                    </div>
+                  );
+                })}
+              {/* </div> */}
+            </div>
+          )}
       </div>
     </>
   );
