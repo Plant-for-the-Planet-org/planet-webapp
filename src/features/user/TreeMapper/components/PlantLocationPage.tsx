@@ -287,8 +287,8 @@ export function LocationDetails({
                     ) : (
                       ''
                     )}
-                    {[...spl.history].reverse().map((h) => (
-                      <p>
+                    {[...spl.history].reverse().map((h, index) => (
+                      <p key={index}>
                         {h.created.substring(0, 10)} : {h?.measurements?.height}
                         {t('maps:meterHigh')} • {h?.measurements?.width}
                         {t('maps:cmWide')}
