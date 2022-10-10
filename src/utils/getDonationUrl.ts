@@ -1,4 +1,4 @@
-import {getTenantID} from "../../src/utils/apiRequests/api" 
+import {getTenantID} from "../../src/utils/apiRequests/compareTenanID" 
 // calling this function before window is loaded may cause an error
 export const getDonationUrl = (
   id: string,

@@ -10,7 +10,7 @@ export interface ParamsContextType {
   showBackIcon: QueryParamType;
   callbackUrl: QueryParamType;
   language: QueryParamType;
-  tenantID: string | undefined;
+  tenantID: string | string[] | undefined;
   showProjectDetails: QueryParamType;
   showProjectList: QueryParamType;
 }
@@ -31,7 +31,9 @@ const QueryParamsProvider: FC = ({ children }) => {
   const [showBackIcon, setShowBackIcon] = useState<QueryParamType>(undefined);
   const [callbackUrl, setCallbackUrl] = useState<QueryParamType>(undefined);
   const [language, setLanguage] = useState<QueryParamType>(undefined);
-  const [tenantID, setTenantID] = useState<string | undefined>(undefined);
+  const [tenantID, setTenantID] = useState<string | string[] | undefined>(
+    undefined
+  );
   const [showProjectDetails, setShowProjectDetails] =
     useState<QueryParamType>(undefined);
   const [showProjectList, setShowProjectList] =

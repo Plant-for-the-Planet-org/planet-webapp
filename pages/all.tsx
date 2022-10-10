@@ -6,7 +6,7 @@ import { getRequest } from '../src/utils/apiRequests/api';
 import GetLeaderboardMeta from './../src/utils/getMetaTags/GetLeaderboardMeta';
 import { ParamsContext } from '../src/features/common/Layout/QueryParamsContext';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
-import { getTenantID } from '../src/utils/apiRequests/api';
+import { getTenantID } from '../src/utils/apiRequests/compareTenanID';
 const config = tenantConfig();
 
 interface Props {

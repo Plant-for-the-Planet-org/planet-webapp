@@ -2,13 +2,11 @@ import { ApiCustomError } from '../../features/common/types/apiErrors';
 import { getQueryString } from './getQueryString';
 import getsessionId from './getSessionId';
 import { validateToken } from './validateToken';
-import { DEFAULT_TENANT_ID } from '../../../src/utils/constants/environment'
- 
-type paramTenant = string | undefined
+import { getTenantID } from './compareTenanID';
 
-export const getTenantID = (paramTenant:paramTenant) : paramTenant => {
-  return process.env.TENANTID || paramTenant || DEFAULT_TENANT_ID
-}
+
+ 
+
 
 // Handle Error responses from API
 const handleApiError = (
@@ -74,7 +72,7 @@ const handleApiError = (
 };
 
 //  API call to private /profile endpoint
-export async function getAccountInfo(token: any, tenantID: string): Promise<any> {
+export async function getAccountInfo(token: any, tenantID: paramTenant ): Promise<any> {
   const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
     method: 'GET',
     headers: {

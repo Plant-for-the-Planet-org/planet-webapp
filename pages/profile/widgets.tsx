@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement, useEffect } from 'react';
-import { getTenantID } from '../../src/utils/apiRequests/api';
+import { getTenantID } from '../../src/utils/apiRequests/compareTenanID';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import EmbedModal from '../../src/features/user/Widget/EmbedModal';

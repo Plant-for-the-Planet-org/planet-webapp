@@ -33,13 +33,14 @@ function UserPropsProvider({ children }: any): ReactElement {
 
   const router = useRouter();
   const [contextLoaded, setContextLoaded] = React.useState(false);
-  const [token, setToken] = React.useState(null);
+  const [token, setToken] = React.useState<string | null>(null);
   const [profile, setUser] = React.useState<boolean | object | null>(false);
   const { tenantID } = React.useContext(ParamsContext);
 
   React.useEffect(() => {
     async function loadToken() {
       const accessToken = await getAccessTokenSilently();
+
       setToken(accessToken);
     }
     if (!isLoading)
@@ -53,37 +54,39 @@ function UserPropsProvider({ children }: any): ReactElement {
     logout({ returnTo: returnUrl });
   };
 
-  React.useEffect(() => {
-    async function loadUser() {
-      setContextLoaded(false);
-      try {
-        const res = await getAccountInfo(token, tenantID);
-        if (res.status === 200) {
-          const resJson = await res.json();
-          setUser(resJson);
-        } else if (res.status === 303) {
-          // if 303 -> user doesn not exist in db
-          setUser(null);
-          if (typeof window !== 'undefined') {
-            router.push('/complete-signup', undefined, { shallow: true });
-          }
-        } else if (res.status === 401) {
-          // in case of 401 - invalid token: signIn()
-          setUser(false);
-          setToken(null);
-          loginWithRedirect({
-            redirectUri: `${process.env.NEXTAUTH_URL}/login`,
-            ui_locales: localStorage.getItem('language') || 'en',
-          });
-        } else {
-          // any other error
+  async function loadUser() {
+    setContextLoaded(false);
+    try {
+      const res = await getAccountInfo(token, tenantID);
+      if (res.status === 200) {
+        const resJson = await res.json();
+
+        setUser(resJson);
+      } else if (res.status === 303) {
+        // if 303 -> user doesn not exist in db
+        setUser(null);
+        if (typeof window !== 'undefined') {
+          router.push('/complete-signup', undefined, { shallow: true });
         }
-      } catch (err) {
-        console.log(err);
+      } else if (res.status === 401) {
+        // in case of 401 - invalid token: signIn()
+        setUser(false);
+        setToken(null);
+        loginWithRedirect({
+          redirectUri: `${process.env.NEXTAUTH_URL}/login`,
+          ui_locales: localStorage.getItem('language') || 'en',
+        });
+      } else {
+        // any other error
       }
+    } catch (err) {
+      console.log(err);
     }
-    if (token && router.isReady && tenantID) loadUser();
-  }, [token, router.isReady, tenantID]);
+    setContextLoaded(true);
+  }
+  React.useEffect(() => {
+    if (token) loadUser();
+  }, [token]);
 
   return (
     <UserPropsContext.Provider

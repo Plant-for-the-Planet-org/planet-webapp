@@ -10,7 +10,7 @@ import Filters from '../src/features/projects/components/projects/Filters';
 import { ParamsContext } from '../src/features/common/Layout/QueryParamsContext';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 import DirectGift from '../src/features/donations/components/DirectGift';
-import { getTenantID } from '../src/utils/apiRequests/api';
+import { getTenantID } from '../src/utils/apiRequests/compareTenanID';
 import i18next from '../i18n';
 
 const { useTranslation } = i18next;

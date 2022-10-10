@@ -5,7 +5,8 @@ import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsC
 import Credits from '../src/features/projects/components/maps/Credits';
 import SingleProjectDetails from '../src/features/projects/screens/SingleProjectDetails';
 import { ThemeContext } from '../src/theme/themeContext';
-import { getRequest, getTenantID } from '../src/utils/apiRequests/api';
+import { getRequest } from '../src/utils/apiRequests/api';
+import { getTenantID } from '../src/utils/apiRequests/compareTenanID';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
 import { getAllPlantLocations } from '../src/utils/maps/plantLocations';

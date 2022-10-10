@@ -14,7 +14,7 @@ import {
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../utils/apiRequests/api';
-import { getTenantID } from '../../../utils/apiRequests/api';
+import { getTenantID } from '../../../utils/apiRequests/compareTenanID';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 
 export enum BulkCodeSteps {
