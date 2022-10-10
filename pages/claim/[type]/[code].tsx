@@ -63,7 +63,7 @@ function ClaimDonation(): ReactElement {
         submitData,
         token,
         handleError
-      ).then((res: any) => {
+      ).then((res) => {
         if (res.error_code === 'invalid_code') {
           setErrorMessage(t('redeem:invalidCode'));
         } else if (res.error_code === 'already_redeemed') {
