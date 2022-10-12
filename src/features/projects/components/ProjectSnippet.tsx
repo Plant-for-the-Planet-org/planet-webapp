@@ -11,6 +11,7 @@ import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import VerifiedIcon from '@mui/icons-material/Verified';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -89,6 +90,7 @@ export default function ProjectSnippet({
           </div>
           <div className={'projectName'}>
             {truncateString(project.name, 54)}
+            <VerifiedIcon sx={{ color: '#42A5F5' }} />
           </div>
         </div>
       </div>

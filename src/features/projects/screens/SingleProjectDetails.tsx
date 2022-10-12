@@ -17,6 +17,7 @@ import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import ProjectTabs from '../components/maps/ProjectTabs';
 import PlantLocationDetails from '../components/PlantLocation/PlantLocationDetails';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import TopProjectReports from '../components/projectDetails/TopProjectReports';
 
 const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
   ssr: false,
@@ -59,6 +60,7 @@ function SingleProjectDetails({}: Props): ReactElement {
     useContext(ParamsContext);
   const isEmbed = embed === 'true';
   const [hideProjectContainer, setHideProjectContainer] = useState(isEmbed);
+  const [isOpenReports, setIsOpenReports] = useState(true);
 
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
@@ -213,6 +215,10 @@ function SingleProjectDetails({}: Props): ReactElement {
             ) : (
               <div className={'singleProjectDetails'}>
                 <div className={'projectCompleteInfo'}>
+                  <TopProjectReports
+                    isOpen={isOpenReports}
+                    handleClose={() => setIsOpenReports(!isOpenReports)}
+                  />
                   <div className={'projectDescription'}>
                     <div className={'infoTitle'}>
                       {t('donate:aboutProject')}

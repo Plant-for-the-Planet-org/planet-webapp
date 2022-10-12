@@ -8,6 +8,20 @@
   z-index: 12;
 }
 
+.reports_container{
+  display: flex;
+  gap: 20px;
+  padding-top: 10px;
+  .reports_description{
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    a{
+      color: $primaryColor;
+      font-weight: bold;
+    }
+  }
+}
 .modalClose {
   position: absolute;
   right: 15px;

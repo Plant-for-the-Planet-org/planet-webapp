@@ -117,6 +117,8 @@
   font-family: $primaryFontFamily;
   font-size: $fontMedium;
   color: $light;
+  display: flex;
+  gap: 5px;
 }
 
 /* Progress Bar */
