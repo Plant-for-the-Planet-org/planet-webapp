@@ -83,7 +83,7 @@ export default function ProjectSnippet({
             }}
           ></div>
         ) : null}
-
+        <div className={'topProjectBadge'}>Top Project</div>
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
             {project.classification && t(`donate:${project.classification}`)}

@@ -120,6 +120,18 @@
   display: flex;
   gap: 5px;
 }
+.topProjectBadge{
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background-color: $backgroundBase;
+  border-radius: 20px;
+  padding: 0 10px;
+  color: $primaryColor;
+  border: 1px solid $primaryColor;
+  text-transform: uppercase;
+  font-weight: 400;
+}
 
 /* Progress Bar */
 .progressBar {
