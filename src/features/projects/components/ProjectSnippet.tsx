@@ -12,6 +12,9 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import VerifiedIcon from '@mui/icons-material/Verified';
+import TopProjectReports from './projectDetails/TopProjectReports';
+import Popover from '@mui/material/Popover';
+import Typography from '@mui/material/Typography';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -28,6 +31,8 @@ export default function ProjectSnippet({
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
+  const [displayReports, setdisplayReports] =
+    React.useState<HTMLElement | null>(null);
 
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
@@ -46,6 +51,15 @@ export default function ProjectSnippet({
     const url = getDonationUrl(project.slug, token, embed, callbackUrl);
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
+  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setdisplayReports(event.currentTarget);
+  };
+
+  const handlePopoverClose = (event: React.MouseEvent<HTMLElement>) => {
+    setTimeout(() => setdisplayReports(null), 3000);
+  };
+
+  const open = Boolean(displayReports);
 
   return ready ? (
     <div className={'singleProject'} key={keyString}>
@@ -90,7 +104,37 @@ export default function ProjectSnippet({
           </div>
           <div className={'projectName'}>
             {truncateString(project.name, 54)}
-            <VerifiedIcon sx={{ color: '#42A5F5' }} />
+            <Typography
+              aria-owns={open ? 'mouse-over-popover' : undefined}
+              aria-haspopup="true"
+              onMouseEnter={handlePopoverOpen}
+              onMouseLeave={handlePopoverClose}
+            >
+              <VerifiedIcon
+                sx={{ color: '#42A5F5' }}
+                className={'verifiedIcon'}
+              />
+            </Typography>
+
+            <Popover
+              id={'project-reports'}
+              open={open}
+              anchorEl={displayReports}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              onClose={handlePopoverClose}
+              disableRestoreFocus
+            >
+              <Typography sx={{ p: 1 }}>
+                <TopProjectReports />
+              </Typography>
+            </Popover>
           </div>
         </div>
       </div>

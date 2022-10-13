@@ -2,14 +2,7 @@ import React, { ReactElement } from 'react';
 import styles from './../../styles/ProjectDetails.module.scss';
 import VerifiedIcon from '@mui/icons-material/Verified';
 
-interface Props {
-  isOpen: boolean;
-  handleClose: () => void;
-}
-export default function TopProjectReports({
-  isOpen,
-  handleClose,
-}: Props): ReactElement {
+export default function TopProjectReports() {
   return (
     <>
       <div className={styles.reports_container}>
