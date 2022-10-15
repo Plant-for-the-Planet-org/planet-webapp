@@ -208,6 +208,7 @@ function SingleProjectDetails({}: Props): ReactElement {
                 keyString={project.id}
                 project={project}
                 editMode={false}
+                displayPopup={false}
               />
             </div>
             {hoveredPl || selectedPl ? (

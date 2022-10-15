@@ -26,12 +26,14 @@ interface Props {
   project: any;
   keyString: string;
   editMode: Boolean;
+  displayPopup: Boolean;
 }
 
 export default function ProjectSnippet({
   project,
   keyString,
   editMode,
+  displayPopup,
 }: Props): ReactElement {
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
@@ -107,21 +109,23 @@ export default function ProjectSnippet({
               className={'verifiedIcon'}
               {...bindHover(popupState)}
             />
-            <HoverPopover
-              {...bindPopover(popupState)}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-            >
-              <Typography style={{ margin: 7 }}>
-                <TopProjectReports />
-              </Typography>
-            </HoverPopover>
+            {displayPopup && (
+              <HoverPopover
+                {...bindPopover(popupState)}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+              >
+                <Typography style={{ margin: 7 }}>
+                  <TopProjectReports />
+                </Typography>
+              </HoverPopover>
+            )}
           </div>
         </div>
       </div>

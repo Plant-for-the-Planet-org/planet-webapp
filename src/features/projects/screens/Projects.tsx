@@ -221,6 +221,7 @@ function ProjectsList({
                         key={project.properties.id}
                         project={project.properties}
                         editMode={false}
+                        displayPopup={true}
                       />
                     ))
                   ) : (
@@ -233,6 +234,7 @@ function ProjectsList({
                         key={project.properties.id}
                         project={project.properties}
                         editMode={false}
+                        displayPopup={true}
                       />
                     ))
                   ) : (
@@ -244,6 +246,7 @@ function ProjectsList({
                       key={project.properties.id}
                       project={project.properties}
                       editMode={false}
+                      displayPopup={true}
                     />
                   ))
                 ) : (
