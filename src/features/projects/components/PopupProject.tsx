@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import VerifiedIcon from '@mui/icons-material/Verified';
 
 const { useTranslation } = i18next;
 interface Props {
@@ -59,7 +60,7 @@ export default function PopupProject({
             }}
           ></div>
         ) : null}
-
+        <div className={'topProjectBadge'}>Top Project</div>
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
             {project.properties.classification &&
@@ -68,6 +69,10 @@ export default function PopupProject({
 
           <div className={'projectName'}>
             {truncateString(project.properties.name, 54)}
+            <VerifiedIcon
+              sx={{ color: '#42A5F5' }}
+              className={'verifiedIcon'}
+            />
           </div>
         </div>
       </div>

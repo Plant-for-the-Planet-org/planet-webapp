@@ -117,8 +117,11 @@
   font-family: $primaryFontFamily;
   font-size: $fontMedium;
   color: $light;
-  display: flex;
-  gap: 5px;
+  display: inline;
+}
+.verifiedIcon {
+  margin-left: 7px;
+  margin-bottom: -7px;
 }
 .topProjectBadge{
   position: absolute;
