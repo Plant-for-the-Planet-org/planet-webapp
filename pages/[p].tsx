@@ -142,10 +142,15 @@ export default function Donate({
     //for selecting one of the site of project if user use link  to directly visit to site from home page
     if (geoJson && router.query.site) {
       const siteIndex: number = geoJson?.features.findIndex(
-        (singleSite: SingleProjectGeojson) =>
-          router.query.site === singleSite?.properties.name
+        (singleSite: SingleProjectGeojson) => {
+          return router.query.site === singleSite?.properties.name;
+        }
       );
-      setSelectedSite(siteIndex);
+      if (siteIndex === -1) {
+        router.push(`/${project.slug}`);
+      } else {
+        setSelectedSite(siteIndex);
+      }
     }
   }, [setSelectedSite, geoJson]);
 
