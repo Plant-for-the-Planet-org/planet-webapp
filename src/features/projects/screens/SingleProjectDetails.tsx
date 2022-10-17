@@ -216,10 +216,7 @@ function SingleProjectDetails({}: Props): ReactElement {
             ) : (
               <div className={'singleProjectDetails'}>
                 <div className={'projectCompleteInfo'}>
-                  <TopProjectReports
-                    isOpen={isOpenReports}
-                    handleClose={() => setIsOpenReports(!isOpenReports)}
-                  />
+                  {project?.isApproved && <TopProjectReports />}
                   <div className={'projectDescription'}>
                     <div className={'infoTitle'}>
                       {t('donate:aboutProject')}

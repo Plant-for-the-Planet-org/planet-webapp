@@ -60,7 +60,9 @@ export default function PopupProject({
             }}
           ></div>
         ) : null}
-        <div className={'topProjectBadge'}>Top Project</div>
+        {project.isTopProject && project.isApproved && (
+          <div className={'topProjectBadge'}>Top Project</div>
+        )}
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
             {project.properties.classification &&
@@ -69,10 +71,12 @@ export default function PopupProject({
 
           <div className={'projectName'}>
             {truncateString(project.properties.name, 54)}
-            <VerifiedIcon
-              sx={{ color: '#42A5F5' }}
-              className={'verifiedIcon'}
-            />
+            {project.isApproved && (
+              <VerifiedIcon
+                sx={{ color: '#42A5F5' }}
+                className={'verifiedIcon'}
+              />
+            )}
           </div>
         </div>
       </div>

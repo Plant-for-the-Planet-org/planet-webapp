@@ -97,34 +97,40 @@ export default function ProjectSnippet({
             }}
           ></div>
         ) : null}
-        <div className={'topProjectBadge'}>Top Project</div>
+        {project.isTopProject && project.isApproved && (
+          <div className={'topProjectBadge'}>Top Project</div>
+        )}
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
             {project.classification && t(`donate:${project.classification}`)}
           </div>
           <div className={'projectName'}>
             {truncateString(project.name, 54)}
-            <VerifiedIcon
-              sx={{ color: '#42A5F5' }}
-              className={'verifiedIcon'}
-              {...bindHover(popupState)}
-            />
-            {displayPopup && (
-              <HoverPopover
-                {...bindPopover(popupState)}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'center',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-              >
-                <Typography style={{ margin: 7 }}>
-                  <TopProjectReports />
-                </Typography>
-              </HoverPopover>
+            {project.isApproved && (
+              <>
+                <VerifiedIcon
+                  sx={{ color: '#42A5F5' }}
+                  className={'verifiedIcon'}
+                  {...bindHover(popupState)}
+                />
+                {displayPopup && (
+                  <HoverPopover
+                    {...bindPopover(popupState)}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'center',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'left',
+                    }}
+                  >
+                    <Typography style={{ margin: 7 }}>
+                      <TopProjectReports />
+                    </Typography>
+                  </HoverPopover>
+                )}
+              </>
             )}
           </div>
         </div>
