@@ -14,6 +14,7 @@ import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import router, { useRouter } from 'next/router';
 import CopyToClipboard from '../../../common/CopyToClipboard';
+import moment from 'moment';
 
 const { useTranslation } = i18next;
 
@@ -289,14 +290,20 @@ export function LocationDetails({
                       ) : (
                         ''
                       )}
-                      {[...spl.history].reverse().map((h, index) => (
-                        <p key={index}>
-                          {h.created.substring(0, 10)} :{' '}
-                          {h?.measurements?.height}
-                          {t('maps:meterHigh')} • {h?.measurements?.width}
-                          {t('maps:cmWide')}
-                        </p>
-                      ))}
+                      {spl.history
+                        .sort(function (left, right) {
+                          return moment
+                            .utc(right.created)
+                            .diff(moment.utc(left.created));
+                        })
+                        .map((h, index) => (
+                          <p key={index}>
+                            {h.created.substring(0, 10)} :{' '}
+                            {h?.measurements?.height}
+                            {t('maps:meterHigh')} • {h?.measurements?.width}
+                            {t('maps:cmWide')}
+                          </p>
+                        ))}
                     </div>
                   );
                 })}
