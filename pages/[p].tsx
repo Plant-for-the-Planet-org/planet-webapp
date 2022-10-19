@@ -35,7 +35,7 @@ export default function Donate({
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
   const [internalLanguage, setInternalLanguage] = React.useState('');
   const [open, setOpen] = React.useState(false);
-  const { theme } = React.useContext(ThemeContext);
+
   const { i18n } = useTranslation();
   const {
     geoJson,
@@ -129,7 +129,7 @@ export default function Donate({
   }, [router.asPath]);
 
   React.useEffect(() => {
-    if (geoJson && !router.query.site) {
+    if (geoJson && !router.query.site && !router.query.ploc) {
       router.push(
         `/${project.slug}?site=${geoJson.features[0].properties.name}`,
         undefined,
@@ -156,17 +156,21 @@ export default function Donate({
 
   React.useEffect(() => {
     //for selecting one of the plant location. if user use link  to directly visit to plantLocation from home page
-    if (geoJson && router.query.site) {
+    if (geoJson && router.query.ploc && plantLocations) {
       const singlePlantLocation: SinglePlantLocation | undefined =
-        plantLocations.find(
+        plantLocations?.find(
           (dataOfSinglePlantLocation: SinglePlantLocation) => {
             return router.query.ploc === dataOfSinglePlantLocation?.hid;
           }
         );
 
-      setSelectedPl(singlePlantLocation);
+      if (singlePlantLocation === 'undefined') {
+        router.push(`/${project.slug}`);
+      } else {
+        setSelectedPl(singlePlantLocation);
+      }
     }
-  }, [router.query.ploc, plantLocations, setSelectedPl]);
+  }, [router, router.query.ploc, plantLocations, setSelectedPl, project]);
 
   return (
     <>
