@@ -55,7 +55,13 @@ export default function Project({
     if (plantLocations && selectedPl) {
       setPlantPolygonCoordinates(selectedPl?.geometry.coordinates[0]);
     }
-  }, [selectedPl, plantLocations]);
+  }, [router, selectedPl, plantLocations]);
+
+  React.useEffect(() => {
+    if (selectedPl && plantPolygonCoordinates) {
+      router.push(`/${project.slug}?ploc=${selectedPl?.hid}`);
+    }
+  }, [selectedPl, plantPolygonCoordinates]);
 
   React.useEffect(() => {
     if (siteExists && !router.query.ploc) {

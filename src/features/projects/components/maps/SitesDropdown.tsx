@@ -11,6 +11,7 @@ interface Props {}
 
 export default function SitesDropdown(): ReactElement {
   const {
+    setSelectedPl,
     geoJson,
     project,
     selectedSite,
@@ -23,8 +24,8 @@ export default function SitesDropdown(): ReactElement {
   const router = useRouter();
 
   const handleChangeSite = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setSelectedPl(null);
     setSelectedSite(event.target.value as number);
-
     router.push(
       `/${project.slug}/?site=${
         geoJson.features[event.target.value].properties.name

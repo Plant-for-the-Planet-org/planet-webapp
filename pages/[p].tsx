@@ -4,14 +4,11 @@ import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlin
 import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
 import Credits from '../src/features/projects/components/maps/Credits';
 import SingleProjectDetails from '../src/features/projects/screens/SingleProjectDetails';
-import { ThemeContext } from '../src/theme/themeContext';
+
 import { getRequest } from '../src/utils/apiRequests/api';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
-import {
-  getAllPlantLocations,
-  zoomToPlantLocation,
-} from '../src/utils/maps/plantLocations';
+import { getAllPlantLocations } from '../src/utils/maps/plantLocations';
 import i18next from '../i18n';
 import {
   SingleProjectGeojson,
