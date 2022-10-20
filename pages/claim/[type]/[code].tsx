@@ -106,7 +106,7 @@ function ClaimDonation(): ReactElement {
     }
   }, [user, contextLoaded, ready, router.query.type, router.query.code]);
 
-  return ready ? (
+  return ready && user ? (
     <LandingSection>
       <>
         {redeemedCodeData ? (
