@@ -95,7 +95,7 @@ const ReedemCode: FC = () => {
     }
   }
 
-  return ready ? (
+  return ready && user ? (
     router.query.inputCode === 'true' ? (
       // to input  redeem code
       <LandingSection>
