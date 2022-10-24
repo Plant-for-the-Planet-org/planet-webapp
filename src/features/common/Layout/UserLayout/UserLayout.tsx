@@ -287,6 +287,15 @@ function UserLayout(props: any): ReactElement {
 
         <div>
           <LanguageSwitcher />
+          <div className={styles.navlink}>
+            <a
+              className={styles.navlinkTitle}
+              target={'_blank'}
+              href="https://plantfortheplanet.notion.site/Public-Documentation-Plant-for-the-Planet-Platform-04af8ed821b44d358130142778d79e01"
+            >
+              Platform Documentation (EN){' '}
+            </a>
+          </div>
           <div
             className={styles.navlink}
             //logout user
