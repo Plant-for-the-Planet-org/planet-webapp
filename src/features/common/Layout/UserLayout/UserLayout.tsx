@@ -150,6 +150,10 @@ function UserLayout(props: any): ReactElement {
           path: '/profile/bulk-codes',
           flag: t('me:beta'),
         },
+        {
+          title: t('me:giftFund'),
+          path: '/profile/giftfund',
+        },
       ],
     },
     /* {
