@@ -216,7 +216,9 @@ function SingleProjectDetails({}: Props): ReactElement {
             ) : (
               <div className={'singleProjectDetails'}>
                 <div className={'projectCompleteInfo'}>
-                  {project?.isApproved && <TopProjectReports />}
+                  {project?.isApproved && (
+                    <TopProjectReports data={project.reviews} />
+                  )}
                   <div className={'projectDescription'}>
                     <div className={'infoTitle'}>
                       {t('donate:aboutProject')}

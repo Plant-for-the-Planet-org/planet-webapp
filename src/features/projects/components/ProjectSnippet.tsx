@@ -60,7 +60,6 @@ export default function ProjectSnippet({
     const url = getDonationUrl(project.slug, token, embed, callbackUrl);
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
-
   return ready ? (
     <div className={'singleProject'} key={keyString}>
       {editMode ? (
@@ -126,7 +125,7 @@ export default function ProjectSnippet({
                     }}
                   >
                     <Typography style={{ margin: 7 }}>
-                      <TopProjectReports />
+                      <TopProjectReports data={project.reviews} />
                     </Typography>
                   </HoverPopover>
                 )}

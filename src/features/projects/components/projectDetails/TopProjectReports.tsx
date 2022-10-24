@@ -2,16 +2,26 @@ import React, { ReactElement } from 'react';
 import styles from './../../styles/ProjectDetails.module.scss';
 import VerifiedIcon from '@mui/icons-material/Verified';
 
-export default function TopProjectReports() {
+interface Props {
+  data: any;
+}
+export default function TopProjectReports(data: Props) {
   return (
     <>
       <div className={styles.reports_container}>
         <VerifiedIcon sx={{ color: '#42A5F5' }} />
         <div className={styles.reports_description}>
-          <p id="child-modal-description">
-            The project was inspected in a multiday field review in March 2021
-          </p>
-          <a href="">View Report</a>
+          {data?.data?.map((review) => (
+            <div id={review.id}>
+              <p id="child-modal-description">
+                The project was inspected in a multiday field review in{' '}
+                {review.issueMonth}
+              </p>
+              <a href={review.pdf} download>
+                View Report
+              </a>
+            </div>
+          ))}
         </div>
       </div>
     </>
