@@ -153,7 +153,11 @@ function UserLayout(props: any): ReactElement {
         {
           title: t('me:giftFund'),
           path: '/profile/giftfund',
-          hideItem: !user.planetCash,
+          //For an active PlanetCash account with an empty GiftFund array or if openUnits = 0 for all GiftFunds, it should be hidden
+          hideItem:
+            !user.planetCash ||
+            user.planetCash?.giftFunds.filter((gift) => gift.openUnits !== 0)
+              .length == 0,
         },
       ],
     },
