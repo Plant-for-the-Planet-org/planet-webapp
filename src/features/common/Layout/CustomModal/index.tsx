@@ -12,8 +12,6 @@ interface Props {
   modalSubtitle: string;
 }
 
-const { useTranslation } = i18next;
-
 export default function CustomModal({
   isOpen,
   handleContinue,
