@@ -120,7 +120,7 @@
   }
   &:hover {
     cursor: pointer;
-    > svg > path {
+    > svg > path , > svg > g > path{
       fill: $primaryColor;
     }
     .navlinkTitle {
