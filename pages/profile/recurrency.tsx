@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import i18next from '../../i18n';
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgressBar';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
@@ -7,8 +6,8 @@ import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import Recurrency from '../../src/features/user/Account/Recurrency';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 interface Props {}
 
@@ -84,3 +83,11 @@ function RecurrentDonations({}: Props): ReactElement {
 }
 
 export default RecurrentDonations;
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['me'])),
+    },
+  };
+}

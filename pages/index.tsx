@@ -10,9 +10,9 @@ import Filters from '../src/features/projects/components/projects/Filters';
 import { TENANT_ID } from '../src/utils/constants/environment';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 import DirectGift from '../src/features/donations/components/DirectGift';
-import i18next from '../i18n';
-
-const { useTranslation } = i18next;
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
+import nextI18NextConfig from '../next-i18next.config';
 
 interface Props {
   initialized: Boolean;
@@ -43,7 +43,6 @@ export default function Donate({
   const [directGift, setDirectGift] = React.useState(null);
   const [showdirectGift, setShowDirectGift] = React.useState(true);
   const [internalLanguage, setInternalLanguage] = React.useState('');
-
   React.useEffect(() => {
     const getdirectGift = localStorage.getItem('directGift');
     if (getdirectGift) {
@@ -137,4 +136,35 @@ export default function Donate({
       {showProjects && <Filters />}
     </>
   );
+}
+
+export async function getServerSideProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donation',
+          'editProfile',
+          'leaderboard',
+          'managePay',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTree',
+          'tenants',
+          'treemapper',
+        ],
+        nextI18NextConfig,
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+      )),
+    },
+  };
 }

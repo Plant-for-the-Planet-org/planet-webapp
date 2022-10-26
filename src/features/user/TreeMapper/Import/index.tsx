@@ -5,7 +5,7 @@ import {
 } from '../../../../utils/apiRequests/api';
 import PlantingLocation from './components/PlantingLocation';
 import styles from './Import.module.scss';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
 import {
@@ -18,8 +18,6 @@ import SampleTrees from './components/SampleTrees';
 import ReviewSubmit from './components/ReviewSubmit';
 import dynamic from 'next/dynamic';
 import theme from '../../../../theme/themeProperties';
-
-const { useTranslation } = i18next;
 
 const Stepper = styled(MuiStepper)({
   '&': {

@@ -5,14 +5,13 @@ import BulkCodes, {
 } from '../../../../src/features/user/BulkCodes';
 import { PaymentOptions } from '../../../../src/features/user/BulkCodes/BulkCodesTypes';
 import Head from 'next/head';
-import i18next from '../../../../i18n';
 import { BulkCodeMethods } from '../../../../src/utils/constants/bulkCodeConstants';
 import { useBulkCode } from '../../../../src/features/common/Layout/BulkCodeContext';
 import { ErrorHandlingContext } from '../../../../src/features/common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../../src/utils/apiRequests/api';
 import { useRouter } from 'next/router';
-
-const { useTranslation } = i18next;
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 export default function BulkCodeIssueCodesPage(): ReactElement {
   const router = useRouter();
@@ -83,4 +82,12 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
       <BulkCodes step={BulkCodeSteps.ISSUE_CODES} />
     </UserLayout>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['me'])),
+    },
+  };
 }

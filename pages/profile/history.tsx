@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
-import i18next from '../../i18n';
+import { useTranslation } from 'next-i18next';
+
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgressBar';
 import History from '../../src/features/user/Account/History';
@@ -8,8 +9,7 @@ import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 interface Props {}
 
@@ -125,3 +125,11 @@ function AccountHistory({}: Props): ReactElement {
 }
 
 export default AccountHistory;
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['me'])),
+    },
+  };
+}

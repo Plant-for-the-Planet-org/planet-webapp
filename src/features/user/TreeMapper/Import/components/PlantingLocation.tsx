@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { Controller, useForm, useFieldArray } from 'react-hook-form';
 import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
 import styles from '../Import.module.scss';
-import i18next from '../../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
 import { useDropzone } from 'react-dropzone';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
@@ -22,8 +22,6 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../../../theme/themeProperties';
-
-const { useTranslation } = i18next;
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {

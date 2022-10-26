@@ -10,10 +10,8 @@ import PlantLocations from './maps/PlantLocations';
 import { useRouter } from 'next/router';
 import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
-
-const { useTranslation } = i18next;
 
 export default function ProjectsMap(): ReactElement {
   const router = useRouter();

@@ -6,6 +6,8 @@ import { getRequest } from '../src/utils/apiRequests/api';
 import GetLeaderboardMeta from './../src/utils/getMetaTags/GetLeaderboardMeta';
 import { TENANT_ID } from '../src/utils/constants/environment';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
 const config = tenantConfig();
 
 interface Props {
@@ -72,4 +74,30 @@ export default function Home({ initialized }: Props) {
       ) : null}
     </>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, [
+        'bulkCodes',
+        'common',
+        'country',
+        'donate',
+        'donation',
+        'editProfile',
+        'leaderboard',
+        'managePay',
+        'manageProjects',
+        'maps',
+        'me',
+        'planet',
+        'planetcash',
+        'redeem',
+        'registerTree',
+        'tenants',
+        'treemapper',
+      ])),
+    },
+  };
 }

@@ -1,6 +1,5 @@
 import React, { ReactElement, useEffect, useCallback, useContext } from 'react';
-import i18next from '../../../../i18n';
-
+import { useTranslation } from 'next-i18next';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from './TabbedView';
 import CreationMethodForm from './forms/CreationMethodForm';
@@ -25,8 +24,6 @@ export enum BulkCodeSteps {
 interface BulkCodesProps {
   step: BulkCodeSteps;
 }
-
-const { useTranslation } = i18next;
 
 export default function BulkCodes({
   step,

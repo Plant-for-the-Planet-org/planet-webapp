@@ -10,7 +10,7 @@ import MapGL, {
   Marker,
   NavigationControl,
 } from 'react-map-gl';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { ThemeContext } from '../../../theme/themeContext';
 import {
   getAuthenticatedRequest,
@@ -51,9 +51,7 @@ const dialogSx: SxProps = {
 
 interface Props {}
 
-const { useTranslation } = i18next;
 export default function RegisterTrees({}: Props) {
-  const router = useRouter();
   const { user, token, contextLoaded } = React.useContext(UserPropsContext);
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {

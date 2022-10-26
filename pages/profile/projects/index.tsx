@@ -2,9 +2,8 @@ import React, { ReactElement } from 'react';
 import ProjectsContainer from '../../../src/features/user/ManageProjects/ProjectsContainer';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
-import i18next from '../../../i18n';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 interface Props {}
 export default function Register({}: Props): ReactElement {
@@ -17,4 +16,12 @@ export default function Register({}: Props): ReactElement {
       <ProjectsContainer />
     </UserLayout>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['me'])),
+    },
+  };
 }

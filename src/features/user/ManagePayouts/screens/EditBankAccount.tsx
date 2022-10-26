@@ -1,7 +1,7 @@
 import { ReactElement, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { styled } from '@mui/material/styles';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { usePayouts } from '../../../common/Layout/PayoutsContext';
@@ -13,8 +13,6 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
-
-const { useTranslation } = i18next;
 
 const FormHeader = styled('div')(({ theme }) => ({
   display: 'flex',

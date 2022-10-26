@@ -4,7 +4,6 @@ import MuiAlert from '@mui/material/Alert';
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Controller, useForm } from 'react-hook-form';
-import i18next from '../../../../i18n';
 import Camera from '../../../../public/assets/images/icons/userProfileIcons/Camera';
 import CameraWhite from '../../../../public/assets/images/icons/userProfileIcons/CameraWhite';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
@@ -18,8 +17,6 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
 
 interface Props {}
 

@@ -1,8 +1,6 @@
 import React, { createContext, FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import i18next from '../../../../i18n';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'next-i18next';
 
 type QueryParamType = string | undefined | string[] | null;
 export interface ParamsContextType {

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
 import tenantConfig from '../../../../../tenant.config';
 import DarkModeSwitch from '../../../common/Layout/DarkModeSwitch.tsx';
@@ -13,7 +13,6 @@ interface Props {
 }
 
 export default function Credits({ setCurrencyCode }: Props): ReactElement {
-  const { useTranslation } = i18next;
   const { i18n, t } = useTranslation(['common', 'maps']);
   const [language, setLanguage] = React.useState(i18n.language);
   const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
@@ -22,9 +21,6 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
 
   const handleLanguageModalClose = () => {
     setLanguageModalOpen(false);
-  };
-  const handleLanguageModalOpen = () => {
-    setLanguageModalOpen(true);
   };
 
   const { embed } = React.useContext(ParamsContext);

@@ -4,14 +4,13 @@ import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlin
 import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
 import Credits from '../src/features/projects/components/maps/Credits';
 import SingleProjectDetails from '../src/features/projects/screens/SingleProjectDetails';
-import { ThemeContext } from '../src/theme/themeContext';
 import { getRequest } from '../src/utils/apiRequests/api';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
 import { getAllPlantLocations } from '../src/utils/maps/plantLocations';
-import i18next from '../i18n';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import nextI18NextConfig from '../next-i18next.config.js';
 
 interface Props {
   initialized: boolean;
@@ -28,7 +27,6 @@ export default function Donate({
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
   const [internalLanguage, setInternalLanguage] = React.useState('');
   const [open, setOpen] = React.useState(false);
-  const { theme } = React.useContext(ThemeContext);
   const { i18n } = useTranslation();
   const {
     project,
@@ -131,4 +129,34 @@ export default function Donate({
       <Credits setCurrencyCode={setCurrencyCode} />
     </>
   );
+}
+
+export async function getServerSideProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donation',
+          'editProfile',
+          'leaderboard',
+          'managePay',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTree',
+          'tenants',
+          'treemapper',
+        ],
+        nextI18NextConfig
+      )),
+    },
+  };
 }

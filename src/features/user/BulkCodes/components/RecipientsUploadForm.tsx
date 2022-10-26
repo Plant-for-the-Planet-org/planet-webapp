@@ -1,7 +1,6 @@
 import { useState, ReactElement, useEffect } from 'react';
 import { parse, ParseResult } from 'papaparse';
-import i18next from '../../../../../i18n';
-
+import { useTranslation } from 'next-i18next';
 import UploadWidget from './UploadWidget';
 import RecipientsTable from './RecipientsTable';
 import {
@@ -12,8 +11,6 @@ import {
 } from '../BulkCodesTypes';
 
 import styles from '../BulkCodes.module.scss';
-
-const { Trans, useTranslation } = i18next;
 
 const acceptedHeaders: (keyof Recipient)[] = [
   'recipient_name',

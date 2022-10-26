@@ -1,6 +1,6 @@
 import router, { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import MenuIcon from '../../../../../public/assets/images/icons/Sidebar/MenuIcon';
 import DownArrow from '../../../../../public/assets/images/icons/DownArrow';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
@@ -18,8 +18,6 @@ import { UserPropsContext } from '../UserPropsContext';
 import styles from './UserLayout.module.scss';
 import TreeMappperIcon from '../../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
 import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/RegisterIcon';
-
-const { useTranslation } = i18next;
 
 function UserLayout(props: any): ReactElement {
   const { t, i18n } = useTranslation(['common', 'me']);

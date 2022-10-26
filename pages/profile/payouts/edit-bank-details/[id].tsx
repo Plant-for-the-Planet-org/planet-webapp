@@ -4,9 +4,7 @@ import Head from 'next/head';
 import ManagePayouts, {
   ManagePayoutTabs,
 } from '../../../../src/features/user/ManagePayouts';
-import i18next from '../../../../i18n';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'next-i18next';
 
 export default function EditBankDetailsPage(): ReactElement {
   const { t, ready } = useTranslation('me');

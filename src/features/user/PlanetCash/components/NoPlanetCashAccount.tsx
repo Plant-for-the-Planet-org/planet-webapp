@@ -2,10 +2,8 @@
 
 import { ReactElement } from 'react';
 import { Button, styled } from '@mui/material';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
-
-const { useTranslation } = i18next;
 
 const Container = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,

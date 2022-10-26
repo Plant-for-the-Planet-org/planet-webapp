@@ -1,13 +1,12 @@
 import React from 'react';
 import styles from './LeaderBoard.module.scss';
-import i18next from '../../../../i18n';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   leaderboard: any;
 }
 
-const { useTranslation } = i18next;
 export default function LeaderBoardSection(leaderboard: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
   const leaderboardData = leaderboard.leaderboard;

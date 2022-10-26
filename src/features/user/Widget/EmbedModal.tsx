@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { Modal, Snackbar, styled } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import styles from './EmbedModal.module.scss';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../theme/themeContext';
@@ -14,8 +14,6 @@ interface Props {
   embedModalOpen: boolean;
   setEmbedModalOpen: Function;
 }
-
-const { useTranslation } = i18next;
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {

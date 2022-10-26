@@ -12,12 +12,11 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import styles from '../Import.module.scss';
 import Dropzone from 'react-dropzone';
 import tj from '@mapbox/togeojson';
-import i18next from '../../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import WebMercatorViewport from '@math.gl/web-mercator';
 import gjv from 'geojson-validation';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
 
-const { useTranslation } = i18next;
 interface Props {
   geoJson: any;
   setGeoJson: Function;
@@ -29,7 +28,6 @@ const Map = ReactMapboxGl({ maxZoom: 15 });
 export default function MapComponent({
   geoJson,
   setGeoJson,
-  setActiveMethod,
 }: Props): ReactElement {
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;

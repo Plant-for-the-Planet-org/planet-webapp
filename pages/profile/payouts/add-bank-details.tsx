@@ -4,9 +4,8 @@ import Head from 'next/head';
 import ManagePayouts, {
   ManagePayoutTabs,
 } from '../../../src/features/user/ManagePayouts';
-import i18next from '../../../i18n';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function AddBankDetailsPage(): ReactElement {
   const { t, ready } = useTranslation('me');
@@ -18,4 +17,12 @@ export default function AddBankDetailsPage(): ReactElement {
       <ManagePayouts step={ManagePayoutTabs.ADD_BANK_DETAILS} />
     </UserLayout>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['me'])),
+    },
+  };
 }

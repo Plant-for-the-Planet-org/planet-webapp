@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
 import LazyLoad from 'react-lazyload';
-import i18next from '../../../../i18n';
 import NotFound from '../../../../public/assets/images/NotFound';
 import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
@@ -10,8 +9,6 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './ProjectsContainer.module.scss';
 import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
-
-const { useTranslation } = i18next;
 
 export default function ProjectsContainer({}: any) {
   const { t, ready } = useTranslation(['donate', 'manageProjects']);

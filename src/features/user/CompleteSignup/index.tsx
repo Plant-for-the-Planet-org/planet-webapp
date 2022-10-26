@@ -13,7 +13,7 @@ import { makeStyles } from '@mui/styles';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountryNew';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 import { useForm, Controller } from 'react-hook-form';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { selectUserType } from '../../../utils/selectUserType';
 import { getStoredConfig } from '../../../utils/storeConfig';
@@ -23,8 +23,7 @@ import { ThemeContext } from '../../../theme/themeContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { postRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-
-const { Trans, useTranslation } = i18next;
+import { Trans, useTranslation } from 'next-i18next';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {

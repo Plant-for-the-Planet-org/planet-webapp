@@ -1,10 +1,10 @@
 import Head from 'next/head';
 import React, { ReactElement } from 'react';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
-import i18next from '../../i18n';
-import ApiKey from '../../src/features/user/Settings/ApiKey';
+import { useTranslation } from 'next-i18next';
 
-const { useTranslation } = i18next;
+import ApiKey from '../../src/features/user/Settings/ApiKey';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 function EditProfilePage(): ReactElement {
   const { t } = useTranslation('me');
@@ -19,3 +19,11 @@ function EditProfilePage(): ReactElement {
 }
 
 export default EditProfilePage;
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['me'])),
+    },
+  };
+}

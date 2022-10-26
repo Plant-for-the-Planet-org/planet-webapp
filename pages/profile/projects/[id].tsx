@@ -8,10 +8,9 @@ import Footer from '../../../src/features/common/Layout/Footer';
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
-import i18next from '../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 interface Props {}
 
@@ -109,6 +108,14 @@ function ManageSingleProject({}: Props): ReactElement {
       <GlobeContentLoader />
     </UserLayout>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['manageProjects', 'common'])),
+    },
+  };
 }
 
 export default ManageSingleProject;

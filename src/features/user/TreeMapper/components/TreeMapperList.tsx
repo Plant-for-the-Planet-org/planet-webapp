@@ -3,9 +3,7 @@ import TransactionListLoader from '../../../../../public/assets/images/icons/Tra
 import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
 import PlantLocation from './PlantLocation';
 import styles from '../TreeMapper.module.scss';
-import i18next from '../../../../../i18n';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   selectedLocation: string;

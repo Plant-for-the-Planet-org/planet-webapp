@@ -8,11 +8,8 @@ import {
   CircularProgress,
 } from '@mui/material';
 import StyledForm from '../../../common/Layout/StyledForm';
-import i18next from '../../../../../i18n';
 import ReactHookFormSelect from './ReactHookFormSelect';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
-
-const { useTranslation } = i18next;
 
 const InlineFormGroup = styled('div')({
   display: 'flex',

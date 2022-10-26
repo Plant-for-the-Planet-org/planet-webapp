@@ -1,17 +1,14 @@
 import React, { FormEvent, ReactElement, useContext, useState } from 'react';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { Button, TextField } from '@mui/material';
-
 import styles from '../BulkCodes.module.scss';
 import { useRouter } from 'next/router';
-
 import BulkCodesForm from './BulkCodesForm';
 import ProjectSelector from '../components/ProjectSelector';
 import BulkGiftTotal from '../components/BulkGiftTotal';
 import RecipientsUploadForm from '../components/RecipientsUploadForm';
 import GenericCodesPartial from '../components/GenericCodesPartial';
 import BulkCodesError from '../components/BulkCodesError';
-
 import { useBulkCode, Recipient } from '../../../common/Layout/BulkCodeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import cleanObject from '../../../../utils/cleanObject';
@@ -22,7 +19,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import { Recipient as LocalRecipient } from '../BulkCodesTypes';
-const { useTranslation } = i18next;
 
 interface IssueCodesFormProps {}
 

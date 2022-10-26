@@ -1,9 +1,7 @@
 import React, { ReactElement } from 'react';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import UnderMaintenanceImage from '../../../../../public/assets/images/icons/UnderMaintenance';
 import styles from './UnderMaintenance.module.scss';
-
-const { useTranslation } = i18next;
 
 interface Props {}
 

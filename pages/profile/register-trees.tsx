@@ -2,9 +2,8 @@ import React, { ReactElement } from 'react';
 import dynamic from 'next/dynamic';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
-import i18next from '../../i18n';
-
-const { useTranslation } = i18next;
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 interface Props {}
 
@@ -21,4 +20,12 @@ export default function Register({}: Props): ReactElement {
       <RegisterTrees />
     </UserLayout>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['me'])),
+    },
+  };
 }

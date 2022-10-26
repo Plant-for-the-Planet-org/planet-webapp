@@ -4,12 +4,11 @@ import BulkCodes, {
   BulkCodeSteps,
 } from '../../../../src/features/user/BulkCodes';
 import Head from 'next/head';
-import i18next from '../../../../i18n';
 import { useRouter } from 'next/router';
 import { useBulkCode } from '../../../../src/features/common/Layout/BulkCodeContext';
 import { BulkCodeMethods } from '../../../../src/utils/constants/bulkCodeConstants';
-
-const { useTranslation } = i18next;
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 export default function BulkCodeSelectProjectPage(): ReactElement {
   const { t, ready } = useTranslation('me');
@@ -42,4 +41,12 @@ export default function BulkCodeSelectProjectPage(): ReactElement {
       <BulkCodes step={BulkCodeSteps.SELECT_PROJECT} />
     </UserLayout>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['me'])),
+    },
+  };
 }

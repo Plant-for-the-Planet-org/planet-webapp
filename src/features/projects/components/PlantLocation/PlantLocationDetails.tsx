@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import i18next from '../../../../../i18n';
 import styles from '../../styles/PlantLocation.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import * as turf from '@turf/turf';

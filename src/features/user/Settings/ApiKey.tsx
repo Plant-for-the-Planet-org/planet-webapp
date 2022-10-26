@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './ApiKey.module.scss';
-import i18next from '../../../../i18n';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../common/InputTypes/AnimatedButton';
 import {
@@ -12,8 +11,6 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import CopyToClipboard from '../../common/CopyToClipboard';
 import EyeIcon from '../../../../public/assets/images/icons/EyeIcon';
 import EyeDisabled from '../../../../public/assets/images/icons/EyeDisabled';
-
-const { useTranslation } = i18next;
 
 export default function ApiKey({}: any) {
   const { token, contextLoaded } = React.useContext(UserPropsContext);
