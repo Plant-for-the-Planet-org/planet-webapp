@@ -153,6 +153,7 @@ function UserLayout(props: any): ReactElement {
         {
           title: t('me:giftFund'),
           path: '/profile/giftfund',
+          hideItem: !user.planetCash,
         },
       ],
     },
