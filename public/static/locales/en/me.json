@@ -1,4 +1,11 @@
 {
+  "managePayouts": {
+    "menuText": "Manage Payouts",
+    "titleOverview": "Manage Payouts - Overview",
+    "titleAddBankDetails": "Manage Payouts - Add Bank Details",
+    "titlePayoutSchedule": "Manage Payouts - Schedule Payouts",
+    "titleEditBankDetails": "Manage Payouts - Edit Bank Details"
+  },
   "donationLinkTitle": "Build Donation Link",
   "planetcash": {
     "menuText": "PlanetCash",
@@ -18,7 +25,6 @@
   "registerTrees": "Register Trees",
   "registerTreesDescription": "Register trees that you have planted yourself, e.g. in your garden.",
   "redeem": "Redeem",
-  "redeemDescription": "Redeem your tree voucher and other codes.",
   "myForest": "My Forest",
   "giftToGiftee": "Gift to {{gifteeName}}",
   "settingManageProject": "Manage Projects",
