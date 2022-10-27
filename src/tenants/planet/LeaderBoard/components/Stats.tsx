@@ -47,29 +47,6 @@ export default function Stats({ tenantScore }: Props): ReactElement {
         </div>
         <div className={styles.statCard}>
           <h2 className={styles.statNumber}>
-            {' '}
-            {localizedAbbreviatedNumber(
-              i18n.language,
-              Number(77060000),
-              2
-            )}{' '}
-          </h2>
-          <h3 className={styles.statText}>
-            {t('planet:plantedByTPO', { projects: 206 })}
-          </h3>
-          <button
-            id={'plantedStats'}
-            onClick={() => {
-              setInfoExpanded('planted');
-              setModalOpen(true);
-            }}
-            className={styles.statInfo}
-          >
-            <InfoIcon color="#000" />
-          </button>
-        </div>
-        <div className={styles.statCard}>
-          <h2 className={styles.statNumber}>
             {localizedAbbreviatedNumber(
               i18n.language,
               Number(tenantScore.total),
