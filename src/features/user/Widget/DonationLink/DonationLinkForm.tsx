@@ -189,7 +189,7 @@ const DonationLinkForm = ({
             <div className={styles.formHeader}>
               {t('donationLink:treeCounterTitle')}
             </div>
-            <InlineFormDisplayGroup>
+            <InlineFormDisplayGroup type="other">
               <h6>{t('donationLink:treeCounterSubtitle')}</h6>
               <Switch
                 id="treeCounter"
@@ -205,7 +205,7 @@ const DonationLinkForm = ({
               )}
             </InlineFormDisplayGroup>
           </div>
-          <InlineFormDisplayGroup>
+          <InlineFormDisplayGroup type="other">
             <div className={styles.formHeader}>
               {t('donationLink:testingTitle')}
             </div>
@@ -239,7 +239,7 @@ const DonationLinkForm = ({
             <div className={styles.formHeader}>
               {t('donationLink:urlTitle')}
             </div>
-            <InlineFormDisplayGroup>
+            <InlineFormDisplayGroup type="other">
               <MuiTextField
                 id="donation-url"
                 name="donation-url"
