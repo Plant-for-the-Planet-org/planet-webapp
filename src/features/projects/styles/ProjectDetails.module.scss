@@ -122,6 +122,13 @@
   border-radius: 10px;
   background-color: $backgroundColor;
   padding-bottom: 16px;
+  overflow-y: scroll;
+  height: calc(100vh - 300px);
+  scrollbar-width: none;
+  
+  &::-webkit-scrollbar { 
+    width:0px;  /* Safari and Chrome */
+}
 }
 
 .ratings {
