@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
 import { useRouter } from 'next/router';
 import i18next from '../../../../i18n';
@@ -46,6 +46,15 @@ export default function ProjectSnippet({
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
 
+  const [offset, setOffset] = useState(0);
+  useEffect(() => {
+    const onScroll = () => setOffset(window.pageYOffset);
+    // clean up code
+    window.removeEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return ready ? (
     <div className={'singleProject'} key={keyString}>
       {editMode ? (
@@ -70,7 +79,7 @@ export default function ProjectSnippet({
           );
         }}
         className={`projectImage ${
-          selectedPl || hoveredPl ? 'projectCollapsed' : ''
+          selectedPl || hoveredPl || offset > 0 ? 'projectCollapsed' : ''
         }`}
       >
         {project.image && typeof project.image !== 'undefined' ? (
