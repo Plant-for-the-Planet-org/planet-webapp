@@ -4,5 +4,6 @@
   "validateCode": "Convalidare il codice",
   "enterRedeemCode": "Si prega di inserire un codice per riscattare",
   "validating": "Convalida",
-  "invalidType": "Tipo non valido, si prega di controllare di nuovo il link"
+  "invalidType": "Tipo non valido, si prega di controllare di nuovo il link",
+  "redeemDescription": "Riscatta il tuo buono per l'albero e altri codici."
 }

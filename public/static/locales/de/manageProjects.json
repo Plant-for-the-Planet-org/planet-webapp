@@ -41,6 +41,7 @@
   "yearOfAbandonment": "Ungefähres Jahr der Flächenaufgabe",
   "firstTreePlanted": "Erster gepflanzter Baum",
   "plantingDensity": "Pflanzdichte",
+  "maxPlantingDensity": "Maximale Bepflanzungsdichte (optional)",
   "employeeCount": "Mitarbeiterzahl",
   "endangeredSpeciesValidation": "Keine gültige Eingabe",
   "endangeredSpecies": "Gefährdete Arten",
@@ -186,8 +187,11 @@
   "validation": "{{fieldName}} ist ungültig",
   "date": "Datum",
   "plantingDensityValidation": "Bitte gibt die Dichte der Pflanzung ein",
+  "maxPlantingDensityValidation": "bitte maximale Bepflanzungsdichte eingeben",
   "onlyEnglish": "Bitte erstelle/bearbeite Projekte nur auf Englisch. Übersetzungen von Projekten werden automatisch von Plant-for-the-Planet verwaltet.",
   "since": "seit",
   "Since": "Seit",
-  "and": "und"
+  "and": "und",
+  "errorForMaxPlantingDensity": "Dieser Wert sollte größer sein als die Bepflanzungsdichte",
+  "managePayoutsButton": "Auszahlungen verwalten"
 }

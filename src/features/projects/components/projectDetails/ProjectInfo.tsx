@@ -174,7 +174,18 @@ function ProjectInfo({ project }: Props): ReactElement {
               {t('manageProjects:plantingDensity')}
             </div>
             <div className={styles.infoText}>
-              {project.plantingDensity} {t('manageProjects:treePerHa')}
+              {project.plantingDensity}
+              {project?.metadata?.maxPlantingDensity ? (
+                <div className={styles.infoTextMaxDensity}>
+                  {'-'}
+                  <div>{project?.metadata?.maxPlantingDensity}</div>
+                  <h4>{t('manageProjects:treePerHa')}</h4>
+                </div>
+              ) : (
+                <div style={{ paddingRight: '68px' }}>
+                  {t('manageProjects:treePerHa')}
+                </div>
+              )}{' '}
             </div>
           </div>
         )}

@@ -90,8 +90,11 @@
   "unauthorized": "Es ist ein Fehler aufgetreten. Bitte versuche, dich abzumelden und wieder anzumelden.",
   "forbidden": "Du bist nicht berechtigt, diese Seite zu sehen!",
   "internalServerError": "Interner Serverfehler - Bitte versuche es später noch einmal!",
+  "connectionError": "Der Server konnte nicht erreicht werden. Bitte überprüfe deine Internetverbindung.",
   "validationFailed": "Prüfung fehlgeschlagen!",
   "add": "Hinzufügen",
-  "poweredBy": "Powered by",
-  "pftp": "Plant-for-the-Planet"
+  "modalTitle": "Beende alle Dauerspenden um fortzufahren",
+  "modalSubtitle": "Bitte beende zuerst deine Dauerspenden",
+  "deleteCondition": "Bevor du fortfährst, vergewissere dich, dass alle Dauerspenden beendet sind.",
+  "showSubscriptions": "Meine Dauerspenden anzeigen"
 }
