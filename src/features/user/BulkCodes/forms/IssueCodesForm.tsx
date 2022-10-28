@@ -5,7 +5,6 @@ import { Button, TextField } from '@mui/material';
 import styles from '../BulkCodes.module.scss';
 import { useRouter } from 'next/router';
 
-import BulkCodesForm from './BulkCodesForm';
 import ProjectSelector from '../components/ProjectSelector';
 import BulkGiftTotal from '../components/BulkGiftTotal';
 import RecipientsUploadForm from '../components/RecipientsUploadForm';
@@ -23,6 +22,7 @@ import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import { Recipient as LocalRecipient } from '../BulkCodesTypes';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
+import StyledForm from '../../../common/Layout/StyledForm';
 const { useTranslation } = i18next;
 
 interface IssueCodesFormProps {}
@@ -204,7 +204,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
     if (!isSubmitted) {
       return (
         <CenteredContainer>
-          <BulkCodesForm className="IssueCodesForm" onSubmit={handleSubmit}>
+          <StyledForm className="IssueCodesForm" onSubmit={handleSubmit}>
             <div className="inputContainer">
               <ProjectSelector
                 projectList={projectList || []}
@@ -265,7 +265,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
                 ? t('bulkCodes:issuingCodes')
                 : t('bulkCodes:issueCodes')}
             </Button>
-          </BulkCodesForm>
+          </StyledForm>
         </CenteredContainer>
       );
     } else {

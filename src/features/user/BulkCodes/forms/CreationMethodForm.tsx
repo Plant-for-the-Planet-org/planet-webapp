@@ -2,8 +2,6 @@ import React, { ReactElement, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import i18next from '../../../../../i18n';
 import { Button } from '@mui/material';
-
-import BulkCodesForm from './BulkCodesForm';
 import SelectorOption, {
   SelectorOptionProps,
 } from '../components/SelectorOption';
@@ -12,6 +10,7 @@ import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
+import StyledForm from '../../../common/Layout/StyledForm';
 
 const { useTranslation } = i18next;
 
@@ -77,7 +76,7 @@ const CreationMethodForm = (): ReactElement | null => {
 
     return (
       <CenteredContainer>
-        <BulkCodesForm className="CreationMethodForm">
+        <StyledForm className="CreationMethodForm">
           <div className="inputContainer">{renderSelectorOptions()}</div>
 
           <BulkCodesError />
@@ -96,7 +95,7 @@ const CreationMethodForm = (): ReactElement | null => {
           >
             {t('common:continue')}
           </Button>
-        </BulkCodesForm>
+        </StyledForm>
       </CenteredContainer>
     );
   }
