@@ -10,8 +10,12 @@ const CenteredContainer = styled('div')(({ theme }) => ({
   width: '100%',
   alignItems: 'center',
   justifyContent: 'center',
+  gap: 24,
   '&.CenteredContainer--small': {
     height: 160,
+  },
+  '& .centered-text': {
+    textAlign: 'center',
   },
 }));
 

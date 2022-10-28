@@ -1,26 +1,10 @@
-// Currently Unused
-
 import { ReactElement } from 'react';
-import { Button, styled } from '@mui/material';
+import { Button } from '@mui/material';
 import i18next from '../../../../../i18n';
 import { useRouter } from 'next/router';
+import CenteredContainer from '../../../common/Layout/CenteredContainer';
 
 const { useTranslation } = i18next;
-
-const Container = styled('div')(({ theme }) => ({
-  backgroundColor: theme.palette.background.default,
-  padding: 24,
-  borderRadius: 9,
-  boxShadow: theme.shadows[1],
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 24,
-  textAlign: 'center',
-  alignItems: 'center',
-  justifyContent: 'space-around',
-  fontSize: '1rem',
-}));
 
 const NoPlanetCashAccount = (): ReactElement | null => {
   const { t, ready } = useTranslation('planetcash');
@@ -32,12 +16,12 @@ const NoPlanetCashAccount = (): ReactElement | null => {
 
   if (ready) {
     return (
-      <Container>
-        <p>{t('noAccountsText')}</p>
+      <CenteredContainer>
+        <p className="centered-text">{t('noAccountsText')}</p>
         <Button variant="contained" color="primary" onClick={handleClick}>
           {t('createPlanetCashButton')}
         </Button>
-      </Container>
+      </CenteredContainer>
     );
   }
 
