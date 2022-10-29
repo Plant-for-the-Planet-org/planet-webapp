@@ -9,7 +9,6 @@ import { getRequest } from '../src/utils/apiRequests/api';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-const config = tenantConfig();
 
 interface Props {
   initialized: Boolean;
@@ -17,6 +16,7 @@ interface Props {
 
 export default function Home(initialized: Props) {
   const router = useRouter();
+  const config = tenantConfig();
 
   const [leaderboard, setLeaderboard] = React.useState(null);
   const [tenantScore, setTenantScore] = React.useState(null);
