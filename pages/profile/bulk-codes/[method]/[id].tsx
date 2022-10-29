@@ -84,6 +84,13 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
   );
 }
 
+export const getStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};
+
 export async function getStaticProps({ locale }) {
   return {
     props: {
