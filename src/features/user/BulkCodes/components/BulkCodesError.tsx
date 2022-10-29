@@ -3,6 +3,7 @@ import React, { ReactElement, useContext } from 'react';
 import { styled } from '@mui/material';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
+import { useTranslation } from 'next-i18next';
 
 const AddBalanceLink = styled('span')(({ theme }) => ({
   color: theme.palette.primary.main,

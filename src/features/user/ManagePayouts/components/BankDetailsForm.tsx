@@ -10,6 +10,7 @@ import {
 import StyledForm from '../../../common/Layout/StyledForm';
 import ReactHookFormSelect from './ReactHookFormSelect';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
+import { useTranslation } from 'next-i18next';
 
 const InlineFormGroup = styled('div')({
   display: 'flex',

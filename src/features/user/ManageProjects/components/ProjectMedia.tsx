@@ -14,6 +14,7 @@ import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   handleNext: Function;

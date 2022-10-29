@@ -7,6 +7,7 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import CustomModal from '../../common/Layout/CustomModal';
 import router from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 export default function DeleteProfile({}: any) {
   const { user, token, logoutUser } = React.useContext(UserPropsContext);

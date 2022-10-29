@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { useTranslation } from 'next-i18next';
 import styles from '../../styles/PlantLocation.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import * as turf from '@turf/turf';
@@ -22,8 +23,6 @@ const ImageSliderSingle = dynamic(
     loading: () => <p>Images</p>,
   }
 );
-
-const { useTranslation } = i18next;
 
 interface Props {
   plantLocation: Object;

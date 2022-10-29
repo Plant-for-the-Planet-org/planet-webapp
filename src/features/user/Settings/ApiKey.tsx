@@ -11,6 +11,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import CopyToClipboard from '../../common/CopyToClipboard';
 import EyeIcon from '../../../../public/assets/images/icons/EyeIcon';
 import EyeDisabled from '../../../../public/assets/images/icons/EyeDisabled';
+import { useTranslation } from 'next-i18next';
 
 export default function ApiKey({}: any) {
   const { token, contextLoaded } = React.useContext(UserPropsContext);

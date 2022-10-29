@@ -9,6 +9,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './ProjectsContainer.module.scss';
 import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
+import { useTranslation } from 'next-i18next';
 
 export default function ProjectsContainer({}: any) {
   const { t, ready } = useTranslation(['donate', 'manageProjects']);

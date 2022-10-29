@@ -17,6 +17,7 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { useTranslation } from 'next-i18next';
 
 interface Props {}
 

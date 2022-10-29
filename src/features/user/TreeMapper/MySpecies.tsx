@@ -12,6 +12,7 @@ import SpeciesSelect from './Import/components/SpeciesAutoComplete';
 import styles from './MySpecies.module.scss';
 import { useForm } from 'react-hook-form';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { useTranslation } from 'next-i18next';
 
 interface Props {}
 
