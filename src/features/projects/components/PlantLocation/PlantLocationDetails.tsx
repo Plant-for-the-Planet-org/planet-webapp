@@ -7,7 +7,6 @@ import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import dynamic from 'next/dynamic';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
-import { useTranslation } from 'next-i18next';
 
 const ImageSlider = dynamic(
   () => import('../../components/PlantLocation/ImageSlider'),
