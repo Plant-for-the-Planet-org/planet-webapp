@@ -3,7 +3,6 @@ import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile
 import { useRouter } from 'next/router';
 import { UserPropsContext } from '../src/features/common/Layout/UserPropsContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import nextI18NextConfig from '../next-i18next.config';
 
 interface Props {}
 

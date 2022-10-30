@@ -1,7 +1,6 @@
 import styles from './../styles/GrowingImpact.module.scss';
 import gridStyles from './../styles/Grid.module.scss';
 import Timeline from './Timeline';
-import Link from 'next/link';
 
 export default function GrowingImpact() {
   const articles = [

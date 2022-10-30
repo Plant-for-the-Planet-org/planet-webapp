@@ -1,8 +1,5 @@
 import React, { ReactElement } from 'react';
-import {
-  getAuthenticatedRequest,
-  putAuthenticatedRequest,
-} from '../../../../utils/apiRequests/api';
+import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import PlantingLocation from './components/PlantingLocation';
 import styles from './Import.module.scss';
 import { useTranslation } from 'next-i18next';
@@ -76,12 +73,11 @@ export default function ImportData({}: Props): ReactElement {
   const [activeStep, setActiveStep] = React.useState(0);
   const [errorMessage, setErrorMessage] = React.useState('');
   const steps = getSteps();
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [plantLocation, setPlantLocation] =
     React.useState<Treemapper.PlantLocation | null>(null);
   const [userLang, setUserLang] = React.useState('en');
   const [geoJson, setGeoJson] = React.useState(null);
-  const [geoJsonError, setGeoJsonError] = React.useState(false);
+
   const [activeMethod, setActiveMethod] = React.useState('import');
 
   const handleNext = () => {

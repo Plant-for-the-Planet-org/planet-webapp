@@ -15,7 +15,6 @@ import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import materialTheme from '../../../theme/themeStyles';
 
 export default function ManageProjects({ GUID, token, project }: any) {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
@@ -35,7 +34,6 @@ export default function ManageProjects({ GUID, token, project }: any) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [tabSelected, setTabSelected] = React.useState(0);
-  const steps = getSteps();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [projectGUID, setProjectGUID] = React.useState(GUID ? GUID : '');
   const [projectDetails, setProjectDetails] = React.useState(

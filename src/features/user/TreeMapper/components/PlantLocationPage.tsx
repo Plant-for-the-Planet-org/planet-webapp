@@ -1,18 +1,11 @@
 import React, { ReactElement } from 'react';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
-import getImageUrl from '../../../../utils/getImageURL';
 import styles from '../TreeMapper.module.scss';
 import { useTranslation } from 'next-i18next';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
-import TreeIcon from '../../../../../public/assets/images/icons/TreeIcon';
-import {
-  getFormattedNumber,
-  localizedAbbreviatedNumber,
-} from '../../../../utils/getFormattedNumber';
+import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import dynamic from 'next/dynamic';
-import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
-import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
-import router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import CopyToClipboard from '../../../common/CopyToClipboard';
 
 interface Props {
@@ -43,7 +36,7 @@ export default function PlantLocationPage({
   plantLocations,
 }: Props): ReactElement {
   const router = useRouter();
-  const { t, i18n } = useTranslation('treemapper');
+
   const handleBackButton = () => {
     if (location.type === 'sample') {
       for (const i in plantLocations) {

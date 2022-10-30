@@ -1,20 +1,8 @@
 import React, { ReactElement } from 'react';
 import * as turf from '@turf/turf';
-import * as d3 from 'd3-ease';
-import ReactMapboxGl, {
-  ZoomControl,
-  Source,
-  Layer,
-  GeoJSONLayer,
-} from 'react-mapbox-gl';
-import DrawControl from 'react-mapbox-gl-draw';
+import ReactMapboxGl, { ZoomControl, GeoJSONLayer } from 'react-mapbox-gl';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
-import styles from '../Import.module.scss';
-import Dropzone from 'react-dropzone';
-import tj from '@mapbox/togeojson';
-import { useTranslation } from 'next-i18next';
 import WebMercatorViewport from '@math.gl/web-mercator';
-import gjv from 'geojson-validation';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
 
 interface Props {
@@ -31,7 +19,7 @@ export default function MapComponent({
 }: Props): ReactElement {
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
-  const { t, i18n, ready } = useTranslation(['manageProjects']);
+
   const [viewport, setViewPort] = React.useState({
     height: '100%',
     width: '100%',

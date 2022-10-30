@@ -1,8 +1,6 @@
 import { MenuItem, SxProps } from '@mui/material';
-
 import * as d3 from 'd3-ease';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import MapGL, {

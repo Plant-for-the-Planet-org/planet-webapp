@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { Modal, Snackbar, styled } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import styles from './EmbedModal.module.scss';
@@ -7,7 +7,6 @@ import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../theme/themeContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
-import { TENANT_ID } from '../../../utils/constants/environment';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 interface Props {

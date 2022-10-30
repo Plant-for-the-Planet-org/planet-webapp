@@ -10,7 +10,7 @@ import '../src/theme/global.scss';
 import './../src/features/projects/styles/Projects.scss';
 import './../src/features/common/Layout/Navbar/Navbar.scss';
 import ThemeProvider from '../src/theme/themeContext';
-import { useTranslation, UseTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next';
 import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
@@ -92,7 +92,7 @@ const onRedirectCallback = (appState: any) => {
   if (appState) Router.replace(appState?.returnTo || '/');
 };
 
-const PlanetWeb = ({ Component, pageProps, err }: any) => {
+const PlanetWeb = ({ Component, pageProps }: any) => {
   const { i18n } = useTranslation();
   const router = useRouter();
   const [isMap, setIsMap] = React.useState(false);
