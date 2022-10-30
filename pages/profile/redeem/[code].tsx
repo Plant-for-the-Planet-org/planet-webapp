@@ -13,9 +13,10 @@ import {
 } from '../../../src/features/common/RedeemMicro/RedeemCode';
 import { ClaimCode1 } from '../../claim/[type]/[code]';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticPaths } from 'next';
 
 const ReedemCode: FC = () => {
-  const { t, ready } = useTranslation(['redeem']);
+  const { t, ready, i18n } = useTranslation(['redeem']);
   const { user, contextLoaded, token } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
 
@@ -65,6 +66,13 @@ const ReedemCode: FC = () => {
       setCode(router.query.code);
     }
   }, [router]);
+
+  useEffect(() => {
+    if (localStorage.getItem('i18nextLng') !== null && i18n) {
+      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
+      i18n.changeLanguage(languageFromLocalStorage);
+    }
+  }, [i18n]);
 
   useEffect(() => {
     if (contextLoaded && user && router && router.query.code) {
@@ -131,7 +139,7 @@ const ReedemCode: FC = () => {
   );
 };
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: [],
     fallback: 'blocking',

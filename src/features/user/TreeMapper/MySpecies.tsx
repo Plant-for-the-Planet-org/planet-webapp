@@ -11,12 +11,14 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import SpeciesSelect from './Import/components/SpeciesAutoComplete';
 import styles from './MySpecies.module.scss';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 interface Props {}
 
 export default function MySpecies({}: Props): ReactElement {
-  const { t } = useTranslation('treemapper', 'me', 'common');
+  const { t } = useTranslation(['treemapper', 'me', 'common']);
   const { token, contextLoaded } = React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const [species, setSpecies] = React.useState<any[]>([]);
@@ -26,7 +28,7 @@ export default function MySpecies({}: Props): ReactElement {
     aliases: '',
   };
 
-  const { register, handleSubmit, errors, control, getValues } = useForm({
+  const { register, handleSubmit, errors, control } = useForm({
     mode: 'onBlur',
     defaultValues: defaultMySpeciesValue,
   });
@@ -143,4 +145,35 @@ export default function MySpecies({}: Props): ReactElement {
       </div>
     </div>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donation',
+          'editProfile',
+          'leaderboard',
+          'managePay',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTree',
+          'tenants',
+          'treemapper',
+        ],
+        null,
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+      )),
+    },
+  };
 }

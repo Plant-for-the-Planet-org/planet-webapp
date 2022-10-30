@@ -73,9 +73,9 @@
     "mapbox-gl": "^1.13.0",
     "mapbox-gl-compare": "^0.4.0",
     "moment": "^2.29.4",
-    "next": "^12.3.1",
+    "next": "^12.2.2",
     "next-compose-plugins": "^2.2.1",
-    "next-i18next": "^11.3.0",
+    "next-i18next": "^12.1.0",
     "next-useragent": "^2.7.0",
     "papaparse": "^5.3.1",
     "path-browserify": "^1.0.1",
@@ -139,6 +139,6 @@
     "prettier": "^2.0.5",
     "storybook-addon-next": "^1.6.6",
     "typescript": "^4.3.2",
-    "webpack": "^5.72.0"
+    "webpack": "^5.74.0"
   }
 }

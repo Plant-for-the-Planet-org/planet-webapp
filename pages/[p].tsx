@@ -11,6 +11,7 @@ import { getAllPlantLocations } from '../src/utils/maps/plantLocations';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nextI18NextConfig from '../next-i18next.config.js';
+import { GetStaticPaths } from 'next';
 
 interface Props {
   initialized: boolean;
@@ -131,7 +132,14 @@ export default function Donate({
   );
 }
 
-export async function getServerSideProps({ locale }) {
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};
+
+export async function getStaticProps({ locale }: any) {
   return {
     props: {
       ...(await serverSideTranslations(
@@ -155,7 +163,8 @@ export async function getServerSideProps({ locale }) {
           'tenants',
           'treemapper',
         ],
-        nextI18NextConfig
+        null,
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
       )),
     },
   };

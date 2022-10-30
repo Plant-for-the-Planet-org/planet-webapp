@@ -9,11 +9,10 @@ import { getRequest } from '../src/utils/apiRequests/api';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-const config = tenantConfig();
-
 interface Props {
   initialized: Boolean;
 }
+const config = tenantConfig();
 
 export default function Home(initialized: Props) {
   const router = useRouter();
@@ -92,25 +91,30 @@ export default function Home(initialized: Props) {
 export async function getStaticProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, [
-        'bulkCodes',
-        'common',
-        'country',
-        'donate',
-        'donation',
-        'editProfile',
-        'leaderboard',
-        'managePay',
-        'manageProjects',
-        'maps',
-        'me',
-        'planet',
-        'planetcash',
-        'redeem',
-        'registerTree',
-        'tenants',
-        'treemapper',
-      ])),
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donation',
+          'editProfile',
+          'leaderboard',
+          'managePay',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTree',
+          'tenants',
+          'treemapper',
+        ],
+        null,
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+      )),
     },
   };
 }

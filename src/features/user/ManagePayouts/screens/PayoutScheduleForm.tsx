@@ -4,7 +4,7 @@ import { Button, MenuItem, CircularProgress } from '@mui/material';
 import ReactHookFormSelect from '../components/ReactHookFormSelect';
 import StyledForm from '../../../common/Layout/StyledForm';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
-import i18n from '../../../../../i18n';
+import { useTranslation, Trans } from 'next-i18next';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
@@ -12,8 +12,6 @@ import { User } from '../../../common/types/user';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 import { PaymentFrequencies } from '../../../../utils/constants/payoutConstants';
-
-const { useTranslation, Trans } = i18n;
 
 const paymentFrequencies = [
   PaymentFrequencies.MANUAL,
@@ -28,7 +26,7 @@ type FormData = {
 };
 
 const PayoutScheduleForm = (): ReactElement | null => {
-  const { t, ready } = useTranslation('managePayouts');
+  const { t, ready, i18n } = useTranslation('managePayouts');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const { token, user, setUser } = useContext(UserPropsContext);

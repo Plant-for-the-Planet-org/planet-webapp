@@ -68,6 +68,13 @@ export default function Donate({
   }, [router]);
 
   React.useEffect(() => {
+    if (localStorage.getItem('i18nextLng') !== null && i18n) {
+      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
+      i18n.changeLanguage(languageFromLocalStorage);
+    }
+  }, [i18n]);
+
+  React.useEffect(() => {
     setShowSingleProject(false);
     setProject(null);
     setZoomLevel(1);
@@ -138,7 +145,7 @@ export default function Donate({
   );
 }
 
-export async function getServerSideProps({ locale }) {
+export async function getStaticProps({ locale }: any) {
   return {
     props: {
       ...(await serverSideTranslations(

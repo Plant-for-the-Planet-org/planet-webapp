@@ -2,6 +2,8 @@ import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import { getRequest } from '../../src/utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticPaths } from 'next';
 
 interface Props {}
 
@@ -37,4 +39,42 @@ async function loadPublicUserData(router: any, handleError: Function) {
   router.push('/', undefined, {
     shallow: true,
   });
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donation',
+          'editProfile',
+          'leaderboard',
+          'managePay',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTree',
+          'tenants',
+          'treemapper',
+        ],
+        null,
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+      )),
+    },
+  };
 }

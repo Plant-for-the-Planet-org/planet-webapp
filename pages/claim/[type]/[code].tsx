@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
 import { useTranslation } from 'next-i18next';
-
+import { GetStaticPaths } from 'next';
 import LandingSection from '../../../src/features/common/Layout/LandingSection';
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
@@ -16,7 +16,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 export type ClaimCode1 = string | null;
 
 function ClaimDonation(): ReactElement {
-  const { t, ready } = useTranslation(['redeem']);
+  const { t, ready, i18n } = useTranslation(['redeem']);
 
   const router = useRouter();
 
@@ -79,6 +79,13 @@ function ClaimDonation(): ReactElement {
       setCode(router.query.code);
     }
   }, [router.query.code]);
+
+  React.useEffect(() => {
+    if (localStorage.getItem('i18nextLng') !== null && i18n) {
+      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
+      i18n.changeLanguage(languageFromLocalStorage);
+    }
+  }, [i18n]);
   // // Check if the user is logged in or not.
   React.useEffect(() => {
     // If the user is logged in -
@@ -133,10 +140,40 @@ function ClaimDonation(): ReactElement {
   );
 }
 
-export async function getServerSideProps(locale) {
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};
+
+export async function getStaticProps({ locale }: any) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['redeem'])),
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donation',
+          'editProfile',
+          'leaderboard',
+          'managePay',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTree',
+          'tenants',
+          'treemapper',
+        ],
+        null,
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+      )),
     },
   };
 }

@@ -8,6 +8,7 @@ import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import TopProgressBar from '../../common/ContentLoaders/TopProgressBar';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { useTranslation } from 'next-i18next';
 
 interface Props {}
 

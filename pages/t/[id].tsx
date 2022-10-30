@@ -9,6 +9,8 @@ import Profile from '../../src/features/user/Profile';
 import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees';
 import ProjectsContainer from '../../src/features/user/Profile/ProjectsContainer';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticPaths } from 'next';
 
 function User(): ReactElement {
   // External imports
@@ -65,6 +67,44 @@ function User(): ReactElement {
   ) : (
     <UserProfileLoader />
   );
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donation',
+          'editProfile',
+          'leaderboard',
+          'managePay',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTree',
+          'tenants',
+          'treemapper',
+        ],
+        null,
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+      )),
+    },
+  };
 }
 
 export default User;

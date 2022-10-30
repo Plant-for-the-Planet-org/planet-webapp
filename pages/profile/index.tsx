@@ -6,11 +6,11 @@ import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
-
+import nextI18NextConfig, { i18n } from '../../next-i18next.config';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 function ProfilePage(): ReactElement {
-  const { t } = useTranslation('me');
+  const { t, i18n } = useTranslation('me');
   // External imports
   const router = useRouter();
   const { user, contextLoaded, token } = React.useContext(UserPropsContext);
@@ -27,6 +27,13 @@ function ProfilePage(): ReactElement {
       }
     }
   }, [contextLoaded, user, router]);
+
+  useEffect(() => {
+    if (localStorage.getItem('i18nextLng') !== null && i18n) {
+      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
+      i18n.changeLanguage(languageFromLocalStorage);
+    }
+  }, [i18n]);
 
   return (
     <UserLayout>

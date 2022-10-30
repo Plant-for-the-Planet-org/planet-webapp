@@ -28,25 +28,30 @@ export default function OpenApp() {
 export async function getServerSideProps(locale) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, [
-        'bulkCodes',
-        'common',
-        'country',
-        'donate',
-        'donation',
-        'editProfile',
-        'leaderboard',
-        'managePay',
-        'manageProjects',
-        'maps',
-        'me',
-        'planet',
-        'planetcash',
-        'redeem',
-        'registerTree',
-        'tenants',
-        'treemapper',
-      ])),
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donation',
+          'editProfile',
+          'leaderboard',
+          'managePay',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTree',
+          'tenants',
+          'treemapper',
+        ],
+        null,
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+      )),
     },
   };
 }

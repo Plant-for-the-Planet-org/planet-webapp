@@ -7,4 +7,5 @@ module.exports = {
     locales: ['en', 'de', 'cs', 'es', 'fr', 'it', 'pt-BR'],
   },
   localePath: path.resolve('./public/static/locales'),
+  reloadOnPrerender: false,
 };

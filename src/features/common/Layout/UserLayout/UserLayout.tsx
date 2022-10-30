@@ -20,7 +20,7 @@ import TreeMappperIcon from '../../../../../public/assets/images/icons/Sidebar/T
 import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/RegisterIcon';
 
 function UserLayout(props: any): ReactElement {
-  const { t, i18n } = useTranslation(['common', 'me']);
+  const { t } = useTranslation(['common', 'me']);
   // const { asPath } = useRouter();
   const router = useRouter();
   const { user, logoutUser, contextLoaded } =
