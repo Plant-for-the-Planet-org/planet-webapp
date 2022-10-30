@@ -12,10 +12,10 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 interface Props {
   initialized: Boolean;
 }
-const config = tenantConfig();
 
 export default function Home(initialized: Props) {
   const router = useRouter();
+  const config = tenantConfig();
 
   const [leaderboard, setLeaderboard] = React.useState(null);
   const [tenantScore, setTenantScore] = React.useState(null);

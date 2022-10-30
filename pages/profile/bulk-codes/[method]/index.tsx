@@ -43,6 +43,13 @@ export default function BulkCodeSelectProjectPage(): ReactElement {
   );
 }
 
+export const getStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};
+
 export async function getStaticProps({ locale }) {
   return {
     props: {

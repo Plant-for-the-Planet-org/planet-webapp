@@ -4,8 +4,8 @@ import tenantConfig from '../tenant.config';
 import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-const config = tenantConfig();
 export default function UserProfile() {
+  const config = tenantConfig();
   return (
     <>
       <Head>

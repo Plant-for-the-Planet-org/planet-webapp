@@ -1,5 +1,6 @@
 import { ReactElement } from 'react';
 import { TextField, styled } from '@mui/material';
+import { useTranslation } from 'next-i18next';
 
 const UnitCostDisplayGroup = styled('div')({
   display: 'flex',
