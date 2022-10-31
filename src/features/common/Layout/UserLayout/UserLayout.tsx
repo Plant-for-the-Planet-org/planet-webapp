@@ -18,6 +18,7 @@ import { UserPropsContext } from '../UserPropsContext';
 import styles from './UserLayout.module.scss';
 import TreeMappperIcon from '../../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
 import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/RegisterIcon';
+import NotionLinkIcon from '../../../../../public/assets/images/icons/Sidebar/NotionLinkIcon';
 
 function LanguageSwitcher() {
   const { i18n, ready } = useTranslation(['common']);
@@ -313,6 +314,15 @@ function UserLayout(props: any): ReactElement {
           path: '/profile/bulk-codes',
           flag: t('me:beta'),
         },
+        {
+          title: t('me:giftFund'),
+          path: '/profile/giftfund',
+          //For an active PlanetCash account with an empty GiftFund array or if openUnits = 0 for all GiftFunds, it should be hidden
+          hideItem:
+            !user.planetCash ||
+            user.planetCash?.giftFunds.filter((gift) => gift.openUnits !== 0)
+              .length == 0,
+        },
       ],
     },
     /* {
@@ -450,6 +460,20 @@ function UserLayout(props: any): ReactElement {
 
         <div>
           <LanguageSwitcher />
+          <div className={styles.navlink}>
+            <NotionLinkIcon />
+            <button
+              onClick={() =>
+                window.open(
+                  'https://plantfortheplanet.notion.site/Public-Documentation-Plant-for-the-Planet-Platform-04af8ed821b44d358130142778d79e01',
+                  '_blank'
+                )
+              }
+              className={styles.navlinkTitle}
+            >
+              {t('document')}
+            </button>
+          </div>
           <div
             className={styles.navlink}
             //logout user
