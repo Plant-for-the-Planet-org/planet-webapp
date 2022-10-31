@@ -13,10 +13,8 @@ import CreationMethodForm from './forms/CreationMethodForm';
 import SelectProjectForm from './forms/SelectProjectForm';
 import IssueCodesForm from './forms/IssueCodesForm';
 
-import {
-  useBulkCode,
-  APISingleProject,
-} from '../../common/Layout/BulkCodeContext';
+import { useBulkCode } from '../../common/Layout/BulkCodeContext';
+import { MapSingleProject } from '../../common/types/project';
 import { TENANT_ID } from '../../../utils/constants/environment';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../utils/apiRequests/api';
@@ -78,7 +76,7 @@ export default function BulkCodes({
   const fetchProjectList = useCallback(async () => {
     if (planetCashAccount && !projectList) {
       try {
-        const fetchedProjects = await getRequest<APISingleProject[]>(
+        const fetchedProjects = await getRequest<MapSingleProject[]>(
           `/app/projects`,
           handleError,
           undefined,

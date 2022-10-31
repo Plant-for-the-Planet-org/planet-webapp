@@ -9,12 +9,17 @@ export interface Project {
   allowDonations: boolean;
 }
 
-export interface SingleProject {
-  id: string;
-  name: string;
-  slug: string;
-  allowDonations: boolean;
-  purpose: string;
-  currency: string;
-  unitCost: number;
+export interface MapSingleProject {
+  type: string;
+  geometry: unknown;
+  properties: {
+    [index: string]: unknown;
+    id: string;
+    name: string;
+    slug: string;
+    allowDonations: boolean;
+    purpose: string;
+    currency: string;
+    unitCost: number;
+  };
 }
