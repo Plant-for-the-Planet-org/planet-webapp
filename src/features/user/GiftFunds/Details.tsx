@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './GiftFunds.module.scss';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 
-const { useTranslation } = i18next;
 const Details = () => {
   const { user } = useContext(UserPropsContext);
   const { t, ready } = useTranslation('giftfunds');
