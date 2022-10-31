@@ -19,10 +19,14 @@ const InlineFormGroup = styled('div')({
 });
 
 interface Props {
-  type?: 'field' | 'other'; //Use type='other' to specify inline groups that do not contain only text field elements
+  /** Use type='other' to specify inline groups that do not contain only text field elements */
+  type?: 'field' | 'other';
   children: ReactNode;
 }
 
+/**
+ * Responsive element that groups fields/other form elements that need to be arranged in one line
+ */
 const InlineFormDisplayGroup = ({
   type = 'field',
   children,
