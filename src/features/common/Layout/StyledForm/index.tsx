@@ -4,7 +4,7 @@ import { styled } from '@mui/material';
  * Returns an empty flex column display `<form>` with
  * styles defined for formButton, formTitle and inputContainer
  */
-const StyledForm = styled('form')(({ theme }) => ({
+const StyledForm = styled('form')(() => ({
   width: '100%',
   display: 'flex',
   flexDirection: 'column',
@@ -19,10 +19,6 @@ const StyledForm = styled('form')(({ theme }) => ({
     flexDirection: 'column',
     gap: 24,
     width: '100%',
-  },
-  '& .formTitle': {
-    color: theme.palette.text.secondary,
-    fontSize: theme.typography.h2.fontSize,
   },
 }));
 
