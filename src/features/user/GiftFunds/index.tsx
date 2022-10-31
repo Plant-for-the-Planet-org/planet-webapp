@@ -14,8 +14,8 @@ const GiftFunds = () => {
   useEffect(() => {
     if (
       !user.planetCash ||
-      user.planetCash?.giftFunds.filter((gift) => gift.openUnits === 0)
-        .length !== 0
+      user.planetCash?.giftFunds.filter((gift) => gift.openUnits !== 0)
+        .length === 0
     )
       router.push('/profile');
   }, [user]);
