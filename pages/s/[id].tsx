@@ -10,7 +10,29 @@ interface Props {}
 export default function DirectGift({}: Props): ReactElement {
   const router = useRouter();
   const { handleError } = React.useContext(ErrorHandlingContext);
-  //   const [profile, setProfile] = React.useState(null);
+
+  async function loadPublicUserData(router: any, handleError: Function) {
+    const newProfile = await getRequest(
+      `/app/profiles/${router.query.id}`,
+      handleError,
+      '/'
+    );
+    if (newProfile.type !== 'tpo') {
+      localStorage.setItem(
+        'directGift',
+        JSON.stringify({
+          id: newProfile.slug,
+          displayName: newProfile.displayName,
+          type: newProfile.type,
+          show: true,
+        })
+      );
+    }
+    router.push('/', undefined, {
+      shallow: true,
+    });
+  }
+
   React.useEffect(() => {
     if (router && router.query.id) {
       loadPublicUserData(router, handleError);
@@ -18,29 +40,6 @@ export default function DirectGift({}: Props): ReactElement {
   }, [router]);
   return <div></div>;
 }
-
-async function loadPublicUserData(router: any, handleError: Function) {
-  const newProfile = await getRequest(
-    `/app/profiles/${router.query.id}`,
-    handleError,
-    '/'
-  );
-  if (newProfile.type !== 'tpo') {
-    localStorage.setItem(
-      'directGift',
-      JSON.stringify({
-        id: newProfile.slug,
-        displayName: newProfile.displayName,
-        type: newProfile.type,
-        show: true,
-      })
-    );
-  }
-  router.push('/', undefined, {
-    shallow: true,
-  });
-}
-
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: [],

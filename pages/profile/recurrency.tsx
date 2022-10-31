@@ -21,7 +21,7 @@ function RecurrentDonations({}: Props): ReactElement {
 
   const { handleError } = React.useContext(ErrorHandlingContext);
 
-  async function fetchRecurrentDonations(next = false): Promise<void> {
+  async function fetchRecurrentDonations(): Promise<void> {
     setIsDataLoading(true);
     setProgress(70);
     const recurrencies: Payments.Subscription[] = await getAuthenticatedRequest(

@@ -43,10 +43,6 @@ export default function EmbedModal({
     }
   }, [user]);
 
-  const handleToggleChange = (e: any) => {
-    setIsPrivate(!e.target.checked);
-  };
-
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
   };

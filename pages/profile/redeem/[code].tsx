@@ -42,13 +42,6 @@ const ReedemCode: FC = () => {
     setInputCode('');
   };
 
-  const changeRouteCode = () => {
-    router.push(`/profile/redeem/${inputCode}?inputCode=${false}`);
-
-    const codeFromUrl = router.query.code;
-    redeemingCode(codeFromUrl);
-  };
-
   useEffect(() => {
     if (contextLoaded) {
       if (!user) {
@@ -74,12 +67,6 @@ const ReedemCode: FC = () => {
     }
   }, [i18n]);
 
-  useEffect(() => {
-    if (contextLoaded && user && router && router.query.code) {
-      redeemingCode(router.query.code);
-    }
-  }, [user, contextLoaded, router.query.code]);
-
   async function redeemingCode(data: string | string[]): Promise<void> {
     const submitData = {
       code: data,
@@ -102,6 +89,19 @@ const ReedemCode: FC = () => {
       });
     }
   }
+
+  useEffect(() => {
+    if (contextLoaded && user && router && router.query.code) {
+      redeemingCode(router.query.code);
+    }
+  }, [user, contextLoaded, router.query.code]);
+
+  const changeRouteCode = () => {
+    router.push(`/profile/redeem/${inputCode}?inputCode=${false}`);
+
+    const codeFromUrl = router.query.code;
+    redeemingCode(codeFromUrl);
+  };
 
   return ready ? (
     router.query.inputCode === 'true' ? (

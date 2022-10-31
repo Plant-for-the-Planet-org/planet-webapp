@@ -53,12 +53,6 @@ export default function PlantLocationPage({
     }
   };
 
-  const handleDeleteButton = () => {
-    router.replace('/profile/treemapper');
-  };
-
-  const handleEditButton = () => {};
-
   const DetailProps = {
     location,
     setselectedLocation,
@@ -98,13 +92,10 @@ export function LocationDetails({
 }: DetailsProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['treemapper', 'maps']);
   const [sampleTreeImages, setSampleTreeImages] = React.useState([]);
-  const coordinateRef = React.useRef(null);
 
-  const text = `${location?.deviceLocation?.coordinates.map(
-    (coord: any, index: number) => {
-      return getFormattedNumber(i18n.language, Number(coord));
-    }
-  )}`;
+  const text = `${location?.deviceLocation?.coordinates.map((coord: any) => {
+    return getFormattedNumber(i18n.language, Number(coord));
+  })}`;
 
   React.useEffect(() => {
     if (

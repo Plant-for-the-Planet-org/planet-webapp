@@ -48,7 +48,7 @@ export default function ProjectSites({
   handleReset,
   projectDetails,
 }: Props): ReactElement {
-  const { t, i18n, ready } = useTranslation(['manageProjects']);
+  const { t, ready } = useTranslation(['manageProjects']);
   const { theme } = React.useContext(ThemeContext);
   const [features, setFeatures] = React.useState([]);
   const { register, handleSubmit, errors, control } = useForm();
@@ -126,15 +126,6 @@ export default function ProjectSites({
     tileSize: 128,
   };
 
-  // React.useEffect(() => {
-  //   const promise = getMapStyle('openStreetMap');
-  //   promise.then((style: any) => {
-  //     if (style) {
-  //       setStyle(style);
-  //     }
-  //   });
-  // }, []);
-
   const [showForm, setShowForm] = React.useState(true);
 
   const [editMode, seteditMode] = React.useState(false);
@@ -151,12 +142,6 @@ export default function ProjectSites({
     setGeoJsonError,
     geoLocation,
   };
-
-  const onSubmit = (data: any) => {
-    handleNext();
-  };
-
-  const _onViewportChange = (view: any) => setViewPort({ ...view });
 
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {

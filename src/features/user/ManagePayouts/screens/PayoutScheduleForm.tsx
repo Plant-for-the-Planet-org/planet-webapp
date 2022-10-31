@@ -26,7 +26,7 @@ type FormData = {
 };
 
 const PayoutScheduleForm = (): ReactElement | null => {
-  const { t, ready, i18n } = useTranslation('managePayouts');
+  const { t, ready } = useTranslation('managePayouts');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const { token, user, setUser } = useContext(UserPropsContext);

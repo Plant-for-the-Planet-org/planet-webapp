@@ -133,8 +133,10 @@ export default function RegisterTrees({}: Props) {
     plantDate: new Date(),
     geometry: {},
   };
-  const { register, handleSubmit, errors, control, reset, setValue, watch } =
-    useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
+  const { register, handleSubmit, errors, control, watch } = useForm({
+    mode: 'onBlur',
+    defaultValues: defaultBasicDetails,
+  });
 
   const treeCount = watch('treeCount');
 
@@ -223,7 +225,6 @@ export default function RegisterTrees({}: Props) {
     contributionGUID,
     slug: user.slug,
   };
-  const { theme } = React.useContext(ThemeContext);
 
   return ready ? (
     <div className="profilePage">

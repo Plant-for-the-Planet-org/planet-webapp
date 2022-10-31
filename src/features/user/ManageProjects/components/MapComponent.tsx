@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import * as turf from '@turf/turf';
-import * as d3 from 'd3-ease';
 import ReactMapboxGl, { ZoomControl, Source, Layer } from 'react-mapbox-gl';
 import DrawControl from 'react-mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
@@ -31,7 +30,7 @@ export default function MapComponent({
 }: Props): ReactElement {
   const defaultMapCenter = [geoLocation.geoLongitude, geoLocation.geoLatitude];
   const defaultZoom = 1.4;
-  const { t, i18n, ready } = useTranslation(['manageProjects']);
+  const { t, ready } = useTranslation(['manageProjects']);
   const [viewport, setViewPort] = React.useState({
     height: '400px',
     width: '100%',

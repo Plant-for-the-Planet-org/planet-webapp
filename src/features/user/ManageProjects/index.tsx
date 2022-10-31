@@ -17,19 +17,9 @@ import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 export default function ManageProjects({ GUID, token, project }: any) {
-  const { t, i18n, ready } = useTranslation(['manageProjects']);
+  const { t, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const router = useRouter();
-  function getSteps() {
-    return [
-      ready ? t('manageProjects:basicDetails') : '',
-      ready ? t('manageProjects:projectMedia') : '',
-      ready ? t('manageProjects:detailedAnalysis') : '',
-      ready ? t('manageProjects:projectSites') : '',
-      ready ? t('manageProjects:projectSpending') : '',
-      ready ? t('manageProjects:review') : '',
-    ];
-  }
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [errorMessage, setErrorMessage] = React.useState('');

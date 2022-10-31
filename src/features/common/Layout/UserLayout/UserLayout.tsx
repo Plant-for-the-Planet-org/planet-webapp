@@ -19,6 +19,171 @@ import styles from './UserLayout.module.scss';
 import TreeMappperIcon from '../../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
 import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/RegisterIcon';
 
+function LanguageSwitcher() {
+  const { i18n, ready } = useTranslation(['common']);
+
+  const [language, setLanguage] = React.useState(i18n.language);
+  const [openModal, setOpenModal] = React.useState(false);
+  const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
+  const [selectedCountry, setSelectedCountry] = React.useState('DE');
+
+  React.useEffect(() => {
+    if (typeof Storage !== 'undefined') {
+      //fetching language from browser's local storage
+      if (localStorage.getItem('language')) {
+        const langCode = localStorage.getItem('language') || 'en';
+        if (langCode) setLanguage(langCode.toLowerCase());
+      }
+    }
+  }, [language]);
+
+  React.useEffect(() => {
+    if (typeof Storage !== 'undefined') {
+      //fetching currencycode from browser's localstorage
+      if (localStorage.getItem('currencyCode')) {
+        const currencyCode = localStorage.getItem('currencyCode');
+        if (currencyCode) setSelectedCurrency(currencyCode);
+      }
+      //fetching country code from browser's localstorage
+      if (localStorage.getItem('countryCode')) {
+        const countryCode = localStorage.getItem('countryCode');
+        if (countryCode) setSelectedCountry(countryCode);
+      }
+    }
+  }, []);
+
+  return ready ? (
+    <>
+      <div
+        className={styles.navlink}
+        onClick={() => {
+          setOpenModal(true); // open language and country change modal
+        }}
+      >
+        <GlobeIcon />
+        <button className={styles.navlinkTitle}>
+          {`${
+            i18n.language ? i18n.language.toUpperCase() : ''
+          } • ${selectedCurrency}`}
+        </button>
+        <button></button>
+      </div>
+      <SelectLanguageAndCountry
+        openModal={openModal}
+        handleModalClose={() => setOpenModal(false)}
+        language={i18n.language}
+        setLanguage={setLanguage}
+        setSelectedCurrency={setSelectedCurrency}
+        selectedCountry={selectedCountry}
+        setSelectedCountry={setSelectedCountry}
+      />
+    </>
+  ) : (
+    <></>
+  );
+}
+
+function NavLink({
+  link,
+  setactiveLink,
+  activeLink,
+  activeSubMenu,
+  setActiveSubMenu,
+  user,
+}: any) {
+  const [isSubMenuActive, setisSubMenuActive] = React.useState(false);
+
+  React.useEffect(() => {
+    // Check if array of submenu has activeSubLink
+    if (link.subMenu && link.subMenu.length > 0) {
+      const subMenuItem = link.subMenu.find((subMenuItem: any) => {
+        return subMenuItem.path === activeSubMenu;
+      });
+      if (subMenuItem) {
+        setactiveLink(link.path);
+        setActiveSubMenu(subMenuItem.path);
+        if (activeSubMenu && subMenuItem.path === activeSubMenu) {
+          setisSubMenuActive(true);
+        }
+      }
+    }
+  }, [activeLink]);
+
+  if (link.accessLevel) {
+    //checks the type of user login
+    if (!link.accessLevel.includes(user.type)) {
+      return null;
+    }
+  }
+
+  return (
+    <div key={link.title} className={styles.navlinkMenu}>
+      <div
+        className={`${styles.navlink} ${
+          activeLink && activeLink === link.path ? styles.navlinkActive : ''
+        } ${isSubMenuActive ? styles.navlinkActive : ''}`}
+        onClick={() => {
+          // This is to shift to the main page needed when there is no sub menu
+          if ((!link.subMenu || link.subMenu.length <= 0) && link.path) {
+            router.push(link.path);
+            setactiveLink(link.path);
+            setActiveSubMenu('');
+          } else {
+            if (link.hideSubMenu) {
+              router.push(link.path);
+            } else {
+              setisSubMenuActive(!isSubMenuActive);
+            }
+          }
+        }}
+      >
+        {link.icon}
+        <button className={styles.navlinkTitle}>
+          {link.title}
+          {link.flag && <span>{link.flag}</span>}
+        </button>
+        {link.subMenu && link.subMenu.length > 0 && !link.hideSubMenu && (
+          <button
+            className={styles.subMenuArrow}
+            style={{
+              transform: isSubMenuActive ? 'rotate(-180deg)' : 'rotate(-90deg)',
+            }}
+          >
+            <DownArrow />
+          </button>
+        )}
+      </div>
+      {isSubMenuActive &&
+        link.subMenu &&
+        link.subMenu.length > 0 &&
+        !link.hideSubMenu &&
+        link.subMenu.map((subLink: any, index: any) => {
+          if (!subLink.hideItem) {
+            return (
+              <div
+                className={`${styles.navlinkSubMenu} ${
+                  activeSubMenu === subLink.path
+                    ? styles.navlinkActiveSubMenu
+                    : ''
+                }`}
+                key={index}
+                onClick={() => {
+                  //this is to shift to the submenu pages
+                  setactiveLink(link.path);
+                  setActiveSubMenu(subLink.path);
+                  router.push(subLink.path);
+                }}
+              >
+                {subLink.title}
+                {subLink.flag && <span>{subLink.flag}</span>}
+              </div>
+            );
+          }
+        })}
+    </div>
+  );
+}
+
 function UserLayout(props: any): ReactElement {
   const { t } = useTranslation(['common', 'me']);
   // const { asPath } = useRouter();
@@ -300,172 +465,6 @@ function UserLayout(props: any): ReactElement {
     </div>
   ) : (
     <UserProfileLoader />
-  );
-}
-
-function LanguageSwitcher() {
-  const { t, i18n, ready } = useTranslation(['common']);
-
-  const [language, setLanguage] = React.useState(i18n.language);
-  const [openModal, setOpenModal] = React.useState(false);
-  const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
-  const [selectedCountry, setSelectedCountry] = React.useState('DE');
-
-  React.useEffect(() => {
-    if (typeof Storage !== 'undefined') {
-      //fetching language from browser's local storage
-      if (localStorage.getItem('language')) {
-        const langCode = localStorage.getItem('language') || 'en';
-        if (langCode) setLanguage(langCode.toLowerCase());
-      }
-    }
-  }, [language]);
-
-  React.useEffect(() => {
-    if (typeof Storage !== 'undefined') {
-      //fetching currencycode from browser's localstorage
-      if (localStorage.getItem('currencyCode')) {
-        const currencyCode = localStorage.getItem('currencyCode');
-        if (currencyCode) setSelectedCurrency(currencyCode);
-      }
-      //fetching country code from browser's localstorage
-      if (localStorage.getItem('countryCode')) {
-        const countryCode = localStorage.getItem('countryCode');
-        if (countryCode) setSelectedCountry(countryCode);
-      }
-    }
-  }, []);
-
-  return ready ? (
-    <>
-      <div
-        className={styles.navlink}
-        onClick={() => {
-          setOpenModal(true); // open language and country change modal
-        }}
-      >
-        <GlobeIcon />
-        <button className={styles.navlinkTitle}>
-          {`${
-            i18n.language ? i18n.language.toUpperCase() : ''
-          } • ${selectedCurrency}`}
-        </button>
-        <button></button>
-      </div>
-      <SelectLanguageAndCountry
-        openModal={openModal}
-        handleModalClose={() => setOpenModal(false)}
-        language={i18n.language}
-        setLanguage={setLanguage}
-        setSelectedCurrency={setSelectedCurrency}
-        selectedCountry={selectedCountry}
-        setSelectedCountry={setSelectedCountry}
-      />
-    </>
-  ) : (
-    <></>
-  );
-}
-
-function NavLink({
-  link,
-  setactiveLink,
-  activeLink,
-  activeSubMenu,
-  setActiveSubMenu,
-  user,
-  closeMenu,
-}: any) {
-  const [isSubMenuActive, setisSubMenuActive] = React.useState(false);
-
-  React.useEffect(() => {
-    // Check if array of submenu has activeSubLink
-    if (link.subMenu && link.subMenu.length > 0) {
-      const subMenuItem = link.subMenu.find((subMenuItem: any) => {
-        return subMenuItem.path === activeSubMenu;
-      });
-      if (subMenuItem) {
-        setactiveLink(link.path);
-        setActiveSubMenu(subMenuItem.path);
-        if (activeSubMenu && subMenuItem.path === activeSubMenu) {
-          setisSubMenuActive(true);
-        }
-      }
-    }
-  }, [activeLink]);
-
-  if (link.accessLevel) {
-    //checks the type of user login
-    if (!link.accessLevel.includes(user.type)) {
-      return null;
-    }
-  }
-
-  return (
-    <div key={link.title} className={styles.navlinkMenu}>
-      <div
-        className={`${styles.navlink} ${
-          activeLink && activeLink === link.path ? styles.navlinkActive : ''
-        } ${isSubMenuActive ? styles.navlinkActive : ''}`}
-        onClick={() => {
-          // This is to shift to the main page needed when there is no sub menu
-          if ((!link.subMenu || link.subMenu.length <= 0) && link.path) {
-            router.push(link.path);
-            setactiveLink(link.path);
-            setActiveSubMenu('');
-          } else {
-            if (link.hideSubMenu) {
-              router.push(link.path);
-            } else {
-              setisSubMenuActive(!isSubMenuActive);
-            }
-          }
-        }}
-      >
-        {link.icon}
-        <button className={styles.navlinkTitle}>
-          {link.title}
-          {link.flag && <span>{link.flag}</span>}
-        </button>
-        {link.subMenu && link.subMenu.length > 0 && !link.hideSubMenu && (
-          <button
-            className={styles.subMenuArrow}
-            style={{
-              transform: isSubMenuActive ? 'rotate(-180deg)' : 'rotate(-90deg)',
-            }}
-          >
-            <DownArrow />
-          </button>
-        )}
-      </div>
-      {isSubMenuActive &&
-        link.subMenu &&
-        link.subMenu.length > 0 &&
-        !link.hideSubMenu &&
-        link.subMenu.map((subLink: any, index: any) => {
-          if (!subLink.hideItem) {
-            return (
-              <div
-                className={`${styles.navlinkSubMenu} ${
-                  activeSubMenu === subLink.path
-                    ? styles.navlinkActiveSubMenu
-                    : ''
-                }`}
-                key={index}
-                onClick={() => {
-                  //this is to shift to the submenu pages
-                  setactiveLink(link.path);
-                  setActiveSubMenu(subLink.path);
-                  router.push(subLink.path);
-                }}
-              >
-                {subLink.title}
-                {subLink.flag && <span>{subLink.flag}</span>}
-              </div>
-            );
-          }
-        })}
-    </div>
   );
 }
 

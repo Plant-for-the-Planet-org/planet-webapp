@@ -36,6 +36,9 @@ export default function EditProfile({}: Props) {
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { t, ready } = useTranslation(['editProfile', 'donate']);
 
+  const { register, handleSubmit, errors, control, reset, setValue, watch } =
+    useForm({ mode: 'onBlur' });
+
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
   };
@@ -66,17 +69,6 @@ export default function EditProfile({}: Props) {
     };
     reset(defaultProfileDetails);
   }, [user]);
-
-  const {
-    register,
-    handleSubmit,
-    errors,
-    control,
-    reset,
-    setValue,
-    watch,
-    getValues,
-  } = useForm({ mode: 'onBlur' });
 
   const [country, setCountry] = React.useState(user.country);
   const [updatingPic, setUpdatingPic] = React.useState(false);
@@ -198,13 +190,11 @@ export default function EditProfile({}: Props) {
     [token]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
     multiple: false,
     onDrop: onDrop,
-    onDropAccepted: () => {
-      // console.log('uploaded');
-    },
+    onDropAccepted: () => {},
   });
 
   const saveProfile = async (data: any) => {

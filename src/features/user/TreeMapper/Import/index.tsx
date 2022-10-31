@@ -34,10 +34,6 @@ const Step = styled(MuiStep)({
 
 interface Props {}
 
-const Map = dynamic(() => import('./components/Map'), {
-  loading: () => <p>loading</p>,
-});
-
 const MapComponent = dynamic(() => import('./components/MapComponent'), {
   ssr: false,
   loading: () => <p></p>,
@@ -45,23 +41,8 @@ const MapComponent = dynamic(() => import('./components/MapComponent'), {
 
 export default function ImportData({}: Props): ReactElement {
   const router = useRouter();
-  const { t, i18n, ready } = useTranslation(['treemapper']);
+  const { t, ready } = useTranslation(['treemapper']);
   const { token } = React.useContext(UserPropsContext);
-
-  // loc_ACxv7uldM1VdKd5cikv3qoF5
-  const fetchPlantLocation = async (id: any): Promise<void> => {
-    const result = await getAuthenticatedRequest(
-      `/treemapper/plantLocations/${id}?_scope=extended`,
-      token
-    );
-    setPlantLocation(result);
-  };
-
-  React.useEffect(() => {
-    if (router && router.query.loc) {
-      fetchPlantLocation(router.query.loc);
-    }
-  }, [router]);
 
   function getSteps() {
     return [
@@ -78,6 +59,20 @@ export default function ImportData({}: Props): ReactElement {
   const [userLang, setUserLang] = React.useState('en');
   const [geoJson, setGeoJson] = React.useState(null);
 
+  const fetchPlantLocation = async (id: any): Promise<void> => {
+    const result = await getAuthenticatedRequest(
+      `/treemapper/plantLocations/${id}?_scope=extended`,
+      token
+    );
+    setPlantLocation(result);
+  };
+
+  React.useEffect(() => {
+    if (router && router.query.loc) {
+      fetchPlantLocation(router.query.loc);
+    }
+  }, [router]);
+
   const [activeMethod, setActiveMethod] = React.useState('import');
 
   const handleNext = () => {
@@ -86,11 +81,6 @@ export default function ImportData({}: Props): ReactElement {
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
-  };
-
-  const handleReset = (message: any) => {
-    setErrorMessage(message);
-    setActiveStep(0);
   };
 
   React.useEffect(() => {
