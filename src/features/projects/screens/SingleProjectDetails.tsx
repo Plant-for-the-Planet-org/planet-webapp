@@ -59,6 +59,7 @@ function SingleProjectDetails({}: Props): ReactElement {
     useContext(ParamsContext);
   const isEmbed = embed === 'true';
   const [hideProjectContainer, setHideProjectContainer] = useState(isEmbed);
+  const [projectContainerScrollPos, setprojectContainerScrollPos] = useState(0);
 
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
@@ -206,12 +207,17 @@ function SingleProjectDetails({}: Props): ReactElement {
                 keyString={project.id}
                 project={project}
                 editMode={false}
+                isCompressed={projectContainerScrollPos > 0}
               />
             </div>
             {hoveredPl || selectedPl ? (
               <PlantLocationDetails {...ProjectProps} />
             ) : (
-              <div className={'singleProjectDetails'}>
+              <div
+                className={'singleProjectDetails'}
+                onMouseMove={(e) => setprojectContainerScrollPos(e.clientY)}
+                onMouseLeave={() => setprojectContainerScrollPos(0)}
+              >
                 <div className={'projectCompleteInfo'}>
                   <div className={'projectDescription'}>
                     <div className={'infoTitle'}>

@@ -17,12 +17,14 @@ interface Props {
   project: any;
   keyString: string;
   editMode: Boolean;
+  isCompressed?: Boolean;
 }
 
 export default function ProjectSnippet({
   project,
   keyString,
   editMode,
+  isCompressed,
 }: Props): ReactElement {
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
@@ -45,15 +47,6 @@ export default function ProjectSnippet({
     const url = getDonationUrl(project.slug, token, embed, callbackUrl);
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
-
-  const [offset, setOffset] = useState(0);
-  useEffect(() => {
-    const onScroll = () => setOffset(window.pageYOffset);
-    // clean up code
-    window.removeEventListener('scroll', onScroll);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   return ready ? (
     <div className={'singleProject'} key={keyString}>
@@ -79,7 +72,7 @@ export default function ProjectSnippet({
           );
         }}
         className={`projectImage ${
-          selectedPl || hoveredPl || offset > 0 ? 'projectCollapsed' : ''
+          selectedPl || hoveredPl || isCompressed ? 'projectCollapsed' : ''
         }`}
       >
         {project.image && typeof project.image !== 'undefined' ? (
