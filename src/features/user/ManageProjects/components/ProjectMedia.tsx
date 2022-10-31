@@ -35,7 +35,7 @@ export default function ProjectMedia({
   projectGUID,
   handleReset,
 }: Props): ReactElement {
-  const { t, i18n, ready } = useTranslation(['manageProjects']);
+  const { t, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 

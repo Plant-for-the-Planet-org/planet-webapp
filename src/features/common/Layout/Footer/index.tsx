@@ -14,7 +14,6 @@ import DarkModeSwitch from '../DarkModeSwitch.tsx';
 export default function Footer(): ReactElement | null {
   const { t, i18n, ready } = useTranslation(['common']);
   const config = tenantConfig();
-
   const [openModal, setOpenModal] = useState(false);
   const [language, setLanguage] = useState(i18n.language);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
@@ -111,7 +110,7 @@ export default function Footer(): ReactElement | null {
               >
                 <World color={styles.primaryFontColor} />
                 <p className={styles.selected_language}>
-                  {`${getLanguageName(language)} · ${selectedCurrency}`}
+                  {`${getLanguageName(i18n.language)} · ${selectedCurrency}`}
                 </p>
               </button>
               <div className={styles.footer_social_container}>

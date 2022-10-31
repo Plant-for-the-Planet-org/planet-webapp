@@ -14,8 +14,8 @@ interface Props {
 
 export default function Credits({ setCurrencyCode }: Props): ReactElement {
   const { i18n, t } = useTranslation(['common', 'maps']);
-  const [language, setLanguage] = React.useState(i18n.language);
   const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
+  const [language, setLanguage] = React.useState(i18n.language);
   const [selectedCountry, setSelectedCountry] = React.useState('DE');
   const [openLanguageModal, setLanguageModalOpen] = React.useState(false);
 
@@ -38,7 +38,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
             }}
           >
             {`🌐 ${
-              language ? language.toUpperCase() : ''
+              i18n.language ? i18n.language.toUpperCase() : ''
             } • ${selectedCurrency}`}
           </div>
         )}
@@ -143,7 +143,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
       <SelectLanguageAndCountry
         openModal={openLanguageModal}
         handleModalClose={handleLanguageModalClose}
-        language={language}
+        language={i18n.language}
         setLanguage={setLanguage}
         setSelectedCurrency={setSelectedCurrency}
         selectedCountry={selectedCountry}

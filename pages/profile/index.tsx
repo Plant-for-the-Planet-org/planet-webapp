@@ -6,7 +6,6 @@ import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
-import nextI18NextConfig, { i18n } from '../../next-i18next.config';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 function ProfilePage(): ReactElement {

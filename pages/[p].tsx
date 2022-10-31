@@ -10,7 +10,6 @@ import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
 import { getAllPlantLocations } from '../src/utils/maps/plantLocations';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import nextI18NextConfig from '../next-i18next.config.js';
 import { GetStaticPaths } from 'next';
 
 interface Props {
@@ -106,6 +105,13 @@ export default function Donate({
     setCurrencyCode,
     plantLocation: hoveredPl ? hoveredPl : selectedPl,
   };
+
+  React.useEffect(() => {
+    if (localStorage.getItem('i18nextLng') !== null && i18n) {
+      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
+      i18n.changeLanguage(languageFromLocalStorage);
+    }
+  }, [i18n]);
 
   React.useEffect(() => {
     if (router.asPath) {

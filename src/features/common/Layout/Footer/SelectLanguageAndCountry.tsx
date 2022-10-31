@@ -66,8 +66,9 @@ export default function TransitionsModal({
   // when user clicks on OK
   function handleOKClick() {
     // window.localStorage.setItem('language', modalLanguage);
-    setLanguage(modalLanguage);
+
     i18n.changeLanguage(modalLanguage);
+    window.localStorage.setItem('i18nextLng', modalLanguage);
     window.localStorage.setItem('countryCode', selectedModalCountry);
     setSelectedCountry(selectedModalCountry);
     const currencyCode = getCountryDataBy(
@@ -82,13 +83,11 @@ export default function TransitionsModal({
     handleModalClose();
   }
 
-  // changes the language in local state whenever the language changes in Footer state
   useEffect(() => {
-    if (language) {
-      setModalLanguage(language);
+    if (i18n.language) {
+      setModalLanguage(i18n.language);
     }
-  }, [language]);
-
+  }, [i18n.language]);
   // changes the selected country in local state whenever the currency changes
   // in Footer state
   useEffect(() => {

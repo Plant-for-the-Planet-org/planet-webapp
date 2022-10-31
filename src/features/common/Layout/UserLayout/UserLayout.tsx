@@ -346,14 +346,16 @@ function LanguageSwitcher() {
       >
         <GlobeIcon />
         <button className={styles.navlinkTitle}>
-          {`${language ? language.toUpperCase() : ''} • ${selectedCurrency}`}
+          {`${
+            i18n.language ? i18n.language.toUpperCase() : ''
+          } • ${selectedCurrency}`}
         </button>
         <button></button>
       </div>
       <SelectLanguageAndCountry
         openModal={openModal}
         handleModalClose={() => setOpenModal(false)}
-        language={language}
+        language={i18n.language}
         setLanguage={setLanguage}
         setSelectedCurrency={setSelectedCurrency}
         selectedCountry={selectedCountry}

@@ -72,13 +72,13 @@ export default function MapComponent({
   const mapParentRef = React.useRef(null);
   const drawControlRef = React.useRef(null);
 
-  const onDrawCreate = ({ features }: any) => {
+  const onDrawCreate = () => {
     if (drawControlRef.current) {
       setGeoJson(drawControlRef.current.draw.getAll());
     }
   };
 
-  const onDrawUpdate = ({ features }: any) => {
+  const onDrawUpdate = () => {
     if (drawControlRef.current) {
       setGeoJson(drawControlRef.current.draw.getAll());
     }

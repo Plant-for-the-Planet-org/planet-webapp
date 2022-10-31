@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Tab, ThemeProvider } from '@mui/material';
+import { Tabs, Tab } from '@mui/material';
 import BasicDetails from './components/BasicDetails';
 import styles from './StepForm.module.scss';
 import ProjectMedia from './components/ProjectMedia';
