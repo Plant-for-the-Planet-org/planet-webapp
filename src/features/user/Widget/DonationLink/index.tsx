@@ -5,7 +5,7 @@ import { getRequest } from '../../../../utils/apiRequests/api';
 import DashboardView from '../../../common/Layout/DashboardView';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import DonationLinkForm from './DonationLinkForm';
-import SingleColumnView from '../../../common/Layout/DashboardView/SingleColumnView';
+import SingleColumnView from '../../../common/Layout/SingleColumnView';
 import { Project, SingleProject } from '../../../common/types/project';
 
 const { useTranslation } = i18next;

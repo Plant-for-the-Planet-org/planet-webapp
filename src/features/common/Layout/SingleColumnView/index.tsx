@@ -5,6 +5,10 @@ interface SingleColumnViewProps {
   children: React.ReactNode;
 }
 
+/**
+ * Renders a single column MUI grid container.
+ * Usually used within a `DashboardView` container
+ */
 export default function SingleColumnView({
   children,
 }: SingleColumnViewProps): ReactElement {
