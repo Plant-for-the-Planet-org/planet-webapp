@@ -4,16 +4,13 @@ import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlin
 import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
 import Credits from '../src/features/projects/components/maps/Credits';
 import SingleProjectDetails from '../src/features/projects/screens/SingleProjectDetails';
-
 import { getRequest } from '../src/utils/apiRequests/api';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
 import { getAllPlantLocations } from '../src/utils/maps/plantLocations';
 import i18next from '../i18n';
-import {
-  SingleProjectGeojson,
-  SinglePlantLocation,
-} from '../src/features/common/types/project';
+import { SingleProjectGeojson } from '../src/features/common/types/project';
+import { Treemapper } from '../src/features/user/TreeMapper/Treemapper';
 
 const { useTranslation } = i18next;
 
@@ -154,9 +151,9 @@ export default function Donate({
   React.useEffect(() => {
     //for selecting one of the plant location. if user use link  to directly visit to plantLocation from home page
     if (geoJson && router.query.ploc && plantLocations) {
-      const singlePlantLocation: SinglePlantLocation | undefined =
+      const singlePlantLocation: Treemapper.PlantLocation | undefined =
         plantLocations?.find(
-          (dataOfSinglePlantLocation: SinglePlantLocation) => {
+          (dataOfSinglePlantLocation: Treemapper.PlantLocation) => {
             return router.query.ploc === dataOfSinglePlantLocation?.hid;
           }
         );
