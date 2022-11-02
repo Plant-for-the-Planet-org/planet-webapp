@@ -27,7 +27,7 @@ export default function Donate({
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
   const [internalLanguage, setInternalLanguage] = React.useState('');
-  const [open, setOpen] = React.useState(false);
+  const [_open, setOpen] = React.useState(false);
 
   const { i18n } = useTranslation();
   const {
