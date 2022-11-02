@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import { useRouter } from 'next/router';
-import styles from './CompleteSignup.module.scss';
+import styles from '../../../../src/features/user/CompleteSignup';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import {
   Snackbar,
@@ -22,7 +22,7 @@ import { ThemeContext } from '../../../theme/themeContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { postRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { useTranslation } from 'next-i18next';
+import { useTranslation, Trans } from 'next-i18next';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
