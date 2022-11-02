@@ -1,6 +1,6 @@
 import { ReactElement, useContext, useState, useEffect } from 'react';
-import { Button, styled, Switch, TextField } from '@mui/material';
 import { useTranslation } from 'next-i18next';
+import { Button, Switch, TextField } from '@mui/material';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
@@ -8,7 +8,7 @@ import supportedLanguages from '../../../../utils/language/supportedLanguages.js
 import React from 'react';
 import ProjectSelectAutocomplete from '../../BulkCodes/components/ProjectSelectAutocomplete';
 import { TENANT_ID } from '../../../../utils/constants/environment';
-import styles from './DonationLinkForm.module.scss';
+import styles from '../../../../../src/features/user/Widget/DonationLink';
 import CopyToClipboard from '../../../common/CopyToClipboard';
 import {
   MuiAutoComplete,
@@ -17,30 +17,7 @@ import {
 import { Project } from '../../../common/types/project';
 import { allCountries } from '../../../../utils/constants/countries';
 import CustomSnackbar from '../../../common/CustomSnackbar';
-
-// TODOO - refactor code for reuse?
-const StyledForm = styled('form')((/* { theme } */) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 24,
-  alignItems: 'flex-start',
-  '& .formButton': {
-    marginTop: 24,
-  },
-  '& .inputContainer': {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 24,
-    width: '100%',
-  },
-}));
-
-const MuiTextField = styled(TextField)(() => {
-  return {
-    flex: '1',
-    minWidth: 240,
-  };
-});
+import StyledForm from '../../../common/Layout/StyledForm';
 
 interface DonationLinkFormProps {
   projectsList: Project[] | null;
@@ -188,7 +165,7 @@ const DonationLinkForm = ({
             <div className={styles.formHeader}>
               {t('donationLink:treeCounterTitle')}
             </div>
-            <InlineFormDisplayGroup>
+            <InlineFormDisplayGroup type="other">
               <h6>{t('donationLink:treeCounterSubtitle')}</h6>
               <Switch
                 id="treeCounter"
@@ -204,7 +181,7 @@ const DonationLinkForm = ({
               )}
             </InlineFormDisplayGroup>
           </div>
-          <InlineFormDisplayGroup>
+          <InlineFormDisplayGroup type="other">
             <div className={styles.formHeader}>
               {t('donationLink:testingTitle')}
             </div>
@@ -238,8 +215,8 @@ const DonationLinkForm = ({
             <div className={styles.formHeader}>
               {t('donationLink:urlTitle')}
             </div>
-            <InlineFormDisplayGroup>
-              <MuiTextField
+            <InlineFormDisplayGroup type="other">
+              <TextField
                 id="donation-url"
                 name="donation-url"
                 InputProps={{
@@ -258,19 +235,16 @@ const DonationLinkForm = ({
               handleClose={handleSnackbarClose}
             />
           )}
-          <div className={styles.formButtonContainer}>
-            <Button
-              id="Preview"
-              name="Preview"
-              variant="contained"
-              color="primary"
-              fullWidth={false}
-              onClick={() => window.open(donationUrl, '_blank')}
-            >
-              {t('donationLink:preview')}
-            </Button>
-          </div>
         </div>
+        <Button
+          variant="contained"
+          color="primary"
+          className="formButton"
+          type="button"
+          onClick={() => window.open(donationUrl, '_blank')}
+        >
+          {t('donationLink:preview')}
+        </Button>
       </StyledForm>
     );
   }

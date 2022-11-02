@@ -1,13 +1,9 @@
-import { TextField, styled } from '@mui/material';
+import { TextField } from '@mui/material';
 import { ReactElement, useState, FocusEvent } from 'react';
 import { useTranslation } from 'next-i18next';
 import { SetState } from '../../../common/Layout/BulkCodeContext';
 import { BulkCodeLimits } from '../../../../utils/constants/bulkCodeConstants';
-
-const InlineFormGroup = styled('div')({
-  display: 'flex',
-  gap: 16,
-});
+import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 
 interface GenericCodesProps {
   codeQuantity: string;
@@ -58,7 +54,7 @@ const GenericCodesPartial = ({
 
   if (ready) {
     return (
-      <InlineFormGroup>
+      <InlineFormDisplayGroup>
         <TextField
           value={unitsPerCode}
           onChange={(e) => handleChange(e.target.value, setUnitsPerCode)}
@@ -89,7 +85,7 @@ const GenericCodesPartial = ({
               : ''
           }
         ></TextField>
-      </InlineFormGroup>
+      </InlineFormDisplayGroup>
     );
   }
   return null;

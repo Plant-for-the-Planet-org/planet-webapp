@@ -1,12 +1,7 @@
 import { ReactElement } from 'react';
-import { TextField, styled } from '@mui/material';
 import { useTranslation } from 'next-i18next';
-
-const UnitCostDisplayGroup = styled('div')({
-  display: 'flex',
-  justifyContent: 'space-between',
-  columnGap: '10px',
-});
+import { TextField } from '@mui/material';
+import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 
 interface UnitCostDisplayProps {
   unitCost: number | '-';
@@ -23,7 +18,7 @@ const UnitCostDisplay = ({
 
   if (ready) {
     return (
-      <UnitCostDisplayGroup className="UnitCostDisplay">
+      <InlineFormDisplayGroup>
         <TextField
           label={t('bulkCodes:costPerUnit')}
           value={`${unitCost} ${currency}`}
@@ -36,7 +31,7 @@ const UnitCostDisplay = ({
           inputProps={{ readOnly: true }}
           disabled
         ></TextField>
-      </UnitCostDisplayGroup>
+      </InlineFormDisplayGroup>
     );
   }
   return null;

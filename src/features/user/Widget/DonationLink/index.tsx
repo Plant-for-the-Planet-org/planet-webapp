@@ -5,21 +5,25 @@ import { getRequest } from '../../../../utils/apiRequests/api';
 import DashboardView from '../../../common/Layout/DashboardView';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import DonationLinkForm from './DonationLinkForm';
-import SingleColumnView from '../../../common/Layout/DashboardView/SingleColumnView';
-import { Project, SingleProject } from '../../../common/types/project';
+import SingleColumnView from '../../../common/Layout/SingleColumnView';
+import { Project, MapSingleProject } from '../../../common/types/project';
+import { TENANT_ID } from '../../../../utils/constants/environment';
 
 export default function DonationLink(): ReactElement | null {
   const { handleError } = useContext(ErrorHandlingContext);
   const [projects, setProjects] = useState<Project[] | null>(null);
+  const { t, ready, i18n } = useTranslation(['donationLink']);
 
   async function fetchProjectList() {
-    const projectsList = await getRequest<SingleProject>(
+    const projectsList = await getRequest<MapSingleProject[]>(
       `/app/projects`,
       handleError,
       undefined,
       {
-        _scope: 'default',
+        _scope: 'map',
         'filter[purpose]': 'trees,restoration',
+        tenant: TENANT_ID,
+        locale: i18n.language,
       }
     );
     if (
@@ -29,16 +33,16 @@ export default function DonationLink(): ReactElement | null {
     ) {
       setProjects(
         projectsList
-          .filter((project) => project.allowDonations)
+          .filter((project) => project.properties.allowDonations)
           .map((project) => {
             return {
-              guid: project.id,
-              slug: project.slug,
-              name: project.name,
-              unitCost: project.unitCost,
-              currency: project.currency,
-              purpose: project.purpose,
-              allowDonations: project.allowDonations,
+              guid: project.properties.id,
+              slug: project.properties.slug,
+              name: project.properties.name,
+              unitCost: project.properties.unitCost,
+              currency: project.properties.currency,
+              purpose: project.properties.purpose,
+              allowDonations: project.properties.allowDonations,
             };
           })
       );
@@ -49,7 +53,6 @@ export default function DonationLink(): ReactElement | null {
     fetchProjectList();
   }, []);
 
-  const { t, ready } = useTranslation(['donationLink']);
   return ready ? (
     <DashboardView
       title={t('donationLink:donationLinkTitle')}

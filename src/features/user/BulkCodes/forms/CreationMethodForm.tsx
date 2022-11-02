@@ -1,7 +1,6 @@
 import React, { ReactElement, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
-import BulkCodesForm from './BulkCodesForm';
 import SelectorOption, {
   SelectorOptionProps,
 } from '../components/SelectorOption';
@@ -10,6 +9,8 @@ import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
 import { useTranslation } from 'next-i18next';
+import CenteredContainer from '../../../common/Layout/CenteredContainer';
+import StyledForm from '../../../common/Layout/StyledForm';
 
 const CreationMethodForm = (): ReactElement | null => {
   const router = useRouter();
@@ -72,26 +73,28 @@ const CreationMethodForm = (): ReactElement | null => {
     };
 
     return (
-      <BulkCodesForm className="CreationMethodForm">
-        <div className="inputContainer">{renderSelectorOptions()}</div>
+      <CenteredContainer>
+        <StyledForm className="CreationMethodForm">
+          <div className="inputContainer">{renderSelectorOptions()}</div>
 
-        <BulkCodesError />
+          <BulkCodesError />
 
-        <Button
-          variant="contained"
-          color="primary"
-          className="formButton"
-          disabled={
-            !(
-              user.planetCash &&
-              !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
-            ) || method === null
-          }
-          onClick={handleFormSubmit}
-        >
-          {t('common:continue')}
-        </Button>
-      </BulkCodesForm>
+          <Button
+            variant="contained"
+            color="primary"
+            className="formButton"
+            disabled={
+              !(
+                user.planetCash &&
+                !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
+              ) || method === null
+            }
+            onClick={handleFormSubmit}
+          >
+            {t('common:continue')}
+          </Button>
+        </StyledForm>
+      </CenteredContainer>
     );
   }
   return null;

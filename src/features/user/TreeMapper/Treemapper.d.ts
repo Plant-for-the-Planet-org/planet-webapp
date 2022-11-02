@@ -1,4 +1,4 @@
-declare namespace Treemapper {
+export declare namespace Treemapper {
   export interface DeviceLocation {
     coordinates: number[];
     type: string;

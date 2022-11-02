@@ -1,6 +1,5 @@
 import { ReactElement, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { styled } from '@mui/material/styles';
 import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
@@ -10,21 +9,10 @@ import BankDetailsForm, { FormData } from '../components/BankDetailsForm';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
+import FormHeader from '../../../common/Layout/Forms/FormHeader';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
-
-const FormHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: 16,
-  marginBottom: 24,
-  width: '100%',
-  '& .formTitle': {
-    color: theme.palette.text.secondary,
-    fontSize: theme.typography.h2.fontSize,
-  },
-}));
 
 const EditBankAccount = (): ReactElement | null => {
   const { accounts, payoutMinAmounts, setAccounts } = usePayouts();
