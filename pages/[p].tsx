@@ -158,7 +158,7 @@ export default function Donate({
           }
         );
 
-      if (singlePlantLocation === 'undefined') {
+      if (singlePlantLocation === undefined) {
         router.push(`/${project.slug}`);
       } else {
         setSelectedPl(singlePlantLocation);
