@@ -10,7 +10,6 @@ import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
 import { getAllPlantLocations } from '../src/utils/maps/plantLocations';
 import i18next from '../i18n';
 import { SingleProjectGeojson } from '../src/features/common/types/project';
-import { Treemapper } from '../src/features/user/TreeMapper/Treemapper';
 
 const { useTranslation } = i18next;
 
