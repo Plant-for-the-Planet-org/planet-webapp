@@ -24,6 +24,11 @@ interface TabbedViewProps {
   tabItems: TabItem[];
 }
 
+/**
+ * Renders a two column MUI grid container.
+ * Column 1 = Tabs. Column 2 = Content
+ * Usually used within a `<DashboardView>` container
+ */
 export default function TabbedView({
   children,
   step,

@@ -123,6 +123,7 @@ export default function ProjectsMap(): ReactElement {
             const element = plantLocations[key];
             if (element.id === e.features[0].layer?.source) {
               setSelectedPl(element);
+
               break;
             }
           }
