@@ -12,7 +12,6 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
 import { SingleProjectGeojson } from '../src/features/common/types/project';
-import { Treemapper } from '../src/features/user/TreeMapper/Treemapper';
 
 interface Props {
   initialized: boolean;

@@ -1,15 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, ReactElement } from 'react';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './GiftFunds.module.scss';
 import { useTranslation } from 'next-i18next';
 
-const Details = () => {
+const Details = (): ReactElement | null => {
   const { user } = useContext(UserPropsContext);
   const { t, ready } = useTranslation('giftfunds');
 
-  return (
-    ready &&
-    user.planetCash && (
+  if (ready && user.planetCash) {
+    return (
       <div className={styles.allGiftFundscontainer}>
         {user.planetCash.giftFunds
           .filter((gift) => gift.openUnits !== 0)
@@ -37,8 +36,10 @@ const Details = () => {
             </div>
           ))}
       </div>
-    )
-  );
+    );
+  }
+
+  return null;
 };
 
 export default Details;

@@ -31,8 +31,7 @@ export default function ProjectSnippet({
     ? getImageUrl('project', 'medium', project.image)
     : '';
 
-  const { selectedPl, hoveredPl, selectedSite } =
-    React.useContext(ProjectPropsContext);
+  const { selectedPl, hoveredPl } = React.useContext(ProjectPropsContext);
 
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
