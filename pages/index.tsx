@@ -79,13 +79,7 @@ export default function Donate({
     setProject(null);
     setZoomLevel(1);
   }, []);
-  console.log(
-    internalLanguage,
-    i18n.language,
-    internalCurrencyCode,
-    currencyCode,
-    internalCurrencyCode
-  );
+
   // Load all projects
   React.useEffect(() => {
     async function loadProjects() {
@@ -94,7 +88,6 @@ export default function Donate({
         currencyCode !== internalCurrencyCode ||
         internalLanguage !== i18n.language
       ) {
-        console.log('lol');
         const currency = getStoredCurrency();
         setInternalCurrencyCode(currency);
         setCurrencyCode(currency);

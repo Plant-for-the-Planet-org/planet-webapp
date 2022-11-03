@@ -5,6 +5,7 @@ import GetLeaderboardMeta from './../src/utils/getMetaTags/GetLeaderboardMeta';
 import { TENANT_ID } from '../src/utils/constants/environment';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   initialized: Boolean;
@@ -13,6 +14,14 @@ interface Props {
 export default function Home({ initialized }: Props) {
   const [leaderboard, setLeaderboard] = React.useState(null);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { i18n } = useTranslation();
+
+  React.useEffect(() => {
+    if (localStorage.getItem('i18nextLng') !== null && i18n) {
+      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
+      i18n.changeLanguage(languageFromLocalStorage);
+    }
+  }, [i18n]);
 
   React.useEffect(() => {
     async function loadLeaderboard() {

@@ -5,6 +5,7 @@ module.exports = {
     fallbackLng: 'en',
     defaultLocale: 'en',
     locales: ['en', 'de', 'cs', 'es', 'fr', 'it', 'pt-BR'],
+    localeDetection: false,
   },
   localePath: path.resolve('./public/static/locales'),
   reloadOnPrerender: false,

@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
@@ -8,7 +8,15 @@ import { useTranslation } from 'next-i18next';
 interface Props {}
 
 export default function Register({}: Props): ReactElement {
-  const { t } = useTranslation('me');
+  const { t, i18n } = useTranslation('me');
+
+  useEffect(() => {
+    if (localStorage.getItem('i18nextLng') !== null && i18n) {
+      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
+      i18n.changeLanguage(languageFromLocalStorage);
+    }
+  }, [i18n]);
+
   const RegisterTrees = dynamic(
     () => import('../../src/features/user/RegisterTrees/RegisterTrees')
   );
@@ -22,7 +30,7 @@ export default function Register({}: Props): ReactElement {
   );
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: any) {
   return {
     props: {
       ...(await serverSideTranslations(
