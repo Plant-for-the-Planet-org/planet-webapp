@@ -60,7 +60,6 @@ function SingleProjectDetails({}: Props): ReactElement {
     useContext(ParamsContext);
   const isEmbed = embed === 'true';
   const [hideProjectContainer, setHideProjectContainer] = useState(isEmbed);
-  const [isOpenReports, setIsOpenReports] = useState(true);
 
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
