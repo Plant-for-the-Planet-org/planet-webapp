@@ -1,29 +1,40 @@
 import React, { ReactElement } from 'react';
 import styles from './../../styles/ProjectDetails.module.scss';
 import VerifiedIcon from '@mui/icons-material/Verified';
+import { getPDFFile } from '../../../../utils/getImageURL';
+import i18next from '../../../../../i18n';
 
 interface Props {
   data: any;
 }
 export default function TopProjectReports(data: Props) {
+  const { useTranslation } = i18next;
+  const { t, ready } = useTranslation('common');
   return (
-    <>
-      <div className={styles.reports_container}>
-        <VerifiedIcon sx={{ color: '#42A5F5' }} />
-        <div className={styles.reports_description}>
-          {data?.data?.map((review) => (
-            <div id={review.id}>
-              <p id="child-modal-description">
-                The project was inspected in a multiday field review in{' '}
-                {review.issueMonth}
-              </p>
-              <a href={review.pdf} download>
-                View Report
-              </a>
-            </div>
-          ))}
+    ready && (
+      <>
+        <div className={styles.reports_container}>
+          <VerifiedIcon sx={{ color: '#42A5F5' }} />
+          <div className={styles.reports_description}>
+            {data?.data?.map((review) => (
+              <div id={review.id}>
+                <p id="child-modal-description">
+                  {t('common:reviewInfo', {
+                    month: review.issueMonth,
+                  })}
+                </p>
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={getPDFFile('reviews', review.pdf)}
+                >
+                  {t('common:viewReport')}
+                </a>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    </>
+      </>
+    )
   );
 }

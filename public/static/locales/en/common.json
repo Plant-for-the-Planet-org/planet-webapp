@@ -96,5 +96,9 @@
   "modalTitle": "Cancel all subscriptions to proceed",
   "modalSubtitle": "Please cancel your subscriptions first",
   "deleteCondition": "Before proceeding, make sure you've cancelled all subscriptions.",
-  "showSubscriptions": "Show my Subscriptions"
+  "showSubscriptions": "Show my Subscriptions",
+  "topProject": "Top Project",
+  "viewReport": "View Report",
+  "reviewInfo": " The project was inspected in a multiday field review in `{{month}}`"
+  
 }

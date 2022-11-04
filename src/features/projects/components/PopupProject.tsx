@@ -61,7 +61,7 @@ export default function PopupProject({
           ></div>
         ) : null}
         {project.isTopProject && project.isApproved && (
-          <div className={'topProjectBadge'}>Top Project</div>
+          <div className={'topProjectBadge'}>{t('common:topProject')}</div>
         )}
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
