@@ -73,7 +73,7 @@
     "mapbox-gl": "^1.13.0",
     "mapbox-gl-compare": "^0.4.0",
     "moment": "^2.29.4",
-    "next": "^11.1.4",
+    "next": "^12.0.9",
     "next-compose-plugins": "^2.2.1",
     "next-i18next": "^6.0.3",
     "next-useragent": "^2.7.0",
@@ -96,7 +96,7 @@
     "react-player": "^2.8.2",
     "read-more-react": "^1.0.10",
     "sass": "^1.52.0",
-    "styled-jsx": "^3.4.7",
+    "styled-jsx": "^5.0.0",
     "uuid": "^8.3.2",
     "vizzuality-components": "^3.0.3"
   },
