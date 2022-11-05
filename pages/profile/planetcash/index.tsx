@@ -9,7 +9,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function PlanetCashPage(): ReactElement {
-  const { t, ready, i18n } = useTranslation('me');
+  const { t, ready } = useTranslation('me');
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -46,17 +46,18 @@ export async function getStaticProps({ locale }) {
           'common',
           'country',
           'donate',
-          'donation',
+          'donationLink',
           'editProfile',
+          'giftfunds',
           'leaderboard',
-          'managePay',
+          'managePayouts',
           'manageProjects',
           'maps',
           'me',
           'planet',
           'planetcash',
           'redeem',
-          'registerTree',
+          'registerTrees',
           'tenants',
           'treemapper',
         ],

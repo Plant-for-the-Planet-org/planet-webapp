@@ -3,12 +3,11 @@ import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import DonationLink from '../../src/features/user/Widget/DonationLink';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
-
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 interface Props {}
 export default function DonationLinkPage({}: Props): ReactElement {
-  const { t, ready } = useTranslation('me');
+  const { t, ready } = useTranslation(['me']);
   return (
     <UserLayout>
       <Head>
@@ -29,17 +28,18 @@ export async function getStaticProps({ locale }) {
           'common',
           'country',
           'donate',
-          'donation',
+          'donationLink',
           'editProfile',
+          'giftfunds',
           'leaderboard',
-          'managePay',
+          'managePayouts',
           'manageProjects',
           'maps',
           'me',
           'planet',
           'planetcash',
           'redeem',
-          'registerTree',
+          'registerTrees',
           'tenants',
           'treemapper',
         ],

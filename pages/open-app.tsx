@@ -26,7 +26,7 @@ export default function OpenApp() {
   ) : null;
 }
 
-export async function getServerSideProps(locale) {
+export async function getServerSideProps({ locale }) {
   return {
     props: {
       ...(await serverSideTranslations(
@@ -36,17 +36,18 @@ export async function getServerSideProps(locale) {
           'common',
           'country',
           'donate',
-          'donation',
+          'donationLink',
           'editProfile',
+          'giftfunds',
           'leaderboard',
-          'managePay',
+          'managePayouts',
           'manageProjects',
           'maps',
           'me',
           'planet',
           'planetcash',
           'redeem',
-          'registerTree',
+          'registerTrees',
           'tenants',
           'treemapper',
         ],
