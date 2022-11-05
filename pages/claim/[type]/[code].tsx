@@ -80,12 +80,6 @@ function ClaimDonation(): ReactElement {
     }
   }, [router.query.code]);
 
-  React.useEffect(() => {
-    if (localStorage.getItem('i18nextLng') !== null && i18n) {
-      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
-      i18n.changeLanguage(languageFromLocalStorage);
-    }
-  }, [i18n]);
   // // Check if the user is logged in or not.
   React.useEffect(() => {
     // If the user is not logged in - send the user to log in page, store the claim redirect link in the localstorage.

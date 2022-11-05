@@ -6,14 +6,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function BulkCodePage(): ReactElement {
-  const { t, ready, i18n } = useTranslation('me');
-
-  React.useEffect(() => {
-    if (localStorage.getItem('i18nextLng') !== null && i18n) {
-      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
-      i18n.changeLanguage(languageFromLocalStorage);
-    }
-  }, [i18n]);
+  const { t, ready } = useTranslation('me');
 
   return (
     <UserLayout>

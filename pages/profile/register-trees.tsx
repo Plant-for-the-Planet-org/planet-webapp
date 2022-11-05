@@ -10,13 +10,6 @@ interface Props {}
 export default function Register({}: Props): ReactElement {
   const { t, i18n } = useTranslation('me');
 
-  useEffect(() => {
-    if (localStorage.getItem('i18nextLng') !== null && i18n) {
-      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
-      i18n.changeLanguage(languageFromLocalStorage);
-    }
-  }, [i18n]);
-
   const RegisterTrees = dynamic(
     () => import('../../src/features/user/RegisterTrees/RegisterTrees')
   );

@@ -12,14 +12,7 @@ function TreeMapperPage({}: Props): ReactElement {
   // if (typeof window !== 'undefined') {
   //   router.push('/');
   // }
-  const { t, i18n } = useTranslation('me');
-
-  React.useEffect(() => {
-    if (localStorage.getItem('i18nextLng') !== null && i18n) {
-      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
-      i18n.changeLanguage(languageFromLocalStorage);
-    }
-  }, [i18n]);
+  const { t } = useTranslation('me');
 
   return (
     <UserLayout>

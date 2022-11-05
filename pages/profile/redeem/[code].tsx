@@ -16,7 +16,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
 
 const ReedemCode: FC = () => {
-  const { t, ready, i18n } = useTranslation(['redeem']);
+  const { t, ready } = useTranslation(['redeem']);
   const { user, contextLoaded, token } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
 
@@ -59,13 +59,6 @@ const ReedemCode: FC = () => {
       setCode(router.query.code);
     }
   }, [router]);
-
-  useEffect(() => {
-    if (localStorage.getItem('i18nextLng') !== null && i18n) {
-      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
-      i18n.changeLanguage(languageFromLocalStorage);
-    }
-  }, [i18n]);
 
   async function redeemingCode(data: string | string[]): Promise<void> {
     const submitData = {

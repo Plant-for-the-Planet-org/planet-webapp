@@ -9,15 +9,8 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function OverviewPage(): ReactElement {
-  const { t, ready, i18n } = useTranslation('me');
+  const { t, ready } = useTranslation('me');
   const [progress, setProgress] = useState(0);
-
-  React.useEffect(() => {
-    if (localStorage.getItem('i18nextLng') !== null && i18n) {
-      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
-      i18n.changeLanguage(languageFromLocalStorage);
-    }
-  }, [i18n]);
 
   return (
     <>

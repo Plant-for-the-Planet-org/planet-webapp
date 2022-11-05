@@ -123,6 +123,13 @@ const PlanetWeb = ({ Component, pageProps }: any) => {
   }, [i18n, i18n.isInitialized]);
 
   React.useEffect(() => {
+    if (localStorage.getItem('i18nextLng') !== null && i18n) {
+      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
+      i18n.changeLanguage(languageFromLocalStorage);
+    }
+  }, [i18n]);
+
+  React.useEffect(() => {
     if (
       router.pathname === '/' ||
       router.pathname === '/[p]' ||

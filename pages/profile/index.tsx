@@ -27,13 +27,6 @@ function ProfilePage(): ReactElement {
     }
   }, [contextLoaded, user, router]);
 
-  useEffect(() => {
-    if (localStorage.getItem('i18nextLng') !== null && i18n) {
-      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
-      i18n.changeLanguage(languageFromLocalStorage);
-    }
-  }, [i18n]);
-
   return (
     <UserLayout>
       <Head>

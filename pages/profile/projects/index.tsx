@@ -9,13 +9,6 @@ interface Props {}
 export default function Register({}: Props): ReactElement {
   const { t, i18n } = useTranslation('me');
 
-  React.useEffect(() => {
-    if (localStorage.getItem('i18nextLng') !== null && i18n) {
-      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
-      i18n.changeLanguage(languageFromLocalStorage);
-    }
-  }, [i18n]);
-
   return (
     <UserLayout>
       <Head>

@@ -107,13 +107,6 @@ export default function Donate({
   };
 
   React.useEffect(() => {
-    if (localStorage.getItem('i18nextLng') !== null && i18n) {
-      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
-      i18n.changeLanguage(languageFromLocalStorage);
-    }
-  }, [i18n]);
-
-  React.useEffect(() => {
     if (router.asPath) {
       const isDonation = router.asPath.search('#donate');
       if (isDonation && isDonation != -1) {

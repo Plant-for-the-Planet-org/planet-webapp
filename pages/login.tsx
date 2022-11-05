@@ -18,13 +18,6 @@ function Login({}: Props): ReactElement {
     React.useContext(UserPropsContext);
 
   React.useEffect(() => {
-    if (localStorage.getItem('i18nextLng') !== null && i18n) {
-      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
-      i18n.changeLanguage(languageFromLocalStorage);
-    }
-  }, [i18n]);
-
-  React.useEffect(() => {
     async function loadFunction() {
       // redirect
       if (user) {

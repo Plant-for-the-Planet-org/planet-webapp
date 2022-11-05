@@ -3,21 +3,10 @@ import Footer from '../src/features/common/Layout/Footer';
 import LandingSection from '../src/features/common/Layout/LandingSection';
 import VerifyEmailComponent from './../src/features/common/VerifyEmail/VerifyEmail';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useEffect } from 'react';
-import { useTranslation } from 'next-i18next';
 
 interface Props {}
 
 function VerifyEmail({}: Props): ReactElement {
-  const { i18n } = useTranslation();
-
-  useEffect(() => {
-    if (localStorage.getItem('i18nextLng') !== null && i18n) {
-      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
-      i18n.changeLanguage(languageFromLocalStorage);
-    }
-  }, [i18n]);
-
   return (
     <div>
       <LandingSection>

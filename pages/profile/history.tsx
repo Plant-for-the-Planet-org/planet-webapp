@@ -98,12 +98,6 @@ function AccountHistory({}: Props): ReactElement {
     fetchPaymentHistory,
   };
 
-  React.useEffect(() => {
-    if (localStorage.getItem('i18nextLng') !== null && i18n) {
-      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
-      i18n.changeLanguage(languageFromLocalStorage);
-    }
-  }, [i18n]);
   // // TODO - remove this
   // if (typeof window !== 'undefined') {
   //   router.push('/');

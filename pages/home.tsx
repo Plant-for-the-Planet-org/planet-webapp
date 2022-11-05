@@ -8,7 +8,6 @@ import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
 import { getRequest } from '../src/utils/apiRequests/api';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useTranslation } from 'next-i18next';
 
 interface Props {
   initialized: Boolean;
@@ -17,18 +16,9 @@ interface Props {
 export default function Home(initialized: Props) {
   const router = useRouter();
   const config = tenantConfig();
-  const { i18n } = useTranslation();
-
   const [leaderboard, setLeaderboard] = React.useState(null);
   const [tenantScore, setTenantScore] = React.useState(null);
   const { handleError } = React.useContext(ErrorHandlingContext);
-
-  React.useEffect(() => {
-    if (localStorage.getItem('i18nextLng') !== null && i18n) {
-      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
-      i18n.changeLanguage(languageFromLocalStorage);
-    }
-  }, [i18n]);
 
   React.useEffect(() => {
     async function loadTenantScore() {
