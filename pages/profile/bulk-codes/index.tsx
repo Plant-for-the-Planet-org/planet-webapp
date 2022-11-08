@@ -6,15 +6,17 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function BulkCodePage(): ReactElement {
-  const { t, ready } = useTranslation('me');
+  const { t, ready } = useTranslation(['me']);
 
-  return (
+  return ready ? (
     <UserLayout>
       <Head>
         <title>{ready ? t('bulkCodesTitle') : ''}</title>
       </Head>
       <BulkCodes step={BulkCodeSteps.SELECT_METHOD} />
     </UserLayout>
+  ) : (
+    <></>
   );
 }
 

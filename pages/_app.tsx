@@ -124,11 +124,11 @@ const PlanetWeb = ({ Component, pageProps }: any) => {
 
   React.useEffect(() => {
     if (
-      localStorage.getItem('i18nextLng') !== null &&
+      localStorage.getItem('language') !== null &&
       i18n &&
       i18n.isInitialized
     ) {
-      const languageFromLocalStorage: any = localStorage.getItem('i18nextLng');
+      const languageFromLocalStorage: any = localStorage.getItem('language');
       i18n.changeLanguage(languageFromLocalStorage);
     }
   }, [i18n, i18n.isInitialized]);

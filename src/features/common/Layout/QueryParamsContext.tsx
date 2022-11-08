@@ -1,6 +1,7 @@
 import React, { createContext, FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
+import appSupportedLocale from '../../../../public/static/localeList.json';
 
 type QueryParamType = string | undefined | string[] | null;
 export interface ParamsContextType {
@@ -26,7 +27,12 @@ const QueryParamsProvider: FC = ({ children }) => {
   const [embed, setEmbed] = useState<QueryParamType>(undefined);
   const [showBackIcon, setShowBackIcon] = useState<QueryParamType>(undefined);
   const [callbackUrl, setCallbackUrl] = useState<QueryParamType>(undefined);
-  const [language, setLanguage] = useState<QueryParamType>(undefined);
+  const [language, setLanguage] = useState<QueryParamType>(
+    typeof window !== 'undefined' && localStorage.getItem('language')
+      ? localStorage.getItem('language')
+      : 'en'
+  );
+
   const [showProjectDetails, setShowProjectDetails] =
     useState<QueryParamType>(undefined);
   const [showProjectList, setShowProjectList] =
@@ -47,7 +53,34 @@ const QueryParamsProvider: FC = ({ children }) => {
   }, [query.callback]);
 
   useEffect(() => {
-    if (query.locale) setLanguage(query.locale);
+    if (
+      query.locale &&
+      appSupportedLocale.some(
+        (locale) => locale.key[0] + locale.key[1] === query.locale
+      )
+    ) {
+      setLanguage(query.locale);
+    } else {
+      const userPreferenceLanguage = navigator.language ?? navigator.languages;
+
+      //checking is user preference language matching with the application supported language
+      const languageMatched = appSupportedLocale.filter((locale) => {
+        return (
+          locale.key[0] + locale.key[1] ===
+          userPreferenceLanguage[0] + userPreferenceLanguage[1]
+        );
+      });
+
+      if (languageMatched !== undefined) {
+        localStorage.setItem('language', languageMatched[0]?.key);
+        setLanguage(languageMatched[0]?.key);
+        i18n.changeLanguage(languageMatched[0]?.key);
+      } else {
+        localStorage.setItem('language', 'en');
+        setLanguage('en');
+        i18n.changeLanguage('en');
+      }
+    }
   }, [query.locale]);
 
   useEffect(() => {

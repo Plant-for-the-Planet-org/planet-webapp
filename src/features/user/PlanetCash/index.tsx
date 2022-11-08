@@ -17,7 +17,6 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
 import { useRouter } from 'next/router';
-import { i18n } from '../../../../next-i18next.config';
 
 export enum PlanetCashTabs {
   ACCOUNTS = 'accounts',
@@ -34,7 +33,7 @@ export default function PlanetCash({
   step,
   setProgress,
 }: PlanetCashProps): ReactElement | null {
-  const { t, ready, i18n } = useTranslation('planetcash');
+  const { t, ready } = useTranslation('planetcash');
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   const { token, contextLoaded } = useContext(UserPropsContext);
   const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();

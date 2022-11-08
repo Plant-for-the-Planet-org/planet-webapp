@@ -133,7 +133,7 @@ export default function TransitionsModal({
     // window.localStorage.setItem('language', modalLanguage);
 
     i18n.changeLanguage(modalLanguage);
-    window.localStorage.setItem('i18nextLng', modalLanguage);
+    window.localStorage.setItem('language', modalLanguage);
     window.localStorage.setItem('countryCode', selectedModalCountry);
     setSelectedCountry(selectedModalCountry);
     const currencyCode = getCountryDataBy(

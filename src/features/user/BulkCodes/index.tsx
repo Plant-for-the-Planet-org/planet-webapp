@@ -32,7 +32,7 @@ interface BulkCodesProps {
 export default function BulkCodes({
   step,
 }: BulkCodesProps): ReactElement | null {
-  const { t, ready, i18n } = useTranslation(['bulkCodes']);
+  const { t, ready, i18n } = useTranslation('bulkCodes');
   const {
     planetCashAccount,
     setPlanetCashAccount,
