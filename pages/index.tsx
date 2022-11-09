@@ -167,3 +167,4 @@ export async function getStaticProps({ locale }: any) {
       )),
     },
   };
+}
