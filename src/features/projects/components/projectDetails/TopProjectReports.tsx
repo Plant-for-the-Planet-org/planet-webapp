@@ -26,7 +26,7 @@ export default function TopProjectReports(data: Props) {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href={getPDFFile('review', review.pdf)}
+                  href={getPDFFile('projectReview', review.pdf)}
                 >
                   {t('common:viewReport')}
                 </a>
