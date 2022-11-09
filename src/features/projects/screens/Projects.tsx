@@ -9,7 +9,6 @@ import Header from '../components/projects/Header';
 import SearchBar from '../components/projects/SearchBar';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
-import Filters from '../components/projects/Filters';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 interface Props {
@@ -143,7 +142,7 @@ function ProjectsList({
     [projects]
   );
 
-  const NoProjectFound = (props: any) => {
+  const NoProjectFound = () => {
     return ready ? (
       <div className={'projectNotFound'}>
         <LazyLoad>
