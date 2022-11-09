@@ -7,7 +7,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 interface Props {}
 export default function Register({}: Props): ReactElement {
-  const { t, i18n } = useTranslation('me');
+  const { t } = useTranslation('me');
 
   return (
     <UserLayout>

@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement } from 'react';
 import dynamic from 'next/dynamic';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
@@ -8,7 +8,7 @@ import { useTranslation } from 'next-i18next';
 interface Props {}
 
 export default function Register({}: Props): ReactElement {
-  const { t, i18n } = useTranslation('me');
+  const { t } = useTranslation('me');
 
   const RegisterTrees = dynamic(
     () => import('../../src/features/user/RegisterTrees/RegisterTrees')

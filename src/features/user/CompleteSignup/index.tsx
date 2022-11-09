@@ -151,8 +151,6 @@ export default function CompleteSignup(): ReactElement | null {
   const [requestSent, setRequestSent] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(null);
   const [country, setCountry] = useState('');
-  const defaultCountry =
-    typeof window !== 'undefined' ? localStorage.getItem('countryCode') : 'DE';
 
   const [postalRegex, setPostalRegex] = React.useState(
     COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal

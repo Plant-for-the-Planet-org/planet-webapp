@@ -9,7 +9,6 @@ import MapGL, {
   NavigationControl,
 } from 'react-map-gl';
 import { useTranslation } from 'next-i18next';
-import { ThemeContext } from '../../../theme/themeContext';
 import {
   getAuthenticatedRequest,
   postAuthenticatedRequest,
@@ -133,12 +132,10 @@ export default function RegisterTrees({}: Props) {
     plantDate: new Date(),
     geometry: {},
   };
-  const { register, handleSubmit, errors, control, watch } = useForm({
+  const { register, handleSubmit, errors, control } = useForm({
     mode: 'onBlur',
     defaultValues: defaultBasicDetails,
   });
-
-  const treeCount = watch('treeCount');
 
   const onTreeCountChange = (e: any) => {
     if (Number(e.target.value) < 25) {

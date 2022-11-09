@@ -13,6 +13,14 @@ import EyeIcon from '../../../../public/assets/images/icons/EyeIcon';
 import EyeDisabled from '../../../../public/assets/images/icons/EyeDisabled';
 import { useTranslation } from 'next-i18next';
 
+const EyeButton = ({ isVisible, onClick }: any) => {
+  return (
+    <div className={styles.eyeButton} onClick={onClick}>
+      {isVisible ? <EyeIcon /> : <EyeDisabled />}
+    </div>
+  );
+};
+
 export default function ApiKey({}: any) {
   const { token, contextLoaded } = React.useContext(UserPropsContext);
   const { t } = useTranslation(['me']);
@@ -102,11 +110,3 @@ export default function ApiKey({}: any) {
     </div>
   );
 }
-
-const EyeButton = ({ isVisible, onClick }: any) => {
-  return (
-    <div className={styles.eyeButton} onClick={onClick}>
-      {isVisible ? <EyeIcon /> : <EyeDisabled />}
-    </div>
-  );
-};

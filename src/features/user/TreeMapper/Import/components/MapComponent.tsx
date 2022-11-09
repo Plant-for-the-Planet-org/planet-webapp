@@ -56,9 +56,6 @@ export default function MapComponent({
     });
   }, []);
 
-  // const mapParentRef = React.useRef(null);
-  const drawControlRef = React.useRef(null);
-
   React.useEffect(() => {
     if (geoJson) {
       const geo = turf.featureCollection([

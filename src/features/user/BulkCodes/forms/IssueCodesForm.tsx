@@ -51,6 +51,18 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
     setBulkMethod(null);
   };
 
+  const getTotalUnits = (): number => {
+    if (bulkMethod === BulkCodeMethods.GENERIC) {
+      return project ? Number(codeQuantity) * Number(unitsPerCode) : 0;
+    } else {
+      let totalUnits = 0;
+      for (const recipient of localRecipients) {
+        totalUnits = totalUnits + Number(recipient.units);
+      }
+      return totalUnits;
+    }
+  };
+
   const getProcessedRecipients = (): Recipient[] => {
     const recipients: Recipient[] = [];
     localRecipients.forEach((recipient) => {
@@ -181,18 +193,6 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
         ? Math.round((totalUnits * project.unitCost + Number.EPSILON) * 100) /
             100
         : undefined;
-    }
-  };
-
-  const getTotalUnits = (): number => {
-    if (bulkMethod === BulkCodeMethods.GENERIC) {
-      return project ? Number(codeQuantity) * Number(unitsPerCode) : 0;
-    } else {
-      let totalUnits = 0;
-      for (const recipient of localRecipients) {
-        totalUnits = totalUnits + Number(recipient.units);
-      }
-      return totalUnits;
     }
   };
 

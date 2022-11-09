@@ -16,7 +16,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 export type ClaimCode1 = string | null;
 
 function ClaimDonation(): ReactElement {
-  const { t, ready, i18n } = useTranslation(['redeem']);
+  const { t, ready } = useTranslation(['redeem']);
 
   const router = useRouter();
 

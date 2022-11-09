@@ -9,7 +9,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 function ProfilePage(): ReactElement {
-  const { t, i18n } = useTranslation('me');
+  const { t } = useTranslation('me');
   // External imports
   const router = useRouter();
   const { user, contextLoaded, token } = React.useContext(UserPropsContext);

@@ -26,7 +26,6 @@ export default function Donate({
   setCurrencyCode,
 }: Props) {
   const {
-    projects,
     setProject,
     setProjects,
     setShowSingleProject,
@@ -168,4 +167,3 @@ export async function getStaticProps({ locale }: any) {
       )),
     },
   };
-}

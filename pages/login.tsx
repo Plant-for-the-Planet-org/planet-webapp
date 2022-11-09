@@ -3,13 +3,11 @@ import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile
 import { useRouter } from 'next/router';
 import { UserPropsContext } from '../src/features/common/Layout/UserPropsContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useTranslation } from 'next-i18next';
 
 interface Props {}
 
 function Login({}: Props): ReactElement {
   const router = useRouter();
-  const { i18n } = useTranslation();
 
   // if the user is authenticated check if we have slug, and if we do, send user to slug
   // else send user to login flow

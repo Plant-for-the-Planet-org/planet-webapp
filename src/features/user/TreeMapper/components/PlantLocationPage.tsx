@@ -30,62 +30,6 @@ const ImageSliderSingle = dynamic(
   }
 );
 
-export default function PlantLocationPage({
-  location,
-  setselectedLocation,
-  plantLocations,
-}: Props): ReactElement {
-  const router = useRouter();
-
-  const handleBackButton = () => {
-    if (location.type === 'sample') {
-      for (const i in plantLocations) {
-        if (Object.prototype.hasOwnProperty.call(plantLocations, i)) {
-          const pl = plantLocations[i];
-          if (pl.id === location.parent) {
-            setselectedLocation(pl);
-            break;
-          }
-        }
-      }
-    } else {
-      router.replace('/profile/treemapper');
-    }
-  };
-
-  const DetailProps = {
-    location,
-    setselectedLocation,
-  };
-  return (
-    <div className={styles.locationDetails}>
-      <div className={styles.pullUpContainer}>
-        <div className={styles.pullUpBar}></div>
-      </div>
-      <div className={styles.locationNav}>
-        <div onClick={handleBackButton} className={styles.backButton}>
-          <BackButton />
-        </div>
-        <div className={styles.locationMenu}>
-          {/* <div onClick={handleEditButton} className={styles.editButton}>
-        <EditIcon/>
-      </div>
-      <div onClick={handleDeleteButton} className={styles.deleteButton}>
-        <TrashIcon />
-      </div> */}
-        </div>
-      </div>
-
-      <LocationDetails {...DetailProps} />
-    </div>
-  );
-}
-
-interface DetailsProps {
-  setselectedLocation: Function;
-  location: Object;
-}
-
 export function LocationDetails({
   location,
   setselectedLocation,
@@ -173,9 +117,9 @@ export function LocationDetails({
           []
         )}
         {/* <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('guid')}</p>
-          <div className={styles.value}>{location.id}</div>
-        </div> */}
+              <p className={styles.title}>{t('guid')}</p>
+              <div className={styles.value}>{location.id}</div>
+            </div> */}
         {location.measurements && (
           <>
             <div className={styles.singleDetail}>
@@ -275,4 +219,59 @@ export function LocationDetails({
       </div>
     </>
   );
+}
+export default function PlantLocationPage({
+  location,
+  setselectedLocation,
+  plantLocations,
+}: Props): ReactElement {
+  const router = useRouter();
+
+  const handleBackButton = () => {
+    if (location.type === 'sample') {
+      for (const i in plantLocations) {
+        if (Object.prototype.hasOwnProperty.call(plantLocations, i)) {
+          const pl = plantLocations[i];
+          if (pl.id === location.parent) {
+            setselectedLocation(pl);
+            break;
+          }
+        }
+      }
+    } else {
+      router.replace('/profile/treemapper');
+    }
+  };
+
+  const DetailProps = {
+    location,
+    setselectedLocation,
+  };
+  return (
+    <div className={styles.locationDetails}>
+      <div className={styles.pullUpContainer}>
+        <div className={styles.pullUpBar}></div>
+      </div>
+      <div className={styles.locationNav}>
+        <div onClick={handleBackButton} className={styles.backButton}>
+          <BackButton />
+        </div>
+        <div className={styles.locationMenu}>
+          {/* <div onClick={handleEditButton} className={styles.editButton}>
+        <EditIcon/>
+      </div>
+      <div onClick={handleDeleteButton} className={styles.deleteButton}>
+        <TrashIcon />
+      </div> */}
+        </div>
+      </div>
+
+      <LocationDetails {...DetailProps} />
+    </div>
+  );
+}
+
+interface DetailsProps {
+  setselectedLocation: Function;
+  location: Object;
 }

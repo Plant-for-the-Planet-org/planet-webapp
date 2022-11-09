@@ -41,30 +41,17 @@ export default function PlanetCash({
   const [isDataLoading, setIsDataLoading] = useState(false);
   const router = useRouter();
 
-  const fetchAccounts = useCallback(async () => {
-    if (!accounts) {
-      setIsDataLoading(true);
-      setProgress && setProgress(70);
-      const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
-        `/app/planetCash`,
-        token,
-        {},
-        handleError
-      );
-      redirectIfNeeded(accounts);
-      const sortedAccounts = sortAccountsByActive(accounts);
-      setIsPlanetCashActive(accounts.some((account) => account.isActive));
-      setAccounts(sortedAccounts);
-      setIsDataLoading(false);
-
-      if (setProgress) {
-        setProgress(100);
-        setTimeout(() => setProgress(0), 1000);
+  const sortAccountsByActive = (
+    accounts: PlanetCash.Account[]
+  ): PlanetCash.Account[] => {
+    return accounts.sort((accountA, accountB) => {
+      if (accountA.isActive === accountB.isActive) {
+        return 0;
+      } else {
+        return accountA.isActive ? -1 : 1;
       }
-    } else {
-      redirectIfNeeded(accounts);
-    }
-  }, [accounts]);
+    });
+  };
 
   // Redirect routes based on whether at least one account is created.
   // Prevents multiple account creation.
@@ -89,17 +76,30 @@ export default function PlanetCash({
     [step]
   );
 
-  const sortAccountsByActive = (
-    accounts: PlanetCash.Account[]
-  ): PlanetCash.Account[] => {
-    return accounts.sort((accountA, accountB) => {
-      if (accountA.isActive === accountB.isActive) {
-        return 0;
-      } else {
-        return accountA.isActive ? -1 : 1;
+  const fetchAccounts = useCallback(async () => {
+    if (!accounts) {
+      setIsDataLoading(true);
+      setProgress && setProgress(70);
+      const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
+        `/app/planetCash`,
+        token,
+        {},
+        handleError
+      );
+      redirectIfNeeded(accounts);
+      const sortedAccounts = sortAccountsByActive(accounts);
+      setIsPlanetCashActive(accounts.some((account) => account.isActive));
+      setAccounts(sortedAccounts);
+      setIsDataLoading(false);
+
+      if (setProgress) {
+        setProgress(100);
+        setTimeout(() => setProgress(0), 1000);
       }
-    });
-  };
+    } else {
+      redirectIfNeeded(accounts);
+    }
+  }, [accounts]);
 
   useEffect(() => {
     if (contextLoaded && token) fetchAccounts();

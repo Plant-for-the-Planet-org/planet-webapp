@@ -122,7 +122,7 @@ export default function ProjectMedia({
     [uploadedImages]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
     multiple: true,
     maxSize: 10485760,

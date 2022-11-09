@@ -1,10 +1,9 @@
 import Footer from '../src/features/common/Layout/Footer';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-import { useEffect } from 'react';
 
 export default function OpenApp() {
-  const { t, ready, i18n } = useTranslation(['common']);
+  const { t, ready } = useTranslation(['common']);
 
   const styles = {
     width: '100vw',

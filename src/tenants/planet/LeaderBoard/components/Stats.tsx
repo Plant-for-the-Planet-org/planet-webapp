@@ -21,9 +21,7 @@ export default function Stats({ tenantScore }: Props): ReactElement {
   const handleModalClose = () => {
     setModalOpen(false);
   };
-  const handleModalOpen = () => {
-    setModalOpen(true);
-  };
+
   const { theme } = React.useContext(ThemeContext);
   return ready ? (
     <div className={styles.wrapper}>

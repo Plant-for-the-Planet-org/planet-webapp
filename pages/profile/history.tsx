@@ -12,7 +12,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 interface Props {}
 
 function AccountHistory({}: Props): ReactElement {
-  const { t, i18n } = useTranslation(['me']);
+  const { t } = useTranslation(['me']);
   const { token, contextLoaded } = React.useContext(UserPropsContext);
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
