@@ -136,7 +136,7 @@ export default function Donate({
     if (geoJson && router.query.site) {
       const siteIndex: number = geoJson?.features.findIndex(
         (singleSite: SingleProjectGeojson) => {
-          return router.query.site === singleSite?.properties.name;
+          return router.query.site === singleSite?.properties.id;
         }
       );
       if (siteIndex === -1) {
