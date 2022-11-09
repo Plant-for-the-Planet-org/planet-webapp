@@ -39,8 +39,7 @@ function ProjectsList({
 
   const topProjectsList = process.env.NEXT_PUBLIC_TOP_PROJECTS_LIST;
 
-  const showTopProjectsList =
-    topProjectsList === 'false' || topProjectsList === '0' ? false : true;
+  const showTopProjectsList = topProjectsList === 'true' ? true : false;
 
   const [selectedTab, setSelectedTab] = React.useState<'all' | 'top'>('all');
   const [searchMode, setSearchMode] = React.useState(false);
