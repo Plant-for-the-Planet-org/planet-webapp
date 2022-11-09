@@ -38,15 +38,15 @@ function ProjectsList({
   const [hideSidebar, setHideSidebar] = React.useState(isEmbed);
   const { t, ready } = useTranslation(['donate', 'country', 'maps']);
 
-  const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
+  const topProjectsList = process.env.NEXT_PUBLIC_TOP_PROJECTS_LIST;
 
-  const showFeaturedList =
-    featuredList === 'false' || featuredList === '0' ? false : true;
+  const showTopProjectsList =
+    topProjectsList === 'false' || topProjectsList === '0' ? false : true;
 
-  const [selectedTab, setSelectedTab] = React.useState('all');
+  const [selectedTab, setSelectedTab] = React.useState<'all' | 'top'>('all');
   const [searchMode, setSearchMode] = React.useState(false);
   React.useEffect(() => {
-    showFeaturedList ? setSelectedTab('featured') : null;
+    showTopProjectsList ? setSelectedTab('top') : null;
   }, []);
 
   const [searchValue, setSearchValue] = React.useState('');
@@ -63,10 +63,13 @@ function ProjectsList({
   const searchRef = React.useRef(null);
 
   function getProjects(projects: Array<any>, type: string) {
-    if (type === 'featured') {
+    if (type === 'top') {
       return projects.filter(
-        (project: { properties: { isFeatured: boolean } }) =>
-          project.properties.isFeatured === true
+        (project: {
+          properties: { isApproved: boolean; isTopProject: boolean };
+        }) =>
+          project.properties.isApproved === true &&
+          project.properties.isTopProject === true
       );
     } else if (type === 'all') {
       return projects;
@@ -135,8 +138,8 @@ function ProjectsList({
     [trottledSearchValue, projects]
   );
 
-  const featuredProjects = React.useMemo(
-    () => getProjects(projects, 'featured'),
+  const topProjects = React.useMemo(
+    () => getProjects(projects, 'top'),
     [projects]
   );
 
@@ -204,7 +207,7 @@ function ProjectsList({
                   />
                 ) : (
                   <Header
-                    showFeaturedList={showFeaturedList}
+                    showTopProjectsList={showTopProjectsList}
                     setSelectedTab={setSelectedTab}
                     selectedTab={selectedTab}
                     setSearchMode={setSearchMode}
@@ -238,8 +241,8 @@ function ProjectsList({
                   ) : (
                     <NoProjectFound />
                   )
-                ) : featuredProjects && featuredProjects.length > 0 ? (
-                  featuredProjects.map((project: any) => (
+                ) : topProjects && topProjects.length > 0 ? (
+                  topProjects.map((project: any) => (
                     <ProjectSnippet
                       key={project.properties.id}
                       project={project.properties}

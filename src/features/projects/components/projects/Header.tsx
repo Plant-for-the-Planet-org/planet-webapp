@@ -3,16 +3,16 @@ import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import i18next from '../../../../../i18n/';
 
 interface Props {
-  showFeaturedList: any;
+  showTopProjectsList: boolean;
   setSelectedTab: Function;
-  selectedTab: any;
+  selectedTab: 'top' | 'all';
   setSearchMode: Function;
   projects: any;
 }
 const { useTranslation } = i18next;
 
 function Header({
-  showFeaturedList,
+  showTopProjectsList,
   setSelectedTab,
   selectedTab,
   setSearchMode,
@@ -21,22 +21,17 @@ function Header({
   const { t, ready } = useTranslation(['donate']);
   return ready ? (
     <div className={'header'}>
-      {showFeaturedList ? (
+      {showTopProjectsList ? (
         <div className={'tabButtonContainer'}>
-          <div
-            className={'tabButton'}
-            onClick={() => setSelectedTab('featured')}
-          >
+          <div className={'tabButton'} onClick={() => setSelectedTab('top')}>
             <div
               className={
-                selectedTab === 'featured'
-                  ? 'tabButtonSelected'
-                  : 'tabButtonText'
+                selectedTab === 'top' ? 'tabButtonSelected' : 'tabButtonText'
               }
             >
               {t('donate:topProjects')}
             </div>
-            {selectedTab === 'featured' ? (
+            {selectedTab === 'top' ? (
               <div className={'tabButtonSelectedIndicator'} />
             ) : null}
           </div>
