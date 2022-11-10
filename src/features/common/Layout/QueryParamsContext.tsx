@@ -61,24 +61,27 @@ const QueryParamsProvider: FC = ({ children }) => {
     ) {
       setLanguage(query.locale);
     } else {
-      const userPreferenceLanguage = navigator.language ?? navigator.languages;
+      if (localStorage?.getItem('language') === null) {
+        const userPreferenceLanguage =
+          navigator.language ?? navigator.languages;
 
-      //checking is user preference language matching with the application supported language
-      const languageMatched = appSupportedLocale.filter((locale) => {
-        return (
-          locale.key[0] + locale.key[1] ===
-          userPreferenceLanguage[0] + userPreferenceLanguage[1]
-        );
-      });
+        //checking is user preference language matching with the application supported language
+        const languageMatched = appSupportedLocale.filter((locale) => {
+          return (
+            locale.key[0] + locale.key[1] ===
+            userPreferenceLanguage[0] + userPreferenceLanguage[1]
+          );
+        });
 
-      if (languageMatched !== undefined) {
-        localStorage.setItem('language', languageMatched[0]?.key);
-        setLanguage(languageMatched[0]?.key);
-        i18n.changeLanguage(languageMatched[0]?.key);
-      } else {
-        localStorage.setItem('language', 'en');
-        setLanguage('en');
-        i18n.changeLanguage('en');
+        if (languageMatched !== undefined) {
+          localStorage.setItem('language', languageMatched[0]?.key);
+          setLanguage(languageMatched[0]?.key);
+          i18n.changeLanguage(languageMatched[0]?.key);
+        } else {
+          localStorage.setItem('language', 'en');
+          setLanguage('en');
+          i18n.changeLanguage('en');
+        }
       }
     }
   }, [query.locale]);
