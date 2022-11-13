@@ -33,7 +33,7 @@ export default function PlanetCash({
   step,
   setProgress,
 }: PlanetCashProps): ReactElement | null {
-  const { t, ready } = useTranslation('planetcash');
+  const { t, ready, i18n } = useTranslation('planetcash');
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   const { token, contextLoaded } = useContext(UserPropsContext);
   const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
@@ -116,8 +116,8 @@ export default function PlanetCash({
         return <Accounts isDataLoading={isDataLoading} />;
     }
   };
-
   useEffect(() => {
+    i18n.changeLanguage(localStorage.getItem('language') as any);
     if (ready && accounts) {
       if (!accounts.length) {
         setTabConfig([
@@ -141,7 +141,7 @@ export default function PlanetCash({
           },
         ]);
     }
-  }, [ready, accounts]);
+  }, [ready, accounts, i18n.language]);
 
   return ready ? (
     <DashboardView

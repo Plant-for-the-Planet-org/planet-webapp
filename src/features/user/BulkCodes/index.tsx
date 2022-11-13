@@ -46,6 +46,7 @@ export default function BulkCodes({
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
 
   useEffect(() => {
+    i18n.changeLanguage(localStorage.getItem('language') as any);
     if (ready) {
       setTabConfig([
         {
@@ -67,7 +68,7 @@ export default function BulkCodes({
         },
       ]);
     }
-  }, [ready, bulkMethod, project]);
+  }, [ready, bulkMethod, project, i18n.language]);
 
   const fetchProjectList = useCallback(async () => {
     if (planetCashAccount && !projectList) {
