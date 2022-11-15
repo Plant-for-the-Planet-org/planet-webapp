@@ -28,7 +28,7 @@ export default function SitesDropdown(): ReactElement {
     setSelectedSite(event.target.value as number);
     router.push(
       `/${project.slug}/?site=${
-        geoJson.features[event.target.value].properties.name
+        geoJson.features[event.target.value].properties.id
       }`
     );
 

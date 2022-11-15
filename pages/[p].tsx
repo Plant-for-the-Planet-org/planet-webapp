@@ -124,7 +124,7 @@ export default function Donate({
   React.useEffect(() => {
     if (geoJson && !router.query.site && !router.query.ploc) {
       router.push(
-        `/${project.slug}?site=${geoJson.features[0].properties.name}`,
+        `/${project.slug}?site=${geoJson.features[0].properties.id}`,
         undefined,
         { shallow: true }
       );
@@ -136,7 +136,7 @@ export default function Donate({
     if (geoJson && router.query.site) {
       const siteIndex: number = geoJson?.features.findIndex(
         (singleSite: SingleProjectGeojson) => {
-          return router.query.site === singleSite?.properties.name;
+          return router.query.site === singleSite?.properties.id;
         }
       );
       if (siteIndex === -1) {
