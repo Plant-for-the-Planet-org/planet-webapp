@@ -246,5 +246,6 @@
   "apiKeyMessage1": "Der API-Schlüssel ist wie ein digitales Passwort, mit dem du in jeder Anwendung unter deinem Profil auftreten kannst. Er ermöglicht es Anwendungen auch, in deinem Namen zu spenden, PlanetCash zu nutzen und Transaktionen einzusehen.",
   "apiKeyMessage2": "Sobald du einen API-Schlüssel generiert hast, benötigen wir eine Zwei-Faktor-Authentifizierung für deine Anmeldung. Diese kannst du beim nächsten Mal einrichten, wenn du dich anmeldest.",
   "apiKeyMessage3": "Wenn du den API-Schlüssel neu generierst, wird dein bestehender API-Schlüssel sofort ungültig.",
-  "regenerateKey": "Schlüssel  neu generieren"
+  "regenerateKey": "Schlüssel neu generieren",
+  "giftFund": "Geschenkfonds"
 }
