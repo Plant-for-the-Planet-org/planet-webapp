@@ -1,32 +1,13 @@
 import { ChangeEvent, ReactElement, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import {
-  Button,
-  TextField,
-  MenuItem,
-  styled,
-  CircularProgress,
-} from '@mui/material';
+import { Button, TextField, MenuItem, CircularProgress } from '@mui/material';
 import StyledForm from '../../../common/Layout/StyledForm';
 import i18next from '../../../../../i18n';
 import ReactHookFormSelect from './ReactHookFormSelect';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
+import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 
 const { useTranslation } = i18next;
-
-const InlineFormGroup = styled('div')({
-  display: 'flex',
-  columnGap: 16,
-  rowGap: 24,
-  justifyContent: 'space-between',
-  alignItems: 'flex-start',
-  flexWrap: 'wrap',
-
-  '& .MuiTextField-root': {
-    flex: 1,
-    minWidth: 240,
-  },
-});
 
 export type FormData = {
   currency: string;
@@ -189,7 +170,7 @@ const BankDetailsForm = ({
             error={errors.holderAddress !== undefined}
             helperText={errors.holderAddress && errors.holderAddress.message}
           ></TextField>
-          <InlineFormGroup>
+          <InlineFormDisplayGroup>
             <TextField
               label={t('labels.accountNumber') + '*'}
               name="accountNumber"
@@ -204,8 +185,8 @@ const BankDetailsForm = ({
               name="routingNumber"
               inputRef={register}
             ></TextField>
-          </InlineFormGroup>
-          <InlineFormGroup>
+          </InlineFormDisplayGroup>
+          <InlineFormDisplayGroup>
             <TextField
               label={t('labels.bic') + '*'}
               name="bic"
@@ -220,7 +201,7 @@ const BankDetailsForm = ({
               name="branchCode"
               inputRef={register}
             ></TextField>
-          </InlineFormGroup>
+          </InlineFormDisplayGroup>
           <TextField
             multiline
             minRows={2}

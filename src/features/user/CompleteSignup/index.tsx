@@ -23,6 +23,7 @@ import { ThemeContext } from '../../../theme/themeContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { postRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 
 const { Trans, useTranslation } = i18next;
 
@@ -30,20 +31,6 @@ const Alert = styled(MuiAlert)(({ theme }) => {
   return {
     backgroundColor: theme.palette.primary.main,
   };
-});
-
-const InlineFormGroup = styled('div')({
-  display: 'flex',
-  columnGap: 16,
-  rowGap: 24,
-  justifyContent: 'space-between',
-  alignItems: 'flex-start',
-  flexWrap: 'wrap',
-
-  '& .MuiTextField-root': {
-    flex: 1,
-    minWidth: 160,
-  },
 });
 
 const MuiTextField = styled(TextField)(() => {
@@ -323,7 +310,7 @@ export default function CompleteSignup(): ReactElement | null {
               ))}
             </MuiTextField>
 
-            <InlineFormGroup>
+            <InlineFormDisplayGroup>
               <MuiTextField
                 label={t('donate:firstName')}
                 inputRef={register({ required: true })}
@@ -342,7 +329,7 @@ export default function CompleteSignup(): ReactElement | null {
                 error={errors.lastname}
                 helperText={errors.lastname && t('donate:firstNameRequired')}
               />
-            </InlineFormGroup>
+            </InlineFormDisplayGroup>
 
             {type !== 'individual' ? (
               <MuiTextField
@@ -394,7 +381,7 @@ export default function CompleteSignup(): ReactElement | null {
                       </div>
                     )
                   : null}
-                <InlineFormGroup>
+                <InlineFormDisplayGroup>
                   <MuiTextField
                     label={t('donate:city')}
                     inputRef={register({ required: true })}
@@ -428,7 +415,7 @@ export default function CompleteSignup(): ReactElement | null {
                       errors.zipCode && t('donate:zipCodeAlphaNumValidation')
                     }
                   />
-                </InlineFormGroup>
+                </InlineFormDisplayGroup>
               </>
             ) : null}
             <AutoCompleteCountry

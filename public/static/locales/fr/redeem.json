@@ -6,5 +6,6 @@
   "validateCode": "Valider le code",
   "enterRedeemCode": "Veuillez entrer un code pour le rachat",
   "validating": "Validation",
-  "invalidType": "Type non valide, vérifier à nouveau le lien"
+  "invalidType": "Type non valide, vérifier à nouveau le lien",
+  "redeemDescription": "Échangez votre bon d'arbre et d'autres codes."
 }

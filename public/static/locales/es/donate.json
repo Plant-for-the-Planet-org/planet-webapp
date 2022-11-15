@@ -7,7 +7,7 @@
   "myTreesPlantedByOnLocation_plural": "Mis árboles {{treeCount}} están siendo plantados en {{location}}.",
   "PROJECTS": "PROYECTOS",
   "topProjects": "Proyectos principales",
-  "allCountProjects": "Todos {{{projectCount}} los Proyectos",
+  "allCountProjects": "Todos {{projectCount}} los Proyectos",
   "searchProjects": "Buscar Proyectos",
   "viewProfile": "Ver Perfil",
   "contactDetails": "Detalles de contacto",

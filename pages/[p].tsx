@@ -4,12 +4,12 @@ import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlin
 import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
 import Credits from '../src/features/projects/components/maps/Credits';
 import SingleProjectDetails from '../src/features/projects/screens/SingleProjectDetails';
-import { ThemeContext } from '../src/theme/themeContext';
 import { getRequest } from '../src/utils/apiRequests/api';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
 import { getAllPlantLocations } from '../src/utils/maps/plantLocations';
 import i18next from '../i18n';
+import { SingleProjectGeojson } from '../src/features/common/types/project';
 
 const { useTranslation } = i18next;
 
@@ -27,12 +27,16 @@ export default function Donate({
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
   const [internalLanguage, setInternalLanguage] = React.useState('');
-  const [open, setOpen] = React.useState(false);
-  const { theme } = React.useContext(ThemeContext);
+  const [_open, setOpen] = React.useState(false);
+
   const { i18n } = useTranslation();
   const {
+    geoJson,
     project,
+    setSelectedSite,
     setProject,
+    setSelectedPl,
+    plantLocations,
     setShowSingleProject,
     setZoomLevel,
     setPlantLocations,
@@ -116,6 +120,51 @@ export default function Donate({
       }
     }
   }, [router.asPath]);
+
+  React.useEffect(() => {
+    if (geoJson && !router.query.site && !router.query.ploc) {
+      router.push(
+        `/${project.slug}?site=${geoJson.features[0].properties.name}`,
+        undefined,
+        { shallow: true }
+      );
+    }
+  }, [router, geoJson]);
+
+  React.useEffect(() => {
+    //for selecting one of the site of project if user use link  to directly visit to site from home page
+    if (geoJson && router.query.site) {
+      const siteIndex: number = geoJson?.features.findIndex(
+        (singleSite: SingleProjectGeojson) => {
+          return router.query.site === singleSite?.properties.name;
+        }
+      );
+      if (siteIndex === -1) {
+        router.push(`/${project.slug}`);
+      } else {
+        setSelectedSite(siteIndex);
+      }
+    }
+  }, [setSelectedSite, geoJson]);
+
+  React.useEffect(() => {
+    //for selecting one of the plant location. if user use link  to directly visit to plantLocation from home page
+    if (geoJson && router.query.ploc && plantLocations) {
+      const singlePlantLocation: Treemapper.PlantLocation | undefined =
+        plantLocations?.find(
+          (dataOfSinglePlantLocation: Treemapper.PlantLocation) => {
+            return router.query.ploc === dataOfSinglePlantLocation?.hid;
+          }
+        );
+
+      if (singlePlantLocation === undefined) {
+        router.push(`/${project.slug}`);
+      } else {
+        setSelectedPl(singlePlantLocation);
+      }
+    }
+  }, [router, router.query.ploc, plantLocations, setSelectedPl, project]);
+
   return (
     <>
       {project ? <GetProjectMeta {...ProjectProps} /> : null}

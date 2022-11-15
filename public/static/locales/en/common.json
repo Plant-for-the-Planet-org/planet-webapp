@@ -76,6 +76,7 @@
   "copiedToClipboard": "Copied to clipboard!",
   "close": "Close",
   "logout": "Logout",
+  "document": "Platform Documentation (EN)",
   "featured": "Featured",
   "treeMapper": "TreeMapper",
   "overview": "Overview",
@@ -101,4 +102,6 @@
   "viewReport": "View Report",
   "reviewInfo": " The project was inspected in a multiday field review in {{month}}"
   
+}
+  "showSubscriptions": "Show my Subscriptions"
 }

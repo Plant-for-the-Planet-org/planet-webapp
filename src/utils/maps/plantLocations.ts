@@ -4,14 +4,15 @@ import * as turf from '@turf/turf';
 import { getRequest } from '../apiRequests/api';
 
 export function zoomToPlantLocation(
-  geoJson: Object,
+  coordinates: any,
   viewport: Object,
   isMobile: boolean,
   setViewPort: Function,
   duration = 1200
 ) {
   if (viewport.width && viewport.height) {
-    const bbox = turf.bbox(geoJson);
+    const polygon  = turf.polygon([coordinates])
+    const bbox = turf.bbox(polygon);
     const { longitude, latitude, zoom } = new WebMercatorViewport(
       viewport
     ).fitBounds(
@@ -38,7 +39,7 @@ export function zoomToPlantLocation(
       transitionEasing: d3.easeCubic,
     };
     setViewPort(newViewport);
-  } else {
+   } else {
     const newViewport = {
       ...viewport,
       height: window.innerHeight,

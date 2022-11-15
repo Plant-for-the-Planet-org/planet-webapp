@@ -17,9 +17,7 @@ const Layout: FC = ({ children }) => {
   return (
     <>
       <Header />
-      <style jsx global>
-        {theme}
-      </style>
+      <style>{theme}</style>
       <div className={`${themeType}`}>
         {!isEmbed && <Navbar theme={themeType} />}
         <div>{children}</div>

@@ -6,5 +6,13 @@
   "validateCode": "Code prüfen",
   "enterRedeemCode": "Bitte gibt einen Code zum Einlösen ein",
   "validating": "Prüfe",
-  "invalidType": "Ungültiger Typ, bitte überprüfen Sie den Link erneut"
+  "invalidType": "Ungültiger Typ, bitte überprüfen Sie den Link erneut",
+  "redeeming": "Einlösen:",
+  "invalidCode": "Dieser Code ist ungültig.",
+  "alreadyRedeemed": "Der Code wurde bereits eingelöst",
+  "redeemCode": "Code einlösen",
+  "redeem": "Einlösen",
+  "redeemDescription": "Löse Baumgutscheine und andere Codes ein.",
+  "successfullyRedeemed": "Erfolgreich eingelöst",
+  "redeemAnotherCode": "Einen anderen Code einlösen"
 }

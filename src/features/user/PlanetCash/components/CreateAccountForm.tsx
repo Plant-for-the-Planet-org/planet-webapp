@@ -3,6 +3,7 @@ import { Button, CircularProgress } from '@mui/material';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import StyledForm from '../../../common/Layout/StyledForm';
+import FormHeader from '../../../common/Layout/Forms/FormHeader';
 import i18next from '../../../../../i18n';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
@@ -84,8 +85,10 @@ const CreateAccountForm = ({
   if (ready) {
     return (
       <>
-        <StyledForm onSubmit={onSubmit}>
+        <FormHeader>
           <h2 className="formTitle">{t('createAccountTitleText')}</h2>
+        </FormHeader>
+        <StyledForm onSubmit={onSubmit}>
           <div className="inputContainer">
             <AutoCompleteCountry
               label={t('labelCountry')}
