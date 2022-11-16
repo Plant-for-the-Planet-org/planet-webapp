@@ -15,17 +15,17 @@ import supportedLanguages from '../../../../utils/language/supportedLanguages.js
 import { ThemeContext } from '../../../../theme/themeContext';
 import GreenRadio from '../../InputTypes/GreenRadio';
 import styles from './SelectLanguageAndCountry.module.scss';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import tenantConfig from '../../../../../tenant.config';
 
-const config = tenantConfig();
-const { useTranslation } = i18next;
-
-// reduce the allowed languages to the languages listed in the tenants config file
-const selectableLanguages = supportedLanguages.filter((lang) =>
-  config.languages.includes(lang.langCode)
-);
-
+interface MapCountryProps {
+  value: string;
+  handleChange: Function;
+}
+interface MapLanguageProps {
+  value: string;
+  handleChange: Function;
+}
 interface TransitionsModalProps {
   openModal: boolean;
   handleModalClose: Function;
@@ -36,11 +36,75 @@ interface TransitionsModalProps {
   setSelectedCountry: Function;
   setCurrencyCode?: Function;
 }
+const config = tenantConfig();
+
+// reduce the allowed languages to the languages listed in the tenants config file
+const selectableLanguages = supportedLanguages.filter((lang) =>
+  config.languages.includes(lang.langCode)
+);
+
+// Maps the radio buttons for language
+
+function MapLanguage({ value, handleChange }: MapLanguageProps) {
+  return (
+    <FormControl component="fieldset">
+      <RadioGroup
+        aria-label="language"
+        name="language"
+        value={value}
+        onChange={handleChange}
+        className={styles.currencyGrid}
+      >
+        {selectableLanguages.map((lang) => (
+          <FormControlLabel
+            key={lang.langCode}
+            value={lang.langCode}
+            control={<GreenRadio />}
+            label={lang.languageName}
+          />
+        ))}
+      </RadioGroup>
+    </FormControl>
+  );
+}
+
+// Maps the radio buttons for countries
+function MapCountry({ value, handleChange }: MapCountryProps) {
+  const { t, i18n, ready } = useTranslation(['country']);
+  const country = getStoredConfig('country');
+  const priorityCountries = country === value ? [value] : [value, country];
+  const sortedCountriesData = ready
+    ? sortCountriesByTranslation(t, i18n.language, priorityCountries)
+    : {};
+  return ready ? (
+    <FormControl variant="standard" component="fieldset">
+      <RadioGroup
+        aria-label="language"
+        name="language"
+        value={value}
+        onChange={handleChange}
+        className={styles.currencyGrid}
+      >
+        {sortedCountriesData.map((country) => (
+          <FormControlLabel
+            key={country.countryCode}
+            value={country.countryCode}
+            control={<GreenRadio />}
+            label={
+              t('country:' + country.countryCode.toLowerCase()) +
+              ' · ' +
+              country.currencyCode
+            }
+          />
+        ))}
+      </RadioGroup>
+    </FormControl>
+  ) : null;
+}
+
 export default function TransitionsModal({
   openModal,
   handleModalClose,
-  setLanguage,
-  language,
   setSelectedCurrency,
   selectedCountry,
   setSelectedCountry,
@@ -67,8 +131,9 @@ export default function TransitionsModal({
   // when user clicks on OK
   function handleOKClick() {
     // window.localStorage.setItem('language', modalLanguage);
-    setLanguage(modalLanguage);
+
     i18n.changeLanguage(modalLanguage);
+    window.localStorage.setItem('language', modalLanguage);
     window.localStorage.setItem('countryCode', selectedModalCountry);
     setSelectedCountry(selectedModalCountry);
     const currencyCode = getCountryDataBy(
@@ -83,13 +148,11 @@ export default function TransitionsModal({
     handleModalClose();
   }
 
-  // changes the language in local state whenever the language changes in Footer state
   useEffect(() => {
-    if (language) {
-      setModalLanguage(language);
+    if (i18n.language) {
+      setModalLanguage(i18n.language);
     }
-  }, [language]);
-
+  }, [i18n.language]);
   // changes the selected country in local state whenever the currency changes
   // in Footer state
   useEffect(() => {
@@ -151,70 +214,4 @@ export default function TransitionsModal({
       </Modal>
     </div>
   ) : null;
-}
-
-// Maps the radio buttons for countries
-interface MapCountryProps {
-  value: string;
-  handleChange: Function;
-}
-function MapCountry({ value, handleChange }: MapCountryProps) {
-  const { t, i18n, ready } = useTranslation(['country']);
-  const country = getStoredConfig('country');
-  const priorityCountries = country === value ? [value] : [value, country];
-  const sortedCountriesData = ready
-    ? sortCountriesByTranslation(t, i18n.language, priorityCountries)
-    : {};
-  return ready ? (
-    <FormControl variant="standard" component="fieldset">
-      <RadioGroup
-        aria-label="language"
-        name="language"
-        value={value}
-        onChange={handleChange}
-        className={styles.currencyGrid}
-      >
-        {sortedCountriesData.map((country) => (
-          <FormControlLabel
-            key={country.countryCode}
-            value={country.countryCode}
-            control={<GreenRadio />}
-            label={
-              t('country:' + country.countryCode.toLowerCase()) +
-              ' · ' +
-              country.currencyCode
-            }
-          />
-        ))}
-      </RadioGroup>
-    </FormControl>
-  ) : null;
-}
-
-// Maps the radio buttons for language
-interface MapLanguageProps {
-  value: string;
-  handleChange: Function;
-}
-function MapLanguage({ value, handleChange }: MapLanguageProps) {
-  return (
-    <FormControl component="fieldset">
-      <RadioGroup
-        aria-label="language"
-        name="language"
-        value={value}
-        onChange={handleChange}
-        className={styles.currencyGrid}
-      >
-        {selectableLanguages.map((lang) => (
-          <FormControlLabel
-            key={lang.langCode}
-            value={lang.langCode}
-            control={<GreenRadio />}
-            label={lang.languageName}
-          />
-        ))}
-      </RadioGroup>
-    </FormControl>
-  );
 }

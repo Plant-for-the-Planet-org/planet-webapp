@@ -1,7 +1,6 @@
 import Footer from '../src/features/common/Layout/Footer';
-import i18next from '../i18n';
-
-const { useTranslation } = i18next;
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 export default function OpenApp() {
   const { t, ready } = useTranslation(['common']);
@@ -24,4 +23,36 @@ export default function OpenApp() {
       <Footer />
     </>
   ) : null;
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donationLink',
+          'editProfile',
+          'giftfunds',
+          'leaderboard',
+          'managePayouts',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTrees',
+          'tenants',
+          'treemapper',
+        ],
+        null,
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+      )),
+    },
+  };
 }

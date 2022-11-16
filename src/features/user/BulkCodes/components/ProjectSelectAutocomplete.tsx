@@ -1,10 +1,9 @@
 import React, { ReactElement, useState, useEffect } from 'react';
 import { Autocomplete, TextField, styled } from '@mui/material';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
+
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import { Project } from '../../../common/Layout/BulkCodeContext';
-
-const { useTranslation } = i18next;
 
 const MuiAutocomplete = styled(Autocomplete)((/* { theme } */) => {
   return {

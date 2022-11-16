@@ -1,9 +1,7 @@
 import { ReactElement } from 'react';
+import { useTranslation } from 'next-i18next';
 import { TextField } from '@mui/material';
-import i18next from '../../../../../i18n';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
-
-const { useTranslation } = i18next;
 
 interface UnitCostDisplayProps {
   unitCost: number | '-';

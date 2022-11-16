@@ -1,6 +1,6 @@
 import { ReactElement, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { usePayouts } from '../../../common/Layout/PayoutsContext';
@@ -13,8 +13,6 @@ import FormHeader from '../../../common/Layout/Forms/FormHeader';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
-
-const { useTranslation } = i18next;
 
 const EditBankAccount = (): ReactElement | null => {
   const { accounts, payoutMinAmounts, setAccounts } = usePayouts();

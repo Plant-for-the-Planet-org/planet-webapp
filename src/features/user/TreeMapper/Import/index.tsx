@@ -1,11 +1,8 @@
 import React, { ReactElement } from 'react';
-import {
-  getAuthenticatedRequest,
-  putAuthenticatedRequest,
-} from '../../../../utils/apiRequests/api';
+import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import PlantingLocation from './components/PlantingLocation';
 import styles from './Import.module.scss';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
 import {
@@ -18,8 +15,6 @@ import SampleTrees from './components/SampleTrees';
 import ReviewSubmit from './components/ReviewSubmit';
 import dynamic from 'next/dynamic';
 import theme from '../../../../theme/themeProperties';
-
-const { useTranslation } = i18next;
 
 const Stepper = styled(MuiStepper)({
   '&': {
@@ -39,10 +34,6 @@ const Step = styled(MuiStep)({
 
 interface Props {}
 
-const Map = dynamic(() => import('./components/Map'), {
-  loading: () => <p>loading</p>,
-});
-
 const MapComponent = dynamic(() => import('./components/MapComponent'), {
   ssr: false,
   loading: () => <p></p>,
@@ -50,10 +41,24 @@ const MapComponent = dynamic(() => import('./components/MapComponent'), {
 
 export default function ImportData({}: Props): ReactElement {
   const router = useRouter();
-  const { t, i18n, ready } = useTranslation(['treemapper']);
+  const { t, ready } = useTranslation(['treemapper']);
   const { token } = React.useContext(UserPropsContext);
 
-  // loc_ACxv7uldM1VdKd5cikv3qoF5
+  function getSteps() {
+    return [
+      ready ? t('treemapper:plantingLocation') : '',
+      ready ? t('treemapper:sampleTrees') : '',
+      ready ? t('treemapper:submitted') : '',
+    ];
+  }
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [errorMessage, setErrorMessage] = React.useState('');
+  const steps = getSteps();
+  const [plantLocation, setPlantLocation] =
+    React.useState<Treemapper.PlantLocation | null>(null);
+  const [userLang, setUserLang] = React.useState('en');
+  const [geoJson, setGeoJson] = React.useState(null);
+
   const fetchPlantLocation = async (id: any): Promise<void> => {
     const result = await getAuthenticatedRequest(
       `/treemapper/plantLocations/${id}?_scope=extended`,
@@ -68,22 +73,6 @@ export default function ImportData({}: Props): ReactElement {
     }
   }, [router]);
 
-  function getSteps() {
-    return [
-      ready ? t('treemapper:plantingLocation') : '',
-      ready ? t('treemapper:sampleTrees') : '',
-      ready ? t('treemapper:submitted') : '',
-    ];
-  }
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [errorMessage, setErrorMessage] = React.useState('');
-  const steps = getSteps();
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [plantLocation, setPlantLocation] =
-    React.useState<Treemapper.PlantLocation | null>(null);
-  const [userLang, setUserLang] = React.useState('en');
-  const [geoJson, setGeoJson] = React.useState(null);
-  const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [activeMethod, setActiveMethod] = React.useState('import');
 
   const handleNext = () => {
@@ -92,11 +81,6 @@ export default function ImportData({}: Props): ReactElement {
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
-  };
-
-  const handleReset = (message: any) => {
-    setErrorMessage(message);
-    setActiveStep(0);
   };
 
   React.useEffect(() => {

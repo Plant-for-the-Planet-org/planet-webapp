@@ -8,10 +8,10 @@ import { getRequest } from '../src/utils/apiRequests/api';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
 import { getAllPlantLocations } from '../src/utils/maps/plantLocations';
-import i18next from '../i18n';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticPaths } from 'next';
 import { SingleProjectGeojson } from '../src/features/common/types/project';
-
-const { useTranslation } = i18next;
 
 interface Props {
   initialized: boolean;
@@ -27,8 +27,7 @@ export default function Donate({
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
   const [internalLanguage, setInternalLanguage] = React.useState('');
-  const [_open, setOpen] = React.useState(false);
-
+  const [open, setOpen] = React.useState(false);
   const { i18n } = useTranslation();
   const {
     geoJson,
@@ -49,11 +48,6 @@ export default function Donate({
     setZoomLevel(2);
   }, []);
 
-  const handleClose = (reason: string) => {
-    if (reason !== 'backdropClick') {
-      setOpen(false);
-    }
-  };
   const handleOpen = () => {
     setOpen(true);
   };
@@ -180,4 +174,43 @@ export default function Donate({
       <Credits setCurrencyCode={setCurrencyCode} />
     </>
   );
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};
+
+export async function getStaticProps({ locale }: any) {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donationLink',
+          'editProfile',
+          'giftfunds',
+          'leaderboard',
+          'managePayouts',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTrees',
+          'tenants',
+          'treemapper',
+        ],
+        null,
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+      )),
+    },
+  };
 }

@@ -1,20 +1,17 @@
-import { useRouter } from 'next/router';
 import React, { ReactElement, useEffect } from 'react';
-import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import EmbedModal from '../../src/features/user/Widget/EmbedModal';
 import styles from './../../src/features/common/Layout/UserLayout/UserLayout.module.scss';
 import Head from 'next/head';
-import i18next from '../../i18n';
 import { TENANT_ID } from '../../src/utils/constants/environment';
-
-const { useTranslation } = i18next;
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 function ProfilePage(): ReactElement {
   const { t } = useTranslation('me');
   // External imports
-  const router = useRouter();
+
   const { user, contextLoaded } = React.useContext(UserPropsContext);
 
   // Internal states
@@ -57,3 +54,35 @@ function ProfilePage(): ReactElement {
 }
 
 export default ProfilePage;
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donationLink',
+          'editProfile',
+          'giftfunds',
+          'leaderboard',
+          'managePayouts',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTrees',
+          'tenants',
+          'treemapper',
+        ],
+        null,
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+      )),
+    },
+  };
+}

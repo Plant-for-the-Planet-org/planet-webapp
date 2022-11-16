@@ -1,16 +1,13 @@
 import React, { FormEvent, ReactElement, useContext, useState } from 'react';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { Button, TextField } from '@mui/material';
-
-import styles from '../BulkCodes.module.scss';
+import styles from '../../../../../src/features/user/BulkCodes';
 import { useRouter } from 'next/router';
-
 import ProjectSelector from '../components/ProjectSelector';
 import BulkGiftTotal from '../components/BulkGiftTotal';
 import RecipientsUploadForm from '../components/RecipientsUploadForm';
 import GenericCodesPartial from '../components/GenericCodesPartial';
 import BulkCodesError from '../components/BulkCodesError';
-
 import { useBulkCode, Recipient } from '../../../common/Layout/BulkCodeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import cleanObject from '../../../../utils/cleanObject';
@@ -23,7 +20,6 @@ import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedC
 import { Recipient as LocalRecipient } from '../BulkCodesTypes';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
-const { useTranslation } = i18next;
 
 interface IssueCodesFormProps {}
 
@@ -53,6 +49,18 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const resetBulkContext = (): void => {
     setProject(null);
     setBulkMethod(null);
+  };
+
+  const getTotalUnits = (): number => {
+    if (bulkMethod === BulkCodeMethods.GENERIC) {
+      return project ? Number(codeQuantity) * Number(unitsPerCode) : 0;
+    } else {
+      let totalUnits = 0;
+      for (const recipient of localRecipients) {
+        totalUnits = totalUnits + Number(recipient.units);
+      }
+      return totalUnits;
+    }
   };
 
   const getProcessedRecipients = (): Recipient[] => {
@@ -185,18 +193,6 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
         ? Math.round((totalUnits * project.unitCost + Number.EPSILON) * 100) /
             100
         : undefined;
-    }
-  };
-
-  const getTotalUnits = (): number => {
-    if (bulkMethod === BulkCodeMethods.GENERIC) {
-      return project ? Number(codeQuantity) * Number(unitsPerCode) : 0;
-    } else {
-      let totalUnits = 0;
-      for (const recipient of localRecipients) {
-        totalUnits = totalUnits + Number(recipient.units);
-      }
-      return totalUnits;
     }
   };
 

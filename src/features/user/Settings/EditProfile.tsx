@@ -4,7 +4,6 @@ import MuiAlert from '@mui/material/Alert';
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Controller, useForm } from 'react-hook-form';
-import i18next from '../../../../i18n';
 import Camera from '../../../../public/assets/images/icons/userProfileIcons/Camera';
 import CameraWhite from '../../../../public/assets/images/icons/userProfileIcons/CameraWhite';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
@@ -18,8 +17,7 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'next-i18next';
 
 interface Props {}
 
@@ -37,6 +35,9 @@ export default function EditProfile({}: Props) {
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { t, ready } = useTranslation(['editProfile', 'donate']);
+
+  const { register, handleSubmit, errors, control, reset, setValue, watch } =
+    useForm({ mode: 'onBlur' });
 
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
@@ -68,17 +69,6 @@ export default function EditProfile({}: Props) {
     };
     reset(defaultProfileDetails);
   }, [user]);
-
-  const {
-    register,
-    handleSubmit,
-    errors,
-    control,
-    reset,
-    setValue,
-    watch,
-    getValues,
-  } = useForm({ mode: 'onBlur' });
 
   const [country, setCountry] = React.useState(user.country);
   const [updatingPic, setUpdatingPic] = React.useState(false);
@@ -200,13 +190,11 @@ export default function EditProfile({}: Props) {
     [token]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
     multiple: false,
     onDrop: onDrop,
-    onDropAccepted: () => {
-      // console.log('uploaded');
-    },
+    onDropAccepted: () => {},
   });
 
   const saveProfile = async (data: any) => {

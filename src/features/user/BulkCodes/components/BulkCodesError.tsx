@@ -1,11 +1,8 @@
 import React, { ReactElement, useContext } from 'react';
-
+import { useTranslation } from 'next-i18next';
 import { styled } from '@mui/material';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
-
-import i18next from '../../../../../i18n';
-const { useTranslation } = i18next;
 
 const AddBalanceLink = styled('span')(({ theme }) => ({
   color: theme.palette.primary.main,

@@ -1,10 +1,8 @@
 import React, { ReactElement } from 'react';
 import styles from './styles.module.scss';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import ReactPlayer from 'react-player/lazy';
 import { useUserAgent } from 'next-useragent';
-
-const { useTranslation } = i18next;
 
 interface Props {
   setshowVideo: Function;

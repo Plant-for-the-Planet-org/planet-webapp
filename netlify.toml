@@ -1,6 +1,6 @@
 [build]
-  command = "npm run build && npm run export"
-  publish = "out"
+  command = "npm run build"
+  publish = ".next"
 [[redirects]]
   from = "/account-activate/*"
   to = "/open-app"
@@ -62,6 +62,4 @@
   status = 301
   force = false
 [[plugins]]
-  package = "netlify-plugin-next-dynamic"
-[[plugins]]
-  package = "netlify-plugin-cache-nextjs"
+  package = "@netlify/plugin-nextjs"
