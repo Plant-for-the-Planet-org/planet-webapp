@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
 import tenantConfig from '../../../../../tenant.config';
 import DarkModeSwitch from '../../../common/Layout/DarkModeSwitch.tsx';
@@ -13,18 +13,14 @@ interface Props {
 }
 
 export default function Credits({ setCurrencyCode }: Props): ReactElement {
-  const { useTranslation } = i18next;
   const { i18n, t } = useTranslation(['common', 'maps']);
-  const [language, setLanguage] = React.useState(i18n.language);
   const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
+  const [language, setLanguage] = React.useState(i18n.language);
   const [selectedCountry, setSelectedCountry] = React.useState('DE');
   const [openLanguageModal, setLanguageModalOpen] = React.useState(false);
 
   const handleLanguageModalClose = () => {
     setLanguageModalOpen(false);
-  };
-  const handleLanguageModalOpen = () => {
-    setLanguageModalOpen(true);
   };
 
   const { embed } = React.useContext(ParamsContext);
@@ -42,7 +38,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
             }}
           >
             {`🌐 ${
-              language ? language.toUpperCase() : ''
+              i18n.language ? i18n.language.toUpperCase() : ''
             } • ${selectedCurrency}`}
           </div>
         )}
@@ -147,7 +143,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
       <SelectLanguageAndCountry
         openModal={openLanguageModal}
         handleModalClose={handleLanguageModalClose}
-        language={language}
+        language={i18n.language}
         setLanguage={setLanguage}
         setSelectedCurrency={setSelectedCurrency}
         selectedCountry={selectedCountry}

@@ -1,13 +1,9 @@
 import { ReactElement, useContext } from 'react';
 import { styled, Grid, Button, Divider } from '@mui/material';
-import i18next from '../../../../../i18n';
-import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { useTranslation } from 'next-i18next';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
 
 const AccountDetailsGrid = styled('article')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -16,6 +12,7 @@ const AccountDetailsGrid = styled('article')(({ theme }) => ({
   borderRadius: 9,
   width: '100%',
   boxShadow: theme.shadows[1],
+  fontSize: '0.875rem',
   '&.accountDetails--inactive': {
     opacity: '80%',
     backgroundColor: theme.palette.grey[200],
@@ -60,62 +57,14 @@ const SingleDetail = styled('div')(({ theme }) => ({
 }));
 
 interface AccountDetailsProps {
-  isPlanetCashActive: boolean;
   account: PlanetCash.Account;
-  updateAccount: (account: PlanetCash.Account) => void;
 }
 
-const AccountDetails = ({
-  isPlanetCashActive,
-  account,
-  updateAccount,
-}: AccountDetailsProps): ReactElement => {
+const AccountDetails = ({ account }: AccountDetailsProps): ReactElement => {
   const { t, i18n } = useTranslation('planetcash');
   const { token } = useContext(UserPropsContext);
-  const { handleError } = useContext(ErrorHandlingContext);
 
   const addBalanceLink = getDonationUrl('planetcash', token);
-
-  const handleDeactivate = async () => {
-    const res = await postAuthenticatedRequest(
-      `/app/planetCash/${account.id}/deactivate`,
-      {},
-      token,
-      handleError
-    );
-    if (res && !res['error_code']) {
-      updateAccount(res);
-    }
-  };
-
-  const handleActivate = async () => {
-    const res = await postAuthenticatedRequest(
-      `/app/planetCash/${account.id}/activate`,
-      {},
-      token,
-      handleError
-    );
-    if (res) {
-      if (!res['error_code']) {
-        updateAccount(res);
-      } else {
-        switch (res['error_code']) {
-          case 'active_account_exists':
-            handleError({
-              code: 400,
-              message: t(`accountError.${res['error_code']}`),
-            });
-            break;
-          default:
-            handleError({
-              code: 400,
-              message: t(`accountError.default`),
-            });
-            break;
-        }
-      }
-    }
-  };
 
   return (
     <Grid
@@ -187,19 +136,11 @@ const AccountDetails = ({
             </div>
           </Grid>
         )}
-        <Grid item xs={12}>
-          {account.isActive ? (
-            <Button onClick={handleDeactivate} color="warning">
-              {t('deactivateAccountButton')}
-            </Button>
-          ) : isPlanetCashActive ? (
+        {!account.isActive && (
+          <Grid item xs={12}>
             <p className="helpText">{t('accountInactiveHelpText')}</p>
-          ) : (
-            <Button onClick={handleActivate}>
-              {t('activateAccountButton')}
-            </Button>
-          )}
-        </Grid>
+          </Grid>
+        )}
       </Grid>
     </Grid>
   );

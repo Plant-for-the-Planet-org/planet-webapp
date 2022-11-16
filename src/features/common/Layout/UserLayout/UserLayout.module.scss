@@ -120,7 +120,7 @@
   }
   &:hover {
     cursor: pointer;
-    > svg > path {
+    > svg > path , > svg > g > path{
       fill: $primaryColor;
     }
     .navlinkTitle {
@@ -174,12 +174,19 @@
 .navlinkSubMenu {
   padding: 16px 20px;
   text-align: left;
-
-  justify-content: space-between;
+  justify-content: flex-start;
+  align-items: center;
   padding-left: 56px;
   &:hover {
     cursor: pointer;
     background-color: $backgroundColorDark;
+  }
+  span {
+    background-color: $primaryColor;
+    color: $light;
+    padding: 4px 8px;
+    margin-left: 8px;
+    border-radius: 4px;
   }
 }
 

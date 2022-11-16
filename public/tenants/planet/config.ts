@@ -1,4 +1,4 @@
-const config = {
+ const config = {
   // name of tenant
   tenantName: 'planet',
   // url of tenant home page
@@ -118,4 +118,5 @@ const config = {
   ],
   manifest: '/tenants/planet/manifest.json',
 };
+
 export default config;

@@ -6,11 +6,14 @@ import styles from '../../styles/ProjectsMap.module.scss';
 import BootstrapInput from '../../../common/InputTypes/BootstrapInput';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import { SingleProjectGeojson } from '../../../../features/common/types/project';
 interface Props {}
 
 export default function SitesDropdown(): ReactElement {
   const {
+    setSelectedPl,
     geoJson,
+    project,
     selectedSite,
     setSelectedSite,
     isMobile,
@@ -18,17 +21,25 @@ export default function SitesDropdown(): ReactElement {
     setIsPolygonMenuOpen,
   } = React.useContext(ProjectPropsContext);
   const { embed } = React.useContext(ParamsContext);
-  const { pathname } = useRouter();
+  const router = useRouter();
 
   const handleChangeSite = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setSelectedSite(event.target.value as string);
+    setSelectedPl(null);
+    setSelectedSite(event.target.value as number);
+    router.push(
+      `/${project.slug}/?site=${
+        geoJson.features[event.target.value].properties.id
+      }`
+    );
+
     if (isMobile) setIsPolygonMenuOpen(false);
   };
-
   const dropdownContainerClasses = `${
     embed === 'true' ? styles.embed_dropdownContainer : styles.dropdownContainer
   } ${
-    pathname === '/[p]' ? styles['dropdownContainer--reduce-right-offset'] : ''
+    router.pathname === '/[p]'
+      ? styles['dropdownContainer--reduce-right-offset']
+      : ''
   }`;
 
   const projectSitesButtonClasses = `${
@@ -36,7 +47,9 @@ export default function SitesDropdown(): ReactElement {
       ? styles.embed_projectSitesButton
       : styles.projectSitesButton
   } ${
-    pathname === '/[p]' ? styles['projectSitesButton--reduce-right-offset'] : ''
+    router.pathname === '/[p]'
+      ? styles['projectSitesButton--reduce-right-offset']
+      : ''
   }`;
 
   return (
@@ -69,13 +82,15 @@ export default function SitesDropdown(): ReactElement {
                     onChange={handleChangeSite}
                     input={<BootstrapInput />}
                   >
-                    {geoJson.features.map((site: any, index: any) => {
-                      return (
-                        <option key={index} value={index}>
-                          {site.properties.name}
-                        </option>
-                      );
-                    })}
+                    {geoJson?.features.map(
+                      (site: SingleProjectGeojson, index: number) => {
+                        return (
+                          <option key={index} value={index}>
+                            {site.properties.name}
+                          </option>
+                        );
+                      }
+                    )}
                   </NativeSelect>
                 </FormControl>
               </div>

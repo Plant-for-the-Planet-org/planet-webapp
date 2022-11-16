@@ -3,14 +3,13 @@ import MuiCircularProgress, {
 } from '@mui/material/CircularProgress';
 import React from 'react';
 import treeCounterStyles from './TreeCounter.module.scss';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import EditIcon from '../../../../public/assets/images/icons/manageProjects/Pencil';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
 import { styled } from '@mui/material/styles';
-const { useTranslation } = i18next;
 
 const CircularProgress = styled(MuiCircularProgress)({
   '&.MuiCircularProgress-root': {

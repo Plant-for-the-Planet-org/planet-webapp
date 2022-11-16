@@ -76,6 +76,7 @@
   "copiedToClipboard": "Copied to clipboard!",
   "close": "Close",
   "logout": "Logout",
+  "document": "Platform Documentation (EN)",
   "featured": "Featured",
   "treeMapper": "TreeMapper",
   "overview": "Overview",
@@ -92,5 +93,9 @@
   "internalServerError": "Internal Server Error - Please try again later!",
   "connectionError": "Could not reach the server. Please check your internet connection.",
   "validationFailed": "Validation Failed!",
-  "add": "Add"
+  "add": "Add",
+  "modalTitle": "Cancel all subscriptions to proceed",
+  "modalSubtitle": "Please cancel your subscriptions first",
+  "deleteCondition": "Before proceeding, make sure you've cancelled all subscriptions.",
+  "showSubscriptions": "Show my Subscriptions"
 }

@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import dynamic from 'next/dynamic';
 import MuiButton from '../../common/InputTypes/MuiButton';
 import ProjectLoader from '../../common/ContentLoaders/Projects/ProjectLoader';
-import i18next from '../../../../i18n/';
+import { useTranslation } from 'next-i18next';
 import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../public/assets/images/NotFound';
 import Header from '../components/projects/Header';
@@ -19,7 +19,6 @@ interface Props {
   setsearchedProjects: any;
 }
 
-const { useTranslation } = i18next;
 const ProjectSnippet = dynamic(() => import('../components/ProjectSnippet'), {
   loading: () => <ProjectLoader />,
 });
@@ -36,7 +35,7 @@ function ProjectsList({
   const isEmbed = embed === 'true';
   const [scrollY, setScrollY] = React.useState(0);
   const [hideSidebar, setHideSidebar] = React.useState(isEmbed);
-  const { t, ready } = useTranslation(['donate', 'country']);
+  const { t, ready } = useTranslation(['donate', 'country', 'maps']);
 
   const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
 
@@ -166,7 +165,7 @@ function ProjectsList({
           variant={hideSidebar ? 'outlined' : 'contained'}
           className="toggleButton"
         >
-          {hideSidebar ? 'Show Project List' : 'Hide Project List'}
+          {hideSidebar ? t('maps:showProjectList') : t('maps:hideProjectList')}
         </MuiButton>
       )}
       {showProjects ? (

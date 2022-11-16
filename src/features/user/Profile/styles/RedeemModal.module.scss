@@ -5,8 +5,8 @@
   background-color: $backgroundColor;
   border: 0px;
   border-radius: 8px;
-  padding: 30px 56px;
-  max-width: 80vw;
+  padding: 20px 56px;
+  max-width: 90vw;
   min-width: 320px;
   overflow: hidden;
   outline: none;
@@ -18,9 +18,97 @@
     font-weight: bold;
     color: $primaryFontColor;
   }
+  >div {
+    >button{
+      margin-top: 6px;
+    }
+  }
+ }
+
+ .successfullRedeemModal {
+    padding: 11px 18px 17px;
+    max-width: 80vw;
+    min-width: 427px;
+ }
+ 
+ .errorAndSpinnerDiv {
+   justify-content: center;
+   margin-top: 10px;
+ }
+ 
+ .cancelIcon {
+   width: 1rem;
+   cursor: pointer;
+   position: relative;
+   bottom: 15px;
+   left: 11rem;
+   top: -11px
+  }
+
+  .fixModal {
+    max-width: 400px;
+    min-height: 260px;
+    min-width: 400px;
+    align-items: center;
+    justify-content: center;
+    padding-top: 30px;
+    position: relative;
+   }
+
+  .crossButtonDiv {
+    position:absolute;
+    left: 362px;
+    top: 13px
+   }
+   
+  .crossButton {
+     width: 15px;
+     cursor: pointer;
+    }
+   
+  .redeemCode{
+     margin-top: 24px;
+   }
+
+ .routeRedeemModal {
+  background-color: $backgroundColor;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 0px;
+  outline: none;
+  border-radius: 8px;
+  position: relative;
+  max-width: 400px;
+  min-height: 275px;
+  min-width: 438px;
+  padding: 20px 56px;
+ }
+
+.crossDiv {
+  position: absolute;
+  top: 11px;
+  left: 400px;
 }
 
+.crossWidth {
+  width: 17px;
+  cursor: pointer;
+}
+
+
+.redeemAnotherCodeDiv {
+  margin-top: 12px;
+}
+
+.RedeemTitle {
+  font-weight: bold;
+}
+
+
 .modalFinal {
+
   background-color: $backgroundColor;
   border: 0px;
   border-radius: 8px;
@@ -35,7 +123,7 @@
 }
 
 .inputField {
-  margin-top: 20px;
+  margin-top: 10px;
   min-width: 208px;
 }
 
@@ -84,7 +172,7 @@
 }
 
 .codeTreeCount {
-  font-size: fontXXXLarge;
+  font-size: 1.5rem;
   font-weight: bold;
   display: flex;
   flex-direction: row;
@@ -92,7 +180,7 @@
   align-items: baseline;
   color: $primaryColor;
   > span {
-    font-size: 20px;
+    font-size: 25px;
     margin-left: 6px;
   }
 }

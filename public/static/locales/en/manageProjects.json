@@ -41,6 +41,7 @@
   "yearOfAbandonment": "Approx. year of Abandonment",
   "firstTreePlanted": "First tree planted",
   "plantingDensity": "Planting Density",
+  "maxPlantingDensity": "Max Planting Density (optional)",
   "employeeCount": "Employee Count",
   "endangeredSpeciesValidation": "Not a Valid Input",
   "endangeredSpecies": "Endangered Species",
@@ -175,7 +176,7 @@
   "ownershipType": "Ownership Type",
   "landOwnershipType": "Land Ownership Type",
   "restorationProject": "Restoration Project",
-  "addProjetDescription": "You're few steps away from showcasing your work on Plant-for-the-planet platform.",
+  "addProjetDescription": "You're few steps away from showcasing your work on the Plant-for-the-planet platform. Important: Please create projects in English only",
   "addProjetContact": "If you need any help contact us at ",
   "supportLink": "support@plant-for-the-planet.org",
   "wrongCoordinates": "Wrong Coordinates",
@@ -186,8 +187,11 @@
   "validation": "{{fieldName}} is Invalid",
   "date": "Date",
   "plantingDensityValidation": "Please enter Planting Density",
+  "maxPlantingDensityValidation": "please enter Maximum Planting Density",
   "onlyEnglish": "Please create/edit projects in English only. Translations of Projects are managed automatically by Plant-for-the-Planet.",
   "since": "since",
   "Since": "Since",
-  "and": "and"
+  "and": "and",
+  "errorForMaxPlantingDensity": "This value should be greater than planting density",
+  "managePayoutsButton": "Manage Payouts"
 }

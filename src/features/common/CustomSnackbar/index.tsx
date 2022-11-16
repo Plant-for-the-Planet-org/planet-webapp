@@ -4,8 +4,9 @@ import { ReactElement } from 'react';
 import { styled } from '@mui/material/styles';
 
 interface SnackbarProps {
-  snackbarText: String;
+  snackbarText: string;
   isVisible: boolean;
+  /** Include operations that need to take place when the snackbar is closed */
   handleClose: () => void;
 }
 
@@ -15,6 +16,9 @@ const Alert = styled(MuiAlert)(({ theme }) => {
   };
 });
 
+/**
+ * Component that renders a temporary snackbar to indicate a success message
+ */
 export default function CustomSnackbar({
   snackbarText,
   isVisible,

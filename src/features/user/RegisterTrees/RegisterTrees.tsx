@@ -1,8 +1,6 @@
-import { MenuItem } from '@mui/material';
-
+import { MenuItem, SxProps } from '@mui/material';
 import * as d3 from 'd3-ease';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import MapGL, {
@@ -10,8 +8,7 @@ import MapGL, {
   Marker,
   NavigationControl,
 } from 'react-map-gl';
-import i18next from '../../../../i18n';
-import { ThemeContext } from '../../../theme/themeContext';
+import { useTranslation } from 'next-i18next';
 import {
   getAuthenticatedRequest,
   postAuthenticatedRequest,
@@ -28,17 +25,30 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import themeProperties from '../../../theme/themeProperties';
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   ssr: false,
   loading: () => <p></p>,
 });
 
+const dialogSx: SxProps = {
+  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
+    backgroundColor: themeProperties.primaryColor,
+    color: '#fff',
+  },
+
+  '& .MuiPickersDay-dayWithMargin': {
+    '&:hover': {
+      backgroundColor: themeProperties.primaryColor,
+      color: '#fff',
+    },
+  },
+};
+
 interface Props {}
 
-const { useTranslation } = i18next;
 export default function RegisterTrees({}: Props) {
-  const router = useRouter();
   const { user, token, contextLoaded } = React.useContext(UserPropsContext);
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {
@@ -122,10 +132,10 @@ export default function RegisterTrees({}: Props) {
     plantDate: new Date(),
     geometry: {},
   };
-  const { register, handleSubmit, errors, control, reset, setValue, watch } =
-    useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
-
-  const treeCount = watch('treeCount');
+  const { register, handleSubmit, errors, control } = useForm({
+    mode: 'onBlur',
+    defaultValues: defaultBasicDetails,
+  });
 
   const onTreeCountChange = (e: any) => {
     if (Number(e.target.value) < 25) {
@@ -212,7 +222,6 @@ export default function RegisterTrees({}: Props) {
     contributionGUID,
     slug: user.slug,
   };
-  const { theme } = React.useContext(ThemeContext);
 
   return ready ? (
     <div className="profilePage">
@@ -271,6 +280,9 @@ export default function RegisterTrees({}: Props) {
                         minDate={new Date(new Date().setFullYear(1950))}
                         inputFormat="MMMM d, yyyy"
                         maxDate={new Date()}
+                        DialogProps={{
+                          sx: dialogSx,
+                        }}
                       />
                     )}
                     name="plantDate"

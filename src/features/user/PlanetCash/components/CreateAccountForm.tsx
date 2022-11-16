@@ -1,16 +1,17 @@
 import { ReactElement, useState, useContext, FormEvent } from 'react';
 import { Button, CircularProgress } from '@mui/material';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
-import CustomSnackbar from '../../Widget/DonationLink/CustomSnackbar';
+import CustomSnackbar from '../../../common/CustomSnackbar';
 import StyledForm from '../../../common/Layout/StyledForm';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
+import FormHeader from '../../../common/Layout/Forms/FormHeader';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { CountryType } from '../../../common/types/country';
 import { useRouter } from 'next/router';
 
-const { useTranslation } = i18next;
 interface Props {
   isPlanetCashActive: boolean;
   allowedCountries: CountryType[];
@@ -21,6 +22,7 @@ const CreateAccountForm = ({
   isPlanetCashActive,
 }: Props): ReactElement | null => {
   const { t, ready } = useTranslation(['planetcash', 'country']);
+  const { setAccounts } = usePlanetCash();
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
@@ -39,12 +41,13 @@ const CreateAccountForm = ({
       handleError
     );
     if (res?.id) {
-      // show success message
+      // show success message and update accounts in context
       setIsAccountCreated(true);
+      setAccounts([res]);
       // go to accounts tab
       setTimeout(() => {
         router.push('/profile/planetcash');
-      }, 3000);
+      }, 1000);
     } else {
       setIsProcessing(false);
       if (res && res['error_type'] === 'planet_cash_account_error') {
@@ -81,8 +84,10 @@ const CreateAccountForm = ({
   if (ready) {
     return (
       <>
-        <StyledForm onSubmit={onSubmit}>
+        <FormHeader>
           <h2 className="formTitle">{t('createAccountTitleText')}</h2>
+        </FormHeader>
+        <StyledForm onSubmit={onSubmit}>
           <div className="inputContainer">
             <AutoCompleteCountry
               label={t('labelCountry')}

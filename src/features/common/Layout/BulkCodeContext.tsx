@@ -9,21 +9,6 @@ import {
 } from 'react';
 import { BulkCodeMethods } from '../../../utils/constants/bulkCodeConstants';
 
-export interface APISingleProject {
-  type: string;
-  geometry: unknown;
-  properties: {
-    [index: string]: unknown;
-    id: string;
-    name: string;
-    slug: string;
-    allowDonations: boolean;
-    purpose: string;
-    currency: string;
-    unitCost: number;
-  };
-}
-
 export interface PlanetCashAccount {
   guid: string;
   currency: string;

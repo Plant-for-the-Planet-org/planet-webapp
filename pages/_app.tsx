@@ -10,7 +10,7 @@ import '../src/theme/global.scss';
 import './../src/features/projects/styles/Projects.scss';
 import './../src/features/common/Layout/Navbar/Navbar.scss';
 import ThemeProvider from '../src/theme/themeContext';
-import i18next from '../i18n';
+import { useTranslation } from 'next-i18next';
 import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
@@ -33,6 +33,9 @@ import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
 import QueryParamsProvider from '../src/features/common/Layout/QueryParamsContext';
 import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
+import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
+import { appWithTranslation } from 'next-i18next';
+import nextI18NextConfig from '../next-i18next.config.js';
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -89,7 +92,8 @@ const onRedirectCallback = (appState: any) => {
   if (appState) Router.replace(appState?.returnTo || '/');
 };
 
-export default function PlanetWeb({ Component, pageProps, err }: any) {
+const PlanetWeb = ({ Component, pageProps }: any) => {
+  const { i18n } = useTranslation();
   const router = useRouter();
   const [isMap, setIsMap] = React.useState(false);
   const [currencyCode, setCurrencyCode] = React.useState('');
@@ -113,8 +117,21 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
     storeConfig();
   }, []);
   React.useEffect(() => {
-    i18next.initPromise.then(() => setInitialized(true));
-  }, []);
+    if (i18n && i18n.isInitialized) {
+      setInitialized(true);
+    }
+  }, [i18n, i18n.isInitialized]);
+
+  React.useEffect(() => {
+    if (
+      localStorage.getItem('language') !== null &&
+      i18n &&
+      i18n.isInitialized
+    ) {
+      const languageFromLocalStorage: any = localStorage.getItem('language');
+      i18n.changeLanguage(languageFromLocalStorage);
+    }
+  }, [i18n, i18n.isInitialized]);
 
   React.useEffect(() => {
     if (
@@ -223,32 +240,34 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
                   <QueryParamsProvider>
                     <UserPropsProvider>
                       <PlanetCashProvider>
-                        <Layout>
-                          <ProjectPropsProvider>
-                            <BulkCodeProvider>
-                              {isMap ? (
-                                <>
-                                  {project ? (
-                                    <MapLayout />
-                                  ) : projects ? (
-                                    <MapLayout />
-                                  ) : null}
-                                  <div
-                                    style={
-                                      config.tenantName === 'planet' ||
-                                      config.tenantName === 'ttc'
-                                        ? {}
-                                        : { display: 'none' }
-                                    }
-                                  >
-                                    <PlayButton setshowVideo={setshowVideo} />
-                                  </div>
-                                </>
-                              ) : null}
-                              <Component {...ProjectProps} />
-                            </BulkCodeProvider>
-                          </ProjectPropsProvider>
-                        </Layout>
+                        <PayoutsProvider>
+                          <Layout>
+                            <ProjectPropsProvider>
+                              <BulkCodeProvider>
+                                {isMap ? (
+                                  <>
+                                    {project ? (
+                                      <MapLayout />
+                                    ) : projects ? (
+                                      <MapLayout />
+                                    ) : null}
+                                    <div
+                                      style={
+                                        config.tenantName === 'planet' ||
+                                        config.tenantName === 'ttc'
+                                          ? {}
+                                          : { display: 'none' }
+                                      }
+                                    >
+                                      <PlayButton setshowVideo={setshowVideo} />
+                                    </div>
+                                  </>
+                                ) : null}
+                                <Component {...ProjectProps} />
+                              </BulkCodeProvider>
+                            </ProjectPropsProvider>
+                          </Layout>
+                        </PayoutsProvider>
                       </PlanetCashProvider>
                     </UserPropsProvider>
                   </QueryParamsProvider>
@@ -260,4 +279,6 @@ export default function PlanetWeb({ Component, pageProps, err }: any) {
       </ErrorHandlingProvider>
     );
   }
-}
+};
+
+export default appWithTranslation(PlanetWeb, nextI18NextConfig);

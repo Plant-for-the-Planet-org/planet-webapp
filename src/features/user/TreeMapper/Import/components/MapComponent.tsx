@@ -1,23 +1,10 @@
 import React, { ReactElement } from 'react';
 import * as turf from '@turf/turf';
-import * as d3 from 'd3-ease';
-import ReactMapboxGl, {
-  ZoomControl,
-  Source,
-  Layer,
-  GeoJSONLayer,
-} from 'react-mapbox-gl';
-import DrawControl from 'react-mapbox-gl-draw';
+import ReactMapboxGl, { ZoomControl, GeoJSONLayer } from 'react-mapbox-gl';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
-import styles from '../Import.module.scss';
-import Dropzone from 'react-dropzone';
-import tj from '@mapbox/togeojson';
-import i18next from '../../../../../../i18n';
 import WebMercatorViewport from '@math.gl/web-mercator';
-import gjv from 'geojson-validation';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
 
-const { useTranslation } = i18next;
 interface Props {
   geoJson: any;
   setGeoJson: Function;
@@ -29,11 +16,10 @@ const Map = ReactMapboxGl({ maxZoom: 15 });
 export default function MapComponent({
   geoJson,
   setGeoJson,
-  setActiveMethod,
 }: Props): ReactElement {
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
-  const { t, i18n, ready } = useTranslation(['manageProjects']);
+
   const [viewport, setViewPort] = React.useState({
     height: '100%',
     width: '100%',
@@ -69,23 +55,6 @@ export default function MapComponent({
       }
     });
   }, []);
-
-  // const mapParentRef = React.useRef(null);
-  const drawControlRef = React.useRef(null);
-
-  const onDrawCreate = ({ features }: any) => {
-    if (drawControlRef.current) {
-      const geo = drawControlRef.current.draw.getAll();
-      setGeoJson(geo.features[0].geometry);
-    }
-  };
-
-  const onDrawUpdate = ({ features }: any) => {
-    if (drawControlRef.current) {
-      const geo = drawControlRef.current.draw.getAll();
-      setGeoJson(geo.features[0].geometry);
-    }
-  };
 
   React.useEffect(() => {
     if (geoJson) {

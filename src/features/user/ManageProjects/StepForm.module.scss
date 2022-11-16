@@ -36,6 +36,50 @@
   }
 }
 
+.inputEndAdornment {
+  margin-left: 4px;
+  width: 100%;
+  text-align: right;
+  font-size: 14px;
+}
+
+.hyphen {
+  font-size: 40px;
+  margin-top: 16px;
+  @include xsPhoneView {
+    writing-mode: vertical-rl; 
+    margin-top: 0;
+    margin-bottom: -19px;
+    margin-right: 126px;
+  }
+  @include smTabletView {
+    writing-mode: vertical-rl; 
+    margin-top: 0;
+    margin-bottom: -19px;
+    margin-right: 126px;    
+  }
+  @include mdTabletView {
+    writing-mode: horizontal-tb;
+    margin-top: 14px;
+    margin-bottom: 0;
+    margin-right: 0; 
+  }
+  
+}
+.density {
+ display: flex;
+ @include xsPhoneView {
+   flex-direction: column;
+ }
+ @include smTabletView {
+  flex-direction: column;
+}
+@include mdTabletView {
+  flex-direction: row;
+}
+
+}
+
 .reviewContent {
   display: flex;
   flex-direction: column;
@@ -75,7 +119,8 @@
   max-width: 320px;
   justify-content: space-between;
   align-items: center;
-}
+ }
+
 
 .skipBasicButton {
   width: 89px;
@@ -85,6 +130,17 @@
   @include xsPhoneView {
     margin-top: 10px;
   }
+}
+
+.skipDetailAnalysis {
+  width: 89px;
+  margin-right: 45px;
+}
+
+.saveAndContinueDetailAnalysis {
+  width:169px;
+  height: 46px;
+  margin-right: 20px;
 }
 
 .reviewButtons {
@@ -138,6 +194,10 @@
   flex-wrap: wrap;
   max-width: 320px;
   min-width: 320px;
+}
+
+.formFieldFix {
+  position: relative;
 }
 .latitudeInput {
   width: fit-content !important;
@@ -711,6 +771,7 @@
     text-align: center;
     border: 2px solid $primaryColor;
     display: none;
+    left: -290px
   }
   &:hover,
   &:active {
@@ -719,6 +780,18 @@
       display: block;
     }
   }
+}
+
+.infoIconDiv {
+  position: absolute;
+  top: -9px;
+  right: -292px;
+  width:fit-content
+}
+
+.causeOfDegradation {
+  position: absolute;
+  right: 13px;
 }
 
 // white modal

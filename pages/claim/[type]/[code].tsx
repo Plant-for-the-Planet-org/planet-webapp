@@ -1,32 +1,22 @@
 import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
-import styles from './../../../src/features/user/Profile/styles/RedeemModal.module.scss';
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
-import Close from '../../../public/assets/images/icons/headerIcons/close';
-import i18next from './../../../i18n';
-import tenantConfig from './../../../tenant.config';
+import { useTranslation } from 'next-i18next';
+import { GetStaticPaths } from 'next';
 import LandingSection from '../../../src/features/common/Layout/LandingSection';
-import { getFormattedNumber } from '../../../src/utils/getFormattedNumber';
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
-import ShareOptions from '../../../src/features/common/ShareOptions/ShareOptions';
-import { styled } from '@mui/material';
+import {
+  SuccessfullyRedeemed,
+  RedeemCodeFailed,
+} from '../../../src/features/common/RedeemMicro/RedeemCode';
+import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-const { useTranslation } = i18next;
+export type ClaimCode1 = string | null;
 
-interface Props {}
-
-function ClaimDonation({}: Props): ReactElement {
-  const { t, i18n, ready } = useTranslation([
-    'me',
-    'common',
-    'donate',
-    'redeem',
-  ]);
-
-  const config = tenantConfig();
+function ClaimDonation(): ReactElement {
+  const { t, ready } = useTranslation(['redeem']);
 
   const router = useRouter();
 
@@ -34,108 +24,70 @@ function ClaimDonation({}: Props): ReactElement {
     React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState();
-  const [code, setCode] = React.useState();
-  const [type, setType] = React.useState();
-  const [codeValidated, setCodeValidated] = React.useState(false);
-  const [validCodeData, setValidCodeData] = React.useState();
-
-  const [routerReady, setRouterReady] = React.useState(false);
-
-  const imageRef = React.createRef();
-  const sendRef = () => imageRef;
-
-  const [textCopiedsnackbarOpen, setTextCopiedSnackbarOpen] =
-    React.useState(false);
-  const handleTextCopiedSnackbarOpen = () => {
-    setTextCopiedSnackbarOpen(true);
-  };
-
-  const handleTextCopiedSnackbarClose = (
-    event?: React.SyntheticEvent,
-    reason?: string
-  ) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setTextCopiedSnackbarOpen(false);
-  };
-
-  const Alert = styled(MuiAlert)(({ theme }) => {
-    return {
-      backgroundColor: theme.palette.primary.main,
-    };
-  });
-
-  const [codeRedeemed, setCodeRedeemed] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState<ClaimCode1>('');
+  const [code, setCode] = React.useState<string | string[] | null>('');
+  const [redeemedCodeData, setRedeemedCodeData] = React.useState<
+    RedeemedCodeData | undefined
+  >(undefined);
 
   React.useEffect(() => {
     if (router && router.query.type && router.query.code) {
-      if (
-        router.query.type !== 'donation' &&
-        router.query.type !== 'donor' &&
-        router.query.type !== 'gift'
-      ) {
+      if (router.query.type !== 'donation' && router.query.type !== 'gift') {
         setErrorMessage(ready ? t('redeem:invalidType') : '');
-      } else {
         setCode(router.query.code);
-        setType(router.query.type);
-        setRouterReady(true);
+      } else {
         setErrorMessage('');
       }
     }
-  }, [router]);
+  }, [router, router.query.type, ready]);
+  const redeemAnotherCode = () => {
+    router.push(`/profile/redeem/${code}?inputCode=${true}`);
 
-  async function validateCode(code: any, type: any) {
-    setIsUploadingData(true);
+    setRedeemedCodeData(undefined);
+    setErrorMessage('');
+  };
+
+  const closeRedeem = () => {
+    if (typeof window !== 'undefined') {
+      router.push(`/`);
+    }
+  };
+
+  async function redeemingCode(code: string | string[]): Promise<void> {
     const submitData = {
-      type: type,
       code: code,
     };
     if (contextLoaded && user) {
-      const userLang = localStorage.getItem('language') || 'en';
       postAuthenticatedRequest(
-        `/api/v1.3/${userLang}/validateCode`,
+        `/app/redeem`,
         submitData,
         token,
         handleError
       ).then((res) => {
-        if (res.code === 401) {
-          setErrorMessage(res.message);
-          setIsUploadingData(false);
-        } else if (res.status === 'error') {
-          setErrorMessage(res.errorText || t('me:wentWrong'));
-          setIsUploadingData(false);
-        } else if (res.status === 'success') {
-          setCodeValidated(true);
-          setValidCodeData(res);
-          setIsUploadingData(false);
+        if (res.error_code === 'invalid_code') {
+          setErrorMessage(t('redeem:invalidCode'));
+        } else if (res.error_code === 'already_redeemed') {
+          setErrorMessage(t('redeem:alreadyRedeemed'));
+        } else if (res.status === 'redeemed') {
+          setRedeemedCodeData(res);
         }
       });
     }
   }
-
-  // Check if the user is logged in or not.
   React.useEffect(() => {
-    // If the user is logged in -
-    // Validate the code automatically
-    // Once validated ask user to claim their donation
-    // Once claimed user can share the donation
-    // From here user can go back to home by clicking X
-    if (contextLoaded && user) {
-      // validate code
-      if (routerReady && code && type) {
-        validateCode(code, type);
-      }
+    if (router.query.code) {
+      setCode(router.query.code);
     }
+  }, [router.query.code]);
 
+  // // Check if the user is logged in or not.
+  React.useEffect(() => {
     // If the user is not logged in - send the user to log in page, store the claim redirect link in the localstorage.
     // When the user logs in, redirect user to the claim link from the localstorage and clear the localstorage.
     // For this  fetch the link from the storage, clears the storage and then redirects the user using the link
-    else if (contextLoaded && !user) {
+    if (contextLoaded && !user) {
       // store the claim link in localstorage
-      if (routerReady && typeof window !== 'undefined') {
+      if (typeof window !== 'undefined') {
         localStorage.setItem('redirectLink', window.location.href);
         loginWithRedirect({
           redirectUri: `${process.env.NEXTAUTH_URL}/login`,
@@ -143,233 +95,79 @@ function ClaimDonation({}: Props): ReactElement {
         });
       }
     }
-  }, [contextLoaded, user, code]);
+  }, [contextLoaded, user]);
 
-  async function redeemCode(code: any, type: any) {
-    setIsUploadingData(true);
-    const submitData = {
-      type: type,
-      code: code,
-    };
-    if (contextLoaded && user) {
-      const userLang = localStorage.getItem('language') || 'en';
-      postAuthenticatedRequest(
-        `/api/v1.3/${userLang}/convertCode`,
-        submitData,
-        token,
-        handleError
-      ).then((res) => {
-        if (res.code === 401) {
-          setErrorMessage(res.message);
-          setIsUploadingData(false);
-        } else if (!res.response || res.response.status === 'error') {
-          setErrorMessage(res.errorText || t('me:wentWrong'));
-          setIsUploadingData(false);
-        } else if (res.response.status === 'success') {
-          setCodeRedeemed(true);
-          setIsUploadingData(false);
-          setCodeValidated(false);
-        }
-      });
+  React.useEffect(() => {
+    //redeem code using route
+    if (user && contextLoaded) {
+      if (ready && router.query.type && router.query.code) {
+        redeemingCode(router.query.code);
+      }
     }
-  }
+  }, [user, contextLoaded, ready, router.query.type, router.query.code]);
 
-  const closeRedeem = () => {
-    setCodeValidated(false);
-    setCodeRedeemed(false);
-    if (typeof window !== 'undefined') {
-      router.push(`/`);
-    }
-  };
-
-  return ready ? (
-    routerReady ? (
-      <LandingSection>
-        {codeRedeemed && validCodeData ? (
-          <>
-            <div className={styles.modalFinal}>
-              <div className={styles.header}>
-                <button
-                  id={'closeIconCode'}
-                  onClick={() => closeRedeem()}
-                  className={styles.headerCloseIcon}
-                >
-                  <Close />
-                </button>
-                <div className={styles.headerTitle}>
-                  {t('redeem:congratulations')}
-                </div>
-              </div>
-
-              <div className={styles.thankyouImageContainer}>
-                <div className={styles.thankyouImage}>
-                  <div className={styles.thankyouImageHeader}>
-                    <p
-                      dangerouslySetInnerHTML={{
-                        __html: t('donate:thankyouHeaderText'),
-                      }}
-                    />
-                  </div>
-                  <div className={styles.donationCount}>
-                    {validCodeData.tpos?.length > 0 &&
-                      t('redeem:myPlantedTreesByOrg', {
-                        count: Number(validCodeData.treeCount),
-                        formattedNumber: getFormattedNumber(
-                          i18n.language,
-                          Number(validCodeData.treeCount)
-                        ),
-                        tpoName: validCodeData.tpos[0]?.tpoName,
-                      })}
-                    <p className={styles.donationTenant}>
-                      {t('donate:plantTreesAtURL', { url: config.tenantURL })}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* hidden div for image download */}
-              <div style={{ width: '0px', height: '0px', overflow: 'hidden' }}>
-                <div className={styles.tempThankYouImage} ref={imageRef}>
-                  <div className={styles.tempthankyouImageHeader}>
-                    <p
-                      dangerouslySetInnerHTML={{
-                        __html: t('donate:thankyouHeaderText'),
-                      }}
-                    />
-                  </div>
-                  <p className={styles.tempDonationCount}>
-                    {validCodeData.tpos?.length > 0 &&
-                      t('redeem:myPlantedTreesByOrg', {
-                        count: Number(validCodeData.treeCount),
-                        formattedNumber: getFormattedNumber(
-                          i18n.language,
-                          Number(validCodeData.treeCount)
-                        ),
-                        tpoName: validCodeData.tpos[0]?.tpoName,
-                      })}
-                  </p>
-                  <p className={styles.tempDonationTenant}>
-                    {t('donate:plantTreesAtURL', { url: config.tenantURL })}
-                  </p>
-                </div>
-              </div>
-
-              <div className={styles.shareOptions}>
-                <ShareOptions
-                  treeCount={getFormattedNumber(
-                    i18n.language,
-                    Number(validCodeData.treeCount)
-                  )}
-                  sendRef={sendRef}
-                  handleTextCopiedSnackbarOpen={handleTextCopiedSnackbarOpen}
-                />
-              </div>
-
-              <Snackbar
-                open={textCopiedsnackbarOpen}
-                autoHideDuration={4000}
-                onClose={handleTextCopiedSnackbarClose}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-              >
-                <div>
-                  <Alert
-                    elevation={6}
-                    variant="filled"
-                    onClose={handleTextCopiedSnackbarClose}
-                    severity="success"
-                  >
-                    {t('donate:copiedToClipboard')}
-                  </Alert>
-                </div>
-              </Snackbar>
-            </div>
-          </>
+  return ready && user ? (
+    <LandingSection>
+      <>
+        {redeemedCodeData ? (
+          <SuccessfullyRedeemed
+            redeemedCodeData={redeemedCodeData}
+            redeemAnotherCode={redeemAnotherCode}
+            closeRedeem={closeRedeem}
+          />
         ) : (
-          <div className={styles.modal}>
-            {codeValidated && validCodeData ? (
-              <>
-                {errorMessage && (
-                  <span className={styles.formErrors}>{errorMessage}</span>
-                )}
-
-                <div className={styles.codeTreeCount}>
-                  {getFormattedNumber(
-                    i18n.language,
-                    Number(validCodeData.treeCount)
-                  )}
-                  <span>
-                    {t('common:tree', {
-                      count: Number(validCodeData.treeCount),
-                    })}
-                  </span>
-                </div>
-
-                {validCodeData.tpos?.length > 0 && (
-                  <div className={styles.plantedBy}>
-                    <span>{t('common:plantedBy')}</span>
-                    <p>{validCodeData.tpos[0].tpoName}</p>
-                  </div>
-                )}
-
-                <div
-                  onClick={() => redeemCode(code, type)}
-                  className="primaryButton"
-                  style={{ maxWidth: '200px', marginTop: '24px' }}
-                >
-                  {isUploadingData ? (
-                    <div className={styles.spinner}></div>
-                  ) : (
-                    t('redeem:addToMyTrees')
-                  )}
-                </div>
-              </>
-            ) : (
-              <>
-                <div>
-                  {t('redeem:validating')} {code}
-                </div>
-
-                {errorMessage && (
-                  <span className={styles.formErrors}>{errorMessage}</span>
-                )}
-                <div
-                  onClick={() => validateCode(code, type)}
-                  className="primaryButton"
-                  style={{ maxWidth: '200px', marginTop: '24px' }}
-                >
-                  {isUploadingData ? (
-                    <div className={styles.spinner}></div>
-                  ) : (
-                    t('redeem:validateCode')
-                  )}
-                </div>
-              </>
-            )}
-          </div>
+          // if redeem code is invalid and  redeem process failed
+          <RedeemCodeFailed
+            errorMessage={errorMessage}
+            code={code}
+            redeemAnotherCode={redeemAnotherCode}
+            closeRedeem={closeRedeem}
+          />
         )}
-      </LandingSection>
-    ) : (
-      <LandingSection>
-        <div className={styles.modalFinal}>
-          <div className={styles.header}>
-            <div
-              onClick={() => closeRedeem()}
-              className={styles.headerCloseIcon}
-            >
-              <Close />
-            </div>
-            <div className={styles.headerTitle}>
-              {errorMessage && (
-                <span className={styles.formErrors}>{errorMessage}</span>
-              )}
-            </div>
-          </div>
-        </div>
-      </LandingSection>
-    )
+      </>
+    </LandingSection>
   ) : (
     <></>
   );
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};
+
+export async function getStaticProps({ locale }: any) {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donationLink',
+          'editProfile',
+          'giftfunds',
+          'leaderboard',
+          'managePayouts',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTrees',
+          'tenants',
+          'treemapper',
+        ],
+        null,
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+      )),
+    },
+  };
 }
 
 export default ClaimDonation;

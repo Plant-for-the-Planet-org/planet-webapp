@@ -5,7 +5,7 @@ import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import CheckCircle from '../../../../../public/assets/images/icons/CheckCircle';
 import styles from '../RegisterModal.module.scss';
 import UploadImages from './UploadImages';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 
 interface Props {
@@ -15,7 +15,6 @@ interface Props {
   slug: any;
 }
 
-const { useTranslation } = i18next;
 const StaticMap = dynamic(() => import('./StaticMap'), {
   ssr: false,
   loading: () => <p></p>,

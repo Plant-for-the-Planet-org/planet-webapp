@@ -1,29 +1,21 @@
 {
-  "bulkCodesTitle": "Bulk-Codes ausgeben",
+  "bulkCodesTitle": "Bulk-Codes erzeugen",
   "bulkCodesDescription1": "Mit PlanetCash kannst du Tausende von Codes auf einmal erzeugen.",
   "bulkCodesDescription2": "Mit dieser Funktion kannst du Codes für benutzerdefinierte Zertifikate, Geschenkkarten, Spenden im Namen von Nutzern und einlösbare Codes erstellen, die du mit deinen Produkten verknüpfen kannst.",
   "tabCreationMethod": "Herstellungsmethode",
   "tabSelectProject": "Projekt aussuchen",
-  "tabIssueCodes": "Codes ausgeben",
-  "issueCodes": "Codes ausgeben",
-  "issuingCodes": "Codes ausgeben...",
+  "tabIssueCodes": "Codes erzeugen",
+  "issueCodes": "Codes erzeugen",
+  "issuingCodes": "erzeuge Codes...",
   "importMethodText": {
     "title": "Importieren",
     "subtitle": "Verwende diese Methode, wenn eines der folgenden Kriterien auf deinen Anwendungsfall zutrifft:",
-    "details": [
-      "Ich möchte für jeden Code den Namen des Empfängers oder seine E-Mail-Adresse angeben.",
-      "Ich möchte, dass Plant-for-the-Planet nach der Erstellung automatisch eine E-Mail an die Empfänger sendet (optional).",
-      "Ich möchte Codes für verschiedene Zahlen von Bäumen vergeben."
-    ]
+    "details": ["Ich möchte für jeden Code den Namen des Empfängers oder seine E-Mail-Adresse angeben.", "Ich möchte, dass Plant-for-the-Planet nach der Erstellung automatisch eine E-Mail an die Empfänger sendet (optional).", "Ich möchte Codes für verschiedene Zahlen von Bäumen vergeben."]
   },
   "genericMethodText": {
     "title": "Generische Codes erstellen",
     "subtitle": "Verwende diese Methode, wenn die folgenden Kriterien auf deinen Anwendungsfall zutreffen:",
-    "details": [
-      "Alle Codes werden den gleichen Wert haben.",
-      "Ich möchte eine Reihe von Codes für beliebige Empfänger generieren.",
-      "Namen und E-Mail-Adressen können nicht mit dem Code verknüpft werden."
-    ]
+    "details": ["Alle Codes werden den gleichen Wert haben.", "Ich möchte eine Reihe von Codes für beliebige Empfänger generieren.", "Namen und E-Mail-Adressen können nicht mit dem Code verknüpft werden."]
   },
   "projectName": "Projektname",
   "costPerUnit": "Kosten pro Einheit",
@@ -38,7 +30,7 @@
   "totalNumberOfCodes": "Gesamtzahl der Codes*",
   "occasion": "Anlass",
   "total": "Insgesamt",
-  "chargeConsentText": "Indem du auf Codes ausgeben klickst, erklärst du dich damit einverstanden, dass der oben genannte Betrag von deinem Konto abgebucht wird.",
+  "chargeConsentText": "Indem du auf Codes erzeugen klickst, erklärst du dich damit einverstanden, dass der oben genannte Betrag von deinem Konto abgebucht wird.",
   "projectRequired": "Es wurde kein Projekt ausgewählt.",
   "unitsPerCodeRequired": "Jeder Code sollte mindestens eine Einheit enthalten.",
   "codeQuantityRequired": "Du musst mindestens einen Code erstellen.",

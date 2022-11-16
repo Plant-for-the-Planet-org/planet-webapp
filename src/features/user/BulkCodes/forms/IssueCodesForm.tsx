@@ -1,17 +1,13 @@
 import React, { FormEvent, ReactElement, useContext, useState } from 'react';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { Button, TextField } from '@mui/material';
-
-import styles from '../BulkCodes.module.scss';
+import styles from '../../../../../src/features/user/BulkCodes';
 import { useRouter } from 'next/router';
-
-import BulkCodesForm from './BulkCodesForm';
 import ProjectSelector from '../components/ProjectSelector';
 import BulkGiftTotal from '../components/BulkGiftTotal';
 import RecipientsUploadForm from '../components/RecipientsUploadForm';
 import GenericCodesPartial from '../components/GenericCodesPartial';
 import BulkCodesError from '../components/BulkCodesError';
-
 import { useBulkCode, Recipient } from '../../../common/Layout/BulkCodeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import cleanObject from '../../../../utils/cleanObject';
@@ -22,7 +18,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import { Recipient as LocalRecipient } from '../BulkCodesTypes';
-const { useTranslation } = i18next;
+import CenteredContainer from '../../../common/Layout/CenteredContainer';
+import StyledForm from '../../../common/Layout/StyledForm';
 
 interface IssueCodesFormProps {}
 
@@ -52,6 +49,18 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const resetBulkContext = (): void => {
     setProject(null);
     setBulkMethod(null);
+  };
+
+  const getTotalUnits = (): number => {
+    if (bulkMethod === BulkCodeMethods.GENERIC) {
+      return project ? Number(codeQuantity) * Number(unitsPerCode) : 0;
+    } else {
+      let totalUnits = 0;
+      for (const recipient of localRecipients) {
+        totalUnits = totalUnits + Number(recipient.units);
+      }
+      return totalUnits;
+    }
   };
 
   const getProcessedRecipients = (): Recipient[] => {
@@ -187,83 +196,73 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
     }
   };
 
-  const getTotalUnits = (): number => {
-    if (bulkMethod === BulkCodeMethods.GENERIC) {
-      return project ? Number(codeQuantity) * Number(unitsPerCode) : 0;
-    } else {
-      let totalUnits = 0;
-      for (const recipient of localRecipients) {
-        totalUnits = totalUnits + Number(recipient.units);
-      }
-      return totalUnits;
-    }
-  };
-
   if (ready) {
     if (!isSubmitted) {
       return (
-        <BulkCodesForm className="IssueCodesForm" onSubmit={handleSubmit}>
-          <div className="inputContainer">
-            <ProjectSelector
-              projectList={projectList || []}
-              project={project}
-              active={false}
-              planetCashAccount={planetCashAccount}
-            />
-            <TextField
-              onChange={(e) => setComment(e.target.value)}
-              value={comment}
-              label={t('bulkCodes:labelComment')}
-            />
-            <TextField
-              onChange={(e) => setOccasion(e.target.value)}
-              value={occasion}
-              label={t('bulkCodes:occasion')}
-            />
-            {bulkMethod === 'generic' && (
-              <GenericCodesPartial
-                codeQuantity={codeQuantity}
-                unitsPerCode={unitsPerCode}
-                setCodeQuantity={setCodeQuantity}
-                setUnitsPerCode={setUnitsPerCode}
+        <CenteredContainer>
+          <StyledForm className="IssueCodesForm" onSubmit={handleSubmit}>
+            <div className="inputContainer">
+              <ProjectSelector
+                projectList={projectList || []}
+                project={project}
+                active={false}
+                planetCashAccount={planetCashAccount}
               />
-            )}
-            {bulkMethod === 'import' && (
-              <RecipientsUploadForm
-                onRecipientsUploaded={setLocalRecipients}
-                localRecipients={localRecipients}
+              <TextField
+                onChange={(e) => setComment(e.target.value)}
+                value={comment}
+                label={t('bulkCodes:labelComment')}
               />
-            )}
-            <BulkGiftTotal
-              amount={getTotalAmount()}
-              currency={planetCashAccount?.currency}
-              units={getTotalUnits()}
-              unit={project?.unit}
-            />
-          </div>
+              <TextField
+                onChange={(e) => setOccasion(e.target.value)}
+                value={occasion}
+                label={t('bulkCodes:occasion')}
+              />
+              {bulkMethod === 'generic' && (
+                <GenericCodesPartial
+                  codeQuantity={codeQuantity}
+                  unitsPerCode={unitsPerCode}
+                  setCodeQuantity={setCodeQuantity}
+                  setUnitsPerCode={setUnitsPerCode}
+                />
+              )}
+              {bulkMethod === 'import' && (
+                <RecipientsUploadForm
+                  onRecipientsUploaded={setLocalRecipients}
+                  localRecipients={localRecipients}
+                />
+              )}
+              <BulkGiftTotal
+                amount={getTotalAmount()}
+                currency={planetCashAccount?.currency}
+                units={getTotalUnits()}
+                unit={project?.unit}
+              />
+            </div>
 
-          <BulkCodesError />
+            <BulkCodesError />
 
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className="formButton"
-            disabled={
-              !(
-                user.planetCash &&
-                !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
-              ) ||
-              isProcessing ||
-              (localRecipients.length === 0 &&
-                (Number(codeQuantity) <= 0 || Number(unitsPerCode) <= 0))
-            }
-          >
-            {isProcessing
-              ? t('bulkCodes:issuingCodes')
-              : t('bulkCodes:issueCodes')}
-          </Button>
-        </BulkCodesForm>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className="formButton"
+              disabled={
+                !(
+                  user.planetCash &&
+                  !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
+                ) ||
+                isProcessing ||
+                (localRecipients.length === 0 &&
+                  (Number(codeQuantity) <= 0 || Number(unitsPerCode) <= 0))
+              }
+            >
+              {isProcessing
+                ? t('bulkCodes:issuingCodes')
+                : t('bulkCodes:issueCodes')}
+            </Button>
+          </StyledForm>
+        </CenteredContainer>
       );
     } else {
       return (
