@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './ApiKey.module.scss';
-import i18next from '../../../../i18n';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../common/InputTypes/AnimatedButton';
 import {
@@ -12,8 +11,15 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import CopyToClipboard from '../../common/CopyToClipboard';
 import EyeIcon from '../../../../public/assets/images/icons/EyeIcon';
 import EyeDisabled from '../../../../public/assets/images/icons/EyeDisabled';
+import { useTranslation } from 'next-i18next';
 
-const { useTranslation } = i18next;
+const EyeButton = ({ isVisible, onClick }: any) => {
+  return (
+    <div className={styles.eyeButton} onClick={onClick}>
+      {isVisible ? <EyeIcon /> : <EyeDisabled />}
+    </div>
+  );
+};
 
 export default function ApiKey({}: any) {
   const { token, contextLoaded } = React.useContext(UserPropsContext);
@@ -104,11 +110,3 @@ export default function ApiKey({}: any) {
     </div>
   );
 }
-
-const EyeButton = ({ isVisible, onClick }: any) => {
-  return (
-    <div className={styles.eyeButton} onClick={onClick}>
-      {isVisible ? <EyeIcon /> : <EyeDisabled />}
-    </div>
-  );
-};

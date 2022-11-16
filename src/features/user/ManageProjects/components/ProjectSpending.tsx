@@ -2,7 +2,7 @@ import React, { ReactElement, useState } from 'react';
 import styles from './../StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
-import i18next from './../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import { useDropzone } from 'react-dropzone';
 import {
@@ -20,8 +20,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { SxProps } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
-
-const { useTranslation } = i18next;
 
 const yearDialogSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {

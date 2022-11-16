@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import styles from './../../styles/ProjectDetails.module.scss';
-import i18next from '../../../../../i18n/';
+import { useTranslation } from 'next-i18next';
 import { getPDFFile } from '../../../../utils/getImageURL';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
@@ -11,8 +11,6 @@ interface Props {
 }
 
 function ProjectInfo({ project }: Props): ReactElement {
-  const { useTranslation } = i18next;
-
   const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
 
   const plantingSeasons = [
@@ -174,7 +172,18 @@ function ProjectInfo({ project }: Props): ReactElement {
               {t('manageProjects:plantingDensity')}
             </div>
             <div className={styles.infoText}>
-              {project.plantingDensity} {t('manageProjects:treePerHa')}
+              {project.plantingDensity}
+              {project?.metadata?.maxPlantingDensity ? (
+                <div className={styles.infoTextMaxDensity}>
+                  {'-'}
+                  <div>{project?.metadata?.maxPlantingDensity}</div>
+                  <h4>{t('manageProjects:treePerHa')}</h4>
+                </div>
+              ) : (
+                <div style={{ paddingRight: '68px' }}>
+                  {t('manageProjects:treePerHa')}
+                </div>
+              )}{' '}
             </div>
           </div>
         )}

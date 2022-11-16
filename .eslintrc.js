@@ -21,12 +21,31 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint', '@emotion', 'cypress'],
   rules: {
+    // note you must disable the base rule as it can report incorrect errors
+    'no-undef': 'warn',
+    'no-unsafe-optional-chaining': 'warn',
+    'no-unused-vars': 'warn',
+    'no-use-before-define': 'warn',
+    'no-empty-pattern': 'warn',
+    '@typescript-eslint/no-unused-vars': [
+      'warn', // or "error"
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+      },
+    ],
     'react/react-in-jsx-scope': 'off',
     'react/jsx-props-no-spreading': 'off',
-    'no-use-before-define': 'off',
     'react/jsx-filename-extension': [
       1,
       { extensions: ['.js', '.jsx', '.tsx'] },
+    ],
+    'react/no-unknown-property': [
+      2,
+      {
+        ignore: ['jsx', 'global'],
+      },
     ],
     'react/jsx-indent': 'off',
     'import/extensions': 'off',
@@ -35,7 +54,6 @@ module.exports = {
     '@typescript-eslint/ban-types': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-empty-function': 'off',
-    'no-empty-pattern': 'off',
     'react/display-name': 'off',
     'react/no-find-dom-node': 'off',
     '@emotion/jsx-import': 'error',

@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import styles from './../StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { Controller, useForm } from 'react-hook-form';
-import i18next from './../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import dynamic from 'next/dynamic';
 import { WebMercatorViewport } from 'react-map-gl';
@@ -20,10 +20,7 @@ import { makeStyles } from '@mui/styles';
 import { Fade, Modal, MenuItem } from '@mui/material';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
-import getMapStyle from '../../../../utils/maps/getMapStyle';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
@@ -51,7 +48,7 @@ export default function ProjectSites({
   handleReset,
   projectDetails,
 }: Props): ReactElement {
-  const { t, i18n, ready } = useTranslation(['manageProjects']);
+  const { t, ready } = useTranslation(['manageProjects']);
   const { theme } = React.useContext(ThemeContext);
   const [features, setFeatures] = React.useState([]);
   const { register, handleSubmit, errors, control } = useForm();
@@ -129,15 +126,6 @@ export default function ProjectSites({
     tileSize: 128,
   };
 
-  // React.useEffect(() => {
-  //   const promise = getMapStyle('openStreetMap');
-  //   promise.then((style: any) => {
-  //     if (style) {
-  //       setStyle(style);
-  //     }
-  //   });
-  // }, []);
-
   const [showForm, setShowForm] = React.useState(true);
 
   const [editMode, seteditMode] = React.useState(false);
@@ -154,12 +142,6 @@ export default function ProjectSites({
     setGeoJsonError,
     geoLocation,
   };
-
-  const onSubmit = (data: any) => {
-    handleNext();
-  };
-
-  const _onViewportChange = (view: any) => setViewPort({ ...view });
 
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {

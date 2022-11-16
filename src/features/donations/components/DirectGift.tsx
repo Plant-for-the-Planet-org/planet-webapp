@@ -1,10 +1,9 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import styles from '../styles/DirectGift.module.scss';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 
-const { useTranslation } = i18next;
 interface Props {
   directGift: any;
   setShowDirectGift: Function;

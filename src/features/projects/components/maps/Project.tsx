@@ -6,6 +6,8 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import Location from './Location';
 import Sites from './Sites';
+import { useRouter } from 'next/router';
+import { zoomToPlantLocation } from '../../../../../src/utils/maps/plantLocations';
 
 interface Props {
   project: Object;
@@ -19,6 +21,8 @@ export default function Project({
   setViewPort,
 }: Props): ReactElement {
   const {
+    selectedPl,
+    plantLocations,
     geoJson,
     selectedSite,
     siteExists,
@@ -29,6 +33,9 @@ export default function Project({
   } = React.useContext(ProjectPropsContext);
 
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const router = useRouter();
+  const [plantPolygonCoordinates, setPlantPolygonCoordinates] =
+    React.useState(null);
 
   async function loadRasterData() {
     const result = await getRasterData('', handleError);
@@ -43,8 +50,21 @@ export default function Project({
       setRasterData({ ...rasterData, imagery: result.imagery });
     }
   }
+
   React.useEffect(() => {
-    if (siteExists) {
+    if (plantLocations && selectedPl) {
+      setPlantPolygonCoordinates(selectedPl?.geometry.coordinates[0]);
+    }
+  }, [router, selectedPl, plantLocations]);
+
+  React.useEffect(() => {
+    if (selectedPl && plantPolygonCoordinates) {
+      router.push(`/${project.slug}?ploc=${selectedPl?.hid}`);
+    }
+  }, [selectedPl, plantPolygonCoordinates]);
+
+  React.useEffect(() => {
+    if (siteExists && !router.query.ploc) {
       loadRasterData();
       zoomToProjectSite(
         {
@@ -57,6 +77,19 @@ export default function Project({
         setSiteViewPort,
         4000
       );
+    } else if (
+      plantPolygonCoordinates &&
+      plantLocations &&
+      router.query.ploc &&
+      selectedPl
+    ) {
+      zoomToPlantLocation(
+        plantPolygonCoordinates,
+        viewport,
+        isMobile,
+        setViewPort,
+        1200
+      );
     } else {
       zoomToLocation(
         viewport,
@@ -67,7 +100,14 @@ export default function Project({
         3000
       );
     }
-  }, [project, siteExists]);
+  }, [
+    project,
+    siteExists,
+    plantLocations,
+    router.query.ploc,
+    selectedPl,
+    plantPolygonCoordinates,
+  ]);
 
   //Props
   const locationProps = {

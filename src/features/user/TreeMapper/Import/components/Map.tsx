@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import styles from '../../TreeMapper.module.scss';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
-import i18next from '../../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import * as turf from '@turf/turf';
 import MapGL, {
   FlyToInterpolator,
@@ -24,7 +24,7 @@ interface Props {}
 
 export default function MyTreesMap({}: Props): ReactElement {
   const router = useRouter();
-  const { useTranslation } = i18next;
+
   const { i18n, t } = useTranslation('me');
 
   const { isMobile } = React.useContext(ProjectPropsContext);

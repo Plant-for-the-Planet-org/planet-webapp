@@ -1,7 +1,22 @@
 {
+  "managePayouts": {
+    "menuText": "Auszahlungen verwalten",
+    "titleOverview": "Auszahlungen verwalten - Übersicht",
+    "titleAddBankDetails": "Auszahlungen verwalten - Bankdaten hinzufügen",
+    "titlePayoutSchedule": "Auszahlungen verwalten - Auszahlungen planen",
+    "titleEditBankDetails": "Auszahlungen verwalten - Bankdaten bearbeiten"
+  },
+  "donationLinkTitle": "Spenden-Link erstellen",
+  "planetcash": {
+    "menuText": "PlanetCash",
+    "submenuText": "Mein PlanetCash",
+    "titleAccount": "PlanetCash - Konten",
+    "titleTransactions": "PlanetCash - Transaktionen",
+    "titleCreateAccount": "PlanetCash - Konto erstellen"
+  },
   "treesPlanted": "Baum gepflanzt",
   "treesPlanted_plural": "Bäume gepflanzt",
-  "bulkCodesTitleStep3": "Bulk-Codes erzeugen - Codes ausgeben",
+  "bulkCodesTitleStep3": "Bulk-Codes erzeugen - Codes generieren",
   "bulkCodesTitleStep2": "Bulk Codes generieren - Projekt auswählen",
   "bulkCodesTitle": "Bulk-Codes generieren - Methode auswählen",
   "bulkCodes": "Bulk-Codes",
@@ -10,7 +25,6 @@
   "registerTrees": "Bäume registrieren",
   "registerTreesDescription": "Registriere Bäume, die Du z. B. im Garten selbst gepflanzt hast.",
   "redeem": "Einlösen",
-  "redeemDescription": "Löse Baumgutscheine und andere Codes ein.",
   "myForest": "Mein Wald",
   "giftToGiftee": "Geschenk an {{gifteeName}}",
   "settingManageProject": "Projekte verwalten",
@@ -49,6 +63,7 @@
   "filters": "Filter",
   "registeredTrees": "Registrierte Bäume",
   "embedWidget": "Widget einbetten",
+  "donationLink": "Spenden-Link erstellen",
   "tree-donation": "Baumspende",
   "tree-gift": "Baumgeschenk",
   "tree-cash": "TreeCash",
@@ -207,8 +222,8 @@
   "beneficiary": "Begünstigter",
   "donationNote": {
     "offline-offline": "Banküberweisungen benötigen in der Regel 1-5 Werktage, um uns zu erreichen. Sobald deine Überweisung eintrifft, senden wir dir eine Bestätigungs-E-Mail mit deinen Belegen (und deinem Zertifikat).",
-    "stripe-sepa_debit": "SEPA-Zahlungen dauern 2-14 Arbeitstage (normalerweise 3-5 Tage). Sobald deine Überweisung eintrifft, senden wir dir eine Bestätigungs-E-Mail mit deinen Belegen (und deinem Zertifikat).",
-    "stripe-sofort": "SOFORT-Zahlungen dauern 2-14 Werktage (normalerweise 2-3 Tage). Sobald deine Überweisung eintrifft, senden wir dir eine Bestätigungs-E-Mail mit deinen Belegen (und deinem Zertifikat).",
+    "stripe-sepa_debit": "SEPA-Zahlungen dauern 2-14 Arbeitstage (normalerweise 3-5 Tage). Sobald deine Überweisung eintrifft, senden wir dir eine Bestätigungs-E-Mail.",
+    "stripe-sofort": "SOFORT-Zahlungen dauern 2-14 Werktage (normalerweise 2-3 Tage). Sobald deine Überweisung eintrifft, senden wir dir eine Bestätigungs-E-Mail.",
     "in-dispute": "Deine Überweisung wurde angefochten. In der Regel werden von den Zahlungsanbietern $7 - $15.00 Gebühren erhoben. Bitte kontaktiere support@plant-for-the-planet.org für weitere Informationen."
   },
   "active": "aktiv",
@@ -231,5 +246,6 @@
   "apiKeyMessage1": "Der API-Schlüssel ist wie ein digitales Passwort, mit dem du in jeder Anwendung unter deinem Profil auftreten kannst. Er ermöglicht es Anwendungen auch, in deinem Namen zu spenden, PlanetCash zu nutzen und Transaktionen einzusehen.",
   "apiKeyMessage2": "Sobald du einen API-Schlüssel generiert hast, benötigen wir eine Zwei-Faktor-Authentifizierung für deine Anmeldung. Diese kannst du beim nächsten Mal einrichten, wenn du dich anmeldest.",
   "apiKeyMessage3": "Wenn du den API-Schlüssel neu generierst, wird dein bestehender API-Schlüssel sofort ungültig.",
-  "regenerateKey": "Schlüssel  neu generieren"
+  "regenerateKey": "Schlüssel neu generieren",
+  "giftFund": "GiftFund"
 }

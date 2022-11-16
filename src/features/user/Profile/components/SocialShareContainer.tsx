@@ -1,16 +1,12 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import styles from '../styles/Profile.module.scss';
 import TwitterIcon from '../../../../../public/assets/images/icons/share/Twitter';
 import FacebookIcon from '../../../../../public/assets/images/icons/share/Facebook';
-import InstagramIcon from '../../../../../public/assets/images/icons/share/Instagram';
 import LinkedIn from '../../../../../public/assets/images/icons/share/Linkedin';
 import tenantConfig from '../../../../../tenant.config';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 
 const config = tenantConfig();
-
-const { useTranslation } = i18next;
 
 export default function SocialShareContainer({ userprofile, type }: any) {
   const { t, ready } = useTranslation(['donate', 'me']);

@@ -5,7 +5,7 @@ import {
   useEffect,
   useCallback,
 } from 'react';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import AccountRecord from '../../Account/components/AccountRecord';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import { Button, CircularProgress } from '@mui/material';
@@ -14,8 +14,6 @@ import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import NoTransactionsFound from '../components/NoTransactionsFound';
-
-const { useTranslation } = i18next;
 
 interface TransactionsProps {
   setProgress?: (progress: number) => void;

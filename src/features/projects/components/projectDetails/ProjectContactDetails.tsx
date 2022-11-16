@@ -1,13 +1,13 @@
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import styles from './../../styles/ProjectDetails.module.scss';
-import i18next from '../../../../../i18n/';
+import { useTranslation } from 'next-i18next';
 import BlackTree from '../../../../../public/assets/images/icons/project/BlackTree';
 import Email from '../../../../../public/assets/images/icons/project/Email';
 import Location from '../../../../../public/assets/images/icons/project/Location';
 import WorldWeb from '../../../../../public/assets/images/icons/project/WorldWeb';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-const { useTranslation } = i18next;
+
 interface Props {
   project: Object;
 }

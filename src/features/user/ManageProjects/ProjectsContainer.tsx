@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
 import LazyLoad from 'react-lazyload';
-import i18next from '../../../../i18n';
 import NotFound from '../../../../public/assets/images/NotFound';
 import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
@@ -10,90 +9,13 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './ProjectsContainer.module.scss';
 import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
-
-const { useTranslation } = i18next;
-
-export default function ProjectsContainer({}: any) {
-  const { t, ready } = useTranslation(['donate', 'manageProjects']);
-  const [projects, setProjects] = React.useState([]);
-  const [loader, setLoader] = React.useState(true);
-  const { handleError } = React.useContext(ErrorHandlingContext);
-  const { user, contextLoaded, loginWithRedirect, token } =
-    React.useContext(UserPropsContext);
-
-  async function loadProjects() {
-    if (user) {
-      await getAuthenticatedRequest(
-        '/app/profile/projects?version=1.2',
-        token,
-        {},
-        handleError,
-        '/profile'
-      ).then((projects) => {
-        setProjects(projects);
-        setLoader(false);
-      });
-    }
-  }
-  // This effect is used to get and update UserInfo if the isAuthenticated changes
-  React.useEffect(() => {
-    if (contextLoaded && token) {
-      loadProjects();
-    }
-  }, [contextLoaded, token]);
-
-  // console.log(contextLoaded);
-
-  return ready ? (
-    <div className="profilePage">
-      <div className="profilePageHeader">
-        <div>
-          <div className={'profilePageTitle'}>
-            {t('manageProjects:manageProject')}
-          </div>
-          <div className={'profilePageSubTitle'}>
-            {t('manageProjects:descriptionForManageProjects')}
-          </div>
-        </div>
-      </div>
-      <div>
-        <Link href="/profile/projects/new-project">
-          <button
-            // id={'addProjectBut'}
-            className="primaryButton"
-            style={{ width: '175px', marginTop: '20px', marginLeft: '10px' }}
-          >
-            {t('manageProjects:addProject')}
-          </button>
-        </Link>
-      </div>
-
-      <div className={styles.projectsContainer} id="projectsContainer">
-        {loader && <GlobeContentLoader />}
-        {projects?.length < 1 && !loader ? (
-          <div className={styles.projectNotFound}>
-            <LazyLoad>
-              <NotFound className={styles.projectNotFoundImage} />
-              <h5>{t('donate:noProjectsFound')}</h5>
-            </LazyLoad>
-          </div>
-        ) : (
-          <div className={styles.listProjects}>
-            {projects.map((project: any, index: any) => {
-              return <SingleProject key={index} project={project.properties} />;
-            })}
-          </div>
-        )}
-      </div>
-    </div>
-  ) : null;
-}
+import { useTranslation } from 'next-i18next';
 
 function SingleProject({ project }: any) {
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
     : '';
-  const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
+  const { t, i18n } = useTranslation(['donate', 'common', 'country']);
   return (
     <div className={styles.singleProject} key={project.id}>
       {ImageSource ? (
@@ -159,4 +81,81 @@ function SingleProject({ project }: any) {
       </div>
     </div>
   );
+}
+
+export default function ProjectsContainer({}: any) {
+  const { t, ready } = useTranslation(['donate', 'manageProjects']);
+  const [projects, setProjects] = React.useState([]);
+  const [loader, setLoader] = React.useState(true);
+  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { user, contextLoaded, token } = React.useContext(UserPropsContext);
+
+  async function loadProjects() {
+    if (user) {
+      await getAuthenticatedRequest(
+        '/app/profile/projects?version=1.2',
+        token,
+        {},
+        handleError,
+        '/profile'
+      ).then((projects) => {
+        setProjects(projects);
+        setLoader(false);
+      });
+    }
+  }
+  // This effect is used to get and update UserInfo if the isAuthenticated changes
+  React.useEffect(() => {
+    if (contextLoaded && token) {
+      loadProjects();
+    }
+  }, [contextLoaded, token]);
+
+  return ready ? (
+    <div className="profilePage">
+      <div className="profilePageHeader">
+        <div>
+          <div className={'profilePageTitle'}>
+            {t('manageProjects:manageProject')}
+          </div>
+          <div className={'profilePageSubTitle'}>
+            {t('manageProjects:descriptionForManageProjects')}
+          </div>
+        </div>
+      </div>
+      <div className={styles.headerCTAs}>
+        <Link href="/profile/projects/new-project">
+          <button
+            // id={'addProjectBut'}
+            className="primaryButton"
+          >
+            {t('manageProjects:addProject')}
+          </button>
+        </Link>
+        <Link href="/profile/payouts">
+          <button className="primaryButton">
+            {t('manageProjects:managePayoutsButton')}
+          </button>
+        </Link>
+      </div>
+
+      <div className={styles.projectsContainer} id="projectsContainer">
+        {loader && <GlobeContentLoader />}
+        {projects?.length < 1 && !loader ? (
+          <div className={styles.projectNotFound}>
+            <LazyLoad>
+              <NotFound className={styles.projectNotFoundImage} />
+              <h5>{t('donate:noProjectsFound')}</h5>
+            </LazyLoad>
+          </div>
+        ) : (
+          <div className={styles.listProjects}>
+            {projects.map((project: any, index: any) => {
+              return <SingleProject key={index} project={project.properties} />;
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  ) : null;
 }

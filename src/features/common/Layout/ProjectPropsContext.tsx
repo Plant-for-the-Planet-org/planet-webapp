@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { ParamsContext } from './QueryParamsContext';
 
 interface Props {}
 
@@ -109,6 +110,7 @@ function ProjectPropsProvider({ children }: any): ReactElement {
   const [filtersOpen, setFilterOpen] = React.useState(false);
   const [purpose, setPurpose] = React.useState('trees');
   const [plantLocationsLoaded, setPlantLocationsLoaded] = React.useState(false);
+  const { embed, showProjectList } = React.useContext(ParamsContext);
 
   const mapRef = React.useRef(null);
   const EMPTY_STYLE = {
@@ -123,7 +125,14 @@ function ProjectPropsProvider({ children }: any): ReactElement {
     minZoom: 1,
     maxZoom: 25,
   });
-  const defaultMapCenter = isMobile ? [22.54, 9.59] : [36.96, -28.5];
+  const isEmbed = embed === 'true' && showProjectList === 'false';
+  const defaultMapCenter = isMobile
+    ? isEmbed
+      ? [22.54, 0]
+      : [22.54, 9.59]
+    : isEmbed
+    ? [36.96, 0]
+    : [36.96, -28.5];
   const defaultZoom = isMobile ? 1 : 1.4;
   const [viewport, setViewPort] = React.useState({
     width: Number('100%'),

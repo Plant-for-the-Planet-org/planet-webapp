@@ -1,4 +1,11 @@
 {
+  "managePayouts": {
+    "menuText": "Manage Payouts",
+    "titleOverview": "Manage Payouts - Overview",
+    "titleAddBankDetails": "Manage Payouts - Add Bank Details",
+    "titlePayoutSchedule": "Manage Payouts - Schedule Payouts",
+    "titleEditBankDetails": "Manage Payouts - Edit Bank Details"
+  },
   "donationLinkTitle": "Build Donation Link",
   "planetcash": {
     "menuText": "PlanetCash",
@@ -18,7 +25,6 @@
   "registerTrees": "Register Trees",
   "registerTreesDescription": "Register trees that you have planted yourself, e.g. in your garden.",
   "redeem": "Redeem",
-  "redeemDescription": "Redeem your tree voucher and other codes.",
   "myForest": "My Forest",
   "giftToGiftee": "Gift to {{gifteeName}}",
   "settingManageProject": "Manage Projects",
@@ -240,5 +246,6 @@
   "apiKeyMessage1": "API Key is like a digital password that allows you to act as your profile in any application. It also allows applications to donate on your behalf, use PlanetCash and view transactions.",
   "apiKeyMessage2": "Once you generate an API Key, we will require a two factor authentication for your login. This you’ll be able to setup next time you log in.",
   "apiKeyMessage3": "Regenerating an API Key will invalidate your existing API Key immediately.",
-  "regenerateKey": "Regenerate Key"
+  "regenerateKey": "Regenerate Key",
+  "giftFund": "GiftFund"
 }
