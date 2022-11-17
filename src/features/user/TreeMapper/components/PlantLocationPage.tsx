@@ -7,6 +7,7 @@ import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import CopyToClipboard from '../../../common/CopyToClipboard';
+import moment from 'moment';
 
 interface Props {
   setselectedLocation: Function;
@@ -130,24 +131,27 @@ export function LocationDetails({
             <div className={styles.measurements}>
               <div className={styles.singleDetail}>
                 <p className={styles.title}>Date</p>
-                <div className={styles.value}>
-                  {location.measurements?.height}
-                  {t('m')}
-                </div>
+                {location.history?.map((h, index) => (
+                  <div className={styles.value} key={index}>
+                    {moment(h?.created).format('DD-MM-YYYY')}
+                  </div>
+                ))}
               </div>
               <div className={styles.singleDetail}>
                 <p className={styles.title}>{t('height')}</p>
-                <div className={styles.value}>
-                  {location.measurements?.height}
-                  {t('m')}
-                </div>
+                {location.history?.map((h, index) => (
+                  <div className={styles.value} key={index}>
+                    {h?.measurements?.height} {t('m')}
+                  </div>
+                ))}
               </div>
               <div className={styles.singleDetail}>
                 <p className={styles.title}>{t('width')}</p>
-                <div className={styles.value}>
-                  {location.measurements?.width}
-                  {t('cm')}
-                </div>
+                {location.history?.map((h, index) => (
+                  <div className={styles.value} key={index}>
+                    {h?.measurements?.width} {t('cm')}
+                  </div>
+                ))}
               </div>
             </div>
           </>
