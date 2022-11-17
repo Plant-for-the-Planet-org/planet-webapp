@@ -122,30 +122,48 @@ export function LocationDetails({
             </div> */}
         {location.measurements && (
           <>
-            <div className={styles.singleDetail}>
-              <p className={styles.title}>{t('height')}</p>
-              <div className={styles.value}>
-                {location.measurements?.height}
-                {t('m')}
+            <div className={styles.measurements}>
+              <div className={styles.singleDetail}>
+                <p className={styles.title}>Measurements</p>
               </div>
             </div>
-            <div className={styles.singleDetail}>
-              <p className={styles.title}>{t('width')}</p>
-              <div className={styles.value}>
-                {location.measurements?.width}
-                {t('cm')}
+            <div className={styles.measurements}>
+              <div className={styles.singleDetail}>
+                <p className={styles.title}>Date</p>
+                <div className={styles.value}>
+                  {location.measurements?.height}
+                  {t('m')}
+                </div>
+              </div>
+              <div className={styles.singleDetail}>
+                <p className={styles.title}>{t('height')}</p>
+                <div className={styles.value}>
+                  {location.measurements?.height}
+                  {t('m')}
+                </div>
+              </div>
+              <div className={styles.singleDetail}>
+                <p className={styles.title}>{t('width')}</p>
+                <div className={styles.value}>
+                  {location.measurements?.width}
+                  {t('cm')}
+                </div>
               </div>
             </div>
           </>
         )}
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('plantDate')}</p>
-          <div className={styles.value}>{formatDate(location.plantDate)}</div>
+        <div className={styles.rowDetail}>
+          <div className={styles.singleDetail}>
+            <p className={styles.title}>{t('plantDate')}</p>
+            <div className={styles.value}>{formatDate(location.plantDate)}</div>
+          </div>
         </div>
-        <div className={styles.singleDetail}>
-          <p className={styles.title}>{t('registrationDate')}</p>
-          <div className={styles.value}>
-            {formatDate(location.registrationDate)}
+        <div className={styles.rowDetail}>
+          <div className={styles.singleDetail}>
+            <p className={styles.title}>{t('registrationDate')}</p>
+            <div className={styles.value}>
+              {formatDate(location.registrationDate)}
+            </div>
           </div>
         </div>
         {location.plantProject && (
