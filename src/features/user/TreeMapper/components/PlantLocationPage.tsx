@@ -112,7 +112,7 @@ export function LocationDetails({
             <p className={styles.title}>
               {t('coordinates')} <CopyToClipboard text={text} />
             </p>
-            <div className={styles.value}>{text}</div>
+            <div className={styles.value}>{text.split(',').join(', ')}</div>
           </div>
         ) : (
           []
