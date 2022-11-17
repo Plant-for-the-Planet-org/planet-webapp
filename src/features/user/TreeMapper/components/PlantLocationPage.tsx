@@ -156,13 +156,13 @@ export function LocationDetails({
             </div>
           </>
         )}
-        <div className={styles.rowDetail}>
+        <div className={`${location.plantProject ? '' : styles.rowDetail}`}>
           <div className={styles.singleDetail}>
             <p className={styles.title}>{t('plantDate')}</p>
             <div className={styles.value}>{formatDate(location.plantDate)}</div>
           </div>
         </div>
-        <div className={styles.rowDetail}>
+        <div className={`${location.plantProject ? '' : styles.rowDetail}`}>
           <div className={styles.singleDetail}>
             <p className={styles.title}>{t('registrationDate')}</p>
             <div className={styles.value}>
