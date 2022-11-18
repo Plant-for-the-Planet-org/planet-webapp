@@ -1,8 +1,10 @@
 import React, { createContext, FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import appSupportedLocale from '../../../../public/static/localeList.json';
+import tenantConfig from '../../../../tenant.config';
 
+const config = tenantConfig();
+const tenantSupportedLocale = config.languages;
 type QueryParamType = string | undefined | string[] | null;
 export interface ParamsContextType {
   embed: QueryParamType;
@@ -53,38 +55,24 @@ const QueryParamsProvider: FC = ({ children }) => {
   }, [query.callback]);
 
   useEffect(() => {
-    if (
-      query.locale &&
-      appSupportedLocale.some(
-        (locale) => locale.key[0] + locale.key[1] === query.locale
-      )
-    ) {
-      setLanguage(query.locale);
-    } else {
-      if (localStorage?.getItem('language') === null) {
-        const userPreferenceLanguage =
-          navigator.language ?? navigator.languages;
+    if (localStorage.getItem('language') === null) {
+      const userBrowserLanguage = navigator.language ?? navigator.languages;
+      // checks whether tenant supported locale matches the user browser preference locale
+      const languageMatched = tenantSupportedLocale.find((locale) => {
+        return locale === userBrowserLanguage;
+      });
 
-        //checking is user preference language matching with the application supported language
-        const languageMatched = appSupportedLocale.filter((locale) => {
-          return (
-            locale.key[0] + locale.key[1] ===
-            userPreferenceLanguage[0] + userPreferenceLanguage[1]
-          );
-        });
-
-        if (languageMatched !== undefined) {
-          localStorage.setItem('language', languageMatched[0]?.key);
-          setLanguage(languageMatched[0]?.key);
-          i18n.changeLanguage(languageMatched[0]?.key);
-        } else {
-          localStorage.setItem('language', 'en');
-          setLanguage('en');
-          i18n.changeLanguage('en');
-        }
+      if (languageMatched !== undefined) {
+        localStorage.setItem('language', languageMatched);
+        setLanguage(languageMatched);
+        i18n.changeLanguage(languageMatched);
+      } else {
+        localStorage.setItem('language', 'en');
+        setLanguage('en');
+        i18n.changeLanguage('en');
       }
     }
-  }, [query.locale]);
+  }, [tenantSupportedLocale]);
 
   useEffect(() => {
     if (query.project_details === 'true' || query.project_details === 'false')
