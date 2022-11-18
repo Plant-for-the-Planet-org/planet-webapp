@@ -204,7 +204,11 @@ export default function ProjectsMap(): ReactElement {
             offsetTop={-5}
             tipSize={0}
           >
-            <div className={styles.clickForDetails}>{t('clickForDetails')}</div>
+            {selectedPl?.hid !== hoveredPl?.hid && (
+              <div className={styles.clickForDetails}>
+                {t('clickForDetails')}
+              </div>
+            )}
           </Popup>
         )}
       </MapGL>
