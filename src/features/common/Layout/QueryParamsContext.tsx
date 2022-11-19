@@ -56,10 +56,10 @@ const QueryParamsProvider: FC = ({ children }) => {
 
   useEffect(() => {
     if (localStorage.getItem('language') === null) {
-      const userBrowserLanguage = navigator.language ?? navigator.languages;
+      const userBrowserLanguage = navigator.language ?? navigator.languages[0];
       // checks whether tenant supported locale matches the user browser preference locale
       const languageMatched = tenantSupportedLocale.find((locale) => {
-        return locale === userBrowserLanguage;
+        return locale === userBrowserLanguage[0] + userBrowserLanguage[1];
       });
 
       if (languageMatched !== undefined) {
