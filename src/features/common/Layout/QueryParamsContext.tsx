@@ -59,7 +59,10 @@ const QueryParamsProvider: FC = ({ children }) => {
       const userBrowserLanguage = navigator.language ?? navigator.languages[0];
       // checks whether tenant supported locale matches the user browser preference locale
       const languageMatched = tenantSupportedLocale.find((locale) => {
-        return locale === userBrowserLanguage[0] + userBrowserLanguage[1];
+        return (
+          locale[0] + locale[1] ===
+          userBrowserLanguage[0] + userBrowserLanguage[1]
+        );
       });
 
       if (languageMatched !== undefined) {
