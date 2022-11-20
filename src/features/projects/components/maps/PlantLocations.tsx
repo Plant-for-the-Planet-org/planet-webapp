@@ -25,6 +25,7 @@ export default function PlantLocations({}: Props): ReactElement {
   const { i18n, t } = useTranslation(['maps', 'common']);
 
   const openPl = (pl: any) => {
+    console.log('i ran');
     setSelectedPl(pl);
   };
 
@@ -186,7 +187,7 @@ export default function PlantLocations({}: Props): ReactElement {
                               <div
                                 key={`${spl.id}-marker`}
                                 className={`${styles.single} ${
-                                  spl.id === selectedPl?.id
+                                  spl.hid === selectedPl?.hid
                                     ? styles.singleSelected
                                     : ''
                                 }`}
