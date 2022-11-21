@@ -125,12 +125,12 @@ export function LocationDetails({
           <>
             <div className={styles.measurements}>
               <div className={styles.singleDetail}>
-                <p className={styles.title}>Measurements</p>
+                <p className={styles.title}>{t('measurements')}</p>
               </div>
             </div>
             <div className={styles.measurements}>
               <div className={styles.singleDetail}>
-                <p className={styles.title}>Date</p>
+                <p className={styles.title}>{t('date')}</p>
                 {location.history?.map((h, index) => (
                   <div className={styles.value} key={index}>
                     {moment(h?.created).format('DD-MM-YYYY')}
