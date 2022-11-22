@@ -12,7 +12,7 @@
   display: flex;
   gap: 20px;
   padding-top: 10px;
-  width: 360px;
+  width: 100%;
   .reports_description{
     display: flex;
     flex-direction: column;
@@ -320,7 +320,9 @@
     min-height: calc(100vh - 100px);
     background-color: transparent;
   }
-
+  .reports_container{
+    width: 360px;
+  }
   .singleProjectDetails {
     margin-top: 20px;
   }
