@@ -8,7 +8,7 @@ import supportedLanguages from '../../../../utils/language/supportedLanguages.js
 import React from 'react';
 import ProjectSelectAutocomplete from '../../BulkCodes/components/ProjectSelectAutocomplete';
 import { TENANT_ID } from '../../../../utils/constants/environment';
-import styles from '../../../../../src/features/user/Widget/DonationLink';
+import styles from '../../../../../src/features/user/Widget/DonationLink/DonationLinkForm.module.scss';
 import CopyToClipboard from '../../../common/CopyToClipboard';
 import {
   MuiAutoComplete,
