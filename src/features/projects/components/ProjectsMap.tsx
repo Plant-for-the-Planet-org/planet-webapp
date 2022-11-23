@@ -7,16 +7,12 @@ import ExploreLayers from './maps/ExploreLayers';
 import Home from './maps/Home';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import PlantLocations from './maps/PlantLocations';
-import { useRouter } from 'next/router';
 import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
-const { useTranslation } = i18next;
-
 export default function ProjectsMap(): ReactElement {
-  const router = useRouter();
   const {
     project,
     showSingleProject,
@@ -95,21 +91,6 @@ export default function ProjectsMap(): ReactElement {
     setMapState,
   };
 
-  const exploreProps = {
-    loaded,
-    mapRef,
-    setShowProjects,
-    viewport,
-    setViewPort,
-    setExploreProjects,
-    defaultMapCenter,
-    mapState,
-    setMapState,
-    isMobile,
-    exploreProjects,
-    showSingleProject,
-  };
-
   const onMapClick = (e: MapEvent) => {
     setSelectedPl(null);
     setHoveredPl(null);
@@ -123,6 +104,7 @@ export default function ProjectsMap(): ReactElement {
             const element = plantLocations[key];
             if (element.id === e.features[0].layer?.source) {
               setSelectedPl(element);
+
               break;
             }
           }

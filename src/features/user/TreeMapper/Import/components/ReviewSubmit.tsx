@@ -1,11 +1,9 @@
 import React, { ReactElement } from 'react';
 import styles from '../Import.module.scss';
-import i18next from '../../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
-
-const { useTranslation } = i18next;
 
 interface Props {
   plantLocation: Treemapper.PlantLocation | null;

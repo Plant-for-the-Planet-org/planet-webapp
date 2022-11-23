@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import { useRouter } from 'next/router';
-import styles from './CompleteSignup.module.scss';
+import styles from '../../../../src/features/user/CompleteSignup';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import {
   Snackbar,
@@ -13,7 +13,6 @@ import { makeStyles } from '@mui/styles';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountryNew';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 import { useForm, Controller } from 'react-hook-form';
-import i18next from '../../../../i18n';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { selectUserType } from '../../../utils/selectUserType';
 import { getStoredConfig } from '../../../utils/storeConfig';
@@ -23,27 +22,13 @@ import { ThemeContext } from '../../../theme/themeContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { postRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-
-const { Trans, useTranslation } = i18next;
+import { useTranslation, Trans } from 'next-i18next';
+import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
     backgroundColor: theme.palette.primary.main,
   };
-});
-
-const InlineFormGroup = styled('div')({
-  display: 'flex',
-  columnGap: 16,
-  rowGap: 24,
-  justifyContent: 'space-between',
-  alignItems: 'flex-start',
-  flexWrap: 'wrap',
-
-  '& .MuiTextField-root': {
-    flex: 1,
-    minWidth: 160,
-  },
 });
 
 const MuiTextField = styled(TextField)(() => {
@@ -166,8 +151,6 @@ export default function CompleteSignup(): ReactElement | null {
   const [requestSent, setRequestSent] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(null);
   const [country, setCountry] = useState('');
-  const defaultCountry =
-    typeof window !== 'undefined' ? localStorage.getItem('countryCode') : 'DE';
 
   const [postalRegex, setPostalRegex] = React.useState(
     COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal
@@ -323,7 +306,7 @@ export default function CompleteSignup(): ReactElement | null {
               ))}
             </MuiTextField>
 
-            <InlineFormGroup>
+            <InlineFormDisplayGroup>
               <MuiTextField
                 label={t('donate:firstName')}
                 inputRef={register({ required: true })}
@@ -342,7 +325,7 @@ export default function CompleteSignup(): ReactElement | null {
                 error={errors.lastname}
                 helperText={errors.lastname && t('donate:firstNameRequired')}
               />
-            </InlineFormGroup>
+            </InlineFormDisplayGroup>
 
             {type !== 'individual' ? (
               <MuiTextField
@@ -394,7 +377,7 @@ export default function CompleteSignup(): ReactElement | null {
                       </div>
                     )
                   : null}
-                <InlineFormGroup>
+                <InlineFormDisplayGroup>
                   <MuiTextField
                     label={t('donate:city')}
                     inputRef={register({ required: true })}
@@ -428,7 +411,7 @@ export default function CompleteSignup(): ReactElement | null {
                       errors.zipCode && t('donate:zipCodeAlphaNumValidation')
                     }
                   />
-                </InlineFormGroup>
+                </InlineFormDisplayGroup>
               </>
             ) : null}
             <AutoCompleteCountry

@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
-import i18next from './../../../i18n';
+import { useTranslation } from 'next-i18next';
+import { GetStaticPaths } from 'next';
 import LandingSection from '../../../src/features/common/Layout/LandingSection';
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
@@ -10,8 +11,7 @@ import {
   RedeemCodeFailed,
 } from '../../../src/features/common/RedeemMicro/RedeemCode';
 import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
-
-const { useTranslation } = i18next;
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export type ClaimCode1 = string | null;
 
@@ -79,24 +79,13 @@ function ClaimDonation(): ReactElement {
       setCode(router.query.code);
     }
   }, [router.query.code]);
+
   // // Check if the user is logged in or not.
   React.useEffect(() => {
-    // If the user is logged in -
-    // Validate the code automatically
-    // Once validated ask user to claim their donation
-    // Once claimed user can share the donation
-    // From here user can go back to home by clicking X
-    if (contextLoaded && user) {
-      // validate code
-      if (ready && router.query.type && router.query.code) {
-        redeemingCode(router.query.code);
-      }
-    }
-
     // If the user is not logged in - send the user to log in page, store the claim redirect link in the localstorage.
     // When the user logs in, redirect user to the claim link from the localstorage and clear the localstorage.
     // For this  fetch the link from the storage, clears the storage and then redirects the user using the link
-    else if (contextLoaded && !user) {
+    if (contextLoaded && !user) {
       // store the claim link in localstorage
       if (typeof window !== 'undefined') {
         localStorage.setItem('redirectLink', window.location.href);
@@ -106,9 +95,18 @@ function ClaimDonation(): ReactElement {
         });
       }
     }
-  }, [contextLoaded, user, code]);
+  }, [contextLoaded, user]);
 
-  return ready ? (
+  React.useEffect(() => {
+    //redeem code using route
+    if (user && contextLoaded) {
+      if (ready && router.query.type && router.query.code) {
+        redeemingCode(router.query.code);
+      }
+    }
+  }, [user, contextLoaded, ready, router.query.type, router.query.code]);
+
+  return ready && user ? (
     <LandingSection>
       <>
         {redeemedCodeData ? (
@@ -131,6 +129,45 @@ function ClaimDonation(): ReactElement {
   ) : (
     <></>
   );
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};
+
+export async function getStaticProps({ locale }: any) {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donationLink',
+          'editProfile',
+          'giftfunds',
+          'leaderboard',
+          'managePayouts',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTrees',
+          'tenants',
+          'treemapper',
+        ],
+        null,
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+      )),
+    },
+  };
 }
 
 export default ClaimDonation;

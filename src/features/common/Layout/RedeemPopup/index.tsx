@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './RedeemPopup.module.scss';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import tenantConfig from '../../../../../tenant.config';
 import { UserPropsContext } from '../UserPropsContext';
 
-const { useTranslation } = i18next;
 export default function RedeemPopup() {
   const { t, ready } = useTranslation(['leaderboard']);
   const config = tenantConfig();

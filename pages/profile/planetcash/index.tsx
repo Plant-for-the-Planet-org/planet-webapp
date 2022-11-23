@@ -5,9 +5,8 @@ import Head from 'next/head';
 import PlanetCash, {
   PlanetCashTabs,
 } from '../../../src/features/user/PlanetCash';
-import i18next from '../../../i18n';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function PlanetCashPage(): ReactElement {
   const { t, ready } = useTranslation('me');
@@ -35,4 +34,36 @@ export default function PlanetCashPage(): ReactElement {
       </UserLayout>
     </>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donationLink',
+          'editProfile',
+          'giftfunds',
+          'leaderboard',
+          'managePayouts',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTrees',
+          'tenants',
+          'treemapper',
+        ],
+        null,
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+      )),
+    },
+  };
 }

@@ -4,14 +4,12 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { usePayouts } from '../../../common/Layout/PayoutsContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import BankDetailsForm, { FormData } from '../components/BankDetailsForm';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
-
-const { useTranslation } = i18next;
 
 const AddBankAccount = (): ReactElement | null => {
   const { t } = useTranslation('managePayouts');

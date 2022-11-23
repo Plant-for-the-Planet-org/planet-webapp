@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import LocationIcon from '../../../../../public/assets/images/icons/LocationIcon';
 import ResearchIcon from '../../../../../public/assets/images/icons/ResearchIcon';
 import SatelliteIcon from '../../../../../public/assets/images/icons/SatelliteIcon';
@@ -13,8 +13,7 @@ interface Props {}
 export default function ProjectTabs({}: Props): ReactElement {
   const { embed, showProjectDetails } = React.useContext(ParamsContext);
   const { pathname } = useRouter();
-  const { useTranslation } = i18next;
-  const { i18n, t } = useTranslation(['maps']);
+  const { t } = useTranslation(['maps']);
   const { selectedMode, setSelectedMode, rasterData } =
     React.useContext(ProjectPropsContext);
 

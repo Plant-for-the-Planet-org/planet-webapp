@@ -1,8 +1,6 @@
 import { MenuItem, SxProps } from '@mui/material';
-
 import * as d3 from 'd3-ease';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import MapGL, {
@@ -10,8 +8,7 @@ import MapGL, {
   Marker,
   NavigationControl,
 } from 'react-map-gl';
-import i18next from '../../../../i18n';
-import { ThemeContext } from '../../../theme/themeContext';
+import { useTranslation } from 'next-i18next';
 import {
   getAuthenticatedRequest,
   postAuthenticatedRequest,
@@ -51,9 +48,7 @@ const dialogSx: SxProps = {
 
 interface Props {}
 
-const { useTranslation } = i18next;
 export default function RegisterTrees({}: Props) {
-  const router = useRouter();
   const { user, token, contextLoaded } = React.useContext(UserPropsContext);
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {
@@ -137,10 +132,10 @@ export default function RegisterTrees({}: Props) {
     plantDate: new Date(),
     geometry: {},
   };
-  const { register, handleSubmit, errors, control, reset, setValue, watch } =
-    useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
-
-  const treeCount = watch('treeCount');
+  const { register, handleSubmit, errors, control } = useForm({
+    mode: 'onBlur',
+    defaultValues: defaultBasicDetails,
+  });
 
   const onTreeCountChange = (e: any) => {
     if (Number(e.target.value) < 25) {
@@ -227,7 +222,6 @@ export default function RegisterTrees({}: Props) {
     contributionGUID,
     slug: user.slug,
   };
-  const { theme } = React.useContext(ThemeContext);
 
   return ready ? (
     <div className="profilePage">

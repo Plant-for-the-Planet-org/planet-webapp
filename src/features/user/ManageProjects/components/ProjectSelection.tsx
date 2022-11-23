@@ -1,8 +1,6 @@
-import router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
-import i18next from './../../../../../i18n';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'next-i18next';
 
 export default function ProjectSelection(): ReactElement {
   const router = useRouter();

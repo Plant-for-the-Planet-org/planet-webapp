@@ -1,11 +1,10 @@
 import React, { ReactElement } from 'react';
 import styles from './VerifyEmail.module.scss';
-import i18next from './../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import VerifyEmailIcon from '../../../../public/assets/images/icons/VerifyEmail';
 import { UserPropsContext } from '../Layout/UserPropsContext';
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
-const { useTranslation } = i18next;
 
 interface Props {}
 

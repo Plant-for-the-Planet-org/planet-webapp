@@ -39,6 +39,9 @@ const DashboardGridContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
+/**
+ * Returns a template layout for a Dashboard view with a `<header>` section and a `<main>` section
+ */
 export default function DashboardView({
   title,
   subtitle,

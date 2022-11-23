@@ -2,14 +2,12 @@ import React, { ReactElement, SyntheticEvent } from 'react';
 import { useRouter } from 'next/router';
 import { Tab, Tabs } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { useBulkCode } from '../../../features/common/Layout/BulkCodeContext';
 
 interface FormStepsProps {
   step: number;
 }
-
-const { useTranslation } = i18next;
 
 const StyledTabs = styled(Tabs)({
   paddingTop: 24,

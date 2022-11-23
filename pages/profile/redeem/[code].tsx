@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect, useContext, FC } from 'react';
 import LandingSection from '../../../src/features/common/Layout/LandingSection';
-import i18next from './../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
@@ -12,8 +12,9 @@ import {
   RedeemCodeFailed,
 } from '../../../src/features/common/RedeemMicro/RedeemCode';
 import { ClaimCode1 } from '../../claim/[type]/[code]';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticPaths } from 'next';
 
-const { useTranslation } = i18next;
 const ReedemCode: FC = () => {
   const { t, ready } = useTranslation(['redeem']);
   const { user, contextLoaded, token } = useContext(UserPropsContext);
@@ -41,13 +42,6 @@ const ReedemCode: FC = () => {
     setInputCode('');
   };
 
-  const changeRouteCode = () => {
-    router.push(`/profile/redeem/${inputCode}?inputCode=${false}`);
-
-    const codeFromUrl = router.query.code;
-    redeemingCode(codeFromUrl);
-  };
-
   useEffect(() => {
     if (contextLoaded) {
       if (!user) {
@@ -65,12 +59,6 @@ const ReedemCode: FC = () => {
       setCode(router.query.code);
     }
   }, [router]);
-
-  useEffect(() => {
-    if (contextLoaded && user && router && router.query.code) {
-      redeemingCode(router.query.code);
-    }
-  }, [user, contextLoaded, router.query.code]);
 
   async function redeemingCode(data: string | string[]): Promise<void> {
     const submitData = {
@@ -95,7 +83,20 @@ const ReedemCode: FC = () => {
     }
   }
 
-  return ready ? (
+  useEffect(() => {
+    if (contextLoaded && user && router && router.query.code) {
+      redeemingCode(router.query.code);
+    }
+  }, [user, contextLoaded, router.query.code]);
+
+  const changeRouteCode = () => {
+    router.push(`/profile/redeem/${inputCode}?inputCode=${false}`);
+
+    const codeFromUrl = router.query.code;
+    redeemingCode(codeFromUrl);
+  };
+
+  return ready && user ? (
     router.query.inputCode === 'true' ? (
       // to input  redeem code
       <LandingSection>
@@ -130,5 +131,44 @@ const ReedemCode: FC = () => {
     <></>
   );
 };
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donationLink',
+          'editProfile',
+          'giftfunds',
+          'leaderboard',
+          'managePayouts',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTrees',
+          'tenants',
+          'treemapper',
+        ],
+        null,
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+      )),
+    },
+  };
+}
 
 export default ReedemCode;

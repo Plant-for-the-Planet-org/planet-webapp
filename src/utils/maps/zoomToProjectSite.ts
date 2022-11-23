@@ -23,6 +23,8 @@ export default function zoomToProjectSite(
     //console.log("zoomToProjectSite", viewport, viewport.width, window.innerWidth, viewport.height, window.innerHeight);
 
     const bbox = turf.bbox(geoJson.features[selectedSite]);
+
+   
     const { longitude, latitude, zoom } = new WebMercatorViewport(
       viewport
     ).fitBounds(
@@ -42,8 +44,8 @@ export default function zoomToProjectSite(
     let defaultZoom = 15;
     if (zoom < defaultZoom) {
       defaultZoom = zoom;
-    }
-
+     }
+    
     const newViewport = {
       ...viewport,
       longitude,
@@ -53,6 +55,7 @@ export default function zoomToProjectSite(
       transitionInterpolator: new FlyToInterpolator(),
       transitionEasing: d3.easeCubic,
     };
+
     setViewPort(newViewport);
     setSiteViewPort({ center: [longitude, latitude], zoom: defaultZoom });
   } else {

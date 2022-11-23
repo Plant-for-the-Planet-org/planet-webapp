@@ -3,14 +3,13 @@ import React, { ReactElement } from 'react';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import styles from './Stats.module.scss';
 import StatsInfoModal from './StatsInfoModal';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
 
 interface Props {
   tenantScore: any;
 }
-const { useTranslation } = i18next;
 export default function Stats({ tenantScore }: Props): ReactElement {
   const [infoExpanded, setInfoExpanded] = React.useState(null);
   const { t, i18n, ready } = useTranslation([
@@ -22,9 +21,7 @@ export default function Stats({ tenantScore }: Props): ReactElement {
   const handleModalClose = () => {
     setModalOpen(false);
   };
-  const handleModalOpen = () => {
-    setModalOpen(true);
-  };
+
   const { theme } = React.useContext(ThemeContext);
   return ready ? (
     <div className={styles.wrapper}>
@@ -38,29 +35,6 @@ export default function Stats({ tenantScore }: Props): ReactElement {
             id={'donatedStats'}
             onClick={() => {
               setInfoExpanded('donated');
-              setModalOpen(true);
-            }}
-            className={styles.statInfo}
-          >
-            <InfoIcon color="#000" />
-          </button>
-        </div>
-        <div className={styles.statCard}>
-          <h2 className={styles.statNumber}>
-            {' '}
-            {localizedAbbreviatedNumber(
-              i18n.language,
-              Number(77060000),
-              2
-            )}{' '}
-          </h2>
-          <h3 className={styles.statText}>
-            {t('planet:plantedByTPO', { projects: 206 })}
-          </h3>
-          <button
-            id={'plantedStats'}
-            onClick={() => {
-              setInfoExpanded('planted');
               setModalOpen(true);
             }}
             className={styles.statInfo}
