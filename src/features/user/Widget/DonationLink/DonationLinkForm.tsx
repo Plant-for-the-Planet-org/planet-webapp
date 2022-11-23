@@ -18,7 +18,7 @@ import {
 import { Project } from '../../../common/types/project';
 import { allCountries } from '../../../../utils/constants/countries';
 import CustomSnackbar from '../../../common/CustomSnackbar';
-import { getRequest } from '../../../../utils/apiRequests/api';
+import QRCode from 'qrcode';
 
 // TODOO - refactor code for reuse?
 const StyledForm = styled('form')((/* { theme } */) => ({
@@ -69,10 +69,11 @@ const DonationLinkForm = ({
   const [isTesting, setIsTesting] = useState<boolean>(false);
   const [isArrayUpdated, setIsArrayUpdated] = useState<boolean>(false);
   const [isLinkUpdated, setIsLinkUpdated] = useState<boolean>(false);
+  const [qrCode, setQrCode] = useState<string | null>(null);
 
   const getDonationORCode = async () => {
-    const data = await getRequest('https://qr.pp.eco/max=100?' + donationUrl);
-    console.log('==>', data);
+    const data = await QRCode.toDataURL(donationUrl);
+    setQrCode(data);
   };
 
   useEffect(() => {
@@ -282,6 +283,13 @@ const DonationLinkForm = ({
             >
               {t('donationLink:preview')}
             </Button>
+            {qrCode && (
+              <img
+                style={{ display: 'block', width: '150px', height: '150px' }}
+                id="base64image"
+                src={qrCode}
+              />
+            )}
           </div>
         </div>
       </StyledForm>

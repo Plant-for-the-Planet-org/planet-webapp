@@ -1,22 +1,22 @@
 @import '../../../../theme/theme';
 
-.formSection{
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 .formHeader {
-    font-size: $fontMedium;
-    color: $primaryFontColor;
-    font-weight: 700;
-    flex: 1;
-    margin-right: auto;
+  font-size: $fontMedium;
+  color: $primaryFontColor;
+  font-weight: 700;
+  flex: 1;
+  margin-right: auto;
 }
 .formButtonContainer {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    padding: 24px 0px 0px;
-    gap: 10px;
-    margin-right: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 24px 0px 0px;
+  gap: 10px;
 }
