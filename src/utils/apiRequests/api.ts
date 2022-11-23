@@ -149,6 +149,7 @@ export async function getAuthenticatedRequest<T>(
       Authorization: `Bearer ${token}`,
       'x-locale': `${lang}`,
       'x-accept-versions': version ? version : '1.0.3',
+      ...(header ? header : {}),
     },
   })
     .then(async (res) => {
@@ -338,9 +339,7 @@ export async function getRasterData(
   errorHandler?: Function
 ): Promise<any> {
   let result;
-  const res = await fetch(
-    `${process.env.SITE_IMAGERY_API_URL}/api/v1/project/${id}`
-  )
+  await fetch(`${process.env.SITE_IMAGERY_API_URL}/api/v1/project/${id}`)
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
       handleApiError(res.status, result, errorHandler);
