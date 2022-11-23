@@ -57,10 +57,10 @@ export function LocationDetails({
           )
         ) {
           const element = location.samplePlantLocations[key];
-
-          if (element.coordinates?.[0]) {
+          const length = element.history.length;
+          if (element.history?.[length - 1]) {
             images.push({
-              image: element.coordinates[0].image,
+              image: element.history[length - 1].image,
               description: `${t('maps:sampleTree')} ${
                 element.tag ? '#' + element.tag : ''
               }`,
@@ -85,12 +85,12 @@ export function LocationDetails({
           />
         </div>
       )}
-      {location.type !== 'multi' && location.coordinates?.length > 0 && (
+      {location.type !== 'multi' && location.history?.length > 0 && (
         <div
           className={`${styles.projectImageSliderContainer} ${styles.singlePl}`}
         >
           <ImageSliderSingle
-            images={location.coordinates}
+            images={location.history}
             height={233}
             imageSize="large"
             type="coordinate"
