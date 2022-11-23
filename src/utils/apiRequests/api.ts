@@ -105,7 +105,8 @@ export async function getRequest<T>(
   const fullUrl = isAbsoluteUrl(url)
     ? url
     : `${process.env.API_ENDPOINT}${url}${queryStringSuffix}`;
-  await fetch(fullUrl, {
+
+  await fetch(encodeURI(fullUrl), {
     method: 'GET',
     headers: {
       'tenant-key': `${TENANT_ID}`,
