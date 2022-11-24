@@ -39,7 +39,7 @@ const DonationLinkForm = ({
     languageName: 'Automatic Selection',
   });
   const [donationUrl, setDonationUrl] = useState<string>('');
-  const { t, ready } = useTranslation(['donationLink', 'country']);
+  const { t, ready } = useTranslation(['donationLink', 'country', 'me']);
   const [localProject, setLocalProject] = useState<Project | null>(null);
   const [isSupport, setIsSupport] = useState<boolean>(!user.isPrivate);
   const [isTesting, setIsTesting] = useState<boolean>(false);
@@ -107,6 +107,16 @@ const DonationLinkForm = ({
 
   const handleSnackbarClose = () => {
     setIsLinkUpdated(false);
+  };
+
+  const downloadBase64File = () => {
+    if (qrCode) {
+      const linkSource = qrCode;
+      const downloadLink = document.createElement('a');
+      downloadLink.href = linkSource;
+      downloadLink.download = t('donationLink:qrCodeFileName');
+      downloadLink.click();
+    }
   };
 
   if (isArrayUpdated && ready) {
@@ -240,34 +250,47 @@ const DonationLinkForm = ({
               />
               <CopyToClipboard isButton={true} text={donationUrl} />
             </InlineFormDisplayGroup>
+            <div>
+              <Button
+                id="Preview"
+                variant="contained"
+                color="primary"
+                onClick={() => window.open(donationUrl, '_blank')}
+              >
+                {t('donationLink:preview')}
+              </Button>
+            </div>
           </div>
-          {isLinkUpdated && (
-            <CustomSnackbar
-              snackbarText={t('donationLink:linkUpdatedMessage')}
-              isVisible={isLinkUpdated}
-              handleClose={handleSnackbarClose}
-            />
-          )}
-        </div>
-        <div className={styles.formButtonContainer}>
-          <Button
-            id="Preview"
-            name="Preview"
-            variant="contained"
-            color="primary"
-            fullWidth={false}
-            onClick={() => window.open(donationUrl, '_blank')}
-          >
-            {t('donationLink:preview')}
-          </Button>
           {qrCode && (
-            <img
-              style={{ display: 'block', width: '150px', height: '150px' }}
-              id="base64image"
-              src={qrCode}
-            />
+            <div className={styles.formSection}>
+              <div className={styles.formHeader}>
+                {t('donationLink:qrCodeTitle')}
+              </div>
+              <img
+                style={{ display: 'block', width: '150px', height: '150px' }}
+                id="base64image"
+                src={qrCode}
+              />
+              <div>
+                <Button
+                  id="download-qr-code"
+                  variant="contained"
+                  color="primary"
+                  onClick={downloadBase64File}
+                >
+                  {t('me:download')}
+                </Button>
+              </div>
+            </div>
           )}
         </div>
+        {isLinkUpdated && (
+          <CustomSnackbar
+            snackbarText={t('donationLink:linkAndQRCodeUpdatedMessage')}
+            isVisible={isLinkUpdated}
+            handleClose={handleSnackbarClose}
+          />
+        )}
       </StyledForm>
     );
   }

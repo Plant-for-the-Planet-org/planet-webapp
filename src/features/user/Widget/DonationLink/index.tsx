@@ -56,7 +56,12 @@ export default function DonationLink(): ReactElement | null {
   return ready ? (
     <DashboardView
       title={t('donationLink:donationLinkTitle')}
-      subtitle={<p>{t('donationLink:donationLinkDescription')}</p>}
+      subtitle={
+        <div>
+          <p>{t('donationLink:donationLinkDescription')}</p>
+          <p>{t('donationLink:qrCodeDiscription')}</p>
+        </div>
+      }
     >
       <SingleColumnView>
         <DonationLinkForm projectsList={projects} />
