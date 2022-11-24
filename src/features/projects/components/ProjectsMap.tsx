@@ -92,7 +92,7 @@ export default function ProjectsMap(): ReactElement {
     mapState,
     setMapState,
   };
-  // console.log(selectedPl, samplePlantLocation, 'step1');
+
   const onMapClick = (e: MapEvent) => {
     setSamplePlantLocation(null);
     setPopupData({ ...popupData, show: false });
@@ -172,7 +172,7 @@ export default function ProjectsMap(): ReactElement {
         onViewportChange={_onViewportChange}
         onStateChange={_onStateChange}
         onClick={onMapClick}
-        onHover={onMapHover}
+        onHover={selectedPl ? undefined : onMapHover}
         onLoad={() => setLoaded(true)}
         interactiveLayerIds={plIds ? plIds : undefined}
       >
