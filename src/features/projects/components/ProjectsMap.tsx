@@ -43,6 +43,8 @@ export default function ProjectsMap(): ReactElement {
     hoveredPl,
     setIsPolygonMenuOpen,
     setFilterOpen,
+    setSamplePlantLocation,
+    samplePlantLocation,
   } = React.useContext(ProjectPropsContext);
 
   const { t } = useTranslation(['maps']);
@@ -90,10 +92,9 @@ export default function ProjectsMap(): ReactElement {
     mapState,
     setMapState,
   };
-
+  // console.log(selectedPl, samplePlantLocation, 'step1');
   const onMapClick = (e: MapEvent) => {
-    setSelectedPl(null);
-    setHoveredPl(null);
+    setSamplePlantLocation(null);
     setPopupData({ ...popupData, show: false });
     setIsPolygonMenuOpen(false);
     setFilterOpen(false);
@@ -103,7 +104,11 @@ export default function ProjectsMap(): ReactElement {
           if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
             const element = plantLocations[key];
             if (element.id === e.features[0].layer?.source) {
-              setSelectedPl(element);
+              if (element?.tag) {
+                setSamplePlantLocation(element);
+              } else {
+                setSelectedPl(element);
+              }
 
               break;
             }
@@ -167,7 +172,7 @@ export default function ProjectsMap(): ReactElement {
         onViewportChange={_onViewportChange}
         onStateChange={_onStateChange}
         onClick={onMapClick}
-        onHover={plIds ? onMapHover : undefined}
+        onHover={onMapHover}
         onLoad={() => setLoaded(true)}
         interactiveLayerIds={plIds ? plIds : undefined}
       >
@@ -204,7 +209,7 @@ export default function ProjectsMap(): ReactElement {
             offsetTop={-5}
             tipSize={0}
           >
-            {selectedPl?.hid !== hoveredPl?.hid && (
+            {!(selectedPl?.hid === hoveredPl?.hid) && (
               <div className={styles.clickForDetails}>
                 {t('clickForDetails')}
               </div>

@@ -22,7 +22,6 @@ export default function Project({
 }: Props): ReactElement {
   const {
     selectedPl,
-    hoveredPl,
     plantLocations,
     geoJson,
     selectedSite,
@@ -31,6 +30,7 @@ export default function Project({
     setRasterData,
     isMobile,
     setSiteViewPort,
+    samplePlantLocation,
   } = React.useContext(ProjectPropsContext);
 
   const { handleError } = React.useContext(ErrorHandlingContext);
@@ -58,10 +58,10 @@ export default function Project({
         setPlantPolygonCoordinates(selectedPl?.geometry.coordinates[0]);
       }
     }
-  }, [router, selectedPl, plantLocations]);
+  }, [selectedPl]);
 
   React.useEffect(() => {
-    if (selectedPl && plantPolygonCoordinates) {
+    if (selectedPl && plantPolygonCoordinates && !selectedPl?.parent) {
       router.push(`/${project.slug}?ploc=${selectedPl?.hid}`);
     }
   }, [selectedPl, plantPolygonCoordinates]);

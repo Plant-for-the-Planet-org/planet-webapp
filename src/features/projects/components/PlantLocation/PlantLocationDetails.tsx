@@ -31,7 +31,7 @@ interface Props {
 export default function PlantLocationDetails({
   plantLocation,
 }: Props): ReactElement {
-  const { setSelectedPl, plantLocations } =
+  const { setSelectedPl, plantLocations, setSamplePlantLocation } =
     React.useContext(ProjectPropsContext);
   const { t, i18n } = useTranslation(['maps']);
   const [treeCount, setTreeCount] = React.useState(1);
@@ -102,7 +102,7 @@ export default function PlantLocationDetails({
           )
         ) {
           const element = plantLocation.samplePlantLocations[key];
-          if (element.id === id) setSelectedPl(element);
+          if (element.id === id) setSamplePlantLocation(element);
         }
       }
     }

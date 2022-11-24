@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react';
 import { Layer, Marker } from 'react-map-gl';
 import { Source } from 'react-map-gl';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
-import { useRouter } from 'next/router';
 import styles from '../../styles/PlantLocation.module.scss';
 import * as turf from '@turf/turf';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
@@ -11,7 +10,6 @@ import { useTranslation } from 'next-i18next';
 interface Props {}
 
 export default function PlantLocations({}: Props): ReactElement {
-  const router = useRouter();
   const {
     plantLocations,
     hoveredPl,
@@ -20,13 +18,14 @@ export default function PlantLocations({}: Props): ReactElement {
     setHoveredPl,
     viewport,
     satellite,
+    setSamplePlantLocation,
+    samplePlantLocation,
   } = React.useContext(ProjectPropsContext);
 
   const { i18n, t } = useTranslation(['maps', 'common']);
 
   const openPl = (pl: any) => {
-    console.log('i ran');
-    setSelectedPl(pl);
+    setSamplePlantLocation(pl);
   };
 
   const onHover = (pl: Object) => {
@@ -187,7 +186,7 @@ export default function PlantLocations({}: Props): ReactElement {
                               <div
                                 key={`${spl.id}-marker`}
                                 className={`${styles.single} ${
-                                  spl.hid === selectedPl?.hid
+                                  spl.hid === samplePlantLocation?.hid
                                     ? styles.singleSelected
                                     : ''
                                 }`}
