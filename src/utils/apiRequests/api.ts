@@ -103,10 +103,10 @@ export async function getRequest<T>(
   const queryString = getQueryString(query);
   const queryStringSuffix = queryString ? '?' + queryString : '';
   const fullUrl = isAbsoluteUrl(url)
-    ? url
-    : `${process.env.API_ENDPOINT}${url}${queryStringSuffix}`;
+    ? encodeURI(url)
+    : encodeURI(`${process.env.API_ENDPOINT}${url}${queryStringSuffix}`);
 
-  await fetch(encodeURI(fullUrl), {
+  await fetch(fullUrl, {
     method: 'GET',
     headers: {
       'tenant-key': `${TENANT_ID}`,
