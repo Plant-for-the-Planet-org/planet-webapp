@@ -64,8 +64,9 @@ export default function Donate({
         setInternalCurrencyCode(currency);
         setInternalLanguage(i18n.language);
         setCurrencyCode(currency);
+        const { p } = router.query;
         const project = await getRequest(
-          `/app/projects/${router.query.p}`,
+          `/app/projects/${p}`,
           handleError,
           '/',
           {

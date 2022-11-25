@@ -103,8 +103,8 @@ export async function getRequest<T>(
   const queryString = getQueryString(query);
   const queryStringSuffix = queryString ? '?' + queryString : '';
   const fullUrl = isAbsoluteUrl(url)
-    ? encodeURI(url)
-    : encodeURI(`${process.env.API_ENDPOINT}${url}${queryStringSuffix}`);
+    ? url
+    : `${process.env.API_ENDPOINT}${url}${queryStringSuffix}`;
 
   await fetch(fullUrl, {
     method: 'GET',
