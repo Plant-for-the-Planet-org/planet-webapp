@@ -64,20 +64,22 @@ export default function Donate({
         setInternalCurrencyCode(currency);
         setInternalLanguage(i18n.language);
         setCurrencyCode(currency);
-        const { p } = router.query;
-        const project = await getRequest(
-          `/app/projects/${p}`,
-          handleError,
-          '/',
-          {
-            _scope: 'extended',
-            currency: currency,
-            locale: i18n.language,
-          }
-        );
-        setProject(project);
-        setShowSingleProject(true);
-        setZoomLevel(2);
+        const _project = router.query.p?.toString();
+        if (_project) {
+          const project = await getRequest(
+            `/app/projects/${_project}`,
+            handleError,
+            '/',
+            {
+              _scope: 'extended',
+              currency: currency,
+              locale: i18n.language,
+            }
+          );
+          setProject(project);
+          setShowSingleProject(true);
+          setZoomLevel(2);
+        }
       }
     }
     if (router.query.p) {
