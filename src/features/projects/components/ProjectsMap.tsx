@@ -172,7 +172,7 @@ export default function ProjectsMap(): ReactElement {
         onViewportChange={_onViewportChange}
         onStateChange={_onStateChange}
         onClick={onMapClick}
-        onHover={selectedPl ? undefined : onMapHover}
+        onHover={onMapHover}
         onLoad={() => setLoaded(true)}
         interactiveLayerIds={plIds ? plIds : undefined}
       >
@@ -209,7 +209,7 @@ export default function ProjectsMap(): ReactElement {
             offsetTop={-5}
             tipSize={0}
           >
-            {!(selectedPl?.hid === hoveredPl?.hid) && (
+            {hoveredPl?.hid && selectedPl?.hid !== hoveredPl?.hid && (
               <div className={styles.clickForDetails}>
                 {t('clickForDetails')}
               </div>
