@@ -1,4 +1,6 @@
-import moment from 'moment';
+import getYear from 'date-fns/getYear';
+import getMonth from 'date-fns/getMonth';
+import getDayOfYear from 'date-fns/getDayOfYear';
 
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
@@ -65,19 +67,19 @@ export const getParams = (config = [], params = {}) => {
   return {
     ...newParams,
     ...(!!start && {
-      startYear: moment(start).year(),
-      startMonth: moment(start).month(),
-      startDay: moment(start).dayOfYear(),
+      startYear: getYear(start),
+      startMonth: getMonth(start),
+      startDay: getDayOfYear(start),
     }),
     ...(!!endDate && {
-      endYear: moment(end).year(),
-      endMonth: moment(end).month(),
-      endDay: moment(end).dayOfYear(),
+      endYear: getYear(end),
+      endMonth: getMonth(end),
+      endDay: getDayOfYear(end),
     }),
     ...(!!trimEndDate && {
-      trimEndYear: moment(trim).year(),
-      trimEndMonth: moment(trim).month(),
-      trimEndDay: moment(trim).dayOfYear(),
+      trimEndYear: getYear(trim),
+      trimEndMonth: getMonth(trim),
+      trimEndDay: getDayOfYear(trim),
     }),
     ...getDayRange(newParams),
   };
