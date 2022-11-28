@@ -30,7 +30,6 @@ export default function Project({
     setRasterData,
     isMobile,
     setSiteViewPort,
-    samplePlantLocation,
   } = React.useContext(ProjectPropsContext);
 
   const { handleError } = React.useContext(ErrorHandlingContext);
