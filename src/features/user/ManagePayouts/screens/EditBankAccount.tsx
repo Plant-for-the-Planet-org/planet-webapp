@@ -116,9 +116,7 @@ const EditBankAccount = (): ReactElement | null => {
     <CenteredContainer>
       <FormHeader>
         <Link href="/profile/payouts" passHref>
-          <a>
-            <BackArrow />
-          </a>
+          <BackArrow />
         </Link>
         <h2 className="formTitle">{t('editBankAccountTitle')}</h2>
       </FormHeader>

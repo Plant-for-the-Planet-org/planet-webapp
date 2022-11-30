@@ -83,17 +83,18 @@ function ProjectContactDetails({ project }: Props): ReactElement {
   return ready ? (
     <div className={styles.projectMoreInfo}>
       <div className={styles.infoTitle}>{t('donate:contactDetails')}</div>
-      <Link prefetch={false} href="/t/[id]" as={`/t/${contactDetails[0].link}`}>
-        <a target={embed === 'true' ? '_top' : null}>
-          <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
-            {contactDetails[0].icon}
-            <span
-              style={{ marginLeft: '16px', flexGrow: 1, cursor: 'pointer' }}
-            >
-              {contactDetails[0].text}
-            </span>
-          </div>
-        </a>
+      <Link
+        prefetch={false}
+        href="/t/[id]"
+        as={`/t/${contactDetails[0].link}`}
+        target={embed === 'true' ? '_top' : undefined}
+      >
+        <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
+          {contactDetails[0].icon}
+          <span style={{ marginLeft: '16px', flexGrow: 1, cursor: 'pointer' }}>
+            {contactDetails[0].text}
+          </span>
+        </div>
       </Link>
 
       {contactDetails.slice(1).map((contact) => {
@@ -112,7 +113,9 @@ function ProjectContactDetails({ project }: Props): ReactElement {
         );
       })}
     </div>
-  ) : null;
+  ) : (
+    <></>
+  );
 }
 
 export default ProjectContactDetails;
