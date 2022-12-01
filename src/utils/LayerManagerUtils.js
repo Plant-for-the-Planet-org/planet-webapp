@@ -1,6 +1,7 @@
 import getYear from 'date-fns/getYear';
 import getMonth from 'date-fns/getMonth';
 import getDayOfYear from 'date-fns/getDayOfYear';
+import parseISO from 'date-fns/parseISO';
 
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
@@ -58,7 +59,11 @@ export const getParams = (config = [], params = {}) => {
     ...params,
   };
 
-  const { startDate, endDate, trimEndDate, maxAbsoluteDate } = newParams;
+  let { startDate, endDate, trimEndDate, maxAbsoluteDate } = newParams;
+  if (typeof startDate == "string") startDate = parseISO(startDate)
+  if (typeof endDate == "string") endDate = parseISO(endDate)
+  if (typeof trimEndDate == "string") trimEndDate = parseISO(trimEndDate)
+  if (typeof maxAbsoluteDate == "string") maxAbsoluteDate = parseISO(maxAbsoluteDate)
 
   const start = startDate;
   const end = endDate > maxAbsoluteDate ? maxAbsoluteDate : endDate;
