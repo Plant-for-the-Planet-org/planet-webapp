@@ -82,7 +82,7 @@ export default function Donate({
     if (router.query.p) {
       loadProject();
     }
-  }, [router.query.p, currencyCode, i18n.language]);
+  }, [router.query.p]);
 
   React.useEffect(() => {
     async function loadPl() {

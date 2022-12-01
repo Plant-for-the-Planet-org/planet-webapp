@@ -98,7 +98,7 @@ export default function Donate({
       }
     }
     loadProjects();
-  }, [currencyCode, i18n.language]);
+  }, [currencyCode]);
 
   const ProjectsProps = {
     projects: filteredProjects,
