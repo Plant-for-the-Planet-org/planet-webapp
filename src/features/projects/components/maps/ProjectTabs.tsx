@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { useRouter } from 'next/router';
+import { Router, useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import LocationIcon from '../../../../../public/assets/images/icons/LocationIcon';
 import ResearchIcon from '../../../../../public/assets/images/icons/ResearchIcon';
@@ -12,10 +12,29 @@ interface Props {}
 
 export default function ProjectTabs({}: Props): ReactElement {
   const { embed, showProjectDetails } = React.useContext(ParamsContext);
-  const { pathname } = useRouter();
+  const { pathname, query, push } = useRouter();
   const { t } = useTranslation(['maps']);
-  const { selectedMode, setSelectedMode, rasterData } =
-    React.useContext(ProjectPropsContext);
+  const {
+    selectedMode,
+    setSelectedMode,
+    rasterData,
+    selectedSite,
+    project,
+    geoJson,
+    plantLocations,
+  } = React.useContext(ProjectPropsContext);
+
+  React.useEffect(() => {
+    if (plantLocations) {
+      if (query.view === 'field-data') {
+        setSelectedMode('location');
+      } else if (query.view === 'time-travel') {
+        setSelectedMode('imagery');
+      } else {
+        setSelectedMode('location');
+      }
+    }
+  }, [plantLocations, query.view]);
 
   const containerClasses =
     embed !== 'true'
@@ -29,6 +48,9 @@ export default function ProjectTabs({}: Props): ReactElement {
       <div className={containerClasses}>
         <div
           onClick={() => {
+            push(
+              `/${project.slug}/?site=${geoJson.features[selectedSite].properties.id}&view=field-data`
+            );
             setSelectedMode('location');
           }}
           style={
@@ -47,6 +69,9 @@ export default function ProjectTabs({}: Props): ReactElement {
         </div>
         <div
           onClick={() => {
+            push(
+              `/${project.slug}/?site=${geoJson.features[selectedSite].properties.id}&view=time-travel`
+            );
             setSelectedMode('imagery');
           }}
           style={

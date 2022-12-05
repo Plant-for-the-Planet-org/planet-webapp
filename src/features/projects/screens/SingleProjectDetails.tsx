@@ -44,7 +44,6 @@ function SingleProjectDetails({}: Props): ReactElement {
     project,
     geoJson,
     rasterData,
-    selectedMode,
     hoveredPl,
     selectedPl,
     setHoveredPl,

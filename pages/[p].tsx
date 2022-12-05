@@ -118,7 +118,7 @@ export default function Donate({
   React.useEffect(() => {
     if (geoJson && !router.query.site && !router.query.ploc) {
       router.push(
-        `/${project.slug}?site=${geoJson.features[0].properties.id}`,
+        `/${project?.slug}?site=${geoJson.features[0].properties.id}&view=site-data`,
         undefined,
         { shallow: true }
       );
