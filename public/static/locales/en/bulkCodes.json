@@ -10,12 +10,20 @@
   "importMethodText": {
     "title": "Import File",
     "subtitle": "Use this method if one of the following criteria match your use case:",
-    "details": ["I want to provide the Recipient's name or Email for each code.", "I want Plant-for-the-Planet to automatically email the recipients once it has been generated (optional).", "I want to issue codes for different tree counts."]
+    "details": [
+      "I want to provide the Recipient's name or Email for each code.",
+      "I want Plant-for-the-Planet to automatically email the recipients once it has been generated (optional).",
+      "I want to issue codes for different tree counts."
+    ]
   },
   "genericMethodText": {
     "title": "Create Generic Codes",
     "subtitle": "Use this method if the following criteria matches your use case:",
-    "details": ["All codes will have the same value.", "I want to generate a number of code for arbitrary recipients.", "Names and Emails cannot be associated with the code."]
+    "details": [
+      "All codes will have the same value.",
+      "I want to generate a number of code for arbitrary recipients.",
+      "Names and Emails cannot be associated with the code."
+    ]
   },
   "projectName": "Project Name",
   "costPerUnit": "Cost per Unit",
@@ -31,6 +39,7 @@
   "occasion": "Occasion",
   "total": "Total",
   "chargeConsentText": "By clicking Issue Codes, you agree that above amount will be charged to your account.",
+  "invalidEmailWarningText": "Please make sure that that recipient_email is a valid email. Using dummy or invalid emails will lead to account suspension in accordance with Platform terms and conditions.",
   "projectRequired": "No project is selected.",
   "unitsPerCodeRequired": "Each code should contain at least 1 unit.",
   "codeQuantityRequired": "You need to create at least 1 code.",
@@ -61,7 +70,7 @@
     "unitsNotProvided": "Units are missing/invalid for some recipients.",
     "notifyNotPossible": "Email and name are missing for some recipients that are to be notified.",
     "instructionRowError": "An error occurred on the 1st row. Please check if you have deleted the instructions, or if there is additional data.",
-    "invalidEmails": "The emails provided are invalid on the following rows: ",
+    "invalidEmails": "recipient_email contains dummy/invalid emails on the following rows: {{rowList}}. Please remove invalid emails or add valid emails.",
     "generalError": "Something went wrong. Please try after a while."
   },
   "successUploadCSV": {

@@ -12,6 +12,7 @@ import {
 } from '../BulkCodesTypes';
 
 import styles from '../BulkCodes.module.scss';
+import { isEmailValid } from '../../../../utils/isEmailValid';
 
 const { Trans, useTranslation } = i18next;
 
@@ -126,19 +127,18 @@ const RecipientsUploadForm = ({
     const invalidEmailIndexes: number[] = [];
     recipients.forEach((recipient, index) => {
       const { recipient_email } = recipient;
-      const emailRegex =
-        /^([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/i;
-      if (!emailRegex.test(recipient_email) && recipient_email.length !== 0)
+      if (!isEmailValid(recipient_email) && recipient_email.length !== 0) {
         invalidEmailIndexes.push(index + 1);
+      }
     });
 
     if (invalidEmailIndexes.length > 0) {
       setParseError({
         type: 'invalidEmails',
         message: ready
-          ? `${t(
-              'bulkCodes:errorUploadCSV.invalidEmails'
-            )} ${invalidEmailIndexes.join(', ')}`
+          ? t('bulkCodes:errorUploadCSV.invalidEmails', {
+              rowList: invalidEmailIndexes.join(', '),
+            })
           : '',
       });
       return false;

@@ -10,6 +10,7 @@ interface BulkGiftTotalProps {
   currency?: string;
   units?: number;
   unit?: string;
+  isImport?: boolean;
 }
 
 const BulkGiftTotal = ({
@@ -17,6 +18,7 @@ const BulkGiftTotal = ({
   currency,
   units = 0,
   unit = 'tree',
+  isImport = false,
 }: BulkGiftTotalProps): ReactElement | null => {
   const { t, ready, i18n } = useTranslation(['common', 'bulkCodes']);
 
@@ -43,7 +45,17 @@ const BulkGiftTotal = ({
           currency as string,
           amount
         )} for ${units} ${getUnit(unit, units)}`}
-        helperText={t('bulkCodes:chargeConsentText')}
+        helperText={
+          <>
+            {t('bulkCodes:chargeConsentText')}
+            {isImport && (
+              <>
+                <br />
+                {t('bulkCodes:invalidEmailWarningText')}
+              </>
+            )}
+          </>
+        }
         // TODOO translation and pluralization
       ></TextField>
     );
