@@ -5,6 +5,7 @@ import { getPDFFile } from '../../../../utils/getImageURL';
 import i18next from '../../../../../i18n';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
+import { Trans } from 'react-i18next';
 
 interface Props {
   data: object[];
@@ -21,12 +22,22 @@ export default function TopProjectReports(data: Props) {
             {data?.data?.map((review) => (
               <div key={review.id}>
                 <p id="child-modal-description">
-                  {t('common:reviewInfo', {
-                    month: format(
+                  <Trans i18nKey="common:reviewInfo">
+                    The project was inspected in a multiday field review in{' '}
+                    {format(
                       parse(review?.issueMonth, 'MM-yyyy', new Date()),
                       'LLLL yyyy'
-                    ),
-                  })}
+                    )}{' '}
+                    and fullfills our
+                    <a
+                      target="_blank"
+                      href={t('standardsPdfLink')}
+                      rel="noreferrer"
+                      style={{ fontWeight: 400 }}
+                    >
+                      standards.
+                    </a>
+                  </Trans>
                 </p>
                 <a
                   target="_blank"
