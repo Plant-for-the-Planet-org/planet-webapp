@@ -2,7 +2,7 @@ import styles from '../styles/RedeemModal.module.scss';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useForm } from 'react-hook-form';
 import React, { ReactElement } from 'react';
@@ -10,8 +10,6 @@ import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
-
-const { useTranslation } = i18next;
 
 interface RedeemModal {
   redeemModalOpen: boolean;

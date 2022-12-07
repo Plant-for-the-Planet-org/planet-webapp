@@ -1,10 +1,8 @@
 import { ReactElement } from 'react';
+import { useTranslation } from 'next-i18next';
 import { Button } from '@mui/material';
-import i18next from '../../../../../i18n';
 import { useRouter } from 'next/router';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
-
-const { useTranslation } = i18next;
 
 const NoPlanetCashAccount = (): ReactElement | null => {
   const { t, ready } = useTranslation('planetcash');

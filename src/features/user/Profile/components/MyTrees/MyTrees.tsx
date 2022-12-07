@@ -5,7 +5,7 @@ import {
   getAuthenticatedRequest,
   getRequest,
 } from '../../../../../utils/apiRequests/api';
-import i18next from '../../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { getFormattedNumber } from '../../../../../utils/getFormattedNumber';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
@@ -15,8 +15,6 @@ import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingCon
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
 });
-
-const { useTranslation } = i18next;
 
 interface Props {
   profile: any;

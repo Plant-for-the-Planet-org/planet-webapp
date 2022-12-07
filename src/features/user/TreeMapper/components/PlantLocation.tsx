@@ -1,13 +1,11 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import styles from '../TreeMapper.module.scss';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import * as turf from '@turf/turf';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import TreeIcon from '../../../../../public/assets/images/icons/TreeIcon';
 import { useRouter } from 'next/router';
-
-const { useTranslation } = i18next;
 
 interface Props {
   location: Object;

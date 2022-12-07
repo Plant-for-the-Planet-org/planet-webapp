@@ -1,8 +1,6 @@
 import React, { ReactElement } from 'react';
 import styles from './../../styles/ProjectDetails.module.scss';
-import i18next from '../../../../../i18n';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   species: Array<{
@@ -13,7 +11,7 @@ interface Props {
 }
 
 function PlantSpecies({ species }: Props): ReactElement {
-  const { t, ready } = useTranslation(['maps']);
+  const { t } = useTranslation(['maps']);
   return (
     <div className={styles.projectMoreInfo}>
       <div className={styles.infoTitle}>

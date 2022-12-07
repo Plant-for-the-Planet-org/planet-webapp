@@ -1,18 +1,16 @@
 import React, { ReactElement } from 'react';
 import * as turf from '@turf/turf';
-import * as d3 from 'd3-ease';
 import ReactMapboxGl, { ZoomControl, Source, Layer } from 'react-mapbox-gl';
 import DrawControl from 'react-mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import styles from './../StepForm.module.scss';
 import Dropzone from 'react-dropzone';
 import tj from '@mapbox/togeojson';
-import i18next from './../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import WebMercatorViewport from '@math.gl/web-mercator';
 import gjv from 'geojson-validation';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 
-const { useTranslation } = i18next;
 interface Props {
   geoJson: any;
   setGeoJson: Function;
@@ -32,7 +30,7 @@ export default function MapComponent({
 }: Props): ReactElement {
   const defaultMapCenter = [geoLocation.geoLongitude, geoLocation.geoLatitude];
   const defaultZoom = 1.4;
-  const { t, i18n, ready } = useTranslation(['manageProjects']);
+  const { t, ready } = useTranslation(['manageProjects']);
   const [viewport, setViewPort] = React.useState({
     height: '400px',
     width: '100%',
@@ -73,13 +71,13 @@ export default function MapComponent({
   const mapParentRef = React.useRef(null);
   const drawControlRef = React.useRef(null);
 
-  const onDrawCreate = ({ features }: any) => {
+  const onDrawCreate = () => {
     if (drawControlRef.current) {
       setGeoJson(drawControlRef.current.draw.getAll());
     }
   };
 
-  const onDrawUpdate = ({ features }: any) => {
+  const onDrawUpdate = () => {
     if (drawControlRef.current) {
       setGeoJson(drawControlRef.current.draw.getAll());
     }

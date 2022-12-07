@@ -1,21 +1,18 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { Modal, Snackbar, styled } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import styles from './EmbedModal.module.scss';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../theme/themeContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
-import { TENANT_ID } from '../../../utils/constants/environment';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 
 interface Props {
   embedModalOpen: boolean;
   setEmbedModalOpen: Function;
 }
-
-const { useTranslation } = i18next;
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -45,10 +42,6 @@ export default function EmbedModal({
       setIsPrivate(true);
     }
   }, [user]);
-
-  const handleToggleChange = (e: any) => {
-    setIsPrivate(!e.target.checked);
-  };
 
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);

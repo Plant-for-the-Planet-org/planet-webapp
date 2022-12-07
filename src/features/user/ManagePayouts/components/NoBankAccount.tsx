@@ -1,10 +1,8 @@
 import { ReactElement } from 'react';
 import { Button } from '@mui/material';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
-
-const { useTranslation } = i18next;
 
 const NoBankAccount = (): ReactElement | null => {
   const { t, ready } = useTranslation('managePayouts');

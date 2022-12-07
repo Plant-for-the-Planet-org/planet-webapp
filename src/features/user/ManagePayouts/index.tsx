@@ -5,7 +5,7 @@ import {
   useContext,
   useCallback,
 } from 'react';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
@@ -21,8 +21,6 @@ import Overview from './screens/Overview';
 import EditBankAccount from './screens/EditBankAccount';
 import AddBankAccount from './screens/AddBankAccount';
 import { useRouter } from 'next/router';
-
-const { useTranslation } = i18next;
 
 export enum ManagePayoutTabs {
   OVERVIEW = 'overview',

@@ -1,13 +1,11 @@
 import React, { ReactElement, useContext, useEffect } from 'react';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import TransactionListLoader from '../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../public/assets/images/icons/TransactionsNotFound';
 import AccountRecord from './components/AccountRecord';
 import styles from './AccountHistory.module.scss';
 import { useRouter } from 'next/router';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
-
-const { useTranslation } = i18next;
 
 interface Props {
   filter: string | null;

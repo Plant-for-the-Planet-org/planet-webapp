@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
 import { useRouter } from 'next/router';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import EditIcon from '../../../../public/assets/images/icons/manageProjects/Pencil';
 import Link from 'next/link';
@@ -21,7 +21,6 @@ import {
   bindPopover,
 } from 'material-ui-popup-state/hooks';
 
-const { useTranslation } = i18next;
 interface Props {
   project: any;
   keyString: string;
@@ -152,7 +151,10 @@ export default function ProjectSnippet({
                     Number(project.countPlanted),
                     1
                   )}{' '}
-                  {t('common:tree', { count: Number(project.countPlanted) })} •{' '}
+                  {t('common:tree_plural', {
+                    count: Number(project.countPlanted),
+                  })}{' '}
+                  •{' '}
                 </>
               ) : (
                 []

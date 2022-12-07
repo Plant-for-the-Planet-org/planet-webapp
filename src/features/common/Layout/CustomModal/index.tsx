@@ -1,6 +1,6 @@
 import Modal from '@mui/material/Modal';
 import React from 'react';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import styles from './CustomModal.module.scss';
 
 interface Props {
@@ -11,8 +11,6 @@ interface Props {
   modalTitle: string;
   modalSubtitle: string;
 }
-
-const { useTranslation } = i18next;
 
 export default function CustomModal({
   isOpen,
