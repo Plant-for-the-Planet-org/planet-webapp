@@ -235,8 +235,7 @@ const RecipientsUploadForm = ({
           >
             documentation here
           </a>
-          , and download{' '}
-          <a href="/assets/recipient-upload-sample.csv">template here</a>
+          , and download <a href="/assets/ExportAsCsv.xlsx">template here</a>
         </Trans>
       </p>
       {recipients.length > 0 && (

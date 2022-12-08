@@ -67,7 +67,7 @@
   "successUploadCSV": {
     "ignoredColumns": "Zusätzliche Spalten in der CSV-Datei wurden ignoriert"
   },
-  "importInstructions": "Bitte lese die <2>Dokumentation hier</2>, und lade die<4> </4><5>Vorlage hier</5> herunter.",
+  "importInstructions": "Bitte lese die <2>Dokumentation hier</2>, und lade die <4>Vorlage hier</4> herunter.",
   "donationSuccess": "Deine Spende war erfolgreich. Du wirst in Kürze zur Anzeige der Spendendetails weitergeleitet...",
   "donationError": {
     "planet_cash_insufficient_credit": "Verfügbares Guthaben = {{availableBalance}}. Bitte lade Guthaben auf dein PlanetCash-Konto auf, um diese Spende zu tätigen.",
