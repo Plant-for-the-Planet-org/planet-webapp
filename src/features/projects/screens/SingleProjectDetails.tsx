@@ -44,7 +44,6 @@ function SingleProjectDetails({}: Props): ReactElement {
     project,
     geoJson,
     rasterData,
-    selectedMode,
     hoveredPl,
     selectedPl,
     setHoveredPl,
@@ -101,6 +100,8 @@ function SingleProjectDetails({}: Props): ReactElement {
         }`
       );
     } else {
+      const link = localStorage.getItem('redirectLink');
+      const previousPath = link?.replace(link[0], '');
       router.replace(
         `/${
           isEmbed
@@ -109,7 +110,7 @@ function SingleProjectDetails({}: Props): ReactElement {
                   ? `?embed=true&callback=${callbackUrl}`
                   : '?embed=true'
               }`
-            : ''
+            : `${previousPath}`
         }`
       );
     }
