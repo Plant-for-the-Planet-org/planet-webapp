@@ -90,6 +90,19 @@ const RecipientsUploadForm = ({
       return false;
     }
 
+    // Check if first row has not been deleted
+    const firstRow = recipients[0];
+    if (
+      firstRow.units === 'number - mandatory' ||
+      isNaN(Number(firstRow.units))
+    ) {
+      setParseError({
+        type: 'instructionRowError',
+        message: ready ? t('bulkCodes:errorUploadCSV.instructionRowError') : '',
+      });
+      return false;
+    }
+
     // Check recipient has "units" field, and this is a number
     const hasUnits = recipients.every((recipient) => {
       const units = Number(recipient.units);
@@ -235,8 +248,10 @@ const RecipientsUploadForm = ({
           >
             documentation here
           </a>
-          , and download{' '}
-          <a href="/assets/recipient-upload-sample.csv">template here</a>
+          , download{' '}
+          <a href="/assets/recipient-upload-sample.xlsx">Excel template here</a>
+          , and{' '}
+          <a href="/assets/recipient-upload-sample.csv">CSV template here</a>
         </Trans>
       </p>
       {recipients.length > 0 && (

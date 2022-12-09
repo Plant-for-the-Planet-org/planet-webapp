@@ -98,7 +98,8 @@
     "sass": "^1.52.0",
     "styled-jsx": "^3.4.7",
     "uuid": "^8.3.2",
-    "vizzuality-components": "^3.0.3"
+    "vizzuality-components": "^3.0.3",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.9.2",
