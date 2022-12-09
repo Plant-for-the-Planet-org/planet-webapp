@@ -198,18 +198,6 @@ module.exports = withPlugins([[withBundleAnalyzer]], {
       },
     ];
   },
-  async rewrites() {
-    return {
-      fallback: [
-        // These rewrites are checked after both pages/public files
-        // and dynamic routes are checked
-        {
-          source: '/profile/:slug*',
-          destination: `/profile/`,
-        },
-      ],
-    };
-  },
   assetPrefix: hasAssetPrefix ? `${scheme}://${process.env.ASSET_PREFIX}` : '',
   // Asset Prefix allows to use CDN for the generated js files
   // https://nextjs.org/docs/api-reference/next.config.js/cdn-support-with-asset-prefix
