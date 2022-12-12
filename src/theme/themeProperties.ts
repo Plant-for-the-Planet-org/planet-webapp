@@ -33,6 +33,7 @@ const themeProperties = {
     mapboxIcon: 'invert(0) hue-rotate(180deg)',
     backgroundBase: '#FaFaFf',
     disabledFontColor: '#909090',
+    tabBackgroundColor: '#f4ffec',
   },
   dark: {
     primaryFontColor: '#ffffff',

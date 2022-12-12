@@ -7,6 +7,15 @@ const materialTheme = createTheme({
     primary: {
       main: theme.primaryColor,
       contrastText: theme.light.light,
+      light: theme.light.tabBackgroundColor,
+    },
+    background: {
+      base: theme.light.backgroundBase,
+      default: theme.light.light,
+    },
+    text: {
+      primary: theme.light.primaryFontColor,
+      secondary: 'rgba(0, 0, 0, 0.6)',
     },
   },
   typography: {
@@ -63,6 +72,14 @@ const materialTheme = createTheme({
         },
         textWarning: {
           color: theme.light.dangerColor,
+        },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          minHeight: 30,
+          fontSize: theme.fontSizes.fontRemXSmall,
         },
       },
     },
