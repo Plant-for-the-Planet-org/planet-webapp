@@ -11,6 +11,10 @@ const themeProperties = {
     fontXLarge: '26px',
     fontXXLarge: '36px',
     fontXXXLarge: '48px',
+    fontRemLarge: '2.25rem',
+    fontRemMedium: '1.5rem',
+    fontRemSmall: '1.125rem',
+    fontRemXSmall: '0.875rem',
   },
   primaryColor: '#68B030',
   primaryDarkColor: '#007a49',
@@ -46,6 +50,7 @@ const themeProperties = {
     backgroundBase: '#202020',
     disabledFontColor: '#686868',
   },
+  fontWeight: '700',
 };
 
 export default themeProperties;
