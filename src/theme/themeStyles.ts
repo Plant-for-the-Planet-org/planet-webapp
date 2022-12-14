@@ -13,6 +13,9 @@ const materialTheme = createTheme({
       base: theme.light.backgroundBase,
       default: theme.light.light,
     },
+    error: {
+      main: theme.light.dangerColor,
+    },
     text: {
       primary: theme.light.primaryFontColor,
       secondary: 'rgba(0, 0, 0, 0.6)',
@@ -80,6 +83,13 @@ const materialTheme = createTheme({
         root: {
           minHeight: 30,
           fontSize: theme.fontSizes.fontRemXSmall,
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          width: '100%',
         },
       },
     },

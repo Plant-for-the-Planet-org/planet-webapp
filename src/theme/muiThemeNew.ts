@@ -6,7 +6,7 @@ declare module '@mui/material/styles/createPalette' {
     base?: string;
   }
 }
-
+//unused
 const muiThemeNew = createTheme({
   palette: {
     primary: {

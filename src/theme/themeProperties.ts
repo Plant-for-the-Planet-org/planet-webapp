@@ -11,6 +11,7 @@ const themeProperties = {
     fontXLarge: '26px',
     fontXXLarge: '36px',
     fontXXXLarge: '48px',
+    //to be converted to same unit
     fontRemLarge: '2.25rem',
     fontRemMedium: '1.5rem',
     fontRemSmall: '1.125rem',
