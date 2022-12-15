@@ -7,7 +7,6 @@ import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import CopyToClipboard from '../../../common/CopyToClipboard';
-import moment from 'moment';
 
 interface Props {
   setselectedLocation: Function;
@@ -133,7 +132,7 @@ export function LocationDetails({
                 <p className={styles.title}>{t('date')}</p>
                 {location.history?.map((h, index) => (
                   <div className={styles.value} key={index}>
-                    {moment(h?.created).format('DD-MM-YYYY')}
+                    {formatDate(h?.created)}
                   </div>
                 ))}
               </div>
