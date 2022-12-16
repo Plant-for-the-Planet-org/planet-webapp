@@ -106,9 +106,6 @@ const nextConfig =  {
   },
   basePath,
   // your config for other plugins or the general next.js here...
-  devIndicators: {
-    autoPrerender: false,
-  },
   env: {
     AUTH0_CUSTOM_DOMAIN: process.env.AUTH0_CUSTOM_DOMAIN,
     AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
@@ -197,7 +194,7 @@ const nextConfig =  {
       },
     ];
   },
-  assetPrefix: hasAssetPrefix ? `${scheme}://${process.env.ASSET_PREFIX}` : '',
+  assetPrefix: hasAssetPrefix ? `${scheme}://${process.env.ASSET_PREFIX}` : undefined,
   // Asset Prefix allows to use CDN for the generated js files
   // https://nextjs.org/docs/api-reference/next.config.js/cdn-support-with-asset-prefix
 };
