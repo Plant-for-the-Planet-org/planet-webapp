@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { Box, Grid, ThemeProvider, styled } from '@mui/material';
 import materialTheme from '../../../../theme/themeStyles';
 
@@ -6,8 +6,8 @@ import materialTheme from '../../../../theme/themeStyles';
 
 interface DashboardViewProps {
   title: string;
-  subtitle: JSX.Element | null;
-  children: React.ReactNode;
+  subtitle: ReactElement | null;
+  children: ReactNode;
 }
 
 const DashboardGridContainer = styled(Box)(({ theme }) => ({
