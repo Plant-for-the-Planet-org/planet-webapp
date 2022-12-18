@@ -10,20 +10,12 @@
   "importMethodText": {
     "title": "Importieren",
     "subtitle": "Verwende diese Methode, wenn eines der folgenden Kriterien auf deinen Anwendungsfall zutrifft:",
-    "details": [
-      "Ich möchte für jeden Code den Namen des Empfängers oder seine E-Mail-Adresse angeben.",
-      "Ich möchte, dass Plant-for-the-Planet nach der Erstellung automatisch eine E-Mail an die Empfänger sendet (optional).",
-      "Ich möchte Codes für verschiedene Zahlen von Bäumen vergeben."
-    ]
+    "details": ["Ich möchte für jeden Code den Namen des Empfängers oder seine E-Mail-Adresse angeben.", "Ich möchte, dass Plant-for-the-Planet nach der Erstellung automatisch eine E-Mail an die Empfänger sendet (optional).", "Ich möchte Codes für verschiedene Zahlen von Bäumen vergeben."]
   },
   "genericMethodText": {
     "title": "Generische Codes erstellen",
     "subtitle": "Verwende diese Methode, wenn die folgenden Kriterien auf deinen Anwendungsfall zutreffen:",
-    "details": [
-      "Alle Codes werden den gleichen Wert haben.",
-      "Ich möchte eine Reihe von Codes für beliebige Empfänger generieren.",
-      "Namen und E-Mail-Adressen können nicht mit dem Code verknüpft werden."
-    ]
+    "details": ["Alle Codes werden den gleichen Wert haben.", "Ich möchte eine Reihe von Codes für beliebige Empfänger generieren.", "Namen und E-Mail-Adressen können nicht mit dem Code verknüpft werden."]
   },
   "projectName": "Projektname",
   "costPerUnit": "Kosten pro Einheit",
@@ -39,7 +31,7 @@
   "occasion": "Anlass",
   "total": "Insgesamt",
   "chargeConsentText": "Indem du auf Codes erzeugen klickst, erklärst du dich damit einverstanden, dass der oben genannte Betrag von deinem Konto abgebucht wird.",
-  "invalidEmailWarningText": "Stelle bitte sicher, dass die Empfänger-E-Mail eine gültige Adresse ist. Die Verwendung von Dummy- oder ungültigen E-Mail-Adressen führt gemäß der Nutzungsbedingungen der Plattform zur Sperrung des Kontos.",
+  "invalidEmailWarningText": "Bitte stelle sicher, dass recipient_email eine gültige E-Mail ist. Die Verwendung von Pseudo-E-Mails oder ungültigen E-Mails führt zur Sperrung des Kontos in Übereinstimmung mit den Geschäftsbedingungen der Plattform.",
   "projectRequired": "Es wurde kein Projekt ausgewählt.",
   "unitsPerCodeRequired": "Jeder Code sollte mindestens eine Einheit enthalten.",
   "codeQuantityRequired": "Du musst mindestens einen Code erstellen.",
@@ -50,18 +42,18 @@
   "insufficientPCashBalance": "Unzureichendes Guthaben",
   "addBalanceGeneric": "Bitte klicke hier, um Guthaben hinzuzufügen.",
   "instructionsUploadCSV": {
-    "empty": "Drag & Drop / klicken um eine .xslx / .csv Datei zum hochladen auszuwählen.",
-    "error": "Bitte kontrolliere die Probleme und ziehe die .xslx / .csv Datei hier her zum hochladen.",
+    "empty": "Drag & Drop / Klicke zur Auswahl einer .xslx/.csv-Datei zum Hochladen.",
+    "error": "Bitte prüfe etwaige Probleme und ziehe die .xslx/.csv-Datei zum Hochladen hierher.",
     "processing": "Bitte warte, während wir deine Datei analysieren...",
-    "success": "Fahre fort oder ziehe eine .xlsx oder .csv Datei hier her um die aktuelle zu ersetzen."
+    "success": "Weiter oder ziehe eine .xslx or .csv-Datei hierher, um die aktuelle Datei zu ersetzen."
   },
   "statusUploadCSV": {
     "error": "Fehler",
     "success": "Dateianalyse abgeschlossen"
   },
   "errorUploadCSV": {
-    "fileInvalidType": "Es sind nur .csv und .xslx Dateien erlaubt.",
-    "tooManyFiles": "Lade bitte nur eine einzige Datei hoch.",
+    "fileInvalidType": "Nur .csv or .xslx Dateien sind zulässig",
+    "tooManyFiles": "Bitte lade nur eine einzige Datei hoch.",
     "fileTooSmall": "Die hochgeladene Datei scheint leer zu sein",
     "fileTooLarge": "Die hochgeladene Datei darf höchstens 5 MB groß sein.",
     "missingColumns": "In der hochgeladenen Datei fehlen die folgenden Spalten: ",
@@ -70,13 +62,13 @@
     "unitsNotProvided": "Einheiten fehlen oder sind ungültig bei einigen Empfängern.",
     "notifyNotPossible": "E-Mail und Name fehlen bei einigen Empfängern, die benachrichtigt werden sollen.",
     "instructionRowError": "In der 1. Zeile ist ein Fehler aufgetreten. Bitte prüfe, ob du die Anweisungen gelöscht hast oder ob zusätzliche Daten vorhanden sind.",
-    "invalidEmails": "Die angegebenen E-Mails sind in den folgenden Zeilen ungültig:",
+    "invalidEmails": "recipient_email enthält falsche/ungültige E-Mails in den folgenden Zeilen: {{rowList}}. Bitte entferne ungültige Emails oder füge gültige Emails hinzu.",
     "generalError": "Es ist ein Fehler aufgetreten. Bitte versuche es nach einer Weile erneut."
   },
   "successUploadCSV": {
-    "ignoredColumns": "Zusätzliche Spalten werden ignoriert."
+    "ignoredColumns": "Zusätzliche Spalten wurden ignoriert"
   },
-  "importInstructions": "Bitte lese die <2>Dokumentation hier</2>, und lade die hier die <5>Excel-</5> oder <8>CSV-Vorlage</8> herunter.",
+  "importInstructions": "Bitte lesen Sie die <2>Dokumentation hier</2>, lade die <5>Excel-Vorlage hier</5> und die <8>CSV-Vorlage hier</8> herunter.",
   "donationSuccess": "Deine Spende war erfolgreich. Du wirst in Kürze zur Anzeige der Spendendetails weitergeleitet...",
   "donationError": {
     "planet_cash_insufficient_credit": "Verfügbares Guthaben = {{availableBalance}}. Bitte lade Guthaben auf dein PlanetCash-Konto auf, um diese Spende zu tätigen.",
