@@ -3,6 +3,7 @@ import { TENANT_ID } from '../constants/environment';
 import { getQueryString } from './getQueryString';
 import getsessionId from './getSessionId';
 import { validateToken } from './validateToken';
+import { APIError } from '@planet-sdk/common';
 
 // Handle Error responses from API
 const handleApiError = (
@@ -92,12 +93,9 @@ function isAbsoluteUrl(url: any) {
 
 export async function getRequest<T>(
   url: any,
-  errorHandler?: Function,
-  redirect?: string,
   queryParams?: { [key: string]: string },
   version?: string
 ) {
-  let result;
   const lang = localStorage.getItem('language') || 'en';
   const query: any = { ...queryParams, locale: lang };
   const queryString = getQueryString(query);
@@ -105,25 +103,30 @@ export async function getRequest<T>(
   const fullUrl = isAbsoluteUrl(url)
     ? url
     : `${process.env.API_ENDPOINT}${url}${queryStringSuffix}`;
-  await fetch(fullUrl, {
-    method: 'GET',
-    headers: {
-      'tenant-key': `${TENANT_ID}`,
-      'X-SESSION-ID': await getsessionId(),
-      'x-locale': `${
-        localStorage.getItem('language')
-          ? localStorage.getItem('language')
-          : 'en'
-      }`,
-      'x-accept-versions': version ? version : '1.0.3',
-    },
+
+  return new Promise<T>(async (resolve, reject) => {
+    try {
+      const res = await fetch(fullUrl, {
+        method: 'GET',
+        headers: {
+          'tenant-key': `${TENANT_ID}`,
+          'X-SESSION-ID': await getsessionId(),
+          'x-locale': `${
+            localStorage.getItem('language')
+              ? localStorage.getItem('language')
+              : 'en'
+          }`,
+          'x-accept-versions': version ? version : '1.0.3',
+        },
+      })
+      if (!res.ok) {
+        throw new APIError(res.status, await res.json());
+      }
+      resolve(await res.json())
+    } catch (err) {
+      reject(err)
+    }
   })
-    .then(async (res) => {
-      result = res.status === 200 ? await res.json() : null;
-      handleApiError(res.status, result, errorHandler, redirect);
-    })
-    .catch((err) => console.error(`Unhandled Exception: ${err}`));
-  return result as unknown as T;
 }
 
 export async function getAuthenticatedRequest<T>(
@@ -215,7 +218,7 @@ export async function postRequest(
   url: any,
   data: any,
   errorHandler?: Function,
-  redirect?: string
+  redirect: string | undefined = undefined
 ): Promise<any> {
   const res = await fetch(process.env.API_ENDPOINT + url, {
     method: 'POST',
