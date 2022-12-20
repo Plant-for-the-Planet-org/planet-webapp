@@ -188,6 +188,29 @@
   font-family: $primaryFontFamily;
 }
 
+
+.registeredTrees {
+  padding-bottom: 10px;
+  margin-left: 5px;
+  color: #3D67B1;
+}
+
+.registeredTreesContainer{
+display: flex;
+margin-left: 20px;
+}
+
+
+.donatedTrees{
+  margin-left: 5px;
+  color: rgb(104, 176, 48);
+}
+
+.donatedTreesContainer{
+  display: flex;
+  padding-bottom: 5px;
+}
+
 @include mdTabletView {
   .myTreesSection {
     height: 80vh;
