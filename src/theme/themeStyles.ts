@@ -2,6 +2,12 @@ import { createTheme } from '@mui/material';
 
 import theme from './themeProperties';
 
+declare module '@mui/material/styles/createPalette' {
+  interface TypeBackground {
+    base?: string;
+  }
+}
+
 const materialTheme = createTheme({
   palette: {
     primary: {

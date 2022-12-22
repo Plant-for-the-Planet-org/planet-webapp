@@ -2,8 +2,6 @@ import React, { ReactElement } from 'react';
 import { Box, Grid, ThemeProvider, styled } from '@mui/material';
 import materialTheme from '../../../../theme/themeStyles';
 
-// import muiThemeNew from '../../../../theme/muiThemeNew';
-
 interface DashboardViewProps {
   title: string;
   subtitle: JSX.Element | null;
