@@ -66,7 +66,8 @@ export default function Donate({
         setInternalLanguage(i18n.language);
         setCurrencyCode(currency);
         try {
-          const project = await getRequest(`/app/projects/${router.query.p}`, {
+          const { p } = router.query;
+          const project = await getRequest(`/app/projects/${p}`, {
             _scope: 'extended',
             currency: currency,
             locale: i18n.language,
