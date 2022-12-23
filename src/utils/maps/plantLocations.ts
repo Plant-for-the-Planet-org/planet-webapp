@@ -1,7 +1,9 @@
+import { SetStateAction, Dispatch } from 'react';
 import { FlyToInterpolator, WebMercatorViewport } from 'react-map-gl';
 import * as d3 from 'd3-ease';
 import * as turf from '@turf/turf';
 import { getRequest } from '../apiRequests/api';
+import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 
 export function zoomToPlantLocation(
   coordinates: any,
@@ -11,7 +13,7 @@ export function zoomToPlantLocation(
   duration = 1200
 ) {
   if (viewport.width && viewport.height) {
-    const polygon  = turf.polygon([coordinates])
+    const polygon = turf.polygon([coordinates]);
     const bbox = turf.bbox(polygon);
     const { longitude, latitude, zoom } = new WebMercatorViewport(
       viewport
@@ -39,7 +41,7 @@ export function zoomToPlantLocation(
       transitionEasing: d3.easeCubic,
     };
     setViewPort(newViewport);
-   } else {
+  } else {
     const newViewport = {
       ...viewport,
       height: window.innerHeight,
@@ -51,20 +53,24 @@ export function zoomToPlantLocation(
 
 export async function getAllPlantLocations(
   project: string,
-  handleError: Function
+  setErrors: Dispatch<SetStateAction<SerializedError[] | null>>,
+  redirect: (url: string) => void
 ) {
-  const result = await getRequest(
-    `/app/plantLocations/${project}`,
-    handleError,
-    '/',
-    {
-      _scope: 'extended',
-    },
-    '1.0.4'
-  );
-  if (result) {
-    return result;
-  } else {
-    return null;
+  try {
+    const result = await getRequest(
+      `/app/plantLocations/${project}`,
+      {
+        _scope: 'extended',
+      },
+      '1.0.4'
+    );
+    if (result) {
+      return result;
+    } else {
+      return null;
+    }
+  } catch (err) {
+    setErrors(handleError(err as APIError));
+    redirect('/');
   }
 }

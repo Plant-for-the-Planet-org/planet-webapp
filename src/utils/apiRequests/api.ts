@@ -118,15 +118,15 @@ export async function getRequest<T>(
           }`,
           'x-accept-versions': version ? version : '1.0.3',
         },
-      })
+      });
       if (!res.ok) {
         throw new APIError(res.status, await res.json());
       }
-      resolve(await res.json())
+      resolve(await res.json());
     } catch (err) {
-      reject(err)
+      reject(err);
     }
-  })
+  });
 }
 
 export async function getAuthenticatedRequest<T>(

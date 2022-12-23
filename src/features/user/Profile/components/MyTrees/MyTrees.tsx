@@ -11,6 +11,7 @@ import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
+import { handleError as _handleError, APIError } from '@planet-sdk/common';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
@@ -25,7 +26,7 @@ interface Props {
 export default function MyTrees({ profile, authenticatedType, token }: Props) {
   const { t, i18n, ready } = useTranslation(['country', 'me']);
   const [contributions, setContributions] = React.useState();
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { handleError, setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     async function loadFunction() {
@@ -44,13 +45,14 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
             console.log('error occured :', e);
           });
       } else {
-        getRequest(`/app/profiles/${profile.id}/contributions`)
-          .then((result: any) => {
-            setContributions(result);
-          })
-          .catch((e: any) => {
-            console.log('error occured :', e);
-          });
+        try {
+          const result = await getRequest(
+            `/app/profiles/${profile.id}/contributions`
+          );
+          setContributions(result);
+        } catch (err) {
+          setErrors(_handleError(err as APIError));
+        }
       }
     }
     loadFunction();

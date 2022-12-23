@@ -4,7 +4,7 @@ import { useTranslation } from 'next-i18next';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import LeaderboardLoader from '../../../../features/common/ContentLoaders/LeaderboardLoader';
 import MaterialTextField from '../../../../features/common/InputTypes/MaterialTextField';
-import { getRequest, postRequest } from '../../../../utils/apiRequests/api';
+import { postRequest } from '../../../../utils/apiRequests/api';
 import Link from 'next/link';
 import getImageUrl from '../../../../utils/getImageURL';
 import { Autocomplete } from '@mui/material';

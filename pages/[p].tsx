@@ -12,7 +12,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
 import { SingleProjectGeojson } from '../src/features/common/types/project';
-import { handleError as _handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError } from '@planet-sdk/common';
 
 interface Props {
   initialized: boolean;
@@ -52,8 +52,7 @@ export default function Donate({
   const handleOpen = () => {
     setOpen(true);
   };
-  const { handleError, redirect, setErrors } =
-    React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     async function loadProject() {
@@ -76,7 +75,7 @@ export default function Donate({
           setShowSingleProject(true);
           setZoomLevel(2);
         } catch (err) {
-          setErrors(_handleError(err as APIError));
+          setErrors(handleError(err as APIError));
           redirect('/');
         }
       }
@@ -91,7 +90,8 @@ export default function Donate({
       setPlantLocationsLoaded(false);
       const newPlantLocations = await getAllPlantLocations(
         project.id,
-        handleError
+        setErrors,
+        redirect
       );
       setPlantLocations(newPlantLocations);
       setPlantLocationsLoaded(true);

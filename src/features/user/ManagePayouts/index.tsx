@@ -21,6 +21,7 @@ import Overview from './screens/Overview';
 import EditBankAccount from './screens/EditBankAccount';
 import AddBankAccount from './screens/AddBankAccount';
 import { useRouter } from 'next/router';
+import { handleError as _handleError, APIError } from '@planet-sdk/common';
 
 export enum ManagePayoutTabs {
   OVERVIEW = 'overview',
@@ -41,7 +42,7 @@ export default function ManagePayouts({
 }: ManagePayoutsProps): ReactElement | null {
   const { t, ready } = useTranslation('managePayouts');
   const router = useRouter();
-  const { handleError } = useContext(ErrorHandlingContext);
+  const { handleError, setErrors } = useContext(ErrorHandlingContext);
   const { token, contextLoaded, user } = useContext(UserPropsContext);
   const { accounts, setAccounts, payoutMinAmounts, setPayoutMinAmounts } =
     usePayouts();
@@ -52,14 +53,11 @@ export default function ManagePayouts({
     if (!payoutMinAmounts) {
       try {
         const res = await getRequest<Payouts.PayoutMinAmounts>(
-          '/app/payoutMinAmounts',
-          handleError
+          '/app/payoutMinAmounts'
         );
-        if (res && !res['error_code']) {
-          setPayoutMinAmounts(res);
-        }
+        setPayoutMinAmounts(res);
       } catch (err) {
-        console.log(err);
+        setErrors(_handleError(err as APIError));
       }
     }
   }, []);
