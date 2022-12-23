@@ -91,7 +91,7 @@ function isAbsoluteUrl(url: any) {
   return pattern.test(url);
 }
 
-export async function getRequest<T>(
+export function getRequest<T>(
   url: any,
   queryParams?: { [key: string]: string },
   version?: string
