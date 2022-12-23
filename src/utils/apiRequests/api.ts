@@ -129,36 +129,42 @@ export function getRequest<T>(
   });
 }
 
-export async function getAuthenticatedRequest<T>(
+export function getAuthenticatedRequest<T>(
   url: any,
   token: any,
   header: any = null,
-  errorHandler?: Function,
-  redirect?: string,
   queryParams?: { [key: string]: string },
   version?: string
 ): Promise<T> {
-  let result = {};
   const lang = localStorage.getItem('language') || 'en';
   const query: any = { ...queryParams };
   const queryString = getQueryString(query);
   const queryStringSuffix = queryString ? '?' + queryString : '';
-  await fetch(`${process.env.API_ENDPOINT}${url}${queryStringSuffix}`, {
-    method: 'GET',
-    headers: {
-      'tenant-key': `${TENANT_ID}`,
-      'X-SESSION-ID': await getsessionId(),
-      Authorization: `Bearer ${token}`,
-      'x-locale': `${lang}`,
-      'x-accept-versions': version ? version : '1.0.3',
-    },
-  })
-    .then(async (res) => {
-      result = res.status === 200 ? await res.json() : null;
-      handleApiError(res.status, result, errorHandler, redirect);
-    })
-    .catch((err) => console.log(`Something went wrong: ${err}`));
-  return result as unknown as T;
+
+  return new Promise<T>(async (resolve, reject) => {
+    try {
+      const res = await fetch(
+        `${process.env.API_ENDPOINT}${url}${queryStringSuffix}`,
+        {
+          method: 'GET',
+          headers: {
+            'tenant-key': `${TENANT_ID}`,
+            'X-SESSION-ID': await getsessionId(),
+            Authorization: `Bearer ${token}`,
+            'x-locale': `${lang}`,
+            'x-accept-versions': version ? version : '1.0.3',
+            ...(header ? header : {}),
+          },
+        }
+      );
+      if (!res.ok) {
+        throw new APIError(res.status, await res.json());
+      }
+      resolve(await res.json());
+    } catch (err) {
+      reject(err);
+    }
+  });
 }
 
 export async function postAuthenticatedRequest<T>(
