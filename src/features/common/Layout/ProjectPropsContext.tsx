@@ -1,124 +1,246 @@
-import React, { ReactElement } from 'react';
+import React, { FC, Dispatch, SetStateAction } from 'react';
 import { ParamsContext } from './QueryParamsContext';
+import {
+  Project,
+  SearchProject,
+  GeoJson,
+  ViewPort,
+  MapState,
+  RasterData,
+  PlantLocation,
+  SiteViewPort,
+  MapStyle,
+} from '../types/projectPropContext';
 
-interface Props {}
+export type SetState<T> = Dispatch<SetStateAction<T>>;
 
-export const ProjectPropsContext = React.createContext({
-  projects: [] || null,
+export type ProjectContextInterface = {
+  project: Project | null;
+  setProject: SetState<Project | null>;
+  projects: Project[] | null;
+  setProjects: SetState<Project[] | null>;
+  plantLocations: PlantLocation[] | null;
+  setPlantLocations: React.Dispatch<
+    React.SetStateAction<PlantLocation[] | null>
+  >;
+  showSingleProject: boolean;
+  setShowSingleProject: SetState<boolean>;
+  showProjects: boolean;
+  setShowProjects: SetState<boolean>;
+  searchedProject: SearchProject[];
+  setsearchedProjects: SetState<SearchProject[]>;
+  geoJson: GeoJson | null;
+  setGeoJson: SetState<GeoJson | null>;
+  selectedPl: PlantLocation | null;
+  setSelectedPl: SetState<PlantLocation | null>;
+  zoomLevel: number;
+  setZoomLevel: SetState<number>;
+  siteExists: boolean;
+  setsiteExists: SetState<boolean>;
+  selectedSite: number;
+  setSelectedSite: SetState<number>;
+  isMobile: boolean;
+  setIsMobile: SetState<boolean>;
+  infoRef: {
+    current: null;
+  };
+  exploreContainerRef: React.MutableRefObject<null>;
+  exploreExpanded: boolean;
+  setExploreExpanded: SetState<boolean>;
+  exploreForests: boolean;
+  setExploreForests: SetState<boolean>;
+  explorePotential: boolean;
+  setExplorePotential: SetState<boolean>;
+  exploreDeforestation: boolean;
+  setExploreDeforestation: SetState<boolean>;
+  explorePlanted: boolean;
+  setExplorePlanted: SetState<boolean>;
+  infoExpanded: string | null;
+  setInfoExpanded: SetState<string | null>;
+  openModal: boolean;
+  setModalOpen: SetState<boolean>;
+  filtersOpen: boolean;
+  setFilterOpen: SetState<boolean>;
+  filteredProjects: SearchProject[] | null;
+  setFilteredProjects: React.Dispatch<
+    React.SetStateAction<SearchProject[] | null>
+  >;
+  purpose: string;
+  setPurpose: SetState<string>;
+  mapState: MapState;
+  setMapState: SetState<MapState>;
+  selectedMode: string;
+  setSelectedMode: SetState<string>;
+  viewport: ViewPort;
+  setViewPort: SetState<ViewPort>;
+  exploreProjects: boolean;
+  setExploreProjects: SetState<boolean>;
+  loaded: boolean;
+  setLoaded: SetState<boolean>;
+  mapRef: any;
+  defaultMapCenter: number[];
+  defaultZoom: number;
+  layersSettings: {};
+  setLayersSettings: SetState<{}>;
+  rasterData: RasterData;
+  setRasterData: SetState<RasterData>;
+  satellite: boolean;
+  setSatellite: SetState<boolean>;
+  plIds: string[] | null;
+  setPlIds: SetState<string[] | null>;
+  hoveredPl: PlantLocation | null;
+  setHoveredPl: SetState<PlantLocation | null>;
+  isPolygonMenuOpen: boolean;
+  setIsPolygonMenuOpen: SetState<boolean>;
+  siteViewPort: SiteViewPort | null;
+  setSiteViewPort: SetState<SiteViewPort | null>;
+  plantLocationsLoaded: boolean;
+  setPlantLocationsLoaded: SetState<boolean>;
+};
+
+const defaultState = {
   project: {} || null,
-  setProject: (value: {}) => {},
-  setProjects: (value: []) => {},
+  setProject: () => {},
+  projects: [] || null,
+  setProjects: () => {},
+  plantLocations: [],
+  setPlantLocations: () => {},
   showSingleProject: false,
-  setShowSingleProject: (value: boolean) => {},
+  setShowSingleProject: () => {},
   showProjects: true,
-  setShowProjects: (value: boolean) => {},
+  setShowProjects: () => {},
   searchedProject: [],
-  setsearchedProjects: (value: []) => {},
+  setsearchedProjects: () => [],
   geoJson: {} || null,
-  setGeoJson: (value: boolean) => {},
+  setGeoJson: () => {},
   selectedSite: 0,
-  setSelectedSite: (value: number) => {},
+  setSelectedSite: () => {},
   siteExists: false,
-  setsiteExists: (value: boolean) => {},
-  isMobile: false,
+  setsiteExists: () => {},
   infoRef: {} || null,
   exploreContainerRef: {} || null,
   exploreExpanded: false,
-  setExploreExpanded: (value: boolean) => {},
+  setExploreExpanded: () => {},
   exploreForests: false,
-  setExploreForests: (value: boolean) => {},
+  setExploreForests: () => {},
   explorePotential: false,
-  setExplorePotential: (value: boolean) => {},
+  setExplorePotential: () => {},
   exploreDeforestation: false,
-  setExploreDeforestation: (value: boolean) => {},
+  setExploreDeforestation: () => {},
   explorePlanted: false,
-  setExplorePlanted: (value: boolean) => {},
+  setExplorePlanted: () => {},
   infoExpanded: null || '',
-  setInfoExpanded: (value: string) => {},
+  setInfoExpanded: () => {},
   openModal: false,
-  setModalOpen: (value: boolean) => {},
+  setModalOpen: () => {},
   viewport: {},
-  setViewPort: (value: {}) => {},
-  setExploreProjects: (value: boolean) => {},
+  setViewPort: () => {},
   mapState: {},
-  setMapState: (value: {}) => {},
+  setMapState: () => {},
   exploreProjects: true,
+  setExploreProjects: () => {},
   loaded: false,
-  setLoaded: (value: boolean) => {},
+  setLoaded: () => {},
   mapRef: {},
   defaultMapCenter: [],
   defaultZoom: 1.4,
   layersSettings: {},
-  setLayersSettings: (value: {}) => {},
+  setLayersSettings: () => {},
   selectedMode: 'location',
-  setSelectedMode: (value: string) => {},
+  setSelectedMode: () => {},
   rasterData: {
     evi: '',
     imagery: {},
   },
-  setRasterData: (value: {}) => {},
-  plantLocations: [],
-  setPlantLocations: (value: []) => {},
+  setRasterData: () => {},
   selectedPl: {},
-  setSelectedPl: (value: {}) => {},
+  setSelectedPl: () => {},
   zoomLevel: 1,
-  setZoomLevel: (value: number) => {},
+  setZoomLevel: () => {},
   satellite: false,
-  setSatellite: (value: boolean) => {},
+  setSatellite: () => {},
   plIds: null || [],
-  setPlIds: (value: []) => {},
+  setPlIds: () => {},
   hoveredPl: null || '',
-  setHoveredPl: (value: {}) => {},
+  setHoveredPl: () => {},
   isPolygonMenuOpen: false,
-  setIsPolygonMenuOpen: (value: boolean) => {},
+  setIsPolygonMenuOpen: () => {},
   siteViewPort: null || {},
-  setSiteViewPort: (value: {}) => {},
+  setSiteViewPort: () => {},
   filteredProjects: null || [],
-  setFilteredProjects: (value: []) => {},
+  setFilteredProjects: () => {},
   filtersOpen: false,
-  setFilterOpen: (value: boolean) => {},
+  setFilterOpen: () => {},
   purpose: 'trees',
-  setPurpose: (value: string) => {},
+  setPurpose: () => {},
   plantLocationsLoaded: false,
-  setPlantLocationsLoaded: (value: boolean) => {},
-});
+  setPlantLocationsLoaded: () => {},
+  isMobile: false,
+  setIsMobile: () => {},
+};
 
-function ProjectPropsProvider({ children }: any): ReactElement {
-  const [projects, setProjects] = React.useState(null);
-  const [project, setProject] = React.useState(null);
-  const [plantLocations, setPlantLocations] = React.useState(null);
-  const [selectedPl, setSelectedPl] = React.useState(null);
-  const [zoomLevel, setZoomLevel] = React.useState(1);
-  const [showProjects, setShowProjects] = React.useState(true);
-  const [showSingleProject, setShowSingleProject] = React.useState(false);
-  const [searchedProject, setsearchedProjects] = React.useState([]);
-  const [geoJson, setGeoJson] = React.useState(null);
-  const [siteExists, setsiteExists] = React.useState(false);
-  const [selectedSite, setSelectedSite] = React.useState(0);
+export const ProjectPropsContext =
+  React.createContext<ProjectContextInterface>(defaultState);
+
+export const ProjectPropsProvider: FC = ({ children }) => {
+  const [projects, setProjects] = React.useState<Project[] | null>(null);
+  const [project, setProject] = React.useState<Project | null>(null);
+  const [plantLocations, setPlantLocations] = React.useState<
+    PlantLocation[] | null
+  >(null);
+  const [selectedPl, setSelectedPl] = React.useState<PlantLocation | null>(
+    null
+  );
+  const [zoomLevel, setZoomLevel] = React.useState<number>(1);
+  const [showProjects, setShowProjects] = React.useState<boolean>(true);
+  const [showSingleProject, setShowSingleProject] =
+    React.useState<boolean>(false);
+  const [searchedProject, setsearchedProjects] = React.useState<
+    SearchProject[]
+  >([]);
+  const [geoJson, setGeoJson] = React.useState<GeoJson | null>(null);
+  const [siteExists, setsiteExists] = React.useState<boolean>(false);
+  const [selectedSite, setSelectedSite] = React.useState<number>(0);
   const infoRef = React.useRef(null);
   const exploreContainerRef = React.useRef(null);
-  const [exploreExpanded, setExploreExpanded] = React.useState(false);
-  const [exploreForests, setExploreForests] = React.useState(false);
-  const [explorePotential, setExplorePotential] = React.useState(false);
-  const [exploreDeforestation, setExploreDeforestation] = React.useState(false);
-  const [explorePlanted, setExplorePlanted] = React.useState(false);
-  const [infoExpanded, setInfoExpanded] = React.useState(null);
-  const [openModal, setModalOpen] = React.useState(false);
-  const [isMobile, setIsMobile] = React.useState(false);
-  const [satellite, setSatellite] = React.useState(false);
-  const [filteredProjects, setFilteredProjects] = React.useState(null);
-  const [filtersOpen, setFilterOpen] = React.useState(false);
-  const [purpose, setPurpose] = React.useState('trees');
-  const [plantLocationsLoaded, setPlantLocationsLoaded] = React.useState(false);
+  const [exploreExpanded, setExploreExpanded] = React.useState<boolean>(false);
+  const [exploreForests, setExploreForests] = React.useState<boolean>(false);
+  const [explorePotential, setExplorePotential] =
+    React.useState<boolean>(false);
+  const [exploreDeforestation, setExploreDeforestation] =
+    React.useState<boolean>(false);
+  const [explorePlanted, setExplorePlanted] = React.useState<boolean>(false);
+  const [infoExpanded, setInfoExpanded] = React.useState<string | null>(null);
+  const [openModal, setModalOpen] = React.useState<boolean>(false);
+  const [isMobile, setIsMobile] = React.useState<boolean>(false);
+  const [satellite, setSatellite] = React.useState<boolean>(false);
+  const [filteredProjects, setFilteredProjects] = React.useState<
+    SearchProject[] | null
+  >(null);
+  const [filtersOpen, setFilterOpen] = React.useState<boolean>(false);
+  const [purpose, setPurpose] = React.useState<string>('trees');
+  const [plantLocationsLoaded, setPlantLocationsLoaded] =
+    React.useState<boolean>(false);
   const { embed, showProjectList } = React.useContext(ParamsContext);
 
   const mapRef = React.useRef(null);
-  const EMPTY_STYLE = {
+
+  const EMPTY_STYLE: MapStyle = {
     version: 8,
-    sources: {},
+    sources: {
+      esri: {
+        type: '',
+        scheme: '',
+        tilejson: '',
+        format: '',
+        maxzoom: 15,
+        tiles: [],
+        name: '',
+      },
+    },
     layers: [],
   };
-  const [mapState, setMapState] = React.useState({
+  const [mapState, setMapState] = React.useState<MapState>({
     mapStyle: EMPTY_STYLE,
     dragPan: true,
     scrollZoom: false,
@@ -141,20 +263,28 @@ function ProjectPropsProvider({ children }: any): ReactElement {
     longitude: defaultMapCenter[1],
     zoom: defaultZoom,
   });
-  const [loaded, setLoaded] = React.useState(false);
-  const [exploreProjects, setExploreProjects] = React.useState(true);
-  const [layersSettings, setLayersSettings] = React.useState({});
-  const [selectedMode, setSelectedMode] = React.useState('location');
-  const [rasterData, setRasterData] = React.useState({
-    evi: '',
-    imagery: {},
-  });
-  const [plIds, setPlIds] = React.useState(null);
-  const [isPolygonMenuOpen, setIsPolygonMenuOpen] = React.useState(false);
 
-  const [windowSize, setWindowSize] = React.useState(1280);
-  const [hoveredPl, setHoveredPl] = React.useState(null);
-  const [siteViewPort, setSiteViewPort] = React.useState(null);
+  const [loaded, setLoaded] = React.useState<boolean>(false);
+  const [exploreProjects, setExploreProjects] = React.useState<boolean>(true);
+  const [layersSettings, setLayersSettings] = React.useState({});
+  const [selectedMode, setSelectedMode] = React.useState<string>('location');
+  const [rasterData, setRasterData] = React.useState<RasterData>({
+    evi: '',
+    imagery: {
+      esri: [],
+      landsat: [],
+      planetLabs: [],
+      sentinel: [],
+    },
+  });
+  const [plIds, setPlIds] = React.useState<string[] | null>(null);
+  const [isPolygonMenuOpen, setIsPolygonMenuOpen] =
+    React.useState<boolean>(false);
+
+  const [hoveredPl, setHoveredPl] = React.useState<PlantLocation | null>(null);
+  const [siteViewPort, setSiteViewPort] = React.useState<SiteViewPort | null>(
+    null
+  );
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -173,10 +303,6 @@ function ProjectPropsProvider({ children }: any): ReactElement {
       setIsPolygonMenuOpen(true);
     }
   }, [isMobile]);
-
-  const updateWidth = () => {
-    setWindowSize(window.innerWidth);
-  };
 
   React.useEffect(() => {
     if (
@@ -264,7 +390,6 @@ function ProjectPropsProvider({ children }: any): ReactElement {
         setExploreProjects,
         mapState,
         setMapState,
-        isMobile,
         exploreProjects,
         loaded,
         setLoaded,
@@ -306,6 +431,6 @@ function ProjectPropsProvider({ children }: any): ReactElement {
       {children}
     </ProjectPropsContext.Provider>
   );
-}
+};
 
 export default ProjectPropsProvider;
