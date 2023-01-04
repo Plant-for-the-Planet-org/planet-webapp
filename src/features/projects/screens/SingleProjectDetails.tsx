@@ -34,12 +34,7 @@ const ImageSlider = dynamic(
 
 function SingleProjectDetails({}: Props): ReactElement {
   const router = useRouter();
-  const { t, i18n, ready } = useTranslation([
-    'donate',
-    'common',
-    'country',
-    'maps',
-  ]);
+  const { t, ready } = useTranslation(['donate', 'common', 'country', 'maps']);
   const {
     project,
     geoJson,
@@ -100,8 +95,6 @@ function SingleProjectDetails({}: Props): ReactElement {
         }`
       );
     } else {
-      const link = localStorage.getItem('redirectLink');
-      const previousPath = link?.replace(link[0], '');
       router.replace(
         `/${
           isEmbed
@@ -110,7 +103,7 @@ function SingleProjectDetails({}: Props): ReactElement {
                   ? `?embed=true&callback=${callbackUrl}`
                   : '?embed=true'
               }`
-            : `${previousPath}`
+            : `/profile`
         }`
       );
     }
