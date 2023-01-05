@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { Router, useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import LocationIcon from '../../../../../public/assets/images/icons/LocationIcon';
 import ResearchIcon from '../../../../../public/assets/images/icons/ResearchIcon';
@@ -30,6 +30,8 @@ export default function ProjectTabs({}: Props): ReactElement {
         setSelectedMode('location');
       } else if (query.view === 'time-travel') {
         setSelectedMode('imagery');
+      } else if (query.view === 'vegetation') {
+        setSelectedMode('vegetation');
       } else {
         setSelectedMode('location');
       }
@@ -94,6 +96,9 @@ export default function ProjectTabs({}: Props): ReactElement {
         {rasterData.evi ? (
           <div
             onClick={() => {
+              push(
+                `/${project.slug}/?site=${geoJson.features[selectedSite].properties.id}&view=vegetation`
+              );
               setSelectedMode('vegetation');
             }}
             style={
