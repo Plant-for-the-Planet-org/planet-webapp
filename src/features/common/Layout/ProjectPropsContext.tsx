@@ -44,7 +44,7 @@ export type ProjectContextInterface = {
   infoRef: {
     current: null;
   };
-  exploreContainerRef: React.MutableRefObject<null>;
+  exploreContainerRef: React.MutableRefObject<null> | null;
   exploreExpanded: boolean;
   setExploreExpanded: SetState<boolean>;
   exploreForests: boolean;
@@ -67,12 +67,12 @@ export type ProjectContextInterface = {
   >;
   purpose: string;
   setPurpose: SetState<string>;
-  mapState: MapState;
-  setMapState: SetState<MapState>;
+  mapState: MapState | null;
+  setMapState: SetState<MapState | null>;
   selectedMode: string;
   setSelectedMode: SetState<string>;
-  viewport: ViewPort;
-  setViewPort: SetState<ViewPort>;
+  viewport: ViewPort | null;
+  setViewPort: SetState<ViewPort | null>;
   exploreProjects: boolean;
   setExploreProjects: SetState<boolean>;
   loaded: boolean;
@@ -99,7 +99,7 @@ export type ProjectContextInterface = {
 };
 
 const defaultState = {
-  project: {} || null,
+  project: null,
   setProject: () => {},
   projects: [] || null,
   setProjects: () => {},
@@ -111,14 +111,16 @@ const defaultState = {
   setShowProjects: () => {},
   searchedProject: [],
   setsearchedProjects: () => [],
-  geoJson: {} || null,
+  geoJson: null,
   setGeoJson: () => {},
   selectedSite: 0,
   setSelectedSite: () => {},
   siteExists: false,
   setsiteExists: () => {},
-  infoRef: {} || null,
-  exploreContainerRef: {} || null,
+  infoRef: {
+    current: null
+  },
+  exploreContainerRef: null,
   exploreExpanded: false,
   setExploreExpanded: () => {},
   exploreForests: false,
@@ -133,9 +135,9 @@ const defaultState = {
   setInfoExpanded: () => {},
   openModal: false,
   setModalOpen: () => {},
-  viewport: {},
+  viewport: null,
   setViewPort: () => {},
-  mapState: {},
+  mapState: null,
   setMapState: () => {},
   exploreProjects: true,
   setExploreProjects: () => {},
@@ -150,10 +152,15 @@ const defaultState = {
   setSelectedMode: () => {},
   rasterData: {
     evi: '',
-    imagery: {},
+    imagery: {
+      planetLabs: [],
+      sentinel: [],
+      landsat: [],
+      esri: []
+    },
   },
   setRasterData: () => {},
-  selectedPl: {},
+  selectedPl: null,
   setSelectedPl: () => {},
   zoomLevel: 1,
   setZoomLevel: () => {},
@@ -161,11 +168,11 @@ const defaultState = {
   setSatellite: () => {},
   plIds: null || [],
   setPlIds: () => {},
-  hoveredPl: null || '',
+  hoveredPl: null,
   setHoveredPl: () => {},
   isPolygonMenuOpen: false,
   setIsPolygonMenuOpen: () => {},
-  siteViewPort: null || {},
+  siteViewPort: null,
   setSiteViewPort: () => {},
   filteredProjects: null || [],
   setFilteredProjects: () => {},
