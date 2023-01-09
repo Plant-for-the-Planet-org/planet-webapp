@@ -176,10 +176,10 @@ const DonationLinkForm = ({
                 }}
                 disabled={user.isPrivate}
               />
-              {user.isPrivate && (
-                <h6>{t('donationLink:treeCounterPrivateAccountSubtitle')}</h6>
-              )}
             </InlineFormDisplayGroup>
+            {user.isPrivate && (
+              <h6>{t('donationLink:treeCounterPrivateAccountSubtitle')}</h6>
+            )}
           </div>
           <InlineFormDisplayGroup type="other">
             <div className={styles.formHeader}>
