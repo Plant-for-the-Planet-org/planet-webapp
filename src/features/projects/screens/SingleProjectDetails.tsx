@@ -17,6 +17,7 @@ import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import ProjectTabs from '../components/maps/ProjectTabs';
 import PlantLocationDetails from '../components/PlantLocation/PlantLocationDetails';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
   ssr: false,
@@ -34,6 +35,8 @@ const ImageSlider = dynamic(
 
 function SingleProjectDetails({}: Props): ReactElement {
   const router = useRouter();
+  const { isAuthenticated } = useAuth0();
+
   const { t, ready } = useTranslation(['donate', 'common', 'country', 'maps']);
   const {
     project,
@@ -62,7 +65,6 @@ function SingleProjectDetails({}: Props): ReactElement {
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
   const [openModal, setModalOpen] = React.useState(false);
   const handleModalClose = () => {
     setModalOpen(false);
@@ -78,6 +80,11 @@ function SingleProjectDetails({}: Props): ReactElement {
   const ProjectProps = {
     plantLocation: hoveredPl ? hoveredPl : selectedPl,
   };
+
+  const routeContainProfile = localStorage
+    .getItem('redirectLink')
+    ?.split('/')
+    .some((element) => element === 'profile');
 
   const goBack = () => {
     if (selectedPl || hoveredPl) {
@@ -103,7 +110,7 @@ function SingleProjectDetails({}: Props): ReactElement {
                   ? `?embed=true&callback=${callbackUrl}`
                   : '?embed=true'
               }`
-            : `/profile`
+            : `${isAuthenticated ? (routeContainProfile ? 'profile' : '') : ''}`
         }`
       );
     }
