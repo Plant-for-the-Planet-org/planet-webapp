@@ -21,6 +21,7 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './RegisterModal.module.scss';
 import SingleContribution from './RegisterTrees/SingleContribution';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { handleError as _handleError, APIError } from '@planet-sdk/common';
 
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -80,7 +81,8 @@ export default function RegisterTrees({}: Props) {
   const [userLocation, setUserLocation] = React.useState();
   const [registered, setRegistered] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { handleError, setErrors, redirect } =
+    React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
@@ -195,15 +197,16 @@ export default function RegisterTrees({}: Props) {
   };
 
   async function loadProjects() {
-    await getAuthenticatedRequest(
-      '/app/profile/projects',
-      token,
-      {},
-      handleError,
-      '/profile'
-    ).then((projects: any) => {
+    try {
+      const projects = await getAuthenticatedRequest(
+        '/app/profile/projects',
+        token
+      );
       setProjects(projects);
-    });
+    } catch (err) {
+      setErrors(_handleError(err as APIError));
+      redirect('/profile');
+    }
   }
 
   React.useEffect(() => {

@@ -15,10 +15,12 @@ import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { handleError as _handleError, APIError } from '@planet-sdk/common';
 
 export default function ManageProjects({ GUID, token, project }: any) {
   const { t, ready } = useTranslation(['manageProjects']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { handleError, redirect, setErrors } =
+    React.useContext(ErrorHandlingContext);
   const router = useRouter();
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -170,16 +172,23 @@ export default function ManageProjects({ GUID, token, project }: any) {
 
   React.useEffect(() => {
     // Fetch details of the project
-    if (projectGUID && token)
-      getAuthenticatedRequest(
-        `/app/profile/projects/${projectGUID}`,
-        token,
-        {},
-        handleError,
-        '/profile'
-      ).then((result) => {
-        setProjectDetails(result);
-      });
+
+    const fetchProjectDetails = async () => {
+      try {
+        const res = await getAuthenticatedRequest(
+          `/app/profile/projects/${projectGUID}`,
+          token
+        );
+        setProjectDetails(res);
+      } catch (err) {
+        setErrors(_handleError(err as APIError));
+        redirect('/profile');
+      }
+    };
+
+    if (projectGUID && token) {
+      fetchProjectDetails();
+    }
   }, [GUID, projectGUID]);
 
   const [userLang, setUserLang] = React.useState('en');

@@ -22,6 +22,8 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../../../theme/themeProperties';
+import { handleError, APIError } from '@planet-sdk/common';
+import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -69,6 +71,7 @@ export default function PlantingLocation({
   const importMethods = ['import', 'editor'];
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [mySpecies, setMySpecies] = React.useState(null);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
   const { t, ready } = useTranslation(['treemapper', 'common', 'maps']);
   const defaultValues = {
@@ -94,19 +97,27 @@ export default function PlantingLocation({
   });
 
   const loadProjects = async () => {
-    await getAuthenticatedRequest('/app/profile/projects', token).then(
-      (projects: any) => {
-        setProjects(projects);
-      }
-    );
+    try {
+      const projects = await getAuthenticatedRequest(
+        '/app/profile/projects',
+        token
+      );
+      setProjects(projects);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
   };
 
   const loadMySpecies = async () => {
-    await getAuthenticatedRequest('/treemapper/species', token).then(
-      (species: any) => {
-        setMySpecies(species);
-      }
-    );
+    try {
+      const species = await getAuthenticatedRequest(
+        '/treemapper/species',
+        token
+      );
+      setMySpecies(species);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
   };
 
   React.useEffect(() => {

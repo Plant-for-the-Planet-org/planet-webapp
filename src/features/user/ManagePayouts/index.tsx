@@ -21,7 +21,7 @@ import Overview from './screens/Overview';
 import EditBankAccount from './screens/EditBankAccount';
 import AddBankAccount from './screens/AddBankAccount';
 import { useRouter } from 'next/router';
-import { handleError as _handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError } from '@planet-sdk/common';
 
 export enum ManagePayoutTabs {
   OVERVIEW = 'overview',
@@ -42,7 +42,7 @@ export default function ManagePayouts({
 }: ManagePayoutsProps): ReactElement | null {
   const { t, ready } = useTranslation('managePayouts');
   const router = useRouter();
-  const { handleError, setErrors } = useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const { token, contextLoaded, user } = useContext(UserPropsContext);
   const { accounts, setAccounts, payoutMinAmounts, setPayoutMinAmounts } =
     usePayouts();
@@ -57,7 +57,7 @@ export default function ManagePayouts({
         );
         setPayoutMinAmounts(res);
       } catch (err) {
-        setErrors(_handleError(err as APIError));
+        setErrors(handleError(err as APIError));
       }
     }
   }, []);
@@ -73,15 +73,11 @@ export default function ManagePayouts({
       try {
         const res = await getAuthenticatedRequest<Payouts.BankAccount[]>(
           `/app/accounts`,
-          token,
-          {},
-          handleError
+          token
         );
-        if (res && res.length > 0) {
-          setAccounts(res);
-        }
+        setAccounts(res);
       } catch (err) {
-        console.log(err);
+        setErrors(handleError(err as APIError));
       }
       setIsDataLoading(false);
       if (setProgress) {

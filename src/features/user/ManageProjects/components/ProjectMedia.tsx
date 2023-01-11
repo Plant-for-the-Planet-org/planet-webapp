@@ -15,6 +15,7 @@ import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
+import { handleError as _handleError, APIError } from '@planet-sdk/common';
 
 interface Props {
   handleNext: Function;
@@ -36,7 +37,8 @@ export default function ProjectMedia({
   handleReset,
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { handleError, redirect, setErrors } =
+    React.useContext(ErrorHandlingContext);
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
   const [uploadedImages, setUploadedImages] = React.useState<Array<any>>([]);
@@ -44,18 +46,24 @@ export default function ProjectMedia({
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
 
-  React.useEffect(() => {
-    // Fetch images of the project
-    if (projectGUID && token)
-      getAuthenticatedRequest(
-        `/app/profile/projects/${projectGUID}?_scope=images`,
-        token,
-        {},
-        handleError,
-        '/profile'
-      ).then((result) => {
+  const fetchImages = async () => {
+    try {
+      // Fetch images of the project
+      if (projectGUID && token) {
+        const result = await getAuthenticatedRequest(
+          `/app/profile/projects/${projectGUID}?_scope=images`,
+          token
+        );
         setUploadedImages(result.images);
-      });
+      }
+    } catch (err) {
+      setErrors(_handleError(err as APIError));
+      redirect('/profile');
+    }
+  };
+
+  React.useEffect(() => {
+    fetchImages();
   }, [projectGUID]);
 
   const uploadPhotos = (image: any) => {

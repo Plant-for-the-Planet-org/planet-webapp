@@ -20,6 +20,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { SxProps } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
+import { handleError as _handleError, APIError } from '@planet-sdk/common';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -49,7 +50,8 @@ function ProjectCertificates({
   userLang,
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { handleError, redirect, setErrors } =
+    React.useContext(ErrorHandlingContext);
 
   const {
     register,
@@ -89,24 +91,26 @@ function ProjectCertificates({
 
   React.useEffect(() => {
     // Fetch certificates of the project
-    if (projectGUID && token) {
-      getAuthenticatedRequest(
-        `/app/profile/projects/${projectGUID}?_scope=certificates`,
-        token,
-        {},
-        handleError,
-        '/profile'
-      ).then((result) => {
-        if (result && result.certificates && result.certificates.length > 0) {
-          setShowForm(false);
-          setShowToggle(false);
-        } else {
-          setShowToggle(true);
-          setisCertified(false);
-          setShowForm(true);
-        }
+
+    const fetchCertificates = async () => {
+      try {
+        const result = await getAuthenticatedRequest(
+          `/app/profile/projects/${projectGUID}?_scope=certificates`,
+          token
+        );
+        setShowForm(false);
+        setShowToggle(false);
         setUploadedFiles(result.certificates);
-      });
+      } catch (err) {
+        setErrors(_handleError(err as APIError));
+        redirect('/profile');
+        setShowToggle(true);
+        setisCertified(false);
+        setShowForm(true);
+      }
+    };
+    if (projectGUID && token) {
+      fetchCertificates();
     }
   }, [projectGUID]);
 

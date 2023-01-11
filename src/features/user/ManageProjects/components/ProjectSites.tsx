@@ -21,6 +21,7 @@ import { Fade, Modal, MenuItem } from '@mui/material';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { handleError as _handleError, APIError } from '@planet-sdk/common';
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
@@ -56,7 +57,8 @@ export default function ProjectSites({
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [openModal, setOpenModal] = React.useState(false);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { handleError, redirect, setErrors } =
+    React.useContext(ErrorHandlingContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -258,16 +260,14 @@ export default function ProjectSites({
     },
   ];
 
-  React.useEffect(() => {
-    // Fetch sites of the project
-    if (projectGUID)
-      getAuthenticatedRequest(
-        `/app/profile/projects/${projectGUID}?_scope=sites`,
-        token,
-        {},
-        handleError,
-        '/profile'
-      ).then((result) => {
+  const fetchProjSites = async () => {
+    try {
+      if (projectGUID) {
+        // Fetch sites of the project
+        const result = await getAuthenticatedRequest(
+          `/app/profile/projects/${projectGUID}?_scope=sites`,
+          token
+        );
         const geoLocation = {
           geoLatitude: result.geoLatitude,
           geoLongitude: result.geoLongitude,
@@ -278,7 +278,15 @@ export default function ProjectSites({
           setShowForm(false);
         }
         setSiteList(result.sites);
-      });
+      }
+    } catch (err) {
+      setErrors(_handleError(err as APIError));
+      redirect('/profile');
+    }
+  };
+
+  React.useEffect(() => {
+    fetchProjSites();
   }, [projectGUID]);
 
   const [siteGUID, setSiteGUID] = React.useState();

@@ -14,13 +14,15 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { handleError as _handleError, APIError } from '@planet-sdk/common';
 
 interface Props {}
 
 export default function MySpecies({}: Props): ReactElement {
   const { t } = useTranslation(['treemapper', 'me', 'common']);
   const { token, contextLoaded } = React.useContext(UserPropsContext);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { handleError, redirect, setErrors } =
+    React.useContext(ErrorHandlingContext);
   const [species, setSpecies] = React.useState<any[]>([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
 
@@ -34,8 +36,15 @@ export default function MySpecies({}: Props): ReactElement {
   });
 
   const fetchMySpecies = async () => {
-    const result = await getAuthenticatedRequest('/treemapper/species', token);
-    setSpecies(result);
+    try {
+      const result = await getAuthenticatedRequest(
+        '/treemapper/species',
+        token
+      );
+      setSpecies(result);
+    } catch (err) {
+      setErrors(_handleError(err as APIError));
+    }
   };
 
   const deleteSpecies = async (id: number) => {

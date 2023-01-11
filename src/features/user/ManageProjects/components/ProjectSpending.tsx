@@ -20,6 +20,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { SxProps } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
+import { handleError as _handleError, APIError } from '@planet-sdk/common';
 
 const yearDialogSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
@@ -53,7 +54,8 @@ export default function ProjectSpending({
   handleReset,
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { handleError, redirect, setErrors } =
+    React.useContext(ErrorHandlingContext);
   const {
     register,
     handleSubmit,
@@ -171,21 +173,27 @@ export default function ProjectSpending({
     });
   };
 
-  React.useEffect(() => {
-    // Fetch spending of the project
-    if (projectGUID && token)
-      getAuthenticatedRequest(
-        `/app/profile/projects/${projectGUID}?_scope=expenses`,
-        token,
-        {},
-        handleError,
-        '/profile'
-      ).then((result) => {
+  const fetchProjSpending = async () => {
+    try {
+      // Fetch spending of the project
+      if (projectGUID && token) {
+        const result = await getAuthenticatedRequest(
+          `/app/profile/projects/${projectGUID}?_scope=expenses`,
+          token
+        );
         if (result?.expenses && result.expenses.length > 0) {
           setShowForm(false);
         }
         setUploadedFiles(result.expenses);
-      });
+      }
+    } catch (err) {
+      setErrors(_handleError(err as APIError));
+      redirect('/profile');
+    }
+  };
+
+  React.useEffect(() => {
+    fetchProjSpending()
   }, [projectGUID]);
 
   const fiveYearsAgo = new Date();

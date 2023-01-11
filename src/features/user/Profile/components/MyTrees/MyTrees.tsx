@@ -11,7 +11,7 @@ import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { handleError as _handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError } from '@planet-sdk/common';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
@@ -26,24 +26,21 @@ interface Props {
 export default function MyTrees({ profile, authenticatedType, token }: Props) {
   const { t, i18n, ready } = useTranslation(['country', 'me']);
   const [contributions, setContributions] = React.useState();
-  const { handleError, setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     async function loadFunction() {
       if (authenticatedType === 'private' && token) {
-        getAuthenticatedRequest(
-          `/app/profile/contributions`,
-          token,
-          {},
-          handleError,
-          '/profile'
-        )
-          .then((result: any) => {
-            setContributions(result);
-          })
-          .catch((e: any) => {
-            console.log('error occured :', e);
-          });
+        try {
+          const result = await getAuthenticatedRequest(
+            `/app/profile/contributions`,
+            token
+          );
+          setContributions(result);
+        } catch (err) {
+          setErrors(handleError(err as APIError));
+          redirect('/profile');
+        }
       } else {
         try {
           const result = await getRequest(
@@ -51,7 +48,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
           );
           setContributions(result);
         } catch (err) {
-          setErrors(_handleError(err as APIError));
+          setErrors(handleError(err as APIError));
         }
       }
     }

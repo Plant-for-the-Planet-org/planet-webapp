@@ -12,6 +12,7 @@ import CopyToClipboard from '../../common/CopyToClipboard';
 import EyeIcon from '../../../../public/assets/images/icons/EyeIcon';
 import EyeDisabled from '../../../../public/assets/images/icons/EyeDisabled';
 import { useTranslation } from 'next-i18next';
+import { handleError as _handleError, APIError } from '@planet-sdk/common';
 
 const EyeButton = ({ isVisible, onClick }: any) => {
   return (
@@ -24,7 +25,7 @@ const EyeButton = ({ isVisible, onClick }: any) => {
 export default function ApiKey({}: any) {
   const { token, contextLoaded } = React.useContext(UserPropsContext);
   const { t } = useTranslation(['me']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { handleError, setErrors } = React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [apiKey, setApiKey] = React.useState('');
   const [isApiKeyVisible, setIsApiKeyVisible] = React.useState(false);
@@ -35,14 +36,13 @@ export default function ApiKey({}: any) {
 
   const getApiKey = async () => {
     setIsUploadingData(true);
-    const res = await getAuthenticatedRequest(
-      '/app/profile/apiKey',
-      token,
-      {},
-      handleError
-    );
-    if (res) {
-      setApiKey(res.apiKey);
+    try {
+      const res = await getAuthenticatedRequest('/app/profile/apiKey', token);
+      if (res) {
+        setApiKey(res.apiKey);
+      }
+    } catch (err) {
+      setErrors(_handleError(err as APIError));
     }
     setIsUploadingData(false);
   };
