@@ -7,6 +7,7 @@ import { useTranslation } from 'next-i18next';
 import MaterialTextField from '../InputTypes/MaterialTextField';
 import CircularProgress from '@mui/material/CircularProgress';
 import { RedeemedCodeData } from '../types/redeem';
+import { SerializedError } from '@planet-sdk/common';
 
 export interface InputRedeemCode {
   setInputCode: React.Dispatch<React.SetStateAction<string | null>>;
@@ -16,7 +17,7 @@ export interface InputRedeemCode {
 }
 
 export interface RedeemCodeFailed {
-  errorMessage: string | null;
+  errorMessages: SerializedError[];
   code: string | string[] | null;
   redeemAnotherCode: () => void;
   closeRedeem: () => void;
@@ -80,12 +81,22 @@ export const InputRedeemCode = ({
 };
 
 export const RedeemCodeFailed = ({
-  errorMessage,
+  errorMessages,
   code,
   redeemAnotherCode,
   closeRedeem,
 }: RedeemCodeFailed): ReactElement => {
   const { t } = useTranslation(['redeem']);
+
+  const getErrorMessages = () => {
+    return errorMessages!.map((e, index) => {
+      return (
+        <div key={`${index}`}>
+          <span className={styles.formErrors}>{e.message}</span>
+        </div>
+      );
+    });
+  };
 
   return (
     <div className={styles.routeRedeemModal}>
@@ -94,7 +105,7 @@ export const RedeemCodeFailed = ({
           <CancelIcon />
         </button>
       </div>
-      {errorMessage ? (
+      {errorMessages && errorMessages.length > 0 ? (
         <div className={styles.RedeemTitle}>{code}</div>
       ) : (
         <div className={styles.RedeemTitle}>
@@ -102,13 +113,9 @@ export const RedeemCodeFailed = ({
         </div>
       )}
 
-      {errorMessage && (
-        <div>
-          <span className={styles.formErrors}>{errorMessage}</span>
-        </div>
-      )}
+      {errorMessages && getErrorMessages()}
 
-      {!errorMessage ? (
+      {!errorMessages ? (
         <div className={styles.redeemAnotherCodeDiv}>
           <CircularProgress />
         </div>

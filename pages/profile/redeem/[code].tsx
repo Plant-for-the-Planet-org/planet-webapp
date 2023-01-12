@@ -14,11 +14,12 @@ import {
 import { ClaimCode1 } from '../../claim/[type]/[code]';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
+import { handleError, APIError } from '@planet-sdk/common';
 
 const ReedemCode: FC = () => {
   const { t, ready } = useTranslation(['redeem']);
   const { user, contextLoaded, token } = useContext(UserPropsContext);
-  const { handleError } = useContext(ErrorHandlingContext);
+  const { setErrors, errors } = useContext(ErrorHandlingContext);
 
   const [code, setCode] = useState<string | string[] | null>('');
   const [inputCode, setInputCode] = useState<ClaimCode1>('');
@@ -66,20 +67,32 @@ const ReedemCode: FC = () => {
     };
 
     if (contextLoaded && user) {
-      postAuthenticatedRequest(
-        `/app/redeem`,
-        submitData,
-        token,
-        handleError
-      ).then((res) => {
-        if (res.error_code === 'invalid_code') {
-          setErrorMessage(t('redeem:invalidCode'));
-        } else if (res.error_code === 'already_redeemed') {
-          setErrorMessage(t('redeem:alreadyRedeemed'));
-        } else if (res.status === 'redeemed') {
-          setRedeemedCodeData(res);
+      try {
+        const res = await postAuthenticatedRequest(
+          `/app/redeem`,
+          submitData,
+          token
+        );
+        setRedeemedCodeData(res);
+      } catch (err) {
+        const serializedErrors = handleError(err as APIError);
+        const _serializedErrors = [];
+        for (let e of serializedErrors) {
+          if (e.message === 'invalid_code') {
+            _serializedErrors.push({
+              message: t('redeem:invalidCode'),
+            });
+          } else if (e.message === 'already_redeemed') {
+            _serializedErrors.push({
+              message: t('redeem:alreadyRedeemed'),
+            });
+          } else {
+            _serializedErrors.push(e);
+          }
         }
-      });
+        setErrors(_serializedErrors);
+        setRedeemedCodeData(undefined);
+      }
     }
   }
 
@@ -119,7 +132,7 @@ const ReedemCode: FC = () => {
         ) : (
           // if redeem code is invalid and  redeem process failed
           <RedeemCodeFailed
-            errorMessage={errorMessage}
+            errorMessages={errors}
             code={code}
             redeemAnotherCode={handleCode}
             closeRedeem={closeRedeem}

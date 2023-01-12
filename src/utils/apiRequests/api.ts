@@ -135,7 +135,7 @@ export function getAuthenticatedRequest<T>(
   header: any = null,
   queryParams?: { [key: string]: string },
   version?: string
-): Promise<T> {
+) {
   const lang = localStorage.getItem('language') || 'en';
   const query: any = { ...queryParams };
   const queryString = getQueryString(query);
@@ -171,10 +171,9 @@ export async function postAuthenticatedRequest<T>(
   url: any,
   data: any,
   token: any,
-  errorHandler?: Function,
   headers?: any
-): Promise<T | ApiCustomError | null> {
-  if (validateToken(token)) {
+) {
+  return new Promise<T>(async (resolve, reject) => {
     try {
       const res = await fetch(process.env.API_ENDPOINT + url, {
         method: 'POST',
@@ -192,32 +191,17 @@ export async function postAuthenticatedRequest<T>(
           ...(headers ? headers : {}),
         },
       });
-      const result = await res.json();
-      handleApiError(res.status, result, errorHandler);
-      return result as unknown as T | ApiCustomError;
-    } catch (err) {
-      // Fetch API only throws errors for network errors
-      console.log(
-        'Could not reach the server. Please check your internet connection.'
-      );
-      if (errorHandler) {
-        errorHandler({
-          type: 'error',
-          message: 'connectionError',
-        });
+
+      if(!res.ok){
+        throw new APIError(res.status, await res.json());
       }
-      return null;
+
+      resolve(await res.json());
+      
+    } catch (err) {
+      reject(err);
     }
-  } else {
-    if (errorHandler) {
-      errorHandler({
-        type: 'warning',
-        message: 'unauthorized',
-      });
-    }
-    console.error('Error 401: You are not Authorized!');
-    return null;
-  }
+  });
 }
 
 export async function postRequest(
