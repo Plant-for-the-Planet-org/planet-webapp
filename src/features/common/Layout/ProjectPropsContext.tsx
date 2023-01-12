@@ -1,105 +1,21 @@
-import React, { FC, Dispatch, SetStateAction } from 'react';
+import React, { FC } from 'react';
 import { ParamsContext } from './QueryParamsContext';
 import {
   Project,
   SearchProject,
   GeoJson,
-  ViewPort,
   MapState,
   RasterData,
   PlantLocation,
   SiteViewPort,
   MapStyle,
+  ViewPort,
+  Imagery,
+  ProjectContextInterface,
 } from '../types/projectPropContext';
 
-export type SetState<T> = Dispatch<SetStateAction<T>>;
-
-export type ProjectContextInterface = {
-  project: Project | null;
-  setProject: SetState<Project | null>;
-  projects: Project[] | null;
-  setProjects: SetState<Project[] | null>;
-  plantLocations: PlantLocation[] | null;
-  setPlantLocations: React.Dispatch<
-    React.SetStateAction<PlantLocation[] | null>
-  >;
-  showSingleProject: boolean;
-  setShowSingleProject: SetState<boolean>;
-  showProjects: boolean;
-  setShowProjects: SetState<boolean>;
-  searchedProject: SearchProject[];
-  setsearchedProjects: SetState<SearchProject[]>;
-  geoJson: GeoJson | null;
-  setGeoJson: SetState<GeoJson | null>;
-  selectedPl: PlantLocation | null;
-  setSelectedPl: SetState<PlantLocation | null>;
-  zoomLevel: number;
-  setZoomLevel: SetState<number>;
-  siteExists: boolean;
-  setsiteExists: SetState<boolean>;
-  selectedSite: number;
-  setSelectedSite: SetState<number>;
-  isMobile: boolean;
-  setIsMobile: SetState<boolean>;
-  infoRef: {
-    current: null;
-  };
-  exploreContainerRef: React.MutableRefObject<null>;
-  exploreExpanded: boolean;
-  setExploreExpanded: SetState<boolean>;
-  exploreForests: boolean;
-  setExploreForests: SetState<boolean>;
-  explorePotential: boolean;
-  setExplorePotential: SetState<boolean>;
-  exploreDeforestation: boolean;
-  setExploreDeforestation: SetState<boolean>;
-  explorePlanted: boolean;
-  setExplorePlanted: SetState<boolean>;
-  infoExpanded: string | null;
-  setInfoExpanded: SetState<string | null>;
-  openModal: boolean;
-  setModalOpen: SetState<boolean>;
-  filtersOpen: boolean;
-  setFilterOpen: SetState<boolean>;
-  filteredProjects: SearchProject[] | null;
-  setFilteredProjects: React.Dispatch<
-    React.SetStateAction<SearchProject[] | null>
-  >;
-  purpose: string;
-  setPurpose: SetState<string>;
-  mapState: MapState;
-  setMapState: SetState<MapState>;
-  selectedMode: string;
-  setSelectedMode: SetState<string>;
-  viewport: ViewPort;
-  setViewPort: SetState<ViewPort>;
-  exploreProjects: boolean;
-  setExploreProjects: SetState<boolean>;
-  loaded: boolean;
-  setLoaded: SetState<boolean>;
-  mapRef: any;
-  defaultMapCenter: number[];
-  defaultZoom: number;
-  layersSettings: {};
-  setLayersSettings: SetState<{}>;
-  rasterData: RasterData;
-  setRasterData: SetState<RasterData>;
-  satellite: boolean;
-  setSatellite: SetState<boolean>;
-  plIds: string[] | null;
-  setPlIds: SetState<string[] | null>;
-  hoveredPl: PlantLocation | null;
-  setHoveredPl: SetState<PlantLocation | null>;
-  isPolygonMenuOpen: boolean;
-  setIsPolygonMenuOpen: SetState<boolean>;
-  siteViewPort: SiteViewPort | null;
-  setSiteViewPort: SetState<SiteViewPort | null>;
-  plantLocationsLoaded: boolean;
-  setPlantLocationsLoaded: SetState<boolean>;
-};
-
-const defaultState = {
-  project: {} || null,
+const defaultState: ProjectContextInterface = {
+  project: ({} as Project) || null,
   setProject: () => {},
   projects: [] || null,
   setProjects: () => {},
@@ -111,14 +27,17 @@ const defaultState = {
   setShowProjects: () => {},
   searchedProject: [],
   setsearchedProjects: () => [],
-  geoJson: {} || null,
+  geoJson: ({} as GeoJson) || null,
   setGeoJson: () => {},
   selectedSite: 0,
   setSelectedSite: () => {},
   siteExists: false,
   setsiteExists: () => {},
-  infoRef: {} || null,
-  exploreContainerRef: {} || null,
+  infoRef:
+    {
+      current: null,
+    } || null,
+  exploreContainerRef: ({} as React.MutableRefObject<null>) || null,
   exploreExpanded: false,
   setExploreExpanded: () => {},
   exploreForests: false,
@@ -133,9 +52,9 @@ const defaultState = {
   setInfoExpanded: () => {},
   openModal: false,
   setModalOpen: () => {},
-  viewport: {},
+  viewport: {} as ViewPort,
   setViewPort: () => {},
-  mapState: {},
+  mapState: {} as MapState,
   setMapState: () => {},
   exploreProjects: true,
   setExploreProjects: () => {},
@@ -150,10 +69,10 @@ const defaultState = {
   setSelectedMode: () => {},
   rasterData: {
     evi: '',
-    imagery: {},
+    imagery: {} as Imagery,
   },
   setRasterData: () => {},
-  selectedPl: {},
+  selectedPl: {} as PlantLocation,
   setSelectedPl: () => {},
   zoomLevel: 1,
   setZoomLevel: () => {},
@@ -161,11 +80,11 @@ const defaultState = {
   setSatellite: () => {},
   plIds: null || [],
   setPlIds: () => {},
-  hoveredPl: null || '',
+  hoveredPl: null || ({} as PlantLocation),
   setHoveredPl: () => {},
   isPolygonMenuOpen: false,
   setIsPolygonMenuOpen: () => {},
-  siteViewPort: null || {},
+  siteViewPort: null || ({} as SiteViewPort),
   setSiteViewPort: () => {},
   filteredProjects: null || [],
   setFilteredProjects: () => {},
