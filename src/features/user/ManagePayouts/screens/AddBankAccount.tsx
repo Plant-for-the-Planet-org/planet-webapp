@@ -10,12 +10,13 @@ import CustomSnackbar from '../../../common/CustomSnackbar';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
+import { handleError, APIError } from '@planet-sdk/common';
 
 const AddBankAccount = (): ReactElement | null => {
   const { t } = useTranslation('managePayouts');
   const { payoutMinAmounts, setAccounts, accounts } = usePayouts();
   const { token } = useContext(UserPropsContext);
-  const { handleError } = useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
   const router = useRouter();
@@ -32,14 +33,12 @@ const AddBankAccount = (): ReactElement | null => {
       payoutMinAmount:
         data.currency === PayoutCurrency.DEFAULT ? '' : data.payoutMinAmount,
     };
-    const res = await postAuthenticatedRequest<Payouts.BankAccount>(
-      '/app/accounts',
-      accountData,
-      token,
-      handleError
-    );
-    if (res?.id && !isApiCustomError(res)) {
-      // update accounts in context
+    try {
+      const res = await postAuthenticatedRequest<Payouts.BankAccount>(
+        '/app/accounts',
+        accountData,
+        token
+      );
       if (accounts) {
         setAccounts([...accounts, res]);
       } else {
@@ -51,42 +50,44 @@ const AddBankAccount = (): ReactElement | null => {
       setTimeout(() => {
         router.push('/profile/payouts');
       }, 3000);
-    } else {
+    } catch (err) {
       setIsProcessing(false);
-      if (isApiCustomError(res) && res['error_type'] === 'account_error') {
-        switch (res['error_code']) {
+      const serializedErrors = handleError(err as APIError);
+      const _serializedErrors = [];
+
+      for (const error of serializedErrors) {
+        switch (error.message) {
           case 'min_amount_range':
-            handleError({
-              code: 400,
-              message: t(`accountError.${res['error_code']}`, {
-                ...res.parameters,
+            _serializedErrors.push({
+              message: t('accountError.min_amount_range', {
+                ...error.parameters,
               }),
             });
             break;
+
           case 'account_duplicate':
-            handleError({
-              code: 400,
-              message: t(`accountError.${res['error_code']}`, {
-                currency: res.parameters?.currency
-                  ? res.parameters.currency
+            _serializedErrors.push({
+              message: t('accountError.account_duplicate', {
+                currency: error.parameters?.currency
+                  ? error.parameters.currency
                   : t('defaultCurrency').toLowerCase(),
               }),
             });
             break;
+
           case 'min_amount_forbidden':
-            handleError({
-              code: 400,
-              message: t(`accountError.${res['error_code']}`),
+            _serializedErrors.push({
+              message: t('accountError.min_amount_forbidden'),
             });
             break;
+
           default:
-            handleError({
-              code: 400,
-              message: t(`accountError.default`),
-            });
+            _serializedErrors.push(error);
             break;
         }
       }
+
+      setErrors(_serializedErrors);
     }
   };
 

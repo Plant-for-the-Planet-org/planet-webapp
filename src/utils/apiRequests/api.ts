@@ -167,7 +167,7 @@ export function getAuthenticatedRequest<T>(
   });
 }
 
-export async function postAuthenticatedRequest<T>(
+export function postAuthenticatedRequest<T>(
   url: any,
   data: any,
   token: any,
