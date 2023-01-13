@@ -313,6 +313,8 @@ export interface Coordinates {
       wkid: number
       latestWkid?: number
     }
+//comment
+  
   export interface ArcgisEditorExtent {
     spatialReference: SpatialReference
     xmin: number
