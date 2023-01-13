@@ -71,6 +71,7 @@ const defaultState: ProjectContextInterface = {
     evi: '',
     imagery: {} as Imagery,
   },
+
   setRasterData: () => {},
   selectedPl: {} as PlantLocation,
   setSelectedPl: () => {},
@@ -101,6 +102,7 @@ const defaultState: ProjectContextInterface = {
 export const ProjectPropsContext =
   React.createContext<ProjectContextInterface>(defaultState);
 
+
 export const ProjectPropsProvider: FC = ({ children }) => {
   const [projects, setProjects] = React.useState<Project[] | null>(null);
   const [project, setProject] = React.useState<Project | null>(null);
@@ -120,6 +122,7 @@ export const ProjectPropsProvider: FC = ({ children }) => {
   const [geoJson, setGeoJson] = React.useState<GeoJson | null>(null);
   const [siteExists, setsiteExists] = React.useState<boolean>(false);
   const [selectedSite, setSelectedSite] = React.useState<number>(0);
+
   const infoRef = React.useRef(null);
   const exploreContainerRef = React.useRef(null);
   const [exploreExpanded, setExploreExpanded] = React.useState<boolean>(false);
@@ -325,6 +328,8 @@ export const ProjectPropsProvider: FC = ({ children }) => {
         setPlantLocations,
         selectedPl,
         setSelectedPl,
+        samplePlantLocation,
+        setSamplePlantLocation,
         zoomLevel,
         setZoomLevel,
         satellite,
