@@ -135,7 +135,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
         const serializedErrors = handleError(err as APIError);
         const _serializedErrors = [];
 
-        for (let error of serializedErrors) {
+        for (const error of serializedErrors) {
           switch (error.message) {
             case 'planet_cash_invalid_project':
               _serializedErrors.push({
