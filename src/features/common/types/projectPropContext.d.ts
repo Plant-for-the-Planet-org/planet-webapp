@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
-
 export interface Coordinates {
     lon: number;
     lat: number;
@@ -43,7 +41,7 @@ export interface Coordinates {
     fixedDefaultTreeCount: number;
   }
   
-  export interface GeometryB {
+  export interface Geometry {
     coordinates?: ((((number)[] | null | number)[] | null)[] | null)[] | null;
     type: string;
   }
@@ -52,7 +50,7 @@ export interface Coordinates {
     timezone: string;
     timezone_type: number;
   }
-  export interface PropertiesA {
+  export interface Properties {
     lastUpdated: LastUpdated;
     name: string;
     description?: string | null;
@@ -60,9 +58,9 @@ export interface Coordinates {
     status: string;
   }
     export interface SitesEntity {
-      geometry: GeometryB;
+      geometry: Geometry;
       type: string;
-      properties: PropertiesA;
+      properties: Properties;
     }
     export interface Address {
       zipCode: string;
@@ -148,7 +146,7 @@ export interface Coordinates {
       mainChallenge: string | null
       motivation: string | null
     }
-    export interface PropertiesB {
+    export interface Properties {
       id: string
       _scope: string
       allowDonations: boolean
@@ -179,30 +177,43 @@ export interface Coordinates {
       metadata: SearchMetadata
       options: any[]
     } 
-    export interface SearchProject  {
-        type: string
-        geometry: GeometryB
-        properties: PropertiesB
-    }
   
     
-  
-  // GeoJson//////////////////////////////////////////////////////////////////////////////////
-  export interface GeometryA {
-    coordinates: number[][][]
-    type: string
-    properties?: PropertiesA
-}
-  export interface Feature {
-      geometry: GeometryA
+  export interface SearchProject  {
       type: string
-      properties: PropertiesA
+      geometry: Geometry
+      properties: Properties
+  }
+  
+  // GeoJson
+  export interface Feature {
+      geometry: Geometry
+      type: string
+      properties: Properties
+  }
+    
+    export interface Geometry {
+      coordinates: any[][][]
+      type: string
+  }
+  
+  export interface Properties {
+      lastUpdated: LastUpdated
+      name: string
+      description?: string
+      id: string
+      status: string
+  }
+  
+  export interface LastUpdated {
+      date: string
+      timezone: string
+      timezone_type: number
   }
   export interface GeoJson {
       type: string
       features: Feature[]
     }
-  
     
   
     // ViewPort
@@ -215,6 +226,8 @@ export interface Coordinates {
       propNames: string[]
       props: Props
     }
+    
+    
     export interface ViewPort {
       width: number
       height: number
@@ -233,14 +246,9 @@ export interface Coordinates {
       transitionInterruption?: number
     }
     
-    
-    
   
     // MapState 
   
-    export interface FillTranslate {
-      stops: [number, number[]][]
-    }
     export interface Paint {
       "background-color"?: string
       "fill-color": any
@@ -258,6 +266,11 @@ export interface Coordinates {
       "text-halo-blur"?: number
       "text-halo-width"?: number
     }
+    
+    export interface FillTranslate {
+      stops: [number, number[]][]
+    }
+    
     export interface Layout {
       visibility?: string
       "line-join"?: string
@@ -295,25 +308,45 @@ export interface Coordinates {
       colorMode: string
       colors: Colors
       boundaries: string
-    }
-    export interface SpatialReference {
+  }
+  export interface SpatialReference {
       wkid: number
       latestWkid?: number
     }
-    export interface ArcgisEditorExtent {
+//comment
+  
+  export interface ArcgisEditorExtent {
     spatialReference: SpatialReference
     xmin: number
     ymin: number
     xmax: number
     ymax: number
-    }
-    export interface MetadataA{
+  }
+    export interface Metadata {
       arcgisStyleUrl: string
       arcgisOriginalItemTitle: string
       arcgisQuickEditorWarning: boolean
       arcgisQuickEditor: ArcgisQuickEditor
       arcgisEditorExtents: ArcgisEditorExtent[]
       arcgisMinimapVisibility: boolean
+    }
+    
+    
+    export interface Colors {
+      boundaries: string
+    }
+    
+    export interface Layer {
+      id: string
+      type: string
+      paint: Paint
+      layout: Layout
+      showProperties?: boolean
+      source?: string
+      "source-layer"?: string
+      minzoom?: number
+      maxzoom?: number
+      filter?: any[]
     }
     export interface Layer {
       id: string
@@ -345,7 +378,7 @@ export interface Coordinates {
       glyphs?: string
       sources: Sources
       layers: Layer[]
-      metadata?: MetadataA
+      metadata?: Metadata
     }
     
     export interface MapState {
@@ -355,8 +388,6 @@ export interface Coordinates {
       minZoom: number
       maxZoom: number
     }
-    
-    
     
    //rasterData
   
@@ -389,14 +420,14 @@ export interface Coordinates {
   }
   
   export interface RasterData {
-    evi: string | undefined;
-    imagery: Imagery
-  }
+      evi: string | undefined;
+      imagery: Imagery
+   }
     
     
-  // samplePlantLocation
+  // plantLocation
   
-  export interface Geometry {
+  export interface DeviceLocation {
     coordinates: number[]
     type: string
   }
@@ -413,10 +444,10 @@ export interface Coordinates {
     deviceModel: string
     deviceManufacturer: string
     deviceBrand: string
-    deviceLocation: Geometry
+    deviceLocation: DeviceLocation
   }
   
-  export interface MetadataB {
+  export interface Metadata {
     app: App
     public: Public
   }
@@ -427,50 +458,8 @@ export interface Coordinates {
     coordinateIndex: string
     id: string
     status: string
-    created?: string
-    updated?: string
-  }
-  export interface Metadata2 {
-    app: App
-    private: any[]
-    public: any[]
-  }
-  export interface NextMeasurementDate {
-    date: string
-    timezone: string
-    timezone_type: number
-  }
-  export interface Measurements {
-    width: number
-    height: number
   }
   
-  export interface RevisionPeriodicity {
-    subsequentInterval: string
-    discreteIntervals: string[]
-    startDate: string
-  }
-  
-  export interface LastMeasurementDate {
-    date: string
-    timezone: string
-    timezone_type: number
-  }
-  export interface EventDate {
-    date: string
-    timezone: string
-    timezone_type: number
-  }
-  export interface History {
-    image: string
-    statusReason: any
-    created: string
-    eventName: string
-    classification: any
-    eventDate: EventDate
-    measurements: Measurements
-    status: string
-  }
   export interface SamplePlantLocation {
     parent: string
     nextMeasurementDate?: NextMeasurementDate
@@ -491,22 +480,104 @@ export interface Coordinates {
     image: any
     idempotencyKey: string
     profile: string
-    coordinates: Coordinate[]
+    coordinates: Coordinate2[]
     revisionPeriodicity?: RevisionPeriodicity
     scientificSpecies: string
     history: History[]
-    originalGeometry: Geometry
+    originalGeometry: OriginalGeometry
     captureMode: string
     geometry: Geometry
     lastMeasurementDate?: LastMeasurementDate
     captureStatus: string
-    deviceLocation: Geometry
+    deviceLocation: DeviceLocation3
     status: any
   }
   
+  export interface NextMeasurementDate {
+    date: string
+    timezone: string
+    timezone_type: number
+  }
   
-  //plantLocation
+  export interface Metadata2 {
+    app: App2
+    private: any[]
+    public: any[]
+  }
+  export interface DeviceLocation2 {
+    coordinates: number[]
+    type: string
+  }
+  export interface App2 {
+    appVersion: string
+    deviceSystemName: string
+    deviceSystemVersion: string
+    deviceModel: string
+    deviceManufacturer: string
+    deviceBrand: string
+    deviceLocation: DeviceLocation2
+  }
   
+  
+  
+  export interface Measurements {
+    width: number
+    height: number
+  }
+  
+  export interface Coordinate2 {
+    image: string
+    created: string
+    coordinateIndex: string
+    id: string
+    updated: string
+    status: string
+  }
+  
+  export interface RevisionPeriodicity {
+    subsequentInterval: string
+    discreteIntervals: string[]
+    startDate: string
+  }
+  export interface Measurements2 {
+    width: number
+    height: number
+  }
+  export interface EventDate {
+    date: string
+    timezone: string
+    timezone_type: number
+  }
+  export interface History {
+    image: string
+    statusReason: any
+    created: string
+    eventName: string
+    classification: any
+    eventDate: EventDate
+    measurements: Measurements2
+    status: string
+  }
+  export interface OriginalGeometry {
+    coordinates: number[]
+    type: string
+  }
+  
+  export interface Geometry {
+    coordinates: number[]
+    type: string
+  }
+  
+  export interface LastMeasurementDate {
+    date: string
+    timezone: string
+    timezone_type: number
+  }
+  
+  export interface DeviceLocation3 {
+    coordinates: number[]
+    type: string
+  }
   
   export interface PlantedSpecy {
     scientificName: string
@@ -517,8 +588,29 @@ export interface Coordinates {
     id: string
     updated: string
   }
+  
+  export interface OriginalGeometry2 {
+    coordinates: number[][][]
+    type: string
+  }
+  
+  export interface Geometry2 {
+    coordinates: number[][][]
+    type: string
+    properties: Properties
+  }
+  
+  export interface Properties {
+    id: string
+  }
+  
+  export interface DeviceLocation4 {
+    coordinates: number[]
+    type: string
+  }
+  
   export interface PlantLocation {
-    metadata: MetadataB
+    metadata: Metadata
     hid: string
     otherSpecies: null
     description: null
@@ -539,11 +631,11 @@ export interface Coordinates {
     plantProject: string
     plantedSpecies: PlantedSpecy[]
     plantDateStart: null
-    originalGeometry: GeometryA
+    originalGeometry: OriginalGeometry2
     captureMode: string
-    geometry: GeometryA
+    geometry: Geometry2
     captureStatus: string
-    deviceLocation: Geometry
+    deviceLocation: DeviceLocation4
     status: null
   }
   
@@ -551,89 +643,4 @@ export interface Coordinates {
       center: number[];
       zoom: number;
   }
- //main 
- export type SetState<T> = Dispatch<SetStateAction<T>>;
   
-  export type ProjectContextInterface = {
-    project: Project | null;
-    setProject: SetState<Project | null>;
-    projects: Project[] | null;
-    setProjects: SetState<Project[] | null>;
-    plantLocations: PlantLocation[] | null;
-    setPlantLocations: React.Dispatch<
-      React.SetStateAction<PlantLocation[] | null>
-    >;
-    showSingleProject: boolean;
-    setShowSingleProject: SetState<boolean>;
-    showProjects: boolean;
-    setShowProjects: SetState<boolean>;
-    searchedProject: SearchProject[];
-    setsearchedProjects: SetState<SearchProject[]>;
-    geoJson: GeoJson | null;
-    setGeoJson: SetState<GeoJson | null>;
-    selectedPl: PlantLocation | null;
-    setSelectedPl: SetState<PlantLocation | null>;
-    zoomLevel: number;
-    setZoomLevel: SetState<number>;
-    siteExists: boolean;
-    setsiteExists: SetState<boolean>;
-    selectedSite: number;
-    setSelectedSite: SetState<number>;
-    isMobile: boolean;
-    setIsMobile: SetState<boolean>;
-    infoRef: {
-      current: null;
-    };
-    exploreContainerRef: React.MutableRefObject<null>;
-    exploreExpanded: boolean;
-    setExploreExpanded: SetState<boolean>;
-    exploreForests: boolean;
-    setExploreForests: SetState<boolean>;
-    explorePotential: boolean;
-    setExplorePotential: SetState<boolean>;
-    exploreDeforestation: boolean;
-    setExploreDeforestation: SetState<boolean>;
-    explorePlanted: boolean;
-    setExplorePlanted: SetState<boolean>;
-    infoExpanded: string | null;
-    setInfoExpanded: SetState<string | null>;
-    openModal: boolean;
-    setModalOpen: SetState<boolean>;
-    filtersOpen: boolean;
-    setFilterOpen: SetState<boolean>;
-    filteredProjects: SearchProject[] | null;
-    setFilteredProjects: React.Dispatch<
-      React.SetStateAction<SearchProject[] | null>
-    >;
-    purpose: string;
-    setPurpose: SetState<string>;
-    mapState: MapState;
-    setMapState: SetState<MapState>;
-    selectedMode: string;
-    setSelectedMode: SetState<string>;
-    viewport: ViewPort;
-    setViewPort: SetState<ViewPort>;
-    exploreProjects: boolean;
-    setExploreProjects: SetState<boolean>;
-    loaded: boolean;
-    setLoaded: SetState<boolean>;
-    mapRef: any;
-    defaultMapCenter: number[];
-    defaultZoom: number;
-    layersSettings: {};
-    setLayersSettings: SetState<{}>;
-    rasterData: RasterData;
-    setRasterData: SetState<RasterData>;
-    satellite: boolean;
-    setSatellite: SetState<boolean>;
-    plIds: string[] | null;
-    setPlIds: SetState<string[] | null>;
-    hoveredPl: PlantLocation | null;
-    setHoveredPl: SetState<PlantLocation | null>;
-    isPolygonMenuOpen: boolean;
-    setIsPolygonMenuOpen: SetState<boolean>;
-    siteViewPort: SiteViewPort | null;
-    setSiteViewPort: SetState<SiteViewPort | null>;
-    plantLocationsLoaded: boolean;
-    setPlantLocationsLoaded: SetState<boolean>;
-  };
