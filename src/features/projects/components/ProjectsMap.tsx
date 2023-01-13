@@ -15,13 +15,18 @@ import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 export default function ProjectsMap(): ReactElement {
   const {
     project,
+    showSingleProject,
     showProjects,
+    setShowProjects,
     searchedProject,
     viewport,
     setViewPort,
+    setExploreProjects,
     mapState,
     setMapState,
     isMobile,
+    exploreProjects,
+    loaded,
     setLoaded,
     mapRef,
     defaultMapCenter,
@@ -39,6 +44,7 @@ export default function ProjectsMap(): ReactElement {
     setIsPolygonMenuOpen,
     setFilterOpen,
     setSamplePlantLocation,
+    samplePlantLocation,
   } = React.useContext(ProjectPropsContext);
 
   const { t } = useTranslation(['maps']);
@@ -98,7 +104,9 @@ export default function ProjectsMap(): ReactElement {
           if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
             const element = plantLocations[key];
             if (element.id === e.features[0].layer?.source) {
-              if (!element?.tag) {
+              if (element?.tag) {
+                setSamplePlantLocation(element);
+              } else {
                 setSelectedPl(element);
               }
 
