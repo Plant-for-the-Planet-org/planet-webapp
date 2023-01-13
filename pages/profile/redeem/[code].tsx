@@ -77,17 +77,17 @@ const ReedemCode: FC = () => {
       } catch (err) {
         const serializedErrors = handleError(err as APIError);
         const _serializedErrors = [];
-        for (let e of serializedErrors) {
-          if (e.message === 'invalid_code') {
+        for (let error of serializedErrors) {
+          if (error.message === 'invalid_code') {
             _serializedErrors.push({
               message: t('redeem:invalidCode'),
             });
-          } else if (e.message === 'already_redeemed') {
+          } else if (error.message === 'already_redeemed') {
             _serializedErrors.push({
               message: t('redeem:alreadyRedeemed'),
             });
           } else {
-            _serializedErrors.push(e);
+            _serializedErrors.push(error);
           }
         }
         setErrors(_serializedErrors);
