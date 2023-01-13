@@ -104,11 +104,7 @@ export default function ProjectsMap(): ReactElement {
           if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
             const element = plantLocations[key];
             if (element.id === e.features[0].layer?.source) {
-              if (element?.tag) {
-                setSamplePlantLocation(element);
-              } else {
-                setSelectedPl(element);
-              }
+              setSelectedPl(element);
 
               break;
             }
