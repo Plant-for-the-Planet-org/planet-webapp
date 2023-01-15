@@ -10,12 +10,20 @@
   "importMethodText": {
     "title": "Importieren",
     "subtitle": "Verwende diese Methode, wenn eines der folgenden Kriterien auf deinen Anwendungsfall zutrifft:",
-    "details": ["Ich möchte für jeden Code den Namen des Empfängers oder seine E-Mail-Adresse angeben.", "Ich möchte, dass Plant-for-the-Planet nach der Erstellung automatisch eine E-Mail an die Empfänger sendet (optional).", "Ich möchte Codes für verschiedene Zahlen von Bäumen vergeben."]
+    "details": [
+      "Ich möchte für jeden Code den Namen des Empfängers oder seine E-Mail-Adresse angeben.",
+      "Ich möchte, dass Plant-for-the-Planet nach der Erstellung automatisch eine E-Mail an die Empfänger sendet (optional).",
+      "Ich möchte Codes für verschiedene Zahlen von Bäumen vergeben."
+    ]
   },
   "genericMethodText": {
     "title": "Generische Codes erstellen",
     "subtitle": "Verwende diese Methode, wenn die folgenden Kriterien auf deinen Anwendungsfall zutreffen:",
-    "details": ["Alle Codes werden den gleichen Wert haben.", "Ich möchte eine Reihe von Codes für beliebige Empfänger generieren.", "Namen und E-Mail-Adressen können nicht mit dem Code verknüpft werden."]
+    "details": [
+      "Alle Codes werden den gleichen Wert haben.",
+      "Ich möchte eine Reihe von Codes für beliebige Empfänger generieren.",
+      "Namen und E-Mail-Adressen können nicht mit dem Code verknüpft werden."
+    ]
   },
   "projectName": "Projektname",
   "costPerUnit": "Kosten pro Einheit",
@@ -31,6 +39,7 @@
   "occasion": "Anlass",
   "total": "Insgesamt",
   "chargeConsentText": "Indem du auf Codes erzeugen klickst, erklärst du dich damit einverstanden, dass der oben genannte Betrag von deinem Konto abgebucht wird.",
+  "invalidEmailWarningText": "Stelle bitte sicher, dass die Empfänger-E-Mail eine gültige Adresse ist. Die Verwendung von Dummy- oder ungültigen E-Mail-Adressen führt gemäß der Nutzungsbedingungen der Plattform zur Sperrung des Kontos.",
   "projectRequired": "Es wurde kein Projekt ausgewählt.",
   "unitsPerCodeRequired": "Jeder Code sollte mindestens eine Einheit enthalten.",
   "codeQuantityRequired": "Du musst mindestens einen Code erstellen.",
@@ -41,18 +50,18 @@
   "insufficientPCashBalance": "Unzureichendes Guthaben",
   "addBalanceGeneric": "Bitte klicke hier, um Guthaben hinzuzufügen.",
   "instructionsUploadCSV": {
-    "empty": "Drag & Drop / Klicke zur Auswahl einer .csv-Datei zum Hochladen.",
-    "error": "Bitte prüfe etwaige Probleme und ziehe die .csv-Datei zum Hochladen hierher.",
+    "empty": "Drag & Drop / klicken um eine .xslx / .csv Datei zum hochladen auszuwählen.",
+    "error": "Bitte kontrolliere die Probleme und ziehe die .xslx / .csv Datei hier her zum hochladen.",
     "processing": "Bitte warte, während wir deine Datei analysieren...",
-    "success": "Weiter oder ziehe eine .csv-Datei hierher, um die aktuelle Datei zu ersetzen."
+    "success": "Fahre fort oder ziehe eine .xlsx oder .csv Datei hier her um die aktuelle zu ersetzen."
   },
   "statusUploadCSV": {
     "error": "Fehler",
     "success": "Dateianalyse abgeschlossen"
   },
   "errorUploadCSV": {
-    "fileInvalidType": "Nur CSV-Dateien sind zulässig",
-    "tooManyFiles": "Bitte lade nur eine einzige CSV-Datei hoch.",
+    "fileInvalidType": "Es sind nur .csv und .xslx Dateien erlaubt.",
+    "tooManyFiles": "Lade bitte nur eine einzige Datei hoch.",
     "fileTooSmall": "Die hochgeladene Datei scheint leer zu sein",
     "fileTooLarge": "Die hochgeladene Datei darf höchstens 5 MB groß sein.",
     "missingColumns": "In der hochgeladenen Datei fehlen die folgenden Spalten: ",
@@ -65,9 +74,9 @@
     "generalError": "Es ist ein Fehler aufgetreten. Bitte versuche es nach einer Weile erneut."
   },
   "successUploadCSV": {
-    "ignoredColumns": "Zusätzliche Spalten in der CSV-Datei wurden ignoriert"
+    "ignoredColumns": "Zusätzliche Spalten werden ignoriert."
   },
-  "importInstructions": "Bitte lese die <2>Dokumentation hier</2>, und lade die<4> </4><5>Vorlage hier</5> herunter.",
+  "importInstructions": "Bitte lese die <2>Dokumentation hier</2>, und lade die hier die <5>Excel-</5> oder <8>CSV-Vorlage</8> herunter.",
   "donationSuccess": "Deine Spende war erfolgreich. Du wirst in Kürze zur Anzeige der Spendendetails weitergeleitet...",
   "donationError": {
     "planet_cash_insufficient_credit": "Verfügbares Guthaben = {{availableBalance}}. Bitte lade Guthaben auf dein PlanetCash-Konto auf, um diese Spende zu tätigen.",

@@ -11,6 +11,7 @@ import {
 } from '../BulkCodesTypes';
 
 import styles from '../BulkCodes.module.scss';
+import { isEmailValid } from '../../../../utils/isEmailValid';
 
 const acceptedHeaders: (keyof Recipient)[] = [
   'recipient_name',
@@ -86,6 +87,19 @@ const RecipientsUploadForm = ({
       return false;
     }
 
+    // Check if first row has not been deleted
+    const firstRow = recipients[0];
+    if (
+      firstRow.units === 'number - mandatory' ||
+      isNaN(Number(firstRow.units))
+    ) {
+      setParseError({
+        type: 'instructionRowError',
+        message: ready ? t('bulkCodes:errorUploadCSV.instructionRowError') : '',
+      });
+      return false;
+    }
+
     // Check recipient has "units" field, and this is a number
     const hasUnits = recipients.every((recipient) => {
       const units = Number(recipient.units);
@@ -123,19 +137,18 @@ const RecipientsUploadForm = ({
     const invalidEmailIndexes: number[] = [];
     recipients.forEach((recipient, index) => {
       const { recipient_email } = recipient;
-      const emailRegex =
-        /^([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/i;
-      if (!emailRegex.test(recipient_email) && recipient_email.length !== 0)
+      if (!isEmailValid(recipient_email) && recipient_email.length !== 0) {
         invalidEmailIndexes.push(index + 1);
+      }
     });
 
     if (invalidEmailIndexes.length > 0) {
       setParseError({
         type: 'invalidEmails',
         message: ready
-          ? `${t(
-              'bulkCodes:errorUploadCSV.invalidEmails'
-            )} ${invalidEmailIndexes.join(', ')}`
+          ? t('bulkCodes:errorUploadCSV.invalidEmails', {
+              rowList: invalidEmailIndexes.join(', '),
+            })
           : '',
       });
       return false;
@@ -232,8 +245,10 @@ const RecipientsUploadForm = ({
           >
             documentation here
           </a>
-          , and download{' '}
-          <a href="/assets/recipient-upload-sample.csv">template here</a>
+          , download{' '}
+          <a href="/assets/recipient-upload-sample.xlsx">Excel template here</a>
+          , and{' '}
+          <a href="/assets/recipient-upload-sample.csv">CSV template here</a>
         </Trans>
       </p>
       {recipients.length > 0 && (

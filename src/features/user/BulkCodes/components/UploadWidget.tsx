@@ -6,6 +6,7 @@ import FileProcessingIcon from '../../../../../public/assets/images/icons/FilePr
 import FileAttachedIcon from '../../../../../public/assets/images/icons/FileAttachedIcon';
 import { FileImportError, UploadStates } from '../BulkCodesTypes';
 import styles from '../BulkCodes.module.scss';
+import handleFileUpload from '../../../../utils/handleFileUpload';
 
 interface UploadWidgetInterface {
   status: UploadStates;
@@ -27,14 +28,7 @@ const UploadWidget = ({
 
   const onDropAccepted = useCallback((acceptedFiles: File[]) => {
     onStatusChange('processing');
-    const reader = new FileReader();
-    reader.readAsText(acceptedFiles[0]);
-    reader.onabort = () => handleUploadError('file reading was aborted');
-    reader.onerror = () => handleUploadError('file reading has failed');
-    reader.onload = (event: ProgressEvent<FileReader>) => {
-      const csv = event.target?.result;
-      onFileUploaded(csv as string);
-    };
+    handleFileUpload(acceptedFiles[0], handleUploadError, onFileUploaded);
     setError(null);
   }, []);
 
@@ -94,7 +88,7 @@ const UploadWidget = ({
   };
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: '.csv',
+    accept: ['.csv', '.xlsx'],
     multiple: false,
     minSize: 1,
     maxSize: 5242880,
