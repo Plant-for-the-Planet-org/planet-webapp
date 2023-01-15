@@ -1,12 +1,19 @@
 import { PaymentFrequencies } from '../../../utils/constants/payoutConstants';
 
 // TO CHECK WITH JORGO - WHAT PARAMETERS ARE PRESENT, AND WHAT IS THEIR TYPE?
+
+export interface GiftFunds {
+  maxUnits: number;
+  openUnits: number;
+  project: string;
+}
 export interface PlanetCash {
   account: string;
   country: string;
   currency: string;
   balance: number;
   creditLimit: number;
+  giftFunds: GiftFunds[];
 }
 
 export interface Score {
