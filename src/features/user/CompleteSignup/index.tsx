@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import { useRouter } from 'next/router';
-import styles from '../../../../src/features/user/CompleteSignup';
+import styles from '../../../../src/features/user/CompleteSignup/CompleteSignup.module.scss';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import {
   Snackbar,

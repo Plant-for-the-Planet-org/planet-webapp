@@ -10,6 +10,18 @@ module.exports = {
   core: {
     builder: 'webpack5',
   },
+  webpackFinal: async (config, { configType }) => {
+    config.resolve = {
+      ...config.resolve,
+      fallback: {
+        ...(config.resolve || {}).fallback,
+        fs: false,
+      },
+    };
+
+    // Return the altered config
+    return config;
+  },
   features: {
     emotionAlias: false,
   },

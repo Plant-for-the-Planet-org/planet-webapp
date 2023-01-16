@@ -1,4 +1,3 @@
-const withPlugins = require('next-compose-plugins');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
@@ -46,7 +45,7 @@ const nextauthUrl = process.env.NEXTAUTH_URL
 const hasAssetPrefix =
   process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
-module.exports = withPlugins([[withBundleAnalyzer]], {
+const nextConfig =  {
   productionBrowserSourceMaps: true,
   i18n,
   serverRuntimeConfig: {
@@ -107,9 +106,6 @@ module.exports = withPlugins([[withBundleAnalyzer]], {
   },
   basePath,
   // your config for other plugins or the general next.js here...
-  devIndicators: {
-    autoPrerender: false,
-  },
   env: {
     AUTH0_CUSTOM_DOMAIN: process.env.AUTH0_CUSTOM_DOMAIN,
     AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
@@ -198,19 +194,12 @@ module.exports = withPlugins([[withBundleAnalyzer]], {
       },
     ];
   },
-  async rewrites() {
-    return {
-      fallback: [
-        // These rewrites are checked after both pages/public files
-        // and dynamic routes are checked
-        {
-          source: '/profile/:slug*',
-          destination: `/profile/`,
-        },
-      ],
-    };
-  },
-  assetPrefix: hasAssetPrefix ? `${scheme}://${process.env.ASSET_PREFIX}` : '',
+  assetPrefix: hasAssetPrefix ? `${scheme}://${process.env.ASSET_PREFIX}` : undefined,
   // Asset Prefix allows to use CDN for the generated js files
   // https://nextjs.org/docs/api-reference/next.config.js/cdn-support-with-asset-prefix
-});
+};
+
+module.exports = () => {
+  const plugins = [withBundleAnalyzer];
+  return plugins.reduce((config, plugin) => plugin(config), nextConfig);
+};
