@@ -1,9 +1,17 @@
 import { ReactElement } from 'react';
-import { Grid } from '@mui/material';
+import { Grid, styled } from '@mui/material';
 import CenteredContainer from '../CenteredContainer';
 interface SingleColumnViewProps {
   children: React.ReactNode;
 }
+
+const StyledGrid = styled(Grid)`
+  & {
+    background-color: transparent;
+    padding: 0;
+    box-shadow: none;
+  }
+`;
 
 /**
  * Renders a single column MUI grid container.
@@ -14,9 +22,9 @@ export default function SingleColumnView({
 }: SingleColumnViewProps): ReactElement {
   return (
     <Grid container className="SingleColumnView">
-      <Grid item xs={12} md={9} component={CenteredContainer}>
+      <StyledGrid item xs={12} md={9} component={CenteredContainer}>
         {children}
-      </Grid>
+      </StyledGrid>
     </Grid>
   );
 }

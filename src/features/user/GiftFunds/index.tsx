@@ -4,6 +4,7 @@ import Details from './Details';
 import { useTranslation } from 'next-i18next';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
+import SingleColumnView from '../../common/Layout/SingleColumnView';
 
 const GiftFunds = () => {
   const { t, ready } = useTranslation('giftfunds');
@@ -30,7 +31,9 @@ const GiftFunds = () => {
           </p>
         }
       >
-        <Details />
+        <SingleColumnView>
+          <Details />
+        </SingleColumnView>
       </DashboardView>
     )
   );

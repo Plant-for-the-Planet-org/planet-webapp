@@ -8,6 +8,7 @@ import DonationLinkForm from './DonationLinkForm';
 import SingleColumnView from '../../../common/Layout/SingleColumnView';
 import { Project, MapSingleProject } from '../../../common/types/project';
 import { TENANT_ID } from '../../../../utils/constants/environment';
+import CenteredContainer from '../../../common/Layout/CenteredContainer';
 
 export default function DonationLink(): ReactElement | null {
   const { handleError } = useContext(ErrorHandlingContext);
@@ -59,7 +60,9 @@ export default function DonationLink(): ReactElement | null {
       subtitle={<p>{t('donationLink:donationLinkDescription')}</p>}
     >
       <SingleColumnView>
-        <DonationLinkForm projectsList={projects} />
+        <CenteredContainer>
+          <DonationLinkForm projectsList={projects} />
+        </CenteredContainer>
       </SingleColumnView>
     </DashboardView>
   ) : null;
