@@ -28,6 +28,7 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
+import { handleError as _handleError, APIError } from '@planet-sdk/common';
 
 interface Props {
   handleNext: Function;
@@ -101,7 +102,7 @@ export default function BasicDetails({
     },
   });
   const classes = useStylesAutoComplete();
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { handleError, setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     //loads the default mapstyle
@@ -354,7 +355,7 @@ export default function BasicDetails({
     }
   }, [projectDetails]);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     setIsUploadingData(true);
     const submitData =
       purpose === 'trees'
@@ -440,33 +441,20 @@ export default function BasicDetails({
           setErrorMessage(err);
         });
     } else {
-      postAuthenticatedRequest(`/app/projects`, submitData, token, handleError)
-        .then((res) => {
-          if (!res.code) {
-            setErrorMessage('');
-            setProjectGUID(res.id);
-            setProjectDetails(res);
-            router.push(`/profile/projects/${res.id}?type=media`);
-            setIsUploadingData(false);
-          } else {
-            if (res.code === 404) {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-            } else if (res.code === 400) {
-              setIsUploadingData(false);
-              if (res.errors && res.errors.children) {
-                addServerErrors(res.errors.children, setError);
-              }
-            } else {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-            }
-          }
-        })
-        .catch((err) => {
-          setIsUploadingData(false);
-          setErrorMessage(err);
-        });
+      try {
+        const res = await postAuthenticatedRequest(
+          `/app/projects`,
+          submitData,
+          token
+        );
+        setProjectGUID(res.id);
+        setProjectDetails(res);
+        router.push(`/profile/projects/${res.id}?type=media`);
+        setIsUploadingData(false);
+      } catch (err) {
+        setIsUploadingData(false);
+        setErrors(_handleError(err as APIError));
+      }
     }
   };
   const geocoder = new GeocoderArcGIS(
