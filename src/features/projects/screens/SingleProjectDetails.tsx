@@ -81,11 +81,6 @@ function SingleProjectDetails({}: Props): ReactElement {
     plantLocation: hoveredPl ? hoveredPl : selectedPl,
   };
 
-  const routeContainProfile = localStorage
-    .getItem('redirectLink')
-    ?.split('/')
-    .some((element) => element === 'profile');
-
   const goBack = () => {
     if (selectedPl || hoveredPl) {
       setHoveredPl(null);
@@ -110,7 +105,7 @@ function SingleProjectDetails({}: Props): ReactElement {
                   ? `?embed=true&callback=${callbackUrl}`
                   : '?embed=true'
               }`
-            : `${isAuthenticated ? (routeContainProfile ? 'profile' : '') : ''}`
+            : ``
         }`
       );
     }
