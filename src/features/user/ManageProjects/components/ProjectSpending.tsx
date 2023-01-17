@@ -112,7 +112,7 @@ export default function ProjectSpending({
 
   const { isDirty, isSubmitting } = formState;
 
-  const onSubmit = (pdf: any) => {
+  const onSubmit = async (pdf: any) => {
     setIsUploadingData(true);
     const updatedAmount = getValues('amount');
     const year = getValues('year');
@@ -123,37 +123,25 @@ export default function ProjectSpending({
       pdfFile: pdf,
     };
 
-    postAuthenticatedRequest(
-      `/app/projects/${projectGUID}/expenses`,
-      submitData,
-      token,
-      handleError
-    )
-      .then((res) => {
-        if (!res.code) {
-          const newUploadedFiles = uploadedFiles;
-          newUploadedFiles.push(res);
-          setUploadedFiles(newUploadedFiles);
-          setAmount(0);
-          setValue('amount', 0, { shouldDirty: false });
-          setIsUploadingData(false);
-          setShowForm(false);
-          setErrorMessage('');
-          handleNext();
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          }
-        }
-      })
-      .catch((err) => {
-        setIsUploadingData(false);
-        setErrorMessage(err);
-      });
+    try {
+      const res = await postAuthenticatedRequest(
+        `/app/projects/${projectGUID}/expenses`,
+        submitData,
+        token
+      );
+      const newUploadedFiles = uploadedFiles;
+      newUploadedFiles.push(res);
+      setUploadedFiles(newUploadedFiles);
+      setAmount(0);
+      setValue('amount', 0, { shouldDirty: false });
+      setIsUploadingData(false);
+      setShowForm(false);
+      setErrorMessage('');
+      handleNext();
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(_handleError(err as APIError));
+    }
   };
 
   const deleteProjectSpending = (id: any) => {
@@ -193,7 +181,7 @@ export default function ProjectSpending({
   };
 
   React.useEffect(() => {
-    fetchProjSpending()
+    fetchProjSpending();
   }, [projectGUID]);
 
   const fiveYearsAgo = new Date();
