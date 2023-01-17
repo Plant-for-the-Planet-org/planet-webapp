@@ -140,42 +140,28 @@ function ProjectCertificates({
       pdfFile: pdf,
     };
 
-    postAuthenticatedRequest(
-      `/app/projects/${projectGUID}/certificates`,
-      submitData,
-      token,
-      handleError
-    )
-      .then((res) => {
-        if (!res.code) {
-          let newUploadedFiles = uploadedFiles;
+    try {
+      const res = postAuthenticatedRequest(
+        `/app/projects/${projectGUID}/certificates`,
+        submitData,
+        token
+      );
+      let newUploadedFiles = uploadedFiles;
 
-          if (newUploadedFiles === undefined) {
-            newUploadedFiles = [];
-          }
+      if (newUploadedFiles === undefined) {
+        newUploadedFiles = [];
+      }
 
-          newUploadedFiles.push(res);
-          setUploadedFiles(newUploadedFiles);
-
-          setCertifierName('');
-          setValue('certifierName', '', { shouldDirty: false });
-          setIsUploadingData(false);
-          setShowForm(false);
-          setErrorMessage('');
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          }
-        }
-      })
-      .catch((err) => {
-        setIsUploadingData(false);
-        setErrorMessage(err);
-      });
+      newUploadedFiles.push(res);
+      setUploadedFiles(newUploadedFiles);
+      setCertifierName('');
+      setValue('certifierName', '', { shouldDirty: false });
+      setIsUploadingData(false);
+      setShowForm(false);
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(_handleError(err as APIError));
+    }
   };
 
   const deleteProjectCertificate = (id: any) => {
