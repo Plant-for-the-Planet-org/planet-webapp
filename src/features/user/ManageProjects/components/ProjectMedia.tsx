@@ -66,7 +66,7 @@ export default function ProjectMedia({
     fetchImages();
   }, [projectGUID]);
 
-  const uploadPhotos = (image: any) => {
+  const uploadPhotos = async (image: any) => {
     setIsUploadingData(true);
 
     const submitData = {
@@ -74,37 +74,26 @@ export default function ProjectMedia({
       description: null,
       isDefault: false,
     };
-    postAuthenticatedRequest(
-      `/app/projects/${projectGUID}/images`,
-      submitData,
-      token,
-      handleError
-    )
-      .then((res) => {
-        if (!res.code) {
-          let newUploadedImages = [...uploadedImages];
 
-          if (!newUploadedImages) {
-            newUploadedImages = [];
-          }
-          newUploadedImages.push(res);
-          setUploadedImages(newUploadedImages);
-          setIsUploadingData(false);
-          setErrorMessage('');
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          }
-        }
-      })
-      .catch((err) => {
-        setIsUploadingData(false);
-        setErrorMessage(err);
-      });
+    try {
+      const res = await postAuthenticatedRequest(
+        `/app/projects/${projectGUID}/images`,
+        submitData,
+        token
+      );
+      let newUploadedImages = [...uploadedImages];
+
+      if (!newUploadedImages) {
+        newUploadedImages = [];
+      }
+      newUploadedImages.push(res);
+      setUploadedImages(newUploadedImages);
+      setIsUploadingData(false);
+      setErrorMessage('');
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(_handleError(err as APIError));
+    }
   };
 
   React.useEffect(() => {

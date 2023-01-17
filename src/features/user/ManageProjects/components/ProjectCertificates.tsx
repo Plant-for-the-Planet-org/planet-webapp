@@ -131,7 +131,7 @@ function ProjectCertificates({
     },
   });
 
-  const onSubmit = (pdf: any) => {
+  const onSubmit = async (pdf: any) => {
     setIsUploadingData(true);
     const updatedAmount = getValues('certifierName');
     const submitData = {
@@ -141,7 +141,7 @@ function ProjectCertificates({
     };
 
     try {
-      const res = postAuthenticatedRequest(
+      const res = await postAuthenticatedRequest(
         `/app/projects/${projectGUID}/certificates`,
         submitData,
         token
@@ -158,6 +158,7 @@ function ProjectCertificates({
       setValue('certifierName', '', { shouldDirty: false });
       setIsUploadingData(false);
       setShowForm(false);
+      setErrorMessage('');
     } catch (err) {
       setIsUploadingData(false);
       setErrors(_handleError(err as APIError));
