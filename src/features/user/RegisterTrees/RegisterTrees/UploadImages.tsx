@@ -9,6 +9,7 @@ import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { handleError as _handleError, APIError } from '@planet-sdk/common';
 
 interface Props {
   contribution: any;
@@ -37,43 +38,34 @@ export default function UploadImages({
       };
     });
   }, []);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { handleError, setErrors } = React.useContext(ErrorHandlingContext);
 
   // React.useEffect(() => {
   //   // Fetch images of the project
   //   setUploadedImages(contribution.contributionImages);
   // }, [contribution]);
 
-  const uploadPhotos = (image: any) => {
+  const uploadPhotos = async (image: any) => {
     setIsUploadingData(true);
     const submitData = {
       imageFile: image,
       description: '',
     };
-    postAuthenticatedRequest(
-      `/app/contributions/${contributionGUID}/images`,
-      submitData,
-      token,
-      handleError
-    )
-      .then((res) => {
-        if (!res.code) {
-          const newUploadedImages = uploadedImages;
-          newUploadedImages.push(res);
-          setUploadedImages(newUploadedImages);
-          setIsUploadingData(false);
-          setErrorMessage(null);
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(ready ? t('me:contribNotFound') : '');
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(ready ? t('me:errorOccured') : '');
-          }
-        }
-      })
-      .catch((e) => console.log(e));
+
+    try {
+      const res = await postAuthenticatedRequest(
+        `/app/contributions/${contributionGUID}/images`,
+        submitData,
+        token
+      );
+      const newUploadedImages = uploadedImages;
+      newUploadedImages.push(res);
+      setUploadedImages(newUploadedImages);
+      setIsUploadingData(false);
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(_handleError(err as APIError));
+    }
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
