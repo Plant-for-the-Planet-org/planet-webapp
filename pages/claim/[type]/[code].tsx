@@ -12,7 +12,7 @@ import {
 } from '../../../src/features/common/RedeemMicro/RedeemCode';
 import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 
 export type ClaimCode1 = string | null;
 
@@ -68,18 +68,24 @@ function ClaimDonation(): ReactElement {
         setRedeemedCodeData(res);
       } catch (err) {
         const serializedErrors = handleError(err as APIError);
-        const _serializedErrors = [];
-        for (const e of serializedErrors) {
-          if (e.message === 'invalid_code') {
-            _serializedErrors.push({
-              message: t('redeem:invalidCode'),
-            });
-          } else if (e.message === 'already_redeemed') {
-            _serializedErrors.push({
-              message: t('redeem:alreadyRedeemed'),
-            });
-          } else {
-            _serializedErrors.push(e);
+        const _serializedErrors: SerializedError[] = [];
+        for (const error of serializedErrors) {
+          switch (error.message) {
+            case 'already_redeemed':
+              _serializedErrors.push({
+                message: t('redeem:alreadyRedeemed'),
+              });
+              break;
+
+            case 'invalid_code':
+              _serializedErrors.push({
+                message: t('redeem:invalidCode'),
+              });
+              break;
+
+            default:
+              _serializedErrors.push(error);
+              break;
           }
         }
         setErrors(_serializedErrors);

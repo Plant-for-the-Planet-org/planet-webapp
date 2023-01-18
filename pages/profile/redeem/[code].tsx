@@ -14,7 +14,7 @@ import {
 import { ClaimCode1 } from '../../claim/[type]/[code]';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 
 const ReedemCode: FC = () => {
   const { t, ready } = useTranslation(['redeem']);
@@ -23,7 +23,6 @@ const ReedemCode: FC = () => {
 
   const [code, setCode] = useState<string | string[] | null>('');
   const [inputCode, setInputCode] = useState<ClaimCode1>('');
-  const [errorMessage, setErrorMessage] = useState<ClaimCode1>('');
   const [redeemedCodeData, setRedeemedCodeData] = useState<
     RedeemedCodeData | undefined
   >(undefined);
@@ -38,7 +37,6 @@ const ReedemCode: FC = () => {
 
   const handleCode = () => {
     router.push(`/profile/redeem/${code}?inputCode=${true}`);
-    setErrorMessage('');
     setRedeemedCodeData(undefined);
     setInputCode('');
   };
@@ -76,18 +74,24 @@ const ReedemCode: FC = () => {
         setRedeemedCodeData(res);
       } catch (err) {
         const serializedErrors = handleError(err as APIError);
-        const _serializedErrors = [];
+        const _serializedErrors: SerializedError[] = [];
         for (const error of serializedErrors) {
-          if (error.message === 'invalid_code') {
-            _serializedErrors.push({
-              message: t('redeem:invalidCode'),
-            });
-          } else if (error.message === 'already_redeemed') {
-            _serializedErrors.push({
-              message: t('redeem:alreadyRedeemed'),
-            });
-          } else {
-            _serializedErrors.push(error);
+          switch (error.message) {
+            case 'already_redeemed':
+              _serializedErrors.push({
+                message: t('redeem:alreadyRedeemed'),
+              });
+              break;
+
+            case 'invalid_code':
+              _serializedErrors.push({
+                message: t('redeem:invalidCode'),
+              });
+              break;
+
+            default:
+              _serializedErrors.push(error);
+              break;
           }
         }
         setErrors(_serializedErrors);

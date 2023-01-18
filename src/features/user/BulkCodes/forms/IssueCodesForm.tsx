@@ -20,7 +20,7 @@ import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedC
 import { Recipient as LocalRecipient } from '../BulkCodesTypes';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 
 interface IssueCodesFormProps {}
 
@@ -133,7 +133,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
       } catch (err) {
         setIsProcessing(false);
         const serializedErrors = handleError(err as APIError);
-        const _serializedErrors = [];
+        const _serializedErrors: SerializedError[] = [];
 
         for (const error of serializedErrors) {
           switch (error.message) {

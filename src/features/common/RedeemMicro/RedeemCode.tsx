@@ -17,7 +17,7 @@ export interface InputRedeemCode {
 }
 
 export interface RedeemCodeFailed {
-  errorMessages: SerializedError[];
+  errorMessages: SerializedError[] | null;
   code: string | string[] | null;
   redeemAnotherCode: () => void;
   closeRedeem: () => void;
@@ -88,16 +88,6 @@ export const RedeemCodeFailed = ({
 }: RedeemCodeFailed): ReactElement => {
   const { t } = useTranslation(['redeem']);
 
-  const getErrorMessages = () => {
-    return errorMessages!.map((e, index) => {
-      return (
-        <div key={`${index}`}>
-          <span className={styles.formErrors}>{e.message}</span>
-        </div>
-      );
-    });
-  };
-
   return (
     <div className={styles.routeRedeemModal}>
       <div className={styles.crossDiv}>
@@ -112,8 +102,6 @@ export const RedeemCodeFailed = ({
           {t('redeem:redeeming')} {code}
         </div>
       )}
-
-      {errorMessages && getErrorMessages()}
 
       {!errorMessages ? (
         <div className={styles.redeemAnotherCodeDiv}>
