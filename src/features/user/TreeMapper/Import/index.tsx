@@ -103,8 +103,6 @@ export default function ImportData({}: Props): ReactElement {
         return (
           <PlantingLocation
             handleNext={handleNext}
-            errorMessage={errorMessage}
-            setErrorMessage={setErrorMessage}
             userLang={userLang}
             plantLocation={plantLocation}
             setPlantLocation={setPlantLocation}
@@ -138,8 +136,6 @@ export default function ImportData({}: Props): ReactElement {
         return (
           <PlantingLocation
             handleNext={handleNext}
-            errorMessage={errorMessage}
-            setErrorMessage={setErrorMessage}
             userLang={userLang}
             plantLocation={plantLocation}
             setPlantLocation={setPlantLocation}

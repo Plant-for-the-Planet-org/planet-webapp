@@ -41,8 +41,6 @@ const dialogSx: SxProps = {
 
 interface Props {
   handleNext: () => void;
-  errorMessage: string;
-  setErrorMessage: Function;
   userLang: string;
   plantLocation: any;
   setPlantLocation: Function;
@@ -54,8 +52,6 @@ interface Props {
 
 export default function PlantingLocation({
   handleNext,
-  errorMessage,
-  setErrorMessage,
   userLang,
   plantLocation,
   setPlantLocation,
@@ -73,7 +69,7 @@ export default function PlantingLocation({
   const [mySpecies, setMySpecies] = React.useState(null);
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
-  const { t, ready } = useTranslation(['treemapper', 'common', 'maps']);
+  const { t } = useTranslation(['treemapper', 'common', 'maps']);
   const defaultValues = {
     plantDate: new Date(),
     plantProject: '',
@@ -202,7 +198,7 @@ export default function PlantingLocation({
     onFileDialogCancel: () => setIsUploadingData(false),
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     if (geoJson) {
       setIsUploadingData(true);
       const submitData = {
@@ -215,28 +211,19 @@ export default function PlantingLocation({
         plantProject: data.plantProject,
       };
 
-      postAuthenticatedRequest(
-        `/treemapper/plantLocations`,
-        submitData,
-        token
-      ).then((res: any) => {
-        if (!res.code) {
-          setErrorMessage('');
-          setPlantLocation(res);
-          setIsUploadingData(false);
-          handleNext();
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          } else if (res.code === 400) {
-            setIsUploadingData(false);
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          }
-        }
-      });
+      try {
+        const res = await postAuthenticatedRequest(
+          `/treemapper/plantLocations`,
+          submitData,
+          token
+        );
+        setPlantLocation(res);
+        setIsUploadingData(false);
+        handleNext();
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+        setIsUploadingData(false);
+      }
     } else {
       setGeoJsonError(true);
     }
