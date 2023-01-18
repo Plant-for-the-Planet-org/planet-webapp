@@ -14,15 +14,14 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { handleError as _handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError } from '@planet-sdk/common';
 
 interface Props {}
 
 export default function MySpecies({}: Props): ReactElement {
   const { t } = useTranslation(['treemapper', 'me', 'common']);
   const { token, contextLoaded } = React.useContext(UserPropsContext);
-  const { handleError, redirect, setErrors } =
-    React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
   const [species, setSpecies] = React.useState<any[]>([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
 
@@ -43,7 +42,7 @@ export default function MySpecies({}: Props): ReactElement {
       );
       setSpecies(result);
     } catch (err) {
-      setErrors(_handleError(err as APIError));
+      setErrors(handleError(err as APIError));
     }
   };
 
@@ -61,12 +60,12 @@ export default function MySpecies({}: Props): ReactElement {
           : species.scientificSpecies.name,
       scientificSpecies: species.scientificSpecies.id,
     };
-    const result = await postAuthenticatedRequest(
-      `/treemapper/species`,
-      data,
-      token,
-      handleError
-    );
+    try {
+      await postAuthenticatedRequest(`/treemapper/species`, data, token);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
+
     fetchMySpecies();
     setIsUploadingData(false);
   };
