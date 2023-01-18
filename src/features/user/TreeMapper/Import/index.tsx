@@ -116,8 +116,6 @@ export default function ImportData({}: Props): ReactElement {
         return (
           <SampleTrees
             handleNext={handleNext}
-            errorMessage={errorMessage}
-            setErrorMessage={setErrorMessage}
             plantLocation={plantLocation}
             setPlantLocation={setPlantLocation}
             userLang={userLang}
