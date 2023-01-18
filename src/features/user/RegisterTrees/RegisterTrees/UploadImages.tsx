@@ -24,8 +24,6 @@ export default function UploadImages({
 }: Props): ReactElement {
   const [uploadedImages, setUploadedImages] = React.useState([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [files, setFiles] = React.useState([]);
-  const [errorMessage, setErrorMessage] = React.useState(null);
   const { t, ready } = useTranslation(['me', 'common']);
   const onDrop = React.useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: any) => {
@@ -39,11 +37,6 @@ export default function UploadImages({
     });
   }, []);
   const { handleError, setErrors } = React.useContext(ErrorHandlingContext);
-
-  // React.useEffect(() => {
-  //   // Fetch images of the project
-  //   setUploadedImages(contribution.contributionImages);
-  // }, [contribution]);
 
   const uploadPhotos = async (image: any) => {
     setIsUploadingData(true);
