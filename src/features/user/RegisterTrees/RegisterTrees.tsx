@@ -21,7 +21,7 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './RegisterModal.module.scss';
 import SingleContribution from './RegisterTrees/SingleContribution';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { handleError as _handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError } from '@planet-sdk/common';
 
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -81,8 +81,7 @@ export default function RegisterTrees({}: Props) {
   const [userLocation, setUserLocation] = React.useState();
   const [registered, setRegistered] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
-  const { handleError, setErrors, redirect } =
-    React.useContext(ErrorHandlingContext);
+  const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
@@ -147,7 +146,7 @@ export default function RegisterTrees({}: Props) {
     }
   };
 
-  const submitRegisterTrees = (data: any) => {
+  const submitRegisterTrees = async (data: any) => {
     if (data.treeCount < 10000000) {
       if (
         geometry &&
@@ -161,33 +160,23 @@ export default function RegisterTrees({}: Props) {
           plantDate: new Date(data.plantDate),
           geometry: geometry,
         };
-        postAuthenticatedRequest(
-          `/app/contributions`,
-          submitData,
-          token,
-          handleError
-        ).then((res) => {
-          if (!res.code) {
-            setErrorMessage('');
-            setContributionGUID(res.id);
-            setContributionDetails(res);
-            setIsUploadingData(false);
-            setRegistered(true);
-            // router.push('/c/[id]', `/c/${res.id}`);
-          } else {
-            if (res.code === 404) {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-              setRegistered(false);
-            } else {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-              setRegistered(false);
-            }
-          }
-        });
 
-        // handleNext();
+        try {
+          const res = await postAuthenticatedRequest(
+            `/app/contributions`,
+            submitData,
+            token
+          );
+          setErrorMessage('');
+          setContributionGUID(res.id);
+          setContributionDetails(res);
+          setIsUploadingData(false);
+          setRegistered(true);
+        } catch (err) {
+          setIsUploadingData(false);
+          setErrors(handleError(err as APIError));
+          setRegistered(false);
+        }
       } else {
         setErrorMessage(ready ? t('me:locationMissing') : '');
       }
@@ -204,7 +193,7 @@ export default function RegisterTrees({}: Props) {
       );
       setProjects(projects);
     } catch (err) {
-      setErrors(_handleError(err as APIError));
+      setErrors(handleError(err as APIError));
       redirect('/profile');
     }
   }
