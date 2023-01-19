@@ -192,12 +192,11 @@ export function postAuthenticatedRequest<T>(
         },
       });
 
-      if(!res.ok){
+      if (!res.ok) {
         throw new APIError(res.status, await res.json());
       }
 
       resolve(await res.json());
-      
     } catch (err) {
       reject(err);
     }
@@ -268,37 +267,35 @@ export async function deleteAuthenticatedRequest(
 export async function putAuthenticatedRequest<T>(
   url: any,
   data: any,
-  token: any,
-  errorHandler?: Function
-): Promise<T | ApiCustomError | undefined> {
-  if (validateToken(token)) {
-    const res = await fetch(process.env.API_ENDPOINT + url, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'tenant-key': `${TENANT_ID}`,
-        'X-SESSION-ID': await getsessionId(),
-        Authorization: `Bearer ${token}`,
-        'x-locale': `${
-          localStorage.getItem('language')
-            ? localStorage.getItem('language')
-            : 'en'
-        }`,
-      },
-    });
-    const result = await res.json();
-    handleApiError(res.status, result, errorHandler);
-    return result as unknown as T | ApiCustomError;
-  } else {
-    if (errorHandler) {
-      errorHandler({
-        type: 'warning',
-        message: 'unauthorized',
+  token: any
+) {
+  return new Promise<T>(async (resolve, reject) => {
+    try {
+      const res = await fetch(process.env.API_ENDPOINT + url, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+          'tenant-key': `${TENANT_ID}`,
+          'X-SESSION-ID': await getsessionId(),
+          Authorization: `Bearer ${token}`,
+          'x-locale': `${
+            localStorage.getItem('language')
+              ? localStorage.getItem('language')
+              : 'en'
+          }`,
+        },
       });
+
+      if (!res.ok) {
+        throw new APIError(res.status, res.json());
+      }
+
+      resolve(await res.json());
+    } catch (err) {
+      reject(err);
     }
-    console.error('Error 401: You are not Authorized!');
-  }
+  });
 }
 
 export async function putRequest(
