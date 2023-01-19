@@ -17,7 +17,6 @@ import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import ProjectTabs from '../components/maps/ProjectTabs';
 import PlantLocationDetails from '../components/PlantLocation/PlantLocationDetails';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
-import { useAuth0 } from '@auth0/auth0-react';
 
 const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
   ssr: false,
@@ -35,7 +34,6 @@ const ImageSlider = dynamic(
 
 function SingleProjectDetails({}: Props): ReactElement {
   const router = useRouter();
-  const { isAuthenticated } = useAuth0();
 
   const { t, ready } = useTranslation(['donate', 'common', 'country', 'maps']);
   const {
@@ -105,7 +103,7 @@ function SingleProjectDetails({}: Props): ReactElement {
                   ? `?embed=true&callback=${callbackUrl}`
                   : '?embed=true'
               }`
-            : ``
+            : `${document.referrer === '' ? '' : window.history.go(-2)}`
         }`
       );
     }
