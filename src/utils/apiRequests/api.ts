@@ -288,7 +288,7 @@ export async function putAuthenticatedRequest<T>(
       });
 
       if (!res.ok) {
-        throw new APIError(res.status, res.json());
+        throw new APIError(res.status, await res.json());
       }
 
       resolve(await res.json());
