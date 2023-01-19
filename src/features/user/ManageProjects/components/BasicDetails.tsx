@@ -28,15 +28,13 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
-import { handleError as _handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError } from '@planet-sdk/common';
 
 interface Props {
   handleNext: Function;
   projectDetails: Object;
   setProjectDetails: Function;
-  errorMessage: String;
   setProjectGUID: Function;
-  setErrorMessage: Function;
   projectGUID: any;
   token: any;
   purpose: String;
@@ -47,9 +45,7 @@ export default function BasicDetails({
   token,
   projectDetails,
   setProjectDetails,
-  errorMessage,
   setProjectGUID,
-  setErrorMessage,
   projectGUID,
   purpose,
 }: Props): ReactElement {
@@ -102,7 +98,7 @@ export default function BasicDetails({
     },
   });
   const classes = useStylesAutoComplete();
-  const { handleError, setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     //loads the default mapstyle
@@ -409,37 +405,19 @@ export default function BasicDetails({
 
     // Check if GUID is set use update instead of create project
     if (projectGUID) {
-      putAuthenticatedRequest(
-        `/app/projects/${projectGUID}`,
-        submitData,
-        token,
-        handleError
-      )
-        .then((res) => {
-          if (!res.code) {
-            setErrorMessage('');
-            setProjectDetails(res);
-            setIsUploadingData(false);
-            handleNext();
-          } else {
-            if (res.code === 404) {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-            } else if (res.code === 400) {
-              setIsUploadingData(false);
-              if (res.errors && res.errors.children) {
-                addServerErrors(res.errors.children, setError);
-              }
-            } else {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-            }
-          }
-        })
-        .catch((err) => {
-          setIsUploadingData(false);
-          setErrorMessage(err);
-        });
+      try {
+        const res = await putAuthenticatedRequest(
+          `/app/projects/${projectGUID}`,
+          submitData,
+          token
+        );
+        setProjectDetails(res);
+        setIsUploadingData(false);
+        handleNext();
+      } catch (err) {
+        setIsUploadingData(false);
+        setErrors(handleError(err as APIError));
+      }
     } else {
       try {
         const res = await postAuthenticatedRequest(
@@ -453,7 +431,7 @@ export default function BasicDetails({
         setIsUploadingData(false);
       } catch (err) {
         setIsUploadingData(false);
-        setErrors(_handleError(err as APIError));
+        setErrors(handleError(err as APIError));
       }
     }
   };
@@ -988,12 +966,6 @@ export default function BasicDetails({
               />
             </div>
           </div> */}
-
-          {errorMessage && errorMessage !== '' ? (
-            <div className={styles.formFieldLarge}>
-              <h4 className={styles.errorMessage}>{errorMessage}</h4>
-            </div>
-          ) : null}
         </div>
         <div className={styles.formField} style={{ marginTop: '48px' }}>
           {/* <div className={`${styles.formFieldHalf}`}>

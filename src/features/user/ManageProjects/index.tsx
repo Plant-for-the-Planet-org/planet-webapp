@@ -229,10 +229,8 @@ export default function ManageProjects({ GUID, token, project }: any) {
             token={token}
             projectDetails={projectDetails}
             setProjectDetails={setProjectDetails}
-            errorMessage={errorMessage}
             setProjectGUID={setProjectGUID}
             projectGUID={projectGUID}
-            setErrorMessage={setErrorMessage}
             purpose={
               project?.purpose ? project?.purpose : router.query?.purpose
             }
