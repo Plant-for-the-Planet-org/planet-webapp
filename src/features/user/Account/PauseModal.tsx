@@ -21,6 +21,7 @@ import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
+import { handleError, APIError } from '@planet-sdk/common';
 
 const MuiCalendarPicker = styled(CalendarPicker)({
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -52,7 +53,7 @@ export const PauseModal = ({
   const [disabled, setDisabled] = React.useState(false);
 
   const { t, i18n, ready } = useTranslation(['me']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     setdate(
@@ -64,7 +65,7 @@ export const PauseModal = ({
     setDisabled(false);
   }, [pauseModalOpen]);
 
-  const pauseDonation = () => {
+  const pauseDonation = async () => {
     setDisabled(true);
     const bodyToSend = {
       pauseType:
@@ -76,19 +77,19 @@ export const PauseModal = ({
           ? date.toISOString().split('T')[0]
           : null, // only if pauseType='custom-date'
     };
-    putAuthenticatedRequest(
-      `/app/subscriptions/${record.id}?scope=pause`,
-      bodyToSend,
-      token,
-      handleError
-    )
-      .then((res) => {
-        handlePauseModalClose();
-        fetchRecurrentDonations();
-      })
-      .catch((err) => {
-        console.log('Error pausing recurring donation.');
-      });
+
+    try {
+      await putAuthenticatedRequest(
+        `/app/subscriptions/${record.id}?scope=pause`,
+        bodyToSend,
+        token
+      );
+      handlePauseModalClose();
+      fetchRecurrentDonations();
+    } catch (err) {
+      handlePauseModalClose();
+      setErrors(handleError(err as APIError));
+    }
   };
   return (
     <Modal
