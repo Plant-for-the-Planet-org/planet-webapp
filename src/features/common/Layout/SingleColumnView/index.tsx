@@ -1,6 +1,5 @@
 import { ReactElement } from 'react';
-import { Grid, styled } from '@mui/material';
-import CenteredContainer from '../CenteredContainer';
+import { Grid } from '@mui/material';
 interface SingleColumnViewProps {
   children: React.ReactNode;
 }
