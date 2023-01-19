@@ -15,12 +15,11 @@ import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { handleError as _handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError } from '@planet-sdk/common';
 
 export default function ManageProjects({ GUID, token, project }: any) {
   const { t, ready } = useTranslation(['manageProjects']);
-  const { handleError, redirect, setErrors } =
-    React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const router = useRouter();
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -117,57 +116,46 @@ export default function ManageProjects({ GUID, token, project }: any) {
       handleNext();
     }
   };
-  const submitForReview = () => {
+  const submitForReview = async () => {
     setIsUploadingData(true);
     const submitData = {
       reviewRequested: true,
     };
-    putAuthenticatedRequest(
-      `/app/projects/${projectGUID}`,
-      submitData,
-      token,
-      handleError
-    ).then((res) => {
-      if (!res.code) {
-        setProjectDetails(res);
-        setErrorMessage('');
-        setIsUploadingData(false);
-      } else {
-        if (res.code === 404) {
-          setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-          setIsUploadingData(false);
-        } else {
-          setErrorMessage(res.message);
-          setIsUploadingData(false);
-        }
-      }
-    });
+
+    try {
+      const res = await putAuthenticatedRequest(
+        `/app/projects/${projectGUID}`,
+        submitData,
+        token
+      );
+      setProjectDetails(res);
+      setErrorMessage('');
+      setIsUploadingData(false);
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
   };
 
-  const handlePublishChange = (val) => {
+  const handlePublishChange = async (val) => {
+    setIsUploadingData(true);
     const submitData = {
       publish: val,
     };
-    putAuthenticatedRequest(
-      `/app/projects/${projectGUID}`,
-      submitData,
-      token,
-      handleError
-    ).then((res) => {
-      if (!res.code) {
-        setProjectDetails(res);
-        setErrorMessage('');
-        setIsUploadingData(false);
-      } else {
-        if (res.code === 404) {
-          setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-          setIsUploadingData(false);
-        } else {
-          setErrorMessage(res.message);
-          setIsUploadingData(false);
-        }
-      }
-    });
+
+    try {
+      const res = await putAuthenticatedRequest(
+        `/app/projects/${projectGUID}`,
+        submitData,
+        token
+      );
+      setProjectDetails(res);
+      setErrorMessage('');
+      setIsUploadingData(false);
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
   };
 
   React.useEffect(() => {
@@ -181,7 +169,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
         );
         setProjectDetails(res);
       } catch (err) {
-        setErrors(_handleError(err as APIError));
+        setErrors(handleError(err as APIError));
         redirect('/profile');
       }
     };
