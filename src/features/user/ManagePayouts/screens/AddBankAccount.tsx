@@ -10,7 +10,7 @@ import CustomSnackbar from '../../../common/CustomSnackbar';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 
 const AddBankAccount = (): ReactElement | null => {
   const { t } = useTranslation('managePayouts');
@@ -46,6 +46,7 @@ const AddBankAccount = (): ReactElement | null => {
       }
       // show success message
       setIsAccountCreated(true);
+      setIsProcessing(false);
       // go to accounts tab
       setTimeout(() => {
         router.push('/profile/payouts');
@@ -53,7 +54,7 @@ const AddBankAccount = (): ReactElement | null => {
     } catch (err) {
       setIsProcessing(false);
       const serializedErrors = handleError(err as APIError);
-      const _serializedErrors = [];
+      const _serializedErrors: SerializedError[] = [];
 
       for (const error of serializedErrors) {
         switch (error.message) {
