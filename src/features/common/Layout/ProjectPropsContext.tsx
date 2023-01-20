@@ -3,16 +3,15 @@ import { ParamsContext } from './QueryParamsContext';
 import {
   Project,
   SearchProject,
-  GeoJson,
-  MapState,
   RasterData,
   PlantLocation,
   SiteViewPort,
-  MapStyle,
-  ViewPort,
   Imagery,
   ProjectContextInterface,
 } from '../types/projectPropContext';
+import { ViewportProps } from 'react-map-gl';
+import { MapboxOptions } from 'mapbox-gl';
+import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
 
 const defaultState: ProjectContextInterface = {
   project: ({} as Project) || null,
@@ -27,7 +26,7 @@ const defaultState: ProjectContextInterface = {
   setShowProjects: () => {},
   searchedProject: [],
   setsearchedProjects: () => [],
-  geoJson: ({} as GeoJson) || null,
+  geoJson: ({} as FeatureCollection) || null,
   setGeoJson: () => {},
   selectedSite: 0,
   setSelectedSite: () => {},
@@ -52,9 +51,9 @@ const defaultState: ProjectContextInterface = {
   setInfoExpanded: () => {},
   openModal: false,
   setModalOpen: () => {},
-  viewport: {} as ViewPort,
+  viewport: {} as ViewportProps,
   setViewPort: () => {},
-  mapState: {} as MapState,
+  mapState: {} as MapboxOptions,
   setMapState: () => {},
   exploreProjects: true,
   setExploreProjects: () => {},
@@ -117,7 +116,10 @@ export const ProjectPropsProvider: FC = ({ children }) => {
   const [searchedProject, setsearchedProjects] = React.useState<
     SearchProject[]
   >([]);
-  const [geoJson, setGeoJson] = React.useState<GeoJson | null>(null);
+  const [geoJson, setGeoJson] = React.useState<FeatureCollection<
+    Geometry,
+    GeoJsonProperties
+  > | null>(null);
   const [siteExists, setsiteExists] = React.useState<boolean>(false);
   const [selectedSite, setSelectedSite] = React.useState<number>(0);
   const infoRef = React.useRef(null);
@@ -144,7 +146,7 @@ export const ProjectPropsProvider: FC = ({ children }) => {
 
   const mapRef = React.useRef(null);
 
-  const EMPTY_STYLE: MapStyle = {
+  const EMPTY_STYLE = {
     version: 8,
     sources: {
       esri: {
@@ -159,7 +161,7 @@ export const ProjectPropsProvider: FC = ({ children }) => {
     },
     layers: [],
   };
-  const [mapState, setMapState] = React.useState<MapState>({
+  const [mapState, setMapState] = React.useState<MapboxOptions>({
     mapStyle: EMPTY_STYLE,
     dragPan: true,
     scrollZoom: false,
@@ -175,7 +177,7 @@ export const ProjectPropsProvider: FC = ({ children }) => {
     ? [36.96, 0]
     : [36.96, -28.5];
   const defaultZoom = isMobile ? 1 : 1.4;
-  const [viewport, setViewPort] = React.useState({
+  const [viewport, setViewPort] = React.useState<ViewportProps>({
     width: Number('100%'),
     height: Number('100%'),
     latitude: defaultMapCenter[0],

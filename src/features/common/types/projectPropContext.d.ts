@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
-import { ViewportProps } from '@types/react-map-gl'
-import { Style } from '@types/mapbox-gl'
+import { ViewportProps } from 'react-map-gl'
+import {  MapboxOptions } from 'mapbox-gl'
+import { FeatureCollection, GeoJsonProperties,Geometry,Feature } from 'geojson'
 
 
 export interface Coordinates {
@@ -129,7 +130,7 @@ export interface Coordinates {
       reviews?: (null)[] | null;
       siteOwnerName?: null;
       siteOwnerType?: (string)[] | null;
-      sites?: (SitesEntity)[] ;
+      sites?: Feature<Geometry, GeoJsonProperties>[];
       slug: string;
       survivalRate: number;
       survivalRateStatus: string;
@@ -186,28 +187,7 @@ export interface Coordinates {
         type: string
         geometry: GeometryB
         properties: PropertiesB
-    }
-  
-    
-  
-  // GeoJson//////////////////////////////////////////////////////////////////////////////////
-  export interface GeometryA {
-    coordinates: number[][][]
-    type: string
-    properties?: PropertiesA
-}
-  export interface Feature {
-      geometry: GeometryA
-      type: string
-      properties: PropertiesA
-  }
-  export interface GeoJson {
-      type: string
-      features: Feature[]
-    }
-  
-    
-  
+    }  
     // ViewPort
     
     export interface Props {
@@ -447,8 +427,8 @@ export interface Coordinates {
     setShowProjects: SetState<boolean>;
     searchedProject: SearchProject[];
     setsearchedProjects: SetState<SearchProject[]>;
-    geoJson: GeoJson | null;
-    setGeoJson: SetState<GeoJson | null>;
+    geoJson: FeatureCollection | null;
+    setGeoJson: SetState<FeatureCollection<Geometry, GeoJsonProperties> | null>;
     selectedPl: PlantLocation | null;
     setSelectedPl: SetState<PlantLocation | null>;
     zoomLevel: number;
@@ -485,8 +465,8 @@ export interface Coordinates {
     >;
     purpose: string;
     setPurpose: SetState<string>;
-    mapState: MapState;
-    setMapState: SetState<MapState>;
+    mapState: MapboxOptions;
+    setMapState: SetState<MapboxOptions>;
     selectedMode: string;
     setSelectedMode: SetState<string>;
     viewport: ViewportProps;
