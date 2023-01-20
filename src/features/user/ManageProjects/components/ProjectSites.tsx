@@ -603,7 +603,7 @@ function EditSite({
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -639,7 +639,7 @@ function EditSite({
     },
   };
 
-  const editProjectSite = (data: any) => {
+  const editProjectSite = async (data: any) => {
     if (geoJson && geoJson.features && geoJson.features.length !== 0) {
       setIsUploadingData(true);
       const submitData = {
@@ -647,40 +647,34 @@ function EditSite({
         geometry: geoJson,
         status: data.status,
       };
-      putAuthenticatedRequest(
-        `/app/projects/${projectGUID}/sites/${siteGUID}`,
-        submitData,
-        token,
-        handleError
-      ).then((res) => {
-        if (!res.code) {
-          const temp = siteList;
-          let siteIndex;
-          temp.find((site, index) => {
-            if (site.id === res.id) {
-              siteIndex = index;
-              return true;
-            }
-          });
-          if (siteIndex !== null) {
-            temp[siteIndex] = res;
+
+      try {
+        const res = await putAuthenticatedRequest(
+          `/app/projects/${projectGUID}/sites/${siteGUID}`,
+          submitData,
+          token
+        );
+        const temp = siteList;
+        let siteIndex;
+        temp.find((site, index) => {
+          if (site.id === res.id) {
+            siteIndex = index;
+            return true;
           }
-          setSiteList(temp);
-          setGeoJson(null);
-          setFeatures([]);
-          setIsUploadingData(false);
-          seteditMode(false);
-          setErrorMessage('');
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          }
+        });
+        if (siteIndex !== null) {
+          temp[siteIndex] = res;
         }
-      });
+        setSiteList(temp);
+        setGeoJson(null);
+        setFeatures([]);
+        setIsUploadingData(false);
+        seteditMode(false);
+        setErrorMessage('');
+      } catch (err) {
+        setIsUploadingData(false);
+        setErrors(_handleError(err as APIError));
+      }
     } else {
       setErrorMessage(ready ? t('manageProjects:polygonRequired') : '');
     }
