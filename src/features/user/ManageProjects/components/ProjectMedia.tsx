@@ -162,38 +162,27 @@ export default function ProjectMedia({
   };
 
   // For uploading the Youtube field
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     // Add isDirty test here
     setIsUploadingData(true);
     const submitData = {
       videoUrl: data.youtubeURL,
     };
-    putAuthenticatedRequest(
-      `/app/projects/${projectGUID}`,
-      submitData,
-      token,
-      handleError
-    )
-      .then((res) => {
-        if (!res.code) {
-          setProjectDetails(res);
-          setIsUploadingData(false);
-          handleNext();
-          setErrorMessage('');
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          }
-        }
-      })
-      .catch((err) => {
-        setIsUploadingData(false);
-        setErrorMessage(err);
-      });
+
+    try {
+      const res = await putAuthenticatedRequest(
+        `/app/projects/${projectGUID}`,
+        submitData,
+        token
+      );
+      setProjectDetails(res);
+      setIsUploadingData(false);
+      handleNext();
+      setErrorMessage('');
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(_handleError(err as APIError));
+    }
   };
 
   React.useEffect(() => {
@@ -202,65 +191,53 @@ export default function ProjectMedia({
     }
   }, [projectDetails]);
 
-  const setDefaultImage = (id: any, index: any) => {
+  const setDefaultImage = async (id: any, index: any) => {
     setIsUploadingData(true);
     const submitData = {
       isDefault: true,
     };
-    putAuthenticatedRequest(
-      `/app/projects/${projectGUID}/images/${id}`,
-      submitData,
-      token,
-      handleError
-    ).then((res) => {
-      if (!res.code) {
-        const tempUploadedData = uploadedImages;
-        tempUploadedData.forEach((image) => {
-          image.isDefault = false;
-        });
-        tempUploadedData[index].isDefault = true;
-        setUploadedImages(tempUploadedData);
-        setIsUploadingData(false);
-        setErrorMessage('');
-      } else {
-        if (res.code === 404) {
-          setIsUploadingData(false);
-          setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-        } else {
-          setIsUploadingData(false);
-          setErrorMessage(res.message);
-        }
-      }
-    });
+
+    try {
+      await putAuthenticatedRequest(
+        `/app/projects/${projectGUID}/images/${id}`,
+        submitData,
+        token
+      );
+      const tempUploadedData = uploadedImages;
+      tempUploadedData.forEach((image) => {
+        image.isDefault = false;
+      });
+      tempUploadedData[index].isDefault = true;
+      setUploadedImages(tempUploadedData);
+      setIsUploadingData(false);
+      setErrorMessage('');
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(_handleError(err as APIError));
+    }
   };
 
-  const uploadCaption = (id: any, index: any, e: any) => {
+  const uploadCaption = async (id: any, index: any, e: any) => {
     setIsUploadingData(true);
     const submitData = {
       description: e.target.value,
     };
-    putAuthenticatedRequest(
-      `/app/projects/${projectGUID}/images/${id}`,
-      submitData,
-      token,
-      handleError
-    ).then((res) => {
-      if (!res.code) {
-        const tempUploadedData = uploadedImages;
-        tempUploadedData[index].description = res.description;
-        setUploadedImages(tempUploadedData);
-        setIsUploadingData(false);
-        setErrorMessage('');
-      } else {
-        if (res.code === 404) {
-          setIsUploadingData(false);
-          setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-        } else {
-          setIsUploadingData(false);
-          setErrorMessage(res.message);
-        }
-      }
-    });
+
+    try {
+      const res = await putAuthenticatedRequest(
+        `/app/projects/${projectGUID}/images/${id}`,
+        submitData,
+        token
+      );
+      const tempUploadedData = uploadedImages;
+      tempUploadedData[index].description = res.description;
+      setUploadedImages(tempUploadedData);
+      setIsUploadingData(false);
+      setErrorMessage('');
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(_handleError(err as APIError));
+    }
   };
   return ready ? (
     <div className={styles.stepContainer}>
