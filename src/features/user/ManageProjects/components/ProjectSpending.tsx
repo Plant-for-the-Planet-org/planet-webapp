@@ -20,7 +20,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { SxProps } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
-import { handleError as _handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError } from '@planet-sdk/common';
 
 const yearDialogSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
@@ -54,7 +54,7 @@ export default function ProjectSpending({
   handleReset,
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
-  const { handleError, redirect, setErrors } =
+  const { redirect, setErrors } =
     React.useContext(ErrorHandlingContext);
   const {
     register,
@@ -140,25 +140,24 @@ export default function ProjectSpending({
       handleNext();
     } catch (err) {
       setIsUploadingData(false);
-      setErrors(_handleError(err as APIError));
+      setErrors(handleError(err as APIError));
     }
   };
 
-  const deleteProjectSpending = (id: any) => {
-    setIsUploadingData(true);
-    deleteAuthenticatedRequest(
-      `/app/projects/${projectGUID}/expenses/${id}`,
-      token,
-      handleError
-    ).then((res) => {
-      if (res !== 404) {
-        const uploadedFilesTemp = uploadedFiles.filter(
-          (item) => item.id !== id
-        );
-        setUploadedFiles(uploadedFilesTemp);
-        setIsUploadingData(false);
-      }
-    });
+  const deleteProjectSpending = async (id: any) => {
+    try {
+      setIsUploadingData(true);
+      await deleteAuthenticatedRequest(
+        `/app/projects/${projectGUID}/expenses/${id}`,
+        token
+      );
+      const uploadedFilesTemp = uploadedFiles.filter((item) => item.id !== id);
+      setUploadedFiles(uploadedFilesTemp);
+      setIsUploadingData(false);
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
   };
 
   const fetchProjSpending = async () => {
@@ -175,7 +174,7 @@ export default function ProjectSpending({
         setUploadedFiles(result.expenses);
       }
     } catch (err) {
-      setErrors(_handleError(err as APIError));
+      setErrors(handleError(err as APIError));
       redirect('/profile');
     }
   };
