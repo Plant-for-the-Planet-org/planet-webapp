@@ -20,7 +20,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { SxProps } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
-import { handleError as _handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError } from '@planet-sdk/common';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -50,8 +50,7 @@ function ProjectCertificates({
   userLang,
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
-  const { handleError, redirect, setErrors } =
-    React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
   const {
     register,
@@ -102,7 +101,7 @@ function ProjectCertificates({
         setShowToggle(false);
         setUploadedFiles(result.certificates);
       } catch (err) {
-        setErrors(_handleError(err as APIError));
+        setErrors(handleError(err as APIError));
         redirect('/profile');
         setShowToggle(true);
         setisCertified(false);
@@ -161,23 +160,21 @@ function ProjectCertificates({
       setErrorMessage('');
     } catch (err) {
       setIsUploadingData(false);
-      setErrors(_handleError(err as APIError));
+      setErrors(handleError(err as APIError));
     }
   };
 
-  const deleteProjectCertificate = (id: any) => {
-    deleteAuthenticatedRequest(
-      `/app/projects/${projectGUID}/certificates/${id}`,
-      token,
-      handleError
-    ).then((res) => {
-      if (res !== 404) {
-        const uploadedFilesTemp = uploadedFiles.filter(
-          (item) => item.id !== id
-        );
-        setUploadedFiles(uploadedFilesTemp);
-      }
-    });
+  const deleteProjectCertificate = async (id: any) => {
+    try {
+      await deleteAuthenticatedRequest(
+        `/app/projects/${projectGUID}/certificates/${id}`,
+        token
+      );
+      const uploadedFilesTemp = uploadedFiles!.filter((item) => item.id !== id);
+      setUploadedFiles(uploadedFilesTemp);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
   };
 
   React.useEffect(() => {
