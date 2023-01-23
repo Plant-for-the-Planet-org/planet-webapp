@@ -203,32 +203,36 @@ export function postAuthenticatedRequest<T>(
   });
 }
 
-export async function postRequest(
-  url: any,
-  data: any,
-  errorHandler?: Function,
-  redirect: string | undefined = undefined
-): Promise<any> {
-  const res = await fetch(process.env.API_ENDPOINT + url, {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json',
-      'tenant-key': `${TENANT_ID}`,
-      'X-SESSION-ID': await getsessionId(),
-      'x-locale': `${
-        localStorage.getItem('language')
-          ? localStorage.getItem('language')
-          : 'en'
-      }`,
-    },
+export function postRequest<T>(url: any, data: any) {
+  return new Promise<T>(async (resolve, reject) => {
+    try {
+      const res = await fetch(process.env.API_ENDPOINT + url, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+          'tenant-key': `${TENANT_ID}`,
+          'X-SESSION-ID': await getsessionId(),
+          'x-locale': `${
+            localStorage.getItem('language')
+              ? localStorage.getItem('language')
+              : 'en'
+          }`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new APIError(res.status, await res.json());
+      }
+
+      resolve(await res.json());
+    } catch (err) {
+      reject(err);
+    }
   });
-  const result = await res.json();
-  handleApiError(res.status, result, errorHandler, redirect);
-  return result;
 }
 
-export async function deleteAuthenticatedRequest<T>(url: any, token: any) {
+export function deleteAuthenticatedRequest<T>(url: any, token: any) {
   return new Promise<T>(async (resolve, reject) => {
     try {
       const res = await fetch(process.env.API_ENDPOINT + url, {
@@ -257,7 +261,7 @@ export async function deleteAuthenticatedRequest<T>(url: any, token: any) {
   });
 }
 
-export async function putAuthenticatedRequest<T>(
+export function putAuthenticatedRequest<T>(
   url: any,
   data: any,
   token: any
