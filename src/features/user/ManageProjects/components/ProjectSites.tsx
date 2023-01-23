@@ -21,7 +21,7 @@ import { Fade, Modal, MenuItem } from '@mui/material';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { handleError as _handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError } from '@planet-sdk/common';
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
@@ -57,7 +57,7 @@ export default function ProjectSites({
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [openModal, setOpenModal] = React.useState(false);
-  const { handleError, redirect, setErrors } =
+  const { redirect, setErrors } =
     React.useContext(ErrorHandlingContext);
 
   const useStylesAutoComplete = makeStyles({
@@ -184,7 +184,7 @@ export default function ProjectSites({
         setErrorMessage('');
       } catch (err) {
         setIsUploadingData(false);
-        setErrors(_handleError(err as APIError));
+        setErrors(handleError(err as APIError));
       }
     } else {
       setErrorMessage(ready ? t('manageProjects:polygonRequired') : '');
@@ -196,19 +196,20 @@ export default function ProjectSites({
     handleNext();
   };
 
-  const deleteProjectSite = (id: any) => {
-    setIsUploadingData(true);
-    deleteAuthenticatedRequest(
-      `/app/projects/${projectGUID}/sites/${id}`,
-      token,
-      handleError
-    ).then((res) => {
-      if (res !== 404) {
-        const siteListTemp = siteList.filter((item) => item.id !== id);
-        setSiteList(siteListTemp);
-        setIsUploadingData(false);
-      }
-    });
+  const deleteProjectSite = async (id: any) => {
+    try {
+      setIsUploadingData(true);
+      await deleteAuthenticatedRequest(
+        `/app/projects/${projectGUID}/sites/${id}`,
+        token
+      );
+      const siteListTemp = siteList.filter((item) => item.id !== id);
+      setSiteList(siteListTemp);
+      setIsUploadingData(false);
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
   };
 
   const status = [
@@ -268,7 +269,7 @@ export default function ProjectSites({
         setSiteList(result.sites);
       }
     } catch (err) {
-      setErrors(_handleError(err as APIError));
+      setErrors(handleError(err as APIError));
       redirect('/profile');
     }
   };
@@ -673,7 +674,7 @@ function EditSite({
         setErrorMessage('');
       } catch (err) {
         setIsUploadingData(false);
-        setErrors(_handleError(err as APIError));
+        setErrors(handleError(err as APIError));
       }
     } else {
       setErrorMessage(ready ? t('manageProjects:polygonRequired') : '');
