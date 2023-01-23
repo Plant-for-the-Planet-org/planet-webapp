@@ -15,7 +15,7 @@ import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
-import { handleError as _handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError } from '@planet-sdk/common';
 
 interface Props {
   handleNext: Function;
@@ -37,8 +37,7 @@ export default function ProjectMedia({
   handleReset,
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
-  const { handleError, redirect, setErrors } =
-    React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
   const [uploadedImages, setUploadedImages] = React.useState<Array<any>>([]);
@@ -57,7 +56,7 @@ export default function ProjectMedia({
         setUploadedImages(result.images);
       }
     } catch (err) {
-      setErrors(_handleError(err as APIError));
+      setErrors(handleError(err as APIError));
       redirect('/profile');
     }
   };
@@ -92,7 +91,7 @@ export default function ProjectMedia({
       setErrorMessage('');
     } catch (err) {
       setIsUploadingData(false);
-      setErrors(_handleError(err as APIError));
+      setErrors(handleError(err as APIError));
     }
   };
 
@@ -146,19 +145,17 @@ export default function ProjectMedia({
     [files]
   );
 
-  const deleteProjectCertificate = (id: any) => {
-    deleteAuthenticatedRequest(
-      `/app/projects/${projectGUID}/images/${id}`,
-      token,
-      handleError
-    ).then((res) => {
-      if (res !== 404) {
-        const uploadedFilesTemp = uploadedImages.filter(
-          (item) => item.id !== id
-        );
-        setUploadedImages(uploadedFilesTemp);
-      }
-    });
+  const deleteProjectCertificate = async (id: any) => {
+    try {
+      await deleteAuthenticatedRequest(
+        `/app/projects/${projectGUID}/images/${id}`,
+        token
+      );
+      const uploadedFilesTemp = uploadedImages.filter((item) => item.id !== id);
+      setUploadedImages(uploadedFilesTemp);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
   };
 
   // For uploading the Youtube field
@@ -181,7 +178,7 @@ export default function ProjectMedia({
       setErrorMessage('');
     } catch (err) {
       setIsUploadingData(false);
-      setErrors(_handleError(err as APIError));
+      setErrors(handleError(err as APIError));
     }
   };
 
@@ -213,7 +210,7 @@ export default function ProjectMedia({
       setErrorMessage('');
     } catch (err) {
       setIsUploadingData(false);
-      setErrors(_handleError(err as APIError));
+      setErrors(handleError(err as APIError));
     }
   };
 
@@ -236,7 +233,7 @@ export default function ProjectMedia({
       setErrorMessage('');
     } catch (err) {
       setIsUploadingData(false);
-      setErrors(_handleError(err as APIError));
+      setErrors(handleError(err as APIError));
     }
   };
   return ready ? (
