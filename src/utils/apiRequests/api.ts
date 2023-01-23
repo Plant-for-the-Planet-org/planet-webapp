@@ -228,40 +228,33 @@ export async function postRequest(
   return result;
 }
 
-export async function deleteAuthenticatedRequest(
-  url: any,
-  token: any,
-  errorHandler?: Function
-): Promise<any> {
-  let result;
-  if (validateToken(token)) {
-    await fetch(process.env.API_ENDPOINT + url, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'tenant-key': `${TENANT_ID}`,
-        'X-SESSION-ID': await getsessionId(),
-        Authorization: `Bearer ${token}`,
-        'x-locale': `${
-          localStorage.getItem('language')
-            ? localStorage.getItem('language')
-            : 'en'
-        }`,
-      },
-    }).then(async (res) => {
-      result = res.status === 400 ? await res.json() : res.status;
-      handleApiError(res.status, result, errorHandler);
-    });
-  } else {
-    if (errorHandler) {
-      errorHandler({
-        type: 'warning',
-        message: 'unauthorized',
+export async function deleteAuthenticatedRequest<T>(url: any, token: any) {
+  return new Promise<T>(async (resolve, reject) => {
+    try {
+      const res = await fetch(process.env.API_ENDPOINT + url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'tenant-key': `${TENANT_ID}`,
+          'X-SESSION-ID': await getsessionId(),
+          Authorization: `Bearer ${token}`,
+          'x-locale': `${
+            localStorage.getItem('language')
+              ? localStorage.getItem('language')
+              : 'en'
+          }`,
+        },
       });
+
+      if (!res.ok) {
+        throw new APIError(res.status, await res.json());
+      }
+
+      resolve(await res.json());
+    } catch (err) {
+      reject(err);
     }
-    console.error('Error 401: You are not Authorized!');
-  }
-  return result;
+  });
 }
 
 export async function putAuthenticatedRequest<T>(
