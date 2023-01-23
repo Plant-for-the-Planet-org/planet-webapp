@@ -12,10 +12,10 @@ import { makeStyles } from '@mui/styles';
 import tenantConfig from '../../../../../tenant.config';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import getRandomImage from '../../../../utils/getRandomImage';
-import Image from 'next/image';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
+import { handleError, APIError } from '@planet-sdk/common';
 
 interface Props {
   leaderboard: any;
@@ -26,7 +26,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
   const leaderboardData = leaderboard.leaderboard;
   const { t, i18n, ready } = useTranslation(['leaderboard', 'common']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
   const [users, setUsers] = React.useState([]);
 
   const { theme } = React.useContext(ThemeContext);
@@ -65,12 +65,16 @@ export default function LeaderBoardSection(leaderboard: Props) {
   });
   const classes = useStylesAutoComplete();
 
-  async function fetchUsers(query: any) {
-    postRequest('/suggest.php', { q: query }, handleError).then((res) => {
+  const fetchUsers = async (query: any) => {
+    try {
+      const res = await postRequest('/suggest.php', { q: query });
       const result = res.filter((item) => item.type !== 'competition');
       setUsers(result);
-    });
-  }
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
+  };
+
   const imageErrorSrc =
     'https://cdn.planetapp.workers.dev/development/logo/svg/planet.svg';
   return ready ? (
@@ -186,13 +190,6 @@ export default function LeaderBoardSection(leaderboard: Props) {
                           className={styles.searchedUserCard}
                           // style={{ cursor: 'pointer', padding: '5px 0px' }}
                         >
-                          {/* <Image
-                      loader={myLoader}
-                      src={getImageUrl('profile', 'avatar', option.image)}
-                      alt={option.name}
-                      width={26}
-                      height={26}
-                    /> */}
                           <img
                             src={getImageUrl('profile', 'avatar', option.image)}
                             onError={(e) => (
