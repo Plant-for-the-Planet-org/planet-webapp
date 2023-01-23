@@ -47,8 +47,12 @@ export default function MySpecies({}: Props): ReactElement {
   };
 
   const deleteSpecies = async (id: number) => {
-    await deleteAuthenticatedRequest(`/treemapper/species/${id}`, token);
-    fetchMySpecies();
+    try {
+      await deleteAuthenticatedRequest(`/treemapper/species/${id}`, token);
+      fetchMySpecies();
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
   };
 
   const addSpecies = async (species: any) => {
