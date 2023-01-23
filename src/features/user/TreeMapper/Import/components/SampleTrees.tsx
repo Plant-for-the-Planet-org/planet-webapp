@@ -255,11 +255,7 @@ export default function SampleTrees({
       </div>
       <div className={`${styles.formField}`}>
         <div className={styles.formFieldHalf}>
-          <button
-            onClick={handleSubmit(onSubmit)}
-            className="primaryButton"
-            style={{ width: '188px' }}
-          >
+          <button onClick={handleSubmit(onSubmit)} className="primaryButton">
             {isUploadingData ? (
               <div className={styles.spinner}></div>
             ) : (
@@ -268,11 +264,7 @@ export default function SampleTrees({
           </button>
         </div>
         <div className={`${styles.formFieldHalf} `}>
-          <button
-            onClick={() => handleNext()}
-            className="secondaryButton"
-            style={{ width: '188px' }}
-          >
+          <button onClick={() => handleNext()} className="secondaryButton">
             {isUploadingData ? (
               <div className={styles.spinner}></div>
             ) : (
