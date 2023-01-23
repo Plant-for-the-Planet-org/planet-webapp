@@ -9,7 +9,7 @@ import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { handleError as _handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError } from '@planet-sdk/common';
 
 interface Props {
   contribution: any;
@@ -36,7 +36,7 @@ export default function UploadImages({
       };
     });
   }, []);
-  const { handleError, setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
   const uploadPhotos = async (image: any) => {
     setIsUploadingData(true);
@@ -57,7 +57,7 @@ export default function UploadImages({
       setIsUploadingData(false);
     } catch (err) {
       setIsUploadingData(false);
-      setErrors(_handleError(err as APIError));
+      setErrors(handleError(err as APIError));
     }
   };
 
@@ -71,14 +71,13 @@ export default function UploadImages({
     onFileDialogCancel: () => setIsUploadingData(false),
   });
 
-  const deleteContributionImage = (id: any) => {
-    deleteAuthenticatedRequest(
-      `/app/contributions/${contributionGUID}/images/${id}`,
-      token,
-      handleError
-    ).then((res) => {
-      if (res !== 404) {
-        const uploadedImagesTemp = uploadedImages;
+  const deleteContributionImage = async (id: any) => {
+    try {
+      await deleteAuthenticatedRequest(
+        `/app/contributions/${contributionGUID}/images/${id}`,
+        token
+      );
+      const uploadedImagesTemp = uploadedImages;
         const index = uploadedImagesTemp.findIndex((item) => {
           return item.id === id;
         });
@@ -88,8 +87,9 @@ export default function UploadImages({
         } else {
           console.log('image not found');
         }
-      }
-    });
+    } catch (err) {
+      setErrors(handleError(err as APIError))
+    }
   };
 
   return ready ? (
