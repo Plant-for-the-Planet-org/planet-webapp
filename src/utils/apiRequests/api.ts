@@ -317,19 +317,28 @@ export function putAuthenticatedRequest<T>(url: any, data: any, token: any) {
   });
 }
 
-export async function getRasterData(
+export function getRasterData<T>(
   id: any,
   errorHandler?: Function
-): Promise<any> {
-  let result;
-  const res = await fetch(
-    `${process.env.SITE_IMAGERY_API_URL}/api/v1/project/${id}`
-  )
-    .then(async (res) => {
-      result = res.status === 200 ? await res.json() : null;
-      handleApiError(res.status, result, errorHandler);
-      return result;
-    })
-    .catch((err) => console.log(`Something went wrong: ${err}`));
-  return result;
+){
+  return new Promise<T>(async (resolve, reject) => {
+    try {
+      const res = await fetch(
+        `${process.env.SITE_IMAGERY_API_URL}/api/v1/project/${id}`
+      )
+
+      if (!res.ok) {
+        throw new APIError(res.status, await res.json());
+      }
+
+      if (res.status === 204) {
+        resolve(true as T);
+      } else {
+        resolve(await res.json());
+      }
+
+    } catch (err) {
+      reject(err)
+    }
+  })
 }
