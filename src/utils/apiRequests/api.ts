@@ -317,30 +317,6 @@ export function putAuthenticatedRequest<T>(url: any, data: any, token: any) {
   });
 }
 
-export async function putRequest(
-  url: any,
-  data: any,
-  errorHandler?: Function
-): Promise<any> {
-  const res = await fetch(process.env.API_ENDPOINT + url, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json',
-      'tenant-key': `${TENANT_ID}`,
-      'X-SESSION-ID': await getsessionId(),
-      'x-locale': `${
-        localStorage.getItem('language')
-          ? localStorage.getItem('language')
-          : 'en'
-      }`,
-    },
-  });
-  const result = await res.json();
-  handleApiError(res.status, result, errorHandler);
-  return result;
-}
-
 export async function getRasterData(
   id: any,
   errorHandler?: Function
