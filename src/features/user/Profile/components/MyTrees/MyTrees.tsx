@@ -85,15 +85,13 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
                 ? t('me:myForest')
                 : t('me:nameForest', { name: profile.displayName })}
             </div>
-            <div className={styles.donatedTreesContainer}>
+            <div className={styles.MyTreesLegend}>
               <div>
                 <TreesIcon />
+                <p className={styles.donatedTrees}>{t('me:donatedTrees')}</p>
               </div>
-              <p className={styles.donatedTrees}> {t('me:donatedTrees')} </p>
-              <div className={styles.registeredTreesContainer}>
-                <div style={{ marginLeft: '2px' }}>
-                  <TreesIcon color="#3D67B1" />
-                </div>
+              <div>
+                <TreesIcon color="#3D67B1" />
                 <p className={styles.registeredTrees}>
                   {t('me:registeredTrees')}
                 </p>
