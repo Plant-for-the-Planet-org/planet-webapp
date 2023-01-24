@@ -24,6 +24,7 @@ import { postRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslation, Trans } from 'next-i18next';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
+import { handleError, APIError } from '@planet-sdk/common';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -40,7 +41,7 @@ const MuiTextField = styled(TextField)(() => {
 export default function CompleteSignup(): ReactElement | null {
   const router = useRouter();
   const { i18n, t, ready } = useTranslation(['editProfile', 'donate']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const [addressSugggestions, setaddressSugggestions] = React.useState([]);
   const geocoder = new GeocoderArcGIS(
     process.env.ESRI_CLIENT_SECRET
@@ -165,34 +166,20 @@ export default function CompleteSignup(): ReactElement | null {
   const sendRequest = async (bodyToSend: any) => {
     setRequestSent(true);
     try {
-      const res = await postRequest(
-        `/app/profile`,
-        bodyToSend,
-        handleError,
-        '/login'
-      );
+      const res = await postRequest(`/app/profile`, bodyToSend);
       setRequestSent(false);
-      if (res) {
-        // successful signup -> goto me page
-        setUser(res);
-        setSnackbarMessage(ready ? t('editProfile:profileCreated') : '');
-        setSeverity('success');
-        handleSnackbarOpen();
-
-        if (typeof window !== 'undefined') {
-          router.push('/t/[id]', `/t/${res.slug}`);
-        }
-      } else {
-        setSnackbarMessage(ready ? t('editProfile:profileCreationFailed') : '');
-        setSubmit(false);
-        setSeverity('error');
-        handleSnackbarOpen();
-      }
-    } catch {
-      setSubmit(false);
-      setSnackbarMessage(ready ? t('editProfile:profileCreationError') : '');
-      setSeverity('error');
+      // successful signup -> goto me page
+      setUser(res);
+      setSnackbarMessage(ready ? t('editProfile:profileCreated') : '');
+      setSeverity('success');
       handleSnackbarOpen();
+
+      if (typeof window !== 'undefined') {
+        router.push('/t/[id]', `/t/${res.slug}`);
+      }
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+      redirect('/login');
     }
   };
 

@@ -25,6 +25,7 @@ export default function DeleteProfile({}: any) {
     setIsUploadingData(true);
     try {
       await deleteAuthenticatedRequest('/app/profile', token);
+      setIsUploadingData(false);
       logoutUser(`${process.env.NEXTAUTH_URL}/`);
     } catch (err) {
       setIsUploadingData(false);
