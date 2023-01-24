@@ -122,7 +122,11 @@ export function getRequest<T>(
       if (!res.ok) {
         throw new APIError(res.status, await res.json());
       }
-      resolve(await res.json());
+      if (res.status === 204) {
+        resolve(true as T);
+      } else {
+        resolve(await res.json());
+      }
     } catch (err) {
       reject(err);
     }
@@ -160,7 +164,11 @@ export function getAuthenticatedRequest<T>(
       if (!res.ok) {
         throw new APIError(res.status, await res.json());
       }
-      resolve(await res.json());
+      if (res.status === 204) {
+        resolve(true as T);
+      } else {
+        resolve(await res.json());
+      }
     } catch (err) {
       reject(err);
     }
@@ -196,7 +204,12 @@ export function postAuthenticatedRequest<T>(
         throw new APIError(res.status, await res.json());
       }
 
-      resolve(await res.json());
+      if (res.status === 204) {
+        resolve(true as T);
+      } else {
+        resolve(await res.json());
+      }
+
     } catch (err) {
       reject(err);
     }
@@ -225,7 +238,12 @@ export function postRequest<T>(url: any, data: any) {
         throw new APIError(res.status, await res.json());
       }
 
-      resolve(await res.json());
+      if (res.status === 204) {
+        resolve(true as T);
+      } else {
+        resolve(await res.json());
+      }
+
     } catch (err) {
       reject(err);
     }
@@ -254,18 +272,18 @@ export function deleteAuthenticatedRequest<T>(url: any, token: any) {
         throw new APIError(res.status, await res.json());
       }
 
-      resolve(await res.json());
+      if (res.status === 204) {
+        resolve(true as T);
+      } else {
+        resolve(await res.json());
+      }
     } catch (err) {
       reject(err);
     }
   });
 }
 
-export function putAuthenticatedRequest<T>(
-  url: any,
-  data: any,
-  token: any
-) {
+export function putAuthenticatedRequest<T>(url: any, data: any, token: any) {
   return new Promise<T>(async (resolve, reject) => {
     try {
       const res = await fetch(process.env.API_ENDPOINT + url, {
@@ -288,7 +306,11 @@ export function putAuthenticatedRequest<T>(
         throw new APIError(res.status, await res.json());
       }
 
-      resolve(await res.json());
+      if (res.status === 204) {
+        resolve(true as T);
+      } else {
+        resolve(await res.json());
+      }
     } catch (err) {
       reject(err);
     }
