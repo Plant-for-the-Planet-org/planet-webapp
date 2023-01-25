@@ -1,4 +1,4 @@
-import React, { useContext, ReactElement, useState } from 'react';
+import React, { useContext, ReactElement } from 'react';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { useTranslation } from 'next-i18next';
 import { styled } from '@mui/material';
