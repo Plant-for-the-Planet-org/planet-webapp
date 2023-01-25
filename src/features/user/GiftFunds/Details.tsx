@@ -14,10 +14,9 @@ const Details = ({ validGiftFunds }: Props): ReactElement | null => {
 
   const StyledContainer = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.background.default,
-    padding: 34,
+    padding: 24,
     borderRadius: 9,
-    boxShadow: `0px 2px 1px -1px rgb(0 0 0 / 20%),
-    0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)`,
+    boxShadow: theme.shadows[1],
     marginBottom: 24,
     '& .container_heading': {
       paddingBottom: 16,
@@ -26,7 +25,7 @@ const Details = ({ validGiftFunds }: Props): ReactElement | null => {
       display: 'flex',
       marginTop: 24,
       flexWrap: 'wrap',
-      gap: 15,
+      gap: 16,
 
       div: {
         flex: 1,
