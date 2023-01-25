@@ -1,24 +1,16 @@
 import React, { useContext, ReactElement, useState } from 'react';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { useTranslation } from 'next-i18next';
-import { GiftFunds } from '../../common/types/user';
 import { styled } from '@mui/material';
+import { GiftFundsType } from '../../common/types/user';
 
-const Details = (): ReactElement | null => {
+interface Props {
+  validGiftFunds: GiftFundsType[] | null;
+}
+
+const Details = ({ validGiftFunds }: Props): ReactElement | null => {
   const { user } = useContext(UserPropsContext);
   const { t, ready } = useTranslation('giftfunds');
-  const [validGiftFunds, setValidGiftFunds] = useState<GiftFunds[] | null>(
-    null
-  );
-
-  React.useEffect(() => {
-    const nonZeroOpenUnitsGiftFunds = user.planetCash?.giftFunds.filter(
-      (gift) => gift.openUnits !== 0
-    );
-    setValidGiftFunds(
-      nonZeroOpenUnitsGiftFunds ? nonZeroOpenUnitsGiftFunds : null
-    );
-  }, [user]);
 
   const StyledContainer = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.background.default,
@@ -48,7 +40,7 @@ const Details = (): ReactElement | null => {
   if (ready && user.planetCash) {
     return (
       <>
-        {validGiftFunds?.map((gift: GiftFunds, index: number) => (
+        {validGiftFunds?.map((gift: GiftFundsType, index: number) => (
           //Not displaying details for gift fund where open units = 0
           <StyledContainer className="giftFunds_container" key={index}>
             <div className="container_heading">

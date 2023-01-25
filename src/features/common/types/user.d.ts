@@ -2,7 +2,7 @@ import { PaymentFrequencies } from '../../../utils/constants/payoutConstants';
 
 // TO CHECK WITH JORGO - WHAT PARAMETERS ARE PRESENT, AND WHAT IS THEIR TYPE?
 
-export interface GiftFunds {
+export interface GiftFundsType {
   maxUnits: number;
   openUnits: number;
   project: string;
