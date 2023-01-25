@@ -188,13 +188,12 @@
   font-family: $primaryFontFamily;
 }
 
-
 .registeredTrees {
-  color: #3D67B1;
+  color: #3d67b1;
 }
 
-.donatedTrees{
-  color: rgb(104, 176, 48);
+.donatedTrees {
+  color: #68b030;
 }
 
 .MyTreesLegend {
@@ -203,13 +202,9 @@
   padding-bottom: 10px;
   div {
     display: flex;
-    p {
-      margin-left: 5px;
-      }
+    gap: 5px;
   }
 }
-
-
 
 @include mdTabletView {
   .myTreesSection {
