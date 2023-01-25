@@ -190,22 +190,26 @@
 
 
 .registeredTrees {
-  padding-bottom: 10px;
-  margin-left: 5px;
   color: #3D67B1;
 }
+
 .donatedTrees{
-  margin-left: 5px;
   color: rgb(104, 176, 48);
 }
+
 .MyTreesLegend {
   display: flex;
   gap: 14px;
   padding-bottom: 10px;
   div {
     display: flex;
+    p {
+      margin-left: 5px;
+      }
   }
 }
+
+
 
 @include mdTabletView {
   .myTreesSection {
