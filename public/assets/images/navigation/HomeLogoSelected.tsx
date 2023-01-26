@@ -1,6 +1,9 @@
 import React from 'react';
 
-function HomeLogoSelected(prop: any) {
+interface Prop {
+  color: string;
+}
+function HomeLogoSelected(prop: Prop) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -42,7 +42,7 @@ function GetNavBarIcon({
         ) : tenantName === 'salesforce' ? (
           <Globe color={themeProperties.light.primaryFontColor} />
         ) : (
-          <HomeLogo color={themeProperties.light.primaryFontColor} />
+          <HomeLogo />
         )}
       </button>
     );
@@ -64,7 +64,7 @@ function GetNavBarIcon({
             <DonateSelected color={themeProperties.primaryColor} />
           )
         ) : tenantName === 'planet' ? (
-          <HomeLogo color={themeProperties.light.primaryFontColor} />
+          <HomeLogo />
         ) : (
           <Donate color={themeProperties.light.primaryFontColor} />
         )}
