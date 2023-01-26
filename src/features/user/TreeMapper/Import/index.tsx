@@ -45,7 +45,7 @@ export default function ImportData({}: Props): ReactElement {
   const router = useRouter();
   const { t, ready } = useTranslation(['treemapper']);
   const { token } = React.useContext(UserPropsContext);
-  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
   function getSteps() {
     return [
