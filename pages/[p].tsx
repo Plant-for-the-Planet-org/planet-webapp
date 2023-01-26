@@ -67,7 +67,7 @@ export default function Donate({
         setCurrencyCode(currency);
         try {
           const { p } = router.query;
-          const project = await getRequest(encodeURI(`app/projects/${p}`), {
+          const project = await getRequest(encodeURI(`/app/projects/${p}`), {
             _scope: 'extended',
             currency: currency,
             locale: i18n.language,
