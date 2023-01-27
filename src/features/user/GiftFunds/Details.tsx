@@ -1,7 +1,7 @@
 import React, { useContext, ReactElement } from 'react';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { useTranslation } from 'next-i18next';
-import { styled } from '@mui/material';
+import { Divider, Grid, styled } from '@mui/material';
 import { GiftFundsType } from '../../common/types/user';
 
 interface Props {
@@ -12,27 +12,27 @@ const Details = ({ validGiftFunds }: Props): ReactElement | null => {
   const { user } = useContext(UserPropsContext);
   const { t, ready } = useTranslation('giftfunds');
 
-  const StyledContainer = styled('div')(({ theme }) => ({
+  const StyledContainer = styled('article')(({ theme }) => ({
     backgroundColor: theme.palette.background.default,
     padding: 24,
     borderRadius: 9,
     boxShadow: theme.shadows[1],
     marginBottom: 24,
+    fontSize: '0.875rem',
+    gap: 16,
     '& .container_heading': {
-      paddingBottom: 16,
+      fontWeight: theme.typography.fontWeightBold,
     },
     '& .container_details': {
-      display: 'flex',
-      marginTop: 24,
-      flexWrap: 'wrap',
       gap: 16,
-
-      div: {
-        flex: 1,
-      },
     },
-    hr: {
-      border: '1px solid #DDDBDA',
+  }));
+
+  const SingleDetail = styled('div')(({ theme }) => ({
+    flex: 1,
+    '& .detailTitle': {
+      fontWeight: theme.typography.fontWeightBold,
+      marginBottom: 9,
     },
   }));
 
@@ -41,26 +41,32 @@ const Details = ({ validGiftFunds }: Props): ReactElement | null => {
       <>
         {validGiftFunds?.map((gift: GiftFundsType, index: number) => (
           //Not displaying details for gift fund where open units = 0
-          <StyledContainer className="giftFunds_container" key={index}>
-            <div className="container_heading">
-              <b>
-                {user.planetCash?.country}/{user.planetCash?.currency}{' '}
-                {t('title')}
-              </b>
-            </div>
-            <hr />
-            <div className="container_details">
-              <div className="project">
-                <b>{t('project')}</b>
-                <p>{gift.project}</p>
-              </div>
+          <Grid
+            container
+            className="giftFunds_container"
+            key={index}
+            direction="column"
+            component={StyledContainer}
+          >
+            <Grid container item className="container_heading">
+              {user.planetCash?.country}/{user.planetCash?.currency}{' '}
+              {t('title')}
+            </Grid>
+            <Grid item component={Divider} />
+            <Grid container item className="container_details" direction="row">
+              <Grid item component={SingleDetail}>
+                <b className="detailTitle">{t('project')}</b>
+                <p className="detailInfo">{gift.project}</p>
+              </Grid>
 
-              <div className="unit">
-                <b>{t('units')}</b>
-                <p>{Number(gift.openUnits / 100).toFixed(2)}</p>
-              </div>
-            </div>
-          </StyledContainer>
+              <Grid item component={SingleDetail}>
+                <b className="detailTitle">{t('units')}</b>
+                <p className="detailInfo">
+                  {Number(gift.openUnits / 100).toFixed(2)}
+                </p>
+              </Grid>
+            </Grid>
+          </Grid>
         ))}
       </>
     );
