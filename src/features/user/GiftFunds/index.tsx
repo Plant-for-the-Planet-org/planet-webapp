@@ -26,6 +26,7 @@ const GiftFunds = () => {
   );
 
   React.useEffect(() => {
+    //Not displaying details for gift fund where open units = 0
     const nonZeroOpenUnitsGiftFunds = user.planetCash?.giftFunds.filter(
       (gift) => gift.openUnits !== 0
     );
@@ -47,7 +48,9 @@ const GiftFunds = () => {
         }
       >
         <SingleColumnView>
-          <Details validGiftFunds={validGiftFunds} />
+          {validGiftFunds?.map((gift: GiftFundsType, index: number) => (
+            <Details gift={gift} key={index} />
+          ))}
         </SingleColumnView>
       </DashboardView>
     )

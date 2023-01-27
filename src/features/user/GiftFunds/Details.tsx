@@ -5,10 +5,10 @@ import { Divider, Grid, styled } from '@mui/material';
 import { GiftFundsType } from '../../common/types/user';
 
 interface Props {
-  validGiftFunds: GiftFundsType[] | null;
+  gift: GiftFundsType | null;
 }
 
-const Details = ({ validGiftFunds }: Props): ReactElement | null => {
+const Details = ({ gift }: Props): ReactElement | null => {
   const { user } = useContext(UserPropsContext);
   const { t, ready } = useTranslation('giftfunds');
 
@@ -39,35 +39,30 @@ const Details = ({ validGiftFunds }: Props): ReactElement | null => {
   if (ready && user.planetCash) {
     return (
       <>
-        {validGiftFunds?.map((gift: GiftFundsType, index: number) => (
-          //Not displaying details for gift fund where open units = 0
-          <Grid
-            container
-            className="giftFunds_container"
-            key={index}
-            direction="column"
-            component={StyledContainer}
-          >
-            <Grid container item className="container_heading">
-              {user.planetCash?.country}/{user.planetCash?.currency}{' '}
-              {t('title')}
+        <Grid
+          container
+          className="giftFunds_container"
+          direction="column"
+          component={StyledContainer}
+        >
+          <Grid container item className="container_heading">
+            {user.planetCash?.country}/{user.planetCash?.currency} {t('title')}
+          </Grid>
+          <Grid item component={Divider} />
+          <Grid container item className="container_details" direction="row">
+            <Grid item component={SingleDetail}>
+              <b className="detailTitle">{t('project')}</b>
+              <p className="detailInfo">{gift.project}</p>
             </Grid>
-            <Grid item component={Divider} />
-            <Grid container item className="container_details" direction="row">
-              <Grid item component={SingleDetail}>
-                <b className="detailTitle">{t('project')}</b>
-                <p className="detailInfo">{gift.project}</p>
-              </Grid>
 
-              <Grid item component={SingleDetail}>
-                <b className="detailTitle">{t('units')}</b>
-                <p className="detailInfo">
-                  {Number(gift.openUnits / 100).toFixed(2)}
-                </p>
-              </Grid>
+            <Grid item component={SingleDetail}>
+              <b className="detailTitle">{t('units')}</b>
+              <p className="detailInfo">
+                {Number(gift.openUnits / 100).toFixed(2)}
+              </p>
             </Grid>
           </Grid>
-        ))}
+        </Grid>
       </>
     );
   }
