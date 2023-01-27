@@ -4,6 +4,7 @@ interface Prop {
   color: string;
 }
 function HomeLogoSelected(prop: Prop) {
+  console.log('testing');
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
