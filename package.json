@@ -21,7 +21,7 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "chromatic": "npx chromatic --exit-zero-on-changes",
-    "prepare": "husky install"
+    "prepare": "node ./husky-prepare.js"
   },
   "validate-branch-name": {
     "pattern": "^(main|develop){1}$|^(feature|hotfix)/[a-z0-9-_]+$",
