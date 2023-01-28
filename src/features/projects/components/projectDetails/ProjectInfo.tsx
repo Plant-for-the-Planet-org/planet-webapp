@@ -280,7 +280,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                 {ownerTypes.map((ownerType: any, index: any) => {
                   return (
                     <React.Fragment key={ownerType}>
-                      {t(`manageProjects:${ownerType}`)}
+                      {`${ownerType}`}
                       {index === ownerTypes.length - 2 ? (
                         <> {t('manageProjects:and')} </>
                       ) : index === ownerTypes.length - 1 ? (
