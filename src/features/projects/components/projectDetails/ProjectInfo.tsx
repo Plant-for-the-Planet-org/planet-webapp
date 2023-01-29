@@ -60,7 +60,6 @@ function ProjectInfo({ project }: Props): ReactElement {
       value: 'other',
     },
   ];
-
   const [ownerTypes, setOwnerTypes] = React.useState([]);
   React.useEffect(() => {
     if (ready && project.siteOwnerType && project.siteOwnerType.length > 0) {
@@ -75,7 +74,7 @@ function ProjectInfo({ project }: Props): ReactElement {
 
       setOwnerTypes(updatedSiteOwners);
     }
-  }, [ready]);
+  }, [ready, i18n.language]);
 
   React.useEffect(() => {
     if (
