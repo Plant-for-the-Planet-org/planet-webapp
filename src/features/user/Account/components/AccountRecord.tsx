@@ -36,10 +36,21 @@ export default function AccountRecord({
   isModal = false,
 }: Props): ReactElement {
   const { t } = useTranslation(['me']);
+  const [showCertificate, setShowCertificate] = React.useState<boolean>(false);
 
   const outerDivClasses = isModal
     ? styles.recordModal
     : `${styles.record} ${selectedRecord === index ? styles.selected : ''}`;
+
+  React.useEffect(() => {
+    if (
+      record?.details?.donorCertificate ||
+      record?.details?.taxDeductibleReceipt ||
+      record?.details?.giftCertificate
+    ) {
+      setShowCertificate(true);
+    }
+  }, [record]);
 
   return (
     <div className={outerDivClasses}>
@@ -80,17 +91,14 @@ export default function AccountRecord({
               <TransferDetails account={record.details.account} />
             )}
             {showStatusNote(record, t)}
-            {(record?.details?.donorCertificate ||
-              record?.details?.taxDeductibleReceipt ||
-              record?.details?.giftCertificate) &&
-              record?.purpose !== 'conservation' && (
-                <>
-                  <div className={styles.title}>{t('downloads')}</div>
-                  <div className={styles.detailGrid}>
-                    <Certificates recordDetails={record.details} />
-                  </div>
-                </>
-              )}
+            {showCertificate && record?.purpose !== 'conservation' && (
+              <>
+                <div className={styles.title}>{t('downloads')}</div>
+                <div className={styles.detailGrid}>
+                  <Certificates recordDetails={record.details} />
+                </div>
+              </>
+            )}
           </div>
         </>
       )}
