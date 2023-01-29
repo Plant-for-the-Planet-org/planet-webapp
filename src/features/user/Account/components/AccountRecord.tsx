@@ -82,14 +82,15 @@ export default function AccountRecord({
             {showStatusNote(record, t)}
             {(record?.details?.donorCertificate ||
               record?.details?.taxDeductibleReceipt ||
-              record?.details?.giftCertificate) && (
-              <>
-                <div className={styles.title}>{t('downloads')}</div>
-                <div className={styles.detailGrid}>
-                  <Certificates recordDetails={record.details} />
-                </div>
-              </>
-            )}
+              record?.details?.giftCertificate) &&
+              record.purpose !== 'conservation' && (
+                <>
+                  <div className={styles.title}>{t('downloads')}</div>
+                  <div className={styles.detailGrid}>
+                    <Certificates recordDetails={record.details} />
+                  </div>
+                </>
+              )}
           </div>
         </>
       )}
