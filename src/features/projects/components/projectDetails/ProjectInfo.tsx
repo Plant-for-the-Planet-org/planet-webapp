@@ -93,7 +93,7 @@ function ProjectInfo({ project }: Props): ReactElement {
 
       setOwnerTypes(updatedSiteOwners);
     }
-  }, [ready]);
+  }, [ready, i18n.language]);
 
   const expenseAmount = project.expenses.map((expense: any) => expense.amount);
   const calculatePercentage = (amount: any) => {
