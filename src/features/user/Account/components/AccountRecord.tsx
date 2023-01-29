@@ -83,7 +83,7 @@ export default function AccountRecord({
             {(record?.details?.donorCertificate ||
               record?.details?.taxDeductibleReceipt ||
               record?.details?.giftCertificate) &&
-              record.purpose !== 'conservation' && (
+              record?.purpose !== 'conservation' && (
                 <>
                   <div className={styles.title}>{t('downloads')}</div>
                   <div className={styles.detailGrid}>
