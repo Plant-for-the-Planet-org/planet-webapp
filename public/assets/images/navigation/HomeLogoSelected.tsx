@@ -4,13 +4,12 @@ interface Prop {
   color: string;
 }
 function HomeLogoSelected(prop: Prop) {
-  console.log('testing');
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="10 30 255.12 255.12"
-      width="30"
-      height="30"
+      viewBox="0 0 255.12 255.12"
+      width="24"
+      height="27"
     >
       <path
         fill={prop.color}
