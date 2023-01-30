@@ -49,6 +49,7 @@ function SingleProjectDetails({}: Props): ReactElement {
     selectedPl,
     setHoveredPl,
     setSelectedPl,
+    samplePlantLocation,
   } = useContext(ProjectPropsContext);
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
@@ -82,7 +83,11 @@ function SingleProjectDetails({}: Props): ReactElement {
   };
 
   const ProjectProps = {
-    plantLocation: hoveredPl ? hoveredPl : selectedPl,
+    plantLocation: hoveredPl
+      ? hoveredPl
+      : samplePlantLocation
+      ? samplePlantLocation
+      : selectedPl,
   };
 
   const goBack = () => {
