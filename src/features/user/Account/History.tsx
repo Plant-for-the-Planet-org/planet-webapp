@@ -141,7 +141,7 @@ export default function History({
               <div className={styles.filterGrid}>
                 {accountingFilters &&
                   Object.entries(accountingFilters).map((item) => {
-                    return (
+                    return item[0] !== 'in-progress' ? (
                       <div
                         key={item[0]}
                         className={`${styles.filterButton} ${
@@ -150,6 +150,16 @@ export default function History({
                         onClick={() => handleSetFilter(item[0])}
                       >
                         {t(item[0])}
+                      </div>
+                    ) : (
+                      <div
+                        key={item[0]}
+                        className={`${styles.filterButton} ${
+                          filter === item[0] ? styles.selected : ''
+                        }`}
+                        onClick={() => handleSetFilter(item[0])}
+                      >
+                        {t('me:pending')}
                       </div>
                     );
                   })}
