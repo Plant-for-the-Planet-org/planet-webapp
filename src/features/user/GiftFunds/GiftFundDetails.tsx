@@ -5,10 +5,10 @@ import { Divider, Grid, styled } from '@mui/material';
 import { GiftFundsType } from '../../common/types/user';
 
 interface Props {
-  gift: GiftFundsType | null;
+  giftFund: GiftFundsType;
 }
 
-const Details = ({ gift }: Props): ReactElement | null => {
+const GiftFundDetails = ({ giftFund }: Props): ReactElement | null => {
   const { user } = useContext(UserPropsContext);
   const { t, ready } = useTranslation('giftfunds');
 
@@ -52,13 +52,13 @@ const Details = ({ gift }: Props): ReactElement | null => {
           <Grid container item className="container_details" direction="row">
             <Grid item component={SingleDetail}>
               <b className="detailTitle">{t('project')}</b>
-              <p className="detailInfo">{gift.project}</p>
+              <p className="detailInfo">{giftFund.project}</p>
             </Grid>
 
             <Grid item component={SingleDetail}>
               <b className="detailTitle">{t('units')}</b>
               <p className="detailInfo">
-                {Number(gift.openUnits / 100).toFixed(2)}
+                {Number(giftFund.openUnits / 100).toFixed(2)}
               </p>
             </Grid>
           </Grid>
@@ -70,4 +70,4 @@ const Details = ({ gift }: Props): ReactElement | null => {
   return null;
 };
 
-export default Details;
+export default GiftFundDetails;

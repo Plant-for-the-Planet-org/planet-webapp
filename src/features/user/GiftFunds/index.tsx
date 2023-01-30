@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
 import DashboardView from '../../common/Layout/DashboardView';
-import Details from './Details';
+import GiftFundDetails from './GiftFundDetails';
 import { useTranslation } from 'next-i18next';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
@@ -48,8 +48,8 @@ const GiftFunds = () => {
         }
       >
         <SingleColumnView>
-          {validGiftFunds?.map((gift: GiftFundsType, index: number) => (
-            <Details gift={gift} key={index} />
+          {validGiftFunds?.map((giftFund, index) => (
+            <GiftFundDetails giftFund={giftFund} key={index} />
           ))}
         </SingleColumnView>
       </DashboardView>
