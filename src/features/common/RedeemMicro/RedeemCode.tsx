@@ -3,12 +3,10 @@ import { useForm } from 'react-hook-form';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import styles from '../../../../src/features/user/Profile/styles/RedeemModal.module.scss';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import MaterialTextField from '../InputTypes/MaterialTextField';
 import CircularProgress from '@mui/material/CircularProgress';
 import { RedeemedCodeData } from '../types/redeem';
-
-const { useTranslation } = i18next;
 
 export interface InputRedeemCode {
   setInputCode: React.Dispatch<React.SetStateAction<string | null>>;

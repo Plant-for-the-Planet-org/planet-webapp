@@ -15,7 +15,7 @@ const BootstrapInput = withStyles(() =>
       fontSize: 14,
       padding: '10px 26px 10px 12px',
       // Use the system font instead of the default Roboto font.
-      fontFamily: [config.font.primaryFontFamily].join(','),
+      fontFamily: [config?.font.primaryFontFamily].join(','),
       '&:focus': {
         backgroundColor: 'var(--background-color)',
         borderRadius: 9,

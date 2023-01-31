@@ -7,8 +7,7 @@ import tenantConfig from '../tenant.config';
 import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
 import { getRequest } from '../src/utils/apiRequests/api';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
-
-const config = tenantConfig();
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 interface Props {
   initialized: Boolean;
@@ -16,7 +15,7 @@ interface Props {
 
 export default function Home(initialized: Props) {
   const router = useRouter();
-
+  const config = tenantConfig();
   const [leaderboard, setLeaderboard] = React.useState(null);
   const [tenantScore, setTenantScore] = React.useState(null);
   const { handleError } = React.useContext(ErrorHandlingContext);
@@ -86,4 +85,36 @@ export default function Home(initialized: Props) {
       {initialized ? getHomePage() : <></>}
     </>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donationLink',
+          'editProfile',
+          'giftfunds',
+          'leaderboard',
+          'managePayouts',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTrees',
+          'tenants',
+          'treemapper',
+        ],
+        null,
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+      )),
+    },
+  };
 }

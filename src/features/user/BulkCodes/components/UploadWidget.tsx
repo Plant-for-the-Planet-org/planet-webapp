@@ -1,17 +1,12 @@
 import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useDropzone, ErrorCode } from 'react-dropzone';
-import i18next from '../../../../../i18n';
-
+import { useTranslation } from 'next-i18next';
 import FileUploadIcon from '../../../../../public/assets/images/icons/FileUploadIcon';
 import FileProcessingIcon from '../../../../../public/assets/images/icons/FileProcessingIcon';
 import FileAttachedIcon from '../../../../../public/assets/images/icons/FileAttachedIcon';
-
 import { FileImportError, UploadStates } from '../BulkCodesTypes';
-
 import styles from '../BulkCodes.module.scss';
 import handleFileUpload from '../../../../utils/handleFileUpload';
-
-const { useTranslation } = i18next;
 
 interface UploadWidgetInterface {
   status: UploadStates;

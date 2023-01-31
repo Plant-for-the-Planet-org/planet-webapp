@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import i18next from '../../../../i18n';
 import TrashIcon from '../../../../public/assets/images/icons/manageProjects/Trash';
 import {
   deleteAuthenticatedRequest,
@@ -12,14 +11,13 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import SpeciesSelect from './Import/components/SpeciesAutoComplete';
 import styles from './MySpecies.module.scss';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
 
 interface Props {}
 
 export default function MySpecies({}: Props): ReactElement {
-  const { t } = useTranslation('treemapper', 'me', 'common');
+  const { t } = useTranslation(['treemapper', 'me', 'common']);
   const { token, contextLoaded } = React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const [species, setSpecies] = React.useState<any[]>([]);
@@ -29,7 +27,7 @@ export default function MySpecies({}: Props): ReactElement {
     aliases: '',
   };
 
-  const { register, handleSubmit, errors, control, getValues } = useForm({
+  const { register, handleSubmit, errors, control } = useForm({
     mode: 'onBlur',
     defaultValues: defaultMySpeciesValue,
   });
@@ -40,10 +38,7 @@ export default function MySpecies({}: Props): ReactElement {
   };
 
   const deleteSpecies = async (id: number) => {
-    const result = await deleteAuthenticatedRequest(
-      `/treemapper/species/${id}`,
-      token
-    );
+    await deleteAuthenticatedRequest(`/treemapper/species/${id}`, token);
     fetchMySpecies();
   };
 

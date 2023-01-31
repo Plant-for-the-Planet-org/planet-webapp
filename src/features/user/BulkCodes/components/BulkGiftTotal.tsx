@@ -1,9 +1,7 @@
 import { TextField } from '@mui/material';
 import { ReactElement } from 'react';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
-
-const { useTranslation } = i18next;
 
 interface BulkGiftTotalProps {
   amount?: number;

@@ -1,11 +1,10 @@
 import { TextField } from '@mui/material';
 import { ReactElement, useState, FocusEvent } from 'react';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { SetState } from '../../../common/Layout/BulkCodeContext';
 import { BulkCodeLimits } from '../../../../utils/constants/bulkCodeConstants';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 
-const { useTranslation } = i18next;
 interface GenericCodesProps {
   codeQuantity: string;
   unitsPerCode: string;

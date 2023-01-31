@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
-import i18next from './../../../i18n';
+import { useTranslation } from 'next-i18next';
+import { GetStaticPaths } from 'next';
 import LandingSection from '../../../src/features/common/Layout/LandingSection';
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
@@ -10,8 +11,7 @@ import {
   RedeemCodeFailed,
 } from '../../../src/features/common/RedeemMicro/RedeemCode';
 import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
-
-const { useTranslation } = i18next;
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export type ClaimCode1 = string | null;
 
@@ -129,6 +129,45 @@ function ClaimDonation(): ReactElement {
   ) : (
     <></>
   );
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};
+
+export async function getStaticProps({ locale }: any) {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donationLink',
+          'editProfile',
+          'giftfunds',
+          'leaderboard',
+          'managePayouts',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTrees',
+          'tenants',
+          'treemapper',
+        ],
+        null,
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+      )),
+    },
+  };
 }
 
 export default ClaimDonation;

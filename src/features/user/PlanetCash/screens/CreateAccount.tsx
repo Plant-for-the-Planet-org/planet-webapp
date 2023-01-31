@@ -3,10 +3,8 @@ import CreateAccountForm from '../components/CreateAccountForm';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { CountryType } from '../../../common/types/country';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import AccountListLoader from '../../../../../public/assets/images/icons/AccountListLoader';
-
-const { useTranslation } = i18next;
 
 const initialAllowedCountries: CountryType[] = [
   { code: 'DE', currency: 'EUR' },

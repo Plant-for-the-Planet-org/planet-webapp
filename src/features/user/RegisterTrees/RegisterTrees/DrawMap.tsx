@@ -3,7 +3,7 @@ import ReactMapboxGl, { ZoomControl } from 'react-mapbox-gl';
 import DrawControl from 'react-mapbox-gl-draw';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import styles from '../RegisterModal.module.scss';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
 
 interface Props {
@@ -16,7 +16,6 @@ const Map = ReactMapboxGl({
     '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
 });
 
-const { useTranslation } = i18next;
 export default function MapComponent({
   setGeometry,
   userLocation,
@@ -30,12 +29,6 @@ export default function MapComponent({
     zoom: [defaultZoom],
   });
 
-  const [viewport2, setViewPort2] = React.useState({
-    height: 400,
-    width: 700,
-    center: defaultMapCenter,
-    zoom: [defaultZoom],
-  });
   const [style, setStyle] = React.useState({
     version: 8,
     sources: {},

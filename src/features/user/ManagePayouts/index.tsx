@@ -5,7 +5,7 @@ import {
   useContext,
   useCallback,
 } from 'react';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
@@ -21,8 +21,6 @@ import Overview from './screens/Overview';
 import EditBankAccount from './screens/EditBankAccount';
 import AddBankAccount from './screens/AddBankAccount';
 import { useRouter } from 'next/router';
-
-const { useTranslation } = i18next;
 
 export enum ManagePayoutTabs {
   OVERVIEW = 'overview',
@@ -41,7 +39,7 @@ export default function ManagePayouts({
   setProgress,
   isEdit,
 }: ManagePayoutsProps): ReactElement | null {
-  const { t, ready } = useTranslation('managePayouts');
+  const { t, ready, i18n } = useTranslation('managePayouts');
   const router = useRouter();
   const { handleError } = useContext(ErrorHandlingContext);
   const { token, contextLoaded, user } = useContext(UserPropsContext);
@@ -123,7 +121,7 @@ export default function ManagePayouts({
         },
       ]);
     }
-  }, [ready, user]);
+  }, [ready, user, i18n.language]);
 
   const renderStep = () => {
     switch (step) {

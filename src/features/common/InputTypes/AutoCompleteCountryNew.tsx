@@ -2,12 +2,10 @@
 import { useState, ReactElement, useEffect } from 'react';
 import { TextField } from '@mui/material';
 import React from 'react';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { MuiAutoComplete, StyledAutoCompleteOption } from './MuiAutoComplete';
 import { CountryType } from '../types/country';
 import { allCountries } from '../../../utils/constants/countries';
-
-const { useTranslation } = i18next;
 
 // ISO 3166-1 alpha-2
 // ⚠️ No support for IE 11

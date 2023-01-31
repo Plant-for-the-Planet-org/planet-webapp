@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import styles from '../StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import i18next from '../../../../../i18n';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import {
   deleteAuthenticatedRequest,
@@ -15,8 +14,7 @@ import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   handleNext: Function;
@@ -37,7 +35,7 @@ export default function ProjectMedia({
   projectGUID,
   handleReset,
 }: Props): ReactElement {
-  const { t, i18n, ready } = useTranslation(['manageProjects']);
+  const { t, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
@@ -124,7 +122,7 @@ export default function ProjectMedia({
     [uploadedImages]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
     multiple: true,
     maxSize: 10485760,

@@ -1,3 +1,4 @@
+import { useTranslation } from 'next-i18next';
 import React, {
   ReactElement,
   useEffect,
@@ -5,14 +6,11 @@ import React, {
   useContext,
   useState,
 } from 'react';
-import i18next from '../../../../i18n';
-
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
 import CreationMethodForm from './forms/CreationMethodForm';
 import SelectProjectForm from './forms/SelectProjectForm';
 import IssueCodesForm from './forms/IssueCodesForm';
-
 import { useBulkCode } from '../../common/Layout/BulkCodeContext';
 import { MapSingleProject } from '../../common/types/project';
 import { TENANT_ID } from '../../../utils/constants/environment';
@@ -31,12 +29,10 @@ interface BulkCodesProps {
   step: BulkCodeSteps;
 }
 
-const { useTranslation } = i18next;
-
 export default function BulkCodes({
   step,
 }: BulkCodesProps): ReactElement | null {
-  const { t, ready, i18n } = useTranslation(['bulkCodes']);
+  const { t, ready, i18n } = useTranslation('bulkCodes');
   const {
     planetCashAccount,
     setPlanetCashAccount,
@@ -71,7 +67,7 @@ export default function BulkCodes({
         },
       ]);
     }
-  }, [ready, bulkMethod, project]);
+  }, [ready, bulkMethod, project, i18n.language]);
 
   const fetchProjectList = useCallback(async () => {
     if (planetCashAccount && !projectList) {

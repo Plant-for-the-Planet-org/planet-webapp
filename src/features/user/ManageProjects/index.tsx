@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Tab, ThemeProvider } from '@mui/material';
+import { Tabs, Tab } from '@mui/material';
 import BasicDetails from './components/BasicDetails';
 import styles from './StepForm.module.scss';
 import ProjectMedia from './components/ProjectMedia';
@@ -13,31 +13,17 @@ import {
 } from '../../../utils/apiRequests/api';
 import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import materialTheme from '../../../theme/themeStyles';
-
-const { useTranslation } = i18next;
 
 export default function ManageProjects({ GUID, token, project }: any) {
-  const { t, i18n, ready } = useTranslation(['manageProjects']);
+  const { t, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const router = useRouter();
-  function getSteps() {
-    return [
-      ready ? t('manageProjects:basicDetails') : '',
-      ready ? t('manageProjects:projectMedia') : '',
-      ready ? t('manageProjects:detailedAnalysis') : '',
-      ready ? t('manageProjects:projectSites') : '',
-      ready ? t('manageProjects:projectSpending') : '',
-      ready ? t('manageProjects:review') : '',
-    ];
-  }
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [tabSelected, setTabSelected] = React.useState(0);
-  const steps = getSteps();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [projectGUID, setProjectGUID] = React.useState(GUID ? GUID : '');
   const [projectDetails, setProjectDetails] = React.useState(

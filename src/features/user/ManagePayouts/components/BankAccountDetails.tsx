@@ -1,10 +1,8 @@
 import { ReactElement } from 'react';
 import { styled, Grid, Button, Divider } from '@mui/material';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
-import i18next from '../../../../../i18n';
 import Link from 'next/link';
-
-const { useTranslation } = i18next;
+import { useTranslation } from 'next-i18next';
 
 // TODOO - See if something can be made common between accounts of Manage Accounts and Planet Cash
 const AccountDetailsGrid = styled('article')(({ theme }) => ({

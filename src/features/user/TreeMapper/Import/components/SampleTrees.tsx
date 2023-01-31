@@ -3,12 +3,10 @@ import styles from '../Import.module.scss';
 import { useDropzone } from 'react-dropzone';
 import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
-import i18next from '../../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { useForm, useFieldArray } from 'react-hook-form';
 import SampleTreeCard from './SampleTreeCard';
 import Papa from 'papaparse';
-
-const { useTranslation } = i18next;
 
 interface Props {
   handleNext: Function;
@@ -255,7 +253,7 @@ export default function SampleTrees({
           ? t('treemapper:addSampleTree')
           : t('treemapper:addAnotherSampleTree')}
       </div>
-      <div className={`${styles.formField}`}>
+      <div className={styles.formField}>
         <div className={styles.formFieldHalf}>
           <button onClick={handleSubmit(onSubmit)} className="primaryButton">
             {isUploadingData ? (
