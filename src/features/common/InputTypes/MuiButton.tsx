@@ -11,12 +11,6 @@ const MuiButton = styled(Button)(({ theme }) => {
     },
     '&.MuiButton-outlinedPrimary': {
       backgroundColor: theme.palette.background.default,
-      color: theme.palette.primary.main,
-      borderColor: theme.palette.primary.main,
-    },
-    '&.MuiButton-containedPrimary': {
-      color: theme.palette.background.default,
-      background: theme.palette.primary.main,
     },
   };
 });
