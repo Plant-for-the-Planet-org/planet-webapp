@@ -360,6 +360,10 @@ function UserLayout(props: any): ReactElement {
           path: '/profile/edit',
         },
         {
+          title: t('me:switchUser'),
+          path: '/profile/switch-user',
+        },
+        {
           title: t('me:apiKey'),
           path: '/profile/api-key',
         },
