@@ -9,11 +9,8 @@ export const SwitchUserContainer = styled('div')(({ theme }) => ({
 
   '& .MuiTextField-root': {
     marginTop: 20,
-    width: 313,
-  },
-
-  '& .css-1u3bzj6-MuiFormControl-root-MuiTextField-root': {
     marginLeft: 20,
+    width: 313,
   },
 
   '& .switchButton': {
@@ -22,8 +19,6 @@ export const SwitchUserContainer = styled('div')(({ theme }) => ({
     marginBottom: 20,
     marginLeft: 20,
     marginTop: 20,
-  },
-  '& .css-136rk25-MuiButtonBase-root-MuiButton-root': {
     textTransform: 'capitalize',
     color: '#fff',
     fontFamily:
