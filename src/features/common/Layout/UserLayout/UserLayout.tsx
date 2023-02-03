@@ -93,7 +93,6 @@ function NavLink({
   user,
 }: any) {
   const [isSubMenuActive, setisSubMenuActive] = React.useState(false);
-
   React.useEffect(() => {
     // Check if array of submenu has activeSubLink
     if (link.subMenu && link.subMenu.length > 0) {
@@ -362,6 +361,7 @@ function UserLayout(props: any): ReactElement {
         {
           title: t('me:switchUser'),
           path: '/profile/switch-user',
+          hideItem: user?.allowedToSwitch === undefined,
         },
         {
           title: t('me:apiKey'),
