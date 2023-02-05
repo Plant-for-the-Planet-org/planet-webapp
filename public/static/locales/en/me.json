@@ -251,5 +251,8 @@
   "switchUser": "Switch User",
   "switchUserMessage": "Enter the email of the user you want to switch to in the field below.",
   "profileEmail": "Profile Email",
-  "switch": "Switch"
-}
+  "switch": "Switch",
+  "targetUser": "You are currently impersonating",
+  "exitImpersonation": "Exit impersonation",
+  "enterTheEmail": "Enter the email of the target user"
+  }

@@ -11,6 +11,43 @@
     .css-mhc70k-MuiGrid-root{
         margin-top: 11px;
     }
+    .fieldContainer {
+        margin-top: 11px;
+    }
+}
+
+.impersonationAlertContainer {
+    background-color: rgb(255, 0, 0);
+    margin-top: 142px;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    font-weight: bold;
+    > div {
+        button {
+         cursor: pointer;
+        }
+    };
+    .logoutContainer {
+        margin-left: 2rem;
+    }
+    
+    .exit {
+        margin-left: 7px;
+    }
+}
+
+.emailErrors {
+    font-family: $primaryFontFamily;
+    font-size: $fontSmall;
+    color: $dangerColor;
+    margin-left: 21px;
+    margin-top: 6px;
+    max-width: 208px;
+    text-align: center;
 }
 
  
