@@ -119,7 +119,6 @@ export default function PlanetCash({
     }
   };
   useEffect(() => {
-    i18n.changeLanguage(localStorage.getItem('language') as any);
     if (ready && accounts) {
       if (!accounts.length) {
         setTabConfig([

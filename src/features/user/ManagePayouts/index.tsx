@@ -40,7 +40,7 @@ export default function ManagePayouts({
   setProgress,
   isEdit,
 }: ManagePayoutsProps): ReactElement | null {
-  const { t, ready } = useTranslation('managePayouts');
+  const { t, ready, i18n } = useTranslation('managePayouts');
   const router = useRouter();
   const { setErrors } = useContext(ErrorHandlingContext);
   const { token, contextLoaded, user } = useContext(UserPropsContext);
@@ -115,7 +115,7 @@ export default function ManagePayouts({
         },
       ]);
     }
-  }, [ready, user]);
+  }, [ready, user, i18n.language]);
 
   const renderStep = () => {
     switch (step) {

@@ -246,7 +246,7 @@ export default function SampleTrees({
           ? t('treemapper:addSampleTree')
           : t('treemapper:addAnotherSampleTree')}
       </div>
-      <div className={`${styles.formField}`}>
+      <div className={styles.formField}>
         <div className={styles.formFieldHalf}>
           <button onClick={handleSubmit(onSubmit)} className="primaryButton">
             {isUploadingData ? (

@@ -31,6 +31,7 @@ export default function Project({
     setRasterData,
     isMobile,
     setSiteViewPort,
+    samplePlantLocation,
   } = React.useContext(ProjectPropsContext);
 
   const { setErrors } = React.useContext(ErrorHandlingContext);
@@ -67,13 +68,15 @@ export default function Project({
   }
 
   React.useEffect(() => {
-    if (plantLocations && selectedPl) {
-      setPlantPolygonCoordinates(selectedPl?.geometry.coordinates[0]);
+    if (!selectedPl?.parent) {
+      if (plantLocations && selectedPl) {
+        setPlantPolygonCoordinates(selectedPl?.geometry.coordinates[0]);
+      }
     }
-  }, [router, selectedPl, plantLocations]);
+  }, [selectedPl]);
 
   React.useEffect(() => {
-    if (selectedPl && plantPolygonCoordinates) {
+    if (selectedPl && plantPolygonCoordinates && !selectedPl?.parent) {
       router.push(`/${project.slug}?ploc=${selectedPl?.hid}`);
     }
   }, [selectedPl, plantPolygonCoordinates]);
@@ -93,6 +96,7 @@ export default function Project({
         4000
       );
     } else if (
+      !selectedPl?.parent &&
       plantPolygonCoordinates &&
       plantLocations &&
       router.query.ploc &&

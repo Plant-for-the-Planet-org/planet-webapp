@@ -44,6 +44,9 @@ const dialogSx: SxProps = {
       color: '#fff',
     },
   },
+  '.MuiDialogActions-root': {
+    paddingBottom: '12px',
+  },
 };
 
 export const EditModal = ({
