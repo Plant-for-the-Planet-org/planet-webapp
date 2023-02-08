@@ -19,6 +19,7 @@ import styles from './UserLayout.module.scss';
 import TreeMappperIcon from '../../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
 import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/RegisterIcon';
 import NotionLinkIcon from '../../../../../public/assets/images/icons/Sidebar/NotionLinkIcon';
+import { ParamsContext } from '../QueryParamsContext';
 
 function LanguageSwitcher() {
   const { i18n, ready } = useTranslation(['common']);
@@ -188,6 +189,7 @@ function UserLayout(props: any): ReactElement {
   const { t } = useTranslation(['common', 'me']);
   // const { asPath } = useRouter();
   const router = useRouter();
+  const { email } = React.useContext(ParamsContext);
   const { user, logoutUser, contextLoaded } =
     React.useContext(UserPropsContext);
 
@@ -434,7 +436,9 @@ function UserLayout(props: any): ReactElement {
         <MenuIcon />
       </div>
       <div
-        className={`${styles.sidebar} ${!isMenuOpen ? styles.menuClosed : ''}`}
+        className={`${
+          email ? `${styles.sidebarModified}` : `${styles.sidebar}`
+        } ${!isMenuOpen ? styles.menuClosed : ''}`}
       >
         <div className={styles.navLinksContainer}>
           <>
@@ -489,7 +493,12 @@ function UserLayout(props: any): ReactElement {
           </div>
         </div>
       </div>
-      <div className={styles.profilePageWrapper}>{props.children}</div>
+      <div
+        className={styles.profilePageWrapper}
+        style={{ marginTop: email ? '75px' : '' }}
+      >
+        {props.children}
+      </div>
     </div>
   ) : (
     <UserProfileLoader />

@@ -13,6 +13,8 @@ export interface ParamsContextType {
   language: QueryParamType;
   showProjectDetails: QueryParamType;
   showProjectList: QueryParamType;
+  email: QueryParamType;
+  targetEmail: QueryParamType;
 }
 export const ParamsContext = createContext<ParamsContextType>({
   embed: undefined,
@@ -21,6 +23,8 @@ export const ParamsContext = createContext<ParamsContextType>({
   language: undefined,
   showProjectDetails: undefined,
   showProjectList: undefined,
+  email: '',
+  targetEmail: '',
 });
 
 const QueryParamsProvider: FC = ({ children }) => {
@@ -41,6 +45,8 @@ const QueryParamsProvider: FC = ({ children }) => {
     useState<QueryParamType>(undefined);
   const router = useRouter();
   const { query } = router;
+  const [email, setEmail] = useState('');
+  const [targetEmail, setTargetEmail] = useState('');
 
   useEffect(() => {
     if (query.embed) setEmbed(query.embed);
@@ -94,9 +100,20 @@ const QueryParamsProvider: FC = ({ children }) => {
     }
   }, [language, i18n.isInitialized]);
 
+  const fetchEmail = () => {
+    const emailFromLocal = localStorage.getItem('targetEmail');
+    if (emailFromLocal) setEmail(emailFromLocal);
+  };
+  useEffect(() => {
+    fetchEmail();
+  }, [targetEmail]);
   return (
     <ParamsContext.Provider
       value={{
+        email,
+        setEmail,
+        targetEmail,
+        setTargetEmail,
         embed,
         showBackIcon,
         callbackUrl,

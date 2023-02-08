@@ -68,7 +68,7 @@ const handleApiError = (
 };
 
 //  API call to private /profile endpoint
-export async function getAccountInfo(token: any): Promise<any> {
+export async function getAccountInfo(token: any, email:string): Promise<any> {
   const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
     method: 'GET',
     headers: {
@@ -80,6 +80,7 @@ export async function getAccountInfo(token: any): Promise<any> {
           ? localStorage.getItem('language')
           : 'en'
       }`,
+      "x-switch-user": `${email ? email : ""}`
     },
   });
   return response;
@@ -211,31 +212,6 @@ export async function postAuthenticatedRequest<T>(
   }
 }
 
-export async function postRequest(
-  url: any,
-  data: any,
-  errorHandler?: Function,
-  redirect?: string
-): Promise<any> {
-  const res = await fetch(process.env.API_ENDPOINT + url, {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json',
-      'tenant-key': `${TENANT_ID}`,
-      'X-SESSION-ID': await getsessionId(),
-      'x-locale': `${
-        localStorage.getItem('language')
-          ? localStorage.getItem('language')
-          : 'en'
-      }`,
-    },
-  });
-  const result = await res.json();
-  handleApiError(res.status, result, errorHandler, redirect);
-  return result;
-}
-
 export async function deleteAuthenticatedRequest(
   url: any,
   token: any,
@@ -307,6 +283,31 @@ export async function putAuthenticatedRequest<T>(
     console.error('Error 401: You are not Authorized!');
   }
 }
+export async function postRequest(
+  url: any,
+  data: any,
+  errorHandler?: Function,
+  redirect?: string
+): Promise<any> {
+  const res = await fetch(process.env.API_ENDPOINT + url, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+      'tenant-key': `${TENANT_ID}`,
+      'X-SESSION-ID': await getsessionId(),
+      'x-locale': `${
+        localStorage.getItem('language')
+          ? localStorage.getItem('language')
+          : 'en'
+      }`,
+    },
+  });
+  const result = await res.json();
+  handleApiError(res.status, result, errorHandler, redirect);
+  return result;
+}
+
 
 export async function putRequest(
   url: any,

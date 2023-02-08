@@ -1,8 +1,9 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { useRouter } from 'next/router';
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useContext } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
 import { User } from '../types/user';
+import { ParamsContext } from './QueryParamsContext';
 
 interface Props {}
 
@@ -29,7 +30,7 @@ function UserPropsProvider({ children }: any): ReactElement {
     user,
     error,
   } = useAuth0();
-
+  const { email, targetEmail } = useContext(ParamsContext);
   const router = useRouter();
   const [contextLoaded, setContextLoaded] = React.useState(false);
   const [token, setToken] = React.useState(null);
@@ -54,7 +55,7 @@ function UserPropsProvider({ children }: any): ReactElement {
   async function loadUser() {
     setContextLoaded(false);
     try {
-      const res = await getAccountInfo(token);
+      const res = await getAccountInfo(token, email ? email : '');
       if (res.status === 200) {
         const resJson = await res.json();
         setUser(resJson);
@@ -83,7 +84,11 @@ function UserPropsProvider({ children }: any): ReactElement {
 
   React.useEffect(() => {
     if (token) loadUser();
-  }, [token]);
+  }, [token, email]);
+
+  React.useEffect(() => {
+    if (email) loadUser();
+  }, [email, targetEmail]);
 
   return (
     <UserPropsContext.Provider

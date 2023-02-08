@@ -1,20 +1,22 @@
 import { useTranslation } from 'next-i18next';
-import { useState } from 'react';
 import styles from './SwitchUser.module.scss';
 import { SwitchUserContainer } from '../../common/Layout/SwitchUserContainer';
 import { TextField, Button } from '@mui/material';
 import { useForm } from 'react-hook-form';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import { useContext } from 'react';
 
 const SwitchUser = () => {
   const { t } = useTranslation('me');
-  const [targetEmail, setTargetEmail] = useState('');
 
   const { register, errors, handleSubmit } = useForm({
     mode: 'onSubmit',
   });
+  const { targetEmail, setTargetEmail } = useContext(ParamsContext);
 
   const handle = () => {
     if (targetEmail) {
+      localStorage.setItem('targetEmail', targetEmail);
       setTargetEmail('');
     }
   };

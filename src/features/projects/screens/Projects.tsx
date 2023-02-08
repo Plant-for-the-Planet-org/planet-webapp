@@ -31,7 +31,7 @@ function ProjectsList({
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 767;
-  const { embed, showProjectList } = React.useContext(ParamsContext);
+  const { embed, showProjectList, email } = React.useContext(ParamsContext);
   const isEmbed = embed === 'true';
   const [scrollY, setScrollY] = React.useState(0);
   const [hideSidebar, setHideSidebar] = React.useState(isEmbed);
@@ -189,6 +189,7 @@ function ProjectsList({
                   ? 'mobile-hidden'
                   : ''
               }`}
+              style={{ marginTop: email ? '65px' : '' }}
             >
               <div className={`header ${isMobile ? 'header--mobile' : ''}`}>
                 {isMobile && (!hideSidebar || showProjectList === 'true') && (
