@@ -215,7 +215,6 @@
   justify-content: flex-start;
   align-items: flex-start;
   // box-shadow: 1px 2px 8px -6px #707070;
-  background-color: $light;
   border-radius: 10px;
   padding: 20px;
   gap: 20px;
@@ -281,7 +280,7 @@
   transition-timing-function: ease-in;
   padding: 8px 12px;
   border-radius: 100px;
-  margin: 25px 0px 10px 0px;
+  margin: 25px 0px 10px;
   white-space: nowrap;
   font-family: $primaryFontFamily;
   cursor: pointer;
@@ -299,7 +298,7 @@
     transition-timing-function: ease-in;
     padding: 8px 12px;
     border-radius: 100px;
-    margin: 0px 0px 10px 0px;
+    margin: 0px 0px 10px;
     white-space: nowrap;
     font-family: $primaryFontFamily;
     cursor: pointer;
