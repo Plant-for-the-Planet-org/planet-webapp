@@ -6,6 +6,20 @@ import AccountRecord from './components/AccountRecord';
 import styles from './AccountHistory.module.scss';
 import { useRouter } from 'next/router';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
+import { postAuthenticatedRequest } from '../../../utils/apiRequests/api';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { Alert, styled, Snackbar } from '@mui/material';
+import themeProperties from '../../../theme/themeProperties';
+
+const MuiAlert = styled(Alert)({
+  '&.MuiAlert-filledSuccess': {
+    backgroundColor: themeProperties.primaryColor,
+  },
+  '.MuiAlert-message': {
+    color: 'white !important',
+  },
+});
 
 interface Props {
   filter: string | null;
@@ -30,7 +44,10 @@ export default function History({
   );
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const { isMobile } = useContext(ProjectPropsContext);
+  const { token } = useContext(UserPropsContext);
+  const { handleError, setError } = useContext(ErrorHandlingContext);
   const router = useRouter();
+  const [open, setOpen] = React.useState(false);
 
   const handleRecordToggle = (index: number | undefined) => {
     if (selectedRecord === index || index === undefined) {
@@ -60,6 +77,44 @@ export default function History({
     }
   }, [paymentHistory]);
 
+  const handleIssueReceipts = async () => {
+    try {
+      const res = await postAuthenticatedRequest(
+        '/app/taxReceipts',
+        {
+          year: new Date().getFullYear(),
+        },
+        token,
+        handleError
+      );
+      if (res && res.length === 0) {
+        setError({
+          type: 'error',
+          message: t('me:taxReceiptsAlreadyGenerated'),
+        });
+      } else {
+        await fetchPaymentHistory();
+        // setTimeout(async () => {
+
+        //   setOpen(true);
+        // }, 5000);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   const adSpaceLanguage = i18n.language === 'de' ? 'de' : 'en';
 
   return (
@@ -68,20 +123,26 @@ export default function History({
       <div className={'profilePageSubTitle'}>{t('me:donationsSubTitle')}</div>
       <div className={styles.pageContainer}>
         <div className={styles.filterRow}>
-          {accountingFilters &&
-            Object.entries(accountingFilters).map((item) => {
-              return (
-                <div
-                  key={item[0]}
-                  className={`${styles.filterButton} ${
-                    filter === item[0] ? styles.selected : ''
-                  }`}
-                  onClick={() => handleSetFilter(item[0])}
-                >
-                  {t(item[0])}
-                </div>
-              );
-            })}
+          {accountingFilters && (
+            <>
+              {Object.entries(accountingFilters).map((item) => {
+                return (
+                  <div
+                    key={item[0]}
+                    className={`${styles.filterButton} ${
+                      filter === item[0] ? styles.selected : ''
+                    }`}
+                    onClick={() => handleSetFilter(item[0])}
+                  >
+                    {t(item[0])}
+                  </div>
+                );
+              })}
+            </>
+          )}
+        </div>
+        <div className={`${styles.issueButton}`} onClick={handleIssueReceipts}>
+          {t('me:issueReceipts')}
         </div>
         <iframe
           src={`https://www5.plant-for-the-planet.org/membership-cta/${adSpaceLanguage}/`}
@@ -139,21 +200,30 @@ export default function History({
             <div className={styles.filterContainer}>
               <p className={styles.header}>{t('me:filters')}</p>
               <div className={styles.filterGrid}>
-                {accountingFilters &&
-                  Object.entries(accountingFilters).map((item) => {
-                    return (
-                      <div
-                        key={item[0]}
-                        className={`${styles.filterButton} ${
-                          filter === item[0] ? styles.selected : ''
-                        }`}
-                        onClick={() => handleSetFilter(item[0])}
-                      >
-                        {t(item[0])}
-                      </div>
-                    );
-                  })}
+                {accountingFilters && (
+                  <>
+                    {Object.entries(accountingFilters).map((item) => {
+                      return (
+                        <div
+                          key={item[0]}
+                          className={`${styles.filterButton} ${
+                            filter === item[0] ? styles.selected : ''
+                          }`}
+                          onClick={() => handleSetFilter(item[0])}
+                        >
+                          {t(item[0])}
+                        </div>
+                      );
+                    })}
+                  </>
+                )}
               </div>
+            </div>
+            <div
+              className={`${styles.issueButton}`}
+              onClick={handleIssueReceipts}
+            >
+              {t('me:issueReceipts')}
             </div>
             <iframe
               src={`https://www5.plant-for-the-planet.org/membership-cta/${adSpaceLanguage}/`}
@@ -172,6 +242,22 @@ export default function History({
               record={paymentHistory.items[selectedRecord]}
             />
           )}
+
+        <Snackbar
+          open={open}
+          autoHideDuration={5000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <MuiAlert
+            onClose={handleClose}
+            severity="success"
+            variant="filled"
+            sx={{ width: '100%' }}
+          >
+            {t('me:taxReceiptsSuccess')}
+          </MuiAlert>
+        </Snackbar>
       </div>
     </div>
   );
