@@ -290,6 +290,10 @@ function UserLayout(props: any): ReactElement {
           path: '/profile/treemapper/import',
           hideItem: !(user?.type === 'tpo'),
         },
+        {
+          title: t('treemapperAnalytics:title'),
+          path: '/profile/treemapper/analytics',
+        },
       ],
     },
     {
