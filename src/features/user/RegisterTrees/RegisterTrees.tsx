@@ -162,6 +162,7 @@ export default function RegisterTrees({}: Props) {
           geometry: geometry,
         };
         postAuthenticatedRequest(
+          email,
           `/app/contributions`,
           submitData,
           token,

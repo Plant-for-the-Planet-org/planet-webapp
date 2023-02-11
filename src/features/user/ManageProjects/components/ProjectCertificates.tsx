@@ -140,6 +140,7 @@ function ProjectCertificates({
     };
 
     postAuthenticatedRequest(
+      email,
       `/app/projects/${projectGUID}/certificates`,
       submitData,
       token,

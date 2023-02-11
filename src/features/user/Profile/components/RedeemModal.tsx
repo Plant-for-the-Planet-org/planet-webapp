@@ -10,6 +10,7 @@ import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 interface RedeemModal {
   redeemModalOpen: boolean;
@@ -32,6 +33,7 @@ export default function RedeemModal({
   ]);
   const { user, contextLoaded, token, setUser } =
     React.useContext(UserPropsContext);
+  const { email } = React.useContext(ParamsContext);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [validCodeData, setValidCodeData] = React.useState<{} | undefined>();
@@ -54,25 +56,27 @@ export default function RedeemModal({
       code: data.code,
     };
     if (contextLoaded && user) {
-      postAuthenticatedRequest(`/app/redeem`, submitData, token).then((res) => {
-        if (res.error_code === 'already_redeemed') {
-          setErrorMessage(t('redeem:alreadyRedeemed'));
-          setIsUploadingData(false);
-        } else if (res.error_code === 'invalid_code') {
-          setErrorMessage(t('redeem:invalidCode'));
-          setIsUploadingData(false);
-        } else if (res.status === 'redeemed') {
-          setIsCodeRedeemed(true);
-          setValidCodeData(res);
-          if (res.units > 0) {
-            const cloneUser = { ...user };
-            cloneUser.score.received = cloneUser.score.received + res.units;
-            setUser(cloneUser);
-          }
+      postAuthenticatedRequest(email, `/app/redeem`, submitData, token).then(
+        (res) => {
+          if (res.error_code === 'already_redeemed') {
+            setErrorMessage(t('redeem:alreadyRedeemed'));
+            setIsUploadingData(false);
+          } else if (res.error_code === 'invalid_code') {
+            setErrorMessage(t('redeem:invalidCode'));
+            setIsUploadingData(false);
+          } else if (res.status === 'redeemed') {
+            setIsCodeRedeemed(true);
+            setValidCodeData(res);
+            if (res.units > 0) {
+              const cloneUser = { ...user };
+              cloneUser.score.received = cloneUser.score.received + res.units;
+              setUser(cloneUser);
+            }
 
-          setIsUploadingData(false);
+            setIsUploadingData(false);
+          }
         }
-      });
+      );
     }
   }
 

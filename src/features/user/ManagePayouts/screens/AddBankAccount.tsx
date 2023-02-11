@@ -10,12 +10,14 @@ import CustomSnackbar from '../../../common/CustomSnackbar';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 const AddBankAccount = (): ReactElement | null => {
   const { t } = useTranslation('managePayouts');
   const { payoutMinAmounts, setAccounts, accounts } = usePayouts();
   const { token } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
+  const { email } = useContext(ParamsContext);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
   const router = useRouter();
@@ -33,6 +35,7 @@ const AddBankAccount = (): ReactElement | null => {
         data.currency === PayoutCurrency.DEFAULT ? '' : data.payoutMinAmount,
     };
     const res = await postAuthenticatedRequest<Payouts.BankAccount>(
+      email,
       '/app/accounts',
       accountData,
       token,

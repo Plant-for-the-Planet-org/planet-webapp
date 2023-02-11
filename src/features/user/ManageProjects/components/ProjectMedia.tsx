@@ -70,6 +70,7 @@ export default function ProjectMedia({
       isDefault: false,
     };
     postAuthenticatedRequest(
+      email,
       `/app/projects/${projectGUID}/images`,
       submitData,
       token,

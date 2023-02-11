@@ -20,6 +20,7 @@ import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedC
 import { Recipient as LocalRecipient } from '../BulkCodesTypes';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 interface IssueCodesFormProps {}
 
@@ -37,6 +38,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
   const { user } = useContext(UserPropsContext);
   const { getAccessTokenSilently } = useAuth0();
   const { handleError } = useContext(ErrorHandlingContext);
+  const { email } = useContext(ParamsContext);
   const [localRecipients, setLocalRecipients] = useState<LocalRecipient[]>([]);
   const [comment, setComment] = useState('');
   const [occasion, setOccasion] = useState('');
@@ -114,6 +116,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
 
       const cleanedData = cleanObject(donationData);
       const res = await postAuthenticatedRequest(
+        email,
         `/app/donations`,
         cleanedData,
         token,

@@ -14,12 +14,12 @@ import {
 import { ClaimCode1 } from '../../claim/[type]/[code]';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
-
+import { ParamsContext } from '../../../src/features/common/Layout/QueryParamsContext';
 const ReedemCode: FC = () => {
   const { t, ready } = useTranslation(['redeem']);
   const { user, contextLoaded, token } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
-
+  const { email } = useContext(ParamsContext);
   const [code, setCode] = useState<string | string[] | null>('');
   const [inputCode, setInputCode] = useState<ClaimCode1>('');
   const [errorMessage, setErrorMessage] = useState<ClaimCode1>('');
@@ -67,6 +67,7 @@ const ReedemCode: FC = () => {
 
     if (contextLoaded && user) {
       postAuthenticatedRequest(
+        email,
         `/app/redeem`,
         submitData,
         token,

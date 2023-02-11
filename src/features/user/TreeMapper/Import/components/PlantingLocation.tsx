@@ -207,6 +207,7 @@ export default function PlantingLocation({
       };
 
       postAuthenticatedRequest(
+        email,
         `/treemapper/plantLocations`,
         submitData,
         token

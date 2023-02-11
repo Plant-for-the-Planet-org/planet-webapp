@@ -58,6 +58,7 @@ export default function MySpecies({}: Props): ReactElement {
       scientificSpecies: species.scientificSpecies.id,
     };
     const result = await postAuthenticatedRequest(
+      email,
       `/treemapper/species`,
       data,
       token,

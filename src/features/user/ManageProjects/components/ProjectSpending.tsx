@@ -124,6 +124,7 @@ export default function ProjectSpending({
     };
 
     postAuthenticatedRequest(
+      email,
       `/app/projects/${projectGUID}/expenses`,
       submitData,
       token,

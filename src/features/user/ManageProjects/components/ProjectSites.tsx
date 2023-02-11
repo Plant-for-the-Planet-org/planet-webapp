@@ -163,6 +163,7 @@ export default function ProjectSites({
 
       if (!data.name) return;
       postAuthenticatedRequest(
+        email,
         `/app/projects/${projectGUID}/sites`,
         submitData,
         token,

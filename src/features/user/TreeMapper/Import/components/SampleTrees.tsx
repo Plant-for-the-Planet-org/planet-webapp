@@ -7,6 +7,7 @@ import { useTranslation } from 'next-i18next';
 import { useForm, useFieldArray } from 'react-hook-form';
 import SampleTreeCard from './SampleTreeCard';
 import Papa from 'papaparse';
+import { ParamsContext } from '../../../../common/Layout/QueryParamsContext';
 
 interface Props {
   handleNext: Function;
@@ -26,6 +27,7 @@ export default function SampleTrees({
   userLang,
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['treemapper', 'common']);
+  const { email } = React.useContext(ParamsContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [uploadIndex, setUploadIndex] = React.useState(0);
   const [uploadStatus, setUploadStatus] = React.useState<string[]>([]);
@@ -87,6 +89,7 @@ export default function SampleTrees({
     newStatus[index] = 'uploading';
     setUploadStatus(newStatus);
     const res = await postAuthenticatedRequest(
+      email,
       `/treemapper/plantLocations`,
       sampleTree,
       token

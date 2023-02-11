@@ -162,6 +162,7 @@ export async function getAuthenticatedRequest<T>(
 }
 
 export async function postAuthenticatedRequest<T>(
+  email?: string,
   url: any,
   data: any,
   token: any,
@@ -184,6 +185,7 @@ export async function postAuthenticatedRequest<T>(
               : 'en'
           }`,
           ...(headers ? headers : {}),
+          "x-switch-user": `${email ? email : ""}`
         },
       });
       const result = await res.json();

@@ -11,6 +11,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { CountryType } from '../../../common/types/country';
 import { useRouter } from 'next/router';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 interface Props {
   isPlanetCashActive: boolean;
@@ -28,6 +29,7 @@ const CreateAccountForm = ({
   const [isAccountCreated, setIsAccountCreated] = useState(false);
   const { token } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
+  const { email } = useContext(ParamsContext);
   const router = useRouter();
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -35,6 +37,7 @@ const CreateAccountForm = ({
     const data = { country: country, activate: !isPlanetCashActive };
     setIsProcessing(true);
     const res = await postAuthenticatedRequest(
+      email,
       '/app/planetCash',
       data,
       token,
