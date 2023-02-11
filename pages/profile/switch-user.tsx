@@ -3,10 +3,9 @@ import { useTranslation } from 'next-i18next';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import SwitchUser from '../../src/features/user/Settings/SwitchUser';
-
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import { useContext } from 'react';
-import Custom404 from '../404';
+import AccessDeniedLoader from '../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 
 const SwitchUserPage = () => {
   const { user } = useContext(UserPropsContext);
@@ -17,11 +16,7 @@ const SwitchUserPage = () => {
       <Head>
         <title>{t('me:switchUser')}</title>
       </Head>
-      {user?.allowedToSwitch ? (
-        <SwitchUser />
-      ) : (
-        <Custom404 initialized={i18n.isInitialized} />
-      )}
+      {user?.allowedToSwitch ? <SwitchUser /> : <AccessDeniedLoader />}
     </UserLayout>
   );
 };

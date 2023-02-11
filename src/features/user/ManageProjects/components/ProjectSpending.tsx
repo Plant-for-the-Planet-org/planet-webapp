@@ -20,6 +20,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { SxProps } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 const yearDialogSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
@@ -70,6 +71,7 @@ export default function ProjectSpending({
 
   const [showForm, setShowForm] = React.useState(true);
   const [uploadedFiles, setUploadedFiles] = React.useState([]);
+  const { email } = React.useContext(ParamsContext);
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {
       handleReset(ready ? t('manageProjects:resetMessage') : '');
@@ -175,6 +177,7 @@ export default function ProjectSpending({
     // Fetch spending of the project
     if (projectGUID && token)
       getAuthenticatedRequest(
+        email,
         `/app/profile/projects/${projectGUID}?_scope=expenses`,
         token,
         {},

@@ -13,6 +13,7 @@ import styles from './MySpecies.module.scss';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 interface Props {}
 
@@ -20,6 +21,7 @@ export default function MySpecies({}: Props): ReactElement {
   const { t } = useTranslation(['treemapper', 'me', 'common']);
   const { token, contextLoaded } = React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { email } = React.useContext(ParamsContext);
   const [species, setSpecies] = React.useState<any[]>([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
 
@@ -33,7 +35,11 @@ export default function MySpecies({}: Props): ReactElement {
   });
 
   const fetchMySpecies = async () => {
-    const result = await getAuthenticatedRequest('/treemapper/species', token);
+    const result = await getAuthenticatedRequest(
+      email,
+      '/treemapper/species',
+      token
+    );
     setSpecies(result);
   };
 

@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import styles from '../../styles/MyTrees.module.scss';
 import dynamic from 'next/dynamic';
 import {
@@ -11,6 +11,7 @@ import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
+import { ParamsContext } from '../../../../common/Layout/QueryParamsContext';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
@@ -23,14 +24,16 @@ interface Props {
 }
 
 export default function MyTrees({ profile, authenticatedType, token }: Props) {
-  const { t, i18n, ready } = useTranslation(['country', 'me']);
+  const { t, ready } = useTranslation(['country', 'me']);
   const [contributions, setContributions] = React.useState();
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { email } = React.useContext(ParamsContext);
 
   React.useEffect(() => {
     async function loadFunction() {
       if (authenticatedType === 'private' && token) {
         getAuthenticatedRequest(
+          email,
           `/app/profile/contributions`,
           token,
           {},

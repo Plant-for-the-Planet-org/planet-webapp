@@ -84,11 +84,7 @@ function UserPropsProvider({ children }: any): ReactElement {
 
   React.useEffect(() => {
     if (token) loadUser();
-  }, [token, email]);
-
-  React.useEffect(() => {
-    if (email) loadUser();
-  }, [email, targetEmail]);
+  }, [token, email, targetEmail]);
 
   return (
     <UserPropsContext.Provider

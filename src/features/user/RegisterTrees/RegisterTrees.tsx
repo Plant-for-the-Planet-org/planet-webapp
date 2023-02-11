@@ -26,6 +26,7 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   ssr: false,
@@ -50,6 +51,7 @@ interface Props {}
 
 export default function RegisterTrees({}: Props) {
   const { user, token, contextLoaded } = React.useContext(UserPropsContext);
+  const { email } = React.useContext(ParamsContext);
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {
     version: 8,
@@ -196,6 +198,7 @@ export default function RegisterTrees({}: Props) {
 
   async function loadProjects() {
     await getAuthenticatedRequest(
+      email,
       '/app/profile/projects',
       token,
       {},

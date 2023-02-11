@@ -21,6 +21,7 @@ import { Fade, Modal, MenuItem } from '@mui/material';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
@@ -57,6 +58,7 @@ export default function ProjectSites({
   const [errorMessage, setErrorMessage] = React.useState('');
   const [openModal, setOpenModal] = React.useState(false);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { email } = React.useContext(ParamsContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -262,6 +264,7 @@ export default function ProjectSites({
     // Fetch sites of the project
     if (projectGUID)
       getAuthenticatedRequest(
+        email,
         `/app/profile/projects/${projectGUID}?_scope=sites`,
         token,
         {},

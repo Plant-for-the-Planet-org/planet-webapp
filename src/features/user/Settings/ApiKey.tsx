@@ -12,6 +12,7 @@ import CopyToClipboard from '../../common/CopyToClipboard';
 import EyeIcon from '../../../../public/assets/images/icons/EyeIcon';
 import EyeDisabled from '../../../../public/assets/images/icons/EyeDisabled';
 import { useTranslation } from 'next-i18next';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 const EyeButton = ({ isVisible, onClick }: any) => {
   return (
@@ -25,6 +26,7 @@ export default function ApiKey({}: any) {
   const { token, contextLoaded } = React.useContext(UserPropsContext);
   const { t } = useTranslation(['me']);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { email } = React.useContext(ParamsContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [apiKey, setApiKey] = React.useState('');
   const [isApiKeyVisible, setIsApiKeyVisible] = React.useState(false);
@@ -36,6 +38,7 @@ export default function ApiKey({}: any) {
   const getApiKey = async () => {
     setIsUploadingData(true);
     const res = await getAuthenticatedRequest(
+      email,
       '/app/profile/apiKey',
       token,
       {},

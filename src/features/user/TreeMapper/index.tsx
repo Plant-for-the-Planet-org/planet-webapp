@@ -9,6 +9,7 @@ import TopProgressBar from '../../common/ContentLoaders/TopProgressBar';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 interface Props {}
 
@@ -19,6 +20,8 @@ const PlantLocationMap = dynamic(() => import('./components/Map'), {
 function TreeMapper({}: Props): ReactElement {
   const router = useRouter();
   const { token, contextLoaded } = React.useContext(UserPropsContext);
+  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { email } = React.useContext(ParamsContext);
   const { t } = useTranslation(['treemapper']);
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
@@ -26,7 +29,6 @@ function TreeMapper({}: Props): ReactElement {
   const [selectedLocation, setselectedLocation] = React.useState('');
   const [location, setLocation] = React.useState(null);
   const [links, setLinks] = React.useState();
-  const { handleError } = React.useContext(ErrorHandlingContext);
 
   async function fetchTreemapperData(next = false) {
     setIsDataLoading(true);
@@ -34,6 +36,7 @@ function TreeMapper({}: Props): ReactElement {
 
     if (next && links?.next) {
       const response = await getAuthenticatedRequest(
+        email,
         links.next,
         token,
         {},
@@ -69,6 +72,7 @@ function TreeMapper({}: Props): ReactElement {
       }
     } else {
       const response = await getAuthenticatedRequest(
+        email,
         '/treemapper/plantLocations?_scope=extended&limit=15',
         token,
         {},

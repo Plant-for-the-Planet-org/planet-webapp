@@ -9,8 +9,8 @@ import Header from '../components/projects/Header';
 import SearchBar from '../components/projects/SearchBar';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
-import Filters from '../components/projects/Filters';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import { UserPropsContext } from '../../../../src/features/common/Layout/UserPropsContext';
 
 interface Props {
   projects: any;
@@ -32,6 +32,7 @@ function ProjectsList({
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 767;
   const { embed, showProjectList, email } = React.useContext(ParamsContext);
+  const { user } = React.useContext(UserPropsContext);
   const isEmbed = embed === 'true';
   const [scrollY, setScrollY] = React.useState(0);
   const [hideSidebar, setHideSidebar] = React.useState(isEmbed);
@@ -189,7 +190,7 @@ function ProjectsList({
                   ? 'mobile-hidden'
                   : ''
               }`}
-              style={{ marginTop: email ? '65px' : '' }}
+              style={{ marginTop: email && user ? '65px' : '' }}
             >
               <div className={`header ${isMobile ? 'header--mobile' : ''}`}>
                 {isMobile && (!hideSidebar || showProjectList === 'true') && (

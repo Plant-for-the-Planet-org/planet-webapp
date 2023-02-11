@@ -15,6 +15,7 @@ import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 interface Props {
   handleNext: Function;
@@ -37,6 +38,7 @@ export default function ProjectMedia({
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { email } = React.useContext(ParamsContext);
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
   const [uploadedImages, setUploadedImages] = React.useState<Array<any>>([]);
@@ -48,6 +50,7 @@ export default function ProjectMedia({
     // Fetch images of the project
     if (projectGUID && token)
       getAuthenticatedRequest(
+        email,
         `/app/profile/projects/${projectGUID}?_scope=images`,
         token,
         {},

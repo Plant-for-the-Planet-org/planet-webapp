@@ -15,10 +15,12 @@ import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 export default function ManageProjects({ GUID, token, project }: any) {
   const { t, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { email } = React.useContext(ParamsContext);
   const router = useRouter();
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -172,6 +174,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
     // Fetch details of the project
     if (projectGUID && token)
       getAuthenticatedRequest(
+        email,
         `/app/profile/projects/${projectGUID}`,
         token,
         {},

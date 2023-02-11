@@ -8,12 +8,14 @@ import Recurrency from '../../src/features/user/Account/Recurrency';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import { ParamsContext } from '../../src/features/common/Layout/QueryParamsContext';
 
 interface Props {}
 
 function RecurrentDonations({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
   const { token, contextLoaded } = React.useContext(UserPropsContext);
+  const { email } = React.useContext(ParamsContext);
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const [recurrencies, setrecurrencies] =
@@ -25,6 +27,7 @@ function RecurrentDonations({}: Props): ReactElement {
     setIsDataLoading(true);
     setProgress(70);
     const recurrencies: Payments.Subscription[] = await getAuthenticatedRequest(
+      email,
       '/app/subscriptions',
       token,
       {},

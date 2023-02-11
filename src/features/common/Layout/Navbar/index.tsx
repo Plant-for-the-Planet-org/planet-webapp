@@ -14,7 +14,7 @@ import GetSubMenu from './getSubMenu';
 import { lang_path } from '../../../../utils/constants/wpLanguages';
 import { ParamsContext } from '../QueryParamsContext';
 import ImpersonationActivated from '../../../user/Settings/ImpersonationActivated';
-import styles from '../../../../../src/features/user/Settings/SwitchUser.module.scss';
+import AccessDeniedLoader from '../../ContentLoaders/Projects/AccessDeniedLoader';
 
 // used to detect window resize and return the current width of the window
 const useWidth = () => {
@@ -275,7 +275,7 @@ export default function NavbarComponent(props: any) {
     <></>
   ) : (
     <>
-      {email && (
+      {email && user && (
         <div
           style={{
             width: '100%',
@@ -287,7 +287,10 @@ export default function NavbarComponent(props: any) {
           <ImpersonationActivated />
         </div>
       )}
-      <div className={`mainNavContainer`} style={{ top: email ? 69 : 0 }}>
+      <div
+        className={`mainNavContainer`}
+        style={{ top: email && user ? 69 : 0 }}
+      >
         <div className={'top_nav'}>
           <div className={'brandLogos'}>
             {config.header?.isSecondaryTenant && (

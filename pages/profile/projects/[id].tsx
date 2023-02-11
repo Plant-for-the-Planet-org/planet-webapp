@@ -12,6 +12,7 @@ import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
+import { ParamsContext } from '../../../src/features/common/Layout/QueryParamsContext';
 
 interface Props {}
 
@@ -25,6 +26,7 @@ function ManageSingleProject({}: Props): ReactElement {
   const [project, setProject] = React.useState({});
 
   const { user, contextLoaded, token } = React.useContext(UserPropsContext);
+  const { email } = React.useContext(ParamsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
   useEffect(() => {
@@ -37,6 +39,7 @@ function ManageSingleProject({}: Props): ReactElement {
   useEffect(() => {
     async function loadProject() {
       getAuthenticatedRequest(
+        email,
         `/app/profile/projects/${projectGUID}`,
         token,
         {},

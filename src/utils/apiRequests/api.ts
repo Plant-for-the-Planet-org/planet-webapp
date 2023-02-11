@@ -128,6 +128,7 @@ export async function getRequest<T>(
 }
 
 export async function getAuthenticatedRequest<T>(
+  email?:string,
   url: any,
   token: any,
   header: any = null,
@@ -149,6 +150,7 @@ export async function getAuthenticatedRequest<T>(
       Authorization: `Bearer ${token}`,
       'x-locale': `${lang}`,
       'x-accept-versions': version ? version : '1.0.3',
+      "x-switch-user": `${email ? email : ""}`
     },
   })
     .then(async (res) => {

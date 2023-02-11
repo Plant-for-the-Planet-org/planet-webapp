@@ -8,12 +8,14 @@ import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { ParamsContext } from '../../src/features/common/Layout/QueryParamsContext';
 
 interface Props {}
 
 function AccountHistory({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
   const { token, contextLoaded } = React.useContext(UserPropsContext);
+  const { email } = React.useContext(ParamsContext);
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const [filter, setFilter] = React.useState<string | null>(null);
@@ -30,6 +32,7 @@ function AccountHistory({}: Props): ReactElement {
     if (next && paymentHistory?._links?.next) {
       const newPaymentHistory: Payments.PaymentHistory =
         await getAuthenticatedRequest(
+          email,
           `${
             filter && accountingFilters
               ? accountingFilters[filter] +
@@ -54,6 +57,7 @@ function AccountHistory({}: Props): ReactElement {
       if (filter === null) {
         const paymentHistory: Payments.PaymentHistory =
           await getAuthenticatedRequest(
+            email,
             '/app/paymentHistory?limit=15',
             token,
             {},
@@ -67,6 +71,7 @@ function AccountHistory({}: Props): ReactElement {
         setaccountingFilters(paymentHistory._filters);
       } else {
         const paymentHistory = await getAuthenticatedRequest(
+          email,
           `${
             filter && accountingFilters
               ? accountingFilters[filter] + '&limit=15'
