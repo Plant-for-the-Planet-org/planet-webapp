@@ -21,6 +21,7 @@ import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 const MuiCalendarPicker = styled(CalendarPicker)({
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -44,12 +45,13 @@ export const CancelModal = ({
 }: any) => {
   const { theme } = React.useContext(ThemeContext);
   const { token } = React.useContext(UserPropsContext);
+  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { email } = React.useContext(ParamsContext);
   const [option, setoption] = React.useState('cancelImmediately');
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState(new Date());
   const [disabled, setDisabled] = React.useState(false);
   const { t, i18n, ready } = useTranslation(['me']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     setDisabled(false);
@@ -70,6 +72,7 @@ export const CancelModal = ({
           : null, // if custom-date is cancellationType
     };
     putAuthenticatedRequest(
+      email,
       `/app/subscriptions/${record.id}?scope=cancel`,
       bodyToSend,
       token,

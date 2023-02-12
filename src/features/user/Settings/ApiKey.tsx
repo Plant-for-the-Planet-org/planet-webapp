@@ -53,6 +53,7 @@ export default function ApiKey({}: any) {
   const regenerateApiKey = async () => {
     setIsUploadingData(true);
     const res = await putAuthenticatedRequest(
+      email,
       '/app/profile/apiKey',
       undefined,
       token,

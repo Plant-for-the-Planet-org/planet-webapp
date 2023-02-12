@@ -612,6 +612,7 @@ function EditSite({
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { email } = React.useContext(ParamsContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -656,6 +657,7 @@ function EditSite({
         status: data.status,
       };
       putAuthenticatedRequest(
+        email,
         `/app/projects/${projectGUID}/sites/${siteGUID}`,
         submitData,
         token,

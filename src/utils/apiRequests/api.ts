@@ -253,6 +253,7 @@ export async function deleteAuthenticatedRequest(
 }
 
 export async function putAuthenticatedRequest<T>(
+  email?: string,
   url: any,
   data: any,
   token: any,
@@ -272,6 +273,7 @@ export async function putAuthenticatedRequest<T>(
             ? localStorage.getItem('language')
             : 'en'
         }`,
+        "x-switch-user": `${email ? email : ""}`
       },
     });
     const result = await res.json();

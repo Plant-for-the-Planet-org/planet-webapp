@@ -18,7 +18,7 @@ import { ThemeContext } from '../../../theme/themeContext';
 import getCurrencySymbolByCode from '../../../utils/countryCurrency/getCurrencySymbolByCode';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -62,6 +62,7 @@ export const EditModal = ({
     });
   const { token } = React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { email } = React.useContext(ParamsContext);
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
       const userLang = localStorage.getItem('language');
@@ -98,6 +99,7 @@ export const EditModal = ({
 
     if (Object.keys(bodyToSend).length !== 0) {
       putAuthenticatedRequest(
+        email,
         `/app/subscriptions/${record?.id}?scope=modify`,
         bodyToSend,
         token,

@@ -7,6 +7,7 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { CircularProgress, Modal, Fade } from '@mui/material';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 export const ReactivateModal = ({
   reactivateModalOpen,
@@ -18,7 +19,8 @@ export const ReactivateModal = ({
   const { theme } = React.useContext(ThemeContext);
   const { token } = React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { t, i18n, ready } = useTranslation(['me']);
+  const { email } = React.useContext(ParamsContext);
+  const { t } = useTranslation(['me']);
   const bodyToSend = {};
 
   React.useEffect(() => {
@@ -28,6 +30,7 @@ export const ReactivateModal = ({
   const reactivateDonation = () => {
     setDisabled(true);
     putAuthenticatedRequest(
+      email,
       `/app/subscriptions/${record.id}?scope=reactivate`,
       bodyToSend,
       token,

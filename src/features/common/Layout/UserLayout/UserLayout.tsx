@@ -485,7 +485,10 @@ function UserLayout(props: any): ReactElement {
           <div
             className={styles.navlink}
             //logout user
-            onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)}
+            onClick={() => {
+              localStorage.removeItem('targetEmail');
+              logoutUser(`${process.env.NEXTAUTH_URL}/`);
+            }}
           >
             <LogoutIcon />
             <button className={styles.navlinkTitle}>{t('logout')}</button>

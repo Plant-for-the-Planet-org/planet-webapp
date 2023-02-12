@@ -411,6 +411,7 @@ export default function BasicDetails({
     // Check if GUID is set use update instead of create project
     if (projectGUID) {
       putAuthenticatedRequest(
+        email,
         `/app/projects/${projectGUID}`,
         submitData,
         token,

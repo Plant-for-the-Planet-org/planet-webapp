@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../theme/themeContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 interface Props {
   embedModalOpen: boolean;
   setEmbedModalOpen: Function;
@@ -26,6 +26,7 @@ export default function EmbedModal({
 }: Props) {
   const { t, ready } = useTranslation(['editProfile']);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { email } = React.useContext(ParamsContext);
   const [isPrivate, setIsPrivate] = React.useState(false);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [severity, setSeverity] = React.useState('success');
@@ -63,7 +64,13 @@ export default function EmbedModal({
     };
     if (contextLoaded && token) {
       try {
-        putAuthenticatedRequest(`/app/profile`, bodyToSend, token, handleError)
+        putAuthenticatedRequest(
+          email,
+          `/app/profile`,
+          bodyToSend,
+          token,
+          handleError
+        )
           .then((res) => {
             setSeverity('success');
             setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');

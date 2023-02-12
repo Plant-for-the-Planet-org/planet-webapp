@@ -18,6 +18,7 @@ import styles from './EditProfile.module.scss';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 interface Props {}
 
@@ -32,6 +33,7 @@ export default function EditProfile({}: Props) {
   const { handleError } = React.useContext(ErrorHandlingContext);
   const { user, setUser, token, contextLoaded } =
     React.useContext(UserPropsContext);
+  const { email } = React.useContext(ParamsContext);
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { t, ready } = useTranslation(['editProfile', 'donate']);
@@ -169,6 +171,7 @@ export default function EditProfile({}: Props) {
             handleSnackbarOpen();
 
             putAuthenticatedRequest(
+              email,
               `/app/profile`,
               bodyToSend,
               token,
@@ -211,7 +214,13 @@ export default function EditProfile({}: Props) {
     }
     if (contextLoaded && token) {
       try {
-        putAuthenticatedRequest(`/app/profile`, bodyToSend, token, handleError)
+        putAuthenticatedRequest(
+          email,
+          `/app/profile`,
+          bodyToSend,
+          token,
+          handleError
+        )
           .then((res) => {
             console.log(res);
             if (res.code !== 400) {

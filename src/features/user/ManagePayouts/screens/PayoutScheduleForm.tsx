@@ -12,6 +12,7 @@ import { User } from '../../../common/types/user';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 import { PaymentFrequencies } from '../../../../utils/constants/payoutConstants';
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 const paymentFrequencies = [
   PaymentFrequencies.MANUAL,
@@ -31,6 +32,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
   const [isSaved, setIsSaved] = useState(false);
   const { token, user, setUser } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
+  const { email } = useContext(ParamsContext);
   const { handleSubmit, errors, control } = useForm<FormData>({
     mode: 'onBlur',
   });
@@ -38,6 +40,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
   const onSubmit = async (data: FormData): Promise<void> => {
     setIsProcessing(true);
     const res = await putAuthenticatedRequest<User>(
+      email,
       '/app/profile',
       { scheduleFrequency: data.scheduleFrequency },
       token,

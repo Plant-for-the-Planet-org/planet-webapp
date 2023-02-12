@@ -123,6 +123,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
       reviewRequested: true,
     };
     putAuthenticatedRequest(
+      email,
       `/app/projects/${projectGUID}`,
       submitData,
       token,
@@ -149,6 +150,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
       publish: val,
     };
     putAuthenticatedRequest(
+      email,
       `/app/projects/${projectGUID}`,
       submitData,
       token,

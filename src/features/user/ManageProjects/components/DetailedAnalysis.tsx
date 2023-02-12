@@ -14,7 +14,7 @@ import { SxProps } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-
+import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -70,8 +70,9 @@ export default function DetailedAnalysis({
   handleReset,
   purpose,
 }: Props): ReactElement {
-  const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
+  const { t, ready } = useTranslation(['manageProjects', 'common']);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { email } = React.useContext(ParamsContext);
   const [siteOwners, setSiteOwners] = React.useState([
     {
       id: 1,
@@ -285,6 +286,7 @@ export default function DetailedAnalysis({
           };
 
     putAuthenticatedRequest(
+      email,
       `/app/projects/${projectGUID}`,
       submitData,
       token,

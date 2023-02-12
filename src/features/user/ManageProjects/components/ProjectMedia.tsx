@@ -176,6 +176,7 @@ export default function ProjectMedia({
       videoUrl: data.youtubeURL,
     };
     putAuthenticatedRequest(
+      email,
       `/app/projects/${projectGUID}`,
       submitData,
       token,
@@ -215,6 +216,7 @@ export default function ProjectMedia({
       isDefault: true,
     };
     putAuthenticatedRequest(
+      email,
       `/app/projects/${projectGUID}/images/${id}`,
       submitData,
       token,
@@ -247,6 +249,7 @@ export default function ProjectMedia({
       description: e.target.value,
     };
     putAuthenticatedRequest(
+      email,
       `/app/projects/${projectGUID}/images/${id}`,
       submitData,
       token,
