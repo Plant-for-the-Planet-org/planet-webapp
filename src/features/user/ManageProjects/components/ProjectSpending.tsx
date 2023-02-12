@@ -160,6 +160,7 @@ export default function ProjectSpending({
   const deleteProjectSpending = (id: any) => {
     setIsUploadingData(true);
     deleteAuthenticatedRequest(
+      email,
       `/app/projects/${projectGUID}/expenses/${id}`,
       token,
       handleError

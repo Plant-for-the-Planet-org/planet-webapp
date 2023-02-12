@@ -155,6 +155,7 @@ export default function ProjectMedia({
 
   const deleteProjectCertificate = (id: any) => {
     deleteAuthenticatedRequest(
+      email,
       `/app/projects/${projectGUID}/images/${id}`,
       token,
       handleError

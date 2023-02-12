@@ -180,6 +180,7 @@ function ProjectCertificates({
 
   const deleteProjectCertificate = (id: any) => {
     deleteAuthenticatedRequest(
+      email,
       `/app/projects/${projectGUID}/certificates/${id}`,
       token,
       handleError

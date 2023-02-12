@@ -89,6 +89,7 @@ export default function UploadImages({
 
   const deleteContributionImage = (id: any) => {
     deleteAuthenticatedRequest(
+      email,
       `/app/contributions/${contributionGUID}/images/${id}`,
       token,
       handleError

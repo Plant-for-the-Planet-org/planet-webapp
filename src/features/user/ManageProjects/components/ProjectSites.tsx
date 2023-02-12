@@ -212,6 +212,7 @@ export default function ProjectSites({
   const deleteProjectSite = (id: any) => {
     setIsUploadingData(true);
     deleteAuthenticatedRequest(
+      email,
       `/app/projects/${projectGUID}/sites/${id}`,
       token,
       handleError

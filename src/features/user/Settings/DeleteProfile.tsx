@@ -8,6 +8,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import CustomModal from '../../common/Layout/CustomModal';
 import router from 'next/router';
 import { useTranslation } from 'next-i18next';
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 export default function DeleteProfile({}: any) {
   const { user, token, logoutUser } = React.useContext(UserPropsContext);
@@ -16,13 +17,14 @@ export default function DeleteProfile({}: any) {
     e.preventDefault();
   };
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { email } = React.useContext(ParamsContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [isModalOpen, setisModalOpen] = React.useState(false); //true when subscriptions are present
   const [canDeleteAccount, setcanDeleteAccount] = React.useState(false);
 
   const handleDeleteAccount = () => {
     setIsUploadingData(true);
-    deleteAuthenticatedRequest('/app/profile', token, handleError).then(
+    deleteAuthenticatedRequest(email, '/app/profile', token, handleError).then(
       (res) => {
         if (res.error_code === 'active_subscriptions') {
           setIsUploadingData(false);

@@ -217,6 +217,7 @@ export async function postAuthenticatedRequest<T>(
 }
 
 export async function deleteAuthenticatedRequest(
+  email?: string,
   url: any,
   token: any,
   errorHandler?: Function
@@ -235,6 +236,7 @@ export async function deleteAuthenticatedRequest(
             ? localStorage.getItem('language')
             : 'en'
         }`,
+        "x-switch-user": `${email ? email : ""}`
       },
     }).then(async (res) => {
       result = res.status === 400 ? await res.json() : res.status;
