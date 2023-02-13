@@ -9,7 +9,7 @@ import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import { postAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { Alert, styled, Snackbar } from '@mui/material';
+import { Alert, styled, Snackbar, CircularProgress } from '@mui/material';
 import themeProperties from '../../../theme/themeProperties';
 
 const MuiAlert = styled(Alert)({
@@ -48,6 +48,7 @@ export default function History({
   const { handleError, setError } = useContext(ErrorHandlingContext);
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
+  const [isLoading, setLoading] = React.useState(false);
 
   const handleRecordToggle = (index: number | undefined) => {
     if (selectedRecord === index || index === undefined) {
@@ -78,6 +79,7 @@ export default function History({
   }, [paymentHistory]);
 
   const handleIssueReceipts = async () => {
+    setLoading(true);
     try {
       const res = await postAuthenticatedRequest(
         '/app/taxReceipts',
@@ -87,19 +89,19 @@ export default function History({
         token,
         handleError
       );
+      setLoading(false);
       if (res && res.length === 0) {
         setError({
           type: 'error',
           message: t('me:taxReceiptsAlreadyGenerated'),
         });
+        setSelectedRecord(0);
       } else {
         await fetchPaymentHistory();
-        // setTimeout(async () => {
-
-        //   setOpen(true);
-        // }, 5000);
+        setSelectedRecord(0);
       }
     } catch (err) {
+      setLoading(false);
       console.error(err);
     }
   };
@@ -141,8 +143,15 @@ export default function History({
             </>
           )}
         </div>
-        <div className={`${styles.issueButton}`} onClick={handleIssueReceipts}>
-          {t('me:issueReceipts')}
+        <div
+          className={`${styles.issueButtonMobile}`}
+          onClick={!isLoading ? handleIssueReceipts : undefined}
+        >
+          {isLoading ? (
+            <CircularProgress color="inherit" size={20} />
+          ) : (
+            t('me:issueReceipts')
+          )}
         </div>
         <iframe
           src={`https://www5.plant-for-the-planet.org/membership-cta/${adSpaceLanguage}/`}
@@ -221,9 +230,13 @@ export default function History({
             </div>
             <div
               className={`${styles.issueButton}`}
-              onClick={handleIssueReceipts}
+              onClick={!isLoading ? handleIssueReceipts : undefined}
             >
-              {t('me:issueReceipts')}
+              {isLoading ? (
+                <CircularProgress color="inherit" size={20} />
+              ) : (
+                t('me:issueReceipts')
+              )}
             </div>
             <iframe
               src={`https://www5.plant-for-the-planet.org/membership-cta/${adSpaceLanguage}/`}

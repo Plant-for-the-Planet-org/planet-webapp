@@ -287,24 +287,22 @@
   color: #fff;
 }
 
-@include xsPhoneView {
-  .issueButton {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    background-color: $primaryColor;
-    transition-duration: 0.4;
-    transition-timing-function: ease-in;
-    padding: 8px 12px;
-    border-radius: 100px;
-    margin: 0px 0px 10px;
-    white-space: nowrap;
-    font-family: $primaryFontFamily;
-    cursor: pointer;
-    color: #fff;
-    width: 100%;
-  }
+.issueButtonMobile {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: $primaryColor;
+  transition-duration: 0.4;
+  transition-timing-function: ease-in;
+  padding: 8px 12px;
+  border-radius: 100px;
+  margin: 0px 0px 10px;
+  white-space: nowrap;
+  font-family: $primaryFontFamily;
+  cursor: pointer;
+  color: #fff;
+  width: 100%;
 }
 
 .filterButton.selected {
@@ -715,6 +713,10 @@
     display: none;
   }
 
+  .issueButtonMobile {
+    display: none;
+  }
+
   .modal {
     display: none;
   }
@@ -737,6 +739,10 @@
   }
 
   .filterRow {
+    display: none;
+  }
+
+  .issueButtonMobile {
     display: none;
   }
 
