@@ -276,14 +276,7 @@ export default function NavbarComponent(props: any) {
   ) : (
     <>
       {email && user && (
-        <div
-          style={{
-            width: '100%',
-            position: 'fixed',
-            zIndex: '1220',
-            top: -142,
-          }}
-        >
+        <div className="impersonationAlertContainer" style={{ top: -142 }}>
           <ImpersonationActivated />
         </div>
       )}
