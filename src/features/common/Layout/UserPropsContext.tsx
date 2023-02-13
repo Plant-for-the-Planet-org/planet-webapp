@@ -81,7 +81,7 @@ function UserPropsProvider({ children }: any): ReactElement {
     }
     setContextLoaded(true);
   }
-  console.log('test');
+
   React.useEffect(() => {
     if (token) loadUser();
   }, [token, email, targetEmail]);
