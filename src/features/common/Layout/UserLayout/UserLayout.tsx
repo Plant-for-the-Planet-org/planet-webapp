@@ -497,7 +497,9 @@ function UserLayout(props: any): ReactElement {
         </div>
       </div>
       <div
-        className={`${styles.profilePageWrapper} ${styles.profileImpersonation}`}
+        className={`${styles.profilePageWrapper} ${
+          email && user ? ` ${styles.profileImpersonation}` : ''
+        }`}
       >
         {props.children}
       </div>
