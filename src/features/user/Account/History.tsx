@@ -99,6 +99,7 @@ export default function History({
       } else {
         await fetchPaymentHistory();
         setSelectedRecord(0);
+        setOpen(true)
       }
     } catch (err) {
       setLoading(false);
