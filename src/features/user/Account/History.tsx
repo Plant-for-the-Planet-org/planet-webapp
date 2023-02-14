@@ -11,6 +11,7 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { CircularProgress } from '@mui/material';
 import CustomSnackbar from '../../common/CustomSnackbar';
+import MuiButton from '../../common/InputTypes/MuiButton';
 
 interface Props {
   filter: string | null;
@@ -133,16 +134,20 @@ export default function History({
               );
             })}
         </div>
-        <div
-          className={`${styles.issueButtonMobile}`}
-          onClick={!isLoading ? handleIssueReceipts : undefined}
-        >
-          {isLoading ? (
-            <CircularProgress color="inherit" size={20} />
-          ) : (
-            t('me:issueReceipts')
-          )}
+        <div className={`${styles.issueButtonMobileContainer}`}>
+          <MuiButton
+            fullWidth
+            variant="contained"
+            onClick={!isLoading ? handleIssueReceipts : undefined}
+          >
+            {isLoading ? (
+              <CircularProgress color="inherit" size={20} />
+            ) : (
+              t('me:issueReceipts')
+            )}
+          </MuiButton>
         </div>
+
         <iframe
           src={`https://www5.plant-for-the-planet.org/membership-cta/${adSpaceLanguage}/`}
           className={styles.topAdSpace}
@@ -215,8 +220,8 @@ export default function History({
                   })}
               </div>
             </div>
-            <div
-              className={`${styles.issueButton}`}
+            <MuiButton
+              variant="contained"
               onClick={!isLoading ? handleIssueReceipts : undefined}
             >
               {isLoading ? (
@@ -224,7 +229,7 @@ export default function History({
               ) : (
                 t('me:issueReceipts')
               )}
-            </div>
+            </MuiButton>
             <iframe
               src={`https://www5.plant-for-the-planet.org/membership-cta/${adSpaceLanguage}/`}
               className={styles.rightAdSpace}
