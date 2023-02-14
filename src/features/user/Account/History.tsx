@@ -88,7 +88,6 @@ export default function History({
           type: 'error',
           message: t('me:taxReceiptsAlreadyGenerated'),
         });
-        setSelectedRecord(0);
       } else {
         await fetchPaymentHistory();
         setSelectedRecord(0);
