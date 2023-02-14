@@ -11,6 +11,7 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { Alert, styled, Snackbar, CircularProgress } from '@mui/material';
 import themeProperties from '../../../theme/themeProperties';
+import CustomSnackbar from '../../common/CustomSnackbar';
 
 const MuiAlert = styled(Alert)({
   '&.MuiAlert-filledSuccess': {
@@ -99,7 +100,7 @@ export default function History({
       } else {
         await fetchPaymentHistory();
         setSelectedRecord(0);
-        setOpen(true)
+        setOpen(true);
       }
     } catch (err) {
       setLoading(false);
@@ -257,21 +258,11 @@ export default function History({
             />
           )}
 
-        <Snackbar
-          open={open}
-          autoHideDuration={5000}
-          onClose={handleClose}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        >
-          <MuiAlert
-            onClose={handleClose}
-            severity="success"
-            variant="filled"
-            sx={{ width: '100%' }}
-          >
-            {t('me:taxReceiptsSuccess')}
-          </MuiAlert>
-        </Snackbar>
+        <CustomSnackbar
+          snackbarText={t('me:taxReceiptsSuccess')}
+          isVisible={open}
+          handleClose={handleClose}
+        />
       </div>
     </div>
   );
