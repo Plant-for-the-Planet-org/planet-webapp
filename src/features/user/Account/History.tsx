@@ -72,7 +72,9 @@ export default function History({
   const handleIssueReceipts = async () => {
     setLoading(true);
     try {
-      const res = await postAuthenticatedRequest(
+      const res = await postAuthenticatedRequest<
+        { [k: string]: string } | never[]
+      >(
         '/app/taxReceipts',
         {
           year: new Date().getFullYear(),
@@ -81,7 +83,7 @@ export default function History({
         handleError
       );
       setLoading(false);
-      if (res && res.length === 0) {
+      if (Array.isArray(res) && res.length === 0) {
         setError({
           type: 'error',
           message: t('me:taxReceiptsAlreadyGenerated'),
