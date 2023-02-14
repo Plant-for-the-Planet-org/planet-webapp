@@ -119,23 +119,20 @@ export default function History({
       <div className={'profilePageSubTitle'}>{t('me:donationsSubTitle')}</div>
       <div className={styles.pageContainer}>
         <div className={styles.filterRow}>
-          {accountingFilters && (
-            <>
-              {Object.entries(accountingFilters).map((item) => {
-                return (
-                  <div
-                    key={item[0]}
-                    className={`${styles.filterButton} ${
-                      filter === item[0] ? styles.selected : ''
-                    }`}
-                    onClick={() => handleSetFilter(item[0])}
-                  >
-                    {t(item[0])}
-                  </div>
-                );
-              })}
-            </>
-          )}
+          {accountingFilters &&
+            Object.entries(accountingFilters).map((item) => {
+              return (
+                <div
+                  key={item[0]}
+                  className={`${styles.filterButton} ${
+                    filter === item[0] ? styles.selected : ''
+                  }`}
+                  onClick={() => handleSetFilter(item[0])}
+                >
+                  {t(item[0])}
+                </div>
+              );
+            })}
         </div>
         <div
           className={`${styles.issueButtonMobile}`}
@@ -203,23 +200,20 @@ export default function History({
             <div className={styles.filterContainer}>
               <p className={styles.header}>{t('me:filters')}</p>
               <div className={styles.filterGrid}>
-                {accountingFilters && (
-                  <>
-                    {Object.entries(accountingFilters).map((item) => {
-                      return (
-                        <div
-                          key={item[0]}
-                          className={`${styles.filterButton} ${
-                            filter === item[0] ? styles.selected : ''
-                          }`}
-                          onClick={() => handleSetFilter(item[0])}
-                        >
-                          {t(item[0])}
-                        </div>
-                      );
-                    })}
-                  </>
-                )}
+                {accountingFilters &&
+                  Object.entries(accountingFilters).map((item) => {
+                    return (
+                      <div
+                        key={item[0]}
+                        className={`${styles.filterButton} ${
+                          filter === item[0] ? styles.selected : ''
+                        }`}
+                        onClick={() => handleSetFilter(item[0])}
+                      >
+                        {t(item[0])}
+                      </div>
+                    );
+                  })}
               </div>
             </div>
             <div
