@@ -9,18 +9,8 @@ import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import { postAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { Alert, styled, Snackbar, CircularProgress } from '@mui/material';
-import themeProperties from '../../../theme/themeProperties';
+import { CircularProgress } from '@mui/material';
 import CustomSnackbar from '../../common/CustomSnackbar';
-
-const MuiAlert = styled(Alert)({
-  '&.MuiAlert-filledSuccess': {
-    backgroundColor: themeProperties.primaryColor,
-  },
-  '.MuiAlert-message': {
-    color: 'white !important',
-  },
-});
 
 interface Props {
   filter: string | null;
