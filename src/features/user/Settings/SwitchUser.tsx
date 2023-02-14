@@ -37,6 +37,10 @@ const SwitchUser = () => {
                     value: true,
                     message: t('me:enterTheEmail'),
                   },
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: t('me:invalidEmail'),
+                  },
                 })}
                 name="targetEmail"
                 label={t('me:profileEmail')}

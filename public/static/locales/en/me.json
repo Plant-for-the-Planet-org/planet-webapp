@@ -254,5 +254,6 @@
   "switch": "Switch",
   "targetUser": "You are currently impersonating",
   "exitImpersonation": "Exit impersonation",
-  "enterTheEmail": "Enter the email of the target user"
+  "enterTheEmail": "Enter the email of the target user",
+  "invalidEmail": "Please enter a valid email Id"
   }
