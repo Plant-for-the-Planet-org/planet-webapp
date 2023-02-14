@@ -164,7 +164,7 @@ export default function PlanetCash({
             {t('description')}{' '}
             <a
               className="planet-links"
-              href="https://www.plant-for-the-planet.org/planetcash/"
+              href={`https://pp.eco/${i18n.language}/planetcash/`}
               target="_blank"
               rel="noreferrer"
             >
@@ -173,7 +173,7 @@ export default function PlanetCash({
             <br />
             <a
               className="planet-links"
-              href="https://www.plant-for-the-planet.org/terms-and-conditions/"
+              href={`https://pp.eco/legal/${i18n.language}/terms`}
               target="_blank"
               rel="noreferrer"
             >
