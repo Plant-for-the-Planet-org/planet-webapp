@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useContext, useState } from 'react';
 import TopProgressBar from '../../../src/features/common/ContentLoaders/TopProgressBar';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
@@ -7,10 +7,13 @@ import ManagePayouts, {
 } from '../../../src/features/user/ManagePayouts';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { ParamsContext } from '../../../src/features/common/Layout/QueryParamsContext';
+import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 
 export default function OverviewPage(): ReactElement {
   const { t, ready } = useTranslation('me');
   const [progress, setProgress] = useState(0);
+  const { user } = useContext(ParamsContext);
 
   return (
     <>
@@ -23,10 +26,14 @@ export default function OverviewPage(): ReactElement {
         <Head>
           <title>{ready ? t('managePayouts.titleOverview') : ''}</title>
         </Head>
-        <ManagePayouts
-          step={ManagePayoutTabs.OVERVIEW}
-          setProgress={setProgress}
-        />
+        {user?.type === 'tpo' ? (
+          <ManagePayouts
+            step={ManagePayoutTabs.OVERVIEW}
+            setProgress={setProgress}
+          />
+        ) : (
+          <AccessDeniedLoader />
+        )}
       </UserLayout>
     </>
   );
