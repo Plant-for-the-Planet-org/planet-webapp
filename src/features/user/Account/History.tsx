@@ -220,16 +220,20 @@ export default function History({
                   })}
               </div>
             </div>
-            <MuiButton
-              variant="contained"
-              onClick={!isLoading ? handleIssueReceipts : undefined}
-            >
-              {isLoading ? (
-                <CircularProgress color="inherit" size={20} />
-              ) : (
-                t('me:issueReceipts')
-              )}
-            </MuiButton>
+            <div className={styles.issueButtonContainer}>
+              <MuiButton
+                style={{ width: '100%' }}
+                variant="contained"
+                onClick={!isLoading ? handleIssueReceipts : undefined}
+              >
+                {isLoading ? (
+                  <CircularProgress color="inherit" size={20} />
+                ) : (
+                  t('me:issueReceipts')
+                )}
+              </MuiButton>
+            </div>
+
             <iframe
               src={`https://www5.plant-for-the-planet.org/membership-cta/${adSpaceLanguage}/`}
               className={styles.rightAdSpace}
