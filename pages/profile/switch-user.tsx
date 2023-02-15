@@ -9,7 +9,7 @@ import AccessDeniedLoader from '../../src/features/common/ContentLoaders/Project
 
 const SwitchUserPage = () => {
   const { user } = useContext(UserPropsContext);
-  const { t, i18n } = useTranslation('me');
+  const { t } = useTranslation('me');
 
   return (
     <UserLayout>

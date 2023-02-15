@@ -15,6 +15,7 @@ export interface ParamsContextType {
   showProjectList: QueryParamType;
   email: QueryParamType;
   targetEmail: QueryParamType;
+  alertError: boolean;
 }
 export const ParamsContext = createContext<ParamsContextType>({
   embed: undefined,
@@ -25,6 +26,7 @@ export const ParamsContext = createContext<ParamsContextType>({
   showProjectList: undefined,
   email: '',
   targetEmail: '',
+  alertError: false,
 });
 
 const QueryParamsProvider: FC = ({ children }) => {
@@ -47,6 +49,7 @@ const QueryParamsProvider: FC = ({ children }) => {
   const { query } = router;
   const [email, setEmail] = useState('');
   const [targetEmail, setTargetEmail] = useState('');
+  const [alertError, setAlertError] = React.useState<boolean>(false);
 
   useEffect(() => {
     if (query.embed) setEmbed(query.embed);
@@ -99,7 +102,6 @@ const QueryParamsProvider: FC = ({ children }) => {
       /* localStorage.setItem('language', language as string); */ //not needed as i18n handles setting the local storage
     }
   }, [language, i18n.isInitialized]);
-
   const fetchEmail = () => {
     const emailFromLocal = localStorage.getItem('targetEmail');
     if (emailFromLocal) setEmail(emailFromLocal);
@@ -110,6 +112,8 @@ const QueryParamsProvider: FC = ({ children }) => {
   return (
     <ParamsContext.Provider
       value={{
+        alertError,
+        setAlertError,
         email,
         setEmail,
         targetEmail,

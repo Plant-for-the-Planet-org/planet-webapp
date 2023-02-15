@@ -44,7 +44,7 @@ export default function NavbarComponent(props: any) {
   const [menu, setMenu] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
   const [mobileWidth, setMobileWidth] = React.useState(false);
-  const { embed, email } = React.useContext(ParamsContext);
+  const { embed, email, alertError } = React.useContext(ParamsContext);
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       if (window.innerWidth > 767) {

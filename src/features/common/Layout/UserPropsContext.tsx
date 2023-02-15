@@ -30,7 +30,7 @@ function UserPropsProvider({ children }: any): ReactElement {
     user,
     error,
   } = useAuth0();
-  const { email, targetEmail } = useContext(ParamsContext);
+  const { email, setAlertError } = useContext(ParamsContext);
   const router = useRouter();
   const [contextLoaded, setContextLoaded] = React.useState(false);
   const [token, setToken] = React.useState(null);
@@ -59,6 +59,9 @@ function UserPropsProvider({ children }: any): ReactElement {
       if (res.status === 200) {
         const resJson = await res.json();
         setUser(resJson);
+      } else if (res.status === 403) {
+        setAlertError(true);
+        localStorage.removeItem('targetEmail');
       } else if (res.status === 303) {
         // if 303 -> user doesn not exist in db
         setUser(null);
