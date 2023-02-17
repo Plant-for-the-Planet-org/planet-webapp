@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'next-i18next';
 import LogoutIcon from '../../../../public/assets/images/icons/Sidebar/LogoutIcon';
 import styles from './SwitchUser.module.scss';
@@ -6,16 +6,13 @@ import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { useContext } from 'react';
 
 const ImpersonationActivated = () => {
-  const { setEmail, email, alertError, setAlertError } =
-    useContext(ParamsContext);
+  const { setEmail, email, alertError } = useContext(ParamsContext);
 
   const closeAlert = () => {
     localStorage.removeItem('targetEmail');
     setEmail('');
   };
-  useEffect(() => {
-    setAlertError('');
-  }, [email]);
+
   const { t } = useTranslation('me');
 
   return (

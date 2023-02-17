@@ -59,6 +59,12 @@ function UserPropsProvider({ children }: any): ReactElement {
       if (res.status === 200) {
         const resJson = await res.json();
         setUser(resJson);
+        if (resJson?.allowedToSwitch) {
+          localStorage.setItem('mainEmail', resJson?.email);
+        }
+        if (localStorage.getItem('mainEmail') !== resJson?.email) {
+          router.push('/profile');
+        }
       } else if (res.status === 403) {
         setAlertError(true);
         localStorage.removeItem('targetEmail');
