@@ -12,12 +12,14 @@ const SwitchUser = () => {
   const { register, errors, handleSubmit } = useForm({
     mode: 'onSubmit',
   });
-  const { targetEmail, setTargetEmail } = useContext(ParamsContext);
+  const { targetEmail, setTargetEmail, setAlertError } =
+    useContext(ParamsContext);
 
   const handle = () => {
     if (targetEmail) {
       localStorage.setItem('targetEmail', targetEmail);
       setTargetEmail('');
+      setAlertError(false);
     }
   };
 
