@@ -49,7 +49,7 @@ export default function RecurrencyRecord({
         <div className={styles.detailGrid}>
           <DetailsComponent record={record} />
         </div>
-        <>
+        {record.status !== 'incomplete' && (
           <ManageDonation
             record={record}
             seteditDonation={seteditDonation}
@@ -57,7 +57,7 @@ export default function RecurrencyRecord({
             setcancelDonation={setcancelDonation}
             setreactivateDonation={setreactivateDonation}
           />
-        </>
+        )}
       </div>
     </div>
   );
@@ -183,7 +183,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
           <p>{t(record.method)}</p>
         </div>
       )}
-      {record.totalDonated && (
+      {!Number.isNaN(record.totalDonated) && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('totalDonated')}</p>
           <p>

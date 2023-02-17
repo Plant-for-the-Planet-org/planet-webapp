@@ -54,7 +54,11 @@ export default function Recurrency({
       setSelectedRecord(index);
       setOpenModal(false);
     } else {
-      if (recurrencies && recurrencies[index]?.status !== 'incomplete') {
+      if (
+        recurrencies &&
+        (recurrencies[index]?.status !== 'incomplete' ||
+          recurrencies[index]?.method === 'offline')
+      ) {
         setSelectedRecord(index);
         setOpenModal(true);
       }
