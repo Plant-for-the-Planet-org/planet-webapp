@@ -24,9 +24,9 @@ function ManageSingleProject({}: Props): ReactElement {
   const [accessDenied, setAccessDenied] = React.useState(false);
   const [setupAccess, setSetupAccess] = React.useState(false);
   const [project, setProject] = React.useState({});
+  const { user, contextLoaded, token, validEmail } =
+    React.useContext(UserPropsContext);
 
-  const { user, contextLoaded, token } = React.useContext(UserPropsContext);
-  const { email } = React.useContext(ParamsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ function ManageSingleProject({}: Props): ReactElement {
   useEffect(() => {
     async function loadProject() {
       getAuthenticatedRequest(
-        email,
+        validEmail,
         `/app/profile/projects/${projectGUID}`,
         token,
         {},

@@ -14,8 +14,9 @@ interface Props {}
 
 function RecurrentDonations({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
-  const { token, contextLoaded } = React.useContext(UserPropsContext);
-  const { email } = React.useContext(ParamsContext);
+  const { token, contextLoaded, validEmail } =
+    React.useContext(UserPropsContext);
+
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const [recurrencies, setrecurrencies] =
@@ -27,7 +28,7 @@ function RecurrentDonations({}: Props): ReactElement {
     setIsDataLoading(true);
     setProgress(70);
     const recurrencies: Payments.Subscription[] = await getAuthenticatedRequest(
-      email,
+      validEmail,
       '/app/subscriptions',
       token,
       {},

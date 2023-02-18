@@ -13,7 +13,6 @@ import FormHeader from '../../../common/Layout/Forms/FormHeader';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
-import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 const EditBankAccount = (): ReactElement | null => {
   const { accounts, payoutMinAmounts, setAccounts } = usePayouts();
@@ -22,9 +21,8 @@ const EditBankAccount = (): ReactElement | null => {
     useState<Payouts.BankAccount | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountUpdated, setIsAccountUpdated] = useState(false);
-  const { token } = useContext(UserPropsContext);
+  const { token, validEmail } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
-  const { email } = useContext(ParamsContext);
   const { t, ready } = useTranslation('managePayouts');
 
   const closeSnackbar = (): void => {
@@ -40,7 +38,7 @@ const EditBankAccount = (): ReactElement | null => {
         data.currency === PayoutCurrency.DEFAULT ? '' : data.payoutMinAmount,
     };
     const res = await putAuthenticatedRequest<Payouts.BankAccount>(
-      email,
+      validEmail,
       `/app/accounts/${accountToEdit?.id}`,
       accountData,
       token,

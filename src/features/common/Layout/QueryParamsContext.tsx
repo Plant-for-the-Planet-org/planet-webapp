@@ -102,13 +102,7 @@ const QueryParamsProvider: FC = ({ children }) => {
       /* localStorage.setItem('language', language as string); */ //not needed as i18n handles setting the local storage
     }
   }, [language, i18n.isInitialized]);
-  const fetchEmail = () => {
-    const emailFromLocal = localStorage.getItem('targetEmail');
-    if (emailFromLocal) setEmail(emailFromLocal);
-  };
-  useEffect(() => {
-    fetchEmail();
-  }, [targetEmail]);
+
   return (
     <ParamsContext.Provider
       value={{

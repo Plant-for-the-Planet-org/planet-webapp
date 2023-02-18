@@ -43,8 +43,8 @@ export default function ManagePayouts({
   const { t, ready, i18n } = useTranslation('managePayouts');
   const router = useRouter();
   const { handleError } = useContext(ErrorHandlingContext);
-  const { token, contextLoaded, user } = useContext(UserPropsContext);
-  const { email } = useContext(ParamsContext);
+  const { token, contextLoaded, user, validEmail } =
+    useContext(UserPropsContext);
   const { accounts, setAccounts, payoutMinAmounts, setPayoutMinAmounts } =
     usePayouts();
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
@@ -76,7 +76,7 @@ export default function ManagePayouts({
       setProgress && setProgress(70);
       try {
         const res = await getAuthenticatedRequest<Payouts.BankAccount[]>(
-          email,
+          validEmail,
           `/app/accounts`,
           token,
           {},

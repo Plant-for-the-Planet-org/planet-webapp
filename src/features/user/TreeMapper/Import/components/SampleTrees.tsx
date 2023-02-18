@@ -7,7 +7,6 @@ import { useTranslation } from 'next-i18next';
 import { useForm, useFieldArray } from 'react-hook-form';
 import SampleTreeCard from './SampleTreeCard';
 import Papa from 'papaparse';
-import { ParamsContext } from '../../../../common/Layout/QueryParamsContext';
 
 interface Props {
   handleNext: Function;
@@ -20,14 +19,11 @@ interface Props {
 
 export default function SampleTrees({
   handleNext,
-  errorMessage,
   setErrorMessage,
   plantLocation,
-  setPlantLocation,
   userLang,
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['treemapper', 'common']);
-  const { email } = React.useContext(ParamsContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [uploadIndex, setUploadIndex] = React.useState(0);
   const [uploadStatus, setUploadStatus] = React.useState<string[]>([]);
@@ -61,18 +57,10 @@ export default function SampleTrees({
   const defaultValues = {
     sampleTrees: [],
   };
-  const {
-    register,
-    handleSubmit,
-    errors,
-    control,
-    reset,
-    setValue,
-    watch,
-    getValues,
-  } = useForm({ mode: 'onBlur', defaultValues: defaultValues });
+  const { register, handleSubmit, errors, control, setValue, getValues } =
+    useForm({ mode: 'onBlur', defaultValues: defaultValues });
 
-  const { fields, append, remove, prepend } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: 'sampleTrees',
   });
@@ -81,7 +69,7 @@ export default function SampleTrees({
     append(sampleTrees);
   };
 
-  const { token } = React.useContext(UserPropsContext);
+  const { token, validEmail } = React.useContext(UserPropsContext);
 
   const uploadSampleTree = async (sampleTree: any, index: number) => {
     setUploadIndex(index);
@@ -89,7 +77,7 @@ export default function SampleTrees({
     newStatus[index] = 'uploading';
     setUploadStatus(newStatus);
     const res = await postAuthenticatedRequest(
-      email,
+      validEmail,
       `/treemapper/plantLocations`,
       sampleTree,
       token
@@ -147,7 +135,7 @@ export default function SampleTrees({
     }
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     accept: ['.csv'],
     multiple: false,
     onDrop: onDrop,

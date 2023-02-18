@@ -9,19 +9,19 @@ import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+
 export default function AddTargetModal({
   addTargetModalOpen,
   handleAddTargetModalClose,
 }: any) {
   // External imports
   const { t, ready } = useTranslation(['me']);
-  const { user, token, contextLoaded, setUser } =
+  const { user, token, contextLoaded, setUser, validEmail } =
     React.useContext(UserPropsContext);
   const { register, errors } = useForm({ mode: 'onBlur' });
   const { theme } = React.useContext(ThemeContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { email } = React.useContext(ParamsContext);
+
   // Internal states
   const [target, setTarget] = React.useState(0);
   const [isLoadingForm, setIsLoading] = React.useState(false);
@@ -34,7 +34,7 @@ export default function AddTargetModal({
         target: !target ? user.score.target : target,
       };
       putAuthenticatedRequest(
-        email,
+        validEmail,
         `/app/profile`,
         bodyToSend,
         token,

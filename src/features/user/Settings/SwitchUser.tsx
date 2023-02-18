@@ -12,14 +12,14 @@ const SwitchUser = () => {
   const { register, errors, handleSubmit } = useForm({
     mode: 'onSubmit',
   });
-  const { targetEmail, setTargetEmail, setAlertError } =
+  const { targetEmail, setTargetEmail, setAlertError, alertError, setEmail } =
     useContext(ParamsContext);
 
   const handle = () => {
+    setAlertError(false);
     if (targetEmail) {
-      localStorage.setItem('targetEmail', targetEmail);
+      setEmail(targetEmail);
       setTargetEmail('');
-      setAlertError(false);
     }
   };
 
@@ -49,9 +49,15 @@ const SwitchUser = () => {
                 placeholder="xyz@email.com"
               />
             </div>
-            {errors.targetEmail && (
+            {!alertError && errors.targetEmail && (
               <span className={styles.emailErrors}>
                 {errors.targetEmail.message}
+              </span>
+            )}
+            {alertError && !targetEmail && (
+              <span className={styles.emailErrors}>
+                {' '}
+                {t('me:userNotexist')}
               </span>
             )}
             <div>

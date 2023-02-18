@@ -13,15 +13,14 @@ import styles from './MySpecies.module.scss';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 interface Props {}
 
 export default function MySpecies({}: Props): ReactElement {
   const { t } = useTranslation(['treemapper', 'me', 'common']);
-  const { token, contextLoaded } = React.useContext(UserPropsContext);
+  const { token, contextLoaded, validEmail } =
+    React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { email } = React.useContext(ParamsContext);
   const [species, setSpecies] = React.useState<any[]>([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
 
@@ -36,7 +35,7 @@ export default function MySpecies({}: Props): ReactElement {
 
   const fetchMySpecies = async () => {
     const result = await getAuthenticatedRequest(
-      email,
+      validEmail,
       '/treemapper/species',
       token
     );
@@ -44,7 +43,11 @@ export default function MySpecies({}: Props): ReactElement {
   };
 
   const deleteSpecies = async (id: number) => {
-    await deleteAuthenticatedRequest(email, `/treemapper/species/${id}`, token);
+    await deleteAuthenticatedRequest(
+      validEmail,
+      `/treemapper/species/${id}`,
+      token
+    );
     fetchMySpecies();
   };
 
@@ -58,7 +61,7 @@ export default function MySpecies({}: Props): ReactElement {
       scientificSpecies: species.scientificSpecies.id,
     };
     const result = await postAuthenticatedRequest(
-      email,
+      validEmail,
       `/treemapper/species`,
       data,
       token,

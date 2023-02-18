@@ -439,7 +439,9 @@ function UserLayout(props: any): ReactElement {
       </div>
       <div
         className={`${
-          email ? `${styles.sidebarModified}` : `${styles.sidebar}`
+          !user?.allowedToSwitch
+            ? `${styles.sidebarModified}`
+            : `${styles.sidebar}`
         } ${!isMenuOpen ? styles.menuClosed : ''}`}
       >
         <div className={styles.navLinksContainer}>
@@ -500,7 +502,7 @@ function UserLayout(props: any): ReactElement {
       </div>
       <div
         className={`${styles.profilePageWrapper} ${
-          email && user ? ` ${styles.profileImpersonation}` : ''
+          !user?.allowedToSwitch ? ` ${styles.profileImpersonation}` : ''
         }`}
       >
         {props.children}

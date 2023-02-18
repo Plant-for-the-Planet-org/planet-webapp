@@ -28,7 +28,7 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
-import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 interface Props {
   handleNext: Function;
@@ -65,7 +65,7 @@ export default function BasicDetails({
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   // Map setup
   const { theme } = React.useContext(ThemeContext);
-  const { email } = React.useContext(ParamsContext);
+  const { validEmail } = React.useContext(UserPropsContext);
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
   const mapRef = React.useRef(null);
@@ -411,7 +411,7 @@ export default function BasicDetails({
     // Check if GUID is set use update instead of create project
     if (projectGUID) {
       putAuthenticatedRequest(
-        email,
+        validEmail,
         `/app/projects/${projectGUID}`,
         submitData,
         token,
@@ -444,7 +444,7 @@ export default function BasicDetails({
         });
     } else {
       postAuthenticatedRequest(
-        email,
+        validEmail,
         `/app/projects`,
         submitData,
         token,

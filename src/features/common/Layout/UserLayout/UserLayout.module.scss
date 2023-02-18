@@ -46,7 +46,7 @@
 }
 
 .profileImpersonation {
-  margin-top: 75px;
+  margin-top: 58px;
 }
 
 // Styles for Sidebar
@@ -115,11 +115,11 @@
 .sidebarModified {
   width: 109px;
   position: fixed;
-  top: 144px;
+  top: 120px;
   left: 0px;
   display: flex;
   flex-direction: column;
-  height: calc(100% - 144px);
+  height: calc(100% - 120px);
   overflow-y: scroll;
   justify-content: space-between;
   box-shadow: rgba(150, 150, 150, $alpha: 0.2) 0px 0px 4px;
@@ -146,7 +146,7 @@
     }
   }
   @include smTabletView {
-    top: 144px;
+    top: 120px;
     & .closeMenu {
       display: none;
     }

@@ -11,7 +11,7 @@ import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { ParamsContext } from '../../../../common/Layout/QueryParamsContext';
+import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
@@ -27,13 +27,13 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   const { t, ready } = useTranslation(['country', 'me']);
   const [contributions, setContributions] = React.useState();
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { email } = React.useContext(ParamsContext);
+  const { validEmail } = React.useContext(UserPropsContext);
 
   React.useEffect(() => {
     async function loadFunction() {
       if (authenticatedType === 'private' && token) {
         getAuthenticatedRequest(
-          email,
+          validEmail,
           `/app/profile/contributions`,
           token,
           {},
@@ -105,7 +105,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
 
 function TreeList({ contribution }: any) {
   const date = formatDate(contribution.properties.plantDate);
-  const { t, i18n, ready } = useTranslation(['country', 'me']);
+  const { t, i18n } = useTranslation(['country', 'me']);
 
   return (
     <div key={contribution.properties.id} className={styles.tree}>

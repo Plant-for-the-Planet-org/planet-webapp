@@ -15,12 +15,12 @@ import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 
 export default function ManageProjects({ GUID, token, project }: any) {
   const { t, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { email } = React.useContext(ParamsContext);
+  const { validEmail } = React.useContext(UserPropsContext);
   const router = useRouter();
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -123,7 +123,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
       reviewRequested: true,
     };
     putAuthenticatedRequest(
-      email,
+      validEmail,
       `/app/projects/${projectGUID}`,
       submitData,
       token,
@@ -150,7 +150,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
       publish: val,
     };
     putAuthenticatedRequest(
-      email,
+      validEmail,
       `/app/projects/${projectGUID}`,
       submitData,
       token,
@@ -176,7 +176,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
     // Fetch details of the project
     if (projectGUID && token)
       getAuthenticatedRequest(
-        email,
+        validEmail,
         `/app/profile/projects/${projectGUID}`,
         token,
         {},

@@ -60,9 +60,9 @@ export const EditModal = ({
     useForm({
       mode: 'all',
     });
-  const { token } = React.useContext(UserPropsContext);
+  const { token, validEmail } = React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { email } = React.useContext(ParamsContext);
+
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
       const userLang = localStorage.getItem('language');
@@ -99,7 +99,7 @@ export const EditModal = ({
 
     if (Object.keys(bodyToSend).length !== 0) {
       putAuthenticatedRequest(
-        email,
+        validEmail,
         `/app/subscriptions/${record?.id}?scope=modify`,
         bodyToSend,
         token,

@@ -17,7 +17,6 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
 import { useRouter } from 'next/router';
-import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 export enum PlanetCashTabs {
   ACCOUNTS = 'accounts',
@@ -36,8 +35,7 @@ export default function PlanetCash({
 }: PlanetCashProps): ReactElement | null {
   const { t, ready, i18n } = useTranslation('planetcash');
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
-  const { token, contextLoaded } = useContext(UserPropsContext);
-  const { email } = useContext(ParamsContext);
+  const { token, contextLoaded, validEmail } = useContext(UserPropsContext);
   const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
   const { handleError } = useContext(ErrorHandlingContext);
   const [isDataLoading, setIsDataLoading] = useState(false);
@@ -83,7 +81,7 @@ export default function PlanetCash({
       setIsDataLoading(true);
       setProgress && setProgress(70);
       const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
-        email,
+        validEmail,
         `/app/planetCash`,
         token,
         {},

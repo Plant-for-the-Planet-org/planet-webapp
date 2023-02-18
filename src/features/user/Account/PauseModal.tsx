@@ -43,8 +43,7 @@ export const PauseModal = ({
   fetchRecurrentDonations,
 }: any) => {
   const { theme } = React.useContext(ThemeContext);
-  const { token } = React.useContext(UserPropsContext);
-  const { email } = React.useContext(ParamsContext);
+  const { token, validEmail } = React.useContext(UserPropsContext);
   const [option, setoption] = React.useState();
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState(
@@ -78,7 +77,7 @@ export const PauseModal = ({
           : null, // only if pauseType='custom-date'
     };
     putAuthenticatedRequest(
-      email,
+      validEmail,
       `/app/subscriptions/${record.id}?scope=pause`,
       bodyToSend,
       token,

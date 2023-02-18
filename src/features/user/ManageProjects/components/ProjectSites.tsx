@@ -21,7 +21,7 @@ import { Fade, Modal, MenuItem } from '@mui/material';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
@@ -58,7 +58,7 @@ export default function ProjectSites({
   const [errorMessage, setErrorMessage] = React.useState('');
   const [openModal, setOpenModal] = React.useState(false);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { email } = React.useContext(ParamsContext);
+  const { validEmail } = React.useContext(UserPropsContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -163,7 +163,7 @@ export default function ProjectSites({
 
       if (!data.name) return;
       postAuthenticatedRequest(
-        email,
+        validEmail,
         `/app/projects/${projectGUID}/sites`,
         submitData,
         token,
@@ -212,7 +212,7 @@ export default function ProjectSites({
   const deleteProjectSite = (id: any) => {
     setIsUploadingData(true);
     deleteAuthenticatedRequest(
-      email,
+      validEmail,
       `/app/projects/${projectGUID}/sites/${id}`,
       token,
       handleError
@@ -266,7 +266,7 @@ export default function ProjectSites({
     // Fetch sites of the project
     if (projectGUID)
       getAuthenticatedRequest(
-        email,
+        validEmail,
         `/app/profile/projects/${projectGUID}?_scope=sites`,
         token,
         {},
@@ -613,7 +613,7 @@ function EditSite({
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { email } = React.useContext(ParamsContext);
+  const { validEmail } = React.useContext(UserPropsContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -658,7 +658,7 @@ function EditSite({
         status: data.status,
       };
       putAuthenticatedRequest(
-        email,
+        validEmail,
         `/app/projects/${projectGUID}/sites/${siteGUID}`,
         submitData,
         token,

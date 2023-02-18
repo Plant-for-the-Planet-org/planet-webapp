@@ -14,7 +14,6 @@ import GetSubMenu from './getSubMenu';
 import { lang_path } from '../../../../utils/constants/wpLanguages';
 import { ParamsContext } from '../QueryParamsContext';
 import ImpersonationActivated from '../../../user/Settings/ImpersonationActivated';
-import AccessDeniedLoader from '../../ContentLoaders/Projects/AccessDeniedLoader';
 
 // used to detect window resize and return the current width of the window
 const useWidth = () => {
@@ -61,8 +60,14 @@ export default function NavbarComponent(props: any) {
     setIsMobile(width < 768);
   }, [width]);
 
-  const { user, setUser, loginWithRedirect, logoutUser, auth0Error } =
-    React.useContext(UserPropsContext);
+  const {
+    user,
+    setUser,
+    loginWithRedirect,
+    logoutUser,
+    auth0Error,
+    validEmail,
+  } = React.useContext(UserPropsContext);
 
   // This function controls the path for the user when they click on Me
   async function gotoUserPage() {
@@ -275,14 +280,14 @@ export default function NavbarComponent(props: any) {
     <></>
   ) : (
     <>
-      {email && user && (
+      {!user?.allowedToSwitch && (
         <div className="impersonationAlertContainer" style={{ top: -142 }}>
           <ImpersonationActivated />
         </div>
       )}
       <div
         className={`mainNavContainer`}
-        style={{ top: email && user ? 69 : 0 }}
+        style={{ top: !user?.allowedToSwitch ? 40 : 0 }}
       >
         <div className={'top_nav'}>
           <div className={'brandLogos'}>

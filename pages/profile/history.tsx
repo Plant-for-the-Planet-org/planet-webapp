@@ -14,8 +14,9 @@ interface Props {}
 
 function AccountHistory({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
-  const { token, contextLoaded } = React.useContext(UserPropsContext);
-  const { email } = React.useContext(ParamsContext);
+  const { token, contextLoaded, validEmail } =
+    React.useContext(UserPropsContext);
+
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const [filter, setFilter] = React.useState<string | null>(null);
@@ -32,7 +33,7 @@ function AccountHistory({}: Props): ReactElement {
     if (next && paymentHistory?._links?.next) {
       const newPaymentHistory: Payments.PaymentHistory =
         await getAuthenticatedRequest(
-          email,
+          validEmail,
           `${
             filter && accountingFilters
               ? accountingFilters[filter] +
@@ -57,7 +58,7 @@ function AccountHistory({}: Props): ReactElement {
       if (filter === null) {
         const paymentHistory: Payments.PaymentHistory =
           await getAuthenticatedRequest(
-            email,
+            validEmail,
             '/app/paymentHistory?limit=15',
             token,
             {},

@@ -9,7 +9,7 @@ import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 interface Props {
   contribution: any;
   contributionGUID: any;
@@ -38,7 +38,7 @@ export default function UploadImages({
     });
   }, []);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { email } = React.useContext(ParamsContext);
+  const { validEmail } = React.useContext(UserPropsContext);
   // React.useEffect(() => {
   //   // Fetch images of the project
   //   setUploadedImages(contribution.contributionImages);
@@ -51,7 +51,7 @@ export default function UploadImages({
       description: '',
     };
     postAuthenticatedRequest(
-      email,
+      validEmail,
       `/app/contributions/${contributionGUID}/images`,
       submitData,
       token,
@@ -89,7 +89,7 @@ export default function UploadImages({
 
   const deleteContributionImage = (id: any) => {
     deleteAuthenticatedRequest(
-      email,
+      validEmail,
       `/app/contributions/${contributionGUID}/images/${id}`,
       token,
       handleError

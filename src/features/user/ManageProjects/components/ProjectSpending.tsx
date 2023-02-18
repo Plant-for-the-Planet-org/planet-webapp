@@ -20,7 +20,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { SxProps } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
-import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const yearDialogSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
@@ -71,7 +71,7 @@ export default function ProjectSpending({
 
   const [showForm, setShowForm] = React.useState(true);
   const [uploadedFiles, setUploadedFiles] = React.useState([]);
-  const { email } = React.useContext(ParamsContext);
+  const { validEmail } = React.useContext(UserPropsContext);
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {
       handleReset(ready ? t('manageProjects:resetMessage') : '');
@@ -93,7 +93,7 @@ export default function ProjectSpending({
     [uploadedFiles]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     accept: '.pdf',
     multiple: false,
     maxSize: 10485760,
@@ -124,7 +124,7 @@ export default function ProjectSpending({
     };
 
     postAuthenticatedRequest(
-      email,
+      validEmail,
       `/app/projects/${projectGUID}/expenses`,
       submitData,
       token,
@@ -160,7 +160,7 @@ export default function ProjectSpending({
   const deleteProjectSpending = (id: any) => {
     setIsUploadingData(true);
     deleteAuthenticatedRequest(
-      email,
+      validEmail,
       `/app/projects/${projectGUID}/expenses/${id}`,
       token,
       handleError
@@ -179,7 +179,7 @@ export default function ProjectSpending({
     // Fetch spending of the project
     if (projectGUID && token)
       getAuthenticatedRequest(
-        email,
+        validEmail,
         `/app/profile/projects/${projectGUID}?_scope=expenses`,
         token,
         {},

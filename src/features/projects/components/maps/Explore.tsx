@@ -62,7 +62,7 @@ export default function Explore({}: Props): ReactElement {
   const router = useRouter();
 
   const { theme } = React.useContext(ThemeContext);
-  const { embed, callbackUrl } = React.useContext(ParamsContext);
+  const { embed, callbackUrl, email } = React.useContext(ParamsContext);
 
   const handleModalClose = () => {
     setModalOpen(false);
@@ -219,7 +219,11 @@ export default function Explore({}: Props): ReactElement {
           onClick={() => {
             setExploreExpanded(!exploreExpanded);
           }}
-          style={exploreExpanded ? { padding: '4px 10px' } : {}}
+          style={
+            exploreExpanded
+              ? { padding: '4px 10px', marginTop: email ? '46px' : '' }
+              : { marginTop: email ? '46px' : '' }
+          }
         >
           {exploreExpanded ? <CancelIcon /> : <ExploreIcon />}
           {exploreExpanded ? null : isMobile ? null : (

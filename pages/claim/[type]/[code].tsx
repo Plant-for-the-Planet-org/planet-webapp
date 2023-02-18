@@ -12,7 +12,6 @@ import {
 } from '../../../src/features/common/RedeemMicro/RedeemCode';
 import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { ParamsContext } from '../../../src/features/common/Layout/QueryParamsContext';
 
 export type ClaimCode1 = string | null;
 
@@ -21,10 +20,9 @@ function ClaimDonation(): ReactElement {
 
   const router = useRouter();
 
-  const { user, contextLoaded, loginWithRedirect, token } =
+  const { user, contextLoaded, loginWithRedirect, token, validEmail } =
     React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { email } = React.useContext(ParamsContext);
   const [errorMessage, setErrorMessage] = React.useState<ClaimCode1>('');
   const [code, setCode] = React.useState<string | string[] | null>('');
   const [redeemedCodeData, setRedeemedCodeData] = React.useState<
@@ -60,7 +58,7 @@ function ClaimDonation(): ReactElement {
     };
     if (contextLoaded && user) {
       postAuthenticatedRequest(
-        email,
+        validEmail,
         `/app/redeem`,
         submitData,
         token,

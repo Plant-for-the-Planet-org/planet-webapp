@@ -189,7 +189,7 @@ function ProjectsList({
                 isMobile && hideSidebar && showProjectList !== 'true'
                   ? 'mobile-hidden'
                   : ''
-              } ${email && user ? `impersonationTop` : ''}`}
+              } ${!user?.allowedToSwitch ? `impersonationTop` : ''}`}
             >
               <div className={`header ${isMobile ? 'header--mobile' : ''}`}>
                 {isMobile && (!hideSidebar || showProjectList === 'true') && (

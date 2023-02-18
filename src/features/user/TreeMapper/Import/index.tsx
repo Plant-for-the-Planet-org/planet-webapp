@@ -15,7 +15,6 @@ import SampleTrees from './components/SampleTrees';
 import ReviewSubmit from './components/ReviewSubmit';
 import dynamic from 'next/dynamic';
 import theme from '../../../../theme/themeProperties';
-import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 const Stepper = styled(MuiStepper)({
   '&': {
@@ -43,8 +42,7 @@ const MapComponent = dynamic(() => import('./components/MapComponent'), {
 export default function ImportData({}: Props): ReactElement {
   const router = useRouter();
   const { t, ready } = useTranslation(['treemapper']);
-  const { token } = React.useContext(UserPropsContext);
-  const { email } = React.useContext(ParamsContext);
+  const { token, validEmail } = React.useContext(UserPropsContext);
 
   function getSteps() {
     return [
@@ -63,7 +61,7 @@ export default function ImportData({}: Props): ReactElement {
 
   const fetchPlantLocation = async (id: any): Promise<void> => {
     const result = await getAuthenticatedRequest(
-      email,
+      validEmail,
       `/treemapper/plantLocations/${id}?_scope=extended`,
       token
     );

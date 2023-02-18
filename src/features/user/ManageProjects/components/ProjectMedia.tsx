@@ -15,8 +15,7 @@ import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
-import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 interface Props {
   handleNext: Function;
   handleBack: Function;
@@ -38,7 +37,7 @@ export default function ProjectMedia({
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { email } = React.useContext(ParamsContext);
+  const { validEmail } = React.useContext(UserPropsContext);
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
   const [uploadedImages, setUploadedImages] = React.useState<Array<any>>([]);
@@ -50,7 +49,7 @@ export default function ProjectMedia({
     // Fetch images of the project
     if (projectGUID && token)
       getAuthenticatedRequest(
-        email,
+        validEmail,
         `/app/profile/projects/${projectGUID}?_scope=images`,
         token,
         {},
@@ -70,7 +69,7 @@ export default function ProjectMedia({
       isDefault: false,
     };
     postAuthenticatedRequest(
-      email,
+      validEmail,
       `/app/projects/${projectGUID}/images`,
       submitData,
       token,
@@ -155,7 +154,7 @@ export default function ProjectMedia({
 
   const deleteProjectCertificate = (id: any) => {
     deleteAuthenticatedRequest(
-      email,
+      validEmail,
       `/app/projects/${projectGUID}/images/${id}`,
       token,
       handleError
@@ -177,7 +176,7 @@ export default function ProjectMedia({
       videoUrl: data.youtubeURL,
     };
     putAuthenticatedRequest(
-      email,
+      validEmail,
       `/app/projects/${projectGUID}`,
       submitData,
       token,
@@ -217,7 +216,7 @@ export default function ProjectMedia({
       isDefault: true,
     };
     putAuthenticatedRequest(
-      email,
+      validEmail,
       `/app/projects/${projectGUID}/images/${id}`,
       submitData,
       token,
@@ -250,7 +249,7 @@ export default function ProjectMedia({
       description: e.target.value,
     };
     putAuthenticatedRequest(
-      email,
+      validEmail,
       `/app/projects/${projectGUID}/images/${id}`,
       submitData,
       token,

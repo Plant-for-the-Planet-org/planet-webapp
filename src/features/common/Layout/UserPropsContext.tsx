@@ -18,6 +18,7 @@ export const UserPropsContext = React.createContext({
   logoutUser: (value: string | undefined) => {},
   auth0User: {},
   auth0Error: {} || undefined,
+  validEmail: '',
 });
 
 function UserPropsProvider({ children }: any): ReactElement {
@@ -30,11 +31,12 @@ function UserPropsProvider({ children }: any): ReactElement {
     user,
     error,
   } = useAuth0();
-  const { email, setAlertError } = useContext(ParamsContext);
+  const { email, setAlertError, targetEmail } = useContext(ParamsContext);
   const router = useRouter();
   const [contextLoaded, setContextLoaded] = React.useState(false);
   const [token, setToken] = React.useState(null);
   const [profile, setUser] = React.useState<boolean | User | null>(false);
+  const [validEmail, setValidEmail] = React.useState('');
 
   React.useEffect(() => {
     async function loadToken() {
@@ -55,7 +57,10 @@ function UserPropsProvider({ children }: any): ReactElement {
   async function loadUser() {
     setContextLoaded(false);
     try {
-      const res = await getAccountInfo(token, email ? email : '');
+      const res = await getAccountInfo(
+        token,
+        targetEmail || validEmail ? targetEmail || validEmail : ''
+      );
       if (res.status === 200) {
         const resJson = await res.json();
         setUser(resJson);
@@ -63,6 +68,8 @@ function UserPropsProvider({ children }: any): ReactElement {
           localStorage.setItem('mainEmail', resJson?.email);
         }
         if (localStorage.getItem('mainEmail') !== resJson?.email) {
+          localStorage.setItem('targetEmail', resJson?.email);
+          setValidEmail(resJson?.email);
           router.push('/profile');
         }
       } else if (res.status === 403) {
@@ -93,13 +100,22 @@ function UserPropsProvider({ children }: any): ReactElement {
 
   React.useEffect(() => {
     if (token) loadUser();
-  }, [token, email]);
+  }, [token, validEmail, email]);
+
+  React.useEffect(() => {
+    const emailfromLocal = localStorage.getItem('targetEmail');
+    if (emailfromLocal) {
+      setValidEmail(emailfromLocal);
+    }
+  }, [validEmail, targetEmail]);
 
   return (
     <UserPropsContext.Provider
       value={{
         user: profile,
         setUser,
+        validEmail,
+        setValidEmail,
         contextLoaded,
         token,
         isLoading,
