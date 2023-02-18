@@ -190,7 +190,7 @@ function UserLayout(props: any): ReactElement {
   // const { asPath } = useRouter();
   const router = useRouter();
   const { email } = React.useContext(ParamsContext);
-  const { user, logoutUser, contextLoaded } =
+  const { user, logoutUser, contextLoaded, validEmail } =
     React.useContext(UserPropsContext);
 
   // Flags can be added to show labels on the right
@@ -439,9 +439,7 @@ function UserLayout(props: any): ReactElement {
       </div>
       <div
         className={`${
-          !user?.allowedToSwitch
-            ? `${styles.sidebarModified}`
-            : `${styles.sidebar}`
+          validEmail ? `${styles.sidebarModified}` : `${styles.sidebar}`
         } ${!isMenuOpen ? styles.menuClosed : ''}`}
       >
         <div className={styles.navLinksContainer}>
