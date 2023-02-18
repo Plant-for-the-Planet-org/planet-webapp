@@ -280,15 +280,12 @@ export default function NavbarComponent(props: any) {
     <></>
   ) : (
     <>
-      {!user?.allowedToSwitch && (
+      {validEmail && (
         <div className="impersonationAlertContainer" style={{ top: -142 }}>
           <ImpersonationActivated />
         </div>
       )}
-      <div
-        className={`mainNavContainer`}
-        style={{ top: !user?.allowedToSwitch ? 40 : 0 }}
-      >
+      <div className={`mainNavContainer`} style={{ top: validEmail ? 40 : 0 }}>
         <div className={'top_nav'}>
           <div className={'brandLogos'}>
             {config.header?.isSecondaryTenant && (
