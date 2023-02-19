@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useMemo } from 'react';
 import styles from '../AccountHistory.module.scss';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
@@ -42,7 +42,7 @@ export default function AccountRecord({
     ? styles.recordModal
     : `${styles.record} ${selectedRecord === index ? styles.selected : ''}`;
 
-  React.useEffect(() => {
+  useMemo(() => {
     if (
       record?.details?.donorCertificate ||
       record?.details?.taxDeductibleReceipt ||
