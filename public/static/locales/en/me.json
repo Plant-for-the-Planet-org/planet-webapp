@@ -248,7 +248,7 @@
   "apiKeyMessage3": "Regenerating an API Key will invalidate your existing API Key immediately.",
   "regenerateKey": "Regenerate Key",
   "giftFund": "GiftFund",
-  "issueReceipts": "Issue Receipts",
+  "issueReceipts": "Issue Donation Receipts",
   "taxReceiptsSuccess": "Successfully generated tax receipts",
-  "taxReceiptsAlreadyGenerated": "All tax receipts has already been generated"
+  "taxReceiptsAlreadyGenerated": "All donation receipts have already been generated"
 }
