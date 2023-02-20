@@ -250,5 +250,5 @@
   "giftFund": "GiftFund",
   "issueReceipts": "Issue Donation Receipts",
   "taxReceiptsSuccess": "Successfully generated tax receipts",
-  "taxReceiptsAlreadyGenerated": "All donation receipts have already been generated"
+  "taxReceiptsAlreadyGenerated": "All donation receipts have already been generated. Please check the donation details"
 }
