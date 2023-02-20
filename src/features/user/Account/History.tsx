@@ -1,5 +1,5 @@
 import React, { ReactElement, useContext, useEffect } from 'react';
-import { useTranslation } from 'next-i18next';
+import { Trans, useTranslation } from 'next-i18next';
 import TransactionListLoader from '../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../public/assets/images/icons/TransactionsNotFound';
 import AccountRecord from './components/AccountRecord';
@@ -135,6 +135,17 @@ export default function History({
             })}
         </div>
         <div className={`${styles.issueButtonMobileContainer}`}>
+          <p>
+            <Trans i18nKey="me:taxReceiptsDescription">
+              Press the button below to issue your tax receipts. The receipts
+              will show in each donation afterwards. Please make sure in advance
+              that your address data is correct at{' '}
+              <a className={styles.link} href="/profile/edit">
+                profile settings
+              </a>
+            </Trans>
+          </p>
+
           <MuiButton
             fullWidth
             variant="contained"
@@ -221,6 +232,17 @@ export default function History({
               </div>
             </div>
             <div className={styles.issueButtonContainer}>
+              <p>
+                <Trans i18nKey="me:taxReceiptsDescription">
+                  Press the button below to issue your tax receipts. The
+                  receipts will show in each donation afterwards. Please make
+                  sure in advance that your address data is correct at{' '}
+                  <a className={styles.link} href="/profile/edit">
+                    profile settings
+                  </a>
+                </Trans>
+              </p>
+
               <MuiButton
                 style={{ width: '100%' }}
                 variant="contained"

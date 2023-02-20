@@ -272,15 +272,28 @@
 
 .issueButtonMobileContainer {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
+  gap: 10px;
   align-items: center;
-  margin: 0px 0px 10px;
+  margin: 0px 0px 15px;
 }
 
 .issueButtonContainer {
   margin: 25px 0px 10px 0px;
   display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.link {
+  display: inline-block;
+  color: $primaryFontColor;
+  margin: 0;
+  padding: 0;
+  &:hover {
+    color: $primaryColor;
+  }
 }
 
 .filterButton.selected {

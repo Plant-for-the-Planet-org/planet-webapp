@@ -250,5 +250,6 @@
   "giftFund": "GiftFund",
   "issueReceipts": "Issue Donation Receipts",
   "taxReceiptsSuccess": "Successfully generated tax receipts",
-  "taxReceiptsAlreadyGenerated": "All donation receipts have already been generated. Please check the donation details"
+  "taxReceiptsAlreadyGenerated": "All donation receipts have already been generated. Please check the donation details.",
+  "taxReceiptsDescription": "Press the button below to issue your tax receipts. The receipts will show in each donation afterwards. Please make sure in advance that your address data is correct at <2>profile settings</2>"
 }
