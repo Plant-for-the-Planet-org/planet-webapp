@@ -54,28 +54,37 @@ function UserPropsProvider({ children }: any): ReactElement {
     logout({ returnTo: returnUrl });
   };
 
+  const validation = (validEmail, email) => {
+    if (validEmail || email) {
+      return validEmail || email;
+    } else {
+      return undefined;
+    }
+  };
+
   async function loadUser() {
     setContextLoaded(false);
     try {
-      const res = await getAccountInfo(
-        token,
-        validEmail ? validEmail : targetEmail
-      );
+      const res = await getAccountInfo(token, validation(validEmail, email));
       if (res.status === 200) {
         const resJson = await res.json();
         setUser(resJson);
+
         if (resJson?.allowedToSwitch) {
-          localStorage.removeItem('targetEmail');
-          localStorage.setItem('mainEmail', resJson?.email);
+          //this logic  only run if user authorized for doing impersonation
+          localStorage.setItem('firstUser', resJson?.email);
         }
-        if (localStorage.getItem('mainEmail') !== resJson?.email) {
-          localStorage.setItem('targetEmail', resJson?.email);
+
+        if (
+          localStorage.getItem('firstUser') &&
+          localStorage.getItem('firstUser') !== resJson?.email
+        ) {
+          localStorage.setItem('secondUser', resJson?.email);
           setValidEmail(resJson?.email);
           router.push('/profile');
         }
       } else if (res.status === 403) {
         setAlertError(true);
-        localStorage.removeItem('targetEmail');
       } else if (res.status === 303) {
         // if 303 -> user doesn not exist in db
         setUser(null);
@@ -101,14 +110,14 @@ function UserPropsProvider({ children }: any): ReactElement {
 
   React.useEffect(() => {
     if (token) loadUser();
-  }, [token, email]);
+  }, [token, validEmail, email]);
 
   React.useEffect(() => {
-    const emailfromLocal = localStorage.getItem('targetEmail');
-    if (emailfromLocal) {
-      setValidEmail(emailfromLocal);
+    const emailFromLocal = localStorage.getItem('secondUser');
+    if (emailFromLocal) {
+      setValidEmail(emailFromLocal);
     }
-  }, [validEmail, email]);
+  }, [email, validEmail]);
 
   return (
     <UserPropsContext.Provider

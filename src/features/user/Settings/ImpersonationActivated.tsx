@@ -12,7 +12,7 @@ const ImpersonationActivated = () => {
   const { setValidEmail, validEmail } = useContext(UserPropsContext);
   const { push } = useRouter();
   const closeAlert = () => {
-    localStorage.removeItem('targetEmail');
+    localStorage.removeItem('secondUser');
     setTargetEmail('');
     setValidEmail('');
     setEmail('');
