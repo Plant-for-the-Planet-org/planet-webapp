@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import DashboardView from '../../../common/Layout/DashboardView';
 import { useTranslation } from 'react-i18next';
+import ProjectFilter from './components/Filter';
 
 interface Props {
   setProgress: Dispatch<SetStateAction<number>>;
@@ -11,7 +12,7 @@ const Analytics = ({ setProgress }: Props) => {
 
   return ready ? (
     <DashboardView title={t('treemapperAnalytics:title')} subtitle={null}>
-      <h1>Graphs</h1>
+      <ProjectFilter  {...{setProgress}} />
     </DashboardView>
   ) : null;
 };
