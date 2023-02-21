@@ -291,7 +291,7 @@ function UserLayout(props: any): ReactElement {
           hideItem: !(user?.type === 'tpo'),
         },
         {
-          title: t('treemapperAnalytics:title'),
+          title: t('me:analytics'),
           path: '/profile/treemapper/analytics',
         },
       ],
