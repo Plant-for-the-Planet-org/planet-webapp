@@ -13,13 +13,10 @@
   @include xsPhoneView {
     padding-left: 0;
     margin-left: 0;
-    & .hamburgerImpersonation {
-      margin-top: 66px;
-    }
     & .hamburgerIcon {
       display: block;
       position: fixed;
-      top: 100px;
+      top: 149px;
       left: 20px;
       z-index: 10;
       height: 42px;

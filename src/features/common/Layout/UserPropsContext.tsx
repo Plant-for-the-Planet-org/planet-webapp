@@ -59,12 +59,13 @@ function UserPropsProvider({ children }: any): ReactElement {
     try {
       const res = await getAccountInfo(
         token,
-        targetEmail || validEmail ? targetEmail || validEmail : ''
+        validEmail ? validEmail : targetEmail
       );
       if (res.status === 200) {
         const resJson = await res.json();
         setUser(resJson);
         if (resJson?.allowedToSwitch) {
+          localStorage.removeItem('targetEmail');
           localStorage.setItem('mainEmail', resJson?.email);
         }
         if (localStorage.getItem('mainEmail') !== resJson?.email) {
@@ -100,14 +101,14 @@ function UserPropsProvider({ children }: any): ReactElement {
 
   React.useEffect(() => {
     if (token) loadUser();
-  }, [token, validEmail, email]);
+  }, [token, email]);
 
   React.useEffect(() => {
     const emailfromLocal = localStorage.getItem('targetEmail');
     if (emailfromLocal) {
       setValidEmail(emailfromLocal);
     }
-  }, [validEmail, targetEmail]);
+  }, [validEmail, email]);
 
   return (
     <UserPropsContext.Provider

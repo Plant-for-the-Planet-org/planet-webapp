@@ -13,9 +13,9 @@ const ImpersonationActivated = () => {
   const { push } = useRouter();
   const closeAlert = () => {
     localStorage.removeItem('targetEmail');
-    setEmail('');
-    setValidEmail('');
     setTargetEmail('');
+    setValidEmail('');
+    setEmail('');
     push(`/profile/switch-user`);
   };
 

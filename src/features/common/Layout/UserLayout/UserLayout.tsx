@@ -430,9 +430,7 @@ function UserLayout(props: any): ReactElement {
     <div className={styles.profilePageContainer}>
       <div
         key={'hamburgerIcon'}
-        className={`${styles.hamburgerIcon} ${
-          email ? `${styles.hamburgerImpersonation}` : ''
-        }`}
+        className={`${styles.hamburgerIcon}`}
         onClick={() => setIsMenuOpen(true)} // for mobile verion to open menu
       >
         <MenuIcon />

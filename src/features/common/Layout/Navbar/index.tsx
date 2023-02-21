@@ -285,7 +285,7 @@ export default function NavbarComponent(props: any) {
           <ImpersonationActivated />
         </div>
       )}
-      <div className={`mainNavContainer`} style={{ top: validEmail ? 40 : 0 }}>
+      <div className={`mainNavContainer`} style={{ top: validEmail ? 49 : 0 }}>
         <div className={'top_nav'}>
           <div className={'brandLogos'}>
             {config.header?.isSecondaryTenant && (
