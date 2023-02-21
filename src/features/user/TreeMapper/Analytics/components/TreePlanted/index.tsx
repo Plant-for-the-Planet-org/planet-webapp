@@ -1,5 +1,4 @@
 import data from '../../treesPlantedMockData.json';
-import { ApexOptions } from 'apexcharts';
 import { format } from 'date-fns';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
@@ -21,7 +20,6 @@ data.forEach((plant) => {
 export const TreePlanted = () => {
   const [series, setSeries] = useState([
     {
-      name: 'Inflation',
       data: plantedTrees || [],
     },
   ]);
@@ -38,7 +36,7 @@ export const TreePlanted = () => {
           zoomout: true,
           download: true,
         },
-        offsetY: -10,
+        offsetY: -15,
       },
     },
     plotOptions: {
