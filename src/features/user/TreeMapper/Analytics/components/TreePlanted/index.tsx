@@ -1,5 +1,6 @@
 import data from '../../treesPlantedMockData.json';
 import { ApexOptions } from 'apexcharts';
+import { format } from 'date-fns';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import styles from './index.module.scss';
@@ -9,11 +10,19 @@ const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
 });
 
+const plantedTrees = [];
+const timeFrame = [];
+
+data.forEach((plant) => {
+  plantedTrees.push(plant.trees_planted);
+  timeFrame.push(format(new Date(plant.plant_date), 'MM/dd/yy'));
+});
+
 export const TreePlanted = () => {
   const [series, setSeries] = useState([
     {
       name: 'Inflation',
-      data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2],
+      data: plantedTrees || [],
     },
   ]);
 
@@ -29,11 +38,12 @@ export const TreePlanted = () => {
           zoomout: true,
           download: true,
         },
+        offsetY: -10,
       },
     },
     plotOptions: {
       bar: {
-        borderRadius: 10,
+        borderRadius: 0,
         dataLabels: {
           position: 'top', // top, center, bottom
         },
@@ -42,7 +52,7 @@ export const TreePlanted = () => {
     dataLabels: {
       enabled: true,
       formatter: function (val) {
-        return val + '%';
+        return val;
       },
       offsetY: -20,
       style: {
@@ -56,20 +66,7 @@ export const TreePlanted = () => {
     },
 
     xaxis: {
-      categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ],
+      categories: timeFrame,
       position: 'top',
       axisBorder: {
         show: false,
@@ -104,7 +101,7 @@ export const TreePlanted = () => {
       labels: {
         show: false,
         formatter: function (val) {
-          return val + '%';
+          return val;
         },
       },
     },
