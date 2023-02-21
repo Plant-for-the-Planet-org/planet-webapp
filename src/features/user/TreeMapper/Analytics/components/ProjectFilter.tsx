@@ -78,9 +78,9 @@ const ProjectFilter = ({ setProgress }: Props) => {
             inputFormat="MMMM d, yyyy"
             // minDate={}
             maxDate={new Date()}
-            // DialogProps={{
-            //   sx: dialogSx,
-            // }}
+            DialogProps={{
+              sx: dialogSx,
+            }}
           />
         </LocalizationProvider>
       </Grid>
@@ -104,9 +104,9 @@ const ProjectFilter = ({ setProgress }: Props) => {
             inputFormat="MMMM d, yyyy"
             minDate={fromDate}
             maxDate={new Date()}
-            // DialogProps={{
-            //   sx: dialogSx,
-            // }}
+            DialogProps={{
+              sx: dialogSx,
+            }}
           />
         </LocalizationProvider>
       </Grid>
