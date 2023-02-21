@@ -3,6 +3,7 @@ import DashboardView from '../../../common/Layout/DashboardView';
 import { useTranslation } from 'react-i18next';
 import ProjectFilter from './components/ProjectFilter';
 import { useAnalytics } from '../../../common/Layout/AnalyticsContext';
+import { Graphs } from './components/Graphs';
 
 interface Props {
   setProgress: Dispatch<SetStateAction<number>>;
@@ -43,7 +44,7 @@ const Analytics = ({ setProgress }: Props) => {
   return ready ? (
     <DashboardView title={t('treemapperAnalytics:title')} subtitle={null}>
       <ProjectFilter {...{ setProgress }} />
-      {/* <Graphs /> */}
+      <Graphs {...{ setProgress }} />
     </DashboardView>
   ) : null;
 };
