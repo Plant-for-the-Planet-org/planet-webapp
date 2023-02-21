@@ -31,3 +31,11 @@ export const AnalyticsProvider: FC = ({children}) => {
 
     return (<AnalyticsContext.Provider value={value}>{children}</AnalyticsContext.Provider>)
 }
+
+export const useAnalytics = (): AnalyticsContextInterface => {
+    const context = useContext(AnalyticsContext);
+    if (!context) {
+      throw new Error('AnalyticsContext must be used within AnalyticsProvider');
+    }
+    return context;
+  };
