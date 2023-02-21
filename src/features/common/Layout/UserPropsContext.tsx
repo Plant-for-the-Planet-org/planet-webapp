@@ -17,6 +17,7 @@ export const UserPropsContext = React.createContext({
   logoutUser: (value: string | undefined) => {},
   auth0User: {},
   auth0Error: {} || undefined,
+  userLang: 'en',
 });
 
 function UserPropsProvider({ children }: any): ReactElement {
@@ -34,6 +35,14 @@ function UserPropsProvider({ children }: any): ReactElement {
   const [contextLoaded, setContextLoaded] = React.useState(false);
   const [token, setToken] = React.useState(null);
   const [profile, setUser] = React.useState<boolean | User | null>(false);
+  const [userLang, setUserLang] = React.useState('en');
+
+  React.useEffect(() => {
+    if (localStorage.getItem('language')) {
+      const userLang = localStorage.getItem('language');
+      if (userLang) setUserLang(userLang);
+    }
+  }, []);
 
   React.useEffect(() => {
     async function loadToken() {
@@ -98,6 +107,7 @@ function UserPropsProvider({ children }: any): ReactElement {
         logoutUser,
         auth0User: user,
         auth0Error: error,
+        userLang,
       }}
     >
       {children}
