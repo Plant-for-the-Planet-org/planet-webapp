@@ -2,7 +2,7 @@ import {useContext, createContext, useMemo, useState, Dispatch, SetStateAction, 
 
 import { SetState } from '../types/common';
 
-interface Project {
+export interface Project {
     guid: string;
     slug: string;
     name: string;
