@@ -237,6 +237,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
                 currency={planetCashAccount?.currency}
                 units={getTotalUnits()}
                 unit={project?.unit}
+                isImport={bulkMethod === 'import'}
               />
             </div>
 

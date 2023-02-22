@@ -10,12 +10,20 @@
   "importMethodText": {
     "title": "Import File",
     "subtitle": "Use this method if one of the following criteria match your use case:",
-    "details": ["I want to provide the Recipient's name or Email for each code.", "I want Plant-for-the-Planet to automatically email the recipients once it has been generated (optional).", "I want to issue codes for different tree counts."]
+    "details": [
+      "I want to provide the Recipient's name or Email for each code.",
+      "I want Plant-for-the-Planet to automatically email the recipients once it has been generated (optional).",
+      "I want to issue codes for different tree counts."
+    ]
   },
   "genericMethodText": {
     "title": "Create Generic Codes",
     "subtitle": "Use this method if the following criteria matches your use case:",
-    "details": ["All codes will have the same value.", "I want to generate a number of code for arbitrary recipients.", "Names and Emails cannot be associated with the code."]
+    "details": [
+      "All codes will have the same value.",
+      "I want to generate a number of code for arbitrary recipients.",
+      "Names and Emails cannot be associated with the code."
+    ]
   },
   "projectName": "Project Name",
   "costPerUnit": "Cost per Unit",
@@ -31,6 +39,7 @@
   "occasion": "Occasion",
   "total": "Total",
   "chargeConsentText": "By clicking Issue Codes, you agree that above amount will be charged to your account.",
+  "invalidEmailWarningText": "Please make sure that that recipient_email is a valid email. Using dummy or invalid emails will lead to account suspension in accordance with Platform terms and conditions.",
   "projectRequired": "No project is selected.",
   "unitsPerCodeRequired": "Each code should contain at least 1 unit.",
   "codeQuantityRequired": "You need to create at least 1 code.",
@@ -41,18 +50,18 @@
   "insufficientPCashBalance": "Insufficient balance.",
   "addBalanceGeneric": "Please Click here to add funds.",
   "instructionsUploadCSV": {
-    "empty": "Drag and drop / click to select a .csv file for upload.",
-    "error": "Please check for issues and drag .csv file here to upload.",
+    "empty": "Drag and drop / click to select a .xslx / .csv file for upload.",
+    "error": "Please check for issues and drag .xslx / .csv file here to upload.",
     "processing": "Please wait while we analyze your file...",
-    "success": "Continue or drag .csv file here to replace current file."
+    "success": "Continue or drag .xlsx or .csv file here to replace current file."
   },
   "statusUploadCSV": {
     "error": "Error",
     "success": "File analysis complete"
   },
   "errorUploadCSV": {
-    "fileInvalidType": "Only CSV files are permitted.",
-    "tooManyFiles": "Please upload only a single CSV file.",
+    "fileInvalidType": "Only .csv and .xslx files are permitted.",
+    "tooManyFiles": "Please upload only a single file.",
     "fileTooSmall": "The uploaded file seems to be empty.",
     "fileTooLarge": "The uploaded file must be 5MB or less.",
     "missingColumns": "The uploaded file does not contain the following columns: ",
@@ -61,13 +70,13 @@
     "unitsNotProvided": "Units are missing/invalid for some recipients.",
     "notifyNotPossible": "Email and name are missing for some recipients that are to be notified.",
     "instructionRowError": "An error occurred on the 1st row. Please check if you have deleted the instructions, or if there is additional data.",
-    "invalidEmails": "The emails provided are invalid on the following rows: ",
+    "invalidEmails": "recipient_email contains dummy/invalid emails on the following rows: {{rowList}}. Please remove invalid emails or add valid emails.",
     "generalError": "Something went wrong. Please try after a while."
   },
   "successUploadCSV": {
-    "ignoredColumns": "Extra columns in the CSV were ignored"
+    "ignoredColumns": "Extra columns were ignored"
   },
-  "importInstructions": "Please refer to the <2>documentation here</2>, and download<4> </4><5>template here</5>.",
+  "importInstructions": "Please refer to the <2>documentation here</2>, download <5>Excel template here</5>, and <8>CSV template here.</8>",
   "donationSuccess": "Your donation was successful. Redirecting you to view donation details shortly...",
   "donationError": {
     "planet_cash_insufficient_credit": "Available credit = {{availableBalance}}. Please load balance in your PlanetCash account to make this donation.",

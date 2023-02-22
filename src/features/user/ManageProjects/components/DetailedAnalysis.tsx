@@ -31,6 +31,9 @@ const dialogSx: SxProps = {
       color: '#fff',
     },
   },
+  '.MuiDialogActions-root': {
+    paddingBottom: '12px',
+  },
 };
 
 const yearDialogSx: SxProps = {
@@ -44,6 +47,9 @@ const yearDialogSx: SxProps = {
       backgroundColor: `${themeProperties.primaryColor} !important`,
       color: '#fff',
     },
+  },
+  '.MuiDialogActions-root': {
+    paddingBottom: '12px',
   },
 };
 
