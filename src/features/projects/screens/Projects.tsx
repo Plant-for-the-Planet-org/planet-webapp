@@ -37,9 +37,9 @@ function ProjectsList({
   const [hideSidebar, setHideSidebar] = React.useState(isEmbed);
   const { t, ready } = useTranslation(['donate', 'country', 'maps']);
 
-  const topProjectsList = process.env.NEXT_PUBLIC_TOP_PROJECTS_LIST;
+  const topProjectsList = process.env.NEXT_PUBLIC_FEATURED_LIST;
 
-  const showTopProjectsList = topProjectsList === 'true' ? true : false;
+  const showTopProjectsList = topProjectsList === 'false' ? false : true;
 
   const [selectedTab, setSelectedTab] = React.useState<'all' | 'top'>('all');
   const [searchMode, setSearchMode] = React.useState(false);
