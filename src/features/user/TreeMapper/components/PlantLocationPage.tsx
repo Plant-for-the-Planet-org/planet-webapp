@@ -106,20 +106,32 @@ export function LocationDetails({
           <p className={styles.title}>{t('captureStatus')}</p>
           <div className={styles.value}>{t(location.captureStatus)}</div>
         </div>
-        {location?.deviceLocation ? (
-          <div className={styles.singleDetail}>
-            <p className={styles.title}>
-              {t('coordinates')} <CopyToClipboard text={text} />
-            </p>
-            <div className={styles.value}>{text.split(',').join(', ')}</div>
-          </div>
-        ) : (
-          []
-        )}
         {/* <div className={styles.singleDetail}>
               <p className={styles.title}>{t('guid')}</p>
               <div className={styles.value}>{location.id}</div>
             </div> */}
+        {location?.deviceLocation ? (
+          <div className={styles.rowDetail}>
+            <div className={styles.singleDetail}>
+              <p className={styles.title}>
+                {t('coordinates')} <CopyToClipboard text={text} />
+              </p>
+              <div className={styles.value}>{text.split(',').join(', ')}</div>
+            </div>
+          </div>
+        ) : (
+          []
+        )}
+        <div className={styles.singleDetail}>
+          <p className={styles.title}>{t('plantDate')}</p>
+          <div className={styles.value}>{formatDate(location.plantDate)}</div>
+        </div>
+        <div className={styles.singleDetail}>
+          <p className={styles.title}>{t('registrationDate')}</p>
+          <div className={styles.value}>
+            {formatDate(location.registrationDate)}
+          </div>
+        </div>
         {location.measurements && (
           <>
             <div className={styles.measurements}>
@@ -155,20 +167,6 @@ export function LocationDetails({
             </div>
           </>
         )}
-        <div className={`${location.plantProject ? '' : styles.rowDetail}`}>
-          <div className={styles.singleDetail}>
-            <p className={styles.title}>{t('plantDate')}</p>
-            <div className={styles.value}>{formatDate(location.plantDate)}</div>
-          </div>
-        </div>
-        <div className={`${location.plantProject ? '' : styles.rowDetail}`}>
-          <div className={styles.singleDetail}>
-            <p className={styles.title}>{t('registrationDate')}</p>
-            <div className={styles.value}>
-              {formatDate(location.registrationDate)}
-            </div>
-          </div>
-        </div>
         {location.plantProject && (
           <div className={styles.singleDetail}>
             <p className={styles.title}>{t('plantProject')}</p>
