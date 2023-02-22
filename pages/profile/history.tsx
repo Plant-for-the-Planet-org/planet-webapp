@@ -8,8 +8,6 @@ import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { ParamsContext } from '../../src/features/common/Layout/QueryParamsContext';
-
 interface Props {}
 
 function AccountHistory({}: Props): ReactElement {
@@ -72,7 +70,7 @@ function AccountHistory({}: Props): ReactElement {
         setaccountingFilters(paymentHistory._filters);
       } else {
         const paymentHistory = await getAuthenticatedRequest(
-          email,
+          validEmail,
           `${
             filter && accountingFilters
               ? accountingFilters[filter] + '&limit=15'

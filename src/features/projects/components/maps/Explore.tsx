@@ -23,6 +23,7 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 interface Props {}
 
@@ -52,8 +53,6 @@ export default function Explore({}: Props): ReactElement {
     setViewPort,
     setExploreProjects,
     defaultMapCenter,
-    mapState,
-    setMapState,
     isMobile,
     exploreProjects,
   } = React.useContext(ProjectPropsContext);
@@ -62,7 +61,8 @@ export default function Explore({}: Props): ReactElement {
   const router = useRouter();
 
   const { theme } = React.useContext(ThemeContext);
-  const { embed, callbackUrl, email } = React.useContext(ParamsContext);
+  const { embed, callbackUrl } = React.useContext(ParamsContext);
+  const { validEmail } = React.useContext(UserPropsContext);
 
   const handleModalClose = () => {
     setModalOpen(false);
@@ -221,8 +221,8 @@ export default function Explore({}: Props): ReactElement {
           }}
           style={
             exploreExpanded
-              ? { padding: '4px 10px', marginTop: email ? '46px' : '' }
-              : { marginTop: email ? '46px' : '' }
+              ? { padding: '4px 10px', marginTop: validEmail ? '46px' : '' }
+              : { marginTop: validEmail ? '46px' : '' }
           }
         >
           {exploreExpanded ? <CancelIcon /> : <ExploreIcon />}

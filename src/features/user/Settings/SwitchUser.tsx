@@ -3,22 +3,31 @@ import styles from './SwitchUser.module.scss';
 import { SwitchUserContainer } from '../../common/Layout/SwitchUserContainer';
 import { TextField, Button } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { useContext } from 'react';
+
+export type FormData = {
+  targetEmail: string;
+};
 
 const SwitchUser = () => {
   const { t } = useTranslation('me');
 
-  const { register, errors, handleSubmit } = useForm({
+  const { register, errors, handleSubmit } = useForm<FormData>({
     mode: 'onSubmit',
   });
-  const { targetEmail, setTargetEmail, setAlertError, alertError, setEmail } =
-    useContext(ParamsContext);
-
-  const handle = () => {
+  const {
+    targetEmail,
+    setTargetEmail,
+    setAlertError,
+    alertError,
+    setImpersonationEmail,
+  } = useContext(UserPropsContext);
+  console.log(errors);
+  const handle = (data: FormData): void => {
     setAlertError(false);
-    if (targetEmail) {
-      setEmail(targetEmail);
+    if (data.targetEmail) {
+      setImpersonationEmail(data.targetEmail);
       setTargetEmail('');
     }
   };
@@ -47,19 +56,16 @@ const SwitchUser = () => {
                 name="targetEmail"
                 label={t('me:profileEmail')}
                 placeholder="xyz@email.com"
-              />
+                error={errors.targetEmail || alertError}
+                helperText={
+                  (!alertError &&
+                    errors.targetEmail &&
+                    errors.targetEmail.message) ||
+                  (alertError && !targetEmail && t('me:userNotexist'))
+                }
+              />{' '}
             </div>
-            {!alertError && errors.targetEmail && (
-              <span className={styles.emailErrors}>
-                {errors.targetEmail.message}
-              </span>
-            )}
-            {alertError && !targetEmail && (
-              <span className={styles.emailErrors}>
-                {' '}
-                {t('me:userNotexist')}
-              </span>
-            )}
+
             <div>
               <Button
                 variant="contained"

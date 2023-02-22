@@ -189,7 +189,7 @@ function UserLayout(props: any): ReactElement {
   const { t } = useTranslation(['common', 'me']);
   // const { asPath } = useRouter();
   const router = useRouter();
-  const { email } = React.useContext(ParamsContext);
+
   const { user, logoutUser, contextLoaded, validEmail } =
     React.useContext(UserPropsContext);
 

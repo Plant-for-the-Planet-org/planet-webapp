@@ -13,9 +13,6 @@ export interface ParamsContextType {
   language: QueryParamType;
   showProjectDetails: QueryParamType;
   showProjectList: QueryParamType;
-  email: QueryParamType;
-  targetEmail: QueryParamType;
-  alertError: boolean;
 }
 export const ParamsContext = createContext<ParamsContextType>({
   embed: undefined,
@@ -24,9 +21,6 @@ export const ParamsContext = createContext<ParamsContextType>({
   language: undefined,
   showProjectDetails: undefined,
   showProjectList: undefined,
-  email: '',
-  targetEmail: '',
-  alertError: false,
 });
 
 const QueryParamsProvider: FC = ({ children }) => {
@@ -47,9 +41,6 @@ const QueryParamsProvider: FC = ({ children }) => {
     useState<QueryParamType>(undefined);
   const router = useRouter();
   const { query } = router;
-  const [email, setEmail] = useState('');
-  const [targetEmail, setTargetEmail] = useState('');
-  const [alertError, setAlertError] = React.useState<boolean>(false);
 
   useEffect(() => {
     if (query.embed) setEmbed(query.embed);
@@ -106,12 +97,6 @@ const QueryParamsProvider: FC = ({ children }) => {
   return (
     <ParamsContext.Provider
       value={{
-        alertError,
-        setAlertError,
-        email,
-        setEmail,
-        targetEmail,
-        setTargetEmail,
         embed,
         showBackIcon,
         callbackUrl,

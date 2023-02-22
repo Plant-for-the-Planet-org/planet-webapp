@@ -5,7 +5,8 @@ export const SwitchUserContainer = styled('div')(({ theme }) => ({
   boxShadow: theme.shadows[1],
   borderRadius: 9,
   marginTop: '32px',
-  height: '167px',
+  height: '180px',
+  width: '360px',
 
   '& .MuiTextField-root': {
     marginTop: 20,
@@ -23,5 +24,8 @@ export const SwitchUserContainer = styled('div')(({ theme }) => ({
     color: '#fff',
     fontFamily:
       '-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol',
+  },
+  '& .MuiFormHelperText-root': {
+    marginLeft: 0,
   },
 }));

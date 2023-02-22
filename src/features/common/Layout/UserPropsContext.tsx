@@ -1,9 +1,8 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { useRouter } from 'next/router';
-import React, { ReactElement, useContext } from 'react';
+import React, { ReactElement } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
 import { User } from '../types/user';
-import { ParamsContext } from './QueryParamsContext';
 
 interface Props {}
 
@@ -19,6 +18,8 @@ export const UserPropsContext = React.createContext({
   auth0User: {},
   auth0Error: {} || undefined,
   validEmail: '',
+  impersonationEmail: '',
+  targetEmail: '',
 });
 
 function UserPropsProvider({ children }: any): ReactElement {
@@ -31,12 +32,15 @@ function UserPropsProvider({ children }: any): ReactElement {
     user,
     error,
   } = useAuth0();
-  const { email, setAlertError, targetEmail } = useContext(ParamsContext);
+
   const router = useRouter();
   const [contextLoaded, setContextLoaded] = React.useState(false);
   const [token, setToken] = React.useState(null);
   const [profile, setUser] = React.useState<boolean | User | null>(false);
   const [validEmail, setValidEmail] = React.useState('');
+  const [impersonationEmail, setImpersonationEmail] = React.useState('');
+  const [targetEmail, setTargetEmail] = React.useState('');
+  const [alertError, setAlertError] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     async function loadToken() {
@@ -65,7 +69,10 @@ function UserPropsProvider({ children }: any): ReactElement {
   async function loadUser() {
     setContextLoaded(false);
     try {
-      const res = await getAccountInfo(token, validation(validEmail, email));
+      const res = await getAccountInfo(
+        token,
+        validation(validEmail, impersonationEmail)
+      );
       if (res.status === 200) {
         const resJson = await res.json();
         setUser(resJson);
@@ -110,18 +117,24 @@ function UserPropsProvider({ children }: any): ReactElement {
 
   React.useEffect(() => {
     if (token) loadUser();
-  }, [token, validEmail, email]);
+  }, [token, validEmail, impersonationEmail]);
 
   React.useEffect(() => {
     const emailFromLocal = localStorage.getItem('secondUser');
     if (emailFromLocal) {
       setValidEmail(emailFromLocal);
     }
-  }, [email, validEmail]);
+  }, [impersonationEmail, validEmail]);
 
   return (
     <UserPropsContext.Provider
       value={{
+        alertError,
+        setAlertError,
+        targetEmail,
+        setTargetEmail,
+        impersonationEmail,
+        setImpersonationEmail,
         user: profile,
         setUser,
         validEmail,
