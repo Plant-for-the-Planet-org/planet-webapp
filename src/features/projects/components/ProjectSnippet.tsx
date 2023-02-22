@@ -107,7 +107,7 @@ export default function ProjectSnippet({
             {project.isApproved && (
               <>
                 <VerifiedIcon
-                  sx={{ color: '#42A5F5' }}
+                  sx={{ color: '#fff' }}
                   className={'verifiedIcon'}
                   {...bindHover(popupState)}
                 />

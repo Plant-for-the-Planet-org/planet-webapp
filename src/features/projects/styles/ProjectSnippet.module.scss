@@ -117,23 +117,20 @@
   font-family: $primaryFontFamily;
   font-size: $fontMedium;
   color: $light;
-  display: inline;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 5px;
 }
-.verifiedIcon {
-  margin-left: 7px;
-  margin-bottom: -7px;
-}
-.topProjectBadge{
+
+.topProjectBadge {
   position: absolute;
   top: 12px;
   right: 16px;
-  background-color: $backgroundBase;
-  border-radius: 20px;
-  padding: 0 10px;
-  color: $primaryColor;
-  border: 1px solid $primaryColor;
-  text-transform: uppercase;
-  font-weight: 400;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 4px 12px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
 }
 
 /* Progress Bar */
