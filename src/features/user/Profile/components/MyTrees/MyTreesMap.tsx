@@ -11,7 +11,7 @@ import {
   getFormattedNumber,
   getFormattedRoundedNumber,
 } from '../../../../../utils/getFormattedNumber';
-import i18next from '../../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
@@ -33,7 +33,6 @@ export default function MyTreesMap({
   contributions,
   authenticatedType,
 }: Props): ReactElement {
-  const { useTranslation } = i18next;
   const { i18n, t } = useTranslation('me');
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;

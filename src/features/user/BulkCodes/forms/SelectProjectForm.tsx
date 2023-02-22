@@ -1,5 +1,5 @@
 import React, { ReactElement, useContext, useState } from 'react';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
 import {
@@ -13,8 +13,6 @@ import BulkCodesError from '../components/BulkCodesError';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
-
-const { useTranslation } = i18next;
 
 const SelectProjectForm = (): ReactElement | null => {
   const router = useRouter();

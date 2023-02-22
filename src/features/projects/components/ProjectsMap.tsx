@@ -7,16 +7,12 @@ import ExploreLayers from './maps/ExploreLayers';
 import Home from './maps/Home';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import PlantLocations from './maps/PlantLocations';
-import { useRouter } from 'next/router';
 import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
-const { useTranslation } = i18next;
-
 export default function ProjectsMap(): ReactElement {
-  const router = useRouter();
   const {
     project,
     showSingleProject,
@@ -47,6 +43,8 @@ export default function ProjectsMap(): ReactElement {
     hoveredPl,
     setIsPolygonMenuOpen,
     setFilterOpen,
+    setSamplePlantLocation,
+    samplePlantLocation,
   } = React.useContext(ProjectPropsContext);
 
   const { t } = useTranslation(['maps']);
@@ -95,24 +93,8 @@ export default function ProjectsMap(): ReactElement {
     setMapState,
   };
 
-  const exploreProps = {
-    loaded,
-    mapRef,
-    setShowProjects,
-    viewport,
-    setViewPort,
-    setExploreProjects,
-    defaultMapCenter,
-    mapState,
-    setMapState,
-    isMobile,
-    exploreProjects,
-    showSingleProject,
-  };
-
   const onMapClick = (e: MapEvent) => {
-    setSelectedPl(null);
-    setHoveredPl(null);
+    setSamplePlantLocation(null);
     setPopupData({ ...popupData, show: false });
     setIsPolygonMenuOpen(false);
     setFilterOpen(false);
@@ -186,7 +168,7 @@ export default function ProjectsMap(): ReactElement {
         onViewportChange={_onViewportChange}
         onStateChange={_onStateChange}
         onClick={onMapClick}
-        onHover={plIds ? onMapHover : undefined}
+        onHover={onMapHover}
         onLoad={() => setLoaded(true)}
         interactiveLayerIds={plIds ? plIds : undefined}
       >
@@ -223,7 +205,11 @@ export default function ProjectsMap(): ReactElement {
             offsetTop={-5}
             tipSize={0}
           >
-            <div className={styles.clickForDetails}>{t('clickForDetails')}</div>
+            {hoveredPl?.hid && selectedPl?.hid !== hoveredPl?.hid && (
+              <div className={styles.clickForDetails}>
+                {t('clickForDetails')}
+              </div>
+            )}
           </Popup>
         )}
       </MapGL>

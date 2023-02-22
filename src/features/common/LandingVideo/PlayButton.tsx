@@ -2,10 +2,8 @@ import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import PlayIcon from '../../../../public/assets/images/icons/PlayIcon';
 import styles from './styles.module.scss';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import { ParamsContext } from '../Layout/QueryParamsContext';
-
-const { useTranslation } = i18next;
 
 interface Props {
   setshowVideo: Function;

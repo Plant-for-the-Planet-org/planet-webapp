@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import dynamic from 'next/dynamic';
 import MuiButton from '../../common/InputTypes/MuiButton';
 import ProjectLoader from '../../common/ContentLoaders/Projects/ProjectLoader';
-import i18next from '../../../../i18n/';
+import { useTranslation } from 'next-i18next';
 import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../public/assets/images/NotFound';
 import Header from '../components/projects/Header';
@@ -18,7 +18,6 @@ interface Props {
   setsearchedProjects: any;
 }
 
-const { useTranslation } = i18next;
 const ProjectSnippet = dynamic(() => import('../components/ProjectSnippet'), {
   loading: () => <ProjectLoader />,
 });

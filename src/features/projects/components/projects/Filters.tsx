@@ -1,12 +1,9 @@
 import React, { ReactElement } from 'react';
 import styles from '../../styles/Filters.module.scss';
-import i18next from '../../../../../i18n/';
+import { useTranslation } from 'next-i18next';
 import { FormControlLabel, FormGroup } from '@mui/material';
 import Switch from '../../../common/InputTypes/ToggleSwitch';
-import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
-
-const { useTranslation } = i18next;
 
 interface Props {}
 

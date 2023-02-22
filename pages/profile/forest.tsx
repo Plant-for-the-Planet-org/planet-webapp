@@ -3,9 +3,8 @@ import React, { ReactElement, useEffect } from 'react';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees';
-import i18next from '../../i18n';
-
-const { useTranslation } = i18next;
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 function ProfilePage(): ReactElement {
   const { t } = useTranslation('me');
@@ -40,3 +39,35 @@ function ProfilePage(): ReactElement {
 }
 
 export default ProfilePage;
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donationLink',
+          'editProfile',
+          'giftfunds',
+          'leaderboard',
+          'managePayouts',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTrees',
+          'tenants',
+          'treemapper',
+        ],
+        null,
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+      )),
+    },
+  };
+}

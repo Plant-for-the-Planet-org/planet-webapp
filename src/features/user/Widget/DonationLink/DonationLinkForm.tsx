@@ -1,6 +1,6 @@
 import { ReactElement, useContext, useState, useEffect } from 'react';
+import { useTranslation } from 'next-i18next';
 import { Button, Switch, TextField } from '@mui/material';
-import i18next from '../../../../../i18n';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
@@ -8,8 +8,7 @@ import supportedLanguages from '../../../../utils/language/supportedLanguages.js
 import React from 'react';
 import ProjectSelectAutocomplete from '../../BulkCodes/components/ProjectSelectAutocomplete';
 import { TENANT_ID } from '../../../../utils/constants/environment';
-const { useTranslation } = i18next;
-import styles from './DonationLinkForm.module.scss';
+import styles from '../../../../../src/features/user/Widget/DonationLink/DonationLinkForm.module.scss';
 import CopyToClipboard from '../../../common/CopyToClipboard';
 import {
   MuiAutoComplete,
@@ -177,10 +176,10 @@ const DonationLinkForm = ({
                 }}
                 disabled={user.isPrivate}
               />
-              {user.isPrivate && (
-                <h6>{t('donationLink:treeCounterPrivateAccountSubtitle')}</h6>
-              )}
             </InlineFormDisplayGroup>
+            {user.isPrivate && (
+              <h6>{t('donationLink:treeCounterPrivateAccountSubtitle')}</h6>
+            )}
           </div>
           <InlineFormDisplayGroup type="other">
             <div className={styles.formHeader}>

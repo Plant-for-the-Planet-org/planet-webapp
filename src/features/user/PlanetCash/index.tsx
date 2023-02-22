@@ -5,7 +5,7 @@ import {
   useContext,
   useCallback,
 } from 'react';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
@@ -24,8 +24,6 @@ export enum PlanetCashTabs {
   TRANSACTIONS = 'transactions',
 }
 
-const { useTranslation } = i18next;
-
 interface PlanetCashProps {
   step: PlanetCashTabs;
   setProgress?: (progress: number) => void;
@@ -35,13 +33,48 @@ export default function PlanetCash({
   step,
   setProgress,
 }: PlanetCashProps): ReactElement | null {
-  const { t, ready } = useTranslation('planetcash');
+  const { t, ready, i18n } = useTranslation('planetcash');
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
   const { token, contextLoaded } = useContext(UserPropsContext);
   const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
   const { handleError } = useContext(ErrorHandlingContext);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const router = useRouter();
+
+  const sortAccountsByActive = (
+    accounts: PlanetCash.Account[]
+  ): PlanetCash.Account[] => {
+    return accounts.sort((accountA, accountB) => {
+      if (accountA.isActive === accountB.isActive) {
+        return 0;
+      } else {
+        return accountA.isActive ? -1 : 1;
+      }
+    });
+  };
+
+  // Redirect routes based on whether at least one account is created.
+  // Prevents multiple account creation.
+  const redirectIfNeeded = useCallback(
+    (accounts) => {
+      switch (step) {
+        case PlanetCashTabs.CREATE_ACCOUNT:
+          if (accounts.length) {
+            router.push('/profile/planetcash');
+          }
+          break;
+        case PlanetCashTabs.ACCOUNTS:
+        case PlanetCashTabs.TRANSACTIONS:
+          if (!accounts.length) {
+            router.push('/profile/planetcash/new');
+          }
+          break;
+        default:
+          break;
+      }
+    },
+    [step]
+  );
 
   const fetchAccounts = useCallback(async () => {
     if (!accounts) {
@@ -68,41 +101,6 @@ export default function PlanetCash({
     }
   }, [accounts]);
 
-  // Redirect routes based on whether at least one account is created.
-  // Prevents multiple account creation.
-  const redirectIfNeeded = useCallback(
-    (accounts) => {
-      switch (step) {
-        case PlanetCashTabs.CREATE_ACCOUNT:
-          if (accounts.length) {
-            router.push('/profile/planetcash');
-          }
-          break;
-        case PlanetCashTabs.ACCOUNTS:
-        case PlanetCashTabs.TRANSACTIONS:
-          if (!accounts.length) {
-            router.push('/profile/planetcash/new');
-          }
-          break;
-        default:
-          break;
-      }
-    },
-    [step]
-  );
-
-  const sortAccountsByActive = (
-    accounts: PlanetCash.Account[]
-  ): PlanetCash.Account[] => {
-    return accounts.sort((accountA, accountB) => {
-      if (accountA.isActive === accountB.isActive) {
-        return 0;
-      } else {
-        return accountA.isActive ? -1 : 1;
-      }
-    });
-  };
-
   useEffect(() => {
     if (contextLoaded && token) fetchAccounts();
   }, [contextLoaded, token]);
@@ -118,7 +116,6 @@ export default function PlanetCash({
         return <Accounts isDataLoading={isDataLoading} />;
     }
   };
-
   useEffect(() => {
     if (ready && accounts) {
       if (!accounts.length) {
@@ -143,7 +140,7 @@ export default function PlanetCash({
           },
         ]);
     }
-  }, [ready, accounts]);
+  }, [ready, accounts, i18n.language]);
 
   return ready ? (
     <DashboardView

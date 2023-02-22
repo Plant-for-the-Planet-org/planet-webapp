@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import styles from './../StepForm.module.scss';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import ProjectCertificates from './ProjectCertificates';
@@ -19,8 +19,6 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-const { useTranslation } = i18next;
-
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
     backgroundColor: themeProperties.primaryColor,
@@ -32,6 +30,9 @@ const dialogSx: SxProps = {
       backgroundColor: themeProperties.primaryColor,
       color: '#fff',
     },
+  },
+  '.MuiDialogActions-root': {
+    paddingBottom: '12px',
   },
 };
 
@@ -46,6 +47,9 @@ const yearDialogSx: SxProps = {
       backgroundColor: `${themeProperties.primaryColor} !important`,
       color: '#fff',
     },
+  },
+  '.MuiDialogActions-root': {
+    paddingBottom: '12px',
   },
 };
 

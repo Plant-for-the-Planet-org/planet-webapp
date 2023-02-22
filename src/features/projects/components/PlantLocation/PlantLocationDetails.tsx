@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import styles from '../../styles/PlantLocation.module.scss';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import * as turf from '@turf/turf';
@@ -24,8 +24,6 @@ const ImageSliderSingle = dynamic(
   }
 );
 
-const { useTranslation } = i18next;
-
 interface Props {
   plantLocation: Object;
 }
@@ -33,8 +31,12 @@ interface Props {
 export default function PlantLocationDetails({
   plantLocation,
 }: Props): ReactElement {
-  const { setSelectedPl, plantLocations } =
-    React.useContext(ProjectPropsContext);
+  const {
+    setSelectedPl,
+    plantLocations,
+    setSamplePlantLocation,
+    setHoveredPl,
+  } = React.useContext(ProjectPropsContext);
   const { t, i18n } = useTranslation(['maps']);
   const [treeCount, setTreeCount] = React.useState(1);
   const [plantationArea, setPlantationArea] = React.useState(0);
@@ -95,6 +97,7 @@ export default function PlantLocationDetails({
   }, [plantLocation]);
 
   const openSampleTree = (id: any) => {
+    setHoveredPl(null);
     if (plantLocation && plantLocation.samplePlantLocations) {
       for (const key in plantLocation.samplePlantLocations) {
         if (
@@ -104,7 +107,8 @@ export default function PlantLocationDetails({
           )
         ) {
           const element = plantLocation.samplePlantLocations[key];
-          if (element.id === id) setSelectedPl(element);
+
+          if (element.id === id) setSamplePlantLocation(element);
         }
       }
     }

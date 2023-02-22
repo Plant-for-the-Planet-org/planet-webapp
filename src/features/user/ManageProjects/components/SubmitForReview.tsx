@@ -3,14 +3,11 @@ import BackArrow from '../../../../../public/assets/images/icons/headerIcons/Bac
 import styles from './../StepForm.module.scss';
 import SubmitForReviewImage from '../../../../../public/assets/images/icons/manageProjects/SubmitForReviewImage';
 import UnderReview from '../../../../../public/assets/images/icons/manageProjects/UnderReview';
-import i18next from './../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import NotReviewed from '../../../../../public/assets/images/icons/manageProjects/NotReviewed';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
-import { Controller, useForm } from 'react-hook-form';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { useForm } from 'react-hook-form';
 import router from 'next/router';
-
-const { useTranslation } = i18next;
 
 interface Props {
   handleBack: Function;

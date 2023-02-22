@@ -1,19 +1,16 @@
-import { useRouter } from 'next/router';
 import React from 'react';
 import LeaderBoard from '../src/tenants/planet/LeaderBoard';
-import tenantConfig from '../tenant.config';
 import { getRequest } from '../src/utils/apiRequests/api';
 import GetLeaderboardMeta from './../src/utils/getMetaTags/GetLeaderboardMeta';
 import { TENANT_ID } from '../src/utils/constants/environment';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
-const config = tenantConfig();
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 interface Props {
   initialized: Boolean;
 }
 
 export default function Home({ initialized }: Props) {
-  const router = useRouter();
   const [leaderboard, setLeaderboard] = React.useState(null);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
@@ -72,4 +69,36 @@ export default function Home({ initialized }: Props) {
       ) : null}
     </>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donationLink',
+          'editProfile',
+          'giftfunds',
+          'leaderboard',
+          'managePayouts',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTrees',
+          'tenants',
+          'treemapper',
+        ],
+        null,
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+      )),
+    },
+  };
 }

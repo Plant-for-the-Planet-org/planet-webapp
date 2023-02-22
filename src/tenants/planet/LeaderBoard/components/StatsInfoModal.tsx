@@ -1,11 +1,8 @@
 import React, { ReactElement } from 'react';
 import styles from './Stats.module.scss';
-import i18next from '../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import OpenLink from '../../../../../public/assets/images/icons/OpenLink';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
-import { ThemeContext } from '../../../../theme/themeContext';
-
-const { useTranslation } = i18next;
 
 interface Props {
   infoExpanded: any;
@@ -18,8 +15,7 @@ function ExploreInfoModal({
   setInfoExpanded,
   setModalOpen,
 }: Props): ReactElement {
-  const { t, i18n, ready } = useTranslation(['planet']);
-  const { theme } = React.useContext(ThemeContext);
+  const { t, ready } = useTranslation(['planet']);
 
   return ready ? (
     <div className={styles.infoExpanded}>

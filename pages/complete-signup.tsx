@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import CompleteSignup from '../src/features/user/CompleteSignup';
 import tenantConfig from '../tenant.config';
 import Head from 'next/head';
-
-const config = tenantConfig();
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function UserProfile() {
+  const config = tenantConfig();
   return (
     <>
       <Head>
@@ -14,4 +14,36 @@ export default function UserProfile() {
       <CompleteSignup />
     </>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        [
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donationLink',
+          'editProfile',
+          'giftfunds',
+          'leaderboard',
+          'managePayouts',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTrees',
+          'tenants',
+          'treemapper',
+        ],
+        null,
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+      )),
+    },
+  };
 }

@@ -2,12 +2,10 @@ import { ChangeEvent, ReactElement, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, TextField, MenuItem, CircularProgress } from '@mui/material';
 import StyledForm from '../../../common/Layout/StyledForm';
-import i18next from '../../../../../i18n';
 import ReactHookFormSelect from './ReactHookFormSelect';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
+import { useTranslation } from 'next-i18next';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
-
-const { useTranslation } = i18next;
 
 export type FormData = {
   currency: string;

@@ -7,7 +7,7 @@ import ReactPlayer from 'react-player/lazy';
 import ReadMoreReact from 'read-more-react';
 import BackButton from '../../../../public/assets/images/icons/BackButton';
 import ProjectContactDetails from '../components/projectDetails/ProjectContactDetails';
-import i18next from '../../../../i18n';
+import { useTranslation } from 'next-i18next';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import ExpandIcon from '../../../../public/assets/images/icons/ExpandIcon';
 import ProjectInfo from '../components/projectDetails/ProjectInfo';
@@ -22,7 +22,6 @@ const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
   ssr: false,
 });
 
-const { useTranslation } = i18next;
 interface Props {}
 
 const ImageSlider = dynamic(
@@ -50,6 +49,7 @@ function SingleProjectDetails({}: Props): ReactElement {
     selectedPl,
     setHoveredPl,
     setSelectedPl,
+    samplePlantLocation,
   } = useContext(ProjectPropsContext);
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
@@ -83,7 +83,11 @@ function SingleProjectDetails({}: Props): ReactElement {
   };
 
   const ProjectProps = {
-    plantLocation: hoveredPl ? hoveredPl : selectedPl,
+    plantLocation: hoveredPl
+      ? hoveredPl
+      : samplePlantLocation
+      ? samplePlantLocation
+      : selectedPl,
   };
 
   const goBack = () => {

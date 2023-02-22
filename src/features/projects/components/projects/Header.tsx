@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
-import i18next from '../../../../../i18n/';
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   showTopProjectsList: boolean;
@@ -9,7 +9,6 @@ interface Props {
   setSearchMode: Function;
   projects: any;
 }
-const { useTranslation } = i18next;
 
 function Header({
   showTopProjectsList,

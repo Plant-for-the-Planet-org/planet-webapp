@@ -8,10 +8,10 @@ import { postRequest } from '../../../../../utils/apiRequests/api';
 import { Controller, useForm } from 'react-hook-form';
 import { Autocomplete } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import i18next from '../../../../../../i18n';
+import { useTranslation } from 'next-i18next';
 
 const config = tenantConfig();
-const { useTranslation } = i18next;
+
 export default function SpeciesSelect(props: {
   label: React.ReactNode;
   name: string;

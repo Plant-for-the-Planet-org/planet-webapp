@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layer, Marker, Source } from 'react-map-gl';
+import { Marker } from 'react-map-gl';
 import styles from '../../styles/ProjectsMap.module.scss';
 import ProjectPolygon from './ProjectPolygon';
 

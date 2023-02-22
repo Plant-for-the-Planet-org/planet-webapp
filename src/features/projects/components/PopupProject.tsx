@@ -1,15 +1,13 @@
-import React, { ReactElement, Ref } from 'react';
+import React, { ReactElement } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
-import i18next from '../../../../i18n/';
+import { useTranslation } from 'next-i18next';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
-import { useRouter } from 'next/router';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
-const { useTranslation } = i18next;
 interface Props {
   project: any;
   open: boolean;
@@ -21,13 +19,8 @@ interface Props {
 
 export default function PopupProject({
   project,
-  open,
-  handleOpen,
-  handleClose,
   buttonRef,
-  popupRef,
 }: Props): ReactElement {
-  const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const { token } = React.useContext(UserPropsContext);
   const { embed } = React.useContext(ParamsContext);
@@ -38,8 +31,6 @@ export default function PopupProject({
   const progressPercentage =
     (project.properties.countPlanted / project.properties.countTarget) * 100 +
     '%';
-
-  const projectDetails = project.properties;
 
   const handleDonationOpen = () => {
     const url = getDonationUrl(project.properties.slug, token);
