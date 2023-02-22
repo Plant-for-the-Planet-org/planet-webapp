@@ -1,6 +1,8 @@
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import themeProperties from '../../../../../../theme/themeProperties';
+import { getFormattedNumber } from '../../../../../../utils/getFormattedNumber';
 import data from '../../speciesPlantedMockData.json';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
@@ -35,35 +37,9 @@ Object.entries(result).map((s) => {
   species_num.push(s[1].tree_count);
 });
 
-// const counts = {};
-
-// for (let i = 0; i < data.length; i++) {
-//   const item = data[i];
-//   const id = item.scientific_species_id;
-//   const count = parseInt(item.tree_count, 10);
-
-//   if (id && !isNaN(count)) {
-//     if (counts[id]) {
-//       counts[id] += count;
-//     } else {
-//       counts[id] = count;
-//     }
-//   }
-// }
-
-// // create an array of objects from the counts object
-// const results = Object.keys(counts).map((id) => ({
-//   scientific_species_id: id,
-//   tree_count: counts[id],
-
-// }));
-
-// // sort the results array in descending order of tree_count
-// results.sort((a, b) => b.tree_count - a.tree_count);
-
-// console.log(result);
-
 export const SpeciesPlanted = () => {
+  const { i18n } = useTranslation();
+
   const [series, setSeries] = useState([
     {
       data: species_num || [],
@@ -87,7 +63,7 @@ export const SpeciesPlanted = () => {
     },
     plotOptions: {
       bar: {
-        borderRadius: 0,
+        borderRadius: 2,
         dataLabels: {
           position: 'top', // top, center, bottom
         },
@@ -96,7 +72,7 @@ export const SpeciesPlanted = () => {
     dataLabels: {
       enabled: true,
       formatter: function (val) {
-        return val;
+        return getFormattedNumber(i18n.language, val);
       },
       offsetY: -20,
       style: {
@@ -110,8 +86,11 @@ export const SpeciesPlanted = () => {
     },
 
     xaxis: {
+      labels: {
+        rotate: -90,
+      },
       categories: species,
-      position: 'top',
+      position: 'bottom',
       axisBorder: {
         show: false,
       },
@@ -145,7 +124,7 @@ export const SpeciesPlanted = () => {
       labels: {
         show: false,
         formatter: function (val) {
-          return val;
+          return getFormattedNumber(i18n.language, val);
         },
       },
     },

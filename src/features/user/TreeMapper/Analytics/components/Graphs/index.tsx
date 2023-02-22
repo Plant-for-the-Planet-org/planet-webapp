@@ -12,10 +12,10 @@ export const Graphs = ({ setProgress }: Props) => {
   return (
     <div className={styles.graphsContainer}>
       <Grid container alignContent="center" justifyContent="center" spacing={2}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={12}>
           <TreePlanted />
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={12}>
           <SpeciesPlanted />
         </Grid>
       </Grid>

@@ -1,9 +1,11 @@
 import data from '../../treesPlantedMockData.json';
 import { format } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import styles from './index.module.scss';
 import themeProperties from '../../../../../../theme/themeProperties';
+import { getFormattedNumber } from '../../../../../../utils/getFormattedNumber';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -18,6 +20,10 @@ data.forEach((plant) => {
 });
 
 export const TreePlanted = () => {
+  const {
+    i18n: { language },
+  } = useTranslation();
+
   const [series, setSeries] = useState([
     {
       data: plantedTrees || [],
@@ -41,7 +47,7 @@ export const TreePlanted = () => {
     },
     plotOptions: {
       bar: {
-        borderRadius: 0,
+        borderRadius: 2,
         dataLabels: {
           position: 'top', // top, center, bottom
         },
@@ -50,7 +56,7 @@ export const TreePlanted = () => {
     dataLabels: {
       enabled: true,
       formatter: function (val) {
-        return val;
+        return getFormattedNumber(language, val);
       },
       offsetY: -20,
       style: {
@@ -64,8 +70,11 @@ export const TreePlanted = () => {
     },
 
     xaxis: {
+      labels: {
+        rotate: -90,
+      },
       categories: timeFrame,
-      position: 'top',
+      position: 'bottom',
       axisBorder: {
         show: false,
       },
@@ -99,7 +108,7 @@ export const TreePlanted = () => {
       labels: {
         show: false,
         formatter: function (val) {
-          return val;
+          return getFormattedNumber(language, val);
         },
       },
     },
