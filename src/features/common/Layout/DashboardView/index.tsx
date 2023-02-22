@@ -1,12 +1,11 @@
-import React, { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { Box, Grid, ThemeProvider, styled } from '@mui/material';
-
-import muiThemeNew from '../../../../theme/muiThemeNew';
+import materialTheme from '../../../../theme/themeStyles';
 
 interface DashboardViewProps {
   title: string;
-  subtitle: JSX.Element | null;
-  children: React.ReactNode;
+  subtitle: ReactElement | null;
+  children: ReactNode;
 }
 
 const DashboardGridContainer = styled(Box)(({ theme }) => ({
@@ -48,7 +47,7 @@ export default function DashboardView({
   children,
 }: DashboardViewProps): ReactElement {
   return (
-    <ThemeProvider theme={muiThemeNew}>
+    <ThemeProvider theme={materialTheme}>
       <DashboardGridContainer className="DashboardView">
         <Grid container className="dashboardGrid">
           <Grid

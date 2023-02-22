@@ -33,6 +33,9 @@ const yearDialogSx: SxProps = {
       color: '#fff',
     },
   },
+  '.MuiDialogActions-root': {
+    paddingBottom: '12px',
+  },
 };
 
 interface Props {
