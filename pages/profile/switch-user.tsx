@@ -30,31 +30,15 @@ export default SwitchUserPage;
 export async function getStaticProps({ locale }: any) {
   return {
     props: {
-      ...(await serverSideTranslations(
-        locale,
-        [
-          'bulkCodes',
-          'common',
-          'country',
-          'donate',
-          'donationLink',
-          'editProfile',
-          'giftfunds',
-          'leaderboard',
-          'managePayouts',
-          'manageProjects',
-          'maps',
-          'me',
-          'planet',
-          'planetcash',
-          'redeem',
-          'registerTrees',
-          'tenants',
-          'treemapper',
-        ],
-        null,
-        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
-      )),
+      ...(await serverSideTranslations(locale, ['me'], null, [
+        'en',
+        'de',
+        'fr',
+        'es',
+        'it',
+        'pt-BR',
+        'cs',
+      ])),
     },
   };
 }

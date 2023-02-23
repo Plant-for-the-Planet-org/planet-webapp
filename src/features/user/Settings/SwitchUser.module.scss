@@ -1,21 +1,5 @@
 @import './../../../theme/theme';
 
-
-.switchUserContainer {
-    margin-top: 145px;
-    margin-left: 34px;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    max-width: fit-content;
-    .css-mhc70k-MuiGrid-root{
-        margin-top: 11px;
-    }
-    .fieldContainer {
-        margin-top: 11px;
-    }
-}
-
 .impersonationAlertContainer {
     background-color: #94f0f9;
     margin-top: 142px;
