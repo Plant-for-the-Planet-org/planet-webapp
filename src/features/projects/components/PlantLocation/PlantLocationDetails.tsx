@@ -124,7 +124,6 @@ export default function PlantLocationDetails({
       }
     }
   };
-
   return (
     <>
       {plantLocation && (
@@ -205,7 +204,6 @@ export default function PlantLocationDetails({
                   </div>
                 )}
             </div>
-
             {plantLocation.type === 'multi' && (
               <div className={styles.singleDetail}>
                 <div className={styles.detailTitle}>
@@ -251,13 +249,15 @@ export default function PlantLocationDetails({
                 })}
               </div>
             )}
-
             {plantLocation.type === 'multi' && (
               <div className={styles.singleDetail}>
                 <div className={styles.detailTitle}>
                   {t('sampleTrees')} (
                   {plantLocation?.samplePlantLocations?.length})
                 </div>
+                <h4>
+                  <b>{t('latestMeasurements')}</b>
+                </h4>
                 {plantLocation.samplePlantLocations &&
                   plantLocation.samplePlantLocations.map(
                     (spl: any, index: number) => {
@@ -276,10 +276,12 @@ export default function PlantLocationDetails({
                               : t('unknown')}
                           </span>
                           <br />
-                          {spl.tag ? `${t('tag')} #${spl.tag} • ` : null}
-                          {spl?.measurements?.height}
-                          {t('meterHigh')} • {spl?.measurements?.width}
-                          {t('cmWide')}
+                          {spl.status !== 'dead'
+                            ? `${spl.tag ? `${t('tag')} #${spl.tag} • ` : ''}
+                          ${spl?.measurements?.height}
+                          ${t('meterHigh')} • ${spl?.measurements?.width}
+                          ${t('cmWide')}`
+                            : ` ${spl?.status} • ${spl?.statusReason}`}
                         </div>
                       );
                     }
@@ -305,11 +307,17 @@ export default function PlantLocationDetails({
               plantLocation.type === 'single') &&
               plantLocation.measurements && (
                 <div className={styles.singleDetail}>
-                  <div className={styles.detailTitle}>{t('measurements')}</div>
+                  <div className={styles.detailTitle}>
+                    {t('latestMeasurements')}
+                  </div>
                   <div className={styles.detailValue}>
-                    {plantLocation?.measurements?.height}
-                    {t('meterHigh')} • {plantLocation?.measurements?.width}
-                    {t('cmWide')}
+                    {plantLocation.status !== 'dead'
+                      ? `${plantLocation?.measurements?.height}
+                            ${t('meterHigh')} • ${
+                          plantLocation?.measurements?.width
+                        }
+                            ${t('cmWide')}`
+                      : ` ${plantLocation?.status} • ${plantLocation?.statusReason}`}
                   </div>
                 </div>
               )}

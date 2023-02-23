@@ -45,5 +45,7 @@
   "showProjectList": "Show Project List",
   "showProjectDetails": "Show Project Details",
   "hideProjectList": "Hide Project List",
+  "hideProjectDetails": "Hide Project Details",
+  "latestMeasurements":"Latest measurements",
   "hideProjectDetails": "Hide Project Details"
 }
