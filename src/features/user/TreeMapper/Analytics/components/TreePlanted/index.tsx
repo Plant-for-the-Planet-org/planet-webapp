@@ -32,8 +32,24 @@ export const TreePlanted = () => {
 
   const [options, setOptions] = useState({
     chart: {
+      events: {
+        beforeZoom: function (ctx) {
+          ctx.w.config.xaxis.range = undefined;
+        },
+        // zoomed: function (chartContext, { xaxis }) {
+        //   // calculate the new columnWidth based on the zoomed range
+
+        //   const { max, min } = xaxis;
+        //   let columnWidth: number | string = Math.abs(
+        //     Math.ceil((max - min) / 10)
+        //   );
+
+        //   if (columnWidth <= 3) columnWidth = '200%';
+        //   else columnWidth = '30%';
+        //   chartContext.w.config.plotOptions.bar.columnWidth = columnWidth;
+        // },
+      },
       type: 'bar',
-      height: 400,
       toolbar: {
         show: true,
         tools: {
@@ -49,20 +65,13 @@ export const TreePlanted = () => {
       bar: {
         borderRadius: 2,
         dataLabels: {
-          position: 'top', // top, center, bottom
+          position: 'top',
         },
+        // columnWidth: '70%',
       },
     },
     dataLabels: {
-      enabled: true,
-      formatter: function (val) {
-        return getFormattedNumber(language, val);
-      },
-      offsetY: -20,
-      style: {
-        fontSize: '12px',
-        colors: ['#304758'],
-      },
+      enabled: false,
     },
 
     fill: {
@@ -70,13 +79,15 @@ export const TreePlanted = () => {
     },
 
     xaxis: {
+      range: 20,
+      max: 20,
       labels: {
         rotate: -90,
       },
       categories: timeFrame,
       position: 'bottom',
       axisBorder: {
-        show: false,
+        show: true,
       },
       axisTicks: {
         show: true,
@@ -99,14 +110,12 @@ export const TreePlanted = () => {
       tickPlacement: 'on',
     },
     yaxis: {
+      // logarithmic: true, //open bug that causes data labels to render wrong numbers
       axisBorder: {
-        show: false,
-      },
-      axisTicks: {
-        show: false,
+        show: true,
       },
       labels: {
-        show: false,
+        show: true,
         formatter: function (val) {
           return getFormattedNumber(language, val);
         },
