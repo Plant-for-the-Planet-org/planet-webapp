@@ -3,6 +3,7 @@ import styles from '../AccountHistory.module.scss';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { useTranslation } from 'next-i18next';
+import TransferDetails from './TransferDetails';
 import themeProperties from '../../../../theme/themeProperties';
 
 interface Props {
@@ -49,6 +50,9 @@ export default function RecurrencyRecord({
         <div className={styles.detailGrid}>
           <DetailsComponent record={record} />
         </div>
+        {record.method === 'offline' && record.bankAccount && (
+          <TransferDetails account={record.bankAccount} />
+        )}
         {record.status !== 'incomplete' && (
           <ManageDonation
             record={record}

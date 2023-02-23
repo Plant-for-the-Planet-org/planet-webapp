@@ -14,6 +14,7 @@ import { CancelModal } from './CancelModal';
 import { ReactivateModal } from './ReactivateModal';
 import { useRouter } from 'next/router';
 import { EditModal } from './EditModal';
+import TransferDetails from './components/TransferDetails';
 
 interface Props {
   isDataLoading: boolean;
@@ -147,6 +148,12 @@ export default function Recurrency({
                         <div className={styles.detailGrid}>
                           <DetailsComponent record={currentRecord} />
                         </div>
+                        {currentRecord.method === 'offline' &&
+                          currentRecord.bankAccount && (
+                            <TransferDetails
+                              account={currentRecord.bankAccount}
+                            />
+                          )}
                         {currentRecord.status !== 'incomplete' && (
                           <ManageDonation
                             record={currentRecord}

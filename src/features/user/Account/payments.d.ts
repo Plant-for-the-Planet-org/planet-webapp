@@ -127,5 +127,6 @@ declare namespace Payments {
     isSynced: boolean;
     pauseUntil?: any;
     donorName?: string;
+    bankAccount: BankAccount | null;
   }
 }
