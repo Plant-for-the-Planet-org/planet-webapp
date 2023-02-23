@@ -61,7 +61,7 @@
   "aliasesValidation": "Please enter aliases",
   "speciesValidation": "Please enter a species",
   "sampleTreeTitle": "Sample Tree",
-  "external": "External".
+  "external": "External",
   "date": "Date",
   "measurements": "Measurements"
 }
