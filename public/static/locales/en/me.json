@@ -247,5 +247,6 @@
   "apiKeyMessage2": "Once you generate an API Key, we will require a two factor authentication for your login. This you’ll be able to setup next time you log in.",
   "apiKeyMessage3": "Regenerating an API Key will invalidate your existing API Key immediately.",
   "regenerateKey": "Regenerate Key",
-  "giftFund": "GiftFund"
+  "giftFund": "GiftFund",
+  "donatedTrees": "Donated Trees"
 }
