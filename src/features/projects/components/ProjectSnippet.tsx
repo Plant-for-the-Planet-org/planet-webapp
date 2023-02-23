@@ -109,7 +109,10 @@ export default function ProjectSnippet({
                     Number(project.countPlanted),
                     1
                   )}{' '}
-                  {t('common:tree', { count: Number(project.countPlanted) })} •{' '}
+                  {t('common:tree_plural', {
+                    count: Number(project.countPlanted),
+                  })}{' '}
+                  •{' '}
                 </>
               ) : (
                 []

@@ -60,7 +60,6 @@ function ProjectInfo({ project }: Props): ReactElement {
       value: 'other',
     },
   ];
-
   const [ownerTypes, setOwnerTypes] = React.useState([]);
   React.useEffect(() => {
     if (ready && project.siteOwnerType && project.siteOwnerType.length > 0) {
@@ -75,7 +74,7 @@ function ProjectInfo({ project }: Props): ReactElement {
 
       setOwnerTypes(updatedSiteOwners);
     }
-  }, [ready]);
+  }, [ready, i18n.language]);
 
   React.useEffect(() => {
     if (
@@ -94,7 +93,7 @@ function ProjectInfo({ project }: Props): ReactElement {
 
       setOwnerTypes(updatedSiteOwners);
     }
-  }, [ready]);
+  }, [ready, i18n.language]);
 
   const expenseAmount = project.expenses.map((expense: any) => expense.amount);
   const calculatePercentage = (amount: any) => {
@@ -280,7 +279,7 @@ function ProjectInfo({ project }: Props): ReactElement {
                 {ownerTypes.map((ownerType: any, index: any) => {
                   return (
                     <React.Fragment key={ownerType}>
-                      {t(`manageProjects:${ownerType}`)}
+                      {`${ownerType}`}
                       {index === ownerTypes.length - 2 ? (
                         <> {t('manageProjects:and')} </>
                       ) : index === ownerTypes.length - 1 ? (

@@ -78,7 +78,7 @@ export default function TpoProfile(props: any) {
             )}
           </h1>
           <h2>
-            {t('me:treesPlanted', {
+            {t('me:treesPlanted_plural', {
               count: Number(props.planted),
               treeCount: getFormattedNumber(
                 i18n.language,

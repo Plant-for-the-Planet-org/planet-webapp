@@ -1,7 +1,7 @@
 import '../src/theme/global.scss';
 import './storybook.scss';
 import { ThemeProvider as MUIThemeProvider } from '@mui/material';
-import muiThemeNew from '../src/theme/muiThemeNew';
+import materialTheme from '../src/theme/themeStyles';
 import { ThemeProvider } from '@storybook/theming';
 // import { ThemeProvider } from 'emotion-theming';
 
@@ -12,8 +12,8 @@ import { ThemeProvider } from '@storybook/theming';
  */
 export const decorators = [
   (Story) => (
-    <MUIThemeProvider theme={muiThemeNew}>
-      <ThemeProvider theme={muiThemeNew}>
+    <MUIThemeProvider theme={materialTheme}>
+      <ThemeProvider theme={materialTheme}>
         <Story />
       </ThemeProvider>
     </MUIThemeProvider>

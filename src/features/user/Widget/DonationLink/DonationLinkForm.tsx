@@ -8,7 +8,7 @@ import supportedLanguages from '../../../../utils/language/supportedLanguages.js
 import React from 'react';
 import ProjectSelectAutocomplete from '../../BulkCodes/components/ProjectSelectAutocomplete';
 import { TENANT_ID } from '../../../../utils/constants/environment';
-import styles from '../../../../../src/features/user/Widget/DonationLink';
+import styles from '../../../../../src/features/user/Widget/DonationLink/DonationLinkForm.module.scss';
 import CopyToClipboard from '../../../common/CopyToClipboard';
 import {
   MuiAutoComplete,
@@ -176,10 +176,10 @@ const DonationLinkForm = ({
                 }}
                 disabled={user.isPrivate}
               />
-              {user.isPrivate && (
-                <h6>{t('donationLink:treeCounterPrivateAccountSubtitle')}</h6>
-              )}
             </InlineFormDisplayGroup>
+            {user.isPrivate && (
+              <h6>{t('donationLink:treeCounterPrivateAccountSubtitle')}</h6>
+            )}
           </div>
           <InlineFormDisplayGroup type="other">
             <div className={styles.formHeader}>
