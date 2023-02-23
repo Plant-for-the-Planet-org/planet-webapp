@@ -4,6 +4,9 @@ import { useTranslation } from 'react-i18next';
 import themeProperties from '../../../../../../theme/themeProperties';
 import { getFormattedNumber } from '../../../../../../utils/getFormattedNumber';
 import data from '../../speciesPlantedMockData.json';
+import styles from './index.module.scss';
+import { Tooltip } from './Tooltip';
+import ReactDOMServer from 'react-dom/server';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -38,7 +41,9 @@ Object.entries(result).map((s) => {
 });
 
 export const SpeciesPlanted = () => {
-  const { i18n } = useTranslation();
+  const {
+    i18n: { language },
+  } = useTranslation();
 
   const [series, setSeries] = useState([
     {
@@ -95,10 +100,20 @@ export const SpeciesPlanted = () => {
     },
 
     tooltip: {
-      y: {
-        title: {
-          formatter: () => 'Planted Species',
-        },
+      custom: function ({ series: s, dataPointIndex, w }) {
+        const getToolTip = () => {
+          console.log('==>', s, s[0][dataPointIndex]);
+
+          return (
+            <Tooltip
+              headerTitle={w.globals.categoryLabels[dataPointIndex]}
+              bodyTitle={'Planted Species'}
+              value={s[0][dataPointIndex]}
+            />
+          );
+        };
+
+        return ReactDOMServer.renderToString(getToolTip());
       },
     },
 
@@ -107,6 +122,9 @@ export const SpeciesPlanted = () => {
       max: 20,
       labels: {
         rotate: -90,
+        style: {
+          cssClass: styles.italics,
+        },
       },
       categories: species,
       position: 'bottom',
@@ -138,7 +156,7 @@ export const SpeciesPlanted = () => {
       labels: {
         show: true,
         formatter: function (val) {
-          return getFormattedNumber(i18n.language, val);
+          return getFormattedNumber(language, val);
         },
       },
     },
