@@ -18,11 +18,11 @@ export const Tooltip = ({ headerTitle, bodyTitle, value }: Props) => {
       <div className={styles.header}>
         <p className={styles.title}>{headerTitle}</p>
       </div>
-        <div className={styles.body}>
-          <span className={styles.circle}></span>
-          <p className={styles.bodyTitle}>{bodyTitle}</p>
-          <p className={styles.value}>{getFormattedNumber(language, value)}</p>
-        </div>
+      <div className={styles.body}>
+        <span className={styles.circle}></span>
+        <p className={styles.bodyTitle}>{bodyTitle}</p>
+        <p className={styles.value}>{getFormattedNumber(language, value)}</p>
+      </div>
     </div>
   );
 };
