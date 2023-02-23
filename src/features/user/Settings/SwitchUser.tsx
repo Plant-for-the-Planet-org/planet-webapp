@@ -23,7 +23,7 @@ const SwitchUser = () => {
     alertError,
     setImpersonationEmail,
   } = useContext(UserPropsContext);
-  console.log(errors);
+
   const handle = (data: FormData): void => {
     setAlertError(false);
     if (data.targetEmail) {

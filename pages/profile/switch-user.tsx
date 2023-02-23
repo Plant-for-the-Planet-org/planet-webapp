@@ -8,7 +8,7 @@ import { useContext } from 'react';
 import AccessDeniedLoader from '../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 
 const SwitchUserPage = () => {
-  const { user } = useContext(UserPropsContext);
+  const { user, doNotShowImpersonation } = useContext(UserPropsContext);
   const { t } = useTranslation('me');
 
   return (
@@ -16,7 +16,11 @@ const SwitchUserPage = () => {
       <Head>
         <title>{t('me:switchUser')}</title>
       </Head>
-      {user?.allowedToSwitch ? <SwitchUser /> : <AccessDeniedLoader />}
+      {user?.allowedToSwitch && !doNotShowImpersonation ? (
+        <SwitchUser />
+      ) : (
+        <AccessDeniedLoader />
+      )}
     </UserLayout>
   );
 };

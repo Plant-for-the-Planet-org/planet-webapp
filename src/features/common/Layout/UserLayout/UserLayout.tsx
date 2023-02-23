@@ -19,7 +19,6 @@ import styles from './UserLayout.module.scss';
 import TreeMappperIcon from '../../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
 import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/RegisterIcon';
 import NotionLinkIcon from '../../../../../public/assets/images/icons/Sidebar/NotionLinkIcon';
-import { ParamsContext } from '../QueryParamsContext';
 
 function LanguageSwitcher() {
   const { i18n, ready } = useTranslation(['common']);
@@ -189,9 +188,13 @@ function UserLayout(props: any): ReactElement {
   const { t } = useTranslation(['common', 'me']);
   // const { asPath } = useRouter();
   const router = useRouter();
-
-  const { user, logoutUser, contextLoaded, validEmail } =
-    React.useContext(UserPropsContext);
+  const {
+    user,
+    logoutUser,
+    contextLoaded,
+    validEmail,
+    doNotShowImpersonation,
+  } = React.useContext(UserPropsContext);
 
   // Flags can be added to show labels on the right
   // TO DO - remove arrow when link is selected
@@ -363,7 +366,7 @@ function UserLayout(props: any): ReactElement {
         {
           title: t('me:switchUser'),
           path: '/profile/switch-user',
-          hideItem: user?.allowedToSwitch === undefined,
+          hideItem: doNotShowImpersonation,
         },
         {
           title: t('me:apiKey'),
