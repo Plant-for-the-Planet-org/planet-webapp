@@ -185,6 +185,19 @@
   grid-template-columns: 1fr;
 }
 
+.measurements {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  display: grid;
+  grid-row-gap: 20px;
+  grid-template-columns: 2fr 1fr 1fr;
+}
+
+.rowDetail {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
 .singleDetail {
   display: flex;
   flex-direction: column;
