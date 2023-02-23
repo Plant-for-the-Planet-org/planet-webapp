@@ -78,6 +78,14 @@ export const TreePlanted = () => {
       colors: themeProperties.primaryColor,
     },
 
+    tooltip: {
+      y: {
+        title: {
+          formatter: () => 'Planted Trees',
+        },
+      },
+    },
+
     xaxis: {
       range: 20,
       max: 20,
@@ -103,9 +111,6 @@ export const TreePlanted = () => {
             opacityTo: 0.5,
           },
         },
-      },
-      tooltip: {
-        enabled: true,
       },
       tickPlacement: 'on',
     },
