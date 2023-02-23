@@ -5,83 +5,106 @@ import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { useTranslation } from 'next-i18next';
 import TransferDetails from './TransferDetails';
 import themeProperties from '../../../../theme/themeProperties';
+import BackButton from '../../../../../public/assets/images/icons/BackButton';
 
-interface Props {
-  handleRecordOpen: Function;
-  index: number;
+interface CommonProps {
+  handleRecordToggle: (index: number | undefined) => void;
   selectedRecord: number | null;
   record: Payments.Subscription;
   recurrencies: Payments.Subscription[];
-  openModal: boolean;
   seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
   setpauseDonation: React.Dispatch<React.SetStateAction<boolean>>;
   setcancelDonation: React.Dispatch<React.SetStateAction<boolean>>;
   setreactivateDonation: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+interface ModalProps extends CommonProps {
+  index?: undefined;
+  isModal: true;
+}
+
+interface ListItemProps extends CommonProps {
+  index: number;
+  isModal?: false;
+}
+
+type Props = ModalProps | ListItemProps;
+
 export default function RecurrencyRecord({
-  handleRecordOpen,
-  index,
+  isModal = false,
+  index = undefined,
+  handleRecordToggle,
   selectedRecord,
   record,
-  recurrencies,
-  openModal,
   seteditDonation,
   setpauseDonation,
   setcancelDonation,
   setreactivateDonation,
 }: Props): ReactElement {
-  const { t, i18n } = useTranslation(['me']);
+  const outerDivClasses = isModal
+    ? styles.recordModal
+    : `${styles.record} ${selectedRecord === index ? styles.selected : ''}`;
+
   return (
-    <div
-      key={index}
-      className={`${styles.record} ${
-        selectedRecord === index ? styles.selected : ''
-      }`}
-    >
-      <RecordHeader
-        record={record}
-        handleRecordOpen={handleRecordOpen}
-        index={index}
-        openModal={openModal}
-      />
-      {index !== recurrencies?.length - 1 && <div className={styles.divider} />}
-      <div className={styles.detailContainer}>
-        <div className={styles.detailGrid}>
-          <DetailsComponent record={record} />
+    <div className={outerDivClasses}>
+      {isModal && (
+        <div
+          onClick={() => {
+            handleRecordToggle(index);
+          }}
+          className={styles.closeRecord}
+        >
+          <BackButton />
         </div>
-        {record.method === 'offline' && record.bankAccount && (
-          <TransferDetails account={record.bankAccount} />
-        )}
-        {record.status !== 'incomplete' && (
-          <ManageDonation
+      )}
+      {(!isModal || (isModal && selectedRecord !== null)) && (
+        <>
+          <RecordHeader
             record={record}
-            seteditDonation={seteditDonation}
-            setpauseDonation={setpauseDonation}
-            setcancelDonation={setcancelDonation}
-            setreactivateDonation={setreactivateDonation}
+            handleRecordToggle={handleRecordToggle}
+            index={index}
           />
-        )}
-      </div>
+          {(isModal || index === selectedRecord) && (
+            <div className={styles.divider} />
+          )}
+          <div className={styles.detailContainer}>
+            <div className={styles.detailGrid}>
+              <DetailsComponent record={record} />
+            </div>
+            {record.method === 'offline' && record.bankAccount && (
+              <TransferDetails account={record.bankAccount} />
+            )}
+            {record.status !== 'incomplete' && (
+              <ManageDonation
+                record={record}
+                seteditDonation={seteditDonation}
+                setpauseDonation={setpauseDonation}
+                setcancelDonation={setcancelDonation}
+                setreactivateDonation={setreactivateDonation}
+              />
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }
 
 interface HeaderProps {
   record: Payments.Subscription;
-  handleRecordOpen: Function;
+  handleRecordToggle?: (index: number | undefined) => void;
   index?: number;
 }
 
 export function RecordHeader({
   record,
-  handleRecordOpen,
+  handleRecordToggle,
   index,
 }: HeaderProps): ReactElement {
   const { t, i18n } = useTranslation(['me']);
   return (
     <div
-      onClick={() => handleRecordOpen(index)}
+      onClick={handleRecordToggle && (() => handleRecordToggle(index))}
       className={`${styles.recurrencyRecordHeader}`}
       style={{
         cursor: record?.status === 'incomplete' ? 'default' : 'pointer',
@@ -252,7 +275,7 @@ export function ManageDonation({
   setcancelDonation,
   setreactivateDonation,
 }: ManageDonationProps): ReactElement {
-  const { t, i18n } = useTranslation(['me']);
+  const { t } = useTranslation(['me']);
 
   const showPause =
     (record?.status === 'active' || record?.status === 'trialing') &&

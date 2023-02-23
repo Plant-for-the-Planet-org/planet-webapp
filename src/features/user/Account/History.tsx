@@ -113,7 +113,6 @@ export default function History({
                       index={index}
                       selectedRecord={selectedRecord}
                       record={record}
-                      paymentHistory={paymentHistory}
                     />
                   );
                 })
@@ -168,7 +167,6 @@ export default function History({
               isModal={true}
               handleRecordToggle={handleRecordToggle}
               selectedRecord={selectedRecord}
-              paymentHistory={paymentHistory}
               record={paymentHistory.items[selectedRecord]}
             />
           )}

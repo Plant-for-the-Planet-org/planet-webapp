@@ -1,20 +1,14 @@
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'next-i18next';
-import BackButton from '../../../../public/assets/images/icons/BackButton';
 import TransactionListLoader from '../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../public/assets/images/icons/TransactionsNotFound';
 import styles from './AccountHistory.module.scss';
-import RecurrencyRecord, {
-  ManageDonation,
-  DetailsComponent,
-  RecordHeader,
-} from './components/RecurrencyRecord';
+import RecurrencyRecord from './components/RecurrencyRecord';
 import { PauseModal } from './PauseModal';
 import { CancelModal } from './CancelModal';
 import { ReactivateModal } from './ReactivateModal';
 import { useRouter } from 'next/router';
 import { EditModal } from './EditModal';
-import TransferDetails from './components/TransferDetails';
 
 interface Props {
   isDataLoading: boolean;
@@ -29,7 +23,8 @@ export default function Recurrency({
 }: Props): ReactElement {
   const { t, i18n } = useTranslation(['me']);
   const [selectedRecord, setSelectedRecord] = React.useState<number | null>(0);
-  const [openModal, setOpenModal] = React.useState(false);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  // const [openModal, setOpenModal] = React.useState(false);
   const [editModalOpen, seteditModalOpen] = React.useState(false);
   const [pauseModalOpen, setpauseModalOpen] = React.useState(false);
   const [cancelModalOpen, setcancelModalOpen] = React.useState(false);
@@ -44,13 +39,24 @@ export default function Recurrency({
   React.useEffect(() => {
     if (
       recurrencies &&
-      (selectedRecord !== null || selectedRecord !== undefined)
+      selectedRecord !== null &&
+      selectedRecord !== undefined
     ) {
       setCurrentRecord(recurrencies[selectedRecord]);
     }
   }, [selectedRecord, recurrencies]);
 
-  const handleRecordOpen = (index: number) => {
+  const handleRecordToggle = (index: number | undefined) => {
+    if (selectedRecord === index || index === undefined) {
+      setSelectedRecord(null);
+      setIsModalOpen(false);
+    } else {
+      setSelectedRecord(index);
+      setIsModalOpen(true);
+    }
+  };
+
+  /* const handleRecordOpen = (index: number) => {
     if (selectedRecord === index && window.innerWidth > 980) {
       setSelectedRecord(index);
       setOpenModal(false);
@@ -64,12 +70,12 @@ export default function Recurrency({
         setOpenModal(true);
       }
     }
-  };
+  }; */
 
-  const handleClose = () => {
+  /* const handleClose = () => {
     setOpenModal(false);
     setSelectedRecord(null);
-  };
+  }; */
   const handlePauseModalClose = () => {
     setpauseModalOpen(false);
   };
@@ -110,12 +116,11 @@ export default function Recurrency({
                     return (
                       <RecurrencyRecord
                         key={index}
-                        handleRecordOpen={handleRecordOpen}
+                        handleRecordToggle={handleRecordToggle}
                         index={index}
                         selectedRecord={selectedRecord}
                         record={record}
                         recurrencies={recurrencies}
-                        openModal={openModal}
                         seteditDonation={seteditModalOpen}
                         setpauseDonation={setpauseModalOpen}
                         setcancelDonation={setcancelModalOpen}
@@ -126,48 +131,18 @@ export default function Recurrency({
                 )}
               </div>
             </div>
-            {openModal && (
-              <div className={styles.modalContainer}>
-                <>
-                  <div
-                    onClick={() => {
-                      handleClose();
-                    }}
-                    className={styles.closeRecord}
-                  >
-                    <BackButton />
-                  </div>
-                  {currentRecord ? (
-                    <>
-                      <RecordHeader
-                        record={currentRecord}
-                        handleRecordOpen={() => {}}
-                      />
-                      <div className={styles.divider}></div>
-                      <div className={styles.detailContainer}>
-                        <div className={styles.detailGrid}>
-                          <DetailsComponent record={currentRecord} />
-                        </div>
-                        {currentRecord.method === 'offline' &&
-                          currentRecord.bankAccount && (
-                            <TransferDetails
-                              account={currentRecord.bankAccount}
-                            />
-                          )}
-                        {currentRecord.status !== 'incomplete' && (
-                          <ManageDonation
-                            record={currentRecord}
-                            seteditDonation={seteditModalOpen}
-                            setpauseDonation={setpauseModalOpen}
-                            setcancelDonation={setcancelModalOpen}
-                            setreactivateDonation={setreactivateModalOpen}
-                          />
-                        )}
-                      </div>
-                    </>
-                  ) : null}
-                </>
-              </div>
+            {isModalOpen && recurrencies?.length && selectedRecord !== null && (
+              <RecurrencyRecord
+                isModal={true}
+                handleRecordToggle={handleRecordToggle}
+                selectedRecord={selectedRecord}
+                record={recurrencies[selectedRecord]}
+                recurrencies={recurrencies}
+                seteditDonation={seteditModalOpen}
+                setpauseDonation={setpauseModalOpen}
+                setcancelDonation={setcancelModalOpen}
+                setreactivateDonation={setreactivateModalOpen}
+              />
             )}
           </div>
           <PauseModal
