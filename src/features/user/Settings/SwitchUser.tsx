@@ -57,9 +57,7 @@ const SwitchUser = () => {
             placeholder="xyz@email.com"
             error={errors.targetEmail || alertError}
             helperText={
-              (!alertError &&
-                errors.targetEmail &&
-                errors.targetEmail.message) ||
+              (errors.targetEmail && errors.targetEmail.message) ||
               (alertError && !targetEmail && t('me:userNotexist'))
             }
           />{' '}

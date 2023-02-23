@@ -435,6 +435,7 @@ function UserLayout(props: any): ReactElement {
         key={'hamburgerIcon'}
         className={`${styles.hamburgerIcon}`}
         onClick={() => setIsMenuOpen(true)} // for mobile verion to open menu
+        style={{ marginTop: validEmail ? '47px' : '' }}
       >
         <MenuIcon />
       </div>
