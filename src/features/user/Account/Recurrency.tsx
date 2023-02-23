@@ -147,7 +147,7 @@ export default function Recurrency({
                         <div className={styles.detailGrid}>
                           <DetailsComponent record={currentRecord} />
                         </div>
-                        <>
+                        {currentRecord.status !== 'incomplete' && (
                           <ManageDonation
                             record={currentRecord}
                             seteditDonation={seteditModalOpen}
@@ -155,7 +155,7 @@ export default function Recurrency({
                             setcancelDonation={setcancelModalOpen}
                             setreactivateDonation={setreactivateModalOpen}
                           />
-                        </>
+                        )}
                       </div>
                     </>
                   ) : null}
