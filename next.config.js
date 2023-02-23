@@ -19,6 +19,11 @@ const {
   SOURCE_VERSION,
   COMMIT_REF,
   SITE_IMAGERY_API_URL,
+  MYSQL_HOST,
+  MYSQL_PORT,
+  MYSQL_DATABASE,
+  MYSQL_USER,
+  MYSQL_PASSWORD
 } = process.env;
 
 // allow source map uploads from Vercel, Heroku and Netlify deployments
@@ -45,7 +50,7 @@ const nextauthUrl = process.env.NEXTAUTH_URL
 const hasAssetPrefix =
   process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
-const nextConfig =  {
+const nextConfig = {
   productionBrowserSourceMaps: true,
   i18n,
   serverRuntimeConfig: {
@@ -119,6 +124,11 @@ const nextConfig =  {
     SITE_IMAGERY_API_URL: SITE_IMAGERY_API_URL,
     WIDGET_URL: process.env.WIDGET_URL,
     CONFIG_URL: process.env.CONFIG_URL,
+    MYSQL_HOST,
+    MYSQL_PORT,
+    MYSQL_DATABASE,
+    MYSQL_USER,
+    MYSQL_PASSWORD
   },
   trailingSlash: false,
   reactStrictMode: true,
