@@ -106,6 +106,7 @@ export async function getRequest<T>(
   const fullUrl = isAbsoluteUrl(url)
     ? url
     : `${process.env.API_ENDPOINT}${url}${queryStringSuffix}`;
+
   await fetch(fullUrl, {
     method: 'GET',
     headers: {
@@ -151,7 +152,8 @@ export async function getAuthenticatedRequest<T>(
       'x-locale': `${lang}`,
       'x-accept-versions': version ? version : '1.0.3',
       "x-switch-user": `${email ? email : ""}`
-    },
+      ...(header ? header : {}),
+     },
   })
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
@@ -346,9 +348,7 @@ export async function getRasterData(
   errorHandler?: Function
 ): Promise<any> {
   let result;
-  const res = await fetch(
-    `${process.env.SITE_IMAGERY_API_URL}/api/v1/project/${id}`
-  )
+  await fetch(`${process.env.SITE_IMAGERY_API_URL}/api/v1/project/${id}`)
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
       handleApiError(res.status, result, errorHandler);

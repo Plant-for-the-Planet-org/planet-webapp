@@ -257,4 +257,6 @@
   "enterTheEmail": "Enter the email of the target user",
   "invalidEmail": "Please enter a valid email Id",
   "userNotexist": "There is no account associated to this email !!"
-  }
+  "donatedTrees": "Donated Trees"
+}
+
