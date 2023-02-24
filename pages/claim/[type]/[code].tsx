@@ -58,10 +58,10 @@ function ClaimDonation(): ReactElement {
     };
     if (contextLoaded && user) {
       postAuthenticatedRequest(
-        validEmail,
         `/app/redeem`,
         submitData,
         token,
+        validEmail,
         handleError
       ).then((res) => {
         if (res.error_code === 'invalid_code') {

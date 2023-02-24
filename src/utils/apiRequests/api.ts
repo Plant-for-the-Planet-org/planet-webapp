@@ -68,7 +68,7 @@ const handleApiError = (
 };
 
 //  API call to private /profile endpoint
-export async function getAccountInfo(token: any, email:string): Promise<any> {
+export async function getAccountInfo(token: any, email?:string): Promise<any> {
   const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
     method: 'GET',
     headers: {
@@ -128,15 +128,15 @@ export async function getRequest<T>(
 }
 
 export async function getAuthenticatedRequest<T>(
-  email?:string,
   url: any,
+  email?:string,
   token: any,
   header: any = null,
   errorHandler?: Function,
   redirect?: string,
   queryParams?: { [key: string]: string },
   version?: string
-): Promise<T> {
+  ): Promise<T> {
   let result = {};
   const lang = localStorage.getItem('language') || 'en';
   const query: any = { ...queryParams };
@@ -162,10 +162,10 @@ export async function getAuthenticatedRequest<T>(
 }
 
 export async function postAuthenticatedRequest<T>(
-  email?: string,
   url: any,
   data: any,
   token: any,
+  email?: string,
   errorHandler?: Function,
   headers?: any
 ): Promise<T | ApiCustomError | null> {
@@ -217,9 +217,9 @@ export async function postAuthenticatedRequest<T>(
 }
 
 export async function deleteAuthenticatedRequest(
-  email?: string,
   url: any,
   token: any,
+  email?: string,
   errorHandler?: Function
 ): Promise<any> {
   let result;
@@ -255,10 +255,10 @@ export async function deleteAuthenticatedRequest(
 }
 
 export async function putAuthenticatedRequest<T>(
-  email?: string,
   url: any,
   data: any,
   token: any,
+  email?: string,
   errorHandler?: Function
 ): Promise<T | ApiCustomError | undefined> {
   if (validateToken(token)) {

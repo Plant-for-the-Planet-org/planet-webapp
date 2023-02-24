@@ -39,10 +39,10 @@ const PayoutScheduleForm = (): ReactElement | null => {
   const onSubmit = async (data: FormData): Promise<void> => {
     setIsProcessing(true);
     const res = await putAuthenticatedRequest<User>(
-      validEmail,
       '/app/profile',
       { scheduleFrequency: data.scheduleFrequency },
       token,
+      validEmail,
       handleError
     );
     if (res?.id && !isApiCustomError(res)) {

@@ -99,10 +99,10 @@ export const EditModal = ({
 
     if (Object.keys(bodyToSend).length !== 0) {
       putAuthenticatedRequest(
-        validEmail,
         `/app/subscriptions/${record?.id}?scope=modify`,
         bodyToSend,
         token,
+        validEmail,
         handleError
       )
         .then((res) => {

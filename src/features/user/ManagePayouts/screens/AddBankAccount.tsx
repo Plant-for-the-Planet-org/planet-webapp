@@ -33,10 +33,10 @@ const AddBankAccount = (): ReactElement | null => {
         data.currency === PayoutCurrency.DEFAULT ? '' : data.payoutMinAmount,
     };
     const res = await postAuthenticatedRequest<Payouts.BankAccount>(
-      validEmail,
       '/app/accounts',
       accountData,
       token,
+      validEmail,
       handleError
     );
     if (res?.id && !isApiCustomError(res)) {

@@ -8,7 +8,6 @@ import Recurrency from '../../src/features/user/Account/Recurrency';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-import { ParamsContext } from '../../src/features/common/Layout/QueryParamsContext';
 
 interface Props {}
 
@@ -28,8 +27,8 @@ function RecurrentDonations({}: Props): ReactElement {
     setIsDataLoading(true);
     setProgress(70);
     const recurrencies: Payments.Subscription[] = await getAuthenticatedRequest(
-      validEmail,
       '/app/subscriptions',
+      validEmail,
       token,
       {},
       handleError,

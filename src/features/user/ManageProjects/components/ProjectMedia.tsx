@@ -49,8 +49,8 @@ export default function ProjectMedia({
     // Fetch images of the project
     if (projectGUID && token)
       getAuthenticatedRequest(
-        validEmail,
         `/app/profile/projects/${projectGUID}?_scope=images`,
+        validEmail,
         token,
         {},
         handleError,
@@ -69,10 +69,10 @@ export default function ProjectMedia({
       isDefault: false,
     };
     postAuthenticatedRequest(
-      validEmail,
       `/app/projects/${projectGUID}/images`,
       submitData,
       token,
+      validEmail,
       handleError
     )
       .then((res) => {
@@ -154,9 +154,9 @@ export default function ProjectMedia({
 
   const deleteProjectCertificate = (id: any) => {
     deleteAuthenticatedRequest(
-      validEmail,
       `/app/projects/${projectGUID}/images/${id}`,
       token,
+      validEmail,
       handleError
     ).then((res) => {
       if (res !== 404) {
@@ -176,10 +176,10 @@ export default function ProjectMedia({
       videoUrl: data.youtubeURL,
     };
     putAuthenticatedRequest(
-      validEmail,
       `/app/projects/${projectGUID}`,
       submitData,
       token,
+      validEmail,
       handleError
     )
       .then((res) => {
@@ -216,10 +216,10 @@ export default function ProjectMedia({
       isDefault: true,
     };
     putAuthenticatedRequest(
-      validEmail,
       `/app/projects/${projectGUID}/images/${id}`,
       submitData,
       token,
+      validEmail,
       handleError
     ).then((res) => {
       if (!res.code) {
@@ -249,10 +249,10 @@ export default function ProjectMedia({
       description: e.target.value,
     };
     putAuthenticatedRequest(
-      validEmail,
       `/app/projects/${projectGUID}/images/${id}`,
       submitData,
       token,
+      validEmail,
       handleError
     ).then((res) => {
       if (!res.code) {

@@ -31,7 +31,6 @@ function AccountHistory({}: Props): ReactElement {
     if (next && paymentHistory?._links?.next) {
       const newPaymentHistory: Payments.PaymentHistory =
         await getAuthenticatedRequest(
-          validEmail,
           `${
             filter && accountingFilters
               ? accountingFilters[filter] +
@@ -39,6 +38,7 @@ function AccountHistory({}: Props): ReactElement {
                 paymentHistory?._links?.next.split('?').pop()
               : paymentHistory?._links?.next
           }`,
+          validEmail,
           token,
           {},
           handleError,
@@ -56,8 +56,8 @@ function AccountHistory({}: Props): ReactElement {
       if (filter === null) {
         const paymentHistory: Payments.PaymentHistory =
           await getAuthenticatedRequest(
-            validEmail,
             '/app/paymentHistory?limit=15',
+            validEmail,
             token,
             {},
             handleError,

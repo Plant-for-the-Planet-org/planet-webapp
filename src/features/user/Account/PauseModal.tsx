@@ -77,10 +77,10 @@ export const PauseModal = ({
           : null, // only if pauseType='custom-date'
     };
     putAuthenticatedRequest(
-      validEmail,
       `/app/subscriptions/${record.id}?scope=pause`,
       bodyToSend,
       token,
+      validEmail,
       handleError
     )
       .then((res) => {

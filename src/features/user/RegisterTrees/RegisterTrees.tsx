@@ -161,10 +161,10 @@ export default function RegisterTrees({}: Props) {
           geometry: geometry,
         };
         postAuthenticatedRequest(
-          validEmail,
           `/app/contributions`,
           submitData,
           token,
+          validEmail,
           handleError
         ).then((res) => {
           if (!res.code) {
@@ -198,8 +198,8 @@ export default function RegisterTrees({}: Props) {
 
   async function loadProjects() {
     await getAuthenticatedRequest(
-      validEmail,
       '/app/profile/projects',
+      validEmail,
       token,
       {},
       handleError,

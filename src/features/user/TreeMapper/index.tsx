@@ -71,8 +71,8 @@ function TreeMapper({}: Props): ReactElement {
       }
     } else {
       const response = await getAuthenticatedRequest(
-        validEmail,
         '/treemapper/plantLocations?_scope=extended&limit=15',
+        validEmail,
         token,
         {},
         handleError,

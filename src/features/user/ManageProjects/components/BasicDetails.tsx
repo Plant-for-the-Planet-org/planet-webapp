@@ -411,10 +411,10 @@ export default function BasicDetails({
     // Check if GUID is set use update instead of create project
     if (projectGUID) {
       putAuthenticatedRequest(
-        validEmail,
         `/app/projects/${projectGUID}`,
         submitData,
         token,
+        validEmail,
         handleError
       )
         .then((res) => {
@@ -444,10 +444,10 @@ export default function BasicDetails({
         });
     } else {
       postAuthenticatedRequest(
-        validEmail,
         `/app/projects`,
         submitData,
         token,
+        validEmail,
         handleError
       )
         .then((res) => {

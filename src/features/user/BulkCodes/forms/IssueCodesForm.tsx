@@ -114,10 +114,10 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
 
       const cleanedData = cleanObject(donationData);
       const res = await postAuthenticatedRequest(
-        validEmail,
         `/app/donations`,
         cleanedData,
         token,
+        validEmail,
         handleError,
         {
           'IDEMPOTENCY-KEY': uuidv4(),

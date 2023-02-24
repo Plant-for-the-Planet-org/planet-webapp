@@ -51,10 +51,10 @@ export default function UploadImages({
       description: '',
     };
     postAuthenticatedRequest(
-      validEmail,
       `/app/contributions/${contributionGUID}/images`,
       submitData,
       token,
+      validEmail,
       handleError
     )
       .then((res) => {
@@ -89,9 +89,9 @@ export default function UploadImages({
 
   const deleteContributionImage = (id: any) => {
     deleteAuthenticatedRequest(
-      validEmail,
       `/app/contributions/${contributionGUID}/images/${id}`,
       token,
+      validEmail,
       handleError
     ).then((res) => {
       if (res !== 404) {

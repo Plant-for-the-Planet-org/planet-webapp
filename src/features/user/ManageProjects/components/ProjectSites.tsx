@@ -163,10 +163,10 @@ export default function ProjectSites({
 
       if (!data.name) return;
       postAuthenticatedRequest(
-        validEmail,
         `/app/projects/${projectGUID}/sites`,
         submitData,
         token,
+        validEmail,
         handleError
       )
         .then((res) => {
@@ -212,9 +212,9 @@ export default function ProjectSites({
   const deleteProjectSite = (id: any) => {
     setIsUploadingData(true);
     deleteAuthenticatedRequest(
-      validEmail,
       `/app/projects/${projectGUID}/sites/${id}`,
       token,
+      validEmail,
       handleError
     ).then((res) => {
       if (res !== 404) {
@@ -266,8 +266,8 @@ export default function ProjectSites({
     // Fetch sites of the project
     if (projectGUID)
       getAuthenticatedRequest(
-        validEmail,
         `/app/profile/projects/${projectGUID}?_scope=sites`,
+        validEmail,
         token,
         {},
         handleError,
@@ -658,10 +658,10 @@ function EditSite({
         status: data.status,
       };
       putAuthenticatedRequest(
-        validEmail,
         `/app/projects/${projectGUID}/sites/${siteGUID}`,
         submitData,
         token,
+        validEmail,
         handleError
       ).then((res) => {
         if (!res.code) {

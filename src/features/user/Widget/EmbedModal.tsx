@@ -63,10 +63,10 @@ export default function EmbedModal({
     if (contextLoaded && token) {
       try {
         putAuthenticatedRequest(
-          validEmail,
           `/app/profile`,
           bodyToSend,
           token,
+          validEmail,
           handleError
         )
           .then((res) => {

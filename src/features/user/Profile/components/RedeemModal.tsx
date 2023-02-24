@@ -55,10 +55,10 @@ export default function RedeemModal({
     };
     if (contextLoaded && user) {
       postAuthenticatedRequest(
-        validEmail,
         `/app/redeem`,
         submitData,
-        token
+        token,
+        validEmail
       ).then((res) => {
         if (res.error_code === 'already_redeemed') {
           setErrorMessage(t('redeem:alreadyRedeemed'));

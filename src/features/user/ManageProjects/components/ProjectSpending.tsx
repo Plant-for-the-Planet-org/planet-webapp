@@ -124,10 +124,10 @@ export default function ProjectSpending({
     };
 
     postAuthenticatedRequest(
-      validEmail,
       `/app/projects/${projectGUID}/expenses`,
       submitData,
       token,
+      validEmail,
       handleError
     )
       .then((res) => {
@@ -160,9 +160,9 @@ export default function ProjectSpending({
   const deleteProjectSpending = (id: any) => {
     setIsUploadingData(true);
     deleteAuthenticatedRequest(
-      validEmail,
       `/app/projects/${projectGUID}/expenses/${id}`,
       token,
+      validEmail,
       handleError
     ).then((res) => {
       if (res !== 404) {
@@ -179,8 +179,8 @@ export default function ProjectSpending({
     // Fetch spending of the project
     if (projectGUID && token)
       getAuthenticatedRequest(
-        validEmail,
         `/app/profile/projects/${projectGUID}?_scope=expenses`,
+        validEmail,
         token,
         {},
         handleError,

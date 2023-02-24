@@ -76,8 +76,8 @@ export default function ManagePayouts({
       setProgress && setProgress(70);
       try {
         const res = await getAuthenticatedRequest<Payouts.BankAccount[]>(
-          validEmail,
           `/app/accounts`,
+          validEmail,
           token,
           {},
           handleError

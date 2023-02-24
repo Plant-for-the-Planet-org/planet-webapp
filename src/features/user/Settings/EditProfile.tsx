@@ -169,10 +169,10 @@ export default function EditProfile({}: Props) {
             handleSnackbarOpen();
 
             putAuthenticatedRequest(
-              validEmail,
               `/app/profile`,
               bodyToSend,
               token,
+              validEmail,
               handleError
             )
               .then((res) => {
@@ -213,10 +213,10 @@ export default function EditProfile({}: Props) {
     if (contextLoaded && token) {
       try {
         putAuthenticatedRequest(
-          validEmail,
           `/app/profile`,
           bodyToSend,
           token,
+          validEmail,
           handleError
         )
           .then((res) => {

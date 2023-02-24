@@ -33,8 +33,8 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
     async function loadFunction() {
       if (authenticatedType === 'private' && token) {
         getAuthenticatedRequest(
-          validEmail,
           `/app/profile/contributions`,
+          validEmail,
           token,
           {},
           handleError,

@@ -34,10 +34,10 @@ export default function AddTargetModal({
         target: !target ? user.score.target : target,
       };
       putAuthenticatedRequest(
-        validEmail,
         `/app/profile`,
         bodyToSend,
         token,
+        validEmail,
         handleError
       )
         .then((res) => {

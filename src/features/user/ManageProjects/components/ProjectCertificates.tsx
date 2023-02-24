@@ -93,8 +93,8 @@ function ProjectCertificates({
     // Fetch certificates of the project
     if (projectGUID && token) {
       getAuthenticatedRequest(
-        validEmail,
         `/app/profile/projects/${projectGUID}?_scope=certificates`,
+        validEmail,
         token,
         {},
         handleError,
@@ -140,10 +140,10 @@ function ProjectCertificates({
     };
 
     postAuthenticatedRequest(
-      validEmail,
       `/app/projects/${projectGUID}/certificates`,
       submitData,
       token,
+      validEmail,
       handleError
     )
       .then((res) => {
@@ -180,9 +180,9 @@ function ProjectCertificates({
 
   const deleteProjectCertificate = (id: any) => {
     deleteAuthenticatedRequest(
-      validEmail,
       `/app/projects/${projectGUID}/certificates/${id}`,
       token,
+      validEmail,
       handleError
     ).then((res) => {
       if (res !== 404) {

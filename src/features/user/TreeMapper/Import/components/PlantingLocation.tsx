@@ -94,8 +94,8 @@ export default function PlantingLocation({
 
   const loadProjects = async () => {
     await getAuthenticatedRequest(
-      validEmail,
       '/app/profile/projects',
+      validEmail,
       token
     ).then((projects: any) => {
       setProjects(projects);
@@ -104,8 +104,8 @@ export default function PlantingLocation({
 
   const loadMySpecies = async () => {
     await getAuthenticatedRequest(
-      validEmail,
       '/treemapper/species',
+      validEmail,
       token
     ).then((species: any) => {
       setMySpecies(species);

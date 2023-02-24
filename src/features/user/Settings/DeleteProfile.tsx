@@ -24,9 +24,9 @@ export default function DeleteProfile({}: any) {
   const handleDeleteAccount = () => {
     setIsUploadingData(true);
     deleteAuthenticatedRequest(
-      validEmail,
       '/app/profile',
       token,
+      validEmail,
       handleError
     ).then((res) => {
       if (res.error_code === 'active_subscriptions') {

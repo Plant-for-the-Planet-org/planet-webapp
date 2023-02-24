@@ -81,8 +81,8 @@ export default function PlanetCash({
       setIsDataLoading(true);
       setProgress && setProgress(70);
       const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
-        validEmail,
         `/app/planetCash`,
+        validEmail,
         token,
         {},
         handleError

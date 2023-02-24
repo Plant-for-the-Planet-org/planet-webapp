@@ -176,8 +176,8 @@ export default function ManageProjects({ GUID, token, project }: any) {
     // Fetch details of the project
     if (projectGUID && token)
       getAuthenticatedRequest(
-        validEmail,
         `/app/profile/projects/${projectGUID}`,
+        validEmail,
         token,
         {},
         handleError,

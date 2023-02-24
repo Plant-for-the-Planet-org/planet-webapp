@@ -38,10 +38,10 @@ const EditBankAccount = (): ReactElement | null => {
         data.currency === PayoutCurrency.DEFAULT ? '' : data.payoutMinAmount,
     };
     const res = await putAuthenticatedRequest<Payouts.BankAccount>(
-      validEmail,
       `/app/accounts/${accountToEdit?.id}`,
       accountData,
       token,
+      validEmail,
       handleError
     );
     if (res?.id && !isApiCustomError(res)) {

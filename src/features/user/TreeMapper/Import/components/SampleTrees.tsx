@@ -77,10 +77,10 @@ export default function SampleTrees({
     newStatus[index] = 'uploading';
     setUploadStatus(newStatus);
     const res = await postAuthenticatedRequest(
-      validEmail,
       `/treemapper/plantLocations`,
       sampleTree,
-      token
+      token,
+      validEmail
     );
     if (!res.code) {
       setErrorMessage('');

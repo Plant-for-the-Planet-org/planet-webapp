@@ -60,8 +60,8 @@ const Transactions = ({
 
       const newTransactionHistory: Payments.PaymentHistory =
         await getAuthenticatedRequest(
-          validEmail,
           apiUrl,
+          validEmail,
           token,
           {},
           handleError,

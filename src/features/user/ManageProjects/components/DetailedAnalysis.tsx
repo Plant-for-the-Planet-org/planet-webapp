@@ -286,10 +286,10 @@ export default function DetailedAnalysis({
           };
 
     putAuthenticatedRequest(
-      validEmail,
       `/app/projects/${projectGUID}`,
       submitData,
       token,
+      validEmail,
       handleError
     )
       .then((res) => {

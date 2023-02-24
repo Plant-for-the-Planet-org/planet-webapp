@@ -94,8 +94,8 @@ export default function ProjectsContainer({}: any) {
   async function loadProjects() {
     if (user) {
       await getAuthenticatedRequest(
-        validEmail,
         '/app/profile/projects?version=1.2',
+        validEmail,
         token,
         {},
         handleError,

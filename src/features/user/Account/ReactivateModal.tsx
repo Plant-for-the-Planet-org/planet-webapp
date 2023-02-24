@@ -29,10 +29,10 @@ export const ReactivateModal = ({
   const reactivateDonation = () => {
     setDisabled(true);
     putAuthenticatedRequest(
-      validEmail,
       `/app/subscriptions/${record.id}?scope=reactivate`,
       bodyToSend,
       token,
+      validEmail,
       handleError
     )
       .then((res) => {

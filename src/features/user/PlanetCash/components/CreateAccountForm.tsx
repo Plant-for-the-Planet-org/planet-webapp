@@ -36,10 +36,10 @@ const CreateAccountForm = ({
     const data = { country: country, activate: !isPlanetCashActive };
     setIsProcessing(true);
     const res = await postAuthenticatedRequest(
-      validEmail,
       '/app/planetCash',
       data,
       token,
+      validEmail,
       handleError
     );
     if (res?.id) {

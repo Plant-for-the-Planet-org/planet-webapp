@@ -39,8 +39,8 @@ function ManageSingleProject({}: Props): ReactElement {
   useEffect(() => {
     async function loadProject() {
       getAuthenticatedRequest(
-        validEmail,
         `/app/profile/projects/${projectGUID}`,
+        validEmail,
         token,
         {},
         handleError,
