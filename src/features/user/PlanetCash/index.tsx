@@ -5,7 +5,7 @@ import {
   useContext,
   useCallback,
 } from 'react';
-import { useTranslation } from 'next-i18next';
+import { Trans, useTranslation } from 'next-i18next';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
@@ -146,26 +146,41 @@ export default function PlanetCash({
     <DashboardView
       title={t('title')}
       subtitle={
-        <p>
-          {t('description')}{' '}
-          <a
-            className="planet-links"
-            href="https://www.plant-for-the-planet.org/planetcash/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            {t('learnMoreText')}
-          </a>
-          <br />
-          <a
-            className="planet-links"
-            href="https://www.plant-for-the-planet.org/terms-and-conditions/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            {t('termsText')}
-          </a>
-        </p>
+        <div>
+          <p>
+            <Trans i18nKey="partnerSignupInfo">
+              Our Planet Cash/Bulk Codes feature is a feature specifically for
+              Plant-for-the-Planet partners. Feel free to contact us at{' '}
+              <a
+                className="planet-links"
+                href="mailto:partner@plant-for-the-planet.org"
+              >
+                partner@plant-for-the-planet.org
+              </a>{' '}
+              if you are interested.
+            </Trans>
+          </p>
+          <p>
+            {t('description')}{' '}
+            <a
+              className="planet-links"
+              href={`https://pp.eco/${i18n.language}/planetcash/`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {t('learnMoreText')}
+            </a>
+            <br />
+            <a
+              className="planet-links"
+              href={`https://pp.eco/legal/${i18n.language}/terms`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {t('termsText')}
+            </a>
+          </p>
+        </div>
       }
     >
       <TabbedView step={step} tabItems={tabConfig}>
