@@ -21,6 +21,7 @@ import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
+import { Subscription } from '../../common/types/payments';
 
 const MuiCalendarPicker = styled(CalendarPicker)({
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -36,19 +37,26 @@ const MuiCalendarPicker = styled(CalendarPicker)({
   },
 });
 
+interface CancelModalProps {
+  cancelModalOpen: boolean;
+  handleCancelModalClose: () => void;
+  record: Subscription;
+  fetchRecurrentDonations: (next?: boolean | undefined) => void;
+}
+
 export const CancelModal = ({
   cancelModalOpen,
   handleCancelModalClose,
   record,
   fetchRecurrentDonations,
-}: any) => {
+}: CancelModalProps) => {
   const { theme } = React.useContext(ThemeContext);
   const { token } = React.useContext(UserPropsContext);
   const [option, setoption] = React.useState('cancelImmediately');
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState(new Date());
   const [disabled, setDisabled] = React.useState(false);
-  const { t, i18n, ready } = useTranslation(['me']);
+  const { t } = useTranslation(['me']);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {

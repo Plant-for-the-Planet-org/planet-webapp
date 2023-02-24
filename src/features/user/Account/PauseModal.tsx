@@ -21,6 +21,7 @@ import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
+import { Subscription } from '../../common/types/payments';
 
 const MuiCalendarPicker = styled(CalendarPicker)({
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -36,12 +37,19 @@ const MuiCalendarPicker = styled(CalendarPicker)({
   },
 });
 
+interface PauseModalProps {
+  pauseModalOpen: boolean;
+  handlePauseModalClose: () => void;
+  record: Subscription;
+  fetchRecurrentDonations: (next?: boolean | undefined) => void;
+}
+
 export const PauseModal = ({
   pauseModalOpen,
   handlePauseModalClose,
   record,
   fetchRecurrentDonations,
-}: any) => {
+}: PauseModalProps) => {
   const { theme } = React.useContext(ThemeContext);
   const { token } = React.useContext(UserPropsContext);
   const [option, setoption] = React.useState();
@@ -51,7 +59,7 @@ export const PauseModal = ({
   );
   const [disabled, setDisabled] = React.useState(false);
 
-  const { t, i18n, ready } = useTranslation(['me']);
+  const { t } = useTranslation(['me']);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
