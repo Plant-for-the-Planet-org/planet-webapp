@@ -151,7 +151,7 @@ export async function getAuthenticatedRequest<T>(
       Authorization: `Bearer ${token}`,
       'x-locale': `${lang}`,
       'x-accept-versions': version ? version : '1.0.3',
-      "x-switch-user": `${email ? email : ""}`
+      "x-switch-user": `${email ? email : ""}`,
       ...(header ? header : {}),
      },
   })
