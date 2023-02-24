@@ -46,7 +46,7 @@ const ProjectFilter = ({ setProgress }: Props) => {
 
   const handleProjectChange = (proj: Project | null) => {
     if (proj) {
-      console.log(proj.name);
+      console.log(proj.id);
     }
   };
 

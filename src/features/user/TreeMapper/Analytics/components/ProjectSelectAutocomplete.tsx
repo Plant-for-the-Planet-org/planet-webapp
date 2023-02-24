@@ -45,14 +45,14 @@ const ProjectSelectAutocomplete = ({
         options={projectList}
         getOptionLabel={(option) => (option as Project).name}
         isOptionEqualToValue={(option, value) =>
-          (option as Project).guid === (value as Project).guid
+          (option as Project).id === (value as Project).id
         }
         value={localProject}
         onChange={(_event, newValue: unknown) =>
           setLocalProject(newValue as Project | null)
         }
         renderOption={(props, option) => (
-          <span {...props} key={(option as Project).guid}>
+          <span {...props} key={(option as Project).id}>
             {(option as Project).name}
           </span>
         )}

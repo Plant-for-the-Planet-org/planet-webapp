@@ -3,8 +3,7 @@ import { useContext, createContext, useMemo, useState, FC } from 'react';
 import { SetState } from '../types/common';
 
 export interface Project {
-  guid: string;
-  slug: string;
+  id: string;
   name: string;
 }
 

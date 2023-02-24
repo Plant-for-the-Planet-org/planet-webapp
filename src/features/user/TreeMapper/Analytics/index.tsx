@@ -1,44 +1,46 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import React, { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import DashboardView from '../../../common/Layout/DashboardView';
 import { useTranslation } from 'react-i18next';
 import ProjectFilter from './components/ProjectFilter';
-import { useAnalytics } from '../../../common/Layout/AnalyticsContext';
+import { Project, useAnalytics } from '../../../common/Layout/AnalyticsContext';
 import { Graphs } from './components/Graphs';
+import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { ProjectMapInfo } from '@planet-sdk/common';
 
 interface Props {
   setProgress: Dispatch<SetStateAction<number>>;
 }
 
-const tempProjectList = [
-  {
-    guid: 'proj_asdf',
-    slug: 'yucatan',
-    name: 'Yucatan',
-  },
-  {
-    guid: 'proj_qwer',
-    slug: 'lacruzhabitat',
-    name: 'Mexico Reforestation Project',
-  },
-  {
-    guid: 'proj_poiu',
-    slug: 'one-student-one-tree',
-    name: 'One student One tree and conservation Education',
-  },
-  {
-    guid: 'proj_asdf',
-    slug: 'making-madagascar-green-again',
-    name: 'Making Madagascar Green-Again',
-  },
-];
-
 const Analytics = ({ setProgress }: Props) => {
   const { t, ready } = useTranslation('treemapperAnalytics');
   const { setProjectList } = useAnalytics();
 
+  const { token } = useContext(UserPropsContext);
+  const { handleError } = useContext(ErrorHandlingContext);
+
+  const fetchProjects = async () => {
+    const res = await getAuthenticatedRequest<ProjectMapInfo[]>(
+      '/app/profile/projects?scope=map',
+      token,
+      {},
+      handleError
+    );
+
+    const projects: Project[] = [];
+
+    res.forEach((_proj) => {
+      const { id, name } = _proj.properties;
+      const proj = { id, name };
+      projects.push(proj);
+    });
+
+    setProjectList(projects);
+  };
+
   useEffect(() => {
-    // fetch and set projectList mock
-    setProjectList(tempProjectList);
+    fetchProjects();
   }, []);
 
   return ready ? (
