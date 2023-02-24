@@ -60,5 +60,7 @@
   "aliases": "Aliasnamen",
   "aliasesValidation": "Bitte gibt ein Alias ein",
   "speciesValidation": "Bitte gib eine Art ein",
-  "external": "Extern"
+  "external": "Extern",
+  "date": "Datum",
+  "measurements": "Messwerte"
 }
