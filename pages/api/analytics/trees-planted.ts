@@ -1,7 +1,10 @@
-import { NextApiRequest } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 import db from '../../../src/utils/connectDB';
 
-export default async function handler(req: NextApiRequest, response) {
+export default async function handler(
+  req: NextApiRequest,
+  response: NextApiResponse
+) {
   const { projectId, startDate, endDate } = req.body;
 
   if (req.method === 'POST') {
