@@ -14,7 +14,7 @@ export default async function handler(
           plant_project_id, \
           DATE_SUB(plant_date, INTERVAL WEEKDAY(plant_date) DAY) AS week_start_date, \
           DATE_ADD(DATE_SUB(plant_date, INTERVAL WEEKDAY(plant_date) DAY), INTERVAL 6 DAY) AS week_end_date, \
-          WEEK(plant_date) AS week_data, \
+          WEEK(plant_date, 1) AS week_data, \
           SUM(trees_planted) AS trees_planted \
         FROM plant_location \
         WHERE plant_project_id = ? AND plant_date BETWEEN ? AND ? \
