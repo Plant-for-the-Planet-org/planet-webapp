@@ -20,7 +20,7 @@ export default async function handler(
         WHERE plant_project_id = ? AND plant_date BETWEEN ? AND ? \
         GROUP BY plant_project_id, week_data \
         ORDER BY plant_date;',
-        [projectId, startDate, endDate]
+        [projectId, startDate, `${endDate} 23:59:59.999`]
       );
 
       await db.end();

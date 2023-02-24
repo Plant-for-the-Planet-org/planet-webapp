@@ -21,7 +21,7 @@ export default async function handler(
         INNER JOIN plant_location pl ON ps.plant_location_id = pl.id \
         LEFT JOIN scientific_species ss ON ps.scientific_species_id = ss.id \
         WHERE pl.plant_project_id = ? AND plant_date BETWEEN ? AND ?',
-        [projectId, startDate, endDate]
+        [projectId, startDate, `${endDate} 23:59:59.999`]
       );
 
       await db.end();
