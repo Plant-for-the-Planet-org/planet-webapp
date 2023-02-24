@@ -6,12 +6,13 @@ import { useTranslation } from 'next-i18next';
 import TransferDetails from './TransferDetails';
 import themeProperties from '../../../../theme/themeProperties';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
+import { Subscription } from '../../../common/types/payments';
 
 interface CommonProps {
   handleRecordToggle: (index: number | undefined) => void;
   selectedRecord: number | null;
-  record: Payments.Subscription;
-  recurrencies: Payments.Subscription[];
+  record: Subscription;
+  recurrencies: Subscription[];
   seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
   setpauseDonation: React.Dispatch<React.SetStateAction<boolean>>;
   setcancelDonation: React.Dispatch<React.SetStateAction<boolean>>;
@@ -91,7 +92,7 @@ export default function RecurrencyRecord({
 }
 
 interface HeaderProps {
-  record: Payments.Subscription;
+  record: Subscription;
   handleRecordToggle?: (index: number | undefined) => void;
   index?: number;
 }
@@ -183,7 +184,7 @@ export function RecordHeader({
 }
 
 interface DetailProps {
-  record: Payments.Subscription;
+  record: Subscription;
 }
 
 export function DetailsComponent({ record }: DetailProps): ReactElement {
@@ -261,7 +262,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
 }
 
 interface ManageDonationProps {
-  record: Payments.Subscription;
+  record: Subscription;
   seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
   setpauseDonation: React.Dispatch<React.SetStateAction<boolean>>;
   setcancelDonation: React.Dispatch<React.SetStateAction<boolean>>;

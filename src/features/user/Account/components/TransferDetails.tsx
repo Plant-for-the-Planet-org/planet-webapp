@@ -1,9 +1,10 @@
 import { ReactElement } from 'react';
 import { useTranslation } from 'next-i18next';
 import styles from '../AccountHistory.module.scss';
+import { BankAccount } from '../../../common/types/payments';
 
 interface TransferDetailsProps {
-  account: Payments.BankAccount;
+  account: BankAccount;
 }
 
 export default function TransferDetails({
