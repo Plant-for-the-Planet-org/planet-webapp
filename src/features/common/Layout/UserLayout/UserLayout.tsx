@@ -503,7 +503,7 @@ function UserLayout(props: any): ReactElement {
       </div>
       <div
         className={`${styles.profilePageWrapper} ${
-          !user?.allowedToSwitch ? ` ${styles.profileImpersonation}` : ''
+          validEmail ? ` ${styles.profileImpersonation}` : ''
         }`}
       >
         {props.children}

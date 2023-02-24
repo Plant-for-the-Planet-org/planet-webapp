@@ -7,12 +7,11 @@ import { useContext } from 'react';
 import { useRouter } from 'next/router';
 
 const ImpersonationActivated = () => {
-  const { setValidEmail, validEmail, setTargetEmail, setImpersonationEmail } =
+  const { setValidEmail, validEmail, setImpersonationEmail } =
     useContext(UserPropsContext);
   const { push } = useRouter();
   const closeAlert = () => {
     localStorage.removeItem('secondUser');
-    setTargetEmail('');
     setValidEmail('');
     setImpersonationEmail('');
     push(`/profile/switch-user`);
@@ -23,8 +22,8 @@ const ImpersonationActivated = () => {
   return (
     validEmail && (
       <div className={styles.impersonationAlertContainer}>
-        <div>{t('me:targetUser')}</div>
-        <div>{`<${validEmail}>`}</div>
+        <p className={styles.impersonatingText}>{t('me:targetUser')}</p>
+        <p className={styles.impersonatingEmail}>{`<${validEmail}>`}</p>
         <div className={styles.logoutContainer}>
           <button onClick={() => closeAlert()}>
             <LogoutIcon />

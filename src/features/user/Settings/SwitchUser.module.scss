@@ -36,4 +36,20 @@
     text-align: center;
 }
 
- 
+@include xsPhoneView {
+    .impersonatingText {
+        margin-right: 168px;
+        padding-top: 7px;
+    }
+   .exit {
+        position: relative;
+        top: -14px;
+   }
+   .logoutContainer {
+        position: relative;
+        top: -11px;
+   }
+   .impersonatingEmail {
+        padding-bottom: 10px;
+   }
+}

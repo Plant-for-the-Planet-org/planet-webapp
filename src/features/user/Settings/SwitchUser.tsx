@@ -16,19 +16,13 @@ const SwitchUser = () => {
   const { register, errors, handleSubmit } = useForm<FormData>({
     mode: 'onSubmit',
   });
-  const {
-    targetEmail,
-    setTargetEmail,
-    setAlertError,
-    alertError,
-    setImpersonationEmail,
-  } = useContext(UserPropsContext);
+  const { setAlertError, alertError, setImpersonationEmail } =
+    useContext(UserPropsContext);
 
   const handle = (data: FormData): void => {
     setAlertError(false);
     if (data.targetEmail) {
       setImpersonationEmail(data.targetEmail);
-      setTargetEmail('');
     }
   };
 
@@ -40,8 +34,6 @@ const SwitchUser = () => {
       <SwitchUserContainer>
         <form onSubmit={handleSubmit(handle)}>
           <TextField
-            onChange={(e) => setTargetEmail(e.target.value)}
-            value={targetEmail}
             inputRef={register({
               required: {
                 value: true,
@@ -58,7 +50,7 @@ const SwitchUser = () => {
             error={errors.targetEmail || alertError}
             helperText={
               (errors.targetEmail && errors.targetEmail.message) ||
-              (alertError && !targetEmail && t('me:userNotexist'))
+              (alertError && t('me:userNotexist'))
             }
           />{' '}
           <div>

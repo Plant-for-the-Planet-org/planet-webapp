@@ -19,7 +19,6 @@ export const UserPropsContext = React.createContext({
   auth0Error: {} || undefined,
   validEmail: '',
   impersonationEmail: '',
-  targetEmail: '',
   doNotShowImpersonation: true,
 });
 
@@ -40,7 +39,6 @@ function UserPropsProvider({ children }: any): ReactElement {
   const [profile, setUser] = React.useState<boolean | User | null>(false);
   const [validEmail, setValidEmail] = React.useState('');
   const [impersonationEmail, setImpersonationEmail] = React.useState('');
-  const [targetEmail, setTargetEmail] = React.useState('');
   const [alertError, setAlertError] = React.useState<boolean>(false);
   const [doNotShowImpersonation, setDoNotShowImpersonation] =
     React.useState<boolean>(true);
@@ -79,6 +77,7 @@ function UserPropsProvider({ children }: any): ReactElement {
       if (res.status === 200) {
         const resJson = await res.json();
         setUser(resJson);
+        //logic for impersonation feature
         const firstUser = localStorage.getItem('firstUser');
         const secondUser = localStorage.getItem('secondUser');
         if (resJson?.allowedToSwitch) {
@@ -150,8 +149,6 @@ function UserPropsProvider({ children }: any): ReactElement {
       value={{
         alertError,
         setAlertError,
-        targetEmail,
-        setTargetEmail,
         impersonationEmail,
         setImpersonationEmail,
         doNotShowImpersonation,
