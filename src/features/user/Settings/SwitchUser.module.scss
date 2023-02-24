@@ -38,18 +38,22 @@
 
 @include xsPhoneView {
     .impersonatingText {
-        margin-right: 168px;
-        padding-top: 7px;
+       position: relative;
+       top: 7px;
+       right: 70px;
     }
    .exit {
         position: relative;
-        top: -14px;
+        top: -20px;
+        left: 126px;
    }
    .logoutContainer {
         position: relative;
-        top: -11px;
+        right: 72px
    }
    .impersonatingEmail {
-        padding-bottom: 10px;
+        position: relative;
+        top: 8px;
+        right:43px
    }
 }
