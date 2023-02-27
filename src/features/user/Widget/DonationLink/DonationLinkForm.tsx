@@ -267,7 +267,7 @@ const DonationLinkForm = ({
                 {t('donationLink:qrCodeTitle')}
               </div>
               <img
-                style={{ display: 'block', width: '150px', height: '150px' }}
+                className={styles.qrContainer}
                 id="base64image"
                 src={qrCode}
               />
