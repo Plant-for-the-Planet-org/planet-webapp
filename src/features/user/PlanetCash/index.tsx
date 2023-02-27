@@ -148,7 +148,7 @@ export default function PlanetCash({
       subtitle={
         <div>
           <p>
-            <Trans i18nKey="partnerSignupInfo">
+            <Trans i18nKey="planetcash:partnerSignupInfo">
               Use of this feature by Companies is subject to partnership with
               Plant-for-the-Planet. Please contact{' '}
               <a
