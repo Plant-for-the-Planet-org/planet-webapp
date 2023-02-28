@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import styles from '../../styles/MyTrees.module.scss';
 import dynamic from 'next/dynamic';
 import {
@@ -23,7 +23,7 @@ interface Props {
 }
 
 export default function MyTrees({ profile, authenticatedType, token }: Props) {
-  const { t, i18n, ready } = useTranslation(['country', 'me']);
+  const { t, ready } = useTranslation(['country', 'me']);
   const [contributions, setContributions] = React.useState();
   const { handleError } = React.useContext(ErrorHandlingContext);
 
@@ -85,6 +85,16 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
                 ? t('me:myForest')
                 : t('me:nameForest', { name: profile.displayName })}
             </div>
+            <div className={styles.MyTreesLegend}>
+              <div className={styles.donatedTrees}>
+                <TreesIcon color="currentColor" />
+                <p>{t('me:donatedTrees')}</p>
+              </div>
+              <div className={styles.registeredTrees}>
+                <TreesIcon color="currentColor" />
+                <p>{t('me:registeredTrees')}</p>
+              </div>
+            </div>
             <div className={styles.myTreesContainer}>
               <div className={styles.treesList}>
                 {contributions.map((contribution: any, index: any) => {
@@ -102,7 +112,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
 
 function TreeList({ contribution }: any) {
   const date = formatDate(contribution.properties.plantDate);
-  const { t, i18n, ready } = useTranslation(['country', 'me']);
+  const { t, i18n } = useTranslation(['country', 'me']);
 
   return (
     <div key={contribution.properties.id} className={styles.tree}>
