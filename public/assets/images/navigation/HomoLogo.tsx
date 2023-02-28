@@ -1,6 +1,6 @@
 import React from 'react';
 
-function HomeLogo(prop: any) {
+function HomeLogo(prop: { color: string }) {
   return (
     <svg
       height="24"
