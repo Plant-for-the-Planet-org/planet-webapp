@@ -1,11 +1,12 @@
 import data from '../../treesPlantedMockData.json';
 import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import styles from './index.module.scss';
 import themeProperties from '../../../../../../theme/themeProperties';
 import { getFormattedNumber } from '../../../../../../utils/getFormattedNumber';
+import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -29,6 +30,8 @@ export const TreePlanted = () => {
       data: plantedTrees || [],
     },
   ]);
+
+  const { project, fromDate, toDate } = useAnalytics();
 
   const [options, setOptions] = useState({
     chart: {
@@ -127,6 +130,23 @@ export const TreePlanted = () => {
       },
     },
   });
+
+  const fetchPlantedTrees = async () => {
+    const res = await fetch('/api/analytics/trees-planted', {
+      method: 'POST',
+      body: JSON.stringify({
+        projectId: project,
+        startDate: fromDate,
+        endDate: toDate,
+      }),
+    });
+    const plantedTrees = await res.json();
+    console.log('==>', plantedTrees);
+  };
+
+  useEffect(() => {
+    fetchPlantedTrees();
+  }, []);
 
   return (
     <>

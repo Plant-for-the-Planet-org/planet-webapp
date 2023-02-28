@@ -1,4 +1,5 @@
 import { useContext, createContext, useMemo, useState, FC } from 'react';
+import { format } from 'date-fns';
 
 import { SetState } from '../types/common';
 
@@ -12,6 +13,10 @@ interface AnalyticsContextInterface {
   setProjectList: SetState<Project[] | null>;
   project: Project | null;
   setProject: SetState<Project | null>;
+  fromDate: Date;
+  setFromDate: SetState<Date>;
+  toDate: Date;
+  setToDate: SetState<Date>;
 }
 
 const AnalyticsContext = createContext<AnalyticsContextInterface | null>(null);
@@ -19,6 +24,8 @@ const AnalyticsContext = createContext<AnalyticsContextInterface | null>(null);
 export const AnalyticsProvider: FC = ({ children }) => {
   const [projectList, setProjectList] = useState<Project[] | null>(null);
   const [project, setProject] = useState<Project | null>(null);
+  const [fromDate, setFromDate] = useState(new Date('2021-04-18'));
+  const [toDate, setToDate] = useState(new Date('2022-06-27'));
 
   const value: AnalyticsContextInterface | null = useMemo(
     () => ({
@@ -26,8 +33,21 @@ export const AnalyticsProvider: FC = ({ children }) => {
       setProjectList,
       project,
       setProject,
+      fromDate,
+      setFromDate,
+      toDate,
+      setToDate,
     }),
-    [projectList, setProjectList, project, setProject]
+    [
+      projectList,
+      setProjectList,
+      project,
+      setProject,
+      fromDate,
+      setFromDate,
+      toDate,
+      setToDate,
+    ]
   );
 
   return (

@@ -38,11 +38,9 @@ interface Props {
 
 const ProjectFilter = ({ setProgress }: Props) => {
   const { t, ready } = useTranslation('treemapperAnalytics');
-  const { projectList } = useAnalytics();
+  const { projectList, fromDate, toDate, setFromDate, setToDate } =
+    useAnalytics();
   const { userLang } = useContext(UserPropsContext);
-
-  const [fromDate, setFromDate] = useState(new Date());
-  const [toDate, setToDate] = useState(new Date());
 
   const handleProjectChange = (proj: Project | null) => {
     if (proj) {

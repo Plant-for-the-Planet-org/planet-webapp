@@ -5,7 +5,7 @@ export default async function handler(
   req: NextApiRequest,
   response: NextApiResponse
 ) {
-  const { projectId, startDate, endDate } = req.body;
+  const { projectId, startDate, endDate } = JSON.parse(req.body);
 
   if (req.method === 'POST') {
     try {
