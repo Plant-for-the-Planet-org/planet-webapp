@@ -35,6 +35,7 @@ function GetNavBarIcon({
       >
         {router.pathname === item.onclick ? (
           tenantName === 'salesforce' ? (
+            //the homelogo for all tenant remains the same except salesforce tenant
             <GlobeSelected color={themeProperties.primaryColor} />
           ) : (
             <HomeLogoSelected color={themeProperties.primaryColor} />
@@ -42,7 +43,7 @@ function GetNavBarIcon({
         ) : tenantName === 'salesforce' ? (
           <Globe color={themeProperties.light.primaryFontColor} />
         ) : (
-          <HomeLogo />
+          <HomeLogo color={themeProperties.light.primaryFontColor} />
         )}
       </button>
     );
@@ -58,13 +59,7 @@ function GetNavBarIcon({
         }`}
       >
         {router.pathname === item.onclick || router.pathname === '/[p]' ? (
-          tenantName === 'planet' ? (
-            <HomeLogoSelected color={themeProperties.primaryColor} />
-          ) : (
-            <DonateSelected color={themeProperties.primaryColor} />
-          )
-        ) : tenantName === 'planet' ? (
-          <HomeLogo />
+          <DonateSelected color={themeProperties.primaryColor} />
         ) : (
           <Donate color={themeProperties.light.primaryFontColor} />
         )}

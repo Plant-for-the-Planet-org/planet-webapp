@@ -24,14 +24,14 @@
     items: {
       home: {
         title: 'home',
-        onclick: '/home',
-        visible: false,
-      },
-      donate: {
-        title: 'home',
         onclick: '/',
         visible: true,
       },
+      // donate: {
+      //   title: 'home',
+      //   onclick: '/',
+      //   visible: true,
+      // },
       about: {
         title: 'aboutUs',
         onclick: 'https://a.plant-for-the-planet.org/',
