@@ -23,7 +23,9 @@ const AnalyticsContext = createContext<AnalyticsContextInterface | null>(null);
 
 export const AnalyticsProvider: FC = ({ children }) => {
   const [projectList, setProjectList] = useState<Project[] | null>(null);
-  const [project, setProject] = useState<Project | null>(null);
+  const [project, setProject] = useState<Project | null>(
+    'proj_Ly4lVzw50r6hJtocv74al9Ps'
+  );
   const [fromDate, setFromDate] = useState(new Date('2021-04-18'));
   const [toDate, setToDate] = useState(new Date('2022-06-27'));
 

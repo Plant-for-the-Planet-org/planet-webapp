@@ -141,12 +141,14 @@ export const TreePlanted = () => {
       }),
     });
     const plantedTrees = await res.json();
-    console.log('==>', plantedTrees);
+    console.log('process.env.MYSQL_PASSWORD', plantedTrees);
   };
 
   useEffect(() => {
     fetchPlantedTrees();
   }, []);
+
+  console.log('process.env.MYSQL_PASSWORD', process.env.MYSQL_PASSWORD);
 
   return (
     <>
