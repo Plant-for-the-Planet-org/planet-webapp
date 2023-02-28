@@ -135,7 +135,7 @@ export const TreePlanted = () => {
     const res = await fetch('/api/analytics/trees-planted', {
       method: 'POST',
       body: JSON.stringify({
-        projectId: project,
+        projectId: 'proj_Ly4lVzw50r6hJtocv74al9Ps',
         startDate: fromDate,
         endDate: toDate,
       }),
