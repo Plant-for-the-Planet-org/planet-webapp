@@ -30,7 +30,7 @@ export default ImpersonateUserPage;
 export async function getStaticProps({ locale }: any) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['me'], null, [
+      ...(await serverSideTranslations(locale, ['me', 'common'], null, [
         'en',
         'de',
         'fr',

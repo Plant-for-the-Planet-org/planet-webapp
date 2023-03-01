@@ -20,6 +20,8 @@ export const UserPropsContext = React.createContext({
   validEmail: '',
   impersonationEmail: '',
   doNotShowImpersonation: true,
+  firstUser: '',
+  secondUser: '',
 });
 
 function UserPropsProvider({ children }: any): ReactElement {
@@ -42,6 +44,21 @@ function UserPropsProvider({ children }: any): ReactElement {
   const [alertError, setAlertError] = React.useState<boolean>(false);
   const [doNotShowImpersonation, setDoNotShowImpersonation] =
     React.useState<boolean>(true);
+  const [firstUser, setFirstUser] = React.useState<string | null>(null);
+  const [secondUser, setSecondUser] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (localStorage.getItem('firstUser')) {
+      setFirstUser(localStorage.getItem('firstUser'));
+    } else {
+      setFirstUser(null);
+    }
+    if (localStorage.getItem('secondUser')) {
+      setSecondUser(localStorage.getItem('secondUser'));
+    } else {
+      setSecondUser(null);
+    }
+  }, [user, validEmail]);
 
   React.useEffect(() => {
     async function loadToken() {
@@ -59,7 +76,7 @@ function UserPropsProvider({ children }: any): ReactElement {
     logout({ returnTo: returnUrl });
   };
 
-  const validation = (validEmail, email) => {
+  const validation = (validEmail: string, email: string) => {
     if (validEmail || email) {
       return validEmail || email;
     } else {
@@ -78,11 +95,10 @@ function UserPropsProvider({ children }: any): ReactElement {
         const resJson = await res.json();
         setUser(resJson);
         //logic for impersonation feature
-        const firstUser = localStorage.getItem('firstUser');
-        const secondUser = localStorage.getItem('secondUser');
         if (resJson?.allowedToSwitch) {
           //this logic  only run if user authorized for doing impersonation
           if (firstUser === null) {
+            setFirstUser(resJson?.email);
             localStorage.setItem('firstUser', resJson?.email);
           }
         }
@@ -91,6 +107,7 @@ function UserPropsProvider({ children }: any): ReactElement {
         //and store in local storage as second user(valid email)
         if (firstUser && firstUser !== resJson?.email) {
           localStorage.setItem('secondUser', resJson?.email);
+          setSecondUser(resJson?.email);
           setValidEmail(resJson?.email);
           if (secondUser === null) router.push('/profile');
         }
@@ -131,8 +148,6 @@ function UserPropsProvider({ children }: any): ReactElement {
   }, [impersonationEmail, validEmail]);
 
   React.useEffect(() => {
-    const firstUser = localStorage.getItem('firstUser');
-    const secondUser = localStorage.getItem('secondUser');
     //this logic is to prevent reverse impersonation (if the second user also has the impersonation authorization)
     if (firstUser) {
       setDoNotShowImpersonation(false);
@@ -142,7 +157,7 @@ function UserPropsProvider({ children }: any): ReactElement {
     } else {
       setDoNotShowImpersonation(true);
     }
-  }, [user, doNotShowImpersonation, validEmail]);
+  }, [firstUser, secondUser, validEmail]);
 
   return (
     <UserPropsContext.Provider
