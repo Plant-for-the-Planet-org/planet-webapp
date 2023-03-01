@@ -3,14 +3,14 @@ import { SwitchUserContainer } from '../../common/Layout/SwitchUserContainer';
 import { TextField, Button } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
-import { useContext } from 'react';
+import { ReactElement, useContext } from 'react';
 import DashboardView from '../../common/Layout/DashboardView';
 
 export type FormData = {
   targetEmail: string;
 };
 
-const SwitchUser = () => {
+const SwitchUser = (): ReactElement => {
   const { t } = useTranslation('me');
 
   const { register, errors, handleSubmit } = useForm<FormData>({

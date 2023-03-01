@@ -12,13 +12,10 @@
     font-size: 12px;
     font-weight: bold;
 
-    > div {
-        button {
-         cursor: pointer;
-        }
-    };
-    .logoutContainer {
+    .exitImpersoantionContainer {
         margin-left: 2rem;
+        cursor: pointer;
+        display: flex;
     }
     
     .exit {

@@ -365,7 +365,7 @@ function UserLayout(props: any): ReactElement {
         },
         {
           title: t('me:switchUser'),
-          path: '/profile/switch-user',
+          path: '/profile/impersonate-user',
           hideItem: doNotShowImpersonation,
         },
         {

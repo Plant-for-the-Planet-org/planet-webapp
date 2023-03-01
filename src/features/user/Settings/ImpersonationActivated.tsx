@@ -9,12 +9,14 @@ import { useRouter } from 'next/router';
 const ImpersonationActivated = () => {
   const { setValidEmail, validEmail, setImpersonationEmail } =
     useContext(UserPropsContext);
+
   const { push } = useRouter();
+
   const closeAlert = () => {
     localStorage.removeItem('secondUser');
     setValidEmail('');
     setImpersonationEmail('');
-    push(`/profile/switch-user`);
+    push(`/profile/impersonate-user`);
   };
 
   const { t } = useTranslation('me');
@@ -24,12 +26,15 @@ const ImpersonationActivated = () => {
       <div className={styles.impersonationAlertContainer}>
         <p className={styles.impersonatingText}>{t('me:targetUser')}</p>
         <p className={styles.impersonatingEmail}>{`<${validEmail}>`}</p>
-        <div className={styles.logoutContainer}>
-          <button onClick={() => closeAlert()}>
+        <div
+          onClick={() => closeAlert()}
+          className={styles.exitImpersoantionContainer}
+        >
+          <div>
             <LogoutIcon />
-          </button>
+          </div>
+          <div className={styles.exit}>{t('me:exitImpersonation')}</div>
         </div>
-        <div className={styles.exit}>{t('me:exitImpersonation')}</div>
       </div>
     )
   );

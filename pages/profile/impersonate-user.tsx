@@ -4,10 +4,10 @@ import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import SwitchUser from '../../src/features/user/Settings/SwitchUser';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
-import { useContext } from 'react';
+import { ReactElement, useContext } from 'react';
 import AccessDeniedLoader from '../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 
-const SwitchUserPage = () => {
+const ImpersonateUserPage = (): ReactElement => {
   const { user, doNotShowImpersonation } = useContext(UserPropsContext);
   const { t } = useTranslation('me');
 
@@ -25,7 +25,7 @@ const SwitchUserPage = () => {
   );
 };
 
-export default SwitchUserPage;
+export default ImpersonateUserPage;
 
 export async function getStaticProps({ locale }: any) {
   return {
