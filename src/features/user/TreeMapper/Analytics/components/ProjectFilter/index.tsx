@@ -58,13 +58,13 @@ const ProjectFilter = ({ setProgress }: Props) => {
     timeFrames,
     setTimeFrame,
     timeFrame,
+    project,
+    setProject,
   } = useAnalytics();
   const { userLang } = useContext(UserPropsContext);
 
   const handleProjectChange = (proj: Project | null) => {
-    if (proj) {
-      console.log(proj.id);
-    }
+    setProject(proj);
   };
 
   const handleClearFilter = () => {
@@ -81,7 +81,7 @@ const ProjectFilter = ({ setProgress }: Props) => {
       <Grid item xs={12} md={6}>
         <ProjectSelectAutocomplete
           projectList={projectList || []}
-          project={null}
+          project={project ? project : null}
           handleProjectChange={handleProjectChange}
         />
       </Grid>

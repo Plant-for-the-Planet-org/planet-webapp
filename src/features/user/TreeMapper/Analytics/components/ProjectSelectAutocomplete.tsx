@@ -23,7 +23,7 @@ interface ProjectSelectAutocompleteProps {
 
 const ProjectSelectAutocomplete = ({
   projectList,
-  project,
+  project = null,
   handleProjectChange,
 }: ProjectSelectAutocompleteProps): ReactElement | null => {
   const [localProject, setLocalProject] = useState<Project | null>(project);

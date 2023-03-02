@@ -15,7 +15,7 @@ interface Props {
 
 const Analytics = ({ setProgress }: Props) => {
   const { t, ready } = useTranslation('treemapperAnalytics');
-  const { setProjectList } = useAnalytics();
+  const { setProjectList, setProject } = useAnalytics();
 
   const { token } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
@@ -37,6 +37,7 @@ const Analytics = ({ setProgress }: Props) => {
     });
 
     setProjectList(projects);
+    if (projects.length > 0) setProject(projects[0]);
   };
 
   useEffect(() => {
