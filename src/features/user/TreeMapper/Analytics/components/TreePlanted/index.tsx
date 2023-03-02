@@ -135,20 +135,18 @@ export const TreePlanted = () => {
     const res = await fetch('/api/analytics/trees-planted', {
       method: 'POST',
       body: JSON.stringify({
-        projectId: 'proj_Ly4lVzw50r6hJtocv74al9Ps',
+        projectId: project,
         startDate: fromDate,
         endDate: toDate,
       }),
     });
     const plantedTrees = await res.json();
-    console.log('process.env.MYSQL_PASSWORD', plantedTrees);
   };
 
   useEffect(() => {
     fetchPlantedTrees();
   }, []);
 
-  console.log('process.env.MYSQL_PASSWORD', process.env.MYSQL_PASSWORD);
 
   return (
     <>

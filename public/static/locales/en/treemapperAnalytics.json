@@ -1,5 +1,10 @@
 {
   "title": "Analytics",
   "from": "From",
-  "to": "To"
+  "to": "To",
+  "clearFilter": "Clear Filter",
+  "days": "Days",
+  "months": "Months",
+  "weeks": "Weeks",
+  "years": "Years"
 }
