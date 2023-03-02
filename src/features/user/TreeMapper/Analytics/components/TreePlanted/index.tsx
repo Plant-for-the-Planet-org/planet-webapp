@@ -31,7 +31,7 @@ export const TreePlanted = () => {
     },
   ]);
 
-  const { project, fromDate, toDate } = useAnalytics();
+  const { project, fromDate, toDate, timeFrame } = useAnalytics();
 
   const [options, setOptions] = useState({
     chart: {
@@ -132,21 +132,24 @@ export const TreePlanted = () => {
   });
 
   const fetchPlantedTrees = async () => {
-    const res = await fetch('/api/analytics/trees-planted', {
-      method: 'POST',
-      body: JSON.stringify({
-        projectId: project,
-        startDate: fromDate,
-        endDate: toDate,
-      }),
-    });
+    const res = await fetch(
+      `/api/analytics/trees-planted?timeFrame=${timeFrame}`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          projectId: project ? project.id : null,
+          startDate: fromDate,
+          endDate: toDate,
+        }),
+      }
+    );
     const plantedTrees = await res.json();
+    console.log('==>', plantedTrees);
   };
 
   useEffect(() => {
     fetchPlantedTrees();
-  }, []);
-
+  }, [project, fromDate, toDate, timeFrame]);
 
   return (
     <>
