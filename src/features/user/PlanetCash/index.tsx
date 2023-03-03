@@ -148,16 +148,16 @@ export default function PlanetCash({
       subtitle={
         <div>
           <p>
-            <Trans i18nKey="partnerSignupInfo">
-              Our Planet Cash/Bulk Codes feature is a feature specifically for
-              Plant-for-the-Planet partners. Feel free to contact us at{' '}
+            <Trans i18nKey="planetcash:partnerSignupInfo">
+              Use of this feature by Companies is subject to partnership with
+              Plant-for-the-Planet. Please contact{' '}
               <a
                 className="planet-links"
                 href="mailto:partner@plant-for-the-planet.org"
               >
                 partner@plant-for-the-planet.org
               </a>{' '}
-              if you are interested.
+              for details.
             </Trans>
           </p>
           <p>
