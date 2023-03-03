@@ -13,11 +13,11 @@ const ReactApexChart = dynamic(() => import('react-apexcharts'), {
 });
 
 const plantedTrees = [];
-const timeFrame = [];
+const dummy_timeFrame = [];
 
 data.forEach((plant) => {
   plantedTrees.push(plant.trees_planted);
-  timeFrame.push(format(new Date(plant.plant_date), 'MM/dd/yy'));
+  dummy_timeFrame.push(format(new Date(plant.plant_date), 'MM/dd/yy'));
 });
 
 export const TreePlanted = () => {
@@ -95,7 +95,7 @@ export const TreePlanted = () => {
       labels: {
         rotate: -90,
       },
-      categories: timeFrame,
+      categories: dummy_timeFrame,
       position: 'bottom',
       axisBorder: {
         show: true,
