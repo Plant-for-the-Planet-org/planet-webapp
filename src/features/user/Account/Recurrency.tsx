@@ -24,7 +24,6 @@ export default function Recurrency({
   const { t } = useTranslation(['me']);
   const [selectedRecord, setSelectedRecord] = React.useState<number | null>(0);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  // const [openModal, setOpenModal] = React.useState(false);
   const [editModalOpen, seteditModalOpen] = React.useState(false);
   const [pauseModalOpen, setpauseModalOpen] = React.useState(false);
   const [cancelModalOpen, setcancelModalOpen] = React.useState(false);
