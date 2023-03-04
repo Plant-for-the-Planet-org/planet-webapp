@@ -1,7 +1,7 @@
 import data from '../../treesPlantedMockData.json';
 import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import styles from './index.module.scss';
 import themeProperties from '../../../../../../theme/themeProperties';
@@ -150,6 +150,59 @@ export const TreePlanted = () => {
   useEffect(() => {
     fetchPlantedTrees();
   }, [project, fromDate, toDate, timeFrame]);
+
+  
+
+  // const previousValues = useRef({
+  //   project,
+  //   toDate,
+  //   fromDate,
+  //   timeFrame,
+  //   clearFilterTriggered: false,
+  // });
+
+  // const [clearFilterTriggered, setClearFilterTriggered] = useState(false);
+
+  // useEffect(() => {
+  //   const noOfDepsChanged =
+  //     Number(previousValues.current.project !== project) +
+  //     Number(previousValues.current.timeFrame !== timeFrame) +
+  //     Number(previousValues.current.toDate !== toDate) +
+  //     Number(previousValues.current.fromDate !== fromDate);
+
+  //   const fetchCondition =
+  //     previousValues.current.timeFrame !== timeFrame ||
+  //     previousValues.current.project !== project ||
+  //     previousValues.current.toDate !== toDate ||
+  //     previousValues.current.fromDate !== fromDate ||
+  //     (previousValues.current.toDate !== toDate &&
+  //       previousValues.current.fromDate !== fromDate);
+
+  //   console.log(
+  //     '==> fetchCondition',
+  //     timeFrame,
+  //     fetchCondition,
+  //     !previousValues.current.clearFilterTriggered,
+  //     previousValues.current
+  //   );
+
+  //   if (
+  //     fetchCondition &&
+  //     previousValues.current.clearFilterTriggered !== clearFilterTriggered
+  //   ) {
+  //     console.log('==> inside if', noOfDepsChanged);
+  //     fetchPlantedTrees();
+  //     previousValues.current = {
+  //       project,
+  //       fromDate,
+  //       toDate,
+  //       timeFrame,
+  //       clearFilterTriggered: noOfDepsChanged === 2 ? true : false,
+  //     };
+  //     if (noOfDepsChanged === 2) setClearFilterTriggered(true);
+  //   }
+  //   console.log('==> outside if');
+  // }, [project, fromDate, toDate, timeFrame]);
 
   return (
     <>

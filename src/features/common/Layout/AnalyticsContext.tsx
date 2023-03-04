@@ -73,8 +73,14 @@ export const AnalyticsProvider: FC = ({ children }) => {
 
   useEffect(() => {
     setTimeFrames(getTimeFrame());
-    setTimeFrame(getTimeFrame()[0]);
   }, [toDate, fromDate]);
+
+  useEffect(() => {
+    if (!timeFrame) {
+      setTimeFrame(getTimeFrame()[0]);
+    }
+    setTimeFrame(timeFrames[0]);
+  }, [timeFrames]);
 
   const value: AnalyticsContextInterface | null = useMemo(
     () => ({
