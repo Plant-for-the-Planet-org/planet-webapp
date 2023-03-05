@@ -138,7 +138,7 @@ function UserPropsProvider({ children }: any): ReactElement {
 
   React.useEffect(() => {
     if (token) loadUser();
-  }, [token, validEmail, impersonationEmail]);
+  }, [token, validEmail ? validEmail : impersonationEmail]);
 
   React.useEffect(() => {
     const emailFromLocal = localStorage.getItem('secondUser');
