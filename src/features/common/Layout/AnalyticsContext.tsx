@@ -5,6 +5,7 @@ import {
   useState,
   FC,
   useEffect,
+  useRef,
 } from 'react';
 import { differenceInDays } from 'date-fns';
 
@@ -42,6 +43,26 @@ interface AnalyticsContextInterface {
   setApiCalled: SetState<Boolean>;
 }
 
+const getTimeFrame = (toDate: Date, fromDate: Date) => {
+  const diffInDays = differenceInDays(toDate, fromDate);
+
+  switch (true) {
+    case diffInDays <= ONE_YEAR_DAYS:
+      return [
+        TIME_FRAMES.DAYS,
+        TIME_FRAMES.WEEKS,
+        TIME_FRAMES.MONTHS,
+        TIME_FRAMES.YEARS,
+      ];
+    case diffInDays <= TWO_YEARS_DAYS:
+      return [TIME_FRAMES.WEEKS, TIME_FRAMES.MONTHS, TIME_FRAMES.YEARS];
+    case diffInDays <= FIVE_YEARS_DAYS:
+      return [TIME_FRAMES.MONTHS, TIME_FRAMES.YEARS];
+    default:
+      return [TIME_FRAMES.YEARS];
+  }
+};
+
 const AnalyticsContext = createContext<AnalyticsContextInterface | null>(null);
 
 export const AnalyticsProvider: FC = ({ children }) => {
@@ -50,38 +71,28 @@ export const AnalyticsProvider: FC = ({ children }) => {
   const [fromDate, setFromDate] = useState<Date>(new Date('2017-04-18'));
   const [toDate, setToDate] = useState<Date>(new Date('2022-06-27'));
 
-  const getTimeFrame = () => {
-    const diffInDays = differenceInDays(toDate, fromDate);
-
-    switch (true) {
-      case diffInDays <= ONE_YEAR_DAYS:
-        return [
-          TIME_FRAMES.DAYS,
-          TIME_FRAMES.WEEKS,
-          TIME_FRAMES.MONTHS,
-          TIME_FRAMES.YEARS,
-        ];
-      case diffInDays <= TWO_YEARS_DAYS:
-        return [TIME_FRAMES.WEEKS, TIME_FRAMES.MONTHS, TIME_FRAMES.YEARS];
-      case diffInDays <= FIVE_YEARS_DAYS:
-        return [TIME_FRAMES.MONTHS, TIME_FRAMES.YEARS];
-      default:
-        return [TIME_FRAMES.YEARS];
-    }
-  };
-
-  const [timeFrames, setTimeFrames] = useState<TIME_FRAMES[]>(getTimeFrame());
+  const [timeFrames, setTimeFrames] = useState<TIME_FRAMES[]>(
+    getTimeFrame(toDate, fromDate)
+  );
   const [timeFrame, setTimeFrame] = useState<TIME_FRAMES | null>(null);
 
   const [apiCalled, setApiCalled] = useState(false);
 
+  const previousTimeFrame = useRef({ timeFrames });
+
   useEffect(() => {
-    setTimeFrames(getTimeFrame());
+    if (
+      getTimeFrame(toDate, fromDate).length !==
+      previousTimeFrame.current.timeFrames.length
+    ) {
+      setTimeFrames(getTimeFrame(toDate, fromDate));
+      previousTimeFrame.current.timeFrames = getTimeFrame(toDate, fromDate);
+    }
   }, [toDate, fromDate]);
 
   useEffect(() => {
     if (!timeFrame) {
-      setTimeFrame(getTimeFrame()[0]);
+      setTimeFrame(getTimeFrame(toDate, fromDate)[0]);
     } else if (!timeFrames.includes(timeFrame)) {
       setTimeFrame(timeFrames[0]);
     }
