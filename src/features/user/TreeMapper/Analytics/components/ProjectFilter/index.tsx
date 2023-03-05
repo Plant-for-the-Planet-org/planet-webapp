@@ -60,24 +60,20 @@ const ProjectFilter = ({ setProgress }: Props) => {
     timeFrame,
     project,
     setProject,
-    setApiCalled,
   } = useAnalytics();
   const { userLang } = useContext(UserPropsContext);
 
   const handleProjectChange = (proj: Project | null) => {
     setProject(proj);
-    // setApiCalled(false);
   };
 
   const handleClearFilter = () => {
     setToDate(new Date());
     setFromDate(subMonths(new Date(), 1));
-    // setApiCalled(false);
   };
 
   const handleTimeFrameChange = (tf: TIME_FRAMES) => {
     setTimeFrame(tf);
-    // setApiCalled(false);
   };
 
   return ready ? (
@@ -102,10 +98,7 @@ const ProjectFilter = ({ setProgress }: Props) => {
             <MuiDatePicker
               label={t('treemapperAnalytics:from')}
               value={fromDate}
-              onChange={(d) => {
-                setFromDate(d);
-                // setApiCalled(false);
-              }}
+              onChange={setFromDate}
               renderInput={(props) => (
                 <MaterialTextField variant="outlined" {...props} />
               )}
@@ -131,10 +124,7 @@ const ProjectFilter = ({ setProgress }: Props) => {
             <MuiDatePicker
               label={t('treemapperAnalytics:to')}
               value={toDate}
-              onChange={(d) => {
-                setToDate(d);
-                // setApiCalled(false);
-              }}
+              onChange={setToDate}
               renderInput={(props) => (
                 <MaterialTextField variant="outlined" {...props} />
               )}

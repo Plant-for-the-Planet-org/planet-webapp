@@ -39,11 +39,9 @@ interface AnalyticsContextInterface {
   timeFrames: TIME_FRAMES[];
   timeFrame: TIME_FRAMES | null;
   setTimeFrame: SetState<TIME_FRAMES | null>;
-  apiCalled: boolean;
-  setApiCalled: SetState<Boolean>;
 }
 
-const getTimeFrame = (toDate: Date, fromDate: Date) => {
+export const getTimeFrames = (toDate: Date, fromDate: Date) => {
   const diffInDays = differenceInDays(toDate, fromDate);
 
   switch (true) {
@@ -72,27 +70,25 @@ export const AnalyticsProvider: FC = ({ children }) => {
   const [toDate, setToDate] = useState<Date>(new Date('2022-06-27'));
 
   const [timeFrames, setTimeFrames] = useState<TIME_FRAMES[]>(
-    getTimeFrame(toDate, fromDate)
+    getTimeFrames(toDate, fromDate)
   );
   const [timeFrame, setTimeFrame] = useState<TIME_FRAMES | null>(null);
-
-  const [apiCalled, setApiCalled] = useState(false);
 
   const previousTimeFrame = useRef({ timeFrames });
 
   useEffect(() => {
     if (
-      getTimeFrame(toDate, fromDate).length !==
+      getTimeFrames(toDate, fromDate).length !==
       previousTimeFrame.current.timeFrames.length
     ) {
-      setTimeFrames(getTimeFrame(toDate, fromDate));
-      previousTimeFrame.current.timeFrames = getTimeFrame(toDate, fromDate);
+      setTimeFrames(getTimeFrames(toDate, fromDate));
+      previousTimeFrame.current.timeFrames = getTimeFrames(toDate, fromDate);
     }
   }, [toDate, fromDate]);
 
   useEffect(() => {
     if (!timeFrame) {
-      setTimeFrame(getTimeFrame(toDate, fromDate)[0]);
+      setTimeFrame(getTimeFrames(toDate, fromDate)[0]);
     } else if (!timeFrames.includes(timeFrame)) {
       setTimeFrame(timeFrames[0]);
     }
@@ -111,8 +107,6 @@ export const AnalyticsProvider: FC = ({ children }) => {
       timeFrames,
       timeFrame,
       setTimeFrame,
-      apiCalled,
-      setApiCalled,
     }),
     [
       projectList,
@@ -126,8 +120,6 @@ export const AnalyticsProvider: FC = ({ children }) => {
       timeFrames,
       timeFrame,
       setTimeFrame,
-      apiCalled,
-      setApiCalled,
     ]
   );
 

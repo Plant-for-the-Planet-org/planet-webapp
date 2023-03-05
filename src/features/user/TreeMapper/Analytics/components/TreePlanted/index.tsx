@@ -6,7 +6,10 @@ import dynamic from 'next/dynamic';
 import styles from './index.module.scss';
 import themeProperties from '../../../../../../theme/themeProperties';
 import { getFormattedNumber } from '../../../../../../utils/getFormattedNumber';
-import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
+import {
+  getTimeFrames,
+  useAnalytics,
+} from '../../../../../common/Layout/AnalyticsContext';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -31,7 +34,7 @@ export const TreePlanted = () => {
     },
   ]);
 
-  const { project, fromDate, toDate, timeFrame, apiCalled, setApiCalled } =
+  const { project, fromDate, toDate, timeFrame } =
     useAnalytics();
 
   const [options, setOptions] = useState({
@@ -149,10 +152,12 @@ export const TreePlanted = () => {
   };
 
   useEffect(() => {
-    // if (!apiCalled) {
-    fetchPlantedTrees();
-    //   setApiCalled(true);
-    // }
+    const isValidTimeFrame = getTimeFrames(toDate, fromDate).includes(
+      timeFrame!
+    );
+    if (isValidTimeFrame) {
+      fetchPlantedTrees();
+    }
   }, [project, fromDate, toDate, timeFrame]);
 
   // const previousValues = useRef({
