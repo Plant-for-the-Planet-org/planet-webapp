@@ -38,6 +38,8 @@ interface AnalyticsContextInterface {
   timeFrames: TIME_FRAMES[];
   timeFrame: TIME_FRAMES | null;
   setTimeFrame: SetState<TIME_FRAMES | null>;
+  apiCalled: boolean;
+  setApiCalled: SetState<Boolean>;
 }
 
 const AnalyticsContext = createContext<AnalyticsContextInterface | null>(null);
@@ -71,6 +73,8 @@ export const AnalyticsProvider: FC = ({ children }) => {
   const [timeFrames, setTimeFrames] = useState<TIME_FRAMES[]>(getTimeFrame());
   const [timeFrame, setTimeFrame] = useState<TIME_FRAMES | null>(null);
 
+  const [apiCalled, setApiCalled] = useState(false);
+
   useEffect(() => {
     setTimeFrames(getTimeFrame());
   }, [toDate, fromDate]);
@@ -78,8 +82,9 @@ export const AnalyticsProvider: FC = ({ children }) => {
   useEffect(() => {
     if (!timeFrame) {
       setTimeFrame(getTimeFrame()[0]);
+    } else if (!timeFrames.includes(timeFrame)) {
+      setTimeFrame(timeFrames[0]);
     }
-    setTimeFrame(timeFrames[0]);
   }, [timeFrames]);
 
   const value: AnalyticsContextInterface | null = useMemo(
@@ -95,6 +100,8 @@ export const AnalyticsProvider: FC = ({ children }) => {
       timeFrames,
       timeFrame,
       setTimeFrame,
+      apiCalled,
+      setApiCalled,
     }),
     [
       projectList,
@@ -108,6 +115,8 @@ export const AnalyticsProvider: FC = ({ children }) => {
       timeFrames,
       timeFrame,
       setTimeFrame,
+      apiCalled,
+      setApiCalled,
     ]
   );
 

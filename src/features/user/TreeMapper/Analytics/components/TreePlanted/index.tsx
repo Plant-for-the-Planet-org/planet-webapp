@@ -31,7 +31,8 @@ export const TreePlanted = () => {
     },
   ]);
 
-  const { project, fromDate, toDate, timeFrame } = useAnalytics();
+  const { project, fromDate, toDate, timeFrame, apiCalled, setApiCalled } =
+    useAnalytics();
 
   const [options, setOptions] = useState({
     chart: {
@@ -148,10 +149,11 @@ export const TreePlanted = () => {
   };
 
   useEffect(() => {
+    // if (!apiCalled) {
     fetchPlantedTrees();
+    //   setApiCalled(true);
+    // }
   }, [project, fromDate, toDate, timeFrame]);
-
-  
 
   // const previousValues = useRef({
   //   project,
