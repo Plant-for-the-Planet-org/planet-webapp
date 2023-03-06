@@ -193,5 +193,8 @@
   "Since": "Since",
   "and": "and",
   "errorForMaxPlantingDensity": "This value should be greater than planting density",
-  "managePayoutsButton": "Manage Payouts"
+  "managePayoutsButton": "Manage Payouts",
+  "selectunit": "Select Unit",
+  "perHectare": "Per Hectare",
+  "perTree":"Per Tree"
 }

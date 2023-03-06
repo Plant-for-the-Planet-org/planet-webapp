@@ -220,6 +220,17 @@ export default function BasicDetails({
     },
   ];
 
+  const selectUnit = [
+    {
+      label: ready ? t('manageProjects:perHectare') : '',
+      value: 'Per Hectare',
+    },
+    {
+      label: ready ? t('manageProjects:perTree') : '',
+      value: 'Per Tree',
+    },
+  ];
+
   // Default Form Fields
   const defaultBasicDetails =
     purpose === 'trees'
@@ -243,6 +254,10 @@ export default function BasicDetails({
           currency: 'EUR',
           latitude: 0,
           longitude: 0,
+          selectUnit: {
+            label: ready ? t('manageProjects:selectUnit') : '',
+            value: null,
+          },
         }
       : {
           purpose: 'conservation',
@@ -355,6 +370,7 @@ export default function BasicDetails({
   }, [projectDetails]);
 
   const onSubmit = (data: any) => {
+    console.log(data);
     setIsUploadingData(true);
     const submitData =
       purpose === 'trees'
@@ -626,6 +642,40 @@ export default function BasicDetails({
                     {errors.countTarget.message
                       ? errors.countTarget.message
                       : t('manageProjects:countTargetValidation2')}
+                  </span>
+                )}
+              </div>
+              <div className={styles.formFieldHalf} data-test-id="selectUnit">
+                <Controller
+                  as={
+                    <MaterialTextField
+                      label={t('manageProjects:selectunit')}
+                      variant="outlined"
+                      select
+                      defaultValue="choose"
+                    >
+                      {selectUnit.map((option) => (
+                        <MenuItem
+                          key={option.value}
+                          value={option.value}
+                          classes={{
+                            root: classes.root,
+                          }}
+                        >
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </MaterialTextField>
+                  }
+                  name="selectUnit"
+                  rules={{
+                    required: t('manageProjects:selectUnitValidation'),
+                  }}
+                  control={control}
+                />
+                {errors.selectUnit && (
+                  <span className={styles.formErrors}>
+                    {errors.selectUnit.message}
                   </span>
                 )}
               </div>
