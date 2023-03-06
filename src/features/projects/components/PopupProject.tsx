@@ -63,10 +63,7 @@ export default function PopupProject({
           <div className={'projectName'}>
             {truncateString(project.properties.name, 54)}
             {project.properties.isApproved && (
-              <VerifiedIcon
-                sx={{ color: '#42A5F5' }}
-                className={'verifiedIcon'}
-              />
+              <VerifiedIcon sx={{ color: '#fff' }} className={'verifiedIcon'} />
             )}
           </div>
         </div>
