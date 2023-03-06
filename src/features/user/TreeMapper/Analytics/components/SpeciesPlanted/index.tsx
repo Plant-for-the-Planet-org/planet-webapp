@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import themeProperties from '../../../../../../theme/themeProperties';
 import { getFormattedNumber } from '../../../../../../utils/getFormattedNumber';
@@ -8,6 +8,8 @@ import styles from './index.module.scss';
 import { Tooltip } from './Tooltip';
 import DownloadSolid from '../../../../../../../public/assets/images/icons/share/DownloadSolid';
 import ReactDOMServer from 'react-dom/server';
+import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
+import { format } from 'date-fns';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -48,7 +50,10 @@ const getDownloadIcon = () => {
 export const SpeciesPlanted = () => {
   const {
     i18n: { language },
-  } = useTranslation();
+    t,
+  } = useTranslation(['treemapperAnalytics']);
+
+  const { project, fromDate, toDate } = useAnalytics();
 
   const [series, setSeries] = useState([
     {
@@ -85,6 +90,17 @@ export const SpeciesPlanted = () => {
           download: `${ReactDOMServer.renderToString(getDownloadIcon())}`,
         },
         offsetY: -15,
+        export: {
+          csv: {
+            filename: `${t('speciesPlanted')}`,
+          },
+          svg: {
+            filename: `${t('speciesPlanted')}`,
+          },
+          png: {
+            filename: `${t('speciesPlanted')}`,
+          },
+        },
       },
     },
     plotOptions: {
@@ -167,9 +183,41 @@ export const SpeciesPlanted = () => {
     },
   });
 
+  useEffect(() => {
+    if (project) {
+      const FILE_NAME = `${project?.name}__${t('speciesPlanted')}__${format(
+        fromDate,
+        'dd-MMM-yy'
+      )}__${format(toDate, 'dd-MMM-yy')}`;
+
+      setOptions({
+        ...options,
+        chart: {
+          ...options.chart,
+          toolbar: {
+            ...options.chart.toolbar,
+            export: {
+              ...options.chart.toolbar.export,
+              csv: {
+                ...options.chart.toolbar.export.csv,
+                filename: FILE_NAME,
+              },
+              svg: {
+                filename: FILE_NAME,
+              },
+              png: {
+                filename: FILE_NAME,
+              },
+            },
+          },
+        },
+      });
+    }
+  }, [project, toDate, fromDate]);
+
   return (
     <>
-      <p>Species Graph</p>
+      <p>{t('speciesPlanted')}</p>
       <ReactApexChart options={options} series={series} type="bar" />
     </>
   );

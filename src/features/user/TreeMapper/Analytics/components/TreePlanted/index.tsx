@@ -28,7 +28,8 @@ data.forEach((plant) => {
 export const TreePlanted = () => {
   const {
     i18n: { language },
-  } = useTranslation();
+    t,
+  } = useTranslation(['treemapperAnalytics']);
 
   const [series, setSeries] = useState([
     {
@@ -71,6 +72,17 @@ export const TreePlanted = () => {
           download: `${ReactDOMServer.renderToString(getDownloadIcon())}`,
         },
         offsetY: -15,
+        export: {
+          csv: {
+            filename: `${t('treesPlanted')}`,
+          },
+          svg: {
+            filename: `${t('treesPlanted')}`,
+          },
+          png: {
+            filename: `${t('treesPlanted')}`,
+          },
+        },
       },
     },
     plotOptions: {
@@ -140,6 +152,38 @@ export const TreePlanted = () => {
     },
   });
 
+  useEffect(() => {
+    if (project) {
+      const FILE_NAME = `${project.name}__${t('treesPlanted')}__${format(
+        fromDate,
+        'dd-MMM-yy'
+      )}__${format(toDate, 'dd-MMM-yy')}`;
+
+      setOptions({
+        ...options,
+        chart: {
+          ...options.chart,
+          toolbar: {
+            ...options.chart.toolbar,
+            export: {
+              ...options.chart.toolbar.export,
+              csv: {
+                ...options.chart.toolbar.export.csv,
+                filename: FILE_NAME,
+              },
+              svg: {
+                filename: FILE_NAME,
+              },
+              png: {
+                filename: FILE_NAME,
+              },
+            },
+          },
+        },
+      });
+    }
+  }, [project, toDate, fromDate]);
+
   const fetchPlantedTrees = async () => {
     const res = await fetch(
       `/api/analytics/trees-planted?timeFrame=${timeFrame}`,
@@ -165,60 +209,9 @@ export const TreePlanted = () => {
     }
   }, [project, fromDate, toDate, timeFrame]);
 
-  // const previousValues = useRef({
-  //   project,
-  //   toDate,
-  //   fromDate,
-  //   timeFrame,
-  //   clearFilterTriggered: false,
-  // });
-
-  // const [clearFilterTriggered, setClearFilterTriggered] = useState(false);
-
-  // useEffect(() => {
-  //   const noOfDepsChanged =
-  //     Number(previousValues.current.project !== project) +
-  //     Number(previousValues.current.timeFrame !== timeFrame) +
-  //     Number(previousValues.current.toDate !== toDate) +
-  //     Number(previousValues.current.fromDate !== fromDate);
-
-  //   const fetchCondition =
-  //     previousValues.current.timeFrame !== timeFrame ||
-  //     previousValues.current.project !== project ||
-  //     previousValues.current.toDate !== toDate ||
-  //     previousValues.current.fromDate !== fromDate ||
-  //     (previousValues.current.toDate !== toDate &&
-  //       previousValues.current.fromDate !== fromDate);
-
-  //   console.log(
-  //     '==> fetchCondition',
-  //     timeFrame,
-  //     fetchCondition,
-  //     !previousValues.current.clearFilterTriggered,
-  //     previousValues.current
-  //   );
-
-  //   if (
-  //     fetchCondition &&
-  //     previousValues.current.clearFilterTriggered !== clearFilterTriggered
-  //   ) {
-  //     console.log('==> inside if', noOfDepsChanged);
-  //     fetchPlantedTrees();
-  //     previousValues.current = {
-  //       project,
-  //       fromDate,
-  //       toDate,
-  //       timeFrame,
-  //       clearFilterTriggered: noOfDepsChanged === 2 ? true : false,
-  //     };
-  //     if (noOfDepsChanged === 2) setClearFilterTriggered(true);
-  //   }
-  //   console.log('==> outside if');
-  // }, [project, fromDate, toDate, timeFrame]);
-
   return (
     <>
-      <p className={styles.title}>Trees Planted</p>
+      <p className={styles.title}>{t('treesPlanted')}</p>
       <ReactApexChart options={options} series={series} type="bar" />
     </>
   );
