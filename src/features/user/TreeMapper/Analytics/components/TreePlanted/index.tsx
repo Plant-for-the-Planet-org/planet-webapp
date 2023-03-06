@@ -17,13 +17,11 @@ const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
 });
 
-const plantedTrees = [];
 const dummy_timeFrame = [];
 
-data.forEach((plant) => {
-  plantedTrees.push(plant.trees_planted);
-  dummy_timeFrame.push(format(new Date(plant.plant_date), 'MM/dd/yy'));
-});
+// data.forEach((plant) => {
+//   dummy_timeFrame.push(format(new Date(plant.plant_date), 'MM/dd/yy'));
+// });
 
 export const TreePlanted = () => {
   const {
@@ -33,7 +31,7 @@ export const TreePlanted = () => {
 
   const [series, setSeries] = useState([
     {
-      data: plantedTrees || [],
+      data: [],
     },
   ]);
 
@@ -45,23 +43,21 @@ export const TreePlanted = () => {
 
   const [options, setOptions] = useState({
     chart: {
-      events: {
-        beforeZoom: function (ctx) {
-          ctx.w.config.xaxis.range = undefined;
-        },
-        // zoomed: function (chartContext, { xaxis }) {
-        //   // calculate the new columnWidth based on the zoomed range
-
-        //   const { max, min } = xaxis;
-        //   let columnWidth: number | string = Math.abs(
-        //     Math.ceil((max - min) / 10)
-        //   );
-
-        //   if (columnWidth <= 3) columnWidth = '200%';
-        //   else columnWidth = '30%';
-        //   chartContext.w.config.plotOptions.bar.columnWidth = columnWidth;
-        // },
-      },
+      // events: {
+      //   beforeZoom: function (ctx) {
+      //     ctx.w.config.xaxis.range = undefined;
+      //   },
+      //   zoomed: function (chartContext, { xaxis }) {
+      //     // calculate the new columnWidth based on the zoomed range
+      //     const { max, min } = xaxis;
+      //     let columnWidth: number | string = Math.abs(
+      //       Math.ceil((max - min) / 10)
+      //     );
+      //     if (columnWidth <= 3) columnWidth = '200%';
+      //     else columnWidth = '30%';
+      //     chartContext.w.config.plotOptions.bar.columnWidth = columnWidth;
+      //   },
+      // },
       type: 'bar',
       toolbar: {
         show: true,
@@ -91,7 +87,7 @@ export const TreePlanted = () => {
         dataLabels: {
           position: 'top',
         },
-        // columnWidth: '70%',
+        columnWidth: '30%',
       },
     },
     dataLabels: {
@@ -111,8 +107,8 @@ export const TreePlanted = () => {
     },
 
     xaxis: {
-      range: 20,
-      max: 20,
+      // range: 20,
+      // max: 20,
       labels: {
         rotate: -90,
       },
@@ -196,8 +192,18 @@ export const TreePlanted = () => {
         }),
       }
     );
-    const plantedTrees = await res.json();
-    console.log('==>', plantedTrees);
+    const { data } = await res.json();
+    console.log('==>', data);
+    const plantedTrees = [];
+    data.forEach((timeframe) => {
+      plantedTrees.push(timeframe.treesPlanted);
+    });
+    setSeries([
+      {
+        data: plantedTrees,
+        name: t('treesPlanted'),
+      },
+    ]);
   };
 
   useEffect(() => {
