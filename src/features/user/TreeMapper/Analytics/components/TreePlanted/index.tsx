@@ -10,6 +10,8 @@ import {
   getTimeFrames,
   useAnalytics,
 } from '../../../../../common/Layout/AnalyticsContext';
+import DownloadSolid from '../../../../../../../public/assets/images/icons/share/DownloadSolid';
+import ReactDOMServer from 'react-dom/server';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -34,8 +36,11 @@ export const TreePlanted = () => {
     },
   ]);
 
-  const { project, fromDate, toDate, timeFrame } =
-    useAnalytics();
+  const { project, fromDate, toDate, timeFrame } = useAnalytics();
+
+  const getDownloadIcon = () => {
+    return <DownloadSolid color="#6E8091" />;
+  };
 
   const [options, setOptions] = useState({
     chart: {
@@ -63,7 +68,7 @@ export const TreePlanted = () => {
           zoom: true,
           zoomin: true,
           zoomout: true,
-          download: true,
+          download: `${ReactDOMServer.renderToString(getDownloadIcon())}`,
         },
         offsetY: -15,
       },

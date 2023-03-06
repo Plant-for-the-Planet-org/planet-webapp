@@ -6,6 +6,7 @@ import { getFormattedNumber } from '../../../../../../utils/getFormattedNumber';
 import data from '../../speciesPlantedMockData.json';
 import styles from './index.module.scss';
 import { Tooltip } from './Tooltip';
+import DownloadSolid from '../../../../../../../public/assets/images/icons/share/DownloadSolid';
 import ReactDOMServer from 'react-dom/server';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
@@ -39,6 +40,10 @@ Object.entries(result).map((s) => {
   species.push(s[1].name);
   species_num.push(s[1].tree_count);
 });
+
+const getDownloadIcon = () => {
+  return <DownloadSolid color="#6E8091" />;
+};
 
 export const SpeciesPlanted = () => {
   const {
@@ -77,7 +82,7 @@ export const SpeciesPlanted = () => {
           zoom: true,
           zoomin: true,
           zoomout: true,
-          download: true,
+          download: `${ReactDOMServer.renderToString(getDownloadIcon())}`,
         },
         offsetY: -15,
       },
