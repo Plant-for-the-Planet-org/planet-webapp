@@ -70,12 +70,12 @@ function AccountHistory({}: Props): ReactElement {
         setaccountingFilters(paymentHistory._filters);
       } else {
         const paymentHistory = await getAuthenticatedRequest(
-          validEmail,
           `${
             filter && accountingFilters
               ? accountingFilters[filter] + '&limit=15'
               : '/app/paymentHistory?limit=15'
           }`,
+          validEmail,
           token,
           {},
           handleError,
