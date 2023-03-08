@@ -67,7 +67,7 @@ export default function UserProfileOptions({ userprofile }: any) {
     }
   });
   const onShareClicked = () => {
-    if (navigator.canShare(webShareData)) {
+    if (navigator?.canShare && navigator.canShare(webShareData)) {
       // if in phone and web share API supported
       webShareMobile();
     } else {
