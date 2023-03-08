@@ -33,6 +33,7 @@ export default function TopProjectReports(data: Props) {
                       href={t('standardsPdfLink')}
                       rel="noreferrer"
                       style={{ fontWeight: 400 }}
+                      onClick={(e) => e.stopPropagation()}
                     >
                       standards.
                     </a>
@@ -42,6 +43,7 @@ export default function TopProjectReports(data: Props) {
                   target="_blank"
                   rel="noopener noreferrer"
                   href={getPDFFile('projectReview', review.pdf)}
+                  onClick={(e) => e.stopPropagation()}
                 >
                   {t('common:viewReport')}
                 </a>
