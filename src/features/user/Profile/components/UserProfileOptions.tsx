@@ -41,21 +41,20 @@ const socialIconAnimate = {
 export default function UserProfileOptions({ userprofile }: any) {
   const router = useRouter();
   const { t, ready } = useTranslation(['me']);
-  const linkToShare = `${process.env.SCHEME}://${config.tenantURL}/t/${userprofile.slug}`;
-  const textToShare = ready
-    ? t('donate:textToShare', { name: userprofile.displayName })
-    : '';
+  const webShareData = {
+    title: ready ? t('donate:shareTextTitle') : '',
+    url: `${process.env.SCHEME}://${config.tenantURL}/t/${userprofile.slug}`,
+    text: ready
+      ? t('donate:textToShare', { name: userprofile.displayName })
+      : '',
+  };
   const [showSocialBtn, setShowSocialBtn] = React.useState(false);
   const [screenWidth, setScreenWidth] = React.useState(null);
   const [divWidth, setDivWidth] = React.useState(null);
   const elementRef = React.useRef(null);
   const webShareMobile = async () => {
     try {
-      const response = await navigator.share({
-        title: ready ? t('donate:shareTextTitle') : '',
-        url: linkToShare,
-        text: textToShare,
-      });
+      await navigator.share(webShareData);
     } catch (error) {
       // console.error('Could not share at this time', error);
     }
@@ -67,7 +66,7 @@ export default function UserProfileOptions({ userprofile }: any) {
     }
   });
   const onShareClicked = () => {
-    if (navigator.share) {
+    if (navigator.canShare(webShareData)) {
       // if in phone and web share API supported
       webShareMobile();
     } else {
