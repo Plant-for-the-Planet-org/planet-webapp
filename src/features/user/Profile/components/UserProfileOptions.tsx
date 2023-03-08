@@ -49,9 +49,10 @@ export default function UserProfileOptions({ userprofile }: any) {
       : '',
   };
   const [showSocialBtn, setShowSocialBtn] = React.useState(false);
-  const [screenWidth, setScreenWidth] = React.useState(null);
-  const [divWidth, setDivWidth] = React.useState(null);
+  const [screenWidth, setScreenWidth] = React.useState<number | null>(null);
+  const [divWidth, setDivWidth] = React.useState<number | null>(null);
   const elementRef = React.useRef(null);
+
   const webShareMobile = async () => {
     try {
       await navigator.share(webShareData);
@@ -88,7 +89,7 @@ export default function UserProfileOptions({ userprofile }: any) {
 
   return ready ? (
     <div style={{ position: 'relative' }}>
-      {showSocialBtn && screenWidth < 600 && (
+      {showSocialBtn && screenWidth !== null && screenWidth < 600 && (
         <motion.div
           initial={{
             y: 100,
@@ -149,12 +150,12 @@ export default function UserProfileOptions({ userprofile }: any) {
           )}
         </div>
       </div>
-      {showSocialBtn && screenWidth > 600 && (
+      {showSocialBtn && screenWidth !== null && screenWidth > 600 && (
         <motion.div
           animate={{
             position: 'absolute',
             top: '35px',
-            right: divWidth > 320 ? '290px' : '-180px',
+            right: divWidth && divWidth > 320 ? '290px' : '-180px',
           }}
         >
           <motion.div
