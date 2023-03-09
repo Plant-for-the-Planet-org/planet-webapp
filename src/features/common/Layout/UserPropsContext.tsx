@@ -18,10 +18,16 @@ export const UserPropsContext = React.createContext({
   auth0User: {},
   auth0Error: {} || undefined,
   validEmail: '',
+  setValidEmail: (value: string) => {},
   impersonationEmail: '',
+  setImpersonationEmail: (value: string) => {},
   doNotShowImpersonation: true,
   firstUser: '',
+  setFirstUser: (value: string | null) => {},
   secondUser: '',
+  setSecondUser: (value: string | null) => {},
+  alertError: false,
+  setAlertError: (value: boolean) => {},
 });
 
 function UserPropsProvider({ children }: any): ReactElement {
@@ -39,8 +45,9 @@ function UserPropsProvider({ children }: any): ReactElement {
   const [contextLoaded, setContextLoaded] = React.useState(false);
   const [token, setToken] = React.useState(null);
   const [profile, setUser] = React.useState<boolean | User | null>(false);
-  const [validEmail, setValidEmail] = React.useState('');
-  const [impersonationEmail, setImpersonationEmail] = React.useState('');
+  const [validEmail, setValidEmail] = React.useState<string>('');
+  const [impersonationEmail, setImpersonationEmail] =
+    React.useState<string>('');
   const [alertError, setAlertError] = React.useState<boolean>(false);
   const [doNotShowImpersonation, setDoNotShowImpersonation] =
     React.useState<boolean>(true);
