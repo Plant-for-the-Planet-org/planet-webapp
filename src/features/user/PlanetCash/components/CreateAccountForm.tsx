@@ -26,8 +26,9 @@ const CreateAccountForm = ({
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
-  const { token } = useContext(UserPropsContext);
+  const { token, validEmail } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
+
   const router = useRouter();
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -38,6 +39,7 @@ const CreateAccountForm = ({
       '/app/planetCash',
       data,
       token,
+      validEmail,
       handleError
     );
     if (res?.id) {

@@ -13,6 +13,7 @@ import GetNavBarIcon from './getNavBarIcon';
 import GetSubMenu from './getSubMenu';
 import { lang_path } from '../../../../utils/constants/wpLanguages';
 import { ParamsContext } from '../QueryParamsContext';
+import ImpersonationActivated from '../../../user/Settings/ImpersonationActivated';
 
 // used to detect window resize and return the current width of the window
 const useWidth = () => {
@@ -42,7 +43,7 @@ export default function NavbarComponent(props: any) {
   const [menu, setMenu] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
   const [mobileWidth, setMobileWidth] = React.useState(false);
-  const { embed } = React.useContext(ParamsContext);
+  const { embed, email, alertError } = React.useContext(ParamsContext);
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       if (window.innerWidth > 767) {
@@ -59,8 +60,14 @@ export default function NavbarComponent(props: any) {
     setIsMobile(width < 768);
   }, [width]);
 
-  const { user, setUser, loginWithRedirect, logoutUser, auth0Error } =
-    React.useContext(UserPropsContext);
+  const {
+    user,
+    setUser,
+    loginWithRedirect,
+    logoutUser,
+    auth0Error,
+    validEmail,
+  } = React.useContext(UserPropsContext);
 
   // This function controls the path for the user when they click on Me
   async function gotoUserPage() {
@@ -272,58 +279,65 @@ export default function NavbarComponent(props: any) {
   return embed === 'true' ? (
     <></>
   ) : (
-    <div className={'mainNavContainer'}>
-      <div className={'top_nav'}>
-        <div className={'brandLogos'}>
-          {config.header?.isSecondaryTenant && (
-            <div
-              className={
-                config.tenantName === 'ttc'
-                  ? 'hidePrimaryTenantLogo'
-                  : 'primaryTenantLogo'
-              }
-            >
-              <a href={config.header?.tenantLogoLink}>
-                <img
-                  className={'tenantLogo desktop'}
-                  src={config.header.tenantLogoURL}
-                />
-                {config.header.mobileLogoURL ? (
+    <>
+      {validEmail && (
+        <div className="impersonationAlertContainer" style={{ top: -142 }}>
+          <ImpersonationActivated />
+        </div>
+      )}
+      <div className={`mainNavContainer`} style={{ top: validEmail ? 49 : 0 }}>
+        <div className={'top_nav'}>
+          <div className={'brandLogos'}>
+            {config.header?.isSecondaryTenant && (
+              <div
+                className={
+                  config.tenantName === 'ttc'
+                    ? 'hidePrimaryTenantLogo'
+                    : 'primaryTenantLogo'
+                }
+              >
+                <a href={config.header?.tenantLogoLink}>
                   <img
-                    className={'tenantLogo mobile'}
-                    src={config.header.mobileLogoURL}
-                  />
-                ) : (
-                  <img
-                    className={'tenantLogo mobile'}
+                    className={'tenantLogo desktop'}
                     src={config.header.tenantLogoURL}
                   />
-                )}
-              </a>
-              <div className={'logo_divider'} />
-            </div>
-          )}
+                  {config.header.mobileLogoURL ? (
+                    <img
+                      className={'tenantLogo mobile'}
+                      src={config.header.mobileLogoURL}
+                    />
+                  ) : (
+                    <img
+                      className={'tenantLogo mobile'}
+                      src={config.header.tenantLogoURL}
+                    />
+                  )}
+                </a>
+                <div className={'logo_divider'} />
+              </div>
+            )}
 
-          {theme === 'theme-light' ? (
-            <a href="https://a.plant-for-the-planet.org">
-              <img
-                className={'tenantLogo'}
-                src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                alt={t('common:about_pftp')}
-              />
-            </a>
-          ) : (
-            <a href="https://a.plant-for-the-planet.org">
-              <img
-                className={'tenantLogo'}
-                src={`/assets/images/PlanetDarkLogo.svg`}
-                alt={t('common:about_pftp')}
-              />
-            </a>
-          )}
+            {theme === 'theme-light' ? (
+              <a href="https://a.plant-for-the-planet.org">
+                <img
+                  className={'tenantLogo'}
+                  src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
+                  alt={t('common:about_pftp')}
+                />
+              </a>
+            ) : (
+              <a href="https://a.plant-for-the-planet.org">
+                <img
+                  className={'tenantLogo'}
+                  src={`/assets/images/PlanetDarkLogo.svg`}
+                  alt={t('common:about_pftp')}
+                />
+              </a>
+            )}
+          </div>
+          {ready && <MenuItems />}
         </div>
-        {ready && <MenuItems />}
       </div>
-    </div>
+    </>
   );
 }

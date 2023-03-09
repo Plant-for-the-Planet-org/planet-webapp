@@ -1,7 +1,7 @@
 @import '../../../../theme/theme';
 
 .profilePageContainer {
-  margin-top: -17px;
+  margin-top: -45px;
   margin-left: 55px;
   position: relative;
   display: flex;
@@ -40,6 +40,10 @@
 .profilePageWrapper {
   width: 100%;
   min-height: 100vh;
+}
+
+.profileImpersonation {
+  margin-top: 58px;
 }
 
 // Styles for Sidebar
@@ -85,6 +89,61 @@
   }
   @include smTabletView {
     top: 80px;
+    & .closeMenu {
+      display: none;
+    }
+    &:hover {
+      width: 300px !important;
+    }
+    &:hover .navlink {
+      padding: 16px 20px;
+      justify-content: space-between;
+    }
+    &:hover .navlink button {
+      display: block;
+    }
+    &:hover .navlinkSubMenu {
+      display: flex;
+    }
+  }
+}
+
+
+.sidebarModified {
+  width: 109px;
+  position: fixed;
+  top: 120px;
+  left: 0px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 120px);
+  overflow-y: scroll;
+  justify-content: space-between;
+  box-shadow: rgba(150, 150, 150, $alpha: 0.2) 0px 0px 4px;
+  background-color: $light;
+  transition: width 0.3s ease-in-out;
+  z-index: 100;
+  background-color: $backgroundColor;
+  color: $primaryFontColor;
+  font-family: $primaryFontFamily;
+  @include xsPhoneView {
+    width: 300px;
+    & .navlink {
+      padding: 16px 20px;
+      justify-content: space-between;
+    }
+    & .navlink button {
+      display: block;
+    }
+    & .navlinkSubMenu {
+      display: flex;
+    }
+    &.menuClosed {
+      width: 0px;
+    }
+  }
+  @include smTabletView {
+    top: 120px;
     & .closeMenu {
       display: none;
     }

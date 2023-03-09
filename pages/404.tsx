@@ -1,7 +1,7 @@
 import Custom404Image from '../public/assets/images/Custom404Image';
-import Footer from '../src/features/common/Layout/Footer';
 import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import Footer from '../src/features/common/Layout/Footer';
 
 interface Props {
   initialized: Boolean;

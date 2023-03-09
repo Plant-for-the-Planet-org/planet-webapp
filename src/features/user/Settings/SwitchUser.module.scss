@@ -1,0 +1,56 @@
+@import './../../../theme/theme';
+
+.impersonationAlertContainer {
+    background-color: #94f0f9;
+    margin-top: 142px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    font-size: 12px;
+    font-weight: bold;
+
+    .exitImpersoantionContainer {
+        margin-left: 2rem;
+        cursor: pointer;
+        display: flex;
+    }
+    
+    .exit {
+        margin-left: 7px;
+    }
+}
+
+.emailErrors {
+    font-family: $primaryFontFamily;
+    font-size: $fontSmall;
+    color: $dangerColor;
+    margin-left: -15px;
+    margin-top: 6px;
+    max-width: 208px;
+    text-align: center;
+}
+
+@include xsPhoneView {
+    .impersonatingText {
+       position: relative;
+       top: 7px;
+       right: 70px;
+    }
+   .exit {
+        position: relative;
+        top: -20px;
+        left: 126px;
+   }
+   .logoutContainer {
+        position: relative;
+        right: 72px
+   }
+   .impersonatingEmail {
+        position: relative;
+        top: 8px;
+        right:43px
+   }
+}

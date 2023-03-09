@@ -16,7 +16,7 @@ import {
   FormControlLabel,
   styled,
 } from '@mui/material';
-
+import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -43,7 +43,7 @@ export const PauseModal = ({
   fetchRecurrentDonations,
 }: any) => {
   const { theme } = React.useContext(ThemeContext);
-  const { token } = React.useContext(UserPropsContext);
+  const { token, validEmail } = React.useContext(UserPropsContext);
   const [option, setoption] = React.useState();
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState(
@@ -51,7 +51,7 @@ export const PauseModal = ({
   );
   const [disabled, setDisabled] = React.useState(false);
 
-  const { t, i18n, ready } = useTranslation(['me']);
+  const { t } = useTranslation(['me']);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
@@ -80,6 +80,7 @@ export const PauseModal = ({
       `/app/subscriptions/${record.id}?scope=pause`,
       bodyToSend,
       token,
+      validEmail,
       handleError
     )
       .then((res) => {

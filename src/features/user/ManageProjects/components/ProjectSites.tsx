@@ -21,6 +21,7 @@ import { Fade, Modal, MenuItem } from '@mui/material';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
@@ -57,6 +58,7 @@ export default function ProjectSites({
   const [errorMessage, setErrorMessage] = React.useState('');
   const [openModal, setOpenModal] = React.useState(false);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { validEmail } = React.useContext(UserPropsContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -164,6 +166,7 @@ export default function ProjectSites({
         `/app/projects/${projectGUID}/sites`,
         submitData,
         token,
+        validEmail,
         handleError
       )
         .then((res) => {
@@ -211,6 +214,7 @@ export default function ProjectSites({
     deleteAuthenticatedRequest(
       `/app/projects/${projectGUID}/sites/${id}`,
       token,
+      validEmail,
       handleError
     ).then((res) => {
       if (res !== 404) {
@@ -263,6 +267,7 @@ export default function ProjectSites({
     if (projectGUID)
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}?_scope=sites`,
+        validEmail,
         token,
         {},
         handleError,
@@ -608,6 +613,7 @@ function EditSite({
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { validEmail } = React.useContext(UserPropsContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -655,6 +661,7 @@ function EditSite({
         `/app/projects/${projectGUID}/sites/${siteGUID}`,
         submitData,
         token,
+        validEmail,
         handleError
       ).then((res) => {
         if (!res.code) {
