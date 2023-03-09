@@ -13,6 +13,7 @@ import {
 import DownloadSolid from '../../../../../../../public/assets/images/icons/share/DownloadSolid';
 import ReactDOMServer from 'react-dom/server';
 import { ApexOptions } from 'apexcharts';
+import { Tooltip } from './Tooltip';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -62,6 +63,11 @@ interface MonthsCategories {
 interface YearsCategories {
   label: string;
 }
+
+type Categories = DaysCategories[]
+| WeeksCategories[]
+| MonthsCategories[]
+| YearsCategories[]
 
 export const TreePlanted = () => {
   const {
@@ -136,14 +142,6 @@ export const TreePlanted = () => {
 
     fill: {
       colors: [themeProperties.primaryColor],
-    },
-
-    tooltip: {
-      y: {
-        title: {
-          formatter: () => 'Planted Trees',
-        },
-      },
     },
 
     xaxis: {
@@ -242,11 +240,7 @@ export const TreePlanted = () => {
     data: DailyFrame[] | WeeklyFrame[] | MonthlyFrame[] | YearlyFrame[]
   ) => {
     const treesPlanted: number[] = [];
-    const categories:
-      | DaysCategories[]
-      | WeeksCategories[]
-      | MonthsCategories[]
-      | YearsCategories[] = [];
+    const categories: Categories = [];
 
     switch (tf) {
       case TIME_FRAMES.DAYS:
@@ -312,6 +306,55 @@ export const TreePlanted = () => {
     return { treesPlanted, categories };
   };
 
+  const getToolTip = (
+    seriesData: number[],
+    dataPointIndex: number,
+    categories: Categories
+  ) => {
+    switch (timeFrame) {
+      case TIME_FRAMES.DAYS:
+        return (
+          <Tooltip
+            headerTitle={(categories as DaysCategories[])[dataPointIndex].label}
+            bodyTitle={t('treesPlanted')}
+            value={`${seriesData[dataPointIndex]}`}
+          />
+        );
+      case TIME_FRAMES.WEEKS:
+        return (
+          <Tooltip
+            headerTitle={`${
+              (categories as WeeksCategories[])[dataPointIndex].weekStateDate
+            } - ${
+              (categories as WeeksCategories[])[dataPointIndex].weekEndDate
+            }`}
+            bodyTitle={t('treesPlanted')}
+            value={`${seriesData[dataPointIndex]}`}
+          />
+        );
+      case TIME_FRAMES.MONTHS:
+        return (
+          <Tooltip
+            headerTitle={`${
+              (categories as MonthsCategories[])[dataPointIndex].month
+            } ${(categories as MonthsCategories[])[dataPointIndex].year}`}
+            bodyTitle={t('treesPlanted')}
+            value={`${seriesData[dataPointIndex]}`}
+          />
+        );
+      case TIME_FRAMES.YEARS:
+        return (
+          <Tooltip
+            headerTitle={(categories as DaysCategories[])[dataPointIndex].label}
+            bodyTitle={t('treesPlanted')}
+            value={`${seriesData[dataPointIndex]}`}
+          />
+        );
+      default:
+        return <></>;
+    }
+  };
+
   const fetchPlantedTrees = async () => {
     const res = await fetch(
       `/api/analytics/trees-planted?timeFrame=${timeFrame}`,
@@ -325,7 +368,6 @@ export const TreePlanted = () => {
       }
     );
     const { data } = await res.json();
-    console.log('==>', data);
 
     const { treesPlanted, categories } = getPlotingData(
       timeFrame!,
@@ -345,6 +387,15 @@ export const TreePlanted = () => {
         ...options.xaxis,
         categories: categories,
       },
+      tooltip: {
+        custom: function ({ series: s, dataPointIndex }) {
+          const seriesData: number[] = s[0];
+
+          return ReactDOMServer.renderToString(
+            getToolTip(seriesData, dataPointIndex, categories)
+          );
+        },
+      },
     });
   };
 
@@ -357,14 +408,10 @@ export const TreePlanted = () => {
     }
   }, [project, fromDate, toDate, timeFrame]);
 
-  const getGraph = useCallback(() => {
-    return <ReactApexChart options={options} series={series} type="bar" />;
-  }, [options, series]);
-
   return (
     <>
       <p className={styles.title}>{t('treesPlanted')}</p>
-      {getGraph()}
+      <ReactApexChart options={options} series={series} type="bar" />
     </>
   );
 };
