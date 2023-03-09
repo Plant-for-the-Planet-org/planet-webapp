@@ -22,11 +22,7 @@ const BulkGiftTotal = ({
 
   const getUnit = (_unit: string, _units?: number) => {
     if (_unit === 'tree') {
-      if (_units) {
-        if (_units === 1) {
-          return t('common:tree');
-        } else return t('common:tree_plural');
-      } else return _unit;
+      return t('common:tree', { count: _units });
     } else if (_unit === 'm2') {
       return 'm2';
     } else return 'ha';
