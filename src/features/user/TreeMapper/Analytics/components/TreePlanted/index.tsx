@@ -1,27 +1,67 @@
-import data from '../../treesPlantedMockData.json';
 import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import styles from './index.module.scss';
 import themeProperties from '../../../../../../theme/themeProperties';
 import { getFormattedNumber } from '../../../../../../utils/getFormattedNumber';
 import {
   getTimeFrames,
+  TIME_FRAMES,
   useAnalytics,
 } from '../../../../../common/Layout/AnalyticsContext';
 import DownloadSolid from '../../../../../../../public/assets/images/icons/share/DownloadSolid';
 import ReactDOMServer from 'react-dom/server';
+import { ApexOptions } from 'apexcharts';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
 });
 
-const dummy_timeFrame = [];
+interface DailyFrame {
+  plantedDate: string;
+  treesPlanted: number;
+}
 
-// data.forEach((plant) => {
-//   dummy_timeFrame.push(format(new Date(plant.plant_date), 'MM/dd/yy'));
-// });
+interface WeeklyFrame {
+  weekStartDate: string;
+  weekEndDate: string;
+  weekNum: number;
+  month: string;
+  year: number;
+  treesPlanted: number;
+}
+
+interface MonthlyFrame {
+  month: string;
+  year: number;
+  treesPlanted: number;
+}
+
+interface YearlyFrame {
+  year: number;
+  treesPlanted: number;
+}
+
+interface DaysCategories {
+  label: string;
+}
+
+interface WeeksCategories {
+  label: string;
+  weekStateDate: string;
+  weekEndDate: string;
+}
+
+interface MonthsCategories {
+  label: string;
+  month: string;
+  year: number;
+}
+
+interface YearsCategories {
+  label: string;
+}
 
 export const TreePlanted = () => {
   const {
@@ -29,7 +69,7 @@ export const TreePlanted = () => {
     t,
   } = useTranslation(['treemapperAnalytics']);
 
-  const [series, setSeries] = useState([
+  const [series, setSeries] = useState<ApexAxisChartSeries>([
     {
       data: [],
     },
@@ -41,7 +81,7 @@ export const TreePlanted = () => {
     return <DownloadSolid color="#6E8091" />;
   };
 
-  const [options, setOptions] = useState({
+  const [options, setOptions] = useState<ApexOptions>({
     chart: {
       // events: {
       //   beforeZoom: function (ctx) {
@@ -95,7 +135,7 @@ export const TreePlanted = () => {
     },
 
     fill: {
-      colors: themeProperties.primaryColor,
+      colors: [themeProperties.primaryColor],
     },
 
     tooltip: {
@@ -111,8 +151,17 @@ export const TreePlanted = () => {
       // max: 20,
       labels: {
         rotate: -90,
+        formatter: function (
+          value:
+            | DaysCategories
+            | WeeksCategories
+            | MonthsCategories
+            | YearsCategories
+        ) {
+          return value ? value.label : '';
+        },
       },
-      categories: dummy_timeFrame,
+      categories: [],
       position: 'bottom',
       axisBorder: {
         show: true,
@@ -160,11 +209,11 @@ export const TreePlanted = () => {
         chart: {
           ...options.chart,
           toolbar: {
-            ...options.chart.toolbar,
+            ...options!.chart!.toolbar,
             export: {
-              ...options.chart.toolbar.export,
+              ...options!.chart!.toolbar!.export,
               csv: {
-                ...options.chart.toolbar.export.csv,
+                ...options!.chart!.toolbar!.export!.csv,
                 filename: FILE_NAME,
               },
               svg: {
@@ -180,6 +229,89 @@ export const TreePlanted = () => {
     }
   }, [project, toDate, fromDate]);
 
+  function isWeeklyFrame(frame: any): frame is WeeklyFrame {
+    return 'weekStartDate' in frame && 'weekEndDate' in frame;
+  }
+
+  function isMonthlyFrame(frame: any): frame is MonthlyFrame {
+    return 'month' in frame && 'year' in frame;
+  }
+
+  const getPlotingData = (
+    tf: TIME_FRAMES,
+    data: DailyFrame[] | WeeklyFrame[] | MonthlyFrame[] | YearlyFrame[]
+  ) => {
+    const treesPlanted: number[] = [];
+    const categories:
+      | DaysCategories[]
+      | WeeksCategories[]
+      | MonthsCategories[]
+      | YearsCategories[] = [];
+
+    switch (tf) {
+      case TIME_FRAMES.DAYS:
+        data.forEach((tf) => {
+          if ('plantedDate' in tf) {
+            treesPlanted.push(tf.treesPlanted);
+            (categories as DaysCategories[]).push({
+              label: format(new Date(tf.plantedDate), 'MMM/dd/yyyy'),
+            });
+          }
+        });
+        break;
+
+      case TIME_FRAMES.WEEKS:
+        data.forEach((tf) => {
+          if (isWeeklyFrame(tf)) {
+            treesPlanted.push(tf.treesPlanted);
+            (categories as WeeksCategories[]).push({
+              label: `${tf.weekNum}'${t('calenderWeek')}`,
+              weekStateDate: format(new Date(tf.weekStartDate), 'MMM/dd/yy'),
+              weekEndDate: format(new Date(tf.weekEndDate), 'MMM/dd/yy'),
+            });
+          }
+        });
+        break;
+
+      case TIME_FRAMES.MONTHS:
+        let year = 0;
+        data.forEach((tf, index) => {
+          if (isMonthlyFrame(tf)) {
+            treesPlanted.push(tf.treesPlanted);
+            const month = t(`${tf.month.toLowerCase()}`);
+            if (tf.year > year || index === 0) {
+              (categories as MonthsCategories[]).push({
+                label: `${month}'${tf.year}`,
+                month: tf.month,
+                year: tf.year,
+              });
+              year = tf.year;
+            } else {
+              (categories as MonthsCategories[]).push({
+                label: `${month}`,
+                month: tf.month,
+                year: tf.year,
+              });
+            }
+          }
+        });
+        break;
+
+      case TIME_FRAMES.YEARS:
+        data.forEach((tf) => {
+          if ('year' in tf) {
+            treesPlanted.push(tf.treesPlanted);
+            (categories as YearsCategories[]).push({
+              label: `${tf.year}`,
+            });
+          }
+        });
+        break;
+    }
+
+    return { treesPlanted, categories };
+  };
+
   const fetchPlantedTrees = async () => {
     const res = await fetch(
       `/api/analytics/trees-planted?timeFrame=${timeFrame}`,
@@ -194,31 +326,45 @@ export const TreePlanted = () => {
     );
     const { data } = await res.json();
     console.log('==>', data);
-    const plantedTrees = [];
-    data.forEach((timeframe) => {
-      plantedTrees.push(timeframe.treesPlanted);
-    });
+
+    const { treesPlanted, categories } = getPlotingData(
+      timeFrame!,
+      data as DailyFrame[] | WeeklyFrame[] | MonthlyFrame[] | YearlyFrame[]
+    );
+
     setSeries([
       {
-        data: plantedTrees,
+        data: treesPlanted,
         name: t('treesPlanted'),
       },
     ]);
+
+    setOptions({
+      ...options,
+      xaxis: {
+        ...options.xaxis,
+        categories: categories,
+      },
+    });
   };
 
   useEffect(() => {
     const isValidTimeFrame = getTimeFrames(toDate, fromDate).includes(
       timeFrame!
     );
-    if (isValidTimeFrame) {
+    if (isValidTimeFrame && project) {
       fetchPlantedTrees();
     }
   }, [project, fromDate, toDate, timeFrame]);
 
+  const getGraph = useCallback(() => {
+    return <ReactApexChart options={options} series={series} type="bar" />;
+  }, [options, series]);
+
   return (
     <>
       <p className={styles.title}>{t('treesPlanted')}</p>
-      <ReactApexChart options={options} series={series} type="bar" />
+      {getGraph()}
     </>
   );
 };
