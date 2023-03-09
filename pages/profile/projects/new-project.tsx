@@ -115,8 +115,11 @@ export default function AddProjectType(): ReactElement {
                     )
                     :
                     null} */}
-
-        <ManageProjects token={token} />
+        {user.type === 'tpo' ? (
+          <ManageProjects token={token} />
+        ) : (
+          <AccessDeniedLoader />
+        )}
       </UserLayout>
     </div>
   );
