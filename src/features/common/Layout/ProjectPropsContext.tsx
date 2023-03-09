@@ -8,9 +8,10 @@ import {
   SiteViewPort,
   Imagery,
   ProjectContextInterface,
+  MapState,
+  MapStyle,
 } from '../types/projectPropContext';
 import { ViewportProps } from 'react-map-gl';
-import { MapboxOptions } from 'mapbox-gl';
 import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
 
 const defaultState: ProjectContextInterface = {
@@ -53,7 +54,7 @@ const defaultState: ProjectContextInterface = {
   setModalOpen: () => {},
   viewport: {} as ViewportProps,
   setViewPort: () => {},
-  mapState: {} as MapboxOptions,
+  mapState: {} as MapState,
   setMapState: () => {},
   exploreProjects: true,
   setExploreProjects: () => {},
@@ -146,7 +147,7 @@ export const ProjectPropsProvider: FC = ({ children }) => {
 
   const mapRef = React.useRef(null);
 
-  const EMPTY_STYLE = {
+  const EMPTY_STYLE: MapStyle = {
     version: 8,
     sources: {
       esri: {
@@ -161,13 +162,15 @@ export const ProjectPropsProvider: FC = ({ children }) => {
     },
     layers: [],
   };
-  const [mapState, setMapState] = React.useState<MapboxOptions>({
+
+  const [mapState, setMapState] = React.useState<MapState>({
     mapStyle: EMPTY_STYLE,
     dragPan: true,
     scrollZoom: false,
     minZoom: 1,
     maxZoom: 25,
   });
+
   const isEmbed = embed === 'true' && showProjectList === 'false';
   const defaultMapCenter = isMobile
     ? isEmbed
@@ -184,9 +187,6 @@ export const ProjectPropsProvider: FC = ({ children }) => {
     longitude: defaultMapCenter[1],
     zoom: defaultZoom,
   });
-  console.log('xyz');
-  console.log('xyz');
-
   const [loaded, setLoaded] = React.useState<boolean>(false);
   const [exploreProjects, setExploreProjects] = React.useState<boolean>(true);
   const [layersSettings, setLayersSettings] = React.useState({});

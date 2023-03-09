@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
 import { ViewportProps } from 'react-map-gl'
-import {  MapboxOptions } from 'mapbox-gl'
 import { FeatureCollection, GeoJsonProperties,Geometry,Feature } from 'geojson'
 
 
@@ -205,14 +204,136 @@ export interface Coordinates {
     // MapState 
   
    
-    
     export interface MapState {
-      mapStyle: Style
+      mapStyle: MapStyle
       dragPan: boolean
       scrollZoom: boolean
       minZoom: number
       maxZoom: number
     }
+    
+    export interface MapStyle {
+      version: number
+      sprite?: string
+      glyphs?: string
+      sources: Sources
+      layers: Layer[]
+      metadata?: Metadata
+    }
+    
+    export interface Sources {
+      esri: Esri
+    }
+    
+    export interface Esri {
+      type: string
+      scheme: string
+      tilejson: string
+      format: string
+      maxzoom: number
+      tiles: string[]
+      name: string
+    }
+    
+    export interface Layer {
+      id: string
+      type: string
+      paint: Paint
+      layout: Layout
+      showProperties?: boolean
+      source?: string
+      "source-layer"?: string
+      minzoom?: number
+      maxzoom?: number
+      filter?: any[]
+    }
+    
+    export interface Paint {
+      "background-color"?: string
+      "fill-color": any
+      "fill-outline-color"?: string
+      "fill-pattern"?: string
+      "fill-opacity"?: number
+      "line-color": any
+      "line-width": any
+      "line-dasharray"?: number[]
+      "text-color"?: string
+      "text-halo-color"?: string
+      "fill-translate"?: FillTranslate
+      "fill-translate-anchor"?: string
+      "line-opacity"?: number
+      "text-halo-blur"?: number
+      "text-halo-width"?: number
+    }
+    
+    export interface FillTranslate {
+      stops: [number, number[]][]
+    }
+    
+    export interface Layout {
+      visibility?: string
+      "line-join"?: string
+      "line-cap"?: string
+      "symbol-placement"?: string
+      "symbol-avoid-edges"?: boolean
+      "icon-image"?: string
+      "symbol-spacing"?: number
+      "icon-rotation-alignment"?: string
+      "icon-allow-overlap"?: boolean
+      "icon-padding"?: number
+      "text-font"?: string[]
+      "text-size": any
+      "text-letter-spacing": any
+      "text-line-height"?: number
+      "text-max-width"?: number
+      "text-field"?: string
+      "text-padding"?: number
+      "text-max-angle"?: number
+      "text-offset"?: number[]
+      "text-rotation-alignment"?: string
+      "text-transform"?: string
+      "text-optional"?: boolean
+    }
+    
+    export interface Metadata {
+      arcgisStyleUrl: string
+      arcgisOriginalItemTitle: string
+      arcgisQuickEditorWarning: boolean
+      arcgisQuickEditor: ArcgisQuickEditor
+      arcgisEditorExtents: ArcgisEditorExtent[]
+      arcgisMinimapVisibility: boolean
+    }
+    
+    export interface ArcgisQuickEditor {
+      labelTextColor: string
+      labelHaloColor: string
+      baseColor: any
+      spriteProcessing: boolean
+      labelContrast: number
+      labelColorMode: string
+      colorMode: string
+      colors: Colors
+      boundaries: string
+    }
+    
+    export interface Colors {
+      boundaries: string
+    }
+    
+    export interface ArcgisEditorExtent {
+      spatialReference: SpatialReference
+      xmin: number
+      ymin: number
+      xmax: number
+      ymax: number
+    }
+    
+    export interface SpatialReference {
+      wkid: number
+      latestWkid?: number
+    }
+    
+    
     
     
     
