@@ -1,4 +1,4 @@
-declare namespace Payments {
+export declare namespace Payments {
   export interface PaymentDetails {
     donorName: string;
     quantity: number;

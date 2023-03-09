@@ -7,6 +7,7 @@ import { useTranslation } from 'next-i18next';
 import { TFunction } from 'next-i18next';
 import DownloadCodes from './DownloadCodes';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
+import { Payments } from '../payments';
 
 interface CommonProps {
   handleRecordToggle: (index: number | undefined) => void;
@@ -36,20 +37,20 @@ export default function AccountRecord({
   isModal = false,
 }: Props): ReactElement {
   const { t } = useTranslation(['me']);
-  const [showCertificate, setShowCertificate] = React.useState<boolean>(false);
 
   const outerDivClasses = isModal
     ? styles.recordModal
     : `${styles.record} ${selectedRecord === index ? styles.selected : ''}`;
 
-  useMemo(() => {
+  const showCertificate = useMemo(() => {
     if (
       record?.details?.donorCertificate ||
       record?.details?.taxDeductibleReceipt ||
       record?.details?.giftCertificate
     ) {
-      setShowCertificate(true);
+      return true;
     }
+    return false;
   }, [record]);
 
   return (
@@ -91,11 +92,14 @@ export default function AccountRecord({
               <TransferDetails account={record.details.account} />
             )}
             {showStatusNote(record, t)}
-            {showCertificate && record?.purpose !== 'conservation' && (
+            {showCertificate && (
               <>
                 <div className={styles.title}>{t('downloads')}</div>
                 <div className={styles.detailGrid}>
-                  <Certificates recordDetails={record.details} />
+                  <Certificates
+                    recordDetails={record.details}
+                    purpose={record.purpose}
+                  />
                 </div>
               </>
             )}
@@ -514,15 +518,17 @@ export function TransferDetails({
 
 interface CertificatesProps {
   recordDetails: Payments.PaymentDetails;
+  purpose: string;
 }
 
 export function Certificates({
   recordDetails,
+  purpose,
 }: CertificatesProps): ReactElement {
   const { t } = useTranslation(['me']);
   return (
     <>
-      {recordDetails?.donorCertificate && (
+      {recordDetails?.donorCertificate && purpose !== 'conservation' && (
         <div className={styles.singleDetail}>
           <a
             href={recordDetails?.donorCertificate}
@@ -544,7 +550,7 @@ export function Certificates({
           </a>
         </div>
       )}
-      {recordDetails?.giftCertificate && (
+      {recordDetails?.giftCertificate && purpose !== 'conservation' && (
         <div className={styles.singleDetail}>
           <a
             href={recordDetails.giftCertificate}
