@@ -3,45 +3,24 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import themeProperties from '../../../../../../theme/themeProperties';
 import { getFormattedNumber } from '../../../../../../utils/getFormattedNumber';
-import data from '../../speciesPlantedMockData.json';
 import styles from './index.module.scss';
 import { Tooltip } from './Tooltip';
 import DownloadSolid from '../../../../../../../public/assets/images/icons/share/DownloadSolid';
 import ReactDOMServer from 'react-dom/server';
 import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
 import { format } from 'date-fns';
+import { ApexOptions } from 'apexcharts';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
 });
 
-const treeCountBySpecies = {};
-
-for (const item of data) {
-  const { scientific_species_id, name, tree_count } = item;
-
-  if (!treeCountBySpecies[scientific_species_id]) {
-    treeCountBySpecies[scientific_species_id] = { name, tree_count: 0 };
-  }
-
-  treeCountBySpecies[scientific_species_id].tree_count += parseInt(tree_count);
+interface Species {
+  other_species: null | string;
+  scientific_species_id: number;
+  name: null | string;
+  total_tree_count: number;
 }
-
-const result = Object.entries(treeCountBySpecies)
-  .map(([scientific_species_id, { name, tree_count }]) => ({
-    scientific_species_id,
-    name,
-    tree_count,
-  }))
-  .sort((a, b) => b.tree_count - a.tree_count);
-
-const species = [];
-const species_num = [];
-
-Object.entries(result).map((s) => {
-  species.push(s[1].name);
-  species_num.push(s[1].tree_count);
-});
 
 const getDownloadIcon = () => {
   return <DownloadSolid color="#6E8091" />;
@@ -55,31 +34,31 @@ export const SpeciesPlanted = () => {
 
   const { project, fromDate, toDate } = useAnalytics();
 
-  const [series, setSeries] = useState([
+  const [series, setSeries] = useState<ApexAxisChartSeries>([
     {
-      data: species_num || [],
+      data: [],
     },
   ]);
 
-  const [options, setOptions] = useState({
+  const [options, setOptions] = useState<ApexOptions>({
     chart: {
-      events: {
-        beforeZoom: function (ctx) {
-          ctx.w.config.xaxis.range = undefined;
-        },
-        zoomed: function (chartContext, { xaxis }) {
-          // calculate the new columnWidth based on the zoomed range
+      // events: {
+      //   beforeZoom: function (ctx) {
+      //     ctx.w.config.xaxis.range = undefined;
+      //   },
+      //   zoomed: function (chartContext, { xaxis }) {
+      //     // calculate the new columnWidth based on the zoomed range
 
-          const { max, min } = xaxis;
-          let columnWidth: number | string = Math.abs(
-            Math.ceil((max - min) / 10)
-          );
+      //     const { max, min } = xaxis;
+      //     let columnWidth: number | string = Math.abs(
+      //       Math.ceil((max - min) / 10)
+      //     );
 
-          if (columnWidth <= 3) columnWidth = '200%';
-          else columnWidth = '30%';
-          chartContext.w.config.plotOptions.bar.columnWidth = columnWidth;
-        },
-      },
+      //     if (columnWidth <= 3) columnWidth = '200%';
+      //     else columnWidth = '30%';
+      //     chartContext.w.config.plotOptions.bar.columnWidth = columnWidth;
+      //   },
+      // },
       type: 'bar',
       toolbar: {
         show: true,
@@ -109,7 +88,7 @@ export const SpeciesPlanted = () => {
         dataLabels: {
           position: 'top',
         },
-        columnWidth: '150%',
+        columnWidth: '30%',
       },
     },
     dataLabels: {
@@ -117,7 +96,7 @@ export const SpeciesPlanted = () => {
     },
 
     fill: {
-      colors: themeProperties.primaryColor,
+      colors: [themeProperties.primaryColor],
     },
 
     tooltip: {
@@ -139,15 +118,15 @@ export const SpeciesPlanted = () => {
     },
 
     xaxis: {
-      range: 20,
-      max: 20,
+      // range: 20,
+      // max: 20,
       labels: {
         rotate: -90,
         style: {
           cssClass: styles.italics,
         },
       },
-      categories: species,
+      categories: [],
       position: 'bottom',
       axisBorder: {
         show: true,
@@ -170,7 +149,7 @@ export const SpeciesPlanted = () => {
       tickPlacement: 'on',
     },
     yaxis: {
-      // logarithmic: true, //open bug that causes data labels to render wrong numbers
+      logarithmic: true, //open bug that causes data labels to render wrong numbers
       axisBorder: {
         show: true,
       },
@@ -195,11 +174,11 @@ export const SpeciesPlanted = () => {
         chart: {
           ...options.chart,
           toolbar: {
-            ...options.chart.toolbar,
+            ...options!.chart!.toolbar,
             export: {
-              ...options.chart.toolbar.export,
+              ...options!.chart!.toolbar!.export,
               csv: {
-                ...options.chart.toolbar.export.csv,
+                ...options!.chart!.toolbar!.export!.csv,
                 filename: FILE_NAME,
               },
               svg: {
@@ -214,6 +193,72 @@ export const SpeciesPlanted = () => {
       });
     }
   }, [project, toDate, fromDate]);
+
+  const getPlotingData = (speciesData: Species[]) => {
+    const speciesPlanted: number[] = [];
+    const categories: string[] = [];
+
+    for (const species of speciesData) {
+      speciesPlanted.push(species.total_tree_count);
+      categories.push(species.name as string);
+    }
+
+    return { speciesPlanted, categories };
+  };
+
+  const fetchPlantedSpecies = async () => {
+    const res = await fetch('/api/analytics/species-planted', {
+      method: 'POST',
+      body: JSON.stringify({
+        projectId: project!.id,
+        startDate: fromDate,
+        endDate: toDate,
+      }),
+    });
+    const { data }: { data: Species[] } = await res.json();
+
+    let unknownIndex = -1;
+
+    const speciesData = data.map((species, index) => {
+      if (species.other_species === 'Unknown') {
+        unknownIndex = index;
+      }
+      if (!species.name && species.other_species !== 'Unknown') {
+        return { ...species, name: species.other_species };
+      }
+      return species;
+    });
+
+    if (unknownIndex !== -1) {
+      const unknownSpecies = speciesData.splice(unknownIndex, 1)[0];
+      speciesData.push({
+        ...unknownSpecies,
+        name: unknownSpecies.other_species,
+      });
+    }
+
+    const { speciesPlanted, categories } = getPlotingData(speciesData);
+
+    console.log('==>', speciesPlanted, categories);
+
+    setSeries([
+      {
+        data: speciesPlanted,
+        name: t('speciesPlanted'),
+      },
+    ]);
+
+    setOptions({
+      ...options,
+      xaxis: { ...options.xaxis, categories: categories },
+    });
+  };
+
+  useEffect(() => {
+    if (project) {
+      fetchPlantedSpecies();
+    }
+  }, [project]);
 
   return (
     <>

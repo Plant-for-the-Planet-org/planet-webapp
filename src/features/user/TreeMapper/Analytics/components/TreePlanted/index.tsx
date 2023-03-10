@@ -64,10 +64,11 @@ interface YearsCategories {
   label: string;
 }
 
-type Categories = DaysCategories[]
-| WeeksCategories[]
-| MonthsCategories[]
-| YearsCategories[]
+type Categories =
+  | DaysCategories[]
+  | WeeksCategories[]
+  | MonthsCategories[]
+  | YearsCategories[];
 
 export const TreePlanted = () => {
   const {
@@ -268,27 +269,29 @@ export const TreePlanted = () => {
         break;
 
       case TIME_FRAMES.MONTHS:
-        let year = 0;
-        data.forEach((tf, index) => {
-          if (isMonthlyFrame(tf)) {
-            treesPlanted.push(tf.treesPlanted);
-            const month = t(`${tf.month.toLowerCase()}`);
-            if (tf.year > year || index === 0) {
-              (categories as MonthsCategories[]).push({
-                label: `${month}'${tf.year}`,
-                month: tf.month,
-                year: tf.year,
-              });
-              year = tf.year;
-            } else {
-              (categories as MonthsCategories[]).push({
-                label: `${month}`,
-                month: tf.month,
-                year: tf.year,
-              });
+        {
+          let year = 0;
+          data.forEach((tf, index) => {
+            if (isMonthlyFrame(tf)) {
+              treesPlanted.push(tf.treesPlanted);
+              const month = t(`${tf.month.toLowerCase()}`);
+              if (tf.year > year || index === 0) {
+                (categories as MonthsCategories[]).push({
+                  label: `${month}'${tf.year}`,
+                  month: tf.month,
+                  year: tf.year,
+                });
+                year = tf.year;
+              } else {
+                (categories as MonthsCategories[]).push({
+                  label: `${month}`,
+                  month: tf.month,
+                  year: tf.year,
+                });
+              }
             }
-          }
-        });
+          });
+        }
         break;
 
       case TIME_FRAMES.YEARS:
@@ -361,7 +364,7 @@ export const TreePlanted = () => {
       {
         method: 'POST',
         body: JSON.stringify({
-          projectId: project ? project.id : null,
+          projectId: project!.id,
           startDate: fromDate,
           endDate: toDate,
         }),
