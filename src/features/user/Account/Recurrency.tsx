@@ -14,10 +14,11 @@ import { CancelModal } from './CancelModal';
 import { ReactivateModal } from './ReactivateModal';
 import { useRouter } from 'next/router';
 import { EditModal } from './EditModal';
+import { Subscription } from './payments';
 
 interface Props {
   isDataLoading: boolean;
-  recurrencies?: Payments.Subscription[];
+  recurrencies?: Subscription[];
   fetchRecurrentDonations: (next?: boolean) => void;
 }
 

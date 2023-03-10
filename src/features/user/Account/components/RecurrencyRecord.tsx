@@ -4,13 +4,14 @@ import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedC
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { useTranslation } from 'next-i18next';
 import themeProperties from '../../../../theme/themeProperties';
+import { Subscription } from '../payments';
 
 interface Props {
   handleRecordOpen: Function;
   index: number;
   selectedRecord: number | null;
-  record: Payments.Subscription;
-  recurrencies: Payments.Subscription[];
+  record: Subscription;
+  recurrencies: Subscription[];
   openModal: boolean;
   seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
   setpauseDonation: React.Dispatch<React.SetStateAction<boolean>>;
@@ -64,7 +65,7 @@ export default function RecurrencyRecord({
 }
 
 interface HeaderProps {
-  record: Payments.Subscription;
+  record: Subscription;
   handleRecordOpen: Function;
   index?: number;
 }
@@ -156,7 +157,7 @@ export function RecordHeader({
 }
 
 interface DetailProps {
-  record: Payments.Subscription;
+  record: Subscription;
 }
 
 export function DetailsComponent({ record }: DetailProps): ReactElement {
@@ -234,7 +235,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
 }
 
 interface ManageDonationProps {
-  record: Payments.Subscription;
+  record: Subscription;
   seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
   setpauseDonation: React.Dispatch<React.SetStateAction<boolean>>;
   setcancelDonation: React.Dispatch<React.SetStateAction<boolean>>;

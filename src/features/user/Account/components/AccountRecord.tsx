@@ -7,12 +7,17 @@ import { useTranslation } from 'next-i18next';
 import { TFunction } from 'next-i18next';
 import DownloadCodes from './DownloadCodes';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
-import { Payments } from '../payments';
+import {
+  PaymentHistoryRecord,
+  RecipientBank,
+  BankAccount,
+  PaymentDetails,
+} from '../payments';
 
 interface CommonProps {
   handleRecordToggle: (index: number | undefined) => void;
   selectedRecord: number | null;
-  record: Payments.PaymentHistoryRecord;
+  record: PaymentHistoryRecord;
   isPlanetCash?: boolean;
 }
 
@@ -111,7 +116,7 @@ export default function AccountRecord({
 }
 
 interface HeaderProps {
-  record: Payments.PaymentHistoryRecord;
+  record: PaymentHistoryRecord;
   handleRecordToggle?: (index: number | undefined) => void;
   index?: number;
   isPlanetCash?: boolean;
@@ -189,7 +194,7 @@ export function RecordHeader({
 }
 
 interface DetailProps {
-  record: Payments.PaymentHistoryRecord;
+  record: PaymentHistoryRecord;
 }
 
 export function DetailsComponent({ record }: DetailProps): ReactElement {
@@ -378,7 +383,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
 }
 
 export const showStatusNote = (
-  record: Payments.PaymentHistoryRecord,
+  record: PaymentHistoryRecord,
   t: TFunction
 ): ReactElement => {
   const showDonationNote = (): string => {
@@ -404,7 +409,7 @@ export const showStatusNote = (
 };
 
 interface BankDetailsProps {
-  recipientBank: Payments.RecipientBank;
+  recipientBank: RecipientBank;
 }
 
 export function BankDetails({ recipientBank }: BankDetailsProps): ReactElement {
@@ -470,7 +475,7 @@ export function BankDetails({ recipientBank }: BankDetailsProps): ReactElement {
 }
 
 interface TransferDetailsProps {
-  account: Payments.BankAccount;
+  account: BankAccount;
 }
 
 export function TransferDetails({
@@ -517,7 +522,7 @@ export function TransferDetails({
 }
 
 interface CertificatesProps {
-  recordDetails: Payments.PaymentDetails;
+  recordDetails: PaymentDetails;
   purpose: string;
 }
 

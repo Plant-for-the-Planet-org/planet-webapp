@@ -6,13 +6,14 @@ import AccountRecord from './components/AccountRecord';
 import styles from './AccountHistory.module.scss';
 import { useRouter } from 'next/router';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
+import { PaymentHistory, Filters } from './payments';
 
 interface Props {
   filter: string | null;
   setFilter: (filter: string) => void;
   isDataLoading: boolean;
-  accountingFilters: Payments.Filters | null;
-  paymentHistory: Payments.PaymentHistory | null;
+  accountingFilters: Filters | null;
+  paymentHistory: PaymentHistory | null;
   fetchPaymentHistory: (next?: boolean) => Promise<void>;
 }
 

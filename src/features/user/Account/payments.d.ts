@@ -1,4 +1,4 @@
-export declare namespace Payments {
+
   export interface PaymentDetails {
     donorName: string;
     quantity: number;
@@ -128,4 +128,4 @@ export declare namespace Payments {
     pauseUntil?: any;
     donorName?: string;
   }
-}
+
