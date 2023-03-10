@@ -33,8 +33,8 @@ function AccountHistory({}: Props): ReactElement {
   async function fetchPaymentHistory(next = false): Promise<void> {
     setIsDataLoading(true);
     setProgress(70);
-    if (next && paymentHistory?._links?.next) 
-    const newPaymentHistory: PaymentHistory = await getAuthenticatedRequest(
+    if (next && paymentHistory?._links?.next) {
+      const newPaymentHistory: PaymentHistory = await getAuthenticatedRequest(
         `${
           filter && accountingFilters
             ? accountingFilters[filter] +
@@ -42,6 +42,7 @@ function AccountHistory({}: Props): ReactElement {
               paymentHistory?._links?.next.split('?').pop()
             : paymentHistory?._links?.next
         }`,
+        validEmail,
         token,
         {},
         handleError,
@@ -59,6 +60,7 @@ function AccountHistory({}: Props): ReactElement {
       if (filter === null) {
         const paymentHistory: PaymentHistory = await getAuthenticatedRequest(
           '/app/paymentHistory?limit=15',
+          validEmail,
           token,
           {},
           handleError,
