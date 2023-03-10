@@ -15,7 +15,7 @@ import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
-
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 interface Props {
   handleNext: Function;
   handleBack: Function;
@@ -37,6 +37,7 @@ export default function ProjectMedia({
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { validEmail } = React.useContext(UserPropsContext);
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
   const [uploadedImages, setUploadedImages] = React.useState<Array<any>>([]);
@@ -49,6 +50,7 @@ export default function ProjectMedia({
     if (projectGUID && token)
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}?_scope=images`,
+        validEmail,
         token,
         {},
         handleError,
@@ -70,6 +72,7 @@ export default function ProjectMedia({
       `/app/projects/${projectGUID}/images`,
       submitData,
       token,
+      validEmail,
       handleError
     )
       .then((res) => {
@@ -153,6 +156,7 @@ export default function ProjectMedia({
     deleteAuthenticatedRequest(
       `/app/projects/${projectGUID}/images/${id}`,
       token,
+      validEmail,
       handleError
     ).then((res) => {
       if (res !== 404) {
@@ -175,6 +179,7 @@ export default function ProjectMedia({
       `/app/projects/${projectGUID}`,
       submitData,
       token,
+      validEmail,
       handleError
     )
       .then((res) => {
@@ -214,6 +219,7 @@ export default function ProjectMedia({
       `/app/projects/${projectGUID}/images/${id}`,
       submitData,
       token,
+      validEmail,
       handleError
     ).then((res) => {
       if (!res.code) {
@@ -246,6 +252,7 @@ export default function ProjectMedia({
       `/app/projects/${projectGUID}/images/${id}`,
       submitData,
       token,
+      validEmail,
       handleError
     ).then((res) => {
       if (!res.code) {

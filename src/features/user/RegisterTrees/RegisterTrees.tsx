@@ -21,7 +21,6 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './RegisterModal.module.scss';
 import SingleContribution from './RegisterTrees/SingleContribution';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -52,7 +51,9 @@ const dialogSx: SxProps = {
 interface Props {}
 
 export default function RegisterTrees({}: Props) {
-  const { user, token, contextLoaded } = React.useContext(UserPropsContext);
+  const { user, token, contextLoaded, validEmail } =
+    React.useContext(UserPropsContext);
+
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {
     version: 8,
@@ -166,6 +167,7 @@ export default function RegisterTrees({}: Props) {
           `/app/contributions`,
           submitData,
           token,
+          validEmail,
           handleError
         ).then((res) => {
           if (!res.code) {
@@ -200,6 +202,7 @@ export default function RegisterTrees({}: Props) {
   async function loadProjects() {
     await getAuthenticatedRequest(
       '/app/profile/projects',
+      validEmail,
       token,
       {},
       handleError,

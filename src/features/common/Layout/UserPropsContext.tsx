@@ -17,6 +17,17 @@ export const UserPropsContext = React.createContext({
   logoutUser: (value: string | undefined) => {},
   auth0User: {},
   auth0Error: {} || undefined,
+  validEmail: '',
+  setValidEmail: (value: string) => {},
+  impersonationEmail: '',
+  setImpersonationEmail: (value: string) => {},
+  doNotShowImpersonation: true,
+  firstUser: '',
+  setFirstUser: (value: string | null) => {},
+  secondUser: '',
+  setSecondUser: (value: string | null) => {},
+  alertError: false,
+  setAlertError: (value: boolean) => {},
 });
 
 function UserPropsProvider({ children }: any): ReactElement {
@@ -34,6 +45,27 @@ function UserPropsProvider({ children }: any): ReactElement {
   const [contextLoaded, setContextLoaded] = React.useState(false);
   const [token, setToken] = React.useState(null);
   const [profile, setUser] = React.useState<boolean | User | null>(false);
+  const [validEmail, setValidEmail] = React.useState<string>('');
+  const [impersonationEmail, setImpersonationEmail] =
+    React.useState<string>('');
+  const [alertError, setAlertError] = React.useState<boolean>(false);
+  const [doNotShowImpersonation, setDoNotShowImpersonation] =
+    React.useState<boolean>(true);
+  const [firstUser, setFirstUser] = React.useState<string | null>(null);
+  const [secondUser, setSecondUser] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (localStorage.getItem('firstUser')) {
+      setFirstUser(localStorage.getItem('firstUser'));
+    } else {
+      setFirstUser(null);
+    }
+    if (localStorage.getItem('secondUser')) {
+      setSecondUser(localStorage.getItem('secondUser'));
+    } else {
+      setSecondUser(null);
+    }
+  }, [user, validEmail]);
 
   React.useEffect(() => {
     async function loadToken() {
@@ -51,13 +83,43 @@ function UserPropsProvider({ children }: any): ReactElement {
     logout({ returnTo: returnUrl });
   };
 
+  const validation = (validEmail: string, email: string) => {
+    if (validEmail || email) {
+      return validEmail || email;
+    } else {
+      return undefined;
+    }
+  };
+
   async function loadUser() {
     setContextLoaded(false);
     try {
-      const res = await getAccountInfo(token);
+      const res = await getAccountInfo(
+        token,
+        validation(validEmail, impersonationEmail)
+      );
       if (res.status === 200) {
         const resJson = await res.json();
         setUser(resJson);
+        //logic for impersonation feature
+        if (resJson?.allowedToSwitch) {
+          //this logic  only run if user authorized for doing impersonation
+          if (firstUser === null) {
+            setFirstUser(resJson?.email);
+            localStorage.setItem('firstUser', resJson?.email);
+          }
+        }
+        // as first user email will be there in localstorage, and if response contains
+        //another email contrary to the first user email then that email would be associated to impersonatee account
+        //and store in local storage as second user(valid email)
+        if (firstUser && firstUser !== resJson?.email) {
+          localStorage.setItem('secondUser', resJson?.email);
+          setSecondUser(resJson?.email);
+          setValidEmail(resJson?.email);
+          if (secondUser === null) router.push('/profile');
+        }
+      } else if (res.status === 403) {
+        setAlertError(true);
       } else if (res.status === 303) {
         // if 303 -> user doesn not exist in db
         setUser(null);
@@ -83,13 +145,40 @@ function UserPropsProvider({ children }: any): ReactElement {
 
   React.useEffect(() => {
     if (token) loadUser();
-  }, [token]);
+  }, [token, validEmail ? validEmail : impersonationEmail]);
+
+  React.useEffect(() => {
+    const emailFromLocal = localStorage.getItem('secondUser');
+    if (emailFromLocal) {
+      setValidEmail(emailFromLocal);
+    }
+  }, [impersonationEmail, validEmail]);
+
+  React.useEffect(() => {
+    //this logic is to prevent reverse impersonation (if the second user also has the impersonation authorization)
+    if (firstUser) {
+      setDoNotShowImpersonation(false);
+      if (secondUser) {
+        setDoNotShowImpersonation(true);
+      }
+    } else {
+      setDoNotShowImpersonation(true);
+    }
+  }, [firstUser, secondUser, validEmail]);
 
   return (
     <UserPropsContext.Provider
       value={{
+        alertError,
+        setAlertError,
+        impersonationEmail,
+        setImpersonationEmail,
+        doNotShowImpersonation,
+        setDoNotShowImpersonation,
         user: profile,
         setUser,
+        validEmail,
+        setValidEmail,
         contextLoaded,
         token,
         isLoading,

@@ -16,9 +16,9 @@ export default function AddTargetModal({
 }: any) {
   // External imports
   const { t, ready } = useTranslation(['me']);
-  const { user, token, contextLoaded, setUser } =
+  const { user, token, contextLoaded, setUser, validEmail } =
     React.useContext(UserPropsContext);
-  const { register, handleSubmit, errors } = useForm({ mode: 'onBlur' });
+  const { register, errors } = useForm({ mode: 'onBlur' });
   const { theme } = React.useContext(ThemeContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
@@ -33,7 +33,13 @@ export default function AddTargetModal({
       const bodyToSend = {
         target: !target ? user.score.target : target,
       };
-      putAuthenticatedRequest(`/app/profile`, bodyToSend, token, handleError)
+      putAuthenticatedRequest(
+        `/app/profile`,
+        bodyToSend,
+        token,
+        validEmail,
+        handleError
+      )
         .then((res) => {
           handleAddTargetModalClose();
           const newUserInfo = {
