@@ -78,7 +78,7 @@ export default function DetailedAnalysis({
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['manageProjects', 'common']);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { validEmail } = React.useContext(UserPropsContext);
+  const { impersonatedEmail } = React.useContext(UserPropsContext);
   const [siteOwners, setSiteOwners] = React.useState([
     {
       id: 1,
@@ -295,7 +295,7 @@ export default function DetailedAnalysis({
       `/app/projects/${projectGUID}`,
       submitData,
       token,
-      validEmail,
+      impersonatedEmail,
       handleError
     )
       .then((res) => {

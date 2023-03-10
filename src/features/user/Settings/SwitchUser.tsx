@@ -3,8 +3,10 @@ import { SwitchUserContainer } from '../../common/Layout/SwitchUserContainer';
 import { TextField, Button } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
-import { ReactElement, useContext } from 'react';
+import { ReactElement, useContext, useState } from 'react';
 import DashboardView from '../../common/Layout/DashboardView';
+import { getAccountInfo } from '../../../utils/apiRequests/api';
+import { useRouter } from 'next/router';
 
 export type FormData = {
   targetEmail: string;
@@ -12,17 +14,34 @@ export type FormData = {
 
 const SwitchUser = (): ReactElement => {
   const { t } = useTranslation('me');
+  const { push } = useRouter();
+  const [isInvalidEmail, setIsInvalidEmail] = useState(false);
 
   const { register, errors, handleSubmit } = useForm<FormData>({
     mode: 'onSubmit',
   });
-  const { setAlertError, alertError, setImpersonationEmail } =
+
+  const { token, setUser, setIsImpersonationModeOn, setImpersonatedEmail } =
     useContext(UserPropsContext);
 
-  const handle = (data: FormData): void => {
-    setAlertError(false);
+  const handle = async (data: FormData): Promise<void> => {
     if (data.targetEmail) {
-      setImpersonationEmail(data.targetEmail);
+      try {
+        const res = await getAccountInfo(token, data.targetEmail);
+        const resJson = await res.json();
+        if (res.status === 200) {
+          setIsInvalidEmail(false);
+          setIsImpersonationModeOn(true);
+          setImpersonatedEmail(resJson.email);
+          setUser(resJson);
+          push('/profile');
+        } else {
+          console.log(resJson);
+          setIsInvalidEmail(true);
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -47,10 +66,10 @@ const SwitchUser = (): ReactElement => {
             name="targetEmail"
             label={t('me:profileEmail')}
             placeholder="xyz@email.com"
-            error={errors.targetEmail || alertError}
+            error={errors.targetEmail !== undefined || isInvalidEmail}
             helperText={
               (errors.targetEmail && errors.targetEmail.message) ||
-              (alertError && t('me:userNotexist'))
+              (isInvalidEmail && t('me:userNotexist'))
             }
           />{' '}
           <div>

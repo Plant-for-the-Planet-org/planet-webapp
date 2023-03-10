@@ -7,37 +7,38 @@ import { useContext } from 'react';
 import { useRouter } from 'next/router';
 
 const ImpersonationActivated = () => {
-  const { setValidEmail, validEmail, setImpersonationEmail } =
-    useContext(UserPropsContext);
+  const {
+    user,
+    isImpersonationModeOn,
+    setImpersonatedEmail,
+    setIsImpersonationModeOn,
+  } = useContext(UserPropsContext);
 
   const { push } = useRouter();
 
-  const closeAlert = () => {
-    localStorage.removeItem('secondUser');
-    setValidEmail('');
-    setImpersonationEmail('');
+  const exitImpersonation = () => {
+    setImpersonatedEmail('');
+    setIsImpersonationModeOn(false);
     push(`/profile/impersonate-user`);
   };
 
   const { t } = useTranslation('me');
 
-  return (
-    validEmail && (
-      <div className={styles.impersonationAlertContainer}>
-        <p className={styles.impersonatingText}>{t('me:targetUser')}</p>
-        <p className={styles.impersonatingEmail}>{`<${validEmail}>`}</p>
-        <div
-          onClick={() => closeAlert()}
-          className={styles.exitImpersoantionContainer}
-        >
-          <div>
-            <LogoutIcon />
-          </div>
-          <div className={styles.exit}>{t('me:exitImpersonation')}</div>
+  return isImpersonationModeOn ? (
+    <div className={styles.impersonationAlertContainer}>
+      <p className={styles.impersonatingText}>{t('me:targetUser')}</p>
+      <p className={styles.impersonatingEmail}>{`<${user.email}>`}</p>
+      <div
+        onClick={exitImpersonation}
+        className={styles.exitImpersoantionContainer}
+      >
+        <div>
+          <LogoutIcon />
         </div>
+        <div className={styles.exit}>{t('me:exitImpersonation')}</div>
       </div>
-    )
-  );
+    </div>
+  ) : null;
 };
 
 export default ImpersonationActivated;

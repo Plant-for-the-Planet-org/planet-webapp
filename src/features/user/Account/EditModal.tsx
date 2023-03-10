@@ -63,7 +63,7 @@ export const EditModal = ({
     useForm({
       mode: 'all',
     });
-  const { token, validEmail } = React.useContext(UserPropsContext);
+  const { token, impersonatedEmail } = React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
@@ -105,7 +105,7 @@ export const EditModal = ({
         `/app/subscriptions/${record?.id}?scope=modify`,
         bodyToSend,
         token,
-        validEmail,
+        impersonatedEmail,
         handleError
       )
         .then((res) => {

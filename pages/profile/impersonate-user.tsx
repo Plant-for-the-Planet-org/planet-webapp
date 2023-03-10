@@ -8,7 +8,7 @@ import { ReactElement, useContext } from 'react';
 import AccessDeniedLoader from '../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 
 const ImpersonateUserPage = (): ReactElement => {
-  const { user, doNotShowImpersonation } = useContext(UserPropsContext);
+  const { user, isImpersonationModeOn } = useContext(UserPropsContext);
   const { t } = useTranslation('me');
 
   return (
@@ -16,7 +16,7 @@ const ImpersonateUserPage = (): ReactElement => {
       <Head>
         <title>{t('me:switchUser')}</title>
       </Head>
-      {user?.allowedToSwitch && !doNotShowImpersonation ? (
+      {user?.allowedToSwitch && !isImpersonationModeOn ? (
         <SwitchUser />
       ) : (
         <AccessDeniedLoader />

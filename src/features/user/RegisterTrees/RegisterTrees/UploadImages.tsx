@@ -38,7 +38,7 @@ export default function UploadImages({
     });
   }, []);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { validEmail } = React.useContext(UserPropsContext);
+  const { impersonatedEmail } = React.useContext(UserPropsContext);
   // React.useEffect(() => {
   //   // Fetch images of the project
   //   setUploadedImages(contribution.contributionImages);
@@ -54,7 +54,7 @@ export default function UploadImages({
       `/app/contributions/${contributionGUID}/images`,
       submitData,
       token,
-      validEmail,
+      impersonatedEmail,
       handleError
     )
       .then((res) => {
@@ -91,7 +91,7 @@ export default function UploadImages({
     deleteAuthenticatedRequest(
       `/app/contributions/${contributionGUID}/images/${id}`,
       token,
-      validEmail,
+      impersonatedEmail,
       handleError
     ).then((res) => {
       if (res !== 404) {
