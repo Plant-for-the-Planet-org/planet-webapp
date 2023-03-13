@@ -88,8 +88,44 @@ function UserPropsProvider({ children }: any): ReactElement {
     setContextLoaded(true);
   }
 
+  const impersonateUser = async (impersonatedEmail: string) => {
+    try {
+      const res = await getAccountInfo(token, impersonatedEmail);
+
+      const resJson = await res.json();
+      if (res.status === 200) {
+        setIsImpersonationModeOn(true);
+        setContextLoaded(true);
+        setImpersonatedEmail(resJson.email);
+        localStorage.setItem('impersonatedEmail', resJson.email);
+        setUser(resJson);
+        return resJson;
+      } else {
+        console.log(resJson);
+        return false;
+      }
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  };
+
   React.useEffect(() => {
-    if (token && !isImpersonationModeOn) loadUser();
+    const checkImpersonation = async () => {
+      if (token && !isImpersonationModeOn) {
+        const _impersonatedEmail = localStorage.getItem('impersonatedEmail');
+        if (_impersonatedEmail === null) {
+          loadUser();
+        } else {
+          const userData = await impersonateUser(_impersonatedEmail);
+          if (userData === false) {
+            localStorage.removeItem('impersonatedEmail');
+            loadUser();
+          }
+        }
+      }
+    };
+    checkImpersonation();
   }, [token, isImpersonationModeOn]);
 
   return (

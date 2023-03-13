@@ -19,6 +19,7 @@ const ImpersonationActivated = () => {
   const exitImpersonation = () => {
     setImpersonatedEmail('');
     setIsImpersonationModeOn(false);
+    localStorage.removeItem('impersonatedEmail');
     push(`/profile/impersonate-user`);
   };
 
