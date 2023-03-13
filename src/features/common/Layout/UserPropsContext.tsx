@@ -96,6 +96,7 @@ function UserPropsProvider({ children }: any): ReactElement {
     impersonatedEmail: string
   ): Promise<User | boolean> => {
     try {
+      setContextLoaded(false);
       const res = await getAccountInfo(token, impersonatedEmail);
       const resJson = await res.json();
       if (res.status === 200) {
@@ -126,7 +127,6 @@ function UserPropsProvider({ children }: any): ReactElement {
         if (_impersonatedEmail === null) {
           loadUser();
         } else {
-          setContextLoaded(false);
           const userData = await impersonateUser(_impersonatedEmail);
           if (userData === false) {
             localStorage.removeItem('impersonatedEmail');
