@@ -138,18 +138,20 @@ export const Export = () => {
   };
 
   const handleExport = async () => {
-    const res = await fetch('/api/analytics/export', {
-      method: 'POST',
-      body: JSON.stringify({
-        projectId: project,
-        startDate: fromDate,
-        endDate: toDate,
-      }),
-    });
+    if (localProject) {
+      const res = await fetch('/api/analytics/export', {
+        method: 'POST',
+        body: JSON.stringify({
+          projectId: localProject.id,
+          startDate: fromDate,
+          endDate: toDate,
+        }),
+      });
 
-    const { data } = await res.json();
+      const { data } = await res.json();
 
-    extractDataToXlsx(data);
+      extractDataToXlsx(data);
+    }
   };
 
   const handleProjectChange = (proj: Project | null) => {
