@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'next-i18next';
-import LogoutIcon from '../../../../public/assets/images/icons/Sidebar/LogoutIcon';
-import styles from './SwitchUser.module.scss';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import LogoutIcon from '../../../../../public/assets/images/icons/Sidebar/LogoutIcon';
+import styles from './ImpersonateUser.module.scss';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
 

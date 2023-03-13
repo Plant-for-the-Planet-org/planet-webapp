@@ -13,7 +13,7 @@ import GetNavBarIcon from './getNavBarIcon';
 import GetSubMenu from './getSubMenu';
 import { lang_path } from '../../../../utils/constants/wpLanguages';
 import { ParamsContext } from '../QueryParamsContext';
-import ImpersonationActivated from '../../../user/Settings/ImpersonationActivated';
+import ImpersonationActivated from '../../../user/Settings/ImpersonateUser/ImpersonationActivated';
 
 // used to detect window resize and return the current width of the window
 const useWidth = () => {

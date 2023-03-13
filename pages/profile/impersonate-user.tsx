@@ -2,10 +2,11 @@ import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import SwitchUser from '../../src/features/user/Settings/SwitchUser';
+import ImpersonateUser from '../../src/features/user/Settings/ImpersonateUser';
 import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
 import { ReactElement, useContext } from 'react';
 import AccessDeniedLoader from '../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
+import { GetStaticPropsContext } from 'next';
 
 const ImpersonateUserPage = (): ReactElement => {
   const { user, isImpersonationModeOn } = useContext(UserPropsContext);
@@ -17,7 +18,7 @@ const ImpersonateUserPage = (): ReactElement => {
         <title>{t('me:switchUser')}</title>
       </Head>
       {user?.allowedToSwitch && !isImpersonationModeOn ? (
-        <SwitchUser />
+        <ImpersonateUser />
       ) : (
         <AccessDeniedLoader />
       )}
@@ -27,10 +28,10 @@ const ImpersonateUserPage = (): ReactElement => {
 
 export default ImpersonateUserPage;
 
-export async function getStaticProps({ locale }: any) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['me', 'common'], null, [
+      ...(await serverSideTranslations(locale || 'en', ['me', 'common'], null, [
         'en',
         'de',
         'fr',
