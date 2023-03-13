@@ -258,7 +258,7 @@ export const SpeciesPlanted = () => {
     if (project) {
       fetchPlantedSpecies();
     }
-  }, [project]);
+  }, [project, fromDate, toDate]);
 
   return (
     <>
