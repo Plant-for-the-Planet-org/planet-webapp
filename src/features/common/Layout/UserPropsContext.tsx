@@ -87,11 +87,14 @@ function UserPropsProvider({ children }: any): ReactElement {
     }
     setContextLoaded(true);
   }
-
+  /**
+   * accept email  and enter impersonation mode
+   * @param impersonatedEmail
+   * @returns false if impersonation fails and user object if successful
+   */
   const impersonateUser = async (impersonatedEmail: string) => {
     try {
       const res = await getAccountInfo(token, impersonatedEmail);
-
       const resJson = await res.json();
       if (res.status === 200) {
         setIsImpersonationModeOn(true);
@@ -111,6 +114,9 @@ function UserPropsProvider({ children }: any): ReactElement {
   };
 
   React.useEffect(() => {
+    /**
+     * show profile of user or impersonated user(if impersonation email present in local storage)
+     */
     const checkImpersonation = async () => {
       if (token && !isImpersonationModeOn) {
         const _impersonatedEmail = localStorage.getItem('impersonatedEmail');
