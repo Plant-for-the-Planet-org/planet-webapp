@@ -39,7 +39,7 @@ const dialogSx: SxProps = {
 
 export const Export = () => {
   const { t, ready } = useTranslation('treemapperAnalytics');
-  const { projectList, project } = useAnalytics();
+  const { projectList } = useAnalytics();
   const { userLang } = useContext(UserPropsContext);
 
   const [localProject, setLocalProject] = useState<Project | null>(null);
@@ -169,7 +169,7 @@ export const Export = () => {
 
       <ProjectSelectAutocomplete
         projectList={projectList || []}
-        project={project}
+        project={projectList && projectList.length > 0 ? projectList[0] : null}
         handleProjectChange={handleProjectChange}
       />
 
