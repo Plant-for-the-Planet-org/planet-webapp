@@ -17,7 +17,7 @@ import themeProperties from '../../../../../../theme/themeProperties';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { useTranslation } from 'react-i18next';
 import MaterialTextField from '../../../../../common/InputTypes/MaterialTextField';
-import { format, subMonths } from 'date-fns';
+import { format, subYears } from 'date-fns';
 import ProjectTypeSelector, { ProjectType } from '../ProjectTypeSelector';
 
 const dialogSx: SxProps = {
@@ -43,7 +43,7 @@ export const Export = () => {
   const { userLang } = useContext(UserPropsContext);
 
   const [localProject, setLocalProject] = useState<Project | null>(null);
-  const [fromDate, setFromDate] = useState<Date>(subMonths(new Date(), 1));
+  const [fromDate, setFromDate] = useState<Date>(subYears(new Date(), 1));
   const [toDate, setToDate] = useState<Date>(new Date());
   const [projectType, setProjectType] = useState<ProjectType | null>(null);
 
@@ -164,6 +164,7 @@ export const Export = () => {
 
   return ready ? (
     <div className={styles.container}>
+      <p>{t('exportData')}</p>
       <ProjectTypeSelector handleProjectTypeChange={handleProjectTypeChange} />
 
       <ProjectSelectAutocomplete
