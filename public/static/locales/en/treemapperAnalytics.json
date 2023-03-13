@@ -31,6 +31,8 @@
     "species": "Name of the species planted",
     "treeCount": "",
     "geometry": "GeoJson Co-ordinate of the polygon",
+    "type": "Type of plant location (single, multi)",
+    "treesAllocated": "",
     "treesPlanted": "Total trees in a plant location",
     "metadata": "Plant Location Metadata",
     "description": "",

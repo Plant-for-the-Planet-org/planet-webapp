@@ -69,6 +69,14 @@ export const Export = () => {
       description: t('exportColumnHeaders.geometry'),
     },
     {
+      title: 'type',
+      description: t('exportColumnHeaders.type'),
+    },
+    {
+      title: 'trees_allocated',
+      description: t('exportColumnHeaders.treesAllocated'),
+    },
+    {
       title: 'trees_planted',
       description: t('exportColumnHeaders.treesPlanted'),
     },
