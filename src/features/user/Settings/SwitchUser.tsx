@@ -24,7 +24,7 @@ const SwitchUser = (): ReactElement => {
   const { token, setUser, setIsImpersonationModeOn, setImpersonatedEmail } =
     useContext(UserPropsContext);
 
-  const handle = async (data: FormData): Promise<void> => {
+  const handleImpersonation = async (data: FormData): Promise<void> => {
     if (data.targetEmail) {
       try {
         const res = await getAccountInfo(token, data.targetEmail);
@@ -33,6 +33,7 @@ const SwitchUser = (): ReactElement => {
           setIsInvalidEmail(false);
           setIsImpersonationModeOn(true);
           setImpersonatedEmail(resJson.email);
+          localStorage.setItem('impersonatedEmail', resJson.email);
           setUser(resJson);
           push('/profile');
         } else {
@@ -51,7 +52,7 @@ const SwitchUser = (): ReactElement => {
       subtitle={t('me:switchUserMessage')}
     >
       <SwitchUserContainer>
-        <form onSubmit={handleSubmit(handle)}>
+        <form onSubmit={handleSubmit(handleImpersonation)}>
           <TextField
             inputRef={register({
               required: {

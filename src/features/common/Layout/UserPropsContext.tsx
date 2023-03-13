@@ -87,9 +87,55 @@ function UserPropsProvider({ children }: any): ReactElement {
     }
     setContextLoaded(true);
   }
+  /**
+   * Accepts email and enters impersonation mode
+   * @param impersonatedEmail
+   * @returns false if impersonation fails and user object if successful
+   */
+  const impersonateUser = async (
+    impersonatedEmail: string
+  ): Promise<User | boolean> => {
+    try {
+      const res = await getAccountInfo(token, impersonatedEmail);
+      const resJson = await res.json();
+      if (res.status === 200) {
+        setIsImpersonationModeOn(true);
+        setImpersonatedEmail(resJson.email);
+        localStorage.setItem('impersonatedEmail', resJson.email);
+        setUser(resJson);
+        setContextLoaded(true);
+        return resJson;
+      } else {
+        console.log(resJson);
+        return false;
+      }
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  };
 
   React.useEffect(() => {
-    if (token && !isImpersonationModeOn) loadUser();
+    /**
+     * 1. Load user profile if impersonation mode is off and impersonatedEmail is not set in local storage
+     * 2. Impersonate user on app reload if impersonatedEmail is set in local storage
+     */
+    const checkImpersonation = async () => {
+      if (token && !isImpersonationModeOn) {
+        const _impersonatedEmail = localStorage.getItem('impersonatedEmail');
+        if (_impersonatedEmail === null) {
+          loadUser();
+        } else {
+          setContextLoaded(false);
+          const userData = await impersonateUser(_impersonatedEmail);
+          if (userData === false) {
+            localStorage.removeItem('impersonatedEmail');
+            loadUser();
+          }
+        }
+      }
+    };
+    checkImpersonation();
   }, [token, isImpersonationModeOn]);
 
   return (
