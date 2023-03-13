@@ -1,5 +1,6 @@
 import { Grid } from '@mui/material';
 import React, { Dispatch, SetStateAction } from 'react';
+import { Export } from '../Export';
 import { SpeciesPlanted } from '../SpeciesPlanted';
 import { TreePlanted } from '../TreePlanted';
 import styles from './index.module.scss';
@@ -17,6 +18,9 @@ export const Graphs = ({ setProgress }: Props) => {
         </Grid>
         <Grid item xs={12} md={12}>
           <SpeciesPlanted />
+        </Grid>
+        <Grid item xs={12} md={12}>
+          <Export />
         </Grid>
       </Grid>
     </div>

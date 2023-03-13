@@ -1,0 +1,19 @@
+@import '../../../../../../theme/theme';
+
+.container{
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    // align-items: flex-start;
+}
+
+.datePickerContainer{
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    column-gap: 20px;
+}
+
+.buttonContainer{
+    width: 100px;
+}

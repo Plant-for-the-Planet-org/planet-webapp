@@ -27,7 +27,7 @@ const ProjectSelectAutocomplete = ({
   handleProjectChange,
 }: ProjectSelectAutocompleteProps): ReactElement | null => {
   const [localProject, setLocalProject] = useState<Project | null>(project);
-  const { t, ready } = useTranslation(['bulkCodes']);
+  const { t, ready } = useTranslation(['common']);
 
   useEffect(() => {
     setLocalProject(project);
@@ -59,7 +59,7 @@ const ProjectSelectAutocomplete = ({
         renderInput={(params) => (
           <TextField
             {...params}
-            label={t('bulkCodes:projectName')}
+            label={t('project')}
             color="primary"
           />
         )}

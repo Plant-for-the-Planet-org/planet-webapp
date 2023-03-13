@@ -239,8 +239,6 @@ export const SpeciesPlanted = () => {
 
     const { speciesPlanted, categories } = getPlotingData(speciesData);
 
-    console.log('==>', speciesPlanted, categories);
-
     setSeries([
       {
         data: speciesPlanted,

@@ -1,0 +1,227 @@
+import styles from './index.module.scss';
+import MuiButton from '../../../../../common/InputTypes/MuiButton';
+import { utils, write } from 'xlsx';
+import { saveAs } from 'file-saver';
+import ProjectSelectAutocomplete from '../ProjectSelectAutocomplete';
+import {
+  Project,
+  useAnalytics,
+} from '../../../../../common/Layout/AnalyticsContext';
+import { useContext, useState } from 'react';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { localeMapForDate } from '../../../../../../utils/language/getLanguageName';
+import { UserPropsContext } from '../../../../../common/Layout/UserPropsContext';
+import { SxProps } from '@mui/material';
+import themeProperties from '../../../../../../theme/themeProperties';
+import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { useTranslation } from 'react-i18next';
+import MaterialTextField from '../../../../../common/InputTypes/MaterialTextField';
+import { format, subMonths } from 'date-fns';
+import ProjectTypeSelector, { ProjectType } from '../ProjectTypeSelector';
+
+const dialogSx: SxProps = {
+  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
+    backgroundColor: themeProperties.primaryColor,
+    color: '#fff',
+  },
+
+  '& .MuiPickersDay-dayWithMargin': {
+    '&:hover': {
+      backgroundColor: themeProperties.primaryColor,
+      color: '#fff',
+    },
+  },
+  '.MuiDialogActions-root': {
+    paddingBottom: '12px',
+  },
+};
+
+export const Export = () => {
+  const { t, ready } = useTranslation('treemapperAnalytics');
+  const { projectList, project } = useAnalytics();
+  const { userLang } = useContext(UserPropsContext);
+
+  const [localProject, setLocalProject] = useState<Project | null>(null);
+  const [fromDate, setFromDate] = useState<Date>(subMonths(new Date(), 1));
+  const [toDate, setToDate] = useState<Date>(new Date());
+  const [projectType, setProjectType] = useState<ProjectType | null>(null);
+
+  const description = [
+    {
+      title: 'hid',
+      description: t('exportColumnHeaders.hid'),
+    },
+    {
+      title: 'plant_date',
+      description: t('exportColumnHeaders.plantDate'),
+    },
+    {
+      title: 'species',
+      description: t('exportColumnHeaders.species'),
+    },
+    {
+      title: 'tree_count',
+      description: t('exportColumnHeaders.treeCount'),
+    },
+    {
+      title: 'geometry',
+      description: t('exportColumnHeaders.geometry'),
+    },
+    {
+      title: 'trees_planted',
+      description: t('exportColumnHeaders.treesPlanted'),
+    },
+    {
+      title: 'metadata',
+      description: t('exportColumnHeaders.metadata'),
+    },
+    {
+      title: 'description',
+      description: t('exportColumnHeaders.description'),
+    },
+    {
+      title: 'plant_project_id',
+      description: t('exportColumnHeaders.plantProjectId'),
+    },
+    {
+      title: 'sample_tree_count',
+      description: t('exportColumnHeaders.sampleTreeCount'),
+    },
+    {
+      title: 'capture_status',
+      description: t('exportColumnHeaders.captureStatus'),
+    },
+    {
+      title: 'created',
+      description: t('exportColumnHeaders.createds'),
+    },
+  ];
+
+  const getSheetTitle = () => {
+    switch (projectType) {
+      case ProjectType.INTERVENTIONS:
+        return t('interventionData');
+
+      case ProjectType.MONITORING_PLOTS:
+        return t('monitoringPlotsData');
+    }
+  };
+
+  const extractDataToXlsx = (data) => {
+    const worksheet = utils.json_to_sheet(data);
+    const workbook = utils.book_new();
+
+    const descWorksheet = utils.json_to_sheet(
+      description.map((d) => ({
+        column_title: d.title,
+        description: d.description,
+      }))
+    );
+    utils.book_append_sheet(workbook, worksheet, getSheetTitle());
+    utils.book_append_sheet(workbook, descWorksheet, t('readme'));
+    const xlsxBuffer = write(workbook, {
+      bookType: 'xlsx',
+      type: 'array',
+    });
+
+    const blob = new Blob([xlsxBuffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+    saveAs(
+      blob,
+      `${localProject?.name}__${format(fromDate, 'dd-MMM-yy')}__${format(
+        toDate,
+        'dd-MMM-yy'
+      )}`
+    );
+  };
+
+  const handleExport = async () => {
+    const res = await fetch('/api/analytics/export', {
+      method: 'POST',
+      body: JSON.stringify({
+        projectId: project,
+        startDate: fromDate,
+        endDate: toDate,
+      }),
+    });
+
+    const { data } = await res.json();
+
+    extractDataToXlsx(data);
+  };
+
+  const handleProjectChange = (proj: Project | null) => {
+    setLocalProject(proj);
+  };
+
+  const handleProjectTypeChange = (projType: ProjectType | null) => {
+    setProjectType(projType);
+  };
+
+  return ready ? (
+    <div className={styles.container}>
+      <ProjectTypeSelector handleProjectTypeChange={handleProjectTypeChange} />
+
+      <ProjectSelectAutocomplete
+        projectList={projectList || []}
+        project={project}
+        handleProjectChange={handleProjectChange}
+      />
+
+      <div className={styles.datePickerContainer}>
+        <LocalizationProvider
+          dateAdapter={AdapterDateFns}
+          locale={
+            localeMapForDate[userLang]
+              ? localeMapForDate[userLang]
+              : localeMapForDate['en']
+          }
+        >
+          <MuiDatePicker
+            label={t('treemapperAnalytics:from')}
+            value={fromDate}
+            onChange={setFromDate}
+            renderInput={(props) => (
+              <MaterialTextField variant="outlined" {...props} />
+            )}
+            inputFormat="MMMM d, yyyy"
+            maxDate={new Date()}
+            DialogProps={{
+              sx: dialogSx,
+            }}
+          />
+        </LocalizationProvider>
+        <LocalizationProvider
+          dateAdapter={AdapterDateFns}
+          locale={
+            localeMapForDate[userLang]
+              ? localeMapForDate[userLang]
+              : localeMapForDate['en']
+          }
+        >
+          <MuiDatePicker
+            label={t('treemapperAnalytics:from')}
+            value={toDate}
+            onChange={setToDate}
+            renderInput={(props) => (
+              <MaterialTextField variant="outlined" {...props} />
+            )}
+            inputFormat="MMMM d, yyyy"
+            maxDate={new Date()}
+            DialogProps={{
+              sx: dialogSx,
+            }}
+          />
+        </LocalizationProvider>
+      </div>
+
+      <div className={styles.buttonContainer}>
+        <MuiButton fullWidth variant="contained" onClick={handleExport}>
+          {t('export')}
+        </MuiButton>
+      </div>
+    </div>
+  ) : null;
+};

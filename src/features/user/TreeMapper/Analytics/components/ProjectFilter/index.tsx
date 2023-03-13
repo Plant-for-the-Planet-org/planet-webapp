@@ -81,7 +81,7 @@ const ProjectFilter = ({ setProgress }: Props) => {
       <Grid item xs={12} md={6}>
         <ProjectSelectAutocomplete
           projectList={projectList || []}
-          project={project ? project : null}
+          project={project}
           handleProjectChange={handleProjectChange}
         />
       </Grid>

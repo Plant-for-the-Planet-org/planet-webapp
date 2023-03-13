@@ -10,6 +10,8 @@
   "treesPlanted": "Trees Planted",
   "speciesPlanted": "Species Planted",
   "calenderWeek": "CW",
+  "project": "Project",
+  "export": "Export",
   "jan": "Jan",
   "feb": "Feb",
   "mar": "Mar",
@@ -21,5 +23,22 @@
   "sep": "Sep",
   "oct": "Oct",
   "nov": "Nov",
-  "dec": "Dec"
+  "dec": "Dec",
+  "exportColumnHeaders": {
+    "hid": "Human Readable ID for a plant location",
+    "plantDate": "Planted Date",
+    "species": "Name of the species planted",
+    "treeCount": "",
+    "geometry": "GeoJson Co-ordinate of the polygon",
+    "treesPlanted": "Total trees in a plant location",
+    "metadata": "Plant Location Metadata",
+    "description": "",
+    "plantProjectId": "Backend ID of the project that the plant location is a part of",
+    "sampleTreeCount": "Count of sample trees present on the plant location",
+    "captureStatus": "Capture Status of the plant location.",
+    "created": "Creation Timestamp"
+  },
+  "readme": "READ ME",
+  "interventionData": "Intervention Data",
+  "monitoringPlotsData": "Monitoring Plots Data"
 }
