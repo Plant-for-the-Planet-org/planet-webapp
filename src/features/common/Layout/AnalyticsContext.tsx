@@ -7,7 +7,7 @@ import {
   useEffect,
   useRef,
 } from 'react';
-import { differenceInDays } from 'date-fns';
+import { differenceInDays, subYears } from 'date-fns';
 
 import { SetState } from '../types/common';
 
@@ -66,8 +66,8 @@ const AnalyticsContext = createContext<AnalyticsContextInterface | null>(null);
 export const AnalyticsProvider: FC = ({ children }) => {
   const [projectList, setProjectList] = useState<Project[] | null>(null);
   const [project, setProject] = useState<Project | null>(null);
-  const [fromDate, setFromDate] = useState<Date>(new Date('2022-01-01'));
-  const [toDate, setToDate] = useState<Date>(new Date('2023-01-01'));
+  const [fromDate, setFromDate] = useState<Date>(subYears(new Date(), 1));
+  const [toDate, setToDate] = useState<Date>(new Date());
 
   const [timeFrames, setTimeFrames] = useState<TIME_FRAMES[]>(
     getTimeFrames(toDate, fromDate)
