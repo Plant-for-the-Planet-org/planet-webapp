@@ -1,12 +1,21 @@
 import mysql from 'serverless-mysql';
+import { ConnectionString } from 'connection-string';
+
+const { user, password, path, hosts } = new ConnectionString(
+  process.env.DB_CONN_URL
+);
+
+const database = path && path[0];
+const port = hosts && hosts[0].port;
+const host = hosts && hosts[0].name;
 
 const db = mysql({
   config: {
-    host: process.env.MYSQL_HOST,
-    port: process.env.MYSQL_PORT ? parseInt(process.env.MYSQL_PORT) : undefined,
-    database: process.env.MYSQL_DATABASE,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
+    host,
+    port,
+    database,
+    user,
+    password,
   },
 });
 
