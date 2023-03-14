@@ -1,26 +1,3 @@
-export interface PaymentDetails {
-  donorName: string;
-  quantity: number;
-  method: string;
-  created: Date;
-  unitCost: number;
-  lastUpdate: Date;
-  project: string;
-  paidAmount: number;
-  refundAmount?: number;
-  donorCertificate?: string;
-  taxDeductibleReceipt?: string;
-  giftCertificate?: string;
-  account?: BankAccount;
-  paymentDate?: Date;
-  totalAmount?: number;
-  fees?: Fees;
-  recipientBank?: RecipientBank;
-  codesUrl?: string;
-  giftOccasion?: string;
-  giftComment?: string;
-}
-
 export interface Fees {
   disputeFee: number;
   planetFee: number;
@@ -48,20 +25,27 @@ export interface RecipientBank {
   updated?: Date;
 }
 
-export interface PaymentHistoryRecord {
+export interface PaymentDetails {
+  donorName: string;
   quantity: number;
-  bouquetPurpose?: string;
-  netAmount: number;
-  purpose: string;
+  method: string;
   created: Date;
-  treeCount: number;
-  type: string;
-  reference: string;
+  unitCost: number;
   lastUpdate: Date;
-  projectGuid: string;
-  currency: string;
-  details: PaymentDetails;
-  status: string;
+  project: string;
+  paidAmount: number;
+  refundAmount?: number;
+  donorCertificate?: string;
+  taxDeductibleReceipt?: string;
+  giftCertificate?: string;
+  account?: BankAccount;
+  paymentDate?: Date;
+  totalAmount?: number;
+  fees?: Fees;
+  recipientBank?: RecipientBank;
+  codesUrl?: string;
+  giftOccasion?: string;
+  giftComment?: string;
 }
 
 export interface Links {
@@ -85,14 +69,6 @@ export interface Filters {
   'action-required': string;
 }
 
-export interface PaymentHistory {
-  items: PaymentHistoryRecord[];
-  total: number;
-  count: number;
-  _links: Links;
-  _filters: Filters;
-}
-
 export interface Destination {
   id: string;
   name?: string;
@@ -102,6 +78,30 @@ export interface Destination {
 export interface FirstDonation {
   created: Date;
   reference: string;
+}
+
+export interface PaymentHistoryRecord {
+  quantity: number;
+  bouquetPurpose?: string;
+  netAmount: number;
+  purpose: string;
+  created: Date;
+  treeCount: number;
+  type: string;
+  reference: string;
+  lastUpdate: Date;
+  projectGuid: string;
+  currency: string;
+  details: PaymentDetails;
+  status: string;
+}
+
+export interface PaymentHistory {
+  items: PaymentHistoryRecord[];
+  total: number;
+  count: number;
+  _links: Links;
+  _filters: Filters;
 }
 
 export interface Subscription {
