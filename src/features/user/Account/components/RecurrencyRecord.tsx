@@ -8,89 +8,6 @@ import themeProperties from '../../../../theme/themeProperties';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
 import { Subscription } from '../../../common/types/payments';
 
-interface CommonProps {
-  handleRecordToggle: (index: number | undefined) => void;
-  selectedRecord: number | null;
-  record: Subscription;
-  recurrencies: Subscription[];
-  seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
-  setpauseDonation: React.Dispatch<React.SetStateAction<boolean>>;
-  setcancelDonation: React.Dispatch<React.SetStateAction<boolean>>;
-  setreactivateDonation: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-interface ModalProps extends CommonProps {
-  index?: undefined;
-  isModal: true;
-}
-
-interface ListItemProps extends CommonProps {
-  index: number;
-  isModal?: false;
-}
-
-type Props = ModalProps | ListItemProps;
-
-export default function RecurrencyRecord({
-  isModal = false,
-  index = undefined,
-  handleRecordToggle,
-  selectedRecord,
-  record,
-  seteditDonation,
-  setpauseDonation,
-  setcancelDonation,
-  setreactivateDonation,
-}: Props): ReactElement {
-  const outerDivClasses = isModal
-    ? styles.recordModal
-    : `${styles.record} ${selectedRecord === index ? styles.selected : ''}`;
-
-  return (
-    <div className={outerDivClasses}>
-      {isModal && (
-        <div
-          onClick={() => {
-            handleRecordToggle(index);
-          }}
-          className={styles.closeRecord}
-        >
-          <BackButton />
-        </div>
-      )}
-      {(!isModal || (isModal && selectedRecord !== null)) && (
-        <>
-          <RecordHeader
-            record={record}
-            handleRecordToggle={handleRecordToggle}
-            index={index}
-          />
-          {(isModal || index === selectedRecord) && (
-            <div className={styles.divider} />
-          )}
-          <div className={styles.detailContainer}>
-            <div className={styles.detailGrid}>
-              <DetailsComponent record={record} />
-            </div>
-            {record.method === 'offline' && record.bankAccount && (
-              <TransferDetails account={record.bankAccount} />
-            )}
-            {record.status !== 'incomplete' && (
-              <ManageDonation
-                record={record}
-                seteditDonation={seteditDonation}
-                setpauseDonation={setpauseDonation}
-                setcancelDonation={setcancelDonation}
-                setreactivateDonation={setreactivateDonation}
-              />
-            )}
-          </div>
-        </>
-      )}
-    </div>
-  );
-}
-
 interface HeaderProps {
   record: Subscription;
   handleRecordToggle?: (index: number | undefined) => void;
@@ -261,6 +178,17 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
   );
 }
 
+interface CommonProps {
+  handleRecordToggle: (index: number | undefined) => void;
+  selectedRecord: number | null;
+  record: Subscription;
+  recurrencies: Subscription[];
+  seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
+  setpauseDonation: React.Dispatch<React.SetStateAction<boolean>>;
+  setcancelDonation: React.Dispatch<React.SetStateAction<boolean>>;
+  setreactivateDonation: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 interface ManageDonationProps {
   record: Subscription;
   seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
@@ -337,6 +265,78 @@ export function ManageDonation({
         </button>
       ) : (
         []
+      )}
+    </div>
+  );
+}
+
+interface ModalProps extends CommonProps {
+  index?: undefined;
+  isModal: true;
+}
+
+interface ListItemProps extends CommonProps {
+  index: number;
+  isModal?: false;
+}
+
+type Props = ModalProps | ListItemProps;
+
+export default function RecurrencyRecord({
+  isModal = false,
+  index = undefined,
+  handleRecordToggle,
+  selectedRecord,
+  record,
+  seteditDonation,
+  setpauseDonation,
+  setcancelDonation,
+  setreactivateDonation,
+}: Props): ReactElement {
+  const outerDivClasses = isModal
+    ? styles.recordModal
+    : `${styles.record} ${selectedRecord === index ? styles.selected : ''}`;
+
+  return (
+    <div className={outerDivClasses}>
+      {isModal && (
+        <div
+          onClick={() => {
+            handleRecordToggle(index);
+          }}
+          className={styles.closeRecord}
+        >
+          <BackButton />
+        </div>
+      )}
+      {(!isModal || (isModal && selectedRecord !== null)) && (
+        <>
+          <RecordHeader
+            record={record}
+            handleRecordToggle={handleRecordToggle}
+            index={index}
+          />
+          {(isModal || index === selectedRecord) && (
+            <div className={styles.divider} />
+          )}
+          <div className={styles.detailContainer}>
+            <div className={styles.detailGrid}>
+              <DetailsComponent record={record} />
+            </div>
+            {record.method === 'offline' && record.bankAccount && (
+              <TransferDetails account={record.bankAccount} />
+            )}
+            {record.status !== 'incomplete' && (
+              <ManageDonation
+                record={record}
+                seteditDonation={seteditDonation}
+                setpauseDonation={setpauseDonation}
+                setcancelDonation={setcancelDonation}
+                setreactivateDonation={setreactivateDonation}
+              />
+            )}
+          </div>
+        </>
       )}
     </div>
   );
