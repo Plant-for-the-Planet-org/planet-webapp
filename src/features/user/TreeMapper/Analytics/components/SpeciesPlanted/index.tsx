@@ -125,6 +125,7 @@ export const SpeciesPlanted = () => {
         style: {
           cssClass: styles.italics,
         },
+        trim: true,
       },
       categories: [],
       position: 'bottom',
