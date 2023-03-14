@@ -280,7 +280,8 @@ export function ManageDonation({
 
   const showPause =
     (record?.status === 'active' || record?.status === 'trialing') &&
-    !record?.endsAt;
+    !record?.endsAt &&
+    record.paymentGateway !== 'offline';
   const showEdit =
     (record?.status === 'active' || record?.status === 'trialing') &&
     record?.endsAt === null;
