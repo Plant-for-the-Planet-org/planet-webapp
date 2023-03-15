@@ -9,7 +9,7 @@
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: bold;
 
   .exitImpersoantionContainer {
@@ -31,33 +31,4 @@
   margin-top: 6px;
   max-width: 208px;
   text-align: center;
-}
-
-@include xsPhoneView {
-  .impersonatingText {
-    position: relative;
-    top: 7px;
-    right: 70px;
-  }
-  .exit {
-    position: relative;
-    top: -30px;
-  }
-  .logoutContainer {
-    position: relative;
-    right: 72px;
-  }
-  .impersonatingEmail {
-    position: relative;
-    top: 8px;
-    margin-bottom: 18px;
-  }
-  .exitImpersoantionContainer {
-    flex-direction: column;
-    align-items: center;
-  }
-  .exitIcon{
-    position: relative;
-    top:10px
-  }
 }
