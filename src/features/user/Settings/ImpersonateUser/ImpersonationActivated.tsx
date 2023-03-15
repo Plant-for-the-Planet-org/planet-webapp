@@ -27,8 +27,10 @@ const ImpersonationActivated = () => {
 
   return isImpersonationModeOn ? (
     <div className={styles.impersonationAlertContainer}>
-      <div className={styles.impersonatingText}>{t('me:targetUser')}</div>
-      <div>{`<${user.email}>`}</div>
+      <div className={styles.impersonatingText}>
+        {t('me:targetUser', { impersonatedEmail: `<${user.email}>` })}
+      </div>
+
       <div
         onClick={exitImpersonation}
         className={styles.exitImpersoantionContainer}
