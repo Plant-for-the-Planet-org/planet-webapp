@@ -21,7 +21,6 @@ import Overview from './screens/Overview';
 import EditBankAccount from './screens/EditBankAccount';
 import AddBankAccount from './screens/AddBankAccount';
 import { useRouter } from 'next/router';
-import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
 export enum ManagePayoutTabs {
   OVERVIEW = 'overview',
