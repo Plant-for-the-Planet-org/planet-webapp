@@ -12,7 +12,6 @@ import { User } from '../../../common/types/user';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 import { PaymentFrequencies } from '../../../../utils/constants/payoutConstants';
-import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 const paymentFrequencies = [
   PaymentFrequencies.MANUAL,

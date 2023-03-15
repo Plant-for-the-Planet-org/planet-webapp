@@ -12,7 +12,6 @@ import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
-import { ParamsContext } from '../../../src/features/common/Layout/QueryParamsContext';
 
 interface Props {}
 
