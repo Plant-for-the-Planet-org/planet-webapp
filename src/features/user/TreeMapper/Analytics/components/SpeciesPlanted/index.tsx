@@ -254,7 +254,7 @@ export const SpeciesPlanted = () => {
   };
 
   useEffect(() => {
-    if (process.env.ENABLE_ANALYTIC && project) {
+    if (process.env.ENABLE_ANALYTICS && project) {
       fetchPlantedSpecies();
     }
   }, [project, fromDate, toDate]);

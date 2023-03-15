@@ -7,7 +7,7 @@ import {
   Project,
   useAnalytics,
 } from '../../../../../common/Layout/AnalyticsContext';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { localeMapForDate } from '../../../../../../utils/language/getLanguageName';
@@ -39,13 +39,21 @@ const dialogSx: SxProps = {
 
 export const Export = () => {
   const { t, ready } = useTranslation('treemapperAnalytics');
-  const { projectList } = useAnalytics();
+  const { projectList, project, fromDate, toDate } = useAnalytics();
   const { userLang } = useContext(UserPropsContext);
 
   const [localProject, setLocalProject] = useState<Project | null>(null);
-  const [fromDate, setFromDate] = useState<Date>(subYears(new Date(), 1));
-  const [toDate, setToDate] = useState<Date>(new Date());
+  const [localFromDate, setLocalFromDate] = useState<Date>(fromDate);
+  const [localToDate, setLocalToDate] = useState<Date>(toDate);
   const [projectType, setProjectType] = useState<ProjectType | null>(null);
+
+  useEffect(() => {
+    setLocalFromDate(fromDate);
+  }, [fromDate]);
+
+  useEffect(() => {
+    setLocalToDate(toDate);
+  }, [toDate]);
 
   const description = [
     {
@@ -138,8 +146,8 @@ export const Export = () => {
     });
     saveAs(
       blob,
-      `${localProject?.name}__${format(fromDate, 'dd-MMM-yy')}__${format(
-        toDate,
+      `${localProject?.name}__${format(localFromDate, 'dd-MMM-yy')}__${format(
+        localToDate,
         'dd-MMM-yy'
       )}`
     );
@@ -151,8 +159,8 @@ export const Export = () => {
         method: 'POST',
         body: JSON.stringify({
           projectId: localProject.id,
-          startDate: fromDate,
-          endDate: toDate,
+          startDate: localFromDate,
+          endDate: localToDate,
         }),
       });
 
@@ -177,7 +185,7 @@ export const Export = () => {
 
       <ProjectSelectAutocomplete
         projectList={projectList || []}
-        project={projectList && projectList.length > 0 ? projectList[0] : null}
+        project={project}
         handleProjectChange={handleProjectChange}
       />
 
@@ -192,8 +200,8 @@ export const Export = () => {
         >
           <MuiDatePicker
             label={t('treemapperAnalytics:from')}
-            value={fromDate}
-            onChange={setFromDate}
+            value={localFromDate}
+            onChange={setLocalFromDate}
             renderInput={(props) => (
               <MaterialTextField variant="outlined" {...props} />
             )}
@@ -214,8 +222,8 @@ export const Export = () => {
         >
           <MuiDatePicker
             label={t('treemapperAnalytics:from')}
-            value={toDate}
-            onChange={setToDate}
+            value={localToDate}
+            onChange={setLocalToDate}
             renderInput={(props) => (
               <MaterialTextField variant="outlined" {...props} />
             )}
