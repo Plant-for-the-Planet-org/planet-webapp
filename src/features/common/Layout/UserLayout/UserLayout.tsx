@@ -293,6 +293,7 @@ function UserLayout(props: any): ReactElement {
         {
           title: t('me:analytics'),
           path: '/profile/treemapper/analytics',
+          hideItem: !process.env.ENABLE_ANALYTICS,
         },
       ],
     },

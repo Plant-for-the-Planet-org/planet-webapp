@@ -406,7 +406,7 @@ export const TreePlanted = () => {
     const isValidTimeFrame = getTimeFrames(toDate, fromDate).includes(
       timeFrame!
     );
-    if (isValidTimeFrame && project) {
+    if (process.env.ENABLE_ANALYTIC && isValidTimeFrame && project) {
       fetchPlantedTrees();
     }
   }, [project, fromDate, toDate, timeFrame]);

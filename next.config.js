@@ -19,6 +19,7 @@ const {
   SOURCE_VERSION,
   COMMIT_REF,
   SITE_IMAGERY_API_URL,
+  DB_CONN_URL
 } = process.env;
 
 // allow source map uploads from Vercel, Heroku and Netlify deployments
@@ -119,6 +120,7 @@ const nextConfig = {
     SITE_IMAGERY_API_URL: SITE_IMAGERY_API_URL,
     WIDGET_URL: process.env.WIDGET_URL,
     CONFIG_URL: process.env.CONFIG_URL,
+    ENABLE_ANALYTICS: DB_CONN_URL
   },
   trailingSlash: false,
   reactStrictMode: true,
