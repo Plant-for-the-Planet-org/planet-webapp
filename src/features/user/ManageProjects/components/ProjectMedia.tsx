@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import styles from '../StepForm.module.scss';
-import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
+import { TextField, Button } from '@mui/material';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import {
   deleteAuthenticatedRequest,
@@ -15,6 +15,7 @@ import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
+import { ProjectCreationFormContainer } from '.';
 
 interface Props {
   handleNext: Function;
@@ -266,7 +267,7 @@ export default function ProjectMedia({
     });
   };
   return ready ? (
-    <div className={styles.stepContainer}>
+    <ProjectCreationFormContainer>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -279,7 +280,7 @@ export default function ProjectMedia({
             ) : null}
           </div> */}
           <div className={styles.formFieldLarge}>
-            <MaterialTextField
+            <TextField
               inputRef={register({
                 pattern: {
                   value:
@@ -293,13 +294,10 @@ export default function ProjectMedia({
               onChange={(e) => setYoutubeURL(e.target.value)}
               defaultValue={youtubeURL}
               value={youtubeURL}
+              error={errors.youtubeURL}
+              helperText={errors.youtubeURL && errors.youtubeURL.message}
             />
           </div>
-          {errors.youtubeURL && (
-            <span className={styles.formErrors}>
-              {errors.youtubeURL.message}
-            </span>
-          )}
 
           {/* Change to field array of react hook form  */}
           {uploadedImages && uploadedImages.length > 0 ? (
@@ -352,10 +350,10 @@ export default function ProjectMedia({
 
           <div className={styles.formFieldLarge} {...getRootProps()}>
             <label htmlFor="upload" className={styles.fileUploadContainer}>
-              <div className="primaryButton" style={{ maxWidth: '240px' }}>
+              <Button variant="contained">
                 <input {...getInputProps()} />
                 {t('manageProjects:uploadPhotos')}
-              </div>
+              </Button>
               <p style={{ marginTop: '18px' }}>{t('manageProjects:dragIn')}</p>
             </label>
 
@@ -368,47 +366,39 @@ export default function ProjectMedia({
             <h4 className={styles.errorMessage}>{errorMessage}</h4>
           </div>
         ) : null}
+        <div className={styles.buttonsForProjectCreationForm}>
+          <Button
+            variant="outlined"
+            onClick={() => handleBack()}
+            className={styles.backButton}
+          >
+            <BackArrow />
+            <p>{t('manageProjects:backToBasic')}</p>
+          </Button>
 
-        <div className={(styles.formField, styles.mediaButtons)}>
-          <div className={`${styles.formFieldHalf}`}>
-            <button
-              onClick={handleBack}
-              className="secondaryButton"
-              style={{ width: '234px', height: '46px' }}
-            >
-              <BackArrow />
-              <p>{t('manageProjects:backToBasic')}</p>
-            </button>
-          </div>
-          <div style={{ width: '20px' }} />
-          <div className={`${styles.formFieldHalf}`}>
-            <button
-              id={'SaveAndCont'}
-              onClick={handleSubmit(onSubmit)}
-              className="primaryButton"
-              style={{ width: '169px', height: '46px', marginRight: '20px' }}
-              data-test-id="projMediaCont"
-            >
-              {isUploadingData ? (
-                <div className={styles.spinner}></div>
-              ) : (
-                t('manageProjects:saveAndContinue')
-              )}
-            </button>
-          </div>
-
-          <div className={`${styles.formFieldHalf}`}>
-            <button
-              className="primaryButton"
-              style={{ width: '89px' }}
-              onClick={handleNext}
-            >
-              {t('manageProjects:skip')}
-            </button>
-          </div>
+          <Button
+            id={'SaveAndCont'}
+            onClick={handleSubmit(onSubmit)}
+            data-test-id="projMediaCont"
+            variant="contained"
+            className={styles.saveAndContinueButton}
+          >
+            {isUploadingData ? (
+              <div className={styles.spinner}></div>
+            ) : (
+              t('manageProjects:saveAndContinue')
+            )}
+          </Button>
+          <Button
+            onClick={() => handleNext()}
+            variant="contained"
+            className={styles.skipButton}
+          >
+            {t('manageProjects:skip')}
+          </Button>
         </div>
       </form>
-    </div>
+    </ProjectCreationFormContainer>
   ) : (
     <></>
   );

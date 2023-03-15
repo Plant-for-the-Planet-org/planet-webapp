@@ -17,10 +17,11 @@ import {
 } from '../../../../utils/apiRequests/api';
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
 import { makeStyles } from '@mui/styles';
-import { Fade, Modal, MenuItem } from '@mui/material';
+import { Fade, Modal, MenuItem, Button, TextField } from '@mui/material';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { ProjectCreationFormContainer } from '.';
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
@@ -327,7 +328,7 @@ export default function ProjectSites({
   };
 
   return ready ? (
-    <div className={styles.stepContainer}>
+    <ProjectCreationFormContainer>
       {editMode && <EditSite {...EditProps} />}
 
       <form
@@ -431,7 +432,7 @@ export default function ProjectSites({
           <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
             <div className={styles.formField}>
               <div className={styles.formFieldHalf} data-test-id="siteName">
-                <MaterialTextField
+                <TextField
                   inputRef={register({
                     required: {
                       value: true,
@@ -443,18 +444,15 @@ export default function ProjectSites({
                   name="name"
                   onChange={changeSiteDetails}
                   defaultValue={siteDetails.name}
+                  error={errors.name}
+                  helperText={errors.name && errors.name.message}
                 />
-                {errors.name && (
-                  <span className={styles.formErrors}>
-                    {errors.name.message}
-                  </span>
-                )}
               </div>
               <div style={{ width: '20px' }}></div>
               <div className={styles.formFieldHalf} data-test-id="siteStatus">
                 <Controller
                   as={
-                    <MaterialTextField
+                    <TextField
                       label={t('manageProjects:siteStatus')}
                       variant="outlined"
                       name="status"
@@ -474,7 +472,7 @@ export default function ProjectSites({
                           {option.label}
                         </MenuItem>
                       ))}
-                    </MaterialTextField>
+                    </TextField>
                   }
                   name="status"
                   rules={{
@@ -482,12 +480,9 @@ export default function ProjectSites({
                   }}
                   control={control}
                   defaultValue={siteDetails.status ? siteDetails.status : ''}
+                  error={errors.status}
+                  helperText={errors.status && errors.status.message}
                 />
-                {errors.status && (
-                  <span className={styles.formErrors}>
-                    {errors.status.message}
-                  </span>
-                )}
               </div>
             </div>
 
@@ -528,40 +523,38 @@ export default function ProjectSites({
           </div>
         ) : null}
 
-        <div className={styles.formField} style={{ marginTop: '10px' }}>
-          <div className={`${styles.formFieldHalf}`}>
-            <button onClick={handleBack} className="secondaryButton">
-              <BackArrow />
-              <p>{t('manageProjects:backToAnalysis')}</p>
-            </button>
-          </div>
-          <div style={{ width: '20px' }}></div>
-          <div className={`${styles.formFieldHalf}`}>
-            <button
-              onClick={handleSubmit(uploadProjectSiteNext)}
-              className="primaryButton"
-              style={{ width: '169px' }}
-              data-test-id="projSitesCont"
-            >
-              {isUploadingData ? (
-                <div className={styles.spinner}></div>
-              ) : (
-                t('manageProjects:saveAndContinue')
-              )}
-            </button>
-          </div>
-          <div className={styles.formFieldHalf}>
-            <button
-              onClick={handleNext}
-              className="primaryButton"
-              style={{ width: '89px', marginRight: '40px', marginLeft: '12px' }}
-            >
-              {t('manageProjects:skip')}
-            </button>
-          </div>
+        <div className={styles.buttonsForProjectCreationForm}>
+          <Button
+            onClick={() => handleBack()}
+            variant="outlined"
+            className={styles.backButton}
+          >
+            <BackArrow />
+            <p>{t('manageProjects:backToAnalysis')}</p>
+          </Button>
+
+          <Button
+            onClick={handleSubmit(uploadProjectSiteNext)}
+            variant="contained"
+            className={styles.saveAndContinueButton}
+          >
+            {isUploadingData ? (
+              <div className={styles.spinner}></div>
+            ) : (
+              t('manageProjects:saveAndContinue')
+            )}
+          </Button>
+
+          <Button
+            onClick={() => handleNext()}
+            variant="contained"
+            className={styles.skipButton}
+          >
+            {t('manageProjects:skip')}
+          </Button>
         </div>
       </form>
-    </div>
+    </ProjectCreationFormContainer>
   ) : (
     <></>
   );
@@ -713,7 +706,7 @@ function EditSite({
           <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
             <div className={styles.formField}>
               <div className={styles.formFieldHalf}>
-                <MaterialTextField
+                <TextField
                   inputRef={register({ required: true })}
                   label={t('manageProjects:siteName')}
                   variant="outlined"
@@ -725,7 +718,7 @@ function EditSite({
               <div className={styles.formFieldHalf}>
                 <Controller
                   as={
-                    <MaterialTextField
+                    <TextField
                       label={t('manageProjects:siteStatus')}
                       variant="outlined"
                       name="status"
@@ -745,18 +738,15 @@ function EditSite({
                           {option.label}
                         </MenuItem>
                       ))}
-                    </MaterialTextField>
+                    </TextField>
                   }
                   name="status"
                   rules={{ required: t('manageProjects:selectProjectStatus') }}
                   control={control}
                   defaultValue={siteDetails.status ? siteDetails.status : ''}
+                  error={errors.status}
+                  helperText={errors.status && errors.status.message}
                 />
-                {errors.status && (
-                  <span className={styles.formErrors}>
-                    {errors.status.message}
-                  </span>
-                )}
               </div>
             </div>
 
@@ -769,31 +759,25 @@ function EditSite({
             </div>
           ) : null}
 
-          <div className={styles.formField}>
-            <div className={`${styles.formFieldHalf}`}>
-              <button
-                onClick={handleModalClose}
-                className="secondaryButton"
-                style={{ width: '234px' }}
-              >
-                <BackArrow />
-                <p>{t('manageProjects:backToSites')}</p>
-              </button>
-            </div>
-            <div style={{ width: '20px' }}></div>
-            <div className={`${styles.formFieldHalf}`}>
-              <button
-                onClick={handleSubmit(editProjectSite)}
-                className="primaryButton"
-                style={{ minWidth: '240px' }}
-              >
-                {isUploadingData ? (
-                  <div className={styles.spinner}></div>
-                ) : (
-                  t('manageProjects:saveSite')
-                )}
-              </button>
-            </div>
+          <div className={styles.buttonsForProjectCreationForm}>
+            <Button
+              onClick={() => handleModalClose()}
+              className={styles.backButton}
+            >
+              <BackArrow />
+              <p>{t('manageProjects:backToSites')}</p>
+            </Button>
+
+            <Button
+              onClick={handleSubmit(editProjectSite)}
+              className={styles.saveAndContinueButton}
+            >
+              {isUploadingData ? (
+                <div className={styles.spinner}></div>
+              ) : (
+                t('manageProjects:saveSite')
+              )}
+            </Button>
           </div>
         </form>
       </Fade>

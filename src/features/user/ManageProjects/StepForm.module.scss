@@ -19,7 +19,7 @@
   background-color: $backgroundBase;
   color: $primaryFontColor;
   @include xsPhoneView {
-    margin-left: -15px;
+    margin-left: 11px;
     margin-top: 5px;
   }
   @include smTabletView {
@@ -31,7 +31,7 @@
     margin-top: 5px;
   }
   @include lgLaptopView {
-    margin-top: -60px;
+    margin-top: -15px;
     margin-left: 40px;
   }
 }
@@ -109,9 +109,9 @@
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-}
+  justify-content: center
+  }
 .formField {
   display: flex;
   flex-direction: row;
@@ -120,28 +120,6 @@
   justify-content: space-between;
   align-items: center;
  }
-
-
-.skipBasicButton {
-  width: 89px;
-  padding: 15px, 30px, 15px, 30px;
-  margin-left: 10px;
-  margin-top: 0px;
-  @include xsPhoneView {
-    margin-top: 10px;
-  }
-}
-
-.skipDetailAnalysis {
-  width: 89px;
-  margin-right: 45px;
-}
-
-.saveAndContinueDetailAnalysis {
-  width:169px;
-  height: 46px;
-  margin-right: 20px;
-}
 
 .reviewButtons {
   display: flex;
@@ -156,27 +134,6 @@
     flex-direction: row;
   }
 }
-
-.basicDetailButton {
-  display: flex;
-  @include xsPhoneView {
-    flex-direction: column;
-  }
-}
-
-.mediaButtons {
-  display: flex;
-  @include xsPhoneView {
-    flex-direction: column;
-  }
-  @include smTabletView {
-    flex-direction: column;
-  }
-  @include mdTabletView {
-    flex-direction: row;
-  }
-}
-
 .formFieldHalf {
   margin-top: 24px;
   display: flex;
@@ -808,4 +765,46 @@
 
 :export {
   primaryFontColor: $primaryFontColor;
+}
+
+// button for projectCreation
+.buttonsForProjectCreationForm {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 18px;
+  margin-top: 20px;
+  .MuiButton-root {
+    height: 50px;
+  }
+  .reviewButton {
+    height: 50px;
+  }
+  .skipButton{
+    margin-left: 10px;
+    margin-top: 0px;
+    @include xsPhoneView {
+      width: 100px;
+      margin-top: 10px
+    }
+  }
+  .saveAndContinueButton {
+    margin-left: 10px;
+    @include xsPhoneView {
+      margin-top: 10px
+    }
+  }
+  .backButton {
+    margin-top: 0px;
+    @include xsPhoneView {
+      margin-top: 10px
+    }
+  }
+}
+
+@include xsPhoneView {
+.buttonsForProjectCreationForm {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 }

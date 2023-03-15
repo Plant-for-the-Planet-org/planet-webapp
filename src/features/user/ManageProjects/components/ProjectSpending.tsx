@@ -1,6 +1,5 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement } from 'react';
 import styles from './../StepForm.module.scss';
-import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
@@ -18,8 +17,9 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { SxProps } from '@mui/material';
+import { SxProps, Button, TextField } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
+import { ProjectCreationFormContainer } from '.';
 
 const yearDialogSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
@@ -194,7 +194,7 @@ export default function ProjectSpending({
   const fiveYearsAgo = new Date();
   fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
   return ready ? (
-    <div className={styles.stepContainer}>
+    <ProjectCreationFormContainer>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -259,9 +259,7 @@ export default function ProjectSpending({
                         value={properties.value}
                         onChange={properties.onChange}
                         label={t('manageProjects:spendingYear')}
-                        renderInput={(props) => (
-                          <MaterialTextField {...props} />
-                        )}
+                        renderInput={(props) => <TextField {...props} />}
                         disableFuture
                         minDate={fiveYearsAgo}
                         maxDate={new Date()}
@@ -283,7 +281,7 @@ export default function ProjectSpending({
               </div>
               <div style={{ width: '20px' }}></div>
               <div className={`${styles.formFieldHalf}`}>
-                <MaterialTextField
+                <TextField
                   inputRef={register({
                     validate: (value) => parseInt(value) > 0,
                     required: {
@@ -292,7 +290,7 @@ export default function ProjectSpending({
                     },
                   })}
                   label={t('manageProjects:spendingAmount')}
-                  placeholder={0}
+                  placeholder="0"
                   type="number"
                   onBlur={(e) => e.preventDefault()}
                   variant="outlined"
@@ -308,21 +306,18 @@ export default function ProjectSpending({
                       >{`€`}</p>
                     ),
                   }}
+                  error={errors.amount}
+                  helperText={errors.amount && errors.amount.message}
                 />
-                {errors.amount && (
-                  <span className={styles.formErrors}>
-                    {errors.amount.message}
-                  </span>
-                )}
               </div>
             </div>
 
             {errors.amount || errors.year || !isDirty || amount === 0 ? (
               <div className={styles.formFieldLarge} style={{ opacity: 0.35 }}>
                 <div className={styles.fileUploadContainer}>
-                  <div className="primaryButton" style={{ maxWidth: '240px' }}>
+                  <Button variant="contained">
                     {t('manageProjects:uploadReport')}
-                  </div>
+                  </Button>
                   <p style={{ marginTop: '18px' }}>
                     {t('manageProjects:dragInPdf')}
                   </p>
@@ -331,10 +326,10 @@ export default function ProjectSpending({
             ) : (
               <div className={styles.formFieldLarge} {...getRootProps()}>
                 <div className={styles.fileUploadContainer}>
-                  <div className="primaryButton" style={{ maxWidth: '240px' }}>
+                  <Button variant="contained">
                     <input {...getInputProps()} />
                     {t('manageProjects:uploadReport')}
-                  </div>
+                  </Button>
                   <p style={{ marginTop: '18px' }}>
                     {t('manageProjects:dragInPdf')}
                   </p>
@@ -359,51 +354,44 @@ export default function ProjectSpending({
           </div>
         ) : null}
 
-        <div className={styles.formField}>
-          <div className={`${styles.formFieldHalf}`}>
-            <button
-              onClick={handleBack}
-              className="secondaryButton"
-              style={{ width: '234px', height: '46px' }}
-            >
-              <BackArrow />
-              <p>{t('manageProjects:backToSites')}</p>
-            </button>
-          </div>
+        <div className={styles.buttonsForProjectCreationForm}>
+          <Button
+            onClick={() => handleBack()}
+            variant="outlined"
+            className={styles.backButton}
+          >
+            <BackArrow />
+            <p>{t('manageProjects:backToSites')}</p>
+          </Button>
 
-          <div style={{ width: '20px' }}></div>
-          <div className={`${styles.formFieldHalf}`}>
-            <button
-              onClick={() => {
-                if (uploadedFiles && uploadedFiles.length > 0) {
-                  handleNext();
-                } else {
-                  setErrorMessage('Please upload  report');
-                }
-              }}
-              className="primaryButton"
-              style={{ width: '169px', height: '46px', marginRight: '20px' }}
-              data-test-id="projSpendingCont"
-            >
-              {isUploadingData ? (
-                <div className={styles.spinner}></div>
-              ) : (
-                t('common:continue')
-              )}
-            </button>
-          </div>
-          <div className={`${styles.formFieldHalf}`}>
-            <button
-              className="primaryButton"
-              style={{ width: '89px', marginRight: '35px' }}
-              onClick={handleNext}
-            >
-              {t('manageProjects:skip')}
-            </button>
-          </div>
+          <Button
+            onClick={() => {
+              if (uploadedFiles && uploadedFiles.length > 0) {
+                handleNext();
+              } else {
+                setErrorMessage('Please upload  report');
+              }
+            }}
+            variant="contained"
+            className={styles.saveAndContinueButton}
+          >
+            {isUploadingData ? (
+              <div className={styles.spinner}></div>
+            ) : (
+              t('common:continue')
+            )}
+          </Button>
+
+          <Button
+            className={styles.skipButton}
+            variant="contained"
+            onClick={() => handleNext()}
+          >
+            {t('manageProjects:skip')}
+          </Button>
         </div>
       </form>
-    </div>
+    </ProjectCreationFormContainer>
   ) : (
     <></>
   );

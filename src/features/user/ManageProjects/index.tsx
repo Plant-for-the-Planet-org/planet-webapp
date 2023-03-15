@@ -15,8 +15,21 @@ import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import Grid from '@mui/material/Grid';
+import TabbedView from '../../common/Layout/TabbedView';
+import DashboardView from '../../common/Layout/DashboardView';
+import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 
-export default function ManageProjects({ GUID, token, project }: any) {
+export enum ProjectCreationTabs {
+  PROJECT_TYPE = 0,
+  BASIC_DETAILS = 1,
+  PROJECT_MEDIA = 2,
+  DETAILED_ANALYSIS = 3,
+  PROJECT_SITES = 4,
+  PROJECT_SPENDING = 5,
+  REVIEW = 6,
+}
+export default function ManageProjects({ GUID, token, project, step }: any) {
   const { t, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const router = useRouter();
@@ -26,95 +39,96 @@ export default function ManageProjects({ GUID, token, project }: any) {
   const [tabSelected, setTabSelected] = React.useState(0);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [projectGUID, setProjectGUID] = React.useState(GUID ? GUID : '');
+  const [tablist, setTabList] = React.useState<TabItem[]>([]);
   const [projectDetails, setProjectDetails] = React.useState(
     project ? project : {}
   );
 
-  const formRouteHandler = (val) => {
-    if (router.query.purpose) return;
-    switch (val) {
-      case 1:
-        router.push(`/profile/projects/${projectGUID}?type=basic-details`);
+  // const formRouteHandler = (val) => {
+  //   if (router.query.purpose) return;
+  //   switch (val) {
+  //     case 1:
+  //       router.push(`/profile/projects/${projectGUID}?type=basic-details`);
 
-        break;
-      case 2:
-        router.push(`/profile/projects/${projectGUID}?type=media`);
+  //       break;
+  //     case 2:
+  //       router.push(`/profile/projects/${projectGUID}?type=media`);
 
-        break;
-      case 3:
-        router.push(`/profile/projects/${projectGUID}?type=detail-analysis`);
+  //       break;
+  //     case 3:
+  //       router.push(`/profile/projects/${projectGUID}?type=detail-analysis`);
 
-        break;
-      case 4:
-        router.push(`/profile/projects/${projectGUID}?type=project-sites`);
+  //       break;
+  //     case 4:
+  //       router.push(`/profile/projects/${projectGUID}?type=project-sites`);
 
-        break;
-      case 5:
-        router.push(`/profile/projects/${projectGUID}?type=project-spendings`);
+  //       break;
+  //     case 5:
+  //       router.push(`/profile/projects/${projectGUID}?type=project-spendings`);
 
-        break;
-      case 6:
-        router.push(`/profile/projects/${projectGUID}?type=review`);
+  //       break;
+  //     case 6:
+  //       router.push(`/profile/projects/${projectGUID}?type=review`);
 
-        break;
-      default:
-        break;
-    }
-  };
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
 
   // for moving next tab
-  const handleNext = () => {
-    formRouteHandler(tabSelected + 1);
-    setTabSelected((prevTabSelected) => prevTabSelected + 1);
-  };
+  // const handleNext = () => {
+  //   formRouteHandler(tabSelected + 1);
+  //   setTabSelected((prevTabSelected) => prevTabSelected + 1);
+  // };
 
   //for moving previous tab
-  const handleBack = () => {
-    formRouteHandler(tabSelected - 1);
-    setTabSelected((prevActiveStep) => prevActiveStep - 1);
-  };
+  // const handleBack = () => {
+  //   formRouteHandler(tabSelected - 1);
+  //   setTabSelected((prevActiveStep) => prevActiveStep - 1);
+  // };
 
   const handleReset = (message) => {
     setErrorMessage(message);
     setActiveStep(0);
   };
 
-  const handleChange = (e: React.ChangeEvent<{}>, newValue: number) => {
-    //restrict the access of Tab
-    if (router.asPath === '/profile/projects/new-project') {
-      e.preventDefault();
-      return;
-    }
-    //show the same route as respective form
+  // const handleChange = (e: React.ChangeEvent<{}>, newValue: number) => {
+  //   //restrict the access of Tab
+  //   if (router.asPath === '/profile/projects/new-project') {
+  //     e.preventDefault();
+  //     return;
+  //   }
+  //   //show the same route as respective form
 
-    formRouteHandler(newValue);
+  //   formRouteHandler(newValue);
 
-    //if project selected don't let it change
-    if (newValue < 1) {
-      e.preventDefault();
-      return;
-    }
+  //   //if project selected don't let it change
+  //   if (newValue < 1) {
+  //     e.preventDefault();
+  //     return;
+  //   }
 
-    //if the Project is not created then lock it to basic details
-    if (projectGUID === '') {
-      e.preventDefault();
-      return;
-    }
-    setTabSelected(newValue);
-    //for getting access to other tab for edit of individual project
-    if (router.query.id) {
-      setTabSelected(newValue);
-    }
+  //   //if the Project is not created then lock it to basic details
+  //   if (projectGUID === '') {
+  //     e.preventDefault();
+  //     return;
+  //   }
+  //   setTabSelected(newValue);
+  //   //for getting access to other tab for edit of individual project
+  //   if (router.query.id) {
+  //     setTabSelected(newValue);
+  //   }
 
-    // A project type should be selected to move to the next step
-    if (!router.query.purpose) {
-      return;
-    }
+  //   // A project type should be selected to move to the next step
+  //   if (!router.query.purpose) {
+  //     return;
+  //   }
 
-    if (router.query.id) {
-      handleNext();
-    }
-  };
+  //   if (router.query.id) {
+  //     handleNext();
+  //   }
+  // };
   const submitForReview = () => {
     setIsUploadingData(true);
     const submitData = {
@@ -190,11 +204,11 @@ export default function ManageProjects({ GUID, token, project }: any) {
     }
   }, []);
 
-  React.useEffect(() => {
-    if (router.query.purpose) {
-      handleNext();
-    }
-  }, [router]);
+  // React.useEffect(() => {
+  //   if (router.query.purpose) {
+  //     handleNext();
+  //   }
+  // }, [router]);
 
   React.useEffect(() => {
     switch (router.query.type) {
@@ -221,11 +235,59 @@ export default function ManageProjects({ GUID, token, project }: any) {
     }
   }, [router.query.screen]);
 
-  function getStepContent(step: number) {
+  React.useEffect(() => {
+    if (router.query.purpose) {
+      setTabList([
+        {
+          label: t('manageProjects:basicDetails'),
+          link: '/profile/projects/new-project?purpose=trees',
+          step: ProjectCreationTabs.BASIC_DETAILS,
+        },
+        {
+          label: t('manageProjects:projectMedia'),
+          link: `/profile/projects/${projectGUID}?type=media`,
+          step: ProjectCreationTabs.PROJECT_MEDIA,
+        },
+        {
+          label: t('manageProjects:detailedAnalysis'),
+          link: `/profile/projects/${projectGUID}?type=detail-analysis`,
+          step: ProjectCreationTabs.DETAILED_ANALYSIS,
+        },
+        {
+          label: t('manageProjects:projectSites'),
+          link: `/profile/projects/${projectGUID}?type=project-sites`,
+          step: ProjectCreationTabs.PROJECT_SITES,
+        },
+        {
+          label: t('manageProjects:projectSpending'),
+          link: `/profile/projects/${projectGUID}?type=review`,
+          step: ProjectCreationTabs.PROJECT_SPENDING,
+        },
+      ]);
+    } else if (router.query.type === '') {
+      setTabList([
+        {
+          label: t('manageProjects:basicDetails'),
+          link: '/profile/projects/new-project?purpose=trees',
+          step: ProjectCreationTabs.BASIC_DETAILS,
+        },
+      ]);
+    } else {
+      setTabList([
+        {
+          label: t('manageProjects:projectType'),
+          link: '/profile/projects/new-project',
+          step: ProjectCreationTabs.PROJECT_TYPE,
+        },
+      ]);
+    }
+  }, [router.query.purpose]);
+
+  function getStepContent() {
     switch (step) {
-      case 0:
+      case ProjectCreationTabs.PROJECT_TYPE:
         return <ProjectSelection />;
-      case 1:
+      case ProjectCreationTabs.BASIC_DETAILS:
         return (
           <BasicDetails
             handleNext={handleNext}
@@ -241,7 +303,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
             }
           />
         );
-      case 2:
+      case ProjectCreationTabs.PROJECT_MEDIA:
         return (
           <ProjectMedia
             handleNext={handleNext}
@@ -253,7 +315,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
             handleReset={handleReset}
           />
         );
-      case 3:
+      case ProjectCreationTabs.DETAILED_ANALYSIS:
         return (
           <DetailedAnalysis
             userLang={userLang}
@@ -269,7 +331,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
             }
           />
         );
-      case 4:
+      case ProjectCreationTabs.PROJECT_SITES:
         return (
           <ProjectSites
             handleNext={handleNext}
@@ -280,7 +342,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
             projectDetails={projectDetails}
           />
         );
-      case 5:
+      case ProjectCreationTabs.PROJECT_SPENDING:
         return (
           <ProjectSpending
             userLang={userLang}
@@ -291,7 +353,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
             handleReset={handleReset}
           />
         );
-      case 6:
+      case ProjectCreationTabs.REVIEW:
         return (
           <SubmitForReview
             handleBack={handleBack}
@@ -308,65 +370,65 @@ export default function ManageProjects({ GUID, token, project }: any) {
     }
   }
 
-  return ready ? (
-    <div
-      className={styles.mainContainer}
-      style={{ display: 'flex', flexDirection: 'row' }}
+  // return ready ? (
+  //   <Grid container spacing={2}>
+  //     <Grid item xs={12} sm={3} lg={2}>
+  //       <Tabs
+  //         value={tabSelected}
+  //         onChange={handleChange}
+  //         orientation={'vertical'}
+  //         variant="scrollable"
+  //         className={'custom-tab'}
+  //       >
+  //         <Tab
+  //           label={t('manageProjects:projectType')}
+  //           className={'tab-flow'}
+  //         ></Tab>
+  //         <Tab
+  //           label={t('manageProjects:basicDetails')}
+  //           className={'tab-flow'}
+  //         ></Tab>
+  //         <Tab
+  //           label={t('manageProjects:projectMedia')}
+  //           className={'tab-flow'}
+  //         ></Tab>
+  //         <Tab
+  //           label={t('manageProjects:detailedAnalysis')}
+  //           className={'tab-flow'}
+  //         />
+  //         <Tab
+  //           label={t('manageProjects:projectSites')}
+  //           className={'tab-flow'}
+  //         />
+  //         <Tab
+  //           label={t('manageProjects:projectSpending')}
+  //           className={'tab-flow'}
+  //         />
+  //         <Tab label={t('manageProjects:review')} className={'tab-flow'} />
+  //       </Tabs>
+  //     </Grid>
+  //     <Grid item xs={12} sm={18} lg={6}>
+  //       {getStepContent(tabSelected)}
+  //     </Grid>
+  //   </Grid>
+  // ) : null;
+
+  return (
+    <DashboardView
+      title={t('manageProjects:addNewProject')}
+      subtitle={
+        <div className={'add-project-title'}>
+          {t('manageProjects:addProjetDescription')}
+          <p>
+            {t('manageProjects:addProjetContact')}{' '}
+            <span>{t('manageProjects:supportLink')}</span>
+          </p>
+        </div>
+      }
     >
-      <div className={'project-form-flow'} style={{ display: 'flex' }}>
-        <div
-          style={{
-            display: 'flex',
-            flexBasis: '10%',
-            flexDirection: 'column',
-          }}
-        >
-          <div className="tab-box">
-            <Tabs
-              value={tabSelected}
-              onChange={handleChange}
-              orientation={'vertical'}
-              variant="scrollable"
-              className={'custom-tab'}
-            >
-              <Tab
-                label={t('manageProjects:projectType')}
-                className={'tab-flow'}
-              ></Tab>
-              <Tab
-                label={t('manageProjects:basicDetails')}
-                className={'tab-flow'}
-              ></Tab>
-              <Tab
-                label={t('manageProjects:projectMedia')}
-                className={'tab-flow'}
-              ></Tab>
-              <Tab
-                label={t('manageProjects:detailedAnalysis')}
-                className={'tab-flow'}
-              />
-              <Tab
-                label={t('manageProjects:projectSites')}
-                className={'tab-flow'}
-              />
-              <Tab
-                label={t('manageProjects:projectSpending')}
-                className={'tab-flow'}
-              />
-              <Tab label={t('manageProjects:review')} className={'tab-flow'} />
-            </Tabs>
-          </div>
-        </div>
-        <div
-          style={{
-            marginTop: '40px',
-            width: '1000px',
-            display: 'flex',
-          }}
-        >
-          {getStepContent(tabSelected)}
-        </div>
-      </div>
-    </div>
-  ) : null;
+      <TabbedView step={step} tabItems={tablist}>
+        {getStepContent()}
+      </TabbedView>
+    </DashboardView>
+  );
 }

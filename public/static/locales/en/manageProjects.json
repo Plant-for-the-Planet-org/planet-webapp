@@ -193,5 +193,6 @@
   "Since": "Since",
   "and": "and",
   "errorForMaxPlantingDensity": "This value should be greater than planting density",
-  "managePayoutsButton": "Manage Payouts"
+  "managePayoutsButton": "Manage Payouts",
+  "siteNameValidation": "Please enter a site name"
 }

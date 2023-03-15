@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import styles from './../StepForm.module.scss';
@@ -10,11 +9,11 @@ import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import { useRouter } from 'next/router';
 import { makeStyles } from '@mui/styles';
-import { SxProps } from '@mui/material';
+import { SxProps, TextField, Button } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-
+import { ProjectCreationFormContainer } from '.';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -491,7 +490,7 @@ export default function DetailedAnalysis({
   }, [projectDetails]);
 
   return ready ? (
-    <div className={styles.stepContainer}>
+    <ProjectCreationFormContainer>
       {' '}
       <form
         onClick={(e) => {
@@ -517,9 +516,7 @@ export default function DetailedAnalysis({
                         value={properties.value}
                         onChange={properties.onChange}
                         label={t('manageProjects:yearOfAbandonment')}
-                        renderInput={(props) => (
-                          <MaterialTextField {...props} />
-                        )}
+                        renderInput={(props) => <TextField {...props} />}
                         autoOk
                         disableFuture
                         minDate={new Date(new Date().setFullYear(1950))}
@@ -559,9 +556,7 @@ export default function DetailedAnalysis({
                         label={t('manageProjects:firstTreePlanted')}
                         value={properties.value}
                         onChange={properties.onChange}
-                        renderInput={(props) => (
-                          <MaterialTextField {...props} />
-                        )}
+                        renderInput={(props) => <TextField {...props} />}
                         disableFuture
                         minDate={new Date(new Date().setFullYear(1950))}
                         inputFormat="d MMMM yyyy"
@@ -580,7 +575,7 @@ export default function DetailedAnalysis({
           ) : (
             <div className={styles.formField}>
               <div className={`${styles.formFieldHalf} ${styles.formFieldFix}`}>
-                <MaterialTextField
+                <TextField
                   inputRef={register({
                     required: {
                       value: true,
@@ -634,9 +629,7 @@ export default function DetailedAnalysis({
                         label={t('manageProjects:protectionStartedIN')}
                         value={properties.value}
                         onChange={properties.onChange}
-                        renderInput={(props) => (
-                          <MaterialTextField {...props} />
-                        )}
+                        renderInput={(props) => <TextField {...props} />}
                         disableFuture
                         minDate={new Date(new Date().setFullYear(1950))}
                         views={['year']}
@@ -667,7 +660,7 @@ export default function DetailedAnalysis({
 
           <div className={styles.formField}>
             <div className={`${styles.formFieldHalf} ${styles.formFieldFix}`}>
-              <MaterialTextField
+              <TextField
                 inputRef={register({
                   required: {
                     value: true,
@@ -683,12 +676,12 @@ export default function DetailedAnalysis({
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9]./g, '');
                 }}
+                error={errors.employeesCount}
+                helperText={
+                  errors.employeesCount && errors.employeesCount.message
+                }
               />
-              {errors.employeesCount && (
-                <span className={styles.formErrors}>
-                  {errors.employeesCount.message}
-                </span>
-              )}
+
               <div className={styles.infoIconDiv}>
                 <div className={styles.popover}>
                   <InfoIcon />
@@ -720,7 +713,7 @@ export default function DetailedAnalysis({
                       label={t('manageProjects:acquisitionYear')}
                       value={properties.value}
                       onChange={properties.onChange}
-                      renderInput={(props) => <MaterialTextField {...props} />}
+                      renderInput={(props) => <TextField {...props} />}
                       disableFuture
                       minDate={new Date(new Date().setFullYear(1950))}
                       views={['year']}
@@ -799,7 +792,7 @@ export default function DetailedAnalysis({
                   data-test-id="plantingDensity"
                 >
                   {/* Integer - the planting density expressed in trees per ha */}
-                  <MaterialTextField
+                  <TextField
                     label={t('manageProjects:plantingDensity')}
                     variant="outlined"
                     name="plantingDensity"
@@ -833,7 +826,7 @@ export default function DetailedAnalysis({
                   className={styles.formFieldHalf}
                   data-test-id="maxPlantingDensity"
                 >
-                  <MaterialTextField
+                  <TextField
                     label={t('manageProjects:maxPlantingDensity')}
                     variant="outlined"
                     name="maxPlantingDensity"
@@ -880,9 +873,7 @@ export default function DetailedAnalysis({
                         value={properties.value}
                         onChange={properties.onChange}
                         label={t('manageProjects:yearOfDegradation')}
-                        renderInput={(props) => (
-                          <MaterialTextField {...props} />
-                        )}
+                        renderInput={(props) => <TextField {...props} />}
                         disableFuture
                         minDate={new Date(new Date().setFullYear(1950))}
                         maxDate={new Date()}
@@ -900,7 +891,7 @@ export default function DetailedAnalysis({
             </div>
           ) : (
             <div className={`${styles.formFieldLarge} ${styles.formFieldFix}`}>
-              <MaterialTextField
+              <TextField
                 inputRef={register({
                   maxLength: {
                     value: 300,
@@ -916,7 +907,7 @@ export default function DetailedAnalysis({
           )}
           {purpose === 'trees' ? (
             <div className={`${styles.formFieldLarge} ${styles.formFieldFix}`}>
-              <MaterialTextField
+              <TextField
                 label={t('manageProjects:causeOfDegradation')}
                 variant="outlined"
                 name="degradationCause"
@@ -945,7 +936,7 @@ export default function DetailedAnalysis({
             </div>
           ) : (
             <div className={`${styles.formFieldLarge} ${styles.formFieldFix}`}>
-              <MaterialTextField
+              <TextField
                 label={t('manageProjects:conservationImpacts')}
                 variant="outlined"
                 name="benefits"
@@ -968,7 +959,7 @@ export default function DetailedAnalysis({
           <div className={styles.formField}>
             <div className={`${styles.formFieldHalf} ${styles.formFieldFix}`}>
               {/* the main challenge the project is facing (max. 300 characters) */}
-              <MaterialTextField
+              <TextField
                 inputRef={register({
                   maxLength: {
                     value: 300,
@@ -999,7 +990,7 @@ export default function DetailedAnalysis({
             <div style={{ width: '20px' }}></div>
             <div className={`${styles.formFieldHalf} ${styles.formFieldFix}`}>
               {/* the reason this project has been created (max. 300 characters) */}
-              <MaterialTextField
+              <TextField
                 inputRef={register({
                   maxLength: {
                     value: 300,
@@ -1067,7 +1058,7 @@ export default function DetailedAnalysis({
           </div>
 
           <div className={`${styles.formFieldLarge} ${styles.formFieldFix}`}>
-            <MaterialTextField
+            <TextField
               label={t('manageProjects:ownerName')}
               variant="outlined"
               name="siteOwnerName"
@@ -1076,7 +1067,7 @@ export default function DetailedAnalysis({
           </div>
 
           <div className={`${styles.formFieldLarge} ${styles.formFieldFix}`}>
-            <MaterialTextField
+            <TextField
               label={t('manageProjects:longTermPlan')}
               variant="outlined"
               name="longTermPlan"
@@ -1107,39 +1098,40 @@ export default function DetailedAnalysis({
             </div>
           ) : null}
 
-          <div className={styles.formFieldLarge} style={{ marginTop: '48px' }}>
-            <div className={`${styles.formFieldHalf}`}>
-              <button onClick={handleBack} className="secondaryButton">
-                <BackArrow />
-                <p>{t('manageProjects:backToMedia')}</p>
-              </button>
-            </div>
-            <div style={{ width: '20px' }}></div>
-            <div className={styles.formFieldHalf}>
-              <button
-                onClick={handleSubmit(onSubmit)}
-                className={`primaryButton ${styles.saveAndContinueDetailAnalysis}`}
-                data-test-id="detailAnalysisCont"
-              >
-                {isUploadingData ? (
-                  <div className={styles.spinner}></div>
-                ) : (
-                  t('manageProjects:saveAndContinue')
-                )}
-              </button>
-            </div>
-            <div className={`${styles.formFieldHalf}`}>
-              <button
-                className={`primaryButton ${styles.skipDetailAnalysis}`}
-                onClick={handleNext}
-              >
-                {t('manageProjects:skip')}
-              </button>
-            </div>
+          <div className={styles.buttonsForProjectCreationForm}>
+            <Button
+              onClick={() => handleBack()}
+              variant="outlined"
+              className={styles.backButton}
+            >
+              <BackArrow />
+              <p>{t('manageProjects:backToMedia')}</p>
+            </Button>
+
+            <Button
+              onClick={handleSubmit(onSubmit)}
+              className={styles.saveAndContinueButton}
+              data-test-id="detailAnalysisCont"
+              variant="contained"
+            >
+              {isUploadingData ? (
+                <div className={styles.spinner}></div>
+              ) : (
+                t('manageProjects:saveAndContinue')
+              )}
+            </Button>
+
+            <Button
+              className={styles.skipButton}
+              variant="contained"
+              onClick={() => handleNext()}
+            >
+              {t('manageProjects:skip')}
+            </Button>
           </div>
         </div>
       </form>
-    </div>
+    </ProjectCreationFormContainer>
   ) : (
     <></>
   );

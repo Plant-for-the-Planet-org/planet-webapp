@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import styles from './../StepForm.module.scss';
-import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import { useDropzone } from 'react-dropzone';
@@ -18,7 +17,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { SxProps } from '@mui/material';
+import { SxProps, TextField, Button } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 
 const dialogSx: SxProps = {
@@ -113,7 +112,7 @@ function ProjectCertificates({
     }
   }, [projectGUID]);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     accept: '.pdf',
     multiple: false,
     maxSize: 10485760,
@@ -264,7 +263,7 @@ function ProjectCertificates({
         <>
           <div className={styles.formField}>
             <div className={styles.formFieldHalf}>
-              <MaterialTextField
+              <TextField
                 inputRef={register({ required: true })}
                 label={t('manageProjects:certifierName')}
                 variant="outlined"
@@ -273,12 +272,11 @@ function ProjectCertificates({
                   setCertifierName(e.target.value);
                 }}
                 defaultValue=""
+                error={errors.certifierName}
+                helperText={
+                  errors.certifierName && errors.certifierName.message
+                }
               />
-              {errors.certifierName && (
-                <span className={styles.formErrors}>
-                  {errors.certifierName.message}
-                </span>
-              )}
             </div>
             <div style={{ width: '20px' }}></div>
             <div className={styles.formFieldHalf}>
@@ -295,7 +293,7 @@ function ProjectCertificates({
                   onChange={setIssueDate}
                   label={t('manageProjects:issueDate')}
                   name="issueDate"
-                  renderInput={(props) => <MaterialTextField {...props} />}
+                  renderInput={(props) => <TextField {...props} />}
                   clearable
                   disableFuture
                   inputRef={register({
@@ -328,9 +326,9 @@ function ProjectCertificates({
           {errors.certifierName || errors.issueDate || certifierName === '' ? (
             <div className={styles.formFieldLarge} style={{ opacity: 0.35 }}>
               <div className={styles.fileUploadContainer}>
-                <div className="primaryButton" style={{ maxWidth: '240px' }}>
+                <Button variant="contained">
                   {t('manageProjects:uploadCertificate')}
-                </div>
+                </Button>
                 <p style={{ marginTop: '18px' }}>
                   {t('manageProjects:dragIn')}
                 </p>
@@ -339,10 +337,10 @@ function ProjectCertificates({
           ) : (
             <div className={styles.formFieldLarge} {...getRootProps()}>
               <div className={styles.fileUploadContainer}>
-                <div className="primaryButton" style={{ maxWidth: '240px' }}>
+                <Button variant="contained">
                   <input {...getInputProps()} />
                   {t('manageProjects:uploadCertificate')}
-                </div>
+                </Button>
                 <p style={{ marginTop: '18px' }}>
                   {t('manageProjects:dragInPdf')}
                 </p>

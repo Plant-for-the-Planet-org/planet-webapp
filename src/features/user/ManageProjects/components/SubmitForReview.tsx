@@ -8,6 +8,7 @@ import NotReviewed from '../../../../../public/assets/images/icons/manageProject
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import { useForm } from 'react-hook-form';
 import router from 'next/router';
+import { Button } from '@mui/material';
 
 interface Props {
   handleBack: Function;
@@ -105,19 +106,20 @@ function SubmitForReview({
   }
 
   function NotSubmittedReview() {
-    const { control } = useForm({ mode: 'onBlur' });
     const [publish, setPublish] = React.useState(projectDetails.publish);
 
     return (
-      <div className={(styles.stepContainer, styles.reviewContent)}>
-        <div
-          className={styles.formFieldLarge}
-          style={{ width: '320px', marginRight: '70px' }}
-        >
-          <div
-            className={`${styles.formFieldRadio}`}
-            style={{ marginLeft: '100px', marginBottom: '38px' }}
-          >
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: 'max-content',
+        }}
+      >
+        <div className={styles.formFieldRadio} style={{ marginBottom: '10px' }}>
+          <div>
             <label
               htmlFor={'publish'}
               style={{ cursor: 'pointer' }}
@@ -125,7 +127,9 @@ function SubmitForReview({
             >
               {t('manageProjects:publishProject')}
             </label>
+          </div>
 
+          <div>
             <ToggleSwitch
               checked={publish}
               onChange={(e) => handlePublishChange(e.target.checked)}
@@ -136,46 +140,42 @@ function SubmitForReview({
         </div>
 
         <div>
-          <div className={(styles.formFieldLarge, styles.reviewImage)}>
-            <div style={{ height: '240px', width: '100%' }}>
-              <NotReviewed />
-            </div>
-            <p
-              style={{ textAlign: 'center', width: '100%', marginTop: '24px' }}
-            >
-              {t('manageProjects:projectForReview')}
-            </p>
+          <div style={{ height: '240px', width: '100%' }}>
+            <NotReviewed />
           </div>
+          <p style={{ textAlign: 'center', width: '100%', marginTop: '24px' }}>
+            {t('manageProjects:projectForReview')}
+          </p>
+        </div>
+        <div className={styles.buttonsForProjectCreationForm}>
+          <Button
+            className={styles.backButton}
+            variant="outlined"
+            onClick={() => handleBack()}
+          >
+            <BackArrow />
+            <p>{t('manageProjects:backToSpending')}</p>
+          </Button>
 
-          <div className={styles.formFields}>
-            <div className={styles.reviewButtons}>
-              <button id={'backArrowSubmitR'} style={{ width: '234px' }}>
-                <button onClick={handleBack} className="secondaryButton">
-                  <BackArrow />
-                  <p>{t('manageProjects:backToSpending')}</p>
-                </button>
-              </button>
-              <button
-                onClick={() => submitForReview()}
-                className="primaryButton notSubmitReview"
-                data-test-id="submitReview"
-              >
-                {isUploadingData ? (
-                  <div className={styles.spinner}></div>
-                ) : (
-                  t('manageProjects:submitForReview')
-                )}
-              </button>
+          <Button
+            className={styles.saveAndContinueButton}
+            onClick={() => submitForReview()}
+            variant="contained"
+          >
+            {isUploadingData ? (
+              <div className={styles.spinner}></div>
+            ) : (
+              t('manageProjects:submitForReview')
+            )}
+          </Button>
 
-              <button
-                className="primaryButton notSubmitExit"
-                onClick={() => router.push('/profile/projects')}
-              >
-                <p>{t('manageProjects:exit')}</p>
-              </button>
-            </div>
-            <div style={{ width: '20px' }}></div>
-          </div>
+          <Button
+            className={styles.skipButton}
+            variant="contained"
+            onClick={() => router.push('/profile/projects')}
+          >
+            <p>{t('manageProjects:exit')}</p>
+          </Button>
         </div>
       </div>
     );
@@ -184,29 +184,22 @@ function SubmitForReview({
   function AcceptedReview() {
     return (
       <div className={styles.stepContainer}>
-        <div>
-          <div className={styles.formFieldLarge}>
-            <div style={{ height: '240px', width: '100%' }}>
-              <SubmitForReviewImage />
-            </div>
-            <p
-              style={{ textAlign: 'center', width: '100%', marginTop: '24px' }}
-            >
-              {t('manageProjects:acceptedReview')}
-            </p>
+        <div className={styles.formFieldLarge}>
+          <div style={{ height: '240px', width: '100%' }}>
+            <SubmitForReviewImage />
           </div>
-          <div className={styles.formField}>
-            <button
-              id={'backArrowSubmitR'}
-              className={`${styles.formFieldHalf}`}
-            >
-              <button onClick={handleBack} className="secondaryButton">
-                <BackArrow />
-                <p>{t('manageProjects:backToSpending')}</p>
-              </button>
+          <p style={{ textAlign: 'center', width: '100%', marginTop: '24px' }}>
+            {t('manageProjects:acceptedReview')}
+          </p>
+        </div>
+        <div className={styles.formField}>
+          <button id={'backArrowSubmitR'} className={`${styles.formFieldHalf}`}>
+            <button onClick={handleBack} className="secondaryButton">
+              <BackArrow />
+              <p>{t('manageProjects:backToSpending')}</p>
             </button>
-            <div style={{ width: '20px' }}></div>
-          </div>
+          </button>
+          <div style={{ width: '20px' }}></div>
         </div>
       </div>
     );
