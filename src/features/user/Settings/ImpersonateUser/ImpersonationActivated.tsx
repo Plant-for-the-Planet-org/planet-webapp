@@ -33,7 +33,7 @@ const ImpersonationActivated = () => {
         onClick={exitImpersonation}
         className={styles.exitImpersoantionContainer}
       >
-        <div>
+        <div className={styles.exitIcon}>
           <LogoutIcon />
         </div>
         <div className={styles.exit}>{t('me:exitImpersonation')}</div>

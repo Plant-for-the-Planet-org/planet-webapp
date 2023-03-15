@@ -16,7 +16,7 @@
     margin-left: 2rem;
     cursor: pointer;
     display: flex;
-  }
+   }
 
   .exit {
     margin-left: 7px;
@@ -41,8 +41,7 @@
   }
   .exit {
     position: relative;
-    top: -20px;
-    left: 126px;
+    top: -30px;
   }
   .logoutContainer {
     position: relative;
@@ -51,6 +50,14 @@
   .impersonatingEmail {
     position: relative;
     top: 8px;
-    right: 43px;
+    margin-bottom: 18px;
+  }
+  .exitImpersoantionContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+  .exitIcon{
+    position: relative;
+    top:10px
   }
 }
