@@ -10,6 +10,7 @@ import ReactDOMServer from 'react-dom/server';
 import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
 import { format } from 'date-fns';
 import { ApexOptions } from 'apexcharts';
+import { Container } from '../Container';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -260,9 +261,8 @@ export const SpeciesPlanted = () => {
   }, [project, fromDate, toDate]);
 
   return (
-    <>
-      <p>{t('speciesPlanted')}</p>
+    <Container title={t('speciesPlanted')}>
       <ReactApexChart options={options} series={series} type="bar" />
-    </>
+    </Container>
   );
 };

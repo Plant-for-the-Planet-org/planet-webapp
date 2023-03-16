@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 import MaterialTextField from '../../../../../common/InputTypes/MaterialTextField';
 import { format, subYears } from 'date-fns';
 import ProjectTypeSelector, { ProjectType } from '../ProjectTypeSelector';
+import { Container } from '../Container';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -179,68 +180,71 @@ export const Export = () => {
   };
 
   return ready ? (
-    <div className={styles.container}>
-      <p>{t('exportData')}</p>
-      <ProjectTypeSelector handleProjectTypeChange={handleProjectTypeChange} />
+    <Container title={t('exportData')}>
+      <div className={styles.container}>
+        <ProjectTypeSelector
+          handleProjectTypeChange={handleProjectTypeChange}
+        />
 
-      <ProjectSelectAutocomplete
-        projectList={projectList || []}
-        project={project}
-        handleProjectChange={handleProjectChange}
-      />
+        <ProjectSelectAutocomplete
+          projectList={projectList || []}
+          project={project}
+          handleProjectChange={handleProjectChange}
+        />
 
-      <div className={styles.datePickerContainer}>
-        <LocalizationProvider
-          dateAdapter={AdapterDateFns}
-          locale={
-            localeMapForDate[userLang]
-              ? localeMapForDate[userLang]
-              : localeMapForDate['en']
-          }
-        >
-          <MuiDatePicker
-            label={t('treemapperAnalytics:from')}
-            value={localFromDate}
-            onChange={setLocalFromDate}
-            renderInput={(props) => (
-              <MaterialTextField variant="outlined" {...props} />
-            )}
-            inputFormat="MMMM d, yyyy"
-            maxDate={new Date()}
-            DialogProps={{
-              sx: dialogSx,
-            }}
-          />
-        </LocalizationProvider>
-        <LocalizationProvider
-          dateAdapter={AdapterDateFns}
-          locale={
-            localeMapForDate[userLang]
-              ? localeMapForDate[userLang]
-              : localeMapForDate['en']
-          }
-        >
-          <MuiDatePicker
-            label={t('treemapperAnalytics:from')}
-            value={localToDate}
-            onChange={setLocalToDate}
-            renderInput={(props) => (
-              <MaterialTextField variant="outlined" {...props} />
-            )}
-            inputFormat="MMMM d, yyyy"
-            maxDate={new Date()}
-            DialogProps={{
-              sx: dialogSx,
-            }}
-          />
-        </LocalizationProvider>
+        <div className={styles.datePickerContainer}>
+          <LocalizationProvider
+            dateAdapter={AdapterDateFns}
+            locale={
+              localeMapForDate[userLang]
+                ? localeMapForDate[userLang]
+                : localeMapForDate['en']
+            }
+          >
+            <MuiDatePicker
+              label={t('treemapperAnalytics:from')}
+              value={localFromDate}
+              onChange={setLocalFromDate}
+              renderInput={(props) => (
+                <MaterialTextField variant="outlined" {...props} />
+              )}
+              inputFormat="MMMM d, yyyy"
+              maxDate={new Date()}
+              DialogProps={{
+                sx: dialogSx,
+              }}
+            />
+          </LocalizationProvider>
+          <LocalizationProvider
+            dateAdapter={AdapterDateFns}
+            locale={
+              localeMapForDate[userLang]
+                ? localeMapForDate[userLang]
+                : localeMapForDate['en']
+            }
+          >
+            <MuiDatePicker
+              label={t('treemapperAnalytics:from')}
+              value={localToDate}
+              onChange={setLocalToDate}
+              renderInput={(props) => (
+                <MaterialTextField variant="outlined" {...props} />
+              )}
+              inputFormat="MMMM d, yyyy"
+              maxDate={new Date()}
+              DialogProps={{
+                sx: dialogSx,
+              }}
+            />
+          </LocalizationProvider>
+        </div>
+
+        <div className={styles.buttonContainer}>
+          <MuiButton fullWidth variant="contained" onClick={handleExport}>
+            {t('export')}
+          </MuiButton>
+        </div>
       </div>
-
-      <div className={styles.buttonContainer}>
-        <MuiButton fullWidth variant="contained" onClick={handleExport}>
-          {t('export')}
-        </MuiButton>
-      </div>
-    </div>
+    </Container>
   ) : null;
 };

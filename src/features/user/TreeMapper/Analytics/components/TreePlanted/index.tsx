@@ -14,6 +14,7 @@ import DownloadSolid from '../../../../../../../public/assets/images/icons/share
 import ReactDOMServer from 'react-dom/server';
 import { ApexOptions } from 'apexcharts';
 import { Tooltip } from './Tooltip';
+import { Container } from '../Container';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -412,9 +413,8 @@ export const TreePlanted = () => {
   }, [project, fromDate, toDate, timeFrame]);
 
   return (
-    <>
-      <p className={styles.title}>{t('treesPlanted')}</p>
+    <Container title={t('treesPlanted')}>
       <ReactApexChart options={options} series={series} type="bar" />
-    </>
+    </Container>
   );
 };
