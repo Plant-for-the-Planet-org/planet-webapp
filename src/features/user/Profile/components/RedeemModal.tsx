@@ -10,6 +10,7 @@ import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
+import useApiCall from '../../../../utils/isButtonClicked';
 
 interface RedeemModal {
   redeemModalOpen: boolean;
@@ -47,22 +48,28 @@ export default function RedeemModal({
   const { register, handleSubmit, errors } = useForm<FormData>({
     mode: 'onBlur',
   });
+  const [callApi, isCallingApi] = useApiCall();
+
+  async function handleClick(data: FormData) {
+    await callApi(() => redeemCode(data));
+    // console.log('first', isCallingApi);
+  }
 
   async function redeemCode(data: FormData) {
-    setDisable(true);
+    // setDisable(true);
+    // console.log('second', isCallingApi);
     setIsUploadingData(true);
     const submitData = {
       code: data.code,
     };
     if (contextLoaded && user) {
-
       postAuthenticatedRequest(
         `/app/redeem`,
         submitData,
         token,
         validEmail
       ).then((res) => {
-        setDisable(false);
+        // setDisable(false);
         if (res.error_code === 'already_redeemed') {
           setErrorMessage(t('redeem:alreadyRedeemed'));
           setIsUploadingData(false);
@@ -188,9 +195,9 @@ export default function RedeemModal({
               {!errorMessage && (
                 <button
                   id={'redeemCodeModal'}
-                  onClick={handleSubmit(redeemCode)}
+                  onClick={() => handleClick(redeemCode)}
                   className={`primaryButton ${styles.redeemCode}`}
-                  disabled={disable}
+                  disabled={isCallingApi}
                 >
                   {isUploadingData ? (
                     <div className={styles.spinner}></div>
