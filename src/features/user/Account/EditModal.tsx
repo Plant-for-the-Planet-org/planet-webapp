@@ -234,7 +234,7 @@ export const EditModal = ({
                 )}
               </div>
             </div>
-            {record?.method !== 'paypal' ? (
+            {/* {record?.method !== 'paypal' ? (
               <div className={styles.formRow}>
                 <div className={styles.formRowInput}>
                   <LocalizationProvider
@@ -286,7 +286,7 @@ export const EditModal = ({
               </div>
             ) : (
               []
-            )}
+            )} */}
           </form>
           <div className={styles.note}>
             <p>{record?.method === 'paypal' ? t('me:noteToWait') : []}</p>
@@ -294,7 +294,7 @@ export const EditModal = ({
           <button
             onClick={handleSubmit(onSubmit)}
             className={styles.submitButton}
-            style={{ minWidth: '20px', marginTop: '30px' }}
+            style={{ minWidth: '20px', marginTop: '15px' }}
             disabled={disabled}
           >
             {disabled ? (
