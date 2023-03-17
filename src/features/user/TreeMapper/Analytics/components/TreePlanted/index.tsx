@@ -1,20 +1,16 @@
-import { format } from 'date-fns';
+import { differenceInDays, format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
-import styles from './index.module.scss';
 import themeProperties from '../../../../../../theme/themeProperties';
 import { getFormattedNumber } from '../../../../../../utils/getFormattedNumber';
-import {
-  getTimeFrames,
-  TIME_FRAMES,
-  useAnalytics,
-} from '../../../../../common/Layout/AnalyticsContext';
+import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
 import DownloadSolid from '../../../../../../../public/assets/images/icons/share/DownloadSolid';
 import ReactDOMServer from 'react-dom/server';
 import { ApexOptions } from 'apexcharts';
 import { Tooltip } from './Tooltip';
 import { Container } from '../Container';
+import TimeFrameSelector, { TIME_FRAME } from './TimeFrameSelector';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -71,6 +67,30 @@ type Categories =
   | MonthsCategories[]
   | YearsCategories[];
 
+const ONE_YEAR_DAYS = 365;
+const TWO_YEARS_DAYS = 2 * ONE_YEAR_DAYS;
+const FIVE_YEARS_DAYS = 5 * ONE_YEAR_DAYS;
+
+export const getTimeFrames = (toDate: Date, fromDate: Date) => {
+  const diffInDays = differenceInDays(toDate, fromDate);
+
+  switch (true) {
+    case diffInDays <= ONE_YEAR_DAYS:
+      return [
+        TIME_FRAME.DAYS,
+        TIME_FRAME.WEEKS,
+        TIME_FRAME.MONTHS,
+        TIME_FRAME.YEARS,
+      ];
+    case diffInDays <= TWO_YEARS_DAYS:
+      return [TIME_FRAME.WEEKS, TIME_FRAME.MONTHS, TIME_FRAME.YEARS];
+    case diffInDays <= FIVE_YEARS_DAYS:
+      return [TIME_FRAME.MONTHS, TIME_FRAME.YEARS];
+    default:
+      return [TIME_FRAME.YEARS];
+  }
+};
+
 export const TreePlanted = () => {
   const {
     i18n: { language },
@@ -83,7 +103,13 @@ export const TreePlanted = () => {
     },
   ]);
 
-  const { project, fromDate, toDate, timeFrame } = useAnalytics();
+  const { project, fromDate, toDate } = useAnalytics();
+
+  const [timeFrames, setTimeFrames] = useState<TIME_FRAME[]>(
+    getTimeFrames(toDate, fromDate)
+  );
+
+  const [timeFrame, setTimeFrame] = useState<TIME_FRAME | null>(null);
 
   const getDownloadIcon = () => {
     return <DownloadSolid color="#6E8091" />;
@@ -197,6 +223,18 @@ export const TreePlanted = () => {
     },
   });
 
+  const previousTimeFrame = useRef({ timeFrames });
+
+  useEffect(() => {
+    if (
+      getTimeFrames(toDate, fromDate).length !==
+      previousTimeFrame.current.timeFrames.length
+    ) {
+      setTimeFrames(getTimeFrames(toDate, fromDate));
+      previousTimeFrame.current.timeFrames = getTimeFrames(toDate, fromDate);
+    }
+  }, [toDate, fromDate]);
+
   useEffect(() => {
     if (project) {
       const FILE_NAME = `${project.name}__${t('treesPlanted')}__${format(
@@ -238,14 +276,14 @@ export const TreePlanted = () => {
   }
 
   const getPlotingData = (
-    tf: TIME_FRAMES,
+    tf: TIME_FRAME,
     data: DailyFrame[] | WeeklyFrame[] | MonthlyFrame[] | YearlyFrame[]
   ) => {
     const treesPlanted: number[] = [];
     const categories: Categories = [];
 
     switch (tf) {
-      case TIME_FRAMES.DAYS:
+      case TIME_FRAME.DAYS:
         data.forEach((tf) => {
           if ('plantedDate' in tf) {
             treesPlanted.push(tf.treesPlanted);
@@ -256,7 +294,7 @@ export const TreePlanted = () => {
         });
         break;
 
-      case TIME_FRAMES.WEEKS:
+      case TIME_FRAME.WEEKS:
         data.forEach((tf) => {
           if (isWeeklyFrame(tf)) {
             treesPlanted.push(tf.treesPlanted);
@@ -269,7 +307,7 @@ export const TreePlanted = () => {
         });
         break;
 
-      case TIME_FRAMES.MONTHS:
+      case TIME_FRAME.MONTHS:
         {
           let year = 0;
           data.forEach((tf, index) => {
@@ -295,7 +333,7 @@ export const TreePlanted = () => {
         }
         break;
 
-      case TIME_FRAMES.YEARS:
+      case TIME_FRAME.YEARS:
         data.forEach((tf) => {
           if ('year' in tf) {
             treesPlanted.push(tf.treesPlanted);
@@ -316,7 +354,7 @@ export const TreePlanted = () => {
     categories: Categories
   ) => {
     switch (timeFrame) {
-      case TIME_FRAMES.DAYS:
+      case TIME_FRAME.DAYS:
         return (
           <Tooltip
             headerTitle={(categories as DaysCategories[])[dataPointIndex].label}
@@ -324,7 +362,7 @@ export const TreePlanted = () => {
             value={`${seriesData[dataPointIndex]}`}
           />
         );
-      case TIME_FRAMES.WEEKS:
+      case TIME_FRAME.WEEKS:
         return (
           <Tooltip
             headerTitle={`${
@@ -336,7 +374,7 @@ export const TreePlanted = () => {
             value={`${seriesData[dataPointIndex]}`}
           />
         );
-      case TIME_FRAMES.MONTHS:
+      case TIME_FRAME.MONTHS:
         return (
           <Tooltip
             headerTitle={`${
@@ -346,7 +384,7 @@ export const TreePlanted = () => {
             value={`${seriesData[dataPointIndex]}`}
           />
         );
-      case TIME_FRAMES.YEARS:
+      case TIME_FRAME.YEARS:
         return (
           <Tooltip
             headerTitle={(categories as DaysCategories[])[dataPointIndex].label}
@@ -412,8 +450,21 @@ export const TreePlanted = () => {
     }
   }, [project, fromDate, toDate, timeFrame]);
 
+  const handleTimeFrameChange = (tf: TIME_FRAME | null) => {
+    setTimeFrame(tf);
+  };
+
   return (
-    <Container title={t('treesPlanted')}>
+    <Container
+      title={t('treesPlanted')}
+      options={
+        <TimeFrameSelector
+          handleTimeFrameChange={handleTimeFrameChange}
+          timeFrames={timeFrames}
+          timeFrame={timeFrame ?? null}
+        />
+      }
+    >
       <ReactApexChart options={options} series={series} type="bar" />
     </Container>
   );

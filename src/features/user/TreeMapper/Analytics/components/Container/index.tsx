@@ -2,7 +2,7 @@ import styles from './index.module.scss';
 
 interface Props {
   title: string;
-  options?: React.FC;
+  options?: React.ReactElement;
   children: React.ReactElement;
   flexDirection?: 'row' | 'column';
 }

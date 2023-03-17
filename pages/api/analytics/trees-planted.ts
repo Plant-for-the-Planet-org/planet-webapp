@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import db from '../../../src/utils/connectDB';
-import { TIME_FRAMES } from '../../../src/features/common/Layout/AnalyticsContext';
+import { TIME_FRAME } from '../../../src/features/user/TreeMapper/Analytics/components/TreePlanted/TimeFrameSelector';
 
 export default async function handler(
   req: NextApiRequest,
@@ -13,7 +13,7 @@ export default async function handler(
     let query: string;
 
     switch (timeFrame) {
-      case TIME_FRAMES.DAYS:
+      case TIME_FRAME.DAYS:
         query =
           'SELECT  \
             pl.plant_date AS plantedDate, \
@@ -25,7 +25,7 @@ export default async function handler(
           ORDER BY pl.plant_date';
         break;
 
-      case TIME_FRAMES.WEEKS:
+      case TIME_FRAME.WEEKS:
         query =
           'SELECT \
             DATE_SUB(pl.plant_date, INTERVAL WEEKDAY(pl.plant_date) DAY) AS weekStartDate, \
@@ -41,7 +41,7 @@ export default async function handler(
           ORDER BY pl.plant_date';
         break;
 
-      case TIME_FRAMES.MONTHS:
+      case TIME_FRAME.MONTHS:
         query =
           'SELECT \
             LEFT(MONTHNAME(pl.plant_date), 3) AS month, \
@@ -54,7 +54,7 @@ export default async function handler(
           ORDER BY pl.plant_date;';
         break;
 
-      case TIME_FRAMES.YEARS:
+      case TIME_FRAME.YEARS:
         query =
           'SELECT \
             YEAR(pl.plant_date) AS year, \

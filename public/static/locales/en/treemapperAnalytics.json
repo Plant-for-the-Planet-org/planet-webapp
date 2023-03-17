@@ -43,5 +43,6 @@
   },
   "readme": "READ ME",
   "interventionData": "Intervention Data",
-  "monitoringPlotsData": "Monitoring Plots Data"
+  "monitoringPlotsData": "Monitoring Plots Data",
+  "dataIntervals": "Data Intervals"
 }
