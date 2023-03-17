@@ -12,6 +12,7 @@ import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
+import DashboardView from '../../../src/features/common/Layout/DashboardView';
 
 interface Props {}
 
@@ -81,23 +82,12 @@ function ManageSingleProject({}: Props): ReactElement {
         <Head>
           <title>{`${t('common:edit')} - ${project.name}`}</title>
         </Head>
-        <div className="profilePage">
-          <div className="profilePageHeader">
-            <div>
-              <div className={'profilePageTitle'}>{project.name}</div>
-              <div style={{ marginBottom: 15 }}>
-                {t('manageProjects:onlyEnglish')}
-              </div>
-            </div>
-          </div>
-          <div style={{ marginTop: '60px' }}>
-            <ManageProjects
-              GUID={projectGUID}
-              token={token}
-              project={project}
-            />
-          </div>
-        </div>
+        <DashboardView
+          title={project.name}
+          subtitle={t('manageProjects:onlyEnglish')}
+        >
+          <ManageProjects GUID={projectGUID} token={token} project={project} />
+        </DashboardView>
       </UserLayout>
     ) : (
       <UserLayout>

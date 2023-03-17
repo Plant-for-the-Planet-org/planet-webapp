@@ -1,7 +1,5 @@
 import React from 'react';
-import { Tabs, Tab } from '@mui/material';
 import BasicDetails from './components/BasicDetails';
-import styles from './StepForm.module.scss';
 import ProjectMedia from './components/ProjectMedia';
 import ProjectSelection from './components/ProjectSelection';
 import DetailedAnalysis from './components/DetailedAnalysis';
@@ -15,9 +13,7 @@ import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import Grid from '@mui/material/Grid';
 import TabbedView from '../../common/Layout/TabbedView';
-import DashboardView from '../../common/Layout/DashboardView';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 
 export enum ProjectCreationTabs {
@@ -29,14 +25,14 @@ export enum ProjectCreationTabs {
   PROJECT_SPENDING = 5,
   REVIEW = 6,
 }
-export default function ManageProjects({ GUID, token, project, step }: any) {
+export default function ManageProjects({ GUID, token, project }: any) {
   const { t, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const router = useRouter();
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [errorMessage, setErrorMessage] = React.useState('');
-  const [tabSelected, setTabSelected] = React.useState(0);
+  const [tabSelected, setTabSelected] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [projectGUID, setProjectGUID] = React.useState(GUID ? GUID : '');
   const [tablist, setTabList] = React.useState<TabItem[]>([]);
@@ -44,91 +40,52 @@ export default function ManageProjects({ GUID, token, project, step }: any) {
     project ? project : {}
   );
 
-  // const formRouteHandler = (val) => {
-  //   if (router.query.purpose) return;
-  //   switch (val) {
-  //     case 1:
-  //       router.push(`/profile/projects/${projectGUID}?type=basic-details`);
+  const formRouteHandler = (val) => {
+    if (router.query.purpose) return;
+    switch (val) {
+      case 1:
+        router.push(`/profile/projects/${projectGUID}?type=basic-details`);
 
-  //       break;
-  //     case 2:
-  //       router.push(`/profile/projects/${projectGUID}?type=media`);
+        break;
+      case 2:
+        router.push(`/profile/projects/${projectGUID}?type=media`);
 
-  //       break;
-  //     case 3:
-  //       router.push(`/profile/projects/${projectGUID}?type=detail-analysis`);
+        break;
+      case 3:
+        router.push(`/profile/projects/${projectGUID}?type=detail-analysis`);
 
-  //       break;
-  //     case 4:
-  //       router.push(`/profile/projects/${projectGUID}?type=project-sites`);
+        break;
+      case 4:
+        router.push(`/profile/projects/${projectGUID}?type=project-sites`);
 
-  //       break;
-  //     case 5:
-  //       router.push(`/profile/projects/${projectGUID}?type=project-spendings`);
+        break;
+      case 5:
+        router.push(`/profile/projects/${projectGUID}?type=project-spendings`);
 
-  //       break;
-  //     case 6:
-  //       router.push(`/profile/projects/${projectGUID}?type=review`);
+        break;
+      case 6:
+        router.push(`/profile/projects/${projectGUID}?type=review`);
 
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
+        break;
+      default:
+        break;
+    }
+  };
 
   // for moving next tab
-  // const handleNext = () => {
-  //   formRouteHandler(tabSelected + 1);
-  //   setTabSelected((prevTabSelected) => prevTabSelected + 1);
-  // };
-
+  const handleNext = (nextTab: number): void => {
+    formRouteHandler(nextTab);
+  };
   //for moving previous tab
-  // const handleBack = () => {
-  //   formRouteHandler(tabSelected - 1);
-  //   setTabSelected((prevActiveStep) => prevActiveStep - 1);
-  // };
+  const handleBack = (previousTab: number): void => {
+    formRouteHandler(previousTab);
+  };
 
   const handleReset = (message) => {
     setErrorMessage(message);
     setActiveStep(0);
   };
 
-  // const handleChange = (e: React.ChangeEvent<{}>, newValue: number) => {
-  //   //restrict the access of Tab
-  //   if (router.asPath === '/profile/projects/new-project') {
-  //     e.preventDefault();
-  //     return;
-  //   }
-  //   //show the same route as respective form
-
-  //   formRouteHandler(newValue);
-
-  //   //if project selected don't let it change
-  //   if (newValue < 1) {
-  //     e.preventDefault();
-  //     return;
-  //   }
-
-  //   //if the Project is not created then lock it to basic details
-  //   if (projectGUID === '') {
-  //     e.preventDefault();
-  //     return;
-  //   }
-  //   setTabSelected(newValue);
-  //   //for getting access to other tab for edit of individual project
-  //   if (router.query.id) {
-  //     setTabSelected(newValue);
-  //   }
-
-  //   // A project type should be selected to move to the next step
-  //   if (!router.query.purpose) {
-  //     return;
-  //   }
-
-  //   if (router.query.id) {
-  //     handleNext();
-  //   }
-  // };
   const submitForReview = () => {
     setIsUploadingData(true);
     const submitData = {
@@ -204,13 +161,11 @@ export default function ManageProjects({ GUID, token, project, step }: any) {
     }
   }, []);
 
-  // React.useEffect(() => {
-  //   if (router.query.purpose) {
-  //     handleNext();
-  //   }
-  // }, [router]);
-
   React.useEffect(() => {
+    if (router.query.purpose) {
+      setTabSelected(1);
+    }
+
     switch (router.query.type) {
       case 'basic-details':
         setTabSelected(1);
@@ -233,14 +188,14 @@ export default function ManageProjects({ GUID, token, project, step }: any) {
       default:
         null;
     }
-  }, [router.query.screen]);
+  }, [tabSelected, router.query.type]);
 
   React.useEffect(() => {
-    if (router.query.purpose) {
+    if (router.query.type && project) {
       setTabList([
         {
           label: t('manageProjects:basicDetails'),
-          link: '/profile/projects/new-project?purpose=trees',
+          link: `/profile/projects/${projectGUID}?type=basic-details`,
           step: ProjectCreationTabs.BASIC_DETAILS,
         },
         {
@@ -260,15 +215,28 @@ export default function ManageProjects({ GUID, token, project, step }: any) {
         },
         {
           label: t('manageProjects:projectSpending'),
-          link: `/profile/projects/${projectGUID}?type=review`,
+          link: `/profile/projects/${projectGUID}?type=project-spendings`,
           step: ProjectCreationTabs.PROJECT_SPENDING,
         },
+        {
+          label: t('manageProjects:review'),
+          link: `/profile/projects/${projectGUID}?type=review`,
+          step: ProjectCreationTabs.REVIEW,
+        },
       ]);
-    } else if (router.query.type === '') {
+    } else if (router.query.purpose === 'trees' && !project) {
       setTabList([
         {
           label: t('manageProjects:basicDetails'),
           link: '/profile/projects/new-project?purpose=trees',
+          step: ProjectCreationTabs.BASIC_DETAILS,
+        },
+      ]);
+    } else if (router.query.purpose === 'conservation' && !project) {
+      setTabList([
+        {
+          label: t('manageProjects:basicDetails'),
+          link: '/profile/projects/new-project?purpose=conservation',
           step: ProjectCreationTabs.BASIC_DETAILS,
         },
       ]);
@@ -281,12 +249,12 @@ export default function ManageProjects({ GUID, token, project, step }: any) {
         },
       ]);
     }
-  }, [router.query.purpose]);
+  }, [tabSelected]);
 
   function getStepContent() {
-    switch (step) {
+    switch (tabSelected) {
       case ProjectCreationTabs.PROJECT_TYPE:
-        return <ProjectSelection />;
+        return <ProjectSelection setTabSelected={setTabSelected} />;
       case ProjectCreationTabs.BASIC_DETAILS:
         return (
           <BasicDetails
@@ -366,69 +334,13 @@ export default function ManageProjects({ GUID, token, project, step }: any) {
           />
         );
       default:
-        return <ProjectSelection />;
+        return <ProjectSelection setTabSelected={setTabSelected} />;
     }
   }
 
-  // return ready ? (
-  //   <Grid container spacing={2}>
-  //     <Grid item xs={12} sm={3} lg={2}>
-  //       <Tabs
-  //         value={tabSelected}
-  //         onChange={handleChange}
-  //         orientation={'vertical'}
-  //         variant="scrollable"
-  //         className={'custom-tab'}
-  //       >
-  //         <Tab
-  //           label={t('manageProjects:projectType')}
-  //           className={'tab-flow'}
-  //         ></Tab>
-  //         <Tab
-  //           label={t('manageProjects:basicDetails')}
-  //           className={'tab-flow'}
-  //         ></Tab>
-  //         <Tab
-  //           label={t('manageProjects:projectMedia')}
-  //           className={'tab-flow'}
-  //         ></Tab>
-  //         <Tab
-  //           label={t('manageProjects:detailedAnalysis')}
-  //           className={'tab-flow'}
-  //         />
-  //         <Tab
-  //           label={t('manageProjects:projectSites')}
-  //           className={'tab-flow'}
-  //         />
-  //         <Tab
-  //           label={t('manageProjects:projectSpending')}
-  //           className={'tab-flow'}
-  //         />
-  //         <Tab label={t('manageProjects:review')} className={'tab-flow'} />
-  //       </Tabs>
-  //     </Grid>
-  //     <Grid item xs={12} sm={18} lg={6}>
-  //       {getStepContent(tabSelected)}
-  //     </Grid>
-  //   </Grid>
-  // ) : null;
-
   return (
-    <DashboardView
-      title={t('manageProjects:addNewProject')}
-      subtitle={
-        <div className={'add-project-title'}>
-          {t('manageProjects:addProjetDescription')}
-          <p>
-            {t('manageProjects:addProjetContact')}{' '}
-            <span>{t('manageProjects:supportLink')}</span>
-          </p>
-        </div>
-      }
-    >
-      <TabbedView step={step} tabItems={tablist}>
-        {getStepContent()}
-      </TabbedView>
-    </DashboardView>
+    <TabbedView step={tabSelected} tabItems={tablist}>
+      {getStepContent()}
+    </TabbedView>
   );
 }

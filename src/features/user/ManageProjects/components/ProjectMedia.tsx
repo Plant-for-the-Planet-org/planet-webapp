@@ -16,6 +16,7 @@ import Star from '../../../../../public/assets/images/icons/manageProjects/Star'
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
 import { ProjectCreationFormContainer } from '.';
+import { ProjectCreationTabs } from '..';
 
 interface Props {
   handleNext: Function;
@@ -369,7 +370,7 @@ export default function ProjectMedia({
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
             variant="outlined"
-            onClick={() => handleBack()}
+            onClick={() => handleBack(ProjectCreationTabs.BASIC_DETAILS)}
             className={styles.backButton}
           >
             <BackArrow />
@@ -390,7 +391,7 @@ export default function ProjectMedia({
             )}
           </Button>
           <Button
-            onClick={() => handleNext()}
+            onClick={() => handleNext(ProjectCreationTabs.DETAILED_ANALYSIS)}
             variant="contained"
             className={styles.skipButton}
           >

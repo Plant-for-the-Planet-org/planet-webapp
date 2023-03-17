@@ -29,6 +29,7 @@ import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { ProjectCreationFormContainer } from '.';
+import { ProjectCreationTabs } from '..';
 
 interface Props {
   handleNext: Function;
@@ -938,7 +939,7 @@ export default function BasicDetails({
             <Button
               className={styles.skipButton}
               variant="contained"
-              onClick={() => handleNext()}
+              onClick={() => handleNext(ProjectCreationTabs.PROJECT_MEDIA)}
             >
               {t('manageProjects:skip')}
             </Button>

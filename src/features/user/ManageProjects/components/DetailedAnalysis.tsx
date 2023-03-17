@@ -17,6 +17,7 @@ import { ProjectCreationFormContainer } from '.';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { ProjectCreationTabs } from '..';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -814,12 +815,11 @@ export default function DetailedAnalysis({
                         </p>
                       ),
                     }}
+                    error={errors.plantingDensity}
+                    helperText={
+                      errors.plantingDensity && errors.plantingDensity.message
+                    }
                   />
-                  {errors.plantingDensity && (
-                    <span className={styles.formErrors}>
-                      {errors.plantingDensity.message}
-                    </span>
-                  )}
                 </div>
                 <div className={styles.hyphen}>-</div>
                 <div
@@ -848,12 +848,12 @@ export default function DetailedAnalysis({
                         </p>
                       ),
                     }}
+                    error={errors.maxPlantingDensity}
+                    helperText={
+                      errors.maxPlantingDensity &&
+                      errors.maxPlantingDensity.message
+                    }
                   />
-                  {errors.maxPlantingDensity && (
-                    <span className={styles.formErrors}>
-                      {errors.maxPlantingDensity.message}
-                    </span>
-                  )}
                 </div>
               </div>
               <div style={{ width: '20px' }}></div>
@@ -1100,7 +1100,7 @@ export default function DetailedAnalysis({
 
           <div className={styles.buttonsForProjectCreationForm}>
             <Button
-              onClick={() => handleBack()}
+              onClick={() => handleBack(ProjectCreationTabs.PROJECT_MEDIA)}
               variant="outlined"
               className={styles.backButton}
             >
@@ -1124,7 +1124,7 @@ export default function DetailedAnalysis({
             <Button
               className={styles.skipButton}
               variant="contained"
-              onClick={() => handleNext()}
+              onClick={() => handleNext(ProjectCreationTabs.PROJECT_SITES)}
             >
               {t('manageProjects:skip')}
             </Button>

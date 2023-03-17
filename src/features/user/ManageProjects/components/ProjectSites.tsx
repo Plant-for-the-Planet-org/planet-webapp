@@ -22,6 +22,7 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { ProjectCreationFormContainer } from '.';
+import { ProjectCreationTabs } from '..';
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
@@ -525,7 +526,7 @@ export default function ProjectSites({
 
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
-            onClick={() => handleBack()}
+            onClick={() => handleBack(ProjectCreationTabs.PROJECT_SITES)}
             variant="outlined"
             className={styles.backButton}
           >
@@ -546,7 +547,7 @@ export default function ProjectSites({
           </Button>
 
           <Button
-            onClick={() => handleNext()}
+            onClick={() => handleNext(ProjectCreationTabs.PROJECT_SPENDING)}
             variant="contained"
             className={styles.skipButton}
           >

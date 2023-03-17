@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'next-i18next';
 
-export default function ProjectSelection(): ReactElement {
+export default function ProjectSelection({ setTabSelected }): ReactElement {
   const router = useRouter();
   const { t, ready } = useTranslation('manageProjects');
 
@@ -12,9 +12,10 @@ export default function ProjectSelection(): ReactElement {
         <button
           id={'addProjectBut'}
           className={'add-projects-button'}
-          onClick={() =>
-            router.push('/profile/projects/new-project/?purpose=trees')
-          }
+          onClick={() => {
+            setTabSelected(1);
+            router.push('/profile/projects/new-project/?purpose=trees');
+          }}
         >
           {t('manageProjects:restorationProject')}
         </button>
@@ -22,9 +23,10 @@ export default function ProjectSelection(): ReactElement {
         <button
           id={'conservationProj'}
           className={'add-projects-button'}
-          onClick={() =>
-            router.push('/profile/projects/new-project/?purpose=conservation')
-          }
+          onClick={() => {
+            setTabSelected(1);
+            router.push('/profile/projects/new-project/?purpose=conservation');
+          }}
         >
           {t('manageProjects:conservationProject')}
         </button>

@@ -9,6 +9,7 @@ import Footer from '../../../src/features/common/Layout/Footer';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
 import { ProjectCreationTabs } from '../../../src/features/user/ManageProjects';
+import DashboardView from '../../../src/features/common/Layout/DashboardView';
 
 export default function AddProjectType(): ReactElement {
   const router = useRouter();
@@ -67,8 +68,25 @@ export default function AddProjectType(): ReactElement {
       <Head>
         <title>{t('manageProjects:addNewProject')}</title>
       </Head>
+
       {user.type === 'tpo' ? (
-        <ManageProjects step={ProjectCreationTabs.PROJECT_TYPE} token={token} />
+        <DashboardView
+          title={t('manageProjects:addNewProject')}
+          subtitle={
+            <div className={'add-project-title'}>
+              {t('manageProjects:addProjetDescription')}
+              <p>
+                {t('manageProjects:addProjetContact')}{' '}
+                <span>{t('manageProjects:supportLink')}</span>
+              </p>
+            </div>
+          }
+        >
+          <ManageProjects
+            step={ProjectCreationTabs.PROJECT_TYPE}
+            token={token}
+          />
+        </DashboardView>
       ) : (
         <AccessDeniedLoader />
       )}

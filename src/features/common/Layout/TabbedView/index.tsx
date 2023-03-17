@@ -38,16 +38,20 @@ export default function TabbedView({
   const [stepToRender, setStepToRender] = useState<string | number | false>(
     false
   );
-
+  // console.log(tabItems);
   useEffect(() => {
     // sets value for Tabs component only if the specified step is within the list of tabs
     if (tabItems && tabItems.length > 0)
-      setIsStepFound(tabItems.some((tabItem) => tabItem.step === step));
+      setIsStepFound(
+        tabItems.some((tabItem) => {
+          return tabItem.step === step;
+        })
+      );
   }, [step, tabItems]);
 
   useEffect(() => {
     setStepToRender(step);
-  }, [isStepFound]);
+  }, [isStepFound, step]);
 
   return (
     <Grid container className="TabbedView">
