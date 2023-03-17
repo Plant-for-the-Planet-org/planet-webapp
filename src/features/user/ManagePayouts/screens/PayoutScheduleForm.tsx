@@ -12,7 +12,6 @@ import { User } from '../../../common/types/user';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 import { PaymentFrequencies } from '../../../../utils/constants/payoutConstants';
-import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
 const paymentFrequencies = [
   PaymentFrequencies.MANUAL,
@@ -30,7 +29,8 @@ const PayoutScheduleForm = (): ReactElement | null => {
   const { t, ready } = useTranslation('managePayouts');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const { token, user, setUser, validEmail } = useContext(UserPropsContext);
+  const { token, user, setUser, impersonatedEmail } =
+    useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
   const { handleSubmit, errors, control } = useForm<FormData>({
     mode: 'onBlur',
@@ -42,7 +42,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
       '/app/profile',
       { scheduleFrequency: data.scheduleFrequency },
       token,
-      validEmail,
+      impersonatedEmail,
       handleError
     );
     if (res?.id && !isApiCustomError(res)) {

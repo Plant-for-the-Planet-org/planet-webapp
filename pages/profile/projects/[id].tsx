@@ -12,7 +12,6 @@ import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
-import { ParamsContext } from '../../../src/features/common/Layout/QueryParamsContext';
 
 interface Props {}
 
@@ -24,7 +23,7 @@ function ManageSingleProject({}: Props): ReactElement {
   const [accessDenied, setAccessDenied] = React.useState(false);
   const [setupAccess, setSetupAccess] = React.useState(false);
   const [project, setProject] = React.useState({});
-  const { user, contextLoaded, token, validEmail } =
+  const { user, contextLoaded, token, impersonatedEmail } =
     React.useContext(UserPropsContext);
 
   const { handleError } = React.useContext(ErrorHandlingContext);
@@ -40,8 +39,8 @@ function ManageSingleProject({}: Props): ReactElement {
     async function loadProject() {
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}`,
-        validEmail,
         token,
+        impersonatedEmail,
         {},
         handleError,
         '/profile'

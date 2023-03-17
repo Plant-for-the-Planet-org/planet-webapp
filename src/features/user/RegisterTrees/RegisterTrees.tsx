@@ -51,7 +51,7 @@ const dialogSx: SxProps = {
 interface Props {}
 
 export default function RegisterTrees({}: Props) {
-  const { user, token, contextLoaded, validEmail } =
+  const { user, token, contextLoaded, impersonatedEmail } =
     React.useContext(UserPropsContext);
 
   const { t, ready } = useTranslation(['me', 'common']);
@@ -167,7 +167,7 @@ export default function RegisterTrees({}: Props) {
           `/app/contributions`,
           submitData,
           token,
-          validEmail,
+          impersonatedEmail,
           handleError
         ).then((res) => {
           if (!res.code) {
@@ -202,8 +202,8 @@ export default function RegisterTrees({}: Props) {
   async function loadProjects() {
     await getAuthenticatedRequest(
       '/app/profile/projects',
-      validEmail,
       token,
+      impersonatedEmail,
       {},
       handleError,
       '/profile'
