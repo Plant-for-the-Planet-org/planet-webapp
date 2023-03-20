@@ -93,7 +93,6 @@ function NavLink({
   user,
 }: any) {
   const [isSubMenuActive, setisSubMenuActive] = React.useState(false);
-
   React.useEffect(() => {
     // Check if array of submenu has activeSubLink
     if (link.subMenu && link.subMenu.length > 0) {
@@ -189,7 +188,7 @@ function UserLayout(props: any): ReactElement {
   const { t } = useTranslation(['common', 'me']);
   // const { asPath } = useRouter();
   const router = useRouter();
-  const { user, logoutUser, contextLoaded } =
+  const { user, logoutUser, contextLoaded, isImpersonationModeOn } =
     React.useContext(UserPropsContext);
 
   // Flags can be added to show labels on the right
@@ -360,6 +359,11 @@ function UserLayout(props: any): ReactElement {
           path: '/profile/edit',
         },
         {
+          title: t('me:switchUser'),
+          path: '/profile/impersonate-user',
+          hideItem: isImpersonationModeOn || !user.allowedToSwitch,
+        },
+        {
           title: t('me:apiKey'),
           path: '/profile/api-key',
         },
@@ -426,11 +430,16 @@ function UserLayout(props: any): ReactElement {
         key={'hamburgerIcon'}
         className={`${styles.hamburgerIcon}`}
         onClick={() => setIsMenuOpen(true)} // for mobile verion to open menu
+        style={{ marginTop: isImpersonationModeOn ? '47px' : '' }}
       >
         <MenuIcon />
       </div>
       <div
-        className={`${styles.sidebar} ${!isMenuOpen ? styles.menuClosed : ''}`}
+        className={`${
+          isImpersonationModeOn
+            ? `${styles.sidebarModified}`
+            : `${styles.sidebar}`
+        } ${!isMenuOpen ? styles.menuClosed : ''}`}
       >
         <div className={styles.navLinksContainer}>
           <>
@@ -477,7 +486,10 @@ function UserLayout(props: any): ReactElement {
           <div
             className={styles.navlink}
             //logout user
-            onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)}
+            onClick={() => {
+              localStorage.removeItem('impersonatedEmail');
+              logoutUser(`${process.env.NEXTAUTH_URL}/`);
+            }}
           >
             <LogoutIcon />
             <button className={styles.navlinkTitle}>{t('logout')}</button>
@@ -485,7 +497,13 @@ function UserLayout(props: any): ReactElement {
           </div>
         </div>
       </div>
-      <div className={styles.profilePageWrapper}>{props.children}</div>
+      <div
+        className={`${styles.profilePageWrapper} ${
+          isImpersonationModeOn ? ` ${styles.profileImpersonation}` : ''
+        }`}
+      >
+        {props.children}
+      </div>
     </div>
   ) : (
     <UserProfileLoader />

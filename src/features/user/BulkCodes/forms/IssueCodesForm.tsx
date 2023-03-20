@@ -34,7 +34,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
     bulkMethod,
     setBulkMethod,
   } = useBulkCode();
-  const { user } = useContext(UserPropsContext);
+  const { user, impersonatedEmail } = useContext(UserPropsContext);
   const { getAccessTokenSilently } = useAuth0();
   const { handleError } = useContext(ErrorHandlingContext);
   const [localRecipients, setLocalRecipients] = useState<LocalRecipient[]>([]);
@@ -117,6 +117,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
         `/app/donations`,
         cleanedData,
         token,
+        impersonatedEmail,
         handleError,
         {
           'IDEMPOTENCY-KEY': uuidv4(),

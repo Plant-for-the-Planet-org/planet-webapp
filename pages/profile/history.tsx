@@ -8,12 +8,13 @@ import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-
 interface Props {}
 
 function AccountHistory({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
-  const { token, contextLoaded } = React.useContext(UserPropsContext);
+  const { token, contextLoaded, impersonatedEmail } =
+    React.useContext(UserPropsContext);
+
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const [filter, setFilter] = React.useState<string | null>(null);
@@ -38,6 +39,7 @@ function AccountHistory({}: Props): ReactElement {
               : paymentHistory?._links?.next
           }`,
           token,
+          impersonatedEmail,
           {},
           handleError,
           '/profile'
@@ -56,6 +58,7 @@ function AccountHistory({}: Props): ReactElement {
           await getAuthenticatedRequest(
             '/app/paymentHistory?limit=15',
             token,
+            impersonatedEmail,
             {},
             handleError,
             '/profile'
@@ -73,6 +76,7 @@ function AccountHistory({}: Props): ReactElement {
               : '/app/paymentHistory?limit=15'
           }`,
           token,
+          impersonatedEmail,
           {},
           handleError,
           '/profile'

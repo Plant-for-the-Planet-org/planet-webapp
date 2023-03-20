@@ -249,6 +249,17 @@
   "apiKeyMessage3": "Regenerating an API Key will invalidate your existing API Key immediately.",
   "regenerateKey": "Regenerate Key",
   "giftFund": "GiftFund",
+  "switchUser": "Impersonate User",
+  "switchUserMessage": "Enter the email of the user you want to switch to in the field below.",
+  "profileEmail": "Profile Email",
+  "switch": "Impersonate",
+  "targetUser": "You are currently impersonating {{impersonatedEmail}}",
+  "exitImpersonation": "Exit impersonation",
+  "enterTheEmail": "Enter the email of the target user",
+  "invalidEmail": "Please enter a valid email Id",
+  "userNotexist": "There is no account associated to this email !!",
   "donatedTrees": "Donated Trees",
   "remainingPaymentsText": "{{remainingPayments}} donations would take place before cancellation."
 }
+
+
