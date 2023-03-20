@@ -19,7 +19,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { SxProps, Button, TextField } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
-import { ProjectCreationFormContainer } from '.';
+import CenteredContainer from '../../../common/Layout/CenteredContainer';
+import StyledForm from '../../../common/Layout/StyledForm';
 
 const yearDialogSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
@@ -194,12 +195,8 @@ export default function ProjectSpending({
   const fiveYearsAgo = new Date();
   fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
   return ready ? (
-    <ProjectCreationFormContainer>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-      >
+    <CenteredContainer>
+      <StyledForm>
         {uploadedFiles && uploadedFiles.length > 0 ? (
           <div className={styles.formField}>
             {uploadedFiles.map((report) => {
@@ -390,8 +387,8 @@ export default function ProjectSpending({
             {t('manageProjects:skip')}
           </Button>
         </div>
-      </form>
-    </ProjectCreationFormContainer>
+      </StyledForm>
+    </CenteredContainer>
   ) : (
     <></>
   );

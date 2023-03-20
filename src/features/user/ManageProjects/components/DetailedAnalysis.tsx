@@ -18,6 +18,8 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { ProjectCreationTabs } from '..';
+import CenteredContainer from '../../../common/Layout/CenteredContainer';
+import StyledForm from '../../../common/Layout/StyledForm';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -491,13 +493,9 @@ export default function DetailedAnalysis({
   }, [projectDetails]);
 
   return ready ? (
-    <ProjectCreationFormContainer>
+    <CenteredContainer>
       {' '}
-      <form
-        onClick={(e) => {
-          e.preventDefault();
-        }}
-      >
+      <StyledForm>
         <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
           {purpose === 'trees' ? (
             <div className={styles.formField}>
@@ -1130,8 +1128,8 @@ export default function DetailedAnalysis({
             </Button>
           </div>
         </div>
-      </form>
-    </ProjectCreationFormContainer>
+      </StyledForm>
+    </CenteredContainer>
   ) : (
     <></>
   );

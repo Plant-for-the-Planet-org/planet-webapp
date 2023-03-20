@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import styles from './../StepForm.module.scss';
-import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
@@ -21,8 +20,9 @@ import { Fade, Modal, MenuItem, Button, TextField } from '@mui/material';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { ProjectCreationFormContainer } from '.';
 import { ProjectCreationTabs } from '..';
+import CenteredContainer from '../../../common/Layout/CenteredContainer';
+import StyledForm from '../../../common/Layout/StyledForm';
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
@@ -329,10 +329,10 @@ export default function ProjectSites({
   };
 
   return ready ? (
-    <ProjectCreationFormContainer>
+    <CenteredContainer>
       {editMode && <EditSite {...EditProps} />}
 
-      <form
+      <StyledForm
         onSubmit={(e) => {
           e.preventDefault();
         }}
@@ -554,8 +554,8 @@ export default function ProjectSites({
             {t('manageProjects:skip')}
           </Button>
         </div>
-      </form>
-    </ProjectCreationFormContainer>
+      </StyledForm>
+    </CenteredContainer>
   ) : (
     <></>
   );

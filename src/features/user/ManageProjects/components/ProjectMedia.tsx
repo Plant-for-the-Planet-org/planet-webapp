@@ -15,8 +15,9 @@ import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
-import { ProjectCreationFormContainer } from '.';
 import { ProjectCreationTabs } from '..';
+import CenteredContainer from '../../../common/Layout/CenteredContainer';
+import StyledForm from '../../../common/Layout/StyledForm';
 
 interface Props {
   handleNext: Function;
@@ -268,8 +269,8 @@ export default function ProjectMedia({
     });
   };
   return ready ? (
-    <ProjectCreationFormContainer>
-      <form
+    <CenteredContainer>
+      <StyledForm
         onSubmit={(e) => {
           e.preventDefault();
         }}
@@ -398,8 +399,8 @@ export default function ProjectMedia({
             {t('manageProjects:skip')}
           </Button>
         </div>
-      </form>
-    </ProjectCreationFormContainer>
+      </StyledForm>
+    </CenteredContainer>
   ) : (
     <></>
   );

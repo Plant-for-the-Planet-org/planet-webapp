@@ -1,14 +1,15 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'next-i18next';
+import Styles from '../../../../../src/features/user/ManageProjects/StepForm.module.scss';
 
 export default function ProjectSelection({ setTabSelected }): ReactElement {
   const router = useRouter();
   const { t, ready } = useTranslation('manageProjects');
 
   return ready ? (
-    <div className={'add-project-container'}>
-      <div className={'add-project project-selection'}>
+    <div className={Styles.projectTypes}>
+      <div>
         <button
           id={'addProjectBut'}
           className={'add-projects-button'}
@@ -19,7 +20,8 @@ export default function ProjectSelection({ setTabSelected }): ReactElement {
         >
           {t('manageProjects:restorationProject')}
         </button>
-
+      </div>
+      <div>
         <button
           id={'conservationProj'}
           className={'add-projects-button'}

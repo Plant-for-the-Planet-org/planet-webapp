@@ -28,8 +28,9 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
-import { ProjectCreationFormContainer } from '.';
 import { ProjectCreationTabs } from '..';
+import CenteredContainer from '../../../common/Layout/CenteredContainer';
+import StyledForm from '../../../common/Layout/StyledForm';
 
 interface Props {
   handleNext: Function;
@@ -481,12 +482,8 @@ export default function BasicDetails({
   );
 
   return ready ? (
-    <ProjectCreationFormContainer>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-      >
+    <CenteredContainer>
+      <StyledForm>
         <div className={styles.formFieldLarge} data-test-id="projectName">
           <TextField
             inputRef={register({
@@ -947,8 +944,8 @@ export default function BasicDetails({
             ''
           )}
         </div>
-      </form>
-    </ProjectCreationFormContainer>
+      </StyledForm>
+    </CenteredContainer>
   ) : (
     <></>
   );
