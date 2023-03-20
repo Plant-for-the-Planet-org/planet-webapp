@@ -21,6 +21,8 @@ export const UserPropsContext = React.createContext({
   setIsImpersonationModeOn: (value: boolean) => {},
   impersonatedEmail: '',
   setImpersonatedEmail: (value: string) => {},
+  disable: false,
+  setDisable: (value: boolean) => {},
 });
 
 function UserPropsProvider({ children }: any): ReactElement {
@@ -41,7 +43,7 @@ function UserPropsProvider({ children }: any): ReactElement {
   const [isImpersonationModeOn, setIsImpersonationModeOn] =
     React.useState(false);
   const [impersonatedEmail, setImpersonatedEmail] = React.useState('');
-
+  const [disable, setDisable] = React.useState<boolean>(false);
   React.useEffect(() => {
     async function loadToken() {
       const accessToken = await getAccessTokenSilently();
@@ -155,6 +157,8 @@ function UserPropsProvider({ children }: any): ReactElement {
         logoutUser,
         auth0User: user,
         auth0Error: error,
+        disable,
+        setDisable,
       }}
     >
       {children}

@@ -30,14 +30,21 @@ export default function RedeemModal({
     'donate',
     'redeem',
   ]);
-  const { user, contextLoaded, token, setUser, impersonatedEmail } =
-    React.useContext(UserPropsContext);
+  const {
+    user,
+    contextLoaded,
+    token,
+    setUser,
+    impersonatedEmail,
+    disable,
+    setDisable,
+  } = React.useContext(UserPropsContext);
+
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [validCodeData, setValidCodeData] = React.useState<{} | undefined>();
   const [isCodeRedeemed, setIsCodeRedeemed] = React.useState(false);
   const [inputCode, setInputCode] = React.useState('');
-  const [disable, setDisable] = React.useState<boolean>(false);
   const handleAnotherCode = () => {
     setErrorMessage('');
     setInputCode('');
