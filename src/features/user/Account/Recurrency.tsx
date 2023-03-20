@@ -134,6 +134,7 @@ export default function Recurrency({
                 handleCancelModalClose={handleCancelModalClose}
                 record={currentRecord}
                 fetchRecurrentDonations={fetchRecurrentDonations}
+                handleCancelModalOpen={() => setcancelModalOpen(true)}
               />
               <EditModal
                 editModalOpen={editModalOpen}

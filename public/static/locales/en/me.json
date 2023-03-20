@@ -259,7 +259,8 @@
   "invalidEmail": "Please enter a valid email Id",
   "userNotexist": "There is no account associated to this email !!",
   "donatedTrees": "Donated Trees",
-  "remainingPaymentsText": "{{remainingPayments}} donations would take place before cancellation."
+  "remainingPaymentsText": "{{remainingPayments}} donations would take place before cancellation.",
+  "continue": "Continue"
 }
 
 

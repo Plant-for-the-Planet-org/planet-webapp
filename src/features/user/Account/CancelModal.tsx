@@ -22,6 +22,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import { Subscription } from '../../common/types/payments';
+import CustomModal from '../../common/Layout/CustomModal';
 
 const MuiCalendarPicker = styled(CalendarPicker)({
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -42,6 +43,7 @@ interface CancelModalProps {
   handleCancelModalClose: () => void;
   record: Subscription;
   fetchRecurrentDonations: (next?: boolean | undefined) => void;
+  handleCancelModalOpen: () => void;
 }
 
 export const CancelModal = ({
@@ -49,6 +51,7 @@ export const CancelModal = ({
   handleCancelModalClose,
   record,
   fetchRecurrentDonations,
+  handleCancelModalOpen,
 }: CancelModalProps) => {
   const { theme } = React.useContext(ThemeContext);
   const { token, impersonatedEmail } = React.useContext(UserPropsContext);
@@ -57,16 +60,25 @@ export const CancelModal = ({
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState(new Date());
   const [disabled, setDisabled] = React.useState(false);
-
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [remainingPayments, setRemainingPayments] = React.useState(0);
   const { t } = useTranslation(['me']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     setDisabled(false);
   }, [cancelModalOpen]);
 
+  const handleSave = () => {
+    if (option === 'cancelOnSelectedDate') {
+      displayRemainingPayments();
+    } else {
+      cancelDonation();
+    }
+  };
+
   const cancelDonation = () => {
-    displayRemainingPayments();
+    setIsModalOpen(false);
+    handleCancelModalOpen();
     setDisabled(true);
     const bodyToSend = {
       cancellationType:
@@ -101,23 +113,32 @@ export const CancelModal = ({
     const end = new Date(date);
     const subscription = new Date(record.firstDonation.created);
     const subscriptionDate = subscription.getDate();
-    const startDate = current.getDate();
+    const subscriptionYear = subscription.getFullYear();
     const startMonth = current.getMonth();
+    const startYear = current.getFullYear();
     const endDate = end.getDate();
     const endMonth = end.getMonth();
+    const endYear = end.getFullYear();
+
     let remainingPayments = 0;
-    if (subscriptionDate > startDate && subscriptionDate <= endDate) {
-      remainingPayments = endMonth - startMonth + 1;
+
+    if (record.frequency === 'monthly') {
+      remainingPayments += endMonth - startMonth - 1;
+
+      if (subscriptionDate <= endDate) {
+        remainingPayments += 1;
+      }
     } else {
-      remainingPayments = endMonth - startMonth;
+      remainingPayments += endYear - startYear - 1;
+      if (subscriptionYear <= endYear) {
+        remainingPayments += 1;
+      }
     }
-    alert(
-      t('me:remainingPaymentsText', {
-        remainingPayments,
-      })
-    );
+    setIsModalOpen(true);
+    handleCancelModalClose();
+    setRemainingPayments(remainingPayments);
   }
-  return (
+  return !isModalOpen ? (
     <Modal
       className={'modalContainer' + ' ' + theme}
       open={cancelModalOpen}
@@ -219,7 +240,7 @@ export const CancelModal = ({
 
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button
-              onClick={() => cancelDonation()}
+              onClick={() => handleSave()}
               className={styles.submitButton}
               disabled={disabled}
               style={{ minWidth: '20px', marginTop: '30px' }}
@@ -245,5 +266,16 @@ export const CancelModal = ({
         </div>
       </Fade>
     </Modal>
+  ) : (
+    <CustomModal
+      isOpen={isModalOpen}
+      handleContinue={cancelDonation}
+      buttonTitle={t('continue')}
+      isCancel={false}
+      modalTitle=""
+      modalSubtitle={t('me:remainingPaymentsText', {
+        remainingPayments,
+      })}
+    />
   );
 };
