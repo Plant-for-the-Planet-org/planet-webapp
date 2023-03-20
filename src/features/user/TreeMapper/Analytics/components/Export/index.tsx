@@ -156,7 +156,7 @@ export const Export = () => {
 
   const handleExport = async () => {
     if (localProject) {
-      const res = await fetch('/api/analytics/export', {
+      const res = await fetch('/api/data-explorer/export', {
         method: 'POST',
         body: JSON.stringify({
           projectId: localProject.id,

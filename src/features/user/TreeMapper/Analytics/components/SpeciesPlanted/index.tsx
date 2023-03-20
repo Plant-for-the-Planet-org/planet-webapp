@@ -209,7 +209,7 @@ export const SpeciesPlanted = () => {
   };
 
   const fetchPlantedSpecies = async () => {
-    const res = await fetch('/api/analytics/species-planted', {
+    const res = await fetch('/api/data-explorer/species-planted', {
       method: 'POST',
       body: JSON.stringify({
         projectId: project!.id,

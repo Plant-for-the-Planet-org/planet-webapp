@@ -291,8 +291,8 @@ function UserLayout(props: any): ReactElement {
           hideItem: !(user?.type === 'tpo'),
         },
         {
-          title: t('me:analytics'),
-          path: '/profile/treemapper/analytics',
+          title: t('me:dataExplorer'),
+          path: '/profile/treemapper/data-explorer',
           hideItem: !process.env.ENABLE_ANALYTICS,
         },
       ],

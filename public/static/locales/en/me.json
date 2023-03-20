@@ -248,5 +248,5 @@
   "apiKeyMessage3": "Regenerating an API Key will invalidate your existing API Key immediately.",
   "regenerateKey": "Regenerate Key",
   "giftFund": "GiftFund",
-  "analytics": "Analytics"
+  "dataExplorer": "Data Explorer"
 }

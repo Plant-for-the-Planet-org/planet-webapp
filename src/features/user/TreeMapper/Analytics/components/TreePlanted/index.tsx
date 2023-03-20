@@ -399,7 +399,7 @@ export const TreePlanted = () => {
 
   const fetchPlantedTrees = async () => {
     const res = await fetch(
-      `/api/analytics/trees-planted?timeFrame=${timeFrame}`,
+      `/api/data-explorer/trees-planted?timeFrame=${timeFrame}`,
       {
         method: 'POST',
         body: JSON.stringify({
