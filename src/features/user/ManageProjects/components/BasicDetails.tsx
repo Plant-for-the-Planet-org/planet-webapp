@@ -31,6 +31,7 @@ import GeocoderArcGIS from 'geocoder-arcgis';
 import { ProjectCreationTabs } from '..';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
+import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 
 interface Props {
   handleNext: Function;
@@ -484,143 +485,103 @@ export default function BasicDetails({
   return ready ? (
     <CenteredContainer>
       <StyledForm>
-        <div className={styles.formFieldLarge} data-test-id="projectName">
+        <TextField
+          inputRef={register({
+            required: {
+              value: true,
+              message: t('manageProjects:nameValidation'),
+            },
+          })}
+          label={t('manageProjects:name')}
+          variant="outlined"
+          name="name"
+          error={errors.name}
+          helperText={errors.name && errors.name.message}
+        />
+        <InlineFormDisplayGroup>
           <TextField
             inputRef={register({
               required: {
                 value: true,
-                message: t('manageProjects:nameValidation'),
+                message: t('manageProjects:slugValidation'),
               },
             })}
-            label={t('manageProjects:name')}
+            label={t('manageProjects:slug')}
             variant="outlined"
-            name="name"
-            error={errors.name}
-            helperText={errors.name && errors.name.message}
+            name="slug"
+            InputProps={{
+              startAdornment: (
+                <p className={styles.inputStartAdornment}>pp.eco/</p>
+              ),
+            }}
+            error={errors.slug}
+            helperText={errors.slug && errors.slug.message}
           />
-        </div>
-
-        <div className={styles.formField}>
-          <div className={styles.formFieldHalf} data-test-id="slug" id="slug">
-            <TextField
-              inputRef={register({
-                required: {
-                  value: true,
-                  message: t('manageProjects:slugValidation'),
-                },
-              })}
-              label={t('manageProjects:slug')}
-              variant="outlined"
-              name="slug"
-              InputProps={{
-                startAdornment: (
-                  <p className={styles.inputStartAdornment}>pp.eco/</p>
-                ),
-              }}
-              error={errors.slug}
-              helperText={errors.slug && errors.slug.message}
-            />
-          </div>
-          <div style={{ width: '20px' }}></div>
           {purpose === 'trees' ? (
-            <div className={styles.formFieldHalf} data-test-id="classification">
-              <Controller
-                as={
-                  <TextField
-                    label={t('manageProjects:classification')}
-                    variant="outlined"
-                    select
-                  >
-                    {classifications.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                        classes={{
-                          // option: classes.option,
-                          root: classes.root,
-                        }}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                }
-                name="classification"
-                rules={{
-                  required: t('manageProjects:classificationValidation'),
-                }}
-                control={control}
-                error={errors.classification}
-                helperText={
-                  errors.classification && errors.classification.message
-                }
-              />
-            </div>
+            <Controller
+              as={
+                <TextField
+                  label={t('manageProjects:classification')}
+                  variant="outlined"
+                  select
+                >
+                  {classifications.map((option) => (
+                    <MenuItem
+                      key={option.value}
+                      value={option.value}
+                      classes={{
+                        // option: classes.option,
+                        root: classes.root,
+                      }}
+                    >
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              }
+              name="classification"
+              rules={{
+                required: t('manageProjects:classificationValidation'),
+              }}
+              control={control}
+              error={errors.classification}
+              helperText={
+                errors.classification && errors.classification.message
+              }
+            />
           ) : (
-            <div className={styles.formFieldHalf}>
-              <Controller
-                as={
-                  <TextField
-                    label={t('manageProjects:ecosystems')}
-                    variant="outlined"
-                    select
-                  >
-                    {ecosystemsType.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                        classes={{
-                          // option: classes.option,
-                          root: classes.root,
-                        }}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                }
-                name="ecosystems"
-                rules={{
-                  required: t('manageProjects:ecosystemType'),
-                }}
-                control={control}
-              />
-              {errors.ecosystems && (
-                <span className={styles.formErrors}>
-                  {errors.ecosystems.message}
-                </span>
-              )}
-            </div>
+            <Controller
+              as={
+                <TextField
+                  label={t('manageProjects:ecosystems')}
+                  variant="outlined"
+                  select
+                  error={errors.ecosystems}
+                  helperText={errors.ecosystems && errors.ecosystems.message}
+                >
+                  {ecosystemsType.map((option) => (
+                    <MenuItem
+                      key={option.value}
+                      value={option.value}
+                      classes={{
+                        // option: classes.option,
+                        root: classes.root,
+                      }}
+                    >
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              }
+              name="ecosystems"
+              rules={{
+                required: t('manageProjects:ecosystemType'),
+              }}
+              control={control}
+            />
           )}
-        </div>
-
-        {purpose === 'trees' ? (
-          <div className={styles.formField}>
-            <div className={styles.formFieldHalf} data-test-id="target">
-              <TextField
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: t('manageProjects:countTargetValidation'),
-                  },
-                  validate: (value) => parseInt(value, 10) > 1,
-                })}
-                onInput={(e) => {
-                  e.target.value = e.target.value.replace(/[^1-9]/g, '');
-                }}
-                label={t('manageProjects:countTarget')}
-                variant="outlined"
-                name="countTarget"
-                placeholder={t('manageProjects:countTargetValidation2')}
-                error={errors.countTarget}
-                helperText={errors.countTarget && errors.countTarget.message}
-              />
-            </div>
-          </div>
-        ) : (
-          <></>
-        )}
-        <div className={styles.formFieldHalf} data-test-id="website">
+        </InlineFormDisplayGroup>
+        <InlineFormDisplayGroup>
           <TextField
             label={t('manageProjects:website')}
             variant="outlined"
@@ -640,124 +601,139 @@ export default function BasicDetails({
             error={errors.website}
             helperText={errors.website && errors.website.message}
           />
-        </div>
+          {purpose === 'trees' && (
+            <TextField
+              inputRef={register({
+                required: {
+                  value: true,
+                  message: t('manageProjects:countTargetValidation'),
+                },
+                validate: (value) => parseInt(value, 10) > 1,
+              })}
+              onInput={(e) => {
+                e.target.value = e.target.value.replace(/[^1-9]/g, '');
+              }}
+              label={t('manageProjects:countTarget')}
+              variant="outlined"
+              name="countTarget"
+              placeholder={t('manageProjects:countTargetValidation2')}
+              error={errors.countTarget}
+              helperText={errors.countTarget && errors.countTarget.message}
+            />
+          )}
+        </InlineFormDisplayGroup>
 
-        <div className={styles.formFieldLarge} data-test-id="aboutProject">
-          <TextField
-            label={t('manageProjects:aboutProject')}
-            variant="outlined"
-            name="description"
-            multiline
-            inputRef={register({
-              required: {
-                value: true,
-                message: t('manageProjects:aboutProjectValidation'),
-              },
-            })}
-            error={errors.description}
-            helperText={errors.description && errors.description.message}
-          />
-        </div>
+        <TextField
+          label={t('manageProjects:aboutProject')}
+          variant="outlined"
+          name="description"
+          multiline
+          inputRef={register({
+            required: {
+              value: true,
+              message: t('manageProjects:aboutProjectValidation'),
+            },
+          })}
+          error={errors.description}
+          helperText={errors.description && errors.description.message}
+        />
 
-        <div className={styles.formField} style={{ minHeight: '80px' }}>
-          <div className={`${styles.formFieldHalf}`}>
-            <div className={`${styles.formFieldRadio}`}>
-              <label
-                htmlFor="acceptDonations"
+        <InlineFormDisplayGroup>
+          <div className={`${styles.formFieldRadio}`}>
+            <label
+              htmlFor="acceptDonations"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer',
+              }}
+              data-test-id="receiveDonations"
+            >
+              {t('manageProjects:receiveDonations')}
+              <div
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  cursor: 'pointer',
+                  height: '13px',
+                  width: '13px',
+                  marginLeft: '6px',
+                  marginBottom: '3px',
                 }}
-                data-test-id="receiveDonations"
               >
-                {t('manageProjects:receiveDonations')}
-                <div
-                  style={{
-                    height: '13px',
-                    width: '13px',
-                    marginLeft: '6px',
-                    marginBottom: '3px',
-                  }}
-                >
-                  <InfoIcon />
-                  <div className={styles.popover}>
-                    <div
-                      className={styles.popoverContent}
-                      style={{ left: '-150px' }}
-                    >
-                      <p>{t('manageProjects:receiveDonationsInfo')}</p>
-                    </div>
+                <InfoIcon />
+                <div className={styles.popover}>
+                  <div
+                    className={styles.popoverContent}
+                    style={{ left: '-150px' }}
+                  >
+                    <p>{t('manageProjects:receiveDonationsInfo')}</p>
                   </div>
                 </div>
-              </label>
+              </div>
+            </label>
 
-              <Controller
-                name="acceptDonations"
-                control={control}
-                render={(properties) => (
-                  <ToggleSwitch
-                    id="acceptDonations"
-                    checked={properties.value}
-                    onChange={(e: any) => {
-                      properties.onChange(e.target.checked);
-                      setAcceptDonations(e.target.checked);
-                    }}
-                    inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  />
-                )}
-              />
-            </div>
+            <Controller
+              name="acceptDonations"
+              control={control}
+              render={(properties) => (
+                <ToggleSwitch
+                  id="acceptDonations"
+                  checked={properties.value}
+                  onChange={(e: any) => {
+                    properties.onChange(e.target.checked);
+                    setAcceptDonations(e.target.checked);
+                  }}
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                />
+              )}
+            />
           </div>
-          {acceptDonations ? (
-            <div className={styles.formFieldHalf} data-test-id="treeCost">
-              <TextField
-                inputRef={register({
-                  required: {
-                    value: acceptDonations,
-                    message: t('manageProjects:treeCostValidaitonRequired'),
-                  },
-                  validate: (value) =>
-                    parseNumber(i18n.language, value) > 0 &&
-                    parseNumber(i18n.language, value) <= 100,
-                })}
-                label={
-                  router.query.purpose === 'trees' ||
-                  projectDetails.purpose === 'trees'
-                    ? t('manageProjects:unitCost')
-                    : t('manageProjects:unitCostConservation')
-                }
-                variant="outlined"
-                type="number"
-                name="unitCost"
-                placeholder={'0'}
-                InputProps={{
-                  startAdornment: (
-                    <p
-                      className={styles.inputStartAdornment}
-                      style={{ paddingRight: '4px' }}
-                    >{`€`}</p>
-                  ),
-                }}
-                error={errors.unitCost}
-                helperText={
-                  errors?.unitCost?.message
-                    ? errors.unitCost.message
-                    : t(
-                        router.query.purpose === 'trees' ||
-                          projectDetails?.purpose === 'trees'
-                          ? 'manageProjects:treeCostValidation'
-                          : 'manageProjects:conservationCostValidation'
-                      )
-                }
-              />
-            </div>
-          ) : null}
-        </div>
+
+          {acceptDonations && (
+            <TextField
+              inputRef={register({
+                required: {
+                  value: acceptDonations,
+                  message: t('manageProjects:treeCostValidaitonRequired'),
+                },
+                validate: (value) =>
+                  parseNumber(i18n.language, value) > 0 &&
+                  parseNumber(i18n.language, value) <= 100,
+              })}
+              label={
+                router.query.purpose === 'trees' ||
+                projectDetails.purpose === 'trees'
+                  ? t('manageProjects:unitCost')
+                  : t('manageProjects:unitCostConservation')
+              }
+              variant="outlined"
+              type="number"
+              name="unitCost"
+              placeholder={'0'}
+              InputProps={{
+                startAdornment: (
+                  <p
+                    className={styles.inputStartAdornment}
+                    style={{ paddingRight: '4px' }}
+                  >{`€`}</p>
+                ),
+              }}
+              error={errors.unitCost}
+              helperText={
+                errors?.unitCost?.message
+                  ? errors.unitCost.message
+                  : t(
+                      router.query.purpose === 'trees' ||
+                        projectDetails?.purpose === 'trees'
+                        ? 'manageProjects:treeCostValidation'
+                        : 'manageProjects:conservationCostValidation'
+                    )
+              }
+            />
+          )}
+        </InlineFormDisplayGroup>
 
         <div
           className={`${styles.formFieldLarge} ${styles.mapboxContainer}`}
-          data-test-id="marker"
+          style={{ width: '100%' }}
         >
           <p
             style={{
@@ -893,15 +869,11 @@ export default function BasicDetails({
                     top: '-6px',
                   },
                 }}
+                error={errors.longitude}
+                helperText={
+                  errors.longitude && t('manageProjects:longitudeRequired')
+                }
               />
-              {errors.longitude && (
-                <span
-                  className={styles.formErrorsAbsolute}
-                  style={{ zIndex: 2, textAlign: 'center' }}
-                >
-                  {t('manageProjects:longitudeRequired')}
-                </span>
-              )}
             </div>
           </div>
         </div>
