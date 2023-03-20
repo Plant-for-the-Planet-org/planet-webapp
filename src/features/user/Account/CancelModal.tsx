@@ -56,6 +56,7 @@ export const CancelModal = ({
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState(new Date());
   const [disabled, setDisabled] = React.useState(false);
+
   const { t } = useTranslation(['me']);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
@@ -64,6 +65,7 @@ export const CancelModal = ({
   }, [cancelModalOpen]);
 
   const cancelDonation = () => {
+    displayRemainingPayments();
     setDisabled(true);
     const bodyToSend = {
       cancellationType:
@@ -91,6 +93,28 @@ export const CancelModal = ({
         console.log('Error cancelling recurring donations.');
       });
   };
+
+  function displayRemainingPayments() {
+    const current = new Date();
+    const end = new Date(date);
+    const subscription = new Date(record.firstDonation.created);
+    const subscriptionDate = subscription.getDate();
+    const startDate = current.getDate();
+    const startMonth = current.getMonth();
+    const endDate = end.getDate();
+    const endMonth = end.getMonth();
+    let remainingPayments = 0;
+    if (subscriptionDate > startDate && subscriptionDate <= endDate) {
+      remainingPayments = endMonth - startMonth + 1;
+    } else {
+      remainingPayments = endMonth - startMonth;
+    }
+    alert(
+      t('me:remainingPaymentsText', {
+        remainingPayments,
+      })
+    );
+  }
   return (
     <Modal
       className={'modalContainer' + ' ' + theme}
