@@ -1,6 +1,6 @@
 {
-  "tree": "Baum",
-  "tree_plural": "Bäume",
+  "tree_one": "Baum",
+  "tree_other": "Bäume",
   "by": "Von {{tpoName}}",
   "to_project_by_tpo": "An {{projectName}} von {{tpoName}}",
   "for": "für",
@@ -101,5 +101,7 @@
   "topProject": "Top Projekt",
   "viewReport": "Bericht ansehen",
   "reviewInfo": "Das Projekt wurde im <2>month</2> in einer mehrtägigen Vor-Ort-Prüfung inspiziert und erfüllt unsere <5>Standards</5>.",
-  "standardsPdfLink": "https://www.plant-for-the-planet.org/de/standards/" 
+  "standardsPdfLink": "https://www.plant-for-the-planet.org/de/standards/", 
+  "showSubscriptions": "Meine Dauerspenden anzeigen"
 }
+

@@ -1,6 +1,6 @@
 {
-  "tree": "Tree",
-  "tree_plural": "Trees",
+  "tree_one": "Tree",
+  "tree_other": "Trees",
   "by": "By {{tpoName}}",
   "to_project_by_tpo": "To {{projectName}} by {{tpoName}}",
   "for": "for",
@@ -101,5 +101,6 @@
   "topProject": "Top Project",
   "viewReport": "View Report",
   "reviewInfo": " The project was inspected in a multiday field review in <2>month</2> and fullfills our <5>standards.</5>",
-  "standardsPdfLink": "https://www.plant-for-the-planet.org/standards/" 
+  "standardsPdfLink": "https://www.plant-for-the-planet.org/standards/", 
+  "showSubscriptions": "Show my Subscriptions"
 }
