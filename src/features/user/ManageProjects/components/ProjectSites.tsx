@@ -23,6 +23,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { ProjectCreationTabs } from '..';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
+import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
@@ -332,11 +333,7 @@ export default function ProjectSites({
     <CenteredContainer>
       {editMode && <EditSite {...EditProps} />}
 
-      <StyledForm
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-      >
+      <StyledForm>
         <div className={styles.formField}>
           {siteList
             .filter((site) => {
@@ -374,7 +371,7 @@ export default function ProjectSites({
                         .find((e) => site.status == e.value)
                         ?.label.toUpperCase()}
                     </div>
-                    <button
+                    <Button
                       id={'trashIconProjS'}
                       onClick={() => {
                         deleteProjectSite(site.id);
@@ -382,7 +379,7 @@ export default function ProjectSites({
                       className={styles.uploadedMapDeleteButton}
                     >
                       <TrashIcon color={'#000'} />
-                    </button>
+                    </Button>
                     <div
                       id={'edit'}
                       onClick={() => {
@@ -430,66 +427,64 @@ export default function ProjectSites({
         </div>
 
         {showForm ? (
-          <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
-            <div className={styles.formField}>
-              <div className={styles.formFieldHalf} data-test-id="siteName">
-                <TextField
-                  inputRef={register({
-                    required: {
-                      value: true,
-                      message: t('manageProjects:siteNameValidation'),
-                    },
-                  })}
-                  label={t('manageProjects:siteName')}
-                  variant="outlined"
-                  name="name"
-                  onChange={changeSiteDetails}
-                  defaultValue={siteDetails.name}
-                  error={errors.name}
-                  helperText={errors.name && errors.name.message}
-                />
-              </div>
-              <div style={{ width: '20px' }}></div>
-              <div className={styles.formFieldHalf} data-test-id="siteStatus">
-                <Controller
-                  as={
-                    <TextField
-                      label={t('manageProjects:siteStatus')}
-                      variant="outlined"
-                      name="status"
-                      onChange={changeSiteDetails}
-                      select
-                      value={siteDetails.status}
-                    >
-                      {status.map((option) => (
-                        <MenuItem
-                          key={option.value}
-                          value={option.value}
-                          classes={{
-                            // option: classes.option,
-                            root: classes.root,
-                          }}
-                        >
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  }
-                  name="status"
-                  rules={{
-                    required: t('manageProjects:selectProjectStatus'),
-                  }}
-                  control={control}
-                  defaultValue={siteDetails.status ? siteDetails.status : ''}
-                  error={errors.status}
-                  helperText={errors.status && errors.status.message}
-                />
-              </div>
-            </div>
+          <div
+            className={`${isUploadingData ? styles.shallowOpacity : ''}`}
+            style={{ width: 'inherit' }}
+          >
+            <InlineFormDisplayGroup>
+              <TextField
+                inputRef={register({
+                  required: {
+                    value: true,
+                    message: t('manageProjects:siteNameValidation'),
+                  },
+                })}
+                label={t('manageProjects:siteName')}
+                variant="outlined"
+                name="name"
+                onChange={changeSiteDetails}
+                defaultValue={siteDetails.name}
+                error={errors.name}
+                helperText={errors.name && errors.name.message}
+              />
+              <Controller
+                as={
+                  <TextField
+                    label={t('manageProjects:siteStatus')}
+                    variant="outlined"
+                    name="status"
+                    onChange={changeSiteDetails}
+                    select
+                    value={siteDetails.status}
+                  >
+                    {status.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                        classes={{
+                          // option: classes.option,
+                          root: classes.root,
+                        }}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                }
+                name="status"
+                rules={{
+                  required: t('manageProjects:selectProjectStatus'),
+                }}
+                control={control}
+                defaultValue={siteDetails.status ? siteDetails.status : ''}
+                error={errors.status}
+                helperText={errors.status && errors.status.message}
+              />
+            </InlineFormDisplayGroup>
 
             {geoLocation && <Map {...MapProps} />}
 
-            <button
+            <Button
               id="projSiteSaveandAdd"
               onClick={handleSubmit(uploadProjectSite)}
               className={styles.projSiteSaveandAdd}
@@ -497,10 +492,10 @@ export default function ProjectSites({
               <p className={styles.inlineLinkButton}>
                 {t('manageProjects:saveAndAddSite')}
               </p>
-            </button>
+            </Button>
           </div>
         ) : (
-          <button
+          <Button
             id={'manageProjAddSite'}
             onClick={() => {
               setShowForm(true);
@@ -515,7 +510,7 @@ export default function ProjectSites({
             <p className={styles.inlineLinkButton}>
               {t('manageProjects:addSite')}
             </p>
-          </button>
+          </Button>
         )}
 
         {errorMessage && errorMessage !== '' ? (
