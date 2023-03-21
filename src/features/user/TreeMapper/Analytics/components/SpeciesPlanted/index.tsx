@@ -43,30 +43,15 @@ export const SpeciesPlanted = () => {
 
   const [options, setOptions] = useState<ApexOptions>({
     chart: {
-      // events: {
-      //   beforeZoom: function (ctx) {
-      //     ctx.w.config.xaxis.range = undefined;
-      //   },
-      //   zoomed: function (chartContext, { xaxis }) {
-      //     // calculate the new columnWidth based on the zoomed range
-
-      //     const { max, min } = xaxis;
-      //     let columnWidth: number | string = Math.abs(
-      //       Math.ceil((max - min) / 10)
-      //     );
-
-      //     if (columnWidth <= 3) columnWidth = '200%';
-      //     else columnWidth = '30%';
-      //     chartContext.w.config.plotOptions.bar.columnWidth = columnWidth;
-      //   },
-      // },
       type: 'bar',
       toolbar: {
         show: true,
         tools: {
-          zoom: true,
-          zoomin: true,
-          zoomout: true,
+          zoom: false,
+          zoomin: false,
+          zoomout: false,
+          pan: false,
+          reset: false,
           download: `${ReactDOMServer.renderToString(getDownloadIcon())}`,
         },
         offsetY: -15,
@@ -119,8 +104,6 @@ export const SpeciesPlanted = () => {
     },
 
     xaxis: {
-      // range: 20,
-      // max: 20,
       labels: {
         rotate: -90,
         style: {
