@@ -21,6 +21,11 @@ const config = {
         onclick: '/home',
         visible: true,
       },
+      campaign: {
+        title: 'fitnessChallenge',
+        onclick: '/vto-fitness-challenge',
+        visible: true,
+      },
       donate: {
         title: 'donate_gift',
         onclick: '/',

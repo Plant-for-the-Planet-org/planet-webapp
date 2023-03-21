@@ -9,6 +9,7 @@ import LeafSelected from '../../../../../public/assets/images/navigation/LeafSel
 import Leaf from '../../../../../public/assets/images/navigation/Leaf';
 import themeProperties from '../../../../theme/themeProperties';
 import ShopIcon from '../../../../../public/assets/images/navigation/ShopIcon';
+import VTOChallengeIcon from '../../../../../public/assets/images/navigation/VTOChallengeIcon';
 
 interface Props {
   mainKey: any;
@@ -99,6 +100,23 @@ function GetNavBarIcon({ mainKey, router, item }: Props): ReactElement {
       </button>
     );
   };
+  const CampaignLink = () => {
+    return (
+      <button
+        id={'campaignIcon'}
+        className={`link_icon ${
+          router.pathname === item.onclick ? 'active_icon' : ''
+        }`}
+      >
+        {router.pathname === item.onclick ? (
+          <VTOChallengeIcon color={themeProperties.primaryColor} />
+        ) : (
+          <VTOChallengeIcon color={themeProperties.light.primaryFontColor} />
+        )}
+      </button>
+    );
+  };
+
   switch (mainKey) {
     case 'home':
       return <HomeLink />;
@@ -110,8 +128,10 @@ function GetNavBarIcon({ mainKey, router, item }: Props): ReactElement {
       return <LeadersLink />;
     case 'shop':
       return <ShopLink />;
+    case 'campaign':
+      return <CampaignLink />;
     default:
-      <></>;
+      return <></>;
   }
 }
 
