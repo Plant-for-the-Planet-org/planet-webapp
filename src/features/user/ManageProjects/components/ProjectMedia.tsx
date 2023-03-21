@@ -270,36 +270,30 @@ export default function ProjectMedia({
   };
   return ready ? (
     <CenteredContainer>
-      <StyledForm
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-      >
-        <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
-          {/* <div className={styles.formFieldLarge}>
-            {youtubeURL && !errors.youtubeURL ? (
-              <iframe src={youtubeURL}></iframe>
-            ) : null}
-          </div> */}
-          <div className={styles.formFieldLarge}>
-            <TextField
-              inputRef={register({
-                pattern: {
-                  value:
-                    /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|\?v=)([^#&?]*).*/,
-                  message: t('manageProjects:youtubeURLValidation'),
-                },
-              })}
-              label={t('manageProjects:youtubeURL')}
-              variant="outlined"
-              name="youtubeURL"
-              onChange={(e) => setYoutubeURL(e.target.value)}
-              defaultValue={youtubeURL}
-              value={youtubeURL}
-              error={errors.youtubeURL}
-              helperText={errors.youtubeURL && errors.youtubeURL.message}
-            />
-          </div>
+      <StyledForm>
+        <div
+          className={`${isUploadingData ? styles.shallowOpacity : ''}`}
+          style={{
+            width: 'inherit',
+          }}
+        >
+          <TextField
+            inputRef={register({
+              pattern: {
+                value:
+                  /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|\?v=)([^#&?]*).*/,
+                message: t('manageProjects:youtubeURLValidation'),
+              },
+            })}
+            label={t('manageProjects:youtubeURL')}
+            variant="outlined"
+            name="youtubeURL"
+            onChange={(e) => setYoutubeURL(e.target.value)}
+            defaultValue={youtubeURL}
+            value={youtubeURL}
+            error={errors.youtubeURL}
+            helperText={errors.youtubeURL && errors.youtubeURL.message}
+          />
 
           {/* Change to field array of react hook form  */}
           {uploadedImages && uploadedImages.length > 0 ? (
