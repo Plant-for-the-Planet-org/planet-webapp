@@ -334,7 +334,7 @@ export default function ProjectSites({
       {editMode && <EditSite {...EditProps} />}
 
       <StyledForm>
-        <div className={styles.formField}>
+        <InlineFormDisplayGroup>
           {siteList
             .filter((site) => {
               return site.geometry !== null;
@@ -359,11 +359,7 @@ export default function ProjectSites({
               );
 
               return (
-                <div
-                  key={site.id}
-                  className={`${styles.formFieldHalf}`}
-                  style={{ marginLeft: '10px' }}
-                >
+                <div key={site.id}>
                   <div className={styles.mapboxContainer}>
                     <div className={styles.uploadedMapName}>{site.name}</div>
                     <div className={styles.uploadedMapStatus}>
@@ -424,7 +420,7 @@ export default function ProjectSites({
                 </div>
               );
             })}
-        </div>
+        </InlineFormDisplayGroup>
 
         {showForm ? (
           <div

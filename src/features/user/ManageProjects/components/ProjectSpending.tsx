@@ -21,6 +21,7 @@ import { SxProps, Button, TextField } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
+import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 
 const yearDialogSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
@@ -198,7 +199,7 @@ export default function ProjectSpending({
     <CenteredContainer>
       <StyledForm>
         {uploadedFiles && uploadedFiles.length > 0 ? (
-          <div className={styles.formField}>
+          <InlineFormDisplayGroup>
             {uploadedFiles.map((report) => {
               return (
                 <div
@@ -219,98 +220,97 @@ export default function ProjectSpending({
                   {/* <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
                                         <PencilIcon color={"#000"} />
                                     </div> */}
-                  <button
+                  <Button
                     id={'trashIconProjSpend'}
                     onClick={() => deleteProjectSpending(report.id)}
                     className={styles.reportEditButton}
                   >
                     <TrashIcon />
-                  </button>
+                  </Button>
                 </div>
               );
             })}
-          </div>
+          </InlineFormDisplayGroup>
         ) : null}
         {showForm ? (
-          <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
-            <div className={styles.formField}>
-              <div className={`${styles.formFieldHalf}`}>
-                <LocalizationProvider
-                  dateAdapter={AdapterDateFns}
-                  locale={
-                    localeMapForDate[userLang]
-                      ? localeMapForDate[userLang]
-                      : localeMapForDate['en']
-                  }
-                >
-                  <Controller
-                    render={(properties) => (
-                      <MuiDatePicker
-                        inputRef={register({
-                          required: {
-                            value: true,
-                            message: t('manageProjects:spendingYearValidation'),
-                          },
-                        })}
-                        views={['year']}
-                        value={properties.value}
-                        onChange={properties.onChange}
-                        label={t('manageProjects:spendingYear')}
-                        renderInput={(props) => <TextField {...props} />}
-                        disableFuture
-                        minDate={fiveYearsAgo}
-                        maxDate={new Date()}
-                        DialogProps={{
-                          sx: yearDialogSx,
-                        }}
-                      />
-                    )}
-                    defaultValue={new Date()}
-                    name="year"
-                    control={control}
-                  />
-                </LocalizationProvider>
-                {errors.year && (
-                  <span className={styles.formErrors}>
-                    {errors.year.message}
-                  </span>
-                )}
-              </div>
-              <div style={{ width: '20px' }}></div>
-              <div className={`${styles.formFieldHalf}`}>
-                <TextField
-                  inputRef={register({
-                    validate: (value) => parseInt(value) > 0,
-                    required: {
-                      value: true,
-                      message: t('manageProjects:spendingAmountValidation'),
-                    },
-                  })}
-                  label={t('manageProjects:spendingAmount')}
-                  placeholder="0"
-                  type="number"
-                  onBlur={(e) => e.preventDefault()}
-                  variant="outlined"
-                  name="amount"
-                  onInput={(e) => {
-                    setAmount(e.target.value);
-                  }}
-                  InputProps={{
-                    startAdornment: (
-                      <p
-                        className={styles.inputStartAdornment}
-                        style={{ paddingRight: '4px' }}
-                      >{`€`}</p>
-                    ),
-                  }}
-                  error={errors.amount}
-                  helperText={errors.amount && errors.amount.message}
+          <div
+            className={`${isUploadingData ? styles.shallowOpacity : ''}`}
+            style={{ width: 'inherit' }}
+          >
+            <InlineFormDisplayGroup>
+              <LocalizationProvider
+                dateAdapter={AdapterDateFns}
+                locale={
+                  localeMapForDate[userLang]
+                    ? localeMapForDate[userLang]
+                    : localeMapForDate['en']
+                }
+              >
+                <Controller
+                  render={(properties) => (
+                    <MuiDatePicker
+                      inputRef={register({
+                        required: {
+                          value: true,
+                          message: t('manageProjects:spendingYearValidation'),
+                        },
+                      })}
+                      views={['year']}
+                      value={properties.value}
+                      onChange={properties.onChange}
+                      label={t('manageProjects:spendingYear')}
+                      renderInput={(props) => (
+                        <TextField
+                          {...props}
+                          error={errors.year}
+                          helperText={errors.year && errors.year.message}
+                        />
+                      )}
+                      disableFuture
+                      minDate={fiveYearsAgo}
+                      maxDate={new Date()}
+                      DialogProps={{
+                        sx: yearDialogSx,
+                      }}
+                    />
+                  )}
+                  defaultValue={new Date()}
+                  name="year"
+                  control={control}
                 />
-              </div>
-            </div>
+              </LocalizationProvider>
+              <TextField
+                inputRef={register({
+                  validate: (value) => parseInt(value) > 0,
+                  required: {
+                    value: true,
+                    message: t('manageProjects:spendingAmountValidation'),
+                  },
+                })}
+                label={t('manageProjects:spendingAmount')}
+                placeholder="0"
+                type="number"
+                onBlur={(e) => e.preventDefault()}
+                variant="outlined"
+                name="amount"
+                onInput={(e) => {
+                  setAmount(e.target.value);
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <p
+                      className={styles.inputStartAdornment}
+                      style={{ paddingRight: '4px' }}
+                    >{`€`}</p>
+                  ),
+                }}
+                error={errors.amount}
+                helperText={errors.amount && errors.amount.message}
+              />
+            </InlineFormDisplayGroup>
 
             {errors.amount || errors.year || !isDirty || amount === 0 ? (
-              <div className={styles.formFieldLarge} style={{ opacity: 0.35 }}>
+              <div style={{ opacity: 0.35, marginTop: '25px' }}>
                 <div className={styles.fileUploadContainer}>
                   <Button variant="contained">
                     {t('manageProjects:uploadReport')}
@@ -321,7 +321,7 @@ export default function ProjectSpending({
                 </div>
               </div>
             ) : (
-              <div className={styles.formFieldLarge} {...getRootProps()}>
+              <div {...getRootProps()}>
                 <div className={styles.fileUploadContainer}>
                   <Button variant="contained">
                     <input {...getInputProps()} />
