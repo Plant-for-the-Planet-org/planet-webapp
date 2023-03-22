@@ -293,7 +293,13 @@ function ProjectCertificates({
                   onChange={setIssueDate}
                   label={t('manageProjects:issueDate')}
                   name="issueDate"
-                  renderInput={(props) => <TextField {...props} />}
+                  renderInput={(props) => (
+                    <TextField
+                      {...props}
+                      error={errors.issueDate}
+                      helperText={errors.issueDate && errors.issueDate.message}
+                    />
+                  )}
                   clearable
                   disableFuture
                   inputRef={register({
@@ -309,11 +315,6 @@ function ProjectCertificates({
                   }}
                 />
               </LocalizationProvider>
-              {errors.issueDate && (
-                <span className={styles.formErrors}>
-                  {errors.issueDate.message}
-                </span>
-              )}
             </div>
           </div>
 

@@ -46,23 +46,26 @@
 .hyphen {
   font-size: 40px;
   margin-top: 16px;
+  width:fit-content;
+  position: absolute;
   @include xsPhoneView {
     writing-mode: vertical-rl; 
-    margin-top: 0;
-    margin-bottom: -19px;
-    margin-right: 126px;
+    top: 40px;
+    left: 125px;
+    font-size: 60px
+    
   }
   @include smTabletView {
     writing-mode: vertical-rl; 
-    margin-top: 0;
-    margin-bottom: -19px;
-    margin-right: 126px;    
+    left: 254px
   }
   @include mdTabletView {
     writing-mode: horizontal-tb;
-    margin-top: 14px;
-    margin-bottom: 0;
-    margin-right: 0; 
+    top:-20px;
+    left:254px
+  }
+  @include lgLaptopView {
+    left: 335px
   }
   
 }
@@ -744,14 +747,31 @@
 .infoIconDiv {
   position: absolute;
   top: -9px;
-  right: -292px;
-  width:fit-content
+  left: 275px;
+  width:fit-content;
+  @include mdTabletView {
+    left: 227px;
+  }
+  @include lgLaptopView {
+    left: 308px
+  }
 }
 
-.causeOfDegradation {
+.infoIconDivForLargeField {
   position: absolute;
-  right: 13px;
+  left: 655px;
+  top: -9px;
+  @include xsPhoneView {
+    left: 275px
+  }
+  @include mdTabletView {
+    left: 498px;
+  }
+  @include lgLaptopView {
+    left: 655px
+  }
 }
+
 
 // white modal
 .modal {
@@ -771,6 +791,7 @@
 
 // button for projectCreation
 .buttonsForProjectCreationForm {
+  margin-top: 20px;
   display: flex;
   flex-direction: row;
   .MuiButton-root {
