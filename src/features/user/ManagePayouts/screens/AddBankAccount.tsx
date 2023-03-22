@@ -14,7 +14,7 @@ import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 const AddBankAccount = (): ReactElement | null => {
   const { t } = useTranslation('managePayouts');
   const { payoutMinAmounts, setAccounts, accounts } = usePayouts();
-  const { token } = useContext(UserPropsContext);
+  const { token, impersonatedEmail } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
@@ -36,6 +36,7 @@ const AddBankAccount = (): ReactElement | null => {
       '/app/accounts',
       accountData,
       token,
+      impersonatedEmail,
       handleError
     );
     if (res?.id && !isApiCustomError(res)) {

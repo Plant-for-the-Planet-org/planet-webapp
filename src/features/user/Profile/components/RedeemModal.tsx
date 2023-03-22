@@ -30,7 +30,7 @@ export default function RedeemModal({
     'donate',
     'redeem',
   ]);
-  const { user, contextLoaded, token, setUser } =
+  const { user, contextLoaded, token, setUser, impersonatedEmail } =
     React.useContext(UserPropsContext);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
@@ -55,7 +55,12 @@ export default function RedeemModal({
       code: data.code,
     };
     if (contextLoaded && user) {
-      postAuthenticatedRequest(`/app/redeem`, submitData, token).then((res) => {
+      postAuthenticatedRequest(
+        `/app/redeem`,
+        submitData,
+        token,
+        impersonatedEmail
+      ).then((res) => {
         setDisable(false);
         if (res.error_code === 'already_redeemed') {
           setErrorMessage(t('redeem:alreadyRedeemed'));
