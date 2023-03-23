@@ -22,7 +22,7 @@ const config = {
         visible: true,
       },
       campaign: {
-        title: 'fitnessChallenge',
+        title: 'vtoChallenge',
         onclick: '/vto-fitness-challenge',
         visible: true,
       },

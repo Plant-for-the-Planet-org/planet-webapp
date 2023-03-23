@@ -1,8 +1,6 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import SalesforceHome from '../src/tenants/salesforce/Home';
-import SternHome from '../src/tenants/stern/Home';
-import BasicHome from '../src/tenants/common/Home';
+import SalesforceCampaign from '../src/tenants/salesforce/Campaign';
 import tenantConfig from '../tenant.config';
 import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
 import { getRequest } from '../src/utils/apiRequests/api';
@@ -50,39 +48,24 @@ export default function VTOFitnessChallenge(initialized: Props) {
     }
   }
 
-  let HomePage;
-  function getHomePage() {
+  function getCampaignPage() {
+    let CampaignPage;
     switch (process.env.TENANT) {
       case 'salesforce':
-        HomePage = SalesforceHome;
-        return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
-      case 'stern':
-        HomePage = SternHome;
-        return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
-      case 'nitrosb':
-      case 'energizer':
-      case 'senatDerWirtschaft':
-      case 'pampers':
-      case 'interactClub':
-      case 'culchacandela':
-      case 'xiting':
-      case 'lacoqueta':
-      case 'ulmpflanzt':
-      case 'sitex':
-      case '3pleset':
-      case 'weareams':
-        HomePage = BasicHome;
-        return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
+        CampaignPage = SalesforceCampaign;
+        return (
+          <CampaignPage leaderboard={leaderboard} tenantScore={tenantScore} />
+        );
       default:
-        HomePage = null;
-        return HomePage;
+        CampaignPage = null;
+        return CampaignPage;
     }
   }
 
   return (
     <>
       <GetHomeMeta />
-      {initialized ? getHomePage() : <></>}
+      {initialized ? getCampaignPage() : <></>}
     </>
   );
 }
