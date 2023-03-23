@@ -1,16 +1,18 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import db from '../../../src/utils/connectDB';
+import nc from 'next-connect';
+import { limiter, speedLimiter } from '../../../src/middlewares/rate-limiter';
 
-export default async function handler(
-  req: NextApiRequest,
-  response: NextApiResponse
-) {
+const handler = nc<NextApiRequest, NextApiResponse>();
+
+handler.use(limiter);
+handler.use(speedLimiter);
+
+handler.post(async (req, response) => {
   const { projectId, startDate, endDate } = JSON.parse(req.body);
-
-  if (req.method === 'POST') {
-    try {
-      const query =
-        'SELECT \
+  try {
+    const query =
+      'SELECT \
           ps.other_species, \
           ps.scientific_species_id, \
           ss.name, \
@@ -23,21 +25,20 @@ export default async function handler(
         GROUP BY ps.scientific_species_id, ss.name, ps.other_species \
         ORDER BY total_tree_count DESC';
 
-      const res = await db.query(query, [
-        projectId,
-        startDate,
-        `${endDate} 23:59:59.999`,
-      ]);
+    const res = await db.query(query, [
+      projectId,
+      startDate,
+      `${endDate} 23:59:59.999`,
+    ]);
 
-      await db.end();
+    await db.end();
 
-      response.status(200).json({ data: res });
-    } catch (err) {
-      console.log(err);
-    } finally {
-      await db.quit();
-    }
-  } else {
-    response.status(400).send(`${req.method} Method not supported`);
+    response.status(200).json({ data: res });
+  } catch (err) {
+    console.log(err);
+  } finally {
+    await db.quit();
   }
-}
+});
+
+export default handler;

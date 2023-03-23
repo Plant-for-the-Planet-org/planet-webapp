@@ -1,62 +1,77 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import db from '../../../src/utils/connectDB';
 import { TIME_FRAME } from '../../../src/features/user/TreeMapper/Analytics/components/TreePlanted/TimeFrameSelector';
+import nc from 'next-connect';
+import { limiter, speedLimiter } from '../../../src/middlewares/rate-limiter';
 
-export default async function handler(
-  req: NextApiRequest,
-  response: NextApiResponse
-) {
-  if (req.method === 'POST') {
-    const { projectId, startDate, endDate } = JSON.parse(req.body);
-    const { timeFrame } = req.query;
+const handler = nc<NextApiRequest, NextApiResponse>();
 
-    let query: string;
+handler.use(limiter);
+handler.use(speedLimiter);
 
-    switch (timeFrame) {
-      case TIME_FRAME.DAYS:
-        query =
-          'SELECT  \
-            pl.plant_date AS plantedDate, \
-            SUM(pl.trees_planted) AS treesPlanted \
-          FROM plant_location pl \
-          JOIN plant_project pp ON pl.plant_project_id = pp.id \
-          WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ? \
-          GROUP BY pl.plant_date \
-          ORDER BY pl.plant_date';
-        break;
+handler.post(async (req, response) => {
+  const { projectId, startDate, endDate } = JSON.parse(req.body);
+  const { timeFrame } = req.query;
 
-      case TIME_FRAME.WEEKS:
-        query =
-          'SELECT \
-            DATE_SUB(pl.plant_date, INTERVAL WEEKDAY(pl.plant_date) DAY) AS weekStartDate, \
-            DATE_ADD(DATE_SUB(pl.plant_date, INTERVAL WEEKDAY(pl.plant_date) DAY), INTERVAL 6 DAY) AS weekEndDate, \
-            WEEK(pl.plant_date, 1) AS weekNum, \
-            LEFT(MONTHNAME(pl.plant_date), 3) AS month, \
-            YEAR(pl.plant_date) AS year, \
-            SUM(pl.trees_planted) AS treesPlanted \
-          FROM plant_location pl \
-          JOIN plant_project pp ON pl.plant_project_id = pp.id \
-          WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ? \
-          GROUP BY weekNum, weekStartDate, weekEndDate, month, year \
-          ORDER BY pl.plant_date';
-        break;
+  let query: string;
 
-      case TIME_FRAME.MONTHS:
-        query =
-          'SELECT \
-            LEFT(MONTHNAME(pl.plant_date), 3) AS month, \
-            YEAR(pl.plant_date) AS year, \
-            SUM(pl.trees_planted) AS treesPlanted \
-          FROM plant_location pl \
-          JOIN plant_project pp ON pl.plant_project_id = pp.id \
-          WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ? \
-          GROUP BY month, year \
-          ORDER BY pl.plant_date;';
-        break;
+  switch (timeFrame) {
+    case TIME_FRAME.DAYS:
+      query =
+        'SELECT  \
+          pl.plant_date AS plantedDate, \
+          SUM(pl.trees_planted) AS treesPlanted \
+        FROM plant_location pl \
+        JOIN plant_project pp ON pl.plant_project_id = pp.id \
+        WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ? \
+        GROUP BY pl.plant_date \
+        ORDER BY pl.plant_date';
+      break;
 
-      case TIME_FRAME.YEARS:
-        query =
-          'SELECT \
+    case TIME_FRAME.WEEKS:
+      query =
+        'SELECT \
+          DATE_SUB(pl.plant_date, INTERVAL WEEKDAY(pl.plant_date) DAY) AS weekStartDate, \
+          DATE_ADD(DATE_SUB(pl.plant_date, INTERVAL WEEKDAY(pl.plant_date) DAY), INTERVAL 6 DAY) AS weekEndDate, \
+          WEEK(pl.plant_date, 1) AS weekNum, \
+          LEFT(MONTHNAME(pl.plant_date), 3) AS month, \
+          YEAR(pl.plant_date) AS year, \
+          SUM(pl.trees_planted) AS treesPlanted \
+        FROM plant_location pl \
+        JOIN plant_project pp ON pl.plant_project_id = pp.id \
+        WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ? \
+        GROUP BY weekNum, weekStartDate, weekEndDate, month, year \
+        ORDER BY pl.plant_date';
+      break;
+
+    case TIME_FRAME.MONTHS:
+      query =
+        'SELECT \
+          LEFT(MONTHNAME(pl.plant_date), 3) AS month, \
+          YEAR(pl.plant_date) AS year, \
+          SUM(pl.trees_planted) AS treesPlanted \
+        FROM plant_location pl \
+        JOIN plant_project pp ON pl.plant_project_id = pp.id \
+        WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ? \
+        GROUP BY month, year \
+        ORDER BY pl.plant_date;';
+      break;
+
+    case TIME_FRAME.YEARS:
+      query =
+        'SELECT \
+          YEAR(pl.plant_date) AS year, \
+          SUM(pl.trees_planted) AS treesPlanted \
+        FROM plant_location pl \
+        JOIN plant_project pp ON pl.plant_project_id = pp.id \
+        WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ? \
+        GROUP BY year \
+        ORDER BY pl.plant_date';
+      break;
+
+    default:
+      query =
+        'SELECT \
             YEAR(pl.plant_date) AS year, \
             SUM(pl.trees_planted) AS treesPlanted \
           FROM plant_location pl \
@@ -64,36 +79,23 @@ export default async function handler(
           WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ? \
           GROUP BY year \
           ORDER BY pl.plant_date';
-        break;
-
-      default:
-        query =
-          'SELECT \
-              YEAR(pl.plant_date) AS year, \
-              SUM(pl.trees_planted) AS treesPlanted \
-            FROM plant_location pl \
-            JOIN plant_project pp ON pl.plant_project_id = pp.id \
-            WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ? \
-            GROUP BY year \
-            ORDER BY pl.plant_date';
-    }
-
-    try {
-      const res = await db.query(query, [
-        projectId,
-        startDate,
-        `${endDate} 23:59:59.999`,
-      ]);
-
-      await db.end();
-
-      response.status(200).json({ data: res });
-    } catch (err) {
-      console.log(err);
-    } finally {
-      await db.quit();
-    }
-  } else {
-    response.status(400).send(`${req.method} Method not supported`);
   }
-}
+
+  try {
+    const res = await db.query(query, [
+      projectId,
+      startDate,
+      `${endDate} 23:59:59.999`,
+    ]);
+
+    await db.end();
+
+    response.status(200).json({ data: res });
+  } catch (err) {
+    console.log(err);
+  } finally {
+    await db.quit();
+  }
+});
+
+export default handler;
