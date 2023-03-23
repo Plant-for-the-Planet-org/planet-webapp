@@ -62,7 +62,7 @@ export default function Explore({}: Props): ReactElement {
 
   const { theme } = React.useContext(ThemeContext);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
-  const { validEmail } = React.useContext(UserPropsContext);
+  const { isImpersonationModeOn } = React.useContext(UserPropsContext);
 
   const handleModalClose = () => {
     setModalOpen(false);
@@ -221,8 +221,11 @@ export default function Explore({}: Props): ReactElement {
           }}
           style={
             exploreExpanded
-              ? { padding: '4px 10px', marginTop: validEmail ? '46px' : '' }
-              : { marginTop: validEmail ? '46px' : '' }
+              ? {
+                  padding: '4px 10px',
+                  marginTop: isImpersonationModeOn ? '46px' : '',
+                }
+              : { marginTop: isImpersonationModeOn ? '46px' : '' }
           }
         >
           {exploreExpanded ? <CancelIcon /> : <ExploreIcon />}

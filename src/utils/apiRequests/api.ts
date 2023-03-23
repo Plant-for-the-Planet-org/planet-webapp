@@ -68,7 +68,10 @@ const handleApiError = (
 };
 
 //  API call to private /profile endpoint
-export async function getAccountInfo(token: any, email?:string): Promise<any> {
+export async function getAccountInfo(
+  token: any,
+  impersonatedEmail?: string
+): Promise<any> {
   const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
     method: 'GET',
     headers: {
@@ -80,7 +83,7 @@ export async function getAccountInfo(token: any, email?:string): Promise<any> {
           ? localStorage.getItem('language')
           : 'en'
       }`,
-      "x-switch-user": `${email ? email : ""}`
+      'x-switch-user': impersonatedEmail || '',
     },
   });
   return response;
@@ -130,14 +133,14 @@ export async function getRequest<T>(
 
 export async function getAuthenticatedRequest<T>(
   url: any,
-  email?:string,
   token: any,
+  impersonatedEmail?: string,
   header: any = null,
   errorHandler?: Function,
   redirect?: string,
   queryParams?: { [key: string]: string },
   version?: string
-  ): Promise<T> {
+): Promise<T> {
   let result = {};
   const lang = localStorage.getItem('language') || 'en';
   const query: any = { ...queryParams };
@@ -151,9 +154,9 @@ export async function getAuthenticatedRequest<T>(
       Authorization: `Bearer ${token}`,
       'x-locale': `${lang}`,
       'x-accept-versions': version ? version : '1.0.3',
-      "x-switch-user": `${email ? email : ""}`,
+      'x-switch-user': impersonatedEmail || '',
       ...(header ? header : {}),
-     },
+    },
   })
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
@@ -163,11 +166,36 @@ export async function getAuthenticatedRequest<T>(
   return result as unknown as T;
 }
 
+export async function postRequest(
+  url: any,
+  data: any,
+  errorHandler?: Function,
+  redirect?: string
+): Promise<any> {
+  const res = await fetch(process.env.API_ENDPOINT + url, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+      'tenant-key': `${TENANT_ID}`,
+      'X-SESSION-ID': await getsessionId(),
+      'x-locale': `${
+        localStorage.getItem('language')
+          ? localStorage.getItem('language')
+          : 'en'
+      }`,
+    },
+  });
+  const result = await res.json();
+  handleApiError(res.status, result, errorHandler, redirect);
+  return result;
+}
+
 export async function postAuthenticatedRequest<T>(
   url: any,
   data: any,
   token: any,
-  email?: string,
+  impersonatedEmail?: string,
   errorHandler?: Function,
   headers?: any
 ): Promise<T | ApiCustomError | null> {
@@ -187,7 +215,7 @@ export async function postAuthenticatedRequest<T>(
               : 'en'
           }`,
           ...(headers ? headers : {}),
-          "x-switch-user": `${email ? email : ""}`
+          'x-switch-user': impersonatedEmail || '',
         },
       });
       const result = await res.json();
@@ -221,7 +249,7 @@ export async function postAuthenticatedRequest<T>(
 export async function deleteAuthenticatedRequest(
   url: any,
   token: any,
-  email?: string,
+  impersonatedEmail?: string,
   errorHandler?: Function
 ): Promise<any> {
   let result;
@@ -238,7 +266,7 @@ export async function deleteAuthenticatedRequest(
             ? localStorage.getItem('language')
             : 'en'
         }`,
-        "x-switch-user": `${email ? email : ""}`
+        'x-switch-user': impersonatedEmail || '',
       },
     }).then(async (res) => {
       result = res.status === 400 ? await res.json() : res.status;
@@ -255,69 +283,6 @@ export async function deleteAuthenticatedRequest(
   }
   return result;
 }
-
-export async function putAuthenticatedRequest<T>(
-  url: any,
-  data: any,
-  token: any,
-  email?: string,
-  errorHandler?: Function
-): Promise<T | ApiCustomError | undefined> {
-  if (validateToken(token)) {
-    const res = await fetch(process.env.API_ENDPOINT + url, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'tenant-key': `${TENANT_ID}`,
-        'X-SESSION-ID': await getsessionId(),
-        Authorization: `Bearer ${token}`,
-        'x-locale': `${
-          localStorage.getItem('language')
-            ? localStorage.getItem('language')
-            : 'en'
-        }`,
-        "x-switch-user": `${email ? email : ""}`
-      },
-    });
-    const result = await res.json();
-    handleApiError(res.status, result, errorHandler);
-    return result as unknown as T | ApiCustomError;
-  } else {
-    if (errorHandler) {
-      errorHandler({
-        type: 'warning',
-        message: 'unauthorized',
-      });
-    }
-    console.error('Error 401: You are not Authorized!');
-  }
-}
-export async function postRequest(
-  url: any,
-  data: any,
-  errorHandler?: Function,
-  redirect?: string
-): Promise<any> {
-  const res = await fetch(process.env.API_ENDPOINT + url, {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json',
-      'tenant-key': `${TENANT_ID}`,
-      'X-SESSION-ID': await getsessionId(),
-      'x-locale': `${
-        localStorage.getItem('language')
-          ? localStorage.getItem('language')
-          : 'en'
-      }`,
-    },
-  });
-  const result = await res.json();
-  handleApiError(res.status, result, errorHandler, redirect);
-  return result;
-}
-
 
 export async function putRequest(
   url: any,
@@ -341,6 +306,44 @@ export async function putRequest(
   const result = await res.json();
   handleApiError(res.status, result, errorHandler);
   return result;
+}
+
+export async function putAuthenticatedRequest<T>(
+  url: any,
+  data: any,
+  token: any,
+  impersonatedEmail?: string,
+  errorHandler?: Function
+): Promise<T | ApiCustomError | undefined> {
+  if (validateToken(token)) {
+    const res = await fetch(process.env.API_ENDPOINT + url, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'tenant-key': `${TENANT_ID}`,
+        'X-SESSION-ID': await getsessionId(),
+        Authorization: `Bearer ${token}`,
+        'x-locale': `${
+          localStorage.getItem('language')
+            ? localStorage.getItem('language')
+            : 'en'
+        }`,
+        'x-switch-user': impersonatedEmail || '',
+      },
+    });
+    const result = await res.json();
+    handleApiError(res.status, result, errorHandler);
+    return result as unknown as T | ApiCustomError;
+  } else {
+    if (errorHandler) {
+      errorHandler({
+        type: 'warning',
+        message: 'unauthorized',
+      });
+    }
+    console.error('Error 401: You are not Authorized!');
+  }
 }
 
 export async function getRasterData(

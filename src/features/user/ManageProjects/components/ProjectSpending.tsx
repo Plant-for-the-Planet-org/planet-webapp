@@ -76,7 +76,7 @@ export default function ProjectSpending({
 
   const [showForm, setShowForm] = React.useState(true);
   const [uploadedFiles, setUploadedFiles] = React.useState([]);
-  const { validEmail } = React.useContext(UserPropsContext);
+  const { impersonatedEmail } = React.useContext(UserPropsContext);
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {
       handleReset(ready ? t('manageProjects:resetMessage') : '');
@@ -132,7 +132,7 @@ export default function ProjectSpending({
       `/app/projects/${projectGUID}/expenses`,
       submitData,
       token,
-      validEmail,
+      impersonatedEmail,
       handleError
     )
       .then((res) => {
@@ -167,7 +167,7 @@ export default function ProjectSpending({
     deleteAuthenticatedRequest(
       `/app/projects/${projectGUID}/expenses/${id}`,
       token,
-      validEmail,
+      impersonatedEmail,
       handleError
     ).then((res) => {
       if (res !== 404) {
@@ -185,8 +185,8 @@ export default function ProjectSpending({
     if (projectGUID && token)
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}?_scope=expenses`,
-        validEmail,
         token,
+        impersonatedEmail,
         {},
         handleError,
         '/profile'

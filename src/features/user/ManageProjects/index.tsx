@@ -29,7 +29,7 @@ export enum ProjectCreationTabs {
 export default function ManageProjects({ GUID, token, project }: any) {
   const { t, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { validEmail } = React.useContext(UserPropsContext);
+  const { impersonatedEmail } = React.useContext(UserPropsContext);
   const router = useRouter();
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -94,10 +94,10 @@ export default function ManageProjects({ GUID, token, project }: any) {
       reviewRequested: true,
     };
     putAuthenticatedRequest(
-      validEmail,
       `/app/projects/${projectGUID}`,
       submitData,
       token,
+      impersonatedEmail,
       handleError
     ).then((res) => {
       if (!res.code) {
@@ -121,10 +121,10 @@ export default function ManageProjects({ GUID, token, project }: any) {
       publish: val,
     };
     putAuthenticatedRequest(
-      validEmail,
       `/app/projects/${projectGUID}`,
       submitData,
       token,
+      impersonatedEmail,
       handleError
     ).then((res) => {
       if (!res.code) {
@@ -148,8 +148,8 @@ export default function ManageProjects({ GUID, token, project }: any) {
     if (projectGUID && token)
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}`,
-        validEmail,
         token,
+        impersonatedEmail,
         {},
         handleError,
         '/profile'

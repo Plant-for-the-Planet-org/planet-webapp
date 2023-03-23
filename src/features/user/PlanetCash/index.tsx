@@ -35,7 +35,8 @@ export default function PlanetCash({
 }: PlanetCashProps): ReactElement | null {
   const { t, ready, i18n } = useTranslation('planetcash');
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
-  const { token, contextLoaded, validEmail } = useContext(UserPropsContext);
+  const { token, contextLoaded, impersonatedEmail } =
+    useContext(UserPropsContext);
   const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
   const { handleError } = useContext(ErrorHandlingContext);
   const [isDataLoading, setIsDataLoading] = useState(false);
@@ -82,8 +83,8 @@ export default function PlanetCash({
       setProgress && setProgress(70);
       const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
         `/app/planetCash`,
-        validEmail,
         token,
+        impersonatedEmail,
         {},
         handleError
       );

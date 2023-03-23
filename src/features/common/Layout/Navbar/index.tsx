@@ -13,7 +13,7 @@ import GetNavBarIcon from './getNavBarIcon';
 import GetSubMenu from './getSubMenu';
 import { lang_path } from '../../../../utils/constants/wpLanguages';
 import { ParamsContext } from '../QueryParamsContext';
-import ImpersonationActivated from '../../../user/Settings/ImpersonationActivated';
+import ImpersonationActivated from '../../../user/Settings/ImpersonateUser/ImpersonationActivated';
 
 // used to detect window resize and return the current width of the window
 const useWidth = () => {
@@ -43,7 +43,7 @@ export default function NavbarComponent(props: any) {
   const [menu, setMenu] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
   const [mobileWidth, setMobileWidth] = React.useState(false);
-  const { embed, email, alertError } = React.useContext(ParamsContext);
+  const { embed } = React.useContext(ParamsContext);
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       if (window.innerWidth > 767) {
@@ -66,7 +66,7 @@ export default function NavbarComponent(props: any) {
     loginWithRedirect,
     logoutUser,
     auth0Error,
-    validEmail,
+    isImpersonationModeOn,
   } = React.useContext(UserPropsContext);
 
   // This function controls the path for the user when they click on Me
@@ -280,12 +280,15 @@ export default function NavbarComponent(props: any) {
     <></>
   ) : (
     <>
-      {validEmail && (
+      {isImpersonationModeOn && (
         <div className="impersonationAlertContainer" style={{ top: -142 }}>
           <ImpersonationActivated />
         </div>
       )}
-      <div className={`mainNavContainer`} style={{ top: validEmail ? 49 : 0 }}>
+      <div
+        className={`mainNavContainer`}
+        style={{ top: isImpersonationModeOn ? 49 : 0 }}
+      >
         <div className={'top_nav'}>
           <div className={'brandLogos'}>
             {config.header?.isSecondaryTenant && (

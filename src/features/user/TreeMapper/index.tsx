@@ -18,7 +18,7 @@ const PlantLocationMap = dynamic(() => import('./components/Map'), {
 
 function TreeMapper({}: Props): ReactElement {
   const router = useRouter();
-  const { token, contextLoaded, validEmail } =
+  const { token, contextLoaded, impersonatedEmail } =
     React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const { t } = useTranslation(['treemapper']);
@@ -35,9 +35,9 @@ function TreeMapper({}: Props): ReactElement {
 
     if (next && links?.next) {
       const response = await getAuthenticatedRequest(
-        validEmail,
         links.next,
         token,
+        impersonatedEmail,
         {},
         handleError,
         '/profile',
@@ -72,8 +72,8 @@ function TreeMapper({}: Props): ReactElement {
     } else {
       const response = await getAuthenticatedRequest(
         '/treemapper/plantLocations?_scope=extended&limit=15',
-        validEmail,
         token,
+        impersonatedEmail,
         {},
         handleError,
         '/profile',
