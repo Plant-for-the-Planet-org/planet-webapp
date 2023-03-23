@@ -284,10 +284,6 @@ export default function BasicDetails({
     clearErrors,
   } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
 
-  const nextStep = () => {
-    handleNext();
-  };
-
   const [acceptDonations, setAcceptDonations] = useState(false);
   //if project is already had created then user can visit to  other forms using skip button
   React.useEffect(() => {

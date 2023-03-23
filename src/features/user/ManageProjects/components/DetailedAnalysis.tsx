@@ -65,7 +65,6 @@ interface Props {
   token: any;
   userLang: String;
   purpose: String;
-  siteOwnerName: String;
 }
 export default function DetailedAnalysis({
   handleBack,
@@ -160,7 +159,6 @@ export default function DetailedAnalysis({
       },
     },
   });
-  const classes = useStylesAutoComplete();
 
   const handleSetPlantingSeasons = (id: any) => {
     const month = plantingSeasons[id - 1];

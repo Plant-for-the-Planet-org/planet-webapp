@@ -32,7 +32,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [errorMessage, setErrorMessage] = React.useState('');
-  const [tabSelected, setTabSelected] = React.useState('');
+  const [tabSelected, setTabSelected] = React.useState<number | string>('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [projectGUID, setProjectGUID] = React.useState(GUID ? GUID : '');
   const [tablist, setTabList] = React.useState<TabItem[]>([]);
@@ -40,7 +40,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
     project ? project : {}
   );
 
-  const formRouteHandler = (val) => {
+  const formRouteHandler = (val: number) => {
     if (router.query.purpose) return;
     switch (val) {
       case 1:
@@ -81,7 +81,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
     formRouteHandler(previousTab);
   };
 
-  const handleReset = (message) => {
+  const handleReset = (message: string) => {
     setErrorMessage(message);
     setActiveStep(0);
   };
@@ -249,7 +249,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
         },
       ]);
     }
-  }, [tabSelected]);
+  }, [tabSelected, router.query.purpose]);
 
   function getStepContent() {
     switch (tabSelected) {
