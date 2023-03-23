@@ -15,6 +15,7 @@ import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import TabbedView from '../../common/Layout/TabbedView';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 
 export enum ProjectCreationTabs {
   PROJECT_TYPE = 0,
@@ -28,6 +29,7 @@ export enum ProjectCreationTabs {
 export default function ManageProjects({ GUID, token, project }: any) {
   const { t, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { validEmail } = React.useContext(UserPropsContext);
   const router = useRouter();
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -92,6 +94,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
       reviewRequested: true,
     };
     putAuthenticatedRequest(
+      validEmail,
       `/app/projects/${projectGUID}`,
       submitData,
       token,
@@ -118,6 +121,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
       publish: val,
     };
     putAuthenticatedRequest(
+      validEmail,
       `/app/projects/${projectGUID}`,
       submitData,
       token,
@@ -144,6 +148,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
     if (projectGUID && token)
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}`,
+        validEmail,
         token,
         {},
         handleError,

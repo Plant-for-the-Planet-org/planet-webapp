@@ -28,10 +28,10 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
-import { ProjectCreationTabs } from '..';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 interface Props {
   handleNext: Function;
@@ -68,6 +68,7 @@ export default function BasicDetails({
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   // Map setup
   const { theme } = React.useContext(ThemeContext);
+  const { validEmail } = React.useContext(UserPropsContext);
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
   const mapRef = React.useRef(null);
@@ -412,6 +413,7 @@ export default function BasicDetails({
         `/app/projects/${projectGUID}`,
         submitData,
         token,
+        validEmail,
         handleError
       )
         .then((res) => {
@@ -440,7 +442,13 @@ export default function BasicDetails({
           setErrorMessage(err);
         });
     } else {
-      postAuthenticatedRequest(`/app/projects`, submitData, token, handleError)
+      postAuthenticatedRequest(
+        `/app/projects`,
+        submitData,
+        token,
+        validEmail,
+        handleError
+      )
         .then((res) => {
           if (!res.code) {
             setErrorMessage('');

@@ -22,6 +22,7 @@ import themeProperties from '../../../../theme/themeProperties';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const yearDialogSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
@@ -75,6 +76,7 @@ export default function ProjectSpending({
 
   const [showForm, setShowForm] = React.useState(true);
   const [uploadedFiles, setUploadedFiles] = React.useState([]);
+  const { validEmail } = React.useContext(UserPropsContext);
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {
       handleReset(ready ? t('manageProjects:resetMessage') : '');
@@ -96,7 +98,7 @@ export default function ProjectSpending({
     [uploadedFiles]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     accept: '.pdf',
     multiple: false,
     maxSize: 10485760,
@@ -130,6 +132,7 @@ export default function ProjectSpending({
       `/app/projects/${projectGUID}/expenses`,
       submitData,
       token,
+      validEmail,
       handleError
     )
       .then((res) => {
@@ -164,6 +167,7 @@ export default function ProjectSpending({
     deleteAuthenticatedRequest(
       `/app/projects/${projectGUID}/expenses/${id}`,
       token,
+      validEmail,
       handleError
     ).then((res) => {
       if (res !== 404) {
@@ -181,6 +185,7 @@ export default function ProjectSpending({
     if (projectGUID && token)
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}?_scope=expenses`,
+        validEmail,
         token,
         {},
         handleError,

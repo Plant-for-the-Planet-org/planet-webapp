@@ -23,8 +23,9 @@ const Transactions = ({
   setProgress,
 }: TransactionsProps): ReactElement | null => {
   const { t } = useTranslation('me');
-  const { token, contextLoaded } = useContext(UserPropsContext);
+  const { token, contextLoaded, validEmail } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
+
   const { accounts } = usePlanetCash();
   const [transactionHistory, setTransactionHistory] =
     useState<Payments.PaymentHistory | null>(null);
@@ -60,6 +61,7 @@ const Transactions = ({
       const newTransactionHistory: Payments.PaymentHistory =
         await getAuthenticatedRequest(
           apiUrl,
+          validEmail,
           token,
           {},
           handleError,

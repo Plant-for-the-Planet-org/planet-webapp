@@ -13,6 +13,7 @@ import { SxProps, TextField, Button } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -77,8 +78,9 @@ export default function DetailedAnalysis({
   handleReset,
   purpose,
 }: Props): ReactElement {
-  const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
+  const { t, ready } = useTranslation(['manageProjects', 'common']);
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { validEmail } = React.useContext(UserPropsContext);
   const [siteOwners, setSiteOwners] = React.useState([
     {
       id: 1,
@@ -294,6 +296,7 @@ export default function DetailedAnalysis({
       `/app/projects/${projectGUID}`,
       submitData,
       token,
+      validEmail,
       handleError
     )
       .then((res) => {

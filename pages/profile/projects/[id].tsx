@@ -12,7 +12,11 @@ import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
+<<<<<<< HEAD
 import DashboardView from '../../../src/features/common/Layout/DashboardView';
+=======
+import { ParamsContext } from '../../../src/features/common/Layout/QueryParamsContext';
+>>>>>>> develop
 
 interface Props {}
 
@@ -24,8 +28,9 @@ function ManageSingleProject({}: Props): ReactElement {
   const [accessDenied, setAccessDenied] = React.useState(false);
   const [setupAccess, setSetupAccess] = React.useState(false);
   const [project, setProject] = React.useState({});
+  const { user, contextLoaded, token, validEmail } =
+    React.useContext(UserPropsContext);
 
-  const { user, contextLoaded, token } = React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
   useEffect(() => {
@@ -39,6 +44,7 @@ function ManageSingleProject({}: Props): ReactElement {
     async function loadProject() {
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}`,
+        validEmail,
         token,
         {},
         handleError,

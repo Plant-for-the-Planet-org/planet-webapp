@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function PlayButton({ setshowVideo }: Props): ReactElement {
-  const { embed } = React.useContext(ParamsContext);
+  const { embed, email } = React.useContext(ParamsContext);
   const { t } = useTranslation(['common']);
   const { pathname } = useRouter();
 
@@ -22,6 +22,7 @@ export default function PlayButton({ setshowVideo }: Props): ReactElement {
       title={t('howDoesThisWork')}
       onClick={() => setshowVideo(true)}
       className={playButtonClasses}
+      style={{ marginTop: email ? '45px' : '' }}
     >
       <PlayIcon />
     </div>

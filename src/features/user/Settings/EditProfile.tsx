@@ -30,7 +30,7 @@ const Alert = styled(MuiAlert)(({ theme }) => {
 export default function EditProfile({}: Props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { user, setUser, token, contextLoaded } =
+  const { user, setUser, token, contextLoaded, validEmail } =
     React.useContext(UserPropsContext);
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
@@ -172,6 +172,7 @@ export default function EditProfile({}: Props) {
               `/app/profile`,
               bodyToSend,
               token,
+              validEmail,
               handleError
             )
               .then((res) => {
@@ -211,7 +212,13 @@ export default function EditProfile({}: Props) {
     }
     if (contextLoaded && token) {
       try {
-        putAuthenticatedRequest(`/app/profile`, bodyToSend, token, handleError)
+        putAuthenticatedRequest(
+          `/app/profile`,
+          bodyToSend,
+          token,
+          validEmail,
+          handleError
+        )
           .then((res) => {
             console.log(res);
             if (res.code !== 400) {

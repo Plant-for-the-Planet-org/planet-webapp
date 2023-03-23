@@ -88,12 +88,14 @@ export default function ProjectsContainer({}: any) {
   const [projects, setProjects] = React.useState([]);
   const [loader, setLoader] = React.useState(true);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { user, contextLoaded, token } = React.useContext(UserPropsContext);
+  const { user, contextLoaded, token, validEmail } =
+    React.useContext(UserPropsContext);
 
   async function loadProjects() {
     if (user) {
       await getAuthenticatedRequest(
         '/app/profile/projects?version=1.2',
+        validEmail,
         token,
         {},
         handleError,
