@@ -23,7 +23,8 @@
       color: #032d60;
       margin-bottom: 10px;
       @include lgLaptopView {
-        font-size: 52px;
+        // font-size: 52px;
+        font-size: $fontXXLarge;
         line-height: 100%;
         letter-spacing: -0.006em;
       }

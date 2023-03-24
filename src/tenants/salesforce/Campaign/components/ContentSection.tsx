@@ -9,7 +9,8 @@ export default function ContentSection() {
           className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
         >
           <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
-            <h2>VTO Fitness-for-a-Cause Challenge Sponsored by Earthforce</h2>
+            <h2>For Salesforce Employees</h2>
+            <h2>VTO Fitness-for-a-Cause Challenge, Sponsored by Earthforce</h2>
             <p className={styles.contentSectionSubhead}>
               April is Earthforce Champion Month, and we are inviting Salesforce
               colleagues around the world to log their minutes of humanpowered
@@ -40,22 +41,30 @@ export default function ContentSection() {
           >
             <h3>How you can participate</h3>
             <p>
+              All Salesforce employees globally are eligible to participate in
+              this challenge.
+            </p>
+            <p>
               To join, donate $50 or more to a tree planting project of your
-              choosing, submit your Salesforce Donation Match Request, and
-              commit to consistent exercise of any type throughout the month of
-              April.
+              choice from the projects listed below. You will then receive a
+              donation confirmation email from Plant for the Planet.
             </p>
             <p>
-              Participants who complete these steps are able to earn up to one
-              hour of VTO per day (30 hours max) in April for their support of
-              this challenge while competing with and encouraging colleagues
-              from around the world to double down on sustainability and their
-              own fitness.
+              Next, request your Salesforce Donation Match in Volunteerforce and
+              upload your confirmation from Plant for the Planet. Once your
+              donation and match request are verified, visit our slack channel
+              #vto-fitness-moving-toward-100m-treesapr23 to log your exercise
+              minutes from April 1st - 30th via the slack workflow, and share
+              your thoughts, insights and workouts!
             </p>
             <p>
-              Join this challenge by making your tree donation below, choosing a
-              tree planting project that resonates most with you, and let’s get
-              moving towards a greener tomorrow.
+              Participants in this challenge are able to earn up to one hour of
+              VTO per day in April (30 hours max).
+            </p>
+            <p>
+              Thank you for your interest and support. Continue below to choose
+              a tree planting project that resonates most with you and make your
+              impact. Let’s get moving towards a healthier and greener tomorrow!
             </p>
           </div>
         </div>
