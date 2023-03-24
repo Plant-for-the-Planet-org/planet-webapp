@@ -16,12 +16,14 @@ interface Props {
   project: any;
   keyString: string;
   editMode: Boolean;
+  utmCampaign?: string;
 }
 
 export default function ProjectSnippet({
   project,
   keyString,
   editMode,
+  utmCampaign,
 }: Props): ReactElement {
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
@@ -41,7 +43,13 @@ export default function ProjectSnippet({
 
   const { token } = React.useContext(UserPropsContext);
   const handleOpen = () => {
-    const url = getDonationUrl(project.slug, token, embed, callbackUrl);
+    const url = getDonationUrl(
+      project.slug,
+      token,
+      embed,
+      callbackUrl,
+      utmCampaign
+    );
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
 

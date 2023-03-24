@@ -38,6 +38,7 @@ export default function ProjectGrid() {
               keyString={allowedProject.properties.id}
               project={allowedProject.properties}
               editMode={false}
+              utmCampaign="vto-fc-2023"
             />
           </div>
         );
