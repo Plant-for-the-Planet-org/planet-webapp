@@ -47,6 +47,9 @@
     width: 1px;
     background-color: rgba(0, 0, 0, 0.5);
     margin: 0rem 0.5rem;
+    &.constrained {
+      margin: 0rem 0.2rem;
+    }
   }
   .mobile {
     display: none;
@@ -200,6 +203,9 @@
       .desktop {
         display: none;
       }
+      &.constrained {
+        left: 2px;
+      }
     }
   }
   .menuItems {
@@ -216,6 +222,13 @@
       .link_icon {
         margin: 5px;
       }
+      &.constrained {
+        text-align: center;
+        max-width: 60px;
+      }
+    }
+    &.constrained {
+      right: 2px;
     }
   }
   .subMenuItems {
