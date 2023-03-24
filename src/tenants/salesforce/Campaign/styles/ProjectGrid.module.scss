@@ -20,7 +20,6 @@
     color: #ffffff;
     padding: 13px 24px;
     cursor: pointer;
-    margin-bottom: 50px;
   }
   hr {
     border: none;
@@ -91,6 +90,16 @@
       flex-direction: column;
       justify-content: center;
     }
+    .projectList {
+      gap: 10px;
+    }
+  }
+
+  .projectItem {
+    background-color: #ffffff;
+    padding: 10px;
+    width: 320px;
+    max-width: 100%;
   }
 
   p.contentSectionSubhead {

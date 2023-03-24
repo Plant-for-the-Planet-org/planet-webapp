@@ -31,7 +31,7 @@ export default function ProjectGrid() {
       .map((allowedProject: any) => {
         return (
           <div
-            className={`${gridStyles.colMd4} ${gridStyles.col12}`}
+            className={`${styles.projectItem}`}
             key={allowedProject.properties.id}
           >
             <ProjectSnippet
@@ -50,7 +50,7 @@ export default function ProjectGrid() {
       <div className={`${styles.projectGridContainer}`}>
         <div className={`${gridStyles.fluidContainer} ${styles.projectGrid}`}>
           <div
-            className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+            className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter}`}
           >
             <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
               <h3>Projects</h3>
@@ -60,7 +60,7 @@ export default function ProjectGrid() {
             </div>
           </div>
           <div
-            className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
+            className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${styles.projectList}`}
           >
             {projects ? renderAllowedProjects(projects) : <></>}
           </div>
