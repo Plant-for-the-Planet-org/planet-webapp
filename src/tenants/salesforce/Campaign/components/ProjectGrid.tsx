@@ -47,24 +47,22 @@ export default function ProjectGrid() {
   };
 
   return (
-    <div>
-      <div className={`${styles.projectGridContainer}`}>
-        <div className={`${gridStyles.fluidContainer} ${styles.projectGrid}`}>
-          <div
-            className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter}`}
-          >
-            <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
-              <h3>Projects</h3>
-              <p className={styles.contentSectionSubhead}>
-                You can donate to these projects.
-              </p>
-            </div>
+    <div className={`${styles.projectGridContainer}`}>
+      <div className={`${gridStyles.fluidContainer} ${styles.projectGrid}`}>
+        <div
+          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter}`}
+        >
+          <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
+            <h3>Projects</h3>
+            <p className={styles.contentSectionSubhead}>
+              You can donate to these projects.
+            </p>
           </div>
-          <div
-            className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${styles.projectList}`}
-          >
-            {projects ? renderAllowedProjects(projects) : <></>}
-          </div>
+        </div>
+        <div
+          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${styles.projectList}`}
+        >
+          {projects ? renderAllowedProjects(projects) : <></>}
         </div>
       </div>
     </div>
