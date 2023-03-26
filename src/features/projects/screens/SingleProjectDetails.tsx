@@ -95,6 +95,9 @@ function SingleProjectDetails({}: Props): ReactElement {
         }`
       );
     } else {
+      if (document.referrer) {
+        window.history.go(-2);
+      }
       router.replace(
         `/${
           isEmbed
@@ -103,7 +106,7 @@ function SingleProjectDetails({}: Props): ReactElement {
                   ? `?embed=true&callback=${callbackUrl}`
                   : '?embed=true'
               }`
-            : `${document.referrer === '' ? '' : window.history.go(-2)}`
+            : ``
         }`
       );
     }
