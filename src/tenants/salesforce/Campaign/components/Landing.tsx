@@ -11,7 +11,7 @@ export default function Landing({ tenantScore }: Props) {
       <div className={styles.landingContent}>
         <div className={styles.landingContentTop}>
           <h3>MOVING Toward 100 Million Trees</h3>
-          <TreeCounter target={100000000} planted={tenantScoreData} />
+          <TreeCounter target={100000000} planted={tenantScoreData || 0} />
         </div>
       </div>
     </section>

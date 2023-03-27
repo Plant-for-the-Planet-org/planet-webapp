@@ -12,11 +12,16 @@ interface Props {
 
 export default function LeaderBoardSection({ leaderboard }: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
-  const leaderboardData = leaderboard;
   const isLeaderboardAvailable =
-    Object.keys(leaderboard.mostDonated).length +
-      Object.keys(leaderboard.mostRecent).length >
-    0;
+    leaderboard.mostDonated.length + leaderboard.mostRecent.length > 0 &&
+    !(
+      leaderboard.mostDonated.length === 1 &&
+      Object.keys(leaderboard.mostDonated[0]).length === 0
+    ) &&
+    !(
+      leaderboard.mostRecent.length === 1 &&
+      Object.keys(leaderboard.mostRecent[0]).length === 0
+    );
   const { t, i18n, ready } = useTranslation(['leaderboard', 'common']);
 
   return ready ? (
@@ -49,12 +54,12 @@ export default function LeaderBoardSection({ leaderboard }: Props) {
                 {t('leaderboard:mostTrees')}
               </button>
             </div>
-            {leaderboardData &&
-            leaderboardData.mostRecent &&
-            leaderboardData.mostDonated ? (
+            {leaderboard &&
+            leaderboard.mostRecent &&
+            leaderboard.mostDonated ? (
               selectedTab === 'recent' ? (
                 <div className={styles.leaderBoardBody}>
-                  {leaderboardData.mostRecent.map((leader, index) => {
+                  {leaderboard.mostRecent.map((leader, index) => {
                     return (
                       <div key={index} className={styles.leaderBoardBodyRow}>
                         <p className={styles.leaderBoardDonorName}>
@@ -75,7 +80,7 @@ export default function LeaderBoardSection({ leaderboard }: Props) {
                 </div>
               ) : (
                 <div className={styles.leaderBoardBody}>
-                  {leaderboardData.mostDonated.map((leader, index) => {
+                  {leaderboard.mostDonated.map((leader, index) => {
                     return (
                       <div key={index} className={styles.leaderBoardBodyRow}>
                         <p className={styles.leaderBoardDonorName}>
