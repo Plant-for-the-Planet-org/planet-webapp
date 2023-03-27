@@ -60,6 +60,7 @@ export async function getStaticProps({ locale }) {
       `${process.env.NEXT_PUBLIC_WEBHOOK_URL}/salesforce-earth-month-leaderboard`
     );
     const leaderBoardArr = await leaderboardRes.json();
+    console.log(leaderBoardArr);
     campaignLeaderBoard = leaderBoardArr[0];
   } catch (err) {
     console.log(err);
@@ -70,6 +71,7 @@ export async function getStaticProps({ locale }) {
       `${process.env.NEXT_PUBLIC_WEBHOOK_URL}/salesforce-earth-month-count`
     );
     const tenantScoreArr = await tenantscoreRes.json();
+    console.log(tenantScoreArr);
     campaignTenantScore = tenantScoreArr[0];
   } catch (err) {
     console.log(err);
