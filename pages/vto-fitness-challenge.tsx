@@ -3,44 +3,22 @@ import React from 'react';
 import SalesforceCampaign from '../src/tenants/salesforce/Campaign';
 import tenantConfig from '../tenant.config';
 import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
-import { getRequest } from '../src/utils/apiRequests/api';
-import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 interface Props {
-  initialized: Boolean;
+  initialized: boolean;
+  pageProps: {
+    campaignLeaderBoard: {
+      mostDonated: { created: string; donorName: string; treeCount: string }[];
+      mostRecent: { created: string; donorName: string; treeCount: string }[];
+    };
+    campaignTenantScore: { total: number };
+  };
 }
 
-export default function VTOFitnessChallenge(initialized: Props) {
+export default function VTOFitnessChallenge({ initialized, pageProps }: Props) {
   const router = useRouter();
   const config = tenantConfig();
-  const [leaderboard, setLeaderboard] = React.useState(null);
-  const [tenantScore, setTenantScore] = React.useState(null);
-  const { handleError } = React.useContext(ErrorHandlingContext);
-
-  React.useEffect(() => {
-    async function loadTenantScore() {
-      const newTenantScore = await getRequest(
-        `/app/tenantScore`,
-        handleError,
-        '/'
-      );
-      setTenantScore(newTenantScore);
-    }
-    loadTenantScore();
-  }, []);
-
-  React.useEffect(() => {
-    async function loadLeaderboard() {
-      const newLeaderBoard = await getRequest(
-        `/app/leaderboard`,
-        handleError,
-        '/'
-      );
-      setLeaderboard(newLeaderBoard);
-    }
-    loadLeaderboard();
-  }, []);
 
   if (!config.header.items['home'].visible) {
     if (typeof window !== 'undefined') {
@@ -54,7 +32,10 @@ export default function VTOFitnessChallenge(initialized: Props) {
       case 'salesforce':
         CampaignPage = SalesforceCampaign;
         return (
-          <CampaignPage leaderboard={leaderboard} tenantScore={tenantScore} />
+          <CampaignPage
+            leaderboard={pageProps.campaignLeaderBoard}
+            tenantScore={pageProps.campaignTenantScore}
+          />
         );
       default:
         CampaignPage = null;
@@ -71,6 +52,29 @@ export default function VTOFitnessChallenge(initialized: Props) {
 }
 
 export async function getStaticProps({ locale }) {
+  let campaignLeaderBoard = { mostDonated: [], mostRecent: [] };
+  let campaignTenantScore = { total: 0 };
+
+  try {
+    const leaderboardRes = await fetch(
+      `${process.env.NEXT_PUBLIC_WEBHOOK_URL}/salesforce-earth-month-leaderboard`
+    );
+    const leaderBoardArr = await leaderboardRes.json();
+    campaignLeaderBoard = leaderBoardArr[0];
+  } catch (err) {
+    console.log(err);
+  }
+
+  try {
+    const tenantscoreRes = await fetch(
+      `${process.env.NEXT_PUBLIC_WEBHOOK_URL}/salesforce-earth-month-count`
+    );
+    const tenantScoreArr = await tenantscoreRes.json();
+    campaignTenantScore = tenantScoreArr[0];
+  } catch (err) {
+    console.log(err);
+  }
+
   return {
     props: {
       ...(await serverSideTranslations(
@@ -98,6 +102,9 @@ export async function getStaticProps({ locale }) {
         null,
         ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
       )),
+      campaignLeaderBoard,
+      campaignTenantScore,
     },
+    revalidate: 600,
   };
 }

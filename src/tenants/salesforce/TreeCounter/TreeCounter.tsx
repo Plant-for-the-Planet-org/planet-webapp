@@ -6,7 +6,7 @@ export default function TpoProfile(props: any) {
   return (
     <div
       className={`${treeCounterStyles.treeCounter} ${
-        props.planted > 0 ? treeCounterStyles.treeCounterReady : ''
+        props.planted >= 0 ? treeCounterStyles.treeCounterReady : ''
       }`}
     >
       <div className={treeCounterStyles.treeCounterDataField}>
