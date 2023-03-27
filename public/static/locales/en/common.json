@@ -1,6 +1,6 @@
 {
-  "tree": "Tree",
-  "tree_plural": "Trees",
+  "tree_one": "Tree",
+  "tree_other": "Trees",
   "by": "By {{tpoName}}",
   "to_project_by_tpo": "To {{projectName}} by {{tpoName}}",
   "for": "for",
@@ -97,9 +97,9 @@
   "modalTitle": "Cancel all subscriptions to proceed",
   "modalSubtitle": "Please cancel your subscriptions first",
   "deleteCondition": "Before proceeding, make sure you've cancelled all subscriptions.",
-  "showSubscriptions": "Show my Subscriptions",
   "project": "Project",
   "type": "Type",
   "interventions": "Interventions",
-  "monitoringPlots": "Monitoring Plots (Coming Soon...)"
+  "monitoringPlots": "Monitoring Plots (Coming Soon...)",
+  "showSubscriptions": "Show my Subscriptions"
 }

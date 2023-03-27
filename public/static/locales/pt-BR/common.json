@@ -1,6 +1,6 @@
 {
-  "tree": "Árvore",
-  "tree_plural": "Árvores",
+  "tree_one": "Árvore",
+  "tree_other": "Árvores",
   "by": "Por {{tpoName}}",
   "to_project_by_tpo": "Para {{projectName}} por {{tpoName}}",
   "for": "para",
