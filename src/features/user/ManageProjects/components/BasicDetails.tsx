@@ -32,6 +32,8 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { ProjectCreationTabs } from '..';
+import { error } from 'console';
 
 interface Props {
   handleNext: Function;
@@ -421,7 +423,7 @@ export default function BasicDetails({
             setErrorMessage('');
             setProjectDetails(res);
             setIsUploadingData(false);
-            handleNext();
+            handleNext(ProjectCreationTabs.PROJECT_MEDIA);
           } else {
             if (res.code === 404) {
               setIsUploadingData(false);
@@ -485,7 +487,7 @@ export default function BasicDetails({
         }
       : {}
   );
-
+  console.log(errors.countTarget?.message);
   return ready ? (
     <CenteredContainer>
       <StyledForm>
@@ -614,19 +616,21 @@ export default function BasicDetails({
                 },
                 validate: (value) => parseInt(value, 10) > 1,
               })}
-              onInput={(e) => {
-                e.target.value = e.target.value.replace(/[^1-9]/g, '');
-              }}
               label={t('manageProjects:countTarget')}
               variant="outlined"
               name="countTarget"
-              placeholder={t('manageProjects:countTargetValidation2')}
+              type="number"
+              placeholder={0}
               error={errors.countTarget}
-              helperText={errors.countTarget && errors.countTarget.message}
+              helperText={
+                (errors.countTarget?.message && errors.countTarget.message) ||
+                (errors.countTarget &&
+                  t('manageProjects:countTargetValidation2'))
+              }
             />
           )}
         </InlineFormDisplayGroup>
-
+        {console.log(errors)}
         <TextField
           label={t('manageProjects:aboutProject')}
           variant="outlined"

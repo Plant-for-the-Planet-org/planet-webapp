@@ -304,7 +304,7 @@ export default function DetailedAnalysis({
           setProjectDetails(res);
           setIsUploadingData(false);
           setErrorMessage('');
-          handleNext();
+          handleNext(ProjectCreationTabs.PROJECT_SITES);
         } else {
           if (res.code === 404) {
             setIsUploadingData(false);

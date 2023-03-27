@@ -23,6 +23,7 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { ProjectCreationTabs } from '..';
 
 const yearDialogSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
@@ -145,7 +146,7 @@ export default function ProjectSpending({
           setIsUploadingData(false);
           setShowForm(false);
           setErrorMessage('');
-          handleNext();
+          handleNext(ProjectCreationTabs.REVIEW);
         } else {
           if (res.code === 404) {
             setIsUploadingData(false);
@@ -358,7 +359,7 @@ export default function ProjectSpending({
 
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
-            onClick={() => handleBack()}
+            onClick={() => handleBack(ProjectCreationTabs.PROJECT_SITES)}
             variant="outlined"
             className={styles.backButton}
           >
@@ -369,7 +370,7 @@ export default function ProjectSpending({
           <Button
             onClick={() => {
               if (uploadedFiles && uploadedFiles.length > 0) {
-                handleNext();
+                handleNext(ProjectCreationTabs.REVIEW);
               } else {
                 setErrorMessage('Please upload  report');
               }
@@ -387,7 +388,7 @@ export default function ProjectSpending({
           <Button
             className={styles.skipButton}
             variant="contained"
-            onClick={() => handleNext()}
+            onClick={() => handleNext(ProjectCreationTabs.REVIEW)}
           >
             {t('manageProjects:skip')}
           </Button>

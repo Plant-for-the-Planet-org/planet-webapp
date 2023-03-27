@@ -19,6 +19,7 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { ProjectCreationTabs } from '..';
 
 interface Props {
   handleNext: Function;
@@ -190,7 +191,7 @@ export default function ProjectMedia({
         if (!res.code) {
           setProjectDetails(res);
           setIsUploadingData(false);
-          handleNext();
+          handleNext(ProjectCreationTabs.DETAILED_ANALYSIS);
           setErrorMessage('');
         } else {
           if (res.code === 404) {

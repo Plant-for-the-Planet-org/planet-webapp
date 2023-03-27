@@ -24,6 +24,7 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { ProjectCreationTabs } from '..';
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
@@ -208,7 +209,7 @@ export default function ProjectSites({
 
   const uploadProjectSiteNext = (data: any) => {
     uploadProjectSite(data);
-    handleNext();
+    handleNext(ProjectCreationTabs.PROJECT_SPENDING);
   };
 
   const deleteProjectSite = (id: any) => {
@@ -521,7 +522,7 @@ export default function ProjectSites({
 
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
-            onClick={() => handleBack(ProjectCreationTabs.PROJECT_SITES)}
+            onClick={() => handleBack(ProjectCreationTabs.DETAILED_ANALYSIS)}
             variant="outlined"
             className={styles.backButton}
           >

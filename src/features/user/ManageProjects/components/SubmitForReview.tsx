@@ -6,9 +6,9 @@ import UnderReview from '../../../../../public/assets/images/icons/manageProject
 import { useTranslation } from 'next-i18next';
 import NotReviewed from '../../../../../public/assets/images/icons/manageProjects/NotReviewed';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
-import { useForm } from 'react-hook-form';
 import router from 'next/router';
 import { Button } from '@mui/material';
+import { ProjectCreationTabs } from '..';
 
 interface Props {
   handleBack: Function;
@@ -29,7 +29,7 @@ function SubmitForReview({
   projectDetails,
   handlePublishChange,
 }: Props): ReactElement {
-  const { t, i18n, ready } = useTranslation(['manageProjects']);
+  const { t, ready } = useTranslation(['manageProjects']);
 
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {
@@ -38,7 +38,6 @@ function SubmitForReview({
   });
 
   function UnderReviewComponent() {
-    const { control } = useForm({ mode: 'onBlur' });
     const [publish, setPublish] = React.useState(projectDetails.publish);
 
     return (
@@ -66,12 +65,10 @@ function SubmitForReview({
             </div>
           </div>
           <div className={styles.formFieldLarge}>
-            <div style={{ height: '240px', width: '100%' }}>
+            <div className={styles.reviewImageContainer}>
               <UnderReview />
             </div>
-            <p
-              style={{ textAlign: 'center', width: '100%', marginTop: '24px' }}
-            >
+            <p className={styles.reviewMessage}>
               {t('manageProjects:projectUnderReview')}
             </p>
           </div>
@@ -140,10 +137,10 @@ function SubmitForReview({
         </div>
 
         <div>
-          <div style={{ height: '240px', width: '100%' }}>
+          <div className={styles.reviewImageContainer}>
             <NotReviewed />
           </div>
-          <p style={{ textAlign: 'center', width: '100%', marginTop: '24px' }}>
+          <p className={styles.reviewMessage}>
             {t('manageProjects:projectForReview')}
           </p>
         </div>
@@ -151,7 +148,7 @@ function SubmitForReview({
           <Button
             className={styles.backButton}
             variant="outlined"
-            onClick={() => handleBack()}
+            onClick={() => handleBack(ProjectCreationTabs.PROJECT_SPENDING)}
           >
             <BackArrow />
             <p>{t('manageProjects:backToSpending')}</p>
@@ -185,10 +182,10 @@ function SubmitForReview({
     return (
       <div className={styles.stepContainer}>
         <div className={styles.formFieldLarge}>
-          <div style={{ height: '240px', width: '100%' }}>
+          <div className={styles.reviewImageContainer}>
             <SubmitForReviewImage />
           </div>
-          <p style={{ textAlign: 'center', width: '100%', marginTop: '24px' }}>
+          <p className={styles.reviewMessage}>
             {t('manageProjects:acceptedReview')}
           </p>
         </div>
@@ -210,12 +207,10 @@ function SubmitForReview({
       <div className={styles.stepContainer}>
         <div>
           <div className={styles.formFieldLarge}>
-            <div style={{ height: '240px', width: '100%' }}>
+            <div className={styles.reviewImageContainer}>
               <UnderReview />
             </div>
-            <p
-              style={{ textAlign: 'center', width: '100%', marginTop: '24px' }}
-            >
+            <p className={styles.reviewMessage}>
               {t('manageProjects:deniedReview')}
             </p>
           </div>
