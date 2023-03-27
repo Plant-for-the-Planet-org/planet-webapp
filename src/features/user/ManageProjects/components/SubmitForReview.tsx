@@ -36,6 +36,7 @@ function SubmitForReview({
       handleReset(ready ? t('manageProjects:resetMessage') : '');
     }
   });
+  console.log('xyz');
 
   function UnderReviewComponent() {
     const [publish, setPublish] = React.useState(projectDetails.publish);
