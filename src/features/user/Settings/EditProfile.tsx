@@ -1,4 +1,4 @@
-import { MenuItem, styled } from '@mui/material';
+import { MenuItem, styled, TextField } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import React, { useState } from 'react';
@@ -10,7 +10,7 @@ import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 import getImageUrl from '../../../utils/getImageURL';
 import { selectUserType } from '../../../utils/selectUserType';
-import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
+import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountryNew';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
@@ -18,6 +18,12 @@ import styles from './EditProfile.module.scss';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
+import { allCountries } from '../../../utils/constants/countries';
+import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
+import {
+  MuiAutoComplete,
+  StyledAutoCompleteOption,
+} from '../../common/InputTypes/MuiAutoComplete';
 
 interface Props {}
 
@@ -255,7 +261,7 @@ export default function EditProfile({}: Props) {
 
   return ready ? (
     <div className="profilePage">
-      <div className={'profilePageTitle'}>{t('editProfile:edit')}</div>
+      {/* <div className={'profilePageTitle'}>{t('editProfile:edit')}</div> */}
       <div className={styles.editProfileContainer}>
         <div
           {...getRootProps()}
@@ -307,12 +313,12 @@ export default function EditProfile({}: Props) {
         ) : null}
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
-            <MaterialTextField
+            <TextField
               label={t('donate:firstName')}
               variant="outlined"
               name="firstname"
               inputRef={register({ required: true })}
-            />
+            ></TextField>
             {errors.firstname && (
               <span className={styles.formErrors}>
                 {t('donate:firstNameRequired')}
@@ -321,12 +327,12 @@ export default function EditProfile({}: Props) {
           </div>
           <div style={{ width: '20px' }}></div>
           <div className={styles.formFieldHalf}>
-            <MaterialTextField
+            <TextField
               label={t('donate:lastName')}
               variant="outlined"
               name="lastname"
               inputRef={register({ required: true })}
-            />
+            ></TextField>
             {errors.lastname && (
               <span className={styles.formErrors}>
                 {t('donate:lastNameRequired')}
@@ -337,26 +343,27 @@ export default function EditProfile({}: Props) {
 
         <div className={styles.formFieldLarge}>
           <div style={{ width: '100%' }}>
-            <MaterialTextField
+            <TextField
               label={t('donate:email')}
               variant="outlined"
               name="email"
               defaultValue={user.email}
-              disabled={true}
-            />
+              inputProps={{ readOnly: true }}
+              disabled
+            ></TextField>
           </div>
         </div>
 
         {type && type !== 'individual' && (
           <div className={styles.formFieldLarge}>
-            <MaterialTextField
+            <TextField
               label={t('editProfile:profileName', {
                 type: selectUserType(type, t),
               })}
               variant="outlined"
               name="name"
               inputRef={register({ required: true })}
-            />
+            ></TextField>
             {errors.name && (
               <span className={styles.formErrors}>
                 {t('editProfile:nameValidation')}
@@ -366,7 +373,7 @@ export default function EditProfile({}: Props) {
         )}
 
         <div className={styles.formFieldLarge}>
-          <MaterialTextField
+          <TextField
             label={t('donate:address')}
             variant="outlined"
             name="address"
@@ -375,7 +382,7 @@ export default function EditProfile({}: Props) {
               suggestAddress(event.target.value);
             }}
             onBlur={() => setaddressSugggestions([])}
-          />
+          ></TextField>
           {addressSugggestions
             ? addressSugggestions.length > 0 && (
                 <div className="suggestions-container">
@@ -404,12 +411,12 @@ export default function EditProfile({}: Props) {
 
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
-            <MaterialTextField
+            <TextField
               label={t('donate:city')}
               variant="outlined"
               name="city"
               inputRef={register({ required: true })}
-            />
+            ></TextField>
             {errors.city && (
               <span className={styles.formErrors}>
                 {t('donate:cityRequired')}
@@ -418,7 +425,7 @@ export default function EditProfile({}: Props) {
           </div>
           <div style={{ width: '20px' }}></div>
           <div className={styles.formFieldHalf}>
-            <MaterialTextField
+            <TextField
               label={t('donate:zipCode')}
               variant="outlined"
               name="zipCode"
@@ -426,7 +433,7 @@ export default function EditProfile({}: Props) {
                 pattern: postalRegex,
                 required: true,
               })}
-            />
+            ></TextField>
             {errors.zipCode && (
               <span className={styles.formErrors}>
                 {t('donate:zipCodeAlphaNumValidation')}
@@ -437,11 +444,11 @@ export default function EditProfile({}: Props) {
 
         <div className={styles.formFieldLarge}>
           <AutoCompleteCountry
-            inputRef={null}
             defaultValue={country}
             onChange={setCountry}
             label={t('donate:country')}
             name="editProfile"
+            countries={allCountries}
           />
           {errors.editProfile && (
             <span className={styles.formErrors}>
