@@ -293,7 +293,7 @@ function UserLayout(props: any): ReactElement {
         {
           title: t('me:dataExplorer'),
           path: '/profile/treemapper/data-explorer',
-          hideItem: !process.env.ENABLE_ANALYTICS,
+          hideItem: !(process.env.ENABLE_ANALYTICS && (user?.type === 'tpo')),
         },
       ],
     },
