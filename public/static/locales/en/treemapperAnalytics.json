@@ -44,5 +44,9 @@
   "readme": "READ ME",
   "interventionData": "Intervention Data",
   "monitoringPlotsData": "Monitoring Plots Data",
-  "dataIntervals": "Data Intervals"
+  "dataIntervals": "Data Intervals",
+  "errors": {
+    "emptyExportData": "Data not available for the specified interval. Please try a different time range or check if the data for that period has been recorded.",
+    "tooManyRequest": "Too many requests. Please wait and try again later or contact the system administrator for assistance."
+  }
 }

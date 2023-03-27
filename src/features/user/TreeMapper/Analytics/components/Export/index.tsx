@@ -20,6 +20,7 @@ import MaterialTextField from '../../../../../common/InputTypes/MaterialTextFiel
 import { format, subYears } from 'date-fns';
 import ProjectTypeSelector, { ProjectType } from '../ProjectTypeSelector';
 import { Container } from '../Container';
+import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -42,6 +43,7 @@ export const Export = () => {
   const { t, ready } = useTranslation('treemapperAnalytics');
   const { projectList, project, fromDate, toDate } = useAnalytics();
   const { userLang } = useContext(UserPropsContext);
+  const { handleError } = useContext(ErrorHandlingContext);
 
   const [localProject, setLocalProject] = useState<Project | null>(null);
   const [localFromDate, setLocalFromDate] = useState<Date>(fromDate);
@@ -156,6 +158,8 @@ export const Export = () => {
 
   const handleExport = async () => {
     if (localProject) {
+      // TODO - Once error handling PR is merged refactor this fetch call with a makeNextRequest function
+
       const res = await fetch('/api/data-explorer/export', {
         method: 'POST',
         body: JSON.stringify({
@@ -166,6 +170,11 @@ export const Export = () => {
       });
 
       const { data } = await res.json();
+
+      if (data.length === 0) {
+        handleError({ message: t('errors.emptyExportData'), type: 'error' });
+        return;
+      }
 
       extractDataToXlsx(data);
     }

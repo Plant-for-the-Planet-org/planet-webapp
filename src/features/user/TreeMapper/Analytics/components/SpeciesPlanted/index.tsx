@@ -192,6 +192,8 @@ export const SpeciesPlanted = () => {
   };
 
   const fetchPlantedSpecies = async () => {
+    // TODO - Once error handling PR is merged refactor this fetch call with a makeNextRequest function
+
     const res = await fetch('/api/data-explorer/species-planted', {
       method: 'POST',
       body: JSON.stringify({

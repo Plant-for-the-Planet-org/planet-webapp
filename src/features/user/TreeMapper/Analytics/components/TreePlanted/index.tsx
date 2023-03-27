@@ -382,6 +382,9 @@ export const TreePlanted = () => {
   };
 
   const fetchPlantedTrees = async () => {
+
+    // TODO - Once error handling PR is merged refactor this fetch call with a makeNextRequest function
+
     const res = await fetch(
       `/api/data-explorer/trees-planted?timeFrame=${timeFrame}`,
       {
