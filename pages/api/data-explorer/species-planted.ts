@@ -2,14 +2,30 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import db from '../../../src/utils/connectDB';
 import nc from 'next-connect';
 import { limiter, speedLimiter } from '../../../src/middlewares/rate-limiter';
+import NodeCache from 'node-cache';
+import { getCachedKey } from '../../../src/utils/getCachedKey';
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
 handler.use(limiter);
 handler.use(speedLimiter);
 
+const ONE_HOUR_IN_SEC = 60 * 60;
+const ONE_DAY = ONE_HOUR_IN_SEC * 24;
+
+const cache = new NodeCache({ stdTTL: ONE_DAY, checkperiod: ONE_HOUR_IN_SEC });
+
 handler.post(async (req, response) => {
   const { projectId, startDate, endDate } = JSON.parse(req.body);
+
+  const cacheHit = cache.get(getCachedKey(projectId, startDate, endDate));
+
+  if (cacheHit) {
+    console.log('cache hit');
+    response.status(200).json({ data: cacheHit });
+    return;
+  }
+
   try {
     const query =
       'SELECT \
@@ -33,6 +49,7 @@ handler.post(async (req, response) => {
 
     await db.end();
 
+    cache.set(getCachedKey(projectId, startDate, endDate), res);
     response.status(200).json({ data: res });
   } catch (err) {
     console.log(err);
