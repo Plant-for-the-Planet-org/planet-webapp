@@ -105,6 +105,6 @@ export async function getStaticProps({ locale }) {
       campaignLeaderBoard,
       campaignTenantScore,
     },
-    revalidate: 600,
+    revalidate: 60,
   };
 }
