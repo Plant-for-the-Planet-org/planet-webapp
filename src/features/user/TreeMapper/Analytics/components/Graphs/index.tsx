@@ -5,11 +5,7 @@ import { SpeciesPlanted } from '../SpeciesPlanted';
 import { TreePlanted } from '../TreePlanted';
 import styles from './index.module.scss';
 
-interface Props {
-  setProgress: Dispatch<SetStateAction<number>>;
-}
-
-export const Graphs = ({ setProgress }: Props) => {
+export const Graphs = () => {
   return (
     <div className={styles.graphsContainer}>
       <Grid container alignContent="center" justifyContent="center" spacing={6}>

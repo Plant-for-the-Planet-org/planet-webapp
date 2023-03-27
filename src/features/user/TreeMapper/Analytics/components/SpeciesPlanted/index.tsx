@@ -38,7 +38,7 @@ export const SpeciesPlanted = () => {
 
   const { handleError } = useContext(ErrorHandlingContext);
 
-  const [series, setSeries] = useState<ApexAxisChartSeries>([
+  const [series, setSeries] = useState<ApexOptions['series']>([
     {
       data: [],
     },
@@ -162,11 +162,11 @@ export const SpeciesPlanted = () => {
         chart: {
           ...options.chart,
           toolbar: {
-            ...options!.chart!.toolbar,
+            ...options.chart?.toolbar,
             export: {
-              ...options!.chart!.toolbar!.export,
+              ...options.chart?.toolbar?.export,
               csv: {
-                ...options!.chart!.toolbar!.export!.csv,
+                ...options.chart?.toolbar?.export?.csv,
                 filename: FILE_NAME,
               },
               svg: {
@@ -207,8 +207,8 @@ export const SpeciesPlanted = () => {
     });
 
     if (res.status === 429) {
-      handleError({ message: t('errors.tooManyRequest'), type : 'error' });
-      return
+      handleError({ message: t('errors.tooManyRequest'), type: 'error' });
+      return;
     }
 
     const { data }: { data: Species[] } = await res.json();

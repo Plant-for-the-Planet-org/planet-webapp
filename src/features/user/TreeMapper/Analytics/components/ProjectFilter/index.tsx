@@ -32,11 +32,7 @@ const dialogSx: SxProps = {
   },
 };
 
-interface Props {
-  setProgress: Dispatch<SetStateAction<number>>;
-}
-
-const ProjectFilter = ({ setProgress }: Props) => {
+const ProjectFilter = () => {
   const { t, ready } = useTranslation('treemapperAnalytics');
   const {
     projectList,

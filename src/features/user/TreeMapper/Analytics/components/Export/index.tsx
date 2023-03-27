@@ -17,7 +17,7 @@ import themeProperties from '../../../../../../theme/themeProperties';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { useTranslation } from 'react-i18next';
 import MaterialTextField from '../../../../../common/InputTypes/MaterialTextField';
-import { format, subYears } from 'date-fns';
+import { format } from 'date-fns';
 import ProjectTypeSelector, { ProjectType } from '../ProjectTypeSelector';
 import { Container } from '../Container';
 import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';

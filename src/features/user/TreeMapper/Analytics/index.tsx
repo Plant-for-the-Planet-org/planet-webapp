@@ -9,21 +9,18 @@ import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { ProjectMapInfo } from '@planet-sdk/common';
 
-interface Props {
-  setProgress: Dispatch<SetStateAction<number>>;
-}
-
-const Analytics = ({ setProgress }: Props) => {
+const Analytics = () => {
   const { t, ready } = useTranslation('treemapperAnalytics');
   const { setProjectList, setProject } = useAnalytics();
 
-  const { token } = useContext(UserPropsContext);
+  const { token, impersonatedEmail } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
 
   const fetchProjects = async () => {
     const res = await getAuthenticatedRequest<ProjectMapInfo[]>(
       '/app/profile/projects?scope=map',
       token,
+      impersonatedEmail,
       {},
       handleError
     );
@@ -46,8 +43,8 @@ const Analytics = ({ setProgress }: Props) => {
 
   return ready ? (
     <DashboardView title={t('treemapperAnalytics:title')} subtitle={null}>
-      <ProjectFilter {...{ setProgress }} />
-      <Graphs {...{ setProgress }} />
+      <ProjectFilter />
+      <Graphs />
     </DashboardView>
   ) : null;
 };

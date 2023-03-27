@@ -1,21 +1,16 @@
 import Head from 'next/head';
-import React, { ReactElement, useContext, useEffect, useState } from 'react';
+import React, { ReactElement, useContext, useEffect } from 'react';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
 import Analytics from '../../../src/features/user/TreeMapper/Analytics';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-import TopProgressBar from '../../../src/features/common/ContentLoaders/TopProgressBar';
 import { useRouter } from 'next/router';
 import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
 
-interface Props {}
-
-function TreeMapperAnalytics({}: Props): ReactElement {
+function TreeMapperAnalytics(): ReactElement {
   const { t, ready } = useTranslation('treemapperAnalytics');
 
   const { user } = useContext(UserPropsContext);
-
-  const [progress, setProgress] = useState(0);
   const { push } = useRouter();
 
   useEffect(() => {
@@ -26,16 +21,11 @@ function TreeMapperAnalytics({}: Props): ReactElement {
 
   return (
     <>
-      {progress > 0 && (
-        <div className={'topLoader'}>
-          <TopProgressBar progress={progress} />
-        </div>
-      )}
       <UserLayout>
         <Head>
           <title> {ready ? t('treemapperAnalytics:title') : ''} </title>
         </Head>
-        <Analytics setProgress={setProgress} />
+        <Analytics />
       </UserLayout>
     </>
   );

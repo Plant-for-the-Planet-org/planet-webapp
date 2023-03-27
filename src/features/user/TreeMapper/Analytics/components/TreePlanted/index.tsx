@@ -100,7 +100,7 @@ export const TreePlanted = () => {
 
   const { handleError } = useContext(ErrorHandlingContext);
 
-  const [series, setSeries] = useState<ApexAxisChartSeries>([
+  const [series, setSeries] = useState<ApexOptions['series']>([
     {
       data: [],
     },
@@ -234,11 +234,11 @@ export const TreePlanted = () => {
         chart: {
           ...options.chart,
           toolbar: {
-            ...options!.chart!.toolbar,
+            ...options.chart?.toolbar,
             export: {
-              ...options!.chart!.toolbar!.export,
+              ...options.chart?.toolbar?.export,
               csv: {
-                ...options!.chart!.toolbar!.export!.csv,
+                ...options.chart?.toolbar?.export?.csv,
                 filename: FILE_NAME,
               },
               svg: {
