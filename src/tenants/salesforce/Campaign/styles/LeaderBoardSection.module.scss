@@ -36,7 +36,7 @@
   width: 90vw;
   background-color: white;
   z-index: 999;
-  margin-top: -100px;
+  margin-top: -90px;
   padding: 50px 80px;
   @include xsPhoneView {
     padding: 50px 30px;
@@ -216,9 +216,8 @@
     width: 528px;
     margin: 60px auto 0;
   }
-
   .leaderBoardSection {
-    margin-top: -108px;
+    margin-top: -115px;
   }
   .leaderBoardBushImage {
     display: block;
