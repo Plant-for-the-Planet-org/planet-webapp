@@ -5,11 +5,12 @@ import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurren
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ProjectGrid.module.scss';
 import ProjectSnippet from '../../../../features/projects/components/ProjectSnippet';
+import { MapSingleProject } from '../../../../features/common/types/project';
 import { TENANT_ID } from '../../../../utils/constants/environment';
 
 export default function ProjectGrid() {
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const [projects, setProjects] = useState(null);
+  const [projects, setProjects] = useState<MapSingleProject[] | null>(null);
 
   useEffect(() => {
     async function loadProjects() {
@@ -20,15 +21,15 @@ export default function ProjectGrid() {
         tenant: TENANT_ID,
         'filter[purpose]': 'trees,conservation',
       });
-      setProjects(projects);
+      setProjects(projects as MapSingleProject[]);
     }
     loadProjects();
   }, []);
 
-  const renderAllowedProjects = (projects: any) => {
+  const renderAllowedProjects = (projects: MapSingleProject[]) => {
     const allowedProjects = projects
-      .filter((project: any) => project.properties.allowDonations === true)
-      .map((allowedProject: any) => {
+      .filter((project) => project.properties.allowDonations === true)
+      .map((allowedProject) => {
         return (
           <div
             className={`${styles.projectItem}`}

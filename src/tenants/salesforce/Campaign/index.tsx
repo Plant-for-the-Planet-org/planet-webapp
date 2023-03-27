@@ -11,8 +11,11 @@ import tenantConfig from '../../../../tenant.config';
 const config = tenantConfig();
 
 interface Props {
-  leaderboard: any;
-  tenantScore: any;
+  leaderboard: {
+    mostDonated: { created: string; donorName: string; treeCount: string }[];
+    mostRecent: { created: string; donorName: string; treeCount: string }[];
+  };
+  tenantScore: { total: number };
 }
 
 export default function Campaign({ tenantScore, leaderboard }: Props) {

@@ -4,12 +4,15 @@ import { useTranslation } from 'next-i18next';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 
 interface Props {
-  leaderboard: any;
+  leaderboard: {
+    mostDonated: { created: string; donorName: string; treeCount: string }[];
+    mostRecent: { created: string; donorName: string; treeCount: string }[];
+  };
 }
 
-export default function LeaderBoardSection(leaderboard: Props) {
+export default function LeaderBoardSection({ leaderboard }: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
-  const leaderboardData = leaderboard.leaderboard;
+  const leaderboardData = leaderboard;
   const { t, i18n, ready } = useTranslation(['leaderboard', 'common']);
 
   return ready ? (
@@ -46,7 +49,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
           leaderboardData.mostDonated ? (
             selectedTab === 'recent' ? (
               <div className={styles.leaderBoardBody}>
-                {leaderboardData.mostRecent.map((leader: any, index: any) => {
+                {leaderboardData.mostRecent.map((leader, index) => {
                   return (
                     <div key={index} className={styles.leaderBoardBodyRow}>
                       <p className={styles.leaderBoardDonorName}>
@@ -65,7 +68,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
               </div>
             ) : (
               <div className={styles.leaderBoardBody}>
-                {leaderboardData.mostDonated.map((leader: any, index: any) => {
+                {leaderboardData.mostDonated.map((leader, index) => {
                   return (
                     <div key={index} className={styles.leaderBoardBodyRow}>
                       <p className={styles.leaderBoardDonorName}>

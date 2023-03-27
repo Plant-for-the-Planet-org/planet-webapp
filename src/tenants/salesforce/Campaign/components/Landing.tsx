@@ -2,12 +2,10 @@ import styles from './../styles/Landing.module.scss';
 import TreeCounter from '../../TreeCounter/TreeCounter';
 
 interface Props {
-  tenantScore: any;
+  tenantScore?: { total: number };
 }
-export default function Landing(tenantScore: Props) {
-  const tenantScoreData = tenantScore.tenantScore
-    ? tenantScore.tenantScore.total
-    : '';
+export default function Landing({ tenantScore }: Props) {
+  const tenantScoreData = tenantScore ? tenantScore.total : '';
   return (
     <section className={styles.landingSection}>
       <div className={styles.landingContent}>
