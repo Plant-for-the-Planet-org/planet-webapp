@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import themeProperties from '../../../../../../theme/themeProperties';
 import { getFormattedNumber } from '../../../../../../utils/getFormattedNumber';
@@ -11,6 +11,7 @@ import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
 import { format } from 'date-fns';
 import { ApexOptions } from 'apexcharts';
 import { Container } from '../Container';
+import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -34,6 +35,8 @@ export const SpeciesPlanted = () => {
   } = useTranslation(['treemapperAnalytics']);
 
   const { project, fromDate, toDate } = useAnalytics();
+
+  const { handleError } = useContext(ErrorHandlingContext);
 
   const [series, setSeries] = useState<ApexAxisChartSeries>([
     {
@@ -202,6 +205,12 @@ export const SpeciesPlanted = () => {
         endDate: toDate,
       }),
     });
+
+    if (res.status === 429) {
+      handleError({ message: t('errors.tooManyRequest'), type : 'error' });
+      return
+    }
+
     const { data }: { data: Species[] } = await res.json();
 
     let unknownIndex = -1;

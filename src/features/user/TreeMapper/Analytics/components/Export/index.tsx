@@ -169,6 +169,11 @@ export const Export = () => {
         }),
       });
 
+      if (res.status === 429) {
+        handleError({ message: t('errors.tooManyRequest'), type: 'error' });
+        return;
+      }
+
       const { data } = await res.json();
 
       if (data.length === 0) {
