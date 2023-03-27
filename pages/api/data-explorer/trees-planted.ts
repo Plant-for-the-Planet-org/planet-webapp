@@ -3,6 +3,13 @@ import db from '../../../src/utils/connectDB';
 import { TIME_FRAME } from '../../../src/features/user/TreeMapper/Analytics/components/TreePlanted/TimeFrameSelector';
 import nc from 'next-connect';
 import { limiter, speedLimiter } from '../../../src/middlewares/rate-limiter';
+import NodeCache from 'node-cache';
+import { getCachedKey } from '../../../src/utils/getCachedKey';
+
+const ONE_HOUR_IN_SEC = 60 * 60;
+const ONE_DAY = ONE_HOUR_IN_SEC * 24;
+
+const cache = new NodeCache({ stdTTL: ONE_DAY, checkperiod: ONE_HOUR_IN_SEC });
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
@@ -12,6 +19,15 @@ handler.use(speedLimiter);
 handler.post(async (req, response) => {
   const { projectId, startDate, endDate } = JSON.parse(req.body);
   const { timeFrame } = req.query;
+
+  const cacheHit = cache.get(
+    getCachedKey(projectId, startDate, endDate, timeFrame as string)
+  );
+
+  if (cacheHit) {
+    response.status(200).json({ data: cacheHit });
+    return;
+  }
 
   let query: string;
 
@@ -89,6 +105,11 @@ handler.post(async (req, response) => {
     ]);
 
     await db.end();
+
+    cache.set(
+      getCachedKey(projectId, startDate, endDate, timeFrame as string),
+      res
+    );
 
     response.status(200).json({ data: res });
   } catch (err) {
