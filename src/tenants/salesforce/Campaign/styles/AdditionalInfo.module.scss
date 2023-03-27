@@ -52,116 +52,11 @@
       color: #1a1a1a;
     }
   }
-  .imageContainer {
-    background-position: center center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 180px;
-    width: auto;
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
-  }
-  .contentContainer {
-    display: flex;
-    flex-direction: column;
-    border-bottom-left-radius: 16px;
-    border-bottom-right-radius: 16px;
-    justify-content: space-between;
-    // align-items: center;
-    height: 230px;
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-  .foliageWrapper {
-    border-bottom-left-radius: 16px;
-    border-bottom-right-radius: 16px;
-  }
-  .foliage {
-    margin-bottom: 0px;
-    vertical-align: bottom;
-  }
-  .partnerLogo {
-    position: absolute;
-    width: 90px;
-    height: auto;
-    top: -30px;
-    left: 0px;
-  }
-}
-
-.climateActionContent {
-  display: flex;
-  flex-direction: column;
-  @include mdTabletView {
-    margin-bottom: 40px;
-  }
-  @include xsPhoneView {
-    margin-bottom: 40px;
-  }
   img {
     max-width: 100%;
-    height: auto;
-    border-radius: 16px;
-    margin-bottom: 32px;
+    max-height: 120px;
   }
-  span {
-    font-family: $primaryFontFamily;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 11px;
-    line-height: 15px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #939393;
-    margin-bottom: 12px;
-    display: block;
-  }
-  h4 {
-    font-family: $secondaryFontFamily;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 26px;
-    letter-spacing: -0.001em;
-    color: #ffffff;
-    text-align: center;
-    padding-top: 20px;
-    margin-bottom: 16px;
-    @include lgLaptopView {
-      margin-bottom: 5px;
-    }
-  }
-  h5 {
-    color: #ffffff;
-    text-align: center;
-    padding-top: 20px;
-    margin-bottom: 16px;
-    @include lgLaptopView {
-      margin-bottom: 5px;
-    }
-    + h5 {
-      padding-top: 0;
-    }
-  }
-}
-
-.climateActionDonate {
-  margin-top: 100px;
-  text-align: center;
-  p {
-    margin-bottom: 20px;
-  }
-  button {
-    background: #215ca0;
-    border-radius: 4px;
-    font-family: $primaryFontFamily;
-    font-style: normal;
-    font-weight: normal;
-    font-size: $fontSmall;
-    line-height: 130%;
-    text-transform: uppercase;
-    color: #ffffff;
-    padding: 13px 24px;
-    cursor: pointer;
+  .logoContainer {
+    display: flex;
   }
 }

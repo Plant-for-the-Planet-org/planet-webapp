@@ -53,6 +53,20 @@ export default function AdditionalInfo() {
             </p>
           </div>
         </div>
+        <div
+          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.alignItemsCenter} ${styles.logoContainer}`}
+        >
+          <div
+            className={`${gridStyles.colMd6} ${gridStyles.justifyContentCenter} ${gridStyles.alignItemsCenter} ${styles.logoContainer}`}
+          >
+            <img src="/tenants/salesforce/images/earthforce-pp.png" alt="" />
+          </div>
+          <div
+            className={`${gridStyles.colMd3} ${gridStyles.justifyContentCenter} ${gridStyles.alignItemsCenter}`}
+          >
+            <img src="/tenants/salesforce/images/1t.png" alt="" />
+          </div>
+        </div>
       </div>
     </section>
   );
