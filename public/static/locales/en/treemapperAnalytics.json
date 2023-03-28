@@ -48,5 +48,7 @@
   "errors": {
     "emptyExportData": "Data not available for the specified interval. Please try a different time range or check if the data for that period has been recorded.",
     "tooManyRequest": "Too many requests. Please wait and try again later or contact the system administrator for assistance."
-  }
+  },
+  "timeFrame": "Time Frame",
+  "scientificName": "Scientific name"
 }

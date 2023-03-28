@@ -91,7 +91,6 @@ export const SpeciesPlanted = () => {
     tooltip: {
       custom: function ({ series: s, dataPointIndex, w }) {
         const getToolTip = () => {
-
           return (
             <Tooltip
               headerTitle={w.globals.categoryLabels[dataPointIndex]}
@@ -167,6 +166,7 @@ export const SpeciesPlanted = () => {
               csv: {
                 ...options.chart?.toolbar?.export?.csv,
                 filename: FILE_NAME,
+                headerCategory: t('scientificName'),
               },
               svg: {
                 filename: FILE_NAME,

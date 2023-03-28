@@ -240,6 +240,7 @@ export const TreePlanted = () => {
               csv: {
                 ...options.chart?.toolbar?.export?.csv,
                 filename: FILE_NAME,
+                headerCategory: t('timeFrame')
               },
               svg: {
                 filename: FILE_NAME,
