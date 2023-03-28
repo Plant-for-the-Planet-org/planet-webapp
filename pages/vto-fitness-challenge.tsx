@@ -51,7 +51,7 @@ export default function VTOFitnessChallenge({ initialized, pageProps }: Props) {
   );
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: { locale: string }) {
   let campaignLeaderBoard = { mostDonated: [], mostRecent: [] };
   let campaignTenantScore = { total: 0 };
 

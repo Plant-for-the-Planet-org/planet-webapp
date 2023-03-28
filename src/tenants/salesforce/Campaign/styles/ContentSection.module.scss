@@ -19,11 +19,9 @@
       line-height: 40px;
       text-align: center;
       letter-spacing: -0.004em;
-      // color: #ffffff;
       color: #032d60;
       margin-bottom: 10px;
       @include lgLaptopView {
-        // font-size: 52px;
         font-size: $fontXXLarge;
         line-height: 100%;
         letter-spacing: -0.006em;
@@ -36,7 +34,6 @@
       font-size: 24px;
       line-height: 28px;
       letter-spacing: -0.004em;
-      // color: #ffffff;
       color: #032d60;
       margin-bottom: 10px;
       @include lgLaptopView {
@@ -51,7 +48,6 @@
       font-weight: normal;
       font-size: 15px;
       line-height: 24px;
-      // color: #ffffff;
       color: #032d60;
       margin-bottom: 30px;
       a {
@@ -81,7 +77,6 @@
     line-height: 25px;
     text-align: center;
     letter-spacing: -0.002em;
-    // color: #ffffff;
     color: #032d60;
     @include lgLaptopView {
       font-size: 20px;
