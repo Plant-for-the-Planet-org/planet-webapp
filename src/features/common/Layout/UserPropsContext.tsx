@@ -19,9 +19,9 @@ export const UserPropsContext = React.createContext({
   auth0Error: {} || undefined,
   userLang: 'en',
   isImpersonationModeOn: false,
-  setIsImpersonationModeOn: (value: boolean) => {}, // eslint-disable-line no-unused-vars
+  setIsImpersonationModeOn: (_value: boolean) => {}, // eslint-disable-line no-unused-vars
   impersonatedEmail: '',
-  setImpersonatedEmail: (value: string) => {}, // eslint-disable-line no-unused-vars
+  setImpersonatedEmail: (_value: string) => {}, // eslint-disable-line no-unused-vars
 });
 
 function UserPropsProvider({ children }: any): ReactElement {
@@ -39,7 +39,7 @@ function UserPropsProvider({ children }: any): ReactElement {
   const [contextLoaded, setContextLoaded] = React.useState(false);
   const [token, setToken] = React.useState(null);
   const [profile, setUser] = React.useState<boolean | User | null>(false);
-  const [userLang, setUserLang] = React.useState('en');  
+  const [userLang, setUserLang] = React.useState('en');
   const [isImpersonationModeOn, setIsImpersonationModeOn] =
     React.useState(false);
   const [impersonatedEmail, setImpersonatedEmail] = React.useState('');

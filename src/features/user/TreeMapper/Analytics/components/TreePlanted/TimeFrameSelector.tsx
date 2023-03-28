@@ -4,12 +4,14 @@ import { useTranslation } from 'next-i18next';
 import { getTimeFrames } from '.';
 import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
 
+/* eslint-disable no-unused-vars */
 export enum TIME_FRAME {
-  DAYS = 'days', // eslint-disable-line no-unused-vars
-  WEEKS = 'weeks', // eslint-disable-line no-unused-vars
-  MONTHS = 'months', // eslint-disable-line no-unused-vars
-  YEARS = 'years', // eslint-disable-line no-unused-vars
+  DAYS = 'days',
+  WEEKS = 'weeks',
+  MONTHS = 'months',
+  YEARS = 'years',
 }
+/* eslint-enable no-unused-vars */
 
 const TimeFrameList = [
   TIME_FRAME.DAYS,
