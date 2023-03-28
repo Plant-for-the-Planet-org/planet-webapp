@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import DashboardView from '../../../common/Layout/DashboardView';
 import { useTranslation } from 'react-i18next';
 import ProjectFilter from './components/ProjectFilter';

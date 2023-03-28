@@ -1,5 +1,4 @@
 import { Grid } from '@mui/material';
-import React, { Dispatch, SetStateAction } from 'react';
 import { Export } from '../Export';
 import { SpeciesPlanted } from '../SpeciesPlanted';
 import { TreePlanted } from '../TreePlanted';
