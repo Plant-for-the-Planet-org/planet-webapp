@@ -1,4 +1,4 @@
-import { MenuItem, styled, TextField } from '@mui/material';
+import { Button, MenuItem, styled, TextField } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import React, { useState } from 'react';
@@ -278,7 +278,7 @@ export default function EditProfile({}: Props) {
 
   return ready ? (
     <div className="profilePage">
-      {/* <div className={'profilePageTitle'}>{t('editProfile:edit')}</div> */}
+      <div className={'profilePageTitle'}>{t('editProfile:edit')}</div>
       <div className={styles.editProfileContainer}>
         <div
           {...getRootProps()}
@@ -540,15 +540,16 @@ export default function EditProfile({}: Props) {
         <div className={styles.horizontalLine} />
 
         <div className={styles.formFieldLarge}>
-          <MaterialTextField
+          <TextField
             label={t('editProfile:profileDescription')}
             variant="outlined"
             multiline
+            rows={4}
             name="bio"
             inputRef={register({
               maxLength: 300,
             })}
-          />
+          ></TextField>
         </div>
         {errors.bio && (
           <span className={styles.formErrors}>
@@ -557,7 +558,7 @@ export default function EditProfile({}: Props) {
         )}
 
         <div className={styles.formFieldLarge}>
-          <MaterialTextField
+          <TextField
             label={t('editProfile:website')}
             variant="outlined"
             name="url"
@@ -569,7 +570,7 @@ export default function EditProfile({}: Props) {
                 message: t('editProfile:websiteError'),
               },
             })}
-          />
+          ></TextField>
         </div>
         {errors.url && (
           <span className={styles.formErrors}>
@@ -578,9 +579,10 @@ export default function EditProfile({}: Props) {
         )}
 
         <div className={styles.formFieldLarge}>
-          <button
+          <Button
             id={'editProfileSaveProfile'}
-            className={styles.saveButton}
+            variant="contained"
+            color="primary"
             onClick={handleSubmit(saveProfile)}
           >
             {isUploadingData ? (
@@ -588,7 +590,7 @@ export default function EditProfile({}: Props) {
             ) : (
               t('editProfile:save')
             )}
-          </button>
+          </Button>
         </div>
       </div>
       {/* snackbar for showing various messages */}
