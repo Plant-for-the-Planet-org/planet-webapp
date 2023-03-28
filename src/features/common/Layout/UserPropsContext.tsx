@@ -19,9 +19,9 @@ export const UserPropsContext = React.createContext({
   auth0Error: {} || undefined,
   userLang: 'en',
   isImpersonationModeOn: false,
-  setIsImpersonationModeOn: (value: boolean) => {},
+  setIsImpersonationModeOn: (value: boolean) => {}, // eslint-disable-line no-unused-vars
   impersonatedEmail: '',
-  setImpersonatedEmail: (value: string) => {},
+  setImpersonatedEmail: (value: string) => {}, // eslint-disable-line no-unused-vars
 });
 
 function UserPropsProvider({ children }: any): ReactElement {

@@ -18,7 +18,7 @@ const MuiAutocomplete = styled(Autocomplete)(() => {
 interface ProjectSelectAutocompleteProps {
   projectList: Project[];
   project: Project | null;
-  handleProjectChange?: (project: Project | null) => void;
+  handleProjectChange?: (project: Project | null) => void; // eslint-disable-line no-unused-vars
 }
 
 const ProjectSelectAutocomplete = ({

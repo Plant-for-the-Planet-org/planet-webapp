@@ -5,10 +5,10 @@ import { getTimeFrames } from '.';
 import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
 
 export enum TIME_FRAME {
-  DAYS = 'days',
-  WEEKS = 'weeks',
-  MONTHS = 'months',
-  YEARS = 'years',
+  DAYS = 'days', // eslint-disable-line no-unused-vars
+  WEEKS = 'weeks', // eslint-disable-line no-unused-vars
+  MONTHS = 'months', // eslint-disable-line no-unused-vars
+  YEARS = 'years', // eslint-disable-line no-unused-vars
 }
 
 const TimeFrameList = [

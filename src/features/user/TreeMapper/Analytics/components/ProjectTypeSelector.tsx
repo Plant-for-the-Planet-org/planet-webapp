@@ -3,8 +3,8 @@ import { Autocomplete, TextField, styled } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 
 export enum ProjectType {
-  INTERVENTIONS = 'interventions',
-  MONITORING_PLOTS = 'monitoringPlots',
+  INTERVENTIONS = 'interventions', // eslint-disable-line no-unused-vars
+  MONITORING_PLOTS = 'monitoringPlots', // eslint-disable-line no-unused-vars
 }
 
 const projectTypeList = [
@@ -24,7 +24,7 @@ const MuiAutocomplete = styled(Autocomplete)(() => {
 });
 
 interface ProjectTypeSelectorProps {
-  handleProjectTypeChange?: (projectType: ProjectType | null) => void;
+  handleProjectTypeChange?: (projectType: ProjectType | null) => void; // eslint-disable-line no-unused-vars
 }
 
 const ProjectTypeSelector = ({
