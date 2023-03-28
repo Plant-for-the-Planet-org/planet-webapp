@@ -30,7 +30,7 @@ const MuiAutocomplete = styled(Autocomplete)(() => {
 });
 
 interface TimeFrameSelectorProps {
-  handleTimeFrameChange: (_localTimeFrame: TIME_FRAME | null) => void;
+  handleTimeFrameChange: (localTimeFrame: TIME_FRAME | null) => void; // eslint-disable-line no-unused-vars
   timeFrames: TIME_FRAME[];
   timeFrame: TIME_FRAME | null;
 }
