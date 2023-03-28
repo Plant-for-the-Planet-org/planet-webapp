@@ -10,11 +10,10 @@
   background-position: top center;
   background-repeat: no-repeat;
   background-size: 1440px auto;
-  padding: 35px 0 100px;
+  padding: 150px 0 100px;
 
   @include smTabletView {
     margin-top: 0px;
-    // margin-top: 80px;
   }
 
   @include mdTabletView {
