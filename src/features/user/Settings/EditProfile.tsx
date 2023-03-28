@@ -134,6 +134,11 @@ export default function EditProfile({}: Props) {
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
   const watchIsPrivate = watch('isPrivate');
   const [type, setAccountType] = useState(user.type ? user.type : 'individual');
+  const [localType, setLocalType] = useState({
+    id: '',
+    title: '',
+    value: '',
+  });
 
   const profileTypes = [
     {
@@ -152,6 +157,18 @@ export default function EditProfile({}: Props) {
       value: 'education',
     },
   ];
+
+  React.useEffect(() => {
+    profileTypes.map((p) => {
+      if (p.value === type) {
+        setLocalType({
+          id: p.id,
+          title: p.title,
+          value: p.value,
+        });
+      }
+    });
+  }, []);
 
   React.useEffect(() => {
     // This will remove field values which do not exist for the new type
@@ -293,23 +310,31 @@ export default function EditProfile({}: Props) {
             </div>
           </label>
         </div>
+
         {type !== 'tpo' ? (
-          <MaterialTextField
-            label={t('editProfile:iamA')}
-            variant="outlined"
-            select
-            defaultValue={type}
-          >
-            {profileTypes.map((option) => (
-              <MenuItem
-                key={option.value}
-                value={option.value}
-                onClick={() => setAccountType(option.value)}
-              >
+          <MuiAutoComplete
+            id="profile-type"
+            value={localType}
+            options={profileTypes}
+            getOptionLabel={(option) => option.title}
+            isOptionEqualToValue={(option, selectedOption) =>
+              option.value === selectedOption.value
+            }
+            renderOption={(props, option) => (
+              <StyledAutoCompleteOption {...props} key={option.id}>
                 {option.title}
-              </MenuItem>
-            ))}
-          </MaterialTextField>
+              </StyledAutoCompleteOption>
+            )}
+            onChange={(event, newType) => {
+              if (newType) {
+                setAccountType(newType.value);
+                setLocalType(newType);
+              }
+            }}
+            renderInput={(params) => (
+              <TextField {...params} label={t('editProfile:iamA')} />
+            )}
+          />
         ) : null}
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
