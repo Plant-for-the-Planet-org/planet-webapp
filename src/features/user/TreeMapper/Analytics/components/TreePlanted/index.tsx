@@ -392,7 +392,7 @@ export const TreePlanted = () => {
       {
         method: 'POST',
         body: JSON.stringify({
-          projectId: project!.id,
+          projectId: project?.id,
           startDate: fromDate,
           endDate: toDate,
         }),

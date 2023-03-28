@@ -200,7 +200,7 @@ export const SpeciesPlanted = () => {
     const res = await fetch('/api/data-explorer/species-planted', {
       method: 'POST',
       body: JSON.stringify({
-        projectId: project!.id,
+        projectId: project?.id,
         startDate: fromDate,
         endDate: toDate,
       }),
