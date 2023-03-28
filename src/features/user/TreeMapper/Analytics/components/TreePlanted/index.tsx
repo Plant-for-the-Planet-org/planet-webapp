@@ -418,40 +418,41 @@ export const TreePlanted = () => {
 
     const { data } = await res.json();
 
-    const { treesPlanted, categories } = getPlotingData(
-      timeFrame!,
-      data as DailyFrame[] | WeeklyFrame[] | MonthlyFrame[] | YearlyFrame[]
-    );
+    if (timeFrame) {
+      const { treesPlanted, categories } = getPlotingData(
+        timeFrame,
+        data as DailyFrame[] | WeeklyFrame[] | MonthlyFrame[] | YearlyFrame[]
+      );
 
-    setSeries([
-      {
-        data: treesPlanted,
-        name: t('treesPlanted'),
-      },
-    ]);
-
-    setOptions({
-      ...options,
-      xaxis: {
-        ...options.xaxis,
-        categories: categories,
-      },
-      tooltip: {
-        custom: function ({ series: s, dataPointIndex }) {
-          const seriesData: number[] = s[0];
-
-          return ReactDOMServer.renderToString(
-            getToolTip(seriesData, dataPointIndex, categories)
-          );
+      setSeries([
+        {
+          data: treesPlanted,
+          name: t('treesPlanted'),
         },
-      },
-    });
+      ]);
+
+      setOptions({
+        ...options,
+        xaxis: {
+          ...options.xaxis,
+          categories: categories,
+        },
+        tooltip: {
+          custom: function ({ series: s, dataPointIndex }) {
+            const seriesData: number[] = s[0];
+
+            return ReactDOMServer.renderToString(
+              getToolTip(seriesData, dataPointIndex, categories)
+            );
+          },
+        },
+      });
+    }
   };
 
   useEffect(() => {
-    const isValidTimeFrame = getTimeFrames(toDate, fromDate).includes(
-      timeFrame!
-    );
+    const isValidTimeFrame =
+      timeFrame && getTimeFrames(toDate, fromDate).includes(timeFrame);
     if (process.env.ENABLE_ANALYTICS && isValidTimeFrame && project) {
       fetchPlantedTrees();
     }

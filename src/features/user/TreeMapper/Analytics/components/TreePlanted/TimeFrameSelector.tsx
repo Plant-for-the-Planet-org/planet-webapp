@@ -30,7 +30,7 @@ const MuiAutocomplete = styled(Autocomplete)(() => {
 });
 
 interface TimeFrameSelectorProps {
-  handleTimeFrameChange: (timeFrame: TIME_FRAME | null) => void;
+  handleTimeFrameChange: (localTimeFrame: TIME_FRAME | null) => void;
   timeFrames: TIME_FRAME[];
   timeFrame: TIME_FRAME | null;
 }
