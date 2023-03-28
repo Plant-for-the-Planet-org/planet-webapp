@@ -254,12 +254,24 @@ export const TreePlanted = () => {
     }
   }, [project, toDate, fromDate]);
 
-  function isWeeklyFrame(frame: any): frame is WeeklyFrame {
-    return 'weekStartDate' in frame && 'weekEndDate' in frame;
+  function isWeeklyFrame(frame: unknown): frame is WeeklyFrame {
+    const weeklyFrame = frame as WeeklyFrame;
+    return (
+      typeof weeklyFrame === 'object' &&
+      weeklyFrame !== null &&
+      'weekStartDate' in weeklyFrame &&
+      'weekEndDate' in weeklyFrame
+    );
   }
 
-  function isMonthlyFrame(frame: any): frame is MonthlyFrame {
-    return 'month' in frame && 'year' in frame;
+  function isMonthlyFrame(frame: unknown): frame is MonthlyFrame {
+    const monthlyFrame = frame as MonthlyFrame;
+    return (
+      typeof monthlyFrame === 'object' &&
+      monthlyFrame !== null &&
+      'month' in monthlyFrame &&
+      'year' in monthlyFrame
+    );
   }
 
   const getPlotingData = (
