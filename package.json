@@ -52,6 +52,7 @@
     "@mui/material": "^5.11.4",
     "@mui/styles": "^5.8.0",
     "@mui/x-date-pickers": "^5.0.13",
+    "@netlify/plugin-nextjs": "^4.33.0",
     "@next/bundle-analyzer": "^10.2.3",
     "@planet-sdk/common": "^0.1.0",
     "@sentry/browser": "^6.15.0",
@@ -119,7 +120,6 @@
   "devDependencies": {
     "@emotion/babel-plugin": "^11.9.2",
     "@emotion/eslint-plugin": "^11.7.0",
-    "@netlify/plugin-nextjs": "^4.28.6",
     "@storybook/addon-actions": "^6.5.14",
     "@storybook/addon-essentials": "^6.5.14",
     "@storybook/addon-interactions": "^6.5.14",
