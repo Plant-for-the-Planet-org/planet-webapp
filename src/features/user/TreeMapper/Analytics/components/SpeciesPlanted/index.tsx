@@ -91,7 +91,6 @@ export const SpeciesPlanted = () => {
     tooltip: {
       custom: function ({ series: s, dataPointIndex, w }) {
         const getToolTip = () => {
-          console.log('==>', s, s[0][dataPointIndex]);
 
           return (
             <Tooltip

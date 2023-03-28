@@ -2,10 +2,12 @@ import React, { ReactElement, useState, useEffect } from 'react';
 import { Autocomplete, TextField, styled } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 
+/* eslint-disable no-unused-vars */
 export enum ProjectType {
-  INTERVENTIONS = 'interventions', // eslint-disable-line no-unused-vars
-  MONITORING_PLOTS = 'monitoringPlots', // eslint-disable-line no-unused-vars
+  INTERVENTIONS = 'interventions',
+  MONITORING_PLOTS = 'monitoringPlots',
 }
+/* eslint-enable no-unused-vars */
 
 const projectTypeList = [
   ProjectType.INTERVENTIONS,
