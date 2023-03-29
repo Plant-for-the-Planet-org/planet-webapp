@@ -32,6 +32,22 @@ export default function AdditionalInfo() {
             </p>
           </div>
         </div>
+        <div
+          className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter}`}
+        >
+          <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
+            <div className={styles.videoContainer}>
+              <iframe
+                src="https://customer-3h4q1m4a9rqr5i6y.cloudflarestream.com/22fa318376f8f254cb62511998bbb7ce/iframe?preload=true&loop=false&poster=https%3A%2F%2Fcustomer-3h4q1m4a9rqr5i6y.cloudflarestream.com%2F22fa318376f8f254cb62511998bbb7ce%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
+                className={styles.iframe}
+                allow={
+                  'accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;'
+                }
+                allowFullScreen={true}
+              ></iframe>
+            </div>
+          </div>
+        </div>
         <div className={gridStyles.gridRow}>
           <div className={gridStyles.col12}>
             <h3>More About Fitness-For-A-Cause Challenges</h3>
