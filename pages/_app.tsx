@@ -29,6 +29,7 @@ import PlayButton from '../src/features/common/LandingVideo/PlayButton';
 import ErrorHandlingProvider from '../src/features/common/Layout/ErrorHandlingContext';
 import dynamic from 'next/dynamic';
 import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext';
+import { AnalyticsProvider } from '../src/features/common/Layout/AnalyticsContext'
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
 import QueryParamsProvider from '../src/features/common/Layout/QueryParamsContext';
@@ -244,6 +245,7 @@ const PlanetWeb = ({ Component, pageProps }: any) => {
                           <Layout>
                             <ProjectPropsProvider>
                               <BulkCodeProvider>
+                                <AnalyticsProvider>
                                 {isMap ? (
                                   <>
                                     {project ? (
@@ -264,6 +266,7 @@ const PlanetWeb = ({ Component, pageProps }: any) => {
                                   </>
                                 ) : null}
                                 <Component {...ProjectProps} />
+                                </AnalyticsProvider>
                               </BulkCodeProvider>
                             </ProjectPropsProvider>
                           </Layout>

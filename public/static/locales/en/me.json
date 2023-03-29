@@ -248,6 +248,7 @@
   "apiKeyMessage3": "Regenerating an API Key will invalidate your existing API Key immediately.",
   "regenerateKey": "Regenerate Key",
   "giftFund": "GiftFund",
+  "dataExplorer": "Data Explorer",
   "switchUser": "Impersonate User",
   "switchUserMessage": "Enter the email of the user you want to switch to in the field below.",
   "profileEmail": "Profile Email",
