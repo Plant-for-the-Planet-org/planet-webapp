@@ -4,26 +4,28 @@ import MuiAlert from '@mui/material/Alert';
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Controller, useForm } from 'react-hook-form';
-import Camera from '../../../../public/assets/images/icons/userProfileIcons/Camera';
-import CameraWhite from '../../../../public/assets/images/icons/userProfileIcons/CameraWhite';
-import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
-import getImageUrl from '../../../utils/getImageURL';
-import { selectUserType } from '../../../utils/selectUserType';
-import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountryNew';
-import MaterialTextField from '../../common/InputTypes/MaterialTextField';
-import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import Camera from '../../../../../public/assets/images/icons/userProfileIcons/Camera';
+import CameraWhite from '../../../../../public/assets/images/icons/userProfileIcons/CameraWhite';
+import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import COUNTRY_ADDRESS_POSTALS from '../../../../utils/countryZipCode';
+import getImageUrl from '../../../../utils/getImageURL';
+import { selectUserType } from '../../../../utils/selectUserType';
+import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
+import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
+import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
 import GeocoderArcGIS from 'geocoder-arcgis';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
-import { allCountries } from '../../../utils/constants/countries';
-import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
+import { allCountries } from '../../../../utils/constants/countries';
+import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import {
   MuiAutoComplete,
   StyledAutoCompleteOption,
-} from '../../common/InputTypes/MuiAutoComplete';
+} from '../../../common/InputTypes/MuiAutoComplete';
+import StyledForm from '../../../common/Layout/StyledForm';
+import CenteredContainer from '../../../common/Layout/CenteredContainer';
 
 interface Props {}
 
@@ -33,7 +35,7 @@ const Alert = styled(MuiAlert)(({ theme }) => {
   };
 });
 
-export default function EditProfile({}: Props) {
+export default function EditProfileForm({}: Props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const { user, setUser, token, contextLoaded, impersonatedEmail } =
@@ -277,16 +279,15 @@ export default function EditProfile({}: Props) {
   let suggestion_counter = 0;
 
   return ready ? (
-    <div className="profilePage">
-      <div className={'profilePageTitle'}>{t('editProfile:edit')}</div>
-      <div className={styles.editProfileContainer}>
+    <StyledForm>
+      <div className="inputContainer">
         <div
           {...getRootProps()}
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            width: '100%',
-          }}
+          // style={{
+          //   display: 'flex',
+          //   justifyContent: 'center',
+          //   width: '100%',
+          // }}
         >
           <label htmlFor="upload">
             <div className={styles.profilePicDiv}>
@@ -336,7 +337,7 @@ export default function EditProfile({}: Props) {
             )}
           />
         ) : null}
-        <div className={styles.formField}>
+        <InlineFormDisplayGroup>
           <div className={styles.formFieldHalf}>
             <TextField
               label={t('donate:firstName')}
@@ -364,7 +365,7 @@ export default function EditProfile({}: Props) {
               </span>
             )}
           </div>
-        </div>
+        </InlineFormDisplayGroup>
 
         <div className={styles.formFieldLarge}>
           <div style={{ width: '100%' }}>
@@ -434,7 +435,7 @@ export default function EditProfile({}: Props) {
           )}
         </div>
 
-        <div className={styles.formField}>
+        <InlineFormDisplayGroup>
           <div className={styles.formFieldHalf}>
             <TextField
               label={t('donate:city')}
@@ -465,7 +466,7 @@ export default function EditProfile({}: Props) {
               </span>
             )}
           </div>
-        </div>
+        </InlineFormDisplayGroup>
 
         <div className={styles.formFieldLarge}>
           <AutoCompleteCountry
@@ -482,7 +483,7 @@ export default function EditProfile({}: Props) {
           )}
         </div>
 
-        <div className={styles.isPrivateAccountDiv}>
+        <InlineFormDisplayGroup type="other">
           <div>
             <label
               htmlFor="editPrivate"
@@ -511,9 +512,9 @@ export default function EditProfile({}: Props) {
               />
             )}
           />
-        </div>
+        </InlineFormDisplayGroup>
 
-        <div className={styles.isPrivateAccountDiv}>
+        <InlineFormDisplayGroup type="other">
           <label
             htmlFor="editGetNews"
             className={styles.mainText}
@@ -535,7 +536,7 @@ export default function EditProfile({}: Props) {
               />
             )}
           />
-        </div>
+        </InlineFormDisplayGroup>
 
         <div className={styles.horizontalLine} />
 
@@ -611,6 +612,6 @@ export default function EditProfile({}: Props) {
           </Alert>
         </div>
       </Snackbar>
-    </div>
+    </StyledForm>
   ) : null;
 }
