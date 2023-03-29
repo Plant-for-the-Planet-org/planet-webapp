@@ -1,11 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import db from '../../../src/utils/connectDB';
 import nc from 'next-connect';
-import { limiter, speedLimiter } from '../../../src/middlewares/rate-limiter';
+import {
+  rateLimiter,
+  speedLimiter,
+} from '../../../src/middlewares/rate-limiter';
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
-handler.use(limiter);
+handler.use(rateLimiter);
 handler.use(speedLimiter);
 
 handler.post(async (req, response) => {

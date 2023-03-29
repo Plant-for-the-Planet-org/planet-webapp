@@ -7,10 +7,10 @@ const getIP = (request) =>
   request.headers['x-real-ip'] ||
   request.connection.remoteAddress;
 
-export const limiter = rateLimit({
+export const rateLimiter = rateLimit({
   keyGenerator: getIP,
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 200, // limit each IP to 200 requests per windowMs
 });
 
 export const speedLimiter = slowDown({
@@ -18,4 +18,5 @@ export const speedLimiter = slowDown({
   windowMs: 15 * 60 * 1000, // 15 minutes
   delayAfter: 100, // allow 100 requests per minute, then...
   delayMs: 500, // begin adding 500ms of delay per request above 100:
+  skipFailedRequests: true, // skip slowing down failed requests (status >= 400)
 });

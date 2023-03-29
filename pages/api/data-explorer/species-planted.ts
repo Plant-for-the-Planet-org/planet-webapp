@@ -1,7 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import db from '../../../src/utils/connectDB';
 import nc from 'next-connect';
-import { limiter, speedLimiter } from '../../../src/middlewares/rate-limiter';
+import {
+  rateLimiter,
+  speedLimiter,
+} from '../../../src/middlewares/rate-limiter';
 import NodeCache from 'node-cache';
 import { getCachedKey } from '../../../src/utils/getCachedKey';
 
@@ -12,7 +15,7 @@ const cache = new NodeCache({ stdTTL: ONE_DAY, checkperiod: ONE_HOUR_IN_SEC });
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
-handler.use(limiter);
+handler.use(rateLimiter);
 handler.use(speedLimiter);
 
 handler.post(async (req, response) => {
