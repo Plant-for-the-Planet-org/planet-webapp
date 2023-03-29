@@ -38,27 +38,7 @@ export async function getStaticProps({ locale }) {
     props: {
       ...(await serverSideTranslations(
         locale,
-        [
-          'bulkCodes',
-          'common',
-          'country',
-          'donate',
-          'donationLink',
-          'editProfile',
-          'giftfunds',
-          'leaderboard',
-          'managePayouts',
-          'manageProjects',
-          'maps',
-          'me',
-          'planet',
-          'planetcash',
-          'redeem',
-          'registerTrees',
-          'tenants',
-          'treemapper',
-          'treemapperAnalytics',
-        ],
+        ['common', 'treemapperAnalytics'],
         null,
         ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
       )),
