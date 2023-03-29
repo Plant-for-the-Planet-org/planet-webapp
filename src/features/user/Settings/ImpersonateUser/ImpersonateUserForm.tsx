@@ -9,6 +9,7 @@ import StyledForm from '../../../common/Layout/StyledForm';
 
 export type FormData = {
   targetEmail: string;
+  supportPin: string;
 };
 
 const ImpersonateUserForm = (): ReactElement => {
@@ -34,7 +35,6 @@ const ImpersonateUserForm = (): ReactElement => {
           setUser(resJson);
           router.push('/profile');
         } else {
-          console.log(resJson);
           setIsInvalidEmail(true);
         }
       } catch (err) {
@@ -67,6 +67,19 @@ const ImpersonateUserForm = (): ReactElement => {
           }
         />
       </div>
+      <TextField
+        inputRef={register({
+          required: {
+            value: true,
+            message: t('me:enterSupportPin'),
+          },
+        })}
+        name="supportPin"
+        label={t('me:supportPin')}
+        placeholder="E.g p348"
+        error={errors.supportPin}
+        helperText={errors.supportPin && errors.supportPin.message}
+      />
       <Button
         variant="contained"
         color="primary"
