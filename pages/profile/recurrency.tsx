@@ -8,6 +8,7 @@ import Recurrency from '../../src/features/user/Account/Recurrency';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import { Subscription } from '../../src/features/common/types/payments';
 
 interface Props {}
 
@@ -18,15 +19,14 @@ function RecurrentDonations({}: Props): ReactElement {
 
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
-  const [recurrencies, setrecurrencies] =
-    React.useState<Payments.Subscription[]>();
+  const [recurrencies, setrecurrencies] = React.useState<Subscription[]>();
 
   const { handleError } = React.useContext(ErrorHandlingContext);
 
   async function fetchRecurrentDonations(): Promise<void> {
     setIsDataLoading(true);
     setProgress(70);
-    const recurrencies: Payments.Subscription[] = await getAuthenticatedRequest(
+    const recurrencies: Subscription[] = await getAuthenticatedRequest(
       '/app/subscriptions',
       token,
       impersonatedEmail,

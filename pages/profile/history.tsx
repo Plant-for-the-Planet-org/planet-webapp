@@ -8,6 +8,10 @@ import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import {
+  Filters,
+  PaymentHistory,
+} from '../../src/features/common/types/payments';
 interface Props {}
 
 function AccountHistory({}: Props): ReactElement {
@@ -19,9 +23,9 @@ function AccountHistory({}: Props): ReactElement {
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const [filter, setFilter] = React.useState<string | null>(null);
   const [paymentHistory, setpaymentHistory] =
-    React.useState<Payments.PaymentHistory | null>(null);
+    React.useState<PaymentHistory | null>(null);
   const [accountingFilters, setaccountingFilters] =
-    React.useState<Payments.Filters | null>(null);
+    React.useState<Filters | null>(null);
 
   const { handleError } = React.useContext(ErrorHandlingContext);
 
@@ -29,21 +33,20 @@ function AccountHistory({}: Props): ReactElement {
     setIsDataLoading(true);
     setProgress(70);
     if (next && paymentHistory?._links?.next) {
-      const newPaymentHistory: Payments.PaymentHistory =
-        await getAuthenticatedRequest(
-          `${
-            filter && accountingFilters
-              ? accountingFilters[filter] +
-                '&' +
-                paymentHistory?._links?.next.split('?').pop()
-              : paymentHistory?._links?.next
-          }`,
-          token,
-          impersonatedEmail,
-          {},
-          handleError,
-          '/profile'
-        );
+      const newPaymentHistory: PaymentHistory = await getAuthenticatedRequest(
+        `${
+          filter && accountingFilters
+            ? accountingFilters[filter] +
+              '&' +
+              paymentHistory?._links?.next.split('?').pop()
+            : paymentHistory?._links?.next
+        }`,
+        token,
+        impersonatedEmail,
+        {},
+        handleError,
+        '/profile'
+      );
       setpaymentHistory({
         ...paymentHistory,
         items: [...paymentHistory.items, ...newPaymentHistory.items],
@@ -54,15 +57,14 @@ function AccountHistory({}: Props): ReactElement {
       setTimeout(() => setProgress(0), 1000);
     } else {
       if (filter === null) {
-        const paymentHistory: Payments.PaymentHistory =
-          await getAuthenticatedRequest(
-            '/app/paymentHistory?limit=15',
-            token,
-            impersonatedEmail,
-            {},
-            handleError,
-            '/profile'
-          );
+        const paymentHistory: PaymentHistory = await getAuthenticatedRequest(
+          '/app/paymentHistory?limit=15',
+          token,
+          impersonatedEmail,
+          {},
+          handleError,
+          '/profile'
+        );
         setpaymentHistory(paymentHistory);
         setProgress(100);
         setIsDataLoading(false);
