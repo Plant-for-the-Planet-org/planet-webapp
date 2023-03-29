@@ -1,15 +1,15 @@
 import mysql from 'serverless-mysql';
 import { ConnectionString } from 'connection-string';
 
-const { user, password, path, hostname, port } = new ConnectionString(
+const { user, password, path, hostname: host, port } = new ConnectionString(
   process.env.DB_CONN_URL
 );
 
-const database = path && path[0];
+const database = path?.[0];
 
 const db = mysql({
   config: {
-    host: hostname,
+    host,
     port,
     database,
     user,
