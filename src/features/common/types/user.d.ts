@@ -55,4 +55,5 @@ export interface User {
   hasLogoLicense: boolean | null;
   tin: string | null;
   scheduleFrequency: PaymentFrequencies | null;
+  allowedToSwitch?: boolean;
 }

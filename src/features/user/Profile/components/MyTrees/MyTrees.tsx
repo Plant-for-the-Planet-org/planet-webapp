@@ -11,6 +11,7 @@ import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
+import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
@@ -26,6 +27,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   const { t, ready } = useTranslation(['country', 'me']);
   const [contributions, setContributions] = React.useState();
   const { handleError } = React.useContext(ErrorHandlingContext);
+  const { impersonatedEmail } = React.useContext(UserPropsContext);
 
   React.useEffect(() => {
     async function loadFunction() {
@@ -33,6 +35,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
         getAuthenticatedRequest(
           `/app/profile/contributions`,
           token,
+          impersonatedEmail,
           {},
           handleError,
           '/profile'
