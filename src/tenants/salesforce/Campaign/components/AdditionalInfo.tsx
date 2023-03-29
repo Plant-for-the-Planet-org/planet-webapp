@@ -38,7 +38,7 @@ export default function AdditionalInfo() {
           <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
             <div className={styles.videoContainer}>
               <iframe
-                src="https://customer-3h4q1m4a9rqr5i6y.cloudflarestream.com/22fa318376f8f254cb62511998bbb7ce/iframe?preload=true&loop=false&poster=https%3A%2F%2Fcustomer-3h4q1m4a9rqr5i6y.cloudflarestream.com%2F22fa318376f8f254cb62511998bbb7ce%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D0h1m5s%26height%3D600"
+                src="https://customer-3h4q1m4a9rqr5i6y.cloudflarestream.com/d20fa8f183f67d5fbe9efb5b4aedb102/iframe?preload=true&poster=https%3A%2F%2Fcustomer-3h4q1m4a9rqr5i6y.cloudflarestream.com%2Fd20fa8f183f67d5fbe9efb5b4aedb102%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D0h1m5s%26height%3D600"
                 className={styles.iframe}
                 allow={
                   'accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;'
