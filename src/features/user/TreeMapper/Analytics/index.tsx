@@ -3,7 +3,7 @@ import DashboardView from '../../../common/Layout/DashboardView';
 import { useTranslation } from 'react-i18next';
 import ProjectFilter from './components/ProjectFilter';
 import { Project, useAnalytics } from '../../../common/Layout/AnalyticsContext';
-import { Graphs } from './components/Graphs';
+import { DataExplorerGridContainer } from './components/DataExplorerGridContainer';
 import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
@@ -44,7 +44,7 @@ const Analytics = () => {
   return ready ? (
     <DashboardView title={t('treemapperAnalytics:title')} subtitle={null}>
       <ProjectFilter />
-      <Graphs />
+      <DataExplorerGridContainer />
     </DashboardView>
   ) : null;
 };

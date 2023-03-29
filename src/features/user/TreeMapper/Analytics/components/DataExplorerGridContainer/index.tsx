@@ -4,7 +4,7 @@ import { SpeciesPlanted } from '../SpeciesPlanted';
 import { TreePlanted } from '../TreePlanted';
 import styles from './index.module.scss';
 
-export const Graphs = () => {
+export const DataExplorerGridContainer = () => {
   return (
     <div className={styles.graphsContainer}>
       <Grid container alignContent="center" justifyContent="center" spacing={6}>
