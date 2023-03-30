@@ -76,6 +76,43 @@
     &::-webkit-scrollbar {
       width: 0px;
     }
+    & .navlink .supportPin {
+        display: none;
+      }
+    
+    & .navlink .line {
+        display: none;
+       
+      }
+    & .navlink .pinValue {
+      display: none;
+    }
+
+    & .navlink .supportPinContainer {
+      display: flex;
+      gap: 6px;
+      position: relative;
+      right: 35px;
+    }
+    
+    &:hover {
+      .navlink .line{
+        display: block;
+
+      }
+      .navlink .supportPin{
+        display: block;
+        font-size: 14px;
+        &:hover {
+          color: $primaryColor;
+        }
+      }
+    & .navlink .pinValue {
+        display: block;
+        font-weight: bold;
+       }
+    }
+      
   
   @include xsPhoneView {
     width: 300px;

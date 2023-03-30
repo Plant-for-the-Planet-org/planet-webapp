@@ -70,7 +70,7 @@ const handleApiError = (
 //  API call to private /profile endpoint
 export async function getAccountInfo(
   token: any,
-  impersonatedEmail?: string
+  impersonatedData?: string
 ): Promise<any> {
   const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
     method: 'GET',
@@ -83,7 +83,8 @@ export async function getAccountInfo(
           ? localStorage.getItem('language')
           : 'en'
       }`,
-      'x-switch-user': impersonatedEmail || '',
+      'X-SWITCH-USER': impersonatedData?.targetEmail || '',
+      'X-USER-SUPPORT-PIN':  impersonatedData?.supportPin || "",
     },
   });
   return response;

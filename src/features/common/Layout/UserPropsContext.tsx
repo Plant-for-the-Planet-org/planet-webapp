@@ -22,6 +22,8 @@ export const UserPropsContext = React.createContext({
   setIsImpersonationModeOn: (_value: boolean) => {}, // eslint-disable-line no-unused-vars
   impersonatedEmail: '',
   setImpersonatedEmail: (_value: string) => {}, // eslint-disable-line no-unused-vars
+  supportPin: '',
+  setSupportPin: (_value: string) => {},
 });
 
 function UserPropsProvider({ children }: any): ReactElement {
@@ -43,6 +45,7 @@ function UserPropsProvider({ children }: any): ReactElement {
   const [isImpersonationModeOn, setIsImpersonationModeOn] =
     React.useState(false);
   const [impersonatedEmail, setImpersonatedEmail] = React.useState('');
+  const [supportPin, setSupportPin] = React.useState('');
 
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -73,6 +76,7 @@ function UserPropsProvider({ children }: any): ReactElement {
       const res = await getAccountInfo(token);
       if (res.status === 200) {
         const resJson = await res.json();
+        setSupportPin(resJson?.supportPin);
         setUser(resJson);
       } else if (res.status === 303) {
         // if 303 -> user doesn not exist in db
@@ -156,6 +160,7 @@ function UserPropsProvider({ children }: any): ReactElement {
         setIsImpersonationModeOn,
         impersonatedEmail,
         setImpersonatedEmail,
+        supportPin,
         contextLoaded,
         token,
         isLoading,

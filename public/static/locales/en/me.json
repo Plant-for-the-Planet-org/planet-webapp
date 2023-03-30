@@ -253,6 +253,7 @@
   "switchUserMessage": "Enter the email of the user you want to switch to in the field below.",
   "profileEmail": "Profile Email",
   "supportPin": "Support Pin",
+  "alphaNumeric": "Enter 4 digit alpha numeric code",
   "switch": "Impersonate",
   "targetUser": "You are currently impersonating {{impersonatedEmail}}",
   "exitImpersonation": "Exit impersonation",

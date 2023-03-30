@@ -23,9 +23,9 @@ const ImpersonateUserForm = (): ReactElement => {
   });
 
   const handleImpersonation = async (data: FormData): Promise<void> => {
-    if (data.targetEmail) {
+    if (data.targetEmail && data.supportPin) {
       try {
-        const res = await getAccountInfo(token, data.targetEmail);
+        const res = await getAccountInfo(token, data);
         const resJson = await res.json();
         if (res.status === 200) {
           setIsInvalidEmail(false);
@@ -76,7 +76,7 @@ const ImpersonateUserForm = (): ReactElement => {
         })}
         name="supportPin"
         label={t('me:supportPin')}
-        placeholder="E.g p348"
+        placeholder={t('me:alphaNumeric')}
         error={errors.supportPin}
         helperText={errors.supportPin && errors.supportPin.message}
       />
