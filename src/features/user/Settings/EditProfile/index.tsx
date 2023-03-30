@@ -10,11 +10,9 @@ export default function (): ReactElement | null {
 
   return ready ? (
     <DashboardView title={t('editProfile')} subtitle={null} type="other">
-      <SingleColumnView>
-        <CenteredContainer>
-          <EditProfileForm />
-        </CenteredContainer>
-      </SingleColumnView>
+      <CenteredContainer>
+        <EditProfileForm />
+      </CenteredContainer>
     </DashboardView>
   ) : null;
 }

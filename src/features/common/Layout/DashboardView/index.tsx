@@ -33,13 +33,9 @@ const DashboardGridContainer = styled(Box)(({ theme }) => ({
     width: '100%',
   },
   '& main': {
-    width: 700,
     '&.DashboardView--full-width': {
       width: '100%',
     },
-    // '&.DashboardView--other': {
-    //   width: 460,
-    // },
   },
   '& *': {
     fontFamily: theme.typography.fontFamily,

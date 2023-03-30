@@ -338,33 +338,28 @@ export default function EditProfileForm({}: Props) {
           />
         ) : null}
         <InlineFormDisplayGroup>
-          <div className={styles.formFieldHalf}>
-            <TextField
-              label={t('donate:firstName')}
-              variant="outlined"
-              name="firstname"
-              inputRef={register({ required: true })}
-            ></TextField>
-            {errors.firstname && (
-              <span className={styles.formErrors}>
-                {t('donate:firstNameRequired')}
-              </span>
-            )}
-          </div>
-          <div style={{ width: '20px' }}></div>
-          <div className={styles.formFieldHalf}>
-            <TextField
-              label={t('donate:lastName')}
-              variant="outlined"
-              name="lastname"
-              inputRef={register({ required: true })}
-            ></TextField>
-            {errors.lastname && (
-              <span className={styles.formErrors}>
-                {t('donate:lastNameRequired')}
-              </span>
-            )}
-          </div>
+          <TextField
+            label={t('donate:firstName')}
+            variant="outlined"
+            name="firstname"
+            inputRef={register({ required: true })}
+          ></TextField>
+          {errors.firstname && (
+            <span className={styles.formErrors}>
+              {t('donate:firstNameRequired')}
+            </span>
+          )}
+          <TextField
+            label={t('donate:lastName')}
+            variant="outlined"
+            name="lastname"
+            inputRef={register({ required: true })}
+          ></TextField>
+          {errors.lastname && (
+            <span className={styles.formErrors}>
+              {t('donate:lastNameRequired')}
+            </span>
+          )}
         </InlineFormDisplayGroup>
 
         <div className={styles.formFieldLarge}>
@@ -436,36 +431,31 @@ export default function EditProfileForm({}: Props) {
         </div>
 
         <InlineFormDisplayGroup>
-          <div className={styles.formFieldHalf}>
-            <TextField
-              label={t('donate:city')}
-              variant="outlined"
-              name="city"
-              inputRef={register({ required: true })}
-            ></TextField>
-            {errors.city && (
-              <span className={styles.formErrors}>
-                {t('donate:cityRequired')}
-              </span>
-            )}
-          </div>
-          <div style={{ width: '20px' }}></div>
-          <div className={styles.formFieldHalf}>
-            <TextField
-              label={t('donate:zipCode')}
-              variant="outlined"
-              name="zipCode"
-              inputRef={register({
-                pattern: postalRegex,
-                required: true,
-              })}
-            ></TextField>
-            {errors.zipCode && (
-              <span className={styles.formErrors}>
-                {t('donate:zipCodeAlphaNumValidation')}
-              </span>
-            )}
-          </div>
+          <TextField
+            label={t('donate:city')}
+            variant="outlined"
+            name="city"
+            inputRef={register({ required: true })}
+          ></TextField>
+          {errors.city && (
+            <span className={styles.formErrors}>
+              {t('donate:cityRequired')}
+            </span>
+          )}
+          <TextField
+            label={t('donate:zipCode')}
+            variant="outlined"
+            name="zipCode"
+            inputRef={register({
+              pattern: postalRegex,
+              required: true,
+            })}
+          ></TextField>
+          {errors.zipCode && (
+            <span className={styles.formErrors}>
+              {t('donate:zipCodeAlphaNumValidation')}
+            </span>
+          )}
         </InlineFormDisplayGroup>
 
         <div className={styles.formFieldLarge}>
