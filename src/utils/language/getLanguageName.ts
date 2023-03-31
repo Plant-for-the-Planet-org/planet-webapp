@@ -5,6 +5,8 @@ import esLocale from 'date-fns/locale/es';
 import frLocale from 'date-fns/locale/fr';
 import itLocale from 'date-fns/locale/it';
 import ptBRLocale from 'date-fns/locale/pt-BR';
+import Locale from '@date-io/date-fns';
+
 /**
  * * Returns country details by searching country data json file and options
  * @param {String} code - language Code
@@ -25,13 +27,13 @@ export default function getLanguageName(code: any) {
 }
 
 type LocaleMap = {
-  [key: string]: Locale;
-  en: Locale;
-  de: Locale;
-  es: Locale;
-  fr: Locale;
-  it: Locale;
-  'pt-BR': Locale;
+  [key: string]: Locale['locale'];
+  en: Locale['locale'];
+  de: Locale['locale'];
+  es: Locale['locale'];
+  fr: Locale['locale'];
+  it: Locale['locale'];
+  'pt-BR': Locale['locale'];
 };
 
 export const localeMapForDate: LocaleMap = {
