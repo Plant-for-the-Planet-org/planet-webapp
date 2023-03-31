@@ -209,7 +209,7 @@ export const Export = () => {
         <div className={styles.datePickerContainer}>
           <LocalizationProvider
             dateAdapter={AdapterDateFns}
-            locale={
+            adapterLocale={
               localeMapForDate[userLang]
                 ? localeMapForDate[userLang]
                 : localeMapForDate['en']
@@ -231,7 +231,7 @@ export const Export = () => {
           </LocalizationProvider>
           <LocalizationProvider
             dateAdapter={AdapterDateFns}
-            locale={
+            adapterLocale={
               localeMapForDate[userLang]
                 ? localeMapForDate[userLang]
                 : localeMapForDate['en']
