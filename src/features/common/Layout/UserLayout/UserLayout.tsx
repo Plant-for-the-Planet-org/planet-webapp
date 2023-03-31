@@ -27,7 +27,7 @@ function LanguageSwitcher() {
   const [openModal, setOpenModal] = React.useState(false);
   const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
   const [selectedCountry, setSelectedCountry] = React.useState('DE');
-  const { supportPin } = useContext(UserPropsContext);
+  const { supportPin, isImpersonationModeOn } = useContext(UserPropsContext);
 
   React.useEffect(() => {
     if (typeof Storage !== 'undefined') {
@@ -68,11 +68,15 @@ function LanguageSwitcher() {
             i18n.language ? i18n.language.toUpperCase() : ''
           } • ${selectedCurrency}`}
         </button>
-        <div className={styles.supportPinContainer}>
-          <div className={styles.line}>|</div>
-          <div className={styles.supportPin}>{t('me:supportPin')} :</div>
-          <div className={styles.pinValue}>{supportPin}</div>
-        </div>
+        {isImpersonationModeOn ? (
+          <></>
+        ) : (
+          <div className={styles.supportPinContainer}>
+            <div>|</div>
+            <div className={styles.supportPin}>{t('me:supportPin')} :</div>
+            <div className={styles.pinValue}>{supportPin}</div>
+          </div>
+        )}
       </div>
       <SelectLanguageAndCountry
         openModal={openModal}
