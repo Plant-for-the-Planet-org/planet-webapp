@@ -63,7 +63,7 @@ const ImpersonateUserForm = (): ReactElement => {
           error={errors.targetEmail !== undefined || isInvalidEmail}
           helperText={
             (errors.targetEmail && errors.targetEmail.message) ||
-            (isInvalidEmail && t('me:userNotexist'))
+            (isInvalidEmail && t('me:wrongEntered'))
           }
         />
       </div>
@@ -77,8 +77,11 @@ const ImpersonateUserForm = (): ReactElement => {
         name="supportPin"
         label={t('me:supportPin')}
         placeholder={t('me:alphaNumeric')}
-        error={errors.supportPin}
-        helperText={errors.supportPin && errors.supportPin.message}
+        error={errors.supportPin || isInvalidEmail}
+        helperText={
+          (errors.supportPin && errors.supportPin.message) ||
+          (isInvalidEmail && t('me:wrongEntered'))
+        }
       />
       <Button
         variant="contained"
