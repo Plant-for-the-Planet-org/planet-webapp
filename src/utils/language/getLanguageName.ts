@@ -24,7 +24,17 @@ export default function getLanguageName(code: any) {
   return 'English';
 }
 
-export const localeMapForDate = {
+type LocaleMap = {
+  [key: string]: Locale;
+  en: Locale;
+  de: Locale;
+  es: Locale;
+  fr: Locale;
+  it: Locale;
+  'pt-BR': Locale;
+};
+
+export const localeMapForDate: LocaleMap = {
   en: enLocale,
   de: deLocale,
   es: esLocale,
