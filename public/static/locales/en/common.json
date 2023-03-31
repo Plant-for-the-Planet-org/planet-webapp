@@ -98,8 +98,5 @@
   "modalSubtitle": "Please cancel your subscriptions first",
   "deleteCondition": "Before proceeding, make sure you've cancelled all subscriptions.",
   "project": "Project",
-  "type": "Type",
-  "interventions": "Interventions",
-  "monitoringPlots": "Monitoring Plots (Coming Soon...)",
   "showSubscriptions": "Show my Subscriptions"
 }
