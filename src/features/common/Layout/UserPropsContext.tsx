@@ -21,8 +21,8 @@ export const UserPropsContext = React.createContext({
   userLang: 'en',
   isImpersonationModeOn: false,
   setIsImpersonationModeOn: (_value: boolean) => {}, // eslint-disable-line no-unused-vars
-  impersonatedData: '',
-  setImpersonatedData: (_value: ImpersonationData | undefined) => {}, // eslint-disable-line no-unused-vars
+  impersonatedData: ({} as ImpersonationData) || null,
+  setImpersonatedData: (_value: ImpersonationData | null) => {}, // eslint-disable-line no-unused-vars
   supportPin: '',
   setSupportPin: (_value: string) => {},
 });
@@ -47,7 +47,7 @@ function UserPropsProvider({ children }: any): ReactElement {
     React.useState(false);
   const [impersonatedData, setImpersonatedData] =
     React.useState<ImpersonationData | null>(null);
-  const [supportPin, setSupportPin] = React.useState('');
+  const [supportPin, setSupportPin] = React.useState<string>('');
 
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -145,14 +145,15 @@ function UserPropsProvider({ children }: any): ReactElement {
      */
     const checkImpersonation = async () => {
       if (token && !isImpersonationModeOn) {
-        const _impersonationData = JSON.parse(
-          localStorage.getItem('impersonationData')
-        );
+        const _impersonationData: string | null =
+          localStorage.getItem('impersonationData');
+
+        const data: ImpersonationData = JSON.parse(_impersonationData);
 
         if (_impersonationData === null) {
           loadUser();
         } else {
-          const userData = await impersonateUser(_impersonationData);
+          const userData = await impersonateUser(data);
           if (userData === false) {
             localStorage.removeItem('impersonationData');
             loadUser();

@@ -32,7 +32,7 @@ const ImpersonateUserForm = (): ReactElement => {
         if (res.status === 200) {
           setIsInvalidEmail(false);
           setIsImpersonationModeOn(true);
-          const impersonationData: any = {
+          const impersonationData: ImpersonationData = {
             targetEmail: resJson.email,
             supportPin: resJson.supportPin,
           };

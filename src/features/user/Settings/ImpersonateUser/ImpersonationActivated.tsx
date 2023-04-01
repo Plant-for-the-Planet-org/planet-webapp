@@ -17,7 +17,7 @@ const ImpersonationActivated = () => {
   const { push } = useRouter();
 
   const exitImpersonation = () => {
-    setImpersonatedData('');
+    setImpersonatedData(null);
     setIsImpersonationModeOn(false);
     localStorage.removeItem('impersonationData');
     push(`/profile/impersonate-user`);
