@@ -23,7 +23,7 @@ const Transactions = ({
   setProgress,
 }: TransactionsProps): ReactElement | null => {
   const { t } = useTranslation('me');
-  const { token, contextLoaded, impersonatedEmail } =
+  const { token, contextLoaded, impersonatedData } =
     useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
 
@@ -63,7 +63,7 @@ const Transactions = ({
         await getAuthenticatedRequest(
           apiUrl,
           token,
-          impersonatedEmail,
+          impersonatedData,
           {},
           handleError,
           '/profile/planetcash'

@@ -10,7 +10,7 @@ import router from 'next/router';
 import { useTranslation } from 'next-i18next';
 
 export default function DeleteProfile({}: any) {
-  const { user, token, logoutUser, impersonatedEmail } =
+  const { user, token, logoutUser, impersonatedData } =
     React.useContext(UserPropsContext);
   const { t } = useTranslation(['me', 'common', 'editProfile']);
   const handleChange = (e) => {
@@ -26,7 +26,7 @@ export default function DeleteProfile({}: any) {
     deleteAuthenticatedRequest(
       '/app/profile',
       token,
-      impersonatedEmail,
+      impersonatedData,
       handleError
     ).then((res) => {
       if (res.error_code === 'active_subscriptions') {

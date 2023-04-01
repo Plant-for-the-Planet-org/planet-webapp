@@ -65,7 +65,7 @@ export default function BasicDetails({
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   // Map setup
   const { theme } = React.useContext(ThemeContext);
-  const { impersonatedEmail } = React.useContext(UserPropsContext);
+  const { impersonatedData } = React.useContext(UserPropsContext);
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
   const mapRef = React.useRef(null);
@@ -414,7 +414,7 @@ export default function BasicDetails({
         `/app/projects/${projectGUID}`,
         submitData,
         token,
-        impersonatedEmail,
+        impersonatedData,
         handleError
       )
         .then((res) => {
@@ -447,7 +447,7 @@ export default function BasicDetails({
         `/app/projects`,
         submitData,
         token,
-        impersonatedEmail,
+        impersonatedData,
         handleError
       )
         .then((res) => {

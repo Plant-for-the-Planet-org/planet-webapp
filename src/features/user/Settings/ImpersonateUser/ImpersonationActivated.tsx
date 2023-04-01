@@ -10,16 +10,16 @@ const ImpersonationActivated = () => {
   const {
     user,
     isImpersonationModeOn,
-    setImpersonatedEmail,
+    setImpersonatedData,
     setIsImpersonationModeOn,
   } = useContext(UserPropsContext);
 
   const { push } = useRouter();
 
   const exitImpersonation = () => {
-    setImpersonatedEmail('');
+    setImpersonatedData('');
     setIsImpersonationModeOn(false);
-    localStorage.removeItem('impersonatedEmail');
+    localStorage.removeItem('impersonationData');
     push(`/profile/impersonate-user`);
   };
 

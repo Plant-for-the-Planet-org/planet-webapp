@@ -3,6 +3,7 @@ import { TENANT_ID } from '../constants/environment';
 import { getQueryString } from './getQueryString';
 import getsessionId from './getSessionId';
 import { validateToken } from './validateToken';
+import { ImpersonationData } from '../../features/user/Settings/ImpersonateUser/ImpersonateUserForm';
 
 // Handle Error responses from API
 const handleApiError = (
@@ -70,7 +71,7 @@ const handleApiError = (
 //  API call to private /profile endpoint
 export async function getAccountInfo(
   token: any,
-  impersonatedData?: string
+  impersonatedData?:ImpersonationData 
 ): Promise<any> {
   const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
     method: 'GET',
@@ -135,7 +136,7 @@ export async function getRequest<T>(
 export async function getAuthenticatedRequest<T>(
   url: any,
   token: any,
-  impersonatedEmail?: string,
+  impersonatedData?: ImpersonationData,
   header: any = null,
   errorHandler?: Function,
   redirect?: string,
@@ -155,7 +156,8 @@ export async function getAuthenticatedRequest<T>(
       Authorization: `Bearer ${token}`,
       'x-locale': `${lang}`,
       'x-accept-versions': version ? version : '1.0.3',
-      'x-switch-user': impersonatedEmail || '',
+      'X-SWITCH-USER': impersonatedData?.targetEmail || '',
+      'X-USER-SUPPORT-PIN':  impersonatedData?.supportPin || "",
       ...(header ? header : {}),
     },
   })
@@ -196,7 +198,7 @@ export async function postAuthenticatedRequest<T>(
   url: any,
   data: any,
   token: any,
-  impersonatedEmail?: string,
+  impersonatedData?: ImpersonationData,
   errorHandler?: Function,
   headers?: any
 ): Promise<T | ApiCustomError | null> {
@@ -216,7 +218,8 @@ export async function postAuthenticatedRequest<T>(
               : 'en'
           }`,
           ...(headers ? headers : {}),
-          'x-switch-user': impersonatedEmail || '',
+          'X-SWITCH-USER': impersonatedData?.targetEmail || '',
+          'X-USER-SUPPORT-PIN':  impersonatedData?.supportPin || "",
         },
       });
       const result = await res.json();
@@ -250,7 +253,7 @@ export async function postAuthenticatedRequest<T>(
 export async function deleteAuthenticatedRequest(
   url: any,
   token: any,
-  impersonatedEmail?: string,
+  impersonatedData?: ImpersonationData,
   errorHandler?: Function
 ): Promise<any> {
   let result;
@@ -267,7 +270,8 @@ export async function deleteAuthenticatedRequest(
             ? localStorage.getItem('language')
             : 'en'
         }`,
-        'x-switch-user': impersonatedEmail || '',
+        'X-SWITCH-USER': impersonatedData?.targetEmail || '',
+        'X-USER-SUPPORT-PIN':  impersonatedData?.supportPin || "",
       },
     }).then(async (res) => {
       result = res.status === 400 ? await res.json() : res.status;
@@ -313,7 +317,7 @@ export async function putAuthenticatedRequest<T>(
   url: any,
   data: any,
   token: any,
-  impersonatedEmail?: string,
+  impersonatedData?: ImpersonationData,
   errorHandler?: Function
 ): Promise<T | ApiCustomError | undefined> {
   if (validateToken(token)) {
@@ -330,7 +334,8 @@ export async function putAuthenticatedRequest<T>(
             ? localStorage.getItem('language')
             : 'en'
         }`,
-        'x-switch-user': impersonatedEmail || '',
+        'X-SWITCH-USER': impersonatedData?.targetEmail || '',
+        'X-USER-SUPPORT-PIN':  impersonatedData?.supportPin || "",
       },
     });
     const result = await res.json();

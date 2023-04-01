@@ -37,7 +37,7 @@ export default function ProjectMedia({
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { impersonatedEmail } = React.useContext(UserPropsContext);
+  const { impersonatedData } = React.useContext(UserPropsContext);
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
   const [uploadedImages, setUploadedImages] = React.useState<Array<any>>([]);
@@ -51,7 +51,7 @@ export default function ProjectMedia({
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}?_scope=images`,
         token,
-        impersonatedEmail,
+        impersonatedData,
         {},
         handleError,
         '/profile'
@@ -72,7 +72,7 @@ export default function ProjectMedia({
       `/app/projects/${projectGUID}/images`,
       submitData,
       token,
-      impersonatedEmail,
+      impersonatedData,
       handleError
     )
       .then((res) => {
@@ -156,7 +156,7 @@ export default function ProjectMedia({
     deleteAuthenticatedRequest(
       `/app/projects/${projectGUID}/images/${id}`,
       token,
-      impersonatedEmail,
+      impersonatedData,
       handleError
     ).then((res) => {
       if (res !== 404) {
@@ -179,7 +179,7 @@ export default function ProjectMedia({
       `/app/projects/${projectGUID}`,
       submitData,
       token,
-      impersonatedEmail,
+      impersonatedData,
       handleError
     )
       .then((res) => {
@@ -219,7 +219,7 @@ export default function ProjectMedia({
       `/app/projects/${projectGUID}/images/${id}`,
       submitData,
       token,
-      impersonatedEmail,
+      impersonatedData,
       handleError
     ).then((res) => {
       if (!res.code) {
@@ -252,7 +252,7 @@ export default function ProjectMedia({
       `/app/projects/${projectGUID}/images/${id}`,
       submitData,
       token,
-      impersonatedEmail,
+      impersonatedData,
       handleError
     ).then((res) => {
       if (!res.code) {

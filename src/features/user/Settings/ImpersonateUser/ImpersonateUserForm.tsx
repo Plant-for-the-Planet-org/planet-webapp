@@ -7,7 +7,7 @@ import { getAccountInfo } from '../../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import StyledForm from '../../../common/Layout/StyledForm';
 
-export type FormData = {
+export type ImpersonationData = {
   targetEmail: string;
   supportPin: string;
 };
@@ -16,13 +16,15 @@ const ImpersonateUserForm = (): ReactElement => {
   const router = useRouter();
   const { t } = useTranslation('me');
   const [isInvalidEmail, setIsInvalidEmail] = useState(false);
-  const { token, setUser, setIsImpersonationModeOn, setImpersonatedEmail } =
+  const { token, setUser, setIsImpersonationModeOn, setImpersonatedData } =
     useContext(UserPropsContext);
-  const { register, errors, handleSubmit } = useForm<FormData>({
+  const { register, errors, handleSubmit } = useForm<ImpersonationData>({
     mode: 'onSubmit',
   });
 
-  const handleImpersonation = async (data: FormData): Promise<void> => {
+  const handleImpersonation = async (
+    data: ImpersonationData
+  ): Promise<void> => {
     if (data.targetEmail && data.supportPin) {
       try {
         const res = await getAccountInfo(token, data);
@@ -30,8 +32,15 @@ const ImpersonateUserForm = (): ReactElement => {
         if (res.status === 200) {
           setIsInvalidEmail(false);
           setIsImpersonationModeOn(true);
-          setImpersonatedEmail(resJson.email);
-          localStorage.setItem('impersonatedEmail', resJson.email);
+          const impersonationData: any = {
+            targetEmail: resJson.email,
+            supportPin: resJson.supportPin,
+          };
+          setImpersonatedData(impersonationData);
+          localStorage.setItem(
+            'impersonationData',
+            JSON.stringify(impersonationData)
+          );
           setUser(resJson);
           router.push('/profile');
         } else {

@@ -13,14 +13,14 @@ const Analytics = () => {
   const { t, ready } = useTranslation('treemapperAnalytics');
   const { setProjectList, setProject } = useAnalytics();
 
-  const { token, impersonatedEmail } = useContext(UserPropsContext);
+  const { token, impersonatedData } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
 
   const fetchProjects = async () => {
     const res = await getAuthenticatedRequest<ProjectMapInfo[]>(
       '/app/profile/projects?scope=map',
       token,
-      impersonatedEmail,
+      impersonatedData,
       {},
       handleError
     );

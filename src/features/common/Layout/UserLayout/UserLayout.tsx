@@ -501,7 +501,7 @@ function UserLayout(props: any): ReactElement {
             className={styles.navlink}
             //logout user
             onClick={() => {
-              localStorage.removeItem('impersonatedEmail');
+              localStorage.removeItem('impersonatedData');
               logoutUser(`${process.env.NEXTAUTH_URL}/`);
             }}
           >

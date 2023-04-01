@@ -29,7 +29,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
   const { t, ready } = useTranslation('managePayouts');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const { token, user, setUser, impersonatedEmail } =
+  const { token, user, setUser, impersonatedData } =
     useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
   const { handleSubmit, errors, control } = useForm<FormData>({
@@ -42,7 +42,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
       '/app/profile',
       { scheduleFrequency: data.scheduleFrequency },
       token,
-      impersonatedEmail,
+      impersonatedData,
       handleError
     );
     if (res?.id && !isApiCustomError(res)) {

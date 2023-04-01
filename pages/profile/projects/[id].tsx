@@ -23,7 +23,7 @@ function ManageSingleProject({}: Props): ReactElement {
   const [accessDenied, setAccessDenied] = React.useState(false);
   const [setupAccess, setSetupAccess] = React.useState(false);
   const [project, setProject] = React.useState({});
-  const { user, contextLoaded, token, impersonatedEmail } =
+  const { user, contextLoaded, token, impersonatedData } =
     React.useContext(UserPropsContext);
 
   const { handleError } = React.useContext(ErrorHandlingContext);
@@ -40,7 +40,7 @@ function ManageSingleProject({}: Props): ReactElement {
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}`,
         token,
-        impersonatedEmail,
+        impersonatedData,
         {},
         handleError,
         '/profile'

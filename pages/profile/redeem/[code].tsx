@@ -17,7 +17,7 @@ import { GetStaticPaths } from 'next';
 
 const ReedemCode: FC = () => {
   const { t, ready } = useTranslation(['redeem']);
-  const { user, contextLoaded, token, impersonatedEmail } =
+  const { user, contextLoaded, token, impersonatedData } =
     useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
   const [code, setCode] = useState<string | string[] | null>('');
@@ -70,7 +70,7 @@ const ReedemCode: FC = () => {
         `/app/redeem`,
         submitData,
         token,
-        impersonatedEmail,
+        impersonatedData,
         handleError
       ).then((res) => {
         if (res.error_code === 'invalid_code') {

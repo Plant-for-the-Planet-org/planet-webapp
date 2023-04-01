@@ -54,7 +54,7 @@ function ProjectCertificates({
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { impersonatedEmail } = React.useContext(UserPropsContext);
+  const { impersonatedData } = React.useContext(UserPropsContext);
 
   const {
     register,
@@ -98,7 +98,7 @@ function ProjectCertificates({
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}?_scope=certificates`,
         token,
-        impersonatedEmail,
+        impersonatedData,
         {},
         handleError,
         '/profile'
@@ -146,7 +146,7 @@ function ProjectCertificates({
       `/app/projects/${projectGUID}/certificates`,
       submitData,
       token,
-      impersonatedEmail,
+      impersonatedData,
       handleError
     )
       .then((res) => {
@@ -185,7 +185,7 @@ function ProjectCertificates({
     deleteAuthenticatedRequest(
       `/app/projects/${projectGUID}/certificates/${id}`,
       token,
-      impersonatedEmail,
+      impersonatedData,
       handleError
     ).then((res) => {
       if (res !== 404) {

@@ -58,7 +58,7 @@ export default function ProjectSites({
   const [errorMessage, setErrorMessage] = React.useState('');
   const [openModal, setOpenModal] = React.useState(false);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { impersonatedEmail } = React.useContext(UserPropsContext);
+  const { impersonatedData } = React.useContext(UserPropsContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -166,7 +166,7 @@ export default function ProjectSites({
         `/app/projects/${projectGUID}/sites`,
         submitData,
         token,
-        impersonatedEmail,
+        impersonatedData,
         handleError
       )
         .then((res) => {
@@ -214,7 +214,7 @@ export default function ProjectSites({
     deleteAuthenticatedRequest(
       `/app/projects/${projectGUID}/sites/${id}`,
       token,
-      impersonatedEmail,
+      impersonatedData,
       handleError
     ).then((res) => {
       if (res !== 404) {
@@ -268,7 +268,7 @@ export default function ProjectSites({
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}?_scope=sites`,
         token,
-        impersonatedEmail,
+        impersonatedData,
         {},
         handleError,
         '/profile'
@@ -613,7 +613,7 @@ function EditSite({
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { impersonatedEmail } = React.useContext(UserPropsContext);
+  const { impersonatedData } = React.useContext(UserPropsContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -661,7 +661,7 @@ function EditSite({
         `/app/projects/${projectGUID}/sites/${siteGUID}`,
         submitData,
         token,
-        impersonatedEmail,
+        impersonatedData,
         handleError
       ).then((res) => {
         if (!res.code) {

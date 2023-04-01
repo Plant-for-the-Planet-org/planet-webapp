@@ -42,7 +42,7 @@ export default function ManagePayouts({
   const { t, ready, i18n } = useTranslation('managePayouts');
   const router = useRouter();
   const { handleError } = useContext(ErrorHandlingContext);
-  const { token, contextLoaded, user, impersonatedEmail } =
+  const { token, contextLoaded, user, impersonatedData } =
     useContext(UserPropsContext);
   const { accounts, setAccounts, payoutMinAmounts, setPayoutMinAmounts } =
     usePayouts();
@@ -77,7 +77,7 @@ export default function ManagePayouts({
         const res = await getAuthenticatedRequest<Payouts.BankAccount[]>(
           `/app/accounts`,
           token,
-          impersonatedEmail,
+          impersonatedData,
           {},
           handleError
         );

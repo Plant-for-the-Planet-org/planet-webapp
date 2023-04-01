@@ -88,7 +88,7 @@ export default function ProjectsContainer({}: any) {
   const [projects, setProjects] = React.useState([]);
   const [loader, setLoader] = React.useState(true);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { user, contextLoaded, token, impersonatedEmail } =
+  const { user, contextLoaded, token, impersonatedData } =
     React.useContext(UserPropsContext);
 
   async function loadProjects() {
@@ -96,7 +96,7 @@ export default function ProjectsContainer({}: any) {
       await getAuthenticatedRequest(
         '/app/profile/projects?version=1.2',
         token,
-        impersonatedEmail,
+        impersonatedData,
         {},
         handleError,
         '/profile'

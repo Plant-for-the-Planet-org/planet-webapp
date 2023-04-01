@@ -2,6 +2,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
+import { ImpersonationData } from '../../user/Settings/ImpersonateUser/ImpersonateUserForm';
 import { User } from '../types/user';
 
 interface Props {}
@@ -20,8 +21,8 @@ export const UserPropsContext = React.createContext({
   userLang: 'en',
   isImpersonationModeOn: false,
   setIsImpersonationModeOn: (_value: boolean) => {}, // eslint-disable-line no-unused-vars
-  impersonatedEmail: '',
-  setImpersonatedEmail: (_value: string) => {}, // eslint-disable-line no-unused-vars
+  impersonatedData: '',
+  setImpersonatedData: (_value: ImpersonationData | undefined) => {}, // eslint-disable-line no-unused-vars
   supportPin: '',
   setSupportPin: (_value: string) => {},
 });
@@ -44,7 +45,8 @@ function UserPropsProvider({ children }: any): ReactElement {
   const [userLang, setUserLang] = React.useState('en');
   const [isImpersonationModeOn, setIsImpersonationModeOn] =
     React.useState(false);
-  const [impersonatedEmail, setImpersonatedEmail] = React.useState('');
+  const [impersonatedData, setImpersonatedData] =
+    React.useState<ImpersonationData | null>(null);
   const [supportPin, setSupportPin] = React.useState('');
 
   React.useEffect(() => {
@@ -106,16 +108,23 @@ function UserPropsProvider({ children }: any): ReactElement {
    * @returns false if impersonation fails and user object if successful
    */
   const impersonateUser = async (
-    impersonatedEmail: string
+    impersonationData: ImpersonationData
   ): Promise<User | boolean> => {
     try {
       setContextLoaded(false);
-      const res = await getAccountInfo(token, impersonatedEmail);
+      const res = await getAccountInfo(token, impersonationData);
       const resJson = await res.json();
       if (res.status === 200) {
         setIsImpersonationModeOn(true);
-        setImpersonatedEmail(resJson.email);
-        localStorage.setItem('impersonatedEmail', resJson.email);
+        const impersonationData: any = {
+          targetEmail: resJson.email,
+          supportPin: resJson.supportPin,
+        };
+        setImpersonatedData(impersonationData);
+        localStorage.setItem(
+          'impersonationData',
+          JSON.stringify(impersonationData)
+        );
         setUser(resJson);
         setContextLoaded(true);
         return resJson;
@@ -136,13 +145,16 @@ function UserPropsProvider({ children }: any): ReactElement {
      */
     const checkImpersonation = async () => {
       if (token && !isImpersonationModeOn) {
-        const _impersonatedEmail = localStorage.getItem('impersonatedEmail');
-        if (_impersonatedEmail === null) {
+        const _impersonationData = JSON.parse(
+          localStorage.getItem('impersonationData')
+        );
+
+        if (_impersonationData === null) {
           loadUser();
         } else {
-          const userData = await impersonateUser(_impersonatedEmail);
+          const userData = await impersonateUser(_impersonationData);
           if (userData === false) {
-            localStorage.removeItem('impersonatedEmail');
+            localStorage.removeItem('impersonationData');
             loadUser();
           }
         }
@@ -158,8 +170,8 @@ function UserPropsProvider({ children }: any): ReactElement {
         setUser,
         isImpersonationModeOn,
         setIsImpersonationModeOn,
-        impersonatedEmail,
-        setImpersonatedEmail,
+        impersonatedData,
+        setImpersonatedData,
         supportPin,
         contextLoaded,
         token,
