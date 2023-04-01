@@ -24,7 +24,7 @@ export const UserPropsContext = React.createContext({
   impersonatedData: ({} as ImpersonationData) || null,
   setImpersonatedData: (_value: ImpersonationData | null) => {}, // eslint-disable-line no-unused-vars
   supportPin: '',
-  setSupportPin: (_value: string) => {},
+  setSupportPin: (_value: string) => {}, // eslint-disable-line no-unused-vars,
 });
 
 function UserPropsProvider({ children }: any): ReactElement {
