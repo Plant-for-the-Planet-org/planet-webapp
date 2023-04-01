@@ -116,7 +116,7 @@ function UserPropsProvider({ children }: any): ReactElement {
       const resJson = await res.json();
       if (res.status === 200) {
         setIsImpersonationModeOn(true);
-        const impersonationData: any = {
+        const impersonationData: ImpersonationData = {
           targetEmail: resJson.email,
           supportPin: resJson.supportPin,
         };
