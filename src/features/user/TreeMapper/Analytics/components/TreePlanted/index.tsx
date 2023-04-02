@@ -223,36 +223,42 @@ export const TreePlanted = () => {
   }, [toDate, fromDate]);
 
   useEffect(() => {
-    if (project) {
-      const FILE_NAME = `${project.name}__${t('treesPlanted')}__${format(
-        fromDate,
-        'dd-MMM-yy'
-      )}__${format(toDate, 'dd-MMM-yy')}`;
+    const FILE_NAME = `${project?.name}__${t('treesPlanted')}__${format(
+      fromDate,
+      'dd-MMM-yy'
+    )}__${format(toDate, 'dd-MMM-yy')}`;
 
-      setOptions({
-        ...options,
-        chart: {
-          ...options.chart,
-          toolbar: {
-            ...options.chart?.toolbar,
-            export: {
-              ...options.chart?.toolbar?.export,
-              csv: {
-                ...options.chart?.toolbar?.export?.csv,
-                filename: FILE_NAME,
-                headerCategory: t('timeFrame')
-              },
-              svg: {
-                filename: FILE_NAME,
-              },
-              png: {
-                filename: FILE_NAME,
+    const timeout = setTimeout(() => {
+      setOptions((options) => {
+        return {
+          ...options,
+          chart: {
+            ...options.chart,
+            toolbar: {
+              ...options.chart?.toolbar,
+              export: {
+                ...options.chart?.toolbar?.export,
+                csv: {
+                  ...options.chart?.toolbar?.export?.csv,
+                  filename: FILE_NAME,
+                  headerCategory: t('timeFrame'),
+                },
+                svg: {
+                  filename: FILE_NAME,
+                },
+                png: {
+                  filename: FILE_NAME,
+                },
               },
             },
           },
-        },
+        };
       });
-    }
+    }, 2000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [project, toDate, fromDate]);
 
   function isWeeklyFrame(frame: unknown): frame is WeeklyFrame {
