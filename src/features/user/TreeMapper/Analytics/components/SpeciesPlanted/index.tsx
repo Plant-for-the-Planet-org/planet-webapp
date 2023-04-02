@@ -148,39 +148,6 @@ export const SpeciesPlanted = () => {
     },
   });
 
-  useEffect(() => {
-    if (project) {
-      const FILE_NAME = `${project?.name}__${t('speciesPlanted')}__${format(
-        fromDate,
-        'dd-MMM-yy'
-      )}__${format(toDate, 'dd-MMM-yy')}`;
-
-      setOptions({
-        ...options,
-        chart: {
-          ...options.chart,
-          toolbar: {
-            ...options.chart?.toolbar,
-            export: {
-              ...options.chart?.toolbar?.export,
-              csv: {
-                ...options.chart?.toolbar?.export?.csv,
-                filename: FILE_NAME,
-                headerCategory: t('scientificName'),
-              },
-              svg: {
-                filename: FILE_NAME,
-              },
-              png: {
-                filename: FILE_NAME,
-              },
-            },
-          },
-        },
-      });
-    }
-  }, [project, toDate, fromDate]);
-
   const getPlotingData = (speciesData: Species[]) => {
     const speciesPlanted: number[] = [];
     const categories: string[] = [];
@@ -248,9 +215,44 @@ export const SpeciesPlanted = () => {
   };
 
   useEffect(() => {
+    const FILE_NAME = `${project?.name}__${t('speciesPlanted')}__${format(
+      fromDate,
+      'dd-MMM-yy'
+    )}__${format(toDate, 'dd-MMM-yy')}`;
+
+    const timeout = setTimeout(() => {
+      setOptions({
+        ...options,
+        chart: {
+          ...options.chart,
+          toolbar: {
+            ...options.chart?.toolbar,
+            export: {
+              ...options.chart?.toolbar?.export,
+              csv: {
+                ...options.chart?.toolbar?.export?.csv,
+                filename: FILE_NAME,
+                headerCategory: t('scientificName'),
+              },
+              svg: {
+                filename: FILE_NAME,
+              },
+              png: {
+                filename: FILE_NAME,
+              },
+            },
+          },
+        },
+      });
+    }, 2000);
+
     if (process.env.ENABLE_ANALYTICS && project) {
       fetchPlantedSpecies();
     }
+
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [project, fromDate, toDate]);
 
   return (
