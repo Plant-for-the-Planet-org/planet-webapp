@@ -33,7 +33,7 @@ handler.post(async (req, response) => {
       'SELECT \
           ps.other_species, \
           ps.scientific_species_id, \
-          ss.name, \
+          COALESCE(ss.name, ps.other_species, pl.other_species) AS name, \
           SUM(ps.tree_count) AS total_tree_count \
         FROM planted_species ps \
         INNER JOIN plant_location pl ON ps.plant_location_id = pl.id \

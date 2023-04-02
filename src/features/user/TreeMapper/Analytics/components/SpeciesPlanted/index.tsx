@@ -185,9 +185,6 @@ export const SpeciesPlanted = () => {
       if (species.other_species === 'Unknown') {
         unknownIndex = index;
       }
-      if (!species.name && species.other_species !== 'Unknown') {
-        return { ...species, name: species.other_species };
-      }
       return species;
     });
 
