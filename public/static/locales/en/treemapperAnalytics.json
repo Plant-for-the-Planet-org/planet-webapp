@@ -50,5 +50,12 @@
     "tooManyRequest": "Too many requests. Please wait and try again later or contact the system administrator for assistance."
   },
   "timeFrame": "Time Frame",
-  "scientificName": "Scientific name"
+  "scientificName": "Scientific name",
+  "type": "Type",
+  "interventions": "Interventions",
+  "monitoringPlots": "Monitoring Plots (Coming Soon...)",
+  "trillion": "t",
+  "billion": "b",
+  "million": "m",
+  "thousand": "k"
 }

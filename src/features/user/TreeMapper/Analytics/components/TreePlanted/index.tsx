@@ -210,49 +210,60 @@ export const TreePlanted = () => {
     },
   });
 
-  const previousTimeFrame = useRef({ timeFrames });
+  // To prevent unnecessary re-render of the Treeplanted component due to the change in timeFrame,
+  // track previously rendered value of timeframes
+  const previousTimeFrames = useRef({ timeFrames });
 
   useEffect(() => {
+    // setTimeframes only if there is a change in current timeframes and previously rendered timeframes
     if (
       getTimeFrames(toDate, fromDate).length !==
-      previousTimeFrame.current.timeFrames.length
+      previousTimeFrames.current.timeFrames.length
     ) {
       setTimeFrames(getTimeFrames(toDate, fromDate));
-      previousTimeFrame.current.timeFrames = getTimeFrames(toDate, fromDate);
+
+      // Update value of previousTimeFrames with current timeframes for next render
+      previousTimeFrames.current.timeFrames = getTimeFrames(toDate, fromDate);
     }
   }, [toDate, fromDate]);
 
   useEffect(() => {
-    if (project) {
-      const FILE_NAME = `${project.name}__${t('treesPlanted')}__${format(
-        fromDate,
-        'dd-MMM-yy'
-      )}__${format(toDate, 'dd-MMM-yy')}`;
+    const FILE_NAME = `${project?.name}__${t('treesPlanted')}__${format(
+      fromDate,
+      'dd-MMM-yy'
+    )}__${format(toDate, 'dd-MMM-yy')}`;
 
-      setOptions({
-        ...options,
-        chart: {
-          ...options.chart,
-          toolbar: {
-            ...options.chart?.toolbar,
-            export: {
-              ...options.chart?.toolbar?.export,
-              csv: {
-                ...options.chart?.toolbar?.export?.csv,
-                filename: FILE_NAME,
-                headerCategory: t('timeFrame')
-              },
-              svg: {
-                filename: FILE_NAME,
-              },
-              png: {
-                filename: FILE_NAME,
+    const timeout = setTimeout(() => {
+      setOptions((options) => {
+        return {
+          ...options,
+          chart: {
+            ...options.chart,
+            toolbar: {
+              ...options.chart?.toolbar,
+              export: {
+                ...options.chart?.toolbar?.export,
+                csv: {
+                  ...options.chart?.toolbar?.export?.csv,
+                  filename: FILE_NAME,
+                  headerCategory: t('timeFrame'),
+                },
+                svg: {
+                  filename: FILE_NAME,
+                },
+                png: {
+                  filename: FILE_NAME,
+                },
               },
             },
           },
-        },
+        };
       });
-    }
+    }, 2000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [project, toDate, fromDate]);
 
   function isWeeklyFrame(frame: unknown): frame is WeeklyFrame {
@@ -282,11 +293,17 @@ export const TreePlanted = () => {
     const treesPlanted: number[] = [];
     const categories: Categories = [];
 
+    // Since there is custom tooltip (refer setOptions in fetchTreesPlanted function) which is
+    // unique (using default API [https://apexcharts.com/docs/options/tooltip/] won't give desired results) for each graph,
+    // categories needs to the data that need to displayed in the tooltip
+
     switch (tf) {
       case TIME_FRAME.DAYS:
         data.forEach((tf) => {
           if ('plantedDate' in tf) {
             treesPlanted.push(tf.treesPlanted);
+
+            // Data need to display formatted day in tooltip header (e.g Jan/26/2023)
             (categories as DaysCategories[]).push({
               label: format(new Date(tf.plantedDate), 'MMM/dd/yyyy'),
             });
@@ -298,6 +315,9 @@ export const TreePlanted = () => {
         data.forEach((tf) => {
           if (isWeeklyFrame(tf)) {
             treesPlanted.push(tf.treesPlanted);
+
+            // Data need to display week range in tooltip header (e.g Jan/26/2022 - Jan/26/2023)
+            // and Calender Week at the bottom of every bar (4'CW)
             (categories as WeeksCategories[]).push({
               label: `${tf.weekNum}'${t('calenderWeek')}`,
               weekStateDate: format(new Date(tf.weekStartDate), 'MMM/dd/yy'),
@@ -314,6 +334,10 @@ export const TreePlanted = () => {
             if (isMonthlyFrame(tf)) {
               treesPlanted.push(tf.treesPlanted);
               const month = t(`${tf.month.toLowerCase()}`);
+
+              // Data need to display month in tooltip header (e.g Jan 2023 or Jan)
+
+              // If the record is a first bar or start of new year append year to it else only display month
               if (tf.year > year || index === 0) {
                 (categories as MonthsCategories[]).push({
                   label: `${month}'${tf.year}`,
@@ -337,6 +361,8 @@ export const TreePlanted = () => {
         data.forEach((tf) => {
           if ('year' in tf) {
             treesPlanted.push(tf.treesPlanted);
+
+            // Data need to display week range in tooltip header (e.g 2023)
             (categories as YearsCategories[]).push({
               label: `${tf.year}`,
             });
@@ -400,58 +426,70 @@ export const TreePlanted = () => {
   const fetchPlantedTrees = async () => {
     // TODO - Once error handling PR is merged refactor this fetch call with a makeNextRequest function
 
-    const res = await fetch(
-      `/api/data-explorer/trees-planted?timeFrame=${timeFrame}`,
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          projectId: project?.id,
-          startDate: fromDate,
-          endDate: toDate,
-        }),
-      }
-    );
-
-    if (res.status === 429) {
-      handleError({ message: t('errors.tooManyRequest'), type: 'error' });
-      return;
-    }
-
-    const { data } = await res.json();
-
-    if (timeFrame) {
-      const { treesPlanted, categories } = getPlotingData(
-        timeFrame,
-        data as DailyFrame[] | WeeklyFrame[] | MonthlyFrame[] | YearlyFrame[]
+    try {
+      const res = await fetch(
+        `/api/data-explorer/trees-planted?timeFrame=${timeFrame}`,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            projectId: project?.id,
+            startDate: fromDate,
+            endDate: toDate,
+          }),
+        }
       );
 
-      setSeries([
-        {
-          data: treesPlanted,
-          name: t('treesPlanted'),
-        },
-      ]);
+      if (res.status === 429) {
+        handleError({ message: t('errors.tooManyRequest'), type: 'error' });
+        return;
+      }
 
-      setOptions({
-        ...options,
-        xaxis: {
-          ...options.xaxis,
-          categories: categories,
-        },
-        tooltip: {
-          custom: function ({ series: s, dataPointIndex }) {
-            const seriesData: number[] = s[0];
+      const { data } = await res.json();
 
-            return ReactDOMServer.renderToString(
-              getToolTip(seriesData, dataPointIndex, categories)
-            );
+      if (timeFrame) {
+        const { treesPlanted, categories } = getPlotingData(
+          timeFrame,
+          data as DailyFrame[] | WeeklyFrame[] | MonthlyFrame[] | YearlyFrame[]
+        );
+
+        setSeries([
+          {
+            data: treesPlanted,
+            name: t('treesPlanted'),
           },
-        },
-      });
+        ]);
+
+        setOptions({
+          ...options,
+          xaxis: {
+            ...options.xaxis,
+            categories: categories,
+          },
+          tooltip: {
+            custom: function ({ series: s, dataPointIndex }) {
+              const seriesData: number[] = s[0];
+
+              return ReactDOMServer.renderToString(
+                getToolTip(seriesData, dataPointIndex, categories)
+              );
+            },
+          },
+        });
+      }
+    } catch (err) {
+      handleError({ message: t('wentWrong'), type: 'error' });
     }
   };
 
   useEffect(() => {
+    // This condition handles the edge case where,
+    // Changing the interval between to and from date can change multiple dependencies (namely timeFrame along with to or from date) at the same time.
+    // This will result in 2 API calls (eg: one where data is grouped by days and other where data is grouped by weeks)
+    // Grouping the data by days takes more time than grouping it by weeks at the backend,
+    // due to asynchronous behaviour of JS,
+    // client will recieve data grouped by weeks before days which is incorrect.
+    // a CHECK of timeFrame inclusion within the range avoides unnecessary call (i.e data grouped by days in this example)
+
     const isValidTimeFrame =
       timeFrame && getTimeFrames(toDate, fromDate).includes(timeFrame);
     if (process.env.ENABLE_ANALYTICS && isValidTimeFrame && project) {

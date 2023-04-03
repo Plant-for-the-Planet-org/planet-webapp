@@ -23,9 +23,14 @@ handler.post(async (req, response) => {
   const { projectId, startDate, endDate } = JSON.parse(req.body);
   const { timeFrame } = req.query;
 
-  const cacheHit = cache.get(
-    getCachedKey(projectId, startDate, endDate, timeFrame as string)
-  );
+  const CACHE_KEY = `TREES_PLANTED__${getCachedKey(
+    projectId,
+    startDate,
+    endDate,
+    timeFrame as string
+  )}`;
+
+  const cacheHit = cache.get(CACHE_KEY);
 
   if (cacheHit) {
     response.status(200).json({ data: cacheHit });
@@ -109,10 +114,7 @@ handler.post(async (req, response) => {
 
     await db.end();
 
-    cache.set(
-      getCachedKey(projectId, startDate, endDate, timeFrame as string),
-      res
-    );
+    cache.set(CACHE_KEY, res);
 
     response.status(200).json({ data: res });
   } catch (err) {
