@@ -426,54 +426,58 @@ export const TreePlanted = () => {
   const fetchPlantedTrees = async () => {
     // TODO - Once error handling PR is merged refactor this fetch call with a makeNextRequest function
 
-    const res = await fetch(
-      `/api/data-explorer/trees-planted?timeFrame=${timeFrame}`,
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          projectId: project?.id,
-          startDate: fromDate,
-          endDate: toDate,
-        }),
-      }
-    );
-
-    if (res.status === 429) {
-      handleError({ message: t('errors.tooManyRequest'), type: 'error' });
-      return;
-    }
-
-    const { data } = await res.json();
-
-    if (timeFrame) {
-      const { treesPlanted, categories } = getPlotingData(
-        timeFrame,
-        data as DailyFrame[] | WeeklyFrame[] | MonthlyFrame[] | YearlyFrame[]
+    try {
+      const res = await fetch(
+        `/api/data-explorer/trees-planted?timeFrame=${timeFrame}`,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            projectId: project?.id,
+            startDate: fromDate,
+            endDate: toDate,
+          }),
+        }
       );
 
-      setSeries([
-        {
-          data: treesPlanted,
-          name: t('treesPlanted'),
-        },
-      ]);
+      if (res.status === 429) {
+        handleError({ message: t('errors.tooManyRequest'), type: 'error' });
+        return;
+      }
 
-      setOptions({
-        ...options,
-        xaxis: {
-          ...options.xaxis,
-          categories: categories,
-        },
-        tooltip: {
-          custom: function ({ series: s, dataPointIndex }) {
-            const seriesData: number[] = s[0];
+      const { data } = await res.json();
 
-            return ReactDOMServer.renderToString(
-              getToolTip(seriesData, dataPointIndex, categories)
-            );
+      if (timeFrame) {
+        const { treesPlanted, categories } = getPlotingData(
+          timeFrame,
+          data as DailyFrame[] | WeeklyFrame[] | MonthlyFrame[] | YearlyFrame[]
+        );
+
+        setSeries([
+          {
+            data: treesPlanted,
+            name: t('treesPlanted'),
           },
-        },
-      });
+        ]);
+
+        setOptions({
+          ...options,
+          xaxis: {
+            ...options.xaxis,
+            categories: categories,
+          },
+          tooltip: {
+            custom: function ({ series: s, dataPointIndex }) {
+              const seriesData: number[] = s[0];
+
+              return ReactDOMServer.renderToString(
+                getToolTip(seriesData, dataPointIndex, categories)
+              );
+            },
+          },
+        });
+      }
+    } catch (err) {
+      handleError({ message: t('wentWrong'), type: 'error' });
     }
   };
 

@@ -21,45 +21,53 @@ export const Counter = () => {
   const fetchTotalTreesPlanted = async () => {
     // TODO - Once error handling PR is merged refactor this fetch call with a makeNextRequest function
 
-    const res = await fetch('/api/data-explorer/total-trees-planted', {
-      method: 'POST',
-      body: JSON.stringify({
-        projectId: project?.id,
-        startDate: fromDate,
-        endDate: toDate,
-      }),
-    });
+    try {
+      const res = await fetch('/api/data-explorer/total-trees-planted', {
+        method: 'POST',
+        body: JSON.stringify({
+          projectId: project?.id,
+          startDate: fromDate,
+          endDate: toDate,
+        }),
+      });
 
-    if (res.status === 429) {
-      handleError({ message: t('errors.tooManyRequest'), type: 'error' });
-      return;
+      if (res.status === 429) {
+        handleError({ message: t('errors.tooManyRequest'), type: 'error' });
+        return;
+      }
+
+      const { data } = await res.json();
+
+      setTotalTreesPlanted(data.totalTreesPlanted);
+    } catch (err) {
+      handleError({ message: t('wentWrong'), type: 'error' });
     }
-
-    const { data } = await res.json();
-
-    setTotalTreesPlanted(data.totalTreesPlanted);
   };
 
   const fetchTotalSpeciesPlanted = async () => {
     // TODO - Once error handling PR is merged refactor this fetch call with a makeNextRequest function
 
-    const res = await fetch('/api/data-explorer/total-species-planted', {
-      method: 'POST',
-      body: JSON.stringify({
-        projectId: project?.id,
-        startDate: fromDate,
-        endDate: toDate,
-      }),
-    });
+    try {
+      const res = await fetch('/api/data-explorer/total-species-planted', {
+        method: 'POST',
+        body: JSON.stringify({
+          projectId: project?.id,
+          startDate: fromDate,
+          endDate: toDate,
+        }),
+      });
 
-    if (res.status === 429) {
-      handleError({ message: t('errors.tooManyRequest'), type: 'error' });
-      return;
+      if (res.status === 429) {
+        handleError({ message: t('errors.tooManyRequest'), type: 'error' });
+        return;
+      }
+
+      const { data } = await res.json();
+
+      setTotalSpeciesPlanted(data.totalSpeciesPlanted);
+    } catch (err) {
+      handleError({ message: t('wentWrong'), type: 'error' });
     }
-
-    const { data } = await res.json();
-
-    setTotalSpeciesPlanted(data.totalSpeciesPlanted);
   };
 
   useEffect(() => {
@@ -70,11 +78,7 @@ export const Counter = () => {
   }, [project, fromDate, toDate]);
 
   return (
-    <Grid
-      container
-      alignContent="center"
-      className={styles.container}
-    >
+    <Grid container alignContent="center" className={styles.container}>
       {totalSpeciesPlanted !== null && totalSpeciesPlanted !== undefined && (
         <CounterItem
           quantity={totalSpeciesPlanted}

@@ -163,57 +163,61 @@ export const SpeciesPlanted = () => {
   const fetchPlantedSpecies = async () => {
     // TODO - Once error handling PR is merged refactor this fetch call with a makeNextRequest function
 
-    const res = await fetch('/api/data-explorer/species-planted', {
-      method: 'POST',
-      body: JSON.stringify({
-        projectId: project?.id,
-        startDate: fromDate,
-        endDate: toDate,
-      }),
-    });
-
-    // Show error pop-up for too many request
-    if (res.status === 429) {
-      handleError({ message: t('errors.tooManyRequest'), type: 'error' });
-      return;
-    }
-
-    const { data }: { data: Species[] } = await res.json();
-
-    // In the graph Unknown species needs to be displayed at the end.
-
-    let unknownIndex = -1;
-
-    // Create speciesData while checking for unknown species
-    const speciesData = data.map((species, index) => {
-      if (species.other_species === 'Unknown') {
-        unknownIndex = index;
-      }
-      return species;
-    });
-
-    // If unknown species is found append it at the end of speciesData
-    if (unknownIndex !== -1) {
-      const unknownSpecies = speciesData.splice(unknownIndex, 1)[0];
-      speciesData.push({
-        ...unknownSpecies,
-        name: unknownSpecies.other_species,
+    try {
+      const res = await fetch('/api/data-explorer/species-planted', {
+        method: 'POST',
+        body: JSON.stringify({
+          projectId: project?.id,
+          startDate: fromDate,
+          endDate: toDate,
+        }),
       });
+
+      // Show error pop-up for too many request
+      if (res.status === 429) {
+        handleError({ message: t('errors.tooManyRequest'), type: 'error' });
+        return;
+      }
+
+      const { data }: { data: Species[] } = await res.json();
+
+      // In the graph Unknown species needs to be displayed at the end.
+
+      let unknownIndex = -1;
+
+      // Create speciesData while checking for unknown species
+      const speciesData = data.map((species, index) => {
+        if (species.other_species === 'Unknown') {
+          unknownIndex = index;
+        }
+        return species;
+      });
+
+      // If unknown species is found append it at the end of speciesData
+      if (unknownIndex !== -1) {
+        const unknownSpecies = speciesData.splice(unknownIndex, 1)[0];
+        speciesData.push({
+          ...unknownSpecies,
+          name: unknownSpecies.other_species,
+        });
+      }
+
+      const { speciesPlanted, categories } = getPlotingData(speciesData);
+
+      setSeries([
+        {
+          data: speciesPlanted,
+          name: t('speciesPlanted'),
+        },
+      ]);
+
+      setOptions({
+        ...options,
+        xaxis: { ...options.xaxis, categories: categories },
+      });
+    } catch (err) {
+      handleError({ message: t('wentWrong'), type: 'error' });
     }
-
-    const { speciesPlanted, categories } = getPlotingData(speciesData);
-
-    setSeries([
-      {
-        data: speciesPlanted,
-        name: t('speciesPlanted'),
-      },
-    ]);
-
-    setOptions({
-      ...options,
-      xaxis: { ...options.xaxis, categories: categories },
-    });
   };
 
   useEffect(() => {

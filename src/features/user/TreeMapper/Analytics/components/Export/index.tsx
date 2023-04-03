@@ -159,29 +159,32 @@ export const Export = () => {
   const handleExport = async () => {
     if (localProject) {
       // TODO - Once error handling PR is merged refactor this fetch call with a makeNextRequest function
+      try {
+        const res = await fetch('/api/data-explorer/export', {
+          method: 'POST',
+          body: JSON.stringify({
+            projectId: localProject.id,
+            startDate: localFromDate,
+            endDate: localToDate,
+          }),
+        });
 
-      const res = await fetch('/api/data-explorer/export', {
-        method: 'POST',
-        body: JSON.stringify({
-          projectId: localProject.id,
-          startDate: localFromDate,
-          endDate: localToDate,
-        }),
-      });
+        if (res.status === 429) {
+          handleError({ message: t('errors.tooManyRequest'), type: 'error' });
+          return;
+        }
 
-      if (res.status === 429) {
-        handleError({ message: t('errors.tooManyRequest'), type: 'error' });
-        return;
+        const { data } = await res.json();
+
+        if (data.length === 0) {
+          handleError({ message: t('errors.emptyExportData'), type: 'error' });
+          return;
+        }
+
+        extractDataToXlsx(data);
+      } catch (err) {
+        handleError({ message: t('wentWrong'), type: 'error' });
       }
-
-      const { data } = await res.json();
-
-      if (data.length === 0) {
-        handleError({ message: t('errors.emptyExportData'), type: 'error' });
-        return;
-      }
-
-      extractDataToXlsx(data);
     }
   };
 
