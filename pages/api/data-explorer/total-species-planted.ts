@@ -40,13 +40,14 @@ handler.post(async (req, response) => {
 
   try {
     const query =
-      'SELECT \
-            COUNT(DISTINCT COALESCE(ss.name, ps.other_species, pl.other_species)) as totalSpeciesPlanted \
+      "SELECT \
+            COUNT(DISTINCT COALESCE(ss.name, CASE WHEN ps.other_species='Unknown' THEN null ELSE ps.other_species END, \
+            CASE WHEN pl.other_species='Unknown' THEN null ELSE pl.other_species END)) as totalSpeciesPlanted \
             FROM planted_species ps \
         INNER JOIN plant_location pl ON ps.plant_location_id = pl.id \
         LEFT JOIN scientific_species ss ON ps.scientific_species_id = ss.id \
         JOIN plant_project pp ON pl.plant_project_id = pp.id \
-        WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ?';
+        WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ?";
 
     const res = await db.query<QueryResult[]>(query, [
       projectId,
