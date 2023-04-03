@@ -53,5 +53,9 @@
   "scientificName": "Scientific name",
   "type": "Type",
   "interventions": "Interventions",
-  "monitoringPlots": "Monitoring Plots (Coming Soon...)"
+  "monitoringPlots": "Monitoring Plots (Coming Soon...)",
+  "trillion": "t",
+  "billion": "b",
+  "million": "m",
+  "thousand": "k"
 }

@@ -18,6 +18,10 @@ const handler = nc<NextApiRequest, NextApiResponse>();
 handler.use(rateLimiter);
 handler.use(speedLimiter);
 
+interface QueryResult {
+  totalTreesPlanted: number;
+}
+
 handler.post(async (req, response) => {
   const { projectId, startDate, endDate } = JSON.parse(req.body);
 
@@ -37,14 +41,12 @@ handler.post(async (req, response) => {
   try {
     const query =
       'SELECT \
-            COUNT(DISTINCT COALESCE(ss.name, ps.other_species, pl.other_species)) \
-            FROM planted_species ps \
-        INNER JOIN plant_location pl ON ps.plant_location_id = pl.id \
-        LEFT JOIN scientific_species ss ON ps.scientific_species_id = ss.id \
-        JOIN plant_project pp ON pl.plant_project_id = pp.id \
-        WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ?';
+        COALESCE(SUM(pl.trees_planted), 0) AS totalTreesPlanted \
+      FROM plant_location pl \
+      JOIN plant_project pp ON pl.plant_project_id = pp.id \
+      WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ?';
 
-    const res = await db.query(query, [
+    const res = await db.query<QueryResult[]>(query, [
       projectId,
       startDate,
       `${endDate} 23:59:59.999`,
@@ -52,8 +54,8 @@ handler.post(async (req, response) => {
 
     await db.end();
 
-    cache.set(CACHE_KEY, res);
-    response.status(200).json({ data: res });
+    cache.set(CACHE_KEY, res[0]);
+    response.status(200).json({ data: res[0] });
   } catch (err) {
     console.log(err);
   } finally {
