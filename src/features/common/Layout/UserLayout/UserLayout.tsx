@@ -56,14 +56,14 @@ function LanguageSwitcher() {
 
   return ready ? (
     <>
-      <div
-        className={styles.navlink}
-        onClick={() => {
-          setOpenModal(true); // open language and country change modal
-        }}
-      >
+      <div className={styles.navlink}>
         <GlobeIcon />
-        <button className={styles.navlinkTitle}>
+        <button
+          className={styles.navlinkTitle}
+          onClick={() => {
+            setOpenModal(true); // open language and country change modal
+          }}
+        >
           {`${
             i18n.language ? i18n.language.toUpperCase() : ''
           } • ${selectedCurrency}`}
