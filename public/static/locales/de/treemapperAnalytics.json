@@ -50,5 +50,9 @@
   "scientificName": "Wissenschaftlicher Name",
   "type": "Typ",
   "interventions": "Interventionen",
-  "monitoringPlots": "Monitoring Plots (Demnächst)"
+  "monitoringPlots": "Monitoring Plots (Demnächst)",
+  "trillion": "Bill.",
+  "billion": "Mrd.",
+  "million": "Mill.",
+  "thousand": "Tsd."
 }
