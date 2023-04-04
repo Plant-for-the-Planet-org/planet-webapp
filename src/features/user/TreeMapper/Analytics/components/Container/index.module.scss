@@ -1,0 +1,32 @@
+@import '../../../../../../theme/theme';
+
+.container {
+    box-shadow: 0px 0px 20px -10px rgba(0,0,0,0.35);
+}
+
+.title {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.headerFlexRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    border-radius: 10px 10px 0 0;
+    background-color: $primaryLightColor;
+}
+
+.headerFlexColumn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 30px;
+}
+
+.body {
+    background-color: $backgroundColor;
+    padding: 40px 30px 20px;
+    border-radius: 0 0 10px 10px;
+}
