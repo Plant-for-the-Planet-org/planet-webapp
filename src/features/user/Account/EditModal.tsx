@@ -86,20 +86,10 @@ export const EditModal = ({
   const onSubmit = (data: any) => {
     setDisabled(true);
     const bodyToSend = {
-      nextBilling:
-        record.method !== 'paypal'
-          ? new Date(data.currentPeriodEnd).toISOString().split('T')[0]
-          : null,
       centAmount: Number(data.amount) * 100,
       frequency: frequency,
     };
-    if (
-      new Date(data.currentPeriodEnd).toDateString() ==
-        new Date(record.currentPeriodEnd).toDateString() ||
-      bodyToSend.nextBilling === null
-    ) {
-      delete bodyToSend.nextBilling;
-    }
+
     if (data.frequency.toLowerCase() === record.frequency) {
       delete bodyToSend.frequency;
     }
@@ -234,7 +224,7 @@ export const EditModal = ({
                 )}
               </div>
             </div>
-            {record?.method !== 'paypal' ? (
+            {/* {record?.method !== 'paypal' ? (
               <div className={styles.formRow}>
                 <div className={styles.formRowInput}>
                   <LocalizationProvider
@@ -286,7 +276,7 @@ export const EditModal = ({
               </div>
             ) : (
               []
-            )}
+            )} */}
           </form>
           <div className={styles.note}>
             <p>{record?.method === 'paypal' ? t('me:noteToWait') : []}</p>
@@ -294,7 +284,7 @@ export const EditModal = ({
           <button
             onClick={handleSubmit(onSubmit)}
             className={styles.submitButton}
-            style={{ minWidth: '20px', marginTop: '30px' }}
+            style={{ minWidth: '20px', marginTop: '15px' }}
             disabled={disabled}
           >
             {disabled ? (
