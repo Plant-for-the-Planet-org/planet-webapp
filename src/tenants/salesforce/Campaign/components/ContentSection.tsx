@@ -47,15 +47,22 @@ export default function ContentSection() {
             <p>
               To join, donate $50 or more to a tree planting project of your
               choice from the projects listed below. You will then receive a
-              donation confirmation email from Plant for the Planet.
+              donation confirmation email from Plant-for-the-Planet.
             </p>
             <p>
               Next, request your Salesforce Donation Match in Volunteerforce and
-              upload your confirmation from Plant for the Planet. Once your
-              donation and match request are verified, visit our slack channel
-              #vto-fitness-moving-toward-100m-treesapr23 to log your exercise
-              minutes from April 1st - 30th via the slack workflow, and share
-              your thoughts, insights and workouts!
+              upload your confirmation from{' '}
+              <a
+                href="https://www.plant-for-the-planet.org/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Plant-for-the-Planet
+              </a>
+              . Once your donation and match request are verified, visit our
+              slack channel #vto-fitness-moving-toward-100m-treesapr23 to log
+              your exercise minutes from April 1st - 30th via the slack
+              workflow, and share your thoughts, insights and workouts!
             </p>
             <p>
               Participants in this challenge are able to earn up to one hour of

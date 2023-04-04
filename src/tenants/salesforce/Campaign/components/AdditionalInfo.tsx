@@ -25,10 +25,17 @@ export default function AdditionalInfo() {
               earn VTO by exercising for the cause.
             </p>
             <p>
-              Our partner in this, Plant for the Planet, connects our funding
-              with tree planting projects all over the world. Together, we can
-              help create a greener and cleaner future by moving toward 100
-              million trees.
+              Our partner in this,{' '}
+              <a
+                href="https://www.plant-for-the-planet.org/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Plant-for-the-Planet
+              </a>
+              , connects our funding with tree planting projects all over the
+              world. Together, we can help create a greener and cleaner future
+              by moving toward 100 million trees.
             </p>
           </div>
         </div>
