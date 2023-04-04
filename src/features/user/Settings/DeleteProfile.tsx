@@ -123,6 +123,7 @@ export default function DeleteProfile({}: any) {
       buttonTitle={t('common:showSubscriptions')}
       modalTitle={t('common:modalTitle')}
       modalSubtitle={t('common:modalSubtitle')}
+      isCancel={true}
     />
   );
 }

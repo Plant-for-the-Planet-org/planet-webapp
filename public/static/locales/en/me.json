@@ -249,5 +249,7 @@
   "apiKeyMessage3": "Regenerating an API Key will invalidate your existing API Key immediately.",
   "regenerateKey": "Regenerate Key",
   "giftFund": "GiftFund",
-  "donatedTrees": "Donated Trees"
+  "donatedTrees": "Donated Trees",
+  "remainingPaymentsText": "{{remainingPayments}} donations would take place before cancellation.",
+  "continue": "Continue"
 }
