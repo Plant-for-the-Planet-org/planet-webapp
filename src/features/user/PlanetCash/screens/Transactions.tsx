@@ -14,6 +14,7 @@ import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import NoTransactionsFound from '../components/NoTransactionsFound';
+import { PaymentHistory } from '../../../common/types/payments';
 
 interface TransactionsProps {
   setProgress?: (progress: number) => void;
@@ -23,11 +24,13 @@ const Transactions = ({
   setProgress,
 }: TransactionsProps): ReactElement | null => {
   const { t } = useTranslation('me');
-  const { token, contextLoaded } = useContext(UserPropsContext);
+  const { token, contextLoaded, impersonatedEmail } =
+    useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
+
   const { accounts } = usePlanetCash();
   const [transactionHistory, setTransactionHistory] =
-    useState<Payments.PaymentHistory | null>(null);
+    useState<PaymentHistory | null>(null);
   const [selectedRecord, setSelectedRecord] = useState<number | null>(null);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -57,10 +60,11 @@ const Transactions = ({
           ? `/app/paymentHistory?filter=planet-cash&limit=15&${nextPage}`
           : `/app/paymentHistory?filter=planet-cash&limit=15`;
 
-      const newTransactionHistory: Payments.PaymentHistory =
+      const newTransactionHistory: PaymentHistory =
         await getAuthenticatedRequest(
           apiUrl,
           token,
+          impersonatedEmail,
           {},
           handleError,
           '/profile/planetcash'

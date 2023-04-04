@@ -17,6 +17,11 @@ export const UserPropsContext = React.createContext({
   logoutUser: (value: string | undefined) => {},
   auth0User: {},
   auth0Error: {} || undefined,
+  userLang: 'en',
+  isImpersonationModeOn: false,
+  setIsImpersonationModeOn: (_value: boolean) => {}, // eslint-disable-line no-unused-vars
+  impersonatedEmail: '',
+  setImpersonatedEmail: (_value: string) => {}, // eslint-disable-line no-unused-vars
 });
 
 function UserPropsProvider({ children }: any): ReactElement {
@@ -34,6 +39,17 @@ function UserPropsProvider({ children }: any): ReactElement {
   const [contextLoaded, setContextLoaded] = React.useState(false);
   const [token, setToken] = React.useState(null);
   const [profile, setUser] = React.useState<boolean | User | null>(false);
+  const [userLang, setUserLang] = React.useState('en');
+  const [isImpersonationModeOn, setIsImpersonationModeOn] =
+    React.useState(false);
+  const [impersonatedEmail, setImpersonatedEmail] = React.useState('');
+
+  React.useEffect(() => {
+    if (localStorage.getItem('language')) {
+      const userLang = localStorage.getItem('language');
+      if (userLang) setUserLang(userLang);
+    }
+  }, []);
 
   React.useEffect(() => {
     async function loadToken() {
@@ -80,16 +96,66 @@ function UserPropsProvider({ children }: any): ReactElement {
     }
     setContextLoaded(true);
   }
+  /**
+   * Accepts email and enters impersonation mode
+   * @param impersonatedEmail
+   * @returns false if impersonation fails and user object if successful
+   */
+  const impersonateUser = async (
+    impersonatedEmail: string
+  ): Promise<User | boolean> => {
+    try {
+      setContextLoaded(false);
+      const res = await getAccountInfo(token, impersonatedEmail);
+      const resJson = await res.json();
+      if (res.status === 200) {
+        setIsImpersonationModeOn(true);
+        setImpersonatedEmail(resJson.email);
+        localStorage.setItem('impersonatedEmail', resJson.email);
+        setUser(resJson);
+        setContextLoaded(true);
+        return resJson;
+      } else {
+        console.log(resJson);
+        return false;
+      }
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  };
 
   React.useEffect(() => {
-    if (token) loadUser();
-  }, [token]);
+    /**
+     * 1. Load user profile if impersonation mode is off and impersonatedEmail is not set in local storage
+     * 2. Impersonate user on app reload if impersonatedEmail is set in local storage
+     */
+    const checkImpersonation = async () => {
+      if (token && !isImpersonationModeOn) {
+        const _impersonatedEmail = localStorage.getItem('impersonatedEmail');
+        if (_impersonatedEmail === null) {
+          loadUser();
+        } else {
+          const userData = await impersonateUser(_impersonatedEmail);
+          if (userData === false) {
+            localStorage.removeItem('impersonatedEmail');
+            loadUser();
+          }
+        }
+      }
+    };
+    checkImpersonation();
+  }, [token, isImpersonationModeOn]);
 
   return (
     <UserPropsContext.Provider
       value={{
         user: profile,
         setUser,
+        isImpersonationModeOn,
+        setIsImpersonationModeOn,
+        impersonatedEmail,
+        setImpersonatedEmail,
         contextLoaded,
         token,
         isLoading,
@@ -98,6 +164,7 @@ function UserPropsProvider({ children }: any): ReactElement {
         logoutUser,
         auth0User: user,
         auth0Error: error,
+        userLang,
       }}
     >
       {children}
