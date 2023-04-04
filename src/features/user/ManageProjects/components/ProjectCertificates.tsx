@@ -21,6 +21,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { SxProps } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -54,6 +55,8 @@ function ProjectCertificates({
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { impersonatedEmail } = React.useContext(UserPropsContext);
+
 
   const {
     register,
@@ -98,7 +101,8 @@ function ProjectCertificates({
       try {
         const result = await getAuthenticatedRequest(
           `/app/profile/projects/${projectGUID}?_scope=certificates`,
-          token
+          token,
+          impersonatedEmail
         );
         setShowForm(false);
         setShowToggle(false);
@@ -146,7 +150,8 @@ function ProjectCertificates({
       const res = await postAuthenticatedRequest(
         `/app/projects/${projectGUID}/certificates`,
         submitData,
-        token
+        token,
+        impersonatedEmail
       );
       let newUploadedFiles = uploadedFiles;
 
@@ -171,7 +176,8 @@ function ProjectCertificates({
     try {
       await deleteAuthenticatedRequest(
         `/app/projects/${projectGUID}/certificates/${id}`,
-        token
+        token,
+        impersonatedEmail
       );
       const uploadedFilesTemp = uploadedFiles!.filter((item) => item.id !== id);
       setUploadedFiles(uploadedFilesTemp);

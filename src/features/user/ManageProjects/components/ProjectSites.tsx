@@ -22,6 +22,7 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
@@ -57,8 +58,8 @@ export default function ProjectSites({
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [openModal, setOpenModal] = React.useState(false);
-  const { redirect, setErrors } =
-    React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { impersonatedEmail } = React.useContext(UserPropsContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -166,7 +167,8 @@ export default function ProjectSites({
         const res = await postAuthenticatedRequest(
           `/app/projects/${projectGUID}/sites`,
           submitData,
-          token
+          token,
+          impersonatedEmail
         );
         const temp = siteList;
         const _submitData = {
@@ -201,7 +203,8 @@ export default function ProjectSites({
       setIsUploadingData(true);
       await deleteAuthenticatedRequest(
         `/app/projects/${projectGUID}/sites/${id}`,
-        token
+        token,
+        impersonatedEmail
       );
       const siteListTemp = siteList.filter((item) => item.id !== id);
       setSiteList(siteListTemp);
@@ -255,7 +258,8 @@ export default function ProjectSites({
         // Fetch sites of the project
         const result = await getAuthenticatedRequest(
           `/app/profile/projects/${projectGUID}?_scope=sites`,
-          token
+          token,
+          impersonatedEmail
         );
         const geoLocation = {
           geoLatitude: result.geoLatitude,
@@ -605,6 +609,7 @@ function EditSite({
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { impersonatedEmail } = React.useContext(UserPropsContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -653,7 +658,8 @@ function EditSite({
         const res = await putAuthenticatedRequest(
           `/app/projects/${projectGUID}/sites/${siteGUID}`,
           submitData,
-          token
+          token,
+          impersonatedEmail
         );
         const temp = siteList;
         let siteIndex;

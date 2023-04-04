@@ -17,7 +17,7 @@ export const ReactivateModal = ({
 }: any) => {
   const [disabled, setDisabled] = React.useState(false);
   const { theme } = React.useContext(ThemeContext);
-  const { token } = React.useContext(UserPropsContext);
+  const { token, impersonatedEmail } = React.useContext(UserPropsContext);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const { t, i18n, ready } = useTranslation(['me']);
   const bodyToSend = {};
@@ -33,7 +33,8 @@ export const ReactivateModal = ({
       await putAuthenticatedRequest(
         `/app/subscriptions/${record.id}?scope=reactivate`,
         bodyToSend,
-        token
+        token,
+        impersonatedEmail
       );
       handleReactivateModalClose();
       fetchRecurrentDonations();

@@ -5,7 +5,7 @@ import {
   useContext,
   useCallback,
 } from 'react';
-import { useTranslation } from 'next-i18next';
+import { Trans, useTranslation } from 'next-i18next';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
@@ -36,7 +36,8 @@ export default function PlanetCash({
 }: PlanetCashProps): ReactElement | null {
   const { t, ready, i18n } = useTranslation('planetcash');
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
-  const { token, contextLoaded } = useContext(UserPropsContext);
+  const { token, contextLoaded, impersonatedEmail } =
+    useContext(UserPropsContext);
   const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isDataLoading, setIsDataLoading] = useState(false);
@@ -84,7 +85,8 @@ export default function PlanetCash({
         setProgress && setProgress(70);
         const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
           `/app/planetCash`,
-          token
+          token,
+          impersonatedEmail
         );
         redirectIfNeeded(accounts);
         const sortedAccounts = sortAccountsByActive(accounts);
@@ -148,26 +150,41 @@ export default function PlanetCash({
     <DashboardView
       title={t('title')}
       subtitle={
-        <p>
-          {t('description')}{' '}
-          <a
-            className="planet-links"
-            href="https://www.plant-for-the-planet.org/planetcash/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            {t('learnMoreText')}
-          </a>
-          <br />
-          <a
-            className="planet-links"
-            href="https://www.plant-for-the-planet.org/terms-and-conditions/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            {t('termsText')}
-          </a>
-        </p>
+        <div>
+          <p>
+            <Trans i18nKey="planetcash:partnerSignupInfo">
+              Use of this feature by Companies is subject to partnership with
+              Plant-for-the-Planet. Please contact{' '}
+              <a
+                className="planet-links"
+                href="mailto:partner@plant-for-the-planet.org"
+              >
+                partner@plant-for-the-planet.org
+              </a>{' '}
+              for details.
+            </Trans>
+          </p>
+          <p>
+            {t('description')}{' '}
+            <a
+              className="planet-links"
+              href={`https://pp.eco/${i18n.language}/planetcash/`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {t('learnMoreText')}
+            </a>
+            <br />
+            <a
+              className="planet-links"
+              href={`https://pp.eco/legal/${i18n.language}/terms`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {t('termsText')}
+            </a>
+          </p>
+        </div>
       }
     >
       <TabbedView step={step} tabItems={tabConfig}>

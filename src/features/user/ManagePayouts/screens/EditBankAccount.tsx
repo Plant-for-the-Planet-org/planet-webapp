@@ -22,7 +22,7 @@ const EditBankAccount = (): ReactElement | null => {
     useState<Payouts.BankAccount | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountUpdated, setIsAccountUpdated] = useState(false);
-  const { token } = useContext(UserPropsContext);
+  const { token, impersonatedEmail } = useContext(UserPropsContext);
   const { setErrors, errors } = useContext(ErrorHandlingContext);
   const { t, ready } = useTranslation('managePayouts');
 
@@ -43,7 +43,8 @@ const EditBankAccount = (): ReactElement | null => {
       const res = await putAuthenticatedRequest<Payouts.BankAccount>(
         `/app/accounts/${accountToEdit?.id}`,
         accountData,
-        token
+        token,
+        impersonatedEmail
       );
       // update accounts in context
       if (accounts) {

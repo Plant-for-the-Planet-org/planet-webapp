@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import styles from '../../styles/MyTrees.module.scss';
 import dynamic from 'next/dynamic';
 import {
@@ -12,6 +12,7 @@ import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
+import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
@@ -24,9 +25,11 @@ interface Props {
 }
 
 export default function MyTrees({ profile, authenticatedType, token }: Props) {
-  const { t, i18n, ready } = useTranslation(['country', 'me']);
+  const { t, ready } = useTranslation(['country', 'me']);
   const [contributions, setContributions] = React.useState();
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
+  const { impersonatedEmail } = React.useContext(UserPropsContext);
+
 
   React.useEffect(() => {
     async function loadFunction() {
@@ -34,7 +37,8 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
         try {
           const result = await getAuthenticatedRequest(
             `/app/profile/contributions`,
-            token
+            token,
+            impersonatedEmail
           );
           setContributions(result);
         } catch (err) {
@@ -84,6 +88,16 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
                 ? t('me:myForest')
                 : t('me:nameForest', { name: profile.displayName })}
             </div>
+            <div className={styles.MyTreesLegend}>
+              <div className={styles.donatedTrees}>
+                <TreesIcon color="currentColor" />
+                <p>{t('me:donatedTrees')}</p>
+              </div>
+              <div className={styles.registeredTrees}>
+                <TreesIcon color="currentColor" />
+                <p>{t('me:registeredTrees')}</p>
+              </div>
+            </div>
             <div className={styles.myTreesContainer}>
               <div className={styles.treesList}>
                 {contributions.map((contribution: any, index: any) => {
@@ -101,7 +115,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
 
 function TreeList({ contribution }: any) {
   const date = formatDate(contribution.properties.plantDate);
-  const { t, i18n, ready } = useTranslation(['country', 'me']);
+  const { t, i18n } = useTranslation(['country', 'me']);
 
   return (
     <div key={contribution.properties.id} className={styles.tree}>

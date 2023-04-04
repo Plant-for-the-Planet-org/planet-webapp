@@ -20,7 +20,6 @@ interface Props {
 export default function SampleTrees({
   handleNext,
   plantLocation,
-  setPlantLocation,
   userLang,
 }: Props): ReactElement {
   const { t } = useTranslation(['treemapper', 'common']);
@@ -58,18 +57,10 @@ export default function SampleTrees({
   const defaultValues = {
     sampleTrees: [],
   };
-  const {
-    register,
-    handleSubmit,
-    errors,
-    control,
-    reset,
-    setValue,
-    watch,
-    getValues,
-  } = useForm({ mode: 'onBlur', defaultValues: defaultValues });
+  const { register, handleSubmit, errors, control, setValue, getValues } =
+    useForm({ mode: 'onBlur', defaultValues: defaultValues });
 
-  const { fields, append, remove, prepend } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: 'sampleTrees',
   });
@@ -78,7 +69,7 @@ export default function SampleTrees({
     append(sampleTrees);
   };
 
-  const { token } = React.useContext(UserPropsContext);
+  const { token, impersonatedEmail } = React.useContext(UserPropsContext);
 
   const uploadSampleTree = async (sampleTree: any, index: number) => {
     setUploadIndex(index);
@@ -90,7 +81,8 @@ export default function SampleTrees({
       const res = await postAuthenticatedRequest(
         `/treemapper/plantLocations`,
         sampleTree,
-        token
+        token,
+        impersonatedEmail
       );
       const newSampleTrees = [...sampleTrees];
       newSampleTrees[index] = res;
@@ -137,7 +129,7 @@ export default function SampleTrees({
     }
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     accept: ['.csv'],
     multiple: false,
     onDrop: onDrop,

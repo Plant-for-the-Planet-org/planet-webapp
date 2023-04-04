@@ -16,10 +16,14 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
+import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+
 
 export default function ManageProjects({ GUID, token, project }: any) {
   const { t, ready } = useTranslation(['manageProjects']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { impersonatedEmail } = React.useContext(UserPropsContext);
+
   const router = useRouter();
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -126,7 +130,8 @@ export default function ManageProjects({ GUID, token, project }: any) {
       const res = await putAuthenticatedRequest(
         `/app/projects/${projectGUID}`,
         submitData,
-        token
+        token,
+        impersonatedEmail
       );
       setProjectDetails(res);
       setErrorMessage('');
@@ -147,7 +152,8 @@ export default function ManageProjects({ GUID, token, project }: any) {
       const res = await putAuthenticatedRequest(
         `/app/projects/${projectGUID}`,
         submitData,
-        token
+        token,
+        impersonatedEmail
       );
       setProjectDetails(res);
       setErrorMessage('');
@@ -165,7 +171,8 @@ export default function ManageProjects({ GUID, token, project }: any) {
       try {
         const res = await getAuthenticatedRequest(
           `/app/profile/projects/${projectGUID}`,
-          token
+          token,
+          impersonatedEmail
         );
         setProjectDetails(res);
       } catch (err) {

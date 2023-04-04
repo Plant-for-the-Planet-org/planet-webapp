@@ -19,7 +19,7 @@ interface Props {}
 
 export default function MySpecies({}: Props): ReactElement {
   const { t } = useTranslation(['treemapper', 'me', 'common']);
-  const { token, contextLoaded } = React.useContext(UserPropsContext);
+  const { token, contextLoaded, impersonatedEmail } = React.useContext(UserPropsContext);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const [species, setSpecies] = React.useState<any[]>([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
@@ -37,7 +37,8 @@ export default function MySpecies({}: Props): ReactElement {
     try {
       const result = await getAuthenticatedRequest(
         '/treemapper/species',
-        token
+        token,
+        impersonatedEmail
       );
       setSpecies(result);
     } catch (err) {
@@ -47,7 +48,7 @@ export default function MySpecies({}: Props): ReactElement {
 
   const deleteSpecies = async (id: number) => {
     try {
-      await deleteAuthenticatedRequest(`/treemapper/species/${id}`, token);
+      await deleteAuthenticatedRequest(`/treemapper/species/${id}`, token, impersonatedEmail);
       fetchMySpecies();
     } catch (err) {
       setErrors(handleError(err as APIError));
@@ -64,11 +65,10 @@ export default function MySpecies({}: Props): ReactElement {
       scientificSpecies: species.scientificSpecies.id,
     };
     try {
-      await postAuthenticatedRequest(`/treemapper/species`, data, token);
+      await postAuthenticatedRequest(`/treemapper/species`, data, token, impersonatedEmail);
     } catch (err) {
       setErrors(handleError(err as APIError));
     }
-
     fetchMySpecies();
     setIsUploadingData(false);
   };

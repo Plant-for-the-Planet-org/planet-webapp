@@ -24,7 +24,7 @@ const Transactions = ({
   setProgress,
 }: TransactionsProps): ReactElement | null => {
   const { t } = useTranslation('me');
-  const { token, contextLoaded } = useContext(UserPropsContext);
+  const { token, contextLoaded, impersonatedEmail } = useContext(UserPropsContext);
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { accounts } = usePlanetCash();
   const [transactionHistory, setTransactionHistory] =
@@ -60,7 +60,7 @@ const Transactions = ({
             : `/app/paymentHistory?filter=planet-cash&limit=15`;
 
         const newTransactionHistory =
-          await getAuthenticatedRequest<Payments.PaymentHistory>(apiUrl, token);
+          await getAuthenticatedRequest<Payments.PaymentHistory>(apiUrl, token, impersonatedEmail);
 
         if (transactionHistory) {
           setTransactionHistory({

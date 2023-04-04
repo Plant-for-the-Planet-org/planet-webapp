@@ -21,6 +21,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { SxProps } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const yearDialogSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
@@ -75,6 +76,7 @@ export default function ProjectSpending({
 
   const [showForm, setShowForm] = React.useState(true);
   const [uploadedFiles, setUploadedFiles] = React.useState([]);
+  const { impersonatedEmail } = React.useContext(UserPropsContext);
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {
       handleReset(ready ? t('manageProjects:resetMessage') : '');
@@ -96,7 +98,7 @@ export default function ProjectSpending({
     [uploadedFiles]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     accept: '.pdf',
     multiple: false,
     maxSize: 10485760,
@@ -130,7 +132,8 @@ export default function ProjectSpending({
       const res = await postAuthenticatedRequest(
         `/app/projects/${projectGUID}/expenses`,
         submitData,
-        token
+        token,
+        impersonatedEmail
       );
       const newUploadedFiles = uploadedFiles;
       newUploadedFiles.push(res);
@@ -152,7 +155,8 @@ export default function ProjectSpending({
       setIsUploadingData(true);
       await deleteAuthenticatedRequest(
         `/app/projects/${projectGUID}/expenses/${id}`,
-        token
+        token,
+        impersonatedEmail
       );
       const uploadedFilesTemp = uploadedFiles.filter((item) => item.id !== id);
       setUploadedFiles(uploadedFilesTemp);
@@ -169,7 +173,8 @@ export default function ProjectSpending({
       if (projectGUID && token) {
         const result = await getAuthenticatedRequest(
           `/app/profile/projects/${projectGUID}?_scope=expenses`,
-          token
+          token,
+          impersonatedEmail
         );
         if (result?.expenses && result.expenses.length > 0) {
           setShowForm(false);

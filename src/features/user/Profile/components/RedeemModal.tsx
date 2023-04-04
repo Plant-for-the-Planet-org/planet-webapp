@@ -32,7 +32,7 @@ export default function RedeemModal({
     'donate',
     'redeem',
   ]);
-  const { user, contextLoaded, token, setUser } =
+  const { user, contextLoaded, token, setUser, impersonatedEmail } =
     React.useContext(UserPropsContext);
   const { setErrors, errors: apiErrors } =
     React.useContext(ErrorHandlingContext);
@@ -40,7 +40,7 @@ export default function RedeemModal({
   const [validCodeData, setValidCodeData] = React.useState<{} | undefined>();
   const [isCodeRedeemed, setIsCodeRedeemed] = React.useState(false);
   const [inputCode, setInputCode] = React.useState('');
-
+  const [disable, setDisable] = React.useState<boolean>(false);
   const handleAnotherCode = () => {
     setInputCode('');
     setIsCodeRedeemed(false);
@@ -51,6 +51,7 @@ export default function RedeemModal({
   });
 
   async function redeemCode(data: FormData) {
+    setDisable(true);
     setIsUploadingData(true);
     const submitData = {
       code: data.code,
@@ -60,7 +61,8 @@ export default function RedeemModal({
         const res = await postAuthenticatedRequest(
           `/app/redeem`,
           submitData,
-          token
+          token,
+          impersonatedEmail
         );
         setIsCodeRedeemed(true);
         setValidCodeData(res);
@@ -201,6 +203,7 @@ export default function RedeemModal({
                   id={'redeemCodeModal'}
                   onClick={handleSubmit(redeemCode)}
                   className={`primaryButton ${styles.redeemCode}`}
+                  disabled={disable}
                 >
                   {isUploadingData ? (
                     <div className={styles.spinner}></div>

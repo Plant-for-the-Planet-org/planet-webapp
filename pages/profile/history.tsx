@@ -14,7 +14,9 @@ interface Props {}
 
 function AccountHistory({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
-  const { token, contextLoaded } = React.useContext(UserPropsContext);
+  const { token, contextLoaded, impersonatedEmail } =
+    React.useContext(UserPropsContext);
+
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const [filter, setFilter] = React.useState<string | null>(null);
@@ -39,7 +41,8 @@ function AccountHistory({}: Props): ReactElement {
                   paymentHistory?._links?.next.split('?').pop()
                 : paymentHistory?._links?.next
             }`,
-            token
+            token,
+            impersonatedEmail
           );
         setpaymentHistory({
           ...paymentHistory,
@@ -59,7 +62,8 @@ function AccountHistory({}: Props): ReactElement {
           const paymentHistory =
             await getAuthenticatedRequest<Payments.PaymentHistory>(
               '/app/paymentHistory?limit=15',
-              token
+              token,
+              impersonatedEmail
             );
           setpaymentHistory(paymentHistory);
           setProgress(100);
@@ -78,7 +82,8 @@ function AccountHistory({}: Props): ReactElement {
                 ? accountingFilters[filter] + '&limit=15'
                 : '/app/paymentHistory?limit=15'
             }`,
-            token
+            token,
+            impersonatedEmail
           );
           setpaymentHistory(paymentHistory);
           setProgress(100);

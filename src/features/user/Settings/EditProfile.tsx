@@ -31,7 +31,7 @@ const Alert = styled(MuiAlert)(({ theme }) => {
 export default function EditProfile({}: Props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const { user, setUser, token, contextLoaded } =
+  const { user, setUser, token, contextLoaded, impersonatedEmail } =
     React.useContext(UserPropsContext);
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
@@ -173,8 +173,9 @@ export default function EditProfile({}: Props) {
               const res = await putAuthenticatedRequest(
                 `/app/profile`,
                 bodyToSend,
-                token
-              );
+                token,
+                impersonatedEmail
+              )
               const newUserInfo = { ...user, image: res.image };
               setUpdatingPic(false);
               setUser(newUserInfo);
@@ -213,7 +214,8 @@ export default function EditProfile({}: Props) {
         const res = await putAuthenticatedRequest(
           `/app/profile`,
           bodyToSend,
-          token
+          token,
+          impersonatedEmail
         );
         setSeverity('success');
         setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');

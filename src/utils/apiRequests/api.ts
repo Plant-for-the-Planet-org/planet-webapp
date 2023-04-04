@@ -69,21 +69,39 @@ const handleApiError = (
 };
 
 //  API call to private /profile endpoint
-export async function getAccountInfo(token: any): Promise<any> {
-  const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
-    method: 'GET',
-    headers: {
-      'tenant-key': `${TENANT_ID}`,
-      'X-SESSION-ID': await getsessionId(),
-      Authorization: `Bearer ${token}`,
-      'x-locale': `${
-        localStorage.getItem('language')
-          ? localStorage.getItem('language')
-          : 'en'
-      }`,
-    },
+export function getAccountInfo<T>(token: any, impersonatedEmail?: string) {
+  return new Promise<T>((resolve, reject) => {
+    (async () => {
+      try {
+        const res = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
+          method: 'GET',
+          headers: {
+            'tenant-key': `${TENANT_ID}`,
+            'X-SESSION-ID': await getsessionId(),
+            Authorization: `Bearer ${token}`,
+            'x-locale': `${
+              localStorage.getItem('language')
+                ? localStorage.getItem('language')
+                : 'en'
+            }`,
+            'x-switch-user': impersonatedEmail || '',
+          },
+        });
+
+        if (!res.ok) {
+          throw new APIError(res.status, await res.json());
+        }
+
+        if (res.status === 204) {
+          resolve(true as T);
+        } else {
+          resolve(await res.json());
+        }
+      } catch (err) {
+        reject(err);
+      }
+    })();
   });
-  return response;
 }
 
 function isAbsoluteUrl(url: any) {
@@ -138,6 +156,7 @@ export function getRequest<T>(
 export function getAuthenticatedRequest<T>(
   url: any,
   token: any,
+  impersonatedEmail?: string,
   header: any = null,
   queryParams?: { [key: string]: string },
   version?: string
@@ -160,6 +179,7 @@ export function getAuthenticatedRequest<T>(
               Authorization: `Bearer ${token}`,
               'x-locale': `${lang}`,
               'x-accept-versions': version ? version : '1.0.3',
+              'x-switch-user': impersonatedEmail || '',
               ...(header ? header : {}),
             },
           }
@@ -183,6 +203,7 @@ export function postAuthenticatedRequest<T>(
   url: any,
   data: any,
   token: any,
+  impersonatedEmail?: string,
   headers?: any
 ) {
   return new Promise<T>((resolve, reject) => {
@@ -202,6 +223,7 @@ export function postAuthenticatedRequest<T>(
                 : 'en'
             }`,
             ...(headers ? headers : {}),
+            'x-switch-user': impersonatedEmail || '',
           },
         });
 
@@ -256,7 +278,11 @@ export function postRequest<T>(url: any, data: any) {
   });
 }
 
-export function deleteAuthenticatedRequest<T>(url: any, token: any) {
+export function deleteAuthenticatedRequest<T>(
+  url: any,
+  token: any,
+  impersonatedEmail?: string
+) {
   return new Promise<T>((resolve, reject) => {
     (async () => {
       try {
@@ -272,6 +298,7 @@ export function deleteAuthenticatedRequest<T>(url: any, token: any) {
                 ? localStorage.getItem('language')
                 : 'en'
             }`,
+            'x-switch-user': impersonatedEmail || '',
           },
         });
 
@@ -291,7 +318,12 @@ export function deleteAuthenticatedRequest<T>(url: any, token: any) {
   });
 }
 
-export function putAuthenticatedRequest<T>(url: any, data: any, token: any) {
+export function putAuthenticatedRequest<T>(
+  url: any,
+  data: any,
+  token: any,
+  impersonatedEmail?: string
+) {
   return new Promise<T>((resolve, reject) => {
     (async () => {
       try {
@@ -308,6 +340,7 @@ export function putAuthenticatedRequest<T>(url: any, data: any, token: any) {
                 ? localStorage.getItem('language')
                 : 'en'
             }`,
+            'x-switch-user': impersonatedEmail || '',
           },
         });
 

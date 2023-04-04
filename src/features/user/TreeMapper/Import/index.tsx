@@ -44,7 +44,7 @@ const MapComponent = dynamic(() => import('./components/MapComponent'), {
 export default function ImportData({}: Props): ReactElement {
   const router = useRouter();
   const { t, ready } = useTranslation(['treemapper']);
-  const { token } = React.useContext(UserPropsContext);
+  const { token, impersonatedEmail } = React.useContext(UserPropsContext);
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
   function getSteps() {
@@ -66,7 +66,8 @@ export default function ImportData({}: Props): ReactElement {
     try {
       const result = await getAuthenticatedRequest(
         `/treemapper/plantLocations/${id}?_scope=extended`,
-        token
+        token,
+        impersonatedEmail
       );
       setPlantLocation(result);
     } catch (err) {

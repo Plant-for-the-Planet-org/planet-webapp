@@ -16,7 +16,6 @@ import {
   FormControlLabel,
   styled,
 } from '@mui/material';
-
 import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -44,7 +43,7 @@ export const PauseModal = ({
   fetchRecurrentDonations,
 }: any) => {
   const { theme } = React.useContext(ThemeContext);
-  const { token } = React.useContext(UserPropsContext);
+  const { token, impersonatedEmail } = React.useContext(UserPropsContext);
   const [option, setoption] = React.useState();
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState(
@@ -82,7 +81,8 @@ export const PauseModal = ({
       await putAuthenticatedRequest(
         `/app/subscriptions/${record.id}?scope=pause`,
         bodyToSend,
-        token
+        token,
+        impersonatedEmail
       );
       handlePauseModalClose();
       fetchRecurrentDonations();

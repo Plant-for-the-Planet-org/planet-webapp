@@ -1,6 +1,6 @@
 {
-  "tree": "Tree",
-  "tree_plural": "Trees",
+  "tree_one": "Tree",
+  "tree_other": "Trees",
   "by": "By {{tpoName}}",
   "to_project_by_tpo": "To {{projectName}} by {{tpoName}}",
   "for": "for",
@@ -95,6 +95,7 @@
   "modalSubtitle": "Please cancel your subscriptions first",
   "deleteCondition": "Before proceeding, make sure you've cancelled all subscriptions.",
   "showSubscriptions": "Show my Subscriptions",
+  "project": "Project",
   "notFound": "Resource not found",
   "unauthorized": "Not Authorized",
   "validationError": "Validation Error",

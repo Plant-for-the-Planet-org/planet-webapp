@@ -17,7 +17,7 @@ export default function AddTargetModal({
 }: any) {
   // External imports
   const { t, ready } = useTranslation(['me']);
-  const { user, token, contextLoaded, setUser } =
+  const { user, token, contextLoaded, setUser, impersonatedEmail } =
     React.useContext(UserPropsContext);
   const { register, errors } = useForm({ mode: 'onBlur' });
   const { theme } = React.useContext(ThemeContext);
@@ -39,7 +39,8 @@ export default function AddTargetModal({
         const res = await putAuthenticatedRequest(
           `/app/profile`,
           bodyToSend,
-          token
+          token,
+          impersonatedEmail
         );
         handleAddTargetModalClose();
         const newUserInfo = {

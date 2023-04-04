@@ -15,6 +15,7 @@ import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -79,6 +80,7 @@ export default function DetailedAnalysis({
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { impersonatedEmail } = React.useContext(UserPropsContext);
   const [siteOwners, setSiteOwners] = React.useState([
     {
       id: 1,
@@ -293,7 +295,8 @@ export default function DetailedAnalysis({
       const res = await putAuthenticatedRequest(
         `/app/projects/${projectGUID}`,
         submitData,
-        token
+        token,
+        impersonatedEmail
       );
       setProjectDetails(res);
       setIsUploadingData(false);

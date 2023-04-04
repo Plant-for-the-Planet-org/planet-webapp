@@ -17,7 +17,6 @@ import {
 import tj from '@mapbox/togeojson';
 import gjv from 'geojson-validation';
 import flatten from 'geojson-flatten';
-
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -63,7 +62,8 @@ export default function PlantingLocation({
   activeMethod,
   setActiveMethod,
 }: Props): ReactElement {
-  const { user, token, contextLoaded } = React.useContext(UserPropsContext);
+  const { user, token, contextLoaded, impersonatedEmail } =
+    React.useContext(UserPropsContext);
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
@@ -84,13 +84,12 @@ export default function PlantingLocation({
       },
     ],
   };
-  const { register, handleSubmit, errors, control, reset, setValue, watch } =
-    useForm({
-      mode: 'onBlur',
-      defaultValues: plantLocation ? plantLocation : defaultValues,
-    });
+  const { register, handleSubmit, errors, control, setValue } = useForm({
+    mode: 'onBlur',
+    defaultValues: plantLocation ? plantLocation : defaultValues,
+  });
 
-  const { fields, append, remove, prepend } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: 'plantedSpecies',
   });
@@ -99,7 +98,8 @@ export default function PlantingLocation({
     try {
       const projects = await getAuthenticatedRequest(
         '/app/profile/projects',
-        token
+        token,
+        impersonatedEmail
       );
       setProjects(projects);
     } catch (err) {
@@ -111,7 +111,8 @@ export default function PlantingLocation({
     try {
       const species = await getAuthenticatedRequest(
         '/treemapper/species',
-        token
+        token,
+        impersonatedEmail
       );
       setMySpecies(species);
     } catch (err) {
@@ -218,7 +219,8 @@ export default function PlantingLocation({
         const res = await postAuthenticatedRequest(
           `/treemapper/plantLocations`,
           submitData,
-          token
+          token,
+          impersonatedEmail
         );
         setPlantLocation(res);
         setIsUploadingData(false);

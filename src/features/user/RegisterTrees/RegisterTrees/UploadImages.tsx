@@ -11,6 +11,7 @@ import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
 
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 interface Props {
   contribution: any;
   contributionGUID: any;
@@ -37,6 +38,7 @@ export default function UploadImages({
     });
   }, []);
   const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { impersonatedEmail } = React.useContext(UserPropsContext);
 
   const uploadPhotos = async (image: any) => {
     setIsUploadingData(true);
@@ -49,7 +51,8 @@ export default function UploadImages({
       const res = await postAuthenticatedRequest(
         `/app/contributions/${contributionGUID}/images`,
         submitData,
-        token
+        token,
+        impersonatedEmail
       );
       const newUploadedImages = uploadedImages;
       newUploadedImages.push(res);
@@ -75,7 +78,8 @@ export default function UploadImages({
     try {
       await deleteAuthenticatedRequest(
         `/app/contributions/${contributionGUID}/images/${id}`,
-        token
+        token,
+        impersonatedEmail
       );
       const uploadedImagesTemp = uploadedImages;
         const index = uploadedImagesTemp.findIndex((item) => {

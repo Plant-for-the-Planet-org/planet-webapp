@@ -21,7 +21,7 @@ function ClaimDonation(): ReactElement {
 
   const router = useRouter();
 
-  const { user, contextLoaded, loginWithRedirect, token } =
+  const { user, contextLoaded, loginWithRedirect, token, impersonatedEmail } =
     React.useContext(UserPropsContext);
   const { errors, setErrors } = React.useContext(ErrorHandlingContext);
 
@@ -63,7 +63,8 @@ function ClaimDonation(): ReactElement {
         const res = await postAuthenticatedRequest(
           `/app/redeem`,
           submitData,
-          token
+          token,
+          impersonatedEmail
         );
         setRedeemedCodeData(res);
       } catch (err) {

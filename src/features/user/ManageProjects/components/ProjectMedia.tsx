@@ -16,6 +16,7 @@ import Star from '../../../../../public/assets/images/icons/manageProjects/Star'
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 interface Props {
   handleNext: Function;
@@ -38,6 +39,8 @@ export default function ProjectMedia({
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { impersonatedEmail } = React.useContext(UserPropsContext);
+
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
   const [uploadedImages, setUploadedImages] = React.useState<Array<any>>([]);
@@ -51,7 +54,8 @@ export default function ProjectMedia({
       if (projectGUID && token) {
         const result = await getAuthenticatedRequest(
           `/app/profile/projects/${projectGUID}?_scope=images`,
-          token
+          token,
+          impersonatedEmail
         );
         setUploadedImages(result.images);
       }
@@ -78,7 +82,8 @@ export default function ProjectMedia({
       const res = await postAuthenticatedRequest(
         `/app/projects/${projectGUID}/images`,
         submitData,
-        token
+        token,
+        impersonatedEmail
       );
       let newUploadedImages = [...uploadedImages];
 
@@ -149,7 +154,8 @@ export default function ProjectMedia({
     try {
       await deleteAuthenticatedRequest(
         `/app/projects/${projectGUID}/images/${id}`,
-        token
+        token,
+        impersonatedEmail
       );
       const uploadedFilesTemp = uploadedImages.filter((item) => item.id !== id);
       setUploadedImages(uploadedFilesTemp);
@@ -170,7 +176,8 @@ export default function ProjectMedia({
       const res = await putAuthenticatedRequest(
         `/app/projects/${projectGUID}`,
         submitData,
-        token
+        token,
+        impersonatedEmail
       );
       setProjectDetails(res);
       setIsUploadingData(false);
@@ -198,7 +205,8 @@ export default function ProjectMedia({
       await putAuthenticatedRequest(
         `/app/projects/${projectGUID}/images/${id}`,
         submitData,
-        token
+        token,
+        impersonatedEmail
       );
       const tempUploadedData = uploadedImages;
       tempUploadedData.forEach((image) => {
@@ -224,7 +232,8 @@ export default function ProjectMedia({
       const res = await putAuthenticatedRequest(
         `/app/projects/${projectGUID}/images/${id}`,
         submitData,
-        token
+        token,
+        impersonatedEmail
       );
       const tempUploadedData = uploadedImages;
       tempUploadedData[index].description = res.description;

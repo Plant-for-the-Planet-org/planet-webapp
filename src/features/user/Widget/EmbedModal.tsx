@@ -35,7 +35,7 @@ export default function EmbedModal({
   const router = useRouter();
   // This effect is used to get and update UserInfo if the isAuthenticated changes
 
-  const { user, setUser, contextLoaded, token } =
+  const { user, setUser, contextLoaded, token, impersonatedEmail } =
     React.useContext(UserPropsContext);
 
   React.useEffect(() => {
@@ -67,10 +67,12 @@ export default function EmbedModal({
         const res = await putAuthenticatedRequest(
           `/app/profile`,
           bodyToSend,
-          token
+          token,
+          impersonatedEmail
         );
         setSeverity('success');
         setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');
+        handleSnackbarOpen();
         setEmbedModalOpen(false);
         setIsUploadingData(false);
         setUser(res);
