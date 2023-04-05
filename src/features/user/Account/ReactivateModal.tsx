@@ -31,7 +31,6 @@ export const ReactivateModal = ({
       `/app/subscriptions/${record.id}?scope=reactivate`,
       bodyToSend,
       token,
-      impersonatedData,
       handleError
     )
       .then((res) => {

@@ -40,7 +40,6 @@ function ManageSingleProject({}: Props): ReactElement {
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}`,
         token,
-        impersonatedData,
         {},
         handleError,
         '/profile'

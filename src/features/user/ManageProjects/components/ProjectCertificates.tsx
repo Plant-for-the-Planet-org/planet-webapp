@@ -20,7 +20,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { SxProps } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -54,7 +53,6 @@ function ProjectCertificates({
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { impersonatedData } = React.useContext(UserPropsContext);
 
   const {
     register,
@@ -98,7 +96,6 @@ function ProjectCertificates({
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}?_scope=certificates`,
         token,
-        impersonatedData,
         {},
         handleError,
         '/profile'
@@ -146,7 +143,6 @@ function ProjectCertificates({
       `/app/projects/${projectGUID}/certificates`,
       submitData,
       token,
-      impersonatedData,
       handleError
     )
       .then((res) => {
@@ -185,7 +181,6 @@ function ProjectCertificates({
     deleteAuthenticatedRequest(
       `/app/projects/${projectGUID}/certificates/${id}`,
       token,
-      impersonatedData,
       handleError
     ).then((res) => {
       if (res !== 404) {

@@ -20,7 +20,6 @@ const Analytics = () => {
     const res = await getAuthenticatedRequest<ProjectMapInfo[]>(
       '/app/profile/projects?scope=map',
       token,
-      impersonatedData,
       {},
       handleError
     );

@@ -77,7 +77,6 @@ export default function ManagePayouts({
         const res = await getAuthenticatedRequest<Payouts.BankAccount[]>(
           `/app/accounts`,
           token,
-          impersonatedData,
           {},
           handleError
         );

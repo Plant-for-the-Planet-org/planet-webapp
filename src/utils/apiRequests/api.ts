@@ -73,7 +73,9 @@ export async function getAccountInfo(
   token: any,
   impersonatedData?:ImpersonationData 
 ): Promise<any> {
-  const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
+    const targetData = localStorage.getItem("impersonationData") ;
+    const impersonatedDataFromLocal = JSON.parse(targetData);
+    const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
     method: 'GET',
     headers: {
       'tenant-key': `${TENANT_ID}`,
@@ -84,8 +86,8 @@ export async function getAccountInfo(
           ? localStorage.getItem('language')
           : 'en'
       }`,
-      'X-SWITCH-USER': impersonatedData?.targetEmail || '',
-      'X-USER-SUPPORT-PIN':  impersonatedData?.supportPin || "",
+      'X-SWITCH-USER': impersonatedData?.targetEmail || impersonatedDataFromLocal?.targetEmail ||'',
+      'X-USER-SUPPORT-PIN':  impersonatedData?.supportPin ||  impersonatedDataFromLocal?.supportPin || '',
     },
   });
   return response;
@@ -136,7 +138,6 @@ export async function getRequest<T>(
 export async function getAuthenticatedRequest<T>(
   url: any,
   token: any,
-  impersonatedData?: ImpersonationData,
   header: any = null,
   errorHandler?: Function,
   redirect?: string,
@@ -145,6 +146,8 @@ export async function getAuthenticatedRequest<T>(
 ): Promise<T> {
   let result = {};
   const lang = localStorage.getItem('language') || 'en';
+  const targetData = localStorage.getItem("impersonationData") ;
+  const impersonatedData = JSON.parse(targetData);
   const query: any = { ...queryParams };
   const queryString = getQueryString(query);
   const queryStringSuffix = queryString ? '?' + queryString : '';
@@ -198,10 +201,11 @@ export async function postAuthenticatedRequest<T>(
   url: any,
   data: any,
   token: any,
-  impersonatedData?: ImpersonationData,
   errorHandler?: Function,
   headers?: any
 ): Promise<T | ApiCustomError | null> {
+  const targetData = localStorage.getItem("impersonationData") ;
+  const impersonatedData = JSON.parse(targetData);
   if (validateToken(token)) {
     try {
       const res = await fetch(process.env.API_ENDPOINT + url, {
@@ -253,9 +257,10 @@ export async function postAuthenticatedRequest<T>(
 export async function deleteAuthenticatedRequest(
   url: any,
   token: any,
-  impersonatedData?: ImpersonationData,
   errorHandler?: Function
 ): Promise<any> {
+  const targetData = localStorage.getItem("impersonationData") ;
+  const impersonatedData = JSON.parse(targetData);
   let result;
   if (validateToken(token)) {
     await fetch(process.env.API_ENDPOINT + url, {
@@ -317,9 +322,10 @@ export async function putAuthenticatedRequest<T>(
   url: any,
   data: any,
   token: any,
-  impersonatedData?: ImpersonationData,
   errorHandler?: Function
 ): Promise<T | ApiCustomError | undefined> {
+  const targetData = localStorage.getItem("impersonationData") ;
+  const impersonatedData = JSON.parse(targetData);
   if (validateToken(token)) {
     const res = await fetch(process.env.API_ENDPOINT + url, {
       method: 'PUT',

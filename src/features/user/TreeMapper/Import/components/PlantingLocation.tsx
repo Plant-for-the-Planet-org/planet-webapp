@@ -64,8 +64,7 @@ export default function PlantingLocation({
   activeMethod,
   setActiveMethod,
 }: Props): ReactElement {
-  const { user, token, contextLoaded, impersonatedData } =
-    React.useContext(UserPropsContext);
+  const { user, token, contextLoaded } = React.useContext(UserPropsContext);
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
@@ -106,13 +105,11 @@ export default function PlantingLocation({
   };
 
   const loadMySpecies = async () => {
-    await getAuthenticatedRequest(
-      '/treemapper/species',
-      token,
-      impersonatedData
-    ).then((species: any) => {
-      setMySpecies(species);
-    });
+    await getAuthenticatedRequest('/treemapper/species', token).then(
+      (species: any) => {
+        setMySpecies(species);
+      }
+    );
   };
 
   React.useEffect(() => {
@@ -213,8 +210,7 @@ export default function PlantingLocation({
       postAuthenticatedRequest(
         `/treemapper/plantLocations`,
         submitData,
-        token,
-        impersonatedData
+        token
       ).then((res: any) => {
         if (!res.code) {
           setErrorMessage('');

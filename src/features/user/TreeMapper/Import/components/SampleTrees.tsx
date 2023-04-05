@@ -69,7 +69,7 @@ export default function SampleTrees({
     append(sampleTrees);
   };
 
-  const { token, impersonatedData } = React.useContext(UserPropsContext);
+  const { token } = React.useContext(UserPropsContext);
 
   const uploadSampleTree = async (sampleTree: any, index: number) => {
     setUploadIndex(index);
@@ -79,8 +79,7 @@ export default function SampleTrees({
     const res = await postAuthenticatedRequest(
       `/treemapper/plantLocations`,
       sampleTree,
-      token,
-      impersonatedData
+      token
     );
     if (!res.code) {
       setErrorMessage('');

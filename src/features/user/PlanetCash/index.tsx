@@ -84,7 +84,6 @@ export default function PlanetCash({
       const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
         `/app/planetCash`,
         token,
-        impersonatedData,
         {},
         handleError
       );

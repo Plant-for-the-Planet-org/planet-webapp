@@ -37,7 +37,6 @@ function TreeMapper({}: Props): ReactElement {
       const response = await getAuthenticatedRequest(
         links.next,
         token,
-        impersonatedData,
         {},
         handleError,
         '/profile',
@@ -73,7 +72,6 @@ function TreeMapper({}: Props): ReactElement {
       const response = await getAuthenticatedRequest(
         '/treemapper/plantLocations?_scope=extended&limit=15',
         token,
-        impersonatedData,
         {},
         handleError,
         '/profile',

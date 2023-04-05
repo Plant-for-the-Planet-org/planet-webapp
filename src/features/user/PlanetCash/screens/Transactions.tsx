@@ -63,7 +63,6 @@ const Transactions = ({
         await getAuthenticatedRequest(
           apiUrl,
           token,
-          impersonatedData,
           {},
           handleError,
           '/profile/planetcash'

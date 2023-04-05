@@ -10,8 +10,7 @@ import router from 'next/router';
 import { useTranslation } from 'next-i18next';
 
 export default function DeleteProfile({}: any) {
-  const { user, token, logoutUser, impersonatedData } =
-    React.useContext(UserPropsContext);
+  const { user, token, logoutUser } = React.useContext(UserPropsContext);
   const { t } = useTranslation(['me', 'common', 'editProfile']);
   const handleChange = (e) => {
     e.preventDefault();
@@ -23,21 +22,18 @@ export default function DeleteProfile({}: any) {
 
   const handleDeleteAccount = () => {
     setIsUploadingData(true);
-    deleteAuthenticatedRequest(
-      '/app/profile',
-      token,
-      impersonatedData,
-      handleError
-    ).then((res) => {
-      if (res.error_code === 'active_subscriptions') {
-        setIsUploadingData(false);
-        setisModalOpen(true);
-      } else if (res == 404) {
-        console.log(res.errorText);
-      } else {
-        logoutUser(`${process.env.NEXTAUTH_URL}/`);
+    deleteAuthenticatedRequest('/app/profile', token, handleError).then(
+      (res) => {
+        if (res.error_code === 'active_subscriptions') {
+          setIsUploadingData(false);
+          setisModalOpen(true);
+        } else if (res == 404) {
+          console.log(res.errorText);
+        } else {
+          logoutUser(`${process.env.NEXTAUTH_URL}/`);
+        }
       }
-    });
+    );
   };
 
   const handleSubscriptions = () => {

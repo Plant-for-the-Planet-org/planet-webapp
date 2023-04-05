@@ -39,7 +39,6 @@ function AccountHistory({}: Props): ReactElement {
               : paymentHistory?._links?.next
           }`,
           token,
-          impersonatedData,
           {},
           handleError,
           '/profile'
@@ -58,7 +57,6 @@ function AccountHistory({}: Props): ReactElement {
           await getAuthenticatedRequest(
             '/app/paymentHistory?limit=15',
             token,
-            impersonatedData,
             {},
             handleError,
             '/profile'

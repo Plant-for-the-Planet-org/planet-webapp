@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement } from 'react';
 import styles from './../StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
@@ -74,7 +74,6 @@ export default function ProjectSpending({
 
   const [showForm, setShowForm] = React.useState(true);
   const [uploadedFiles, setUploadedFiles] = React.useState([]);
-  const { impersonatedData } = React.useContext(UserPropsContext);
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {
       handleReset(ready ? t('manageProjects:resetMessage') : '');
@@ -130,7 +129,6 @@ export default function ProjectSpending({
       `/app/projects/${projectGUID}/expenses`,
       submitData,
       token,
-      impersonatedData,
       handleError
     )
       .then((res) => {
@@ -165,7 +163,6 @@ export default function ProjectSpending({
     deleteAuthenticatedRequest(
       `/app/projects/${projectGUID}/expenses/${id}`,
       token,
-      impersonatedData,
       handleError
     ).then((res) => {
       if (res !== 404) {
@@ -184,7 +181,6 @@ export default function ProjectSpending({
       getAuthenticatedRequest(
         `/app/profile/projects/${projectGUID}?_scope=expenses`,
         token,
-        impersonatedData,
         {},
         handleError,
         '/profile'

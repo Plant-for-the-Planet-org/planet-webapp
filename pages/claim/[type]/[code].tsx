@@ -20,7 +20,7 @@ function ClaimDonation(): ReactElement {
 
   const router = useRouter();
 
-  const { user, contextLoaded, loginWithRedirect, token, impersonatedData } =
+  const { user, contextLoaded, loginWithRedirect, token } =
     React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const [errorMessage, setErrorMessage] = React.useState<ClaimCode1>('');
@@ -61,7 +61,6 @@ function ClaimDonation(): ReactElement {
         `/app/redeem`,
         submitData,
         token,
-        impersonatedData,
         handleError
       ).then((res) => {
         if (res.error_code === 'invalid_code') {

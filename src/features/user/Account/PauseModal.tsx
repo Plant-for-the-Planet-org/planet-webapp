@@ -42,7 +42,7 @@ export const PauseModal = ({
   fetchRecurrentDonations,
 }: any) => {
   const { theme } = React.useContext(ThemeContext);
-  const { token, impersonatedData } = React.useContext(UserPropsContext);
+  const { token } = React.useContext(UserPropsContext);
   const [option, setoption] = React.useState();
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState(
@@ -79,7 +79,6 @@ export const PauseModal = ({
       `/app/subscriptions/${record.id}?scope=pause`,
       bodyToSend,
       token,
-      impersonatedData,
       handleError
     )
       .then((res) => {

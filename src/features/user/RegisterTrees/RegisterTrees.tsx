@@ -203,7 +203,6 @@ export default function RegisterTrees({}: Props) {
     await getAuthenticatedRequest(
       '/app/profile/projects',
       token,
-      impersonatedData,
       {},
       handleError,
       '/profile'

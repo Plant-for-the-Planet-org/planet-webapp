@@ -22,8 +22,7 @@ const EyeButton = ({ isVisible, onClick }: any) => {
 };
 
 export default function ApiKey({}: any) {
-  const { token, contextLoaded, impersonatedData } =
-    React.useContext(UserPropsContext);
+  const { token, contextLoaded } = React.useContext(UserPropsContext);
   const { t } = useTranslation(['me']);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
@@ -39,7 +38,6 @@ export default function ApiKey({}: any) {
     const res = await getAuthenticatedRequest(
       '/app/profile/apiKey',
       token,
-      impersonatedData,
       {},
       handleError
     );
@@ -55,7 +53,6 @@ export default function ApiKey({}: any) {
       '/app/profile/apiKey',
       undefined,
       token,
-      impersonatedData,
       handleError
     );
     if (res) {

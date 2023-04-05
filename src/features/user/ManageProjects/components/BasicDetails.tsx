@@ -65,7 +65,6 @@ export default function BasicDetails({
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   // Map setup
   const { theme } = React.useContext(ThemeContext);
-  const { impersonatedData } = React.useContext(UserPropsContext);
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
   const mapRef = React.useRef(null);
@@ -414,7 +413,6 @@ export default function BasicDetails({
         `/app/projects/${projectGUID}`,
         submitData,
         token,
-        impersonatedData,
         handleError
       )
         .then((res) => {
@@ -443,13 +441,7 @@ export default function BasicDetails({
           setErrorMessage(err);
         });
     } else {
-      postAuthenticatedRequest(
-        `/app/projects`,
-        submitData,
-        token,
-        impersonatedData,
-        handleError
-      )
+      postAuthenticatedRequest(`/app/projects`, submitData, token, handleError)
         .then((res) => {
           if (!res.code) {
             setErrorMessage('');

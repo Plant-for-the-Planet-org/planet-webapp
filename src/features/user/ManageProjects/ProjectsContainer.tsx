@@ -96,7 +96,6 @@ export default function ProjectsContainer({}: any) {
       await getAuthenticatedRequest(
         '/app/profile/projects?version=1.2',
         token,
-        impersonatedData,
         {},
         handleError,
         '/profile'

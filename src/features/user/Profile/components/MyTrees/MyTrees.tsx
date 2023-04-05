@@ -35,7 +35,6 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
         getAuthenticatedRequest(
           `/app/profile/contributions`,
           token,
-          impersonatedData,
           {},
           handleError,
           '/profile'

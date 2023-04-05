@@ -43,7 +43,7 @@ export const CancelModal = ({
   fetchRecurrentDonations,
 }: any) => {
   const { theme } = React.useContext(ThemeContext);
-  const { token, impersonatedData } = React.useContext(UserPropsContext);
+  const { token } = React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const [option, setoption] = React.useState('cancelImmediately');
   const [showCalender, setshowCalender] = React.useState(false);
@@ -73,7 +73,6 @@ export const CancelModal = ({
       `/app/subscriptions/${record.id}?scope=cancel`,
       bodyToSend,
       token,
-      impersonatedData,
       handleError
     )
       .then((res) => {
