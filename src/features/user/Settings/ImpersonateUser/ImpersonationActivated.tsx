@@ -12,6 +12,7 @@ const ImpersonationActivated = () => {
     isImpersonationModeOn,
     setImpersonatedData,
     setIsImpersonationModeOn,
+    loadUser,
   } = useContext(UserPropsContext);
 
   const { push } = useRouter();
@@ -21,6 +22,7 @@ const ImpersonationActivated = () => {
     setIsImpersonationModeOn(false);
     localStorage.removeItem('impersonationData');
     push(`/profile/impersonate-user`);
+    loadUser();
   };
 
   const { t } = useTranslation('me');

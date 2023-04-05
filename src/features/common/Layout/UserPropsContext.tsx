@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { useRouter } from 'next/router';
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
 import { ImpersonationData } from '../../user/Settings/ImpersonateUser/ImpersonateUserForm';
 import { User } from '../types/user';
@@ -102,67 +102,18 @@ function UserPropsProvider({ children }: any): ReactElement {
     }
     setContextLoaded(true);
   }
-  /**
-   * Accepts email and enters impersonation mode
-   * @param impersonatedEmail
-   * @returns false if impersonation fails and user object if successful
-   */
-  const impersonateUser = async (
-    impersonationData: ImpersonationData
-  ): Promise<User | boolean> => {
-    try {
-      setContextLoaded(false);
-      const res = await getAccountInfo(token, impersonationData);
-      const resJson = await res.json();
-      if (res.status === 200) {
-        setIsImpersonationModeOn(true);
-        const impersonationData: ImpersonationData = {
-          targetEmail: resJson.email,
-          supportPin: resJson.supportPin,
-        };
-        setImpersonatedData(impersonationData);
-        localStorage.setItem(
-          'impersonationData',
-          JSON.stringify(impersonationData)
-        );
-        setUser(resJson);
-        setContextLoaded(true);
-        return resJson;
-      } else {
-        console.log(resJson);
-        return false;
-      }
-    } catch (err) {
-      console.log(err);
-      return false;
-    }
-  };
 
   React.useEffect(() => {
-    /**
-     * 1. Load user profile if impersonation mode is off and impersonatedEmail is not set in local storage
-     * 2. Impersonate user on app reload if impersonatedEmail is set in local storage
-     */
-    const checkImpersonation = async () => {
-      if (token && !isImpersonationModeOn) {
-        const _impersonationData: string | null =
-          localStorage.getItem('impersonationData');
+    if (token) {
+      loadUser();
+    }
+  }, [token]);
 
-        const data: ImpersonationData = JSON.parse(_impersonationData);
-
-        if (_impersonationData === null) {
-          loadUser();
-        } else {
-          const userData = await impersonateUser(data);
-          if (userData === false) {
-            localStorage.removeItem('impersonationData');
-            loadUser();
-          }
-        }
-      }
-    };
-    checkImpersonation();
-  }, [token, isImpersonationModeOn]);
+  React.useEffect(() => {
+    if (localStorage.getItem('impersonationData') !== null) {
+      setIsImpersonationModeOn(true);
+    }
+  }, [isImpersonationModeOn]);
 
   return (
     <UserPropsContext.Provider
@@ -177,6 +128,7 @@ function UserPropsProvider({ children }: any): ReactElement {
         contextLoaded,
         token,
         isLoading,
+        loadUser,
         isAuthenticated,
         loginWithRedirect,
         logoutUser,

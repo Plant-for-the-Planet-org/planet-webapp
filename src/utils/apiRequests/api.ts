@@ -75,9 +75,7 @@ export async function getAccountInfo(
 ): Promise<any> {
     const targetData = localStorage.getItem("impersonationData") ;
     const impersonatedDataFromLocal = JSON.parse(targetData);
-    const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
-    method: 'GET',
-    headers: {
+    let header = {
       'tenant-key': `${TENANT_ID}`,
       'X-SESSION-ID': await getsessionId(),
       Authorization: `Bearer ${token}`,
@@ -86,9 +84,18 @@ export async function getAccountInfo(
           ? localStorage.getItem('language')
           : 'en'
       }`,
-      'X-SWITCH-USER': impersonatedData?.targetEmail || impersonatedDataFromLocal?.targetEmail ||'',
-      'X-USER-SUPPORT-PIN':  impersonatedData?.supportPin ||  impersonatedDataFromLocal?.supportPin || '',
-    },
+    
+    }
+    if(impersonatedData?.targetEmail || impersonatedDataFromLocal?.targetEmail ){
+      header["X-SWITCH-USER"] = impersonatedData?.targetEmail || impersonatedDataFromLocal?.targetEmail 
+    }
+
+    if(impersonatedData?.supportPin || impersonatedDataFromLocal?.supportPin){
+      header["X-USER-SUPPORT-PIN"] = impersonatedData?.supportPin || impersonatedDataFromLocal?.supportPin 
+    }
+    const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
+    method: 'GET',
+    headers: header
   });
   return response;
 }
