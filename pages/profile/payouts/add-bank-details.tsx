@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useContext } from 'react';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import ManagePayouts, {
@@ -6,15 +6,22 @@ import ManagePayouts, {
 } from '../../../src/features/user/ManagePayouts';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
+import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 
 export default function AddBankDetailsPage(): ReactElement {
   const { t, ready } = useTranslation('me');
+  const { user } = useContext(UserPropsContext);
   return (
     <UserLayout>
       <Head>
         <title>{ready ? t('managePayouts.titleAddBankDetails') : ''}</title>
       </Head>
-      <ManagePayouts step={ManagePayoutTabs.ADD_BANK_DETAILS} />
+      {user.type === 'tpo' ? (
+        <ManagePayouts step={ManagePayoutTabs.ADD_BANK_DETAILS} />
+      ) : (
+        <AccessDeniedLoader />
+      )}
     </UserLayout>
   );
 }

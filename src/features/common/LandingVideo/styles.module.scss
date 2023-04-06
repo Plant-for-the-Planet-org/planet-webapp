@@ -127,6 +127,12 @@
   top: 100px;
 }
 
+
+@include xsPhoneView {
+  .playButton {
+    top: 149px;
+  }
+}
 .embed_playButton {
   top: 30px;
 }
