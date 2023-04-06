@@ -23,7 +23,7 @@ export default function SampleTrees({
   plantLocation,
   userLang,
 }: Props): ReactElement {
-  const { t, ready } = useTranslation(['treemapper', 'common']);
+  const { t } = useTranslation(['treemapper', 'common']);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [uploadIndex, setUploadIndex] = React.useState(0);
   const [uploadStatus, setUploadStatus] = React.useState<string[]>([]);

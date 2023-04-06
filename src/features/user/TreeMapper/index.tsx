@@ -18,8 +18,7 @@ const PlantLocationMap = dynamic(() => import('./components/Map'), {
 
 function TreeMapper({}: Props): ReactElement {
   const router = useRouter();
-  const { token, contextLoaded, impersonatedData } =
-    React.useContext(UserPropsContext);
+  const { token, contextLoaded } = React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const { t } = useTranslation(['treemapper']);
   const [progress, setProgress] = React.useState(0);

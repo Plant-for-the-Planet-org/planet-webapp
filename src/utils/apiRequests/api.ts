@@ -75,7 +75,7 @@ export async function getAccountInfo(
 ): Promise<any> {
     const targetData = localStorage.getItem("impersonationData") ;
     const impersonatedDataFromLocal = JSON.parse(targetData);
-    let header = {
+    const header = {
       'tenant-key': `${TENANT_ID}`,
       'X-SESSION-ID': await getsessionId(),
       Authorization: `Bearer ${token}`,

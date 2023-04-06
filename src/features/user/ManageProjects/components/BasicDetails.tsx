@@ -28,8 +28,6 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
-
 interface Props {
   handleNext: Function;
   projectDetails: Object;

@@ -23,8 +23,7 @@ const Transactions = ({
   setProgress,
 }: TransactionsProps): ReactElement | null => {
   const { t } = useTranslation('me');
-  const { token, contextLoaded, impersonatedData } =
-    useContext(UserPropsContext);
+  const { token, contextLoaded } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
 
   const { accounts } = usePlanetCash();
