@@ -12,8 +12,7 @@ interface Props {}
 
 function AccountHistory({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
-  const { token, contextLoaded, impersonatedData } =
-    React.useContext(UserPropsContext);
+  const { token, contextLoaded } = React.useContext(UserPropsContext);
 
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
@@ -74,7 +73,6 @@ function AccountHistory({}: Props): ReactElement {
               : '/app/paymentHistory?limit=15'
           }`,
           token,
-          impersonatedData,
           {},
           handleError,
           '/profile'

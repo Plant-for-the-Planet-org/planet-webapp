@@ -51,8 +51,7 @@ const dialogSx: SxProps = {
 interface Props {}
 
 export default function RegisterTrees({}: Props) {
-  const { user, token, contextLoaded, impersonatedData } =
-    React.useContext(UserPropsContext);
+  const { user, token, contextLoaded } = React.useContext(UserPropsContext);
 
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {
@@ -167,7 +166,6 @@ export default function RegisterTrees({}: Props) {
           `/app/contributions`,
           submitData,
           token,
-          impersonatedData,
           handleError
         ).then((res) => {
           if (!res.code) {

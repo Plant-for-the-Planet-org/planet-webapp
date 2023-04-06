@@ -42,7 +42,7 @@ const MapComponent = dynamic(() => import('./components/MapComponent'), {
 export default function ImportData({}: Props): ReactElement {
   const router = useRouter();
   const { t, ready } = useTranslation(['treemapper']);
-  const { token, impersonatedData } = React.useContext(UserPropsContext);
+  const { token } = React.useContext(UserPropsContext);
 
   function getSteps() {
     return [

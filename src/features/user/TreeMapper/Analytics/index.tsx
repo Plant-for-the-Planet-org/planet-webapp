@@ -13,7 +13,7 @@ const Analytics = () => {
   const { t, ready } = useTranslation('treemapperAnalytics');
   const { setProjectList, setProject } = useAnalytics();
 
-  const { token, impersonatedData } = useContext(UserPropsContext);
+  const { token } = useContext(UserPropsContext);
   const { handleError } = useContext(ErrorHandlingContext);
 
   const fetchProjects = async () => {

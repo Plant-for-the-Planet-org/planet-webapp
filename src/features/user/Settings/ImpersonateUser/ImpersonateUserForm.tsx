@@ -16,7 +16,7 @@ const ImpersonateUserForm = (): ReactElement => {
   const router = useRouter();
   const { t } = useTranslation('me');
   const [isInvalidEmail, setIsInvalidEmail] = useState(false);
-  const { token, setUser, setIsImpersonationModeOn, setImpersonatedData } =
+  const { token, setUser, setIsImpersonationModeOn } =
     useContext(UserPropsContext);
   const { register, errors, handleSubmit } = useForm<ImpersonationData>({
     mode: 'onSubmit',
@@ -36,7 +36,7 @@ const ImpersonateUserForm = (): ReactElement => {
             targetEmail: resJson.email,
             supportPin: resJson.supportPin,
           };
-          setImpersonatedData(impersonationData);
+
           localStorage.setItem(
             'impersonationData',
             JSON.stringify(impersonationData)

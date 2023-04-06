@@ -27,7 +27,6 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   const { t, ready } = useTranslation(['country', 'me']);
   const [contributions, setContributions] = React.useState();
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { impersonatedData } = React.useContext(UserPropsContext);
 
   React.useEffect(() => {
     async function loadFunction() {

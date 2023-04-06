@@ -35,8 +35,7 @@ export default function PlanetCash({
 }: PlanetCashProps): ReactElement | null {
   const { t, ready, i18n } = useTranslation('planetcash');
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
-  const { token, contextLoaded, impersonatedData } =
-    useContext(UserPropsContext);
+  const { token, contextLoaded } = useContext(UserPropsContext);
   const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
   const { handleError } = useContext(ErrorHandlingContext);
   const [isDataLoading, setIsDataLoading] = useState(false);

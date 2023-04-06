@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { useRouter } from 'next/router';
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
 import { ImpersonationData } from '../../user/Settings/ImpersonateUser/ImpersonateUserForm';
 import { User } from '../types/user';
@@ -21,8 +21,6 @@ export const UserPropsContext = React.createContext({
   userLang: 'en',
   isImpersonationModeOn: false,
   setIsImpersonationModeOn: (_value: boolean) => {}, // eslint-disable-line no-unused-vars
-  impersonatedData: ({} as ImpersonationData) || null,
-  setImpersonatedData: (_value: ImpersonationData | null) => {}, // eslint-disable-line no-unused-vars
   supportPin: '',
   setSupportPin: (_value: string) => {}, // eslint-disable-line no-unused-vars,
 });
@@ -45,8 +43,6 @@ function UserPropsProvider({ children }: any): ReactElement {
   const [userLang, setUserLang] = React.useState('en');
   const [isImpersonationModeOn, setIsImpersonationModeOn] =
     React.useState(false);
-  const [impersonatedData, setImpersonatedData] =
-    React.useState<ImpersonationData | null>(null);
   const [supportPin, setSupportPin] = React.useState<string>('');
 
   React.useEffect(() => {
@@ -94,8 +90,10 @@ function UserPropsProvider({ children }: any): ReactElement {
           redirectUri: `${process.env.NEXTAUTH_URL}/login`,
           ui_locales: localStorage.getItem('language') || 'en',
         });
+      } else if (res.status === 403) {
+        localStorage.removeItem('impersonationData');
       } else {
-        // any other error
+        //any other error
       }
     } catch (err) {
       console.log(err);
@@ -122,8 +120,6 @@ function UserPropsProvider({ children }: any): ReactElement {
         setUser,
         isImpersonationModeOn,
         setIsImpersonationModeOn,
-        impersonatedData,
-        setImpersonatedData,
         supportPin,
         contextLoaded,
         token,

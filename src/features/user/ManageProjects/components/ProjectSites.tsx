@@ -21,7 +21,6 @@ import { Fade, Modal, MenuItem } from '@mui/material';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
@@ -609,7 +608,6 @@ function EditSite({
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { impersonatedData } = React.useContext(UserPropsContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {

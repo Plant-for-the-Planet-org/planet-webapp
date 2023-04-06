@@ -172,7 +172,6 @@ export default function EditProfile({}: Props) {
               `/app/profile`,
               bodyToSend,
               token,
-              impersonatedData,
               handleError
             )
               .then((res) => {

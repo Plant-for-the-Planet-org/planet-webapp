@@ -95,13 +95,11 @@ export default function PlantingLocation({
   });
 
   const loadProjects = async () => {
-    await getAuthenticatedRequest(
-      '/app/profile/projects',
-      token,
-      impersonatedData
-    ).then((projects: any) => {
-      setProjects(projects);
-    });
+    await getAuthenticatedRequest('/app/profile/projects', token).then(
+      (projects: any) => {
+        setProjects(projects);
+      }
+    );
   };
 
   const loadMySpecies = async () => {

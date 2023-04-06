@@ -7,18 +7,12 @@ import { useContext } from 'react';
 import { useRouter } from 'next/router';
 
 const ImpersonationActivated = () => {
-  const {
-    user,
-    isImpersonationModeOn,
-    setImpersonatedData,
-    setIsImpersonationModeOn,
-    loadUser,
-  } = useContext(UserPropsContext);
+  const { user, isImpersonationModeOn, setIsImpersonationModeOn, loadUser } =
+    useContext(UserPropsContext);
 
   const { push } = useRouter();
 
   const exitImpersonation = () => {
-    setImpersonatedData(null);
     setIsImpersonationModeOn(false);
     localStorage.removeItem('impersonationData');
     push(`/profile/impersonate-user`);
