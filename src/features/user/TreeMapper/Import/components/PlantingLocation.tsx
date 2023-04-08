@@ -17,7 +17,6 @@ import {
 import tj from '@mapbox/togeojson';
 import gjv from 'geojson-validation';
 import flatten from 'geojson-flatten';
-
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -65,7 +64,8 @@ export default function PlantingLocation({
   activeMethod,
   setActiveMethod,
 }: Props): ReactElement {
-  const { user, token, contextLoaded } = React.useContext(UserPropsContext);
+  const { user, token, contextLoaded, impersonatedEmail } =
+    React.useContext(UserPropsContext);
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
@@ -73,7 +73,7 @@ export default function PlantingLocation({
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [mySpecies, setMySpecies] = React.useState(null);
 
-  const { t, ready } = useTranslation(['treemapper', 'common', 'maps']);
+  const { t } = useTranslation(['treemapper', 'common', 'maps']);
   const defaultValues = {
     plantDate: new Date(),
     plantProject: '',
@@ -85,31 +85,34 @@ export default function PlantingLocation({
       },
     ],
   };
-  const { register, handleSubmit, errors, control, reset, setValue, watch } =
-    useForm({
-      mode: 'onBlur',
-      defaultValues: plantLocation ? plantLocation : defaultValues,
-    });
+  const { register, handleSubmit, errors, control, setValue } = useForm({
+    mode: 'onBlur',
+    defaultValues: plantLocation ? plantLocation : defaultValues,
+  });
 
-  const { fields, append, remove, prepend } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: 'plantedSpecies',
   });
 
   const loadProjects = async () => {
-    await getAuthenticatedRequest('/app/profile/projects', token).then(
-      (projects: any) => {
-        setProjects(projects);
-      }
-    );
+    await getAuthenticatedRequest(
+      '/app/profile/projects',
+      token,
+      impersonatedEmail
+    ).then((projects: any) => {
+      setProjects(projects);
+    });
   };
 
   const loadMySpecies = async () => {
-    await getAuthenticatedRequest('/treemapper/species', token).then(
-      (species: any) => {
-        setMySpecies(species);
-      }
-    );
+    await getAuthenticatedRequest(
+      '/treemapper/species',
+      token,
+      impersonatedEmail
+    ).then((species: any) => {
+      setMySpecies(species);
+    });
   };
 
   React.useEffect(() => {
@@ -210,7 +213,8 @@ export default function PlantingLocation({
       postAuthenticatedRequest(
         `/treemapper/plantLocations`,
         submitData,
-        token
+        token,
+        impersonatedEmail
       ).then((res: any) => {
         if (!res.code) {
           setErrorMessage('');
@@ -502,6 +506,9 @@ function PlantedSpecies({
         <div
           onClick={() => remove(index)}
           className={styles.speciesDeleteField}
+          style={{
+            cursor: 'pointer',
+          }}
         >
           <DeleteIcon />
         </div>

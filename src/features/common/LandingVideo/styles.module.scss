@@ -127,6 +127,12 @@
   top: calc(100px + env(safe-area-inset-top));
 }
 
+
+@include xsPhoneView {
+  .playButton {
+    top: 149px;
+  }
+}
 .embed_playButton {
   top: calc(30px + env(safe-area-inset-top));
 }

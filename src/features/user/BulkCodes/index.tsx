@@ -1,4 +1,4 @@
-import { useTranslation } from 'next-i18next';
+import { useTranslation, Trans } from 'next-i18next';
 import React, {
   ReactElement,
   useEffect,
@@ -156,11 +156,26 @@ export default function BulkCodes({
     <DashboardView
       title={t('bulkCodes:bulkCodesTitle')}
       subtitle={
-        <p>
-          {t('bulkCodes:bulkCodesDescription1')}
-          <br />
-          {t('bulkCodes:bulkCodesDescription2')}
-        </p>
+        <div>
+          <p>
+            <Trans i18nKey="bulkCodes:partnerSignupInfo">
+              Use of this feature by Companies is subject to partnership with
+              Plant-for-the-Planet. Please contact{' '}
+              <a
+                className="planet-links"
+                href="mailto:partner@plant-for-the-planet.org"
+              >
+                partner@plant-for-the-planet.org
+              </a>{' '}
+              for details.
+            </Trans>
+          </p>
+          <p>
+            {t('bulkCodes:bulkCodesDescription1')}
+            <br />
+            {t('bulkCodes:bulkCodesDescription2')}
+          </p>
+        </div>
       }
     >
       <TabbedView step={step} tabItems={tabConfig}>

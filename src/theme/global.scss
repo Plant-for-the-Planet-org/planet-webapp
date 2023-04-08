@@ -744,3 +744,23 @@ input[type='number'] {
     }
   }
 }
+
+.impersonationAlertContainer {
+  width: 100%;
+  position: fixed;
+  z-index: 1220;
+}
+
+.accessDeniedContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+  h2 {
+    margin-top: 24px;
+    margin-left: 24px;
+    font-weight: bold;
+    font-size: 30px;
+   }
+}

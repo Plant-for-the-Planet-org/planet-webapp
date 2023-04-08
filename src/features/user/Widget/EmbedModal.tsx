@@ -8,7 +8,6 @@ import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../theme/themeContext';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-
 interface Props {
   embedModalOpen: boolean;
   setEmbedModalOpen: Function;
@@ -34,7 +33,7 @@ export default function EmbedModal({
   const router = useRouter();
   // This effect is used to get and update UserInfo if the isAuthenticated changes
 
-  const { user, setUser, contextLoaded, token } =
+  const { user, setUser, contextLoaded, token, impersonatedEmail } =
     React.useContext(UserPropsContext);
 
   React.useEffect(() => {
@@ -63,7 +62,13 @@ export default function EmbedModal({
     };
     if (contextLoaded && token) {
       try {
-        putAuthenticatedRequest(`/app/profile`, bodyToSend, token, handleError)
+        putAuthenticatedRequest(
+          `/app/profile`,
+          bodyToSend,
+          token,
+          impersonatedEmail,
+          handleError
+        )
           .then((res) => {
             setSeverity('success');
             setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');

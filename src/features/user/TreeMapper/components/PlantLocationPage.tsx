@@ -106,37 +106,21 @@ export function LocationDetails({
           <p className={styles.title}>{t('captureStatus')}</p>
           <div className={styles.value}>{t(location.captureStatus)}</div>
         </div>
-        {location?.deviceLocation ? (
-          <div className={styles.singleDetail}>
-            <p className={styles.title}>
-              {t('coordinates')} <CopyToClipboard text={text} />
-            </p>
-            <div className={styles.value}>{text}</div>
-          </div>
-        ) : (
-          []
-        )}
         {/* <div className={styles.singleDetail}>
               <p className={styles.title}>{t('guid')}</p>
               <div className={styles.value}>{location.id}</div>
             </div> */}
-        {location.measurements && (
-          <>
+        {location?.deviceLocation ? (
+          <div className={styles.rowDetail}>
             <div className={styles.singleDetail}>
-              <p className={styles.title}>{t('height')}</p>
-              <div className={styles.value}>
-                {location.measurements?.height}
-                {t('m')}
-              </div>
+              <p className={styles.title}>
+                {t('coordinates')} <CopyToClipboard text={text} />
+              </p>
+              <div className={styles.value}>{text.split(',').join(', ')}</div>
             </div>
-            <div className={styles.singleDetail}>
-              <p className={styles.title}>{t('width')}</p>
-              <div className={styles.value}>
-                {location.measurements?.width}
-                {t('cm')}
-              </div>
-            </div>
-          </>
+          </div>
+        ) : (
+          []
         )}
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('plantDate')}</p>
@@ -148,6 +132,41 @@ export function LocationDetails({
             {formatDate(location.registrationDate)}
           </div>
         </div>
+        {location.measurements && (
+          <>
+            <div className={styles.measurements}>
+              <div className={styles.singleDetail}>
+                <p className={styles.title}>{t('measurements')}</p>
+              </div>
+            </div>
+            <div className={styles.measurements}>
+              <div className={styles.singleDetail}>
+                <p className={styles.title}>{t('date')}</p>
+                {location.history?.map((h, index) => (
+                  <div className={styles.value} key={index}>
+                    {formatDate(h?.created)}
+                  </div>
+                ))}
+              </div>
+              <div className={styles.singleDetail}>
+                <p className={styles.title}>{t('height')}</p>
+                {location.history?.map((h, index) => (
+                  <div className={styles.value} key={index}>
+                    {h?.measurements?.height} {t('m')}
+                  </div>
+                ))}
+              </div>
+              <div className={styles.singleDetail}>
+                <p className={styles.title}>{t('width')}</p>
+                {location.history?.map((h, index) => (
+                  <div className={styles.value} key={index}>
+                    {h?.measurements?.width} {t('cm')}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
         {location.plantProject && (
           <div className={styles.singleDetail}>
             <p className={styles.title}>{t('plantProject')}</p>
