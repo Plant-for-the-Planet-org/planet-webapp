@@ -59,7 +59,7 @@ function LanguageSwitcher() {
       }
     }
   }, []);
-
+  //to  get new pin
   const handleNewPin = async () => {
     try {
       const response = await putAuthenticatedRequest<SupportPin>(
