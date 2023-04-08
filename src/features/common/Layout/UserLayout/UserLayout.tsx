@@ -19,6 +19,11 @@ import styles from './UserLayout.module.scss';
 import TreeMappperIcon from '../../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
 import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/RegisterIcon';
 import NotionLinkIcon from '../../../../../public/assets/images/icons/Sidebar/NotionLinkIcon';
+import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+
+interface SupportPin {
+  supportPin: string;
+}
 
 function LanguageSwitcher() {
   const { i18n, ready, t } = useTranslation(['common', 'me']);
@@ -27,7 +32,8 @@ function LanguageSwitcher() {
   const [openModal, setOpenModal] = React.useState(false);
   const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
   const [selectedCountry, setSelectedCountry] = React.useState('DE');
-  const { supportPin, isImpersonationModeOn } = useContext(UserPropsContext);
+  const { supportPin, isImpersonationModeOn, token, setSupportPin } =
+    useContext(UserPropsContext);
 
   React.useEffect(() => {
     if (typeof Storage !== 'undefined') {
@@ -54,6 +60,23 @@ function LanguageSwitcher() {
     }
   }, []);
 
+  const handleNewPin = async () => {
+    try {
+      const response = await putAuthenticatedRequest<SupportPin>(
+        '/app/profile/supportPin',
+        undefined,
+        token
+      );
+      if (response) {
+        setSupportPin(response?.supportPin);
+      } else {
+        return false;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return ready ? (
     <>
       <div className={styles.navlink}>
@@ -74,6 +97,9 @@ function LanguageSwitcher() {
           <div className={styles.supportPinContainer}>
             <div>|</div>
             <div className={styles.supportPin}>{t('me:supportPin')} :</div>
+            <div className={styles.getNewPin} onClick={handleNewPin}>
+              {t('me:getNewPin')}
+            </div>
             <div className={styles.pinValue}>{supportPin}</div>
           </div>
         )}

@@ -261,5 +261,6 @@
   "enterSupportPin": "Enter the support pin of the target user",
   "invalidEmail": "Please enter a valid email Id",
   "wrongEntered": "Email id or Support pin is incorrect !!",
-  "donatedTrees": "Donated Trees"
+  "donatedTrees": "Donated Trees",
+  "getNewPin": "Get New Pin"
 }

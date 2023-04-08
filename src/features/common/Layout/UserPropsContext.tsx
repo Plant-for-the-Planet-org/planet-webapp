@@ -121,6 +121,7 @@ function UserPropsProvider({ children }: any): ReactElement {
         isImpersonationModeOn,
         setIsImpersonationModeOn,
         supportPin,
+        setSupportPin,
         contextLoaded,
         token,
         isLoading,
