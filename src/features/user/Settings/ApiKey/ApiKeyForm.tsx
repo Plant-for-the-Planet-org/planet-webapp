@@ -55,7 +55,8 @@ export default function ApiKey() {
     setIsUploadingData(false);
   };
 
-  const regenerateApiKey = async () => {
+  const regenerateApiKey = async (e: MouseEvent) => {
+    e.preventDefault();
     setIsUploadingData(true);
     const res = await putAuthenticatedRequest(
       '/app/profile/apiKey',
@@ -97,7 +98,7 @@ export default function ApiKey() {
           </div>
           <div className={styles.regenerateButtonContainer}>
             <AnimatedButton
-              onClick={regenerateApiKey}
+              onClick={(e: MouseEvent) => regenerateApiKey(e)}
               className={styles.regenerateButton}
             >
               {isUploadingData ? (
