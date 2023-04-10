@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './ApiKey.module.scss';
-import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import {
   getAuthenticatedRequest,
@@ -15,7 +14,12 @@ import { useTranslation } from 'next-i18next';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { TextField } from '@mui/material';
 
-const EyeButton = ({ isVisible, onClick }: any) => {
+interface EyeButtonParams {
+  isVisible: boolean;
+  onClick: () => void;
+}
+
+const EyeButton = ({ isVisible, onClick }: EyeButtonParams) => {
   return (
     <div className={styles.eyeButton} onClick={onClick}>
       {isVisible ? <EyeIcon /> : <EyeDisabled />}
@@ -23,7 +27,7 @@ const EyeButton = ({ isVisible, onClick }: any) => {
   );
 };
 
-export default function ApiKey({}: any) {
+export default function ApiKey() {
   const { token, contextLoaded, impersonatedEmail } =
     React.useContext(UserPropsContext);
   const { t } = useTranslation(['me']);
