@@ -33,7 +33,6 @@ import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ProjectCreationTabs } from '..';
-import { error } from 'console';
 
 interface Props {
   handleNext: Function;
@@ -487,7 +486,7 @@ export default function BasicDetails({
         }
       : {}
   );
-  console.log(errors.countTarget?.message);
+
   return ready ? (
     <CenteredContainer>
       <StyledForm>
@@ -630,7 +629,7 @@ export default function BasicDetails({
             />
           )}
         </InlineFormDisplayGroup>
-        {console.log(errors)}
+
         <TextField
           label={t('manageProjects:aboutProject')}
           variant="outlined"
@@ -811,10 +810,7 @@ export default function BasicDetails({
               <NavigationControl showCompass={false} />
             </div>
           </MapGL>
-          <div
-            className={styles.formField}
-            style={{ margin: 'auto', marginTop: '-120px' }}
-          >
+          <div className={styles.basicDetailsCoordinatesContainer}>
             <div
               className={`${styles.formFieldHalf} ${styles.latlongField}`}
               data-test-id="latitude"
@@ -886,8 +882,8 @@ export default function BasicDetails({
           </div>
         </div>
 
-        <div className={styles.formFieldLarge} style={{ width: '320px' }}>
-          <div className={styles.formFieldRadio}>
+        <div className={styles.formFieldLarge}>
+          <div className={styles.formFieldRadio} style={{ width: '320px' }}>
             <label
               htmlFor="visitorAssistance"
               style={{ cursor: 'pointer' }}
@@ -895,6 +891,20 @@ export default function BasicDetails({
             >
               {t('manageProjects:visitorAssistanceLabel')}
             </label>
+          </div>
+          <div>
+            <Controller
+              name="visitorAssistance"
+              control={control}
+              render={(properties) => (
+                <ToggleSwitch
+                  id="visitorAssistance"
+                  checked={properties.value}
+                  onChange={(e) => properties.onChange(e.target.checked)}
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                />
+              )}
+            />
           </div>
 
           {errorMessage && errorMessage !== '' ? (

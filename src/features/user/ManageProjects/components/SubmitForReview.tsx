@@ -41,64 +41,49 @@ function SubmitForReview({
     const [publish, setPublish] = React.useState(projectDetails.publish);
 
     return (
-      <div className={styles.stepContainer}>
-        <div>
-          <div
-            className={styles.formFieldLarge}
-            style={{ width: '320px', marginLeft: '138px' }}
+      <>
+        <div className={`${styles.formFieldRadio} ${styles.publishLabel} `}>
+          <label
+            htmlFor={'publish'}
+            style={{ cursor: 'pointer' }}
+            data-test-id="publishProject"
           >
-            <div className={`${styles.formFieldRadio} ${styles.publishLabel} `}>
-              <label
-                htmlFor={'publish'}
-                style={{ cursor: 'pointer' }}
-                data-test-id="publishProject"
-              >
-                {t('manageProjects:publishProject')}
-              </label>
+            {t('manageProjects:publishProject')}
+          </label>
 
-              <ToggleSwitch
-                checked={publish}
-                onChange={(e) => handlePublishChange(e.target.checked)}
-                id="publish"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-              />
-            </div>
-          </div>
-          <div className={styles.formFieldLarge}>
-            <div className={styles.reviewImageContainer}>
-              <UnderReview />
-            </div>
-            <p className={styles.reviewMessage}>
-              {t('manageProjects:projectUnderReview')}
-            </p>
-          </div>
-          <div className={styles.formField}>
-            <button
-              id={'backArrowSubmitR'}
-              className={`${styles.formFieldHalf}`}
-              style={{ width: '234px' }}
-            >
-              <button onClick={handleBack} className="secondaryButton">
-                <BackArrow />
-                <p>{t('manageProjects:backToSpending')}</p>
-              </button>
-            </button>
-            <button
-              className="primaryButton"
-              style={{
-                width: '150px',
-                marginTop: '30px',
-                marginRight: '245px',
-                marginLeft: '30px',
-              }}
-              onClick={() => router.push('/profile/projects')}
-            >
-              <p>{t('manageProjects:exit')}</p>
-            </button>
-            <div style={{ width: '20px' }}></div>
-          </div>
+          <ToggleSwitch
+            checked={publish}
+            onChange={(e) => handlePublishChange(e.target.checked)}
+            id="publish"
+            inputProps={{ 'aria-label': 'secondary checkbox' }}
+          />
         </div>
-      </div>
+        <div className={styles.reviewImageContainer}>
+          <UnderReview />
+        </div>
+        <p className={styles.reviewMessage}>
+          {t('manageProjects:projectUnderReview')}
+        </p>
+
+        <div className={styles.buttonsForProjectCreationForm}>
+          <Button
+            onClick={() => handleBack(ProjectCreationTabs.PROJECT_SPENDING)}
+            variant="outlined"
+            className={styles.backButton}
+          >
+            <BackArrow />
+            <p>{t('manageProjects:backToSpending')}</p>
+          </Button>
+
+          <Button
+            variant="contained"
+            onClick={() => router.push('/profile/projects')}
+            className={styles.saveAndContinueButton}
+          >
+            <p>{t('manageProjects:exit')}</p>
+          </Button>
+        </div>
+      </>
     );
   }
 
@@ -106,15 +91,7 @@ function SubmitForReview({
     const [publish, setPublish] = React.useState(projectDetails.publish);
 
     return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          alignItems: 'center',
-          width: 'max-content',
-        }}
-      >
+      <>
         <div className={styles.formFieldRadio} style={{ marginBottom: '10px' }}>
           <div>
             <label
@@ -174,13 +151,13 @@ function SubmitForReview({
             <p>{t('manageProjects:exit')}</p>
           </Button>
         </div>
-      </div>
+      </>
     );
   }
 
   function AcceptedReview() {
     return (
-      <div className={styles.stepContainer}>
+      <>
         <div className={styles.formFieldLarge}>
           <div className={styles.reviewImageContainer}>
             <SubmitForReviewImage />
@@ -188,51 +165,57 @@ function SubmitForReview({
           <p className={styles.reviewMessage}>
             {t('manageProjects:acceptedReview')}
           </p>
-        </div>
-        <div className={styles.formField}>
-          <button id={'backArrowSubmitR'} className={`${styles.formFieldHalf}`}>
-            <button onClick={handleBack} className="secondaryButton">
+          <div className={styles.buttonsForProjectCreationForm}>
+            <Button
+              onClick={() => handleBack(ProjectCreationTabs.PROJECT_SPENDING)}
+              variant="outlined"
+              className={styles.backButton}
+            >
               <BackArrow />
               <p>{t('manageProjects:backToSpending')}</p>
-            </button>
-          </button>
-          <div style={{ width: '20px' }}></div>
+            </Button>
+            <Button
+              className={styles.skipButton}
+              variant="contained"
+              onClick={() => router.push('/profile/projects')}
+            >
+              <p>{t('manageProjects:exit')}</p>
+            </Button>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   function DeniedReview() {
     return (
-      <div className={styles.stepContainer}>
-        <div>
-          <div className={styles.formFieldLarge}>
-            <div className={styles.reviewImageContainer}>
-              <UnderReview />
-            </div>
-            <p className={styles.reviewMessage}>
-              {t('manageProjects:deniedReview')}
-            </p>
+      <>
+        <div className={styles.formFieldLarge}>
+          <div className={styles.reviewImageContainer}>
+            <UnderReview />
           </div>
-
-          <div className={styles.formField}>
-            <button
-              id={'backArrowSubmitR'}
-              className={`${styles.formFieldHalf}`}
-            >
-              <button
-                onClick={handleBack}
-                className="secondaryButton"
-                style={{ width: '234px', height: '46px', marginLeft: '40px' }}
-              >
-                <BackArrow />
-                <p>{t('manageProjects:backToSpending')}</p>
-              </button>
-            </button>
-            <div style={{ width: '20px' }}></div>
-          </div>
+          <p className={styles.reviewMessage}>
+            {t('manageProjects:deniedReview')}
+          </p>
         </div>
-      </div>
+
+        <div className={styles.buttonsForProjectCreationForm}>
+          <Button
+            onClick={() => handleBack(ProjectCreationTabs.PROJECT_SPENDING)}
+            variant="outlined"
+          >
+            <BackArrow />
+            <p>{t('manageProjects:backToSpending')}</p>
+          </Button>
+          <Button
+            className={styles.skipButton}
+            variant="contained"
+            onClick={() => router.push('/profile/projects')}
+          >
+            <p>{t('manageProjects:exit')}</p>
+          </Button>
+        </div>
+      </>
     );
   }
 

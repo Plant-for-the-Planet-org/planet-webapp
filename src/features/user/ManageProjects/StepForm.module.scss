@@ -165,6 +165,7 @@
     border-radius: 28px !important;
     border-top-right-radius: 0px !important;
     border-bottom-right-radius: 0px !important;
+    background-color: #E2EEE8;
   }
   div,
   input {
@@ -183,6 +184,7 @@
     border-radius: 28px !important;
     border-top-left-radius: 0px !important;
     border-bottom-left-radius: 0px !important;
+    background-color: #E2EEE8;
   }
   div,
   input {
@@ -194,14 +196,25 @@
     text-align: center !important;
     transform: translateX(0px, 20px);
   }
-}
+  }
 .latlongField {
+  width: fit-content;
   position: relative;
   div,
   input {
     width: 120px !important;
     position: relative;
   }
+}
+
+.basicDetailsCoordinatesContainer {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 290px;
+    left: 10px;
+    overflow: hidden;
+    width: inherit;
 }
 
 .layerSwitcher {
@@ -724,6 +737,7 @@
 .popover {
   position: relative;
   width: fit-content !important;
+  background-color: white;
   .popoverContent {
     position: absolute;
     z-index: 10;
@@ -794,41 +808,34 @@
   margin-top: 20px;
   display: flex;
   flex-direction: row;
-  .MuiButton-root {
+ 
+
+  @include xsPhoneView {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  @include smTabletView {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  .reviewButton,
+  .backButton {
     height: 50px;
-  }
-  .reviewButton {
-    height: 50px;
-  }
-  .skipButton{
-    margin-left: 10px;
-    margin-top: 0px;
-    @include xsPhoneView {
-      width: 100px;
-      margin-top: 10px
-    }
-  }
+   }
+  .skipButton,
   .saveAndContinueButton {
     margin-left: 10px;
+    font-size: 1rem;
+    height: 50px;
     @include xsPhoneView {
-      margin-top: 10px
-    }
-  }
-  .backButton {
-    margin-top: 0px;
-    @include xsPhoneView {
-      margin-top: 10px
+      margin-top: 14px;
     }
   }
 }
 
-@include xsPhoneView {
-.buttonsForProjectCreationForm {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-}
+
 
 .projectTypes {
   display: flex;
