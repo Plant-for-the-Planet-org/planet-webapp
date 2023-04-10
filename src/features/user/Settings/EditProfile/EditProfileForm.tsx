@@ -1,4 +1,4 @@
-import { Button, MenuItem, styled, TextField } from '@mui/material';
+import { Button, styled, TextField } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import React, { useState } from 'react';
@@ -11,7 +11,6 @@ import COUNTRY_ADDRESS_POSTALS from '../../../../utils/countryZipCode';
 import getImageUrl from '../../../../utils/getImageURL';
 import { selectUserType } from '../../../../utils/selectUserType';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
-import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
@@ -25,9 +24,6 @@ import {
   StyledAutoCompleteOption,
 } from '../../../common/InputTypes/MuiAutoComplete';
 import StyledForm from '../../../common/Layout/StyledForm';
-import CenteredContainer from '../../../common/Layout/CenteredContainer';
-
-interface Props {}
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -35,7 +31,7 @@ const Alert = styled(MuiAlert)(({ theme }) => {
   };
 });
 
-export default function EditProfileForm({}: Props) {
+export default function EditProfileForm() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const { user, setUser, token, contextLoaded, impersonatedEmail } =
@@ -179,7 +175,7 @@ export default function EditProfileForm({}: Props) {
   const onDrop = React.useCallback(
     (acceptedFiles) => {
       setUpdatingPic(true);
-      acceptedFiles.forEach((file: any) => {
+      acceptedFiles.forEach((file: object) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onabort = () => console.log('file reading was aborted');
@@ -223,7 +219,7 @@ export default function EditProfileForm({}: Props) {
     onDropAccepted: () => {},
   });
 
-  const saveProfile = async (data: any) => {
+  const saveProfile = async (data: object) => {
     setIsUploadingData(true);
     let bodyToSend = {
       ...data,
@@ -493,7 +489,7 @@ export default function EditProfileForm({}: Props) {
             name="isPrivate"
             control={control}
             inputRef={register()}
-            render={(props: any) => (
+            render={(props: object) => (
               <ToggleSwitch
                 checked={props.value}
                 onChange={(e) => props.onChange(e.target.checked)}

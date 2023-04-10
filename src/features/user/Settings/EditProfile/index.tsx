@@ -2,7 +2,6 @@ import { useTranslation } from 'next-i18next';
 import { ReactElement } from 'react';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import DashboardView from '../../../common/Layout/DashboardView';
-import SingleColumnView from '../../../common/Layout/SingleColumnView';
 import EditProfileForm from './EditProfileForm';
 
 export default function (): ReactElement | null {
