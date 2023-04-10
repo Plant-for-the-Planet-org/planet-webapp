@@ -4,6 +4,7 @@ import { getQueryString } from './getQueryString';
 import getsessionId from './getSessionId';
 import { validateToken } from './validateToken';
 import { ImpersonationData } from '../../features/user/Settings/ImpersonateUser/ImpersonateUserForm';
+import { head } from 'cypress/types/lodash';
 
 // Handle Error responses from API
 const handleApiError = (
@@ -73,9 +74,9 @@ export async function getAccountInfo(
   token: any,
   impersonatedData?:ImpersonationData 
 ): Promise<any> {
-    const targetData = localStorage.getItem("impersonationData") ;
-    const impersonatedDataFromLocal = JSON.parse(targetData);
-    const header = {
+    const data = localStorage.getItem("impersonationData") ;
+    const impersonatedDataFromLocal = JSON.parse(data);
+    const header : any = {
       'tenant-key': `${TENANT_ID}`,
       'X-SESSION-ID': await getsessionId(),
       Authorization: `Bearer ${token}`,
@@ -154,22 +155,28 @@ export async function getAuthenticatedRequest<T>(
   let result = {};
   const lang = localStorage.getItem('language') || 'en';
   const targetData = localStorage.getItem("impersonationData") ;
-  const impersonatedData = JSON.parse(targetData);
+  const impersonatedDataFromLocal = JSON.parse(targetData);
   const query: any = { ...queryParams };
   const queryString = getQueryString(query);
   const queryStringSuffix = queryString ? '?' + queryString : '';
-  await fetch(`${process.env.API_ENDPOINT}${url}${queryStringSuffix}`, {
-    method: 'GET',
-    headers: {
+  const headers = {
       'tenant-key': `${TENANT_ID}`,
       'X-SESSION-ID': await getsessionId(),
       Authorization: `Bearer ${token}`,
       'x-locale': `${lang}`,
       'x-accept-versions': version ? version : '1.0.3',
-      'X-SWITCH-USER': impersonatedData?.targetEmail || '',
-      'X-USER-SUPPORT-PIN':  impersonatedData?.supportPin || "",
       ...(header ? header : {}),
-    },
+  }
+  if(impersonatedDataFromLocal?.targetEmail ){
+    headers["X-SWITCH-USER"] =  impersonatedDataFromLocal?.targetEmail 
+  }
+
+  if( impersonatedDataFromLocal?.supportPin){
+    headers["X-USER-SUPPORT-PIN"] =  impersonatedDataFromLocal?.supportPin 
+  }
+  await fetch(`${process.env.API_ENDPOINT}${url}${queryStringSuffix}`, {
+    method: 'GET',
+    headers: headers
   })
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
@@ -212,26 +219,32 @@ export async function postAuthenticatedRequest<T>(
   headers?: any
 ): Promise<T | ApiCustomError | null> {
   const targetData = localStorage.getItem("impersonationData") ;
-  const impersonatedData = JSON.parse(targetData);
+  const  impersonatedDataFromLocal = JSON.parse(targetData);
+  const header = {
+    'Content-Type': 'application/json',
+    'tenant-key': `${TENANT_ID}`,
+    'X-SESSION-ID': await getsessionId(),
+    Authorization: `Bearer ${token}`,
+    'x-locale': `${
+      localStorage.getItem('language')
+        ? localStorage.getItem('language')
+        : 'en'
+    }`,
+    ...(headers ? headers : {}),
+  }
+  if(impersonatedDataFromLocal?.targetEmail ){
+    header["X-SWITCH-USER"] =  impersonatedDataFromLocal?.targetEmail 
+  }
+
+  if( impersonatedDataFromLocal?.supportPin){
+    header["X-USER-SUPPORT-PIN"] =  impersonatedDataFromLocal?.supportPin 
+  }
   if (validateToken(token)) {
     try {
       const res = await fetch(process.env.API_ENDPOINT + url, {
         method: 'POST',
         body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json',
-          'tenant-key': `${TENANT_ID}`,
-          'X-SESSION-ID': await getsessionId(),
-          Authorization: `Bearer ${token}`,
-          'x-locale': `${
-            localStorage.getItem('language')
-              ? localStorage.getItem('language')
-              : 'en'
-          }`,
-          ...(headers ? headers : {}),
-          'X-SWITCH-USER': impersonatedData?.targetEmail || '',
-          'X-USER-SUPPORT-PIN':  impersonatedData?.supportPin || "",
-        },
+        headers: header
       });
       const result = await res.json();
       handleApiError(res.status, result, errorHandler);
@@ -267,24 +280,30 @@ export async function deleteAuthenticatedRequest(
   errorHandler?: Function
 ): Promise<any> {
   const targetData = localStorage.getItem("impersonationData") ;
-  const impersonatedData = JSON.parse(targetData);
+  const  impersonatedDataFromLocal = JSON.parse(targetData);
+  const header : any = {
+    'Content-Type': 'application/json',
+    'tenant-key': `${TENANT_ID}`,
+    'X-SESSION-ID': await getsessionId(),
+    Authorization: `Bearer ${token}`,
+    'x-locale': `${
+      localStorage.getItem('language')
+        ? localStorage.getItem('language')
+        : 'en'
+    }`,
+  }
+  if(impersonatedDataFromLocal?.targetEmail ){
+    header["X-SWITCH-USER"] =  impersonatedDataFromLocal?.targetEmail 
+  }
+
+  if( impersonatedDataFromLocal?.supportPin){
+    header["X-USER-SUPPORT-PIN"] =  impersonatedDataFromLocal?.supportPin 
+  }
   let result;
   if (validateToken(token)) {
     await fetch(process.env.API_ENDPOINT + url, {
       method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'tenant-key': `${TENANT_ID}`,
-        'X-SESSION-ID': await getsessionId(),
-        Authorization: `Bearer ${token}`,
-        'x-locale': `${
-          localStorage.getItem('language')
-            ? localStorage.getItem('language')
-            : 'en'
-        }`,
-        'X-SWITCH-USER': impersonatedData?.targetEmail || '',
-        'X-USER-SUPPORT-PIN':  impersonatedData?.supportPin || "",
-      },
+      headers: header
     }).then(async (res) => {
       result = res.status === 400 ? await res.json() : res.status;
       handleApiError(res.status, result, errorHandler);
@@ -332,24 +351,30 @@ export async function putAuthenticatedRequest<T>(
   errorHandler?: Function
 ): Promise<T | ApiCustomError | undefined> {
   const targetData = localStorage.getItem("impersonationData") ;
-  const impersonatedData = JSON.parse(targetData);
+  const impersonatedDataFromLocal = JSON.parse(targetData);
+  const header : any = {
+    'Content-Type': 'application/json',
+    'tenant-key': `${TENANT_ID}`,
+    'X-SESSION-ID': await getsessionId(),
+    Authorization: `Bearer ${token}`,
+    'x-locale': `${
+      localStorage.getItem('language')
+        ? localStorage.getItem('language')
+        : 'en'
+    }`,
+  }
+  if(impersonatedDataFromLocal?.targetEmail ){
+    header["X-SWITCH-USER"] =  impersonatedDataFromLocal?.targetEmail 
+  }
+
+  if( impersonatedDataFromLocal?.supportPin){
+    header["X-USER-SUPPORT-PIN"] =  impersonatedDataFromLocal?.supportPin 
+  }
   if (validateToken(token)) {
     const res = await fetch(process.env.API_ENDPOINT + url, {
       method: 'PUT',
       body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'tenant-key': `${TENANT_ID}`,
-        'X-SESSION-ID': await getsessionId(),
-        Authorization: `Bearer ${token}`,
-        'x-locale': `${
-          localStorage.getItem('language')
-            ? localStorage.getItem('language')
-            : 'en'
-        }`,
-        'X-SWITCH-USER': impersonatedData?.targetEmail || '',
-        'X-USER-SUPPORT-PIN':  impersonatedData?.supportPin || "",
-      },
+      headers:header
     });
     const result = await res.json();
     handleApiError(res.status, result, errorHandler);
