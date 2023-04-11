@@ -17,12 +17,14 @@ export const UserPropsContext = React.createContext({
   logoutUser: (value: string | undefined) => {},
   auth0User: {},
   auth0Error: {} || undefined,
+  userLang: 'en',
   isImpersonationModeOn: false,
-  setIsImpersonationModeOn: (value: boolean) => {},
+  setIsImpersonationModeOn: (_value: boolean) => {}, // eslint-disable-line no-unused-vars
   impersonatedEmail: '',
   setImpersonatedEmail: (value: string) => {},
   disable: false,
   setDisable: (value: boolean) => {},
+  setImpersonatedEmail: (_value: string) => {}, // eslint-disable-line no-unused-vars
 });
 
 function UserPropsProvider({ children }: any): ReactElement {
@@ -40,10 +42,18 @@ function UserPropsProvider({ children }: any): ReactElement {
   const [contextLoaded, setContextLoaded] = React.useState(false);
   const [token, setToken] = React.useState(null);
   const [profile, setUser] = React.useState<boolean | User | null>(false);
+  const [userLang, setUserLang] = React.useState('en');
   const [isImpersonationModeOn, setIsImpersonationModeOn] =
     React.useState(false);
   const [impersonatedEmail, setImpersonatedEmail] = React.useState('');
   const [disable, setDisable] = React.useState<boolean>(false);
+  React.useEffect(() => {
+    if (localStorage.getItem('language')) {
+      const userLang = localStorage.getItem('language');
+      if (userLang) setUserLang(userLang);
+    }
+  }, []);
+
   React.useEffect(() => {
     async function loadToken() {
       const accessToken = await getAccessTokenSilently();
@@ -159,6 +169,7 @@ function UserPropsProvider({ children }: any): ReactElement {
         auth0Error: error,
         disable,
         setDisable,
+        userLang,
       }}
     >
       {children}

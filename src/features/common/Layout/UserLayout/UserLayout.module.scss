@@ -62,7 +62,8 @@
   display: flex;
   flex-direction: column;
   height: calc(100% - 80px);
-  overflow-y: auto;
+  overflow-y: scroll;
+  scrollbar-width: none;
   justify-content: space-between;
   box-shadow: rgba(150, 150, 150, $alpha: 0.2) 0px 0px 4px;
   background-color: $light;
@@ -71,6 +72,11 @@
   background-color: $backgroundColor;
   color: $primaryFontColor;
   font-family: $primaryFontFamily;
+    //edit scroll bar for webkit browsers
+    &::-webkit-scrollbar {
+      width: 0px;
+    }
+  
   @include xsPhoneView {
     width: 300px;
     & .navlink {

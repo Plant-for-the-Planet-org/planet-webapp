@@ -97,5 +97,6 @@
   "modalTitle": "Cancel all subscriptions to proceed",
   "modalSubtitle": "Please cancel your subscriptions first",
   "deleteCondition": "Before proceeding, make sure you've cancelled all subscriptions.",
+  "project": "Project",
   "showSubscriptions": "Show my Subscriptions"
 }
