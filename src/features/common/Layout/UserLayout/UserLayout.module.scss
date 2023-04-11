@@ -73,7 +73,7 @@
   }
  }
 
-.sidebar {
+ .sidebar {
   width: 109px;
   position: fixed;
   top: 80px;
@@ -112,15 +112,13 @@
       } 
         
      .supportPinContainer:hover {
+        color: $primaryColor;
         .getNewPin {
          display: flex;
         }
      }
-      .navlink .supportPin{
-       font-size: 14px;
-        &:hover {
-          color: $primaryColor;
-        }
+      .navlink .supportPin {
+       font-size: 14px
       }
     & .navlink .pinValue {
         font-weight: bold;
@@ -238,9 +236,6 @@
     > svg > path , > svg > g > path{
       fill: $primaryColor;
     }
-    .navlinkTitle {
-      color: $primaryColor;
-    }
   }
   button {
     font-size: 14px;
@@ -250,6 +245,7 @@
     }
   }
 }
+
 .navlinkActive {
   // background-color: rgba(104, 176, 48, $alpha: 0.2);
   button {
@@ -271,6 +267,13 @@
   text-align: left;
   margin-left: 12px;
   color: $primaryFontColor;
+  &:hover {
+    cursor: pointer;
+    > svg > path , > svg > g > path{
+      fill: $primaryColor;
+    }
+    color: $primaryColor;
+  }
   span {
     background-color: $primaryColor;
     color: $light;
