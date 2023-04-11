@@ -27,7 +27,7 @@ export enum ProjectCreationTabs {
   REVIEW = 6,
 }
 export default function ManageProjects({ GUID, token, project }: any) {
-  const { t, ready } = useTranslation(['manageProjects']);
+  const { t, ready, i18n } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const { impersonatedEmail } = React.useContext(UserPropsContext);
   const router = useRouter();
@@ -254,7 +254,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
         },
       ]);
     }
-  }, [tabSelected, router.query.purpose]);
+  }, [tabSelected, router.query.purpose, i18n?.language]);
 
   function getStepContent() {
     switch (tabSelected) {
