@@ -70,6 +70,8 @@ function UserPropsProvider({ children }: any): ReactElement {
   async function loadUser() {
     setContextLoaded(false);
     try {
+      // TODO: Add error handling after figuring out the nature of getAccountInfo function call with impersonatedEmail
+
       const res = await getAccountInfo(token);
       if (res.status === 200) {
         const resJson = await res.json();
@@ -106,6 +108,9 @@ function UserPropsProvider({ children }: any): ReactElement {
   ): Promise<User | boolean> => {
     try {
       setContextLoaded(false);
+
+      // TODO: Add error handling after figuring out the nature of getAccountInfo function call with impersonatedEmail
+
       const res = await getAccountInfo(token, impersonatedEmail);
       const resJson = await res.json();
       if (res.status === 200) {

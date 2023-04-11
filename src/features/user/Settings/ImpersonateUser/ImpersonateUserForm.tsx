@@ -24,6 +24,8 @@ const ImpersonateUserForm = (): ReactElement => {
   const handleImpersonation = async (data: FormData): Promise<void> => {
     if (data.targetEmail) {
       try {
+        // TODO: Add error handling after figuring out the nature of getAccountInfo function call with impersonatedEmail
+
         const res = await getAccountInfo(token, data.targetEmail);
         const resJson = await res.json();
         if (res.status === 200) {

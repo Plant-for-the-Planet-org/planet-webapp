@@ -5,103 +5,29 @@ import getsessionId from './getSessionId';
 import { validateToken } from './validateToken';
 import { APIError } from '@planet-sdk/common';
 
-// Handle Error responses from API
-const handleApiError = (
-  error: number,
-  result: any,
-  errorHandler?: Function,
-  redirect?: string
-) => {
-  if (error === 404) {
-    //if error handler is passed, use it
-    if (errorHandler) {
-      errorHandler({
-        type: 'error',
-        message: 'notFound',
-        redirect: redirect,
-        code: error,
-      });
-    }
-    // show error in console
-    console.error('Error 404: Requested Resource Not Found!');
-  } else if (error === 401) {
-    if (errorHandler) {
-      errorHandler({
-        type: 'warning',
-        message: 'unauthorized',
-        redirect: redirect,
-        code: error,
-      });
-    }
-    console.error('Error 401: You are not Authorized!');
-  } else if (error === 403) {
-    if (errorHandler) {
-      errorHandler({
-        type: 'warning',
-        message: 'unauthorized',
-        redirect: redirect,
-        code: error,
-      });
-    }
-    console.error('Error 403: Forbidden');
-  } else if (error === 400) {
-    if (!result || !result['error_code']) {
-      if (errorHandler) {
-        errorHandler({
-          type: 'error',
-          message: 'validationFailed',
-          redirect: redirect,
-        });
-      }
-      console.error('Error 400: Validation Failed!');
-    }
-  } else if (error === 500) {
-    if (errorHandler) {
-      errorHandler({
-        type: 'error',
-        message: 'internalServerError',
-        redirect: redirect,
-        code: error,
-      });
-    }
-    console.error('Error 500: Server Error!');
-  }
-};
-
 //  API call to private /profile endpoint
-export function getAccountInfo<T>(token: any, impersonatedEmail?: string) {
-  return new Promise<T>((resolve, reject) => {
-    (async () => {
-      try {
-        const res = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
-          method: 'GET',
-          headers: {
-            'tenant-key': `${TENANT_ID}`,
-            'X-SESSION-ID': await getsessionId(),
-            Authorization: `Bearer ${token}`,
-            'x-locale': `${
-              localStorage.getItem('language')
-                ? localStorage.getItem('language')
-                : 'en'
-            }`,
-            'x-switch-user': impersonatedEmail || '',
-          },
-        });
-
-        if (!res.ok) {
-          throw new APIError(res.status, await res.json());
-        }
-
-        if (res.status === 204) {
-          resolve(true as T);
-        } else {
-          resolve(await res.json());
-        }
-      } catch (err) {
-        reject(err);
-      }
-    })();
+export async function getAccountInfo(
+  token: any,
+  impersonatedEmail?: string
+): Promise<any> {
+  const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
+    method: 'GET',
+    headers: {
+      'tenant-key': `${TENANT_ID}`,
+      'X-SESSION-ID': await getsessionId(),
+      Authorization: `Bearer ${token}`,
+      'x-locale': `${
+        localStorage.getItem('language')
+          ? localStorage.getItem('language')
+          : 'en'
+      }`,
+      'x-switch-user': impersonatedEmail || '',
+    },
   });
+
+  // TODO: Add error handling after figuring out the nature of getAccountInfo function call with impersonatedEmail
+
+  return response;
 }
 
 function isAbsoluteUrl(url: any) {
