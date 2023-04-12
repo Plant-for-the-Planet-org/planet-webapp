@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { Controller, useForm } from 'react-hook-form';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import styles from './AccountHistory.module.scss';
@@ -11,18 +10,13 @@ import {
   Fade,
   InputAdornment,
   Autocomplete,
-  SxProps,
 } from '@mui/material';
-import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import { ThemeContext } from '../../../theme/themeContext';
 import getCurrencySymbolByCode from '../../../utils/countryCurrency/getCurrencySymbolByCode';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import themeProperties from '../../../theme/themeProperties';
 import { Subscription } from '../../common/types/payments';
+import { useForm } from 'react-hook-form';
 
 // interface EditDonationProps {
 //   editModalOpen
@@ -31,22 +25,22 @@ import { Subscription } from '../../common/types/payments';
 //   // seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
 // }
 
-const dialogSx: SxProps = {
-  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.primaryColor,
-    color: '#fff',
-  },
+// const dialogSx: SxProps = {
+//   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
+//     backgroundColor: themeProperties.primaryColor,
+//     color: '#fff',
+//   },
 
-  '& .MuiPickersDay-dayWithMargin': {
-    '&:hover': {
-      backgroundColor: themeProperties.primaryColor,
-      color: '#fff',
-    },
-  },
-  '.MuiDialogActions-root': {
-    paddingBottom: '12px',
-  },
-};
+//   '& .MuiPickersDay-dayWithMargin': {
+//     '&:hover': {
+//       backgroundColor: themeProperties.primaryColor,
+//       color: '#fff',
+//     },
+//   },
+//   '.MuiDialogActions-root': {
+//     paddingBottom: '12px',
+//   },
+// };
 
 interface EditModalProps {
   editModalOpen: boolean;
@@ -63,22 +57,21 @@ export const EditModal = ({
 }: EditModalProps) => {
   const [frequency, setFrequency] = React.useState(record?.frequency);
   const { theme } = React.useContext(ThemeContext);
-  const [userLang, setUserLang] = React.useState('en');
+  // const [userLang, setUserLang] = React.useState('en');
   const [disabled, setDisabled] = React.useState(false);
   const { t, i18n } = useTranslation(['me']);
-  const { register, handleSubmit, errors, setValue, control, getValues } =
-    useForm({
-      mode: 'all',
-    });
+  const { register, handleSubmit, errors } = useForm({
+    mode: 'all',
+  });
   const { token, impersonatedEmail } = React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
 
-  React.useEffect(() => {
-    if (localStorage.getItem('language')) {
-      const userLang = localStorage.getItem('language');
-      if (userLang) setUserLang(userLang);
-    }
-  }, []);
+  // React.useEffect(() => {
+  //   if (localStorage.getItem('language')) {
+  //     const userLang = localStorage.getItem('language');
+  //     if (userLang) setUserLang(userLang);
+  //   }
+  // }, []);
   React.useEffect(() => {
     setDisabled(false);
   }, [editModalOpen]);
