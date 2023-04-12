@@ -505,10 +505,7 @@ function PlantedSpecies({
       {index > 0 ? (
         <div
           onClick={() => remove(index)}
-          className={styles.speciesDeleteField}
-          style={{
-            cursor: 'pointer',
-          }}
+          className={`${styles.speciesDeleteField} ${styles.deleteActive}`}
         >
           <DeleteIcon />
         </div>
