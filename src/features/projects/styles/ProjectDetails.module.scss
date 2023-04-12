@@ -150,21 +150,30 @@
 
 /* Additional Information */
 
+.projectInfoContainer {
+  margin-top: 35px;
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+
 .projectMoreInfoHalfContainer {
-  width: 340px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  row-gap: 35px;
 }
+
 .projectMoreInfoHalf {
   width: 50%;
-  margin-top: 35px;
+  display: flex;
+  flex-direction: column;
 }
 
 .projectMoreInfo {
   width: 100%;
-  margin-top: 35px;
 }
+
 .infoTitle {
   font-family: $primaryFontFamily;
   font-size: $fontXSmall;
@@ -179,18 +188,19 @@
   font-size: $fontSmall;
   color: $primaryFontColor;
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .infoTextMaxDensity {
   padding-right: 51px;
-  display:flex;
+  display: flex;
   flex-direction: row;
-  >div{
+  > div {
     margin-left: 1px;
   }
-  >h4 {
+  > h4 {
     width: 104px;
     margin-left: 4px;
   }
@@ -212,12 +222,16 @@
   margin-top: $fontSmall;
 }
 
+.projectContactDetails {
+  margin-top: 35px;
+}
+
 .contactDetailsRow {
   display: flex;
   align-items: center;
+  column-gap: 16px;
   > span {
-    margin-left: 16px;
-    flex-grow: 1;
+    flex: 1;
     word-wrap: break-word;
   }
 }
