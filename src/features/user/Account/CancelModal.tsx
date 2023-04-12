@@ -68,14 +68,6 @@ export const CancelModal = ({
     setDisabled(false);
   }, [cancelModalOpen]);
 
-  const handleSave = () => {
-    if (option === 'cancelOnSelectedDate') {
-      displayRemainingPayments();
-    } else {
-      cancelDonation();
-    }
-  };
-
   const cancelDonation = () => {
     setIsModalOpen(false);
     handleCancelModalOpen();
@@ -142,6 +134,14 @@ export const CancelModal = ({
     handleCancelModalClose();
     setRemainingPayments(remainingPayments);
   }
+
+  const handleSave = () => {
+    if (option === 'cancelOnSelectedDate') {
+      displayRemainingPayments();
+    } else {
+      cancelDonation();
+    }
+  };
   return !isModalOpen ? (
     <Modal
       className={'modalContainer' + ' ' + theme}
@@ -244,7 +244,6 @@ export const CancelModal = ({
 
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button
-              onClick={() => cancelDonation()}
               className={styles.submitButton}
               onClick={() => handleSave()}
               style={{ minWidth: '20px', marginTop: '30px' }}
