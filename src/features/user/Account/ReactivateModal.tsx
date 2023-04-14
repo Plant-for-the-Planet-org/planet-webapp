@@ -16,9 +16,9 @@ export const ReactivateModal = ({
 }: any) => {
   const [disabled, setDisabled] = React.useState(false);
   const { theme } = React.useContext(ThemeContext);
-  const { token } = React.useContext(UserPropsContext);
+  const { token, impersonatedEmail } = React.useContext(UserPropsContext);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { t, i18n, ready } = useTranslation(['me']);
+  const { t } = useTranslation(['me']);
   const bodyToSend = {};
 
   React.useEffect(() => {
@@ -31,6 +31,7 @@ export const ReactivateModal = ({
       `/app/subscriptions/${record.id}?scope=reactivate`,
       bodyToSend,
       token,
+      impersonatedEmail,
       handleError
     )
       .then((res) => {

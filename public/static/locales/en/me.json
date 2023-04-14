@@ -247,5 +247,16 @@
   "apiKeyMessage2": "Once you generate an API Key, we will require a two factor authentication for your login. This you’ll be able to setup next time you log in.",
   "apiKeyMessage3": "Regenerating an API Key will invalidate your existing API Key immediately.",
   "regenerateKey": "Regenerate Key",
-  "giftFund": "GiftFund"
+  "giftFund": "GiftFund",
+  "dataExplorer": "Data Explorer",
+  "switchUser": "Impersonate User",
+  "switchUserMessage": "Enter the email of the user you want to switch to in the field below.",
+  "profileEmail": "Profile Email",
+  "switch": "Impersonate",
+  "targetUser": "You are currently impersonating {{impersonatedEmail}}",
+  "exitImpersonation": "Exit impersonation",
+  "enterTheEmail": "Enter the email of the target user",
+  "invalidEmail": "Please enter a valid email Id",
+  "userNotexist": "There is no account associated to this email !!",
+  "donatedTrees": "Donated Trees"
 }
