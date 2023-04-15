@@ -1,87 +1,20 @@
 import { Dispatch, SetStateAction } from 'react';
 import { ViewportProps } from 'react-map-gl'
-import { FeatureCollection, GeoJsonProperties,Geometry,Feature } from 'geojson'
+import { FeatureCollection, GeoJsonProperties,Geometry,Feature, Point as GeoJSONPoint } from 'geojson'
+import {TreeProjectConcise} from "@planet-sdk/common/build/types/project/map"
+import {SiteOwnerTypes, Tpo, Image, ProjectExpense,Coordinates,LastUpdated} from "@planet-sdk/common/build/types/project/common"
+import {TreeProjectMetadata, ConservationProjectMetadata} from "@planet-sdk/common/build/types/project/extended"
 
 
-export interface Coordinates {
-    lon: number;
-    lat: number;
-  }
-  export interface ExpensesEntity {
-    amount: number;
-    pdf: string;
-    year: number;
-    id: string;
-  }
-  export interface ImagesEntity {
-    image: string;
-    description?: string | null;
-    id: string;
-  }
-  export interface Metadata {
-    plantingDensity: number;
-    degradationYear: number;
-    firstTreePlanted: string;
-    motivation: string;
-    longTermPlan: string;
-    acquisitionYear: number;
-    enablePlantLocations: boolean;
-    visitorAssistance: boolean;
-    mainChallenge: string;
-    yearAbandoned: number;
-    plantingSeasons?: (number)[] | null;
-    maxPlantingDensity: number;
-    siteOwnerType?: (string)[] | null;
-    employeesCount: number;
-    siteOwnerName?: null;
-    location: string;
-    degradationCause: string;
-  }
-  export interface GeoLocation {
-      coordinates?: (number)[] | null;
-      type: string;
-  }
   export interface PaymentDefaults {
     fixedTreeCountOptions?: (number)[] | null;
     fixedDefaultTreeCount: number;
-  }
-  
-  export interface GeometryB {
-    coordinates?: ((((number)[] | null | number)[] | null)[] | null)[] | null;
-    type: string;
   }
   export interface LastUpdated {
     date: string;
     timezone: string;
     timezone_type: number;
   }
-  export interface PropertiesA {
-    lastUpdated: LastUpdated;
-    name: string;
-    description?: string | null;
-    id: string;
-    status: string;
-  }
-    export interface SitesEntity {
-      geometry: GeometryB;
-      type: string;
-      properties: PropertiesA;
-    }
-    export interface Address {
-      zipCode: string;
-      country: string;
-      address: string;
-      city: string;
-    }
-    export interface Tpo {
-      image?: null;
-      address: Address;
-      name: string;
-      id: string;
-      email: string;
-      slug: string;
-    }
-    
     export interface Project {
       id: string;
       _scope: string;
@@ -100,12 +33,12 @@ export interface Coordinates {
       description: string;
       employeesCount: number;
       enablePlantLocations: boolean;
-      expenses?: (ExpensesEntity)[] | null;
+      expenses?: (ProjectExpense)[] | null;
       firstTreePlanted: string;
       fixedRates?: (null)[] | null;
-      geoLocation: GeoLocation;
+      geoLocation: GeoJSONPoint;
       image: string;
-      images?: (ImagesEntity)[] | null;
+      images?: (Image)[] | null;
       intensity: number;
       isApproved: boolean;
       isCertified: boolean;
@@ -115,7 +48,7 @@ export interface Coordinates {
       location: string;
       longTermPlan: string;
       mainChallenge: string;
-      metadata: Metadata;
+      metadata: TreeProjectMetadata | ConservationProjectMetadata;
       minQuantity: number;
       minTreeCount: number;
       motivation: string;
@@ -128,7 +61,7 @@ export interface Coordinates {
       reviewRequested: boolean;
       reviews?: (null)[] | null;
       siteOwnerName?: null;
-      siteOwnerType?: (string)[] | null;
+      siteOwnerType?: SiteOwnerTypes;
       sites?: Feature<Geometry, GeoJsonProperties>[];
       slug: string;
       survivalRate: number;
@@ -145,47 +78,10 @@ export interface Coordinates {
     }
   
   // Searched project
-    export interface SearchMetadata {
-      degradationCause: string | null
-      longTermPlan: string | null
-      mainChallenge: string | null
-      motivation: string | null
-    }
-    export interface PropertiesB {
-      id: string
-      _scope: string
-      allowDonations: boolean
-      classification: string
-      countPlanted: number
-      countTarget: number
-      country: string
-      currency: string
-      fixedRates: any[]
-      image: string
-      isApproved: boolean
-      isFeatured: boolean
-      isPublished: boolean
-      isTopProject: boolean
-      location: any
-      minTreeCount: number
-      name: string
-      paymentDefaults: PaymentDefaults
-      purpose: string
-      reviewScore: number
-      reviews: string[]
-      slug: string
-      taxDeductionCountries: string[]
-      tpo: Tpo
-      treeCost: number
-      unitCost: number
-      description: string
-      metadata: SearchMetadata
-      options: any[]
-    } 
-    export interface SearchProject  {
+      export interface SearchProject  {
         type: string
-        geometry: GeometryB
-        properties: PropertiesB
+        geometry: GeoJSONPoint
+        properties: TreeProjectConcise
     }  
     // ViewPort
     
@@ -202,28 +98,7 @@ export interface Coordinates {
     
   
     // MapState 
-  
-   
-    export interface MapState {
-      mapStyle: MapStyle
-      dragPan: boolean
-      scrollZoom: boolean
-      minZoom: number
-      maxZoom: number
-    }
     
-    export interface MapStyle {
-      version: number
-      sprite?: string
-      glyphs?: string
-      sources: Sources
-      layers: Layer[]
-      metadata?: Metadata
-    }
-    
-    export interface Sources {
-      esri: Esri
-    }
     
     export interface Esri {
       type: string
@@ -234,7 +109,9 @@ export interface Coordinates {
       tiles: string[]
       name: string
     }
-    
+    export interface Sources {
+      esri: Esri
+    }
     export interface Layer {
       id: string
       type: string
@@ -246,6 +123,30 @@ export interface Coordinates {
       minzoom?: number
       maxzoom?: number
       filter?: any[]
+    }
+
+    export interface Metadata {
+      arcgisStyleUrl: string
+      arcgisOriginalItemTitle: string
+      arcgisQuickEditorWarning: boolean
+      arcgisQuickEditor: ArcgisQuickEditor
+      arcgisEditorExtents: ArcgisEditorExtent[]
+      arcgisMinimapVisibility: boolean
+    }
+    export interface MapStyle {
+      version: number
+      sprite?: string
+      glyphs?: string
+      sources: Sources
+      layers: Layer[]
+      metadata?: Metadata
+    }
+    export interface MapState {
+      mapStyle: MapStyle
+      dragPan: boolean
+      scrollZoom: boolean
+      minZoom: number
+      maxZoom: number
     }
     
     export interface Paint {
@@ -294,16 +195,9 @@ export interface Coordinates {
       "text-transform"?: string
       "text-optional"?: boolean
     }
-    
-    export interface Metadata {
-      arcgisStyleUrl: string
-      arcgisOriginalItemTitle: string
-      arcgisQuickEditorWarning: boolean
-      arcgisQuickEditor: ArcgisQuickEditor
-      arcgisEditorExtents: ArcgisEditorExtent[]
-      arcgisMinimapVisibility: boolean
+    export interface Colors {
+      boundaries: string
     }
-    
     export interface ArcgisQuickEditor {
       labelTextColor: string
       labelHaloColor: string
@@ -316,10 +210,10 @@ export interface Coordinates {
       boundaries: string
     }
     
-    export interface Colors {
-      boundaries: string
+    export interface SpatialReference {
+      wkid: number
+      latestWkid?: number
     }
-    
     export interface ArcgisEditorExtent {
       spatialReference: SpatialReference
       xmin: number
@@ -328,44 +222,24 @@ export interface Coordinates {
       ymax: number
     }
     
-    export interface SpatialReference {
-      wkid: number
-      latestWkid?: number
-    }
-    
-    
-    
-    
-    
    //rasterData
-  
-   
-   
-   export interface PlanetLab {
-       year: string
-       raster: string
-      }
-      
-  export interface Sentinel {
+ 
+ export interface Landsat {
           year: string
           raster: string
-      }
-  export interface Landsat {
-          year: string
-          raster: string
-      }
+        }
+export interface Esri {
+          year?: string
+          raster?: string
+        }
   export interface Imagery {
-          planetLabs: PlanetLab[]
-         sentinel: Sentinel[]
-         landsat: Landsat[]
-         esri: Esri[]
-     }
+        planetLabs: Landsat[]
+        sentinel: Landsat[]
+        landsat: Landsat[]
+        esri: Esri[]
+        }
     
   
-  export interface Esri {
-      year?: string
-      raster?: string
-  }
   
   export interface RasterData {
     evi: string | undefined;
@@ -398,8 +272,8 @@ export interface Coordinates {
   export interface MetadataB {
     app: App
     public: Public
+    private?: any[]
   }
-  
   
   export interface Coordinate {
     image: string
@@ -409,16 +283,7 @@ export interface Coordinates {
     created?: string
     updated?: string
   }
-  export interface Metadata2 {
-    app: App
-    private: any[]
-    public: any[]
-  }
-  export interface NextMeasurementDate {
-    date: string
-    timezone: string
-    timezone_type: number
-  }
+
   export interface Measurements {
     width: number
     height: number
@@ -430,30 +295,20 @@ export interface Coordinates {
     startDate: string
   }
   
-  export interface LastMeasurementDate {
-    date: string
-    timezone: string
-    timezone_type: number
-  }
-  export interface EventDate {
-    date: string
-    timezone: string
-    timezone_type: number
-  }
   export interface History {
     image: string
     statusReason: any
     created: string
     eventName: string
     classification: any
-    eventDate: EventDate
+    eventDate: LastUpdated
     measurements: Measurements
     status: string
   }
   export interface SamplePlantLocation {
     parent: string
-    nextMeasurementDate?: NextMeasurementDate
-    metadata: Metadata2
+    nextMeasurementDate?: LastUpdated
+    metadata: MetadataB
     hid: string
     scientificName: string
     otherSpecies: any
@@ -469,7 +324,7 @@ export interface Coordinates {
     measurements: Measurements
     image: any
     idempotencyKey: string
-    profile: string
+    profile?: string
     coordinates: Coordinate[]
     revisionPeriodicity?: RevisionPeriodicity
     scientificSpecies: string
@@ -477,7 +332,7 @@ export interface Coordinates {
     originalGeometry: Geometry
     captureMode: string
     geometry: Geometry
-    lastMeasurementDate?: LastMeasurementDate
+    lastMeasurementDate?: LastUpdated
     captureStatus: string
     deviceLocation: Geometry
     status: any
@@ -496,34 +351,13 @@ export interface Coordinates {
     id: string
     updated: string
   }
-  export interface PlantLocation {
-    metadata: MetadataB
-    hid: string
-    otherSpecies: null
-    description: null
-    geometryUpdatesCount: number
-    type: string
-    plantProjectSite: null
-    statusReason: null
+  export interface PlantLocation extends Omit<SamplePlantLocation, "profile" | "scientificSpecies" | "measurements" | "tag" | "parent">  {
     plantDateEnd: null
-    registrationDate: string
     sampleTreeCount: number
-    id: string
-    plantDate: string
-    image: any
-    idempotencyKey: string
-    coordinates: Coordinate[]
-    history: any[]
     samplePlantLocations: SamplePlantLocation[]
     plantProject: string
     plantedSpecies: PlantedSpecy[]
     plantDateStart: null
-    originalGeometry: GeometryA
-    captureMode: string
-    geometry: GeometryA
-    captureStatus: string
-    deviceLocation: Geometry
-    status: null
   }
   
   export interface SiteViewPort {
@@ -586,8 +420,8 @@ export interface Coordinates {
     >;
     purpose: string;
     setPurpose: SetState<string>;
-    mapState: MapboxOptions;
-    setMapState: SetState<MapboxOptions>;
+    mapState: MapState;
+    setMapState: SetState<MapState>;
     selectedMode: string;
     setSelectedMode: SetState<string>;
     viewport: ViewportProps;
