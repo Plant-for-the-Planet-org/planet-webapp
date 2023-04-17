@@ -1,9 +1,9 @@
-import { SetStateAction, Dispatch } from 'react';
 import { FlyToInterpolator, WebMercatorViewport } from 'react-map-gl';
 import * as d3 from 'd3-ease';
 import * as turf from '@turf/turf';
 import { getRequest } from '../apiRequests/api';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
+import { SetState } from '../../features/common/types/common';
 
 export function zoomToPlantLocation(
   coordinates: any,
@@ -53,7 +53,7 @@ export function zoomToPlantLocation(
 
 export async function getAllPlantLocations(
   project: string,
-  setErrors: Dispatch<SetStateAction<SerializedError[] | null>>,
+  setErrors: SetState<SerializedError[] | null>,
   redirect: (url: string) => void
 ) {
   try {
