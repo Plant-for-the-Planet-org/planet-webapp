@@ -49,7 +49,7 @@ export const CancelModal = ({
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState(new Date());
   const [disabled, setDisabled] = React.useState(false);
-  const { t, i18n, ready } = useTranslation(['me']);
+  const { t } = useTranslation(['me']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
