@@ -11,7 +11,7 @@ export default function Register({}: Props): ReactElement {
   const { t } = useTranslation('me');
 
   const RegisterTrees = dynamic(
-    () => import('../../src/features/user/RegisterTrees/RegisterTrees')
+    () => import('../../src/features/user/RegisterTrees')
   );
   return (
     <UserLayout>
