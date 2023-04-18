@@ -35,17 +35,8 @@ function ProjectsList({
   const [scrollY, setScrollY] = React.useState(0);
   const [hideSidebar, setHideSidebar] = React.useState(isEmbed);
   const { t, ready } = useTranslation(['donate', 'country', 'maps']);
-
-  const topProjectsList = process.env.NEXT_PUBLIC_FEATURED_LIST;
-
-  const showTopProjectsList = topProjectsList === 'false' ? false : true;
-
   const [selectedTab, setSelectedTab] = React.useState<'all' | 'top'>('all');
   const [searchMode, setSearchMode] = React.useState(false);
-  React.useEffect(() => {
-    showTopProjectsList ? setSelectedTab('top') : null;
-  }, []);
-
   const [searchValue, setSearchValue] = React.useState('');
   const [trottledSearchValue, setTrottledSearchValue] = React.useState('');
 
@@ -139,6 +130,15 @@ function ProjectsList({
     () => getProjects(projects, 'top'),
     [projects]
   );
+
+  const showTopProjectsList =
+    process.env.NEXT_PUBLIC_SHOW_TOP_PROJECTS === 'true' &&
+    topProjects !== undefined &&
+    topProjects.length > 0;
+
+  React.useEffect(() => {
+    showTopProjectsList ? setSelectedTab('top') : null;
+  }, []);
 
   const NoProjectFound = () => {
     return ready ? (
