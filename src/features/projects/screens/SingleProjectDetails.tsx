@@ -205,7 +205,6 @@ function SingleProjectDetails({}: Props): ReactElement {
             )}
             <div className={'projectSnippetContainer'}>
               <ProjectSnippet
-                keyString={project.id}
                 project={project}
                 editMode={false}
                 displayPopup={false}

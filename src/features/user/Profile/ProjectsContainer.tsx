@@ -60,7 +60,6 @@ export default function ProjectsContainer({ profile }: any) {
                   key={project.properties.id}
                 >
                   <ProjectSnippet
-                    key={project.properties.id}
                     project={project.properties}
                     editMode={false}
                     displayPopup={true}

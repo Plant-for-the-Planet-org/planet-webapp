@@ -23,14 +23,12 @@ import {
 
 interface Props {
   project: any;
-  keyString: string;
   editMode: Boolean;
   displayPopup: Boolean;
 }
 
 export default function ProjectSnippet({
   project,
-  keyString,
   editMode,
   displayPopup,
 }: Props): ReactElement {
@@ -60,7 +58,7 @@ export default function ProjectSnippet({
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
   return ready ? (
-    <div className={'singleProject'} key={keyString}>
+    <div className={'singleProject'}>
       {editMode ? (
         <Link href={`/profile/projects/${project.id}`}>
           <button id={'projectSnipEdit'} className={'projectEditBlock'}>
