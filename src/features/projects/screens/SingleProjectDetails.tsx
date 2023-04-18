@@ -215,7 +215,10 @@ function SingleProjectDetails({}: Props): ReactElement {
               <PlantLocationDetails {...ProjectProps} />
             ) : (
               <div className={'singleProjectDetails'}>
-                <div className={'projectCompleteInfo'}>
+                <div
+                  className={'projectCompleteInfo'}
+                  style={{ marginTop: 24 }}
+                >
                   {project?.isApproved && (
                     <TopProjectReports data={project.reviews} />
                   )}
