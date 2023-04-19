@@ -77,16 +77,13 @@
       width: 0px;
     }
     & {
-      .navlink {
-        .supportPinContainer {
+      .supportPinContainer {
           display: none;
         }
       }
-    }
   
-    & :hover{
-      .navlink {
-        .supportPinContainer {
+    &:hover{
+      .supportPinContainer {
           .pinValue{
             width: 33px;
             font-weight: bold;
@@ -99,9 +96,8 @@
           gap:12px;
           margin-right: 60px;
           cursor: auto;
-         
-        }
-      }
+         }
+      
     }
   @include xsPhoneView {
     width: 300px;
