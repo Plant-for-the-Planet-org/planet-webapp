@@ -120,6 +120,9 @@ export default function ProjectSnippet({
                       vertical: 'top',
                       horizontal: 'left',
                     }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
                   >
                     <Typography style={{ margin: 10 }}>
                       <TopProjectReports data={project.reviews} />
