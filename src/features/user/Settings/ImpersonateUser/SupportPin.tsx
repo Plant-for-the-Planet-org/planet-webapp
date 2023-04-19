@@ -38,8 +38,11 @@ const SupportPin = () => {
         <div className={styles.pinValue}>{user?.supportPin}</div>
         <div>
           <button onClick={handleNewPin}>
-            <RestartAltIcon />
+            <RestartAltIcon sx={{ '&:hover': { color: '#66BB6A' } }} />
           </button>
+        </div>
+        <div className={styles.resetPin}>
+          <span>{t('me:resetPin')}</span>
         </div>
       </div>
     </>

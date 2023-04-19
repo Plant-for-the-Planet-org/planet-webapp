@@ -84,11 +84,29 @@
   
     &:hover{
       .supportPinContainer {
-          .pinValue{
+          .pinValue {
             width: 33px;
             font-weight: bold;
           }
-          position: static;
+          .resetPin{
+            display: none;
+          }
+          &:hover {
+            .resetPin {
+              display: block;
+              position: absolute;
+              bottom: 30px;
+              right: -21px;
+              height: 23px;
+              width: 67px;
+              background-color: $primaryColor;
+              color: $light;
+              font-family: inherit;
+              text-align: center;
+              border-radius: 4px;
+            }
+          }
+          position: relative;
           display: flex;
           flex-direction: row;
           justify-content: center;
@@ -97,6 +115,7 @@
           margin-right: 60px;
           cursor: auto;
          }
+       
       
     }
   @include xsPhoneView {
@@ -226,6 +245,7 @@
     > svg > path , > svg > g > path{
       fill: $primaryColor;
     }
+    
   }
   button {
     font-size: 14px;
