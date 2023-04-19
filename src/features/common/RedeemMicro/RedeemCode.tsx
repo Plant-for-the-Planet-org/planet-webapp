@@ -81,7 +81,7 @@ export const InputRedeemCode = ({
 };
 
 export const RedeemCodeFailed = ({
-  errorMessages,
+  errorMessages = null,
   code,
   redeemAnotherCode,
   closeRedeem,
@@ -95,25 +95,14 @@ export const RedeemCodeFailed = ({
           <CancelIcon />
         </button>
       </div>
-      {errorMessages && errorMessages.length > 0 ? (
-        <div className={styles.RedeemTitle}>{code}</div>
-      ) : (
-        <div className={styles.RedeemTitle}>
-          {t('redeem:redeeming')} {code}
-        </div>
-      )}
 
-      {!errorMessages ? (
-        <div className={styles.redeemAnotherCodeDiv}>
-          <CircularProgress />
-        </div>
-      ) : (
-        <div className={styles.redeemAnotherCodeDiv}>
-          <button className="primaryButton" onClick={redeemAnotherCode}>
-            {t('redeem:redeemAnotherCode')}
-          </button>
-        </div>
-      )}
+      <div className={styles.RedeemTitle}>{code}</div>
+
+      <div className={styles.redeemAnotherCodeDiv}>
+        <button className="primaryButton" onClick={redeemAnotherCode}>
+          {t('redeem:redeemAnotherCode')}
+        </button>
+      </div>
     </div>
   );
 };
