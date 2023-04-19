@@ -59,8 +59,7 @@ export default function ProjectSites({
   const [errorMessage, setErrorMessage] = React.useState('');
   const [openModal, setOpenModal] = React.useState(false);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const { impersonatedEmail, setUser, setToken, logoutUser } =
-    React.useContext(UserPropsContext);
+  const { impersonatedEmail, logoutUser } = React.useContext(UserPropsContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -260,8 +259,6 @@ export default function ProjectSites({
         const result = await getAuthenticatedRequest(
           `/app/profile/projects/${projectGUID}?_scope=sites`,
           token,
-          setUser,
-          setToken,
           logoutUser,
           impersonatedEmail
         );

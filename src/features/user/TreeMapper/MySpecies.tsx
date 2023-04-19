@@ -19,14 +19,8 @@ interface Props {}
 
 export default function MySpecies({}: Props): ReactElement {
   const { t } = useTranslation(['treemapper', 'me', 'common']);
-  const {
-    token,
-    contextLoaded,
-    impersonatedEmail,
-    setUser,
-    setToken,
-    logoutUser,
-  } = React.useContext(UserPropsContext);
+  const { token, contextLoaded, impersonatedEmail, logoutUser } =
+    React.useContext(UserPropsContext);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const [species, setSpecies] = React.useState<any[]>([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
@@ -45,8 +39,6 @@ export default function MySpecies({}: Props): ReactElement {
       const result = await getAuthenticatedRequest(
         '/treemapper/species',
         token,
-        setUser,
-        setToken,
         logoutUser,
         impersonatedEmail
       );

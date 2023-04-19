@@ -94,8 +94,6 @@ export default function ProjectsContainer({}: any) {
     contextLoaded,
     token,
     impersonatedEmail,
-    setUser,
-    setToken,
     logoutUser,
   } = React.useContext(UserPropsContext);
 
@@ -105,8 +103,6 @@ export default function ProjectsContainer({}: any) {
         const projects = await getAuthenticatedRequest(
           '/app/profile/projects?version=1.2',
           token,
-          setUser,
-          setToken,
           logoutUser,
           impersonatedEmail
         );

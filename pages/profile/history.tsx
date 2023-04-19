@@ -14,14 +14,8 @@ interface Props {}
 
 function AccountHistory({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
-  const {
-    token,
-    contextLoaded,
-    impersonatedEmail,
-    setUser,
-    setToken,
-    logoutUser,
-  } = React.useContext(UserPropsContext);
+  const { token, contextLoaded, impersonatedEmail, logoutUser } =
+    React.useContext(UserPropsContext);
 
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
@@ -48,8 +42,6 @@ function AccountHistory({}: Props): ReactElement {
                 : paymentHistory?._links?.next
             }`,
             token,
-            setUser,
-            setToken,
             logoutUser,
             impersonatedEmail
           );
@@ -72,8 +64,6 @@ function AccountHistory({}: Props): ReactElement {
             await getAuthenticatedRequest<Payments.PaymentHistory>(
               '/app/paymentHistory?limit=15',
               token,
-              setUser,
-              setToken,
               logoutUser,
               impersonatedEmail
             );
@@ -95,8 +85,6 @@ function AccountHistory({}: Props): ReactElement {
                 : '/app/paymentHistory?limit=15'
             }`,
             token,
-            setUser,
-            setToken,
             logoutUser,
             impersonatedEmail
           );

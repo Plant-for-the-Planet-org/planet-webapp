@@ -62,15 +62,8 @@ export default function PlantingLocation({
   activeMethod,
   setActiveMethod,
 }: Props): ReactElement {
-  const {
-    user,
-    token,
-    contextLoaded,
-    impersonatedEmail,
-    setUser,
-    setToken,
-    logoutUser,
-  } = React.useContext(UserPropsContext);
+  const { user, token, contextLoaded, impersonatedEmail, logoutUser } =
+    React.useContext(UserPropsContext);
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
@@ -106,8 +99,6 @@ export default function PlantingLocation({
       const projects = await getAuthenticatedRequest(
         '/app/profile/projects',
         token,
-        setUser,
-        setToken,
         logoutUser,
         impersonatedEmail
       );
@@ -122,8 +113,6 @@ export default function PlantingLocation({
       const species = await getAuthenticatedRequest(
         '/treemapper/species',
         token,
-        setUser,
-        setToken,
         logoutUser,
         impersonatedEmail
       );

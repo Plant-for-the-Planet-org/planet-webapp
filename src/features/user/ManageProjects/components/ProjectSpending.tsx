@@ -75,8 +75,7 @@ export default function ProjectSpending({
 
   const [showForm, setShowForm] = React.useState(true);
   const [uploadedFiles, setUploadedFiles] = React.useState([]);
-  const { impersonatedEmail, setUser, setToken, logoutUser } =
-    React.useContext(UserPropsContext);
+  const { impersonatedEmail, logoutUser } = React.useContext(UserPropsContext);
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {
       handleReset(ready ? t('manageProjects:resetMessage') : '');
@@ -174,8 +173,6 @@ export default function ProjectSpending({
         const result = await getAuthenticatedRequest(
           `/app/profile/projects/${projectGUID}?_scope=expenses`,
           token,
-          setUser,
-          setToken,
           logoutUser,
           impersonatedEmail
         );

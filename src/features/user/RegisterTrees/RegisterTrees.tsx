@@ -53,15 +53,8 @@ const dialogSx: SxProps = {
 interface Props {}
 
 export default function RegisterTrees({}: Props) {
-  const {
-    user,
-    token,
-    contextLoaded,
-    impersonatedEmail,
-    setUser,
-    setToken,
-    logoutUser,
-  } = React.useContext(UserPropsContext);
+  const { user, token, contextLoaded, impersonatedEmail, logoutUser } =
+    React.useContext(UserPropsContext);
 
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {
@@ -203,8 +196,6 @@ export default function RegisterTrees({}: Props) {
       const projects = await getAuthenticatedRequest(
         '/app/profile/projects',
         token,
-        setUser,
-        setToken,
         logoutUser,
         impersonatedEmail
       );

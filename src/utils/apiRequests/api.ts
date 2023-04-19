@@ -84,8 +84,6 @@ export function getRequest<T>(
 export function getAuthenticatedRequest<T>(
   url: any,
   token: any,
-  setUser: SetState<null | string>,
-  setToken: SetState<null | string>,
   logoutUser: (value?: string | undefined) => void,
   impersonatedEmail?: string,
   header: any = null,
@@ -125,8 +123,6 @@ export function getAuthenticatedRequest<T>(
             resolve(await res.json());
           }
         } else {
-          setUser(false);
-          setToken(null);
           logoutUser();
           throw new APIError(INVALID_TOKEN_STATUS_CODE, {
             error_type: 'token_expired',

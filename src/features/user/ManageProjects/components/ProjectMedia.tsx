@@ -39,8 +39,7 @@ export default function ProjectMedia({
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const { impersonatedEmail, setUser, setToken, logoutUser } =
-    React.useContext(UserPropsContext);
+  const { impersonatedEmail, logoutUser } = React.useContext(UserPropsContext);
 
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
@@ -56,8 +55,6 @@ export default function ProjectMedia({
         const result = await getAuthenticatedRequest(
           `/app/profile/projects/${projectGUID}?_scope=images`,
           token,
-          setUser,
-          setToken,
           logoutUser,
           impersonatedEmail
         );

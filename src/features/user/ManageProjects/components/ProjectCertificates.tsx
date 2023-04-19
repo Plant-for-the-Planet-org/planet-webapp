@@ -55,8 +55,7 @@ function ProjectCertificates({
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const { impersonatedEmail, setUser, setToken, logoutUser } =
-    React.useContext(UserPropsContext);
+  const { impersonatedEmail, logoutUser } = React.useContext(UserPropsContext);
 
   const {
     register,
@@ -102,8 +101,6 @@ function ProjectCertificates({
         const result = await getAuthenticatedRequest(
           `/app/profile/projects/${projectGUID}?_scope=certificates`,
           token,
-          setUser,
-          setToken,
           logoutUser,
           impersonatedEmail
         );
