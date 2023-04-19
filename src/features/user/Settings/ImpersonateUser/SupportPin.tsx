@@ -12,6 +12,7 @@ interface SupportPin {
 const SupportPin = () => {
   const { token, user, setUser } = useContext(UserPropsContext);
   const { t } = useTranslation('me');
+
   const handleNewPin = async () => {
     try {
       const response = await putAuthenticatedRequest<SupportPin>(
@@ -20,9 +21,9 @@ const SupportPin = () => {
         token
       );
       if (response) {
-        const updateUser = { ...user };
-        updateUser['supportPin'] = response?.supportPin;
-        setUser(updateUser);
+        const updateUserData = { ...user };
+        updateUserData['supportPin'] = response?.supportPin;
+        setUser(updateUserData);
       } else {
         return false;
       }
