@@ -4,8 +4,7 @@ import { getQueryString } from './getQueryString';
 import getsessionId from './getSessionId';
 import { validateToken } from './validateToken';
 import { ImpersonationData } from '../../features/user/Settings/ImpersonateUser/ImpersonateUserForm';
-import { head } from 'cypress/types/lodash';
-
+import { setHeader } from './setHeader';
 // Handle Error responses from API
 const handleApiError = (
   error: number,
@@ -72,11 +71,9 @@ const handleApiError = (
 //  API call to private /profile endpoint
 export async function getAccountInfo(
   token: any,
-  impersonatedData?:ImpersonationData 
+  impersonationData?:ImpersonationData 
 ): Promise<any> {
-    const data = localStorage.getItem("impersonationData") ;
-    const impersonatedDataFromLocal = JSON.parse(data);
-    const header : any = {
+     const header : any = {
       'tenant-key': `${TENANT_ID}`,
       'X-SESSION-ID': await getsessionId(),
       Authorization: `Bearer ${token}`,
@@ -85,18 +82,10 @@ export async function getAccountInfo(
           ? localStorage.getItem('language')
           : 'en'
       }`,
-    
-    }
-    if(impersonatedData?.targetEmail || impersonatedDataFromLocal?.targetEmail ){
-      header["X-SWITCH-USER"] = impersonatedData?.targetEmail || impersonatedDataFromLocal?.targetEmail 
-    }
-
-    if(impersonatedData?.supportPin || impersonatedDataFromLocal?.supportPin){
-      header["X-USER-SUPPORT-PIN"] = impersonatedData?.supportPin || impersonatedDataFromLocal?.supportPin 
     }
     const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
     method: 'GET',
-    headers: header
+    headers: setHeader(header,impersonationData)
   });
   return response;
 }
@@ -146,7 +135,7 @@ export async function getRequest<T>(
 export async function getAuthenticatedRequest<T>(
   url: any,
   token: any,
-  header: any = null,
+  headers: any = null,
   errorHandler?: Function,
   redirect?: string,
   queryParams?: { [key: string]: string },
@@ -154,29 +143,21 @@ export async function getAuthenticatedRequest<T>(
 ): Promise<T> {
   let result = {};
   const lang = localStorage.getItem('language') || 'en';
-  const targetData = localStorage.getItem("impersonationData") ;
-  const impersonatedDataFromLocal = JSON.parse(targetData);
   const query: any = { ...queryParams };
   const queryString = getQueryString(query);
   const queryStringSuffix = queryString ? '?' + queryString : '';
-  const headers = {
+  const header = {
       'tenant-key': `${TENANT_ID}`,
       'X-SESSION-ID': await getsessionId(),
       Authorization: `Bearer ${token}`,
       'x-locale': `${lang}`,
       'x-accept-versions': version ? version : '1.0.3',
-      ...(header ? header : {}),
+      ...(headers ? headers : {}),
   }
-  if(impersonatedDataFromLocal?.targetEmail ){
-    headers["X-SWITCH-USER"] =  impersonatedDataFromLocal?.targetEmail 
-  }
-
-  if( impersonatedDataFromLocal?.supportPin){
-    headers["X-USER-SUPPORT-PIN"] =  impersonatedDataFromLocal?.supportPin 
-  }
+ 
   await fetch(`${process.env.API_ENDPOINT}${url}${queryStringSuffix}`, {
     method: 'GET',
-    headers: headers
+    headers: setHeader(header)
   })
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
@@ -218,9 +199,7 @@ export async function postAuthenticatedRequest<T>(
   errorHandler?: Function,
   headers?: any
 ): Promise<T | ApiCustomError | null> {
-  const targetData = localStorage.getItem("impersonationData") ;
-  const  impersonatedDataFromLocal = JSON.parse(targetData);
-  const header = {
+ const header = {
     'Content-Type': 'application/json',
     'tenant-key': `${TENANT_ID}`,
     'X-SESSION-ID': await getsessionId(),
@@ -232,19 +211,13 @@ export async function postAuthenticatedRequest<T>(
     }`,
     ...(headers ? headers : {}),
   }
-  if(impersonatedDataFromLocal?.targetEmail ){
-    header["X-SWITCH-USER"] =  impersonatedDataFromLocal?.targetEmail 
-  }
-
-  if( impersonatedDataFromLocal?.supportPin){
-    header["X-USER-SUPPORT-PIN"] =  impersonatedDataFromLocal?.supportPin 
-  }
+  
   if (validateToken(token)) {
     try {
       const res = await fetch(process.env.API_ENDPOINT + url, {
         method: 'POST',
         body: JSON.stringify(data),
-        headers: header
+        headers: setHeader(header)
       });
       const result = await res.json();
       handleApiError(res.status, result, errorHandler);
@@ -279,9 +252,7 @@ export async function deleteAuthenticatedRequest(
   token: any,
   errorHandler?: Function
 ): Promise<any> {
-  const targetData = localStorage.getItem("impersonationData") ;
-  const  impersonatedDataFromLocal = JSON.parse(targetData);
-  const header : any = {
+    const header : any = {
     'Content-Type': 'application/json',
     'tenant-key': `${TENANT_ID}`,
     'X-SESSION-ID': await getsessionId(),
@@ -292,18 +263,12 @@ export async function deleteAuthenticatedRequest(
         : 'en'
     }`,
   }
-  if(impersonatedDataFromLocal?.targetEmail ){
-    header["X-SWITCH-USER"] =  impersonatedDataFromLocal?.targetEmail 
-  }
-
-  if( impersonatedDataFromLocal?.supportPin){
-    header["X-USER-SUPPORT-PIN"] =  impersonatedDataFromLocal?.supportPin 
-  }
+ 
   let result;
   if (validateToken(token)) {
     await fetch(process.env.API_ENDPOINT + url, {
       method: 'DELETE',
-      headers: header
+      headers: setHeader(header)
     }).then(async (res) => {
       result = res.status === 400 ? await res.json() : res.status;
       handleApiError(res.status, result, errorHandler);
@@ -350,8 +315,6 @@ export async function putAuthenticatedRequest<T>(
   token: any,
   errorHandler?: Function
 ): Promise<T | ApiCustomError | undefined> {
-  const targetData = localStorage.getItem("impersonationData") ;
-  const impersonatedDataFromLocal = JSON.parse(targetData);
   const header : any = {
     'Content-Type': 'application/json',
     'tenant-key': `${TENANT_ID}`,
@@ -363,18 +326,11 @@ export async function putAuthenticatedRequest<T>(
         : 'en'
     }`,
   }
-  if(impersonatedDataFromLocal?.targetEmail ){
-    header["X-SWITCH-USER"] =  impersonatedDataFromLocal?.targetEmail 
-  }
-
-  if( impersonatedDataFromLocal?.supportPin){
-    header["X-USER-SUPPORT-PIN"] =  impersonatedDataFromLocal?.supportPin 
-  }
   if (validateToken(token)) {
     const res = await fetch(process.env.API_ENDPOINT + url, {
       method: 'PUT',
       body: JSON.stringify(data),
-      headers:header
+      headers: setHeader(header)
     });
     const result = await res.json();
     handleApiError(res.status, result, errorHandler);

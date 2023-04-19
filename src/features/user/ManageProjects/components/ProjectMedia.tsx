@@ -69,7 +69,6 @@ export default function ProjectMedia({
       `/app/projects/${projectGUID}/images`,
       submitData,
       token,
-      impersonatedData,
       handleError
     )
       .then((res) => {

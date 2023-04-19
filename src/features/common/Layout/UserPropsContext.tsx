@@ -2,7 +2,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
-import { ImpersonationData } from '../../user/Settings/ImpersonateUser/ImpersonateUserForm';
 import { User } from '../types/user';
 
 interface Props {}
@@ -21,8 +20,7 @@ export const UserPropsContext = React.createContext({
   userLang: 'en',
   isImpersonationModeOn: false,
   setIsImpersonationModeOn: (_value: boolean) => {}, // eslint-disable-line no-unused-vars
-  supportPin: '',
-  setSupportPin: (_value: string) => {}, // eslint-disable-line no-unused-vars,
+  loadUser: () => Promise<void>,
 });
 
 function UserPropsProvider({ children }: any): ReactElement {
@@ -43,7 +41,6 @@ function UserPropsProvider({ children }: any): ReactElement {
   const [userLang, setUserLang] = React.useState('en');
   const [isImpersonationModeOn, setIsImpersonationModeOn] =
     React.useState(false);
-  const [supportPin, setSupportPin] = React.useState<string>('');
 
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -74,7 +71,6 @@ function UserPropsProvider({ children }: any): ReactElement {
       const res = await getAccountInfo(token);
       if (res.status === 200) {
         const resJson = await res.json();
-        setSupportPin(resJson?.supportPin);
         setUser(resJson);
       } else if (res.status === 303) {
         // if 303 -> user doesn not exist in db
@@ -120,8 +116,6 @@ function UserPropsProvider({ children }: any): ReactElement {
         setUser,
         isImpersonationModeOn,
         setIsImpersonationModeOn,
-        supportPin,
-        setSupportPin,
         contextLoaded,
         token,
         isLoading,

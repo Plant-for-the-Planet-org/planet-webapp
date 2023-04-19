@@ -21,10 +21,10 @@ const ImpersonationActivated = () => {
 
   const { t } = useTranslation('me');
 
-  return isImpersonationModeOn ? (
+  return user && isImpersonationModeOn ? (
     <div className={styles.impersonationAlertContainer}>
       <div className={styles.impersonatingText}>
-        {t('me:targetUser', { impersonatedEmail: `<${user.email}>` })}
+        {t('me:targetUser', { impersonatedEmail: `<${user?.email}>` })}
       </div>
 
       <div

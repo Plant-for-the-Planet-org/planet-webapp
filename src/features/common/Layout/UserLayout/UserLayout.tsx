@@ -1,5 +1,5 @@
 import router, { useRouter } from 'next/router';
-import React, { ReactElement, useContext } from 'react';
+import React, { ReactElement } from 'react';
 import { useTranslation } from 'next-i18next';
 import MenuIcon from '../../../../../public/assets/images/icons/Sidebar/MenuIcon';
 import DownArrow from '../../../../../public/assets/images/icons/DownArrow';
@@ -19,21 +19,16 @@ import styles from './UserLayout.module.scss';
 import TreeMappperIcon from '../../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
 import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/RegisterIcon';
 import NotionLinkIcon from '../../../../../public/assets/images/icons/Sidebar/NotionLinkIcon';
-import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-
-interface SupportPin {
-  supportPin: string;
-}
+import SupportPin from '../../../user/Settings/ImpersonateUser/SupportPin';
+import FiberPinIcon from '@mui/icons-material/FiberPin';
 
 function LanguageSwitcher() {
-  const { i18n, ready, t } = useTranslation(['common', 'me']);
+  const { i18n, ready } = useTranslation(['common', 'me']);
 
   const [language, setLanguage] = React.useState(i18n.language);
   const [openModal, setOpenModal] = React.useState(false);
   const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
   const [selectedCountry, setSelectedCountry] = React.useState('DE');
-  const { supportPin, isImpersonationModeOn, token, setSupportPin } =
-    useContext(UserPropsContext);
 
   React.useEffect(() => {
     if (typeof Storage !== 'undefined') {
@@ -59,23 +54,6 @@ function LanguageSwitcher() {
       }
     }
   }, []);
-  //to  get new pin
-  const handleNewPin = async () => {
-    try {
-      const response = await putAuthenticatedRequest<SupportPin>(
-        '/app/profile/supportPin',
-        undefined,
-        token
-      );
-      if (response) {
-        setSupportPin(response?.supportPin);
-      } else {
-        return false;
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   return ready ? (
     <>
@@ -91,18 +69,6 @@ function LanguageSwitcher() {
             i18n.language ? i18n.language.toUpperCase() : ''
           } • ${selectedCurrency}`}
         </button>
-        {isImpersonationModeOn ? (
-          <></>
-        ) : (
-          <div className={styles.supportPinContainer}>
-            <div>|</div>
-            <div className={styles.supportPin}>{t('me:supportPin')} :</div>
-            <div className={styles.getNewPin} onClick={handleNewPin}>
-              {t('me:getNewPin')}
-            </div>
-            <div className={styles.pinValue}>{supportPin}</div>
-          </div>
-        )}
       </div>
       <SelectLanguageAndCountry
         openModal={openModal}
@@ -509,6 +475,13 @@ function UserLayout(props: any): ReactElement {
 
         <div>
           <LanguageSwitcher />
+
+          {!isImpersonationModeOn && (
+            <div className={styles.navlink}>
+              <FiberPinIcon />
+              <SupportPin />
+            </div>
+          )}
           <div className={styles.navlink}>
             <NotionLinkIcon />
             <button

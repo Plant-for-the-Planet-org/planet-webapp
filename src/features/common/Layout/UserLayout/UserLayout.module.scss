@@ -54,25 +54,6 @@
   font-family: inherit;
 }
 
-.getNewPin {
-  display: none;
-  position: absolute;
-  background-color: $primaryColor;
-  font-family: $primaryFontFamily;
-  margin-left: 6px;
-  margin-top: 20px;
-  height: 32px;
-  width: 116px;
-  border-radius: 7px;
-  font-size: 14px;
-  justify-content: center;
-  align-items: center;
-  color: $light;
-  &:hover {
-    display: flex;
-  }
- }
-
  .sidebar {
   width: 109px;
   position: fixed;
@@ -95,36 +76,33 @@
     &::-webkit-scrollbar {
       width: 0px;
     }
-  
-
-    & .navlink .supportPinContainer {
-      display: none;
-      }
-    
-    
-      &:hover{
+    & {
+      .navlink {
         .supportPinContainer {
-          display: flex;
-          gap: 6px;
-          position: relative;
-          right: 35px;
+          display: none;
         }
-      } 
-        
-     .supportPinContainer:hover {
-        color: $primaryColor;
-        .getNewPin {
-         display: flex;
-        }
-     }
-      .navlink .supportPin {
-       font-size: 14px
       }
-    & .navlink .pinValue {
-        font-weight: bold;
-       }
-         
+    }
   
+    & :hover{
+      .navlink {
+        .supportPinContainer {
+          .pinValue{
+            width: 33px;
+            font-weight: bold;
+          }
+          position: static;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          gap:12px;
+          margin-right: 60px;
+          cursor: auto;
+         
+        }
+      }
+    }
   @include xsPhoneView {
     width: 300px;
     & .navlink {
@@ -140,6 +118,13 @@
     &.menuClosed {
       width: 0px;
     }
+    & {
+      .navlink .supportPinContainer {
+      display: flex;
+      margin-right: 102px;
+      gap:10px
+    }
+  }
   }
   @include smTabletView {
     top: 80px;
@@ -180,6 +165,14 @@
   background-color: $backgroundColor;
   color: $primaryFontColor;
   font-family: $primaryFontFamily;
+  & {
+    .navlink {
+      .supportPinContainer {
+        display: none;
+       
+      }
+    }
+  }
   @include xsPhoneView {
     width: 300px;
     & .navlink {
@@ -196,6 +189,7 @@
       width: 0px;
     }
   }
+  
   @include smTabletView {
     top: 120px;
     & .closeMenu {
@@ -206,7 +200,7 @@
     }
     &:hover .navlink {
       padding: 16px 20px;
-      justify-content: space-between;
+      justify-content: flex-start;
     }
     &:hover .navlink button {
       display: block;
@@ -243,6 +237,9 @@
     &:hover {
       cursor: pointer;
     }
+  }
+  &:hover{
+    color: $primaryColor;
   }
 }
 
