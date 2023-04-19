@@ -10,7 +10,6 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { User } from '../../../common/types/user';
 import CustomSnackbar from '../../../common/CustomSnackbar';
-import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 import { PaymentFrequencies } from '../../../../utils/constants/payoutConstants';
 import { handleError, APIError } from '@planet-sdk/common';
 
@@ -30,7 +29,8 @@ const PayoutScheduleForm = (): ReactElement | null => {
   const { t, ready } = useTranslation('managePayouts');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const { token, user, setUser, impersonatedEmail } = useContext(UserPropsContext);
+  const { token, user, setUser, logoutUser, impersonatedEmail } =
+    useContext(UserPropsContext);
   const { setErrors } = useContext(ErrorHandlingContext);
   const { handleSubmit, errors, control } = useForm<FormData>({
     mode: 'onBlur',
@@ -44,6 +44,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
         '/app/profile',
         { scheduleFrequency: data.scheduleFrequency },
         token,
+        logoutUser,
         impersonatedEmail
       );
       setUser(res);

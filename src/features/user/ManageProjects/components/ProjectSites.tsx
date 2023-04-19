@@ -611,7 +611,7 @@ function EditSite({
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const { impersonatedEmail } = React.useContext(UserPropsContext);
+  const { logoutUser, impersonatedEmail } = React.useContext(UserPropsContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -661,6 +661,7 @@ function EditSite({
           `/app/projects/${projectGUID}/sites/${siteGUID}`,
           submitData,
           token,
+          logoutUser,
           impersonatedEmail
         );
         const temp = siteList;

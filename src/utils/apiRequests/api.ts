@@ -268,36 +268,45 @@ export function putAuthenticatedRequest<T>(
   url: any,
   data: any,
   token: any,
+  logoutUser: (value?: string | undefined) => void,
   impersonatedEmail?: string
 ) {
   return new Promise<T>((resolve, reject) => {
     (async () => {
       try {
-        const res = await fetch(process.env.API_ENDPOINT + url, {
-          method: 'PUT',
-          body: JSON.stringify(data),
-          headers: {
-            'Content-Type': 'application/json',
-            'tenant-key': `${TENANT_ID}`,
-            'X-SESSION-ID': await getsessionId(),
-            Authorization: `Bearer ${token}`,
-            'x-locale': `${
-              localStorage.getItem('language')
-                ? localStorage.getItem('language')
-                : 'en'
-            }`,
-            'x-switch-user': impersonatedEmail || '',
-          },
-        });
+        if (validateToken(token)) {
+          const res = await fetch(process.env.API_ENDPOINT + url, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: {
+              'Content-Type': 'application/json',
+              'tenant-key': `${TENANT_ID}`,
+              'X-SESSION-ID': await getsessionId(),
+              Authorization: `Bearer ${token}`,
+              'x-locale': `${
+                localStorage.getItem('language')
+                  ? localStorage.getItem('language')
+                  : 'en'
+              }`,
+              'x-switch-user': impersonatedEmail || '',
+            },
+          });
 
-        if (!res.ok) {
-          throw new APIError(res.status, await res.json());
-        }
+          if (!res.ok) {
+            throw new APIError(res.status, await res.json());
+          }
 
-        if (res.status === 204) {
-          resolve(true as T);
+          if (res.status === 204) {
+            resolve(true as T);
+          } else {
+            resolve(await res.json());
+          }
         } else {
-          resolve(await res.json());
+          logoutUser();
+          throw new APIError(INVALID_TOKEN_STATUS_CODE, {
+            error_type: 'token_expired',
+            error_code: 'token_expired',
+          });
         }
       } catch (err) {
         reject(err);

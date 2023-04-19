@@ -179,6 +179,7 @@ export default function ProjectMedia({
         `/app/projects/${projectGUID}`,
         submitData,
         token,
+        logoutUser,
         impersonatedEmail
       );
       setProjectDetails(res);
@@ -208,6 +209,7 @@ export default function ProjectMedia({
         `/app/projects/${projectGUID}/images/${id}`,
         submitData,
         token,
+        logoutUser,
         impersonatedEmail
       );
       const tempUploadedData = uploadedImages;
@@ -235,6 +237,7 @@ export default function ProjectMedia({
         `/app/projects/${projectGUID}/images/${id}`,
         submitData,
         token,
+        logoutUser,
         impersonatedEmail
       );
       const tempUploadedData = uploadedImages;

@@ -130,6 +130,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
         `/app/projects/${projectGUID}`,
         submitData,
         token,
+        logoutUser,
         impersonatedEmail
       );
       setProjectDetails(res);
@@ -152,6 +153,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
         `/app/projects/${projectGUID}`,
         submitData,
         token,
+        logoutUser,
         impersonatedEmail
       );
       setProjectDetails(res);

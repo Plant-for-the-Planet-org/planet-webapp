@@ -61,6 +61,7 @@ export default function ApiKey({}: any) {
         '/app/profile/apiKey',
         undefined,
         token,
+        logoutUser,
         impersonatedEmail
       );
       setIsUploadingData(false);

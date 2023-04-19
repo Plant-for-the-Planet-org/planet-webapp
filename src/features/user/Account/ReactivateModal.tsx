@@ -17,7 +17,8 @@ export const ReactivateModal = ({
 }: any) => {
   const [disabled, setDisabled] = React.useState(false);
   const { theme } = React.useContext(ThemeContext);
-  const { token, impersonatedEmail } = React.useContext(UserPropsContext);
+  const { token, logoutUser, impersonatedEmail } =
+    React.useContext(UserPropsContext);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const { t, i18n, ready } = useTranslation(['me']);
   const bodyToSend = {};
@@ -34,6 +35,7 @@ export const ReactivateModal = ({
         `/app/subscriptions/${record.id}?scope=reactivate`,
         bodyToSend,
         token,
+        logoutUser,
         impersonatedEmail
       );
       handleReactivateModalClose();

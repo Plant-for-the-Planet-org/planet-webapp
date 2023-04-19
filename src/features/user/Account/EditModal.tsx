@@ -63,7 +63,8 @@ export const EditModal = ({
     useForm({
       mode: 'all',
     });
-  const { token, impersonatedEmail } = React.useContext(UserPropsContext);
+  const { token, logoutUser, impersonatedEmail } =
+    React.useContext(UserPropsContext);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -105,6 +106,7 @@ export const EditModal = ({
           `/app/subscriptions/${record?.id}?scope=modify`,
           bodyToSend,
           token,
+          logoutUser,
           impersonatedEmail
         );
         if (res?.status === 'action_required') {

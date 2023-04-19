@@ -411,6 +411,7 @@ export default function BasicDetails({
           `/app/projects/${projectGUID}`,
           submitData,
           token,
+          logoutUser,
           impersonatedEmail
         );
         setProjectDetails(res);
