@@ -121,5 +121,6 @@
   "planet_cash_insufficient_credit": "Insufficient Credit",
   "planet_cash_invalid_project": "Invalid Project",
   "active_account_exists": "Active PlanetCash account already exists",
-  "duplicate_account": "Account already exists"
+  "duplicate_account": "Account already exists",
+  "token_expired": "Token Expired. Please login again"
 }

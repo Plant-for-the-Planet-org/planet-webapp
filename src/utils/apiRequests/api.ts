@@ -2,6 +2,10 @@ import { TENANT_ID } from '../constants/environment';
 import { getQueryString } from './getQueryString';
 import getsessionId from './getSessionId';
 import { APIError } from '@planet-sdk/common';
+import { validateToken } from './validateToken';
+import { SetState } from '../../features/common/types/common';
+
+const INVALID_TOKEN_STATUS_CODE = 498;
 
 //  API call to private /profile endpoint
 export async function getAccountInfo(
@@ -80,6 +84,9 @@ export function getRequest<T>(
 export function getAuthenticatedRequest<T>(
   url: any,
   token: any,
+  setUser: SetState<null | string>,
+  setToken: SetState<null | string>,
+  logoutUser: (value?: string | undefined) => void,
   impersonatedEmail?: string,
   header: any = null,
   queryParams?: { [key: string]: string },
@@ -93,28 +100,38 @@ export function getAuthenticatedRequest<T>(
   return new Promise<T>((resolve, reject) => {
     (async () => {
       try {
-        const res = await fetch(
-          `${process.env.API_ENDPOINT}${url}${queryStringSuffix}`,
-          {
-            method: 'GET',
-            headers: {
-              'tenant-key': `${TENANT_ID}`,
-              'X-SESSION-ID': await getsessionId(),
-              Authorization: `Bearer ${token}`,
-              'x-locale': `${lang}`,
-              'x-accept-versions': version ? version : '1.0.3',
-              'x-switch-user': impersonatedEmail || '',
-              ...(header ? header : {}),
-            },
+        if (validateToken(token)) {
+          const res = await fetch(
+            `${process.env.API_ENDPOINT}${url}${queryStringSuffix}`,
+            {
+              method: 'GET',
+              headers: {
+                'tenant-key': `${TENANT_ID}`,
+                'X-SESSION-ID': await getsessionId(),
+                Authorization: `Bearer ${token}`,
+                'x-locale': `${lang}`,
+                'x-accept-versions': version ? version : '1.0.3',
+                'x-switch-user': impersonatedEmail || '',
+                ...(header ? header : {}),
+              },
+            }
+          );
+          if (!res.ok) {
+            throw new APIError(res.status, await res.json());
           }
-        );
-        if (!res.ok) {
-          throw new APIError(res.status, await res.json());
-        }
-        if (res.status === 204) {
-          resolve(true as T);
+          if (res.status === 204) {
+            resolve(true as T);
+          } else {
+            resolve(await res.json());
+          }
         } else {
-          resolve(await res.json());
+          setUser(false);
+          setToken(null);
+          logoutUser();
+          throw new APIError(INVALID_TOKEN_STATUS_CODE, {
+            error_type: 'token_expired',
+            error_code: 'token_expired',
+          });
         }
       } catch (err) {
         reject(err);

@@ -25,7 +25,15 @@ function ManageSingleProject({}: Props): ReactElement {
   const [setupAccess, setSetupAccess] = React.useState(false);
   const [project, setProject] = React.useState({});
 
-  const { user, contextLoaded, token, impersonatedEmail } = React.useContext(UserPropsContext);
+  const {
+    user,
+    contextLoaded,
+    token,
+    impersonatedEmail,
+    setUser,
+    setToken,
+    logoutUser,
+  } = React.useContext(UserPropsContext);
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
 
   useEffect(() => {
@@ -41,6 +49,9 @@ function ManageSingleProject({}: Props): ReactElement {
         const result = await getAuthenticatedRequest(
           `/app/profile/projects/${projectGUID}`,
           token,
+          setUser,
+          setToken,
+          logoutUser,
           impersonatedEmail
         );
         setProject(result);

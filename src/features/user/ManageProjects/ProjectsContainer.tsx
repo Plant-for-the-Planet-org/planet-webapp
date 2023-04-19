@@ -89,7 +89,15 @@ export default function ProjectsContainer({}: any) {
   const [projects, setProjects] = React.useState([]);
   const [loader, setLoader] = React.useState(true);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const { user, contextLoaded, token, impersonatedEmail } = React.useContext(UserPropsContext);
+  const {
+    user,
+    contextLoaded,
+    token,
+    impersonatedEmail,
+    setUser,
+    setToken,
+    logoutUser,
+  } = React.useContext(UserPropsContext);
 
   async function loadProjects() {
     if (user) {
@@ -97,6 +105,9 @@ export default function ProjectsContainer({}: any) {
         const projects = await getAuthenticatedRequest(
           '/app/profile/projects?version=1.2',
           token,
+          setUser,
+          setToken,
+          logoutUser,
           impersonatedEmail
         );
         setProjects(projects);

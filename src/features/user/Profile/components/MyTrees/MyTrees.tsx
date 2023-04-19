@@ -28,8 +28,8 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   const { t, ready } = useTranslation(['country', 'me']);
   const [contributions, setContributions] = React.useState();
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
-  const { impersonatedEmail } = React.useContext(UserPropsContext);
-
+  const { impersonatedEmail, setUser, setToken, logoutUser } =
+    React.useContext(UserPropsContext);
 
   React.useEffect(() => {
     async function loadFunction() {
@@ -38,6 +38,9 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
           const result = await getAuthenticatedRequest(
             `/app/profile/contributions`,
             token,
+            setUser,
+            setToken,
+            logoutUser,
             impersonatedEmail
           );
           setContributions(result);

@@ -43,7 +43,15 @@ export default function ManagePayouts({
   const { t, ready, i18n } = useTranslation('managePayouts');
   const router = useRouter();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const { token, contextLoaded, user, impersonatedEmail } = useContext(UserPropsContext);
+  const {
+    token,
+    contextLoaded,
+    user,
+    impersonatedEmail,
+    setUser,
+    setToken,
+    logoutUser,
+  } = useContext(UserPropsContext);
   const { accounts, setAccounts, payoutMinAmounts, setPayoutMinAmounts } =
     usePayouts();
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
@@ -74,6 +82,9 @@ export default function ManagePayouts({
         const res = await getAuthenticatedRequest<Payouts.BankAccount[]>(
           `/app/accounts`,
           token,
+          setUser,
+          setToken,
+          logoutUser,
           impersonatedEmail
         );
         setAccounts(res);

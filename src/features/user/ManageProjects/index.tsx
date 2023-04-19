@@ -18,11 +18,11 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 
-
 export default function ManageProjects({ GUID, token, project }: any) {
   const { t, ready } = useTranslation(['manageProjects']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const { impersonatedEmail } = React.useContext(UserPropsContext);
+  const { impersonatedEmail, setUser, setToken, logoutUser } =
+    React.useContext(UserPropsContext);
 
   const router = useRouter();
 
@@ -172,6 +172,9 @@ export default function ManageProjects({ GUID, token, project }: any) {
         const res = await getAuthenticatedRequest(
           `/app/profile/projects/${projectGUID}`,
           token,
+          setUser,
+          setToken,
+          logoutUser,
           impersonatedEmail
         );
         setProjectDetails(res);

@@ -14,8 +14,14 @@ interface Props {}
 
 function RecurrentDonations({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
-  const { token, contextLoaded, impersonatedEmail } =
-    React.useContext(UserPropsContext);
+  const {
+    token,
+    contextLoaded,
+    impersonatedEmail,
+    setUser,
+    setToken,
+    logoutUser,
+  } = React.useContext(UserPropsContext);
 
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
@@ -29,7 +35,14 @@ function RecurrentDonations({}: Props): ReactElement {
     setProgress(70);
     try {
       const recurrencies: Payments.Subscription[] =
-        await getAuthenticatedRequest('/app/subscriptions', token, impersonatedEmail);
+        await getAuthenticatedRequest(
+          '/app/subscriptions',
+          token,
+          setUser,
+          setToken,
+          logoutUser,
+          impersonatedEmail
+        );
       if (recurrencies && Array.isArray(recurrencies)) {
         const activeRecurrencies = recurrencies?.filter(
           (obj) => obj.status == 'active' || obj.status == 'trialing'
