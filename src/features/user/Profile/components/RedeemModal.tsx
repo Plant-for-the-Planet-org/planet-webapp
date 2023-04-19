@@ -32,7 +32,7 @@ export default function RedeemModal({
     'donate',
     'redeem',
   ]);
-  const { user, contextLoaded, token, setUser, impersonatedEmail } =
+  const { user, contextLoaded, token, setUser, impersonatedEmail, logoutUser } =
     React.useContext(UserPropsContext);
   const { setErrors, errors: apiErrors } =
     React.useContext(ErrorHandlingContext);
@@ -62,6 +62,7 @@ export default function RedeemModal({
           `/app/redeem`,
           submitData,
           token,
+          logoutUser,
           impersonatedEmail
         );
         setIsCodeRedeemed(true);

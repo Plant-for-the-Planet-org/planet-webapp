@@ -75,6 +75,7 @@ export default function MySpecies({}: Props): ReactElement {
         `/treemapper/species`,
         data,
         token,
+        logoutUser,
         impersonatedEmail
       );
     } catch (err) {

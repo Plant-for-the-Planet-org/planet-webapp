@@ -17,7 +17,6 @@ import {
   postAuthenticatedRequest,
   putAuthenticatedRequest,
 } from '../../../../utils/apiRequests/api';
-import addServerErrors from '../../../../utils/apiRequests/addServerErrors';
 import {
   getFormattedNumber,
   parseNumber,
@@ -30,7 +29,6 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { handleError, APIError } from '@planet-sdk/common';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
-
 
 interface Props {
   handleNext: Function;
@@ -63,7 +61,7 @@ export default function BasicDetails({
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   // Map setup
   const { theme } = React.useContext(ThemeContext);
-  const { impersonatedEmail } = React.useContext(UserPropsContext);
+  const { impersonatedEmail, logoutUser } = React.useContext(UserPropsContext);
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
   const mapRef = React.useRef(null);
@@ -428,6 +426,7 @@ export default function BasicDetails({
           `/app/projects`,
           submitData,
           token,
+          logoutUser,
           impersonatedEmail
         );
         setProjectGUID(res.id);

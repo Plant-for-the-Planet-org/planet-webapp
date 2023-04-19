@@ -168,6 +168,7 @@ export default function ProjectSites({
           `/app/projects/${projectGUID}/sites`,
           submitData,
           token,
+          logoutUser,
           impersonatedEmail
         );
         const temp = siteList;

@@ -132,6 +132,7 @@ export default function ProjectSpending({
         `/app/projects/${projectGUID}/expenses`,
         submitData,
         token,
+        logoutUser,
         impersonatedEmail
       );
       const newUploadedFiles = uploadedFiles;

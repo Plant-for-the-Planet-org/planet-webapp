@@ -151,6 +151,7 @@ function ProjectCertificates({
         `/app/projects/${projectGUID}/certificates`,
         submitData,
         token,
+        logoutUser,
         impersonatedEmail
       );
       let newUploadedFiles = uploadedFiles;

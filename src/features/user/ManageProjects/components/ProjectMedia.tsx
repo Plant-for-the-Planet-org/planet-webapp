@@ -84,6 +84,7 @@ export default function ProjectMedia({
         `/app/projects/${projectGUID}/images`,
         submitData,
         token,
+        logoutUser,
         impersonatedEmail
       );
       let newUploadedImages = [...uploadedImages];

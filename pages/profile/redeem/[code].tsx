@@ -18,7 +18,7 @@ import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 
 const ReedemCode: FC = () => {
   const { t, ready } = useTranslation(['redeem']);
-  const { user, contextLoaded, token, impersonatedEmail } = useContext(UserPropsContext);
+  const { user, contextLoaded, token, impersonatedEmail, logoutUser } = useContext(UserPropsContext);
   const { setErrors, errors } = useContext(ErrorHandlingContext);
 
   const [code, setCode] = useState<string | string[] | null>('');
@@ -70,6 +70,7 @@ const ReedemCode: FC = () => {
           `/app/redeem`,
           submitData,
           token,
+          logoutUser,
           impersonatedEmail
         );
         setRedeemedCodeData(res);

@@ -8,14 +8,13 @@ import { useTranslation } from 'next-i18next';
 import BankDetailsForm, { FormData } from '../components/BankDetailsForm';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
-import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 
 const AddBankAccount = (): ReactElement | null => {
   const { t } = useTranslation('managePayouts');
   const { payoutMinAmounts, setAccounts, accounts } = usePayouts();
-  const { token, impersonatedEmail } = useContext(UserPropsContext);
+  const { token, impersonatedEmail, logoutUser } = useContext(UserPropsContext);
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
@@ -38,6 +37,7 @@ const AddBankAccount = (): ReactElement | null => {
         '/app/accounts',
         accountData,
         token,
+        logoutUser,
         impersonatedEmail
       );
       if (accounts) {

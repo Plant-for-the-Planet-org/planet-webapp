@@ -222,6 +222,7 @@ export default function PlantingLocation({
           `/treemapper/plantLocations`,
           submitData,
           token,
+          logoutUser,
           impersonatedEmail
         );
         setPlantLocation(res);

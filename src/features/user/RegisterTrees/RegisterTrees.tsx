@@ -171,6 +171,7 @@ export default function RegisterTrees({}: Props) {
             `/app/contributions`,
             submitData,
             token,
+            logoutUser,
             impersonatedEmail
           );
           setErrorMessage('');

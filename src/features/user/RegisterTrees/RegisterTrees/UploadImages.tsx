@@ -38,7 +38,7 @@ export default function UploadImages({
     });
   }, []);
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const { impersonatedEmail } = React.useContext(UserPropsContext);
+  const { logoutUser, impersonatedEmail } = React.useContext(UserPropsContext);
 
   const uploadPhotos = async (image: any) => {
     setIsUploadingData(true);
@@ -52,6 +52,7 @@ export default function UploadImages({
         `/app/contributions/${contributionGUID}/images`,
         submitData,
         token,
+        logoutUser,
         impersonatedEmail
       );
       const newUploadedImages = uploadedImages;
@@ -82,17 +83,17 @@ export default function UploadImages({
         impersonatedEmail
       );
       const uploadedImagesTemp = uploadedImages;
-        const index = uploadedImagesTemp.findIndex((item) => {
-          return item.id === id;
-        });
-        if (index !== -1) {
-          uploadedImagesTemp.splice(index, 1);
-          setUploadedImages(uploadedImagesTemp);
-        } else {
-          console.log('image not found');
-        }
+      const index = uploadedImagesTemp.findIndex((item) => {
+        return item.id === id;
+      });
+      if (index !== -1) {
+        uploadedImagesTemp.splice(index, 1);
+        setUploadedImages(uploadedImagesTemp);
+      } else {
+        console.log('image not found');
+      }
     } catch (err) {
-      setErrors(handleError(err as APIError))
+      setErrors(handleError(err as APIError));
     }
   };
 
