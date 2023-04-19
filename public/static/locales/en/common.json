@@ -114,7 +114,7 @@
   "line_item_missing_quantity": "Missing quantity",
   "line_item_project_not_allowing_donations": "Project not allowing donations",
   "line_item_quantity_prohibited": "Quantity prohibited",
-  "generic_error": "Something went wrong",
+  "generic_error": "Something went wrong. Please check your internet connection or try again later.",
   "missing_profile": "Missing Profile",
   "some_error": "Something went wrong",
   "planet_cash_payment_failure": "Payment failure",

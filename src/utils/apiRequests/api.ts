@@ -1,7 +1,7 @@
 import { TENANT_ID } from '../constants/environment';
 import { getQueryString } from './getQueryString';
 import getsessionId from './getSessionId';
-import { APIError } from '@planet-sdk/common';
+import { APIError, ClientError } from '@planet-sdk/common';
 import { validateToken } from './validateToken';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
@@ -123,7 +123,7 @@ export function getAuthenticatedRequest<T>(
           }
         } else {
           logoutUser();
-          throw new APIError(INVALID_TOKEN_STATUS_CODE, {
+          throw new ClientError(INVALID_TOKEN_STATUS_CODE, {
             error_type: 'token_expired',
             error_code: 'token_expired',
           });
@@ -176,7 +176,7 @@ export function postAuthenticatedRequest<T>(
           }
         } else {
           logoutUser();
-          throw new APIError(INVALID_TOKEN_STATUS_CODE, {
+          throw new ClientError(INVALID_TOKEN_STATUS_CODE, {
             error_type: 'token_expired',
             error_code: 'token_expired',
           });
@@ -260,7 +260,7 @@ export function deleteAuthenticatedRequest<T>(
           }
         } else {
           logoutUser();
-          throw new APIError(INVALID_TOKEN_STATUS_CODE, {
+          throw new ClientError(INVALID_TOKEN_STATUS_CODE, {
             error_type: 'token_expired',
             error_code: 'token_expired',
           });
@@ -311,7 +311,7 @@ export function putAuthenticatedRequest<T>(
           }
         } else {
           logoutUser();
-          throw new APIError(INVALID_TOKEN_STATUS_CODE, {
+          throw new ClientError(INVALID_TOKEN_STATUS_CODE, {
             error_type: 'token_expired',
             error_code: 'token_expired',
           });
