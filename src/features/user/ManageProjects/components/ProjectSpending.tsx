@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement } from 'react';
 import styles from './../StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
@@ -156,6 +156,7 @@ export default function ProjectSpending({
       await deleteAuthenticatedRequest(
         `/app/projects/${projectGUID}/expenses/${id}`,
         token,
+        logoutUser,
         impersonatedEmail
       );
       const uploadedFilesTemp = uploadedFiles.filter((item) => item.id !== id);

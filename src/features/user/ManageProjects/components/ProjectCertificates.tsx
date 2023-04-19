@@ -53,20 +53,11 @@ function ProjectCertificates({
   setIsUploadingData,
   userLang,
 }: Props): ReactElement {
-  const { t, i18n, ready } = useTranslation(['manageProjects']);
+  const { t, ready } = useTranslation(['manageProjects']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { impersonatedEmail, logoutUser } = React.useContext(UserPropsContext);
 
-  const {
-    register,
-    handleSubmit,
-    errors,
-    control,
-    formState,
-    getValues,
-    setValue,
-  } = useForm({ mode: 'all' });
-  const { isDirty } = formState;
+  const { register, errors, getValues, setValue } = useForm({ mode: 'all' });
 
   const [issueDate, setIssueDate] = React.useState(new Date());
 
@@ -178,6 +169,7 @@ function ProjectCertificates({
       await deleteAuthenticatedRequest(
         `/app/projects/${projectGUID}/certificates/${id}`,
         token,
+        logoutUser,
         impersonatedEmail
       );
       const uploadedFilesTemp = uploadedFiles!.filter((item) => item.id !== id);

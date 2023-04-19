@@ -53,6 +53,7 @@ export default function MySpecies({}: Props): ReactElement {
       await deleteAuthenticatedRequest(
         `/treemapper/species/${id}`,
         token,
+        logoutUser,
         impersonatedEmail
       );
       fetchMySpecies();

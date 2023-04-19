@@ -25,7 +25,12 @@ export default function DeleteProfile({}: any) {
   const handleDeleteAccount = async () => {
     setIsUploadingData(true);
     try {
-      await deleteAuthenticatedRequest('/app/profile', token, impersonatedEmail);
+      await deleteAuthenticatedRequest(
+        '/app/profile',
+        token,
+        logoutUser,
+        impersonatedEmail
+      );
       setIsUploadingData(false);
       logoutUser(`${process.env.NEXTAUTH_URL}/`);
     } catch (err) {

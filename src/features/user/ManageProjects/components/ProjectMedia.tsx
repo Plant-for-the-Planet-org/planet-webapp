@@ -157,6 +157,7 @@ export default function ProjectMedia({
       await deleteAuthenticatedRequest(
         `/app/projects/${projectGUID}/images/${id}`,
         token,
+        logoutUser,
         impersonatedEmail
       );
       const uploadedFilesTemp = uploadedImages.filter((item) => item.id !== id);

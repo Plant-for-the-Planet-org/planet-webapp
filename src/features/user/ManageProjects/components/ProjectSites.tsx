@@ -205,6 +205,7 @@ export default function ProjectSites({
       await deleteAuthenticatedRequest(
         `/app/projects/${projectGUID}/sites/${id}`,
         token,
+        logoutUser,
         impersonatedEmail
       );
       const siteListTemp = siteList.filter((item) => item.id !== id);

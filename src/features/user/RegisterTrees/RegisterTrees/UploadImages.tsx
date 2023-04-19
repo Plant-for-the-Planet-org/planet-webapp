@@ -80,6 +80,7 @@ export default function UploadImages({
       await deleteAuthenticatedRequest(
         `/app/contributions/${contributionGUID}/images/${id}`,
         token,
+        logoutUser,
         impersonatedEmail
       );
       const uploadedImagesTemp = uploadedImages;
