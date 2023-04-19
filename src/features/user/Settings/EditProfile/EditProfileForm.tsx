@@ -31,6 +31,19 @@ const Alert = styled(MuiAlert)(({ theme }) => {
   };
 });
 
+type FormData = {
+  address: string;
+  bio: string;
+  city: string;
+  firstname: string;
+  getNews: boolean;
+  isPrivate: boolean;
+  lastname: string;
+  name: string;
+  url: string;
+  zipCode: string;
+};
+
 export default function EditProfileForm() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { handleError } = React.useContext(ErrorHandlingContext);
@@ -132,10 +145,10 @@ export default function EditProfileForm() {
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
   const watchIsPrivate = watch('isPrivate');
   const [type, setAccountType] = useState(user.type ? user.type : 'individual');
-  const [localType, setLocalType] = useState({
-    id: '',
-    title: '',
-    value: '',
+  const [localProfileType, setLocalProfileType] = useState({
+    id: 1,
+    title: ready ? t('editProfile:individual') : '',
+    value: 'individual',
   });
 
   const profileTypes = [
@@ -157,15 +170,13 @@ export default function EditProfileForm() {
   ];
 
   React.useEffect(() => {
-    profileTypes.map((p) => {
-      if (p.value === type) {
-        setLocalType({
-          id: p.id,
-          title: p.title,
-          value: p.value,
-        });
-      }
-    });
+    const selectedProfile = profileTypes.find((p) => p.value === type);
+    selectedProfile &&
+      setLocalProfileType({
+        id: selectedProfile.id,
+        title: selectedProfile.title,
+        value: selectedProfile.value,
+      });
   }, []);
 
   React.useEffect(() => {
@@ -175,7 +186,7 @@ export default function EditProfileForm() {
   const onDrop = React.useCallback(
     (acceptedFiles) => {
       setUpdatingPic(true);
-      acceptedFiles.forEach((file: object) => {
+      acceptedFiles.forEach((file: Blob) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onabort = () => console.log('file reading was aborted');
@@ -219,7 +230,7 @@ export default function EditProfileForm() {
     onDropAccepted: () => {},
   });
 
-  const saveProfile = async (data: object) => {
+  const saveProfile = async (data: FormData) => {
     setIsUploadingData(true);
     let bodyToSend = {
       ...data,
@@ -277,14 +288,7 @@ export default function EditProfileForm() {
   return ready ? (
     <StyledForm>
       <div className="inputContainer">
-        <div
-          {...getRootProps()}
-          // style={{
-          //   display: 'flex',
-          //   justifyContent: 'center',
-          //   width: '100%',
-          // }}
-        >
+        <div {...getRootProps()}>
           <label htmlFor="upload">
             <div className={styles.profilePicDiv}>
               <input {...getInputProps()} />
@@ -311,7 +315,7 @@ export default function EditProfileForm() {
         {type !== 'tpo' ? (
           <MuiAutoComplete
             id="profile-type"
-            value={localType}
+            value={localProfileType}
             options={profileTypes}
             getOptionLabel={(option) => option.title}
             isOptionEqualToValue={(option, selectedOption) =>
@@ -325,7 +329,7 @@ export default function EditProfileForm() {
             onChange={(event, newType) => {
               if (newType) {
                 setAccountType(newType.value);
-                setLocalType(newType);
+                setLocalProfileType(newType);
               }
             }}
             renderInput={(params) => (
@@ -370,7 +374,6 @@ export default function EditProfileForm() {
               variant="outlined"
               name="email"
               defaultValue={user.email}
-              inputProps={{ readOnly: true }}
               disabled
             ></TextField>
           </div>
@@ -499,6 +502,7 @@ export default function EditProfileForm() {
             name="isPrivate"
             control={control}
             inputRef={register()}
+            defaultValue={false}
             render={(props: object) => (
               <ToggleSwitch
                 checked={props.value}
@@ -523,6 +527,7 @@ export default function EditProfileForm() {
             name="getNews"
             control={control}
             inputRef={register()}
+            defaultValue={false}
             render={(props: any) => (
               <ToggleSwitch
                 checked={props.value}
