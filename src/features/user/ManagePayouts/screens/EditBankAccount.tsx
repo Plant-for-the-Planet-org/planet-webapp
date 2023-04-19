@@ -55,7 +55,6 @@ const EditBankAccount = (): ReactElement | null => {
       }
       // show success message
       setIsAccountUpdated(true);
-      setIsProcessing(false);
       // go to accounts tab
       setTimeout(() => {
         router.push('/profile/payouts');
