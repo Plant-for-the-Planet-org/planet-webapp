@@ -158,7 +158,7 @@ export function postAuthenticatedRequest<T>(
                 : 'en'
             }`,
             ...(headers ? headers : {}),
-            },
+            }
           const res = await fetch(process.env.API_ENDPOINT + url, {
             method: 'POST',
             body: JSON.stringify(data),
@@ -242,7 +242,7 @@ export function deleteAuthenticatedRequest<T>(
                 ? localStorage.getItem('language')
                 : 'en'
             }`,
-          },
+          }
           const res = await fetch(process.env.API_ENDPOINT + url, {
             method: 'DELETE',
             headers: setHeaderForImpersonation(header)
@@ -291,7 +291,7 @@ export function putAuthenticatedRequest<T>(
                 ? localStorage.getItem('language')
                 : 'en'
             }`,
-          },
+          }
           const res = await fetch(process.env.API_ENDPOINT + url, {
             method: 'PUT',
             body: JSON.stringify(data),
