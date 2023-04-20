@@ -46,7 +46,9 @@ export default function ErrorPopup(): ReactElement {
               >
                 <CloseIcon color={'#f44336'} width={'10'} height={'10'} />
               </button>
-              <div className={styles.errorContent}>{t(err.message)}</div>
+              <div className={styles.errorContent}>
+                {t(`errors.${err.message}`)}
+              </div>
             </div>
           );
         })}
