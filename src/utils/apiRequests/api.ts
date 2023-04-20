@@ -3,17 +3,17 @@ import { getQueryString } from './getQueryString';
 import getsessionId from './getSessionId';
 import { APIError, ClientError } from '@planet-sdk/common';
 import { validateToken } from './validateToken';
+import { ImpersonationData } from '../../features/user/Settings/ImpersonateUser/ImpersonateUserForm';
+import { setHeaderForImpersonation } from './setHeader';
 
 const INVALID_TOKEN_STATUS_CODE = 498;
 
 //  API call to private /profile endpoint
 export async function getAccountInfo(
   token: any,
-  impersonatedEmail?: string
+  impersonationData?:ImpersonationData 
 ): Promise<any> {
-  const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
-    method: 'GET',
-    headers: {
+     const header : any = {
       'tenant-key': `${TENANT_ID}`,
       'X-SESSION-ID': await getsessionId(),
       Authorization: `Bearer ${token}`,
@@ -22,8 +22,10 @@ export async function getAccountInfo(
           ? localStorage.getItem('language')
           : 'en'
       }`,
-      'x-switch-user': impersonatedEmail || '',
-    },
+    }
+    const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
+    method: 'GET',
+    headers: setHeaderForImpersonation(header,impersonationData)
   });
 
   // TODO: Add error handling after figuring out the nature of getAccountInfo function call with impersonatedEmail
@@ -84,7 +86,6 @@ export function getAuthenticatedRequest<T>(
   url: any,
   token: any,
   logoutUser: (value?: string | undefined) => void,
-  impersonatedEmail?: string,
   header: any = null,
   queryParams?: { [key: string]: string },
   version?: string
@@ -98,19 +99,19 @@ export function getAuthenticatedRequest<T>(
     (async () => {
       try {
         if (validateToken(token)) {
+          const headers = {
+            'tenant-key': `${TENANT_ID}`,
+            'X-SESSION-ID': await getsessionId(),
+            Authorization: `Bearer ${token}`,
+            'x-locale': `${lang}`,
+            'x-accept-versions': version ? version : '1.0.3',
+            ...(header ? header : {}),
+          }
           const res = await fetch(
             `${process.env.API_ENDPOINT}${url}${queryStringSuffix}`,
             {
               method: 'GET',
-              headers: {
-                'tenant-key': `${TENANT_ID}`,
-                'X-SESSION-ID': await getsessionId(),
-                Authorization: `Bearer ${token}`,
-                'x-locale': `${lang}`,
-                'x-accept-versions': version ? version : '1.0.3',
-                'x-switch-user': impersonatedEmail || '',
-                ...(header ? header : {}),
-              },
+              headers: setHeaderForImpersonation(headers)
             }
           );
           if (!res.ok) {
@@ -140,29 +141,28 @@ export function postAuthenticatedRequest<T>(
   data: any,
   token: any,
   logoutUser: (value?: string | undefined) => void,
-  impersonatedEmail?: string,
   headers?: any
 ) {
   return new Promise<T>((resolve, reject) => {
     (async () => {
       try {
         if (validateToken(token)) {
+          const header =  {
+            'Content-Type': 'application/json',
+            'tenant-key': `${TENANT_ID}`,
+            'X-SESSION-ID': await getsessionId(),
+            Authorization: `Bearer ${token}`,
+            'x-locale': `${
+              localStorage.getItem('language')
+                ? localStorage.getItem('language')
+                : 'en'
+            }`,
+            ...(headers ? headers : {}),
+            }
           const res = await fetch(process.env.API_ENDPOINT + url, {
             method: 'POST',
             body: JSON.stringify(data),
-            headers: {
-              'Content-Type': 'application/json',
-              'tenant-key': `${TENANT_ID}`,
-              'X-SESSION-ID': await getsessionId(),
-              Authorization: `Bearer ${token}`,
-              'x-locale': `${
-                localStorage.getItem('language')
-                  ? localStorage.getItem('language')
-                  : 'en'
-              }`,
-              ...(headers ? headers : {}),
-              'x-switch-user': impersonatedEmail || '',
-            },
+            headers: setHeaderForImpersonation(header)
           });
 
           if (!res.ok) {
@@ -227,26 +227,25 @@ export function deleteAuthenticatedRequest<T>(
   url: any,
   token: any,
   logoutUser: (value?: string | undefined) => void,
-  impersonatedEmail?: string
 ) {
   return new Promise<T>((resolve, reject) => {
     (async () => {
       try {
         if (validateToken(token)) {
+          const header = {
+            'Content-Type': 'application/json',
+            'tenant-key': `${TENANT_ID}`,
+            'X-SESSION-ID': await getsessionId(),
+            Authorization: `Bearer ${token}`,
+            'x-locale': `${
+              localStorage.getItem('language')
+                ? localStorage.getItem('language')
+                : 'en'
+            }`,
+          }
           const res = await fetch(process.env.API_ENDPOINT + url, {
             method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json',
-              'tenant-key': `${TENANT_ID}`,
-              'X-SESSION-ID': await getsessionId(),
-              Authorization: `Bearer ${token}`,
-              'x-locale': `${
-                localStorage.getItem('language')
-                  ? localStorage.getItem('language')
-                  : 'en'
-              }`,
-              'x-switch-user': impersonatedEmail || '',
-            },
+            headers: setHeaderForImpersonation(header)
           });
 
           if (!res.ok) {
@@ -277,27 +276,26 @@ export function putAuthenticatedRequest<T>(
   data: any,
   token: any,
   logoutUser: (value?: string | undefined) => void,
-  impersonatedEmail?: string
 ) {
   return new Promise<T>((resolve, reject) => {
     (async () => {
       try {
         if (validateToken(token)) {
+          const header = {
+            'Content-Type': 'application/json',
+            'tenant-key': `${TENANT_ID}`,
+            'X-SESSION-ID': await getsessionId(),
+            Authorization: `Bearer ${token}`,
+            'x-locale': `${
+              localStorage.getItem('language')
+                ? localStorage.getItem('language')
+                : 'en'
+            }`,
+          }
           const res = await fetch(process.env.API_ENDPOINT + url, {
             method: 'PUT',
             body: JSON.stringify(data),
-            headers: {
-              'Content-Type': 'application/json',
-              'tenant-key': `${TENANT_ID}`,
-              'X-SESSION-ID': await getsessionId(),
-              Authorization: `Bearer ${token}`,
-              'x-locale': `${
-                localStorage.getItem('language')
-                  ? localStorage.getItem('language')
-                  : 'en'
-              }`,
-              'x-switch-user': impersonatedEmail || '',
-            },
+            headers: setHeaderForImpersonation(header)
           });
 
           if (!res.ok) {

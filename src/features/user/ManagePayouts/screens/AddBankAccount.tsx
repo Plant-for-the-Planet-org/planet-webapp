@@ -14,7 +14,7 @@ import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 const AddBankAccount = (): ReactElement | null => {
   const { t } = useTranslation('managePayouts');
   const { payoutMinAmounts, setAccounts, accounts } = usePayouts();
-  const { token, impersonatedEmail, logoutUser } = useContext(UserPropsContext);
+  const { token, logoutUser } = useContext(UserPropsContext);
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
@@ -37,8 +37,7 @@ const AddBankAccount = (): ReactElement | null => {
         '/app/accounts',
         accountData,
         token,
-        logoutUser,
-        impersonatedEmail
+        logoutUser
       );
       if (accounts) {
         setAccounts([...accounts, res]);

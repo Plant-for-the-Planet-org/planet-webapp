@@ -59,12 +59,10 @@ export const EditModal = ({
   const [userLang, setUserLang] = React.useState('en');
   const [disabled, setDisabled] = React.useState(false);
   const { t, i18n } = useTranslation(['me']);
-  const { register, handleSubmit, errors, setValue, control, getValues } =
-    useForm({
-      mode: 'all',
-    });
-  const { token, logoutUser, impersonatedEmail } =
-    React.useContext(UserPropsContext);
+  const { register, handleSubmit, errors, control } = useForm({
+    mode: 'all',
+  });
+  const { token, logoutUser } = React.useContext(UserPropsContext);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -106,8 +104,7 @@ export const EditModal = ({
           `/app/subscriptions/${record?.id}?scope=modify`,
           bodyToSend,
           token,
-          logoutUser,
-          impersonatedEmail
+          logoutUser
         );
         if (res?.status === 'action_required') {
           window.open(res.response.confirmationUrl, '_blank');

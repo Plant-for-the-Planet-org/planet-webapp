@@ -80,7 +80,7 @@ export default function DetailedAnalysis({
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['manageProjects', 'common']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const { logoutUser, impersonatedEmail } = React.useContext(UserPropsContext);
+  const { logoutUser } = React.useContext(UserPropsContext);
   const [siteOwners, setSiteOwners] = React.useState([
     {
       id: 1,
@@ -296,8 +296,7 @@ export default function DetailedAnalysis({
         `/app/projects/${projectGUID}`,
         submitData,
         token,
-        logoutUser,
-        impersonatedEmail
+        logoutUser
       );
       setProjectDetails(res);
       setIsUploadingData(false);

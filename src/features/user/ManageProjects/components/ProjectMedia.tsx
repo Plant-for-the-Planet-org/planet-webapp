@@ -39,7 +39,7 @@ export default function ProjectMedia({
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const { impersonatedEmail, logoutUser } = React.useContext(UserPropsContext);
+  const { logoutUser } = React.useContext(UserPropsContext);
 
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
@@ -55,8 +55,7 @@ export default function ProjectMedia({
         const result = await getAuthenticatedRequest(
           `/app/profile/projects/${projectGUID}?_scope=images`,
           token,
-          logoutUser,
-          impersonatedEmail
+          logoutUser
         );
         setUploadedImages(result.images);
       }
@@ -84,8 +83,7 @@ export default function ProjectMedia({
         `/app/projects/${projectGUID}/images`,
         submitData,
         token,
-        logoutUser,
-        impersonatedEmail
+        logoutUser
       );
       let newUploadedImages = [...uploadedImages];
 
@@ -157,8 +155,7 @@ export default function ProjectMedia({
       await deleteAuthenticatedRequest(
         `/app/projects/${projectGUID}/images/${id}`,
         token,
-        logoutUser,
-        impersonatedEmail
+        logoutUser
       );
       const uploadedFilesTemp = uploadedImages.filter((item) => item.id !== id);
       setUploadedImages(uploadedFilesTemp);
@@ -180,8 +177,7 @@ export default function ProjectMedia({
         `/app/projects/${projectGUID}`,
         submitData,
         token,
-        logoutUser,
-        impersonatedEmail
+        logoutUser
       );
       setProjectDetails(res);
       setIsUploadingData(false);
@@ -210,8 +206,7 @@ export default function ProjectMedia({
         `/app/projects/${projectGUID}/images/${id}`,
         submitData,
         token,
-        logoutUser,
-        impersonatedEmail
+        logoutUser
       );
       const tempUploadedData = uploadedImages;
       tempUploadedData.forEach((image) => {
@@ -238,8 +233,7 @@ export default function ProjectMedia({
         `/app/projects/${projectGUID}/images/${id}`,
         submitData,
         token,
-        logoutUser,
-        impersonatedEmail
+        logoutUser
       );
       const tempUploadedData = uploadedImages;
       tempUploadedData[index].description = res.description;

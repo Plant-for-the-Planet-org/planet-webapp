@@ -29,8 +29,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
   const { t, ready } = useTranslation('managePayouts');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const { token, user, setUser, logoutUser, impersonatedEmail } =
-    useContext(UserPropsContext);
+  const { token, user, setUser, logoutUser } = useContext(UserPropsContext);
   const { setErrors } = useContext(ErrorHandlingContext);
   const { handleSubmit, errors, control } = useForm<FormData>({
     mode: 'onBlur',
@@ -44,8 +43,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
         '/app/profile',
         { scheduleFrequency: data.scheduleFrequency },
         token,
-        logoutUser,
-        impersonatedEmail
+        logoutUser
       );
       setUser(res);
       setIsSaved(true);

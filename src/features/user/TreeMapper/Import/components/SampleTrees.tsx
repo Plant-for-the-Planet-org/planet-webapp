@@ -69,8 +69,7 @@ export default function SampleTrees({
     append(sampleTrees);
   };
 
-  const { token, logoutUser, impersonatedEmail } =
-    React.useContext(UserPropsContext);
+  const { token, logoutUser } = React.useContext(UserPropsContext);
 
   const uploadSampleTree = async (sampleTree: any, index: number) => {
     setUploadIndex(index);
@@ -83,8 +82,7 @@ export default function SampleTrees({
         `/treemapper/plantLocations`,
         sampleTree,
         token,
-        logoutUser,
-        impersonatedEmail
+        logoutUser
       );
       const newSampleTrees = [...sampleTrees];
       newSampleTrees[index] = res;

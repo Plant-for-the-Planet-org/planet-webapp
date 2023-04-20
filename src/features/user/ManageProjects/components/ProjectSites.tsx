@@ -59,7 +59,7 @@ export default function ProjectSites({
   const [errorMessage, setErrorMessage] = React.useState('');
   const [openModal, setOpenModal] = React.useState(false);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const { impersonatedEmail, logoutUser } = React.useContext(UserPropsContext);
+  const { logoutUser } = React.useContext(UserPropsContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -168,8 +168,7 @@ export default function ProjectSites({
           `/app/projects/${projectGUID}/sites`,
           submitData,
           token,
-          logoutUser,
-          impersonatedEmail
+          logoutUser
         );
         const temp = siteList;
         const _submitData = {
@@ -205,8 +204,7 @@ export default function ProjectSites({
       await deleteAuthenticatedRequest(
         `/app/projects/${projectGUID}/sites/${id}`,
         token,
-        logoutUser,
-        impersonatedEmail
+        logoutUser
       );
       const siteListTemp = siteList.filter((item) => item.id !== id);
       setSiteList(siteListTemp);
@@ -261,8 +259,7 @@ export default function ProjectSites({
         const result = await getAuthenticatedRequest(
           `/app/profile/projects/${projectGUID}?_scope=sites`,
           token,
-          logoutUser,
-          impersonatedEmail
+          logoutUser
         );
         const geoLocation = {
           geoLatitude: result.geoLatitude,
@@ -612,7 +609,7 @@ function EditSite({
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const { logoutUser, impersonatedEmail } = React.useContext(UserPropsContext);
+  const { logoutUser } = React.useContext(UserPropsContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -662,8 +659,7 @@ function EditSite({
           `/app/projects/${projectGUID}/sites/${siteGUID}`,
           submitData,
           token,
-          logoutUser,
-          impersonatedEmail
+          logoutUser
         );
         const temp = siteList;
         let siteIndex;

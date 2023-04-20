@@ -19,7 +19,7 @@ const PlantLocationMap = dynamic(() => import('./components/Map'), {
 
 function TreeMapper({}: Props): ReactElement {
   const router = useRouter();
-  const { token, contextLoaded, impersonatedEmail, logoutUser } =
+  const { token, contextLoaded, logoutUser } =
     React.useContext(UserPropsContext);
   const { t } = useTranslation(['treemapper']);
   const [progress, setProgress] = React.useState(0);
@@ -40,7 +40,6 @@ function TreeMapper({}: Props): ReactElement {
           links.next,
           token,
           logoutUser,
-          impersonatedEmail,
           {},
           undefined,
           '1.0.4'
@@ -80,7 +79,7 @@ function TreeMapper({}: Props): ReactElement {
           '/treemapper/plantLocations?_scope=extended&limit=15',
           token,
           logoutUser,
-          impersonatedEmail,
+
           {},
           undefined,
           '1.0.4'

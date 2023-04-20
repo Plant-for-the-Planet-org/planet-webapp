@@ -56,4 +56,5 @@ export interface User {
   tin: string | null;
   scheduleFrequency: PaymentFrequencies | null;
   allowedToSwitch?: boolean;
+  supportPin: string | undefined
 }

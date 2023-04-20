@@ -21,14 +21,8 @@ function ClaimDonation(): ReactElement {
 
   const router = useRouter();
 
-  const {
-    user,
-    contextLoaded,
-    loginWithRedirect,
-    token,
-    impersonatedEmail,
-    logoutUser,
-  } = React.useContext(UserPropsContext);
+  const { user, contextLoaded, loginWithRedirect, token, logoutUser } =
+    React.useContext(UserPropsContext);
   const { errors, setErrors } = React.useContext(ErrorHandlingContext);
 
   const [errorMessage, setErrorMessage] = React.useState<ClaimCode1>('');
@@ -70,8 +64,7 @@ function ClaimDonation(): ReactElement {
           `/app/redeem`,
           submitData,
           token,
-          logoutUser,
-          impersonatedEmail
+          logoutUser
         );
         setRedeemedCodeData(res);
       } catch (err) {

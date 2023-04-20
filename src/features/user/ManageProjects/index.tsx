@@ -21,7 +21,7 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 export default function ManageProjects({ GUID, token, project }: any) {
   const { t, ready } = useTranslation(['manageProjects']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const { impersonatedEmail, logoutUser } = React.useContext(UserPropsContext);
+  const { logoutUser } = React.useContext(UserPropsContext);
 
   const router = useRouter();
 
@@ -130,8 +130,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
         `/app/projects/${projectGUID}`,
         submitData,
         token,
-        logoutUser,
-        impersonatedEmail
+        logoutUser
       );
       setProjectDetails(res);
       setErrorMessage('');
@@ -153,8 +152,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
         `/app/projects/${projectGUID}`,
         submitData,
         token,
-        logoutUser,
-        impersonatedEmail
+        logoutUser
       );
       setProjectDetails(res);
       setErrorMessage('');
@@ -173,8 +171,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
         const res = await getAuthenticatedRequest(
           `/app/profile/projects/${projectGUID}`,
           token,
-          logoutUser,
-          impersonatedEmail
+          logoutUser
         );
         setProjectDetails(res);
       } catch (err) {
