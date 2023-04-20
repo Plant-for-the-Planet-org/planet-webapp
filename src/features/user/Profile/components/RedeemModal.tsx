@@ -42,6 +42,7 @@ export default function RedeemModal({
   const [inputCode, setInputCode] = React.useState('');
   const [disable, setDisable] = React.useState<boolean>(false);
   const handleAnotherCode = () => {
+    setErrors(null);
     setInputCode('');
     setIsCodeRedeemed(false);
   };
@@ -65,6 +66,8 @@ export default function RedeemModal({
           logoutUser,
           impersonatedEmail
         );
+        setDisable(false);
+        setIsUploadingData(false);
         setIsCodeRedeemed(true);
         setValidCodeData(res);
         if (res.units > 0) {
@@ -73,6 +76,7 @@ export default function RedeemModal({
           setUser(cloneUser);
         }
       } catch (err) {
+        setDisable(false);
         setIsUploadingData(false);
         const serializedErrors = handleError(err as APIError);
         const _serializedErrors: SerializedError[] = [];
