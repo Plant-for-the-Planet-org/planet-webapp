@@ -19,7 +19,7 @@ interface Props {}
 
 export default function MySpecies({}: Props): ReactElement {
   const { t } = useTranslation(['treemapper', 'me', 'common']);
-  const { token, contextLoaded, impersonatedEmail, logoutUser } =
+  const { token, contextLoaded, logoutUser } =
     React.useContext(UserPropsContext);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const [species, setSpecies] = React.useState<any[]>([]);
@@ -39,8 +39,7 @@ export default function MySpecies({}: Props): ReactElement {
       const result = await getAuthenticatedRequest(
         '/treemapper/species',
         token,
-        logoutUser,
-        impersonatedEmail
+        logoutUser
       );
       setSpecies(result);
     } catch (err) {
@@ -53,8 +52,7 @@ export default function MySpecies({}: Props): ReactElement {
       await deleteAuthenticatedRequest(
         `/treemapper/species/${id}`,
         token,
-        logoutUser,
-        impersonatedEmail
+        logoutUser
       );
       fetchMySpecies();
     } catch (err) {
@@ -76,8 +74,7 @@ export default function MySpecies({}: Props): ReactElement {
         `/treemapper/species`,
         data,
         token,
-        logoutUser,
-        impersonatedEmail
+        logoutUser
       );
     } catch (err) {
       setErrors(handleError(err as APIError));

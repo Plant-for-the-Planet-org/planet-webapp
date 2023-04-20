@@ -14,15 +14,14 @@ const Analytics = () => {
   const { setProjectList, setProject } = useAnalytics();
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
-  const { token, impersonatedEmail, logoutUser } = useContext(UserPropsContext);
+  const { token, logoutUser } = useContext(UserPropsContext);
 
   const fetchProjects = async () => {
     try {
       const res = await getAuthenticatedRequest<ProjectMapInfo[]>(
         '/app/profile/projects?scope=map',
         token,
-        logoutUser,
-        impersonatedEmail
+        logoutUser
       );
       const projects: Project[] = [];
 

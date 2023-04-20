@@ -32,7 +32,7 @@ export default function RedeemModal({
     'donate',
     'redeem',
   ]);
-  const { user, contextLoaded, token, setUser, impersonatedEmail, logoutUser } =
+  const { user, contextLoaded, token, setUser, logoutUser } =
     React.useContext(UserPropsContext);
   const { setErrors, errors: apiErrors } =
     React.useContext(ErrorHandlingContext);
@@ -63,8 +63,7 @@ export default function RedeemModal({
           `/app/redeem`,
           submitData,
           token,
-          logoutUser,
-          impersonatedEmail
+          logoutUser
         );
         setDisable(false);
         setIsUploadingData(false);

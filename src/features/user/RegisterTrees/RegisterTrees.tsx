@@ -22,7 +22,6 @@ import styles from './RegisterModal.module.scss';
 import SingleContribution from './RegisterTrees/SingleContribution';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
-
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -53,7 +52,7 @@ const dialogSx: SxProps = {
 interface Props {}
 
 export default function RegisterTrees({}: Props) {
-  const { user, token, contextLoaded, impersonatedEmail, logoutUser } =
+  const { user, token, contextLoaded, logoutUser } =
     React.useContext(UserPropsContext);
 
   const { t, ready } = useTranslation(['me', 'common']);
@@ -165,14 +164,12 @@ export default function RegisterTrees({}: Props) {
           plantDate: new Date(data.plantDate),
           geometry: geometry,
         };
-
         try {
           const res = await postAuthenticatedRequest(
             `/app/contributions`,
             submitData,
             token,
-            logoutUser,
-            impersonatedEmail
+            logoutUser
           );
           setErrorMessage('');
           setContributionGUID(res.id);
@@ -197,8 +194,7 @@ export default function RegisterTrees({}: Props) {
       const projects = await getAuthenticatedRequest(
         '/app/profile/projects',
         token,
-        logoutUser,
-        impersonatedEmail
+        logoutUser
       );
       setProjects(projects);
     } catch (err) {

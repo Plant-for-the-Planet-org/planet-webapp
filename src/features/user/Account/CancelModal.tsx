@@ -44,8 +44,7 @@ export const CancelModal = ({
   fetchRecurrentDonations,
 }: any) => {
   const { theme } = React.useContext(ThemeContext);
-  const { token, logoutUser, impersonatedEmail } =
-    React.useContext(UserPropsContext);
+  const { token, logoutUser } = React.useContext(UserPropsContext);
   const [option, setoption] = React.useState('cancelImmediately');
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState(new Date());
@@ -77,8 +76,7 @@ export const CancelModal = ({
         `/app/subscriptions/${record.id}?scope=cancel`,
         bodyToSend,
         token,
-        logoutUser,
-        impersonatedEmail
+        logoutUser
       );
       handleCancelModalClose();
       fetchRecurrentDonations();

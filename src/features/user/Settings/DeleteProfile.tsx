@@ -11,8 +11,7 @@ import { useTranslation } from 'next-i18next';
 import { APIError, handleError, SerializedError } from '@planet-sdk/common';
 
 export default function DeleteProfile({}: any) {
-  const { user, token, logoutUser, impersonatedEmail } =
-    React.useContext(UserPropsContext);
+  const { user, token, logoutUser } = React.useContext(UserPropsContext);
   const { t } = useTranslation(['me', 'common', 'editProfile']);
   const handleChange = (e) => {
     e.preventDefault();
@@ -25,12 +24,7 @@ export default function DeleteProfile({}: any) {
   const handleDeleteAccount = async () => {
     setIsUploadingData(true);
     try {
-      await deleteAuthenticatedRequest(
-        '/app/profile',
-        token,
-        logoutUser,
-        impersonatedEmail
-      );
+      await deleteAuthenticatedRequest('/app/profile', token, logoutUser);
       setIsUploadingData(false);
       logoutUser(`${process.env.NEXTAUTH_URL}/`);
     } catch (err) {
