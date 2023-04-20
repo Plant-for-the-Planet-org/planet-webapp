@@ -10,8 +10,8 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { User } from '../../../common/types/user';
 import CustomSnackbar from '../../../common/CustomSnackbar';
-import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 import { PaymentFrequencies } from '../../../../utils/constants/payoutConstants';
+import { handleError, APIError } from '@planet-sdk/common';
 
 const paymentFrequencies = [
   PaymentFrequencies.MANUAL,
@@ -29,27 +29,31 @@ const PayoutScheduleForm = (): ReactElement | null => {
   const { t, ready } = useTranslation('managePayouts');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const { token, user, setUser, impersonatedEmail } =
+  const { token, user, setUser, logoutUser, impersonatedEmail } =
     useContext(UserPropsContext);
-  const { handleError } = useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const { handleSubmit, errors, control } = useForm<FormData>({
     mode: 'onBlur',
   });
 
   const onSubmit = async (data: FormData): Promise<void> => {
     setIsProcessing(true);
-    const res = await putAuthenticatedRequest<User>(
-      '/app/profile',
-      { scheduleFrequency: data.scheduleFrequency },
-      token,
-      impersonatedEmail,
-      handleError
-    );
-    if (res?.id && !isApiCustomError(res)) {
+
+    try {
+      const res = await putAuthenticatedRequest<User>(
+        '/app/profile',
+        { scheduleFrequency: data.scheduleFrequency },
+        token,
+        logoutUser,
+        impersonatedEmail
+      );
       setUser(res);
       setIsSaved(true);
+      setIsProcessing(false);
+    } catch (err) {
+      setIsProcessing(false);
+      setErrors(handleError(err as APIError));
     }
-    setIsProcessing(false);
   };
 
   const renderPaymentFrequencyOptions = (): ReactElement[] => {

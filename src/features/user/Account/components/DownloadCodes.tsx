@@ -4,6 +4,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { unparse } from 'papaparse';
 import styles from '../AccountHistory.module.scss';
 import { useTranslation } from 'next-i18next';
+import { handleError, APIError } from '@planet-sdk/common';
 
 interface DownloadCodesProps {
   codesUrl: string;
@@ -13,7 +14,7 @@ const DownloadCodes = ({ codesUrl }: DownloadCodesProps): ReactElement => {
   const [t] = useTranslation('me');
   const [isDownloading, setIsDownloading] = useState(false);
 
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
   function downloadCSV(data: [], filename: string) {
     const csv = unparse(data);
@@ -36,21 +37,31 @@ const DownloadCodes = ({ codesUrl }: DownloadCodesProps): ReactElement => {
         type: string;
         numberOfItems: number;
         items: [];
-      }>(codesUrl, handleError);
+      }>(codesUrl);
       if (response) {
         if (response.items.length) {
           downloadCSV(response.items, 'codes.csv');
           setIsDownloading(false);
         } else {
-          handleError({ message: t('downloadCodesGeneralError') });
+          setErrors([
+            {
+              message: t('downloadCodesGeneralError'),
+              errorType: 'download-codes',
+            },
+          ]);
           setIsDownloading(false);
         }
       } else {
-        handleError({ message: t('downloadCodesNetworkError') });
+        setErrors([
+          {
+            message: t('downloadCodesNetworkError'),
+            errorType: 'download-codes',
+          },
+        ]);
         setIsDownloading(false);
       }
     } catch (err) {
-      handleError({ message: t('downloadCodesGeneralError') });
+      setErrors(handleError(err as APIError));
       setIsDownloading(false);
     }
   }

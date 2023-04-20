@@ -8,11 +8,13 @@ import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { handleError, APIError } from '@planet-sdk/common';
+
 interface Props {}
 
 function AccountHistory({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
-  const { token, contextLoaded, impersonatedEmail } =
+  const { token, contextLoaded, impersonatedEmail, logoutUser } =
     React.useContext(UserPropsContext);
 
   const [progress, setProgress] = React.useState(0);
@@ -23,68 +25,77 @@ function AccountHistory({}: Props): ReactElement {
   const [accountingFilters, setaccountingFilters] =
     React.useState<Payments.Filters | null>(null);
 
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
   async function fetchPaymentHistory(next = false): Promise<void> {
     setIsDataLoading(true);
     setProgress(70);
     if (next && paymentHistory?._links?.next) {
-      const newPaymentHistory: Payments.PaymentHistory =
-        await getAuthenticatedRequest(
-          `${
-            filter && accountingFilters
-              ? accountingFilters[filter] +
-                '&' +
-                paymentHistory?._links?.next.split('?').pop()
-              : paymentHistory?._links?.next
-          }`,
-          token,
-          impersonatedEmail,
-          {},
-          handleError,
-          '/profile'
-        );
-      setpaymentHistory({
-        ...paymentHistory,
-        items: [...paymentHistory.items, ...newPaymentHistory.items],
-        _links: newPaymentHistory._links,
-      });
-      setProgress(100);
-      setIsDataLoading(false);
-      setTimeout(() => setProgress(0), 1000);
+      try {
+        const newPaymentHistory =
+          await getAuthenticatedRequest<Payments.PaymentHistory>(
+            `${
+              filter && accountingFilters
+                ? accountingFilters[filter] +
+                  '&' +
+                  paymentHistory?._links?.next.split('?').pop()
+                : paymentHistory?._links?.next
+            }`,
+            token,
+            logoutUser,
+            impersonatedEmail
+          );
+        setpaymentHistory({
+          ...paymentHistory,
+          items: [...paymentHistory.items, ...newPaymentHistory.items],
+          _links: newPaymentHistory._links,
+        });
+        setProgress(100);
+        setIsDataLoading(false);
+        setTimeout(() => setProgress(0), 1000);
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+        redirect('/profile');
+      }
     } else {
       if (filter === null) {
-        const paymentHistory: Payments.PaymentHistory =
-          await getAuthenticatedRequest(
-            '/app/paymentHistory?limit=15',
-            token,
-            impersonatedEmail,
-            {},
-            handleError,
-            '/profile'
-          );
-        setpaymentHistory(paymentHistory);
-        setProgress(100);
-        setIsDataLoading(false);
-        setTimeout(() => setProgress(0), 1000);
-        setaccountingFilters(paymentHistory._filters);
+        try {
+          const paymentHistory =
+            await getAuthenticatedRequest<Payments.PaymentHistory>(
+              '/app/paymentHistory?limit=15',
+              token,
+              logoutUser,
+              impersonatedEmail
+            );
+          setpaymentHistory(paymentHistory);
+          setProgress(100);
+          setIsDataLoading(false);
+          setTimeout(() => setProgress(0), 1000);
+          setaccountingFilters(paymentHistory._filters);
+        } catch (err) {
+          setErrors(handleError(err as APIError));
+          redirect('/profile');
+        }
       } else {
-        const paymentHistory = await getAuthenticatedRequest(
-          `${
-            filter && accountingFilters
-              ? accountingFilters[filter] + '&limit=15'
-              : '/app/paymentHistory?limit=15'
-          }`,
-          token,
-          impersonatedEmail,
-          {},
-          handleError,
-          '/profile'
-        );
-        setpaymentHistory(paymentHistory);
-        setProgress(100);
-        setIsDataLoading(false);
-        setTimeout(() => setProgress(0), 1000);
+        try {
+          const paymentHistory = await getAuthenticatedRequest(
+            `${
+              filter && accountingFilters
+                ? accountingFilters[filter] + '&limit=15'
+                : '/app/paymentHistory?limit=15'
+            }`,
+            token,
+            logoutUser,
+            impersonatedEmail
+          );
+          setpaymentHistory(paymentHistory);
+          setProgress(100);
+          setIsDataLoading(false);
+          setTimeout(() => setProgress(0), 1000);
+        } catch (err) {
+          setErrors(handleError(err as APIError));
+          redirect('/profile');
+        }
       }
     }
   }
