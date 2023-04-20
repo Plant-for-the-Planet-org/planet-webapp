@@ -21,6 +21,8 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../../../theme/themeProperties';
+import { handleError, APIError } from '@planet-sdk/common';
+import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -41,8 +43,6 @@ const dialogSx: SxProps = {
 
 interface Props {
   handleNext: () => void;
-  errorMessage: string;
-  setErrorMessage: Function;
   userLang: string;
   plantLocation: any;
   setPlantLocation: Function;
@@ -54,8 +54,6 @@ interface Props {
 
 export default function PlantingLocation({
   handleNext,
-  errorMessage,
-  setErrorMessage,
   userLang,
   plantLocation,
   setPlantLocation,
@@ -64,13 +62,15 @@ export default function PlantingLocation({
   activeMethod,
   setActiveMethod,
 }: Props): ReactElement {
-  const { user, token, contextLoaded } = React.useContext(UserPropsContext);
+  const { user, token, contextLoaded, logoutUser } =
+    React.useContext(UserPropsContext);
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
   const importMethods = ['import', 'editor'];
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [mySpecies, setMySpecies] = React.useState(null);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
   const { t } = useTranslation(['treemapper', 'common', 'maps']);
   const defaultValues = {
@@ -95,19 +95,30 @@ export default function PlantingLocation({
   });
 
   const loadProjects = async () => {
-    await getAuthenticatedRequest('/app/profile/projects', token).then(
-      (projects: any) => {
-        setProjects(projects);
-      }
-    );
+    try {
+      const projects = await getAuthenticatedRequest(
+        '/app/profile/projects',
+        token,
+        logoutUser
+      );
+      setProjects(projects);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
   };
 
   const loadMySpecies = async () => {
-    await getAuthenticatedRequest('/treemapper/species', token).then(
-      (species: any) => {
-        setMySpecies(species);
-      }
-    );
+    try {
+      const species = await getAuthenticatedRequest(
+        '/treemapper/species',
+        token,
+        logoutUser,
+        impersonatedEmail
+      );
+      setMySpecies(species);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
   };
 
   React.useEffect(() => {
@@ -192,7 +203,7 @@ export default function PlantingLocation({
     onFileDialogCancel: () => setIsUploadingData(false),
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     if (geoJson) {
       setIsUploadingData(true);
       const submitData = {
@@ -205,28 +216,20 @@ export default function PlantingLocation({
         plantProject: data.plantProject,
       };
 
-      postAuthenticatedRequest(
-        `/treemapper/plantLocations`,
-        submitData,
-        token
-      ).then((res: any) => {
-        if (!res.code) {
-          setErrorMessage('');
-          setPlantLocation(res);
-          setIsUploadingData(false);
-          handleNext();
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          } else if (res.code === 400) {
-            setIsUploadingData(false);
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          }
-        }
-      });
+      try {
+        const res = await postAuthenticatedRequest(
+          `/treemapper/plantLocations`,
+          submitData,
+          token,
+          logoutUser
+        );
+        setPlantLocation(res);
+        setIsUploadingData(false);
+        handleNext();
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+        setIsUploadingData(false);
+      }
     } else {
       setGeoJsonError(true);
     }
@@ -499,7 +502,7 @@ function PlantedSpecies({
       {index > 0 ? (
         <div
           onClick={() => remove(index)}
-          className={styles.speciesDeleteField}
+          className={`${styles.speciesDeleteField} ${styles.deleteActive}`}
         >
           <DeleteIcon />
         </div>

@@ -6,34 +6,36 @@ import { Project, useAnalytics } from '../../../common/Layout/AnalyticsContext';
 import { DataExplorerGridContainer } from './components/DataExplorerGridContainer';
 import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { APIError, ProjectMapInfo, handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { ProjectMapInfo } from '@planet-sdk/common';
 
 const Analytics = () => {
   const { t, ready } = useTranslation('treemapperAnalytics');
   const { setProjectList, setProject } = useAnalytics();
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
-  const { token } = useContext(UserPropsContext);
-  const { handleError } = useContext(ErrorHandlingContext);
+  const { token, logoutUser } = useContext(UserPropsContext);
 
   const fetchProjects = async () => {
-    const res = await getAuthenticatedRequest<ProjectMapInfo[]>(
-      '/app/profile/projects?scope=map',
-      token,
-      {},
-      handleError
-    );
+    try {
+      const res = await getAuthenticatedRequest<ProjectMapInfo[]>(
+        '/app/profile/projects?scope=map',
+        token,
+        logoutUser
+      );
+      const projects: Project[] = [];
 
-    const projects: Project[] = [];
+      res.forEach((_proj) => {
+        const { id, name } = _proj.properties;
+        const proj = { id, name };
+        projects.push(proj);
+      });
 
-    res.forEach((_proj) => {
-      const { id, name } = _proj.properties;
-      const proj = { id, name };
-      projects.push(proj);
-    });
-
-    setProjectList(projects);
-    if (projects.length > 0) setProject(projects[0]);
+      setProjectList(projects);
+      if (projects.length > 0) setProject(projects[0]);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
   };
 
   useEffect(() => {

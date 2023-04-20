@@ -8,48 +8,50 @@ import Recurrency from '../../src/features/user/Account/Recurrency';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import { handleError, APIError } from '@planet-sdk/common';
 
 interface Props {}
 
 function RecurrentDonations({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
-  const { token, contextLoaded } = React.useContext(UserPropsContext);
+  const { token, contextLoaded, logoutUser } =
+    React.useContext(UserPropsContext);
 
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const [recurrencies, setrecurrencies] =
     React.useState<Payments.Subscription[]>();
 
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
 
   async function fetchRecurrentDonations(): Promise<void> {
     setIsDataLoading(true);
     setProgress(70);
-    const recurrencies: Payments.Subscription[] = await getAuthenticatedRequest(
-      '/app/subscriptions',
-      token,
-      {},
-      handleError,
-      '/profile'
-    );
-    if (recurrencies && Array.isArray(recurrencies)) {
-      const activeRecurrencies = recurrencies?.filter(
-        (obj) => obj.status == 'active' || obj.status == 'trialing'
-      );
-      const pauseRecurrencies = recurrencies?.filter(
-        (obj) => obj.status == 'paused'
-      );
-      const otherRecurrencies = recurrencies?.filter(
-        (obj) =>
-          obj.status != 'paused' &&
-          obj.status != 'active' &&
-          obj.status != 'trialing'
-      );
-      setrecurrencies([
-        ...activeRecurrencies,
-        ...pauseRecurrencies,
-        ...otherRecurrencies,
-      ]);
+    try {
+      const recurrencies: Payments.Subscription[] =
+        await getAuthenticatedRequest('/app/subscriptions', token, logoutUser);
+      if (recurrencies && Array.isArray(recurrencies)) {
+        const activeRecurrencies = recurrencies?.filter(
+          (obj) => obj.status == 'active' || obj.status == 'trialing'
+        );
+        const pauseRecurrencies = recurrencies?.filter(
+          (obj) => obj.status == 'paused'
+        );
+        const otherRecurrencies = recurrencies?.filter(
+          (obj) =>
+            obj.status != 'paused' &&
+            obj.status != 'active' &&
+            obj.status != 'trialing'
+        );
+        setrecurrencies([
+          ...activeRecurrencies,
+          ...pauseRecurrencies,
+          ...otherRecurrencies,
+        ]);
+      }
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+      redirect('/profile');
     }
     setProgress(100);
     setIsDataLoading(false);

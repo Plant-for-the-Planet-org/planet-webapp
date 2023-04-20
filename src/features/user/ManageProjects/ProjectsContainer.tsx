@@ -10,6 +10,7 @@ import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import styles from './ProjectsContainer.module.scss';
 import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import { useTranslation } from 'next-i18next';
+import { handleError, APIError } from '@planet-sdk/common';
 
 function SingleProject({ project }: any) {
   const ImageSource = project.image
@@ -87,21 +88,24 @@ export default function ProjectsContainer({}: any) {
   const { t, ready } = useTranslation(['donate', 'manageProjects']);
   const [projects, setProjects] = React.useState([]);
   const [loader, setLoader] = React.useState(true);
-  const { handleError } = React.useContext(ErrorHandlingContext);
-  const { user, contextLoaded, token } = React.useContext(UserPropsContext);
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { user, contextLoaded, token, logoutUser } =
+    React.useContext(UserPropsContext);
 
   async function loadProjects() {
     if (user) {
-      await getAuthenticatedRequest(
-        '/app/profile/projects?version=1.2',
-        token,
-        {},
-        handleError,
-        '/profile'
-      ).then((projects) => {
+      try {
+        const projects = await getAuthenticatedRequest(
+          '/app/profile/projects?version=1.2',
+          token,
+          logoutUser
+        );
         setProjects(projects);
-        setLoader(false);
-      });
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+        redirect('/profile');
+      }
+      setLoader(false);
     }
   }
   // This effect is used to get and update UserInfo if the isAuthenticated changes

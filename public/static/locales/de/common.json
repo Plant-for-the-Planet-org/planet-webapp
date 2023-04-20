@@ -98,8 +98,5 @@
   "modalSubtitle": "Bitte beende zuerst deine Dauerspenden",
   "deleteCondition": "Bevor du fortfährst, vergewissere dich, dass alle Dauerspenden beendet sind.",
   "project": "Projekt",
-  "type": "Typ",
-  "interventions": "Interventionen",
-  "monitoringPlots": "Monitoring Plots (Demnächst)",
   "showSubscriptions": "Meine Dauerspenden anzeigen"
 }

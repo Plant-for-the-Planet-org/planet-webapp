@@ -21,6 +21,7 @@ import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
+import { handleError, APIError } from '@planet-sdk/common';
 
 const MuiCalendarPicker = styled(CalendarPicker)({
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -43,19 +44,19 @@ export const CancelModal = ({
   fetchRecurrentDonations,
 }: any) => {
   const { theme } = React.useContext(ThemeContext);
-  const { token } = React.useContext(UserPropsContext);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { token, logoutUser } = React.useContext(UserPropsContext);
   const [option, setoption] = React.useState('cancelImmediately');
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState(new Date());
   const [disabled, setDisabled] = React.useState(false);
   const { t } = useTranslation(['me']);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     setDisabled(false);
   }, [cancelModalOpen]);
 
-  const cancelDonation = () => {
+  const cancelDonation = async () => {
     setDisabled(true);
     const bodyToSend = {
       cancellationType:
@@ -69,19 +70,20 @@ export const CancelModal = ({
           ? date.toISOString().split('T')[0]
           : null, // if custom-date is cancellationType
     };
-    putAuthenticatedRequest(
-      `/app/subscriptions/${record.id}?scope=cancel`,
-      bodyToSend,
-      token,
-      handleError
-    )
-      .then((res) => {
-        handleCancelModalClose();
-        fetchRecurrentDonations();
-      })
-      .catch((err) => {
-        console.log('Error cancelling recurring donations.');
-      });
+
+    try {
+      await putAuthenticatedRequest(
+        `/app/subscriptions/${record.id}?scope=cancel`,
+        bodyToSend,
+        token,
+        logoutUser
+      );
+      handleCancelModalClose();
+      fetchRecurrentDonations();
+    } catch (err) {
+      handleCancelModalClose();
+      setErrors(handleError(err as APIError));
+    }
   };
   return (
     <Modal

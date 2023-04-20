@@ -11,12 +11,13 @@ import ProjectsContainer from '../../src/features/user/Profile/ProjectsContainer
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
+import { handleError, APIError } from '@planet-sdk/common';
 
 function User(): ReactElement {
   // External imports
   const router = useRouter();
   const { user, contextLoaded, token } = React.useContext(UserPropsContext);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
   // Internal states
   const [profile, setProfile] = React.useState<null | Object>();
@@ -24,13 +25,14 @@ function User(): ReactElement {
 
   // Loads the public user profile
   async function loadPublicProfile(id: any) {
-    const profileData = await getRequest(
-      `/app/profiles/${id}`,
-      handleError,
-      '/'
-    );
-    setProfile(profileData);
-    setAuthenticatedType('public');
+    try {
+      const profileData = await getRequest(`/app/profiles/${id}`);
+      setProfile(profileData);
+      setAuthenticatedType('public');
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+      redirect('/');
+    }
   }
 
   useEffect(() => {
