@@ -4,7 +4,7 @@ import { getQueryString } from './getQueryString';
 import getsessionId from './getSessionId';
 import { validateToken } from './validateToken';
 import { ImpersonationData } from '../../features/user/Settings/ImpersonateUser/ImpersonateUserForm';
-import { setHeader } from './setHeader';
+import { setHeaderForImpersonation } from './setHeader';
 // Handle Error responses from API
 const handleApiError = (
   error: number,
@@ -85,7 +85,7 @@ export async function getAccountInfo(
     }
     const response = await fetch(`${process.env.API_ENDPOINT}/app/profile`, {
     method: 'GET',
-    headers: setHeader(header,impersonationData)
+    headers: setHeaderForImpersonation(header,impersonationData)
   });
   return response;
 }
@@ -157,7 +157,7 @@ export async function getAuthenticatedRequest<T>(
  
   await fetch(`${process.env.API_ENDPOINT}${url}${queryStringSuffix}`, {
     method: 'GET',
-    headers: setHeader(header)
+    headers: setHeaderForImpersonation(header)
   })
     .then(async (res) => {
       result = res.status === 200 ? await res.json() : null;
@@ -217,7 +217,7 @@ export async function postAuthenticatedRequest<T>(
       const res = await fetch(process.env.API_ENDPOINT + url, {
         method: 'POST',
         body: JSON.stringify(data),
-        headers: setHeader(header)
+        headers: setHeaderForImpersonation(header)
       });
       const result = await res.json();
       handleApiError(res.status, result, errorHandler);
@@ -268,7 +268,7 @@ export async function deleteAuthenticatedRequest(
   if (validateToken(token)) {
     await fetch(process.env.API_ENDPOINT + url, {
       method: 'DELETE',
-      headers: setHeader(header)
+      headers: setHeaderForImpersonation(header)
     }).then(async (res) => {
       result = res.status === 400 ? await res.json() : res.status;
       handleApiError(res.status, result, errorHandler);
@@ -330,7 +330,7 @@ export async function putAuthenticatedRequest<T>(
     const res = await fetch(process.env.API_ENDPOINT + url, {
       method: 'PUT',
       body: JSON.stringify(data),
-      headers: setHeader(header)
+      headers: setHeaderForImpersonation(header)
     });
     const result = await res.json();
     handleApiError(res.status, result, errorHandler);

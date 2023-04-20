@@ -20,7 +20,7 @@ export const UserPropsContext = React.createContext({
   userLang: 'en',
   isImpersonationModeOn: false,
   setIsImpersonationModeOn: (_value: boolean) => {}, // eslint-disable-line no-unused-vars
-  loadUser: () => Promise<void>,
+  loadUser: () => {},
 });
 
 function UserPropsProvider({ children }: any): ReactElement {

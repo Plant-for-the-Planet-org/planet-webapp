@@ -1,15 +1,15 @@
 import {ImpersonationData} from "../../features/user/Settings/ImpersonateUser/ImpersonateUserForm"
+//this function set keys for header in impersonation mode
+export const setHeaderForImpersonation =  (header: any, impersonationData?: ImpersonationData) => {
 
-export const setHeader =  (header: any, impersonatedData?: ImpersonationData) => {
-
-    const impersonatedDataFromLocal:ImpersonationData = JSON.parse(`${localStorage.getItem("impersonationData")}`);
-        if(impersonatedDataFromLocal || impersonatedData){
-            if(impersonatedData?.targetEmail || impersonatedDataFromLocal?.targetEmail ){
-                 header["X-SWITCH-USER"] = impersonatedData?.targetEmail || impersonatedDataFromLocal?.targetEmail 
+    const impersonationDataFromLocal:ImpersonationData = JSON.parse(`${localStorage.getItem("impersonationData")}`);
+        if(impersonationDataFromLocal || impersonationData){
+            if(impersonationData?.targetEmail || impersonationDataFromLocal?.targetEmail ){
+                 header["X-SWITCH-USER"] = impersonationData?.targetEmail || impersonationDataFromLocal?.targetEmail 
             }
     
-            if(impersonatedData?.supportPin || impersonatedDataFromLocal?.supportPin){
-                header["X-USER-SUPPORT-PIN"] = impersonatedData?.supportPin || impersonatedDataFromLocal?.supportPin 
+            if(impersonationData?.supportPin || impersonationDataFromLocal?.supportPin){
+                header["X-USER-SUPPORT-PIN"] = impersonationData?.supportPin || impersonationDataFromLocal?.supportPin 
         }
         const impersonationHeader = header
         return impersonationHeader
