@@ -5,25 +5,26 @@ import { getRequest } from '../../../../utils/apiRequests/api';
 import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/SeaOfTrees.module.scss';
+import { handleError, APIError } from '@planet-sdk/common';
 
 export default function SeaOfTrees() {
   const projectID = 'proj_7gmlF7Q8aL65V7j7AG9NW8Yy';
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
   const [project, setProject] = useState(null);
   useEffect(() => {
     async function loadProject() {
       const currencyCode = getStoredCurrency();
-      const project = await getRequest(
-        `/app/projects/${projectID}`,
-        handleError,
-        '/',
-        {
+      try {
+        const project = await getRequest(`/app/projects/${projectID}`, {
           _scope: 'extended',
           currency: currencyCode,
-        }
-      );
-      setProject(project);
+        });
+        setProject(project);
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+        redirect('/');
+      }
     }
     if (projectID) {
       loadProject();

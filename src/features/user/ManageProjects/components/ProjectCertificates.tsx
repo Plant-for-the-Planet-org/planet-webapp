@@ -20,6 +20,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { SxProps } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
+import { handleError, APIError } from '@planet-sdk/common';
+import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -51,19 +53,11 @@ function ProjectCertificates({
   setIsUploadingData,
   userLang,
 }: Props): ReactElement {
-  const { t, i18n, ready } = useTranslation(['manageProjects']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { t, ready } = useTranslation(['manageProjects']);
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { logoutUser } = React.useContext(UserPropsContext);
 
-  const {
-    register,
-    handleSubmit,
-    errors,
-    control,
-    formState,
-    getValues,
-    setValue,
-  } = useForm({ mode: 'all' });
-  const { isDirty } = formState;
+  const { register, errors, getValues, setValue } = useForm({ mode: 'all' });
 
   const [issueDate, setIssueDate] = React.useState(new Date());
 
@@ -92,24 +86,27 @@ function ProjectCertificates({
 
   React.useEffect(() => {
     // Fetch certificates of the project
-    if (projectGUID && token) {
-      getAuthenticatedRequest(
-        `/app/profile/projects/${projectGUID}?_scope=certificates`,
-        token,
-        {},
-        handleError,
-        '/profile'
-      ).then((result) => {
-        if (result && result.certificates && result.certificates.length > 0) {
-          setShowForm(false);
-          setShowToggle(false);
-        } else {
-          setShowToggle(true);
-          setisCertified(false);
-          setShowForm(true);
-        }
+
+    const fetchCertificates = async () => {
+      try {
+        const result = await getAuthenticatedRequest(
+          `/app/profile/projects/${projectGUID}?_scope=certificates`,
+          token,
+          logoutUser
+        );
+        setShowForm(false);
+        setShowToggle(false);
         setUploadedFiles(result.certificates);
-      });
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+        redirect('/profile');
+        setShowToggle(true);
+        setisCertified(false);
+        setShowForm(true);
+      }
+    };
+    if (projectGUID && token) {
+      fetchCertificates();
     }
   }, [projectGUID]);
 
@@ -130,7 +127,7 @@ function ProjectCertificates({
     },
   });
 
-  const onSubmit = (pdf: any) => {
+  const onSubmit = async (pdf: any) => {
     setIsUploadingData(true);
     const updatedAmount = getValues('certifierName');
     const submitData = {
@@ -139,57 +136,44 @@ function ProjectCertificates({
       pdfFile: pdf,
     };
 
-    postAuthenticatedRequest(
-      `/app/projects/${projectGUID}/certificates`,
-      submitData,
-      token,
-      handleError
-    )
-      .then((res) => {
-        if (!res.code) {
-          let newUploadedFiles = uploadedFiles;
+    try {
+      const res = await postAuthenticatedRequest(
+        `/app/projects/${projectGUID}/certificates`,
+        submitData,
+        token,
+        logoutUser
+      );
+      let newUploadedFiles = uploadedFiles;
 
-          if (newUploadedFiles === undefined) {
-            newUploadedFiles = [];
-          }
+      if (newUploadedFiles === undefined) {
+        newUploadedFiles = [];
+      }
 
-          newUploadedFiles.push(res);
-          setUploadedFiles(newUploadedFiles);
-
-          setCertifierName('');
-          setValue('certifierName', '', { shouldDirty: false });
-          setIsUploadingData(false);
-          setShowForm(false);
-          setErrorMessage('');
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          }
-        }
-      })
-      .catch((err) => {
-        setIsUploadingData(false);
-        setErrorMessage(err);
-      });
+      newUploadedFiles.push(res);
+      setUploadedFiles(newUploadedFiles);
+      setCertifierName('');
+      setValue('certifierName', '', { shouldDirty: false });
+      setIsUploadingData(false);
+      setShowForm(false);
+      setErrorMessage('');
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
   };
 
-  const deleteProjectCertificate = (id: any) => {
-    deleteAuthenticatedRequest(
-      `/app/projects/${projectGUID}/certificates/${id}`,
-      token,
-      handleError
-    ).then((res) => {
-      if (res !== 404) {
-        const uploadedFilesTemp = uploadedFiles.filter(
-          (item) => item.id !== id
-        );
-        setUploadedFiles(uploadedFilesTemp);
-      }
-    });
+  const deleteProjectCertificate = async (id: any) => {
+    try {
+      await deleteAuthenticatedRequest(
+        `/app/projects/${projectGUID}/certificates/${id}`,
+        token,
+        logoutUser
+      );
+      const uploadedFilesTemp = uploadedFiles!.filter((item) => item.id !== id);
+      setUploadedFiles(uploadedFilesTemp);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
   };
 
   React.useEffect(() => {

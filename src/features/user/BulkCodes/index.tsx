@@ -1,4 +1,4 @@
-import { useTranslation } from 'next-i18next';
+import { useTranslation, Trans } from 'next-i18next';
 import React, {
   ReactElement,
   useEffect,
@@ -18,6 +18,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
+import { handleError, APIError } from '@planet-sdk/common';
 
 export enum BulkCodeSteps {
   SELECT_METHOD = 'select_method',
@@ -41,7 +42,7 @@ export default function BulkCodes({
     bulkMethod,
     project,
   } = useBulkCode();
-  const { handleError } = useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const { contextLoaded, user } = useContext(UserPropsContext);
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
 
@@ -74,8 +75,6 @@ export default function BulkCodes({
       try {
         const fetchedProjects = await getRequest<MapSingleProject[]>(
           `/app/projects`,
-          handleError,
-          undefined,
           {
             _scope: 'map',
             currency: planetCashAccount.currency,
@@ -117,7 +116,7 @@ export default function BulkCodes({
           );
         }
       } catch (err) {
-        console.log(err);
+        setErrors(handleError(err as APIError));
       }
     }
   }, [planetCashAccount?.currency, i18n.language]);
@@ -156,11 +155,26 @@ export default function BulkCodes({
     <DashboardView
       title={t('bulkCodes:bulkCodesTitle')}
       subtitle={
-        <p>
-          {t('bulkCodes:bulkCodesDescription1')}
-          <br />
-          {t('bulkCodes:bulkCodesDescription2')}
-        </p>
+        <div>
+          <p>
+            <Trans i18nKey="bulkCodes:partnerSignupInfo">
+              Use of this feature by Companies is subject to partnership with
+              Plant-for-the-Planet. Please contact{' '}
+              <a
+                className="planet-links"
+                href="mailto:partner@plant-for-the-planet.org"
+              >
+                partner@plant-for-the-planet.org
+              </a>{' '}
+              for details.
+            </Trans>
+          </p>
+          <p>
+            {t('bulkCodes:bulkCodesDescription1')}
+            <br />
+            {t('bulkCodes:bulkCodesDescription2')}
+          </p>
+        </div>
       }
     >
       <TabbedView step={step} tabItems={tabConfig}>

@@ -11,12 +11,17 @@ export const UserPropsContext = React.createContext({
   setUser: (value: boolean | User | null) => {},
   contextLoaded: false,
   token: null,
+  setToken: () => {},
   isLoading: true,
   isAuthenticated: false,
   loginWithRedirect: ({}) => {},
-  logoutUser: (value: string | undefined) => {},
+  logoutUser: (value?: string | undefined) => {},
   auth0User: {},
   auth0Error: {} || undefined,
+  userLang: 'en',
+  isImpersonationModeOn: false,
+  setIsImpersonationModeOn: (_value: boolean) => {}, // eslint-disable-line no-unused-vars
+  loadUser: () => {},
 });
 
 function UserPropsProvider({ children }: any): ReactElement {
@@ -34,6 +39,16 @@ function UserPropsProvider({ children }: any): ReactElement {
   const [contextLoaded, setContextLoaded] = React.useState(false);
   const [token, setToken] = React.useState(null);
   const [profile, setUser] = React.useState<boolean | User | null>(false);
+  const [userLang, setUserLang] = React.useState('en');
+  const [isImpersonationModeOn, setIsImpersonationModeOn] =
+    React.useState(false);
+
+  React.useEffect(() => {
+    if (localStorage.getItem('language')) {
+      const userLang = localStorage.getItem('language');
+      if (userLang) setUserLang(userLang);
+    }
+  }, []);
 
   React.useEffect(() => {
     async function loadToken() {
@@ -54,6 +69,8 @@ function UserPropsProvider({ children }: any): ReactElement {
   async function loadUser() {
     setContextLoaded(false);
     try {
+      // TODO: Add error handling after figuring out the nature of getAccountInfo function call with impersonatedEmail
+
       const res = await getAccountInfo(token);
       if (res.status === 200) {
         const resJson = await res.json();
@@ -72,8 +89,10 @@ function UserPropsProvider({ children }: any): ReactElement {
           redirectUri: `${process.env.NEXTAUTH_URL}/login`,
           ui_locales: localStorage.getItem('language') || 'en',
         });
+      } else if (res.status === 403) {
+        localStorage.removeItem('impersonationData');
       } else {
-        // any other error
+        //any other error
       }
     } catch (err) {
       console.log(err);
@@ -82,22 +101,35 @@ function UserPropsProvider({ children }: any): ReactElement {
   }
 
   React.useEffect(() => {
-    if (token) loadUser();
+    if (token) {
+      loadUser();
+    }
   }, [token]);
+
+  React.useEffect(() => {
+    if (localStorage.getItem('impersonationData') !== null) {
+      setIsImpersonationModeOn(true);
+    }
+  }, [isImpersonationModeOn]);
 
   return (
     <UserPropsContext.Provider
       value={{
         user: profile,
         setUser,
+        isImpersonationModeOn,
+        setIsImpersonationModeOn,
         contextLoaded,
         token,
+        setToken,
         isLoading,
+        loadUser,
         isAuthenticated,
         loginWithRedirect,
         logoutUser,
         auth0User: user,
         auth0Error: error,
+        userLang,
       }}
     >
       {children}

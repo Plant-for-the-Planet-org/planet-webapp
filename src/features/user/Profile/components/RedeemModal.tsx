@@ -10,6 +10,8 @@ import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
+import { handleError, APIError, SerializedError } from '@planet-sdk/common';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 interface RedeemModal {
   redeemModalOpen: boolean;
@@ -30,16 +32,17 @@ export default function RedeemModal({
     'donate',
     'redeem',
   ]);
-  const { user, contextLoaded, token, setUser } =
+  const { user, contextLoaded, token, setUser, logoutUser } =
     React.useContext(UserPropsContext);
-  const [errorMessage, setErrorMessage] = React.useState('');
+  const { setErrors, errors: apiErrors } =
+    React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [validCodeData, setValidCodeData] = React.useState<{} | undefined>();
   const [isCodeRedeemed, setIsCodeRedeemed] = React.useState(false);
   const [inputCode, setInputCode] = React.useState('');
-
+  const [disable, setDisable] = React.useState<boolean>(false);
   const handleAnotherCode = () => {
-    setErrorMessage('');
+    setErrors(null);
     setInputCode('');
     setIsCodeRedeemed(false);
   };
@@ -49,30 +52,56 @@ export default function RedeemModal({
   });
 
   async function redeemCode(data: FormData) {
+    setDisable(true);
     setIsUploadingData(true);
     const submitData = {
       code: data.code,
     };
     if (contextLoaded && user) {
-      postAuthenticatedRequest(`/app/redeem`, submitData, token).then((res) => {
-        if (res.error_code === 'already_redeemed') {
-          setErrorMessage(t('redeem:alreadyRedeemed'));
-          setIsUploadingData(false);
-        } else if (res.error_code === 'invalid_code') {
-          setErrorMessage(t('redeem:invalidCode'));
-          setIsUploadingData(false);
-        } else if (res.status === 'redeemed') {
-          setIsCodeRedeemed(true);
-          setValidCodeData(res);
-          if (res.units > 0) {
-            const cloneUser = { ...user };
-            cloneUser.score.received = cloneUser.score.received + res.units;
-            setUser(cloneUser);
-          }
-
-          setIsUploadingData(false);
+      try {
+        const res = await postAuthenticatedRequest(
+          `/app/redeem`,
+          submitData,
+          token,
+          logoutUser
+        );
+        setDisable(false);
+        setIsUploadingData(false);
+        setIsCodeRedeemed(true);
+        setValidCodeData(res);
+        if (res.units > 0) {
+          const cloneUser = { ...user };
+          cloneUser.score.received = cloneUser.score.received + res.units;
+          setUser(cloneUser);
         }
-      });
+      } catch (err) {
+        setDisable(false);
+        setIsUploadingData(false);
+        const serializedErrors = handleError(err as APIError);
+        const _serializedErrors: SerializedError[] = [];
+
+        for (const error of serializedErrors) {
+          switch (error.message) {
+            case 'already_redeemed':
+              _serializedErrors.push({
+                message: t('redeem:alreadyRedeemed'),
+              });
+              break;
+
+            case 'invalid_code':
+              _serializedErrors.push({
+                message: t('redeem:invalidCode'),
+              });
+              break;
+
+            default:
+              _serializedErrors.push(error);
+              break;
+          }
+        }
+
+        setErrors(_serializedErrors);
+      }
     }
   }
 
@@ -80,7 +109,6 @@ export default function RedeemModal({
     setIsCodeRedeemed(false);
     handleRedeemModalClose();
     setInputCode('');
-    setErrorMessage('');
   };
 
   const { theme } = React.useContext(ThemeContext);
@@ -138,7 +166,7 @@ export default function RedeemModal({
               <div className={styles.note}>
                 <p>{t('redeem:redeemDescription')}</p>
               </div>
-              {!errorMessage && (
+              {!apiErrors && (
                 <div className={styles.inputField}>
                   <MaterialTextField
                     inputRef={register({
@@ -165,11 +193,8 @@ export default function RedeemModal({
               {errors.code && (
                 <span className={styles.formErrors}>{errors.code.message}</span>
               )}
-              {errorMessage && !errors.code && !isUploadingData && (
-                <span className={styles.formErrors}>{errorMessage}</span>
-              )}
 
-              {errorMessage && (
+              {apiErrors && apiErrors.length > 0 && (
                 <button
                   className={`primaryButton ${styles.redeemCode}`}
                   onClick={handleAnotherCode}
@@ -177,11 +202,12 @@ export default function RedeemModal({
                   {t('redeem:redeemAnotherCode')}
                 </button>
               )}
-              {!errorMessage && (
+              {!apiErrors && (
                 <button
                   id={'redeemCodeModal'}
                   onClick={handleSubmit(redeemCode)}
                   className={`primaryButton ${styles.redeemCode}`}
+                  disabled={disable}
                 >
                   {isUploadingData ? (
                     <div className={styles.spinner}></div>

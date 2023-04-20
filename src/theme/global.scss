@@ -325,7 +325,7 @@ button {
   align-items: center;
   max-width: 98%;
   pointer-events: none;
-  z-index: 999;
+  z-index: 2000;
   height: fit-content;
   background: transparent;
 }
@@ -743,4 +743,24 @@ input[type='number'] {
       height: 10px;
     }
   }
+}
+
+.impersonationAlertContainer {
+  width: 100%;
+  position: fixed;
+  z-index: 1220;
+}
+
+.accessDeniedContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+  h2 {
+    margin-top: 24px;
+    margin-left: 24px;
+    font-weight: bold;
+    font-size: 30px;
+   }
 }

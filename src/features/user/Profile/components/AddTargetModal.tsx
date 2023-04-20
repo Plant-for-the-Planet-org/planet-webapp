@@ -9,6 +9,7 @@ import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { handleError, APIError } from '@planet-sdk/common';
 
 export default function AddTargetModal({
   addTargetModalOpen,
@@ -16,11 +17,11 @@ export default function AddTargetModal({
 }: any) {
   // External imports
   const { t, ready } = useTranslation(['me']);
-  const { user, token, contextLoaded, setUser } =
+  const { user, token, contextLoaded, setUser, logoutUser } =
     React.useContext(UserPropsContext);
-  const { register, handleSubmit, errors } = useForm({ mode: 'onBlur' });
+  const { register, errors } = useForm({ mode: 'onBlur' });
   const { theme } = React.useContext(ThemeContext);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
   // Internal states
   const [target, setTarget] = React.useState(0);
@@ -33,21 +34,26 @@ export default function AddTargetModal({
       const bodyToSend = {
         target: !target ? user.score.target : target,
       };
-      putAuthenticatedRequest(`/app/profile`, bodyToSend, token, handleError)
-        .then((res) => {
-          handleAddTargetModalClose();
-          const newUserInfo = {
-            ...user,
-            score: res.score,
-          };
-          setUser(newUserInfo);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          handleAddTargetModalClose();
-          console.log(error);
-          setIsLoading(false);
-        });
+
+      try {
+        const res = await putAuthenticatedRequest(
+          `/app/profile`,
+          bodyToSend,
+          token,
+          logoutUser
+        );
+        handleAddTargetModalClose();
+        const newUserInfo = {
+          ...user,
+          score: res.score,
+        };
+        setUser(newUserInfo);
+        setIsLoading(false);
+      } catch (err) {
+        handleAddTargetModalClose();
+        setIsLoading(false);
+        setErrors(handleError(err as APIError));
+      }
     }
   };
 
