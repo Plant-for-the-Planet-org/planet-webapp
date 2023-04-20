@@ -15,6 +15,8 @@ import SampleTrees from './components/SampleTrees';
 import ReviewSubmit from './components/ReviewSubmit';
 import dynamic from 'next/dynamic';
 import theme from '../../../../theme/themeProperties';
+import { handleError, APIError } from '@planet-sdk/common';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 const Stepper = styled(MuiStepper)({
   '&': {
@@ -42,7 +44,9 @@ const MapComponent = dynamic(() => import('./components/MapComponent'), {
 export default function ImportData({}: Props): ReactElement {
   const router = useRouter();
   const { t, ready } = useTranslation(['treemapper']);
-  const { token, impersonatedEmail } = React.useContext(UserPropsContext);
+  const { token, impersonatedEmail, logoutUser } =
+    React.useContext(UserPropsContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
   function getSteps() {
     return [
@@ -59,13 +63,18 @@ export default function ImportData({}: Props): ReactElement {
   const [userLang, setUserLang] = React.useState('en');
   const [geoJson, setGeoJson] = React.useState(null);
 
-  const fetchPlantLocation = async (id: any): Promise<void> => {
-    const result = await getAuthenticatedRequest(
-      `/treemapper/plantLocations/${id}?_scope=extended`,
-      token,
-      impersonatedEmail
-    );
-    setPlantLocation(result);
+  const fetchPlantLocation = async (id: any) => {
+    try {
+      const result = await getAuthenticatedRequest(
+        `/treemapper/plantLocations/${id}?_scope=extended`,
+        token,
+        logoutUser,
+        impersonatedEmail
+      );
+      setPlantLocation(result);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
   };
 
   React.useEffect(() => {
@@ -97,8 +106,6 @@ export default function ImportData({}: Props): ReactElement {
         return (
           <PlantingLocation
             handleNext={handleNext}
-            errorMessage={errorMessage}
-            setErrorMessage={setErrorMessage}
             userLang={userLang}
             plantLocation={plantLocation}
             setPlantLocation={setPlantLocation}
@@ -112,8 +119,6 @@ export default function ImportData({}: Props): ReactElement {
         return (
           <SampleTrees
             handleNext={handleNext}
-            errorMessage={errorMessage}
-            setErrorMessage={setErrorMessage}
             plantLocation={plantLocation}
             setPlantLocation={setPlantLocation}
             userLang={userLang}
@@ -132,8 +137,6 @@ export default function ImportData({}: Props): ReactElement {
         return (
           <PlantingLocation
             handleNext={handleNext}
-            errorMessage={errorMessage}
-            setErrorMessage={setErrorMessage}
             userLang={userLang}
             plantLocation={plantLocation}
             setPlantLocation={setPlantLocation}
