@@ -106,7 +106,7 @@ export function getAuthenticatedRequest<T>(
             'x-locale': `${lang}`,
             'x-accept-versions': version ? version : '1.0.3',
             ...(header ? header : {}),
-          },
+          }
           const res = await fetch(
             `${process.env.API_ENDPOINT}${url}${queryStringSuffix}`,
             {
