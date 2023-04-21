@@ -7,8 +7,7 @@ import { useTranslation } from 'next-i18next';
 export default function CookiePolicy() {
   const [showCookieNotice, setShowCookieNotice] = useState(false);
   const { t, ready } = useTranslation(['leaderboard']);
-  const { user, contextLoaded, loginWithRedirect } =
-    React.useContext(UserPropsContext);
+  const { user, contextLoaded } = React.useContext(UserPropsContext);
 
   React.useEffect(() => {
     if (contextLoaded && user) {

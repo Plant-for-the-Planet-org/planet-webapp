@@ -72,5 +72,6 @@ module.exports = {
   globals: {
     React: 'writable',
     cy: true,
+    NodeJS: true
   },
 };

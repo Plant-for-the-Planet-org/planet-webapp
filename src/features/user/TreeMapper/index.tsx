@@ -9,6 +9,7 @@ import TopProgressBar from '../../common/ContentLoaders/TopProgressBar';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
+import { handleError, APIError } from '@planet-sdk/common';
 
 interface Props {}
 
@@ -18,9 +19,8 @@ const PlantLocationMap = dynamic(() => import('./components/Map'), {
 
 function TreeMapper({}: Props): ReactElement {
   const router = useRouter();
-  const { token, contextLoaded, impersonatedEmail } =
+  const { token, contextLoaded, logoutUser } =
     React.useContext(UserPropsContext);
-  const { handleError } = React.useContext(ErrorHandlingContext);
   const { t } = useTranslation(['treemapper']);
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
@@ -28,76 +28,37 @@ function TreeMapper({}: Props): ReactElement {
   const [selectedLocation, setselectedLocation] = React.useState('');
   const [location, setLocation] = React.useState(null);
   const [links, setLinks] = React.useState();
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
   async function fetchTreemapperData(next = false) {
     setIsDataLoading(true);
     setProgress(70);
 
     if (next && links?.next) {
-      const response = await getAuthenticatedRequest(
-        links.next,
-        token,
-        impersonatedEmail,
-        {},
-        handleError,
-        '/profile',
-        undefined,
-        '1.0.4'
-      );
-      if (response) {
-        const newPlantLocations = response?.items;
-        for (const itr in newPlantLocations) {
-          if (Object.prototype.hasOwnProperty.call(newPlantLocations, itr)) {
-            const location = newPlantLocations[itr];
-            if (location.type === 'multi') {
-              newPlantLocations[itr].sampleTrees = [];
-              for (const key in newPlantLocations) {
-                if (
-                  Object.prototype.hasOwnProperty.call(newPlantLocations, key)
-                ) {
-                  const item = newPlantLocations[key];
-                  if (item.type === 'sample') {
-                    if (item.parent === location.id) {
-                      newPlantLocations[itr].sampleTrees.push(item);
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-        setPlantLocations([...plantLocations, ...newPlantLocations]);
-        setLinks(response._links);
-      }
-    } else {
-      const response = await getAuthenticatedRequest(
-        '/treemapper/plantLocations?_scope=extended&limit=15',
-        token,
-        impersonatedEmail,
-        {},
-        handleError,
-        '/profile',
-        undefined,
-        '1.0.4'
-      );
-      if (response) {
-        const plantLocations = response?.items;
-        if (plantLocations?.length === 0) {
-          setPlantLocations(null);
-        } else {
-          for (const itr in plantLocations) {
-            if (Object.prototype.hasOwnProperty.call(plantLocations, itr)) {
-              const location = plantLocations[itr];
+      try {
+        const response = await getAuthenticatedRequest(
+          links.next,
+          token,
+          logoutUser,
+          {},
+          undefined,
+          '1.0.4'
+        );
+        if (response) {
+          const newPlantLocations = response?.items;
+          for (const itr in newPlantLocations) {
+            if (Object.prototype.hasOwnProperty.call(newPlantLocations, itr)) {
+              const location = newPlantLocations[itr];
               if (location.type === 'multi') {
-                plantLocations[itr].sampleTrees = [];
-                for (const key in plantLocations) {
+                newPlantLocations[itr].sampleTrees = [];
+                for (const key in newPlantLocations) {
                   if (
-                    Object.prototype.hasOwnProperty.call(plantLocations, key)
+                    Object.prototype.hasOwnProperty.call(newPlantLocations, key)
                   ) {
-                    const item = plantLocations[key];
+                    const item = newPlantLocations[key];
                     if (item.type === 'sample') {
                       if (item.parent === location.id) {
-                        plantLocations[itr].sampleTrees.push(item);
+                        newPlantLocations[itr].sampleTrees.push(item);
                       }
                     }
                   }
@@ -105,9 +66,56 @@ function TreeMapper({}: Props): ReactElement {
               }
             }
           }
-          setPlantLocations(plantLocations);
+          setPlantLocations([...plantLocations, ...newPlantLocations]);
           setLinks(response._links);
         }
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+        redirect('/profile');
+      }
+    } else {
+      try {
+        const response = await getAuthenticatedRequest(
+          '/treemapper/plantLocations?_scope=extended&limit=15',
+          token,
+          logoutUser,
+
+          {},
+          undefined,
+          '1.0.4'
+        );
+        if (response) {
+          const plantLocations = response?.items;
+          if (plantLocations?.length === 0) {
+            setPlantLocations(null);
+          } else {
+            for (const itr in plantLocations) {
+              if (Object.prototype.hasOwnProperty.call(plantLocations, itr)) {
+                const location = plantLocations[itr];
+                if (location.type === 'multi') {
+                  plantLocations[itr].sampleTrees = [];
+                  for (const key in plantLocations) {
+                    if (
+                      Object.prototype.hasOwnProperty.call(plantLocations, key)
+                    ) {
+                      const item = plantLocations[key];
+                      if (item.type === 'sample') {
+                        if (item.parent === location.id) {
+                          plantLocations[itr].sampleTrees.push(item);
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            setPlantLocations(plantLocations);
+            setLinks(response._links);
+          }
+        }
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+        redirect('/profile');
       }
     }
     setProgress(100);

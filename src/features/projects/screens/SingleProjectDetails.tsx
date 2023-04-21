@@ -34,17 +34,12 @@ const ImageSlider = dynamic(
 
 function SingleProjectDetails({}: Props): ReactElement {
   const router = useRouter();
-  const { t, i18n, ready } = useTranslation([
-    'donate',
-    'common',
-    'country',
-    'maps',
-  ]);
+
+  const { t, ready } = useTranslation(['donate', 'common', 'country', 'maps']);
   const {
     project,
     geoJson,
     rasterData,
-    selectedMode,
     hoveredPl,
     selectedPl,
     setHoveredPl,
@@ -69,7 +64,6 @@ function SingleProjectDetails({}: Props): ReactElement {
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
   const [openModal, setModalOpen] = React.useState(false);
   const handleModalClose = () => {
     setModalOpen(false);
@@ -106,6 +100,9 @@ function SingleProjectDetails({}: Props): ReactElement {
         }`
       );
     } else {
+      if (document.referrer) {
+        window.history.go(-2);
+      }
       router.replace(
         `/${
           isEmbed
@@ -114,7 +111,7 @@ function SingleProjectDetails({}: Props): ReactElement {
                   ? `?embed=true&callback=${callbackUrl}`
                   : '?embed=true'
               }`
-            : ''
+            : ``
         }`
       );
     }
