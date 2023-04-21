@@ -11,9 +11,15 @@ const themeProperties = {
     fontXLarge: '26px',
     fontXXLarge: '36px',
     fontXXXLarge: '48px',
+    //to be converted to same unit
+    fontRemLarge: '2.25rem',
+    fontRemMedium: '1.5rem',
+    fontRemSmall: '1.125rem',
+    fontRemXSmall: '0.875rem',
   },
   primaryColor: '#68B030',
   primaryDarkColor: '#007a49',
+  primaryLightColor: '#79AE4633',
   light: {
     primaryFontColor: '#2f3336',
     dividerColor: '#d5d5d5',
@@ -29,6 +35,7 @@ const themeProperties = {
     mapboxIcon: 'invert(0) hue-rotate(180deg)',
     backgroundBase: '#FaFaFf',
     disabledFontColor: '#909090',
+    tabBackgroundColor: '#f4ffec',
   },
   dark: {
     primaryFontColor: '#ffffff',
@@ -46,6 +53,7 @@ const themeProperties = {
     backgroundBase: '#202020',
     disabledFontColor: '#686868',
   },
+  fontWeight: '700',
 };
 
 export default themeProperties;

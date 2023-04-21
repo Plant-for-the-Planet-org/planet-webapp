@@ -9,8 +9,8 @@ import Header from '../components/projects/Header';
 import SearchBar from '../components/projects/SearchBar';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
-import Filters from '../components/projects/Filters';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import { UserPropsContext } from '../../../../src/features/common/Layout/UserPropsContext';
 
 interface Props {
   projects: any;
@@ -31,7 +31,8 @@ function ProjectsList({
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 767;
-  const { embed, showProjectList } = React.useContext(ParamsContext);
+  const { embed, showProjectList, email } = React.useContext(ParamsContext);
+  const { isImpersonationModeOn } = React.useContext(UserPropsContext);
   const isEmbed = embed === 'true';
   const [scrollY, setScrollY] = React.useState(0);
   const [hideSidebar, setHideSidebar] = React.useState(isEmbed);
@@ -188,7 +189,7 @@ function ProjectsList({
                 isMobile && hideSidebar && showProjectList !== 'true'
                   ? 'mobile-hidden'
                   : ''
-              }`}
+              } ${isImpersonationModeOn ? `impersonationTop` : ''}`}
             >
               <div className={`header ${isMobile ? 'header--mobile' : ''}`}>
                 {isMobile && (!hideSidebar || showProjectList === 'true') && (

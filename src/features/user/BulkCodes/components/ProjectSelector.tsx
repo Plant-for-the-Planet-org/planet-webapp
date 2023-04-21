@@ -10,6 +10,7 @@ import { PaymentOptions } from '../BulkCodesTypes';
 
 import ProjectSelectAutocomplete from './ProjectSelectAutocomplete';
 import UnitCostDisplay from './UnitCostDisplay';
+import { handleError, APIError } from '@planet-sdk/common';
 
 // const { useTranslation } = i18next;
 
@@ -29,7 +30,7 @@ const ProjectSelector = ({
   planetCashAccount,
 }: ProjectSelectorProps): ReactElement | null => {
   // const { t, ready } = useTranslation(['common', 'bulkCodes']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
   const defaultUnit = (project: Project | null) => {
     if (project?.purpose === 'conservation') return 'm2';
@@ -40,8 +41,6 @@ const ProjectSelector = ({
   const fetchPaymentOptions = async (guid: string) => {
     const paymentOptions = await getRequest<PaymentOptions>(
       `/app/paymentOptions/${guid}`,
-      handleError,
-      undefined,
       {
         country: planetCashAccount?.country || '',
       }
@@ -52,13 +51,17 @@ const ProjectSelector = ({
   const handleProjectChange = async (project: Project | null) => {
     // fetch project details
     if (project) {
-      const paymentOptions = await fetchPaymentOptions(project.guid);
-      // Add to project object
-      if (paymentOptions) {
-        project.currency = paymentOptions.currency;
-        project.unitCost = paymentOptions.unitCost;
-        project.unit = paymentOptions.unit;
-        project.purpose = paymentOptions.purpose;
+      try {
+        const paymentOptions = await fetchPaymentOptions(project.guid);
+        // Add to project object
+        if (paymentOptions) {
+          project.currency = paymentOptions.currency;
+          project.unitCost = paymentOptions.unitCost;
+          project.unit = paymentOptions.unit;
+          project.purpose = paymentOptions.purpose;
+        }
+      } catch (err) {
+        setErrors(handleError(err as APIError));
       }
     }
     // set context

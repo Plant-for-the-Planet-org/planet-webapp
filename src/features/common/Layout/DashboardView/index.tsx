@@ -1,18 +1,17 @@
-import React, { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { Box, Grid, ThemeProvider, styled } from '@mui/material';
-
-import muiThemeNew from '../../../../theme/muiThemeNew';
+import materialTheme from '../../../../theme/themeStyles';
 
 interface DashboardViewProps {
   title: string;
-  subtitle: JSX.Element | null;
-  children: React.ReactNode;
+  subtitle: ReactElement | null;
+  children: ReactNode;
 }
 
 const DashboardGridContainer = styled(Box)(({ theme }) => ({
   fontSize: '1rem',
   backgroundColor: theme.palette.background.base,
-  marginTop: 80,
+  marginTop: 105,
   minHeight: '100vh',
   '& .dashboardGrid': {
     [theme.breakpoints.up(481)]: {
@@ -30,6 +29,7 @@ const DashboardGridContainer = styled(Box)(({ theme }) => ({
     color: theme.palette.text.primary,
     fontWeight: theme.typography.fontWeightBold,
     fontSize: theme.typography.h1.fontSize,
+    width: '100%',
   },
   '& main': {
     width: '100%',
@@ -48,7 +48,7 @@ export default function DashboardView({
   children,
 }: DashboardViewProps): ReactElement {
   return (
-    <ThemeProvider theme={muiThemeNew}>
+    <ThemeProvider theme={materialTheme}>
       <DashboardGridContainer className="DashboardView">
         <Grid container className="dashboardGrid">
           <Grid
