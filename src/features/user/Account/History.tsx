@@ -12,6 +12,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { CircularProgress } from '@mui/material';
 import CustomSnackbar from '../../common/CustomSnackbar';
 import MuiButton from '../../common/InputTypes/MuiButton';
+import { APIError, handleError } from '@planet-sdk/common';
 
 interface Props {
   filter: string | null;
@@ -36,8 +37,8 @@ export default function History({
   );
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const { isMobile } = useContext(ProjectPropsContext);
-  const { token } = useContext(UserPropsContext);
-  const { handleError, setError } = useContext(ErrorHandlingContext);
+  const { token, logoutUser } = useContext(UserPropsContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [isLoading, setLoading] = React.useState(false);
@@ -81,14 +82,15 @@ export default function History({
           year: new Date().getFullYear(),
         },
         token,
-        handleError
+        logoutUser
       );
       setLoading(false);
       if (Array.isArray(res) && res.length === 0) {
-        setError({
-          type: 'error',
-          message: t('me:taxReceiptsAlreadyGenerated'),
-        });
+        setErrors([
+          {
+            message: t('me:taxReceiptsAlreadyGenerated'),
+          },
+        ]);
       } else {
         await fetchPaymentHistory();
         setSelectedRecord(0);
@@ -96,7 +98,7 @@ export default function History({
       }
     } catch (err) {
       setLoading(false);
-      console.error(err);
+      setErrors(handleError(err as APIError));
     }
   };
 
