@@ -7,21 +7,28 @@ import styles from './../styles/ProjectGrid.module.scss';
 import ProjectSnippet from '../../../../features/projects/components/ProjectSnippet';
 import { MapSingleProject } from '../../../../features/common/types/project';
 import { TENANT_ID } from '../../../../utils/constants/environment';
+import { handleError } from '@planet-sdk/common/build/utils/handleError';
+import { APIError } from '@planet-sdk/common/build/types/errors';
 
 export default function ProjectGrid() {
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const [projects, setProjects] = useState<MapSingleProject[] | null>(null);
 
   useEffect(() => {
     async function loadProjects() {
       const currencyCode = getStoredCurrency();
-      const projects = await getRequest(`/app/projects`, handleError, '/', {
-        _scope: 'map',
-        currency: currencyCode,
-        tenant: TENANT_ID,
-        'filter[purpose]': 'trees,conservation',
-      });
-      setProjects(projects as MapSingleProject[]);
+      try {
+        const projects = await getRequest(`/app/projects`, {
+          _scope: 'map',
+          currency: currencyCode,
+          tenant: TENANT_ID,
+          'filter[purpose]': 'trees,conservation',
+        });
+        setProjects(projects as MapSingleProject[]);
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+        redirect('/');
+      }
     }
     loadProjects();
   }, []);
