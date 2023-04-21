@@ -24,6 +24,8 @@ import {
   StyledAutoCompleteOption,
 } from '../../../common/InputTypes/MuiAutoComplete';
 import StyledForm from '../../../common/Layout/StyledForm';
+import { AddressSuggestionsType } from '../../../common/types/user';
+import { AlertColor } from '@mui/lab';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -42,6 +44,7 @@ type FormData = {
   name: string;
   url: string;
   zipCode: string;
+  type?: string;
 };
 
 export default function EditProfileForm() {
@@ -60,7 +63,7 @@ export default function EditProfileForm() {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (
-    event?: React.SyntheticEvent,
+    event?: React.SyntheticEvent<any> | Event,
     reason?: string
   ) => {
     if (reason === 'clickaway') {
@@ -90,7 +93,9 @@ export default function EditProfileForm() {
   const [country, setCountry] = React.useState(user.country);
   const [updatingPic, setUpdatingPic] = React.useState(false);
 
-  const [addressSugggestions, setaddressSugggestions] = React.useState([]);
+  const [addressSugggestions, setaddressSugggestions] = React.useState<
+    AddressSuggestionsType[]
+  >([]);
   const geocoder = new GeocoderArcGIS(
     process.env.ESRI_CLIENT_SECRET
       ? {
@@ -99,20 +104,22 @@ export default function EditProfileForm() {
         }
       : {}
   );
-  const suggestAddress = (value) => {
+  const suggestAddress = (value: string) => {
     if (value.length > 3) {
       geocoder
         .suggest(value, { category: 'Address', countryCode: country })
-        .then((result) => {
-          const filterdSuggestions = result.suggestions.filter((suggestion) => {
-            return !suggestion.isCollection;
-          });
+        .then((result: { suggestions: AddressSuggestionsType[] }) => {
+          const filterdSuggestions = result.suggestions.filter(
+            (suggestion: AddressSuggestionsType) => {
+              return !suggestion.isCollection;
+            }
+          );
           setaddressSugggestions(filterdSuggestions);
         })
         .catch(console.log);
     }
   };
-  const getAddress = (value) => {
+  const getAddress = (value: string) => {
     geocoder
       .findAddressCandidates(value, { outfields: '*' })
       .then((result) => {
@@ -141,7 +148,7 @@ export default function EditProfileForm() {
   }, [country]);
 
   // the form values
-  const [severity, setSeverity] = useState('success');
+  const [severity, setSeverity] = useState<AlertColor>('success');
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
   const watchIsPrivate = watch('isPrivate');
   const [type, setAccountType] = useState(user.type ? user.type : 'individual');
@@ -416,11 +423,11 @@ export default function EditProfileForm() {
                       <div
                         key={'suggestion' + suggestion_counter++}
                         onMouseDown={() => {
-                          getAddress(suggestion.text);
+                          getAddress(suggestion['text']);
                         }}
                         className="suggestion"
                       >
-                        {suggestion.text}
+                        {suggestion['text']}
                       </div>
                     );
                   })}

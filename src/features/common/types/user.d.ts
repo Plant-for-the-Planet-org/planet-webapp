@@ -57,3 +57,9 @@ export interface User {
   scheduleFrequency: PaymentFrequencies | null;
   allowedToSwitch?: boolean;
 }
+
+export interface AddressSuggestionsType {
+  isCollection: boolean;
+  magicKey: string;
+  text: string;
+}
