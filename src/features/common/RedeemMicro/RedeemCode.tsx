@@ -5,7 +5,6 @@ import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import styles from '../../../../src/features/user/Profile/styles/RedeemModal.module.scss';
 import { useTranslation } from 'next-i18next';
 import MaterialTextField from '../InputTypes/MaterialTextField';
-import CircularProgress from '@mui/material/CircularProgress';
 import { RedeemedCodeData } from '../types/redeem';
 import { SerializedError } from '@planet-sdk/common';
 

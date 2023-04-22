@@ -103,7 +103,7 @@ const ReedemCode: FC = () => {
   }
 
   useEffect(() => {
-    if (contextLoaded && user && router && router.query.code) {
+    if (contextLoaded && user && router.query.code && !router.query.inputCode) {
       redeemingCode(router.query.code);
     }
   }, [user, contextLoaded, router.query.code]);
@@ -111,8 +111,7 @@ const ReedemCode: FC = () => {
   const changeRouteCode = () => {
     router.push(`/profile/redeem/${inputCode}?inputCode=${false}`);
 
-    const codeFromUrl = router.query.code;
-    redeemingCode(codeFromUrl);
+    redeemingCode(inputCode);
   };
 
   return ready && user ? (
@@ -129,14 +128,15 @@ const ReedemCode: FC = () => {
     ) : (
       //after successful redeem
       <LandingSection>
-        {redeemedCodeData ? (
+        {redeemedCodeData && (
           <SuccessfullyRedeemed
             redeemedCodeData={redeemedCodeData}
             redeemAnotherCode={handleCode}
             closeRedeem={closeRedeem}
           />
-        ) : (
-          // if redeem code is invalid and  redeem process failed
+        )}
+
+        {errors && (
           <RedeemCodeFailed
             errorMessages={errors}
             code={code}
