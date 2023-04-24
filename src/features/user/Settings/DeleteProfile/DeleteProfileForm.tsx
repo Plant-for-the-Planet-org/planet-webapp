@@ -10,11 +10,11 @@ import { useTranslation } from 'next-i18next';
 import { TextField } from '@mui/material';
 import StyledForm from '../../../common/Layout/StyledForm';
 
-export default function DeleteProfileForm({}: any) {
+export default function DeleteProfileForm() {
   const { user, token, logoutUser, impersonatedEmail } =
     React.useContext(UserPropsContext);
   const { t } = useTranslation(['me', 'common', 'editProfile']);
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<{}>) => {
     e.preventDefault();
   };
   const { handleError } = React.useContext(ErrorHandlingContext);
