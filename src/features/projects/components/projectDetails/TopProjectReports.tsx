@@ -7,10 +7,16 @@ import format from 'date-fns/format';
 import { Trans } from 'react-i18next';
 import { useTranslation } from 'next-i18next';
 
-interface Props {
-  data: object[];
+//will be shifted to a common type definition file
+interface reviewType {
+  id: string;
+  issueMonth: string;
+  pdf: string;
 }
-export default function TopProjectReports(data: Props) {
+interface Props {
+  projectReviews: reviewType[];
+}
+export default function TopProjectReports(projectReviews: Props) {
   const { t, ready } = useTranslation(['common']);
   const displayDate = (date: string) => {
     return format(parse(date, 'MM-yyyy', new Date()), 'LLLL yyyy');
@@ -20,7 +26,7 @@ export default function TopProjectReports(data: Props) {
       <div className={styles.reports_container}>
         <VerifiedIcon sx={{ color: '#42A5F5' }} />
         <div className={styles.reports_description}>
-          {data?.data?.map((review) => (
+          {projectReviews?.projectReviews?.map((review) => (
             <div key={review.id}>
               <p id="child-modal-description">
                 <Trans i18nKey="common:reviewInfo">

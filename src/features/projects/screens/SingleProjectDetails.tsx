@@ -219,7 +219,7 @@ function SingleProjectDetails({}: Props): ReactElement {
                   style={{ marginTop: 24 }}
                 >
                   {project?.isApproved && (
-                    <TopProjectReports data={project.reviews} />
+                    <TopProjectReports projectReviews={project.reviews} />
                   )}
                   <div className={'projectDescription'}>
                     <div className={'infoTitle'}>

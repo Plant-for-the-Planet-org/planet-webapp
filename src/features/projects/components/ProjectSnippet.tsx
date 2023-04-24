@@ -125,7 +125,7 @@ export default function ProjectSnippet({
                     }}
                   >
                     <Typography style={{ margin: 10 }}>
-                      <TopProjectReports data={project.reviews} />
+                      <TopProjectReports projectReviews={project.reviews} />
                     </Typography>
                   </HoverPopover>
                 )}
