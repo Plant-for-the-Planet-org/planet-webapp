@@ -249,10 +249,12 @@ export default function Explore({}: Props): ReactElement {
             >
               {/* <div> */}
               <FormGroup style={{ width: '100%' }}>
+                {/* 24 Apr 2023 - temp. disable "Current Forests" / "Restoration Potential" toggles on map */}
                 <div className={styles.exploreToggleRow}>
                   <FormControlLabel
                     control={
                       <Switch
+                        disabled={true}
                         color="#448149"
                         className={styles.toggleForest}
                         checked={exploreForests}
@@ -276,6 +278,7 @@ export default function Explore({}: Props): ReactElement {
                   <FormControlLabel
                     control={
                       <Switch
+                        disabled={true}
                         checked={explorePotential}
                         onChange={handleExplorePotentialChange}
                         name="potential"
