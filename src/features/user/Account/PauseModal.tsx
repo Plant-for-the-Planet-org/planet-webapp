@@ -20,6 +20,7 @@ import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
+import { handleError, APIError } from '@planet-sdk/common';
 
 const MuiCalendarPicker = styled(CalendarPicker)({
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -42,7 +43,7 @@ export const PauseModal = ({
   fetchRecurrentDonations,
 }: any) => {
   const { theme } = React.useContext(ThemeContext);
-  const { token, impersonatedEmail } = React.useContext(UserPropsContext);
+  const { token, logoutUser } = React.useContext(UserPropsContext);
   const [option, setoption] = React.useState();
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState(
@@ -50,8 +51,8 @@ export const PauseModal = ({
   );
   const [disabled, setDisabled] = React.useState(false);
 
-  const { t } = useTranslation(['me']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { t, i18n, ready } = useTranslation(['me']);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     setdate(
@@ -63,7 +64,7 @@ export const PauseModal = ({
     setDisabled(false);
   }, [pauseModalOpen]);
 
-  const pauseDonation = () => {
+  const pauseDonation = async () => {
     setDisabled(true);
     const bodyToSend = {
       pauseType:
@@ -75,20 +76,20 @@ export const PauseModal = ({
           ? date.toISOString().split('T')[0]
           : null, // only if pauseType='custom-date'
     };
-    putAuthenticatedRequest(
-      `/app/subscriptions/${record.id}?scope=pause`,
-      bodyToSend,
-      token,
-      impersonatedEmail,
-      handleError
-    )
-      .then((res) => {
-        handlePauseModalClose();
-        fetchRecurrentDonations();
-      })
-      .catch((err) => {
-        console.log('Error pausing recurring donation.');
-      });
+
+    try {
+      await putAuthenticatedRequest(
+        `/app/subscriptions/${record.id}?scope=pause`,
+        bodyToSend,
+        token,
+        logoutUser
+      );
+      handlePauseModalClose();
+      fetchRecurrentDonations();
+    } catch (err) {
+      handlePauseModalClose();
+      setErrors(handleError(err as APIError));
+    }
   };
   return (
     <Modal
