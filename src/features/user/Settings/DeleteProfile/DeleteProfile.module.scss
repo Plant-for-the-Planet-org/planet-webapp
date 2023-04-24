@@ -13,12 +13,6 @@
   @include smTabletView {
     max-width: 460px;
   }
-  .deleteModalTitle {
-    font-weight: bold;
-    font-size: 27px;
-    text-align: center;
-    color: $primaryFontColor;
-  }
   .deleteModalContent {
     margin-top: 20px;
     color: $primaryFontColor;
