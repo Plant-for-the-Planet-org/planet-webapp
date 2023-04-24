@@ -7,6 +7,7 @@ import { useTranslation } from 'next-i18next';
 import MaterialTextField from '../InputTypes/MaterialTextField';
 import { RedeemedCodeData } from '../types/redeem';
 import { SerializedError } from '@planet-sdk/common';
+import { Button } from '@mui/material';
 
 export interface InputRedeemCode {
   setInputCode: React.Dispatch<React.SetStateAction<string | null>>;
@@ -71,9 +72,9 @@ export const InputRedeemCode = ({
       )}
 
       <div style={{ paddingTop: '30px' }}>
-        <button className={'primaryButton'} onClick={changeRouteCode}>
+        <Button variant="contained" onClick={changeRouteCode}>
           {t('redeem:redeemCode')}
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -98,9 +99,9 @@ export const RedeemCodeFailed = ({
       <div className={styles.RedeemTitle}>{code}</div>
 
       <div className={styles.redeemAnotherCodeDiv}>
-        <button className="primaryButton" onClick={redeemAnotherCode}>
+        <Button variant="contained" onClick={redeemAnotherCode}>
           {t('redeem:redeemAnotherCode')}
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -135,9 +136,9 @@ export const SuccessfullyRedeemed = ({
       </div>
 
       <div className={styles.redeemAnotherCodeDiv}>
-        <button className="primaryButton" onClick={redeemAnotherCode}>
+        <Button variant="contained" onClick={redeemAnotherCode}>
           {t('redeem:redeemAnotherCode')}
-        </button>
+        </Button>
       </div>
     </div>
   );
