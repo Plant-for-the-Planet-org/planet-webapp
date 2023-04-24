@@ -7,9 +7,9 @@ import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorH
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
 import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
 import {
-  InputRedeemCode,
+  EnterRedeemCode,
   SuccessfullyRedeemed,
-  RedeemCodeFailed,
+  RedeemFailed,
 } from '../../../src/features/common/RedeemMicro/RedeemCode';
 import { ClaimCode1 } from '../../claim/[type]/[code]';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -119,7 +119,7 @@ const ReedemCode: FC = () => {
     router.query.inputCode === 'true' ? (
       // to input  redeem code
       <LandingSection>
-        <InputRedeemCode
+        <EnterRedeemCode
           setInputCode={setInputCode}
           inputCode={inputCode}
           changeRouteCode={changeRouteCode}
@@ -137,7 +137,7 @@ const ReedemCode: FC = () => {
           />
         ) : (
           // if redeem code is invalid and  redeem process failed
-          <RedeemCodeFailed
+          <RedeemFailed
             errorMessages={errors}
             code={code}
             redeemAnotherCode={handleCode}

@@ -5,7 +5,7 @@ import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import styles from '../../../../src/features/user/Profile/styles/RedeemModal.module.scss';
 import { useTranslation } from 'next-i18next';
 import MaterialTextField from '../InputTypes/MaterialTextField';
-import CircularProgress from '@mui/material/CircularProgress';
+import Button from '@mui/material/Button';
 import { RedeemedCodeData } from '../types/redeem';
 import { SerializedError } from '@planet-sdk/common';
 
@@ -29,7 +29,7 @@ export interface SuccessfullyRedeemed {
   closeRedeem: () => void;
 }
 
-export const InputRedeemCode = ({
+export const EnterRedeemCode = ({
   setInputCode,
   inputCode,
   changeRouteCode,
@@ -72,15 +72,15 @@ export const InputRedeemCode = ({
       )}
 
       <div style={{ paddingTop: '30px' }}>
-        <button className={'primaryButton'} onClick={changeRouteCode}>
+        <Button variant="contained" onClick={changeRouteCode}>
           {t('redeem:redeemCode')}
-        </button>
+        </Button>
       </div>
     </div>
   );
 };
 
-export const RedeemCodeFailed = ({
+export const RedeemFailed = ({
   errorMessages = null,
   code,
   redeemAnotherCode,
@@ -99,9 +99,9 @@ export const RedeemCodeFailed = ({
       <div className={styles.RedeemTitle}>{code}</div>
 
       <div className={styles.redeemAnotherCodeDiv}>
-        <button className="primaryButton" onClick={redeemAnotherCode}>
+        <Button variant="contained" onClick={redeemAnotherCode}>
           {t('redeem:redeemAnotherCode')}
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -136,9 +136,9 @@ export const SuccessfullyRedeemed = ({
       </div>
 
       <div className={styles.redeemAnotherCodeDiv}>
-        <button className="primaryButton" onClick={redeemAnotherCode}>
+        <Button variant="contained" onClick={redeemAnotherCode}>
           {t('redeem:redeemAnotherCode')}
-        </button>
+        </Button>
       </div>
     </div>
   );
