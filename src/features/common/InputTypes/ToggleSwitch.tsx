@@ -2,7 +2,20 @@ import { Switch } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import theme from '../../../theme/themeProperties';
 
-export default function ToggleSwitch(props: any) {
+interface ToggleSwitchProps {
+  checked: boolean;
+  onChange: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    checked: boolean
+  ) => void;
+  disabled?: boolean;
+  id?: string;
+  inputProps?: React.InputHTMLAttributes<HTMLInputElement> | undefined;
+  name?: string;
+  color?: string;
+}
+
+export default function ToggleSwitch(props: ToggleSwitchProps) {
   const ToggleSwitch = styled(Switch)({
     '& .MuiSwitch-switchBase.Mui-checked': {
       color: props.color ? props.color : theme.primaryColor,
@@ -18,7 +31,7 @@ export default function ToggleSwitch(props: any) {
   return (
     <ToggleSwitch
       checked={props.checked}
-      onClick={props.onChange}
+      onChange={props.onChange}
       id={props.id}
       inputProps={props.inputProps}
       name={props.name}

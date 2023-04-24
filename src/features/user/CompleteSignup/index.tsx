@@ -150,7 +150,7 @@ export default function CompleteSignup(): ReactElement | null {
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
   const [severity, setSeverity] = useState('info');
   const [requestSent, setRequestSent] = useState(false);
-  const [acceptTerms, setAcceptTerms] = useState(null);
+  const [acceptTerms, setAcceptTerms] = useState<boolean | null>(null);
   const [country, setCountry] = useState('');
 
   const [postalRegex, setPostalRegex] = React.useState(
@@ -183,7 +183,7 @@ export default function CompleteSignup(): ReactElement | null {
     }
   };
 
-  const handleTermsAndCondition = (value) => {
+  const handleTermsAndCondition = (value: boolean) => {
     setAcceptTerms(value);
     if (!value) {
       setSubmit(false);
@@ -438,7 +438,7 @@ export default function CompleteSignup(): ReactElement | null {
                 render={(props: any) => (
                   <ToggleSwitch
                     checked={props.value}
-                    onChange={(e: any) => props.onChange(e.target.checked)}
+                    onChange={(e) => props.onChange(e.target.checked)}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                     id="isPrivate"
                   />
@@ -462,7 +462,7 @@ export default function CompleteSignup(): ReactElement | null {
                   return (
                     <ToggleSwitch
                       checked={props.value}
-                      onChange={(e: any) => props.onChange(e.target.checked)}
+                      onChange={(e) => props.onChange(e.target.checked)}
                       inputProps={{ 'aria-label': 'secondary checkbox' }}
                       id="getNews"
                     />
@@ -489,8 +489,8 @@ export default function CompleteSignup(): ReactElement | null {
                   </label>
                 </div>
                 <ToggleSwitch
-                  checked={acceptTerms}
-                  onChange={(e: any) => {
+                  checked={acceptTerms || false}
+                  onChange={(e) => {
                     handleTermsAndCondition(e.target.checked);
                   }}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}

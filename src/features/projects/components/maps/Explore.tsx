@@ -256,7 +256,6 @@ export default function Explore({}: Props): ReactElement {
                       <Switch
                         disabled={true}
                         color="#448149"
-                        className={styles.toggleForest}
                         checked={exploreForests}
                         onChange={handleExploreForestsChange}
                         name="forest"
