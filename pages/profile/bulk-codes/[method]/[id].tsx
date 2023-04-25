@@ -13,12 +13,13 @@ import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { GetStaticPaths } from 'next';
+import { handleError, APIError } from '@planet-sdk/common';
 
 export default function BulkCodeIssueCodesPage(): ReactElement {
   const router = useRouter();
   const { isReady, query } = useRouter();
   const { t, ready } = useTranslation('me');
-  const { handleError } = useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
 
   const { project, setProject, bulkMethod, setBulkMethod, planetCashAccount } =
     useBulkCode();
@@ -28,27 +29,30 @@ export default function BulkCodeIssueCodesPage(): ReactElement {
     if (planetCashAccount) {
       if (!project) {
         if (isReady) {
-          const paymentOptions = await getRequest<PaymentOptions>(
-            `/app/paymentOptions/${query.id}`,
-            handleError,
-            '',
-            {
-              currency: planetCashAccount.country,
-            }
-          );
+          try {
+            const paymentOptions = await getRequest<PaymentOptions>(
+              `/app/paymentOptions/${query.id}`,
+              {
+                currency: planetCashAccount.country,
+              }
+            );
 
-          if (paymentOptions) {
-            const _project = {
-              guid: paymentOptions.id,
-              slug: '',
-              currency: paymentOptions.currency,
-              unitCost: paymentOptions.unitCost,
-              purpose: paymentOptions.purpose,
-              name: paymentOptions.name,
-              unit: paymentOptions.unit,
-              allowDonations: true,
-            };
-            setProject(_project);
+            if (paymentOptions) {
+              const _project = {
+                guid: paymentOptions.id,
+                slug: '',
+                currency: paymentOptions.currency,
+                unitCost: paymentOptions.unitCost,
+                purpose: paymentOptions.purpose,
+                name: paymentOptions.name,
+                unit: paymentOptions.unit,
+                allowDonations: true,
+              };
+              setProject(_project);
+            }
+          } catch (err) {
+            setErrors(handleError(err as APIError));
+            redirect('/');
           }
         } else {
           router.push(`/profile/bulk-codes`);

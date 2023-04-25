@@ -9,6 +9,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { Autocomplete } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useTranslation } from 'next-i18next';
+import { handleError, APIError } from '@planet-sdk/common';
+import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 
 const config = tenantConfig();
 
@@ -26,6 +28,7 @@ export default function SpeciesSelect(props: {
   const [query, setQuery] = React.useState('');
   const { t } = useTranslation(['treemapper']);
   const { theme } = React.useContext(ThemeContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
   const useStylesAutoComplete = makeStyles({
     paper: {
       color:
@@ -87,20 +90,24 @@ export default function SpeciesSelect(props: {
     }
   }, [speciesSuggestion]);
 
-  const suggestSpecies = (value: any) => {
+  const suggestSpecies = async (value: any) => {
     if (value.length > 2) {
-      postRequest(`/suggest.php`, { q: value, t: 'species' }).then(
-        (res: any) => {
-          if (res && res.length > 0) {
-            const species = res.map((item: any) => ({
-              id: item.id,
-              name: item.name,
-              scientificName: item.scientificName,
-            }));
-            setspeciesSuggestion(species);
-          }
+      try {
+        const res = await postRequest(`/suggest.php`, {
+          q: value,
+          t: 'species',
+        });
+        if (res && res.length > 0) {
+          const species = res.map((item: any) => ({
+            id: item.id,
+            name: item.name,
+            scientificName: item.scientificName,
+          }));
+          setspeciesSuggestion(species);
         }
-      );
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+      }
     }
   };
 

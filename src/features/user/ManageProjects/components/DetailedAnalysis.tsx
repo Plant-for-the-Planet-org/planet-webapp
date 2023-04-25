@@ -13,7 +13,9 @@ import { SxProps, TextField, Button } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { handleError, APIError } from '@planet-sdk/common';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -79,8 +81,8 @@ export default function DetailedAnalysis({
   purpose,
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['manageProjects', 'common']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
-  const { impersonatedEmail } = React.useContext(UserPropsContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { logoutUser } = React.useContext(UserPropsContext);
   const [siteOwners, setSiteOwners] = React.useState([
     {
       id: 1,
@@ -119,9 +121,7 @@ export default function DetailedAnalysis({
       isSet: false,
     },
   ]);
-  const [addSpecies, setAddSpecies] = React.useState(false);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState('');
   const { theme } = React.useContext(ThemeContext);
   const [plantingSeasons, setPlantingSeasons] = React.useState([
     { id: 1, title: ready ? t('common:january') : '', isSet: false },
@@ -249,7 +249,7 @@ export default function DetailedAnalysis({
     }
   }, [router.query.type]);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     setIsUploadingData(true);
     const submitData =
       purpose === 'trees'
@@ -292,33 +292,20 @@ export default function DetailedAnalysis({
             },
           };
 
-    putAuthenticatedRequest(
-      `/app/projects/${projectGUID}`,
-      submitData,
-      token,
-      impersonatedEmail,
-      handleError
-    )
-      .then((res) => {
-        if (!res.code) {
-          setProjectDetails(res);
-          setIsUploadingData(false);
-          setErrorMessage('');
-          handleNext(ProjectCreationTabs.PROJECT_SITES);
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          }
-        }
-      })
-      .catch((err) => {
-        setIsUploadingData(false);
-        setErrorMessage(err);
-      });
+    try {
+      const res = await putAuthenticatedRequest(
+        `/app/projects/${projectGUID}`,
+        submitData,
+        token,
+        logoutUser
+      );
+      setProjectDetails(res);
+      setIsUploadingData(false);
+      handleNext();
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
   };
 
   // Use Effect to hide error message after 10 seconds

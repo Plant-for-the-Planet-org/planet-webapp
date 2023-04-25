@@ -13,6 +13,7 @@ import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorH
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
 import DashboardView from '../../../src/features/common/Layout/DashboardView';
+import { handleError, APIError } from '@planet-sdk/common';
 
 interface Props {}
 
@@ -24,10 +25,10 @@ function ManageSingleProject({}: Props): ReactElement {
   const [accessDenied, setAccessDenied] = React.useState(false);
   const [setupAccess, setSetupAccess] = React.useState(false);
   const [project, setProject] = React.useState({});
-  const { user, contextLoaded, token, impersonatedEmail } =
-    React.useContext(UserPropsContext);
 
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { user, contextLoaded, token, logoutUser } =
+    React.useContext(UserPropsContext);
+  const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
 
   useEffect(() => {
     if (router && router.query.id) {
@@ -38,27 +39,19 @@ function ManageSingleProject({}: Props): ReactElement {
 
   useEffect(() => {
     async function loadProject() {
-      getAuthenticatedRequest(
-        `/app/profile/projects/${projectGUID}`,
-        token,
-        impersonatedEmail,
-        {},
-        handleError,
-        '/profile'
-      )
-        .then((result) => {
-          if (result.status === 401) {
-            setAccessDenied(true);
-            setSetupAccess(true);
-          } else {
-            setProject(result);
-            setSetupAccess(true);
-          }
-        })
-        .catch(() => {
-          setAccessDenied(true);
-          setSetupAccess(true);
-        });
+      try {
+        const result = await getAuthenticatedRequest(
+          `/app/profile/projects/${projectGUID}`,
+          token,
+          logoutUser
+        );
+        setProject(result);
+        setSetupAccess(true);
+      } catch (err) {
+        setAccessDenied(true);
+        setErrors(handleError(err as APIError));
+        redirect('/profile');
+      }
     }
 
     // ready is for router, loading is for session

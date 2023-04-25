@@ -20,6 +20,7 @@ import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedC
 import { Recipient as LocalRecipient } from '../BulkCodesTypes';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
+import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 
 interface IssueCodesFormProps {}
 
@@ -34,9 +35,9 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
     bulkMethod,
     setBulkMethod,
   } = useBulkCode();
-  const { user, impersonatedEmail } = useContext(UserPropsContext);
+  const { user, logoutUser } = useContext(UserPropsContext);
   const { getAccessTokenSilently } = useAuth0();
-  const { handleError } = useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const [localRecipients, setLocalRecipients] = useState<LocalRecipient[]>([]);
   const [comment, setComment] = useState('');
   const [occasion, setOccasion] = useState('');
@@ -108,71 +109,80 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
             recipients: getProcessedRecipients(),
           };
           break;
-        default:
-          break;
       }
 
       const cleanedData = cleanObject(donationData);
-      const res = await postAuthenticatedRequest(
-        `/app/donations`,
-        cleanedData,
-        token,
-        impersonatedEmail,
-        handleError,
-        {
-          'IDEMPOTENCY-KEY': uuidv4(),
+
+      try {
+        const res = await postAuthenticatedRequest(
+          `/app/donations`,
+          cleanedData,
+          token,
+          logoutUser,
+          {
+            'IDEMPOTENCY-KEY': uuidv4(),
+          }
+        );
+        // if request is successful, it will have a uid
+        if (res?.uid) {
+          resetBulkContext();
+          setIsSubmitted(true);
+          setTimeout(() => {
+            router.push(`/profile/history?ref=${res.uid}`);
+          }, 5000);
         }
-      );
-      // if request is successful, it will have a uid
-      if (res?.uid) {
-        resetBulkContext();
-        setIsSubmitted(true);
-        setTimeout(() => {
-          router.push(`/profile/history?ref=${res.uid}`);
-        }, 5000);
-      } else {
+      } catch (err) {
         setIsProcessing(false);
-        // TODOO - Extract this error handling logic elsewhere
-        if (res && res['error_type'] === 'payment_error') {
-          switch (res['error_code']) {
+        const serializedErrors = handleError(err as APIError);
+        const _serializedErrors: SerializedError[] = [];
+
+        for (const error of serializedErrors) {
+          switch (error.message) {
             case 'planet_cash_invalid_project':
-              handleError({
-                code: 400,
-                message: t(`bulkCodes:donationError.${res['error_code']}`),
+              _serializedErrors.push({
+                message: t(
+                  'bulkCodes:donationError.planet_cash_invalid_project'
+                ),
               });
               break;
+
             case 'planet_cash_insufficient_credit':
-              handleError({
-                code: 400,
-                message: t(`bulkCodes:donationError.${res['error_code']}`, {
-                  availableBalance: getFormatedCurrency(
-                    i18n.language,
-                    planetCashAccount?.currency as string,
-                    res.parameters['available_credit']
-                  ),
-                }),
+              _serializedErrors.push({
+                message: t(
+                  'bulkCodes:donationError.planet_cash_insufficient_credit',
+                  {
+                    availableBalance: getFormatedCurrency(
+                      i18n.language,
+                      planetCashAccount?.currency as string,
+                      error.parameters && error.parameters['available_credit']
+                    ),
+                  }
+                ),
               });
               break;
+
             case 'planet_cash_payment_failure':
-              handleError({
-                code: 400,
-                message: t(`bulkCodes:donationError.${res['error_code']}`, {
-                  reason: res.parameters['reason'],
-                }),
+              _serializedErrors.push({
+                message: t(
+                  'bulkCodes:donationError.planet_cash_payment_failure',
+                  {
+                    reason: error.parameters && error.parameters['reason'],
+                  }
+                ),
               });
               break;
+
             default:
-              handleError({
-                code: 400,
-                message: t(`bulkCodes:donationError.default`),
-              });
+              _serializedErrors.push(error);
               break;
           }
         }
+
+        setErrors(_serializedErrors);
       }
     } else {
       setIsProcessing(false);
-      handleError({ message: t('bulkCodes:projectRequired') });
+      setErrors([{ message: t('bulkCodes:projectRequired') }]);
     }
   };
 
