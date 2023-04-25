@@ -250,7 +250,7 @@
   "giftFund": "GiftFund",
   "issueReceipts": "Issue Donation Receipts",
   "taxReceiptsSuccess": "Successfully generated tax receipts",
-  "taxReceiptsAlreadyGenerated": "All donation receipts have already been generated. Please check the donation details.",
+  "taxReceiptsAlreadyGenerated": "All available receipts have been generated, to access them check the donation(s). If you have any questions or are missing a receipt, please contact support@plant-for-the-planet.org.",
   "taxReceiptsDescription": "Press the button below to issue your tax receipts. The receipts will show in each donation afterwards. Please make sure in advance that your address data is correct at <2>profile settings</2>",
   "dataExplorer": "Data Explorer",
   "switchUser": "Impersonate User",
