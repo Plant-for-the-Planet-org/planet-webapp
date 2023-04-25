@@ -1,8 +1,8 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DashboardView from '../../common/Layout/DashboardView';
 import GiftFundDetails from './GiftFundDetails';
 import { useTranslation } from 'next-i18next';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
 import SingleColumnView from '../../common/Layout/SingleColumnView';
 import { GiftFundsType } from '../../common/types/user';
@@ -10,7 +10,7 @@ import { GiftFundsType } from '../../common/types/user';
 const GiftFunds = () => {
   const { t, ready } = useTranslation('giftfunds');
   const router = useRouter();
-  const { user } = useContext(UserPropsContext);
+  const { user } = useUserProps();
 
   useEffect(() => {
     if (

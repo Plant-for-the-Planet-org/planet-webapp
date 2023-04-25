@@ -20,7 +20,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { SxProps } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 const yearDialogSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
@@ -56,7 +56,7 @@ export default function ProjectSpending({
   projectGUID,
   handleReset,
 }: Props): ReactElement {
-  const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
+  const { t, ready } = useTranslation(['manageProjects', 'common']);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const {
     register,
@@ -74,7 +74,7 @@ export default function ProjectSpending({
 
   const [showForm, setShowForm] = React.useState(true);
   const [uploadedFiles, setUploadedFiles] = React.useState([]);
-  const { impersonatedEmail } = React.useContext(UserPropsContext);
+  const { impersonatedEmail } = useUserProps();
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {
       handleReset(ready ? t('manageProjects:resetMessage') : '');

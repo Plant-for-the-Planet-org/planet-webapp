@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import styles from '../Import.module.scss';
 import { useDropzone } from 'react-dropzone';
 import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { useTranslation } from 'next-i18next';
 import { useForm, useFieldArray } from 'react-hook-form';
 import SampleTreeCard from './SampleTreeCard';
@@ -69,7 +69,7 @@ export default function SampleTrees({
     append(sampleTrees);
   };
 
-  const { token, impersonatedEmail } = React.useContext(UserPropsContext);
+  const { token, impersonatedEmail } = useUserProps();
 
   const uploadSampleTree = async (sampleTree: any, index: number) => {
     setUploadIndex(index);

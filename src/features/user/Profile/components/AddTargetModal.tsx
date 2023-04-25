@@ -7,7 +7,7 @@ import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useTranslation } from 'next-i18next';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { ThemeContext } from '../../../../theme/themeContext';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 
 export default function AddTargetModal({
@@ -17,7 +17,7 @@ export default function AddTargetModal({
   // External imports
   const { t, ready } = useTranslation(['me']);
   const { user, token, contextLoaded, setUser, impersonatedEmail } =
-    React.useContext(UserPropsContext);
+    useUserProps();
   const { register, errors } = useForm({ mode: 'onBlur' });
   const { theme } = React.useContext(ThemeContext);
   const { handleError } = React.useContext(ErrorHandlingContext);

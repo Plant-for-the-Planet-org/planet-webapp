@@ -6,7 +6,7 @@ import React, {
   Dispatch,
   FC,
 } from 'react';
-import { UserPropsContext } from './UserPropsContext';
+import { useUserProps } from './UserPropsContext';
 
 type SetState<T> = Dispatch<SetStateAction<T>>;
 
@@ -33,8 +33,7 @@ export const ErrorHandlingContext =
 const ErrorHandlingProvider: FC = ({ children }) => {
   const [error, setError] = useState<ErrorInterface | null>(null);
   const router = useRouter();
-  const { setUser, logoutUser, loginWithRedirect } =
-    React.useContext(UserPropsContext);
+  const { setUser, logoutUser, loginWithRedirect } = useUserProps();
 
   const handleError = (error: ErrorInterface) => {
     setError(error);

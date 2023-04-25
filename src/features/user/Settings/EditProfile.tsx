@@ -13,7 +13,7 @@ import { selectUserType } from '../../../utils/selectUserType';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
@@ -31,7 +31,7 @@ export default function EditProfile({}: Props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { handleError } = React.useContext(ErrorHandlingContext);
   const { user, setUser, token, contextLoaded, impersonatedEmail } =
-    React.useContext(UserPropsContext);
+    useUserProps();
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { t, ready } = useTranslation(['editProfile', 'donate']);

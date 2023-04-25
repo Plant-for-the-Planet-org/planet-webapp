@@ -13,7 +13,7 @@ import MaterialTextField from '../../../../../common/InputTypes/MaterialTextFiel
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { localeMapForDate } from '../../../../../../utils/language/getLanguageName';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { UserPropsContext } from '../../../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -43,7 +43,7 @@ const ProjectFilter = () => {
     project,
     setProject,
   } = useAnalytics();
-  const { userLang } = useContext(UserPropsContext);
+  const { userLang } = useUserProps();
 
   const handleProjectChange = (proj: Project | null) => {
     setProject(proj);

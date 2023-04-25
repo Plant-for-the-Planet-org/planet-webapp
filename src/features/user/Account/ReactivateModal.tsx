@@ -3,7 +3,7 @@ import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
 import { useTranslation } from 'react-i18next';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { CircularProgress, Modal, Fade } from '@mui/material';
@@ -16,7 +16,7 @@ export const ReactivateModal = ({
 }: any) => {
   const [disabled, setDisabled] = React.useState(false);
   const { theme } = React.useContext(ThemeContext);
-  const { token, impersonatedEmail } = React.useContext(UserPropsContext);
+  const { token, impersonatedEmail } = useUserProps();
   const { handleError } = React.useContext(ErrorHandlingContext);
   const { t } = useTranslation(['me']);
   const bodyToSend = {};

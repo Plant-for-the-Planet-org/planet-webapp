@@ -6,7 +6,7 @@ import { useTranslation } from 'next-i18next';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../theme/themeContext';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 interface Props {
   embedModalOpen: boolean;
@@ -34,7 +34,7 @@ export default function EmbedModal({
   // This effect is used to get and update UserInfo if the isAuthenticated changes
 
   const { user, setUser, contextLoaded, token, impersonatedEmail } =
-    React.useContext(UserPropsContext);
+    useUserProps();
 
   React.useEffect(() => {
     if (user && user.isPrivate) {

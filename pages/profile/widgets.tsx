@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect } from 'react';
-import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import EmbedModal from '../../src/features/user/Widget/EmbedModal';
 import styles from './../../src/features/common/Layout/UserLayout/UserLayout.module.scss';
@@ -12,7 +12,7 @@ function ProfilePage(): ReactElement {
   const { t } = useTranslation('me');
   // External imports
 
-  const { user, contextLoaded } = React.useContext(UserPropsContext);
+  const { user, contextLoaded } = useUserProps();
 
   // Internal states
   const [profile, setProfile] = React.useState<null | Object>();

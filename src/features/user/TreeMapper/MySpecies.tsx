@@ -7,7 +7,7 @@ import {
 } from '../../../utils/apiRequests/api';
 import MaterialButton from '../../common/InputTypes/MaterialButton';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import SpeciesSelect from './Import/components/SpeciesAutoComplete';
 import styles from './MySpecies.module.scss';
 import { useForm } from 'react-hook-form';
@@ -18,8 +18,7 @@ interface Props {}
 
 export default function MySpecies({}: Props): ReactElement {
   const { t } = useTranslation(['treemapper', 'me', 'common']);
-  const { token, contextLoaded, impersonatedEmail } =
-    React.useContext(UserPropsContext);
+  const { token, contextLoaded, impersonatedEmail } = useUserProps();
   const { handleError } = React.useContext(ErrorHandlingContext);
   const [species, setSpecies] = React.useState<any[]>([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);

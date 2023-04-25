@@ -4,7 +4,7 @@ import { useTranslation } from 'next-i18next';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
@@ -22,7 +22,7 @@ export default function PopupProject({
   buttonRef,
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
-  const { token } = React.useContext(UserPropsContext);
+  const { token } = useUserProps();
   const { embed } = React.useContext(ParamsContext);
 
   const ImageSource = project.properties.image

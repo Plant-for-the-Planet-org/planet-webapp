@@ -6,7 +6,7 @@ import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import getImageUrl from '../../../utils/getImageURL';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './ProjectsContainer.module.scss';
 import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import { useTranslation } from 'next-i18next';
@@ -88,8 +88,7 @@ export default function ProjectsContainer({}: any) {
   const [projects, setProjects] = React.useState([]);
   const [loader, setLoader] = React.useState(true);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { user, contextLoaded, token, impersonatedEmail } =
-    React.useContext(UserPropsContext);
+  const { user, contextLoaded, token, impersonatedEmail } = useUserProps();
 
   async function loadProjects() {
     if (user) {

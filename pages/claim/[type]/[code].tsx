@@ -4,7 +4,7 @@ import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
 import { useTranslation } from 'next-i18next';
 import { GetStaticPaths } from 'next';
 import LandingSection from '../../../src/features/common/Layout/LandingSection';
-import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import {
   SuccessfullyRedeemed,
@@ -21,7 +21,7 @@ function ClaimDonation(): ReactElement {
   const router = useRouter();
 
   const { user, contextLoaded, loginWithRedirect, token, impersonatedEmail } =
-    React.useContext(UserPropsContext);
+    useUserProps();
   const { handleError } = React.useContext(ErrorHandlingContext);
   const [errorMessage, setErrorMessage] = React.useState<ClaimCode1>('');
   const [code, setCode] = React.useState<string | string[] | null>('');

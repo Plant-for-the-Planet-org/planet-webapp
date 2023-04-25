@@ -10,7 +10,7 @@ import SearchBar from '../components/projects/SearchBar';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
-import { UserPropsContext } from '../../../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
 
 interface Props {
   projects: any;
@@ -32,7 +32,7 @@ function ProjectsList({
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 767;
   const { embed, showProjectList, email } = React.useContext(ParamsContext);
-  const { isImpersonationModeOn } = React.useContext(UserPropsContext);
+  const { isImpersonationModeOn } = useUserProps();
   const isEmbed = embed === 'true';
   const [scrollY, setScrollY] = React.useState(0);
   const [hideSidebar, setHideSidebar] = React.useState(isEmbed);

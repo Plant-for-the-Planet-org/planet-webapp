@@ -5,7 +5,7 @@ import ProjectFilter from './components/ProjectFilter';
 import { Project, useAnalytics } from '../../../common/Layout/AnalyticsContext';
 import { DataExplorerGridContainer } from './components/DataExplorerGridContainer';
 import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { ProjectMapInfo } from '@planet-sdk/common';
 
@@ -13,7 +13,7 @@ const Analytics = () => {
   const { t, ready } = useTranslation('treemapperAnalytics');
   const { setProjectList, setProject } = useAnalytics();
 
-  const { token, impersonatedEmail } = useContext(UserPropsContext);
+  const { token, impersonatedEmail } = useUserProps();
   const { handleError } = useContext(ErrorHandlingContext);
 
   const fetchProjects = async () => {

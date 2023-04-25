@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import React, { ReactElement } from 'react';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 
 interface RedeemModal {
@@ -31,7 +31,7 @@ export default function RedeemModal({
     'redeem',
   ]);
   const { user, contextLoaded, token, setUser, impersonatedEmail } =
-    React.useContext(UserPropsContext);
+    useUserProps();
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [validCodeData, setValidCodeData] = React.useState<{} | undefined>();

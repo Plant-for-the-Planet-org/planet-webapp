@@ -15,7 +15,7 @@ import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 interface Props {
   handleNext: Function;
   handleBack: Function;
@@ -37,7 +37,7 @@ export default function ProjectMedia({
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { impersonatedEmail } = React.useContext(UserPropsContext);
+  const { impersonatedEmail } = useUserProps();
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
   const [uploadedImages, setUploadedImages] = React.useState<Array<any>>([]);

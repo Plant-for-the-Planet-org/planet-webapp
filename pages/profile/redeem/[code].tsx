@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useState, useEffect, useContext, FC } from 'react';
 import LandingSection from '../../../src/features/common/Layout/LandingSection';
 import { useTranslation } from 'next-i18next';
-import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
 import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
@@ -17,8 +17,7 @@ import { GetStaticPaths } from 'next';
 
 const ReedemCode: FC = () => {
   const { t, ready } = useTranslation(['redeem']);
-  const { user, contextLoaded, token, impersonatedEmail } =
-    useContext(UserPropsContext);
+  const { user, contextLoaded, token, impersonatedEmail } = useUserProps();
   const { handleError } = useContext(ErrorHandlingContext);
   const [code, setCode] = useState<string | string[] | null>('');
   const [inputCode, setInputCode] = useState<ClaimCode1>('');

@@ -5,7 +5,7 @@ import { getAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
 import GlobeContentLoader from '../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../../src/features/common/Layout/Footer';
-import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
@@ -23,8 +23,7 @@ function ManageSingleProject({}: Props): ReactElement {
   const [accessDenied, setAccessDenied] = React.useState(false);
   const [setupAccess, setSetupAccess] = React.useState(false);
   const [project, setProject] = React.useState({});
-  const { user, contextLoaded, token, impersonatedEmail } =
-    React.useContext(UserPropsContext);
+  const { user, contextLoaded, token, impersonatedEmail } = useUserProps();
 
   const { handleError } = React.useContext(ErrorHandlingContext);
 

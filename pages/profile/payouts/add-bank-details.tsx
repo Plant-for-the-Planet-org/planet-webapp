@@ -6,12 +6,12 @@ import ManagePayouts, {
 } from '../../../src/features/user/ManagePayouts';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 
 export default function AddBankDetailsPage(): ReactElement {
   const { t, ready } = useTranslation('me');
-  const { user } = useContext(UserPropsContext);
+  const { user } = useUserProps();
   return (
     <UserLayout>
       <Head>

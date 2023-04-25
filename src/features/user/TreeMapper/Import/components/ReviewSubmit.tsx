@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import styles from '../Import.module.scss';
 import { useTranslation } from 'next-i18next';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
-import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
 
 interface Props {
@@ -23,7 +23,7 @@ export default function ReviewSubmit({
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [submitted, setSubmitted] = React.useState(true);
 
-  const { token } = React.useContext(UserPropsContext);
+  const { token } = useUserProps();
 
   const handleSubmit = () => {
     setIsUploadingData(true);

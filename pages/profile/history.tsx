@@ -3,7 +3,7 @@ import { useTranslation } from 'next-i18next';
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgressBar';
 import History from '../../src/features/user/Account/History';
-import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
@@ -12,8 +12,7 @@ interface Props {}
 
 function AccountHistory({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
-  const { token, contextLoaded, impersonatedEmail } =
-    React.useContext(UserPropsContext);
+  const { token, contextLoaded, impersonatedEmail } = useUserProps();
 
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);

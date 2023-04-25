@@ -23,7 +23,7 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 interface Props {}
 
@@ -62,7 +62,7 @@ export default function Explore({}: Props): ReactElement {
 
   const { theme } = React.useContext(ThemeContext);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
-  const { isImpersonationModeOn } = React.useContext(UserPropsContext);
+  const { isImpersonationModeOn } = useUserProps();
 
   const handleModalClose = () => {
     setModalOpen(false);

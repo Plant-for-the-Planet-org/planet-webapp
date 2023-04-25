@@ -1,30 +1,32 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { useRouter } from 'next/router';
-import React, { ReactElement } from 'react';
+import React, { FC, useContext, useMemo } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
 import { User } from '../types/user';
+import { SetState } from '../types/common';
 
-interface Props {}
+interface UserPropsContextInterface {
+  contextLoaded: boolean;
+  setContextLoaded: SetState<boolean>;
+  token: string | null;
+  setToken: SetState<string | null>;
+  user: boolean | User | null;
+  setUser: SetState<boolean | User | null>;
+  userLang: string;
+  setUserLang: SetState<string>;
+  isImpersonationModeOn: boolean;
+  setIsImpersonationModeOn: SetState<boolean>;
+  impersonatedEmail: string | null;
+  setImpersonatedEmail: SetState<string | null>;
+  loginWithRedirect: (value: {}) => {};
+  logoutUser: (value: string) => void;
+}
 
-export const UserPropsContext = React.createContext({
-  user: false || ({} as User) || null,
-  setUser: (value: boolean | User | null) => {},
-  contextLoaded: false,
-  token: null,
-  isLoading: true,
-  isAuthenticated: false,
-  loginWithRedirect: ({}) => {},
-  logoutUser: (value: string | undefined) => {},
-  auth0User: {},
-  auth0Error: {} || undefined,
-  userLang: 'en',
-  isImpersonationModeOn: false,
-  setIsImpersonationModeOn: (_value: boolean) => {}, // eslint-disable-line no-unused-vars
-  impersonatedEmail: '',
-  setImpersonatedEmail: (_value: string) => {}, // eslint-disable-line no-unused-vars
-});
+export const UserPropsContext =
+  React.createContext<UserPropsContextInterface | null>(null);
 
-function UserPropsProvider({ children }: any): ReactElement {
+export const UserPropsProvider: FC = ({ children }) => {
+  const router = useRouter();
   const {
     isLoading,
     isAuthenticated,
@@ -35,14 +37,15 @@ function UserPropsProvider({ children }: any): ReactElement {
     error,
   } = useAuth0();
 
-  const router = useRouter();
-  const [contextLoaded, setContextLoaded] = React.useState(false);
-  const [token, setToken] = React.useState(null);
+  const [contextLoaded, setContextLoaded] = React.useState<boolean>(false);
+  const [token, setToken] = React.useState<string | null>(null);
   const [profile, setUser] = React.useState<boolean | User | null>(false);
-  const [userLang, setUserLang] = React.useState('en');
+  const [userLang, setUserLang] = React.useState<string>('en');
   const [isImpersonationModeOn, setIsImpersonationModeOn] =
-    React.useState(false);
-  const [impersonatedEmail, setImpersonatedEmail] = React.useState('');
+    React.useState<boolean>(false);
+  const [impersonatedEmail, setImpersonatedEmail] = React.useState<
+    string | null
+  >(null);
 
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -147,29 +150,51 @@ function UserPropsProvider({ children }: any): ReactElement {
     checkImpersonation();
   }, [token, isImpersonationModeOn]);
 
+  const value: UserPropsContextInterface | null = useMemo(
+    () => ({
+      contextLoaded,
+      setContextLoaded,
+      token,
+      setToken,
+      user: profile,
+      setUser,
+      userLang,
+      setUserLang,
+      isImpersonationModeOn,
+      setIsImpersonationModeOn,
+      impersonatedEmail,
+      setImpersonatedEmail,
+      isLoading,
+      isAuthenticated,
+      loginWithRedirect,
+      logoutUser,
+      auth0User: user,
+      auth0Error: error,
+    }),
+    [
+      contextLoaded,
+      token,
+      profile,
+      userLang,
+      isImpersonationModeOn,
+      impersonatedEmail,
+      isLoading,
+      isAuthenticated,
+      user,
+      error,
+    ]
+  );
   return (
-    <UserPropsContext.Provider
-      value={{
-        user: profile,
-        setUser,
-        isImpersonationModeOn,
-        setIsImpersonationModeOn,
-        impersonatedEmail,
-        setImpersonatedEmail,
-        contextLoaded,
-        token,
-        isLoading,
-        isAuthenticated,
-        loginWithRedirect,
-        logoutUser,
-        auth0User: user,
-        auth0Error: error,
-        userLang,
-      }}
-    >
+    <UserPropsContext.Provider value={value}>
       {children}
     </UserPropsContext.Provider>
   );
-}
+};
 
-export default UserPropsProvider;
+export const useUserProps = (): UserPropsContextInterface => {
+  const context = useContext(UserPropsContext);
+  if (!context) {
+    throw new Error('UserPropsContext must be used within UserPropsProvider ');
+  }
+  return context;
+};

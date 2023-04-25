@@ -10,7 +10,7 @@ import BackArrow from '../../../../../public/assets/images/icons/headerIcons/Bac
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import FormHeader from '../../../common/Layout/Forms/FormHeader';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 
@@ -21,7 +21,7 @@ const EditBankAccount = (): ReactElement | null => {
     useState<Payouts.BankAccount | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountUpdated, setIsAccountUpdated] = useState(false);
-  const { token, impersonatedEmail } = useContext(UserPropsContext);
+  const { token, impersonatedEmail } = useUserProps();
   const { handleError } = useContext(ErrorHandlingContext);
   const { t, ready } = useTranslation('managePayouts');
 

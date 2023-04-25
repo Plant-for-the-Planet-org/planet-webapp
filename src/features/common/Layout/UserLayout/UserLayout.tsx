@@ -14,7 +14,7 @@ import UserIcon from '../../../../../public/assets/images/icons/Sidebar/UserIcon
 import WidgetIcon from '../../../../../public/assets/images/icons/Sidebar/Widget';
 import UserProfileLoader from '../../ContentLoaders/UserProfile/UserProfile';
 import SelectLanguageAndCountry from '../Footer/SelectLanguageAndCountry';
-import { UserPropsContext } from '../UserPropsContext';
+import { useUserProps } from '../UserPropsContext';
 import styles from './UserLayout.module.scss';
 import TreeMappperIcon from '../../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
 import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/RegisterIcon';
@@ -189,7 +189,7 @@ function UserLayout(props: any): ReactElement {
   // const { asPath } = useRouter();
   const router = useRouter();
   const { user, logoutUser, contextLoaded, isImpersonationModeOn } =
-    React.useContext(UserPropsContext);
+    useUserProps();
 
   // Flags can be added to show labels on the right
   // TO DO - remove arrow when link is selected
@@ -292,7 +292,7 @@ function UserLayout(props: any): ReactElement {
         {
           title: t('me:dataExplorer'),
           path: '/profile/treemapper/data-explorer',
-          hideItem: !(process.env.ENABLE_ANALYTICS && (user?.type === 'tpo')),
+          hideItem: !(process.env.ENABLE_ANALYTICS && user?.type === 'tpo'),
         },
       ],
     },
@@ -323,8 +323,8 @@ function UserLayout(props: any): ReactElement {
           path: '/profile/giftfund',
           //For an active PlanetCash account with an empty GiftFund array or if openUnits = 0 for all GiftFunds, it should be hidden
           hideItem:
-            !user.planetCash ||
-            user.planetCash?.giftFunds.filter((gift) => gift.openUnits !== 0)
+            !user?.planetCash ||
+            user?.planetCash?.giftFunds.filter((gift) => gift.openUnits !== 0)
               .length == 0,
         },
       ],
@@ -366,7 +366,7 @@ function UserLayout(props: any): ReactElement {
         {
           title: t('me:switchUser'),
           path: '/profile/impersonate-user',
-          hideItem: isImpersonationModeOn || !user.allowedToSwitch,
+          hideItem: isImpersonationModeOn || !user?.allowedToSwitch,
         },
         {
           title: t('me:apiKey'),

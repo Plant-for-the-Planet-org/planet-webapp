@@ -9,7 +9,7 @@ import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 interface Props {
   contribution: any;
   contributionGUID: any;
@@ -38,7 +38,7 @@ export default function UploadImages({
     });
   }, []);
   const { handleError } = React.useContext(ErrorHandlingContext);
-  const { impersonatedEmail } = React.useContext(UserPropsContext);
+  const { impersonatedEmail } = useUserProps();
   // React.useEffect(() => {
   //   // Fetch images of the project
   //   setUploadedImages(contribution.contributionImages);

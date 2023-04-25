@@ -6,7 +6,7 @@ import {
   getAuthenticatedRequest,
   putAuthenticatedRequest,
 } from '../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import CopyToClipboard from '../../common/CopyToClipboard';
 import EyeIcon from '../../../../public/assets/images/icons/EyeIcon';
@@ -22,9 +22,7 @@ const EyeButton = ({ isVisible, onClick }: any) => {
 };
 
 export default function ApiKey({}: any) {
-  const { token, contextLoaded, impersonatedEmail } =
-    React.useContext(UserPropsContext);
-  const { t } = useTranslation(['me']);
+  const { token, contextLoaded, impersonatedEmail } = useUserProps();
   const { handleError } = React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [apiKey, setApiKey] = React.useState('');

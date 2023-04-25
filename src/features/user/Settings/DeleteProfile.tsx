@@ -3,15 +3,14 @@ import styles from './DeleteProfile.module.scss';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../common/InputTypes/AnimatedButton';
 import { deleteAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import CustomModal from '../../common/Layout/CustomModal';
 import router from 'next/router';
 import { useTranslation } from 'next-i18next';
 
 export default function DeleteProfile({}: any) {
-  const { user, token, logoutUser, impersonatedEmail } =
-    React.useContext(UserPropsContext);
+  const { user, token, logoutUser, impersonatedEmail } = useUserProps();
   const { t } = useTranslation(['me', 'common', 'editProfile']);
   const handleChange = (e) => {
     e.preventDefault();

@@ -8,7 +8,7 @@ import tenantConfig from '../../../../../tenant.config';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import getImageUrl from '../../../../utils/getImageURL';
-import { UserPropsContext } from '../UserPropsContext';
+import { useUserProps } from '../UserPropsContext';
 import GetNavBarIcon from './getNavBarIcon';
 import GetSubMenu from './getSubMenu';
 import { lang_path } from '../../../../utils/constants/wpLanguages';
@@ -67,7 +67,7 @@ export default function NavbarComponent(props: any) {
     logoutUser,
     auth0Error,
     isImpersonationModeOn,
-  } = React.useContext(UserPropsContext);
+  } = useUserProps();
 
   // This function controls the path for the user when they click on Me
   async function gotoUserPage() {

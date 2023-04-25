@@ -1,5 +1,5 @@
-import React, { useContext, ReactElement } from 'react';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import React, { ReactElement } from 'react';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { useTranslation } from 'next-i18next';
 import { Divider, Grid, styled } from '@mui/material';
 import { GiftFundsType } from '../../common/types/user';
@@ -9,7 +9,7 @@ interface Props {
 }
 
 const GiftFundDetails = ({ giftFund }: Props): ReactElement | null => {
-  const { user } = useContext(UserPropsContext);
+  const { user } = useUserProps();
   const { t, ready } = useTranslation('giftfunds');
 
   const StyledContainer = styled('article')(({ theme }) => ({

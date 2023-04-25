@@ -5,7 +5,7 @@ import ReactHookFormSelect from '../components/ReactHookFormSelect';
 import StyledForm from '../../../common/Layout/StyledForm';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { useTranslation, Trans } from 'next-i18next';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { User } from '../../../common/types/user';
@@ -29,8 +29,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
   const { t, ready } = useTranslation('managePayouts');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const { token, user, setUser, impersonatedEmail } =
-    useContext(UserPropsContext);
+  const { token, user, setUser, impersonatedEmail } = useUserProps();
   const { handleError } = useContext(ErrorHandlingContext);
   const { handleSubmit, errors, control } = useForm<FormData>({
     mode: 'onBlur',

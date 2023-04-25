@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement, useEffect } from 'react';
 import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
-import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../src/features/common/Layout/UserPropsContext';
 import { getRequest } from '../../src/utils/apiRequests/api';
 import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import Footer from '../../src/features/common/Layout/Footer';
@@ -15,7 +15,7 @@ import { GetStaticPaths } from 'next';
 function User(): ReactElement {
   // External imports
   const router = useRouter();
-  const { user, contextLoaded, token } = React.useContext(UserPropsContext);
+  const { user, contextLoaded, token } = useUserProps();
   const { handleError } = React.useContext(ErrorHandlingContext);
 
   // Internal states
