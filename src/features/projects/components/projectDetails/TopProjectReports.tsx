@@ -16,7 +16,7 @@ interface reviewType {
 interface Props {
   projectReviews: reviewType[];
 }
-export default function TopProjectReports(projectReviews: Props) {
+export default function TopProjectReports({ projectReviews }: Props) {
   const { t, ready } = useTranslation(['common']);
   const displayDate = (date: string) => {
     return format(parse(date, 'MM-yyyy', new Date()), 'LLLL yyyy');
@@ -26,7 +26,7 @@ export default function TopProjectReports(projectReviews: Props) {
       <div className={styles.reports_container}>
         <VerifiedIcon sx={{ color: '#42A5F5' }} />
         <div className={styles.reports_description}>
-          {projectReviews?.projectReviews?.map((review) => (
+          {projectReviews?.map((review) => (
             <div key={review.id}>
               <p id="child-modal-description">
                 <Trans i18nKey="common:reviewInfo">
