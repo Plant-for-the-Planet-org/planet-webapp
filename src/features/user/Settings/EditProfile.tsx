@@ -18,6 +18,7 @@ import styles from './EditProfile.module.scss';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
+import { handleError, APIError } from '@planet-sdk/common';
 
 interface Props {}
 
@@ -29,13 +30,10 @@ const Alert = styled(MuiAlert)(({ theme }) => {
 
 export default function EditProfile({}: Props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const { handleError } = React.useContext(ErrorHandlingContext);
-  const { user, setUser, token, contextLoaded, impersonatedEmail } =
-    useUserProps();
-
+  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { user, setUser, token, contextLoaded, logoutUser } = useUserProps();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { t, ready } = useTranslation(['editProfile', 'donate']);
-
   const { register, handleSubmit, errors, control, reset, setValue, watch } =
     useForm({ mode: 'onBlur' });
 
@@ -168,22 +166,20 @@ export default function EditProfile({}: Props) {
             setSnackbarMessage(ready ? t('editProfile:profilePicUpdated') : '');
             handleSnackbarOpen();
 
-            putAuthenticatedRequest(
-              `/app/profile`,
-              bodyToSend,
-              token,
-              impersonatedEmail,
-              handleError
-            )
-              .then((res) => {
-                const newUserInfo = { ...user, image: res.image };
-                setUpdatingPic(false);
-                setUser(newUserInfo);
-              })
-              .catch((error) => {
-                setUpdatingPic(false);
-                console.log(error);
-              });
+            try {
+              const res = await putAuthenticatedRequest(
+                `/app/profile`,
+                bodyToSend,
+                token,
+                logoutUser
+              );
+              const newUserInfo = { ...user, image: res.image };
+              setUpdatingPic(false);
+              setUser(newUserInfo);
+            } catch (err) {
+              setUpdatingPic(false);
+              setErrors(handleError(err as APIError));
+            }
           }
         };
       });
@@ -212,42 +208,20 @@ export default function EditProfile({}: Props) {
     }
     if (contextLoaded && token) {
       try {
-        putAuthenticatedRequest(
+        const res = await putAuthenticatedRequest(
           `/app/profile`,
           bodyToSend,
           token,
-          impersonatedEmail,
-          handleError
-        )
-          .then((res) => {
-            console.log(res);
-            if (res.code !== 400) {
-              setSeverity('success');
-              setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');
-              handleSnackbarOpen();
-              setIsUploadingData(false);
-              setUser(res);
-            } else {
-              setSeverity('error');
-              setSnackbarMessage(
-                ready ? t('editProfile:profileSaveFailed') : ''
-              );
-              handleSnackbarOpen();
-              setIsUploadingData(false);
-            }
-          })
-          .catch((error) => {
-            setSeverity('error');
-            setSnackbarMessage(ready ? t('editProfile:profileSaveFailed') : '');
-            handleSnackbarOpen();
-            setIsUploadingData(false);
-            console.log(error);
-          });
-      } catch (e) {
-        setSeverity('error');
-        setSnackbarMessage(ready ? t('editProfile:profileSaveFailed') : '');
+          logoutUser
+        );
+        setSeverity('success');
+        setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');
         handleSnackbarOpen();
         setIsUploadingData(false);
+        setUser(res);
+      } catch (err) {
+        setIsUploadingData(false);
+        setErrors(handleError(err as APIError));
       }
     }
   };

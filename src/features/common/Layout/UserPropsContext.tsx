@@ -16,10 +16,9 @@ interface UserPropsContextInterface {
   setUserLang: SetState<string>;
   isImpersonationModeOn: boolean;
   setIsImpersonationModeOn: SetState<boolean>;
-  impersonatedEmail: string | null;
-  setImpersonatedEmail: SetState<string | null>;
   loginWithRedirect: (value: {}) => {};
   logoutUser: (value: string) => void;
+  loadUser: () => {};
 }
 
 export const UserPropsContext =
@@ -42,10 +41,7 @@ export const UserPropsProvider: FC = ({ children }) => {
   const [profile, setUser] = React.useState<boolean | User | null>(false);
   const [userLang, setUserLang] = React.useState<string>('en');
   const [isImpersonationModeOn, setIsImpersonationModeOn] =
-    React.useState<boolean>(false);
-  const [impersonatedEmail, setImpersonatedEmail] = React.useState<
-    string | null
-  >(null);
+    React.useState(false);
 
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -73,6 +69,8 @@ export const UserPropsProvider: FC = ({ children }) => {
   async function loadUser() {
     setContextLoaded(false);
     try {
+      // TODO: Add error handling after figuring out the nature of getAccountInfo function call with impersonatedEmail
+
       const res = await getAccountInfo(token);
       if (res.status === 200) {
         const resJson = await res.json();
@@ -91,64 +89,28 @@ export const UserPropsProvider: FC = ({ children }) => {
           redirectUri: `${process.env.NEXTAUTH_URL}/login`,
           ui_locales: localStorage.getItem('language') || 'en',
         });
+      } else if (res.status === 403) {
+        localStorage.removeItem('impersonationData');
       } else {
-        // any other error
+        //any other error
       }
     } catch (err) {
       console.log(err);
     }
     setContextLoaded(true);
   }
-  /**
-   * Accepts email and enters impersonation mode
-   * @param impersonatedEmail
-   * @returns false if impersonation fails and user object if successful
-   */
-  const impersonateUser = async (
-    impersonatedEmail: string
-  ): Promise<User | boolean> => {
-    try {
-      setContextLoaded(false);
-      const res = await getAccountInfo(token, impersonatedEmail);
-      const resJson = await res.json();
-      if (res.status === 200) {
-        setIsImpersonationModeOn(true);
-        setImpersonatedEmail(resJson.email);
-        localStorage.setItem('impersonatedEmail', resJson.email);
-        setUser(resJson);
-        setContextLoaded(true);
-        return resJson;
-      } else {
-        console.log(resJson);
-        return false;
-      }
-    } catch (err) {
-      console.log(err);
-      return false;
-    }
-  };
 
   React.useEffect(() => {
-    /**
-     * 1. Load user profile if impersonation mode is off and impersonatedEmail is not set in local storage
-     * 2. Impersonate user on app reload if impersonatedEmail is set in local storage
-     */
-    const checkImpersonation = async () => {
-      if (token && !isImpersonationModeOn) {
-        const _impersonatedEmail = localStorage.getItem('impersonatedEmail');
-        if (_impersonatedEmail === null) {
-          loadUser();
-        } else {
-          const userData = await impersonateUser(_impersonatedEmail);
-          if (userData === false) {
-            localStorage.removeItem('impersonatedEmail');
-            loadUser();
-          }
-        }
-      }
-    };
-    checkImpersonation();
-  }, [token, isImpersonationModeOn]);
+    if (token) {
+      loadUser();
+    }
+  }, [token]);
+
+  React.useEffect(() => {
+    if (localStorage.getItem('impersonationData') !== null) {
+      setIsImpersonationModeOn(true);
+    }
+  }, [isImpersonationModeOn]);
 
   const value: UserPropsContextInterface | null = useMemo(
     () => ({
@@ -162,14 +124,13 @@ export const UserPropsProvider: FC = ({ children }) => {
       setUserLang,
       isImpersonationModeOn,
       setIsImpersonationModeOn,
-      impersonatedEmail,
-      setImpersonatedEmail,
       isLoading,
       isAuthenticated,
       loginWithRedirect,
       logoutUser,
       auth0User: user,
       auth0Error: error,
+      loadUser,
     }),
     [
       contextLoaded,
@@ -177,7 +138,6 @@ export const UserPropsProvider: FC = ({ children }) => {
       profile,
       userLang,
       isImpersonationModeOn,
-      impersonatedEmail,
       isLoading,
       isAuthenticated,
       user,

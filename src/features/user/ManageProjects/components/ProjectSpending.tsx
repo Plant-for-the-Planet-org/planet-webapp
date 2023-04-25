@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement } from 'react';
 import styles from './../StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
@@ -20,6 +20,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { SxProps } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
+import { handleError, APIError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 const yearDialogSx: SxProps = {
@@ -57,7 +58,7 @@ export default function ProjectSpending({
   handleReset,
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['manageProjects', 'common']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const {
     register,
     handleSubmit,
@@ -74,7 +75,7 @@ export default function ProjectSpending({
 
   const [showForm, setShowForm] = React.useState(true);
   const [uploadedFiles, setUploadedFiles] = React.useState([]);
-  const { impersonatedEmail } = useUserProps();
+  const { logoutUser } = useUserProps();
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {
       handleReset(ready ? t('manageProjects:resetMessage') : '');
@@ -115,7 +116,7 @@ export default function ProjectSpending({
 
   const { isDirty, isSubmitting } = formState;
 
-  const onSubmit = (pdf: any) => {
+  const onSubmit = async (pdf: any) => {
     setIsUploadingData(true);
     const updatedAmount = getValues('amount');
     const year = getValues('year');
@@ -126,74 +127,67 @@ export default function ProjectSpending({
       pdfFile: pdf,
     };
 
-    postAuthenticatedRequest(
-      `/app/projects/${projectGUID}/expenses`,
-      submitData,
-      token,
-      impersonatedEmail,
-      handleError
-    )
-      .then((res) => {
-        if (!res.code) {
-          const newUploadedFiles = uploadedFiles;
-          newUploadedFiles.push(res);
-          setUploadedFiles(newUploadedFiles);
-          setAmount(0);
-          setValue('amount', 0, { shouldDirty: false });
-          setIsUploadingData(false);
-          setShowForm(false);
-          setErrorMessage('');
-          handleNext();
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          }
-        }
-      })
-      .catch((err) => {
-        setIsUploadingData(false);
-        setErrorMessage(err);
-      });
-  };
-
-  const deleteProjectSpending = (id: any) => {
-    setIsUploadingData(true);
-    deleteAuthenticatedRequest(
-      `/app/projects/${projectGUID}/expenses/${id}`,
-      token,
-      impersonatedEmail,
-      handleError
-    ).then((res) => {
-      if (res !== 404) {
-        const uploadedFilesTemp = uploadedFiles.filter(
-          (item) => item.id !== id
-        );
-        setUploadedFiles(uploadedFilesTemp);
-        setIsUploadingData(false);
-      }
-    });
-  };
-
-  React.useEffect(() => {
-    // Fetch spending of the project
-    if (projectGUID && token)
-      getAuthenticatedRequest(
-        `/app/profile/projects/${projectGUID}?_scope=expenses`,
+    try {
+      const res = await postAuthenticatedRequest(
+        `/app/projects/${projectGUID}/expenses`,
+        submitData,
         token,
-        impersonatedEmail,
-        {},
-        handleError,
-        '/profile'
-      ).then((result) => {
+        logoutUser
+      );
+      const newUploadedFiles = uploadedFiles;
+      newUploadedFiles.push(res);
+      setUploadedFiles(newUploadedFiles);
+      setAmount(0);
+      setValue('amount', 0, { shouldDirty: false });
+      setIsUploadingData(false);
+      setShowForm(false);
+      setErrorMessage('');
+      handleNext();
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
+  };
+
+  const deleteProjectSpending = async (id: any) => {
+    try {
+      setIsUploadingData(true);
+      await deleteAuthenticatedRequest(
+        `/app/projects/${projectGUID}/expenses/${id}`,
+        token,
+        logoutUser
+      );
+      const uploadedFilesTemp = uploadedFiles.filter((item) => item.id !== id);
+      setUploadedFiles(uploadedFilesTemp);
+      setIsUploadingData(false);
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
+  };
+
+  const fetchProjSpending = async () => {
+    try {
+      // Fetch spending of the project
+      if (projectGUID && token) {
+        const result = await getAuthenticatedRequest(
+          `/app/profile/projects/${projectGUID}?_scope=expenses`,
+          token,
+          logoutUser
+        );
         if (result?.expenses && result.expenses.length > 0) {
           setShowForm(false);
         }
         setUploadedFiles(result.expenses);
-      });
+      }
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+      redirect('/profile');
+    }
+  };
+
+  React.useEffect(() => {
+    fetchProjSpending();
   }, [projectGUID]);
 
   const fiveYearsAgo = new Date();

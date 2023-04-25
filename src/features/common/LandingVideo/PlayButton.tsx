@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function PlayButton({ setshowVideo }: Props): ReactElement {
-  const { impersonatedEmail } = useUserProps();
+  const { isImpersonationModeOn } = useUserProps();
   const { embed } = React.useContext(ParamsContext);
   const { t } = useTranslation(['common']);
   const { pathname } = useRouter();
@@ -24,7 +24,7 @@ export default function PlayButton({ setshowVideo }: Props): ReactElement {
       title={t('howDoesThisWork')}
       onClick={() => setshowVideo(true)}
       className={playButtonClasses}
-      style={{ marginTop: impersonatedEmail ? '45px' : '' }}
+      style={{ marginTop: isImpersonationModeOn ? '45px' : '' }}
     >
       <PlayIcon />
     </div>

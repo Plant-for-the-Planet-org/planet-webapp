@@ -21,6 +21,7 @@ import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './RegisterModal.module.scss';
 import SingleContribution from './RegisterTrees/SingleContribution';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { handleError, APIError } from '@planet-sdk/common';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -51,8 +52,7 @@ const dialogSx: SxProps = {
 interface Props {}
 
 export default function RegisterTrees({}: Props) {
-  const { user, token, contextLoaded, impersonatedEmail } = useUserProps();
-
+  const { user, token, contextLoaded, logoutUser } = useUserProps();
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {
     version: 8,
@@ -83,7 +83,7 @@ export default function RegisterTrees({}: Props) {
   const [userLocation, setUserLocation] = React.useState();
   const [registered, setRegistered] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
@@ -148,7 +148,7 @@ export default function RegisterTrees({}: Props) {
     }
   };
 
-  const submitRegisterTrees = (data: any) => {
+  const submitRegisterTrees = async (data: any) => {
     if (data.treeCount < 10000000) {
       if (
         geometry &&
@@ -162,34 +162,23 @@ export default function RegisterTrees({}: Props) {
           plantDate: new Date(data.plantDate),
           geometry: geometry,
         };
-        postAuthenticatedRequest(
-          `/app/contributions`,
-          submitData,
-          token,
-          impersonatedEmail,
-          handleError
-        ).then((res) => {
-          if (!res.code) {
-            setErrorMessage('');
-            setContributionGUID(res.id);
-            setContributionDetails(res);
-            setIsUploadingData(false);
-            setRegistered(true);
-            // router.push('/c/[id]', `/c/${res.id}`);
-          } else {
-            if (res.code === 404) {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-              setRegistered(false);
-            } else {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-              setRegistered(false);
-            }
-          }
-        });
-
-        // handleNext();
+        try {
+          const res = await postAuthenticatedRequest(
+            `/app/contributions`,
+            submitData,
+            token,
+            logoutUser
+          );
+          setErrorMessage('');
+          setContributionGUID(res.id);
+          setContributionDetails(res);
+          setIsUploadingData(false);
+          setRegistered(true);
+        } catch (err) {
+          setIsUploadingData(false);
+          setErrors(handleError(err as APIError));
+          setRegistered(false);
+        }
       } else {
         setErrorMessage(ready ? t('me:locationMissing') : '');
       }
@@ -199,16 +188,17 @@ export default function RegisterTrees({}: Props) {
   };
 
   async function loadProjects() {
-    await getAuthenticatedRequest(
-      '/app/profile/projects',
-      token,
-      impersonatedEmail,
-      {},
-      handleError,
-      '/profile'
-    ).then((projects: any) => {
+    try {
+      const projects = await getAuthenticatedRequest(
+        '/app/profile/projects',
+        token,
+        logoutUser
+      );
       setProjects(projects);
-    });
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+      redirect('/profile');
+    }
   }
 
   React.useEffect(() => {

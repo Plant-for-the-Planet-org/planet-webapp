@@ -15,7 +15,9 @@ import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
+import { handleError, APIError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
+
 interface Props {
   handleNext: Function;
   handleBack: Function;
@@ -36,8 +38,9 @@ export default function ProjectMedia({
   handleReset,
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
-  const { impersonatedEmail } = useUserProps();
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { logoutUser } = useUserProps();
+
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
   const [uploadedImages, setUploadedImages] = React.useState<Array<any>>([]);
@@ -45,22 +48,28 @@ export default function ProjectMedia({
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
 
-  React.useEffect(() => {
-    // Fetch images of the project
-    if (projectGUID && token)
-      getAuthenticatedRequest(
-        `/app/profile/projects/${projectGUID}?_scope=images`,
-        token,
-        impersonatedEmail,
-        {},
-        handleError,
-        '/profile'
-      ).then((result) => {
+  const fetchImages = async () => {
+    try {
+      // Fetch images of the project
+      if (projectGUID && token) {
+        const result = await getAuthenticatedRequest(
+          `/app/profile/projects/${projectGUID}?_scope=images`,
+          token,
+          logoutUser
+        );
         setUploadedImages(result.images);
-      });
+      }
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+      redirect('/profile');
+    }
+  };
+
+  React.useEffect(() => {
+    fetchImages();
   }, [projectGUID]);
 
-  const uploadPhotos = (image: any) => {
+  const uploadPhotos = async (image: any) => {
     setIsUploadingData(true);
 
     const submitData = {
@@ -68,38 +77,27 @@ export default function ProjectMedia({
       description: null,
       isDefault: false,
     };
-    postAuthenticatedRequest(
-      `/app/projects/${projectGUID}/images`,
-      submitData,
-      token,
-      impersonatedEmail,
-      handleError
-    )
-      .then((res) => {
-        if (!res.code) {
-          let newUploadedImages = [...uploadedImages];
 
-          if (!newUploadedImages) {
-            newUploadedImages = [];
-          }
-          newUploadedImages.push(res);
-          setUploadedImages(newUploadedImages);
-          setIsUploadingData(false);
-          setErrorMessage('');
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          }
-        }
-      })
-      .catch((err) => {
-        setIsUploadingData(false);
-        setErrorMessage(err);
-      });
+    try {
+      const res = await postAuthenticatedRequest(
+        `/app/projects/${projectGUID}/images`,
+        submitData,
+        token,
+        logoutUser
+      );
+      let newUploadedImages = [...uploadedImages];
+
+      if (!newUploadedImages) {
+        newUploadedImages = [];
+      }
+      newUploadedImages.push(res);
+      setUploadedImages(newUploadedImages);
+      setIsUploadingData(false);
+      setErrorMessage('');
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
   };
 
   React.useEffect(() => {
@@ -152,56 +150,43 @@ export default function ProjectMedia({
     [files]
   );
 
-  const deleteProjectCertificate = (id: any) => {
-    deleteAuthenticatedRequest(
-      `/app/projects/${projectGUID}/images/${id}`,
-      token,
-      impersonatedEmail,
-      handleError
-    ).then((res) => {
-      if (res !== 404) {
-        const uploadedFilesTemp = uploadedImages.filter(
-          (item) => item.id !== id
-        );
-        setUploadedImages(uploadedFilesTemp);
-      }
-    });
+  const deleteProjectCertificate = async (id: any) => {
+    try {
+      await deleteAuthenticatedRequest(
+        `/app/projects/${projectGUID}/images/${id}`,
+        token,
+        logoutUser
+      );
+      const uploadedFilesTemp = uploadedImages.filter((item) => item.id !== id);
+      setUploadedImages(uploadedFilesTemp);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
   };
 
   // For uploading the Youtube field
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     // Add isDirty test here
     setIsUploadingData(true);
     const submitData = {
       videoUrl: data.youtubeURL,
     };
-    putAuthenticatedRequest(
-      `/app/projects/${projectGUID}`,
-      submitData,
-      token,
-      impersonatedEmail,
-      handleError
-    )
-      .then((res) => {
-        if (!res.code) {
-          setProjectDetails(res);
-          setIsUploadingData(false);
-          handleNext();
-          setErrorMessage('');
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          }
-        }
-      })
-      .catch((err) => {
-        setIsUploadingData(false);
-        setErrorMessage(err);
-      });
+
+    try {
+      const res = await putAuthenticatedRequest(
+        `/app/projects/${projectGUID}`,
+        submitData,
+        token,
+        logoutUser
+      );
+      setProjectDetails(res);
+      setIsUploadingData(false);
+      handleNext();
+      setErrorMessage('');
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
   };
 
   React.useEffect(() => {
@@ -210,67 +195,55 @@ export default function ProjectMedia({
     }
   }, [projectDetails]);
 
-  const setDefaultImage = (id: any, index: any) => {
+  const setDefaultImage = async (id: any, index: any) => {
     setIsUploadingData(true);
     const submitData = {
       isDefault: true,
     };
-    putAuthenticatedRequest(
-      `/app/projects/${projectGUID}/images/${id}`,
-      submitData,
-      token,
-      impersonatedEmail,
-      handleError
-    ).then((res) => {
-      if (!res.code) {
-        const tempUploadedData = uploadedImages;
-        tempUploadedData.forEach((image) => {
-          image.isDefault = false;
-        });
-        tempUploadedData[index].isDefault = true;
-        setUploadedImages(tempUploadedData);
-        setIsUploadingData(false);
-        setErrorMessage('');
-      } else {
-        if (res.code === 404) {
-          setIsUploadingData(false);
-          setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-        } else {
-          setIsUploadingData(false);
-          setErrorMessage(res.message);
-        }
-      }
-    });
+
+    try {
+      await putAuthenticatedRequest(
+        `/app/projects/${projectGUID}/images/${id}`,
+        submitData,
+        token,
+        logoutUser
+      );
+      const tempUploadedData = uploadedImages;
+      tempUploadedData.forEach((image) => {
+        image.isDefault = false;
+      });
+      tempUploadedData[index].isDefault = true;
+      setUploadedImages(tempUploadedData);
+      setIsUploadingData(false);
+      setErrorMessage('');
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
   };
 
-  const uploadCaption = (id: any, index: any, e: any) => {
+  const uploadCaption = async (id: any, index: any, e: any) => {
     setIsUploadingData(true);
     const submitData = {
       description: e.target.value,
     };
-    putAuthenticatedRequest(
-      `/app/projects/${projectGUID}/images/${id}`,
-      submitData,
-      token,
-      impersonatedEmail,
-      handleError
-    ).then((res) => {
-      if (!res.code) {
-        const tempUploadedData = uploadedImages;
-        tempUploadedData[index].description = res.description;
-        setUploadedImages(tempUploadedData);
-        setIsUploadingData(false);
-        setErrorMessage('');
-      } else {
-        if (res.code === 404) {
-          setIsUploadingData(false);
-          setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-        } else {
-          setIsUploadingData(false);
-          setErrorMessage(res.message);
-        }
-      }
-    });
+
+    try {
+      const res = await putAuthenticatedRequest(
+        `/app/projects/${projectGUID}/images/${id}`,
+        submitData,
+        token,
+        logoutUser
+      );
+      const tempUploadedData = uploadedImages;
+      tempUploadedData[index].description = res.description;
+      setUploadedImages(tempUploadedData);
+      setIsUploadingData(false);
+      setErrorMessage('');
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
   };
   return ready ? (
     <div className={styles.stepContainer}>
