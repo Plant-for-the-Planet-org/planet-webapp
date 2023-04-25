@@ -2,7 +2,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useRouter } from 'next/router';
 import React, { FC, useContext, useMemo } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
-import { User } from '../types/user';
+import { User } from '@planet-sdk/common/build/types/user';
 import { SetState } from '../types/common';
 
 interface UserPropsContextInterface {
