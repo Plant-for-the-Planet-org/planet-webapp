@@ -90,7 +90,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
     setActiveStep(0);
   };
 
-  const submitForReview = () => {
+  const submitForReview = async () => {
     setIsUploadingData(true);
     const submitData = {
       reviewRequested: true,
