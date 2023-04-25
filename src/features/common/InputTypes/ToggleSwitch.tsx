@@ -4,10 +4,7 @@ import theme from '../../../theme/themeProperties';
 
 interface ToggleSwitchProps {
   checked: boolean;
-  onChange: (
-    event: React.ChangeEvent<HTMLInputElement>,
-    checked: boolean
-  ) => void;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   id?: string;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement> | undefined;
