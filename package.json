@@ -85,6 +85,7 @@
     "luma.gl": "^7.3.2",
     "mapbox-gl": "^1.13.0",
     "mapbox-gl-compare": "^0.4.0",
+    "material-ui-popup-state": "^4.1.0",
     "next": "^12.2.2",
     "next-connect": "^0.13.0",
     "next-i18next": "^12.1.0",
