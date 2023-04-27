@@ -12,6 +12,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
 import { SingleProjectGeojson } from '../src/features/common/types/project';
+import { handleError, APIError } from '@planet-sdk/common';
 
 interface Props {
   initialized: boolean;
@@ -51,7 +52,7 @@ export default function Donate({
   const handleOpen = () => {
     setOpen(true);
   };
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     async function loadProject() {
@@ -64,21 +65,19 @@ export default function Donate({
         setInternalCurrencyCode(currency);
         setInternalLanguage(i18n.language);
         setCurrencyCode(currency);
-        const _project = router.query.p?.toString();
-        if (_project) {
-          const project = await getRequest(
-            `/app/projects/${_project}`,
-            handleError,
-            '/',
-            {
-              _scope: 'extended',
-              currency: currency,
-              locale: i18n.language,
-            }
-          );
+        try {
+          const { p } = router.query;
+          const project = await getRequest(encodeURI(`/app/projects/${p}`), {
+            _scope: 'extended',
+            currency: currency,
+            locale: i18n.language,
+          });
           setProject(project);
           setShowSingleProject(true);
           setZoomLevel(2);
+        } catch (err) {
+          setErrors(handleError(err as APIError));
+          redirect('/');
         }
       }
     }
@@ -92,7 +91,8 @@ export default function Donate({
       setPlantLocationsLoaded(false);
       const newPlantLocations = await getAllPlantLocations(
         project.id,
-        handleError
+        setErrors,
+        redirect
       );
       setPlantLocations(newPlantLocations);
       setPlantLocationsLoaded(true);

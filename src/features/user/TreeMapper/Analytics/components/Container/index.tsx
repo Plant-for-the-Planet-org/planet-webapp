@@ -14,7 +14,7 @@ export const Container = ({
   flexDirection = 'row',
 }: Props) => {
   return (
-    <div>
+    <div className={styles.container}>
       <div
         className={
           flexDirection === 'row'

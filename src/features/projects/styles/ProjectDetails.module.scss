@@ -8,6 +8,20 @@
   z-index: 12;
 }
 
+.reports_container{
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  .reports_description{
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    a{
+      color: $primaryColor;
+      font-weight: bold;
+    }
+  }
+}
 .modalClose {
   position: absolute;
   right: 15px;
@@ -150,21 +164,30 @@
 
 /* Additional Information */
 
+.projectInfoContainer {
+  margin-top: 35px;
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+
 .projectMoreInfoHalfContainer {
-  width: 340px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  row-gap: 35px;
 }
+
 .projectMoreInfoHalf {
   width: 50%;
-  margin-top: 35px;
+  display: flex;
+  flex-direction: column;
 }
 
 .projectMoreInfo {
   width: 100%;
-  margin-top: 35px;
 }
+
 .infoTitle {
   font-family: $primaryFontFamily;
   font-size: $fontXSmall;
@@ -179,18 +202,19 @@
   font-size: $fontSmall;
   color: $primaryFontColor;
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .infoTextMaxDensity {
   padding-right: 51px;
-  display:flex;
+  display: flex;
   flex-direction: row;
-  >div{
+  > div {
     margin-left: 1px;
   }
-  >h4 {
+  > h4 {
     width: 104px;
     margin-left: 4px;
   }
@@ -212,12 +236,16 @@
   margin-top: $fontSmall;
 }
 
+.projectContactDetails {
+  margin-top: 35px;
+}
+
 .contactDetailsRow {
   display: flex;
   align-items: center;
+  column-gap: 16px;
   > span {
-    margin-left: 16px;
-    flex-grow: 1;
+    flex: 1;
     word-wrap: break-word;
   }
 }
@@ -305,7 +333,9 @@
     min-height: calc(100vh - 100px);
     background-color: transparent;
   }
-
+  .reports_container{
+    width: 328px;
+  }
   .singleProjectDetails {
     margin-top: 20px;
   }

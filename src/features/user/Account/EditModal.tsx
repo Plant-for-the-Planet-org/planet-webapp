@@ -22,6 +22,7 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
+import { handleError, APIError } from '@planet-sdk/common';
 import { Subscription } from '../../common/types/payments';
 
 // interface EditDonationProps {
@@ -66,13 +67,11 @@ export const EditModal = ({
   const [userLang, setUserLang] = React.useState('en');
   const [disabled, setDisabled] = React.useState(false);
   const { t, i18n } = useTranslation(['me']);
-  const { register, handleSubmit, errors, setValue, control, getValues } =
-    useForm({
-      mode: 'all',
-    });
-  const { token, impersonatedEmail } = React.useContext(UserPropsContext);
-  const { handleError } = React.useContext(ErrorHandlingContext);
-
+  const { register, handleSubmit, errors, control } = useForm({
+    mode: 'all',
+  });
+  const { token, logoutUser } = React.useContext(UserPropsContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
       const userLang = localStorage.getItem('language');
@@ -83,7 +82,7 @@ export const EditModal = ({
     setDisabled(false);
   }, [editModalOpen]);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     setDisabled(true);
     const bodyToSend = {
       nextBilling:
@@ -108,21 +107,22 @@ export const EditModal = ({
     }
 
     if (Object.keys(bodyToSend).length !== 0) {
-      putAuthenticatedRequest(
-        `/app/subscriptions/${record?.id}?scope=modify`,
-        bodyToSend,
-        token,
-        impersonatedEmail,
-        handleError
-      )
-        .then((res) => {
-          if (res?.status === 'action_required') {
-            window.open(res.response.confirmationUrl, '_blank');
-          }
-          handleEditModalClose();
-          fetchRecurrentDonations();
-        })
-        .catch((err) => console.log('Error editing recurring donation.'));
+      try {
+        const res = await putAuthenticatedRequest(
+          `/app/subscriptions/${record?.id}?scope=modify`,
+          bodyToSend,
+          token,
+          logoutUser
+        );
+        if (res?.status === 'action_required') {
+          window.open(res.response.confirmationUrl, '_blank');
+        }
+        handleEditModalClose();
+        fetchRecurrentDonations();
+      } catch (err) {
+        handleEditModalClose();
+        setErrors(handleError(err as APIError));
+      }
     } else {
       handleEditModalClose();
     }
