@@ -1031,12 +1031,6 @@ export default function DetailedAnalysis({
           setIsUploadingData={setIsUploadingData}
           userLang={userLang}
         />
-        {errorMessage && errorMessage !== '' ? (
-          <div className={styles.formFieldLarge}>
-            <h4 className={styles.errorMessage}>{errorMessage}</h4>
-          </div>
-        ) : null}
-
         <div className={styles.buttonsForProjectCreationForm}>
           <Button
             onClick={() => handleBack(ProjectCreationTabs.PROJECT_MEDIA)}
