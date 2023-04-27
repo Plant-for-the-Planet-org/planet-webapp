@@ -29,7 +29,7 @@ import PlayButton from '../src/features/common/LandingVideo/PlayButton';
 import ErrorHandlingProvider from '../src/features/common/Layout/ErrorHandlingContext';
 import dynamic from 'next/dynamic';
 import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext';
-import { AnalyticsProvider } from '../src/features/common/Layout/AnalyticsContext'
+import { AnalyticsProvider } from '../src/features/common/Layout/AnalyticsContext';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
 import QueryParamsProvider from '../src/features/common/Layout/QueryParamsContext';
@@ -37,6 +37,7 @@ import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashCont
 import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
 import { appWithTranslation } from 'next-i18next';
 import nextI18NextConfig from '../next-i18next.config.js';
+import { trpc } from '../src/utils/trpc';
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -246,26 +247,28 @@ const PlanetWeb = ({ Component, pageProps }: any) => {
                             <ProjectPropsProvider>
                               <BulkCodeProvider>
                                 <AnalyticsProvider>
-                                {isMap ? (
-                                  <>
-                                    {project ? (
-                                      <MapLayout />
-                                    ) : projects ? (
-                                      <MapLayout />
-                                    ) : null}
-                                    <div
-                                      style={
-                                        config.tenantName === 'planet' ||
-                                        config.tenantName === 'ttc'
-                                          ? {}
-                                          : { display: 'none' }
-                                      }
-                                    >
-                                      <PlayButton setshowVideo={setshowVideo} />
-                                    </div>
-                                  </>
-                                ) : null}
-                                <Component {...ProjectProps} />
+                                  {isMap ? (
+                                    <>
+                                      {project ? (
+                                        <MapLayout />
+                                      ) : projects ? (
+                                        <MapLayout />
+                                      ) : null}
+                                      <div
+                                        style={
+                                          config.tenantName === 'planet' ||
+                                          config.tenantName === 'ttc'
+                                            ? {}
+                                            : { display: 'none' }
+                                        }
+                                      >
+                                        <PlayButton
+                                          setshowVideo={setshowVideo}
+                                        />
+                                      </div>
+                                    </>
+                                  ) : null}
+                                  <Component {...ProjectProps} />
                                 </AnalyticsProvider>
                               </BulkCodeProvider>
                             </ProjectPropsProvider>
@@ -284,4 +287,4 @@ const PlanetWeb = ({ Component, pageProps }: any) => {
   }
 };
 
-export default appWithTranslation(PlanetWeb, nextI18NextConfig);
+export default trpc.withTRPC(appWithTranslation(PlanetWeb, nextI18NextConfig));
