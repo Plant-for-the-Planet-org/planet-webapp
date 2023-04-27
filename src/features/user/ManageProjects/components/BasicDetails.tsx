@@ -579,7 +579,7 @@ export default function BasicDetails({
               variant="outlined"
               name="countTarget"
               type="number"
-              placeholder={0}
+              placeholder={'0'}
               error={errors.countTarget}
               helperText={
                 (errors.countTarget?.message && errors.countTarget.message) ||
@@ -866,12 +866,6 @@ export default function BasicDetails({
               )}
             />
           </div>
-
-          {errorMessage && errorMessage !== '' ? (
-            <div className={styles.formFieldLarge}>
-              <h4 className={styles.errorMessage}>{errorMessage}</h4>
-            </div>
-          ) : null}
         </div>
         <div className={styles.buttonsForProjectCreationForm}>
           <Button variant="contained" onClick={handleSubmit(onSubmit)}>

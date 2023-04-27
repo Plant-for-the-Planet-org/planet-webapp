@@ -28,7 +28,7 @@ export enum ProjectCreationTabs {
   REVIEW = 6,
 }
 export default function ManageProjects({ GUID, token, project }: any) {
-  const { t, ready } = useTranslation(['manageProjects']);
+  const { t, ready, i18n } = useTranslation(['manageProjects']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = React.useContext(UserPropsContext);
 
