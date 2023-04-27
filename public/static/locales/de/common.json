@@ -97,6 +97,10 @@
   "modalTitle": "Beende alle Dauerspenden um fortzufahren",
   "modalSubtitle": "Bitte beende zuerst deine Dauerspenden",
   "deleteCondition": "Bevor du fortfährst, vergewissere dich, dass alle Dauerspenden beendet sind.",
-  "project": "Projekt",
-  "showSubscriptions": "Meine Dauerspenden anzeigen"
+  "showSubscriptions": "Meine Dauerspenden anzeigen",
+  "topProject": "Top Projekt",
+  "viewReport": "Bericht ansehen",
+  "reviewInfo": "Das Projekt wurde im <2>month</2> in einer mehrtägigen Vor-Ort-Prüfung inspiziert und erfüllt unsere <5>Standards</5>.",
+  "standardsLink": "https://www.plant-for-the-planet.org/de/standards/",
+  "project": "Projekt"
 }
