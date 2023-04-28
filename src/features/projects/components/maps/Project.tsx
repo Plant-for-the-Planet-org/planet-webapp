@@ -8,7 +8,7 @@ import Location from './Location';
 import Sites from './Sites';
 import { useRouter } from 'next/router';
 import { zoomToPlantLocation } from '../../../../../src/utils/maps/plantLocations';
-import { handleError, APIError } from '@planet-sdk/common'
+import { handleError, APIError } from '@planet-sdk/common';
 
 interface Props {
   project: Object;
@@ -40,23 +40,27 @@ export default function Project({
     React.useState(null);
 
   async function loadRasterData() {
-
     let result;
     let result2;
 
     try {
       result = await getRasterData('');
     } catch (err) {
-      setErrors(handleError(err as APIError))
+      setErrors(handleError(err as APIError));
     }
 
     try {
       result2 = await getRasterData(project.id);
     } catch (err) {
-      setErrors(handleError(err as APIError))
+      setErrors(handleError(err as APIError));
     }
 
     if (result && result2) {
+      {
+        /* Raster data for multipolygons is not supported and is returned with an error message (but a 200 response) for such projects, 
+				in this case rasterData.evi will not exist and is not set as a result*/
+      }
+      debugger;
       setRasterData({
         ...rasterData,
         imagery: result.imagery,
