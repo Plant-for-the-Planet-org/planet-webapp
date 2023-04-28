@@ -687,7 +687,7 @@ export default function BasicDetails({
                     <ToggleSwitch
                       id="acceptDonations"
                       checked={properties.value}
-                      onChange={(e: any) => {
+                      onChange={(e) => {
                         properties.onChange(e.target.checked);
                         setAcceptDonations(e.target.checked);
                       }}

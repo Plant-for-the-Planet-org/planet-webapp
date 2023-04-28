@@ -17,7 +17,7 @@ export default function Filters({}: Props): ReactElement {
     conservation: true,
   });
 
-  const [type, setType] = React.useState({
+  const [type, setType] = React.useState<Record<string, boolean>>({
     'natural-regeneration': true,
     'managed-regeneration': true,
     'large-scale-planting': true,
@@ -27,7 +27,7 @@ export default function Filters({}: Props): ReactElement {
     mangroves: true,
   });
 
-  const [filters, setFilters] = React.useState(null);
+  const [filters, setFilters] = React.useState<string[] | null>(null);
 
   React.useEffect(() => {
     function filterProjects() {
@@ -129,13 +129,13 @@ export default function Filters({}: Props): ReactElement {
             <div className={styles.filterTitle}>{t('donate:projectType')}</div>
             <FormGroup style={{ width: '100%' }}>
               {filters &&
-                filters.map((filter: any, index: number) => {
+                filters.map((filter, index: number) => {
                   return (
                     <div key={index} className={styles.filterToggleRow}>
                       <FormControlLabel
                         control={
                           <Switch
-                            checked={type[filter]}
+                            checked={type[filter] !== undefined}
                             onChange={handleTypeChange}
                             name={filter}
                           />
