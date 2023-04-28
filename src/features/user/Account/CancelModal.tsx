@@ -23,6 +23,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { Subscription } from '../../common/types/payments';
+import CustomModal from '../../common/Layout/CustomModal';
 
 const MuiCalendarPicker = styled(CalendarPicker)({
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -43,6 +44,7 @@ interface CancelModalProps {
   handleCancelModalClose: () => void;
   record: Subscription;
   fetchRecurrentDonations: (next?: boolean | undefined) => void;
+  handleCancelModalOpen: () => void;
 }
 
 export const CancelModal = ({
@@ -50,6 +52,7 @@ export const CancelModal = ({
   handleCancelModalClose,
   record,
   fetchRecurrentDonations,
+  handleCancelModalOpen,
 }: CancelModalProps) => {
   const { theme } = React.useContext(ThemeContext);
   const { token, logoutUser } = React.useContext(UserPropsContext);
@@ -57,6 +60,8 @@ export const CancelModal = ({
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState(new Date());
   const [disabled, setDisabled] = React.useState(false);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [remainingPayments, setRemainingPayments] = React.useState(0);
   const { t } = useTranslation(['me']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
@@ -65,6 +70,8 @@ export const CancelModal = ({
   }, [cancelModalOpen]);
 
   const cancelDonation = async () => {
+    setIsModalOpen(false);
+    handleCancelModalOpen();
     setDisabled(true);
     const bodyToSend = {
       cancellationType:
@@ -93,7 +100,50 @@ export const CancelModal = ({
       setErrors(handleError(err as APIError));
     }
   };
-  return (
+
+  function displayRemainingPayments() {
+    const current = new Date();
+    const end = new Date(date);
+    const subscription = new Date(record.firstDonation.created);
+    const subscriptionDate = subscription.getDate();
+    const subscriptionMonth = subscription.getMonth();
+    const startMonth = current.getMonth();
+    const startYear = current.getFullYear();
+    const endDate = end.getDate();
+    const endMonth = end.getMonth();
+    const endYear = end.getFullYear();
+    let remainingPayments = 0;
+
+    if (record.frequency === 'monthly') {
+      //to calculate months between two dates
+      remainingPayments += (endYear - startYear) * 12;
+      remainingPayments -= startMonth;
+      remainingPayments += endMonth - 1;
+
+      //to check if payment needs to be made in the last month
+      if (subscriptionDate <= endDate) {
+        remainingPayments += 1;
+      }
+    } else {
+      remainingPayments += endYear - startYear - 1;
+      //to check if payment needs to be made in the last year
+      if (subscriptionMonth <= endMonth && subscriptionDate <= endDate) {
+        remainingPayments += 1;
+      }
+    }
+    setIsModalOpen(true);
+    handleCancelModalClose();
+    setRemainingPayments(remainingPayments);
+  }
+
+  const handleSave = () => {
+    if (option === 'cancelOnSelectedDate') {
+      displayRemainingPayments();
+    } else {
+      cancelDonation();
+    }
+  };
+  return !isModalOpen ? (
     <Modal
       className={'modalContainer' + ' ' + theme}
       open={cancelModalOpen}
@@ -195,9 +245,8 @@ export const CancelModal = ({
 
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button
-              onClick={() => cancelDonation()}
               className={styles.submitButton}
-              disabled={disabled}
+              onClick={() => handleSave()}
               style={{ minWidth: '20px', marginTop: '30px' }}
             >
               {disabled ? (
@@ -221,5 +270,16 @@ export const CancelModal = ({
         </div>
       </Fade>
     </Modal>
+  ) : (
+    <CustomModal
+      isOpen={isModalOpen}
+      handleContinue={cancelDonation}
+      buttonTitle={t('continue')}
+      isCancel={false}
+      modalTitle=""
+      modalSubtitle={t('me:remainingPaymentsText', {
+        remainingPayments,
+      })}
+    />
   );
 };

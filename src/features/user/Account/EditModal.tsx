@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { Controller, useForm } from 'react-hook-form';
 import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import styles from './AccountHistory.module.scss';
@@ -11,19 +10,14 @@ import {
   Fade,
   InputAdornment,
   Autocomplete,
-  SxProps,
 } from '@mui/material';
-import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import { ThemeContext } from '../../../theme/themeContext';
 import getCurrencySymbolByCode from '../../../utils/countryCurrency/getCurrencySymbolByCode';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import themeProperties from '../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { Subscription } from '../../common/types/payments';
+import { useForm } from 'react-hook-form';
 
 // interface EditDonationProps {
 //   editModalOpen
@@ -32,22 +26,22 @@ import { Subscription } from '../../common/types/payments';
 //   // seteditDonation: React.Dispatch<React.SetStateAction<boolean>>;
 // }
 
-const dialogSx: SxProps = {
-  '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
-    backgroundColor: themeProperties.primaryColor,
-    color: '#fff',
-  },
+// const dialogSx: SxProps = {
+//   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
+//     backgroundColor: themeProperties.primaryColor,
+//     color: '#fff',
+//   },
 
-  '& .MuiPickersDay-dayWithMargin': {
-    '&:hover': {
-      backgroundColor: themeProperties.primaryColor,
-      color: '#fff',
-    },
-  },
-  '.MuiDialogActions-root': {
-    paddingBottom: '12px',
-  },
-};
+//   '& .MuiPickersDay-dayWithMargin': {
+//     '&:hover': {
+//       backgroundColor: themeProperties.primaryColor,
+//       color: '#fff',
+//     },
+//   },
+//   '.MuiDialogActions-root': {
+//     paddingBottom: '12px',
+//   },
+// };
 
 interface EditModalProps {
   editModalOpen: boolean;
@@ -64,20 +58,20 @@ export const EditModal = ({
 }: EditModalProps) => {
   const [frequency, setFrequency] = React.useState(record?.frequency);
   const { theme } = React.useContext(ThemeContext);
-  const [userLang, setUserLang] = React.useState('en');
+  // const [userLang, setUserLang] = React.useState('en');
   const [disabled, setDisabled] = React.useState(false);
   const { t, i18n } = useTranslation(['me']);
-  const { register, handleSubmit, errors, control } = useForm({
+  const { register, handleSubmit, errors } = useForm({
     mode: 'all',
   });
   const { token, logoutUser } = React.useContext(UserPropsContext);
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  React.useEffect(() => {
-    if (localStorage.getItem('language')) {
-      const userLang = localStorage.getItem('language');
-      if (userLang) setUserLang(userLang);
-    }
-  }, []);
+  // React.useEffect(() => {
+  //   if (localStorage.getItem('language')) {
+  //     const userLang = localStorage.getItem('language');
+  //     if (userLang) setUserLang(userLang);
+  //   }
+  // }, []);
   React.useEffect(() => {
     setDisabled(false);
   }, [editModalOpen]);
@@ -85,20 +79,10 @@ export const EditModal = ({
   const onSubmit = async (data: any) => {
     setDisabled(true);
     const bodyToSend = {
-      nextBilling:
-        record.method !== 'paypal'
-          ? new Date(data.currentPeriodEnd).toISOString().split('T')[0]
-          : null,
       centAmount: Number(data.amount) * 100,
       frequency: frequency,
     };
-    if (
-      new Date(data.currentPeriodEnd).toDateString() ==
-        new Date(record.currentPeriodEnd).toDateString() ||
-      bodyToSend.nextBilling === null
-    ) {
-      delete bodyToSend.nextBilling;
-    }
+
     if (data.frequency.toLowerCase() === record.frequency) {
       delete bodyToSend.frequency;
     }
@@ -235,7 +219,7 @@ export const EditModal = ({
                 )}
               </div>
             </div>
-            {record?.method !== 'paypal' ? (
+            {/* {record?.method !== 'paypal' ? (
               <div className={styles.formRow}>
                 <div className={styles.formRowInput}>
                   <LocalizationProvider
@@ -287,7 +271,7 @@ export const EditModal = ({
               </div>
             ) : (
               []
-            )}
+            )} */}
           </form>
           <div className={styles.note}>
             <p>{record?.method === 'paypal' ? t('me:noteToWait') : []}</p>
@@ -295,7 +279,7 @@ export const EditModal = ({
           <button
             onClick={handleSubmit(onSubmit)}
             className={styles.submitButton}
-            style={{ minWidth: '20px', marginTop: '30px' }}
+            style={{ minWidth: '20px', marginTop: '15px' }}
             disabled={disabled}
           >
             {disabled ? (
