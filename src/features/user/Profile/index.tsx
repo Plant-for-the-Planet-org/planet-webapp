@@ -1,10 +1,7 @@
 import React, { ReactElement } from 'react';
 import styles from './styles/Profile.module.scss';
-import Settings from '../../../../public/assets/images/icons/userProfileIcons/Settings';
 import AddTargetModal from './components/AddTargetModal';
 import LandingSection from '../../common/Layout/LandingSection';
-import MyTrees from './components/MyTrees/MyTrees';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { useTranslation } from 'next-i18next';
 import ReadMoreReact from 'read-more-react';
 import UserShareAndSupport from './components/UserShareAndSupport';
@@ -18,11 +15,11 @@ interface Props {
 
 function Profile({ userprofile, authenticatedType }: Props): ReactElement {
   // External imports
-  const { token } = React.useContext(UserPropsContext);
+
   const { t, ready } = useTranslation(['donate']);
 
   // Internal States for authenticated users
-  const [editProfileModalOpen, setEditProfileModalOpen] = React.useState(false);
+
   const [addTargetModalOpen, setAddTargetModalOpen] = React.useState(false);
 
   return (

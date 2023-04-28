@@ -117,6 +117,20 @@
   font-family: $primaryFontFamily;
   font-size: $fontMedium;
   color: $light;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 5px;
+}
+
+.topProjectBadge {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 4px 12px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
 }
 
 /* Progress Bar */

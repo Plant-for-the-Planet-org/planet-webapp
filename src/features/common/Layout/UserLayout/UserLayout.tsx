@@ -19,9 +19,11 @@ import styles from './UserLayout.module.scss';
 import TreeMappperIcon from '../../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
 import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/RegisterIcon';
 import NotionLinkIcon from '../../../../../public/assets/images/icons/Sidebar/NotionLinkIcon';
+import SupportPin from '../../../user/Settings/ImpersonateUser/SupportPin';
+import FiberPinIcon from '@mui/icons-material/FiberPin';
 
 function LanguageSwitcher() {
-  const { i18n, ready } = useTranslation(['common']);
+  const { i18n, ready } = useTranslation(['common', 'me']);
 
   const [language, setLanguage] = React.useState(i18n.language);
   const [openModal, setOpenModal] = React.useState(false);
@@ -55,19 +57,18 @@ function LanguageSwitcher() {
 
   return ready ? (
     <>
-      <div
-        className={styles.navlink}
-        onClick={() => {
-          setOpenModal(true); // open language and country change modal
-        }}
-      >
+      <div className={styles.navlink}>
         <GlobeIcon />
-        <button className={styles.navlinkTitle}>
+        <button
+          className={styles.navlinkTitle}
+          onClick={() => {
+            setOpenModal(true); // open language and country change modal
+          }}
+        >
           {`${
             i18n.language ? i18n.language.toUpperCase() : ''
           } • ${selectedCurrency}`}
         </button>
-        <button></button>
       </div>
       <SelectLanguageAndCountry
         openModal={openModal}
@@ -292,7 +293,7 @@ function UserLayout(props: any): ReactElement {
         {
           title: t('me:dataExplorer'),
           path: '/profile/treemapper/data-explorer',
-          hideItem: !(process.env.ENABLE_ANALYTICS && (user?.type === 'tpo')),
+          hideItem: !(process.env.ENABLE_ANALYTICS && user?.type === 'tpo'),
         },
       ],
     },
@@ -474,6 +475,13 @@ function UserLayout(props: any): ReactElement {
 
         <div>
           <LanguageSwitcher />
+
+          {!isImpersonationModeOn && (
+            <div className={styles.navlink}>
+              <FiberPinIcon />
+              <SupportPin />
+            </div>
+          )}
           <div className={styles.navlink}>
             <NotionLinkIcon />
             <button
@@ -492,7 +500,7 @@ function UserLayout(props: any): ReactElement {
             className={styles.navlink}
             //logout user
             onClick={() => {
-              localStorage.removeItem('impersonatedEmail');
+              localStorage.removeItem('impersonationData');
               logoutUser(`${process.env.NEXTAUTH_URL}/`);
             }}
           >

@@ -47,5 +47,12 @@
     "tooManyRequest": "Zu viele Anfragen. Bitte warten Sie und versuchen Sie es später noch einmal oder wenden Sie sich an den Systemadministrator, um Hilfe zu erhalten."
   },
   "timeFrame": "Zeitrahmen",
-  "scientificName": "Wissenschaftlicher Name"
+  "scientificName": "Wissenschaftlicher Name",
+  "type": "Typ",
+  "interventions": "Interventionen",
+  "monitoringPlots": "Monitoring Plots (Demnächst)",
+  "trillion": "Bill.",
+  "billion": "Mrd.",
+  "million": "Mill.",
+  "thousand": "Tsd."
 }

@@ -35,7 +35,7 @@ const ProjectTypeSelector = ({
   const [localProjectType, setLocalProjectType] = useState<ProjectType | null>(
     null
   );
-  const { t, ready } = useTranslation(['common']);
+  const { t, ready } = useTranslation(['treemapperAnalytics']);
 
   useEffect(() => {
     setLocalProjectType(projectTypeList[0]);

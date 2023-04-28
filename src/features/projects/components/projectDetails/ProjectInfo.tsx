@@ -119,7 +119,7 @@ function ProjectInfo({ project }: Props): ReactElement {
   };
 
   return ready ? (
-    <div>
+    <div className={styles.projectInfoContainer}>
       <div className={styles.projectMoreInfoHalfContainer}>
         {project?.metadata?.yearAbandoned !== 0 && (
           <div className={styles.projectMoreInfoHalf}>
@@ -172,17 +172,11 @@ function ProjectInfo({ project }: Props): ReactElement {
             </div>
             <div className={styles.infoText}>
               {project.plantingDensity}
-              {project?.metadata?.maxPlantingDensity ? (
-                <div className={styles.infoTextMaxDensity}>
-                  {'-'}
-                  <div>{project?.metadata?.maxPlantingDensity}</div>
-                  <h4>{t('manageProjects:treePerHa')}</h4>
-                </div>
-              ) : (
-                <div style={{ paddingRight: '68px' }}>
-                  {t('manageProjects:treePerHa')}
-                </div>
-              )}{' '}
+              {project?.metadata?.maxPlantingDensity
+                ? `-${project.metadata.maxPlantingDensity} ${t(
+                    'manageProjects:treePerHa'
+                  )}`
+                : ` ${t('manageProjects:treePerHa')}`}
             </div>
           </div>
         )}
@@ -317,8 +311,8 @@ function ProjectInfo({ project }: Props): ReactElement {
         )}
       </div>
 
-      <div style={{ display: 'flex' }}>
-        {project?.metadata?.landOwnershipType && (
+      {project?.metadata?.landOwnershipType && (
+        <div style={{ display: 'flex' }}>
           <div className={styles.projectMoreInfo}>
             <div className={styles.infoTitle}>
               {t('manageProjects:siteOwnership')}
@@ -363,8 +357,8 @@ function ProjectInfo({ project }: Props): ReactElement {
               <></>
             )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {project && project.metadata && project.metadata.degradationCause && (
         <div className={styles.projectMoreInfo}>
