@@ -24,7 +24,7 @@ export default function AddProjectType(): ReactElement {
 
   React.useEffect(() => {
     async function loadUserData() {
-      const usertype = user.type;
+      const usertype = user?.type;
       if (usertype === 'tpo') {
         setAccessDenied(false);
         setSetupAccess(true);
@@ -114,7 +114,7 @@ export default function AddProjectType(): ReactElement {
                     )
                     :
                     null} */}
-        {user.type === 'tpo' ? (
+        {user?.type === 'tpo' ? (
           <ManageProjects token={token} />
         ) : (
           <AccessDeniedLoader />

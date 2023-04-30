@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from 'react';
+import React, { ReactElement } from 'react';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import ManagePayouts, {
@@ -17,7 +17,7 @@ export default function AddBankDetailsPage(): ReactElement {
       <Head>
         <title>{ready ? t('managePayouts.titleAddBankDetails') : ''}</title>
       </Head>
-      {user.type === 'tpo' ? (
+      {user?.type === 'tpo' ? (
         <ManagePayouts step={ManagePayoutTabs.ADD_BANK_DETAILS} />
       ) : (
         <AccessDeniedLoader />

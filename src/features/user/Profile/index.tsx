@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react';
 import styles from './styles/Profile.module.scss';
 import AddTargetModal from './components/AddTargetModal';
 import LandingSection from '../../common/Layout/LandingSection';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { useTranslation } from 'next-i18next';
 import ReadMoreReact from 'read-more-react';
 import UserShareAndSupport from './components/UserShareAndSupport';
@@ -16,7 +15,6 @@ interface Props {
 
 function Profile({ userprofile, authenticatedType }: Props): ReactElement {
   // External imports
-  const { token } = useUserProps();
   const { t, ready } = useTranslation(['donate']);
 
   // Internal States for authenticated users

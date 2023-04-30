@@ -38,7 +38,7 @@ export default function EmbedModal({
   const { user, setUser, contextLoaded, token, logoutUser } = useUserProps();
 
   React.useEffect(() => {
-    if (user && user.isPrivate) {
+    if (user && user?.isPrivate) {
       setIsPrivate(true);
     }
   }, [user]);
@@ -82,9 +82,6 @@ export default function EmbedModal({
     }
   };
 
-  // React.useEffect(() => {
-  //     console.log(isPrivate);
-  // }, [isPrivate]);
   const { theme } = React.useContext(ThemeContext);
 
   return (

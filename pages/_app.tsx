@@ -201,45 +201,45 @@ const PlanetWeb = ({ Component, pageProps }: any) => {
     return <BrowserNotSupported />;
   } else {
     return (
-      <div>
-        <div
-          style={
-            showVideo &&
-            (config.tenantName === 'planet' || config.tenantName === 'ttc')
-              ? {}
-              : { display: 'none' }
-          }
-        >
-          {config.tenantName === 'planet' || config.tenantName === 'ttc' ? (
-            <VideoContainer setshowVideo={setshowVideo} />
-          ) : (
-            <></>
-          )}
-        </div>
-
-        <div
-          style={
-            showVideo &&
-            (config.tenantName === 'planet' || config.tenantName === 'ttc')
-              ? { display: 'none' }
-              : {}
-          }
-        >
-          <Auth0Provider
-            domain={process.env.AUTH0_CUSTOM_DOMAIN}
-            clientId={process.env.AUTH0_CLIENT_ID}
-            redirectUri={process.env.NEXTAUTH_URL}
-            audience={'urn:plant-for-the-planet'}
-            cacheLocation={'localstorage'}
-            onRedirectCallback={onRedirectCallback}
-            useRefreshTokens={true}
+      <ErrorHandlingProvider>
+        <div>
+          <div
+            style={
+              showVideo &&
+              (config.tenantName === 'planet' || config.tenantName === 'ttc')
+                ? {}
+                : { display: 'none' }
+            }
           >
-            <ThemeProvider>
-              <MuiThemeProvider theme={materialTheme}>
-                <CssBaseline />
-                <QueryParamsProvider>
-                  <UserPropsProvider>
-                    <ErrorHandlingProvider>
+            {config.tenantName === 'planet' || config.tenantName === 'ttc' ? (
+              <VideoContainer setshowVideo={setshowVideo} />
+            ) : (
+              <></>
+            )}
+          </div>
+
+          <div
+            style={
+              showVideo &&
+              (config.tenantName === 'planet' || config.tenantName === 'ttc')
+                ? { display: 'none' }
+                : {}
+            }
+          >
+            <Auth0Provider
+              domain={process.env.AUTH0_CUSTOM_DOMAIN}
+              clientId={process.env.AUTH0_CLIENT_ID}
+              redirectUri={process.env.NEXTAUTH_URL}
+              audience={'urn:plant-for-the-planet'}
+              cacheLocation={'localstorage'}
+              onRedirectCallback={onRedirectCallback}
+              useRefreshTokens={true}
+            >
+              <ThemeProvider>
+                <MuiThemeProvider theme={materialTheme}>
+                  <CssBaseline />
+                  <QueryParamsProvider>
+                    <UserPropsProvider>
                       <PlanetCashProvider>
                         <PayoutsProvider>
                           <Layout>
@@ -274,14 +274,14 @@ const PlanetWeb = ({ Component, pageProps }: any) => {
                           </Layout>
                         </PayoutsProvider>
                       </PlanetCashProvider>
-                    </ErrorHandlingProvider>
-                  </UserPropsProvider>
-                </QueryParamsProvider>
-              </MuiThemeProvider>
-            </ThemeProvider>
-          </Auth0Provider>
+                    </UserPropsProvider>
+                  </QueryParamsProvider>
+                </MuiThemeProvider>
+              </ThemeProvider>
+            </Auth0Provider>
+          </div>
         </div>
-      </div>
+      </ErrorHandlingProvider>
     );
   }
 };

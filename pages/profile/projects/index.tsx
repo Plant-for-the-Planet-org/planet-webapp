@@ -16,7 +16,7 @@ export default function Register({}: Props): ReactElement {
       <Head>
         <title>{t('projects')}</title>
       </Head>
-      {user.type === 'tpo' ? <ProjectsContainer /> : <AccessDeniedLoader />}
+      {user?.type === 'tpo' ? <ProjectsContainer /> : <AccessDeniedLoader />}
     </UserLayout>
   );
 }

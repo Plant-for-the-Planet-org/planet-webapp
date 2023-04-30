@@ -325,7 +325,7 @@ export default function PlantingLocation({
         </div>
       </div>
 
-      {user && user.type === 'tpo' && (
+      {user && user?.type === 'tpo' && (
         <div className={styles.formFieldLarge}>
           <Controller
             as={

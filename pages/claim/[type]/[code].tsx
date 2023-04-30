@@ -23,6 +23,7 @@ function ClaimDonation(): ReactElement {
 
   const { user, contextLoaded, loginWithRedirect, token, logoutUser } =
     useUserProps();
+
   const { errors, setErrors } = React.useContext(ErrorHandlingContext);
 
   const [errorMessage, setErrorMessage] = React.useState<ClaimCode1>('');
