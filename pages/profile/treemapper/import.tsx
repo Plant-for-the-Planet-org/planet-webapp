@@ -16,7 +16,7 @@ export default function Import({}: Props): ReactElement {
       <Head>
         <title>{t('treemapper:importData')}</title>
       </Head>
-      {user.type === 'tpo' ? <ImportData /> : <AccessDeniedLoader />}
+      {user?.type === 'tpo' ? <ImportData /> : <AccessDeniedLoader />}
     </UserLayout>
   );
 }

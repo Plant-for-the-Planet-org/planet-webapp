@@ -17,7 +17,7 @@ export default function MySpeciesPage({}: Props): ReactElement {
       <Head>
         <title>{t('mySpecies')}</title>
       </Head>
-      {user.type === 'tpo' ? <MySpecies /> : <AccessDeniedLoader />}
+      {user?.type === 'tpo' ? <MySpecies /> : <AccessDeniedLoader />}
     </UserLayout>
   );
 }
