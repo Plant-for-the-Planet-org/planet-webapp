@@ -38,8 +38,15 @@ export default function Donate({
     filteredProjects,
   } = React.useContext(ProjectPropsContext);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const data = trpc.data.query();
-  console.log(data);
+  const data = trpc.profile.useQuery();
+  console.log(
+    data.data,
+    data.isFetched,
+    data.isFetching,
+    data.isLoading,
+    data.isSuccess,
+    data.status
+  );
   const { i18n } = useTranslation();
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');

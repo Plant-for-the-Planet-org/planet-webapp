@@ -19,6 +19,7 @@ const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
 });
 
 interface Props {
+  getData?: any;
   profile: any;
   authenticatedType: any;
   token: any;
