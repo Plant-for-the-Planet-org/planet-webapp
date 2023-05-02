@@ -111,8 +111,7 @@ export default function PlantingLocation({
       const species = await getAuthenticatedRequest(
         '/treemapper/species',
         token,
-        logoutUser,
-        impersonatedEmail
+        logoutUser
       );
       setMySpecies(species);
     } catch (err) {
