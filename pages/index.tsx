@@ -13,6 +13,7 @@ import DirectGift from '../src/features/donations/components/DirectGift';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import nextI18NextConfig from '../next-i18next.config';
+import { handleError, APIError } from '@planet-sdk/common';
 
 interface Props {
   initialized: Boolean;
@@ -35,7 +36,7 @@ export default function Donate({
     setZoomLevel,
     filteredProjects,
   } = React.useContext(ProjectPropsContext);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { i18n } = useTranslation();
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
@@ -84,17 +85,22 @@ export default function Donate({
         setInternalCurrencyCode(currency);
         setCurrencyCode(currency);
         setInternalLanguage(i18n.language);
-        const projects = await getRequest(`/app/projects`, handleError, '/', {
-          _scope: 'map',
-          currency: currency,
-          tenant: TENANT_ID,
-          'filter[purpose]': 'trees,conservation',
-          locale: i18n.language,
-        });
-        setProjects(projects);
-        setProject(null);
-        setShowSingleProject(false);
-        setZoomLevel(1);
+        try {
+          const projects = await getRequest(`/app/projects`, {
+            _scope: 'map',
+            currency: currency,
+            tenant: TENANT_ID,
+            'filter[purpose]': 'trees,conservation',
+            locale: i18n.language,
+          });
+          setProjects(projects);
+          setProject(null);
+          setShowSingleProject(false);
+          setZoomLevel(1);
+        } catch (err) {
+          setErrors(handleError(err as APIError));
+          redirect('/');
+        }
       }
     }
     loadProjects();

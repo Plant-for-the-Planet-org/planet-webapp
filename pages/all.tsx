@@ -5,6 +5,7 @@ import GetLeaderboardMeta from './../src/utils/getMetaTags/GetLeaderboardMeta';
 import { TENANT_ID } from '../src/utils/constants/environment';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { handleError, APIError } from '@planet-sdk/common';
 
 interface Props {
   initialized: Boolean;
@@ -12,16 +13,19 @@ interface Props {
 
 export default function Home({ initialized }: Props) {
   const [leaderboard, setLeaderboard] = React.useState(null);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     async function loadLeaderboard() {
-      const newLeaderboard = await getRequest(
-        `/app/leaderboard/${TENANT_ID}`,
-        handleError,
-        '/'
-      );
-      setLeaderboard(newLeaderboard);
+      try {
+        const newLeaderboard = await getRequest(
+          `/app/leaderboard/${TENANT_ID}`
+        );
+        setLeaderboard(newLeaderboard);
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+        redirect('/');
+      }
     }
     loadLeaderboard();
   }, []);
@@ -30,12 +34,15 @@ export default function Home({ initialized }: Props) {
 
   React.useEffect(() => {
     async function loadTenantScore() {
-      const newTenantScore = await getRequest(
-        `/app/tenantScore/${TENANT_ID}`,
-        handleError,
-        '/'
-      );
-      setTenantScore(newTenantScore);
+      try {
+        const newTenantScore = await getRequest(
+          `/app/tenantScore/${TENANT_ID}`
+        );
+        setTenantScore(newTenantScore);
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+        redirect('/');
+      }
     }
     loadTenantScore();
   }, []);

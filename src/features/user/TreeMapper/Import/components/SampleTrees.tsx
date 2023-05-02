@@ -7,11 +7,11 @@ import { useTranslation } from 'next-i18next';
 import { useForm, useFieldArray } from 'react-hook-form';
 import SampleTreeCard from './SampleTreeCard';
 import Papa from 'papaparse';
+import { handleError, APIError } from '@planet-sdk/common';
+import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 
 interface Props {
   handleNext: Function;
-  errorMessage: String;
-  setErrorMessage: Function;
   plantLocation: any;
   setPlantLocation: Function;
   userLang: string;
@@ -19,11 +19,11 @@ interface Props {
 
 export default function SampleTrees({
   handleNext,
-  setErrorMessage,
   plantLocation,
   userLang,
 }: Props): ReactElement {
-  const { t, ready } = useTranslation(['treemapper', 'common']);
+  const { t } = useTranslation(['treemapper', 'common']);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [uploadIndex, setUploadIndex] = React.useState(0);
   const [uploadStatus, setUploadStatus] = React.useState<string[]>([]);
@@ -69,38 +69,32 @@ export default function SampleTrees({
     append(sampleTrees);
   };
 
-  const { token, impersonatedEmail } = React.useContext(UserPropsContext);
+  const { token, logoutUser } = React.useContext(UserPropsContext);
 
   const uploadSampleTree = async (sampleTree: any, index: number) => {
     setUploadIndex(index);
     const newStatus = [...uploadStatus];
     newStatus[index] = 'uploading';
     setUploadStatus(newStatus);
-    const res = await postAuthenticatedRequest(
-      `/treemapper/plantLocations`,
-      sampleTree,
-      token,
-      impersonatedEmail
-    );
-    if (!res.code) {
-      setErrorMessage('');
+
+    try {
+      const res = await postAuthenticatedRequest(
+        `/treemapper/plantLocations`,
+        sampleTree,
+        token,
+        logoutUser
+      );
       const newSampleTrees = [...sampleTrees];
       newSampleTrees[index] = res;
       setSampleTrees(newSampleTrees);
       const newStatus = [...uploadStatus];
       newStatus[index] = 'success';
       setUploadStatus(newStatus);
-    } else {
+    } catch (err) {
       const newStatus = [...uploadStatus];
       newStatus[index] = 'error';
       setUploadStatus(newStatus);
-      if (res.code === 404) {
-        setErrorMessage(res.message);
-      } else if (res.code === 400) {
-        setErrorMessage(res.message);
-      } else {
-        setErrorMessage(res.message);
-      }
+      setErrors(handleError(err as APIError));
     }
   };
 

@@ -24,6 +24,7 @@ import { postRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslation, Trans } from 'next-i18next';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
+import { handleError, APIError } from '@planet-sdk/common';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -40,7 +41,7 @@ const MuiTextField = styled(TextField)(() => {
 export default function CompleteSignup(): ReactElement | null {
   const router = useRouter();
   const { i18n, t, ready } = useTranslation(['editProfile', 'donate']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const [addressSugggestions, setaddressSugggestions] = React.useState([]);
   const geocoder = new GeocoderArcGIS(
     process.env.ESRI_CLIENT_SECRET
@@ -149,7 +150,7 @@ export default function CompleteSignup(): ReactElement | null {
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
   const [severity, setSeverity] = useState('info');
   const [requestSent, setRequestSent] = useState(false);
-  const [acceptTerms, setAcceptTerms] = useState(null);
+  const [acceptTerms, setAcceptTerms] = useState<boolean | null>(null);
   const [country, setCountry] = useState('');
 
   const [postalRegex, setPostalRegex] = React.useState(
@@ -165,38 +166,24 @@ export default function CompleteSignup(): ReactElement | null {
   const sendRequest = async (bodyToSend: any) => {
     setRequestSent(true);
     try {
-      const res = await postRequest(
-        `/app/profile`,
-        bodyToSend,
-        handleError,
-        '/login'
-      );
+      const res = await postRequest(`/app/profile`, bodyToSend);
       setRequestSent(false);
-      if (res) {
-        // successful signup -> goto me page
-        setUser(res);
-        setSnackbarMessage(ready ? t('editProfile:profileCreated') : '');
-        setSeverity('success');
-        handleSnackbarOpen();
-
-        if (typeof window !== 'undefined') {
-          router.push('/t/[id]', `/t/${res.slug}`);
-        }
-      } else {
-        setSnackbarMessage(ready ? t('editProfile:profileCreationFailed') : '');
-        setSubmit(false);
-        setSeverity('error');
-        handleSnackbarOpen();
-      }
-    } catch {
-      setSubmit(false);
-      setSnackbarMessage(ready ? t('editProfile:profileCreationError') : '');
-      setSeverity('error');
+      // successful signup -> goto me page
+      setUser(res);
+      setSnackbarMessage(ready ? t('editProfile:profileCreated') : '');
+      setSeverity('success');
       handleSnackbarOpen();
+
+      if (typeof window !== 'undefined') {
+        router.push('/t/[id]', `/t/${res.slug}`);
+      }
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+      redirect('/login');
     }
   };
 
-  const handleTermsAndCondition = (value) => {
+  const handleTermsAndCondition = (value: boolean) => {
     setAcceptTerms(value);
     if (!value) {
       setSubmit(false);
@@ -451,7 +438,7 @@ export default function CompleteSignup(): ReactElement | null {
                 render={(props: any) => (
                   <ToggleSwitch
                     checked={props.value}
-                    onChange={(e: any) => props.onChange(e.target.checked)}
+                    onChange={(e) => props.onChange(e.target.checked)}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                     id="isPrivate"
                   />
@@ -475,7 +462,7 @@ export default function CompleteSignup(): ReactElement | null {
                   return (
                     <ToggleSwitch
                       checked={props.value}
-                      onChange={(e: any) => props.onChange(e.target.checked)}
+                      onChange={(e) => props.onChange(e.target.checked)}
                       inputProps={{ 'aria-label': 'secondary checkbox' }}
                       id="getNews"
                     />
@@ -502,8 +489,8 @@ export default function CompleteSignup(): ReactElement | null {
                   </label>
                 </div>
                 <ToggleSwitch
-                  checked={acceptTerms}
-                  onChange={(e: any) => {
+                  checked={acceptTerms || false}
+                  onChange={(e) => {
                     handleTermsAndCondition(e.target.checked);
                   }}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
