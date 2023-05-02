@@ -6,7 +6,7 @@ interface DashboardViewProps {
   title: string;
   subtitle: ReactElement | null;
   children: ReactNode;
-  type?: 'full-width' | 'other';
+  variant?: 'full-width' | 'compact';
 }
 
 const DashboardGridContainer = styled(Box)(({ theme }) => ({
@@ -33,7 +33,7 @@ const DashboardGridContainer = styled(Box)(({ theme }) => ({
     width: '100%',
   },
   '& main': {
-    '&.DashboardView--full-width': {
+    '&.dashboardContent--full-width': {
       width: '100%',
     },
   },
@@ -49,7 +49,7 @@ export default function DashboardView({
   title,
   subtitle,
   children,
-  type = 'full-width',
+  variant = 'full-width',
 }: DashboardViewProps): ReactElement {
   return (
     <ThemeProvider theme={materialTheme}>
@@ -73,11 +73,7 @@ export default function DashboardView({
           <Grid
             item
             component="main"
-            className={
-              type == 'full-width'
-                ? 'DashboardView--full-width'
-                : 'DashBoardView--other'
-            }
+            className={`dashboardContent--${variant}`}
           >
             {children}
           </Grid>
