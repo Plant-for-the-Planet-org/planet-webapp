@@ -1,36 +1,30 @@
-import { useAuth0 } from '@auth0/auth0-react';
+import {
+  useAuth0,
+  User as Auth0User,
+  RedirectLoginOptions,
+} from '@auth0/auth0-react';
 import { useRouter } from 'next/router';
 import React, { FC, useContext } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
 import { User } from '@planet-sdk/common/build/types/user';
 import { SetState } from '../types/common';
 
-interface Auth0User {
-  email: string;
-  email_verified: boolean;
-  name: string;
-  nickname: string;
-  picture: string;
-  sub: string;
-  updated_at: string;
-}
 interface UserPropsContextInterface {
   contextLoaded: boolean;
-  setContextLoaded: SetState<boolean>;
   token: string | null;
-  setToken: SetState<string | null>;
   user: User | undefined;
   setUser: SetState<User | undefined>;
   userLang: string;
-  setUserLang: SetState<string>;
   isImpersonationModeOn: boolean;
   setIsImpersonationModeOn: SetState<boolean>;
   isLoading: boolean;
   isAuthenticated: boolean;
-  auth0User: Auth0User;
+  auth0User: Auth0User | undefined;
   auth0Error: Error | undefined;
-  loginWithRedirect: (value: any) => Promise<void>;
-  logoutUser: (value?: string | undefined) => void;
+  loginWithRedirect: (
+    options?: RedirectLoginOptions | undefined
+  ) => Promise<void>;
+  logoutUser: (returnUrl?: string | undefined) => void;
   loadUser: () => Promise<void>;
 }
 
@@ -127,13 +121,10 @@ export const UserPropsProvider: FC = ({ children }) => {
 
   const value: UserPropsContextInterface | null = {
     contextLoaded,
-    setContextLoaded,
     token,
-    setToken,
     user: profile,
     setUser,
     userLang,
-    setUserLang,
     isImpersonationModeOn,
     setIsImpersonationModeOn,
     isLoading,
