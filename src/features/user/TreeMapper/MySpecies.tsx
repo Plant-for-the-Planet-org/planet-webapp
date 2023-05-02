@@ -13,14 +13,15 @@ import styles from './MySpecies.module.scss';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { handleError, APIError } from '@planet-sdk/common';
 
 interface Props {}
 
 export default function MySpecies({}: Props): ReactElement {
   const { t } = useTranslation(['treemapper', 'me', 'common']);
-  const { token, contextLoaded, impersonatedEmail } =
+  const { token, contextLoaded, logoutUser } =
     React.useContext(UserPropsContext);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
   const [species, setSpecies] = React.useState<any[]>([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
 
@@ -34,21 +35,29 @@ export default function MySpecies({}: Props): ReactElement {
   });
 
   const fetchMySpecies = async () => {
-    const result = await getAuthenticatedRequest(
-      '/treemapper/species',
-      token,
-      impersonatedEmail
-    );
-    setSpecies(result);
+    try {
+      const result = await getAuthenticatedRequest(
+        '/treemapper/species',
+        token,
+        logoutUser
+      );
+      setSpecies(result);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
   };
 
   const deleteSpecies = async (id: number) => {
-    await deleteAuthenticatedRequest(
-      `/treemapper/species/${id}`,
-      token,
-      impersonatedEmail
-    );
-    fetchMySpecies();
+    try {
+      await deleteAuthenticatedRequest(
+        `/treemapper/species/${id}`,
+        token,
+        logoutUser
+      );
+      fetchMySpecies();
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
   };
 
   const addSpecies = async (species: any) => {
@@ -60,13 +69,16 @@ export default function MySpecies({}: Props): ReactElement {
           : species.scientificSpecies.name,
       scientificSpecies: species.scientificSpecies.id,
     };
-    const result = await postAuthenticatedRequest(
-      `/treemapper/species`,
-      data,
-      token,
-      impersonatedEmail,
-      handleError
-    );
+    try {
+      await postAuthenticatedRequest(
+        `/treemapper/species`,
+        data,
+        token,
+        logoutUser
+      );
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
     fetchMySpecies();
     setIsUploadingData(false);
   };

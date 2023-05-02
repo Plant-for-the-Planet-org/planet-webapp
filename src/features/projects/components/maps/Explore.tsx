@@ -33,10 +33,11 @@ export default function Explore({}: Props): ReactElement {
     setShowProjects,
     exploreExpanded,
     setExploreExpanded,
-    exploreForests,
-    setExploreForests,
+    /* 24 Apr 2023 - temp. disable "Current Forests" / "Restoration Potential" toggles on map */
+    /* exploreForests,
+    setExploreForests, 
     explorePotential,
-    setExplorePotential,
+    setExplorePotential,*/
     exploreDeforestation,
     setExploreDeforestation,
     explorePlanted,
@@ -72,12 +73,13 @@ export default function Explore({}: Props): ReactElement {
   };
 
   // Event Handlers
-  const handleExploreForestsChange = (event: any) => {
+  /* 24 Apr 2023 - temp. disable "Current Forests" / "Restoration Potential" toggles on map */
+  /* const handleExploreForestsChange = (event: any) => {
     setExploreForests(event.target.checked);
   };
   const handleExplorePotentialChange = (event: any) => {
     setExplorePotential(event.target.checked);
-  };
+  }; */
   const handleExploreDeforestationChange = (event: any) => {
     setExploreDeforestation(event.target.checked);
   };
@@ -249,12 +251,13 @@ export default function Explore({}: Props): ReactElement {
             >
               {/* <div> */}
               <FormGroup style={{ width: '100%' }}>
-                <div className={styles.exploreToggleRow}>
+                {/* 24 Apr 2023 - temp. disable "Current Forests" / "Restoration Potential" toggles on map */}
+                {/* <div className={styles.exploreToggleRow}>
                   <FormControlLabel
                     control={
                       <Switch
+                        disabled={true}
                         color="#448149"
-                        className={styles.toggleForest}
                         checked={exploreForests}
                         onChange={handleExploreForestsChange}
                         name="forest"
@@ -276,6 +279,7 @@ export default function Explore({}: Props): ReactElement {
                   <FormControlLabel
                     control={
                       <Switch
+                        disabled={true}
                         checked={explorePotential}
                         onChange={handleExplorePotentialChange}
                         name="potential"
@@ -293,7 +297,7 @@ export default function Explore({}: Props): ReactElement {
                   >
                     <InfoIcon />
                   </div>
-                </div>
+                </div> */}
 
                 <div className={styles.exploreToggleRow}>
                   <FormControlLabel

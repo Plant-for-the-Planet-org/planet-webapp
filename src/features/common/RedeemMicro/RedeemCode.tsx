@@ -7,6 +7,7 @@ import { useTranslation } from 'next-i18next';
 import MaterialTextField from '../InputTypes/MaterialTextField';
 import CircularProgress from '@mui/material/CircularProgress';
 import { RedeemedCodeData } from '../types/redeem';
+import { SerializedError } from '@planet-sdk/common';
 
 export interface InputRedeemCode {
   setInputCode: React.Dispatch<React.SetStateAction<string | null>>;
@@ -16,7 +17,7 @@ export interface InputRedeemCode {
 }
 
 export interface RedeemCodeFailed {
-  errorMessage: string | null;
+  errorMessages: SerializedError[] | null;
   code: string | string[] | null;
   redeemAnotherCode: () => void;
   closeRedeem: () => void;
@@ -80,7 +81,7 @@ export const InputRedeemCode = ({
 };
 
 export const RedeemCodeFailed = ({
-  errorMessage,
+  errorMessages = null,
   code,
   redeemAnotherCode,
   closeRedeem,
@@ -94,31 +95,14 @@ export const RedeemCodeFailed = ({
           <CancelIcon />
         </button>
       </div>
-      {errorMessage ? (
-        <div className={styles.RedeemTitle}>{code}</div>
-      ) : (
-        <div className={styles.RedeemTitle}>
-          {t('redeem:redeeming')} {code}
-        </div>
-      )}
 
-      {errorMessage && (
-        <div>
-          <span className={styles.formErrors}>{errorMessage}</span>
-        </div>
-      )}
+      <div className={styles.RedeemTitle}>{code}</div>
 
-      {!errorMessage ? (
-        <div className={styles.redeemAnotherCodeDiv}>
-          <CircularProgress />
-        </div>
-      ) : (
-        <div className={styles.redeemAnotherCodeDiv}>
-          <button className="primaryButton" onClick={redeemAnotherCode}>
-            {t('redeem:redeemAnotherCode')}
-          </button>
-        </div>
-      )}
+      <div className={styles.redeemAnotherCodeDiv}>
+        <button className="primaryButton" onClick={redeemAnotherCode}>
+          {t('redeem:redeemAnotherCode')}
+        </button>
+      </div>
     </div>
   );
 };

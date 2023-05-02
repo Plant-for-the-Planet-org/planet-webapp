@@ -21,7 +21,13 @@ handler.use(speedLimiter);
 handler.post(async (req, response) => {
   const { projectId, startDate, endDate } = JSON.parse(req.body);
 
-  const cacheHit = cache.get(getCachedKey(projectId, startDate, endDate));
+  const CACHE_KEY = `SPECIES_PLANTED__${getCachedKey(
+    projectId,
+    startDate,
+    endDate
+  )}`;
+
+  const cacheHit = cache.get(CACHE_KEY);
 
   if (cacheHit) {
     response.status(200).json({ data: cacheHit });
@@ -33,7 +39,7 @@ handler.post(async (req, response) => {
       'SELECT \
           ps.other_species, \
           ps.scientific_species_id, \
-          ss.name, \
+          COALESCE(ss.name, ps.other_species, pl.other_species) AS name, \
           SUM(ps.tree_count) AS total_tree_count \
         FROM planted_species ps \
         INNER JOIN plant_location pl ON ps.plant_location_id = pl.id \
@@ -51,7 +57,7 @@ handler.post(async (req, response) => {
 
     await db.end();
 
-    cache.set(getCachedKey(projectId, startDate, endDate), res);
+    cache.set(CACHE_KEY, res);
     response.status(200).json({ data: res });
   } catch (err) {
     console.log(err);

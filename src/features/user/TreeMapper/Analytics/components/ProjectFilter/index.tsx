@@ -62,7 +62,7 @@ const ProjectFilter = () => {
         <Grid item xs={6} md={6}>
           <LocalizationProvider
             dateAdapter={AdapterDateFns}
-            locale={
+            adapterLocale={
               localeMapForDate[userLang]
                 ? localeMapForDate[userLang]
                 : localeMapForDate['en']
@@ -88,7 +88,7 @@ const ProjectFilter = () => {
         <Grid item xs={6} md={6}>
           <LocalizationProvider
             dateAdapter={AdapterDateFns}
-            locale={
+            adapterLocale={
               localeMapForDate[userLang]
                 ? localeMapForDate[userLang]
                 : localeMapForDate['en']
