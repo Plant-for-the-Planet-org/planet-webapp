@@ -7,9 +7,11 @@ import ReadMoreReact from 'read-more-react';
 import UserShareAndSupport from './components/UserShareAndSupport';
 import UserProfileOptions from './components/UserProfileOptions';
 import TreeCounter from './../../common/TreeCounter/TreeCounter';
+import { User } from '@planet-sdk/common';
+import { PublicUser } from '../../common/types/user';
 
 interface Props {
-  userprofile: any;
+  userprofile: User | PublicUser;
   authenticatedType: string;
 }
 

@@ -12,6 +12,7 @@ import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHand
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
 import { handleError, APIError } from '@planet-sdk/common';
+import { PublicUser } from '../../src/features/common/types/user';
 
 function User(): ReactElement {
   // External imports
@@ -20,13 +21,13 @@ function User(): ReactElement {
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
   // Internal states
-  const [profile, setProfile] = React.useState<null | Object>();
+  const [profile, setProfile] = React.useState<null | PublicUser>();
   const [authenticatedType, setAuthenticatedType] = React.useState('');
 
   // Loads the public user profile
   async function loadPublicProfile(id: any) {
     try {
-      const profileData = await getRequest(`/app/profiles/${id}`);
+      const profileData = await getRequest<PublicUser>(`/app/profiles/${id}`);
       setProfile(profileData);
       setAuthenticatedType('public');
     } catch (err) {
@@ -45,7 +46,7 @@ function User(): ReactElement {
       }
       // If user is not access their own profile, load the public profile
       else {
-        loadPublicProfile(router.query.id);
+        loadPublicProfile(router.query.id as string);
       }
     }
   }, [contextLoaded, user, router]);

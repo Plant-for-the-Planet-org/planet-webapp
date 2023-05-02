@@ -2,10 +2,10 @@ import React, { ReactElement } from 'react';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { useTranslation } from 'next-i18next';
 import { Divider, Grid, styled } from '@mui/material';
-import { GiftFundsType } from '../../common/types/user';
+import { GiftFund } from '@planet-sdk/common';
 
 interface Props {
-  giftFund: GiftFundsType;
+  giftFund: GiftFund;
 }
 
 const GiftFundDetails = ({ giftFund }: Props): ReactElement | null => {
@@ -36,7 +36,7 @@ const GiftFundDetails = ({ giftFund }: Props): ReactElement | null => {
     },
   }));
 
-  if (ready && user.planetCash) {
+  if (ready && user?.planetCash) {
     return (
       <>
         <Grid

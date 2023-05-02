@@ -7,6 +7,7 @@ import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees'
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { User } from '@planet-sdk/common';
 
 function ProfilePage(): ReactElement {
   const { t } = useTranslation('me');
@@ -15,7 +16,7 @@ function ProfilePage(): ReactElement {
   const { user, contextLoaded, token } = useUserProps();
 
   // Internal states
-  const [profile, setProfile] = React.useState<null | Object>();
+  const [profile, setProfile] = React.useState<null | User>();
   const [authenticatedType, setAuthenticatedType] = React.useState('');
 
   useEffect(() => {

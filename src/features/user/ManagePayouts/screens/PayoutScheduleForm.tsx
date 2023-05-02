@@ -8,10 +8,9 @@ import { useTranslation, Trans } from 'next-i18next';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { User } from '../../../common/types/user';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import { PaymentFrequencies } from '../../../../utils/constants/payoutConstants';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, User } from '@planet-sdk/common';
 
 const paymentFrequencies = [
   PaymentFrequencies.MANUAL,
@@ -68,7 +67,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
     setIsSaved(false);
   };
 
-  if (ready) {
+  if (ready && user?.type === 'tpo') {
     return (
       <CenteredContainer>
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
