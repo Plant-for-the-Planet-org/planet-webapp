@@ -13,7 +13,7 @@ import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
 import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
-import { trpc } from '../../../../../utils/trpc';
+// import { trpc } from '../../../../../utils/trpc';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
@@ -30,7 +30,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   const [contributions, setContributions] = React.useState();
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = React.useContext(UserPropsContext);
-  const data = trpc.profile.useQuery();
+  // const data = trpc.profile.useQuery();
   React.useEffect(() => {
     async function loadFunction() {
       if (authenticatedType === 'private' && token) {

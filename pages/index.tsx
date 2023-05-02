@@ -14,7 +14,6 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import nextI18NextConfig from '../next-i18next.config';
 import { handleError, APIError } from '@planet-sdk/common';
-import { trpc } from '../src/utils/trpc';
 
 interface Props {
   initialized: Boolean;
@@ -38,15 +37,6 @@ export default function Donate({
     filteredProjects,
   } = React.useContext(ProjectPropsContext);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const data = trpc.profile.useQuery();
-  console.log(
-    data.data,
-    data.isFetched,
-    data.isFetching,
-    data.isLoading,
-    data.isSuccess,
-    data.status
-  );
   const { i18n } = useTranslation();
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
