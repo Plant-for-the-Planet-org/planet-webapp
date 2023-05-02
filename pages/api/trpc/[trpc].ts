@@ -22,7 +22,7 @@ const  appRouter = t.router({
 
 export type AppRouter = typeof appRouter
 
-export default trpcNext.createNextApiHandler({
+ trpcNext.createNextApiHandler({
     router: appRouter,
     createContext: () => ({})
 })
