@@ -12,7 +12,7 @@ import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled'
 import { useTranslation } from 'next-i18next';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 
-export default function ProjectsMap(): ReactElement {
+function ProjectsMap(): ReactElement {
   const {
     project,
     showSingleProject,
@@ -216,3 +216,5 @@ export default function ProjectsMap(): ReactElement {
     </div>
   );
 }
+
+export default ProjectsMap;

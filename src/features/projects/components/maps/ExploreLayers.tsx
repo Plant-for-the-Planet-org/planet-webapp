@@ -8,7 +8,7 @@ import { getParams } from '../../../../utils/LayerManagerUtils';
 
 interface Props {}
 
-export default function ExploreLayers({}: Props): ReactElement {
+function ExploreLayers({}: Props): ReactElement {
   const {
     loaded,
     mapRef,
@@ -74,3 +74,5 @@ export default function ExploreLayers({}: Props): ReactElement {
     </>
   );
 }
+
+export default ExploreLayers;
