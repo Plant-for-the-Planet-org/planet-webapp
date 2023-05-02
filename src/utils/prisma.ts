@@ -9,8 +9,7 @@ export const connectDB = async () => {
         return true
         
     }catch (err) {
-        // console.log(err);
-        console.log("I ran")
+        console.log(err);
         process.exit(1)
     }finally {
         await prisma.$disconnect();
@@ -18,13 +17,6 @@ export const connectDB = async () => {
     
 }
 
-
-export const getAccount = async() => {
-    const data = await prisma.accounting_record.findMany()
-    console.log(data)
-    return  data
-} 
-   
 
 
 

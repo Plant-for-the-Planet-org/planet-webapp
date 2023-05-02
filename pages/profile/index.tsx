@@ -7,7 +7,6 @@ import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees'
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { trpc } from '../../src/utils/trpc';
 function ProfilePage(): ReactElement {
   const { t } = useTranslation('me');
   // External imports
