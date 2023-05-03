@@ -237,16 +237,11 @@ export default function EditProfileForm() {
 
   const saveProfile = async (data: FormData) => {
     setIsUploadingData(true);
-    let bodyToSend = {
+    const bodyToSend = {
       ...data,
       country: country,
+      ...(type !== 'tpo' ? { type: type } : {}),
     };
-    if (type !== 'tpo') {
-      bodyToSend = {
-        ...bodyToSend,
-        type: type,
-      };
-    }
     if (contextLoaded && token) {
       try {
         const res = await putAuthenticatedRequest(
@@ -334,7 +329,6 @@ export default function EditProfileForm() {
               </span>
             )}
           </div>
-          <div style={{ width: '20px' }}></div>
           <div className={styles.formFieldHalf}>
             <TextField
               label={t('donate:lastName')}
@@ -431,7 +425,6 @@ export default function EditProfileForm() {
               </span>
             )}
           </div>
-          <div style={{ width: '20px' }}></div>
           <div className={styles.formFieldHalf}>
             <TextField
               label={t('donate:zipCode')}
