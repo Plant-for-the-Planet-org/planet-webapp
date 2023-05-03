@@ -89,7 +89,9 @@ export default function RedeemModal({
   };
 
   const handleRedeemCode = () => {
-    redeemCode(inputCode);
+    if (inputCode) {
+      redeemCode(inputCode);
+    }
   };
 
   const closeModal = () => {

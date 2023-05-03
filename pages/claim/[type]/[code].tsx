@@ -8,7 +8,7 @@ import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsC
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import {
   SuccessfullyRedeemed,
-  RedeemCodeFailed,
+  RedeemFailed,
 } from '../../../src/features/common/RedeemMicro/RedeemCode';
 import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -137,7 +137,7 @@ function ClaimDonation(): ReactElement {
           />
         ) : (
           // if redeem code is invalid and  redeem process failed
-          <RedeemCodeFailed
+          <RedeemFailed
             errorMessages={errors}
             code={code}
             redeemAnotherCode={redeemAnotherCode}

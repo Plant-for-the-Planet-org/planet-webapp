@@ -35,7 +35,7 @@ export const EnterRedeemCode = ({
   changeRouteCode,
   closeRedeem,
 }: InputRedeemCode): ReactElement => {
-  const { register, errors } = useForm({ mode: 'onBlur' });
+  const { register, errors, handleSubmit } = useForm({ mode: 'onBlur' });
   const { t } = useTranslation(['redeem']);
 
   return (
@@ -64,15 +64,13 @@ export const EnterRedeemCode = ({
           placeholder="XAD-1SA-5F1-A"
           label=""
           variant="outlined"
+          error={errors.code}
+          helperText={errors.code && errors.code.message}
         />
       </div>
 
-      {errors.code && (
-        <span className={styles.formErrors}>{errors.code.message}</span>
-      )}
-
       <div style={{ paddingTop: '30px' }}>
-        <Button variant="contained" onClick={changeRouteCode}>
+        <Button variant="contained" onClick={handleSubmit(changeRouteCode)}>
           {t('redeem:redeemCode')}
         </Button>
       </div>
@@ -140,7 +138,11 @@ export const SuccessfullyRedeemed = ({
       </div>
 
       <div className={styles.redeemAnotherCodeDiv}>
-        <Button variant="contained" onClick={redeemAnotherCode}>
+        <Button
+          variant="contained"
+          onClick={redeemAnotherCode}
+          sx={{ textTransform: 'none' }}
+        >
           {t('redeem:redeemAnotherCode')}
         </Button>
       </div>
