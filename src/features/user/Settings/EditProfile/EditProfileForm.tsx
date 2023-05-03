@@ -26,6 +26,7 @@ import {
 import StyledForm from '../../../common/Layout/StyledForm';
 import { AddressSuggestionsType } from '../../../common/types/user';
 import { AlertColor } from '@mui/lab';
+import { APIError, handleError } from '@planet-sdk/common';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -44,13 +45,12 @@ type FormData = {
   name: string;
   url: string;
   zipCode: string;
-  type?: string;
 };
 
 export default function EditProfileForm() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const { handleError } = React.useContext(ErrorHandlingContext);
-  const { user, setUser, token, contextLoaded, impersonatedEmail } =
+  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { user, setUser, token, contextLoaded, logoutUser } =
     React.useContext(UserPropsContext);
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
@@ -193,7 +193,7 @@ export default function EditProfileForm() {
   const onDrop = React.useCallback(
     (acceptedFiles) => {
       setUpdatingPic(true);
-      acceptedFiles.forEach((file: Blob) => {
+      acceptedFiles.forEach((file: any) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onabort = () => console.log('file reading was aborted');
@@ -207,22 +207,20 @@ export default function EditProfileForm() {
             setSnackbarMessage(ready ? t('editProfile:profilePicUpdated') : '');
             handleSnackbarOpen();
 
-            putAuthenticatedRequest(
-              `/app/profile`,
-              bodyToSend,
-              token,
-              impersonatedEmail,
-              handleError
-            )
-              .then((res) => {
-                const newUserInfo = { ...user, image: res.image };
-                setUpdatingPic(false);
-                setUser(newUserInfo);
-              })
-              .catch((error) => {
-                setUpdatingPic(false);
-                console.log(error);
-              });
+            try {
+              const res = await putAuthenticatedRequest(
+                `/app/profile`,
+                bodyToSend,
+                token,
+                logoutUser
+              );
+              const newUserInfo = { ...user, image: res.image };
+              setUpdatingPic(false);
+              setUser(newUserInfo);
+            } catch (err) {
+              setUpdatingPic(false);
+              setErrors(handleError(err as APIError));
+            }
           }
         };
       });
@@ -251,42 +249,20 @@ export default function EditProfileForm() {
     }
     if (contextLoaded && token) {
       try {
-        putAuthenticatedRequest(
+        const res = await putAuthenticatedRequest(
           `/app/profile`,
           bodyToSend,
           token,
-          impersonatedEmail,
-          handleError
-        )
-          .then((res) => {
-            console.log(res);
-            if (res.code !== 400) {
-              setSeverity('success');
-              setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');
-              handleSnackbarOpen();
-              setIsUploadingData(false);
-              setUser(res);
-            } else {
-              setSeverity('error');
-              setSnackbarMessage(
-                ready ? t('editProfile:profileSaveFailed') : ''
-              );
-              handleSnackbarOpen();
-              setIsUploadingData(false);
-            }
-          })
-          .catch((error) => {
-            setSeverity('error');
-            setSnackbarMessage(ready ? t('editProfile:profileSaveFailed') : '');
-            handleSnackbarOpen();
-            setIsUploadingData(false);
-            console.log(error);
-          });
-      } catch (e) {
-        setSeverity('error');
-        setSnackbarMessage(ready ? t('editProfile:profileSaveFailed') : '');
+          logoutUser
+        );
+        setSeverity('success');
+        setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');
         handleSnackbarOpen();
         setIsUploadingData(false);
+        setUser(res);
+      } catch (err) {
+        setIsUploadingData(false);
+        setErrors(handleError(err as APIError));
       }
     }
   };
