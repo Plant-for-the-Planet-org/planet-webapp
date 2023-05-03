@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { Controller, useForm } from 'react-hook-form';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import styles from './AccountHistory.module.scss';
 import {
@@ -62,7 +62,7 @@ export const EditModal = ({
   const { register, handleSubmit, errors, control } = useForm({
     mode: 'all',
   });
-  const { token, logoutUser } = React.useContext(UserPropsContext);
+  const { token, logoutUser } = useUserProps();
   const { setErrors } = React.useContext(ErrorHandlingContext);
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -135,13 +135,6 @@ export const EditModal = ({
       <Fade in={editModalOpen}>
         <div
           className={`${styles.manageDonationModal} ${styles.editDonationModal}`}
-          // style={{
-          //   width: '38vw',
-          //   minWidth: '38vw',
-          //   height: 'auto',
-          //   maxWidth: 'min-content',
-          //   overflow: 'auto',
-          // }}
         >
           <div className={styles.modalTexts}>
             <div

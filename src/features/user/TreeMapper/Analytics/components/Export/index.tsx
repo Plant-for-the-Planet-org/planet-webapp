@@ -11,7 +11,7 @@ import { useContext, useEffect, useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { localeMapForDate } from '../../../../../../utils/language/getLanguageName';
-import { UserPropsContext } from '../../../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
 import { SxProps } from '@mui/material';
 import themeProperties from '../../../../../../theme/themeProperties';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
@@ -42,7 +42,7 @@ const dialogSx: SxProps = {
 export const Export = () => {
   const { t, ready } = useTranslation('treemapperAnalytics');
   const { projectList, project, fromDate, toDate } = useAnalytics();
-  const { userLang } = useContext(UserPropsContext);
+  const { userLang } = useUserProps();
   const { handleError } = useContext(ErrorHandlingContext);
 
   const [localProject, setLocalProject] = useState<Project | null>(null);

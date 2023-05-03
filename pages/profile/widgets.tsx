@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect } from 'react';
-import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import EmbedModal from '../../src/features/user/Widget/EmbedModal';
 import styles from './../../src/features/common/Layout/UserLayout/UserLayout.module.scss';
@@ -12,7 +12,7 @@ function ProfilePage(): ReactElement {
   const { t } = useTranslation('me');
   // External imports
 
-  const { user, contextLoaded } = React.useContext(UserPropsContext);
+  const { user, contextLoaded } = useUserProps();
 
   // Internal states
   const [profile, setProfile] = React.useState<null | Object>();
@@ -42,7 +42,7 @@ function ProfilePage(): ReactElement {
       {user?.isPrivate === false ? (
         <div className="profilePage" style={{ padding: '0px' }}>
           <iframe
-            src={`${process.env.WIDGET_URL}?user=${user.id}&tenantkey=${TENANT_ID}`}
+            src={`${process.env.WIDGET_URL}?user=${user?.id}&tenantkey=${TENANT_ID}`}
             className={styles.widgetIFrame}
           />
         </div>

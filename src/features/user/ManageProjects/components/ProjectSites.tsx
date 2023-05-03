@@ -22,7 +22,7 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
@@ -59,7 +59,7 @@ export default function ProjectSites({
   const [errorMessage, setErrorMessage] = React.useState('');
   const [openModal, setOpenModal] = React.useState(false);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const { logoutUser } = React.useContext(UserPropsContext);
+  const { logoutUser } = useUserProps();
 
   const useStylesAutoComplete = makeStyles({
     root: {

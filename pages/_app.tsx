@@ -24,12 +24,12 @@ import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserN
 import ProjectPropsProvider, {
   ProjectPropsContext,
 } from '../src/features/common/Layout/ProjectPropsContext';
-import UserPropsProvider from '../src/features/common/Layout/UserPropsContext';
+import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
 import PlayButton from '../src/features/common/LandingVideo/PlayButton';
 import ErrorHandlingProvider from '../src/features/common/Layout/ErrorHandlingContext';
 import dynamic from 'next/dynamic';
 import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext';
-import { AnalyticsProvider } from '../src/features/common/Layout/AnalyticsContext'
+import { AnalyticsProvider } from '../src/features/common/Layout/AnalyticsContext';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import materialTheme from '../src/theme/themeStyles';
 import QueryParamsProvider from '../src/features/common/Layout/QueryParamsContext';
@@ -246,26 +246,28 @@ const PlanetWeb = ({ Component, pageProps }: any) => {
                             <ProjectPropsProvider>
                               <BulkCodeProvider>
                                 <AnalyticsProvider>
-                                {isMap ? (
-                                  <>
-                                    {project ? (
-                                      <MapLayout />
-                                    ) : projects ? (
-                                      <MapLayout />
-                                    ) : null}
-                                    <div
-                                      style={
-                                        config.tenantName === 'planet' ||
-                                        config.tenantName === 'ttc'
-                                          ? {}
-                                          : { display: 'none' }
-                                      }
-                                    >
-                                      <PlayButton setshowVideo={setshowVideo} />
-                                    </div>
-                                  </>
-                                ) : null}
-                                <Component {...ProjectProps} />
+                                  {isMap ? (
+                                    <>
+                                      {project ? (
+                                        <MapLayout />
+                                      ) : projects ? (
+                                        <MapLayout />
+                                      ) : null}
+                                      <div
+                                        style={
+                                          config.tenantName === 'planet' ||
+                                          config.tenantName === 'ttc'
+                                            ? {}
+                                            : { display: 'none' }
+                                        }
+                                      >
+                                        <PlayButton
+                                          setshowVideo={setshowVideo}
+                                        />
+                                      </div>
+                                    </>
+                                  ) : null}
+                                  <Component {...ProjectProps} />
                                 </AnalyticsProvider>
                               </BulkCodeProvider>
                             </ProjectPropsProvider>
