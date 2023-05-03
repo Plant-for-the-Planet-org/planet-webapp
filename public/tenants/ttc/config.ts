@@ -2,7 +2,7 @@ const config = {
   tenantName: 'ttc',
   tenantURL: 'trilliontreecampaign.org',
   tenantLogoURL: 'https://www.trilliontreecampaign.org',
-  languages: ['en', 'de', 'es', 'fr', 'it', 'pt-BR'],
+  languages: ['en', 'de', 'es', 'fr', 'it', 'pt-BR','cs'],
   fallbackCurrency: 'EUR',
   tenantGoal: 1000000000000,
   showUNEPLogo: true,

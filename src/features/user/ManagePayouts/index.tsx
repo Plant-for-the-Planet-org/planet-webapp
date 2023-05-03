@@ -14,7 +14,7 @@ import {
   getRequest,
 } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { usePayouts } from '../../common/Layout/PayoutsContext';
 import PayoutScheduleForm from './screens/PayoutScheduleForm';
 import Overview from './screens/Overview';
@@ -43,8 +43,7 @@ export default function ManagePayouts({
   const { t, ready, i18n } = useTranslation('managePayouts');
   const router = useRouter();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const { token, contextLoaded, user, logoutUser } =
-    useContext(UserPropsContext);
+  const { token, contextLoaded, user, logoutUser } = useUserProps();
   const { accounts, setAccounts, payoutMinAmounts, setPayoutMinAmounts } =
     usePayouts();
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);

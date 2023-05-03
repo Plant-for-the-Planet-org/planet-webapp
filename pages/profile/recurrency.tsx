@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgressBar';
-import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import Recurrency from '../../src/features/user/Account/Recurrency';
@@ -14,8 +14,7 @@ interface Props {}
 
 function RecurrentDonations({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
-  const { token, contextLoaded, logoutUser } =
-    React.useContext(UserPropsContext);
+  const { token, contextLoaded, logoutUser } = useUserProps();
 
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);

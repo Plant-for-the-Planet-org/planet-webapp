@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import PlayIcon from '../../../../public/assets/images/icons/PlayIcon';
 import styles from './styles.module.scss';
 import { useTranslation } from 'next-i18next';
-import { UserPropsContext } from '../Layout/UserPropsContext';
+import { useUserProps } from '../Layout/UserPropsContext';
 import { ParamsContext } from '../Layout/QueryParamsContext';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function PlayButton({ setshowVideo }: Props): ReactElement {
-  const { isImpersonationModeOn } = React.useContext(UserPropsContext);
+  const { isImpersonationModeOn } = useUserProps();
   const { embed } = React.useContext(ParamsContext);
   const { t } = useTranslation(['common']);
   const { pathname } = useRouter();

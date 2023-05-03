@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import React, { ReactElement } from 'react';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
@@ -32,8 +32,7 @@ export default function RedeemModal({
     'donate',
     'redeem',
   ]);
-  const { user, contextLoaded, token, setUser, logoutUser } =
-    React.useContext(UserPropsContext);
+  const { user, contextLoaded, token, setUser, logoutUser } = useUserProps();
   const { setErrors, errors: apiErrors } =
     React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);

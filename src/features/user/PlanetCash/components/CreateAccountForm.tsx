@@ -6,7 +6,7 @@ import StyledForm from '../../../common/Layout/StyledForm';
 import { useTranslation } from 'next-i18next';
 import FormHeader from '../../../common/Layout/Forms/FormHeader';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { CountryType } from '../../../common/types/country';
@@ -27,7 +27,7 @@ const CreateAccountForm = ({
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
-  const { token, logoutUser } = useContext(UserPropsContext);
+  const { token, logoutUser } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const router = useRouter();
 

@@ -16,7 +16,7 @@
     secondaryFontFamily:
       '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
   },
-  languages: ['en', 'de', 'es', 'fr', 'it', 'pt-BR'],
+  languages: ['en', 'de', 'es', 'fr', 'it', 'pt-BR','cs'],
   header: {
     isSecondaryTenant: false,
     tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,
