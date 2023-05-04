@@ -1,10 +1,10 @@
 {
   "tree_one": " strom",
-  "tree_other": "Stromy",
-  "by": "Zasazeno{{tpoName}}",
+  "tree_other": "Stromů",
+  "by": "Zasazeno organizací {{tpoName}}",
   "to_project_by_tpo": "Pro{{projectName}} od{{tpoName}}",
   "for": "pro",
-  "trees": "Stromy",
+  "trees": "Stromů",
   "planted": "Zasazeno",
   "privacy": "Soukromí",
   "terms": "Podmínky",
