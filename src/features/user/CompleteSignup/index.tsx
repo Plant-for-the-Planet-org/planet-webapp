@@ -16,7 +16,7 @@ import { useForm, Controller } from 'react-hook-form';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { selectUserType } from '../../../utils/selectUserType';
 import { getStoredConfig } from '../../../utils/storeConfig';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
@@ -110,7 +110,7 @@ export default function CompleteSignup(): ReactElement | null {
     useForm({ mode: 'onBlur' });
 
   const { user, setUser, auth0User, contextLoaded, logoutUser, token } =
-    React.useContext(UserPropsContext);
+    useUserProps();
 
   const isPrivate = watch('isPrivate');
   const [submit, setSubmit] = React.useState(false);
