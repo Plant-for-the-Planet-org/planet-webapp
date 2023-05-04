@@ -3,9 +3,9 @@ import React from 'react';
 function HomeLogoSelected(prop: { color: string }) {
   return (
     <svg
-      width="24"
-      height="24"
-      viewBox="0 0 575 512"
+      width="35"
+      height="35"
+      viewBox="0 0 712 712"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path

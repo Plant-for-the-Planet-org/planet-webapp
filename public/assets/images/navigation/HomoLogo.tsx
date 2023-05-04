@@ -3,10 +3,10 @@ import React from 'react';
 function HomeLogo(prop: { color: string }) {
   return (
     <svg
-      height="24"
-      width="24"
+      height="35"
+      width="35"
       fill="none"
-      viewBox="0 0 595 520"
+      viewBox="0 0 712 712"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
