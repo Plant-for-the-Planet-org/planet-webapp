@@ -4,6 +4,7 @@ import MuiAlert from '@mui/material/Alert';
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Controller, useForm } from 'react-hook-form';
+import { User } from '@planet-sdk/common/build/types/user';
 import Camera from '../../../../../public/assets/images/icons/userProfileIcons/Camera';
 import CameraWhite from '../../../../../public/assets/images/icons/userProfileIcons/CameraWhite';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
@@ -47,6 +48,12 @@ type FormData = {
   zipCode: string;
 };
 
+type ProfileTypeOption = {
+  id: number;
+  title: string;
+  value: 'individual' | 'organization' | 'education';
+};
+
 export default function EditProfileForm() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { setErrors } = React.useContext(ErrorHandlingContext);
@@ -62,7 +69,7 @@ export default function EditProfileForm() {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (
-    event?: React.SyntheticEvent<any> | Event,
+    _event?: React.SyntheticEvent | Event,
     reason?: string
   ) => {
     if (reason === 'clickaway') {
@@ -71,25 +78,32 @@ export default function EditProfileForm() {
     setSnackbarOpen(false);
   };
 
+  const [country, setCountry] = React.useState<string>('');
+
   React.useEffect(() => {
-    const defaultProfileDetails = {
-      firstname: user.firstname ? user.firstname : '',
-      lastname: user.lastname ? user.lastname : '',
-      email: user.email ? user.email : '',
-      address: user.address && user.address.address ? user.address.address : '',
-      city: user.address && user.address.city ? user.address.city : '',
-      zipCode: user.address && user.address.zipCode ? user.address.zipCode : '',
-      country: user.address && user.address.country ? user.address.country : '',
-      isPrivate: user.isPrivate ? user.isPrivate : false,
-      getNews: user.getNews ? user.getNews : false,
-      bio: user.bio ? user.bio : '',
-      url: user.url ? user.url : '',
-      name: user.name ? user.name : '',
-    };
-    reset(defaultProfileDetails);
+    if (user) {
+      const defaultProfileDetails = {
+        firstname: user.firstname ? user.firstname : '',
+        lastname: user.lastname ? user.lastname : '',
+        email: user.email ? user.email : '',
+        address:
+          user.address && user.address.address ? user.address.address : '',
+        city: user.address && user.address.city ? user.address.city : '',
+        zipCode:
+          user.address && user.address.zipCode ? user.address.zipCode : '',
+        country:
+          user.address && user.address.country ? user.address.country : '',
+        isPrivate: user.isPrivate ? user.isPrivate : false,
+        getNews: user.getNews ? user.getNews : false,
+        bio: user.bio ? user.bio : '',
+        url: user.url ? user.url : '',
+        name: user.type !== 'individual' && user?.name ? user.name : '',
+      };
+      setCountry(user.country);
+      reset(defaultProfileDetails);
+    }
   }, [user]);
 
-  const [country, setCountry] = React.useState(user.country);
   const [updatingPic, setUpdatingPic] = React.useState(false);
 
   const [addressSugggestions, setaddressSugggestions] = React.useState<
@@ -103,6 +117,7 @@ export default function EditProfileForm() {
         }
       : {}
   );
+
   const suggestAddress = (value: string) => {
     if (value.length > 3) {
       geocoder
@@ -150,14 +165,16 @@ export default function EditProfileForm() {
   const [severity, setSeverity] = useState<AlertColor>('success');
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
   const watchIsPrivate = watch('isPrivate');
-  const [type, setAccountType] = useState(user.type ? user.type : 'individual');
-  const [localProfileType, setLocalProfileType] = useState({
+  const [type, setAccountType] = useState(
+    user?.type ? user.type : 'individual'
+  );
+  const [localProfileType, setLocalProfileType] = useState<ProfileTypeOption>({
     id: 1,
     title: ready ? t('editProfile:individual') : '',
     value: 'individual',
   });
 
-  const profileTypes = [
+  const profileTypes: ProfileTypeOption[] = [
     {
       id: 1,
       title: ready ? t('editProfile:individual') : '',
@@ -192,7 +209,7 @@ export default function EditProfileForm() {
   const onDrop = React.useCallback(
     (acceptedFiles) => {
       setUpdatingPic(true);
-      acceptedFiles.forEach((file: any) => {
+      acceptedFiles.forEach((file: Blob) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onabort = () => console.log('file reading was aborted');
@@ -200,14 +217,14 @@ export default function EditProfileForm() {
         reader.onload = async (event) => {
           if (contextLoaded && token) {
             const bodyToSend = {
-              imageFile: event.target.result,
+              imageFile: event.target?.result,
             };
             setSeverity('info');
             setSnackbarMessage(ready ? t('editProfile:profilePicUpdated') : '');
             handleSnackbarOpen();
 
             try {
-              const res = await putAuthenticatedRequest(
+              const res = await putAuthenticatedRequest<User>(
                 `/app/profile`,
                 bodyToSend,
                 token,
@@ -271,7 +288,7 @@ export default function EditProfileForm() {
               <input {...getInputProps()} />
               {updatingPic ? (
                 <div className={styles.spinnerImage}></div>
-              ) : user.image ? (
+              ) : user?.image ? (
                 <div className={styles.profilePic}>
                   <img
                     src={getImageUrl('profile', 'thumb', user.image)}
@@ -294,19 +311,23 @@ export default function EditProfileForm() {
             id="profile-type"
             value={localProfileType}
             options={profileTypes}
-            getOptionLabel={(option) => option.title}
+            getOptionLabel={(option) => (option as ProfileTypeOption).title}
             isOptionEqualToValue={(option, selectedOption) =>
-              option.value === selectedOption.value
+              (option as ProfileTypeOption).value ===
+              (selectedOption as ProfileTypeOption).value
             }
-            renderOption={(props, option) => (
-              <StyledAutoCompleteOption {...props} key={option.id}>
-                {option.title}
-              </StyledAutoCompleteOption>
-            )}
+            renderOption={(props, option) => {
+              const { id, title } = option as ProfileTypeOption;
+              return (
+                <StyledAutoCompleteOption {...props} key={id}>
+                  {title}
+                </StyledAutoCompleteOption>
+              );
+            }}
             onChange={(event, newType) => {
               if (newType) {
-                setAccountType(newType.value);
-                setLocalProfileType(newType);
+                setAccountType((newType as ProfileTypeOption).value);
+                setLocalProfileType(newType as ProfileTypeOption);
               }
             }}
             renderInput={(params) => (
@@ -349,7 +370,7 @@ export default function EditProfileForm() {
               label={t('donate:email')}
               variant="outlined"
               name="email"
-              defaultValue={user.email}
+              defaultValue={user?.email}
               disabled
             ></TextField>
           </div>
@@ -478,7 +499,7 @@ export default function EditProfileForm() {
             control={control}
             inputRef={register()}
             defaultValue={false}
-            render={(props: object) => (
+            render={(props) => (
               <ToggleSwitch
                 checked={props.value}
                 onChange={(e) => props.onChange(e.target.checked)}
@@ -503,7 +524,7 @@ export default function EditProfileForm() {
             control={control}
             inputRef={register()}
             defaultValue={false}
-            render={(props: any) => (
+            render={(props) => (
               <ToggleSwitch
                 checked={props.value}
                 onChange={(e) => props.onChange(e.target.checked)}
