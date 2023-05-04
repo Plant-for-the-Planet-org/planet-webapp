@@ -97,11 +97,7 @@ export const RedeemFailed = ({
       <div className={styles.RedeemTitle}>{code}</div>
 
       <div className={styles.redeemAnotherCodeDiv}>
-        <Button
-          variant="contained"
-          onClick={redeemAnotherCode}
-          sx={{ textTransform: 'none' }}
-        >
+        <Button variant="contained" onClick={redeemAnotherCode}>
           {t('redeem:redeemAnotherCode')}
         </Button>
       </div>
@@ -138,11 +134,7 @@ export const SuccessfullyRedeemed = ({
       </div>
 
       <div className={styles.redeemAnotherCodeDiv}>
-        <Button
-          variant="contained"
-          onClick={redeemAnotherCode}
-          sx={{ textTransform: 'none' }}
-        >
+        <Button variant="contained" onClick={redeemAnotherCode}>
           {t('redeem:redeemAnotherCode')}
         </Button>
       </div>
