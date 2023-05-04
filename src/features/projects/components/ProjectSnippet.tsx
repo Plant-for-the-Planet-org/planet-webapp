@@ -17,6 +17,7 @@ interface Props {
   keyString: string;
   editMode: Boolean;
   utmCampaign?: string;
+  disableDonations?: boolean;
 }
 
 export default function ProjectSnippet({
@@ -24,6 +25,7 @@ export default function ProjectSnippet({
   keyString,
   editMode,
   utmCampaign,
+  disableDonations = false,
 }: Props): ReactElement {
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
@@ -144,7 +146,7 @@ export default function ProjectSnippet({
           </div>
         </div>
 
-        {project.allowDonations && (
+        {project.allowDonations && !disableDonations && (
           <div className={'projectCost'}>
             {project.unitCost ? (
               <>

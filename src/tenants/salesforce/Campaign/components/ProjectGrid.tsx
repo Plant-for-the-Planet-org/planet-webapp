@@ -47,6 +47,7 @@ export default function ProjectGrid() {
               project={allowedProject.properties}
               editMode={false}
               utmCampaign="vto-fc-2023"
+              disableDonations={true}
             />
           </div>
         );
