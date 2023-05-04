@@ -62,7 +62,6 @@
       }
     }
     .deleteButton {
-      background-color: $dangerColor;
       height: 40px;
       border-radius: 100px;
       padding-left: 24px;
@@ -71,7 +70,6 @@
       justify-content: center;
       align-items: center;
       font-weight: bold;
-      color: $light;
       border: 0px;
       transition-duration: 0.5s;
       transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);

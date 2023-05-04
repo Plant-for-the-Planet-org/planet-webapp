@@ -1,18 +1,17 @@
 import React from 'react';
 import styles from './DeleteProfile.module.scss';
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import { deleteAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import CustomModal from '../../../common/Layout/CustomModal';
 import router from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { APIError, handleError, SerializedError } from '@planet-sdk/common';
 
 export default function DeleteProfileForm() {
-  const { user, token, logoutUser } = React.useContext(UserPropsContext);
+  const { user, token, logoutUser } = useUserProps();
   const { t } = useTranslation(['me', 'common', 'editProfile']);
   const handleChange = (e: React.ChangeEvent<{}>) => {
     e.preventDefault();
@@ -96,13 +95,13 @@ export default function DeleteProfileForm() {
           <b>{t('common:deleteCondition')}</b>
           <p className={styles.deleteModalWarning}>
             {t('common:deleteIrreversible', {
-              email: user.email,
+              email: user?.email,
             })}
           </p>
 
           <div className={styles.deleteButtonContainer}>
             {canDeleteAccount ? (
-              <AnimatedButton
+              <Button
                 onClick={() => handleDeleteAccount()}
                 className={styles.deleteButton}
                 style={{
@@ -115,14 +114,14 @@ export default function DeleteProfileForm() {
                 ) : (
                   t('common:delete')
                 )}
-              </AnimatedButton>
+              </Button>
             ) : (
-              <AnimatedButton
+              <Button
                 className={styles.deleteButton}
                 style={{ backgroundColor: '#f2f2f7', color: '#2f3336' }}
               >
                 {t('common:delete')}
-              </AnimatedButton>
+              </Button>
             )}
           </div>
         </div>
