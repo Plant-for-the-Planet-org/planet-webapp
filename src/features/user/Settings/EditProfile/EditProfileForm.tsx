@@ -12,7 +12,7 @@ import getImageUrl from '../../../../utils/getImageURL';
 import { selectUserType } from '../../../../utils/selectUserType';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
 import GeocoderArcGIS from 'geocoder-arcgis';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
@@ -50,8 +50,7 @@ type FormData = {
 export default function EditProfileForm() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const { user, setUser, token, contextLoaded, logoutUser } =
-    React.useContext(UserPropsContext);
+  const { user, setUser, token, contextLoaded, logoutUser } = useUserProps();
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { t, ready } = useTranslation(['editProfile', 'donate']);
