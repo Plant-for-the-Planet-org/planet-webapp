@@ -5,13 +5,12 @@ import ReactHookFormSelect from '../components/ReactHookFormSelect';
 import StyledForm from '../../../common/Layout/StyledForm';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { useTranslation, Trans } from 'next-i18next';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { User } from '../../../common/types/user';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import { PaymentFrequencies } from '../../../../utils/constants/payoutConstants';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, User } from '@planet-sdk/common';
 
 const paymentFrequencies = [
   PaymentFrequencies.MANUAL,
@@ -29,7 +28,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
   const { t, ready } = useTranslation('managePayouts');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const { token, user, setUser, logoutUser } = useContext(UserPropsContext);
+  const { token, user, setUser, logoutUser } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const { handleSubmit, errors, control } = useForm<FormData>({
     mode: 'onBlur',
@@ -68,7 +67,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
     setIsSaved(false);
   };
 
-  if (ready) {
+  if (ready && user?.type === 'tpo') {
     return (
       <CenteredContainer>
         <StyledForm onSubmit={handleSubmit(onSubmit)}>

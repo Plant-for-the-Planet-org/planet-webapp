@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { Controller, useForm } from 'react-hook-form';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import styles from './AccountHistory.module.scss';
 import {
@@ -23,6 +23,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
+import { Subscription } from '../../common/types/payments';
 
 // interface EditDonationProps {
 //   editModalOpen
@@ -48,12 +49,19 @@ const dialogSx: SxProps = {
   },
 };
 
+interface EditModalProps {
+  editModalOpen: boolean;
+  handleEditModalClose: () => void;
+  record: Subscription;
+  fetchRecurrentDonations: (next?: boolean | undefined) => void;
+}
+
 export const EditModal = ({
   editModalOpen,
   handleEditModalClose,
   record,
   fetchRecurrentDonations,
-}: any) => {
+}: EditModalProps) => {
   const [frequency, setFrequency] = React.useState(record?.frequency);
   const { theme } = React.useContext(ThemeContext);
   const [userLang, setUserLang] = React.useState('en');
@@ -62,7 +70,7 @@ export const EditModal = ({
   const { register, handleSubmit, errors, control } = useForm({
     mode: 'all',
   });
-  const { token, logoutUser } = React.useContext(UserPropsContext);
+  const { token, logoutUser } = useUserProps();
   const { setErrors } = React.useContext(ErrorHandlingContext);
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -135,13 +143,6 @@ export const EditModal = ({
       <Fade in={editModalOpen}>
         <div
           className={`${styles.manageDonationModal} ${styles.editDonationModal}`}
-          // style={{
-          //   width: '38vw',
-          //   minWidth: '38vw',
-          //   height: 'auto',
-          //   maxWidth: 'min-content',
-          //   overflow: 'auto',
-          // }}
         >
           <div className={styles.modalTexts}>
             <div

@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
@@ -10,7 +10,7 @@ import {
 
 import ProjectSelector from '../components/ProjectSelector';
 import BulkCodesError from '../components/BulkCodesError';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 
@@ -19,7 +19,7 @@ const SelectProjectForm = (): ReactElement | null => {
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
   const { method } = router.query;
   const { project, setProject, projectList, planetCashAccount } = useBulkCode();
-  const { user } = useContext(UserPropsContext);
+  const { user } = useUserProps();
 
   const [localProject, setLocalProject] = useState<Project | null>(project);
 

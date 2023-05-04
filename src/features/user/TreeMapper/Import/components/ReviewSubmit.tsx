@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react';
 import styles from '../Import.module.scss';
 import { useTranslation } from 'next-i18next';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
-import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
 
 interface Props {
@@ -19,11 +18,9 @@ export default function ReviewSubmit({
   setErrorMessage,
 }: Props): ReactElement {
   const router = useRouter();
-  const { t, ready } = useTranslation(['treemapper', 'common']);
+  const { t } = useTranslation(['treemapper', 'common']);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [submitted, setSubmitted] = React.useState(true);
-
-  const { token } = React.useContext(UserPropsContext);
 
   const handleSubmit = () => {
     setIsUploadingData(true);

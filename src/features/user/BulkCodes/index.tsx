@@ -16,7 +16,7 @@ import { MapSingleProject } from '../../common/types/project';
 import { TENANT_ID } from '../../../utils/constants/environment';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import { handleError, APIError } from '@planet-sdk/common';
 
@@ -43,7 +43,7 @@ export default function BulkCodes({
     project,
   } = useBulkCode();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const { contextLoaded, user } = useContext(UserPropsContext);
+  const { contextLoaded, user } = useUserProps();
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
 
   useEffect(() => {

@@ -3,27 +3,30 @@ import { useTranslation } from 'next-i18next';
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgressBar';
 import History from '../../src/features/user/Account/History';
-import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { handleError, APIError } from '@planet-sdk/common';
+import {
+  Filters,
+  PaymentHistory,
+} from '../../src/features/common/types/payments';
 
 interface Props {}
 
 function AccountHistory({}: Props): ReactElement {
   const { t } = useTranslation(['me']);
-  const { token, contextLoaded, logoutUser } =
-    React.useContext(UserPropsContext);
+  const { token, contextLoaded, logoutUser } = useUserProps();
 
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const [filter, setFilter] = React.useState<string | null>(null);
   const [paymentHistory, setpaymentHistory] =
-    React.useState<Payments.PaymentHistory | null>(null);
+    React.useState<PaymentHistory | null>(null);
   const [accountingFilters, setaccountingFilters] =
-    React.useState<Payments.Filters | null>(null);
+    React.useState<Filters | null>(null);
 
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
@@ -32,18 +35,17 @@ function AccountHistory({}: Props): ReactElement {
     setProgress(70);
     if (next && paymentHistory?._links?.next) {
       try {
-        const newPaymentHistory =
-          await getAuthenticatedRequest<Payments.PaymentHistory>(
-            `${
-              filter && accountingFilters
-                ? accountingFilters[filter] +
-                  '&' +
-                  paymentHistory?._links?.next.split('?').pop()
-                : paymentHistory?._links?.next
-            }`,
-            token,
-            logoutUser
-          );
+        const newPaymentHistory = await getAuthenticatedRequest<PaymentHistory>(
+          `${
+            filter && accountingFilters
+              ? accountingFilters[filter] +
+                '&' +
+                paymentHistory?._links?.next.split('?').pop()
+              : paymentHistory?._links?.next
+          }`,
+          token,
+          logoutUser
+        );
         setpaymentHistory({
           ...paymentHistory,
           items: [...paymentHistory.items, ...newPaymentHistory.items],
@@ -59,12 +61,11 @@ function AccountHistory({}: Props): ReactElement {
     } else {
       if (filter === null) {
         try {
-          const paymentHistory =
-            await getAuthenticatedRequest<Payments.PaymentHistory>(
-              '/app/paymentHistory?limit=15',
-              token,
-              logoutUser
-            );
+          const paymentHistory = await getAuthenticatedRequest<PaymentHistory>(
+            '/app/paymentHistory?limit=15',
+            token,
+            logoutUser
+          );
           setpaymentHistory(paymentHistory);
           setProgress(100);
           setIsDataLoading(false);
