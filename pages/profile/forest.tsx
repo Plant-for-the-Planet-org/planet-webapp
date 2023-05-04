@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import React, { ReactElement, useEffect } from 'react';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
-import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../src/features/common/Layout/UserPropsContext';
 import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
@@ -9,7 +9,7 @@ import { useTranslation } from 'next-i18next';
 function ProfilePage(): ReactElement {
   const { t } = useTranslation('me');
   // External imports
-  const { user, contextLoaded, token } = React.useContext(UserPropsContext);
+  const { user, contextLoaded, token } = useUserProps();
 
   // Internal states
   const [profile, setProfile] = React.useState<null | Object>();

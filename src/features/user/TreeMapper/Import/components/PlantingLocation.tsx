@@ -9,7 +9,7 @@ import DeleteIcon from '../../../../../../public/assets/images/icons/manageProje
 import JSONInput from 'react-json-editor-ajrm';
 import locale from 'react-json-editor-ajrm/locale/en';
 import { MenuItem, SxProps } from '@mui/material';
-import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import {
   getAuthenticatedRequest,
   postAuthenticatedRequest,
@@ -62,8 +62,7 @@ export default function PlantingLocation({
   activeMethod,
   setActiveMethod,
 }: Props): ReactElement {
-  const { user, token, contextLoaded, logoutUser } =
-    React.useContext(UserPropsContext);
+  const { user, token, contextLoaded, logoutUser } = useUserProps();
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
@@ -112,8 +111,7 @@ export default function PlantingLocation({
       const species = await getAuthenticatedRequest(
         '/treemapper/species',
         token,
-        logoutUser,
-        impersonatedEmail
+        logoutUser
       );
       setMySpecies(species);
     } catch (err) {
@@ -326,7 +324,7 @@ export default function PlantingLocation({
         </div>
       </div>
 
-      {user && user.type === 'tpo' && (
+      {user && user?.type === 'tpo' && (
         <div className={styles.formFieldLarge}>
           <Controller
             as={

@@ -2,10 +2,10 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'next-i18next';
-import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { ThemeContext } from '../../../../theme/themeContext';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
+import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import {
   EnterRedeemCode,
@@ -25,8 +25,7 @@ export default function RedeemModal({
   handleRedeemModalClose,
 }: RedeemModal): ReactElement | null {
   const { t, ready } = useTranslation(['me', 'common', 'donate', 'redeem']);
-  const { user, contextLoaded, token, setUser, logoutUser } =
-    React.useContext(UserPropsContext);
+  const { user, contextLoaded, token, setUser, logoutUser } = useUserProps();
   const { setErrors, errors: apiErrors } =
     React.useContext(ErrorHandlingContext);
   const [inputCode, setInputCode] = React.useState<ClaimCode1>('');

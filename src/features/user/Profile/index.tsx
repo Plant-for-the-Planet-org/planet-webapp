@@ -7,15 +7,16 @@ import ReadMoreReact from 'read-more-react';
 import UserShareAndSupport from './components/UserShareAndSupport';
 import UserProfileOptions from './components/UserProfileOptions';
 import TreeCounter from './../../common/TreeCounter/TreeCounter';
+import { User } from '@planet-sdk/common';
+import { PublicUser } from '../../common/types/user';
 
 interface Props {
-  userprofile: any;
+  userprofile: User | PublicUser;
   authenticatedType: string;
 }
 
 function Profile({ userprofile, authenticatedType }: Props): ReactElement {
   // External imports
-
   const { t, ready } = useTranslation(['donate']);
 
   // Internal States for authenticated users
@@ -66,7 +67,7 @@ function Profile({ userprofile, authenticatedType }: Props): ReactElement {
                 setAddTargetModalOpen(true);
               }}
               authenticatedType={authenticatedType}
-              target={userprofile.score.target}
+              target={userprofile?.score?.target}
               planted={
                 userprofile.type == 'tpo'
                   ? userprofile.score.personal

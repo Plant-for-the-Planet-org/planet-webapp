@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import styles from './TreeMapper.module.scss';
 import dynamic from 'next/dynamic';
 import TreeMapperList from './components/TreeMapperList';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import PlantLocationPage from './components/PlantLocationPage';
 import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import TopProgressBar from '../../common/ContentLoaders/TopProgressBar';
@@ -19,8 +19,7 @@ const PlantLocationMap = dynamic(() => import('./components/Map'), {
 
 function TreeMapper({}: Props): ReactElement {
   const router = useRouter();
-  const { token, contextLoaded, logoutUser } =
-    React.useContext(UserPropsContext);
+  const { token, contextLoaded, logoutUser } = useUserProps();
   const { t } = useTranslation(['treemapper']);
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
