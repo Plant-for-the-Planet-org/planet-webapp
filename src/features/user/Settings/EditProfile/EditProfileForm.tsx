@@ -63,7 +63,7 @@ export default function EditProfileForm() {
   const { t, ready } = useTranslation(['editProfile', 'donate']);
 
   const { register, handleSubmit, errors, control, reset, setValue, watch } =
-    useForm({ mode: 'onBlur' });
+    useForm<FormData>({ mode: 'onBlur' });
 
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
@@ -78,28 +78,24 @@ export default function EditProfileForm() {
     setSnackbarOpen(false);
   };
 
-  const [country, setCountry] = React.useState<string>('');
+  const [country, setCountry] = React.useState<string>(user?.country || 'DE');
 
   React.useEffect(() => {
     if (user) {
       const defaultProfileDetails = {
         firstname: user.firstname ? user.firstname : '',
         lastname: user.lastname ? user.lastname : '',
-        email: user.email ? user.email : '',
         address:
           user.address && user.address.address ? user.address.address : '',
         city: user.address && user.address.city ? user.address.city : '',
         zipCode:
           user.address && user.address.zipCode ? user.address.zipCode : '',
-        country:
-          user.address && user.address.country ? user.address.country : '',
         isPrivate: user.isPrivate ? user.isPrivate : false,
         getNews: user.getNews ? user.getNews : false,
         bio: user.bio ? user.bio : '',
         url: user.url ? user.url : '',
         name: user.type !== 'individual' && user?.name ? user.name : '',
       };
-      setCountry(user.country);
       reset(defaultProfileDetails);
     }
   }, [user]);
@@ -335,75 +331,50 @@ export default function EditProfileForm() {
             )}
           />
         ) : null}
-        <div className={styles.formField}>
-          <div className={styles.formFieldHalf}>
-            <TextField
-              label={t('donate:firstName')}
-              variant="outlined"
-              name="firstname"
-              inputRef={register({ required: true })}
-            ></TextField>
-            {errors.firstname && (
-              <span className={styles.formErrors}>
-                {t('donate:firstNameRequired')}
-              </span>
-            )}
-          </div>
-          <div className={styles.formFieldHalf}>
-            <TextField
-              label={t('donate:lastName')}
-              variant="outlined"
-              name="lastname"
-              inputRef={register({ required: true })}
-            ></TextField>
-            {errors.lastname && (
-              <span className={styles.formErrors}>
-                {t('donate:lastNameRequired')}
-              </span>
-            )}
-          </div>
-        </div>
-
-        <div className={styles.formFieldLarge}>
-          <div style={{ width: '100%' }}>
-            <TextField
-              label={t('donate:email')}
-              variant="outlined"
-              name="email"
-              defaultValue={user?.email}
-              disabled
-            ></TextField>
-          </div>
-        </div>
-
+        <InlineFormDisplayGroup>
+          <TextField
+            label={t('donate:firstName')}
+            name="firstname"
+            inputRef={register({ required: t('donate:firstNameRequired') })}
+            error={errors.firstname !== undefined}
+            helperText={errors.firstname && errors.firstname.message}
+          ></TextField>
+          <TextField
+            label={t('donate:lastName')}
+            name="lastname"
+            inputRef={register({ required: t('donate:lastNameRequired') })}
+            error={errors.lastname !== undefined}
+            helperText={errors.lastname && errors.lastname.message}
+          ></TextField>
+        </InlineFormDisplayGroup>
+        <TextField
+          label={t('donate:email')}
+          name="email"
+          defaultValue={user?.email}
+          disabled
+        ></TextField>
         {type && type !== 'individual' && (
-          <div className={styles.formFieldLarge}>
-            <TextField
-              label={t('editProfile:profileName', {
-                type: selectUserType(type, t),
-              })}
-              variant="outlined"
-              name="name"
-              inputRef={register({ required: true })}
-            ></TextField>
-            {errors.name && (
-              <span className={styles.formErrors}>
-                {t('editProfile:nameValidation')}
-              </span>
-            )}
-          </div>
+          <TextField
+            label={t('editProfile:profileName', {
+              type: selectUserType(type, t),
+            })}
+            name="name"
+            inputRef={register({ required: t('editProfile:nameValidation') })}
+            error={errors.name !== undefined}
+            helperText={errors.name && errors.name.message}
+          ></TextField>
         )}
-
         <div className={styles.formFieldLarge}>
           <TextField
             label={t('donate:address')}
-            variant="outlined"
             name="address"
-            inputRef={register({ required: true })}
+            inputRef={register({ required: t('donate:addressRequired') })}
             onChange={(event) => {
               suggestAddress(event.target.value);
             }}
             onBlur={() => setaddressSugggestions([])}
+            error={errors.address !== undefined}
+            helperText={errors.address && errors.address.message}
           ></TextField>
           {addressSugggestions
             ? addressSugggestions.length > 0 && (
@@ -424,60 +395,33 @@ export default function EditProfileForm() {
                 </div>
               )
             : null}
-          {errors.address && (
-            <span className={styles.formErrors}>
-              {t('donate:addressRequired')}
-            </span>
-          )}
         </div>
-
-        <div className={styles.formField}>
-          <div className={styles.formFieldHalf}>
-            <TextField
-              label={t('donate:city')}
-              variant="outlined"
-              name="city"
-              inputRef={register({ required: true })}
-            ></TextField>
-            {errors.city && (
-              <span className={styles.formErrors}>
-                {t('donate:cityRequired')}
-              </span>
-            )}
-          </div>
-          <div className={styles.formFieldHalf}>
-            <TextField
-              label={t('donate:zipCode')}
-              variant="outlined"
-              name="zipCode"
-              inputRef={register({
-                pattern: postalRegex,
-                required: true,
-              })}
-            ></TextField>
-            {errors.zipCode && (
-              <span className={styles.formErrors}>
-                {t('donate:zipCodeAlphaNumValidation')}
-              </span>
-            )}
-          </div>
-        </div>
-
-        <div className={styles.formFieldLarge}>
-          <AutoCompleteCountry
-            defaultValue={country}
-            onChange={setCountry}
-            label={t('donate:country')}
-            name="editProfile"
-            countries={allCountries}
-          />
-          {errors.editProfile && (
-            <span className={styles.formErrors}>
-              {t('donate:countryRequired')}
-            </span>
-          )}
-        </div>
-
+        <InlineFormDisplayGroup>
+          <TextField
+            label={t('donate:city')}
+            name="city"
+            inputRef={register({ required: t('donate:cityRequired') })}
+            error={errors.city !== undefined}
+            helperText={errors.city && errors.city.message}
+          ></TextField>
+          <TextField
+            label={t('donate:zipCode')}
+            name="zipCode"
+            inputRef={register({
+              pattern: postalRegex,
+              required: t('donate:zipCodeAlphaNumValidation'),
+            })}
+            error={errors.zipCode !== undefined}
+            helperText={errors.zipCode && errors.zipCode.message}
+          ></TextField>
+        </InlineFormDisplayGroup>
+        <AutoCompleteCountry
+          defaultValue={country}
+          onChange={setCountry}
+          label={t('donate:country')}
+          name="editProfile"
+          countries={allCountries}
+        />
         <InlineFormDisplayGroup type="other">
           <div>
             <label
@@ -537,60 +481,50 @@ export default function EditProfileForm() {
 
         <div className={styles.horizontalLine} />
 
-        <div className={styles.formFieldLarge}>
-          <TextField
-            label={t('editProfile:profileDescription')}
-            variant="outlined"
-            multiline
-            rows={4}
-            name="bio"
-            inputRef={register({
-              maxLength: 300,
-            })}
-          ></TextField>
-        </div>
-        {errors.bio && (
-          <span className={styles.formErrors}>
-            {t('editProfile:descriptionRequired')}
-          </span>
-        )}
+        <TextField
+          label={t('editProfile:profileDescription')}
+          multiline
+          rows={4}
+          name="bio"
+          inputRef={register({
+            maxLength: {
+              value: 300,
+              message: t('editProfile:descriptionRequired'),
+            },
+          })}
+          error={errors.bio !== undefined}
+          helperText={errors.bio && errors.bio.message}
+        ></TextField>
 
-        <div className={styles.formFieldLarge}>
-          <TextField
-            label={t('editProfile:website')}
-            variant="outlined"
-            name="url"
-            inputRef={register({
-              pattern: {
-                //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
-                value:
-                  /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
-                message: t('editProfile:websiteError'),
-              },
-            })}
-          ></TextField>
-        </div>
-        {errors.url && (
-          <span className={styles.formErrors}>
-            {t('editProfile:websiteRequired')}
-          </span>
-        )}
-
-        <div className={styles.formFieldLarge}>
-          <Button
-            id={'editProfileSaveProfile'}
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit(saveProfile)}
-          >
-            {isUploadingData ? (
-              <div className={styles.spinner}></div>
-            ) : (
-              t('editProfile:save')
-            )}
-          </Button>
-        </div>
+        <TextField
+          label={t('editProfile:website')}
+          name="url"
+          inputRef={register({
+            pattern: {
+              //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
+              value:
+                /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
+              message: t('editProfile:websiteRequired'),
+            },
+          })}
+          error={errors.url !== undefined}
+          helperText={errors.url && errors.url.message}
+        ></TextField>
       </div>
+      <Button
+        id={'editProfileSaveProfile'}
+        variant="contained"
+        color="primary"
+        onClick={handleSubmit(saveProfile)}
+        disabled={isUploadingData}
+      >
+        {isUploadingData ? (
+          <div className={styles.spinner}></div>
+        ) : (
+          t('editProfile:save')
+        )}
+      </Button>
+
       {/* snackbar for showing various messages */}
       <Snackbar
         open={snackbarOpen}

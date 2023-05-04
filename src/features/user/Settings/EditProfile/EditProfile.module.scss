@@ -8,7 +8,6 @@
   dividerColor: $dividerColor;
 }
 
-
 //profile pic div
 .profilePicDiv {
   background-color: $backgroundColor;
@@ -31,7 +30,6 @@
   border-radius: 100%;
 }
 
-
 .mainText {
   font-family: $primaryFontFamily;
   color: $highlightBackground;
@@ -50,10 +48,7 @@
   border-top: 1px solid $primaryColor;
   width: 100%;
   opacity: 0.5;
-  margin-top: 20px;
 }
-
-
 
 .formErrors {
   font-family: $primaryFontFamily;
@@ -108,7 +103,7 @@
 
 // Loader for Buttons
 .spinner {
-  border: 2px solid #f3f3f3;
+  border: 2px solid var(--disabled-font-color);
   border-radius: 50%;
   border-top: 2px solid transparent;
   width: 16px !important;
