@@ -12,8 +12,8 @@ import { SetState } from '../types/common';
 interface UserPropsContextInterface {
   contextLoaded: boolean;
   token: string | null;
-  user: User | undefined;
-  setUser: SetState<User | undefined>;
+  user: User | null;
+  setUser: SetState<User | null>;
   userLang: string;
   isImpersonationModeOn: boolean;
   setIsImpersonationModeOn: SetState<boolean>;
@@ -45,7 +45,7 @@ export const UserPropsProvider: FC = ({ children }) => {
 
   const [contextLoaded, setContextLoaded] = React.useState<boolean>(false);
   const [token, setToken] = React.useState<string | null>(null);
-  const [profile, setUser] = React.useState<User | undefined>(undefined);
+  const [profile, setUser] = React.useState<User | null>(null);
   const [userLang, setUserLang] = React.useState<string>('en');
   const [isImpersonationModeOn, setIsImpersonationModeOn] =
     React.useState<boolean>(false);
@@ -81,16 +81,16 @@ export const UserPropsProvider: FC = ({ children }) => {
       const res = await getAccountInfo(token);
       if (res.status === 200) {
         const resJson = await res.json();
-        setUser(resJson);
+        setUser(resJson as User);
       } else if (res.status === 303) {
         // if 303 -> user doesn not exist in db
-        setUser(undefined);
+        setUser(null);
         if (typeof window !== 'undefined') {
           router.push('/complete-signup', undefined, { shallow: true });
         }
       } else if (res.status === 401) {
         // in case of 401 - invalid token: signIn()
-        setUser(undefined);
+        setUser(null);
         setToken(null);
         loginWithRedirect({
           redirectUri: `${process.env.NEXTAUTH_URL}/login`,
