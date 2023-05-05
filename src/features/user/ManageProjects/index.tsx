@@ -5,6 +5,7 @@ import ProjectSelection from './components/ProjectSelection';
 import DetailedAnalysis from './components/DetailedAnalysis';
 import ProjectSites from './components/ProjectSites';
 import ProjectSpending from './components/ProjectSpending';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import {
   getAuthenticatedRequest,
   putAuthenticatedRequest,
@@ -16,7 +17,6 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import TabbedView from '../../common/Layout/TabbedView';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import { handleError, APIError } from '@planet-sdk/common';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 
 export enum ProjectCreationTabs {
   PROJECT_TYPE = 0,
@@ -30,8 +30,7 @@ export enum ProjectCreationTabs {
 export default function ManageProjects({ GUID, token, project }: any) {
   const { t, ready, i18n } = useTranslation(['manageProjects']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const { logoutUser } = React.useContext(UserPropsContext);
-
+  const { logoutUser } = useUserProps();
   const router = useRouter();
 
   const [activeStep, setActiveStep] = React.useState(0);

@@ -9,7 +9,7 @@ import RecipientsUploadForm from '../components/RecipientsUploadForm';
 import GenericCodesPartial from '../components/GenericCodesPartial';
 import BulkCodesError from '../components/BulkCodesError';
 import { useBulkCode, Recipient } from '../../../common/Layout/BulkCodeContext';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import cleanObject from '../../../../utils/cleanObject';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -35,7 +35,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
     bulkMethod,
     setBulkMethod,
   } = useBulkCode();
-  const { user, logoutUser } = useContext(UserPropsContext);
+  const { user, logoutUser } = useUserProps();
   const { getAccessTokenSilently } = useAuth0();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [localRecipients, setLocalRecipients] = useState<LocalRecipient[]>([]);

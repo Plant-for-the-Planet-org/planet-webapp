@@ -66,6 +66,7 @@ export default function ProjectTabs({}: Props): ReactElement {
             <sup>{t('maps:beta')}</sup>
           </p>
         </div>
+        {/* Raster data for multipolygons is not supported and is returned with an error for such projects. In this case rasterData.evi will not exist*/}
         {rasterData.evi ? (
           <div
             onClick={() => {

@@ -16,7 +16,7 @@ import { useForm, Controller } from 'react-hook-form';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { selectUserType } from '../../../utils/selectUserType';
 import { getStoredConfig } from '../../../utils/storeConfig';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
@@ -110,7 +110,7 @@ export default function CompleteSignup(): ReactElement | null {
     useForm({ mode: 'onBlur' });
 
   const { user, setUser, auth0User, contextLoaded, logoutUser, token } =
-    React.useContext(UserPropsContext);
+    useUserProps();
 
   const isPrivate = watch('isPrivate');
   const [submit, setSubmit] = React.useState(false);
@@ -150,7 +150,7 @@ export default function CompleteSignup(): ReactElement | null {
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
   const [severity, setSeverity] = useState('info');
   const [requestSent, setRequestSent] = useState(false);
-  const [acceptTerms, setAcceptTerms] = useState(null);
+  const [acceptTerms, setAcceptTerms] = useState<boolean | null>(null);
   const [country, setCountry] = useState('');
 
   const [postalRegex, setPostalRegex] = React.useState(
@@ -183,7 +183,7 @@ export default function CompleteSignup(): ReactElement | null {
     }
   };
 
-  const handleTermsAndCondition = (value) => {
+  const handleTermsAndCondition = (value: boolean) => {
     setAcceptTerms(value);
     if (!value) {
       setSubmit(false);
@@ -438,7 +438,7 @@ export default function CompleteSignup(): ReactElement | null {
                 render={(props: any) => (
                   <ToggleSwitch
                     checked={props.value}
-                    onChange={(e: any) => props.onChange(e.target.checked)}
+                    onChange={(e) => props.onChange(e.target.checked)}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                     id="isPrivate"
                   />
@@ -462,7 +462,7 @@ export default function CompleteSignup(): ReactElement | null {
                   return (
                     <ToggleSwitch
                       checked={props.value}
-                      onChange={(e: any) => props.onChange(e.target.checked)}
+                      onChange={(e) => props.onChange(e.target.checked)}
                       inputProps={{ 'aria-label': 'secondary checkbox' }}
                       id="getNews"
                     />
@@ -489,8 +489,8 @@ export default function CompleteSignup(): ReactElement | null {
                   </label>
                 </div>
                 <ToggleSwitch
-                  checked={acceptTerms}
-                  onChange={(e: any) => {
+                  checked={acceptTerms || false}
+                  onChange={(e) => {
                     handleTermsAndCondition(e.target.checked);
                   }}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}

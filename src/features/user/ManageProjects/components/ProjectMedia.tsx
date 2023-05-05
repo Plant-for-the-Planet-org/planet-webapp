@@ -18,9 +18,8 @@ import { useTranslation } from 'next-i18next';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
-import { ProjectCreationTabs } from '..';
 import { handleError, APIError } from '@planet-sdk/common';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 interface Props {
   handleNext: Function;
@@ -43,7 +42,7 @@ export default function ProjectMedia({
 }: Props): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const { logoutUser } = React.useContext(UserPropsContext);
+  const { logoutUser } = useUserProps();
 
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 

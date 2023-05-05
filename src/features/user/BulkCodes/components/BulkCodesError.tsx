@@ -1,7 +1,7 @@
-import React, { ReactElement, useContext } from 'react';
+import React, { ReactElement } from 'react';
 import { useTranslation } from 'next-i18next';
 import { styled } from '@mui/material';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
 
 const AddBalanceLink = styled('span')(({ theme }) => ({
@@ -19,7 +19,7 @@ const ErrorMessage = styled('span')(({ theme }) => ({
 
 const BulkCodesError = (): ReactElement | null => {
   const { t } = useTranslation(['bulkCodes']);
-  const { user, token } = useContext(UserPropsContext);
+  const { user, token } = useUserProps();
 
   const GetDisableBulkCodesReason = () => {
     // TODO - Translations

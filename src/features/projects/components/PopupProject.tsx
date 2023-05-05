@@ -4,9 +4,10 @@ import { useTranslation } from 'next-i18next';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import VerifiedIcon from '@mui/icons-material/Verified';
 
 interface Props {
   project: any;
@@ -22,7 +23,7 @@ export default function PopupProject({
   buttonRef,
 }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
-  const { token } = React.useContext(UserPropsContext);
+  const { token } = useUserProps();
   const { embed } = React.useContext(ParamsContext);
 
   const ImageSource = project.properties.image
@@ -50,7 +51,9 @@ export default function PopupProject({
             }}
           ></div>
         ) : null}
-
+        {project.properties.isTopProject && project.properties.isApproved && (
+          <div className={'topProjectBadge'}>{t('common:topProject')}</div>
+        )}
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
             {project.properties.classification &&
@@ -59,6 +62,9 @@ export default function PopupProject({
 
           <div className={'projectName'}>
             {truncateString(project.properties.name, 54)}
+            {project.properties.isApproved && (
+              <VerifiedIcon sx={{ color: '#fff' }} className={'verifiedIcon'} />
+            )}
           </div>
         </div>
       </div>
