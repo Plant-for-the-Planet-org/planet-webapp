@@ -60,8 +60,8 @@ export default function DeleteProfileForm() {
   return !isModalOpen ? (
     <StyledForm>
       <div className="inputContainer">
-        <div className={styles.deleteModal}>
-          <p className={styles.deleteModalContent}>
+        <div>
+          <p>
             {t('common:deleteAccountMessage', {
               delete: 'Delete',
             })}
@@ -99,14 +99,14 @@ export default function DeleteProfileForm() {
             })}
           </p>
 
-          <div className={styles.deleteButtonContainer}>
+          <div style={{ marginTop: 20 }}>
             {canDeleteAccount ? (
               <Button
+                variant="contained"
                 onClick={() => handleDeleteAccount()}
-                className={styles.deleteButton}
-                style={{
-                  backgroundColor: styles.dangerColor,
-                  color: styles.light,
+                sx={{
+                  backgroundColor: `${styles.dangerColor}`,
+                  '&:hover': { backgroundColor: `${styles.dangerColor}` },
                 }}
               >
                 {isUploadingData ? (
@@ -117,8 +117,12 @@ export default function DeleteProfileForm() {
               </Button>
             ) : (
               <Button
-                className={styles.deleteButton}
-                style={{ backgroundColor: '#f2f2f7', color: '#2f3336' }}
+                variant="contained"
+                sx={{
+                  backgroundColor: '#f2f2f7',
+                  color: '#2f3336',
+                  '&:hover': { backgroundColor: '#f2f2f7' },
+                }}
               >
                 {t('common:delete')}
               </Button>
