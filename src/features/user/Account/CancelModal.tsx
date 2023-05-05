@@ -22,6 +22,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
+import { Subscription } from '../../common/types/payments';
 
 const MuiCalendarPicker = styled(CalendarPicker)({
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -37,12 +38,19 @@ const MuiCalendarPicker = styled(CalendarPicker)({
   },
 });
 
+interface CancelModalProps {
+  cancelModalOpen: boolean;
+  handleCancelModalClose: () => void;
+  record: Subscription;
+  fetchRecurrentDonations: (next?: boolean | undefined) => void;
+}
+
 export const CancelModal = ({
   cancelModalOpen,
   handleCancelModalClose,
   record,
   fetchRecurrentDonations,
-}: any) => {
+}: CancelModalProps) => {
   const { theme } = React.useContext(ThemeContext);
   const { token, logoutUser } = useUserProps();
   const [option, setoption] = React.useState('cancelImmediately');
