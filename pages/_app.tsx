@@ -37,6 +37,7 @@ import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashCont
 import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
 import { appWithTranslation } from 'next-i18next';
 import nextI18NextConfig from '../next-i18next.config.js';
+import { trpc } from '../src/utils/trpc';
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -285,5 +286,4 @@ const PlanetWeb = ({ Component, pageProps }: any) => {
     );
   }
 };
-
-export default appWithTranslation(PlanetWeb, nextI18NextConfig);
+export default trpc.withTRPC(appWithTranslation(PlanetWeb, nextI18NextConfig));
