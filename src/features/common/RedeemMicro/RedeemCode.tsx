@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
@@ -8,6 +8,7 @@ import MaterialTextField from '../InputTypes/MaterialTextField';
 import { RedeemedCodeData } from '../types/redeem';
 import { SerializedError } from '@planet-sdk/common';
 import { Button } from '@mui/material';
+import { ErrorHandlingContext } from '../Layout/ErrorHandlingContext';
 
 export interface InputRedeemCode {
   setInputCode: React.Dispatch<React.SetStateAction<string | null>>;
@@ -35,7 +36,7 @@ export const InputRedeemCode = ({
   changeRouteCode,
   closeRedeem,
 }: InputRedeemCode): ReactElement => {
-  const { register, errors } = useForm({ mode: 'onBlur' });
+  const { register, errors, handleSubmit } = useForm({ mode: 'onBlur' });
   const { t } = useTranslation(['redeem']);
 
   return (
@@ -64,15 +65,12 @@ export const InputRedeemCode = ({
           placeholder="XAD-1SA-5F1-A"
           label=""
           variant="outlined"
+          error={errors && errors.code?.message}
+          helperText={errors && errors.code?.message}
         />
       </div>
-
-      {errors.code && (
-        <span className={styles.formErrors}>{errors.code.message}</span>
-      )}
-
       <div style={{ paddingTop: '30px' }}>
-        <Button variant="contained" onClick={changeRouteCode}>
+        <Button variant="contained" onClick={handleSubmit(changeRouteCode)}>
           {t('redeem:redeemCode')}
         </Button>
       </div>
@@ -87,7 +85,7 @@ export const RedeemCodeFailed = ({
   closeRedeem,
 }: RedeemCodeFailed): ReactElement => {
   const { t } = useTranslation(['redeem']);
-
+  const { errors } = useContext(ErrorHandlingContext);
   return (
     <div className={styles.routeRedeemModal}>
       <div className={styles.crossDiv}>
@@ -97,7 +95,7 @@ export const RedeemCodeFailed = ({
       </div>
 
       <div className={styles.RedeemTitle}>{code}</div>
-
+      <div className={styles.formErrors}>{errors[0]?.message}</div>
       <div className={styles.redeemAnotherCodeDiv}>
         <Button variant="contained" onClick={redeemAnotherCode}>
           {t('redeem:redeemAnotherCode')}
