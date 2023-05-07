@@ -1,9 +1,14 @@
+import { PrismaClient } from "@prisma/client";
 import {router, procedure} from "../trpc"
 
+const prisma = new PrismaClient()
+prisma.$connect()
+
 export const appRouter = router({
-    data: procedure.query(()=>{
-        const sendData = "Hello"
-        return sendData
+    contribution: procedure.query(async()=>{
+       const data = await prisma.contribution.findMany()
+        console.log(data)
+        return data
     })
 })
 

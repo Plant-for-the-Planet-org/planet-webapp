@@ -14,6 +14,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import nextI18NextConfig from '../next-i18next.config';
 import { handleError, APIError } from '@planet-sdk/common';
+import { trpc } from '../src/utils/trpc';
 
 interface Props {
   initialized: Boolean;
@@ -49,6 +50,8 @@ export default function Donate({
       setDirectGift(JSON.parse(getdirectGift));
     }
   }, []);
+  const contributionData = trpc.contribution.useQuery();
+  console.log(contributionData);
 
   React.useEffect(() => {
     if (directGift) {
