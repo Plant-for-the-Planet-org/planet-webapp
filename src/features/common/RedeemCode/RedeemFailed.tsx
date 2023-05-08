@@ -7,14 +7,14 @@ import { SerializedError } from '@planet-sdk/common';
 
 export interface RedeemFailedProps {
   errorMessages: SerializedError[] | null;
-  code: string | string[] | null;
+  inputCode: string | string[] | null;
   redeemAnotherCode: () => void;
   closeRedeem: () => void;
 }
 
 const RedeemFailed = ({
   errorMessages,
-  code,
+  inputCode,
   redeemAnotherCode,
   closeRedeem,
 }: RedeemFailedProps): ReactElement => {
@@ -28,7 +28,7 @@ const RedeemFailed = ({
         </button>
       </div>
 
-      <div className={styles.RedeemTitle}>{code}</div>
+      <div className={styles.redeemTitle}>{inputCode}</div>
       <div className={styles.formErrors}>
         {errorMessages && errorMessages[0]?.message}
       </div>

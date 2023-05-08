@@ -5,23 +5,23 @@ import { ReactElement } from 'react';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import styles from '../../../../src/features/user/Profile/styles/RedeemModal.module.scss';
 import Button from '@mui/material/Button';
+import React from 'react';
 
 export interface EnterRedeemCodeProps {
   setInputCode: React.Dispatch<React.SetStateAction<string | null>>;
   inputCode: string | null;
-  changeRouteCode: () => void;
+  redeemCode: () => void;
   closeRedeem: () => void;
 }
 
 const EnterRedeemCode = ({
   setInputCode,
   inputCode,
-  changeRouteCode,
+  redeemCode,
   closeRedeem,
 }: EnterRedeemCodeProps): ReactElement => {
   const { register, errors, handleSubmit } = useForm({ mode: 'onBlur' });
   const { t } = useTranslation(['redeem']);
-
   return (
     <div className={styles.routeRedeemModal}>
       <div className={styles.crossDiv}>
@@ -29,7 +29,6 @@ const EnterRedeemCode = ({
           <CancelIcon />
         </button>
       </div>
-
       <div className={styles.redeemHeading}>{t('redeem:redeem')}</div>
       <div className={styles.note}>{t('redeem:redeemDescription')}</div>
       <div className={styles.inputField}>
@@ -52,9 +51,8 @@ const EnterRedeemCode = ({
           helperText={errors.code && errors.code.message}
         />
       </div>
-
-      <div>
-        <Button variant="contained" onClick={handleSubmit(changeRouteCode)}>
+      <div className={styles.redeemCodeButtonContainer}>
+        <Button variant="contained" onClick={handleSubmit(redeemCode)}>
           {t('redeem:redeemCode')}
         </Button>
       </div>

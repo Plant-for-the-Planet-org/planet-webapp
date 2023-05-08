@@ -31,7 +31,7 @@ export default function RedeemModal({
     RedeemedCodeData | undefined
   >(undefined);
 
-  async function redeemCode(data: ClaimCode1): Promise<void> {
+  async function redeemingCode(data: ClaimCode1): Promise<void> {
     const submitData = {
       code: data,
     };
@@ -85,9 +85,9 @@ export default function RedeemModal({
     setRedeemedCodeData(undefined);
   };
 
-  const handleRedeemCode = () => {
+  const redeemCode = () => {
     if (inputCode) {
-      redeemCode(inputCode);
+      redeemingCode(inputCode);
     }
   };
 
@@ -115,7 +115,7 @@ export default function RedeemModal({
             <EnterRedeemCode
               setInputCode={setInputCode}
               inputCode={inputCode}
-              changeRouteCode={handleRedeemCode}
+              redeemCode={redeemCode}
               closeRedeem={closeModal}
             />
           )}
@@ -131,7 +131,7 @@ export default function RedeemModal({
           {apiErrors && (
             <RedeemFailed
               errorMessages={apiErrors}
-              code={inputCode}
+              inputCode={inputCode}
               redeemAnotherCode={redeemAnotherCode}
               closeRedeem={closeModal}
             />

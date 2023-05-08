@@ -138,7 +138,7 @@ function ClaimDonation(): ReactElement {
           // if redeem code is invalid and  redeem process failed
           <RedeemFailed
             errorMessages={errors}
-            code={code}
+            inputCode={code}
             redeemAnotherCode={redeemAnotherCode}
             closeRedeem={closeRedeem}
           />

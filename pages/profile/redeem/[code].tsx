@@ -27,18 +27,6 @@ const ReedemCode: FC = () => {
 
   const router = useRouter();
 
-  const closeRedeem = () => {
-    if (typeof window !== 'undefined') {
-      router.push('/profile');
-    }
-  };
-
-  const handleCode = () => {
-    router.push(`/profile/redeem/${code}?inputCode=${true}`);
-    setRedeemedCodeData(undefined);
-    setInputCode('');
-  };
-
   useEffect(() => {
     if (contextLoaded) {
       if (!user) {
@@ -105,11 +93,23 @@ const ReedemCode: FC = () => {
     }
   }, [user, contextLoaded, router.query.code]);
 
-  const changeRouteCode = () => {
+  const redeemCode = () => {
     router.push(`/profile/redeem/${inputCode}?inputCode=${false}`);
 
     const codeFromUrl = router.query.code;
     redeemingCode(codeFromUrl);
+  };
+
+  const redeemAnotherCode = () => {
+    router.push(`/profile/redeem/${code}?inputCode=${true}`);
+    setRedeemedCodeData(undefined);
+    setInputCode('');
+  };
+
+  const closeRedeem = () => {
+    if (typeof window !== 'undefined') {
+      router.push('/profile');
+    }
   };
 
   return ready && user ? (
@@ -119,7 +119,7 @@ const ReedemCode: FC = () => {
         <EnterRedeemCode
           setInputCode={setInputCode}
           inputCode={inputCode}
-          changeRouteCode={changeRouteCode}
+          redeemCode={redeemCode}
           closeRedeem={closeRedeem}
         />
       </LandingSection>
@@ -129,15 +129,15 @@ const ReedemCode: FC = () => {
         {redeemedCodeData ? (
           <SuccessfullyRedeemed
             redeemedCodeData={redeemedCodeData}
-            redeemAnotherCode={handleCode}
+            redeemAnotherCode={redeemAnotherCode}
             closeRedeem={closeRedeem}
           />
         ) : (
           // if redeem code is invalid and  redeem process failed
           <RedeemFailed
             errorMessages={errors}
-            code={code}
-            redeemAnotherCode={handleCode}
+            inputCode={code}
+            redeemAnotherCode={redeemAnotherCode}
             closeRedeem={closeRedeem}
           />
         )}

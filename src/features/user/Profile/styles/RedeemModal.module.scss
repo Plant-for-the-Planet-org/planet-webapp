@@ -84,9 +84,10 @@
   min-height: 275px;
   min-width: 438px;
   padding: 20px 56px;
-  >div:nth-child(5) {
+  .redeemCodeButtonContainer {
     padding-top: 15px;
   }
+  
   .redeemHeading {
     font-weight: bold;
   }
@@ -108,7 +109,7 @@
   margin-top: 12px;
 }
 
-.RedeemTitle {
+.redeemTitle {
   font-weight: bold;
 }
 
