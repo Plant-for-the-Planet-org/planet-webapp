@@ -67,7 +67,7 @@ const materialTheme = createTheme({
         root: {
           borderRadius: 28,
           textTransform: 'none',
-          padding: '12px 30px',     
+          padding: '12px 30px',
         },
         containedSizeSmall: {
           padding: '5px 10px',
