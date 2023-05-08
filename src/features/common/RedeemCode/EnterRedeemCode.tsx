@@ -6,7 +6,7 @@ import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import styles from '../../../../src/features/user/Profile/styles/RedeemModal.module.scss';
 import Button from '@mui/material/Button';
 
-export interface EnterRedeemCode {
+export interface EnterRedeemCodeProps {
   setInputCode: React.Dispatch<React.SetStateAction<string | null>>;
   inputCode: string | null;
   changeRouteCode: () => void;
@@ -18,7 +18,7 @@ const EnterRedeemCode = ({
   inputCode,
   changeRouteCode,
   closeRedeem,
-}: EnterRedeemCode): ReactElement => {
+}: EnterRedeemCodeProps): ReactElement => {
   const { register, errors, handleSubmit } = useForm({ mode: 'onBlur' });
   const { t } = useTranslation(['redeem']);
 

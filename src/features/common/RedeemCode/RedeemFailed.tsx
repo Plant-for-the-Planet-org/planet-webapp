@@ -5,7 +5,7 @@ import { useTranslation } from 'next-i18next';
 import Button from '@mui/material/Button';
 import { SerializedError } from '@planet-sdk/common';
 
-export interface RedeemCodeFailed {
+export interface RedeemFailedProps {
   errorMessages: SerializedError[] | null;
   code: string | string[] | null;
   redeemAnotherCode: () => void;
@@ -17,7 +17,7 @@ const RedeemFailed = ({
   code,
   redeemAnotherCode,
   closeRedeem,
-}: RedeemCodeFailed): ReactElement => {
+}: RedeemFailedProps): ReactElement => {
   const { t } = useTranslation(['redeem']);
 
   return (

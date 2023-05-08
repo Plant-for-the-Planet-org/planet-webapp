@@ -6,7 +6,7 @@ import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import Button from '@mui/material/Button';
 
-export interface SuccessfullyRedeemed {
+export interface SuccessfullyRedeemedProps {
   redeemedCodeData: RedeemedCodeData | undefined;
   redeemAnotherCode: () => void;
   closeRedeem: () => void;
@@ -16,7 +16,7 @@ const SuccessfullyRedeemed = ({
   redeemedCodeData,
   redeemAnotherCode,
   closeRedeem,
-}: SuccessfullyRedeemed): ReactElement => {
+}: SuccessfullyRedeemedProps): ReactElement => {
   const { t, i18n } = useTranslation(['common', 'redeem']);
 
   return (

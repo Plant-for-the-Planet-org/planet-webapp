@@ -8,7 +8,7 @@ import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
 import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
 import RedeemFailed from '../../../src/features/common/RedeemCode/RedeemFailed';
 import SuccessfullyRedeemed from '../../../src/features/common/RedeemCode/SuccessfullyRedeemed';
-import EnterRedeemCode from '../../../src/features/common/RedeemCode/EnterReedemCode';
+import EnterRedeemCode from '../../../src/features/common/RedeemCode/EnterRedeemCode';
 import { ClaimCode1 } from '../../claim/[type]/[code]';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
