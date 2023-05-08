@@ -7,11 +7,17 @@ import { useTranslation } from 'next-i18next';
 import { TFunction } from 'next-i18next';
 import DownloadCodes from './DownloadCodes';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
+import TransferDetails from './TransferDetails';
+import {
+  PaymentDetails,
+  PaymentHistoryRecord,
+  RecipientBank,
+} from '../../../common/types/payments';
 
 interface CommonProps {
   handleRecordToggle: (index: number | undefined) => void;
   selectedRecord: number | null;
-  record: Payments.PaymentHistoryRecord;
+  record: PaymentHistoryRecord;
   isPlanetCash?: boolean;
 }
 
@@ -98,7 +104,7 @@ export default function AccountRecord({
 }
 
 interface HeaderProps {
-  record: Payments.PaymentHistoryRecord;
+  record: PaymentHistoryRecord;
   handleRecordToggle?: (index: number | undefined) => void;
   index?: number;
   isPlanetCash?: boolean;
@@ -176,7 +182,7 @@ export function RecordHeader({
 }
 
 interface DetailProps {
-  record: Payments.PaymentHistoryRecord;
+  record: PaymentHistoryRecord;
 }
 
 export function DetailsComponent({ record }: DetailProps): ReactElement {
@@ -365,7 +371,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
 }
 
 export const showStatusNote = (
-  record: Payments.PaymentHistoryRecord,
+  record: PaymentHistoryRecord,
   t: TFunction
 ): ReactElement => {
   const showDonationNote = (): string => {
@@ -391,7 +397,7 @@ export const showStatusNote = (
 };
 
 interface BankDetailsProps {
-  recipientBank: Payments.RecipientBank;
+  recipientBank: RecipientBank;
 }
 
 export function BankDetails({ recipientBank }: BankDetailsProps): ReactElement {
@@ -456,55 +462,8 @@ export function BankDetails({ recipientBank }: BankDetailsProps): ReactElement {
   );
 }
 
-interface TransferDetailsProps {
-  account: Payments.BankAccount;
-}
-
-export function TransferDetails({
-  account,
-}: TransferDetailsProps): ReactElement {
-  const { t } = useTranslation(['me']);
-  return (
-    <>
-      <div className={styles.title}>{t('transferDetails')}</div>
-      <div className={styles.detailGrid}>
-        {account.beneficiary && (
-          <div className={styles.singleDetail}>
-            <p className={styles.title}>{t('beneficiary')}</p>
-            <p>{account.beneficiary}</p>
-          </div>
-        )}
-        {account.iban && (
-          <div className={styles.singleDetail}>
-            <p className={styles.title}>{t('iban')}</p>
-            <p>{account.iban}</p>
-          </div>
-        )}
-        {account.bic && (
-          <div className={styles.singleDetail}>
-            <p className={styles.title}>{t('bic')}</p>
-            <p>{account.bic}</p>
-          </div>
-        )}
-        {account.bankName && (
-          <div className={styles.singleDetail}>
-            <p className={styles.title}>{t('bankName')}</p>
-            <p>{account.bankName}</p>
-          </div>
-        )}
-        {account.swift && account?.swift !== 'swift' && (
-          <div className={styles.singleDetail}>
-            <p className={styles.title}>{t('swift')}</p>
-            <p>{account.swift}</p>
-          </div>
-        )}
-      </div>
-    </>
-  );
-}
-
 interface CertificatesProps {
-  recordDetails: Payments.PaymentDetails;
+  recordDetails: PaymentDetails;
 }
 
 export function Certificates({
