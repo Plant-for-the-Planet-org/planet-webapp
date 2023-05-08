@@ -13,10 +13,11 @@ import CreateAccount from './screens/CreateAccount';
 import Accounts from './screens/Accounts';
 import Transactions from './screens/Transactions';
 import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
 import { useRouter } from 'next/router';
+import { handleError, APIError } from '@planet-sdk/common';
 
 export enum PlanetCashTabs {
   ACCOUNTS = 'accounts',
@@ -35,9 +36,9 @@ export default function PlanetCash({
 }: PlanetCashProps): ReactElement | null {
   const { t, ready, i18n } = useTranslation('planetcash');
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
-  const { token, contextLoaded, validEmail } = useContext(UserPropsContext);
+  const { token, contextLoaded, logoutUser } = useUserProps();
   const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
-  const { handleError } = useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const router = useRouter();
 
@@ -78,21 +79,22 @@ export default function PlanetCash({
 
   const fetchAccounts = useCallback(async () => {
     if (!accounts) {
-      setIsDataLoading(true);
-      setProgress && setProgress(70);
-      const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
-        `/app/planetCash`,
-        validEmail,
-        token,
-        {},
-        handleError
-      );
-      redirectIfNeeded(accounts);
-      const sortedAccounts = sortAccountsByActive(accounts);
-      setIsPlanetCashActive(accounts.some((account) => account.isActive));
-      setAccounts(sortedAccounts);
+      try {
+        setIsDataLoading(true);
+        setProgress && setProgress(70);
+        const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
+          `/app/planetCash`,
+          token,
+          logoutUser
+        );
+        redirectIfNeeded(accounts);
+        const sortedAccounts = sortAccountsByActive(accounts);
+        setIsPlanetCashActive(accounts.some((account) => account.isActive));
+        setAccounts(sortedAccounts);
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+      }
       setIsDataLoading(false);
-
       if (setProgress) {
         setProgress(100);
         setTimeout(() => setProgress(0), 1000);

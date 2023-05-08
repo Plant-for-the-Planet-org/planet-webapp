@@ -205,6 +205,7 @@
   "payments": "Zahlungen",
   "stripe-sepa_debit": "SEPA (Stripe)",
   "sepa_debit": "SEPA (Stripe)",
+  "offline": "Offline",
   "offline-offline": "Offline",
   "profile": "Profil",
   "projects": "Projekte",
@@ -248,5 +249,19 @@
   "apiKeyMessage3": "Wenn du den API-Schlüssel neu generierst, wird dein bestehender API-Schlüssel sofort ungültig.",
   "regenerateKey": "Schlüssel neu generieren",
   "giftFund": "GiftFund",
-  "donatedTrees": "Gespendete Bäume"
+  "dataExplorer": "Daten-Explorer",
+  "switchUser": "Sich als Benutzer identifizieren",
+  "switchUserMessage": "Gib die E-Mail-Adresse des Benutzers, zu dem du wechseln möchtest, in das unten stehende Feld ein.",
+  "profileEmail": "E-Mail des Profils",
+  "supportPin": "Support-PIN",
+  "alphaNumeric": "Eingabe eines 4-stelligen alphanumerischen Codes",
+  "switch": "Identifizieren als",
+  "targetUser": "Du identifizierst dich derzeit als {{impersonatedEmail}}",
+  "exitImpersonation": "Fremd-Indentifizierung entfernen",
+  "enterTheEmail": "Gib die E-Mail des Zielbenutzers ein",
+  "enterSupportPin": "Gib den Support-PIN des Zielbenutzers ein",
+  "invalidEmail": "Gib eine gültige Email-Adresse ein",
+  "wrongEntered": "E-Mail-ID oder Support-PIN ist falsch!",
+  "donatedTrees": "Gespendete Bäume",
+  "resetPin": "PIN zurücksetzen"
 }

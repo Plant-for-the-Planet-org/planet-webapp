@@ -54,7 +54,7 @@
   font-family: inherit;
 }
 
-.sidebar {
+ .sidebar {
   width: 109px;
   position: fixed;
   top: 80px;
@@ -62,7 +62,8 @@
   display: flex;
   flex-direction: column;
   height: calc(100% - 80px);
-  overflow-y: auto;
+  overflow-y: scroll;
+  scrollbar-width: none;
   justify-content: space-between;
   box-shadow: rgba(150, 150, 150, $alpha: 0.2) 0px 0px 4px;
   background-color: $light;
@@ -71,6 +72,52 @@
   background-color: $backgroundColor;
   color: $primaryFontColor;
   font-family: $primaryFontFamily;
+    //edit scroll bar for webkit browsers
+    &::-webkit-scrollbar {
+      width: 0px;
+    }
+    & {
+      .supportPinContainer {
+          display: none;
+        }
+      }
+  
+    &:hover{
+      .supportPinContainer {
+          .pinValue {
+            width: 33px;
+            font-weight: bold;
+          }
+          .resetPin{
+            display: none;
+          }
+          &:hover {
+            .resetPin {
+              display: block;
+              position: absolute;
+              bottom: 30px;
+              right: -21px;
+              height: 23px;
+              width: 67px;
+              background-color: $primaryColor;
+              color: $light;
+              font-family: inherit;
+              text-align: center;
+              border-radius: 4px;
+            }
+          }
+          position: relative;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          gap:12px;
+          margin-right: 60px;
+          cursor: auto;
+         }
+       
+      
+    }
   @include xsPhoneView {
     width: 300px;
     & .navlink {
@@ -86,6 +133,13 @@
     &.menuClosed {
       width: 0px;
     }
+    & {
+      .navlink .supportPinContainer {
+      display: flex;
+      margin-right: 102px;
+      gap:10px
+    }
+  }
   }
   @include smTabletView {
     top: 80px;
@@ -126,6 +180,14 @@
   background-color: $backgroundColor;
   color: $primaryFontColor;
   font-family: $primaryFontFamily;
+  & {
+    .navlink {
+      .supportPinContainer {
+        display: none;
+       
+      }
+    }
+  }
   @include xsPhoneView {
     width: 300px;
     & .navlink {
@@ -142,6 +204,7 @@
       width: 0px;
     }
   }
+  
   @include smTabletView {
     top: 120px;
     & .closeMenu {
@@ -152,7 +215,7 @@
     }
     &:hover .navlink {
       padding: 16px 20px;
-      justify-content: space-between;
+      justify-content: flex-start;
     }
     &:hover .navlink button {
       display: block;
@@ -182,9 +245,7 @@
     > svg > path , > svg > g > path{
       fill: $primaryColor;
     }
-    .navlinkTitle {
-      color: $primaryColor;
-    }
+    
   }
   button {
     font-size: 14px;
@@ -193,7 +254,11 @@
       cursor: pointer;
     }
   }
+  &:hover{
+    color: $primaryColor;
+  }
 }
+
 .navlinkActive {
   // background-color: rgba(104, 176, 48, $alpha: 0.2);
   button {
@@ -215,6 +280,13 @@
   text-align: left;
   margin-left: 12px;
   color: $primaryFontColor;
+  &:hover {
+    cursor: pointer;
+    > svg > path , > svg > g > path{
+      fill: $primaryColor;
+    }
+    color: $primaryColor;
+  }
   span {
     background-color: $primaryColor;
     color: $light;

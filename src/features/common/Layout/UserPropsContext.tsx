@@ -1,36 +1,38 @@
-import { useAuth0 } from '@auth0/auth0-react';
+import {
+  useAuth0,
+  User as Auth0User,
+  RedirectLoginOptions,
+} from '@auth0/auth0-react';
 import { useRouter } from 'next/router';
-import React, { ReactElement } from 'react';
+import React, { FC, useContext } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
-import { User } from '../types/user';
+import { User } from '@planet-sdk/common/build/types/user';
+import { SetState } from '../types/common';
 
-interface Props {}
+interface UserPropsContextInterface {
+  contextLoaded: boolean;
+  token: string | null;
+  user: User | null;
+  setUser: SetState<User | null>;
+  userLang: string;
+  isImpersonationModeOn: boolean;
+  setIsImpersonationModeOn: SetState<boolean>;
+  isLoading: boolean;
+  isAuthenticated: boolean;
+  auth0User: Auth0User | undefined;
+  auth0Error: Error | undefined;
+  loginWithRedirect: (
+    options?: RedirectLoginOptions | undefined
+  ) => Promise<void>;
+  logoutUser: (returnUrl?: string | undefined) => void;
+  loadUser: () => Promise<void>;
+}
 
-export const UserPropsContext = React.createContext({
-  user: false || ({} as User) || null,
-  setUser: (value: boolean | User | null) => {},
-  contextLoaded: false,
-  token: null,
-  isLoading: true,
-  isAuthenticated: false,
-  loginWithRedirect: ({}) => {},
-  logoutUser: (value: string | undefined) => {},
-  auth0User: {},
-  auth0Error: {} || undefined,
-  validEmail: '',
-  setValidEmail: (value: string) => {},
-  impersonationEmail: '',
-  setImpersonationEmail: (value: string) => {},
-  doNotShowImpersonation: true,
-  firstUser: '',
-  setFirstUser: (value: string | null) => {},
-  secondUser: '',
-  setSecondUser: (value: string | null) => {},
-  alertError: false,
-  setAlertError: (value: boolean) => {},
-});
+export const UserPropsContext =
+  React.createContext<UserPropsContextInterface | null>(null);
 
-function UserPropsProvider({ children }: any): ReactElement {
+export const UserPropsProvider: FC = ({ children }) => {
+  const router = useRouter();
   const {
     isLoading,
     isAuthenticated,
@@ -41,31 +43,19 @@ function UserPropsProvider({ children }: any): ReactElement {
     error,
   } = useAuth0();
 
-  const router = useRouter();
-  const [contextLoaded, setContextLoaded] = React.useState(false);
-  const [token, setToken] = React.useState(null);
-  const [profile, setUser] = React.useState<boolean | User | null>(false);
-  const [validEmail, setValidEmail] = React.useState<string>('');
-  const [impersonationEmail, setImpersonationEmail] =
-    React.useState<string>('');
-  const [alertError, setAlertError] = React.useState<boolean>(false);
-  const [doNotShowImpersonation, setDoNotShowImpersonation] =
-    React.useState<boolean>(true);
-  const [firstUser, setFirstUser] = React.useState<string | null>(null);
-  const [secondUser, setSecondUser] = React.useState<string | null>(null);
+  const [contextLoaded, setContextLoaded] = React.useState<boolean>(false);
+  const [token, setToken] = React.useState<string | null>(null);
+  const [profile, setUser] = React.useState<User | null>(null);
+  const [userLang, setUserLang] = React.useState<string>('en');
+  const [isImpersonationModeOn, setIsImpersonationModeOn] =
+    React.useState<boolean>(false);
 
   React.useEffect(() => {
-    if (localStorage.getItem('firstUser')) {
-      setFirstUser(localStorage.getItem('firstUser'));
-    } else {
-      setFirstUser(null);
+    if (localStorage.getItem('language')) {
+      const userLang = localStorage.getItem('language');
+      if (userLang) setUserLang(userLang);
     }
-    if (localStorage.getItem('secondUser')) {
-      setSecondUser(localStorage.getItem('secondUser'));
-    } else {
-      setSecondUser(null);
-    }
-  }, [user, validEmail]);
+  }, []);
 
   React.useEffect(() => {
     async function loadToken() {
@@ -83,43 +73,15 @@ function UserPropsProvider({ children }: any): ReactElement {
     logout({ returnTo: returnUrl });
   };
 
-  const validation = (validEmail: string, email: string) => {
-    if (validEmail || email) {
-      return validEmail || email;
-    } else {
-      return undefined;
-    }
-  };
-
   async function loadUser() {
     setContextLoaded(false);
     try {
-      const res = await getAccountInfo(
-        token,
-        validation(validEmail, impersonationEmail)
-      );
+      // TODO: Add error handling after figuring out the nature of getAccountInfo function call with impersonatedEmail
+
+      const res = await getAccountInfo(token);
       if (res.status === 200) {
         const resJson = await res.json();
-        setUser(resJson);
-        //logic for impersonation feature
-        if (resJson?.allowedToSwitch) {
-          //this logic  only run if user authorized for doing impersonation
-          if (firstUser === null) {
-            setFirstUser(resJson?.email);
-            localStorage.setItem('firstUser', resJson?.email);
-          }
-        }
-        // as first user email will be there in localstorage, and if response contains
-        //another email contrary to the first user email then that email would be associated to impersonatee account
-        //and store in local storage as second user(valid email)
-        if (firstUser && firstUser !== resJson?.email) {
-          localStorage.setItem('secondUser', resJson?.email);
-          setSecondUser(resJson?.email);
-          setValidEmail(resJson?.email);
-          if (secondUser === null) router.push('/profile');
-        }
-      } else if (res.status === 403) {
-        setAlertError(true);
+        setUser(resJson as User);
       } else if (res.status === 303) {
         // if 303 -> user doesn not exist in db
         setUser(null);
@@ -128,14 +90,16 @@ function UserPropsProvider({ children }: any): ReactElement {
         }
       } else if (res.status === 401) {
         // in case of 401 - invalid token: signIn()
-        setUser(false);
+        setUser(null);
         setToken(null);
         loginWithRedirect({
           redirectUri: `${process.env.NEXTAUTH_URL}/login`,
           ui_locales: localStorage.getItem('language') || 'en',
         });
+      } else if (res.status === 403) {
+        localStorage.removeItem('impersonationData');
       } else {
-        // any other error
+        //any other error
       }
     } catch (err) {
       console.log(err);
@@ -144,54 +108,44 @@ function UserPropsProvider({ children }: any): ReactElement {
   }
 
   React.useEffect(() => {
-    if (token) loadUser();
-  }, [token, validEmail ? validEmail : impersonationEmail]);
+    if (token) {
+      loadUser();
+    }
+  }, [token]);
 
   React.useEffect(() => {
-    const emailFromLocal = localStorage.getItem('secondUser');
-    if (emailFromLocal) {
-      setValidEmail(emailFromLocal);
+    if (localStorage.getItem('impersonationData') !== null) {
+      setIsImpersonationModeOn(true);
     }
-  }, [impersonationEmail, validEmail]);
+  }, [isImpersonationModeOn]);
 
-  React.useEffect(() => {
-    //this logic is to prevent reverse impersonation (if the second user also has the impersonation authorization)
-    if (firstUser) {
-      setDoNotShowImpersonation(false);
-      if (secondUser) {
-        setDoNotShowImpersonation(true);
-      }
-    } else {
-      setDoNotShowImpersonation(true);
-    }
-  }, [firstUser, secondUser, validEmail]);
-
+  const value: UserPropsContextInterface | null = {
+    contextLoaded,
+    token,
+    user: profile,
+    setUser,
+    userLang,
+    isImpersonationModeOn,
+    setIsImpersonationModeOn,
+    isLoading,
+    isAuthenticated,
+    loginWithRedirect,
+    logoutUser,
+    auth0User: user,
+    auth0Error: error,
+    loadUser,
+  };
   return (
-    <UserPropsContext.Provider
-      value={{
-        alertError,
-        setAlertError,
-        impersonationEmail,
-        setImpersonationEmail,
-        doNotShowImpersonation,
-        setDoNotShowImpersonation,
-        user: profile,
-        setUser,
-        validEmail,
-        setValidEmail,
-        contextLoaded,
-        token,
-        isLoading,
-        isAuthenticated,
-        loginWithRedirect,
-        logoutUser,
-        auth0User: user,
-        auth0Error: error,
-      }}
-    >
+    <UserPropsContext.Provider value={value}>
       {children}
     </UserPropsContext.Provider>
   );
-}
+};
 
-export default UserPropsProvider;
+export const useUserProps = (): UserPropsContextInterface => {
+  const context = useContext(UserPropsContext);
+  if (!context) {
+    throw new Error('UserPropsContext must be used within UserPropsProvider ');
+  }
+  return context;
+};

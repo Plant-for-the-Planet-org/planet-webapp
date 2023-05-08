@@ -6,12 +6,13 @@ import {
   getAuthenticatedRequest,
   putAuthenticatedRequest,
 } from '../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import CopyToClipboard from '../../common/CopyToClipboard';
 import EyeIcon from '../../../../public/assets/images/icons/EyeIcon';
 import EyeDisabled from '../../../../public/assets/images/icons/EyeDisabled';
 import { useTranslation } from 'next-i18next';
+import { handleError, APIError } from '@planet-sdk/common';
 
 const EyeButton = ({ isVisible, onClick }: any) => {
   return (
@@ -22,10 +23,9 @@ const EyeButton = ({ isVisible, onClick }: any) => {
 };
 
 export default function ApiKey({}: any) {
-  const { token, contextLoaded, validEmail } =
-    React.useContext(UserPropsContext);
+  const { token, contextLoaded, logoutUser } = useUserProps();
   const { t } = useTranslation(['me']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [apiKey, setApiKey] = React.useState('');
   const [isApiKeyVisible, setIsApiKeyVisible] = React.useState(false);
@@ -36,32 +36,37 @@ export default function ApiKey({}: any) {
 
   const getApiKey = async () => {
     setIsUploadingData(true);
-    const res = await getAuthenticatedRequest(
-      '/app/profile/apiKey',
-      validEmail,
-      token,
-      {},
-      handleError
-    );
-    if (res) {
-      setApiKey(res.apiKey);
+    try {
+      const res = await getAuthenticatedRequest(
+        '/app/profile/apiKey',
+        token,
+        logoutUser
+      );
+      if (res) {
+        setApiKey(res.apiKey);
+      }
+    } catch (err) {
+      setErrors(handleError(err as APIError));
     }
     setIsUploadingData(false);
   };
 
   const regenerateApiKey = async () => {
     setIsUploadingData(true);
-    const res = await putAuthenticatedRequest(
-      '/app/profile/apiKey',
-      undefined,
-      token,
-      validEmail,
-      handleError
-    );
-    if (res) {
+
+    try {
+      const res = await putAuthenticatedRequest(
+        '/app/profile/apiKey',
+        undefined,
+        token,
+        logoutUser
+      );
+      setIsUploadingData(false);
       setApiKey(res.apiKey);
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
     }
-    setIsUploadingData(false);
   };
 
   React.useEffect(() => {

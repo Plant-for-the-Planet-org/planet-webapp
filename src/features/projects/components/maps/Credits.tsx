@@ -27,6 +27,21 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
 
   const isEmbed = embed === 'true';
 
+  React.useEffect(() => {
+    if (typeof Storage !== 'undefined') {
+      //fetching currencycode from browser's localstorage
+      if (localStorage.getItem('currencyCode')) {
+        const currencyCode = localStorage.getItem('currencyCode');
+        if (currencyCode) setSelectedCurrency(currencyCode);
+      }
+      //fetching country code from browser's localstorage
+      if (localStorage.getItem('countryCode')) {
+        const countryCode = localStorage.getItem('countryCode');
+        if (countryCode) setSelectedCountry(countryCode);
+      }
+    }
+  }, []);
+
   return (
     <>
       <div className={styles.lngSwitcher + ' mapboxgl-map'}>

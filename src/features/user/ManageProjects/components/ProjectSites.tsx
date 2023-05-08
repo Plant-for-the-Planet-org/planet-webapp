@@ -21,7 +21,8 @@ import { Fade, Modal, MenuItem } from '@mui/material';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { handleError, APIError } from '@planet-sdk/common';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
@@ -57,8 +58,8 @@ export default function ProjectSites({
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [openModal, setOpenModal] = React.useState(false);
-  const { handleError } = React.useContext(ErrorHandlingContext);
-  const { validEmail } = React.useContext(UserPropsContext);
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { logoutUser } = useUserProps();
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -151,54 +152,42 @@ export default function ProjectSites({
     }
   });
 
-  const uploadProjectSite = (data: any) => {
+  const uploadProjectSite = async (data: any) => {
     if (geoJson && geoJson.features.length !== 0) {
-      setIsUploadingData(true);
+      if (!data.name) return;
 
+      setIsUploadingData(true);
       const submitData = {
         name: siteDetails.name,
         geometry: geoJson,
         status: data.status,
       };
 
-      if (!data.name) return;
-      postAuthenticatedRequest(
-        `/app/projects/${projectGUID}/sites`,
-        submitData,
-        token,
-        validEmail,
-        handleError
-      )
-        .then((res) => {
-          if (!res.code) {
-            const temp = siteList;
-            const submitData = {
-              id: res.id,
-              name: res.name,
-              geometry: res.geometry,
-              status: res.status,
-            };
-            temp.push(submitData);
-            setSiteList(temp);
-            setGeoJson(null);
-            setFeatures([]);
-            setIsUploadingData(false);
-            setShowForm(false);
-            setErrorMessage('');
-          } else {
-            if (res.code === 404) {
-              setIsUploadingData(false);
-              setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-            } else {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-            }
-          }
-        })
-        .catch((err) => {
-          setIsUploadingData(false);
-          setErrorMessage(err);
-        });
+      try {
+        const res = await postAuthenticatedRequest(
+          `/app/projects/${projectGUID}/sites`,
+          submitData,
+          token,
+          logoutUser
+        );
+        const temp = siteList;
+        const _submitData = {
+          id: res.id,
+          name: res.name,
+          geometry: res.geometry,
+          status: res.status,
+        };
+        temp.push(_submitData);
+        setSiteList(temp);
+        setGeoJson(null);
+        setFeatures([]);
+        setIsUploadingData(false);
+        setShowForm(false);
+        setErrorMessage('');
+      } catch (err) {
+        setIsUploadingData(false);
+        setErrors(handleError(err as APIError));
+      }
     } else {
       setErrorMessage(ready ? t('manageProjects:polygonRequired') : '');
     }
@@ -209,20 +198,21 @@ export default function ProjectSites({
     handleNext();
   };
 
-  const deleteProjectSite = (id: any) => {
-    setIsUploadingData(true);
-    deleteAuthenticatedRequest(
-      `/app/projects/${projectGUID}/sites/${id}`,
-      token,
-      validEmail,
-      handleError
-    ).then((res) => {
-      if (res !== 404) {
-        const siteListTemp = siteList.filter((item) => item.id !== id);
-        setSiteList(siteListTemp);
-        setIsUploadingData(false);
-      }
-    });
+  const deleteProjectSite = async (id: any) => {
+    try {
+      setIsUploadingData(true);
+      await deleteAuthenticatedRequest(
+        `/app/projects/${projectGUID}/sites/${id}`,
+        token,
+        logoutUser
+      );
+      const siteListTemp = siteList.filter((item) => item.id !== id);
+      setSiteList(siteListTemp);
+      setIsUploadingData(false);
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
   };
 
   const status = [
@@ -262,17 +252,15 @@ export default function ProjectSites({
     },
   ];
 
-  React.useEffect(() => {
-    // Fetch sites of the project
-    if (projectGUID)
-      getAuthenticatedRequest(
-        `/app/profile/projects/${projectGUID}?_scope=sites`,
-        validEmail,
-        token,
-        {},
-        handleError,
-        '/profile'
-      ).then((result) => {
+  const fetchProjSites = async () => {
+    try {
+      if (projectGUID) {
+        // Fetch sites of the project
+        const result = await getAuthenticatedRequest(
+          `/app/profile/projects/${projectGUID}?_scope=sites`,
+          token,
+          logoutUser
+        );
         const geoLocation = {
           geoLatitude: result.geoLatitude,
           geoLongitude: result.geoLongitude,
@@ -283,7 +271,15 @@ export default function ProjectSites({
           setShowForm(false);
         }
         setSiteList(result.sites);
-      });
+      }
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+      redirect('/profile');
+    }
+  };
+
+  React.useEffect(() => {
+    fetchProjSites();
   }, [projectGUID]);
 
   const [siteGUID, setSiteGUID] = React.useState();
@@ -612,8 +608,8 @@ function EditSite({
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const { handleError } = React.useContext(ErrorHandlingContext);
-  const { validEmail } = React.useContext(UserPropsContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { logoutUser } = React.useContext(UserPropsContext);
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -649,7 +645,7 @@ function EditSite({
     },
   };
 
-  const editProjectSite = (data: any) => {
+  const editProjectSite = async (data: any) => {
     if (geoJson && geoJson.features && geoJson.features.length !== 0) {
       setIsUploadingData(true);
       const submitData = {
@@ -657,41 +653,35 @@ function EditSite({
         geometry: geoJson,
         status: data.status,
       };
-      putAuthenticatedRequest(
-        `/app/projects/${projectGUID}/sites/${siteGUID}`,
-        submitData,
-        token,
-        validEmail,
-        handleError
-      ).then((res) => {
-        if (!res.code) {
-          const temp = siteList;
-          let siteIndex;
-          temp.find((site, index) => {
-            if (site.id === res.id) {
-              siteIndex = index;
-              return true;
-            }
-          });
-          if (siteIndex !== null) {
-            temp[siteIndex] = res;
+
+      try {
+        const res = await putAuthenticatedRequest(
+          `/app/projects/${projectGUID}/sites/${siteGUID}`,
+          submitData,
+          token,
+          logoutUser
+        );
+        const temp = siteList;
+        let siteIndex;
+        temp.find((site, index) => {
+          if (site.id === res.id) {
+            siteIndex = index;
+            return true;
           }
-          setSiteList(temp);
-          setGeoJson(null);
-          setFeatures([]);
-          setIsUploadingData(false);
-          seteditMode(false);
-          setErrorMessage('');
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          }
+        });
+        if (siteIndex !== null) {
+          temp[siteIndex] = res;
         }
-      });
+        setSiteList(temp);
+        setGeoJson(null);
+        setFeatures([]);
+        setIsUploadingData(false);
+        seteditMode(false);
+        setErrorMessage('');
+      } catch (err) {
+        setIsUploadingData(false);
+        setErrors(handleError(err as APIError));
+      }
     } else {
       setErrorMessage(ready ? t('manageProjects:polygonRequired') : '');
     }

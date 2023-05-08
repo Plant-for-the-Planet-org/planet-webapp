@@ -1,28 +1,26 @@
 import React, { ReactElement } from 'react';
 import styles from './styles/Profile.module.scss';
-import Settings from '../../../../public/assets/images/icons/userProfileIcons/Settings';
 import AddTargetModal from './components/AddTargetModal';
 import LandingSection from '../../common/Layout/LandingSection';
-import MyTrees from './components/MyTrees/MyTrees';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
 import { useTranslation } from 'next-i18next';
 import ReadMoreReact from 'read-more-react';
 import UserShareAndSupport from './components/UserShareAndSupport';
 import UserProfileOptions from './components/UserProfileOptions';
 import TreeCounter from './../../common/TreeCounter/TreeCounter';
+import { User } from '@planet-sdk/common';
+import { PublicUser } from '../../common/types/user';
 
 interface Props {
-  userprofile: any;
+  userprofile: User | PublicUser;
   authenticatedType: string;
 }
 
 function Profile({ userprofile, authenticatedType }: Props): ReactElement {
   // External imports
-  const { token } = React.useContext(UserPropsContext);
   const { t, ready } = useTranslation(['donate']);
 
   // Internal States for authenticated users
-  const [editProfileModalOpen, setEditProfileModalOpen] = React.useState(false);
+
   const [addTargetModalOpen, setAddTargetModalOpen] = React.useState(false);
 
   return (
@@ -69,7 +67,7 @@ function Profile({ userprofile, authenticatedType }: Props): ReactElement {
                 setAddTargetModalOpen(true);
               }}
               authenticatedType={authenticatedType}
-              target={userprofile.score.target}
+              target={userprofile?.score?.target}
               planted={
                 userprofile.type == 'tpo'
                   ? userprofile.score.personal

@@ -3,41 +3,47 @@ import styles from './DeleteProfile.module.scss';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import AnimatedButton from '../../common/InputTypes/AnimatedButton';
 import { deleteAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import CustomModal from '../../common/Layout/CustomModal';
 import router from 'next/router';
-import { useTranslation } from 'next-i18next';
+import { APIError, handleError, SerializedError } from '@planet-sdk/common';
 
 export default function DeleteProfile({}: any) {
-  const { user, token, logoutUser, validEmail } =
-    React.useContext(UserPropsContext);
-  const { t } = useTranslation(['me', 'common', 'editProfile']);
+  const { user, token, logoutUser } = useUserProps();
   const handleChange = (e) => {
     e.preventDefault();
   };
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [isModalOpen, setisModalOpen] = React.useState(false); //true when subscriptions are present
   const [canDeleteAccount, setcanDeleteAccount] = React.useState(false);
 
-  const handleDeleteAccount = () => {
+  const handleDeleteAccount = async () => {
     setIsUploadingData(true);
-    deleteAuthenticatedRequest(
-      '/app/profile',
-      token,
-      validEmail,
-      handleError
-    ).then((res) => {
-      if (res.error_code === 'active_subscriptions') {
-        setIsUploadingData(false);
-        setisModalOpen(true);
-      } else if (res == 404) {
-        console.log(res.errorText);
-      } else {
-        logoutUser(`${process.env.NEXTAUTH_URL}/`);
+    try {
+      await deleteAuthenticatedRequest('/app/profile', token, logoutUser);
+      setIsUploadingData(false);
+      logoutUser(`${process.env.NEXTAUTH_URL}/`);
+    } catch (err) {
+      setIsUploadingData(false);
+      const serializedErrors = handleError(err as APIError);
+      const _serializedErrors: SerializedError[] = [];
+
+      for (const error of serializedErrors) {
+        switch (error.message) {
+          case 'active_subscriptions':
+            setisModalOpen(true);
+            break;
+
+          default:
+            _serializedErrors.push(error);
+            break;
+        }
       }
-    });
+
+      setErrors(_serializedErrors);
+    }
   };
 
   const handleSubscriptions = () => {

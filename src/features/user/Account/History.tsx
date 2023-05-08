@@ -6,7 +6,7 @@ import AccountRecord from './components/AccountRecord';
 import styles from './AccountHistory.module.scss';
 import { useRouter } from 'next/router';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
-import { PaymentHistory, Filters } from './payments';
+import { Filters, PaymentHistory } from '../../common/types/payments';
 
 interface Props {
   filter: string | null;
@@ -114,7 +114,6 @@ export default function History({
                       index={index}
                       selectedRecord={selectedRecord}
                       record={record}
-                      paymentHistory={paymentHistory}
                     />
                   );
                 })
@@ -169,7 +168,6 @@ export default function History({
               isModal={true}
               handleRecordToggle={handleRecordToggle}
               selectedRecord={selectedRecord}
-              paymentHistory={paymentHistory}
               record={paymentHistory.items[selectedRecord]}
             />
           )}

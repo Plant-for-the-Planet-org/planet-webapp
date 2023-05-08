@@ -1,20 +1,14 @@
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'next-i18next';
-import BackButton from '../../../../public/assets/images/icons/BackButton';
 import TransactionListLoader from '../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../public/assets/images/icons/TransactionsNotFound';
 import styles from './AccountHistory.module.scss';
-import RecurrencyRecord, {
-  ManageDonation,
-  DetailsComponent,
-  RecordHeader,
-} from './components/RecurrencyRecord';
+import RecurrencyRecord from './components/RecurrencyRecord';
 import { PauseModal } from './PauseModal';
 import { CancelModal } from './CancelModal';
 import { ReactivateModal } from './ReactivateModal';
-import { useRouter } from 'next/router';
 import { EditModal } from './EditModal';
-import { Subscription } from './payments';
+import { Subscription } from '../../common/types/payments';
 
 interface Props {
   isDataLoading: boolean;
@@ -27,45 +21,37 @@ export default function Recurrency({
   recurrencies,
   fetchRecurrentDonations,
 }: Props): ReactElement {
-  const { t, i18n } = useTranslation(['me']);
+  const { t } = useTranslation(['me']);
   const [selectedRecord, setSelectedRecord] = React.useState<number | null>(0);
-  const [openModal, setOpenModal] = React.useState(false);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [editModalOpen, seteditModalOpen] = React.useState(false);
   const [pauseModalOpen, setpauseModalOpen] = React.useState(false);
   const [cancelModalOpen, setcancelModalOpen] = React.useState(false);
   const [reactivateModalOpen, setreactivateModalOpen] = React.useState(false);
-  const [currentRecord, setCurrentRecord] = React.useState<number>(0);
-  const router = useRouter();
-
-  // React.useEffect(() => {
-  //   fetchRecurrentDonations();
-  // }, [editModalOpen, pauseModalOpen, cancelModalOpen, reactivateModalOpen]);
+  const [currentRecord, setCurrentRecord] = React.useState<Subscription | null>(
+    null
+  );
 
   React.useEffect(() => {
     if (
       recurrencies &&
-      (selectedRecord !== null || selectedRecord !== undefined)
+      selectedRecord !== null &&
+      selectedRecord !== undefined
     ) {
       setCurrentRecord(recurrencies[selectedRecord]);
     }
   }, [selectedRecord, recurrencies]);
 
-  const handleRecordOpen = (index: number) => {
-    if (selectedRecord === index && window.innerWidth > 980) {
-      setSelectedRecord(index);
-      setOpenModal(false);
+  const handleRecordToggle = (index: number | undefined) => {
+    if (selectedRecord === index || index === undefined) {
+      setSelectedRecord(null);
+      setIsModalOpen(false);
     } else {
-      if (recurrencies && recurrencies[index]?.status !== 'incomplete') {
-        setSelectedRecord(index);
-        setOpenModal(true);
-      }
+      setSelectedRecord(index);
+      setIsModalOpen(true);
     }
   };
 
-  const handleClose = () => {
-    setOpenModal(false);
-    setSelectedRecord(null);
-  };
   const handlePauseModalClose = () => {
     setpauseModalOpen(false);
   };
@@ -102,16 +88,15 @@ export default function Recurrency({
                   recurrencies &&
                   !isDataLoading &&
                   Array.isArray(recurrencies) &&
-                  recurrencies?.map((record: any, index: number) => {
+                  recurrencies?.map((record, index) => {
                     return (
                       <RecurrencyRecord
                         key={index}
-                        handleRecordOpen={handleRecordOpen}
+                        handleRecordToggle={handleRecordToggle}
                         index={index}
                         selectedRecord={selectedRecord}
                         record={record}
                         recurrencies={recurrencies}
-                        openModal={openModal}
                         seteditDonation={seteditModalOpen}
                         setpauseDonation={setpauseModalOpen}
                         setcancelDonation={setcancelModalOpen}
@@ -122,68 +107,48 @@ export default function Recurrency({
                 )}
               </div>
             </div>
-            {openModal && (
-              <div className={styles.modalContainer}>
-                <>
-                  <div
-                    onClick={() => {
-                      handleClose();
-                    }}
-                    className={styles.closeRecord}
-                  >
-                    <BackButton />
-                  </div>
-                  {currentRecord ? (
-                    <>
-                      <RecordHeader
-                        record={currentRecord}
-                        handleRecordOpen={() => {}}
-                      />
-                      <div className={styles.divider}></div>
-                      <div className={styles.detailContainer}>
-                        <div className={styles.detailGrid}>
-                          <DetailsComponent record={currentRecord} />
-                        </div>
-                        <>
-                          <ManageDonation
-                            record={currentRecord}
-                            seteditDonation={seteditModalOpen}
-                            setpauseDonation={setpauseModalOpen}
-                            setcancelDonation={setcancelModalOpen}
-                            setreactivateDonation={setreactivateModalOpen}
-                          />
-                        </>
-                      </div>
-                    </>
-                  ) : null}
-                </>
-              </div>
+            {isModalOpen && recurrencies?.length && selectedRecord !== null && (
+              <RecurrencyRecord
+                isModal={true}
+                handleRecordToggle={handleRecordToggle}
+                selectedRecord={selectedRecord}
+                record={recurrencies[selectedRecord]}
+                recurrencies={recurrencies}
+                seteditDonation={seteditModalOpen}
+                setpauseDonation={setpauseModalOpen}
+                setcancelDonation={setcancelModalOpen}
+                setreactivateDonation={setreactivateModalOpen}
+              />
             )}
           </div>
-          <PauseModal
-            pauseModalOpen={pauseModalOpen}
-            handlePauseModalClose={handlePauseModalClose}
-            record={currentRecord}
-            fetchRecurrentDonations={fetchRecurrentDonations}
-          />
-          <CancelModal
-            cancelModalOpen={cancelModalOpen}
-            handleCancelModalClose={handleCancelModalClose}
-            record={currentRecord}
-            fetchRecurrentDonations={fetchRecurrentDonations}
-          />
-          <EditModal
-            editModalOpen={editModalOpen}
-            handleEditModalClose={handleEditModalClose}
-            record={currentRecord}
-            fetchRecurrentDonations={fetchRecurrentDonations}
-          />
-          <ReactivateModal
-            reactivateModalOpen={reactivateModalOpen}
-            handleReactivateModalClose={handleReactivateModalClose}
-            record={currentRecord}
-            fetchRecurrentDonations={fetchRecurrentDonations}
-          />
+          {currentRecord !== null && (
+            <>
+              <PauseModal
+                pauseModalOpen={pauseModalOpen}
+                handlePauseModalClose={handlePauseModalClose}
+                record={currentRecord}
+                fetchRecurrentDonations={fetchRecurrentDonations}
+              />
+              <CancelModal
+                cancelModalOpen={cancelModalOpen}
+                handleCancelModalClose={handleCancelModalClose}
+                record={currentRecord}
+                fetchRecurrentDonations={fetchRecurrentDonations}
+              />
+              <EditModal
+                editModalOpen={editModalOpen}
+                handleEditModalClose={handleEditModalClose}
+                record={currentRecord}
+                fetchRecurrentDonations={fetchRecurrentDonations}
+              />
+              <ReactivateModal
+                reactivateModalOpen={reactivateModalOpen}
+                handleReactivateModalClose={handleReactivateModalClose}
+                record={currentRecord}
+                fetchRecurrentDonations={fetchRecurrentDonations}
+              />
+            </>
+          )}
         </div>
       </>
     </div>

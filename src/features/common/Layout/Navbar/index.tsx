@@ -8,12 +8,12 @@ import tenantConfig from '../../../../../tenant.config';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import getImageUrl from '../../../../utils/getImageURL';
-import { UserPropsContext } from '../UserPropsContext';
+import { useUserProps } from '../UserPropsContext';
 import GetNavBarIcon from './getNavBarIcon';
 import GetSubMenu from './getSubMenu';
 import { lang_path } from '../../../../utils/constants/wpLanguages';
 import { ParamsContext } from '../QueryParamsContext';
-import ImpersonationActivated from '../../../user/Settings/ImpersonationActivated';
+import ImpersonationActivated from '../../../user/Settings/ImpersonateUser/ImpersonationActivated';
 
 // used to detect window resize and return the current width of the window
 const useWidth = () => {
@@ -43,7 +43,7 @@ export default function NavbarComponent(props: any) {
   const [menu, setMenu] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
   const [mobileWidth, setMobileWidth] = React.useState(false);
-  const { embed, email, alertError } = React.useContext(ParamsContext);
+  const { embed } = React.useContext(ParamsContext);
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       if (window.innerWidth > 767) {
@@ -66,8 +66,8 @@ export default function NavbarComponent(props: any) {
     loginWithRedirect,
     logoutUser,
     auth0Error,
-    validEmail,
-  } = React.useContext(UserPropsContext);
+    isImpersonationModeOn,
+  } = useUserProps();
 
   // This function controls the path for the user when they click on Me
   async function gotoUserPage() {
@@ -139,6 +139,7 @@ export default function NavbarComponent(props: any) {
 
   const MenuItems = () => {
     const links = Object.keys(config.header.items);
+    const tenantName = config?.tenantName;
     return links ? (
       <div className={'menuItems'}>
         {links.map((link) => {
@@ -211,6 +212,7 @@ export default function NavbarComponent(props: any) {
                       mainKey={link}
                       router={router}
                       item={SingleLink}
+                      tenantName={tenantName}
                     />
                     {link === 'donate' ? (
                       <p
@@ -280,12 +282,15 @@ export default function NavbarComponent(props: any) {
     <></>
   ) : (
     <>
-      {validEmail && (
+      {isImpersonationModeOn && (
         <div className="impersonationAlertContainer" style={{ top: -142 }}>
           <ImpersonationActivated />
         </div>
       )}
-      <div className={`mainNavContainer`} style={{ top: validEmail ? 49 : 0 }}>
+      <div
+        className={`mainNavContainer`}
+        style={{ top: isImpersonationModeOn ? 49 : 0 }}
+      >
         <div className={'top_nav'}>
           <div className={'brandLogos'}>
             {config.header?.isSecondaryTenant && (

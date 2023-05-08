@@ -14,14 +14,16 @@ import UserIcon from '../../../../../public/assets/images/icons/Sidebar/UserIcon
 import WidgetIcon from '../../../../../public/assets/images/icons/Sidebar/Widget';
 import UserProfileLoader from '../../ContentLoaders/UserProfile/UserProfile';
 import SelectLanguageAndCountry from '../Footer/SelectLanguageAndCountry';
-import { UserPropsContext } from '../UserPropsContext';
+import { useUserProps } from '../UserPropsContext';
 import styles from './UserLayout.module.scss';
 import TreeMappperIcon from '../../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
 import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/RegisterIcon';
 import NotionLinkIcon from '../../../../../public/assets/images/icons/Sidebar/NotionLinkIcon';
+import SupportPin from '../../../user/Settings/ImpersonateUser/SupportPin';
+import FiberPinIcon from '@mui/icons-material/FiberPin';
 
 function LanguageSwitcher() {
-  const { i18n, ready } = useTranslation(['common']);
+  const { i18n, ready } = useTranslation(['common', 'me']);
 
   const [language, setLanguage] = React.useState(i18n.language);
   const [openModal, setOpenModal] = React.useState(false);
@@ -55,19 +57,18 @@ function LanguageSwitcher() {
 
   return ready ? (
     <>
-      <div
-        className={styles.navlink}
-        onClick={() => {
-          setOpenModal(true); // open language and country change modal
-        }}
-      >
+      <div className={styles.navlink}>
         <GlobeIcon />
-        <button className={styles.navlinkTitle}>
+        <button
+          className={styles.navlinkTitle}
+          onClick={() => {
+            setOpenModal(true); // open language and country change modal
+          }}
+        >
           {`${
             i18n.language ? i18n.language.toUpperCase() : ''
           } • ${selectedCurrency}`}
         </button>
-        <button></button>
       </div>
       <SelectLanguageAndCountry
         openModal={openModal}
@@ -188,13 +189,8 @@ function UserLayout(props: any): ReactElement {
   const { t } = useTranslation(['common', 'me']);
   // const { asPath } = useRouter();
   const router = useRouter();
-  const {
-    user,
-    logoutUser,
-    contextLoaded,
-    validEmail,
-    doNotShowImpersonation,
-  } = React.useContext(UserPropsContext);
+  const { user, logoutUser, contextLoaded, isImpersonationModeOn } =
+    useUserProps();
 
   // Flags can be added to show labels on the right
   // TO DO - remove arrow when link is selected
@@ -294,6 +290,11 @@ function UserLayout(props: any): ReactElement {
           path: '/profile/treemapper/import',
           hideItem: !(user?.type === 'tpo'),
         },
+        {
+          title: t('me:dataExplorer'),
+          path: '/profile/treemapper/data-explorer',
+          hideItem: !(process.env.ENABLE_ANALYTICS && user?.type === 'tpo'),
+        },
       ],
     },
     {
@@ -323,8 +324,8 @@ function UserLayout(props: any): ReactElement {
           path: '/profile/giftfund',
           //For an active PlanetCash account with an empty GiftFund array or if openUnits = 0 for all GiftFunds, it should be hidden
           hideItem:
-            !user.planetCash ||
-            user.planetCash?.giftFunds.filter((gift) => gift.openUnits !== 0)
+            !user?.planetCash ||
+            user?.planetCash?.giftFunds.filter((gift) => gift.openUnits !== 0)
               .length == 0,
         },
       ],
@@ -366,7 +367,7 @@ function UserLayout(props: any): ReactElement {
         {
           title: t('me:switchUser'),
           path: '/profile/impersonate-user',
-          hideItem: doNotShowImpersonation,
+          hideItem: isImpersonationModeOn || !user?.allowedToSwitch,
         },
         {
           title: t('me:apiKey'),
@@ -435,13 +436,15 @@ function UserLayout(props: any): ReactElement {
         key={'hamburgerIcon'}
         className={`${styles.hamburgerIcon}`}
         onClick={() => setIsMenuOpen(true)} // for mobile verion to open menu
-        style={{ marginTop: validEmail ? '47px' : '' }}
+        style={{ marginTop: isImpersonationModeOn ? '47px' : '' }}
       >
         <MenuIcon />
       </div>
       <div
         className={`${
-          validEmail ? `${styles.sidebarModified}` : `${styles.sidebar}`
+          isImpersonationModeOn
+            ? `${styles.sidebarModified}`
+            : `${styles.sidebar}`
         } ${!isMenuOpen ? styles.menuClosed : ''}`}
       >
         <div className={styles.navLinksContainer}>
@@ -472,6 +475,13 @@ function UserLayout(props: any): ReactElement {
 
         <div>
           <LanguageSwitcher />
+
+          {!isImpersonationModeOn && (
+            <div className={styles.navlink}>
+              <FiberPinIcon />
+              <SupportPin />
+            </div>
+          )}
           <div className={styles.navlink}>
             <NotionLinkIcon />
             <button
@@ -490,8 +500,7 @@ function UserLayout(props: any): ReactElement {
             className={styles.navlink}
             //logout user
             onClick={() => {
-              localStorage.removeItem('firstUser');
-              localStorage.removeItem('secondUser');
+              localStorage.removeItem('impersonationData');
               logoutUser(`${process.env.NEXTAUTH_URL}/`);
             }}
           >
@@ -503,7 +512,7 @@ function UserLayout(props: any): ReactElement {
       </div>
       <div
         className={`${styles.profilePageWrapper} ${
-          validEmail ? ` ${styles.profileImpersonation}` : ''
+          isImpersonationModeOn ? ` ${styles.profileImpersonation}` : ''
         }`}
       >
         {props.children}
