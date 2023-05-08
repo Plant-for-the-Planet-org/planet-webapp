@@ -84,6 +84,12 @@
   min-height: 275px;
   min-width: 438px;
   padding: 20px 56px;
+  >div:nth-child(5) {
+    padding-top: 15px;
+  }
+  .redeemHeading {
+    font-weight: bold;
+  }
  }
 
 .crossDiv {
@@ -172,7 +178,7 @@
 }
 
 .codeTreeCount {
-  font-size: 1.5rem;
+  font-size: 35px;
   font-weight: bold;
   display: flex;
   flex-direction: row;

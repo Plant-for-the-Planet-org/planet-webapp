@@ -6,11 +6,9 @@ import { useUserProps } from '../../../src/features/common/Layout/UserPropsConte
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
 import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
-import {
-  EnterRedeemCode,
-  SuccessfullyRedeemed,
-  RedeemFailed,
-} from '../../../src/features/common/RedeemMicro/RedeemCode';
+import RedeemFailed from '../../../src/features/common/RedeemCode/RedeemFailed';
+import SuccessfullyRedeemed from '../../../src/features/common/RedeemCode/SuccessfullyRedeemed';
+import EnterRedeemCode from '../../../src/features/common/RedeemCode/EnterReedemCode';
 import { ClaimCode1 } from '../../claim/[type]/[code]';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';

@@ -7,13 +7,11 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import {
-  EnterRedeemCode,
-  RedeemFailed,
-  SuccessfullyRedeemed,
-} from '../../../common/RedeemMicro/RedeemCode';
 import { RedeemedCodeData } from '../../../common/types/redeem';
 import { ClaimCode1 } from '../../../../../pages/claim/[type]/[code]';
+import EnterRedeemCode from '../../../common/RedeemCode/EnterReedemCode';
+import SuccessfullyRedeemed from '../../../common/RedeemCode/SuccessfullyRedeemed';
+import RedeemFailed from '../../../common/RedeemCode/RedeemFailed';
 
 interface RedeemModal {
   redeemModalOpen: boolean;

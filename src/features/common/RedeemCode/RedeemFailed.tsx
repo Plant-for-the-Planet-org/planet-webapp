@@ -1,0 +1,44 @@
+import { ReactElement } from 'react';
+import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
+import styles from '../../../../src/features/user/Profile/styles/RedeemModal.module.scss';
+import { useTranslation } from 'next-i18next';
+import Button from '@mui/material/Button';
+import { SerializedError } from '@planet-sdk/common';
+
+export interface RedeemCodeFailed {
+  errorMessages: SerializedError[] | null;
+  code: string | string[] | null;
+  redeemAnotherCode: () => void;
+  closeRedeem: () => void;
+}
+
+const RedeemFailed = ({
+  errorMessages,
+  code,
+  redeemAnotherCode,
+  closeRedeem,
+}: RedeemCodeFailed): ReactElement => {
+  const { t } = useTranslation(['redeem']);
+
+  return (
+    <div className={styles.routeRedeemModal}>
+      <div className={styles.crossDiv}>
+        <button className={styles.crossWidth} onClick={closeRedeem}>
+          <CancelIcon />
+        </button>
+      </div>
+
+      <div className={styles.RedeemTitle}>{code}</div>
+      <div className={styles.formErrors}>
+        {errorMessages && errorMessages[0]?.message}
+      </div>
+      <div className={styles.redeemAnotherCodeDiv}>
+        <Button variant="contained" onClick={redeemAnotherCode}>
+          {t('redeem:redeemAnotherCode')}
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export default RedeemFailed;

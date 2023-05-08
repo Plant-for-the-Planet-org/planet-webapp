@@ -66,8 +66,8 @@ const materialTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 28,
-          textTransform: 'capitalize',
-          padding: '12px 30px',
+          textTransform: 'none',
+          padding: '12px 30px',     
         },
         containedSizeSmall: {
           padding: '5px 10px',

@@ -6,10 +6,8 @@ import { GetStaticPaths } from 'next';
 import LandingSection from '../../../src/features/common/Layout/LandingSection';
 import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
-import {
-  SuccessfullyRedeemed,
-  RedeemFailed,
-} from '../../../src/features/common/RedeemMicro/RedeemCode';
+import SuccessfullyRedeemed from '../../../src/features/common/RedeemCode/SuccessfullyRedeemed';
+import RedeemFailed from '../../../src/features/common/RedeemCode/RedeemFailed';
 import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
