@@ -1,10 +1,10 @@
 {
   "tree_one": " strom",
-  "tree_other": "Stromy",
-  "by": "Zasazeno{{tpoName}}",
+  "tree_other": "Stromů",
+  "by": "Zasazeno organizací {{tpoName}}",
   "to_project_by_tpo": "Pro{{projectName}} od{{tpoName}}",
   "for": "pro",
-  "trees": "Stromy",
+  "trees": "Stromů",
   "planted": "Zasazeno",
   "privacy": "Soukromí",
   "terms": "Podmínky",
@@ -124,7 +124,7 @@
   "token_expired": "Platnost tokenu vypršela. Přihlaste se znovu.",
   "topProject": "Top Projekt",
   "viewReport": "Zobrazit zprávu",
-  "reviewInfo": " <5>Projekt byl zkontrolován v rámci vícedenního terénního přezkumu v <2>měsíci</2> a splňuje naše standardy.</5>",
+  "reviewInfo": " Projekt byl zkontrolován v rámci vícedenního terénního přezkumu v <2>měsíci</2> a splňuje naše <5>standardy.</5>",
   "standardsLink": "https://www.plant-for-the-planet.org/standards/",
   "project": "Projekt"
 }

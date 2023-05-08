@@ -8,13 +8,21 @@ import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { CircularProgress, Modal, Fade } from '@mui/material';
 import { handleError, APIError } from '@planet-sdk/common';
+import { Subscription } from '../../common/types/payments';
+
+interface ReactivateModalProps {
+  reactivateModalOpen: boolean;
+  handleReactivateModalClose: () => void;
+  record: Subscription;
+  fetchRecurrentDonations: (next?: boolean | undefined) => void;
+}
 
 export const ReactivateModal = ({
   reactivateModalOpen,
   handleReactivateModalClose,
   record,
   fetchRecurrentDonations,
-}: any) => {
+}: ReactivateModalProps) => {
   const [disabled, setDisabled] = React.useState(false);
   const { theme } = React.useContext(ThemeContext);
   const { token, logoutUser } = useUserProps();
