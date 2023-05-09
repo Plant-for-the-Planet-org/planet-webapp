@@ -6,8 +6,10 @@ import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import styles from '../../../../src/features/user/Profile/styles/RedeemModal.module.scss';
 import Button from '@mui/material/Button';
 import React from 'react';
+import { LoadingButton } from '@mui/lab';
 
 export interface EnterRedeemCodeProps {
+  loading: boolean;
   setInputCode: React.Dispatch<React.SetStateAction<string | null>>;
   inputCode: string | null;
   redeemCode: () => void;
@@ -15,6 +17,7 @@ export interface EnterRedeemCodeProps {
 }
 
 const EnterRedeemCode = ({
+  loading,
   setInputCode,
   inputCode,
   redeemCode,
@@ -51,10 +54,17 @@ const EnterRedeemCode = ({
           helperText={errors.code && errors.code.message}
         />
       </div>
+
       <div className={styles.redeemCodeButtonContainer}>
-        <Button variant="contained" onClick={handleSubmit(redeemCode)}>
-          {t('redeem:redeemCode')}
-        </Button>
+        {loading ? (
+          <LoadingButton loading variant="contained">
+            <span>submit</span>
+          </LoadingButton>
+        ) : (
+          <Button variant="contained" onClick={handleSubmit(redeemCode)}>
+            {t('redeem:redeemCode')}
+          </Button>
+        )}
       </div>
     </div>
   );

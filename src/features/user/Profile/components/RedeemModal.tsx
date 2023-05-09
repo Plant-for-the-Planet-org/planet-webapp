@@ -30,8 +30,10 @@ export default function RedeemModal({
   const [redeemedCodeData, setRedeemedCodeData] = React.useState<
     RedeemedCodeData | undefined
   >(undefined);
+  const [loading, setLoading] = React.useState<boolean>(false);
 
   async function redeemingCode(data: ClaimCode1): Promise<void> {
+    setLoading(true);
     const submitData = {
       code: data,
     };
@@ -44,6 +46,7 @@ export default function RedeemModal({
           logoutUser
         );
         setRedeemedCodeData(res);
+        setLoading(false);
         if (res.units > 0) {
           const cloneUser = { ...user };
           cloneUser.score.received = cloneUser.score.received + res.units;
@@ -74,6 +77,7 @@ export default function RedeemModal({
         }
 
         setErrors(_serializedErrors);
+        setLoading(false);
         setRedeemedCodeData(undefined);
       }
     }
@@ -113,6 +117,7 @@ export default function RedeemModal({
         <div>
           {redeemedCodeData === undefined && !apiErrors && (
             <EnterRedeemCode
+              loading={loading}
               setInputCode={setInputCode}
               inputCode={inputCode}
               redeemCode={redeemCode}
