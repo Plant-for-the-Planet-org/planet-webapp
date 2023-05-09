@@ -60,76 +60,55 @@ export default function DeleteProfileForm() {
   return !isModalOpen ? (
     <StyledForm>
       <div className="inputContainer">
-        <div>
-          <p>
-            {t('common:deleteAccountMessage', {
-              delete: 'Delete',
-            })}
-            <br />
-            <br />
-            {t('common:alternativelyEditProfile')}
-          </p>
-          <TextField
-            // placeholder={t('common:deleteAccount')}
-            label={t('common:deleteAccountLabel', { delete: 'Delete' })}
-            type="text"
-            variant="outlined"
-            style={{ marginTop: '20px' }}
-            name="addTarget"
-            onCut={handleChange}
-            onCopy={handleChange}
-            onPaste={handleChange}
-            onChange={(e) => {
-              if (e.target.value === 'Delete') {
-                setcanDeleteAccount(true);
-              } else {
-                setcanDeleteAccount(false);
-              }
-            }}
-          ></TextField>
-          <p className={styles.deleteConsent}>
-            {t('common:deleteAccountConsent')}
-          </p>
-          <br />
-          <br />
-          <b>{t('common:deleteCondition')}</b>
-          <p className={styles.deleteModalWarning}>
-            {t('common:deleteIrreversible', {
-              email: user?.email,
-            })}
-          </p>
-
-          <div style={{ marginTop: 20 }}>
-            {canDeleteAccount ? (
-              <Button
-                variant="contained"
-                onClick={() => handleDeleteAccount()}
-                sx={{
-                  backgroundColor: `${styles.dangerColor}`,
-                  '&:hover': { backgroundColor: `${styles.dangerColor}` },
-                }}
-              >
-                {isUploadingData ? (
-                  <div className={'spinner'}></div>
-                ) : (
-                  t('common:delete')
-                )}
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: '#f2f2f7',
-                  color: '#2f3336',
-                  '&:hover': { backgroundColor: '#f2f2f7' },
-                }}
-              >
-                {t('common:delete')}
-              </Button>
-            )}
-          </div>
-        </div>
+        <p>
+          {t('common:deleteAccountMessage', {
+            delete: 'Delete',
+          })}
+        </p>
+        <p>{t('common:alternativelyEditProfile')}</p>
+        <TextField
+          // placeholder={t('common:deleteAccount')}
+          label={t('common:deleteAccountLabel', { delete: 'Delete' })}
+          type="text"
+          variant="outlined"
+          name="addTarget"
+          onCut={handleChange}
+          onCopy={handleChange}
+          onPaste={handleChange}
+          onChange={(e) => {
+            if (e.target.value === 'Delete') {
+              setcanDeleteAccount(true);
+            } else {
+              setcanDeleteAccount(false);
+            }
+          }}
+        ></TextField>
+        <p className={styles.deleteConsent}>
+          {t('common:deleteAccountConsent')}
+        </p>
+        <p>
+          <strong>{t('common:deleteCondition')}</strong>
+        </p>
+        <p className={styles.deleteModalWarning}>
+          {t('common:deleteIrreversible', {
+            email: user?.email,
+          })}
+        </p>
       </div>
+
+      <Button
+        variant="contained"
+        className="formButton"
+        disabled={!canDeleteAccount}
+        onClick={() => handleDeleteAccount()}
+        color="error"
+      >
+        {isUploadingData ? (
+          <div className={'spinner'}></div>
+        ) : (
+          t('common:delete')
+        )}
+      </Button>
     </StyledForm>
   ) : (
     <CustomModal

@@ -1,16 +1,5 @@
 @import '../../../../theme/theme';
 
-
-.deleteConsent {
-  margin-top: 20px;
-  color: $primaryFontColor;
-}
 .deleteModalWarning {
-  margin-top: 20px;
   color: $dangerColor;
-}
-
-:export {
-  dangerColor: $dangerColor;
-  light: $light;
 }
