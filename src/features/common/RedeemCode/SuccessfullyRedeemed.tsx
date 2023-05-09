@@ -40,7 +40,7 @@ const SuccessfullyRedeemed = ({
         <span>{t('redeem:successfullyRedeemed')}</span>
       </div>
 
-      <div className={styles.redeemAnotherCodeDiv}>
+      <div className={styles.redeemCodeButtonContainer}>
         <Button variant="contained" onClick={redeemAnotherCode}>
           {t('redeem:redeemAnotherCode')}
         </Button>
