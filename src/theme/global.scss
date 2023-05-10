@@ -520,11 +520,6 @@ input:-webkit-autofill {
   }
 }
 
-.add-project-container {
-  display: flex;
-  align-items: flex-start;
-  gap: 10
-}
 .project-form-flow {
   display: flex;
   justify-content: center;
@@ -671,14 +666,6 @@ input::-webkit-inner-spin-button {
 /* remove updown arrow on input type=number for  Firefox */
 input[type='number'] {
   -moz-appearance: textfield;
-}
-
-.add-project-title {
-  font-size: $fontSixteen;
-  margin-bottom: 80px;
-  span {
-    color: $primaryColor;
-  }
 }
 
 .MuiStepper-horizontal {

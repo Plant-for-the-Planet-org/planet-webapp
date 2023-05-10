@@ -300,7 +300,7 @@ export default function DetailedAnalysis({
       );
       setProjectDetails(res);
       setIsUploadingData(false);
-      handleNext();
+      handleNext(ProjectCreationTabs.PROJECT_SITES);
     } catch (err) {
       setIsUploadingData(false);
       setErrors(handleError(err as APIError));

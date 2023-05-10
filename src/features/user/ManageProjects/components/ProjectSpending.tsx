@@ -145,7 +145,7 @@ export default function ProjectSpending({
       setIsUploadingData(false);
       setShowForm(false);
       setErrorMessage('');
-      handleNext();
+      handleNext(ProjectCreationTabs.REVIEW);
     } catch (err) {
       setIsUploadingData(false);
       setErrors(handleError(err as APIError));

@@ -1,41 +1,5 @@
 @import './../../../theme/theme';
 
-.mainContainer {
-  max-width: 1000px;
-  display: flex;
-  flex-direction: column;
-  background-color: $backgroundColor;
-  > div {
-    background-color: $backgroundBase;
-    padding-left: 0%;
-  }
-}
-
-.stepContainer {
-  margin-top: -60px;
-  margin-left: 100px;
-  font-family: $primaryFontFamily;
-  display: flex;
-  background-color: $backgroundBase;
-  color: $primaryFontColor;
-  @include xsPhoneView {
-    margin-left: 11px;
-    margin-top: 5px;
-  }
-  @include smTabletView {
-    margin-left: -8px;
-    margin-top: 5px;
-  }
-  @include mdTabletView {
-    margin-left: -8px;
-    margin-top: 5px;
-  }
-  @include lgLaptopView {
-    margin-top: -15px;
-    margin-left: 40px;
-  }
-}
-
 .inputEndAdornment {
   margin-left: 4px;
   width: 100%;
@@ -249,9 +213,6 @@
 }
 
 @include mdTabletView {
-  .mainContainer {
-    max-width: 780px;
-  }
   .formField {
     max-width: 660px;
   }
@@ -852,4 +813,17 @@
 .reviewImageContainer{
   height: 240px;
   width: 100%;
+}
+
+.addProjectTitle {
+  >div > span {
+    color: $primaryColor;
+  }
+  .note {
+    font-weight: bold;
+  }
+  .editProjectInfo {
+    display: flex;
+    flex-direction: row;
+  }
 }

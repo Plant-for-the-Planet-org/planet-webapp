@@ -17,6 +17,8 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import TabbedView from '../../common/Layout/TabbedView';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import { handleError, APIError } from '@planet-sdk/common';
+import DashboardView from '../../common/Layout/DashboardView';
+import styles from '../../../../src/features/user/ManageProjects/StepForm.module.scss';
 
 export enum ProjectCreationTabs {
   PROJECT_TYPE = 0,
@@ -28,7 +30,7 @@ export enum ProjectCreationTabs {
   REVIEW = 6,
 }
 export default function ManageProjects({ GUID, token, project }: any) {
-  const { t, ready, i18n } = useTranslation(['manageProjects']);
+  const { t, i18n } = useTranslation(['manageProjects']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
   const router = useRouter();
@@ -339,8 +341,30 @@ export default function ManageProjects({ GUID, token, project }: any) {
   }
 
   return (
-    <TabbedView step={tabSelected} tabItems={tablist}>
-      {getStepContent()}
-    </TabbedView>
+    <DashboardView
+      title={projectGUID ? project?.name : t('manageProjects:addNewProject')}
+      subtitle={
+        projectGUID ? (
+          t('manageProjects:onlyEnglish')
+        ) : (
+          <div className={styles.addProjectTitle}>
+            <div>{t('manageProjects:addProjetDescription')}</div>
+            <div className={styles.editProjectInfo}>
+              <div className={styles.note}>{t('manageProjects:important')}</div>
+              <div>{t('manageProjects:englishOnly')}</div>
+            </div>
+            <div>
+              {' '}
+              {t('manageProjects:addProjetContact')}{' '}
+              <span>{t('manageProjects:supportLink')}</span>{' '}
+            </div>
+          </div>
+        )
+      }
+    >
+      <TabbedView step={tabSelected} tabItems={tablist}>
+        {getStepContent()}
+      </TabbedView>
+    </DashboardView>
   );
 }

@@ -73,14 +73,9 @@ function ManageSingleProject({}: Props): ReactElement {
     ready && token && !accessDenied ? (
       <UserLayout>
         <Head>
-          <title>{`${t('common:edit')} - ${project.name}`}</title>
+          <title>{`${t('common:edit')} - ${project?.name}`}</title>
         </Head>
-        <DashboardView
-          title={project.name}
-          subtitle={t('manageProjects:onlyEnglish')}
-        >
-          <ManageProjects GUID={projectGUID} token={token} project={project} />
-        </DashboardView>
+        <ManageProjects GUID={projectGUID} token={token} project={project} />
       </UserLayout>
     ) : (
       <UserLayout>

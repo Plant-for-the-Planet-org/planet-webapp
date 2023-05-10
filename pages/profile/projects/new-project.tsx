@@ -69,23 +69,7 @@ export default function AddProjectType(): ReactElement {
       </Head>
 
       {user?.type === 'tpo' ? (
-        <DashboardView
-          title={t('manageProjects:addNewProject')}
-          subtitle={
-            <div className={'add-project-title'}>
-              {t('manageProjects:addProjetDescription')}
-              <p>
-                {t('manageProjects:addProjetContact')}{' '}
-                <span>{t('manageProjects:supportLink')}</span>
-              </p>
-            </div>
-          }
-        >
-          <ManageProjects
-            step={ProjectCreationTabs.PROJECT_TYPE}
-            token={token}
-          />
-        </DashboardView>
+        <ManageProjects step={ProjectCreationTabs.PROJECT_TYPE} token={token} />
       ) : (
         <AccessDeniedLoader />
       )}

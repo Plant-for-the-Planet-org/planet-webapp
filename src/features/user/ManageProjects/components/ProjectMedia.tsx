@@ -20,6 +20,7 @@ import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError, APIError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
+import { ProjectCreationTabs } from '..';
 
 interface Props {
   handleNext: Function;
@@ -184,7 +185,7 @@ export default function ProjectMedia({
       );
       setProjectDetails(res);
       setIsUploadingData(false);
-      handleNext();
+      handleNext(ProjectCreationTabs.DETAILED_ANALYSIS);
       setErrorMessage('');
     } catch (err) {
       setIsUploadingData(false);
