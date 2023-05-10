@@ -10,16 +10,22 @@ interface Props {
   setshowVideo: Function;
 }
 
-export default function PlayButton({ setshowVideo }: Props): ReactElement {
+export default function PlayButton({
+  setshowVideo,
+}: Props): ReactElement | null {
   const { isImpersonationModeOn } = useUserProps();
-  const { embed } = React.useContext(ParamsContext);
+  const { embed, enableIntro, isContextLoaded } =
+    React.useContext(ParamsContext);
   const { t } = useTranslation(['common']);
   const { pathname } = useRouter();
 
   const playButtonClasses = `${
     embed === 'true' ? styles.embed_playButton : styles.playButton
   } ${pathname === '/[p]' ? styles['playButton--reduce-right-offset'] : ''}`;
-  return (
+
+  const canShowPlayButton = !(embed === 'true' && enableIntro !== 'true');
+
+  return isContextLoaded && canShowPlayButton ? (
     <div
       title={t('howDoesThisWork')}
       onClick={() => setshowVideo(true)}
@@ -28,5 +34,5 @@ export default function PlayButton({ setshowVideo }: Props): ReactElement {
     >
       <PlayIcon />
     </div>
-  );
+  ) : null;
 }

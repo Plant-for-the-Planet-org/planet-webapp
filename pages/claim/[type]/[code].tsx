@@ -7,9 +7,9 @@ import LandingSection from '../../../src/features/common/Layout/LandingSection';
 import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import {
+  RedeemFailed,
   SuccessfullyRedeemed,
-  RedeemCodeFailed,
-} from '../../../src/features/common/RedeemMicro/RedeemCode';
+} from '../../../src/features/common/RedeemCode';
 import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
@@ -138,9 +138,9 @@ function ClaimDonation(): ReactElement {
           />
         ) : (
           // if redeem code is invalid and  redeem process failed
-          <RedeemCodeFailed
+          <RedeemFailed
             errorMessages={errors}
-            code={code}
+            inputCode={code}
             redeemAnotherCode={redeemAnotherCode}
             closeRedeem={closeRedeem}
           />

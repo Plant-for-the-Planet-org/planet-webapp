@@ -1,17 +1,25 @@
-import React, { ReactElement } from 'react';
+import React, {
+  ReactElement,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import styles from './styles.module.scss';
 import { useTranslation } from 'next-i18next';
 import ReactPlayer from 'react-player/lazy';
 import { useUserAgent } from 'next-useragent';
+import { ParamsContext } from '../Layout/QueryParamsContext';
 
 interface Props {
   setshowVideo: Function;
 }
 
 function VideoContainer({ setshowVideo }: Props): ReactElement {
-  const { t, ready, i18n } = useTranslation(['common']);
-  const [videoURL, setvideoURL] = React.useState<null | string>(null);
-  const videoRef = React.useRef<ReactPlayer | null>(null);
+  const { t, ready } = useTranslation(['common']);
+  const [videoURL, setvideoURL] = useState<null | string>(null);
+  const { isContextLoaded, embed, enableIntro } = useContext(ParamsContext);
+  const videoRef = useRef<ReactPlayer | null>(null);
   const handleVideoClose = () => {
     setshowVideo(false);
     if (videoRef?.current) {
@@ -22,7 +30,7 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (typeof navigator !== 'undefined') {
       const ua = navigator.userAgent;
       const agent = useUserAgent(ua);
@@ -32,7 +40,13 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    if (isContextLoaded && embed === 'true' && enableIntro !== 'true') {
+      handleVideoClose();
+    }
+  }, [isContextLoaded, embed, enableIntro]);
+
+  useEffect(() => {
     const screenWidth = window.innerWidth;
 
     if (screenWidth < 768) {
@@ -72,7 +86,7 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
     }
   }, []);
 
-  React.useEffect((): void => {
+  useEffect((): void => {
     // See if video can play through and disable the video
     if (videoURL) {
       if (!ReactPlayer.canPlay(videoURL)) {
@@ -81,7 +95,7 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
     }
   }, [videoURL]);
 
-  return ready ? (
+  return ready && isContextLoaded ? (
     <div className={styles.landingVideoSection}>
       <div className={styles.landingVideoWrapper}>
         {videoURL &&
