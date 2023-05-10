@@ -32,7 +32,7 @@ export const RedeemFailed = ({
       <div className={styles.formErrors}>
         {errorMessages && errorMessages[0]?.message}
       </div>
-      <div className={styles.redeemAnotherCodeDiv}>
+      <div className={styles.redeemCodeButtonContainer}>
         <Button variant="contained" onClick={redeemAnotherCode}>
           {t('redeem:redeemAnotherCode')}
         </Button>
