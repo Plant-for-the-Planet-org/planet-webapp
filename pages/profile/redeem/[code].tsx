@@ -7,10 +7,10 @@ import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorH
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
 import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
 import {
-  InputRedeemCode,
+  RedeemFailed,
   SuccessfullyRedeemed,
-  RedeemCodeFailed,
-} from '../../../src/features/common/RedeemMicro/RedeemCode';
+  EnterRedeemCode,
+} from '../../../src/features/common/RedeemCode';
 import { ClaimCode1 } from '../../claim/[type]/[code]';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
@@ -26,20 +26,9 @@ const ReedemCode: FC = () => {
   const [redeemedCodeData, setRedeemedCodeData] = useState<
     RedeemedCodeData | undefined
   >(undefined);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const router = useRouter();
-
-  const closeRedeem = () => {
-    if (typeof window !== 'undefined') {
-      router.push('/profile');
-    }
-  };
-
-  const handleCode = () => {
-    router.push(`/profile/redeem/${code}?inputCode=${true}`);
-    setRedeemedCodeData(undefined);
-    setInputCode('');
-  };
 
   useEffect(() => {
     if (contextLoaded) {
@@ -60,6 +49,7 @@ const ReedemCode: FC = () => {
   }, [router]);
 
   async function redeemingCode(data: string | string[]): Promise<void> {
+    setIsLoading(true);
     const submitData = {
       code: data,
     };
@@ -97,6 +87,7 @@ const ReedemCode: FC = () => {
         }
         setErrors(_serializedErrors);
         setRedeemedCodeData(undefined);
+        setIsLoading(false);
       }
     }
   }
@@ -107,21 +98,34 @@ const ReedemCode: FC = () => {
     }
   }, [user, contextLoaded, router.query.code]);
 
-  const changeRouteCode = () => {
+  const redeemCode = () => {
     router.push(`/profile/redeem/${inputCode}?inputCode=${false}`);
 
     const codeFromUrl = router.query.code;
     redeemingCode(codeFromUrl);
   };
 
+  const redeemAnotherCode = () => {
+    router.push(`/profile/redeem/${code}?inputCode=${true}`);
+    setRedeemedCodeData(undefined);
+    setInputCode('');
+  };
+
+  const closeRedeem = () => {
+    if (typeof window !== 'undefined') {
+      router.push('/profile');
+    }
+  };
+
   return ready && user ? (
     router.query.inputCode === 'true' ? (
       // to input  redeem code
       <LandingSection>
-        <InputRedeemCode
+        <EnterRedeemCode
+          isLoading={isLoading}
           setInputCode={setInputCode}
           inputCode={inputCode}
-          changeRouteCode={changeRouteCode}
+          redeemCode={redeemCode}
           closeRedeem={closeRedeem}
         />
       </LandingSection>
@@ -131,15 +135,15 @@ const ReedemCode: FC = () => {
         {redeemedCodeData ? (
           <SuccessfullyRedeemed
             redeemedCodeData={redeemedCodeData}
-            redeemAnotherCode={handleCode}
+            redeemAnotherCode={redeemAnotherCode}
             closeRedeem={closeRedeem}
           />
         ) : (
           // if redeem code is invalid and  redeem process failed
-          <RedeemCodeFailed
+          <RedeemFailed
             errorMessages={errors}
-            code={code}
-            redeemAnotherCode={handleCode}
+            inputCode={code}
+            redeemAnotherCode={redeemAnotherCode}
             closeRedeem={closeRedeem}
           />
         )}
