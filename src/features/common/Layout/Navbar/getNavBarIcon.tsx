@@ -126,7 +126,7 @@ function GetNavBarIcon({
     case 'shop':
       return <ShopLink />;
     default:
-      <></>;
+      return <></>;
   }
 }
 
