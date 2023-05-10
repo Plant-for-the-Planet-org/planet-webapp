@@ -17,7 +17,7 @@ import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import getMapStyle from '../../../utils/maps/getMapStyle';
 import { getStoredConfig } from '../../../utils/storeConfig';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './RegisterModal.module.scss';
 import SingleContribution from './RegisterTrees/SingleContribution';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
@@ -52,9 +52,7 @@ const dialogSx: SxProps = {
 interface Props {}
 
 export default function RegisterTrees({}: Props) {
-  const { user, token, contextLoaded, logoutUser } =
-    React.useContext(UserPropsContext);
-
+  const { user, token, contextLoaded, logoutUser } = useUserProps();
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {
     version: 8,

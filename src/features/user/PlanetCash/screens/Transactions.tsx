@@ -11,10 +11,11 @@ import TransactionListLoader from '../../../../../public/assets/images/icons/Tra
 import { Button, CircularProgress } from '@mui/material';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import NoTransactionsFound from '../components/NoTransactionsFound';
 import { handleError, APIError } from '@planet-sdk/common';
+import { PaymentHistory } from '../../../common/types/payments';
 
 interface TransactionsProps {
   setProgress?: (progress: number) => void;
@@ -24,11 +25,11 @@ const Transactions = ({
   setProgress,
 }: TransactionsProps): ReactElement | null => {
   const { t } = useTranslation('me');
-  const { token, contextLoaded, logoutUser } = useContext(UserPropsContext);
+  const { token, contextLoaded, logoutUser } = useUserProps();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { accounts } = usePlanetCash();
   const [transactionHistory, setTransactionHistory] =
-    useState<Payments.PaymentHistory | null>(null);
+    useState<PaymentHistory | null>(null);
   const [selectedRecord, setSelectedRecord] = useState<number | null>(null);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -60,7 +61,7 @@ const Transactions = ({
             : `/app/paymentHistory?filter=planet-cash&limit=15`;
 
         const newTransactionHistory =
-          await getAuthenticatedRequest<Payments.PaymentHistory>(
+          await getAuthenticatedRequest<PaymentHistory>(
             apiUrl,
             token,
             logoutUser

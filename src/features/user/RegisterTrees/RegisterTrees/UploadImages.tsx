@@ -10,7 +10,7 @@ import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 interface Props {
   contribution: any;
   contributionGUID: any;
@@ -37,7 +37,7 @@ export default function UploadImages({
     });
   }, []);
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const { logoutUser } = React.useContext(UserPropsContext);
+  const { logoutUser } = useUserProps();
 
   const uploadPhotos = async (image: any) => {
     setIsUploadingData(true);

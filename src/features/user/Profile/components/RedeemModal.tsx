@@ -1,61 +1,43 @@
-import styles from '../styles/RedeemModal.module.scss';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
+import React, { ReactElement } from 'react';
 import { useTranslation } from 'next-i18next';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { useForm } from 'react-hook-form';
-import React, { ReactElement } from 'react';
-import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import { ThemeContext } from '../../../../theme/themeContext';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
-import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { RedeemedCodeData } from '../../../common/types/redeem';
+import { ClaimCode1 } from '../../../../../pages/claim/[type]/[code]';
+import {
+  RedeemFailed,
+  SuccessfullyRedeemed,
+  EnterRedeemCode,
+} from '../../../common/RedeemCode';
 
 interface RedeemModal {
   redeemModalOpen: boolean;
   handleRedeemModalClose: () => void;
 }
 
-type FormData = {
-  code: string;
-};
-
 export default function RedeemModal({
   redeemModalOpen,
   handleRedeemModalClose,
 }: RedeemModal): ReactElement | null {
-  const { t, i18n, ready } = useTranslation([
-    'me',
-    'common',
-    'donate',
-    'redeem',
-  ]);
-  const { user, contextLoaded, token, setUser, logoutUser } =
-    React.useContext(UserPropsContext);
+  const { t, ready } = useTranslation(['me', 'common', 'donate', 'redeem']);
+  const { user, contextLoaded, token, setUser, logoutUser } = useUserProps();
   const { setErrors, errors: apiErrors } =
     React.useContext(ErrorHandlingContext);
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [validCodeData, setValidCodeData] = React.useState<{} | undefined>();
-  const [isCodeRedeemed, setIsCodeRedeemed] = React.useState(false);
-  const [inputCode, setInputCode] = React.useState('');
-  const [disable, setDisable] = React.useState<boolean>(false);
-  const handleAnotherCode = () => {
-    setErrors(null);
-    setInputCode('');
-    setIsCodeRedeemed(false);
-  };
+  const [inputCode, setInputCode] = React.useState<ClaimCode1>('');
+  const [redeemedCodeData, setRedeemedCodeData] = React.useState<
+    RedeemedCodeData | undefined
+  >(undefined);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-  const { register, handleSubmit, errors } = useForm<FormData>({
-    mode: 'onBlur',
-  });
-
-  async function redeemCode(data: FormData) {
-    setDisable(true);
-    setIsUploadingData(true);
+  async function redeemingCode(data: ClaimCode1): Promise<void> {
+    setIsLoading(true);
     const submitData = {
-      code: data.code,
+      code: data,
     };
     if (contextLoaded && user) {
       try {
@@ -65,18 +47,14 @@ export default function RedeemModal({
           token,
           logoutUser
         );
-        setDisable(false);
-        setIsUploadingData(false);
-        setIsCodeRedeemed(true);
-        setValidCodeData(res);
+        setRedeemedCodeData(res);
+        setIsLoading(false);
         if (res.units > 0) {
           const cloneUser = { ...user };
           cloneUser.score.received = cloneUser.score.received + res.units;
           setUser(cloneUser);
         }
       } catch (err) {
-        setDisable(false);
-        setIsUploadingData(false);
         const serializedErrors = handleError(err as APIError);
         const _serializedErrors: SerializedError[] = [];
 
@@ -101,16 +79,28 @@ export default function RedeemModal({
         }
 
         setErrors(_serializedErrors);
+        setIsLoading(false);
+        setRedeemedCodeData(undefined);
       }
     }
   }
 
-  const closeRedeem = () => {
-    setIsCodeRedeemed(false);
+  const redeemAnotherCode = () => {
+    setErrors(null);
+    setInputCode('');
+    setRedeemedCodeData(undefined);
+  };
+
+  const redeemCode = () => {
+    if (inputCode) {
+      redeemingCode(inputCode);
+    }
+  };
+
+  const closeModal = () => {
     handleRedeemModalClose();
     setInputCode('');
   };
-
   const { theme } = React.useContext(ThemeContext);
 
   return ready ? (
@@ -126,97 +116,32 @@ export default function RedeemModal({
       }}
     >
       <Fade in={redeemModalOpen}>
-        <div className={`${styles.modal} ${styles.fixModal}`}>
-          <div className={styles.crossButtonDiv}>
-            <button className={styles.crossButton} onClick={closeRedeem}>
-              <CancelIcon color={styles.primaryFontColor} />
-            </button>
-          </div>
+        <div>
+          {redeemedCodeData === undefined && !apiErrors && (
+            <EnterRedeemCode
+              isLoading={isLoading}
+              setInputCode={setInputCode}
+              inputCode={inputCode}
+              redeemCode={redeemCode}
+              closeRedeem={closeModal}
+            />
+          )}
 
-          {isCodeRedeemed && validCodeData ? (
-            // after successful redeeemed code
-            <>
-              <div
-                className={styles.codeTreeCount}
-                style={{ fontSize: '2rem' }}
-              >
-                {getFormattedNumber(i18n.language, Number(validCodeData.units))}
-                <span>
-                  {t('common:tree', {
-                    count: Number(validCodeData.units),
-                  })}
-                </span>
-              </div>
+          {redeemedCodeData && !apiErrors && (
+            <SuccessfullyRedeemed
+              redeemedCodeData={redeemedCodeData}
+              redeemAnotherCode={redeemAnotherCode}
+              closeRedeem={closeModal}
+            />
+          )}
 
-              <span className={styles.codeTreeCount}>
-                {t('redeem:successfullyRedeemed')}
-              </span>
-
-              <button
-                className={`primaryButton ${styles.redeemCode}`}
-                onClick={handleAnotherCode}
-              >
-                {t('redeem:redeemAnotherCode')}
-              </button>
-            </>
-          ) : (
-            // input redeem modal
-            <>
-              <h4 style={{ fontWeight: '700' }}>{t('me:redeem')}</h4>
-              <div className={styles.note}>
-                <p>{t('redeem:redeemDescription')}</p>
-              </div>
-              {!apiErrors && (
-                <div className={styles.inputField}>
-                  <MaterialTextField
-                    inputRef={register({
-                      required: {
-                        value: true,
-                        message: t('redeem:enterRedeemCode'),
-                      },
-                    })}
-                    onChange={(event) => {
-                      event.target.value.startsWith('pp.eco/c/')
-                        ? setInputCode(
-                            event.target.value.replace('pp.eco/c/', '')
-                          )
-                        : setInputCode(event.target.value);
-                    }}
-                    value={inputCode}
-                    name={'code'}
-                    placeholder="XAD-1SA-5F1-A"
-                    label=""
-                    variant="outlined"
-                  />
-                </div>
-              )}
-              {errors.code && (
-                <span className={styles.formErrors}>{errors.code.message}</span>
-              )}
-
-              {apiErrors && apiErrors.length > 0 && (
-                <button
-                  className={`primaryButton ${styles.redeemCode}`}
-                  onClick={handleAnotherCode}
-                >
-                  {t('redeem:redeemAnotherCode')}
-                </button>
-              )}
-              {!apiErrors && (
-                <button
-                  id={'redeemCodeModal'}
-                  onClick={handleSubmit(redeemCode)}
-                  className={`primaryButton ${styles.redeemCode}`}
-                  disabled={disable}
-                >
-                  {isUploadingData ? (
-                    <div className={styles.spinner}></div>
-                  ) : (
-                    t('redeem:redeemCode')
-                  )}
-                </button>
-              )}
-            </>
+          {apiErrors && (
+            <RedeemFailed
+              errorMessages={apiErrors}
+              inputCode={inputCode}
+              redeemAnotherCode={redeemAnotherCode}
+              closeRedeem={closeModal}
+            />
           )}
         </div>
       </Fade>

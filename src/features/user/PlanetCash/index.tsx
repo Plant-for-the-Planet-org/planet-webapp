@@ -13,7 +13,7 @@ import CreateAccount from './screens/CreateAccount';
 import Accounts from './screens/Accounts';
 import Transactions from './screens/Transactions';
 import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
 import { useRouter } from 'next/router';
@@ -36,7 +36,7 @@ export default function PlanetCash({
 }: PlanetCashProps): ReactElement | null {
   const { t, ready, i18n } = useTranslation('planetcash');
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
-  const { token, contextLoaded, logoutUser } = useContext(UserPropsContext);
+  const { token, contextLoaded, logoutUser } = useUserProps();
   const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isDataLoading, setIsDataLoading] = useState(false);

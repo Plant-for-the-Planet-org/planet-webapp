@@ -8,24 +8,37 @@ import Link from 'next/link';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import VerifiedIcon from '@mui/icons-material/Verified';
+import TopProjectReports from './projectDetails/TopProjectReports';
+import Typography from '@mui/material/Typography';
+import HoverPopover from 'material-ui-popup-state/HoverPopover';
+import {
+  usePopupState,
+  bindHover,
+  bindPopover,
+} from 'material-ui-popup-state/hooks';
 
 interface Props {
   project: any;
-  keyString: string;
   editMode: Boolean;
+  displayPopup: Boolean;
 }
 
 export default function ProjectSnippet({
   project,
-  keyString,
   editMode,
+  displayPopup,
 }: Props): ReactElement {
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
+  const popupState = usePopupState({
+    variant: 'popover',
+    popupId: 'demoPopover',
+  });
 
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
@@ -39,14 +52,13 @@ export default function ProjectSnippet({
     progressPercentage = 100;
   }
 
-  const { token } = React.useContext(UserPropsContext);
+  const { token } = useUserProps();
   const handleOpen = () => {
     const url = getDonationUrl(project.slug, token, embed, callbackUrl);
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
-
   return ready ? (
-    <div className={'singleProject'} key={keyString}>
+    <div className={'singleProject'}>
       {editMode ? (
         <Link href={`/profile/projects/${project.id}`}>
           <button id={'projectSnipEdit'} className={'projectEditBlock'}>
@@ -81,13 +93,44 @@ export default function ProjectSnippet({
             }}
           ></div>
         ) : null}
-
+        {project.isTopProject && project.isApproved && (
+          <div className={'topProjectBadge'}>{t('common:topProject')}</div>
+        )}
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
             {project.classification && t(`donate:${project.classification}`)}
           </div>
           <div className={'projectName'}>
             {truncateString(project.name, 54)}
+            {project.isApproved && (
+              <>
+                <VerifiedIcon
+                  sx={{ color: '#fff' }}
+                  className={'verifiedIcon'}
+                  {...bindHover(popupState)}
+                />
+                {displayPopup && (
+                  <HoverPopover
+                    {...bindPopover(popupState)}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'center',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'left',
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    <Typography style={{ margin: 10 }}>
+                      <TopProjectReports projectReviews={project.reviews} />
+                    </Typography>
+                  </HoverPopover>
+                )}
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -4,12 +4,12 @@ import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
 import { useTranslation } from 'next-i18next';
 import { GetStaticPaths } from 'next';
 import LandingSection from '../../../src/features/common/Layout/LandingSection';
-import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import {
+  RedeemFailed,
   SuccessfullyRedeemed,
-  RedeemCodeFailed,
-} from '../../../src/features/common/RedeemMicro/RedeemCode';
+} from '../../../src/features/common/RedeemCode';
 import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
@@ -22,7 +22,8 @@ function ClaimDonation(): ReactElement {
   const router = useRouter();
 
   const { user, contextLoaded, loginWithRedirect, token, logoutUser } =
-    React.useContext(UserPropsContext);
+    useUserProps();
+
   const { errors, setErrors } = React.useContext(ErrorHandlingContext);
 
   const [errorMessage, setErrorMessage] = React.useState<ClaimCode1>('');
@@ -137,9 +138,9 @@ function ClaimDonation(): ReactElement {
           />
         ) : (
           // if redeem code is invalid and  redeem process failed
-          <RedeemCodeFailed
+          <RedeemFailed
             errorMessages={errors}
-            code={code}
+            inputCode={code}
             redeemAnotherCode={redeemAnotherCode}
             closeRedeem={closeRedeem}
           />

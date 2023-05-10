@@ -2,7 +2,7 @@ import { ReactElement, useContext, useState } from 'react';
 import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { usePayouts } from '../../../common/Layout/PayoutsContext';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import BankDetailsForm, { FormData } from '../components/BankDetailsForm';
@@ -14,7 +14,7 @@ import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 const AddBankAccount = (): ReactElement | null => {
   const { t } = useTranslation('managePayouts');
   const { payoutMinAmounts, setAccounts, accounts } = usePayouts();
-  const { token, logoutUser } = useContext(UserPropsContext);
+  const { token, logoutUser } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
