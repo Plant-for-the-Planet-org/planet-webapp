@@ -26,7 +26,7 @@ const ReedemCode: FC = () => {
   const [redeemedCodeData, setRedeemedCodeData] = useState<
     RedeemedCodeData | undefined
   >(undefined);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -49,7 +49,7 @@ const ReedemCode: FC = () => {
   }, [router]);
 
   async function redeemingCode(data: string | string[]): Promise<void> {
-    setLoading(true);
+    setIsLoading(true);
     const submitData = {
       code: data,
     };
@@ -87,7 +87,7 @@ const ReedemCode: FC = () => {
         }
         setErrors(_serializedErrors);
         setRedeemedCodeData(undefined);
-        setLoading(false);
+        setIsLoading(false);
       }
     }
   }
@@ -122,7 +122,7 @@ const ReedemCode: FC = () => {
       // to input  redeem code
       <LandingSection>
         <EnterRedeemCode
-          loading={loading}
+          isLoading={isLoading}
           setInputCode={setInputCode}
           inputCode={inputCode}
           redeemCode={redeemCode}
