@@ -16,7 +16,7 @@ export interface EnterRedeemCodeProps {
   closeRedeem: () => void;
 }
 
-const EnterRedeemCode = ({
+export const EnterRedeemCode = ({
   loading,
   setInputCode,
   inputCode,
@@ -69,5 +69,3 @@ const EnterRedeemCode = ({
     </div>
   );
 };
-
-export default EnterRedeemCode;

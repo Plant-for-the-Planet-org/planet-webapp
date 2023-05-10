@@ -12,7 +12,7 @@ export interface SuccessfullyRedeemedProps {
   closeRedeem: () => void;
 }
 
-const SuccessfullyRedeemed = ({
+export const SuccessfullyRedeemed = ({
   redeemedCodeData,
   redeemAnotherCode,
   closeRedeem,
@@ -48,5 +48,3 @@ const SuccessfullyRedeemed = ({
     </div>
   );
 };
-
-export default SuccessfullyRedeemed;

@@ -12,7 +12,7 @@ export interface RedeemFailedProps {
   closeRedeem: () => void;
 }
 
-const RedeemFailed = ({
+export const RedeemFailed = ({
   errorMessages,
   inputCode,
   redeemAnotherCode,
@@ -40,5 +40,3 @@ const RedeemFailed = ({
     </div>
   );
 };
-
-export default RedeemFailed;

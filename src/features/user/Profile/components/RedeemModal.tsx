@@ -9,9 +9,11 @@ import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { RedeemedCodeData } from '../../../common/types/redeem';
 import { ClaimCode1 } from '../../../../../pages/claim/[type]/[code]';
-import EnterRedeemCode from '../../../common/RedeemCode/EnterRedeemCode';
-import SuccessfullyRedeemed from '../../../common/RedeemCode/SuccessfullyRedeemed';
-import RedeemFailed from '../../../common/RedeemCode/RedeemFailed';
+import {
+  RedeemFailed,
+  SuccessfullyRedeemed,
+  EnterRedeemCode,
+} from '../../../common/RedeemCode';
 
 interface RedeemModal {
   redeemModalOpen: boolean;
