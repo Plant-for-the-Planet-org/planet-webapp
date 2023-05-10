@@ -60,9 +60,10 @@ export default function BasicDetails({
     layers: [],
   };
 
-  const [skipButtonVisible, setSkipButtonVisible] = React.useState(false);
+  const [IsSkipButtonVisible, setIsSkipButtonVisible] =
+    React.useState<boolean>(false);
 
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
+  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
   // Map setup
   const { theme } = React.useContext(ThemeContext);
   const { logoutUser } = useUserProps();
@@ -71,7 +72,7 @@ export default function BasicDetails({
   const mapRef = React.useRef(null);
   const [style, setStyle] = React.useState(EMPTY_STYLE);
   const [wrongCoordinatesMessage, setWrongCoordinatesMessage] =
-    React.useState(false);
+    React.useState<boolean>(false);
   const [viewport, setViewPort] = React.useState({
     width: 760,
     height: 400,
@@ -286,7 +287,7 @@ export default function BasicDetails({
   //if project is already had created then user can visit to  other forms using skip button
   React.useEffect(() => {
     if (projectDetails.id) {
-      setSkipButtonVisible(true);
+      setIsSkipButtonVisible(true);
     }
   }, [router]);
 
@@ -876,7 +877,7 @@ export default function BasicDetails({
             )}
           </Button>
 
-          {skipButtonVisible ? (
+          {IsSkipButtonVisible ? (
             <Button
               className={styles.skipButton}
               variant="contained"

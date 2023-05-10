@@ -8,10 +8,8 @@ import InfoIcon from '../../../../../public/assets/images/icons/manageProjects/I
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import { useRouter } from 'next/router';
-import { makeStyles } from '@mui/styles';
 import { SxProps, TextField, Button } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
-import { ThemeContext } from '../../../../theme/themeContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
@@ -57,7 +55,7 @@ const yearDialogSx: SxProps = {
   },
 };
 
-interface Props {
+interface DetailedAnalysisProps {
   handleNext: Function;
   handleBack: Function;
   projectDetails: Object;
@@ -68,6 +66,19 @@ interface Props {
   userLang: String;
   purpose: String;
 }
+interface SiteOwners {
+  id: number;
+  title: string;
+  value: string;
+  isSet: boolean;
+}
+
+interface PlantingSeason {
+  id: number;
+  title: string;
+  isSet: boolean;
+}
+
 export default function DetailedAnalysis({
   handleBack,
   userLang,
@@ -78,11 +89,11 @@ export default function DetailedAnalysis({
   projectGUID,
   handleReset,
   purpose,
-}: Props): ReactElement {
+}: DetailedAnalysisProps): ReactElement {
   const { t, ready } = useTranslation(['manageProjects', 'common']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
-  const [siteOwners, setSiteOwners] = React.useState([
+  const [siteOwners, setSiteOwners] = React.useState<SiteOwners[]>([
     {
       id: 1,
       title: ready ? t('manageProjects:siteOwnerPrivate') : '',
@@ -120,9 +131,11 @@ export default function DetailedAnalysis({
       isSet: false,
     },
   ]);
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const { theme } = React.useContext(ThemeContext);
-  const [plantingSeasons, setPlantingSeasons] = React.useState([
+  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
+
+  const [plantingSeasons, setPlantingSeasons] = React.useState<
+    PlantingSeason[]
+  >([
     { id: 1, title: ready ? t('common:january') : '', isSet: false },
     { id: 2, title: ready ? t('common:february') : '', isSet: false },
     { id: 3, title: ready ? t('common:march') : '', isSet: false },
@@ -137,31 +150,9 @@ export default function DetailedAnalysis({
     { id: 12, title: ready ? t('common:december') : '', isSet: false },
   ]);
 
-  const [minDensity, setMinDensity] = React.useState(0);
+  const [minDensity, setMinDensity] = React.useState<number>(0);
 
-  const useStylesAutoComplete = makeStyles({
-    root: {
-      color:
-        theme === 'theme-light'
-          ? `${themeProperties.light.primaryFontColor} !important`
-          : `${themeProperties.dark.primaryFontColor} !important`,
-      backgroundColor:
-        theme === 'theme-light'
-          ? `${themeProperties.light.backgroundColor} !important`
-          : `${themeProperties.dark.backgroundColor} !important`,
-    },
-    option: {
-      // color: '#2F3336',
-      '&:hover': {
-        backgroundColor:
-          theme === 'theme-light'
-            ? `${themeProperties.light.backgroundColorDark} !important`
-            : `${themeProperties.dark.backgroundColorDark} !important`,
-      },
-    },
-  });
-
-  const handleSetPlantingSeasons = (id: any) => {
+  const handleSetPlantingSeasons = (id: number) => {
     const month = plantingSeasons[id - 1];
     const updatedMonth = month;
     updatedMonth.isSet = !month.isSet;
@@ -170,7 +161,7 @@ export default function DetailedAnalysis({
     setPlantingSeasons([...plantingSeasonsUpdated]);
   };
 
-  const handleSetSiteOwner = (id: any) => {
+  const handleSetSiteOwner = (id: number) => {
     const owner = siteOwners[id - 1];
     const updatedOwner = owner;
     updatedOwner.isSet = !owner.isSet;
@@ -186,55 +177,18 @@ export default function DetailedAnalysis({
     }
   });
 
-  const defaultDetailedAnalysis =
-    purpose === 'trees'
-      ? {
-          yearAbandoned: '',
-          firstTreePlanted: '',
-          plantingDensity: '',
-          maxPlantingDensity: '',
-          employeesCount: '',
-          mainChallenge: '',
-          siteOwnerType: '',
-          siteOwnerName: '',
-          acquisitionYear: '',
-          degradationYear: '',
-          degradationCause: '',
-          longTermPlan: '',
-          plantingSeasons: '',
-          motivation: '',
-        }
-      : {
-          employeesCount: '',
-          acquisitionYear: '',
-          protectionStartedYear: '',
-          areaProtected: '',
-          employeeCount: '',
-          timePeriod: '',
-          forestProtectionType: '',
-          conservationImpacts: '',
-          siteOwnerType: '',
-          siteOwnerName: '',
-          mainChallenge: '',
-          longTermPlan: '',
-          endangeredSpecies: '',
-          addAnotherSpecies: '',
-          motivation: '',
-        };
-
   const { register, handleSubmit, errors, control, reset } = useForm({
     mode: 'onBlur',
-    defaultValues: defaultDetailedAnalysis,
   });
 
-  const owners = [];
+  const owners: string[] = [];
   for (let i = 0; i < siteOwners.length; i++) {
     if (siteOwners[i].isSet) {
-      owners.push(siteOwners[i].value);
+      owners.push(`${siteOwners[i].value}`);
     }
   }
 
-  const months = [];
+  const months: string[] = [];
   for (let i = 0; i < plantingSeasons.length; i++) {
     if (plantingSeasons[i].isSet) {
       const j = i + 1;
@@ -373,7 +327,6 @@ export default function DetailedAnalysis({
               siteOwnerName: projectDetails?.metadata?.siteOwnerName,
               landOwnershipType: projectDetails?.metadata?.landOwnershipType,
               longTermPlan: projectDetails?.metadata?.longTermPlan,
-              siteOwnerName: projectDetails?.metadata?.siteOwnerName,
               // ownershipType: projectDetails?.metadata?.ownershipType,
               benefits: projectDetails?.metadata?.benefits,
               actions: projectDetails?.metadata?.actions,

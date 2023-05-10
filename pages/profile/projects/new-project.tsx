@@ -9,15 +9,14 @@ import Footer from '../../../src/features/common/Layout/Footer';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
 import { ProjectCreationTabs } from '../../../src/features/user/ManageProjects';
-import DashboardView from '../../../src/features/common/Layout/DashboardView';
 
 export default function AddProjectType(): ReactElement {
   const router = useRouter();
   const { t } = useTranslation(['donate', 'manageProjects']);
-  const [isPurpose, setIsPurpose] = React.useState(false);
+  const [isPurpose, setIsPurpose] = React.useState<boolean>(false);
+  const [accessDenied, setAccessDenied] = React.useState<boolean>(false);
+  const [setupAccess, setSetupAccess] = React.useState<boolean>(false);
   const { user, contextLoaded, token, loginWithRedirect } = useUserProps();
-  const [accessDenied, setAccessDenied] = React.useState(false);
-  const [setupAccess, setSetupAccess] = React.useState(false);
   React.useEffect(() => {
     if (router.query.purpose) {
       setIsPurpose(true);

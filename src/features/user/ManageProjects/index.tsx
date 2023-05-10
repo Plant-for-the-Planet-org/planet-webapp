@@ -35,10 +35,12 @@ export default function ManageProjects({ GUID, token, project }: any) {
   const { logoutUser } = useUserProps();
   const router = useRouter();
 
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [errorMessage, setErrorMessage] = React.useState('');
-  const [tabSelected, setTabSelected] = React.useState<number | string>('');
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
+  const [activeStep, setActiveStep] = React.useState<number>(0);
+  const [errorMessage, setErrorMessage] = React.useState<string | undefined>(
+    undefined
+  );
+  const [tabSelected, setTabSelected] = React.useState<number>(0);
+  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
   const [projectGUID, setProjectGUID] = React.useState(GUID ? GUID : '');
   const [tablist, setTabList] = React.useState<TabItem[]>([]);
   const [projectDetails, setProjectDetails] = React.useState(

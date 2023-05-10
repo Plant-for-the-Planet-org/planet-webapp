@@ -12,19 +12,19 @@ import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
-import DashboardView from '../../../src/features/common/Layout/DashboardView';
 import { handleError, APIError } from '@planet-sdk/common';
+import { Project } from '../../../src/features/common/types/project';
 
-interface Props {}
-
-function ManageSingleProject({}: Props): ReactElement {
+function ManageSingleProject(): ReactElement {
   const { t } = useTranslation(['manageProjects', 'common']);
-  const [projectGUID, setProjectGUID] = React.useState(null);
-  const [ready, setReady] = React.useState(false);
+  const [projectGUID, setProjectGUID] = React.useState<
+    string | string[] | null
+  >(null);
+  const [ready, setReady] = React.useState<boolean>(false);
   const router = useRouter();
-  const [accessDenied, setAccessDenied] = React.useState(false);
-  const [setupAccess, setSetupAccess] = React.useState(false);
-  const [project, setProject] = React.useState({});
+  const [accessDenied, setAccessDenied] = React.useState<boolean>(false);
+  const [setupAccess, setSetupAccess] = React.useState<boolean>(false);
+  const [project, setProject] = React.useState<Project | unknown>(undefined);
   const { user, contextLoaded, token, logoutUser } = useUserProps();
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
 

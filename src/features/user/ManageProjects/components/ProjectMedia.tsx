@@ -22,14 +22,14 @@ import { handleError, APIError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ProjectCreationTabs } from '..';
 
-interface Props {
+interface ProjectMediaProps {
   handleNext: Function;
   handleBack: Function;
   projectDetails: Object;
   setProjectDetails: Function;
   projectGUID: String;
   handleReset: Function;
-  token: any;
+  token: string;
 }
 
 export default function ProjectMedia({
@@ -40,17 +40,19 @@ export default function ProjectMedia({
   setProjectDetails,
   projectGUID,
   handleReset,
-}: Props): ReactElement {
+}: ProjectMediaProps): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
 
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
-  const [uploadedImages, setUploadedImages] = React.useState<Array<any>>([]);
+  const [uploadedImages, setUploadedImages] = React.useState<
+    string[] | undefined
+  >(undefined);
 
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState('');
+  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = React.useState<string>('');
 
   const fetchImages = async () => {
     try {
@@ -149,7 +151,7 @@ export default function ProjectMedia({
   React.useEffect(
     () => () => {
       // Make sure to revoke the data uris to avoid memory leaks
-      files.forEach((file) => URL.revokeObjectURL(file.preview));
+      files.forEach((file) => URL.revokeObjectURL(file?.preview));
     },
     [files]
   );
@@ -195,7 +197,7 @@ export default function ProjectMedia({
 
   React.useEffect(() => {
     if (projectDetails) {
-      setYoutubeURL(projectDetails.videoUrl);
+      setYoutubeURL(projectDetails?.videoUrl);
     }
   }, [projectDetails]);
 
