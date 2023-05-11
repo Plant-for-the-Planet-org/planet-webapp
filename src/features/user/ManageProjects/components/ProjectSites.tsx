@@ -117,7 +117,7 @@ export default function ProjectSites({
   const classes = useStylesAutoComplete();
   // Assigning defaultSiteDetails as default
 
-  const changeSiteDetails = (e: any) => {
+  const changeSiteDetails = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSiteDetails({ ...siteDetails, [e.target.name]: e.target.value });
   };
 

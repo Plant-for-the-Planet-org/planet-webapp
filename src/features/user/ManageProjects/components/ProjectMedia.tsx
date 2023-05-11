@@ -21,16 +21,7 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import { handleError, APIError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ProjectCreationTabs } from '..';
-
-interface ProjectMediaProps {
-  handleNext: Function;
-  handleBack: Function;
-  projectDetails: Object;
-  setProjectDetails: Function;
-  projectGUID: String;
-  handleReset: Function;
-  token: string;
-}
+import { ProjectMediaProps } from '../../../common/types/project';
 
 export default function ProjectMedia({
   handleBack,

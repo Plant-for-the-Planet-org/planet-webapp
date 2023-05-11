@@ -20,6 +20,11 @@ import { ProjectCreationTabs } from '..';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
+import {
+  DetailedAnalysisProps,
+  SiteOwners,
+  PlantingSeason,
+} from '../../../common/types/project';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -54,30 +59,6 @@ const yearDialogSx: SxProps = {
     paddingBottom: '12px',
   },
 };
-
-interface DetailedAnalysisProps {
-  handleNext: Function;
-  handleBack: Function;
-  projectDetails: Object;
-  setProjectDetails: Function;
-  projectGUID: String;
-  handleReset: Function;
-  token: any;
-  userLang: String;
-  purpose: String;
-}
-interface SiteOwners {
-  id: number;
-  title: string;
-  value: string;
-  isSet: boolean;
-}
-
-interface PlantingSeason {
-  id: number;
-  title: string;
-  isSet: boolean;
-}
 
 export default function DetailedAnalysis({
   handleBack,

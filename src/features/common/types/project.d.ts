@@ -1,6 +1,7 @@
 import { ConservationProjectMetadata, TreeProjectMetadata } from "@planet-sdk/common"
 import { FeatureCollection as GeoJson } from 'geojson';
 import { SetState } from "./common";
+import {ChangeEvent} from 'react'
 export interface Project {
   name: string
   countTarget: number
@@ -53,8 +54,57 @@ export interface BasicDetailsProps {
   purpose: String;
 }
 
-// project media types
+// project media
 
+interface ProjectMediaProps {
+  handleBack: (arg: number) => void;
+  token: string;
+  handleNext: (arg: number) => void;
+  projectDetails: Project;
+  setProjectDetails: SetState<Project>;
+  projectGUID: String;
+  handleReset:(arg: string) => void;
+}
+
+
+// Detail Analysis
+
+export interface DetailedAnalysisProps {
+  handleBack: (arg: number) => void;
+  userLang: String;
+  token: string;
+  handleNext: (arg: number) => void;
+  projectDetails: Project;
+  setProjectDetails: SetState<Project>;
+  projectGUID: String;
+  handleReset: (arg: string) => void;
+  purpose: String;
+}
+export interface SiteOwners {
+  id: number;
+  title: string;
+  value: string;
+  isSet: boolean;
+}
+
+export interface PlantingSeason {
+  id: number;
+  title: string;
+  isSet: boolean;
+}
+
+
+// project site types
+
+
+export interface ProjectSitesProps {
+  handleBack: (arg: number) => void;
+  token: string;
+  handleNext: (arg: number) => void;
+  projectGUID: String;
+  handleReset: (arg: string) => void;
+  projectDetails: Project;
+}
 export interface SiteDetails {
   geometry: {};
   name: string;
@@ -75,15 +125,6 @@ export interface Viewport {
   zoom: number[];
 }
 
-export interface ProjectSitesProps {
-  handleNext: (arg: number) => void;
-  handleBack: (arg: number) => void;
-  projectGUID: String;
-  handleReset: (arg: string) => void;
-  token: string;
-  projectDetails: object;
-}
-
 export interface GeoLocation {
   geoLatitude: number;
   geoLongitude: number;
@@ -91,14 +132,14 @@ export interface GeoLocation {
 
 interface EditSiteProps {
   openModal: boolean;
-  handleModalClose: Function;
-  changeSiteDetails: Function;
+  handleModalClose: ()=> void;
+  changeSiteDetails: (e: ChangeEvent<HTMLInputElement>) => void;
   siteDetails: SiteDetails;
   status: string;
   geoJsonProp: GeoJson;
   ready: boolean;
   projectGUID: string;
-  setSiteList: Function;
+  setSiteList: SetState<SiteList>;
   token: string;
   setFeatures: Function;
   seteditMode: Function;
@@ -108,12 +149,12 @@ interface EditSiteProps {
 
 // project spending
 export interface ProjectSpendingProps {
-  handleNext: (arg: number) => void;
   handleBack: (arg: number) => void;
-  handleReset: (arg: string) => void;
-  projectGUID: String;
   token: string;
+  handleNext: (arg: number) => void;
   userLang: String;
+  projectGUID: String;
+  handleReset: (arg: string) => void;
 }
 
 export interface UploadedFiles {
@@ -126,13 +167,13 @@ export interface UploadedFiles {
 // project review
 
 export interface SubmitForReviewProps {
+  submitForReview:  () => Promise<void>;
   handleBack: (arg: number) => void;
-  submitForReview: Function;
   isUploadingData: Boolean;
   projectGUID: string;
   handleReset:  (arg: string) => void;
   projectDetails: Project;
-  handlePublishChange: Function;
+  handlePublishChange: (arg: boolean) => Promise<void>;
 }
 export interface MapSingleProject {
   type: string;

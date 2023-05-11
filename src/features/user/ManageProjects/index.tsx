@@ -115,7 +115,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
     }
   };
 
-  const handlePublishChange = async (val) => {
+  const handlePublishChange = async (val: boolean) => {
     setIsUploadingData(true);
     const submitData = {
       publish: val,
