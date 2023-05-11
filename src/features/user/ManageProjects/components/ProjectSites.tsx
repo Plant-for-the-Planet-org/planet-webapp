@@ -26,19 +26,19 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import { handleError, APIError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ProjectCreationTabs } from '..';
+import {
+  SiteDetails,
+  SiteList,
+  Viewport,
+  ProjectSitesProps,
+  GeoLocation,
+  EditSiteProps,
+} from '../../../common/types/project';
+import { FeatureCollection as GeoJson } from 'geojson';
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
 });
-
-interface Props {
-  handleNext: Function;
-  handleBack: Function;
-  projectGUID: String;
-  handleReset: Function;
-  token: any;
-  projectDetails: object;
-}
 
 const Map = dynamic(() => import('./MapComponent'), {
   ssr: false,
@@ -52,15 +52,44 @@ export default function ProjectSites({
   projectGUID,
   handleReset,
   projectDetails,
-}: Props): ReactElement {
+}: ProjectSitesProps): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
   const { theme } = React.useContext(ThemeContext);
   const [features, setFeatures] = React.useState([]);
   const { register, handleSubmit, errors, control } = useForm();
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [geoJsonError, setGeoJsonError] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState('');
-  const [openModal, setOpenModal] = React.useState(false);
+  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
+  const [geoJsonError, setGeoJsonError] = React.useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+  const [openModal, setOpenModal] = React.useState<boolean>(false);
+  const [showForm, setShowForm] = React.useState<boolean>(true);
+  const [editMode, seteditMode] = React.useState<boolean>(false);
+  const [geoLocation, setgeoLocation] = React.useState<GeoLocation | undefined>(
+    undefined
+  );
+  const [geoJson, setGeoJson] = React.useState<GeoJson | null>(null);
+  const defaultMapCenter = [36.96, -28.5];
+  const defaultZoom = 1.4;
+  const [viewport, setViewPort] = React.useState<Viewport>({
+    height: 320,
+    width: 200,
+    center: defaultMapCenter,
+    zoom: [defaultZoom],
+  });
+  const [style, setStyle] = React.useState({
+    version: 8,
+    sources: {},
+    layers: [],
+  });
+  const defaultSiteDetails = {
+    name: '',
+    status: '',
+    geometry: {},
+  };
+
+  const [siteDetails, setSiteDetails] =
+    React.useState<SiteDetails>(defaultSiteDetails);
+  const [siteList, setSiteList] = React.useState<SiteList[]>([]);
+  const [siteGUID, setSiteGUID] = React.useState<string | null>(null);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
 
@@ -86,43 +115,11 @@ export default function ProjectSites({
     },
   });
   const classes = useStylesAutoComplete();
-
-  const [geoLocation, setgeoLocation] = React.useState<Object>();
-  const defaultSiteDetails = {
-    name: '',
-    status: '',
-    geometry: {},
-  };
-
   // Assigning defaultSiteDetails as default
-  const [siteDetails, setSiteDetails] = React.useState(defaultSiteDetails);
-  const [siteList, setSiteList] = React.useState<
-    Array<{
-      id: String;
-      name: String;
-      status: String;
-      geometry: Object;
-    }>
-  >([]);
 
   const changeSiteDetails = (e: any) => {
     setSiteDetails({ ...siteDetails, [e.target.name]: e.target.value });
   };
-
-  const [geoJson, setGeoJson] = React.useState(null);
-  const defaultMapCenter = [36.96, -28.5];
-  const defaultZoom = 1.4;
-  const [viewport, setViewPort] = React.useState({
-    height: 320,
-    width: 200,
-    center: defaultMapCenter,
-    zoom: [defaultZoom],
-  });
-  const [style, setStyle] = React.useState({
-    version: 8,
-    sources: {},
-    layers: [],
-  });
 
   const RASTER_SOURCE_OPTIONS = {
     type: 'raster',
@@ -131,10 +128,6 @@ export default function ProjectSites({
     ],
     tileSize: 128,
   };
-
-  const [showForm, setShowForm] = React.useState(true);
-
-  const [editMode, seteditMode] = React.useState(false);
 
   const handleModalClose = () => {
     seteditMode(false);
@@ -154,6 +147,35 @@ export default function ProjectSites({
       handleReset(ready ? t('manageProjects:resetMessage') : '');
     }
   });
+
+  const fetchProjSites = async () => {
+    try {
+      if (projectGUID) {
+        // Fetch sites of the project
+        const result = await getAuthenticatedRequest(
+          `/app/profile/projects/${projectGUID}?_scope=sites`,
+          token,
+          logoutUser
+        );
+        const geoLocation = {
+          geoLatitude: result.geoLatitude,
+          geoLongitude: result.geoLongitude,
+        };
+        setgeoLocation(geoLocation);
+
+        if (result.sites.length > 0) {
+          setShowForm(false);
+        }
+        setSiteList(result.sites);
+      }
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+      redirect('/profile');
+    }
+  };
+  React.useEffect(() => {
+    fetchProjSites();
+  }, [projectGUID]);
 
   const uploadProjectSite = async (data: any) => {
     if (geoJson && geoJson.features.length !== 0) {
@@ -254,39 +276,6 @@ export default function ProjectSites({
       value: projectDetails.purpose === 'trees' ? 'reforestation' : '',
     },
   ];
-
-  const fetchProjSites = async () => {
-    try {
-      if (projectGUID) {
-        // Fetch sites of the project
-        const result = await getAuthenticatedRequest(
-          `/app/profile/projects/${projectGUID}?_scope=sites`,
-          token,
-          logoutUser
-        );
-        const geoLocation = {
-          geoLatitude: result.geoLatitude,
-          geoLongitude: result.geoLongitude,
-        };
-        setgeoLocation(geoLocation);
-
-        if (result.sites.length > 0) {
-          setShowForm(false);
-        }
-        setSiteList(result.sites);
-      }
-    } catch (err) {
-      setErrors(handleError(err as APIError));
-      redirect('/profile');
-    }
-  };
-
-  React.useEffect(() => {
-    fetchProjSites();
-  }, [projectGUID]);
-
-  const [siteGUID, setSiteGUID] = React.useState();
-
   const editSite = (site: any) => {
     const defaultSiteDetails = {
       name: site.name,
@@ -553,23 +542,6 @@ export default function ProjectSites({
   );
 }
 
-interface EditSiteProps {
-  openModal: boolean;
-  handleModalClose: Function;
-  changeSiteDetails: Function;
-  siteDetails: any;
-  status: any;
-  geoJsonProp: any;
-  ready: any;
-  projectGUID: any;
-  setSiteList: Function;
-  token: any;
-  setFeatures: Function;
-  seteditMode: Function;
-  siteGUID: any;
-  siteList: any;
-}
-
 function EditSite({
   openModal,
   handleModalClose,
@@ -589,12 +561,12 @@ function EditSite({
   const { theme } = React.useContext(ThemeContext);
   const { t } = useTranslation(['manageProjects']);
   const { register, handleSubmit, errors, control } = useForm();
-  const [geoJson, setGeoJson] = React.useState(geoJsonProp);
-  const [geoJsonError, setGeoJsonError] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState('');
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
+  const [geoJson, setGeoJson] = React.useState<GeoJson>(geoJsonProp);
+  const [geoJsonError, setGeoJsonError] = React.useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const { logoutUser } = React.useContext(UserPropsContext);
+  const { logoutUser } = useUserProps();
 
   const useStylesAutoComplete = makeStyles({
     root: {

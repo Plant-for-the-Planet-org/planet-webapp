@@ -25,6 +25,10 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import { handleError, APIError } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
+import {
+  ProjectSpendingProps,
+  UploadedFiles,
+} from '../../../common/types/project';
 
 const yearDialogSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
@@ -43,15 +47,6 @@ const yearDialogSx: SxProps = {
   },
 };
 
-interface Props {
-  handleNext: Function;
-  handleBack: Function;
-  projectGUID: String;
-  handleReset: Function;
-  token: any;
-  userLang: String;
-}
-
 export default function ProjectSpending({
   handleBack,
   token,
@@ -59,7 +54,7 @@ export default function ProjectSpending({
   userLang,
   projectGUID,
   handleReset,
-}: Props): ReactElement {
+}: ProjectSpendingProps): ReactElement {
   const { t, ready } = useTranslation(['manageProjects', 'common']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const {
@@ -72,12 +67,12 @@ export default function ProjectSpending({
     control,
   } = useForm({ mode: 'all' });
 
-  const [amount, setAmount] = React.useState(0);
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState('');
+  const [amount, setAmount] = React.useState<number>(0);
+  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
-  const [showForm, setShowForm] = React.useState(true);
-  const [uploadedFiles, setUploadedFiles] = React.useState([]);
+  const [showForm, setShowForm] = React.useState<boolean>(true);
+  const [uploadedFiles, setUploadedFiles] = React.useState<UploadedFiles>([]);
   const { logoutUser } = useUserProps();
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {

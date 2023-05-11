@@ -88,7 +88,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
     formRouteHandler(previousTab);
   };
 
-  const handleReset = (message: string) => {
+  const handleReset = (message: string): void => {
     setErrorMessage(message);
     setActiveStep(0);
   };

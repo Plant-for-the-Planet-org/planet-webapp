@@ -9,16 +9,7 @@ import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import router from 'next/router';
 import { Button } from '@mui/material';
 import { ProjectCreationTabs } from '..';
-
-interface Props {
-  handleBack: Function;
-  submitForReview: Function;
-  isUploadingData: Boolean;
-  projectGUID: any;
-  handleReset: Function;
-  projectDetails: any;
-  handlePublishChange: Function;
-}
+import { SubmitForReviewProps } from '../../../common/types/project';
 
 function SubmitForReview({
   submitForReview,
@@ -28,7 +19,7 @@ function SubmitForReview({
   handleReset,
   projectDetails,
   handlePublishChange,
-}: Props): ReactElement {
+}: SubmitForReviewProps): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
 
   React.useEffect(() => {
@@ -36,9 +27,10 @@ function SubmitForReview({
       handleReset(ready ? t('manageProjects:resetMessage') : '');
     }
   });
-
   function UnderReviewComponent() {
-    const [publish, setPublish] = React.useState(projectDetails.publish);
+    const [publish, setPublish] = React.useState<boolean>(
+      projectDetails.publish
+    );
 
     return (
       <>
@@ -88,7 +80,9 @@ function SubmitForReview({
   }
 
   function NotSubmittedReview() {
-    const [publish, setPublish] = React.useState(projectDetails.publish);
+    const [publish, setPublish] = React.useState<boolean>(
+      projectDetails.publish
+    );
 
     return (
       <>
