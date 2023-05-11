@@ -32,8 +32,6 @@ function Login({}: Props): ReactElement {
     if (contextLoaded) {
       if (user) {
         loadFunction();
-      } else if (user === null) {
-        // wait for context to redirect to complete signup
       } else {
         loginWithRedirect({
           redirectUri: `${process.env.NEXTAUTH_URL}/login`,
