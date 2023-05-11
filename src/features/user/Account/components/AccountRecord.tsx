@@ -46,7 +46,7 @@ export default function AccountRecord({
   const outerDivClasses = isModal
     ? styles.recordModal
     : `${styles.record} ${selectedRecord === index ? styles.selected : ''}`;
-
+  console.log(record);
   const showCertificate = useMemo(() => {
     if (
       record?.details?.donorCertificate ||
@@ -476,6 +476,7 @@ export function BankDetails({ recipientBank }: BankDetailsProps): ReactElement {
 
 interface CertificatesProps {
   recordDetails: PaymentDetails;
+  purpose: string;
 }
 
 export function Certificates({
@@ -483,9 +484,20 @@ export function Certificates({
   purpose,
 }: CertificatesProps): ReactElement {
   const { t } = useTranslation(['me']);
+
+  const disableDonorCertficate = (purpose: string) => {
+    if (purpose === 'conservation') {
+      return false;
+    } else if (purpose === 'bouquet') {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   return (
     <>
-      {recordDetails?.donorCertificate && purpose !== 'conservation' && (
+      {recordDetails?.donorCertificate && disableDonorCertficate(purpose) && (
         <div className={styles.singleDetail}>
           <a
             href={recordDetails?.donorCertificate}
@@ -507,7 +519,7 @@ export function Certificates({
           </a>
         </div>
       )}
-      {recordDetails?.giftCertificate && purpose !== 'conservation' && (
+      {recordDetails?.giftCertificate && disableDonorCertficate(purpose) && (
         <div className={styles.singleDetail}>
           <a
             href={recordDetails.giftCertificate}
