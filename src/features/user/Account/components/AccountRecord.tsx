@@ -485,7 +485,7 @@ export function Certificates({
 }: CertificatesProps): ReactElement {
   const { t } = useTranslation(['me']);
 
-  const disableDonorCertficate = (purpose: string) => {
+  const disableCertficate = (purpose: string) => {
     if (purpose === 'conservation') {
       return false;
     } else if (purpose === 'bouquet') {
@@ -497,7 +497,7 @@ export function Certificates({
 
   return (
     <>
-      {recordDetails?.donorCertificate && disableDonorCertficate(purpose) && (
+      {recordDetails?.donorCertificate && disableCertficate(purpose) && (
         <div className={styles.singleDetail}>
           <a
             href={recordDetails?.donorCertificate}
@@ -519,7 +519,7 @@ export function Certificates({
           </a>
         </div>
       )}
-      {recordDetails?.giftCertificate && disableDonorCertficate(purpose) && (
+      {recordDetails?.giftCertificate && disableCertficate(purpose) && (
         <div className={styles.singleDetail}>
           <a
             href={recordDetails.giftCertificate}
