@@ -1,5 +1,6 @@
 import { ConservationProjectMetadata, TreeProjectMetadata } from "@planet-sdk/common"
 import { FeatureCollection as GeoJson } from 'geojson';
+import { SetState } from "./common";
 export interface Project {
   name: string
   countTarget: number
@@ -40,7 +41,17 @@ export interface Project {
   revisionPeriodicityLevel: any
 }
 
+// basic Detail
 
+export interface BasicDetailsProps {
+  handleNext: (arg: number) => void;
+  projectDetails: Project;
+  setProjectDetails: SetState<Project>;
+  setProjectGUID: SetState<string>;
+  projectGUID: string;
+  token: string;
+  purpose: String;
+}
 
 // project media types
 

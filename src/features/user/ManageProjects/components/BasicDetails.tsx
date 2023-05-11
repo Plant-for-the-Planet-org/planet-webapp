@@ -33,16 +33,7 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import { handleError, APIError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ProjectCreationTabs } from '..';
-
-interface Props {
-  handleNext: Function;
-  projectDetails: Object;
-  setProjectDetails: Function;
-  setProjectGUID: Function;
-  projectGUID: any;
-  token: any;
-  purpose: String;
-}
+import { BasicDetailsProps } from '../../../common/types/project';
 
 export default function BasicDetails({
   handleNext,
@@ -52,7 +43,7 @@ export default function BasicDetails({
   setProjectGUID,
   projectGUID,
   purpose,
-}: Props): ReactElement {
+}: BasicDetailsProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
   const EMPTY_STYLE = {
     version: 8,
