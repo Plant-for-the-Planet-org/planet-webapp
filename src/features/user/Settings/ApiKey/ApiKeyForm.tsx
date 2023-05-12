@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './ApiKey.module.scss';
-import AnimatedButton from '../../../common/InputTypes/AnimatedButton';
 import {
   getAuthenticatedRequest,
   putAuthenticatedRequest,
@@ -12,7 +11,7 @@ import EyeIcon from '../../../../../public/assets/images/icons/EyeIcon';
 import EyeDisabled from '../../../../../public/assets/images/icons/EyeDisabled';
 import { useTranslation } from 'next-i18next';
 import StyledForm from '../../../common/Layout/StyledForm';
-import { TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 
 interface EyeButtonParams {
   isVisible: boolean;
@@ -55,7 +54,9 @@ export default function ApiKey() {
     setIsUploadingData(false);
   };
 
-  const regenerateApiKey = async (e: MouseEvent) => {
+  const regenerateApiKey = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
     setIsUploadingData(true);
     const res = await putAuthenticatedRequest(
@@ -80,34 +81,35 @@ export default function ApiKey() {
   return (
     <StyledForm>
       <div className="inputContainer">
-        <div className={styles.apiPage}>
-          <div className={styles.apiKeyContainer}>
-            <TextField
-              // label={t('me:apiKey')}
-              type={isApiKeyVisible ? 'text' : 'password'}
-              variant="outlined"
-              name="apiKey"
-              disabled
-              value={apiKey}
-            />
-            <EyeButton
-              isVisible={isApiKeyVisible}
-              onClick={handleVisibilityChange}
-            />
-            <CopyToClipboard text={apiKey} isButton />
-          </div>
-          <div className={styles.regenerateButtonContainer}>
-            <AnimatedButton
-              onClick={(e: MouseEvent) => regenerateApiKey(e)}
-              className={styles.regenerateButton}
-            >
-              {isUploadingData ? (
-                <div className={'spinner'}></div>
-              ) : (
-                t('me:regenerateKey')
-              )}
-            </AnimatedButton>
-          </div>
+        <div className={styles.apiKeyContainer}>
+          <TextField
+            // label={t('me:apiKey')}
+            type={isApiKeyVisible ? 'text' : 'password'}
+            variant="outlined"
+            name="apiKey"
+            disabled
+            value={apiKey}
+          />
+          <EyeButton
+            isVisible={isApiKeyVisible}
+            onClick={handleVisibilityChange}
+          />
+          <CopyToClipboard text={apiKey} isButton />
+        </div>
+        <div>
+          <Button
+            onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
+              regenerateApiKey(e)
+            }
+            variant="contained"
+            color="primary"
+          >
+            {isUploadingData ? (
+              <div className={'spinner'}></div>
+            ) : (
+              t('me:regenerateKey')
+            )}
+          </Button>
         </div>
       </div>
     </StyledForm>
