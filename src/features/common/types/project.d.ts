@@ -175,6 +175,24 @@ export interface SubmitForReviewProps {
   projectDetails: Project;
   handlePublishChange: (arg: boolean) => Promise<void>;
 }
+
+
+// Project certificate
+
+
+interface ProjectCertificatesProps {
+  projectGUID: String;
+  token: string;
+  setIsUploadingData: Function;
+  userLang: String;
+}
+
+interface CertificateUploaded {
+  certifierName: string;
+  id: string;
+  issueDate : string;
+  pdf: string
+}
 export interface MapSingleProject {
   type: string;
   geometry: unknown;

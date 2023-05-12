@@ -21,6 +21,10 @@ import { SxProps, TextField, Button } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
+import {
+  ProjectCertificatesProps,
+  CertificateUploaded,
+} from '../../../common/types/project';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -39,35 +43,30 @@ const dialogSx: SxProps = {
   },
 };
 
-interface Props {
-  projectGUID: String;
-  token: any;
-  setIsUploadingData: Function;
-  userLang: String;
-}
-
 function ProjectCertificates({
   projectGUID,
   token,
   setIsUploadingData,
   userLang,
-}: Props): ReactElement {
+}: ProjectCertificatesProps): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
 
   const { register, errors, getValues, setValue } = useForm({ mode: 'all' });
 
-  const [issueDate, setIssueDate] = React.useState(new Date());
+  const [issueDate, setIssueDate] = React.useState<Date>(new Date());
 
-  const [certifierName, setCertifierName] = React.useState('');
+  const [certifierName, setCertifierName] = React.useState<string | null>(null);
 
-  const [uploadedFiles, setUploadedFiles] = React.useState<Array<any>>();
-  const [showForm, setShowForm] = React.useState(true);
-  const [errorMessage, setErrorMessage] = React.useState('');
-  const [isCertified, setisCertified] = React.useState(true);
-  const [showToggle, setShowToggle] = React.useState(true);
-
+  const [uploadedFiles, setUploadedFiles] =
+    React.useState<CertificateUploaded[]>();
+  const [showForm, setShowForm] = React.useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = React.useState<string | undefined>(
+    undefined
+  );
+  const [isCertified, setisCertified] = React.useState<boolean>(true);
+  const [showToggle, setShowToggle] = React.useState<boolean>(true);
   const onDrop = React.useCallback(
     (acceptedFiles) => {
       acceptedFiles.forEach((file: any) => {
