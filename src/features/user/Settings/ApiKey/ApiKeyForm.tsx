@@ -12,10 +12,14 @@ import EyeDisabled from '../../../../../public/assets/images/icons/EyeDisabled';
 import { useTranslation } from 'next-i18next';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { Button, TextField } from '@mui/material';
+import { ApiCustomError } from '../../../common/types/apiErrors';
 
 interface EyeButtonParams {
   isVisible: boolean;
   onClick: () => void;
+}
+interface ApiKeyResponse {
+  apiKey: string;
 }
 
 const EyeButton = ({ isVisible, onClick }: EyeButtonParams) => {
@@ -41,15 +45,16 @@ export default function ApiKey() {
 
   const getApiKey = async () => {
     setIsUploadingData(true);
-    const res = await getAuthenticatedRequest(
-      '/app/profile/apiKey',
-      token,
-      impersonatedEmail,
-      {},
-      handleError
-    );
+    const res: ApiKeyResponse | ApiCustomError | undefined =
+      await getAuthenticatedRequest(
+        '/app/profile/apiKey',
+        token,
+        impersonatedEmail,
+        {},
+        handleError
+      );
     if (res) {
-      setApiKey(res.apiKey);
+      setApiKey(res.apiKey || '');
     }
     setIsUploadingData(false);
   };
@@ -59,15 +64,16 @@ export default function ApiKey() {
   ) => {
     e.preventDefault();
     setIsUploadingData(true);
-    const res = await putAuthenticatedRequest(
-      '/app/profile/apiKey',
-      undefined,
-      token,
-      impersonatedEmail,
-      handleError
-    );
+    const res: ApiKeyResponse | ApiCustomError | undefined =
+      await putAuthenticatedRequest(
+        '/app/profile/apiKey',
+        undefined,
+        token,
+        impersonatedEmail,
+        handleError
+      );
     if (res) {
-      setApiKey(res.apiKey);
+      setApiKey(res.apiKey || '');
     }
     setIsUploadingData(false);
   };
