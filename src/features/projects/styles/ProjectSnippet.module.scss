@@ -126,11 +126,24 @@
   position: absolute;
   top: 12px;
   right: 16px;
-  background-color: rgba(0, 0, 0, 0.7);
-  padding: 4px 12px;
-  color: #fff;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  background-color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  border-radius: 50px;
   font-weight: 700;
-  font-size: 12px;
+  gap: 2px;
+  .badgeIcon {
+    background-color: #fff;
+    border-radius: 100%;
+    font-size: 18px;
+  }
+  .badgeText {
+    color: #fff;
+    padding: 0 5px;
+    font-size: 12px;
+  }
 }
 
 /* Progress Bar */

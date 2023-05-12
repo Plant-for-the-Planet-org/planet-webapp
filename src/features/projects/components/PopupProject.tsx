@@ -8,6 +8,7 @@ import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import VerifiedIcon from '@mui/icons-material/Verified';
+import StarIcon from '@mui/icons-material/Star';
 
 interface Props {
   project: any;
@@ -52,7 +53,10 @@ export default function PopupProject({
           ></div>
         ) : null}
         {project.properties.isTopProject && project.properties.isApproved && (
-          <div className={'topProjectBadge'}>{t('common:topProject')}</div>
+          <div className={'topProjectBadge'}>
+            <StarIcon className={'badgeIcon'} sx={{ color: '#68B030' }} />
+            <p className={'badgeText'}>{t('common:topProject')}</p>
+          </div>
         )}
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>

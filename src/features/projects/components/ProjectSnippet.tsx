@@ -20,6 +20,7 @@ import {
   bindHover,
   bindPopover,
 } from 'material-ui-popup-state/hooks';
+import StarIcon from '@mui/icons-material/Star';
 
 interface Props {
   project: any;
@@ -94,7 +95,10 @@ export default function ProjectSnippet({
           ></div>
         ) : null}
         {project.isTopProject && project.isApproved && (
-          <div className={'topProjectBadge'}>{t('common:topProject')}</div>
+          <div className={'topProjectBadge'}>
+            <StarIcon className={'badgeIcon'} sx={{ color: '#68B030' }} />
+            <p className={'badgeText'}>{t('common:topProject')}</p>
+          </div>
         )}
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
