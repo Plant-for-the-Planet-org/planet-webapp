@@ -4,7 +4,7 @@ import {
   getAuthenticatedRequest,
   putAuthenticatedRequest,
 } from '../../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import CopyToClipboard from '../../../common/CopyToClipboard';
 import EyeIcon from '../../../../../public/assets/images/icons/EyeIcon';
@@ -13,6 +13,7 @@ import { useTranslation } from 'next-i18next';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { Button, TextField } from '@mui/material';
 import { ApiCustomError } from '../../../common/types/apiErrors';
+import { APIError, handleError } from '@planet-sdk/common';
 
 interface EyeButtonParams {
   isVisible: boolean;
@@ -31,10 +32,9 @@ const EyeButton = ({ isVisible, onClick }: EyeButtonParams) => {
 };
 
 export default function ApiKey() {
-  const { token, contextLoaded, impersonatedEmail } =
-    React.useContext(UserPropsContext);
+  const { token, contextLoaded, logoutUser } = useUserProps();
   const { t } = useTranslation(['me']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [apiKey, setApiKey] = React.useState('');
   const [isApiKeyVisible, setIsApiKeyVisible] = React.useState(false);
@@ -45,16 +45,14 @@ export default function ApiKey() {
 
   const getApiKey = async () => {
     setIsUploadingData(true);
-    const res: ApiKeyResponse | ApiCustomError | undefined =
-      await getAuthenticatedRequest(
-        '/app/profile/apiKey',
-        token,
-        impersonatedEmail,
-        {},
-        handleError
-      );
-    if (res) {
-      setApiKey(res.apiKey || '');
+    try {
+      const res: ApiKeyResponse | ApiCustomError | undefined =
+        await getAuthenticatedRequest('/app/profile/apiKey', token, logoutUser);
+      if (res) {
+        setApiKey(res.apiKey || '');
+      }
+    } catch (err) {
+      setErrors(handleError(err as APIError));
     }
     setIsUploadingData(false);
   };
@@ -64,16 +62,19 @@ export default function ApiKey() {
   ) => {
     e.preventDefault();
     setIsUploadingData(true);
-    const res: ApiKeyResponse | ApiCustomError | undefined =
-      await putAuthenticatedRequest(
-        '/app/profile/apiKey',
-        undefined,
-        token,
-        impersonatedEmail,
-        handleError
-      );
-    if (res) {
-      setApiKey(res.apiKey || '');
+    try {
+      const res: ApiKeyResponse | ApiCustomError | undefined =
+        await putAuthenticatedRequest(
+          '/app/profile/apiKey',
+          undefined,
+          token,
+          logoutUser
+        );
+      if (res) {
+        setApiKey(res.apiKey || '');
+      }
+    } catch (err) {
+      setErrors(handleError(err as APIError));
     }
     setIsUploadingData(false);
   };
