@@ -1,4 +1,4 @@
-@import './../../../theme/theme';
+@import './../../../../theme/theme';
 
 :export {
   primaryColor: $primaryColor;
@@ -8,40 +8,6 @@
   dividerColor: $dividerColor;
 }
 
-.editProfileContainer {
-  width: 100%;
-  background-color: $backgroundColor;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: rgba(170, 170, 170, $alpha: 0.2) 0px 1px 4px;
-  @include smTabletView {
-    max-width: 460px;
-  }
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-}
-
-// header div
-.headerDiv {
-  display: flex;
-  float: left;
-  width: 100%;
-  align-items: center;
-}
-
-.backDiv:hover {
-  cursor: pointer;
-}
-
-.editProfileText {
-  font-size: $fontLarge;
-  margin-left: 20px;
-  color: $primaryFontColor;
-}
-.backDiv > svg > path {
-  fill: $primaryFontColor;
-}
 //profile pic div
 .profilePicDiv {
   background-color: $backgroundColor;
@@ -64,19 +30,8 @@
   border-radius: 100%;
 }
 
-// private account div
-.isPrivateAccountDiv {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
 .mainText {
   font-family: $primaryFontFamily;
-  font-size: $fontSmall;
   color: $highlightBackground;
   font-size: $fontSixteen;
   text-align: left;
@@ -93,35 +48,6 @@
   border-top: 1px solid $primaryColor;
   width: 100%;
   opacity: 0.5;
-  margin-top: 20px;
-}
-
-// save button
-
-.saveButton {
-  height: 40px;
-  border-radius: 100px;
-  padding-left: 24px;
-  padding-right: 24px;
-  display: flex;
-  justify-content: center;
-  background-image: linear-gradient(
-    103deg,
-    $primaryColor 5%,
-    $primaryDarkColor 116%
-  );
-  align-items: center;
-  font-weight: bold;
-  color: $light;
-  border: 0px;
-  transition-duration: 0.5s;
-  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-  font-size: 14px;
-  flex: 1;
-}
-.saveButton:hover {
-  transform: scale(1.05);
-  cursor: pointer;
 }
 
 .formErrors {
@@ -141,9 +67,9 @@
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
 }
 .formFieldHalf {
-  margin-top: 24px;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -156,7 +82,6 @@
   }
 }
 .formFieldLarge {
-  margin-top: 24px;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -170,9 +95,6 @@
       width: 200px;
     }
   }
-  .formFieldLarge {
-    max-width: 420px;
-  }
   .modal {
     width: 480px;
     padding: 20px 30px;
@@ -181,7 +103,7 @@
 
 // Loader for Buttons
 .spinner {
-  border: 2px solid #f3f3f3;
+  border: 2px solid var(--disabled-font-color);
   border-radius: 50%;
   border-top: 2px solid transparent;
   width: 16px !important;

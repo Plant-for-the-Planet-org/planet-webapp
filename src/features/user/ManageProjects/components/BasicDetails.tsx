@@ -17,7 +17,6 @@ import {
   postAuthenticatedRequest,
   putAuthenticatedRequest,
 } from '../../../../utils/apiRequests/api';
-import addServerErrors from '../../../../utils/apiRequests/addServerErrors';
 import {
   getFormattedNumber,
   parseNumber,
@@ -28,15 +27,14 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { handleError, APIError } from '@planet-sdk/common';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 interface Props {
   handleNext: Function;
   projectDetails: Object;
   setProjectDetails: Function;
-  errorMessage: String;
   setProjectGUID: Function;
-  setErrorMessage: Function;
   projectGUID: any;
   token: any;
   purpose: String;
@@ -47,9 +45,7 @@ export default function BasicDetails({
   token,
   projectDetails,
   setProjectDetails,
-  errorMessage,
   setProjectGUID,
-  setErrorMessage,
   projectGUID,
   purpose,
 }: Props): ReactElement {
@@ -65,7 +61,7 @@ export default function BasicDetails({
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   // Map setup
   const { theme } = React.useContext(ThemeContext);
-  const { impersonatedEmail } = React.useContext(UserPropsContext);
+  const { logoutUser } = useUserProps();
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
   const mapRef = React.useRef(null);
@@ -103,7 +99,7 @@ export default function BasicDetails({
     },
   });
   const classes = useStylesAutoComplete();
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     //loads the default mapstyle
@@ -356,7 +352,7 @@ export default function BasicDetails({
     }
   }, [projectDetails]);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     setIsUploadingData(true);
     const submitData =
       purpose === 'trees'
@@ -410,72 +406,36 @@ export default function BasicDetails({
 
     // Check if GUID is set use update instead of create project
     if (projectGUID) {
-      putAuthenticatedRequest(
-        `/app/projects/${projectGUID}`,
-        submitData,
-        token,
-        impersonatedEmail,
-        handleError
-      )
-        .then((res) => {
-          if (!res.code) {
-            setErrorMessage('');
-            setProjectDetails(res);
-            setIsUploadingData(false);
-            handleNext();
-          } else {
-            if (res.code === 404) {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-            } else if (res.code === 400) {
-              setIsUploadingData(false);
-              if (res.errors && res.errors.children) {
-                addServerErrors(res.errors.children, setError);
-              }
-            } else {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-            }
-          }
-        })
-        .catch((err) => {
-          setIsUploadingData(false);
-          setErrorMessage(err);
-        });
+      try {
+        const res = await putAuthenticatedRequest(
+          `/app/projects/${projectGUID}`,
+          submitData,
+          token,
+          logoutUser
+        );
+        setProjectDetails(res);
+        setIsUploadingData(false);
+        handleNext();
+      } catch (err) {
+        setIsUploadingData(false);
+        setErrors(handleError(err as APIError));
+      }
     } else {
-      postAuthenticatedRequest(
-        `/app/projects`,
-        submitData,
-        token,
-        impersonatedEmail,
-        handleError
-      )
-        .then((res) => {
-          if (!res.code) {
-            setErrorMessage('');
-            setProjectGUID(res.id);
-            setProjectDetails(res);
-            router.push(`/profile/projects/${res.id}?type=media`);
-            setIsUploadingData(false);
-          } else {
-            if (res.code === 404) {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-            } else if (res.code === 400) {
-              setIsUploadingData(false);
-              if (res.errors && res.errors.children) {
-                addServerErrors(res.errors.children, setError);
-              }
-            } else {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-            }
-          }
-        })
-        .catch((err) => {
-          setIsUploadingData(false);
-          setErrorMessage(err);
-        });
+      try {
+        const res = await postAuthenticatedRequest(
+          `/app/projects`,
+          submitData,
+          token,
+          logoutUser
+        );
+        setProjectGUID(res.id);
+        setProjectDetails(res);
+        router.push(`/profile/projects/${res.id}?type=media`);
+        setIsUploadingData(false);
+      } catch (err) {
+        setIsUploadingData(false);
+        setErrors(handleError(err as APIError));
+      }
     }
   };
   const geocoder = new GeocoderArcGIS(
@@ -727,7 +687,7 @@ export default function BasicDetails({
                     <ToggleSwitch
                       id="acceptDonations"
                       checked={properties.value}
-                      onChange={(e: any) => {
+                      onChange={(e) => {
                         properties.onChange(e.target.checked);
                         setAcceptDonations(e.target.checked);
                       }}
@@ -1009,12 +969,6 @@ export default function BasicDetails({
               />
             </div>
           </div> */}
-
-          {errorMessage && errorMessage !== '' ? (
-            <div className={styles.formFieldLarge}>
-              <h4 className={styles.errorMessage}>{errorMessage}</h4>
-            </div>
-          ) : null}
         </div>
         <div className={styles.formField} style={{ marginTop: '48px' }}>
           {/* <div className={`${styles.formFieldHalf}`}>

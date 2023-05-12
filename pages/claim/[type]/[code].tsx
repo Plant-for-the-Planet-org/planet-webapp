@@ -4,14 +4,15 @@ import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
 import { useTranslation } from 'next-i18next';
 import { GetStaticPaths } from 'next';
 import LandingSection from '../../../src/features/common/Layout/LandingSection';
-import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import {
+  RedeemFailed,
   SuccessfullyRedeemed,
-  RedeemCodeFailed,
-} from '../../../src/features/common/RedeemMicro/RedeemCode';
+} from '../../../src/features/common/RedeemCode';
 import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 
 export type ClaimCode1 = string | null;
 
@@ -20,9 +21,11 @@ function ClaimDonation(): ReactElement {
 
   const router = useRouter();
 
-  const { user, contextLoaded, loginWithRedirect, token, impersonatedEmail } =
-    React.useContext(UserPropsContext);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { user, contextLoaded, loginWithRedirect, token, logoutUser } =
+    useUserProps();
+
+  const { errors, setErrors } = React.useContext(ErrorHandlingContext);
+
   const [errorMessage, setErrorMessage] = React.useState<ClaimCode1>('');
   const [code, setCode] = React.useState<string | string[] | null>('');
   const [redeemedCodeData, setRedeemedCodeData] = React.useState<
@@ -57,23 +60,41 @@ function ClaimDonation(): ReactElement {
       code: code,
     };
     if (contextLoaded && user) {
-      postAuthenticatedRequest(
-        `/app/redeem`,
-        submitData,
-        token,
-        impersonatedEmail,
-        handleError
-      ).then((res) => {
-        if (res.error_code === 'invalid_code') {
-          setErrorMessage(t('redeem:invalidCode'));
-        } else if (res.error_code === 'already_redeemed') {
-          setErrorMessage(t('redeem:alreadyRedeemed'));
-        } else if (res.status === 'redeemed') {
-          setRedeemedCodeData(res);
+      try {
+        const res = await postAuthenticatedRequest(
+          `/app/redeem`,
+          submitData,
+          token,
+          logoutUser
+        );
+        setRedeemedCodeData(res);
+      } catch (err) {
+        const serializedErrors = handleError(err as APIError);
+        const _serializedErrors: SerializedError[] = [];
+        for (const error of serializedErrors) {
+          switch (error.message) {
+            case 'already_redeemed':
+              _serializedErrors.push({
+                message: t('redeem:alreadyRedeemed'),
+              });
+              break;
+
+            case 'invalid_code':
+              _serializedErrors.push({
+                message: t('redeem:invalidCode'),
+              });
+              break;
+
+            default:
+              _serializedErrors.push(error);
+              break;
+          }
         }
-      });
+        setErrors(_serializedErrors);
+      }
     }
   }
+
   React.useEffect(() => {
     if (router.query.code) {
       setCode(router.query.code);
@@ -117,9 +138,9 @@ function ClaimDonation(): ReactElement {
           />
         ) : (
           // if redeem code is invalid and  redeem process failed
-          <RedeemCodeFailed
-            errorMessage={errorMessage}
-            code={code}
+          <RedeemFailed
+            errorMessages={errors}
+            inputCode={code}
             redeemAnotherCode={redeemAnotherCode}
             closeRedeem={closeRedeem}
           />

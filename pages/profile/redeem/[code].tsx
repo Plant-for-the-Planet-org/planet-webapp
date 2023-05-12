@@ -2,45 +2,33 @@ import { useRouter } from 'next/router';
 import { useState, useEffect, useContext, FC } from 'react';
 import LandingSection from '../../../src/features/common/Layout/LandingSection';
 import { useTranslation } from 'next-i18next';
-import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
 import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
 import {
-  InputRedeemCode,
+  RedeemFailed,
   SuccessfullyRedeemed,
-  RedeemCodeFailed,
-} from '../../../src/features/common/RedeemMicro/RedeemCode';
+  EnterRedeemCode,
+} from '../../../src/features/common/RedeemCode';
 import { ClaimCode1 } from '../../claim/[type]/[code]';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
+import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 
 const ReedemCode: FC = () => {
   const { t, ready } = useTranslation(['redeem']);
-  const { user, contextLoaded, token, impersonatedEmail } =
-    useContext(UserPropsContext);
-  const { handleError } = useContext(ErrorHandlingContext);
+  const { user, contextLoaded, token, logoutUser } = useUserProps();
+  const { setErrors, errors } = useContext(ErrorHandlingContext);
+
   const [code, setCode] = useState<string | string[] | null>('');
   const [inputCode, setInputCode] = useState<ClaimCode1>('');
-  const [errorMessage, setErrorMessage] = useState<ClaimCode1>('');
   const [redeemedCodeData, setRedeemedCodeData] = useState<
     RedeemedCodeData | undefined
   >(undefined);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const router = useRouter();
-
-  const closeRedeem = () => {
-    if (typeof window !== 'undefined') {
-      router.push('/profile');
-    }
-  };
-
-  const handleCode = () => {
-    router.push(`/profile/redeem/${code}?inputCode=${true}`);
-    setErrorMessage('');
-    setRedeemedCodeData(undefined);
-    setInputCode('');
-  };
 
   useEffect(() => {
     if (contextLoaded) {
@@ -61,26 +49,46 @@ const ReedemCode: FC = () => {
   }, [router]);
 
   async function redeemingCode(data: string | string[]): Promise<void> {
+    setIsLoading(true);
     const submitData = {
       code: data,
     };
 
     if (contextLoaded && user) {
-      postAuthenticatedRequest(
-        `/app/redeem`,
-        submitData,
-        token,
-        impersonatedEmail,
-        handleError
-      ).then((res) => {
-        if (res.error_code === 'invalid_code') {
-          setErrorMessage(t('redeem:invalidCode'));
-        } else if (res.error_code === 'already_redeemed') {
-          setErrorMessage(t('redeem:alreadyRedeemed'));
-        } else if (res.status === 'redeemed') {
-          setRedeemedCodeData(res);
+      try {
+        const res = await postAuthenticatedRequest(
+          `/app/redeem`,
+          submitData,
+          token,
+          logoutUser
+        );
+        setRedeemedCodeData(res);
+      } catch (err) {
+        const serializedErrors = handleError(err as APIError);
+        const _serializedErrors: SerializedError[] = [];
+        for (const error of serializedErrors) {
+          switch (error.message) {
+            case 'already_redeemed':
+              _serializedErrors.push({
+                message: t('redeem:alreadyRedeemed'),
+              });
+              break;
+
+            case 'invalid_code':
+              _serializedErrors.push({
+                message: t('redeem:invalidCode'),
+              });
+              break;
+
+            default:
+              _serializedErrors.push(error);
+              break;
+          }
         }
-      });
+        setErrors(_serializedErrors);
+        setRedeemedCodeData(undefined);
+        setIsLoading(false);
+      }
     }
   }
 
@@ -90,21 +98,34 @@ const ReedemCode: FC = () => {
     }
   }, [user, contextLoaded, router.query.code]);
 
-  const changeRouteCode = () => {
+  const redeemCode = () => {
     router.push(`/profile/redeem/${inputCode}?inputCode=${false}`);
 
     const codeFromUrl = router.query.code;
     redeemingCode(codeFromUrl);
   };
 
+  const redeemAnotherCode = () => {
+    router.push(`/profile/redeem/${code}?inputCode=${true}`);
+    setRedeemedCodeData(undefined);
+    setInputCode('');
+  };
+
+  const closeRedeem = () => {
+    if (typeof window !== 'undefined') {
+      router.push('/profile');
+    }
+  };
+
   return ready && user ? (
     router.query.inputCode === 'true' ? (
       // to input  redeem code
       <LandingSection>
-        <InputRedeemCode
+        <EnterRedeemCode
+          isLoading={isLoading}
           setInputCode={setInputCode}
           inputCode={inputCode}
-          changeRouteCode={changeRouteCode}
+          redeemCode={redeemCode}
           closeRedeem={closeRedeem}
         />
       </LandingSection>
@@ -114,15 +135,15 @@ const ReedemCode: FC = () => {
         {redeemedCodeData ? (
           <SuccessfullyRedeemed
             redeemedCodeData={redeemedCodeData}
-            redeemAnotherCode={handleCode}
+            redeemAnotherCode={redeemAnotherCode}
             closeRedeem={closeRedeem}
           />
         ) : (
           // if redeem code is invalid and  redeem process failed
-          <RedeemCodeFailed
-            errorMessage={errorMessage}
-            code={code}
-            redeemAnotherCode={handleCode}
+          <RedeemFailed
+            errorMessages={errors}
+            inputCode={code}
+            redeemAnotherCode={redeemAnotherCode}
             closeRedeem={closeRedeem}
           />
         )}

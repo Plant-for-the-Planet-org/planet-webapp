@@ -2,33 +2,28 @@ import React from 'react';
 import { useTranslation } from 'next-i18next';
 import LogoutIcon from '../../../../../public/assets/images/icons/Sidebar/LogoutIcon';
 import styles from './ImpersonateUser.module.scss';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
-import { useContext } from 'react';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
 
 const ImpersonationActivated = () => {
-  const {
-    user,
-    isImpersonationModeOn,
-    setImpersonatedEmail,
-    setIsImpersonationModeOn,
-  } = useContext(UserPropsContext);
+  const { user, isImpersonationModeOn, setIsImpersonationModeOn, loadUser } =
+    useUserProps();
 
   const { push } = useRouter();
 
   const exitImpersonation = () => {
-    setImpersonatedEmail('');
     setIsImpersonationModeOn(false);
-    localStorage.removeItem('impersonatedEmail');
+    localStorage.removeItem('impersonationData');
     push(`/profile/impersonate-user`);
+    loadUser();
   };
 
   const { t } = useTranslation('me');
 
-  return isImpersonationModeOn ? (
+  return user && isImpersonationModeOn ? (
     <div className={styles.impersonationAlertContainer}>
       <div className={styles.impersonatingText}>
-        {t('me:targetUser', { impersonatedEmail: `<${user.email}>` })}
+        {t('me:targetUser', { impersonatedEmail: `<${user?.email}>` })}
       </div>
 
       <div
