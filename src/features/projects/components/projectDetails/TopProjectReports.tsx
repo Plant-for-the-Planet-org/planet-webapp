@@ -2,8 +2,6 @@ import React from 'react';
 import styles from './../../styles/ProjectDetails.module.scss';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import { getPDFFile } from '../../../../utils/getImageURL';
-import parse from 'date-fns/parse';
-import format from 'date-fns/format';
 import { Trans } from 'react-i18next';
 import { useTranslation } from 'next-i18next';
 
