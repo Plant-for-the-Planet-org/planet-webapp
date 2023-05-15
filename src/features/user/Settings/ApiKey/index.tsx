@@ -13,12 +13,8 @@ export default function ApiKey(): ReactElement | null {
       title={t('apiKey')}
       subtitle={
         <div>
-          <p>
-            {t('me:apiKeyMessage1')}
-            <br />
-            <br />
-            {t('me:apiKeyMessage3')}
-          </p>
+          <p>{t('me:apiKeyMessage1')}</p>
+          <p>{t('me:apiKeyMessage3')}</p>
         </div>
       }
     >

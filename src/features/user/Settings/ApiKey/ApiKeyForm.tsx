@@ -11,9 +11,10 @@ import EyeIcon from '../../../../../public/assets/images/icons/EyeIcon';
 import EyeDisabled from '../../../../../public/assets/images/icons/EyeDisabled';
 import { useTranslation } from 'next-i18next';
 import StyledForm from '../../../common/Layout/StyledForm';
-import { Button, TextField } from '@mui/material';
+import { Button, InputAdornment, TextField } from '@mui/material';
 import { ApiCustomError } from '../../../common/types/apiErrors';
 import { APIError, handleError } from '@planet-sdk/common';
+import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 
 interface EyeButtonParams {
   isVisible: boolean;
@@ -88,7 +89,7 @@ export default function ApiKey() {
   return (
     <StyledForm>
       <div className="inputContainer">
-        <div className={styles.apiKeyContainer}>
+        <InlineFormDisplayGroup>
           <TextField
             // label={t('me:apiKey')}
             type={isApiKeyVisible ? 'text' : 'password'}
@@ -96,13 +97,19 @@ export default function ApiKey() {
             name="apiKey"
             disabled
             value={apiKey}
-          />
-          <EyeButton
-            isVisible={isApiKeyVisible}
-            onClick={handleVisibilityChange}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <EyeButton
+                    isVisible={isApiKeyVisible}
+                    onClick={handleVisibilityChange}
+                  />
+                </InputAdornment>
+              ),
+            }}
           />
           <CopyToClipboard text={apiKey} isButton />
-        </div>
+        </InlineFormDisplayGroup>
         <div>
           <Button
             onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
