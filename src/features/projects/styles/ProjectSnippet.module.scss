@@ -117,11 +117,12 @@
   font-family: $primaryFontFamily;
   font-size: $fontMedium;
   color: $light;
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: 5px;
+ 
 }
-
+.verifiedIcon {
+  margin-bottom: -2px;
+  margin-left: 5px;
+}
 .topProjectBadge {
   position: absolute;
   top: 12px;
@@ -236,6 +237,3 @@
   font-family: $primaryFontFamily;
   font-weight: 400;
 }
-  .verifiedIcon {
-    margin-top: 5px;
-  }

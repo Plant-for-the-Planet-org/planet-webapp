@@ -64,7 +64,7 @@ export default function PopupProject({
               t(`donate:${project.properties.classification}`)}
           </div>
 
-          <div className={'projectName'}>
+          <p className={'projectName'}>
             {truncateString(project.properties.name, 54)}
             {project.properties.isApproved && (
               <VerifiedIcon
@@ -72,7 +72,7 @@ export default function PopupProject({
                 className={'verifiedIcon'}
               />
             )}
-          </div>
+          </p>
         </div>
       </div>
 

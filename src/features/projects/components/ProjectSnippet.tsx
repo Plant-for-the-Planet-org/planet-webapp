@@ -104,7 +104,7 @@ export default function ProjectSnippet({
           <div className={'projectType'}>
             {project.classification && t(`donate:${project.classification}`)}
           </div>
-          <div className={'projectName'}>
+          <p className={'projectName'}>
             {truncateString(project.name, 54)}
             {project.isApproved && (
               <>
@@ -135,7 +135,7 @@ export default function ProjectSnippet({
                 )}
               </>
             )}
-          </div>
+          </p>
         </div>
       </div>
 
