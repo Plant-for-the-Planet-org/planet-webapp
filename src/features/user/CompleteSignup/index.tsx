@@ -43,7 +43,7 @@ export default function CompleteSignup(): ReactElement | null {
   const { i18n, t, ready } = useTranslation(['editProfile', 'donate']);
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const [addressSugggestions, setaddressSugggestions] = React.useState([]);
-  const [disable, setDisable] = React.useState<boolean>(false);
+  const [isProcessing, setIsProcessing] = React.useState<boolean>(false);
   const geocoder = new GeocoderArcGIS(
     process.env.ESRI_CLIENT_SECRET
       ? {
@@ -166,7 +166,7 @@ export default function CompleteSignup(): ReactElement | null {
 
   const sendRequest = async (bodyToSend: any) => {
     setRequestSent(true);
-    setDisable(true);
+    setIsProcessing(true);
     try {
       const res = await postRequest(`/app/profile`, bodyToSend);
       setRequestSent(false);
@@ -180,6 +180,7 @@ export default function CompleteSignup(): ReactElement | null {
         router.push('/t/[id]', `/t/${res.slug}`);
       }
     } catch (err) {
+      setIsProcessing(false);
       setErrors(handleError(err as APIError));
       redirect('/login');
     }
@@ -511,7 +512,7 @@ export default function CompleteSignup(): ReactElement | null {
               id={'signupCreate'}
               className={styles.saveButton}
               onClick={handleSubmit(createButtonClicked)}
-              disabled={disable}
+              disabled={isProcessing}
             >
               {submit ? (
                 <div className={styles.spinner}></div>
