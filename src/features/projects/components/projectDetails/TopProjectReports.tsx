@@ -18,9 +18,6 @@ interface Props {
 }
 export default function TopProjectReports({ projectReviews }: Props) {
   const { t, ready } = useTranslation(['common']);
-  const displayDate = (date: string) => {
-    return format(parse(date, 'MM-yyyy', new Date()), 'LLLL yyyy');
-  };
   return ready ? (
     <>
       <div className={styles.reports_container}>
