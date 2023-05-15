@@ -19,12 +19,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { SxProps, TextField, Button } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, Certificate } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import {
-  ProjectCertificatesProps,
-  CertificateUploaded,
-} from '../../../common/types/project';
+
+import { ProjectCertificatesProps } from '../../../common/types/project';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -59,8 +57,7 @@ function ProjectCertificates({
 
   const [certifierName, setCertifierName] = React.useState<string | null>(null);
 
-  const [uploadedFiles, setUploadedFiles] =
-    React.useState<CertificateUploaded[]>();
+  const [uploadedFiles, setUploadedFiles] = React.useState<Certificate[]>([]);
   const [showForm, setShowForm] = React.useState<boolean>(true);
   const [errorMessage, setErrorMessage] = React.useState<string | undefined>(
     undefined

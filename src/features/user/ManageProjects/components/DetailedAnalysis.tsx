@@ -25,6 +25,7 @@ import {
   SiteOwners,
   PlantingSeason,
 } from '../../../common/types/project';
+import { Project } from '../../../common/types/project';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -131,7 +132,7 @@ export default function DetailedAnalysis({
     { id: 12, title: ready ? t('common:december') : '', isSet: false },
   ]);
 
-  const [minDensity, setMinDensity] = React.useState<number>(0);
+  const [minDensity, setMinDensity] = React.useState<number | string | null>(0);
 
   const handleSetPlantingSeasons = (id: number) => {
     const month = plantingSeasons[id - 1];
@@ -169,7 +170,7 @@ export default function DetailedAnalysis({
     }
   }
 
-  const months: string[] = [];
+  const months: number[] = [];
   for (let i = 0; i < plantingSeasons.length; i++) {
     if (plantingSeasons[i].isSet) {
       const j = i + 1;
@@ -178,7 +179,7 @@ export default function DetailedAnalysis({
   }
   // for validating maxplanting density value > planting density value
   React.useEffect(() => {
-    if (router.query.type === 'detail-analysis') {
+    if (projectDetails && router.query.type === 'detail-analysis') {
       setMinDensity(projectDetails.metadata.plantingDensity);
     }
   }, [router.query.type]);
@@ -227,7 +228,7 @@ export default function DetailedAnalysis({
           };
 
     try {
-      const res = await putAuthenticatedRequest(
+      const res = await putAuthenticatedRequest<Project>(
         `/app/projects/${projectGUID}`,
         submitData,
         token,
@@ -587,7 +588,7 @@ export default function DetailedAnalysis({
             label={t('manageProjects:employeeCount')}
             variant="outlined"
             name="employeesCount"
-            onInput={(e) => {
+            onInput={(e: React.ChangeEvent<HTMLInputElement>): void => {
               e.target.value = e.target.value.replace(/[^0-9]./g, '');
             }}
             error={errors.employeesCount}
@@ -708,7 +709,7 @@ export default function DetailedAnalysis({
                   },
                   validate: (value) => parseInt(value, 10) > 1,
                 })}
-                onInput={(e) => {
+                onInput={(e: React.ChangeEvent<HTMLInputElement>): void => {
                   setMinDensity(e.target.value);
                   e.target.value = e.target.value.replace(/[^0-9]/g, '');
                 }}
@@ -736,7 +737,7 @@ export default function DetailedAnalysis({
                   },
                   required: false,
                 })}
-                onInput={(e) => {
+                onInput={(e: React.ChangeEvent<HTMLInputElement>): void => {
                   e.target.value = e.target.value.replace(/[^0-9]/g, '');
                 }}
                 InputProps={{

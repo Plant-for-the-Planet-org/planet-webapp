@@ -33,7 +33,38 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import { handleError, APIError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ProjectCreationTabs } from '..';
-import { BasicDetailsProps } from '../../../common/types/project';
+import {
+  BasicDetailsProps,
+  Project,
+  ViewPort,
+} from '../../../common/types/project';
+
+export type FormData = {
+  name: string;
+  slug: string;
+  classification: string;
+  countTarget: number;
+  website: string;
+  description: string;
+  acceptDonations: boolean;
+  unitCost: number;
+  publish: boolean;
+  metadata: {
+    ecosystems?: string;
+    visitorAssistance?: boolean;
+    enablePlantLocations?: boolean;
+    impacts?: {
+      benefits?: string;
+      ecologicalBenefits?: string;
+      socialBenefits?: string;
+      coBenefits?: string;
+    };
+  };
+  currency: string;
+  latitude: number;
+  longitude: number;
+  purpose: string;
+};
 
 export default function BasicDetails({
   handleNext,
@@ -64,7 +95,7 @@ export default function BasicDetails({
   const [style, setStyle] = React.useState(EMPTY_STYLE);
   const [wrongCoordinatesMessage, setWrongCoordinatesMessage] =
     React.useState<boolean>(false);
-  const [viewport, setViewPort] = React.useState({
+  const [viewport, setViewPort] = React.useState<ViewPort>({
     width: 760,
     height: 400,
     latitude: defaultMapCenter[0],
@@ -108,7 +139,7 @@ export default function BasicDetails({
     loadMapStyle();
   }, []);
 
-  const [projectCoords, setProjectCoords] = React.useState([0, 0]);
+  const [projectCoords, setProjectCoords] = React.useState<number[]>([0, 0]);
 
   const changeLat = (e: any) => {
     if (e.target.value && e.target.value > -90 && e.target.value < 90) {
@@ -223,6 +254,7 @@ export default function BasicDetails({
           classification: {
             label: ready ? t('manageProjects:projectType') : '',
             value: null,
+            message: '',
           },
           countTarget: 0,
           website: '',
@@ -248,12 +280,8 @@ export default function BasicDetails({
           currency: 'EUR',
           latitude: 0,
           longitude: 0,
-          ecosystems: '',
           metadata: {
-            ecosystems: {
-              label: ready ? t('manageProjects:ecosystems') : '',
-              value: null,
-            },
+            ecosystems: '',
             impacts: {
               benefits: '',
               ecologicalBenefits: '',
@@ -272,12 +300,12 @@ export default function BasicDetails({
     setValue,
     setError,
     clearErrors,
-  } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
+  } = useForm<FormData>({ mode: 'onBlur', defaultValues: defaultBasicDetails });
 
   const [acceptDonations, setAcceptDonations] = useState(false);
   //if project is already had created then user can visit to  other forms using skip button
   React.useEffect(() => {
-    if (projectDetails.id) {
+    if (projectDetails?.id) {
       setIsSkipButtonVisible(true);
     }
   }, [router]);
@@ -399,7 +427,7 @@ export default function BasicDetails({
     // Check if GUID is set use update instead of create project
     if (projectGUID) {
       try {
-        const res = await putAuthenticatedRequest(
+        const res = await putAuthenticatedRequest<Project>(
           `/app/projects/${projectGUID}`,
           submitData,
           token,
@@ -414,7 +442,7 @@ export default function BasicDetails({
       }
     } else {
       try {
-        const res = await postAuthenticatedRequest(
+        const res = await postAuthenticatedRequest<Project>(
           `/app/projects`,
           submitData,
           token,
@@ -438,7 +466,6 @@ export default function BasicDetails({
         }
       : {}
   );
-
   return ready ? (
     <CenteredContainer>
       <StyledForm>
@@ -452,7 +479,7 @@ export default function BasicDetails({
           label={t('manageProjects:name')}
           variant="outlined"
           name="name"
-          error={errors.name}
+          error={Boolean(errors.name)}
           helperText={errors.name && errors.name.message}
         />
         <InlineFormDisplayGroup>
@@ -471,7 +498,7 @@ export default function BasicDetails({
                 <p className={styles.inputStartAdornment}>pp.eco/</p>
               ),
             }}
-            error={errors.slug}
+            error={Boolean(errors.slug)}
             helperText={errors.slug && errors.slug.message}
           />
           {purpose === 'trees' ? (
@@ -503,7 +530,7 @@ export default function BasicDetails({
               control={control}
               error={errors.classification}
               helperText={
-                errors.classification && errors.classification.message
+                errors.classification && errors.classification?.message
               }
             />
           ) : (
@@ -513,8 +540,11 @@ export default function BasicDetails({
                   label={t('manageProjects:ecosystems')}
                   variant="outlined"
                   select
-                  error={errors.ecosystems}
-                  helperText={errors.ecosystems && errors.ecosystems.message}
+                  error={Boolean(errors?.metadata?.ecosystems)}
+                  helperText={
+                    errors.metadata?.ecosystems &&
+                    errors.metadata?.ecosystems.message
+                  }
                 >
                   {ecosystemsType.map((option) => (
                     <MenuItem
@@ -555,7 +585,7 @@ export default function BasicDetails({
                 message: t('manageProjects:websiteValidationInvalid'),
               },
             })}
-            error={errors.website}
+            error={Boolean(errors.website)}
             helperText={errors.website && errors.website.message}
           />
           {purpose === 'trees' && (
@@ -572,7 +602,7 @@ export default function BasicDetails({
               name="countTarget"
               type="number"
               placeholder={'0'}
-              error={errors.countTarget}
+              error={Boolean(errors.countTarget)}
               helperText={
                 (errors.countTarget?.message && errors.countTarget.message) ||
                 (errors.countTarget &&
@@ -593,7 +623,7 @@ export default function BasicDetails({
               message: t('manageProjects:aboutProjectValidation'),
             },
           })}
-          error={errors.description}
+          error={Boolean(errors.description)}
           helperText={errors.description && errors.description.message}
         />
 
@@ -659,7 +689,7 @@ export default function BasicDetails({
               })}
               label={
                 router.query.purpose === 'trees' ||
-                projectDetails.purpose === 'trees'
+                projectDetails?.purpose === 'trees'
                   ? t('manageProjects:unitCost')
                   : t('manageProjects:unitCostConservation')
               }
@@ -675,7 +705,7 @@ export default function BasicDetails({
                   >{`€`}</p>
                 ),
               }}
-              error={errors.unitCost}
+              error={Boolean(errors.unitCost)}
               helperText={
                 errors?.unitCost?.message
                   ? errors.unitCost.message
@@ -721,7 +751,7 @@ export default function BasicDetails({
                   maxLocations: 10,
                   distance: 100,
                 })
-                .then((result) => {
+                .then((result: any) => {
                   if (result?.address?.Type === 'Ocean') {
                     setWrongCoordinatesMessage(true);
                     setError('latitude', {
@@ -732,7 +762,7 @@ export default function BasicDetails({
                     clearErrors('latitude');
                   }
                 })
-                .catch((error) => {
+                .catch((error: string) => {
                   console.log(`error`, error);
                 });
               setViewPort({
@@ -778,7 +808,7 @@ export default function BasicDetails({
                 name={'latitude'}
                 onChange={changeLat}
                 className={styles.latitudeInput}
-                onInput={(e) => {
+                onInput={(e: React.ChangeEvent<HTMLInputElement>): void => {
                   e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                 }}
                 InputLabelProps={{
@@ -790,7 +820,7 @@ export default function BasicDetails({
                     top: '-6px',
                   },
                 }}
-                error={errors.latitude}
+                error={Boolean(errors.latitude)}
                 helperText={
                   wrongCoordinatesMessage
                     ? t('manageProjects:wrongCoordinates')
@@ -813,7 +843,7 @@ export default function BasicDetails({
                 onChange={changeLon}
                 name={'longitude'}
                 className={styles.longitudeInput}
-                onInput={(e) => {
+                onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
                   e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                 }}
                 InputLabelProps={{
@@ -825,7 +855,7 @@ export default function BasicDetails({
                     top: '-6px',
                   },
                 }}
-                error={errors.longitude}
+                error={Boolean(errors.longitude)}
                 helperText={
                   errors.longitude && t('manageProjects:longitudeRequired')
                 }

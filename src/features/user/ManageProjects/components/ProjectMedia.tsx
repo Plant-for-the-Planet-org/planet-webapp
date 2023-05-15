@@ -21,7 +21,11 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import { handleError, APIError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ProjectCreationTabs } from '..';
-import { ProjectMediaProps } from '../../../common/types/project';
+import {
+  ProjectMediaProps,
+  UploadImage,
+  Project,
+} from '../../../common/types/project';
 
 export default function ProjectMedia({
   handleBack,
@@ -38,18 +42,16 @@ export default function ProjectMedia({
 
   const { register, handleSubmit, errors } = useForm({ mode: 'all' });
 
-  const [uploadedImages, setUploadedImages] = React.useState<
-    string[] | undefined
-  >(undefined);
+  const [uploadedImages, setUploadedImages] = React.useState<UploadImage[]>([]);
 
   const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = React.useState<string>('');
+  const [errorMessage, setErrorMessage] = React.useState<string | null>('');
 
   const fetchImages = async () => {
     try {
       // Fetch images of the project
       if (projectGUID && token) {
-        const result = await getAuthenticatedRequest(
+        const result = await getAuthenticatedRequest<Project>(
           `/app/profile/projects/${projectGUID}?_scope=images`,
           token,
           logoutUser
@@ -76,7 +78,7 @@ export default function ProjectMedia({
     };
 
     try {
-      const res = await postAuthenticatedRequest(
+      const res = await postAuthenticatedRequest<UploadImage>(
         `/app/projects/${projectGUID}/images`,
         submitData,
         token,
@@ -112,8 +114,8 @@ export default function ProjectMedia({
         reader.readAsDataURL(file);
         reader.onabort = () => console.log('file reading was aborted');
         reader.onerror = () => console.log('file reading has failed');
-        reader.onload = (event) => {
-          uploadPhotos(event.target.result);
+        reader.onload = (event: ProgressEvent<FileReader>): void => {
+          uploadPhotos(event?.target?.result);
         };
       });
     },
@@ -170,7 +172,7 @@ export default function ProjectMedia({
     };
 
     try {
-      const res = await putAuthenticatedRequest(
+      const res = await putAuthenticatedRequest<Project>(
         `/app/projects/${projectGUID}`,
         submitData,
         token,
@@ -226,7 +228,7 @@ export default function ProjectMedia({
     };
 
     try {
-      const res = await putAuthenticatedRequest(
+      const res = await putAuthenticatedRequest<UploadImage>(
         `/app/projects/${projectGUID}/images/${id}`,
         submitData,
         token,

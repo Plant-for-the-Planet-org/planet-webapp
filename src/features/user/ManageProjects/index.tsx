@@ -19,6 +19,7 @@ import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import { handleError, APIError } from '@planet-sdk/common';
 import DashboardView from '../../common/Layout/DashboardView';
 import styles from '../../../../src/features/user/ManageProjects/StepForm.module.scss';
+import { Project, ManageProjectsProps } from '../../common/types/project';
 
 export enum ProjectCreationTabs {
   PROJECT_TYPE = 0,
@@ -29,7 +30,11 @@ export enum ProjectCreationTabs {
   PROJECT_SPENDING = 5,
   REVIEW = 6,
 }
-export default function ManageProjects({ GUID, token, project }: any) {
+export default function ManageProjects({
+  GUID,
+  token,
+  project,
+}: ManageProjectsProps) {
   const { t, i18n } = useTranslation(['manageProjects']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
@@ -41,11 +46,13 @@ export default function ManageProjects({ GUID, token, project }: any) {
   );
   const [tabSelected, setTabSelected] = React.useState<number>(0);
   const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
-  const [projectGUID, setProjectGUID] = React.useState(GUID ? GUID : '');
-  const [tablist, setTabList] = React.useState<TabItem[]>([]);
-  const [projectDetails, setProjectDetails] = React.useState(
-    project ? project : {}
+  const [projectGUID, setProjectGUID] = React.useState<string | unknown>(
+    GUID ? GUID : ''
   );
+  const [tablist, setTabList] = React.useState<TabItem[]>([]);
+  const [projectDetails, setProjectDetails] = React.useState<
+    Project | undefined
+  >(undefined);
 
   const formRouteHandler = (val: number) => {
     if (router.query.purpose) return;
@@ -107,7 +114,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
         logoutUser
       );
       setProjectDetails(res);
-      setErrorMessage('');
+      setErrorMessage(undefined);
       setIsUploadingData(false);
     } catch (err) {
       setIsUploadingData(false);

@@ -28,22 +28,229 @@ import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ProjectCreationTabs } from '..';
 import {
   SiteDetails,
-  SiteList,
   Viewport,
   ProjectSitesProps,
   GeoLocation,
   EditSiteProps,
+  Project,
+  Site,
+  Option,
 } from '../../../common/types/project';
 import { FeatureCollection as GeoJson } from 'geojson';
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
+  accessToken: '',
 });
 
 const Map = dynamic(() => import('./MapComponent'), {
   ssr: false,
   loading: () => <p></p>,
 });
+
+function EditSite({
+  openModal,
+  handleModalClose,
+  changeSiteDetails,
+  siteDetails,
+  status,
+  geoJsonProp,
+  ready,
+  projectGUID,
+  setSiteList,
+  token,
+  setFeatures,
+  seteditMode,
+  siteGUID,
+  siteList,
+}: EditSiteProps) {
+  const { theme } = React.useContext(ThemeContext);
+  const { t } = useTranslation(['manageProjects']);
+  const { register, handleSubmit, errors, control } = useForm();
+  const [geoJson, setGeoJson] = React.useState<GeoJson | null>(geoJsonProp);
+  const [geoJsonError, setGeoJsonError] = React.useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { logoutUser } = useUserProps();
+
+  const useStylesAutoComplete = makeStyles({
+    root: {
+      color:
+        theme === 'theme-light'
+          ? `${themeProperties.light.primaryFontColor} !important`
+          : `${themeProperties.dark.primaryFontColor} !important`,
+      backgroundColor:
+        theme === 'theme-light'
+          ? `${themeProperties.light.backgroundColor} !important`
+          : `${themeProperties.dark.backgroundColor} !important`,
+    },
+    option: {
+      // color: '#2F3336',
+      '&:hover': {
+        backgroundColor:
+          theme === 'theme-light'
+            ? `${themeProperties.light.backgroundColorDark} !important`
+            : `${themeProperties.dark.backgroundColorDark} !important`,
+      },
+    },
+  });
+  const classes = useStylesAutoComplete();
+
+  const MapProps = {
+    geoJson,
+    setGeoJson,
+    geoJsonError,
+    setGeoJsonError,
+    geoLocation: {
+      geoLatitude: 36.96,
+      geoLongitude: -28.5,
+    },
+  };
+
+  const editProjectSite = async (data: any) => {
+    if (geoJson && geoJson.features && geoJson.features.length !== 0) {
+      setIsUploadingData(true);
+      const submitData = {
+        name: siteDetails.name,
+        geometry: geoJson,
+        status: data.status,
+      };
+
+      try {
+        const res = await putAuthenticatedRequest<Site>(
+          `/app/projects/${projectGUID}/sites/${siteGUID}`,
+          submitData,
+          token,
+          logoutUser
+        );
+        const temp = siteList;
+        let siteIndex = 0;
+        temp.find((site: Site, index: number) => {
+          if (site.id === res.id) {
+            siteIndex = index;
+            return true;
+          }
+        });
+        if (siteIndex !== null) {
+          temp[siteIndex] = res;
+        }
+        setSiteList(temp);
+        setGeoJson(null);
+        setFeatures([]);
+        setIsUploadingData(false);
+        seteditMode(false);
+        setErrorMessage('');
+      } catch (err) {
+        setIsUploadingData(false);
+        setErrors(handleError(err as APIError));
+      }
+    } else {
+      setErrorMessage(ready ? t('manageProjects:polygonRequired') : '');
+    }
+  };
+
+  return (
+    <Modal
+      aria-labelledby="transition-modal-title"
+      aria-describedby="transition-modal-description"
+      className={'modalContainer' + ' ' + theme}
+      open={openModal}
+      onClose={handleModalClose}
+      closeAfterTransition
+      BackdropProps={{
+        timeout: 500,
+      }}
+    >
+      <Fade in={openModal}>
+        <form
+          style={{
+            backgroundColor: 'white',
+            padding: '20px',
+            borderRadius: '10px',
+          }}
+        >
+          <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
+            <div className={styles.formField}>
+              <div className={styles.formFieldHalf}>
+                <TextField
+                  inputRef={register({ required: true })}
+                  label={t('manageProjects:siteName')}
+                  variant="outlined"
+                  name="name"
+                  onChange={changeSiteDetails}
+                  defaultValue={siteDetails.name}
+                />
+              </div>
+              <div className={styles.formFieldHalf}>
+                <Controller
+                  as={
+                    <TextField
+                      label={t('manageProjects:siteStatus')}
+                      variant="outlined"
+                      name="status"
+                      onChange={changeSiteDetails}
+                      select
+                      value={siteDetails.status}
+                    >
+                      {status.map((option: Option) => (
+                        <MenuItem
+                          key={option.value}
+                          value={option.value}
+                          classes={{
+                            // option: classes.option,
+                            root: classes.root,
+                          }}
+                        >
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  }
+                  name="status"
+                  rules={{ required: t('manageProjects:selectProjectStatus') }}
+                  control={control}
+                  defaultValue={siteDetails.status ? siteDetails.status : ''}
+                  error={errors.status}
+                  helperText={errors.status && errors.status.message}
+                />
+              </div>
+            </div>
+
+            <Map {...MapProps} />
+          </div>
+
+          {errorMessage && errorMessage !== '' ? (
+            <div className={styles.formFieldLarge}>
+              <h4 className={styles.errorMessage}>{errorMessage}</h4>
+            </div>
+          ) : null}
+
+          <div className={styles.buttonsForProjectCreationForm}>
+            <Button
+              onClick={() => handleModalClose()}
+              className={styles.backButton}
+            >
+              <BackArrow />
+              <p>{t('manageProjects:backToSites')}</p>
+            </Button>
+
+            <Button
+              onClick={handleSubmit(editProjectSite)}
+              className={styles.saveAndContinueButton}
+            >
+              {isUploadingData ? (
+                <div className={styles.spinner}></div>
+              ) : (
+                t('manageProjects:saveSite')
+              )}
+            </Button>
+          </div>
+        </form>
+      </Fade>
+    </Modal>
+  );
+}
 
 export default function ProjectSites({
   handleBack,
@@ -88,7 +295,7 @@ export default function ProjectSites({
 
   const [siteDetails, setSiteDetails] =
     React.useState<SiteDetails>(defaultSiteDetails);
-  const [siteList, setSiteList] = React.useState<SiteList[]>([]);
+  const [siteList, setSiteList] = React.useState<Site[]>([]);
   const [siteGUID, setSiteGUID] = React.useState<string | null>(null);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
@@ -152,7 +359,7 @@ export default function ProjectSites({
     try {
       if (projectGUID) {
         // Fetch sites of the project
-        const result = await getAuthenticatedRequest(
+        const result = await getAuthenticatedRequest<Project>(
           `/app/profile/projects/${projectGUID}?_scope=sites`,
           token,
           logoutUser
@@ -163,7 +370,7 @@ export default function ProjectSites({
         };
         setgeoLocation(geoLocation);
 
-        if (result.sites.length > 0) {
+        if (result?.sites.length > 0) {
           setShowForm(false);
         }
         setSiteList(result.sites);
@@ -189,13 +396,13 @@ export default function ProjectSites({
       };
 
       try {
-        const res = await postAuthenticatedRequest(
+        const res = await postAuthenticatedRequest<Site>(
           `/app/projects/${projectGUID}/sites`,
           submitData,
           token,
           logoutUser
         );
-        const temp = siteList;
+        const temp = siteList ? siteList : [];
         const _submitData = {
           id: res.id,
           name: res.name,
@@ -243,39 +450,40 @@ export default function ProjectSites({
   const status = [
     {
       label: ready
-        ? projectDetails.purpose === 'trees'
+        ? projectDetails?.purpose === 'trees'
           ? t('manageProjects:siteStatusPlanting')
           : t('manageProjects:siteStatusNotYetprotected')
         : '',
       value:
-        projectDetails.purpose === 'trees' ? 'planting' : 'not yet protected',
+        projectDetails?.purpose === 'trees' ? 'planting' : 'not yet protected',
     },
     {
       label: ready
-        ? projectDetails.purpose === 'trees'
+        ? projectDetails?.purpose === 'trees'
           ? t('manageProjects:siteStatusPlanted')
           : t('manageProjects:siteStatusPartiallyprotected')
         : '',
       value:
-        projectDetails.purpose === 'trees' ? 'planted' : 'partially protected',
+        projectDetails?.purpose === 'trees' ? 'planted' : 'partially protected',
     },
     {
       label: ready
-        ? projectDetails.purpose === 'trees'
+        ? projectDetails?.purpose === 'trees'
           ? t('manageProjects:siteStatusBarren')
           : t('manageProjects:siteStatusFullyprotected')
         : '',
-      value: projectDetails.purpose === 'trees' ? 'barren' : 'fully protected',
+      value: projectDetails?.purpose === 'trees' ? 'barren' : 'fully protected',
     },
     {
       label: ready
-        ? projectDetails.purpose === 'trees'
+        ? projectDetails?.purpose === 'trees'
           ? t('manageProjects:siteStatusReforestation')
           : ''
         : '',
-      value: projectDetails.purpose === 'trees' ? 'reforestation' : '',
+      value: projectDetails?.purpose === 'trees' ? 'reforestation' : '',
     },
   ];
+
   const editSite = (site: any) => {
     const defaultSiteDetails = {
       name: site.name,
@@ -283,7 +491,7 @@ export default function ProjectSites({
       geometry: {},
     };
 
-    const collection = {
+    const collection: GeoJson = {
       type: 'FeatureCollection',
       features: [
         {
@@ -539,209 +747,5 @@ export default function ProjectSites({
     </CenteredContainer>
   ) : (
     <></>
-  );
-}
-
-function EditSite({
-  openModal,
-  handleModalClose,
-  changeSiteDetails,
-  siteDetails,
-  status,
-  geoJsonProp,
-  ready,
-  projectGUID,
-  setSiteList,
-  token,
-  setFeatures,
-  seteditMode,
-  siteGUID,
-  siteList,
-}: EditSiteProps) {
-  const { theme } = React.useContext(ThemeContext);
-  const { t } = useTranslation(['manageProjects']);
-  const { register, handleSubmit, errors, control } = useForm();
-  const [geoJson, setGeoJson] = React.useState<GeoJson>(geoJsonProp);
-  const [geoJsonError, setGeoJsonError] = React.useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
-  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
-  const { setErrors } = React.useContext(ErrorHandlingContext);
-  const { logoutUser } = useUserProps();
-
-  const useStylesAutoComplete = makeStyles({
-    root: {
-      color:
-        theme === 'theme-light'
-          ? `${themeProperties.light.primaryFontColor} !important`
-          : `${themeProperties.dark.primaryFontColor} !important`,
-      backgroundColor:
-        theme === 'theme-light'
-          ? `${themeProperties.light.backgroundColor} !important`
-          : `${themeProperties.dark.backgroundColor} !important`,
-    },
-    option: {
-      // color: '#2F3336',
-      '&:hover': {
-        backgroundColor:
-          theme === 'theme-light'
-            ? `${themeProperties.light.backgroundColorDark} !important`
-            : `${themeProperties.dark.backgroundColorDark} !important`,
-      },
-    },
-  });
-  const classes = useStylesAutoComplete();
-
-  const MapProps = {
-    geoJson,
-    setGeoJson,
-    geoJsonError,
-    setGeoJsonError,
-    geoLocation: {
-      geoLatitude: 36.96,
-      geoLongitude: -28.5,
-    },
-  };
-
-  const editProjectSite = async (data: any) => {
-    if (geoJson && geoJson.features && geoJson.features.length !== 0) {
-      setIsUploadingData(true);
-      const submitData = {
-        name: siteDetails.name,
-        geometry: geoJson,
-        status: data.status,
-      };
-
-      try {
-        const res = await putAuthenticatedRequest(
-          `/app/projects/${projectGUID}/sites/${siteGUID}`,
-          submitData,
-          token,
-          logoutUser
-        );
-        const temp = siteList;
-        let siteIndex;
-        temp.find((site, index) => {
-          if (site.id === res.id) {
-            siteIndex = index;
-            return true;
-          }
-        });
-        if (siteIndex !== null) {
-          temp[siteIndex] = res;
-        }
-        setSiteList(temp);
-        setGeoJson(null);
-        setFeatures([]);
-        setIsUploadingData(false);
-        seteditMode(false);
-        setErrorMessage('');
-      } catch (err) {
-        setIsUploadingData(false);
-        setErrors(handleError(err as APIError));
-      }
-    } else {
-      setErrorMessage(ready ? t('manageProjects:polygonRequired') : '');
-    }
-  };
-
-  return (
-    <Modal
-      aria-labelledby="transition-modal-title"
-      aria-describedby="transition-modal-description"
-      className={'modalContainer' + ' ' + theme}
-      open={openModal}
-      onClose={handleModalClose}
-      closeAfterTransition
-      BackdropProps={{
-        timeout: 500,
-      }}
-    >
-      <Fade in={openModal}>
-        <form
-          style={{
-            backgroundColor: 'white',
-            padding: '20px',
-            borderRadius: '10px',
-          }}
-        >
-          <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
-            <div className={styles.formField}>
-              <div className={styles.formFieldHalf}>
-                <TextField
-                  inputRef={register({ required: true })}
-                  label={t('manageProjects:siteName')}
-                  variant="outlined"
-                  name="name"
-                  onChange={changeSiteDetails}
-                  defaultValue={siteDetails.name}
-                />
-              </div>
-              <div className={styles.formFieldHalf}>
-                <Controller
-                  as={
-                    <TextField
-                      label={t('manageProjects:siteStatus')}
-                      variant="outlined"
-                      name="status"
-                      onChange={changeSiteDetails}
-                      select
-                      value={siteDetails.status}
-                    >
-                      {status.map((option) => (
-                        <MenuItem
-                          key={option.value}
-                          value={option.value}
-                          classes={{
-                            // option: classes.option,
-                            root: classes.root,
-                          }}
-                        >
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  }
-                  name="status"
-                  rules={{ required: t('manageProjects:selectProjectStatus') }}
-                  control={control}
-                  defaultValue={siteDetails.status ? siteDetails.status : ''}
-                  error={errors.status}
-                  helperText={errors.status && errors.status.message}
-                />
-              </div>
-            </div>
-
-            <Map {...MapProps} />
-          </div>
-
-          {errorMessage && errorMessage !== '' ? (
-            <div className={styles.formFieldLarge}>
-              <h4 className={styles.errorMessage}>{errorMessage}</h4>
-            </div>
-          ) : null}
-
-          <div className={styles.buttonsForProjectCreationForm}>
-            <Button
-              onClick={() => handleModalClose()}
-              className={styles.backButton}
-            >
-              <BackArrow />
-              <p>{t('manageProjects:backToSites')}</p>
-            </Button>
-
-            <Button
-              onClick={handleSubmit(editProjectSite)}
-              className={styles.saveAndContinueButton}
-            >
-              {isUploadingData ? (
-                <div className={styles.spinner}></div>
-              ) : (
-                t('manageProjects:saveSite')
-              )}
-            </Button>
-          </div>
-        </form>
-      </Fade>
-    </Modal>
   );
 }

@@ -22,13 +22,10 @@ import themeProperties from '../../../../theme/themeProperties';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, ProjectExpense } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import {
-  ProjectSpendingProps,
-  UploadedFiles,
-} from '../../../common/types/project';
+import { ProjectSpendingProps, Project } from '../../../common/types/project';
 
 const yearDialogSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
@@ -67,19 +64,52 @@ export default function ProjectSpending({
     control,
   } = useForm({ mode: 'all' });
 
-  const [amount, setAmount] = React.useState<number>(0);
+  const [amount, setAmount] = React.useState<number | string>(0);
   const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
   const [showForm, setShowForm] = React.useState<boolean>(true);
-  const [uploadedFiles, setUploadedFiles] = React.useState<UploadedFiles>([]);
+  const [uploadedFiles, setUploadedFiles] = React.useState<ProjectExpense[]>(
+    []
+  );
   const { logoutUser } = useUserProps();
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {
       handleReset(ready ? t('manageProjects:resetMessage') : '');
     }
   });
+  const onSubmit = async (pdf: any) => {
+    setIsUploadingData(true);
+    const updatedAmount = getValues('amount');
+    const year = getValues('year');
 
+    const submitData = {
+      year: year.getFullYear(),
+      amount: updatedAmount,
+      pdfFile: pdf,
+    };
+
+    try {
+      const res = await postAuthenticatedRequest<ProjectExpense>(
+        `/app/projects/${projectGUID}/expenses`,
+        submitData,
+        token,
+        logoutUser
+      );
+      const newUploadedFiles = uploadedFiles;
+      newUploadedFiles.push(res);
+      setUploadedFiles(newUploadedFiles);
+      setAmount(0);
+      setValue('amount', 0, { shouldDirty: false });
+      setIsUploadingData(false);
+      setShowForm(false);
+      setErrorMessage('');
+      handleNext(ProjectCreationTabs.REVIEW);
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
+  };
   const onDrop = React.useCallback(
     (acceptedFiles) => {
       acceptedFiles.forEach((file: any) => {
@@ -88,7 +118,7 @@ export default function ProjectSpending({
         reader.onabort = () => console.log('file reading was aborted');
         reader.onerror = () => console.log('file reading has failed');
         reader.onload = (event) => {
-          onSubmit(event.target.result);
+          onSubmit(event?.target?.result);
         };
       });
     },
@@ -114,39 +144,6 @@ export default function ProjectSpending({
 
   const { isDirty, isSubmitting } = formState;
 
-  const onSubmit = async (pdf: any) => {
-    setIsUploadingData(true);
-    const updatedAmount = getValues('amount');
-    const year = getValues('year');
-
-    const submitData = {
-      year: year.getFullYear(),
-      amount: updatedAmount,
-      pdfFile: pdf,
-    };
-
-    try {
-      const res = await postAuthenticatedRequest(
-        `/app/projects/${projectGUID}/expenses`,
-        submitData,
-        token,
-        logoutUser
-      );
-      const newUploadedFiles = uploadedFiles;
-      newUploadedFiles.push(res);
-      setUploadedFiles(newUploadedFiles);
-      setAmount(0);
-      setValue('amount', 0, { shouldDirty: false });
-      setIsUploadingData(false);
-      setShowForm(false);
-      setErrorMessage('');
-      handleNext(ProjectCreationTabs.REVIEW);
-    } catch (err) {
-      setIsUploadingData(false);
-      setErrors(handleError(err as APIError));
-    }
-  };
-
   const deleteProjectSpending = async (id: any) => {
     try {
       setIsUploadingData(true);
@@ -168,7 +165,7 @@ export default function ProjectSpending({
     try {
       // Fetch spending of the project
       if (projectGUID && token) {
-        const result = await getAuthenticatedRequest(
+        const result = await getAuthenticatedRequest<Project>(
           `/app/profile/projects/${projectGUID}?_scope=expenses`,
           token,
           logoutUser
@@ -288,7 +285,7 @@ export default function ProjectSpending({
                 onBlur={(e) => e.preventDefault()}
                 variant="outlined"
                 name="amount"
-                onInput={(e) => {
+                onInput={(e: React.ChangeEvent<HTMLInputElement>): void => {
                   setAmount(e.target.value);
                 }}
                 InputProps={{
