@@ -12,7 +12,6 @@ import EyeDisabled from '../../../../../public/assets/images/icons/EyeDisabled';
 import { useTranslation } from 'next-i18next';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { Button, InputAdornment, TextField } from '@mui/material';
-import { ApiCustomError } from '../../../common/types/apiErrors';
 import { APIError, handleError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 
@@ -47,8 +46,11 @@ export default function ApiKey() {
   const getApiKey = async () => {
     setIsUploadingData(true);
     try {
-      const res: ApiKeyResponse | ApiCustomError | undefined =
-        await getAuthenticatedRequest('/app/profile/apiKey', token, logoutUser);
+      const res = await getAuthenticatedRequest<ApiKeyResponse>(
+        '/app/profile/apiKey',
+        token,
+        logoutUser
+      );
       if (res) {
         setApiKey(res.apiKey || '');
       }
@@ -64,13 +66,12 @@ export default function ApiKey() {
     e.preventDefault();
     setIsUploadingData(true);
     try {
-      const res: ApiKeyResponse | ApiCustomError | undefined =
-        await putAuthenticatedRequest(
-          '/app/profile/apiKey',
-          undefined,
-          token,
-          logoutUser
-        );
+      const res = await putAuthenticatedRequest<ApiKeyResponse>(
+        '/app/profile/apiKey',
+        undefined,
+        token,
+        logoutUser
+      );
       if (res) {
         setApiKey(res.apiKey || '');
       }
