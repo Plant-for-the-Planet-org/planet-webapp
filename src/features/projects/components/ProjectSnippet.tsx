@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
 import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
+import { Trans, useTranslation } from 'next-i18next';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import EditIcon from '../../../../public/assets/images/icons/manageProjects/Pencil';
 import Link from 'next/link';
@@ -36,7 +36,11 @@ export default function ProjectSnippet({
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
-  const popupState = usePopupState({
+  const popupState1 = usePopupState({
+    variant: 'popover',
+    popupId: 'demoPopover',
+  });
+  const popupState2 = usePopupState({
     variant: 'popover',
     popupId: 'demoPopover',
   });
@@ -95,10 +99,42 @@ export default function ProjectSnippet({
           ></div>
         ) : null}
         {project.isTopProject && project.isApproved && (
-          <div className={'topProjectBadge'}>
-            <StarIcon className={'badgeIcon'} sx={{ color: '#68B030' }} />
-            <p className={'badgeText'}>{t('common:topProject')}</p>
-          </div>
+          <>
+            <div className={'topProjectBadge'} {...bindHover(popupState2)}>
+              <StarIcon className={'badgeIcon'} sx={{ color: '#68B030' }} />
+              <p className={'badgeText'}>{t('common:topProject')}</p>
+            </div>
+            <HoverPopover
+              {...bindPopover(popupState2)}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <Typography style={{ margin: 10, width: 300 }}>
+                <Trans i18nKey="common:top_project_standards_fulfilled">
+                  The project inspection revealed that this project fulfilled at
+                  least 12 of the 19 Top Project{' '}
+                  <a
+                    target="_blank"
+                    href={t('standardsLink')}
+                    rel="noreferrer"
+                    style={{ color: '#68B030', fontWeight: 400 }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    standards.
+                  </a>
+                </Trans>
+              </Typography>
+            </HoverPopover>
+          </>
         )}
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
@@ -111,11 +147,11 @@ export default function ProjectSnippet({
                 <VerifiedIcon
                   sx={{ color: '#fff', fontSize: 17 }}
                   className={'verifiedIcon'}
-                  {...bindHover(popupState)}
+                  {...bindHover(popupState1)}
                 />
                 {displayPopup && (
                   <HoverPopover
-                    {...bindPopover(popupState)}
+                    {...bindPopover(popupState1)}
                     anchorOrigin={{
                       vertical: 'bottom',
                       horizontal: 'center',
