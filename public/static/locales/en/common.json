@@ -124,7 +124,7 @@
   "token_expired": "Token Expired. Please login again",
   "topProject": "Top Project",
   "viewReport": "View Report",
-  "reviewInfo": " The project inspection revealed that this project fulfilled at least 12 of the 19 Top Project <2>standards.</2>",
+  "reviewInfo": " The project was inspected in a multiday field review in <2>month</2> and fullfills our <5>standards.</5>",
   "standardsLink": "https://www.plant-for-the-planet.org/standards/",
   "project": "Project"
 }

@@ -25,8 +25,8 @@ export default function TopProjectReports({ projectReviews }: Props) {
             <div key={review.id}>
               <p id="child-modal-description">
                 <Trans i18nKey="common:reviewInfo">
-                  The project inspection revealed that this project fulfilled at
-                  least 12 of the 19 Top Project{' '}
+                  The project was inspected in a multiday field review in{' '}
+                  {displayDate(review?.issueMonth)} and fullfills our{' '}
                   <a
                     target="_blank"
                     href={t('standardsLink')}
