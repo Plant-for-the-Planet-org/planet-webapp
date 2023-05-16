@@ -14,7 +14,7 @@ import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 
-export type ClaimCode1 = string | null;
+export type ClaimCode1 = string | undefined;
 
 function ClaimDonation(): ReactElement {
   const { t, ready } = useTranslation(['redeem']);
