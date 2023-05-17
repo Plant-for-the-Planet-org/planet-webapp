@@ -92,7 +92,6 @@ export default function ApiKey() {
       <div className="inputContainer">
         <InlineFormDisplayGroup type="other">
           <TextField
-            // label={t('me:apiKey')}
             type={isApiKeyVisible ? 'text' : 'password'}
             variant="outlined"
             name="apiKey"
