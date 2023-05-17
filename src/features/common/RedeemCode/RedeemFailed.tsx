@@ -7,7 +7,7 @@ import { SerializedError } from '@planet-sdk/common';
 
 export interface RedeemFailedProps {
   errorMessages: SerializedError[] | null;
-  inputCode: string | string[] | null;
+  inputCode: string | undefined;
   redeemAnotherCode: () => void;
   closeRedeem: () => void;
 }

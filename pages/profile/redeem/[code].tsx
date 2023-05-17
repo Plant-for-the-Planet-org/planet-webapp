@@ -11,7 +11,6 @@ import {
   SuccessfullyRedeemed,
   EnterRedeemCode,
 } from '../../../src/features/common/RedeemCode';
-import { ClaimCode1 } from '../../claim/[type]/[code]';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
@@ -21,10 +20,10 @@ const ReedemCode: FC = () => {
   const { user, contextLoaded, token, logoutUser } = useUserProps();
   const { setErrors, errors } = useContext(ErrorHandlingContext);
 
-  const [code, setCode] = useState<string | string[] | undefined>(undefined);
-  const [inputCode, setInputCode] = useState<ClaimCode1>(undefined);
+  const [code, setCode] = useState<string | undefined>(undefined);
+  const [inputCode, setInputCode] = useState<string | undefined>(undefined);
   const [redeemedCodeData, setRedeemedCodeData] = useState<
-    RedeemedCodeData | undefined | unknown
+    RedeemedCodeData | undefined
   >(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -43,7 +42,7 @@ const ReedemCode: FC = () => {
   }, [contextLoaded, user, router]);
 
   useEffect(() => {
-    if (router && router.query.code) {
+    if (router && router.query.code && typeof router.query.code === 'string') {
       setCode(router.query.code);
     }
   }, [router]);
@@ -58,7 +57,7 @@ const ReedemCode: FC = () => {
 
     if (contextLoaded && user) {
       try {
-        const res = await postAuthenticatedRequest(
+        const res = await postAuthenticatedRequest<RedeemedCodeData>(
           `/app/redeem`,
           submitData,
           token,

@@ -14,8 +14,6 @@ import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 
-export type ClaimCode1 = string | undefined;
-
 function ClaimDonation(): ReactElement {
   const { t, ready } = useTranslation(['redeem']);
 
@@ -26,14 +24,19 @@ function ClaimDonation(): ReactElement {
 
   const { errors, setErrors } = React.useContext(ErrorHandlingContext);
 
-  const [errorMessage, setErrorMessage] = React.useState<ClaimCode1>('');
-  const [code, setCode] = React.useState<string | string[] | null>('');
+  const [errorMessage, setErrorMessage] = React.useState('');
+  const [code, setCode] = React.useState<string>('');
   const [redeemedCodeData, setRedeemedCodeData] = React.useState<
     RedeemedCodeData | undefined
   >(undefined);
 
   React.useEffect(() => {
-    if (router && router.query.type && router.query.code) {
+    if (
+      router &&
+      router.query.type &&
+      router.query.code &&
+      typeof router.query.code === 'string'
+    ) {
       if (router.query.type !== 'donation' && router.query.type !== 'gift') {
         setErrorMessage(ready ? t('redeem:invalidType') : '');
         setCode(router.query.code);
@@ -61,7 +64,7 @@ function ClaimDonation(): ReactElement {
     };
     if (contextLoaded && user) {
       try {
-        const res = await postAuthenticatedRequest(
+        const res = await postAuthenticatedRequest<RedeemedCodeData>(
           `/app/redeem`,
           submitData,
           token,
@@ -96,7 +99,7 @@ function ClaimDonation(): ReactElement {
   }
 
   React.useEffect(() => {
-    if (router.query.code) {
+    if (router.query.code && typeof router.query.code === 'string') {
       setCode(router.query.code);
     }
   }, [router.query.code]);
