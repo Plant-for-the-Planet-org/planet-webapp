@@ -83,7 +83,7 @@ export default function SeaOfTrees() {
                 increase resilience, enhance food security, and help secure
                 livelihoods.
               </p>
-              <a href="https://trees.salesforce.com/ridge-to-reef">
+              <a href="https://trees.salesforce.com/restoring-guatemala">
                 <button onClick={handleOpen}>
                   Donate to Blue Carbon Projects
                 </button>
