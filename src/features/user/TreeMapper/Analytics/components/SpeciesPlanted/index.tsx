@@ -135,7 +135,7 @@ export const SpeciesPlanted = () => {
       tickPlacement: 'on',
     },
     yaxis: {
-      logarithmic: true, //open bug that causes data labels to render wrong numbers
+      logarithmic: false, //open bug that causes data labels to render wrong numbers
       axisBorder: {
         show: true,
       },
