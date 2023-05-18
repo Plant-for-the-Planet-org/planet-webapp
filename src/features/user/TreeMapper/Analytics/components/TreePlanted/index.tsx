@@ -286,6 +286,61 @@ export const TreePlanted = () => {
     );
   }
 
+  function addMissingMonths(data: MonthlyFrame[]) {
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+
+    // Extract the first and last month and year from the data
+    const firstData = data[0];
+    const lastData = data[data.length - 1];
+    const firstMonthIndex = months.indexOf(firstData.month);
+    const lastMonthIndex = months.indexOf(lastData.month);
+    const firstYear = firstData.year;
+    const lastYear = lastData.year;
+
+    // Loop through the months and years between the first and last data points
+    for (let year = firstYear; year <= lastYear; year++) {
+      const startMonth = year === firstYear ? firstMonthIndex : 0;
+      const endMonth = year === lastYear ? lastMonthIndex : 11;
+
+      for (let monthIndex = startMonth; monthIndex <= endMonth; monthIndex++) {
+        const month = months[monthIndex];
+
+        // Check if the month data is present
+        const monthDataExists = data.some(
+          (item) => item.month === month && item.year === year
+        );
+
+        // If the month data is missing, add it to the data array
+        if (!monthDataExists) {
+          data.push({ month, year, treesPlanted: 0 });
+        }
+      }
+    }
+
+    // Sort the data array based on year and month
+    data.sort((a, b) => {
+      if (a.year === b.year) {
+        return months.indexOf(a.month) - months.indexOf(b.month);
+      }
+      return a.year - b.year;
+    });
+
+    return data;
+  }
+
   const getPlotingData = (
     tf: TIME_FRAME,
     data: DailyFrame[] | WeeklyFrame[] | MonthlyFrame[] | YearlyFrame[]
@@ -330,7 +385,8 @@ export const TreePlanted = () => {
       case TIME_FRAME.MONTHS:
         {
           let year = 0;
-          data.forEach((tf, index) => {
+          const filledData = addMissingMonths(data as MonthlyFrame[]);
+          filledData.forEach((tf, index) => {
             if (isMonthlyFrame(tf)) {
               treesPlanted.push(tf.treesPlanted);
               const month = t(`${tf.month.toLowerCase()}`);
