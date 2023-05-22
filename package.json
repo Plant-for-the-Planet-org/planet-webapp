@@ -50,7 +50,7 @@
     "@math.gl/web-mercator": "^3.5.3",
     "@mui/icons-material": "^5.11.16",
     "@mui/lab": "^5.0.0-alpha.77",
-    "@mui/material": "^5.11.6",
+    "@mui/material": "^5.12.2",
     "@mui/styles": "^5.8.0",
     "@mui/x-date-pickers": "^5.0.15",
     "@netlify/plugin-nextjs": "^4.33.0",
