@@ -23,7 +23,7 @@ interface QueryResult {
 }
 
 handler.post(async (req, response) => {
-  const { projectId, startDate, endDate } = JSON.parse(req.body);
+  const { projectId, startDate, endDate } = req.body;
 
   const CACHE_KEY = `TOTAL_SPECIES_PLANTED__${getCachedKey(
     projectId,
@@ -58,7 +58,7 @@ handler.post(async (req, response) => {
     await db.end();
 
     cache.set(CACHE_KEY, res[0]);
-    response.status(200).json({ data: res[0] });
+    response.status(200).json(res[0]);
   } catch (err) {
     console.log(err);
   } finally {
