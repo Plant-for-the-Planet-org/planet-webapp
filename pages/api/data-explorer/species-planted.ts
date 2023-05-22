@@ -18,8 +18,15 @@ const handler = nc<NextApiRequest, NextApiResponse>();
 handler.use(rateLimiter);
 handler.use(speedLimiter);
 
+export interface ISpeciesPlanted {
+  other_species: null | string;
+  scientific_species_id: number;
+  name: null | string;
+  total_tree_count: number;
+}
+
 handler.post(async (req, response) => {
-  const { projectId, startDate, endDate } = JSON.parse(req.body);
+  const { projectId, startDate, endDate } = req.body;
 
   const CACHE_KEY = `SPECIES_PLANTED__${getCachedKey(
     projectId,
@@ -49,7 +56,7 @@ handler.post(async (req, response) => {
         GROUP BY ps.scientific_species_id, ss.name, ps.other_species \
         ORDER BY total_tree_count DESC';
 
-    const res = await db.query(query, [
+    const res = await db.query<ISpeciesPlanted[]>(query, [
       projectId,
       startDate,
       `${endDate} 23:59:59.999`,

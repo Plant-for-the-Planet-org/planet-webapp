@@ -24,7 +24,7 @@ import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandling
 import useNextRequest, {
   HTTP_METHOD,
 } from '../../../../../../hooks/use-next-request';
-import { ExportData } from '../../../../../../../pages/api/data-explorer/export';
+import { IExportData } from '../../../../../../../pages/api/data-explorer/export';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -54,7 +54,7 @@ export const Export = () => {
   const [localToDate, setLocalToDate] = useState<Date>(toDate);
   const [projectType, setProjectType] = useState<ProjectType | null>(null);
 
-  const { makeRequest } = useNextRequest<ExportData[]>(
+  const { makeRequest } = useNextRequest<{ data: IExportData[] }>(
     '/api/data-explorer/export',
     HTTP_METHOD.POST,
     {
@@ -141,7 +141,7 @@ export const Export = () => {
     }
   };
 
-  const extractDataToXlsx = (data: ExportData[]) => {
+  const extractDataToXlsx = (data: IExportData[]) => {
     const worksheet = utils.json_to_sheet(data);
     const workbook = utils.book_new();
 
@@ -175,11 +175,12 @@ export const Export = () => {
       const res = await makeRequest();
 
       if (res) {
-        if (res.length === 0) {
+        const { data } = res;
+        if (data.length === 0) {
           setErrors([{ message: t('errors.emptyExportData') }]);
           return;
         }
-        extractDataToXlsx(res);
+        extractDataToXlsx(data);
       }
     }
   };

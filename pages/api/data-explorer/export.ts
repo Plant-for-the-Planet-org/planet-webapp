@@ -11,7 +11,7 @@ const handler = nc<NextApiRequest, NextApiResponse>();
 handler.use(rateLimiter);
 handler.use(speedLimiter);
 
-export interface ExportData {
+export interface IExportData {
   hid: string;
   plant_date: Date;
   species: string;
@@ -53,7 +53,7 @@ handler.post(async (req, response) => {
       JOIN plant_project pp ON pl.plant_project_id = pp.id \
       WHERE pp.guid=? AND pl.type IN ('multi','single') AND pl.deleted_at IS NULL AND pl.plant_date BETWEEN ? AND ?";
 
-    const res = await db.query<ExportData[]>(query, [
+    const res = await db.query<IExportData[]>(query, [
       projectId,
       startDate,
       `${endDate} 23:59:59.999`,
