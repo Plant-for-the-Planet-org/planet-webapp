@@ -61,7 +61,7 @@ handler.post(async (req, response) => {
 
     await db.end();
 
-    response.status(200).json(res);
+    response.status(200).json({ data: res });
   } catch (err) {
     console.log(err);
   } finally {

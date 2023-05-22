@@ -58,7 +58,7 @@ handler.post(async (req, response) => {
     await db.end();
 
     cache.set(CACHE_KEY, res[0]);
-    response.status(200).json(res[0]);
+    response.status(200).json({ data: res[0] });
   } catch (err) {
     console.log(err);
   } finally {

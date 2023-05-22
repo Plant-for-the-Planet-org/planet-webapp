@@ -21,39 +21,33 @@ export const Counter = () => {
     null
   );
 
-  const { makeRequest: _fetchTotalTreesPlanted } =
-    useNextRequest<TotalTreesPlanted>(
-      '/api/data-explorer/total-trees-planted',
-      HTTP_METHOD.POST,
-      {
-        projectId: project?.id,
-        startDate: fromDate,
-        endDate: toDate,
-      }
-    );
+  const { makeRequest: _fetchTotalTreesPlanted } = useNextRequest<{
+    data: TotalTreesPlanted;
+  }>('/api/data-explorer/total-trees-planted', HTTP_METHOD.POST, {
+    projectId: project?.id,
+    startDate: fromDate,
+    endDate: toDate,
+  });
 
-  const { makeRequest: _fetchTotalSpeciesPlanted } =
-    useNextRequest<TotalSpeciesPlanted>(
-      '/api/data-explorer/total-species-planted',
-      HTTP_METHOD.POST,
-      {
-        projectId: project?.id,
-        startDate: fromDate,
-        endDate: toDate,
-      }
-    );
+  const { makeRequest: _fetchTotalSpeciesPlanted } = useNextRequest<{
+    data: TotalSpeciesPlanted;
+  }>('/api/data-explorer/total-species-planted', HTTP_METHOD.POST, {
+    projectId: project?.id,
+    startDate: fromDate,
+    endDate: toDate,
+  });
 
   const fetchTotalTreesPlanted = async () => {
     const result = await _fetchTotalTreesPlanted();
     if (result) {
-      setTotalTreesPlanted(result.totalTreesPlanted);
+      setTotalTreesPlanted(result.data.totalTreesPlanted);
     }
   };
 
   const fetchTotalSpeciesPlanted = async () => {
     const result = await _fetchTotalSpeciesPlanted();
     if (result) {
-      setTotalSpeciesPlanted(result.totalSpeciesPlanted);
+      setTotalSpeciesPlanted(result.data.totalSpeciesPlanted);
     }
   };
 
