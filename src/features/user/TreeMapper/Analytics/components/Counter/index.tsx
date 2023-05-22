@@ -7,6 +7,8 @@ import { Grid } from '@mui/material';
 import useNextRequest, {
   HTTP_METHOD,
 } from '../../../../../../hooks/use-next-request';
+import { TotalSpeciesPlanted } from '../../../../../../../pages/api/data-explorer/total-species-planted';
+import { TotalTreesPlanted } from '../../../../../../../pages/api/data-explorer/total-trees-planted';
 
 export const Counter = () => {
   const { project, fromDate, toDate } = useAnalytics();
@@ -19,21 +21,27 @@ export const Counter = () => {
     null
   );
 
-  const { makeRequest: _fetchTotalTreesPlanted } = useNextRequest<{
-    totalTreesPlanted: number;
-  }>('/api/data-explorer/total-trees-planted', HTTP_METHOD.POST, {
-    projectId: project?.id,
-    startDate: fromDate,
-    endDate: toDate,
-  });
+  const { makeRequest: _fetchTotalTreesPlanted } =
+    useNextRequest<TotalTreesPlanted>(
+      '/api/data-explorer/total-trees-planted',
+      HTTP_METHOD.POST,
+      {
+        projectId: project?.id,
+        startDate: fromDate,
+        endDate: toDate,
+      }
+    );
 
-  const { makeRequest: _fetchTotalSpeciesPlanted } = useNextRequest<{
-    totalSpeciesPlanted: number;
-  }>('/api/data-explorer/total-species-planted', HTTP_METHOD.POST, {
-    projectId: project?.id,
-    startDate: fromDate,
-    endDate: toDate,
-  });
+  const { makeRequest: _fetchTotalSpeciesPlanted } =
+    useNextRequest<TotalSpeciesPlanted>(
+      '/api/data-explorer/total-species-planted',
+      HTTP_METHOD.POST,
+      {
+        projectId: project?.id,
+        startDate: fromDate,
+        endDate: toDate,
+      }
+    );
 
   const fetchTotalTreesPlanted = async () => {
     const result = await _fetchTotalTreesPlanted();

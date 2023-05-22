@@ -18,7 +18,7 @@ const handler = nc<NextApiRequest, NextApiResponse>();
 handler.use(rateLimiter);
 handler.use(speedLimiter);
 
-interface QueryResult {
+export interface TotalSpeciesPlanted {
   totalSpeciesPlanted: number;
 }
 
@@ -49,7 +49,7 @@ handler.post(async (req, response) => {
         JOIN plant_project pp ON pl.plant_project_id = pp.id \
         WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ?";
 
-    const res = await db.query<QueryResult[]>(query, [
+    const res = await db.query<TotalSpeciesPlanted[]>(query, [
       projectId,
       startDate,
       `${endDate} 23:59:59.999`,

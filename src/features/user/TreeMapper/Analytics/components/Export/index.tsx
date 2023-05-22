@@ -21,6 +21,10 @@ import { format } from 'date-fns';
 import ProjectTypeSelector, { ProjectType } from '../ProjectTypeSelector';
 import { Container } from '../Container';
 import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
+import useNextRequest, {
+  HTTP_METHOD,
+} from '../../../../../../hooks/use-next-request';
+import { ExportData } from '../../../../../../../pages/api/data-explorer/export';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -43,12 +47,22 @@ export const Export = () => {
   const { t, ready } = useTranslation('treemapperAnalytics');
   const { projectList, project, fromDate, toDate } = useAnalytics();
   const { userLang } = useUserProps();
-  const { handleError } = useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
 
   const [localProject, setLocalProject] = useState<Project | null>(null);
   const [localFromDate, setLocalFromDate] = useState<Date>(fromDate);
   const [localToDate, setLocalToDate] = useState<Date>(toDate);
   const [projectType, setProjectType] = useState<ProjectType | null>(null);
+
+  const { makeRequest } = useNextRequest<ExportData[]>(
+    '/api/data-explorer/export',
+    HTTP_METHOD.POST,
+    {
+      projectId: localProject?.id,
+      startDate: localFromDate,
+      endDate: localToDate,
+    }
+  );
 
   useEffect(() => {
     setLocalFromDate(fromDate);
@@ -127,7 +141,7 @@ export const Export = () => {
     }
   };
 
-  const extractDataToXlsx = (data) => {
+  const extractDataToXlsx = (data: ExportData[]) => {
     const worksheet = utils.json_to_sheet(data);
     const workbook = utils.book_new();
 
@@ -158,32 +172,14 @@ export const Export = () => {
 
   const handleExport = async () => {
     if (localProject) {
-      // TODO - Once error handling PR is merged refactor this fetch call with a makeNextRequest function
-      try {
-        const res = await fetch('/api/data-explorer/export', {
-          method: 'POST',
-          body: JSON.stringify({
-            projectId: localProject.id,
-            startDate: localFromDate,
-            endDate: localToDate,
-          }),
-        });
+      const res = await makeRequest();
 
-        if (res.status === 429) {
-          handleError({ message: t('errors.tooManyRequest'), type: 'error' });
+      if (res) {
+        if (res.length === 0) {
+          setErrors([{ message: t('errors.emptyExportData') }]);
           return;
         }
-
-        const { data } = await res.json();
-
-        if (data.length === 0) {
-          handleError({ message: t('errors.emptyExportData'), type: 'error' });
-          return;
-        }
-
-        extractDataToXlsx(data);
-      } catch (err) {
-        handleError({ message: t('wentWrong'), type: 'error' });
+        extractDataToXlsx(res);
       }
     }
   };

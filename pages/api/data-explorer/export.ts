@@ -11,8 +11,25 @@ const handler = nc<NextApiRequest, NextApiResponse>();
 handler.use(rateLimiter);
 handler.use(speedLimiter);
 
+export interface ExportData {
+  hid: string;
+  plant_date: Date;
+  species: string;
+  tree_count: number;
+  geometry: string;
+  type: string;
+  trees_allocated: number;
+  trees_planted: number;
+  metadata: string;
+  description: null;
+  plant_project_id: number;
+  sample_tree_count: number;
+  capture_status: string;
+  created: Date;
+}
+
 handler.post(async (req, response) => {
-  const { projectId, startDate, endDate } = JSON.parse(req.body);
+  const { projectId, startDate, endDate } = req.body;
   try {
     const query =
       "SELECT \
@@ -36,7 +53,7 @@ handler.post(async (req, response) => {
       JOIN plant_project pp ON pl.plant_project_id = pp.id \
       WHERE pp.guid=? AND pl.type IN ('multi','single') AND pl.deleted_at IS NULL AND pl.plant_date BETWEEN ? AND ?";
 
-    const res = await db.query(query, [
+    const res = await db.query<ExportData[]>(query, [
       projectId,
       startDate,
       `${endDate} 23:59:59.999`,
@@ -44,7 +61,7 @@ handler.post(async (req, response) => {
 
     await db.end();
 
-    response.status(200).json({ data: res });
+    response.status(200).json(res);
   } catch (err) {
     console.log(err);
   } finally {
