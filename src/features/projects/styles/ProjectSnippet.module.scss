@@ -129,21 +129,29 @@
   right: 16px;
   display: flex;
   align-items: center;
-  margin-left: auto;
+  gap: 4px;
   background-color: var(--primary-color);
-  border: 2px solid var(--primary-color);
-  border-radius: 50px;
+  border: 0.2px solid var(--background-base);
+  border-radius: 14px;
+  padding: 2px 8px 2px 2px;
   font-weight: 700;
-  gap: 2px;
-  .badgeIcon {
-    background-color: #fff;
-    border-radius: 100%;
-    font-size: 18px;
-  }
-  .badgeText {
+  font-size: 12px;
+
+  * {
     color: #fff;
-    padding: 0 5px;
-    font-size: 12px;
+  }
+
+  .badgeIcon {
+    background-color: white;
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    svg {
+      height: 14px;
+    }
   }
 }
 
