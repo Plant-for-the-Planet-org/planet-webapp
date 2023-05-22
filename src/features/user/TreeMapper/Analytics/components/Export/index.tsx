@@ -127,7 +127,7 @@ export const Export = () => {
     },
     {
       title: 'created',
-      description: t('exportColumnHeaders.createds'),
+      description: t('exportColumnHeaders.created'),
     },
   ];
 
