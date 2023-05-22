@@ -112,7 +112,7 @@
     "react-mapbox-gl-draw": "^2.0.4",
     "react-player": "^2.8.2",
     "read-more-react": "^1.0.10",
-    "sass": "^1.52.0",
+    "sass": "^1.62.1",
     "serverless-mysql": "^1.5.4",
     "styled-jsx": "^5.0.0",
     "uuid": "^8.3.2",
