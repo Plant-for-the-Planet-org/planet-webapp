@@ -5,6 +5,7 @@ import UploadWidget from './UploadWidget';
 import RecipientsTable from './RecipientsTable';
 import {
   Recipient,
+  TableHeader,
   FileImportError,
   UploadStates,
   ExtendedRecipient,
@@ -36,7 +37,7 @@ const RecipientsUploadForm = ({
   const [status, setStatus] = useState<UploadStates>('empty');
   const [parseError, setParseError] = useState<FileImportError | null>(null);
   const [hasIgnoredColumns, setHasIgnoredColumns] = useState(false);
-  const [headers, setHeaders] = useState<(keyof Recipient)[]>([]);
+  const [headers, setHeaders] = useState<TableHeader[]>([]);
   const [recipients, setRecipients] = useState<Recipient[]>(
     localRecipients as Recipient[]
   );
@@ -176,7 +177,12 @@ const RecipientsUploadForm = ({
           const parsedData = results.data;
           const headerValidity = checkHeaderValidity(parsedHeaders);
           if (headerValidity.isValid) {
-            setHeaders(acceptedHeaders);
+            setHeaders(
+              acceptedHeaders.map((header) => ({
+                key: header,
+                displayText: t(`bulkCodes:tableHeaders.${header}`),
+              }))
+            );
 
             // Check if any columns in uploaded csv were ignored
             parsedHeaders.length > 5 //To be updated when occasion is added

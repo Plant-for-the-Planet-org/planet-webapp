@@ -16,6 +16,11 @@ export interface Recipient {
   // recipient_occasion: string;
 }
 
+type TableHeader = {
+  key: keyof Recipient;
+  displayText: string;
+};
+
 interface OtherRecipientProperties {
   [key: string]: string;
 }

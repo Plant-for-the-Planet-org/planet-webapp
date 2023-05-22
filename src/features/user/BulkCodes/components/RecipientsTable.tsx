@@ -9,10 +9,10 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
-import { Recipient } from '../BulkCodesTypes';
+import { Recipient, TableHeader } from '../BulkCodesTypes';
 
 interface RecipientsTableProps {
-  headers: (keyof Recipient)[];
+  headers: TableHeader[];
   recipients: Recipient[];
 }
 
@@ -41,7 +41,7 @@ const RecipientsTable = ({
           <TableHead>
             <TableRow>
               {headers.map((header) => (
-                <TableCell key={header}>{header}</TableCell>
+                <TableCell key={header.key}>{header.displayText}</TableCell>
               ))}
             </TableRow>
           </TableHead>
@@ -52,8 +52,8 @@ const RecipientsTable = ({
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                     {headers.map((header) => {
-                      const value = recipient[header];
-                      return <TableCell key={header}>{value}</TableCell>;
+                      const value = recipient[header.key];
+                      return <TableCell key={header.key}>{value}</TableCell>;
                     })}
                   </TableRow>
                 );
