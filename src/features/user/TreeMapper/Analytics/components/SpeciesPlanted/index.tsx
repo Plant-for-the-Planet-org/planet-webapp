@@ -16,7 +16,6 @@ import useNextRequest, {
 } from '../../../../../../hooks/use-next-request';
 import { ISpeciesPlanted } from '../../../../../common/types/dataExplorer';
 
-
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
 });
@@ -33,15 +32,15 @@ export const SpeciesPlanted = () => {
 
   const { project, fromDate, toDate } = useAnalytics();
 
-  const { makeRequest } = useNextRequest<{ data: ISpeciesPlanted[] }>(
-    '/api/data-explorer/species-planted',
-    HTTP_METHOD.POST,
-    {
+  const { makeRequest } = useNextRequest<{ data: ISpeciesPlanted[] }>({
+    url: '/api/data-explorer/species-planted',
+    method: HTTP_METHOD.POST,
+    body: {
       projectId: project?.id,
       startDate: fromDate,
       endDate: toDate,
-    }
-  );
+    },
+  });
 
   const [series, setSeries] = useState<ApexOptions['series']>([
     {

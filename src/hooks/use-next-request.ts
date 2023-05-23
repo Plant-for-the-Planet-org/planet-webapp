@@ -14,12 +14,19 @@ interface Result<Data> {
   isLoading: boolean;
 }
 
-const useNextRequest = <Data>(
-  url: string,
-  method: HTTP_METHOD = HTTP_METHOD.GET,
-  body?: object,
-  onSuccess?: (response: Data) => {}
-): Result<Data> => {
+interface Props<Data> {
+  url: string;
+  method: HTTP_METHOD;
+  body?: object;
+  onSuccess?: (response: Data) => {};
+}
+
+const useNextRequest = <Data>({
+  url,
+  method = HTTP_METHOD.GET,
+  body,
+  onSuccess,
+}: Props<Data>): Result<Data> => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { setErrors } = useContext(ErrorHandlingContext);

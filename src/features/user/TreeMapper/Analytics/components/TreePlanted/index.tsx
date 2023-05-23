@@ -97,15 +97,15 @@ export const TreePlanted = () => {
 
   const { makeRequest } = useNextRequest<{
     data: IDailyFrame[] | IWeeklyFrame[] | IMonthlyFrame[] | IYearlyFrame[];
-  }>(
-    `/api/data-explorer/trees-planted?timeFrame=${timeFrame}`,
-    HTTP_METHOD.POST,
-    {
+  }>({
+    url: `/api/data-explorer/trees-planted?timeFrame=${timeFrame}`,
+    method: HTTP_METHOD.POST,
+    body: {
       projectId: project?.id,
       startDate: fromDate,
       endDate: toDate,
-    }
-  );
+    },
+  });
 
   const getDownloadIcon = () => {
     return <DownloadSolid color="#6E8091" />;

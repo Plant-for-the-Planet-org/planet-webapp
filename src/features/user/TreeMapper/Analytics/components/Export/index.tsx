@@ -54,15 +54,15 @@ export const Export = () => {
   const [localToDate, setLocalToDate] = useState<Date>(toDate);
   const [projectType, setProjectType] = useState<ProjectType | null>(null);
 
-  const { makeRequest } = useNextRequest<{ data: IExportData[] }>(
-    '/api/data-explorer/export',
-    HTTP_METHOD.POST,
-    {
+  const { makeRequest } = useNextRequest<{ data: IExportData[] }>({
+    url: '/api/data-explorer/export',
+    method: HTTP_METHOD.POST,
+    body: {
       projectId: localProject?.id,
       startDate: localFromDate,
       endDate: localToDate,
-    }
-  );
+    },
+  });
 
   useEffect(() => {
     setLocalFromDate(fromDate);

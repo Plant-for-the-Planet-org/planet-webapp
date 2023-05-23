@@ -25,18 +25,26 @@ export const Counter = () => {
 
   const { makeRequest: _fetchTotalTreesPlanted } = useNextRequest<{
     data: TotalTreesPlanted;
-  }>('/api/data-explorer/total-trees-planted', HTTP_METHOD.POST, {
-    projectId: project?.id,
-    startDate: fromDate,
-    endDate: toDate,
+  }>({
+    url: '/api/data-explorer/total-trees-planted',
+    method: HTTP_METHOD.POST,
+    body: {
+      projectId: project?.id,
+      startDate: fromDate,
+      endDate: toDate,
+    },
   });
 
   const { makeRequest: _fetchTotalSpeciesPlanted } = useNextRequest<{
     data: TotalSpeciesPlanted;
-  }>('/api/data-explorer/total-species-planted', HTTP_METHOD.POST, {
-    projectId: project?.id,
-    startDate: fromDate,
-    endDate: toDate,
+  }>({
+    url: '/api/data-explorer/total-species-planted',
+    method: HTTP_METHOD.POST,
+    body: {
+      projectId: project?.id,
+      startDate: fromDate,
+      endDate: toDate,
+    },
   });
 
   const fetchTotalTreesPlanted = async () => {
