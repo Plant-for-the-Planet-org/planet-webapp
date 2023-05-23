@@ -12,35 +12,19 @@ import { Tooltip } from './Tooltip';
 import { Container } from '../Container';
 import TimeFrameSelector, { TIME_FRAME } from './TimeFrameSelector';
 import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
+import {
+  IDailyFrame,
+  IMonthlyFrame,
+  IWeeklyFrame,
+  IYearlyFrame,
+} from '../../../../../common/types/dataExplorer';
+import useNextRequest, {
+  HTTP_METHOD,
+} from '../../../../../../hooks/use-next-request';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
 });
-
-interface DailyFrame {
-  plantedDate: string;
-  treesPlanted: number;
-}
-
-interface WeeklyFrame {
-  weekStartDate: string;
-  weekEndDate: string;
-  weekNum: number;
-  month: string;
-  year: number;
-  treesPlanted: number;
-}
-
-interface MonthlyFrame {
-  month: string;
-  year: number;
-  treesPlanted: number;
-}
-
-interface YearlyFrame {
-  year: number;
-  treesPlanted: number;
-}
 
 interface DaysCategories {
   label: string;
@@ -113,6 +97,18 @@ export const TreePlanted = () => {
   );
 
   const [timeFrame, setTimeFrame] = useState<TIME_FRAME | null>(null);
+
+  const { makeRequest } = useNextRequest<{
+    data: IDailyFrame[] | IWeeklyFrame[] | IMonthlyFrame[] | IYearlyFrame[];
+  }>(
+    `/api/data-explorer/trees-planted?timeFrame=${timeFrame}`,
+    HTTP_METHOD.POST,
+    {
+      projectId: project?.id,
+      startDate: fromDate,
+      endDate: toDate,
+    }
+  );
 
   const getDownloadIcon = () => {
     return <DownloadSolid color="#6E8091" />;
@@ -266,8 +262,8 @@ export const TreePlanted = () => {
     };
   }, [project, toDate, fromDate]);
 
-  function isWeeklyFrame(frame: unknown): frame is WeeklyFrame {
-    const weeklyFrame = frame as WeeklyFrame;
+  function isWeeklyFrame(frame: unknown): frame is IWeeklyFrame {
+    const weeklyFrame = frame as IWeeklyFrame;
     return (
       typeof weeklyFrame === 'object' &&
       weeklyFrame !== null &&
@@ -276,8 +272,8 @@ export const TreePlanted = () => {
     );
   }
 
-  function isMonthlyFrame(frame: unknown): frame is MonthlyFrame {
-    const monthlyFrame = frame as MonthlyFrame;
+  function isMonthlyFrame(frame: unknown): frame is IMonthlyFrame {
+    const monthlyFrame = frame as IMonthlyFrame;
     return (
       typeof monthlyFrame === 'object' &&
       monthlyFrame !== null &&
@@ -286,7 +282,7 @@ export const TreePlanted = () => {
     );
   }
 
-  function addMissingMonths(data: MonthlyFrame[]) {
+  function addMissingMonths(data: IMonthlyFrame[]) {
     const months = [
       'Jan',
       'Feb',
@@ -343,7 +339,7 @@ export const TreePlanted = () => {
 
   const getPlotingData = (
     tf: TIME_FRAME,
-    data: DailyFrame[] | WeeklyFrame[] | MonthlyFrame[] | YearlyFrame[]
+    data: IDailyFrame[] | IWeeklyFrame[] | IMonthlyFrame[] | IYearlyFrame[]
   ) => {
     const treesPlanted: number[] = [];
     const categories: Categories = [];
@@ -385,7 +381,7 @@ export const TreePlanted = () => {
       case TIME_FRAME.MONTHS:
         {
           let year = 0;
-          const filledData = addMissingMonths(data as MonthlyFrame[]);
+          const filledData = addMissingMonths(data as IMonthlyFrame[]);
           filledData.forEach((tf, index) => {
             if (isMonthlyFrame(tf)) {
               treesPlanted.push(tf.treesPlanted);
@@ -480,32 +476,19 @@ export const TreePlanted = () => {
   };
 
   const fetchPlantedTrees = async () => {
-    // TODO - Once error handling PR is merged refactor this fetch call with a makeNextRequest function
+    const res = await makeRequest();
 
-    try {
-      const res = await fetch(
-        `/api/data-explorer/trees-planted?timeFrame=${timeFrame}`,
-        {
-          method: 'POST',
-          body: JSON.stringify({
-            projectId: project?.id,
-            startDate: fromDate,
-            endDate: toDate,
-          }),
-        }
-      );
-
-      if (res.status === 429) {
-        handleError({ message: t('errors.tooManyRequest'), type: 'error' });
-        return;
-      }
-
-      const { data } = await res.json();
+    if (res) {
+      const { data } = await res;
 
       if (timeFrame) {
         const { treesPlanted, categories } = getPlotingData(
           timeFrame,
-          data as DailyFrame[] | WeeklyFrame[] | MonthlyFrame[] | YearlyFrame[]
+          data as
+            | IDailyFrame[]
+            | IWeeklyFrame[]
+            | IMonthlyFrame[]
+            | IYearlyFrame[]
         );
 
         setSeries([
@@ -532,8 +515,6 @@ export const TreePlanted = () => {
           },
         });
       }
-    } catch (err) {
-      handleError({ message: t('wentWrong'), type: 'error' });
     }
   };
 
