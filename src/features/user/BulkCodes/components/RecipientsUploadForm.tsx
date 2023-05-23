@@ -181,6 +181,7 @@ const RecipientsUploadForm = ({
               acceptedHeaders.map((header) => ({
                 key: header,
                 displayText: t(`bulkCodes:tableHeaders.${header}`),
+                helpText: t(`bulkCodes:tableHeaderHelpText.${header}`),
               }))
             );
 

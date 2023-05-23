@@ -79,3 +79,15 @@
     transform: rotate(360deg);
   }
 }
+
+.headerInfoIcon {
+  display: inline-block;
+  width: 1em;
+  min-width: 1em;
+  vertical-align: middle;
+}
+
+.tableHeaderContent {
+  // Prevents header from wrapping
+  white-space: nowrap;
+}

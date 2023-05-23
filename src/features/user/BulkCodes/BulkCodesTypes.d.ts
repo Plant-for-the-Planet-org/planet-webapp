@@ -19,6 +19,7 @@ export interface Recipient {
 type TableHeader = {
   key: keyof Recipient;
   displayText: string;
+  helpText?: string;
 };
 
 interface OtherRecipientProperties {

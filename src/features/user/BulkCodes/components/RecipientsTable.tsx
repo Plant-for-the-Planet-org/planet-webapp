@@ -10,6 +10,10 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
 import { Recipient, TableHeader } from '../BulkCodesTypes';
+import Tooltip from '@mui/material/Tooltip';
+import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
+
+import styles from '../BulkCodes.module.scss';
 
 interface RecipientsTableProps {
   headers: TableHeader[];
@@ -40,9 +44,26 @@ const RecipientsTable = ({
         <Table stickyHeader aria-label="sticky table" size="small">
           <TableHead>
             <TableRow>
-              {headers.map((header) => (
-                <TableCell key={header.key}>{header.displayText}</TableCell>
-              ))}
+              {headers.map((header) => {
+                const { key, displayText, helpText } = header;
+                return (
+                  <TableCell key={key}>
+                    <h3 className={styles.tableHeaderContent}>
+                      {displayText}
+                      {helpText !== undefined && helpText.length > 0 && (
+                        <>
+                          {' '}
+                          <Tooltip title={helpText} arrow>
+                            <span className={styles.headerInfoIcon}>
+                              <InfoIcon />
+                            </span>
+                          </Tooltip>
+                        </>
+                      )}
+                    </h3>
+                  </TableCell>
+                );
+              })}
             </TableRow>
           </TableHead>
           <TableBody>
