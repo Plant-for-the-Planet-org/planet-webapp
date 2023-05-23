@@ -14,7 +14,8 @@ import { Container } from '../Container';
 import useNextRequest, {
   HTTP_METHOD,
 } from '../../../../../../hooks/use-next-request';
-import { ISpeciesPlanted } from '../../../../../../../pages/api/data-explorer/species-planted';
+import { ISpeciesPlanted } from '../../../../../common/types/dataExplorer';
+
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,

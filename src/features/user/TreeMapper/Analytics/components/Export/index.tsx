@@ -24,7 +24,7 @@ import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandling
 import useNextRequest, {
   HTTP_METHOD,
 } from '../../../../../../hooks/use-next-request';
-import { IExportData } from '../../../../../../../pages/api/data-explorer/export';
+import { IExportData } from '../../../../../common/types/dataExplorer';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {

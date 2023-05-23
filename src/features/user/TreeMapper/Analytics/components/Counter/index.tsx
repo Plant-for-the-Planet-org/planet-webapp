@@ -7,8 +7,10 @@ import { Grid } from '@mui/material';
 import useNextRequest, {
   HTTP_METHOD,
 } from '../../../../../../hooks/use-next-request';
-import { TotalSpeciesPlanted } from '../../../../../../../pages/api/data-explorer/total-species-planted';
-import { TotalTreesPlanted } from '../../../../../../../pages/api/data-explorer/total-trees-planted';
+import {
+  TotalSpeciesPlanted,
+  TotalTreesPlanted,
+} from '../../../../../common/types/dataExplorer';
 
 export const Counter = () => {
   const { project, fromDate, toDate } = useAnalytics();

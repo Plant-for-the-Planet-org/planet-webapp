@@ -5,28 +5,12 @@ import {
   rateLimiter,
   speedLimiter,
 } from '../../../src/middlewares/rate-limiter';
+import { IExportData } from '../../../src/features/common/types/dataExplorer';
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
 handler.use(rateLimiter);
 handler.use(speedLimiter);
-
-export interface IExportData {
-  hid: string;
-  plant_date: Date;
-  species: string;
-  tree_count: number;
-  geometry: string;
-  type: string;
-  trees_allocated: number;
-  trees_planted: number;
-  metadata: string;
-  description: null;
-  plant_project_id: number;
-  sample_tree_count: number;
-  capture_status: string;
-  created: Date;
-}
 
 handler.post(async (req, response) => {
   const { projectId, startDate, endDate } = req.body;
