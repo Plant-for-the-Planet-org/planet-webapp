@@ -42,7 +42,7 @@ const useNextRequest = <Data>(
         throw new APIError(res.status, await res.json());
       }
 
-      const responseData = await res.json();
+      const responseData = (await res.json()) as Data;
 
       if (onSuccess) {
         onSuccess(responseData);
