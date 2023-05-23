@@ -1,6 +1,6 @@
 import { differenceInDays, format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import themeProperties from '../../../../../../theme/themeProperties';
 import { getFormattedNumber } from '../../../../../../utils/getFormattedNumber';
@@ -11,7 +11,6 @@ import { ApexOptions } from 'apexcharts';
 import { Tooltip } from './Tooltip';
 import { Container } from '../Container';
 import TimeFrameSelector, { TIME_FRAME } from './TimeFrameSelector';
-import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
 import {
   IDailyFrame,
   IMonthlyFrame,
@@ -81,8 +80,6 @@ export const TreePlanted = () => {
     i18n: { language },
     t,
   } = useTranslation(['treemapperAnalytics']);
-
-  const { handleError } = useContext(ErrorHandlingContext);
 
   const [series, setSeries] = useState<ApexOptions['series']>([
     {
