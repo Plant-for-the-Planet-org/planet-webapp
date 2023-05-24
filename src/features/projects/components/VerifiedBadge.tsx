@@ -10,7 +10,7 @@ import TopProjectReports from './projectDetails/TopProjectReports';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
 
 interface Props {
-  displayPopup: boolean;
+  displayPopup: Boolean;
   project: any;
 }
 

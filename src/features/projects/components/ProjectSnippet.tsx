@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
 import { useRouter } from 'next/router';
-import { Trans, useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
 import EditIcon from '../../../../public/assets/images/icons/manageProjects/Pencil';
 import Link from 'next/link';
@@ -11,15 +11,8 @@ import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
-import Typography from '@mui/material/Typography';
-import HoverPopover from 'material-ui-popup-state/HoverPopover';
-import {
-  usePopupState,
-  bindHover,
-  bindPopover,
-} from 'material-ui-popup-state/hooks';
-import TopProjectIcon from '../../../../public/assets/images/icons/project/TopProjectIcon';
 import VerifiedBadge from './VerifiedBadge';
+import TopProjectBadge from './TopProjectBadge';
 
 interface Props {
   project: any;
@@ -35,15 +28,6 @@ export default function ProjectSnippet({
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
-  const popupState1 = usePopupState({
-    variant: 'popover',
-    popupId: 'demoPopover',
-  });
-  const popupState2 = usePopupState({
-    variant: 'popover',
-    popupId: 'demoPopover',
-  });
-
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
     : '';
@@ -98,44 +82,7 @@ export default function ProjectSnippet({
           ></div>
         ) : null}
         {project.isTopProject && project.isApproved && (
-          <>
-            <div className={'topProjectBadge'} {...bindHover(popupState2)}>
-              <div className={'badgeIcon'}>
-                <TopProjectIcon color="#68B030" />
-              </div>
-              <div>{t('common:topProject')}</div>
-            </div>
-            <HoverPopover
-              {...bindPopover(popupState2)}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            >
-              <Typography style={{ margin: 10, width: 300 }}>
-                <Trans i18nKey="common:top_project_standards_fulfilled">
-                  The project inspection revealed that this project fulfilled at
-                  least 12 of the 19 Top Project{' '}
-                  <a
-                    target="_blank"
-                    href={t('common:standardsLink')}
-                    rel="noreferrer"
-                    style={{ color: '#68B030', fontWeight: 400 }}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    standards.
-                  </a>
-                </Trans>
-              </Typography>
-            </HoverPopover>
-          </>
+          <TopProjectBadge displayPopup={true} />
         )}
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
@@ -144,7 +91,7 @@ export default function ProjectSnippet({
           <p className={'projectName'}>
             {truncateString(project.name, 54)}
             {project.isApproved && (
-              <VerifiedBadge displayPopup={true} project={project} />
+              <VerifiedBadge displayPopup={displayPopup} project={project} />
             )}
           </p>
         </div>

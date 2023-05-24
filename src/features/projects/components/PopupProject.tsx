@@ -7,8 +7,8 @@ import { truncateString } from '../../../utils/getTruncatedString';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
-import TopProjectIcon from '../../../../public/assets/images/icons/project/TopProjectIcon';
 import VerifiedBadge from './VerifiedBadge';
+import TopProjectBadge from './TopProjectBadge';
 
 interface Props {
   project: any;
@@ -53,12 +53,7 @@ export default function PopupProject({
           ></div>
         ) : null}
         {project.properties.isTopProject && project.properties.isApproved && (
-          <div className={'topProjectBadge'}>
-            <div className={'badgeIcon'}>
-              <TopProjectIcon color="#68B030" />
-            </div>
-            <div>{t('common:topProject')}</div>
-          </div>
+          <TopProjectBadge displayPopup={false} />
         )}
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
