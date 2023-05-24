@@ -126,7 +126,7 @@ export default function ProjectSnippet({
                   least 12 of the 19 Top Project{' '}
                   <a
                     target="_blank"
-                    href={t('standardsLink')}
+                    href={t('common:standardsLink')}
                     rel="noreferrer"
                     style={{ color: '#68B030', fontWeight: 400 }}
                     onClick={(e) => e.stopPropagation()}
