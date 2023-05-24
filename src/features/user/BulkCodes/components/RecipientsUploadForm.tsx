@@ -1,4 +1,4 @@
-import { useState, ReactElement, useEffect } from 'react';
+import { useState, ReactElement, useEffect, useMemo } from 'react';
 import { parse, ParseResult } from 'papaparse';
 import { useTranslation, Trans } from 'next-i18next';
 import UploadWidget from './UploadWidget';
@@ -34,14 +34,24 @@ const RecipientsUploadForm = ({
   onRecipientsUploaded,
   localRecipients,
 }: RecipientsUploadFormProps): ReactElement => {
+  const { t, ready } = useTranslation(['bulkCodes']);
+
   const [status, setStatus] = useState<UploadStates>('empty');
   const [parseError, setParseError] = useState<FileImportError | null>(null);
   const [hasIgnoredColumns, setHasIgnoredColumns] = useState(false);
-  const [headers, setHeaders] = useState<TableHeader[]>([]);
   const [recipients, setRecipients] = useState<Recipient[]>(
     localRecipients as Recipient[]
   );
-  const { t, ready } = useTranslation(['bulkCodes']);
+  const headers = useMemo<TableHeader[]>(() => {
+    if (ready) {
+      return acceptedHeaders.map((header) => ({
+        key: header,
+        displayText: t(`bulkCodes:tableHeaders.${header}`),
+        helpText: t(`bulkCodes:tableHeaderHelpText.${header}`),
+      }));
+    }
+    return [];
+  }, [t, ready]);
 
   const handleStatusChange = (newStatus: UploadStates) => {
     setStatus(newStatus);
@@ -177,14 +187,6 @@ const RecipientsUploadForm = ({
           const parsedData = results.data;
           const headerValidity = checkHeaderValidity(parsedHeaders);
           if (headerValidity.isValid) {
-            setHeaders(
-              acceptedHeaders.map((header) => ({
-                key: header,
-                displayText: t(`bulkCodes:tableHeaders.${header}`),
-                helpText: t(`bulkCodes:tableHeaderHelpText.${header}`),
-              }))
-            );
-
             // Check if any columns in uploaded csv were ignored
             parsedHeaders.length > 5 //To be updated when occasion is added
               ? setHasIgnoredColumns(true)
@@ -258,9 +260,7 @@ const RecipientsUploadForm = ({
           <a href="/assets/recipient-upload-sample.csv">CSV template here</a>
         </Trans>
       </p>
-      {recipients.length > 0 && (
-        <RecipientsTable headers={headers} recipients={recipients} />
-      )}
+      <RecipientsTable headers={headers} recipients={recipients} />
     </>
   );
 };
