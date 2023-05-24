@@ -122,6 +122,7 @@
 .verifiedIcon {
   margin-bottom: -2px;
   margin-left: 5px;
+  font-size: 12px;
 }
 .topProjectBadge {
   position: absolute;
@@ -243,4 +244,13 @@
 .perTreeCost > span {
   font-family: $primaryFontFamily;
   font-weight: 400;
+}
+
+.topProjectReportsContainer {
+  margin: 10px;
+}
+
+.topProjectPopupContainer {
+  margin: 10px;
+  width: 300px;
 }

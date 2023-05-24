@@ -1,6 +1,5 @@
 import { ReactElement } from 'react';
 import { Trans, useTranslation } from 'next-i18next';
-import { Typography } from '@mui/material';
 import {
   bindPopover,
   usePopupState,
@@ -8,6 +7,7 @@ import {
 } from 'material-ui-popup-state/hooks';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import TopProjectIcon from '../../../../public/assets/images/icons/project/TopProjectIcon';
+import themeProperties from '../../../theme/themeProperties';
 
 interface Props {
   displayPopup: Boolean;
@@ -42,7 +42,7 @@ const TopProjectBadge = ({ displayPopup }: Props): ReactElement => {
             e.stopPropagation();
           }}
         >
-          <Typography style={{ margin: 10, width: 300 }}>
+          <div className="topProjectPopupContainer">
             <Trans i18nKey="common:top_project_standards_fulfilled">
               The project inspection revealed that this project fulfilled at
               least 12 of the 19 Top Project{' '}
@@ -50,13 +50,13 @@ const TopProjectBadge = ({ displayPopup }: Props): ReactElement => {
                 target="_blank"
                 href={t('common:standardsLink')}
                 rel="noreferrer"
-                style={{ color: '#68B030', fontWeight: 400 }}
+                style={{ color: themeProperties.primaryColor, fontWeight: 400 }}
                 onClick={(e) => e.stopPropagation()}
               >
                 standards.
               </a>
             </Trans>
-          </Typography>
+          </div>
         </HoverPopover>
       )}
     </>

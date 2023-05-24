@@ -1,6 +1,5 @@
 import { ReactElement } from 'react';
 import VerifiedIcon from '@mui/icons-material/Verified';
-import { Typography } from '@mui/material';
 import {
   bindPopover,
   usePopupState,
@@ -41,9 +40,9 @@ const VerifiedBadge = ({ displayPopup, project }: Props): ReactElement => {
             e.stopPropagation();
           }}
         >
-          <Typography style={{ margin: 10 }}>
+          <div className="topProjectReportsContainer">
             <TopProjectReports projectReviews={project.reviews} />
-          </Typography>
+          </div>
         </HoverPopover>
       )}
     </>
