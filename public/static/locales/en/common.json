@@ -96,6 +96,7 @@
   "deleteCondition": "Before proceeding, make sure you've cancelled all subscriptions.",
   "showSubscriptions": "Show my Subscriptions",
   "notFound": "Resource not found",
+  "tooManyRequest": "Too many requests. Please wait and try again later or contact the system administrator for assistance.",
   "unauthorized": "Not Authorized",
   "validationError": "Validation Error",
   "internalServerError": "Internal Server Error - Please try again later!",

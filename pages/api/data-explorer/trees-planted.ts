@@ -8,6 +8,12 @@ import {
 } from '../../../src/middlewares/rate-limiter';
 import NodeCache from 'node-cache';
 import { getCachedKey } from '../../../src/utils/getCachedKey';
+import {
+  IDailyFrame,
+  IMonthlyFrame,
+  IWeeklyFrame,
+  IYearlyFrame,
+} from '../../../src/features/common/types/dataExplorer';
 
 const ONE_HOUR_IN_SEC = 60 * 60;
 const ONE_DAY = ONE_HOUR_IN_SEC * 24;
@@ -20,7 +26,7 @@ handler.use(rateLimiter);
 handler.use(speedLimiter);
 
 handler.post(async (req, response) => {
-  const { projectId, startDate, endDate } = JSON.parse(req.body);
+  const { projectId, startDate, endDate } = req.body;
   const { timeFrame } = req.query;
 
   const CACHE_KEY = `TREES_PLANTED__${getCachedKey(
@@ -106,11 +112,9 @@ handler.post(async (req, response) => {
   }
 
   try {
-    const res = await db.query(query, [
-      projectId,
-      startDate,
-      `${endDate} 23:59:59.999`,
-    ]);
+    const res = await db.query<
+      IDailyFrame[] | IWeeklyFrame[] | IMonthlyFrame[] | IYearlyFrame[]
+    >(query, [projectId, startDate, `${endDate} 23:59:59.999`]);
 
     await db.end();
 

@@ -8,7 +8,6 @@ import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { RedeemedCodeData } from '../../../common/types/redeem';
-import { ClaimCode1 } from '../../../../../pages/claim/[type]/[code]';
 import {
   RedeemFailed,
   SuccessfullyRedeemed,
@@ -28,20 +27,20 @@ export default function RedeemModal({
   const { user, contextLoaded, token, setUser, logoutUser } = useUserProps();
   const { setErrors, errors: apiErrors } =
     React.useContext(ErrorHandlingContext);
-  const [inputCode, setInputCode] = React.useState<ClaimCode1>('');
+  const [inputCode, setInputCode] = React.useState<string | undefined>('');
   const [redeemedCodeData, setRedeemedCodeData] = React.useState<
     RedeemedCodeData | undefined
   >(undefined);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-  async function redeemingCode(data: ClaimCode1): Promise<void> {
+  async function redeemingCode(data: string | undefined): Promise<void> {
     setIsLoading(true);
     const submitData = {
       code: data,
     };
     if (contextLoaded && user) {
       try {
-        const res = await postAuthenticatedRequest(
+        const res = await postAuthenticatedRequest<RedeemedCodeData>(
           `/app/redeem`,
           submitData,
           token,
