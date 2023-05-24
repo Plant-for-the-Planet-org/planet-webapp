@@ -11,8 +11,6 @@ import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
-import VerifiedIcon from '@mui/icons-material/Verified';
-import TopProjectReports from './projectDetails/TopProjectReports';
 import Typography from '@mui/material/Typography';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import {
@@ -21,6 +19,7 @@ import {
   bindPopover,
 } from 'material-ui-popup-state/hooks';
 import TopProjectIcon from '../../../../public/assets/images/icons/project/TopProjectIcon';
+import VerifiedBadge from './VerifiedBadge';
 
 interface Props {
   project: any;
@@ -145,33 +144,7 @@ export default function ProjectSnippet({
           <p className={'projectName'}>
             {truncateString(project.name, 54)}
             {project.isApproved && (
-              <>
-                <VerifiedIcon
-                  sx={{ color: '#fff', fontSize: 17 }}
-                  className={'verifiedIcon'}
-                  {...bindHover(popupState1)}
-                />
-                {displayPopup && (
-                  <HoverPopover
-                    {...bindPopover(popupState1)}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'center',
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'left',
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <Typography style={{ margin: 10 }}>
-                      <TopProjectReports projectReviews={project.reviews} />
-                    </Typography>
-                  </HoverPopover>
-                )}
-              </>
+              <VerifiedBadge displayPopup={true} project={project} />
             )}
           </p>
         </div>

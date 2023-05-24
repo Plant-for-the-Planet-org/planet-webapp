@@ -7,8 +7,8 @@ import { truncateString } from '../../../utils/getTruncatedString';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
-import VerifiedIcon from '@mui/icons-material/Verified';
 import TopProjectIcon from '../../../../public/assets/images/icons/project/TopProjectIcon';
+import VerifiedBadge from './VerifiedBadge';
 
 interface Props {
   project: any;
@@ -69,10 +69,7 @@ export default function PopupProject({
           <p className={'projectName'}>
             {truncateString(project.properties.name, 54)}
             {project.properties.isApproved && (
-              <VerifiedIcon
-                sx={{ color: '#fff', fontSize: 17 }}
-                className={'verifiedIcon'}
-              />
+              <VerifiedBadge displayPopup={false} project={project} />
             )}
           </p>
         </div>
