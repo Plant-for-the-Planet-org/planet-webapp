@@ -7,7 +7,8 @@ import { truncateString } from '../../../utils/getTruncatedString';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
-import VerifiedIcon from '@mui/icons-material/Verified';
+import VerifiedBadge from './VerifiedBadge';
+import TopProjectBadge from './TopProjectBadge';
 
 interface Props {
   project: any;
@@ -52,7 +53,7 @@ export default function PopupProject({
           ></div>
         ) : null}
         {project.properties.isTopProject && project.properties.isApproved && (
-          <div className={'topProjectBadge'}>{t('common:topProject')}</div>
+          <TopProjectBadge displayPopup={false} />
         )}
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
@@ -60,12 +61,12 @@ export default function PopupProject({
               t(`donate:${project.properties.classification}`)}
           </div>
 
-          <div className={'projectName'}>
+          <p className={'projectName'}>
             {truncateString(project.properties.name, 54)}
             {project.properties.isApproved && (
-              <VerifiedIcon sx={{ color: '#fff' }} className={'verifiedIcon'} />
+              <VerifiedBadge displayPopup={false} project={project} />
             )}
-          </div>
+          </p>
         </div>
       </div>
 

@@ -11,15 +11,8 @@ import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
-import VerifiedIcon from '@mui/icons-material/Verified';
-import TopProjectReports from './projectDetails/TopProjectReports';
-import Typography from '@mui/material/Typography';
-import HoverPopover from 'material-ui-popup-state/HoverPopover';
-import {
-  usePopupState,
-  bindHover,
-  bindPopover,
-} from 'material-ui-popup-state/hooks';
+import VerifiedBadge from './VerifiedBadge';
+import TopProjectBadge from './TopProjectBadge';
 
 interface Props {
   project: any;
@@ -35,11 +28,6 @@ export default function ProjectSnippet({
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
-  const popupState = usePopupState({
-    variant: 'popover',
-    popupId: 'demoPopover',
-  });
-
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
     : '';
@@ -94,44 +82,18 @@ export default function ProjectSnippet({
           ></div>
         ) : null}
         {project.isTopProject && project.isApproved && (
-          <div className={'topProjectBadge'}>{t('common:topProject')}</div>
+          <TopProjectBadge displayPopup={true} />
         )}
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
             {project.classification && t(`donate:${project.classification}`)}
           </div>
-          <div className={'projectName'}>
+          <p className={'projectName'}>
             {truncateString(project.name, 54)}
             {project.isApproved && (
-              <>
-                <VerifiedIcon
-                  sx={{ color: '#fff' }}
-                  className={'verifiedIcon'}
-                  {...bindHover(popupState)}
-                />
-                {displayPopup && (
-                  <HoverPopover
-                    {...bindPopover(popupState)}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'center',
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'left',
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <Typography style={{ margin: 10 }}>
-                      <TopProjectReports projectReviews={project.reviews} />
-                    </Typography>
-                  </HoverPopover>
-                )}
-              </>
+              <VerifiedBadge displayPopup={displayPopup} project={project} />
             )}
-          </div>
+          </p>
         </div>
       </div>
 
