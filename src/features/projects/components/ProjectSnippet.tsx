@@ -8,29 +8,31 @@ import Link from 'next/link';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
 import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import VerifiedBadge from './VerifiedBadge';
+import TopProjectBadge from './TopProjectBadge';
 
 interface Props {
   project: any;
   keyString: string;
-  editMode: Boolean;
+  editMode: boolean;
+  displayPopup: boolean;
   utmCampaign?: string;
   disableDonations?: boolean;
 }
 
 export default function ProjectSnippet({
   project,
-  keyString,
   editMode,
+  displayPopup,
   utmCampaign,
   disableDonations = false,
 }: Props): ReactElement {
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
-
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
     : '';
@@ -43,7 +45,7 @@ export default function ProjectSnippet({
     progressPercentage = 100;
   }
 
-  const { token } = React.useContext(UserPropsContext);
+  const { token } = useUserProps();
   const handleOpen = () => {
     const url = getDonationUrl(
       project.slug,
@@ -54,9 +56,8 @@ export default function ProjectSnippet({
     );
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
-
   return ready ? (
-    <div className={'singleProject'} key={keyString}>
+    <div className={'singleProject'}>
       {editMode ? (
         <Link href={`/profile/projects/${project.id}`}>
           <button id={'projectSnipEdit'} className={'projectEditBlock'}>
@@ -91,14 +92,19 @@ export default function ProjectSnippet({
             }}
           ></div>
         ) : null}
-
+        {project.isTopProject && project.isApproved && (
+          <TopProjectBadge displayPopup={true} />
+        )}
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
             {project.classification && t(`donate:${project.classification}`)}
           </div>
-          <div className={'projectName'}>
+          <p className={'projectName'}>
             {truncateString(project.name, 54)}
-          </div>
+            {project.isApproved && (
+              <VerifiedBadge displayPopup={displayPopup} project={project} />
+            )}
+          </p>
         </div>
       </div>
 

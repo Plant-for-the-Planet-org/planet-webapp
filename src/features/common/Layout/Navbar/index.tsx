@@ -8,7 +8,7 @@ import tenantConfig from '../../../../../tenant.config';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import getImageUrl from '../../../../utils/getImageURL';
-import { UserPropsContext } from '../UserPropsContext';
+import { useUserProps } from '../UserPropsContext';
 import GetNavBarIcon from './getNavBarIcon';
 import GetSubMenu from './getSubMenu';
 import { lang_path } from '../../../../utils/constants/wpLanguages';
@@ -72,7 +72,7 @@ export default function NavbarComponent(props: any) {
     logoutUser,
     auth0Error,
     isImpersonationModeOn,
-  } = React.useContext(UserPropsContext);
+  } = useUserProps();
 
   // This function controls the path for the user when they click on Me
   async function gotoUserPage() {
@@ -144,6 +144,7 @@ export default function NavbarComponent(props: any) {
 
   const MenuItems = () => {
     const links = Object.keys(config.header.items);
+    const tenantName = config?.tenantName;
     return links ? (
       <div className={`menuItems ${isConstrained ? 'constrained' : ''}`}>
         {links.map((link) => {
@@ -218,10 +219,10 @@ export default function NavbarComponent(props: any) {
                     }`}
                   >
                     <GetNavBarIcon
-                      UserIcon={UserIcon}
                       mainKey={link}
                       router={router}
                       item={SingleLink}
+                      tenantName={tenantName}
                     />
                     {link === 'donate' ? (
                       <p

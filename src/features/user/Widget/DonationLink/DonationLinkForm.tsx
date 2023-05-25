@@ -1,8 +1,8 @@
-import { ReactElement, useContext, useState, useEffect } from 'react';
+import { ReactElement, useState, useEffect } from 'react';
 import { useTranslation } from 'next-i18next';
 import { Button, Switch, TextField } from '@mui/material';
 import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import supportedLanguages from '../../../../utils/language/supportedLanguages.json';
 import React from 'react';
@@ -32,7 +32,7 @@ interface LanguageType {
 const DonationLinkForm = ({
   projectsList,
 }: DonationLinkFormProps): ReactElement | null => {
-  const { user } = useContext(UserPropsContext);
+  const { user } = useUserProps();
   const [country, setCountry] = useState('auto');
   const [Languages, setLanguage] = useState<LanguageType>({
     langCode: 'auto',

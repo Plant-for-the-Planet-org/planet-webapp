@@ -17,6 +17,7 @@ import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import ProjectTabs from '../components/maps/ProjectTabs';
 import PlantLocationDetails from '../components/PlantLocation/PlantLocationDetails';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import TopProjectReports from '../components/projectDetails/TopProjectReports';
 
 const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
   ssr: false,
@@ -204,16 +205,22 @@ function SingleProjectDetails({}: Props): ReactElement {
             )}
             <div className={'projectSnippetContainer'}>
               <ProjectSnippet
-                keyString={project.id}
                 project={project}
                 editMode={false}
+                displayPopup={false}
               />
             </div>
             {hoveredPl || selectedPl ? (
               <PlantLocationDetails {...ProjectProps} />
             ) : (
               <div className={'singleProjectDetails'}>
-                <div className={'projectCompleteInfo'}>
+                <div
+                  className={'projectCompleteInfo'}
+                  style={{ marginTop: 24 }}
+                >
+                  {project?.isApproved && (
+                    <TopProjectReports projectReviews={project.reviews} />
+                  )}
                   <div className={'projectDescription'}>
                     <div className={'infoTitle'}>
                       {t('donate:aboutProject')}

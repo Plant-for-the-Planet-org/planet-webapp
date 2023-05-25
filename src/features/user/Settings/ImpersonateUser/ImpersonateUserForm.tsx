@@ -1,10 +1,10 @@
-import { ReactElement, useContext, useState } from 'react';
+import { ReactElement, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useForm } from 'react-hook-form';
 import { TextField, Button } from '@mui/material';
 import { getAccountInfo } from '../../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import StyledForm from '../../../common/Layout/StyledForm';
 
 export type ImpersonationData = {
@@ -16,8 +16,7 @@ const ImpersonateUserForm = (): ReactElement => {
   const router = useRouter();
   const { t } = useTranslation('me');
   const [isInvalidEmail, setIsInvalidEmail] = useState(false);
-  const { token, setUser, setIsImpersonationModeOn } =
-    useContext(UserPropsContext);
+  const { token, setUser, setIsImpersonationModeOn } = useUserProps();
   const { register, errors, handleSubmit } = useForm<ImpersonationData>({
     mode: 'onSubmit',
   });

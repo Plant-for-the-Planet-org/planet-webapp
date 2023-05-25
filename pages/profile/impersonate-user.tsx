@@ -3,13 +3,13 @@ import { useTranslation } from 'next-i18next';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import ImpersonateUser from '../../src/features/user/Settings/ImpersonateUser';
-import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
-import { ReactElement, useContext } from 'react';
+import { useUserProps } from '../../src/features/common/Layout/UserPropsContext';
+import { ReactElement } from 'react';
 import AccessDeniedLoader from '../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import { GetStaticPropsContext } from 'next';
 
 const ImpersonateUserPage = (): ReactElement => {
-  const { user, isImpersonationModeOn } = useContext(UserPropsContext);
+  const { user, isImpersonationModeOn } = useUserProps();
   const { t } = useTranslation('me');
 
   return (
