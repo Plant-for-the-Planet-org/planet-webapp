@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import SalesforceCampaign from '../src/tenants/salesforce/Campaign';
+import SalesforceCampaign from '../src/tenants/salesforce/VTOCampaign';
 import tenantConfig from '../tenant.config';
 import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
