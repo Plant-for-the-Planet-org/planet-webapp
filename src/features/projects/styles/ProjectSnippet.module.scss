@@ -119,10 +119,15 @@
   color: $light;
   padding-right: 16px;
 }
+
 .verifiedIcon {
-  margin-left: 5px;
-  vertical-align: middle;
+  display: inline-block;
+  vertical-align: top;
+  width: 0.95em;
+  min-width: 0.95em;
+  line-height: 0.95em;
 }
+
 .topProjectBadge {
   position: absolute;
   top: 12px;

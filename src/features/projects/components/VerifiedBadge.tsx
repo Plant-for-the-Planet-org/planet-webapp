@@ -20,11 +20,13 @@ const VerifiedBadge = ({ displayPopup, project }: Props): ReactElement => {
   });
   return (
     <>
-      <VerifiedIcon
-        sx={{ color: '#fff', fontSize: 17 }}
-        className={'verifiedIcon'}
-        {...bindHover(verifiedPopupState)}
-      />
+      {' '}
+      <span className={'verifiedIcon'}>
+        <VerifiedIcon
+          sx={{ width: '100%' }}
+          {...bindHover(verifiedPopupState)}
+        />
+      </span>
       {displayPopup && (
         <HoverPopover
           {...bindPopover(verifiedPopupState)}
