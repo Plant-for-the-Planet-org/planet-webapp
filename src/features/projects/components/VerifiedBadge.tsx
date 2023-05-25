@@ -9,14 +9,14 @@ import TopProjectReports from './projectDetails/TopProjectReports';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
 
 interface Props {
-  displayPopup: Boolean;
+  displayPopup: boolean;
   project: any;
 }
 
 const VerifiedBadge = ({ displayPopup, project }: Props): ReactElement => {
   const verifiedPopupState = usePopupState({
     variant: 'popover',
-    popupId: 'demoVerifiedPopover',
+    popupId: 'verifiedPopover',
   });
   return (
     <>

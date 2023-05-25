@@ -10,13 +10,13 @@ import TopProjectIcon from '../../../../public/assets/images/icons/project/TopPr
 import themeProperties from '../../../theme/themeProperties';
 
 interface Props {
-  displayPopup: Boolean;
+  displayPopup: boolean;
 }
 
 const TopProjectBadge = ({ displayPopup }: Props): ReactElement => {
   const topProjectPopupState = usePopupState({
     variant: 'popover',
-    popupId: 'demoTopProjectPopover',
+    popupId: 'topProjectPopover',
   });
   const { t } = useTranslation('common');
   return (
