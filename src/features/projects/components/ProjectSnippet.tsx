@@ -16,8 +16,8 @@ import TopProjectBadge from './TopProjectBadge';
 
 interface Props {
   project: any;
-  editMode: Boolean;
-  displayPopup: Boolean;
+  editMode: boolean;
+  displayPopup: boolean;
 }
 
 export default function ProjectSnippet({
