@@ -22,8 +22,8 @@ const config = {
         visible: true,
       },
       campaign: {
-        title: 'vtoChallenge',
-        onclick: '/vto-fitness-challenge',
+        title: 'oceanforceChallenge',
+        onclick: '/oceanforce-challenge',
         visible: true,
       },
       donate: {

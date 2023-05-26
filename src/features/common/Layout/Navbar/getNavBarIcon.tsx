@@ -7,11 +7,11 @@ import LeafSelected from '../../../../../public/assets/images/navigation/LeafSel
 import Leaf from '../../../../../public/assets/images/navigation/Leaf';
 import themeProperties from '../../../../theme/themeProperties';
 import ShopIcon from '../../../../../public/assets/images/navigation/ShopIcon';
-import VTOChallengeIcon from '../../../../../public/assets/images/navigation/VTOChallengeIcon';
 import HomeLogoSelected from '../../../../../public/assets/images/navigation/HomeLogoSelected';
 import HomeLogo from '../../../../../public/assets/images/navigation/HomoLogo';
 import DonateSelected from '../../../../../public/assets/images/navigation/DonateSelected';
 import Donate from '../../../../../public/assets/images/navigation/Donate';
+import OceanforceChallengeIcon from '../../../../../public/assets/images/navigation/OceanforceChallengeIcon';
 
 interface Props {
   mainKey: any;
@@ -124,9 +124,11 @@ function GetNavBarIcon({
         }`}
       >
         {router.pathname === item.onclick ? (
-          <VTOChallengeIcon color={themeProperties.primaryColor} />
+          <OceanforceChallengeIcon color={themeProperties.primaryColor} />
         ) : (
-          <VTOChallengeIcon color={themeProperties.light.primaryFontColor} />
+          <OceanforceChallengeIcon
+            color={themeProperties.light.primaryFontColor}
+          />
         )}
       </button>
     );
