@@ -91,7 +91,7 @@ export default function ContentSection() {
             </p>
             <p>
               We are driving donations to support an impactful mangrove tree
-              project in Guatemala. Guatemala has one of the mostextensive and
+              project in Guatemala. Guatemala has one of the most extensive and
               diverse forest systems in Central America. Its name is said to
               mean “land of the trees” in the Mayan-Toltec language. Sadly, the
               country is losing these precious forests at a rapid rate. This

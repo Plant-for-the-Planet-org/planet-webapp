@@ -52,7 +52,15 @@ export default function ParticipationSection() {
               <li>
                 To utilize the power of donation-matching, donate $50 or more to
                 the Guatemala project. You will then receive a donation
-                confirmation email from Plant-for-the-Planet.
+                confirmation email from{' '}
+                <a
+                  href="https://www.plant-for-the-planet.org/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Plant-for-the-Planet
+                </a>
+                .
               </li>
               <li>
                 Next, request your Salesforce Donation Match in Volunteerforce
