@@ -6,9 +6,10 @@
   background-repeat: no-repeat;
   background-position: bottom center;
   position: relative;
-  z-index: 999;
+  z-index: 998;
   height: 762px;
-  padding-top: 84px;
+  padding-top: 234px;
+  margin-top: -150px;
   @include xsPhoneView {
     background-size: auto 962px;
     height: 962px;
