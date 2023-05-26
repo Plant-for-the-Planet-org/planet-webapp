@@ -43,9 +43,9 @@ export default function ProjectGrid() {
             key={allowedProject.properties.id}
           >
             <ProjectSnippet
-              keyString={allowedProject.properties.id}
               project={allowedProject.properties}
               editMode={false}
+              displayPopup={false}
               utmCampaign="vto-fc-2023"
               disableDonations={true}
             />

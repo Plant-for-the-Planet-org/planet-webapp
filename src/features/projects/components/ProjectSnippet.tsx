@@ -16,7 +16,6 @@ import TopProjectBadge from './TopProjectBadge';
 
 interface Props {
   project: any;
-  keyString: string;
   editMode: boolean;
   displayPopup: boolean;
   utmCampaign?: string;

@@ -19,7 +19,7 @@ export default function ParticipationSection() {
         const project = await getRequest<ProjectExtended>(
           `https://app.plant-for-the-planet.org/app/projects/${projectSlug}`,
           {
-            _scope: 'map',
+            _scope: 'extended',
             currency: currencyCode,
           }
         );
@@ -72,9 +72,9 @@ export default function ParticipationSection() {
               <div className={styles.projectItem}>
                 <ProjectSnippet
                   project={project}
-                  keyString={''}
                   editMode={false}
                   displayPopup={false}
+                  utmCampaign="oceanforce-2023"
                 />
               </div>
             )}
