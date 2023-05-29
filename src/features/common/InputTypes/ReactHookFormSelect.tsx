@@ -5,6 +5,7 @@ import { FormControl, TextField } from '@mui/material';
 interface Props {
   name: string;
   label: string;
+  size?: 'small' | 'medium';
   error?: boolean;
   helperText?: string;
   control: Control;
@@ -19,6 +20,7 @@ interface Props {
 const ReactHookFormSelect = ({
   name,
   label,
+  size,
   error,
   helperText,
   control,
@@ -31,7 +33,13 @@ const ReactHookFormSelect = ({
     <FormControl {...props}>
       <Controller
         as={
-          <TextField select label={label} error={error} helperText={helperText}>
+          <TextField
+            select
+            label={label}
+            error={error}
+            helperText={helperText}
+            size={size}
+          >
             {children}
           </TextField>
         }

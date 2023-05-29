@@ -14,6 +14,7 @@ import Tooltip from '@mui/material/Tooltip';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 
 import styles from '../BulkCodes.module.scss';
+import NewRow from './NewRow';
 
 interface RecipientsTableProps {
   headers: TableHeader[];
@@ -67,6 +68,10 @@ const RecipientsTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
+            <NewRow
+              headers={headers}
+              handleSave={() => alert('Saving recipients')}
+            />
             {recipients
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((recipient, index) => {

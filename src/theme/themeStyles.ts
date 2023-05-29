@@ -99,6 +99,16 @@ const materialTheme = createTheme({
         },
       },
     },
+    MuiTableCell: {
+      styleOverrides: {
+        head: {
+          verticalAlign: 'top',
+        },
+        root: {
+          padding: '6px 8px',
+        },
+      },
+    },
   },
 });
 
