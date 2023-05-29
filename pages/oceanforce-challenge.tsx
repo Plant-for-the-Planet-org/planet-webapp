@@ -57,7 +57,7 @@ export async function getStaticProps({ locale }: { locale: string }) {
 
   try {
     const leaderboardRes = await fetch(
-      `${process.env.WEBHOOK_URL}/salesforce-earth-month-leaderboard`
+      `${process.env.WEBHOOK_URL}/oceanforce-2023-leaderboard`
     );
     const leaderBoardArr = await leaderboardRes.json();
     console.log('updated leaderboard');
@@ -68,7 +68,7 @@ export async function getStaticProps({ locale }: { locale: string }) {
 
   try {
     const tenantscoreRes = await fetch(
-      `${process.env.WEBHOOK_URL}/salesforce-earth-month-count`
+      `${process.env.WEBHOOK_URL}/oceanforce-2023`
     );
     const tenantScoreArr = await tenantscoreRes.json();
     console.log('updated treecount');
