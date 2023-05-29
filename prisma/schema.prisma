@@ -1,0 +1,19 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DB_CONN_URL")
+}
+
+model contribution {
+    id                       Int  @id @default(autoincrement())
+    esri_id                  Int?
+    treecounter_log_id       Int?
+    treecounter_id           Int?
+    community_treecounter_id Int?
+    gift_treecounter_id      Int?
+    tpo_id                   Int?
+    plant_project_id         Int?
+}
