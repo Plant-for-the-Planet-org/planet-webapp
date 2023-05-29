@@ -7,6 +7,7 @@ import {
 } from '../../../src/middlewares/rate-limiter';
 import NodeCache from 'node-cache';
 import { getCachedKey } from '../../../src/utils/getCachedKey';
+import { TotalTreesPlanted } from '../../../src/features/common/types/dataExplorer';
 
 const ONE_HOUR_IN_SEC = 60 * 60;
 const ONE_DAY = ONE_HOUR_IN_SEC * 24;
@@ -18,12 +19,8 @@ const handler = nc<NextApiRequest, NextApiResponse>();
 handler.use(rateLimiter);
 handler.use(speedLimiter);
 
-interface QueryResult {
-  totalTreesPlanted: number;
-}
-
 handler.post(async (req, response) => {
-  const { projectId, startDate, endDate } = JSON.parse(req.body);
+  const { projectId, startDate, endDate } = req.body;
 
   const CACHE_KEY = `TOTAL_TREES_PLANTED__${getCachedKey(
     projectId,
@@ -46,7 +43,7 @@ handler.post(async (req, response) => {
       JOIN plant_project pp ON pl.plant_project_id = pp.id \
       WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ?';
 
-    const res = await db.query<QueryResult[]>(query, [
+    const res = await db.query<TotalTreesPlanted[]>(query, [
       projectId,
       startDate,
       `${endDate} 23:59:59.999`,
