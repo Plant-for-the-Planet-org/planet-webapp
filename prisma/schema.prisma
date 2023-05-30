@@ -8,12 +8,33 @@ datasource db {
 }
 
 model contribution {
-    id                       Int  @id @default(autoincrement())
-    esri_id                  Int?
-    treecounter_log_id       Int?
-    treecounter_id           Int?
-    community_treecounter_id Int?
-    gift_treecounter_id      Int?
-    tpo_id                   Int?
-    plant_project_id         Int?
+    id                Int            @id @default(autoincrement())
+    purpose           String?        @db.VarChar(16)
+    tree_count        Decimal?       @db.Decimal(14, 2)
+    quantity          Float?
+    deleted_at        DateTime?      @db.DateTime(0)
+    contribution_type String         @db.VarChar(20)
+    is_verified       Boolean?
+    payment_status    String?        @db.VarChar(20)
+    plant_project_id  Int?
+    plant_project     plant_project? @relation(fields: [plant_project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    profile           profile?       @relation(fields: [profile_id], references: [id])
+    profile_id        Int?
+}
+
+model plant_project {
+    id            Int            @id @default(autoincrement())
+    country_code  String?        @db.VarChar(2)
+    unit          String?        @db.VarChar(255)
+    purpose       String         @db.VarChar(64)
+    location      String?        @db.LongText
+    geo_longitude Float?
+    geo_latitude  Float?
+    contribution  contribution[]
+}
+
+model profile {
+    id           Int            @id @default(autoincrement())
+    guid         String         @db.VarChar(32)
+    contribution contribution[]
 }
