@@ -76,8 +76,8 @@ function ProjectsList({
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
             .toLowerCase();
-          const projectName = project.properties.name
-            .normalize('NFD')
+          const projectName = project?.properties?.name
+            ?.normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
             .toLowerCase();
           const projectLocation = project.properties.location
@@ -100,7 +100,7 @@ function ProjectsList({
             : '';
           //searching for name
           return (
-            projectName.indexOf(searchWord) > -1 ||
+            projectName?.indexOf(searchWord) > -1 ||
             //searching for location
             (projectLocation && projectLocation.indexOf(searchWord) > -1) ||
             //searching for tpo name

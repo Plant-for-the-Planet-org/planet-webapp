@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
@@ -33,6 +33,7 @@ export default function ProjectSnippet({
     : '';
 
   const { selectedPl, hoveredPl } = React.useContext(ProjectPropsContext);
+  const [projectType, setProjectType] = useState('');
 
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
@@ -45,6 +46,15 @@ export default function ProjectSnippet({
     const url = getDonationUrl(project.slug, token, embed, callbackUrl);
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
+  useEffect(() => {
+    if (!project.allowDonations) {
+      setProjectType('notDonatable');
+    } else if (project.isTopProject && project.isApproved) {
+      setProjectType('topApproved');
+    } else {
+      setProjectType('topUnapproved');
+    }
+  }, []);
   return ready ? (
     <div className={'singleProject'}>
       {editMode ? (
@@ -99,9 +109,7 @@ export default function ProjectSnippet({
 
       <div className={`progressBar`}>
         <div
-          className={`progressBarHighlight ${
-            project.isTopProject ? 'topProjectProgressBar' : ''
-          }`}
+          className={`progressBarHighlight ${projectType}`}
           style={{ width: progressPercentage + '%' }}
         />
       </div>
@@ -142,35 +150,33 @@ export default function ProjectSnippet({
             })}
           </div>
         </div>
-
-        {project.allowDonations && (
-          <div className={'projectCost'}>
-            {project.unitCost ? (
-              <>
-                <button
-                  id={`ProjSnippetDonate_${project.id}`}
-                  onClick={handleOpen}
-                  className={'donateButton'}
-                  data-test-id="donateButton"
-                >
-                  {t('common:donate')}
-                </button>
-                <div className={'perTreeCost'}>
-                  {getFormatedCurrency(
-                    i18n.language,
-                    project.currency,
-                    project.unitCost
-                  )}{' '}
-                  <span>
-                    {project.purpose === 'conservation'
-                      ? t('donate:perM2')
-                      : t('donate:perTree')}
-                  </span>
-                </div>
-              </>
-            ) : null}
-          </div>
-        )}
+        <div className={'projectCost'}>
+          {project.unitCost ? (
+            <>
+              <button
+                id={`ProjSnippetDonate_${project.id}`}
+                onClick={handleOpen}
+                className={`donateButton ${projectType}`}
+                data-test-id="donateButton"
+                disabled={!project.allowDonations}
+              >
+                {t('common:donate')}
+              </button>
+              <div className={'perTreeCost'}>
+                {getFormatedCurrency(
+                  i18n.language,
+                  project.currency,
+                  project.unitCost
+                )}{' '}
+                <span>
+                  {project.purpose === 'conservation'
+                    ? t('donate:perM2')
+                    : t('donate:perTree')}
+                </span>
+              </div>
+            </>
+          ) : null}
+        </div>
       </div>
     </div>
   ) : (
