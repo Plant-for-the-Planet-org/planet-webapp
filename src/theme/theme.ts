@@ -10,7 +10,8 @@ const {
   primaryColor,
   primaryDarkColor,
   defaultFontFamily,
-  primaryLightColor
+  primaryLightColor,
+  topProjectBackgroundColor,
 } = theme;
 
 const globalStyles = css.global`
@@ -30,7 +31,8 @@ const globalStyles = css.global`
     --font-xxx-large: ${fontSizes.fontXXXLarge};
     --primary-color: ${primaryColor};
     --primary-dark-color: ${primaryDarkColor};
-    --primary-light-color: ${primaryLightColor}
+    --primary-light-color: ${primaryLightColor};
+    --top-project-background-color: ${topProjectBackgroundColor};
   }
   .theme-light {
     --primary-font-color: ${light.primaryFontColor};
