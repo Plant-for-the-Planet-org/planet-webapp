@@ -97,9 +97,11 @@ export default function ProjectSnippet({
         </div>
       </div>
 
-      <div className={'progressBar'}>
+      <div className={`progressBar`}>
         <div
-          className={'progressBarHighlight'}
+          className={`progressBarHighlight ${
+            project.isTopProject ? 'topProjectProgressBar' : ''
+          }`}
           style={{ width: progressPercentage + '%' }}
         />
       </div>
