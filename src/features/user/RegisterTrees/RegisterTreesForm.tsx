@@ -381,7 +381,7 @@ export default function RegisterTreesForm({}: Props) {
               )}
             </div>
             {errorMessage !== '' ? (
-              <div className={`${styles.formFieldLarge} ${styles.center}`}>
+              <div className={styles.center}>
                 <p className={styles.formErrors}>{`${errorMessage}`}</p>
               </div>
             ) : null}
@@ -394,7 +394,7 @@ export default function RegisterTreesForm({}: Props) {
           >
             {' '}
             {isUploadingData ? (
-              <div className={styles.spinner}></div>
+              <div className={'spinner'}></div>
             ) : (
               t('me:registerButton')
             )}
