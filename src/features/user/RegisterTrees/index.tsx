@@ -3,6 +3,7 @@ import { ReactElement } from 'react';
 import DashboardView from '../../common/Layout/DashboardView';
 import SingleColumnView from '../../common/Layout/SingleColumnView';
 import RegisterTreesForm from './RegisterTreesForm';
+import CenteredContainer from '../../common/Layout/CenteredContainer';
 
 export default function RegisterTrees(): ReactElement | null {
   const { t, ready } = useTranslation('me');
@@ -10,7 +11,9 @@ export default function RegisterTrees(): ReactElement | null {
   return ready ? (
     <DashboardView title={t('registerTrees')} subtitle={null}>
       <SingleColumnView>
-        <RegisterTreesForm />
+        <CenteredContainer>
+          <RegisterTreesForm />
+        </CenteredContainer>
       </SingleColumnView>
     </DashboardView>
   ) : null;
