@@ -4,38 +4,40 @@ import { getRequest } from '../../src/utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
+import { handleError, APIError } from '@planet-sdk/common';
 
 interface Props {}
 
 export default function DirectGift({}: Props): ReactElement {
   const router = useRouter();
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
-  async function loadPublicUserData(router: any, handleError: Function) {
-    const newProfile = await getRequest(
-      `/app/profiles/${router.query.id}`,
-      handleError,
-      '/'
-    );
-    if (newProfile.type !== 'tpo') {
-      localStorage.setItem(
-        'directGift',
-        JSON.stringify({
-          id: newProfile.slug,
-          displayName: newProfile.displayName,
-          type: newProfile.type,
-          show: true,
-        })
-      );
+  async function loadPublicUserData() {
+    try {
+      const newProfile = await getRequest(`/app/profiles/${router.query.id}`);
+      if (newProfile.type !== 'tpo') {
+        localStorage.setItem(
+          'directGift',
+          JSON.stringify({
+            id: newProfile.slug,
+            displayName: newProfile.displayName,
+            type: newProfile.type,
+            show: true,
+          })
+        );
+      }
+      router.push('/', undefined, {
+        shallow: true,
+      });
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+      redirect('/');
     }
-    router.push('/', undefined, {
-      shallow: true,
-    });
   }
 
   React.useEffect(() => {
-    if (router && router.query.id) {
-      loadPublicUserData(router, handleError);
+    if (router.isReady && router.query.id) {
+      loadPublicUserData();
     }
   }, [router]);
   return <div></div>;

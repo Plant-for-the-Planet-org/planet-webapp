@@ -14,13 +14,14 @@ import {
   getRequest,
 } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { usePayouts } from '../../common/Layout/PayoutsContext';
 import PayoutScheduleForm from './screens/PayoutScheduleForm';
 import Overview from './screens/Overview';
 import EditBankAccount from './screens/EditBankAccount';
 import AddBankAccount from './screens/AddBankAccount';
 import { useRouter } from 'next/router';
+import { handleError, APIError } from '@planet-sdk/common';
 
 export enum ManagePayoutTabs {
   OVERVIEW = 'overview',
@@ -41,9 +42,8 @@ export default function ManagePayouts({
 }: ManagePayoutsProps): ReactElement | null {
   const { t, ready, i18n } = useTranslation('managePayouts');
   const router = useRouter();
-  const { handleError } = useContext(ErrorHandlingContext);
-  const { token, contextLoaded, user, impersonatedEmail } =
-    useContext(UserPropsContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
+  const { token, contextLoaded, user, logoutUser } = useUserProps();
   const { accounts, setAccounts, payoutMinAmounts, setPayoutMinAmounts } =
     usePayouts();
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
@@ -53,14 +53,11 @@ export default function ManagePayouts({
     if (!payoutMinAmounts) {
       try {
         const res = await getRequest<Payouts.PayoutMinAmounts>(
-          '/app/payoutMinAmounts',
-          handleError
+          '/app/payoutMinAmounts'
         );
-        if (res && !res['error_code']) {
-          setPayoutMinAmounts(res);
-        }
+        setPayoutMinAmounts(res);
       } catch (err) {
-        console.log(err);
+        setErrors(handleError(err as APIError));
       }
     }
   }, []);
@@ -77,15 +74,11 @@ export default function ManagePayouts({
         const res = await getAuthenticatedRequest<Payouts.BankAccount[]>(
           `/app/accounts`,
           token,
-          impersonatedEmail,
-          {},
-          handleError
+          logoutUser
         );
-        if (res && res.length > 0) {
-          setAccounts(res);
-        }
+        setAccounts(res);
       } catch (err) {
-        console.log(err);
+        setErrors(handleError(err as APIError));
       }
       setIsDataLoading(false);
       if (setProgress) {

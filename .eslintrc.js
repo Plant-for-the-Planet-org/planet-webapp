@@ -21,12 +21,12 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint', '@emotion', 'cypress'],
   rules: {
-    // note you must disable the base rule as it can report incorrect errors
     'no-undef': 'warn',
     'no-unsafe-optional-chaining': 'warn',
-    'no-unused-vars': 'warn',
     'no-use-before-define': 'warn',
     'no-empty-pattern': 'warn',
+    // base rule disabled as it can report incorrect errors
+    'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': [
       'warn', // or "error"
       {
@@ -72,5 +72,6 @@ module.exports = {
   globals: {
     React: 'writable',
     cy: true,
+    NodeJS: true,
   },
 };

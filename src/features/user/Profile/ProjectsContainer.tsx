@@ -7,6 +7,7 @@ import { useTranslation } from 'next-i18next';
 import styles from './styles/ProjectsContainer.module.scss';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { handleError, APIError } from '@planet-sdk/common';
 
 const ProjectSnippet = dynamic(
   () => import('../../projects/components/ProjectSnippet'),
@@ -18,19 +19,20 @@ const ProjectSnippet = dynamic(
 export default function ProjectsContainer({ profile }: any) {
   const { t, ready, i18n } = useTranslation(['donate', 'manageProjects']);
   const [projects, setProjects] = React.useState([]);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
   async function loadProjects() {
-    await getRequest(
-      `/app/profiles/${profile.id}/projects`,
-      handleError,
-      undefined,
-      {
-        locale: i18n.language,
-      }
-    ).then((projects) => {
+    try {
+      const projects = await getRequest(
+        `/app/profiles/${profile.id}/projects`,
+        {
+          locale: i18n.language,
+        }
+      );
       setProjects(projects);
-    });
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
   }
 
   // This effect is used to get and update UserInfo if the isAuthenticated changes
@@ -60,9 +62,9 @@ export default function ProjectsContainer({ profile }: any) {
                   key={project.properties.id}
                 >
                   <ProjectSnippet
-                    key={project.properties.id}
                     project={project.properties}
                     editMode={false}
+                    displayPopup={true}
                   />
                 </div>
               );

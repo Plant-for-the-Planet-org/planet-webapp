@@ -3,7 +3,7 @@ import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
 import { useTranslation } from 'react-i18next';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import GreenRadio from '../../common/InputTypes/GreenRadio';
 import Close from '../../../../public/assets/images/icons/headerIcons/close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
@@ -20,6 +20,8 @@ import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
+import { handleError, APIError } from '@planet-sdk/common';
+import { Subscription } from '../../common/types/payments';
 
 const MuiCalendarPicker = styled(CalendarPicker)({
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -35,14 +37,21 @@ const MuiCalendarPicker = styled(CalendarPicker)({
   },
 });
 
+interface PauseModalProps {
+  pauseModalOpen: boolean;
+  handlePauseModalClose: () => void;
+  record: Subscription;
+  fetchRecurrentDonations: (next?: boolean | undefined) => void;
+}
+
 export const PauseModal = ({
   pauseModalOpen,
   handlePauseModalClose,
   record,
   fetchRecurrentDonations,
-}: any) => {
+}: PauseModalProps) => {
   const { theme } = React.useContext(ThemeContext);
-  const { token, impersonatedEmail } = React.useContext(UserPropsContext);
+  const { token, logoutUser } = useUserProps();
   const [option, setoption] = React.useState();
   const [showCalender, setshowCalender] = React.useState(false);
   const [date, setdate] = React.useState(
@@ -51,7 +60,7 @@ export const PauseModal = ({
   const [disabled, setDisabled] = React.useState(false);
 
   const { t } = useTranslation(['me']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     setdate(
@@ -63,7 +72,7 @@ export const PauseModal = ({
     setDisabled(false);
   }, [pauseModalOpen]);
 
-  const pauseDonation = () => {
+  const pauseDonation = async () => {
     setDisabled(true);
     const bodyToSend = {
       pauseType:
@@ -75,20 +84,20 @@ export const PauseModal = ({
           ? date.toISOString().split('T')[0]
           : null, // only if pauseType='custom-date'
     };
-    putAuthenticatedRequest(
-      `/app/subscriptions/${record.id}?scope=pause`,
-      bodyToSend,
-      token,
-      impersonatedEmail,
-      handleError
-    )
-      .then((res) => {
-        handlePauseModalClose();
-        fetchRecurrentDonations();
-      })
-      .catch((err) => {
-        console.log('Error pausing recurring donation.');
-      });
+
+    try {
+      await putAuthenticatedRequest(
+        `/app/subscriptions/${record.id}?scope=pause`,
+        bodyToSend,
+        token,
+        logoutUser
+      );
+      handlePauseModalClose();
+      fetchRecurrentDonations();
+    } catch (err) {
+      handlePauseModalClose();
+      setErrors(handleError(err as APIError));
+    }
   };
   return (
     <Modal
