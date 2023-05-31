@@ -10,14 +10,14 @@ import { getRequest } from '../../../../utils/apiRequests/api';
 export default function ContentSection() {
   const projectSlug = 'restoring-guatemala';
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  const currencyCode = getStoredCurrency();
 
   const [project, setProject] = useState<ProjectExtended | null>(null);
   useEffect(() => {
     async function loadProject() {
-      const currencyCode = getStoredCurrency();
       try {
         const project = await getRequest<ProjectExtended>(
-          `https://app.plant-for-the-planet.org/app/projects/${projectSlug}`,
+          `/app/projects/${projectSlug}`,
           {
             _scope: 'extended',
             currency: currencyCode,
@@ -32,7 +32,7 @@ export default function ContentSection() {
     if (projectSlug) {
       loadProject();
     }
-  }, [projectSlug]);
+  }, [projectSlug, currencyCode]);
   return (
     <div className={`${styles.contentSectionContainer}`}>
       <div className={`${gridStyles.fluidContainer} ${styles.contentSection}`}>
