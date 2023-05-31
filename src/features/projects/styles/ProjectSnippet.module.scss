@@ -168,7 +168,6 @@
 
 .progressBarHighlight {
   height: 4px;
-  background-color: $primaryColor;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -215,7 +214,6 @@
 }
 
 .donateButton {
-  background-color: $primaryColor;
   min-width: 75px;
   max-width: 150px;
   padding: 0 4px;
@@ -257,4 +255,15 @@
 .topProjectPopupContainer {
   margin: 10px;
   width: 300px;
+}
+.topApproved {
+  background: var(--top-project-background-color);
+}
+
+.topUnapproved {
+  background-color: $primaryColor;
+}
+
+.notDonatable {
+  background-color: var(--non-donatable-project-background-color);
 }

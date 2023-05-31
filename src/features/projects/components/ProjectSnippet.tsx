@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
@@ -45,6 +45,20 @@ export default function ProjectSnippet({
     const url = getDonationUrl(project.slug, token, embed, callbackUrl);
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
+
+  const donateButtonBackgroundColor = !project.allowDonations
+    ? 'notDonatable'
+    : project.isTopProject
+    ? 'topApproved'
+    : 'topUnapproved';
+
+  const progressBarBackgroundColor = project.isTopProject
+    ? 'topApproved'
+    : project.allowDonations
+    ? 'topUnapproved'
+    : 'notDonatable';
+  console.log(project);
+
   return ready ? (
     <div className={'singleProject'}>
       {editMode ? (
@@ -99,7 +113,7 @@ export default function ProjectSnippet({
 
       <div className={'progressBar'}>
         <div
-          className={'progressBarHighlight'}
+          className={`progressBarHighlight ${progressBarBackgroundColor}`}
           style={{ width: progressPercentage + '%' }}
         />
       </div>
@@ -141,34 +155,33 @@ export default function ProjectSnippet({
           </div>
         </div>
 
-        {project.allowDonations && (
-          <div className={'projectCost'}>
-            {project.unitCost ? (
-              <>
-                <button
-                  id={`ProjSnippetDonate_${project.id}`}
-                  onClick={handleOpen}
-                  className={'donateButton'}
-                  data-test-id="donateButton"
-                >
-                  {t('common:donate')}
-                </button>
-                <div className={'perTreeCost'}>
-                  {getFormatedCurrency(
-                    i18n.language,
-                    project.currency,
-                    project.unitCost
-                  )}{' '}
-                  <span>
-                    {project.purpose === 'conservation'
-                      ? t('donate:perM2')
-                      : t('donate:perTree')}
-                  </span>
-                </div>
-              </>
-            ) : null}
-          </div>
-        )}
+        <div className={'projectCost'}>
+          {project.unitCost ? (
+            <>
+              <button
+                id={`ProjSnippetDonate_${project.id}`}
+                onClick={handleOpen}
+                className={`donateButton ${donateButtonBackgroundColor}`}
+                data-test-id="donateButton"
+                disabled={!project.allowDonations}
+              >
+                {t('common:donate')}
+              </button>
+              <div className={'perTreeCost'}>
+                {getFormatedCurrency(
+                  i18n.language,
+                  project.currency,
+                  project.unitCost
+                )}{' '}
+                <span>
+                  {project.purpose === 'conservation'
+                    ? t('donate:perM2')
+                    : t('donate:perTree')}
+                </span>
+              </div>
+            </>
+          ) : null}
+        </div>
       </div>
     </div>
   ) : (
