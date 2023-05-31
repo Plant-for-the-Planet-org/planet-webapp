@@ -21,7 +21,7 @@ export default function Campaign({ tenantScore, leaderboard }: Props) {
   return (
     <>
       <Head>
-        <title>{`Oceanforce Challenge | ${config.meta.title}`}</title>
+        <title>{`Mangrove Challenge | ${config.meta.title}`}</title>
       </Head>
       <main style={{ backgroundColor: 'white', paddingBottom: '60px' }}>
         <Landing tenantScore={tenantScore} />

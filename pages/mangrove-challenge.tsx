@@ -16,7 +16,7 @@ interface Props {
   };
 }
 
-export default function VTOFitnessChallenge({ initialized, pageProps }: Props) {
+export default function MangroveChallenge({ initialized, pageProps }: Props) {
   const router = useRouter();
   const config = tenantConfig();
 

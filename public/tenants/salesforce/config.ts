@@ -22,8 +22,8 @@ const config = {
         visible: true,
       },
       campaign: {
-        title: 'oceanforceChallenge',
-        onclick: '/oceanforce-challenge',
+        title: 'mangroveChallenge',
+        onclick: '/mangrove-challenge',
         visible: true,
       },
       donate: {
