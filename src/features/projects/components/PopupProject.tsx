@@ -9,6 +9,7 @@ import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import VerifiedBadge from './VerifiedBadge';
 import TopProjectBadge from './TopProjectBadge';
+import ProjectTypeIcon from './ProjectTypeIcon';
 
 interface Props {
   project: any;
@@ -57,6 +58,11 @@ export default function PopupProject({
         )}
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
+            <div className={'projectTypeIcon'}>
+              <ProjectTypeIcon
+                projectType={project.properties.classification}
+              />
+            </div>
             {project.properties.classification &&
               t(`donate:${project.properties.classification}`)}
           </div>
