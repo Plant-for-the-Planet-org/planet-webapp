@@ -33,6 +33,13 @@ export default function Markers({
   const handleClose = () => {
     setOpen(false);
   };
+  const markerBackgroundColor = (project) => {
+    return project.isTopProject
+      ? 'topApproved'
+      : project.allowDonations
+      ? 'topUnapproved'
+      : 'notDonatable';
+  };
   return (
     <>
       {searchedProject.map((projectMarker: any, index: any) => (
@@ -46,9 +53,7 @@ export default function Markers({
           <div className={styles.markerContainer}>
             <div
               className={`${styles.marker} ${
-                projectMarker.properties.purpose === 'conservation'
-                  ? styles.conservationMarker
-                  : ''
+                styles[markerBackgroundColor(projectMarker.properties)]
               }`}
               onClick={() => {
                 router.push(

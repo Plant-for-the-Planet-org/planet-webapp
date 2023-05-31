@@ -24,7 +24,6 @@
   width: 30px;
   height: 30px;
   border-radius: 50% 50% 50% 10%;
-  background: $primaryColor;
   position: absolute;
   -webkit-transform: rotate(-45deg);
   -moz-transform: rotate(-45deg);
@@ -36,9 +35,9 @@
   margin: -20px 0 0 -20px;
   box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
   cursor: pointer;
-  &.conservationMarker {
-    background: #1ea9e4;
-  }
+  // &.conservationMarker {
+  //   background: #1ea9e4;
+  // }
 }
 
 .projectTypeIcon {
@@ -729,6 +728,18 @@
 
 .popupProject {
   min-width: 300px;
+}
+//will be replace by theme styles
+.topApproved {
+  background: linear-gradient(216.51deg, #EAC35D 8.62%, #F4C15D 34.88%, #DBAA4C 74.58%);
+}
+
+.topUnapproved {
+  background-color: $primaryColor;
+}
+
+.notDonatable {
+  background-color: #828282;
 }
 
 @include lgLaptopView {
