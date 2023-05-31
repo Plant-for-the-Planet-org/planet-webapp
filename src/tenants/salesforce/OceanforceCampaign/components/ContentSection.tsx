@@ -9,16 +9,14 @@ export default function ContentSection() {
           className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
         >
           <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
-            <h2>Sponsored by Oceanforce</h2>
+            <h2>World Ocean Month Fundraising Challenge</h2>
             <p className={`${styles.contentSectionSubhead} ${styles.bold}`}>
-              Let&apos;s plant and grow 15,000+ Mangroves in Guatemala!
+              Powered by Oceanforce.
             </p>
-            <p className={`${styles.contentSectionSubhead} ${styles.bold}`}>
-              Fundraising Challenge: Help us conserve, restore, and grow 15,000
-              mangroves.
-            </p>
-            <p className={`${styles.contentSectionSubhead} ${styles.bold}`}>
-              Running all of June.
+            <p className={`${styles.contentSectionSubhead}`}>
+              Help us conserve, restore, and grow 15,000 mangroves. Running all
+              of June. Everyone is eligible to participate! Click on the blue
+              Donate button to donate.
             </p>
           </div>
         </div>
@@ -27,9 +25,9 @@ export default function ContentSection() {
         >
           <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
             <p className={styles.contentSectionSubhead}>
-              June is World Ocean Month, and we are inviting Salesforce
-              employees and friends around the world to join Salesforce in our
-              commitment to protecting and restoring the ocean.
+              June is World Oceans Month, and we are inviting Salesforce
+              employees and friends from around the world to join Oceanforce in
+              our commitment to protect and restore the ocean.
             </p>
           </div>
         </div>
@@ -64,7 +62,7 @@ export default function ContentSection() {
           className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
         >
           <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
-            <p className={styles.contentSectionQuote}>
+            <p className={`${styles.contentSectionQuote}`}>
               <em>
                 “Mangroves are unparalleled in their role as a powerful climate
                 solution, a bedrock of biodiversity, and a source of livelihood
@@ -82,8 +80,8 @@ export default function ContentSection() {
           >
             <p>
               By participating in this fundraising challenge, you will also be a
-              part of Salesforce&apos;s commitment to conserve, restore,and grow
-              100 million trees as a part of the{' '}
+              part of Salesforce&apos;s commitment to conserve, restore, and
+              grow 100 million trees as a part of the{' '}
               <a href="https://www.1t.org/" target="_blank" rel="noreferrer">
                 1t.org
               </a>{' '}

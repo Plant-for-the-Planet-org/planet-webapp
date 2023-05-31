@@ -45,9 +45,7 @@ export default function ParticipationSection() {
           <div
             className={`${gridStyles.colMd6} ${gridStyles.colLg6} ${gridStyles.col12} ${styles.justifyContentCenter} ${styles.participationInfo}`}
           >
-            <h3>How I can participate</h3>
-            <p>Everyone is eligible to participate!</p>
-            <h4>Employees-Only:</h4>
+            <h4>For Salesforce Employees:</h4>
             <ul>
               <li>
                 To utilize the power of donation-matching, donate $50 or more to
