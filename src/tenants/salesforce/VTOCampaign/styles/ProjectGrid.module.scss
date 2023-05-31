@@ -57,19 +57,6 @@
         margin-bottom: 15px;
       }
     }
-    p {
-      font-family: $primaryFontFamily;
-      font-style: normal;
-      font-weight: normal;
-      font-size: 15px;
-      line-height: 24px;
-      color: #032d60;
-      margin-bottom: 30px;
-      a {
-        text-decoration: underline;
-        color: #0b5cab;
-      }
-    }
     img {
       margin: 0 auto 30px;
       display: block;
@@ -104,6 +91,7 @@
     text-align: center;
     letter-spacing: -0.002em;
     color: #032d60;
+    margin-bottom: 30px;
     @include lgLaptopView {
       font-size: 20px;
       line-height: 30px;
