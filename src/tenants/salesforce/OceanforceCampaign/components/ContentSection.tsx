@@ -1,7 +1,38 @@
+import { useContext, useEffect, useState } from 'react';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/ContentSection.module.scss';
+import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
+import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
+import { handleError, APIError, ProjectExtended } from '@planet-sdk/common';
+import ProjectSnippet from '../../../../features/projects/components/ProjectSnippet';
+import { getRequest } from '../../../../utils/apiRequests/api';
 
 export default function ContentSection() {
+  const projectSlug = 'restoring-guatemala';
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+
+  const [project, setProject] = useState<ProjectExtended | null>(null);
+  useEffect(() => {
+    async function loadProject() {
+      const currencyCode = getStoredCurrency();
+      try {
+        const project = await getRequest<ProjectExtended>(
+          `https://app.plant-for-the-planet.org/app/projects/${projectSlug}`,
+          {
+            _scope: 'extended',
+            currency: currencyCode,
+          }
+        );
+        setProject(project);
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+        redirect('/');
+      }
+    }
+    if (projectSlug) {
+      loadProject();
+    }
+  }, [projectSlug]);
   return (
     <div className={`${styles.contentSectionContainer}`}>
       <div className={`${gridStyles.fluidContainer} ${styles.contentSection}`}>
@@ -98,13 +129,18 @@ export default function ContentSection() {
             </p>
           </div>
           <div
-            className={`${gridStyles.colMd6} ${gridStyles.colLg3} ${gridStyles.col12}`}
+            className={`${gridStyles.colMd6} ${gridStyles.colLg4} ${gridStyles.col12}`}
           >
-            <img
-              src="/tenants/salesforce/images/oceanforce_1.png"
-              className={gridStyles.illustration}
-              alt=""
-            />
+            {project !== null && (
+              <div className={styles.projectItem}>
+                <ProjectSnippet
+                  project={project}
+                  editMode={false}
+                  displayPopup={false}
+                  utmCampaign="oceanforce-2023"
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

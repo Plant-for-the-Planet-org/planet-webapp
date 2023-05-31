@@ -96,4 +96,31 @@
       font-style: italic;
     }
   }
+
+  .projectItem {
+    background-color: #ffffff;
+    padding: 10px;
+    width: 320px;
+    max-width: 100%;
+
+    p {
+      margin-bottom: 0;
+      font-size: 18px;
+      color: #ffffff;
+    }
+  }
+
+  button {
+    background: #0176d3;
+    border-radius: 4px;
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: normal;
+    font-size: $fontSmall;
+    line-height: 130%;
+    text-transform: uppercase;
+    color: #ffffff;
+    padding: 13px 24px;
+    cursor: pointer;
+  }
 }
