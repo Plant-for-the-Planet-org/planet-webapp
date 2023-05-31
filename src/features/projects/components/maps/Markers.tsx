@@ -4,6 +4,7 @@ import { Marker, Popup } from 'react-map-gl';
 import PopupProject from '../PopupProject';
 import styles from '../../styles/ProjectsMap.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import ProjectTypeIcon from '../ProjectTypeIcon';
 
 interface Props {
   searchedProject: Array<Object>;
@@ -32,7 +33,6 @@ export default function Markers({
   const handleClose = () => {
     setOpen(false);
   };
-
   return (
     <>
       {searchedProject.map((projectMarker: any, index: any) => (
@@ -43,63 +43,70 @@ export default function Markers({
           offsetLeft={5}
           offsetTop={-16}
         >
-          <div
-            className={`${styles.marker} ${
-              projectMarker.properties.purpose === 'conservation'
-                ? styles.conservationMarker
-                : ''
-            }`}
-            onClick={() => {
-              router.push(
-                `/${projectMarker.properties.slug}/${
-                  embed === 'true'
-                    ? `${
-                        callbackUrl != undefined
-                          ? `?embed=true&callback=${callbackUrl}`
-                          : '?embed=true'
-                      }`
-                    : ''
-                }`,
-                undefined,
-                {
-                  shallow: true,
-                }
-              );
-            }}
-            onKeyPress={() => {
-              router.push(
-                `/${projectMarker.properties.slug}/${
-                  embed === 'true'
-                    ? `${
-                        callbackUrl != undefined
-                          ? `?embed=true&callback=${callbackUrl}`
-                          : '?embed=true'
-                      }`
-                    : ''
-                }`,
-                undefined,
-                {
-                  shallow: true,
-                }
-              );
-            }}
-            role="button"
-            tabIndex={0}
-            onMouseOver={() => {
-              timer = setTimeout(() => {
-                setPopupData({
-                  show: true,
-                  lat: projectMarker.geometry.coordinates[1],
-                  long: projectMarker.geometry.coordinates[0],
-                  project: projectMarker,
-                });
-              }, 300);
-            }}
-            onMouseLeave={() => {
-              clearTimeout(timer);
-            }}
-            onFocus={() => {}}
-          />
+          <div className={styles.markerContainer}>
+            <div
+              className={`${styles.marker} ${
+                projectMarker.properties.purpose === 'conservation'
+                  ? styles.conservationMarker
+                  : ''
+              }`}
+              onClick={() => {
+                router.push(
+                  `/${projectMarker.properties.slug}/${
+                    embed === 'true'
+                      ? `${
+                          callbackUrl != undefined
+                            ? `?embed=true&callback=${callbackUrl}`
+                            : '?embed=true'
+                        }`
+                      : ''
+                  }`,
+                  undefined,
+                  {
+                    shallow: true,
+                  }
+                );
+              }}
+              onKeyPress={() => {
+                router.push(
+                  `/${projectMarker.properties.slug}/${
+                    embed === 'true'
+                      ? `${
+                          callbackUrl != undefined
+                            ? `?embed=true&callback=${callbackUrl}`
+                            : '?embed=true'
+                        }`
+                      : ''
+                  }`,
+                  undefined,
+                  {
+                    shallow: true,
+                  }
+                );
+              }}
+              role="button"
+              tabIndex={0}
+              onMouseOver={() => {
+                timer = setTimeout(() => {
+                  setPopupData({
+                    show: true,
+                    lat: projectMarker.geometry.coordinates[1],
+                    long: projectMarker.geometry.coordinates[0],
+                    project: projectMarker,
+                  });
+                }, 300);
+              }}
+              onMouseLeave={() => {
+                clearTimeout(timer);
+              }}
+              onFocus={() => {}}
+            />
+            <div className={styles.projectTypeIcon}>
+              <ProjectTypeIcon
+                projectType={projectMarker.properties.classification}
+              />
+            </div>
+          </div>
         </Marker>
       ))}
       {popupData.show && !isMobile && (

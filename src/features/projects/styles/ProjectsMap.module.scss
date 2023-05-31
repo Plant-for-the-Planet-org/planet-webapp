@@ -16,6 +16,10 @@
   width: 100% !important;
 }
 
+.markerContainer {
+  position: relative;
+}
+
 .marker {
   width: 30px;
   height: 30px;
@@ -35,6 +39,13 @@
   &.conservationMarker {
     background: #1ea9e4;
   }
+}
+
+.projectTypeIcon {
+  position: absolute;
+  top: -12px;
+  left: -14px;
+  width: 18px;
 }
 
 .markerType {
