@@ -9,7 +9,11 @@ export default function TpoProfile(props: any) {
         props.planted >= 0 ? treeCounterStyles.treeCounterReady : ''
       }`}
     >
-      <div className={treeCounterStyles.treeCounterDataField}>
+      <div
+        className={`${treeCounterStyles.treeCounterDataField} ${
+          props.isLight ? treeCounterStyles.treeCounterLight : ''
+        }`}
+      >
         <span aria-label={props.planted} role="heading">
           {String(getFormattedNumber('en', parseInt(props.planted)))
             .padStart(11)

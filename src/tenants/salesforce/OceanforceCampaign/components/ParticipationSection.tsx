@@ -30,7 +30,14 @@ export default function ParticipationSection() {
                 .
               </li>
               <li>
-                Next, request your Salesforce Donation Match in Volunteerforce
+                Next, request your Salesforce Donation Match in{' '}
+                <a
+                  href="https://foundation.my.site.com/vfx/s/article/How-to-Request-a-Donation-Match"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Volunteerforce
+                </a>{' '}
                 and upload your confirmation from Plant-for-the-Planet.
               </li>
               <li>

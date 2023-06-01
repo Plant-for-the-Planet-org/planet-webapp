@@ -42,20 +42,22 @@ export default function ContentSection() {
           <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
             <h2>World Ocean Month Fundraising Challenge</h2>
             <p className={`${styles.contentSectionSubhead} ${styles.bold}`}>
-              Powered by Oceanforce.
+              Powered by Oceanforce
             </p>
             <p className={`${styles.contentSectionSubhead}`}>
-              Help us conserve, restore, and grow 15,000 mangroves. Running all
-              of June. Everyone is eligible to participate! Click on the blue
-              Donate button to donate.
+              Help us conserve, restore, and grow 15,000 mangroves throughout
+              the month of June. Everyone is eligible to participate! Click on
+              the blue Donate button below to donate.
             </p>
           </div>
         </div>
         <div
           className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${gridStyles.mb65100}`}
         >
-          <div className={`${gridStyles.colMd8} ${gridStyles.col12}`}>
-            <p className={styles.contentSectionSubhead}>
+          <div
+            className={`${gridStyles.colMd8} ${gridStyles.col12} ${gridStyles.textCenter}`}
+          >
+            <p>
               June is World Oceans Month, and we are inviting Salesforce
               employees and friends from around the world to join Oceanforce in
               our commitment to protect and restore the ocean.
@@ -69,7 +71,7 @@ export default function ContentSection() {
             className={`${gridStyles.colMd6} ${gridStyles.colLg3} ${gridStyles.col12}`}
           >
             <img
-              src="/tenants/salesforce/images/oceanforce_3.png"
+              src="/tenants/salesforce/images/oceanforce_1.png"
               className={gridStyles.illustration}
               alt=""
             />
