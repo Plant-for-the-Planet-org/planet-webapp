@@ -77,9 +77,11 @@ function ProjectsList({
             .replace(/[\u0300-\u036f]/g, '')
             .toLowerCase();
           const projectName = project.properties.name
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLowerCase();
+            ? project.properties.name
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase()
+            : '';
           const projectLocation = project.properties.location
             ? project.properties.location
                 .normalize('NFD')
