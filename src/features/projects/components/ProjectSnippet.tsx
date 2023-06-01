@@ -156,31 +156,29 @@ export default function ProjectSnippet({
         </div>
 
         <div className={'projectCost'}>
-          {project.unitCost ? (
-            <>
-              <button
-                id={`ProjSnippetDonate_${project.id}`}
-                onClick={handleOpen}
-                className={`donateButton ${donateButtonBackgroundColor}`}
-                data-test-id="donateButton"
-                disabled={!project.allowDonations}
-              >
-                {t('common:donate')}
-              </button>
-              <div className={'perTreeCost'}>
-                {getFormatedCurrency(
-                  i18n.language,
-                  project.currency,
-                  project.unitCost
-                )}{' '}
-                <span>
-                  {project.purpose === 'conservation'
-                    ? t('donate:perM2')
-                    : t('donate:perTree')}
-                </span>
-              </div>
-            </>
-          ) : null}
+          <button
+            id={`ProjSnippetDonate_${project.id}`}
+            onClick={handleOpen}
+            className={`donateButton ${donateButtonBackgroundColor}`}
+            data-test-id="donateButton"
+            disabled={!project.allowDonations}
+          >
+            {t('common:donate')}
+          </button>
+          {project.allowDonations && (
+            <div className={'perTreeCost'}>
+              {getFormatedCurrency(
+                i18n.language,
+                project.currency,
+                project.unitCost
+              )}{' '}
+              <span>
+                {project.purpose === 'conservation'
+                  ? t('donate:perM2')
+                  : t('donate:perTree')}
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </div>
