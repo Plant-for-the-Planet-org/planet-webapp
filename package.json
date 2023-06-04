@@ -121,6 +121,7 @@
     "sass": "^1.52.0",
     "serverless-mysql": "^1.5.4",
     "styled-jsx": "^5.0.0",
+    "superjson": "^1.12.3",
     "uuid": "^8.3.2",
     "vizzuality-components": "^3.0.3",
     "xlsx": "^0.18.5",

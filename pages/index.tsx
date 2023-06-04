@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ProjectsList from '../src/features/projects/screens/Projects';
 import GetAllProjectsMeta from '../src/utils/getMetaTags/GetAllProjectsMeta';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
@@ -50,10 +50,38 @@ export default function Donate({
       setDirectGift(JSON.parse(getdirectGift));
     }
   }, []);
-  const contributionData = trpc.contribution.useQuery({
+  // const contributionData = trpc.contribution.useQuery({
+  //   profileId: 'prf_guid',
+  // });
+  // console.log('==> contributionData', contributionData.data);
+
+  const contributionData = trpc.stats.useQuery({
     profileId: 'prf_guid',
   });
   console.log('==> contributionData', contributionData.data);
+
+  // const testErr = trpc.testError.useQuery();
+  // useEffect(() => {
+  //   if (!testErr.isLoading) {
+  //     console.log(
+  //       '==> testErr',
+  //       testErr.error?.message,
+  //       testErr.error?.data?.httpStatus
+  //     );
+
+  //     console.log(
+  //       '==>',
+  //       handleError(
+  //         new APIError(testErr.error?.data?.httpStatus, testErr.error)
+  //       )
+  //     );
+  //     setErrors(
+  //       handleError(
+  //         new APIError(testErr.error?.data?.httpStatus, testErr.error)
+  //       )
+  //     );
+  //   }
+  // }, [testErr.isLoading]);
 
   React.useEffect(() => {
     if (directGift) {

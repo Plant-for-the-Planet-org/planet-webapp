@@ -1,6 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import { router, procedure } from '../trpc';
 import { z } from 'zod';
+import { TRPCError } from '@trpc/server';
+import { TRPC_ERROR_CODES_BY_KEY } from '@trpc/server/rpc';
+import { APIError } from '@planet-sdk/common';
 
 const prisma = new PrismaClient();
 prisma.$connect();
@@ -96,18 +99,12 @@ export const appRouter = router({
         )
       )`;
 
-      // Since JavaScript's JSON.stringify doesn't know how to handle BigInt types
-      const transformedResult = data.map((row) => ({
-        tree_count: row.tree_count,
-        square_meters: row.square_meters,
-        conserved: row.conserved,
-        projects: Number(row.projects),
-        countries: Number(row.countries),
-        donations: Number(row.donations),
-      }));
-
-      return transformedResult;
+      return data;
     }),
+
+  // testError: procedure.query(async () => {
+  //   throw new TRPCError({ message: 'Boiii', code: 'BAD_REQUEST' });
+  // }),
 });
 
 // export type definition of API
