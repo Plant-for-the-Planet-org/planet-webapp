@@ -48,15 +48,16 @@ export default function ProjectSnippet({
 
   const donateButtonBackgroundColor = !project.allowDonations
     ? 'notDonatable'
-    : project.isTopProject
+    : project.isTopProject && project.isApproved
     ? 'topApproved'
     : 'topUnapproved';
 
-  const progressBarBackgroundColor = project.isTopProject
-    ? 'topApproved'
-    : project.allowDonations
-    ? 'topUnapproved'
-    : 'notDonatable';
+  const progressBarBackgroundColor =
+    project.isTopProject && project.isApproved
+      ? 'topApproved'
+      : project.allowDonations
+      ? 'topUnapproved'
+      : 'notDonatable';
   console.log(project);
 
   return ready ? (
