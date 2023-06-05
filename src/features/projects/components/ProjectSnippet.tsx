@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
@@ -162,6 +162,11 @@ export default function ProjectSnippet({
             className={`donateButton ${donateButtonBackgroundColor}`}
             data-test-id="donateButton"
             disabled={!project.allowDonations}
+            title={
+              !project.allowDonations
+                ? `${t('common:disabledDonateButtonText')}`
+                : ''
+            }
           >
             {t('common:donate')}
           </button>
