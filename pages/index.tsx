@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ProjectsList from '../src/features/projects/screens/Projects';
 import GetAllProjectsMeta from '../src/utils/getMetaTags/GetAllProjectsMeta';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
@@ -54,6 +54,24 @@ export default function Donate({
   //   profileId: 'prf_guid',
   // });
   // console.log('==> contributionData', contributionData.data);
+
+  const contributionData = trpc.stats.useQuery({ profileId: 'prof' });
+
+  useEffect(() => {
+    if (!contributionData.isLoading) {
+      if (contributionData.error) {
+        setErrors(
+          handleError(
+            new APIError(
+              contributionData.error?.data?.httpStatus as number,
+              contributionData.error
+            )
+          )
+        );
+      }
+      console.log('==>', contributionData.data);
+    }
+  }, [contributionData.isLoading]);
 
   React.useEffect(() => {
     if (directGift) {
