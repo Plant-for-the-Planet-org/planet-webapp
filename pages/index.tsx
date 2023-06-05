@@ -55,7 +55,9 @@ export default function Donate({
   // });
   // console.log('==> contributionData', contributionData.data);
 
-  const contributionData = trpc.stats.useQuery({ profileId: 'prof' });
+  const contributionData = trpc.contribution.useQuery({
+    profileId: 'prof',
+  });
 
   useEffect(() => {
     if (!contributionData.isLoading) {

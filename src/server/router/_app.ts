@@ -32,15 +32,15 @@ export const appRouter = router({
       const data = await prisma.contribution.findMany({
         select: {
           purpose: true,
-          tree_count: true,
+          treeCount: true,
           quantity: true,
-          plant_project: {
+          plantProject: {
             select: {
-              country_code: true,
+              countryCode: true,
               unit: true,
               location: true,
-              geo_latitude: true,
-              geo_longitude: true,
+              geoLatitude: true,
+              geoLongitude: true,
             },
           },
         },
@@ -48,24 +48,25 @@ export const appRouter = router({
           profile: {
             guid: profileId,
           },
-          deleted_at: null,
+          deletedAt: null,
           OR: [
             {
-              contribution_type: 'donation',
-              payment_status: 'paid',
-              plant_project: {
+              contributionType: 'donation',
+              paymentStatus: 'paid',
+              plantProject: {
                 purpose: {
                   in: ['trees', 'conservation'],
                 },
               },
             },
             {
-              contribution_type: 'planting',
-              is_verified: true,
+              contributionType: 'planting',
+              isVerified: true,
             },
           ],
         },
       });
+
       return data;
     }),
 
@@ -77,8 +78,8 @@ export const appRouter = router({
     )
     .query(async ({ input: { profileId } }) => {
       interface QueryResult {
-        tree_count: number;
-        square_meters: number;
+        treeCount: number;
+        squareMeters: number;
         conserved: number;
         projects: number;
         countries: number;
@@ -100,8 +101,8 @@ export const appRouter = router({
 
       const data = await prisma.$queryRaw<QueryResult[]>`
     SELECT
-      SUM(CASE WHEN pp.purpose = 'trees' AND pp.unit = 'tree' THEN COALESCE(c.quantity, c.tree_count) ELSE 0 END) AS tree_count,
-      SUM(CASE WHEN pp.purpose = 'trees' AND pp.unit = 'm2' THEN COALESCE(c.quantity, c.tree_count) ELSE 0 END) AS square_meters,
+      SUM(CASE WHEN pp.purpose = 'trees' AND pp.unit = 'tree' THEN COALESCE(c.quantity, c.tree_count) ELSE 0 END) AS treeCount,
+      SUM(CASE WHEN pp.purpose = 'trees' AND pp.unit = 'm2' THEN COALESCE(c.quantity, c.tree_count) ELSE 0 END) AS squareMeters,
       SUM(CASE WHEN pp.purpose = 'conservation' THEN c.quantity ELSE 0 END) AS conserved,
       COUNT(DISTINCT pp.id) AS projects,
       COUNT(DISTINCT pp.country_code) AS countries,
