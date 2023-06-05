@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement, useEffect } from 'react';
 import { useUserProps } from '../../src/features/common/Layout/UserPropsContext';
-import Profile from '../../src/features/user/Profile';
+import Profile from '../../src/features/user/ProfileV2';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees';
 import Head from 'next/head';
@@ -27,7 +27,7 @@ function ProfilePage(): ReactElement {
       }
     }
   }, [contextLoaded, user, router]);
-
+  console.log(authenticatedType);
   return (
     <UserLayout>
       <Head>
@@ -36,7 +36,7 @@ function ProfilePage(): ReactElement {
       {profile && (
         <>
           <Profile
-            userprofile={profile}
+            userProfile={profile}
             authenticatedType={authenticatedType}
           />
           <MyTrees

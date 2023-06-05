@@ -24,6 +24,68 @@ interface Props {
   token: any;
 }
 
+const PlantedTreesAndRestorationInfo = () => {
+  const { t } = useTranslation(['donate']);
+  return (
+    <div style={{ display: 'flex', gap: '1px' }}>
+      <div
+        style={{
+          position: 'relative',
+          width: '183.5px',
+          height: '104px',
+          backgroundColor: '#219653',
+          borderBottomLeftRadius: '12px',
+          borderTopLeftRadius: '12px',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            left: '45px',
+            top: '20px',
+            fontSize: '16px',
+            fontWeight: '700',
+            color: '#FFFFFF',
+          }}
+        >
+          {t('donate:plantedTrees')}
+        </div>
+        <div
+          style={{
+            position: 'absolute',
+            top: '44px',
+            left: '20px',
+            fontWeight: 'bold',
+            fontSize: '36px',
+            color: '#FFFFFF',
+          }}
+        >
+          34
+        </div>
+      </div>
+      <div
+        style={{
+          width: '183.5px',
+          height: '104px',
+          backgroundColor: '#219653',
+          borderBottomRightRadius: '12px',
+          borderTopRightRadius: '12px',
+          fontSize: '16px',
+          fontWeight: '700',
+          color: '#FFFFFF',
+        }}
+      >
+        <div style={{ position: 'absolute', left: '232px', top: '20px' }}>
+          {t('donate:restored')}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ConservedAreaInfo = () => {
+  return <div></div>;
+};
 export default function MyTrees({ profile, authenticatedType, token }: Props) {
   const { t, ready } = useTranslation(['country', 'me']);
   const [contributions, setContributions] = React.useState();
@@ -64,130 +126,92 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   };
 
   return contributions?.length > 0 && ready ? (
-    <div
-      className={authenticatedType === 'private' ? 'profilePage' : ''}
-      style={{ marginTop: '0px' }}
-    >
-      {contributions &&
-      Array.isArray(contributions) &&
-      contributions.length !== 0 ? (
-        <>
-          <div
-            className={styles.myTreesSection}
-            style={{ paddingBottom: '80px' }}
-          >
-            <div
-              className={
-                authenticatedType === 'private'
-                  ? 'profilePageTitle'
-                  : styles.myTreesTitle
-              }
-            >
-              {authenticatedType === 'private'
-                ? t('me:myForest')
-                : t('me:nameForest', { name: profile.displayName })}
-            </div>
-            <div className={styles.MyTreesLegend}>
-              <div className={styles.donatedTrees}>
-                <TreesIcon color="currentColor" />
-                <p>{t('me:donatedTrees')}</p>
-              </div>
-              <div className={styles.registeredTrees}>
-                <TreesIcon color="currentColor" />
-                <p>{t('me:registeredTrees')}</p>
-              </div>
-            </div>
-            <div className={styles.myTreesContainer}>
-              <div className={styles.treesList}>
-                {contributions.map((contribution: any, index: any) => {
-                  return <TreeList key={index} contribution={contribution} />;
-                })}
-              </div>
-              <MyTreesMap {...MapProps} />
-            </div>
-          </div>
-        </>
-      ) : null}
+    <div style={{ position: 'relative', height: '100%' }}>
+      <MyTreesMap />
+      <div style={{ position: 'absolute', bottom: '400px', left: '58px' }}>
+        <PlantedTreesAndRestorationInfo />
+        <ConservedAreaInfo />
+      </div>
     </div>
   ) : null;
 }
 
-function TreeList({ contribution }: any) {
-  const date = formatDate(contribution.properties.plantDate);
-  const { t, i18n } = useTranslation(['country', 'me']);
+// function TreeList({ contribution }: any) {
+//   const date = formatDate(contribution.properties.plantDate);
+//   const { t, i18n } = useTranslation(['country', 'me']);
 
-  return (
-    <div key={contribution.properties.id} className={styles.tree}>
-      <div className={styles.dateRow}>{date}</div>
-      <div className={styles.treeRow}>
-        <div className={styles.textCol}>
-          <div className={styles.title}>
-            {contribution.properties.type === 'registration'
-              ? t('me:registered')
-              : contribution.properties.project?.name}
-          </div>
-          <div className={styles.country}>
-            {contribution.properties.country
-              ? t('country:' + contribution.properties.country.toLowerCase())
-              : null}
-          </div>
-          {contribution.properties.type === 'gift' ? (
-            <div className={styles.source}>
-              {contribution.properties.giver.name
-                ? t('me:receivedFrom', {
-                    name: contribution.properties.giver.name,
-                  })
-                : t('me:receivedTrees')}
-            </div>
-          ) : null}
-          {contribution.properties.type === 'redeem' ? (
-            <div className={styles.source}>{t('me:redeemedTrees')}</div>
-          ) : null}
-          {contribution.properties.type === 'donation' ? (
-            <div className={styles.source}>
-              {contribution.properties.recipient
-                ? t('me:giftToGiftee', {
-                    gifteeName: contribution.properties.recipient.name,
-                  })
-                : null}
-            </div>
-          ) : null}
-        </div>
-        <div className={styles.numberCol}>
-          <div className={styles.treeIcon}>
-            <div
-              style={
-                contribution.properties.type === 'registration'
-                  ? { color: '#3D67B1' }
-                  : {}
-              }
-              className={styles.number}
-            >
-              {getFormattedNumber(
-                i18n.language,
-                Number(contribution.properties.treeCount)
-              )}
-            </div>
-            {contribution.properties.treeCount > 1 ? (
-              <TreesIcon
-                color={
-                  contribution.properties.type === 'registration'
-                    ? '#3D67B1'
-                    : null
-                }
-              />
-            ) : (
-              <TreeIcon
-                color={
-                  contribution.properties.type === 'registration'
-                    ? '#3D67B1'
-                    : null
-                }
-              />
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+//   return (
+//     <div key={contribution.properties.id} className={styles.tree}>
+//       <div className={styles.dateRow}>{date}</div>
+//       <div className={styles.treeRow}>
+//         <div className={styles.textCol}>
+//           <div className={styles.title}>
+//             {contribution.properties.type === 'registration'
+//               ? t('me:registered')
+//               : contribution.properties.project?.name}
+//           </div>
+//           <div className={styles.country}>
+//             {contribution.properties.country
+//               ? t('country:' + contribution.properties.country.toLowerCase())
+//               : null}
+//           </div>
+//           {contribution.properties.type === 'gift' ? (
+//             <div className={styles.source}>
+//               {contribution.properties.giver.name
+//                 ? t('me:receivedFrom', {
+//                     name: contribution.properties.giver.name,
+//                   })
+//                 : t('me:receivedTrees')}
+//             </div>
+//           ) : null}
+//           {contribution.properties.type === 'redeem' ? (
+//             <div className={styles.source}>{t('me:redeemedTrees')}</div>
+//           ) : null}
+//           {contribution.properties.type === 'donation' ? (
+//             <div className={styles.source}>
+//               {contribution.properties.recipient
+//                 ? t('me:giftToGiftee', {
+//                     gifteeName: contribution.properties.recipient.name,
+//                   })
+//                 : null}
+//             </div>
+//           ) : null}
+//         </div>
+//         <div className={styles.numberCol}>
+//           <div className={styles.treeIcon}>
+//             <div
+//               style={
+//                 contribution.properties.type === 'registration'
+//                   ? { color: '#3D67B1' }
+//                   : {}
+//               }
+//               className={styles.number}
+//             >
+//               {getFormattedNumber(
+//                 i18n.language,
+//                 Number(contribution.properties.treeCount)
+//               )}
+//             </div>
+//             {contribution.properties.treeCount > 1 ? (
+//               <TreesIcon
+//                 color={
+//                   contribution.properties.type === 'registration'
+//                     ? '#3D67B1'
+//                     : null
+//                 }
+//               />
+//             ) : (
+//               <TreeIcon
+//                 color={
+//                   contribution.properties.type === 'registration'
+//                     ? '#3D67B1'
+//                     : null
+//                 }
+//               />
+//             )}
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }

@@ -50,10 +50,10 @@ export default function Donate({
       setDirectGift(JSON.parse(getdirectGift));
     }
   }, []);
-  const contributionData = trpc.contribution.useQuery({
-    profileId: 'prf_guid',
-  });
-  console.log('==> contributionData', contributionData.data);
+  // const contributionData = trpc.contribution.useQuery({
+  //   profileId: 'prf_guid',
+  // });
+  // console.log('==> contributionData', contributionData.data);
 
   React.useEffect(() => {
     if (directGift) {

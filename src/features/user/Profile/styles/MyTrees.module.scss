@@ -123,11 +123,14 @@
 }
 
 .mapContainer {
-  height: 400px;
+  height: 560px;
   width: 100%;
+  padding-left: 36px;
+  padding-right: 36px;
   canvas {
-    border-radius: 10px;
-  }
+    border-radius: 12px;
+ 
+   }
 }
 
 .marker {
@@ -217,10 +220,6 @@
 
   .myTreesContainer {
     flex-direction: row;
-  }
-
-  .mapContainer {
-    height: 100%;
   }
 }
 

@@ -24,15 +24,12 @@ const Map = ReactMapboxGl({
   maxZoom: 16,
 });
 
-interface Props {
-  authenticatedType: string;
-  contributions: any;
-}
+// interface Props {
+//   authenticatedType: string;
+//   contributions: any;
+// }
 
-export default function MyTreesMap({
-  contributions,
-  authenticatedType,
-}: Props): ReactElement {
+export default function MyTreesMap(): ReactElement {
   const { i18n, t } = useTranslation('me');
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;
@@ -65,48 +62,48 @@ export default function MyTreesMap({
     });
   }, []);
 
-  React.useEffect(() => {
-    if (
-      contributions &&
-      Array.isArray(contributions) &&
-      contributions.length !== 0
-    ) {
-      setGeoJson({
-        type: 'FeatureCollection',
-        features: contributions,
-      });
-    }
-  }, [contributions]);
+  // React.useEffect(() => {
+  //   if (
+  //     contributions &&
+  //     Array.isArray(contributions) &&
+  //     contributions.length !== 0
+  //   ) {
+  //     setGeoJson({
+  //       type: 'FeatureCollection',
+  //       features: contributions,
+  //     });
+  //   }
+  // }, [contributions]);
 
-  const clusterMarker = (coordinates: any, pointCount: any, getLeaves: any) => {
-    const nodes = getLeaves(Infinity);
-    let sum = 0;
-    let key = '';
-    nodes.map((node: any) => {
-      const item = contributions.find((i: any) => {
-        if (i.properties.id === node.key) return true;
-      });
-      sum += Number(item ? item.properties.treeCount : 0);
-      key = item.properties.id;
-    });
-    return (
-      <Marker key={key} coordinates={coordinates} anchor="bottom">
-        <div
-          onMouseOver={() => {
-            setContributionInfo(null);
-            clearTimeout(timer2);
-            setClusterInfo({ pointCount, sum });
-          }}
-          onMouseLeave={() => {
-            timer2 = setTimeout(() => setClusterInfo(null), 3000);
-          }}
-          className={styles.bigMarker}
-        >
-          {getFormattedRoundedNumber(i18n.language, sum, 2)}
-        </div>
-      </Marker>
-    );
-  };
+  // const clusterMarker = (coordinates: any, pointCount: any, getLeaves: any) => {
+  //   const nodes = getLeaves(Infinity);
+  //   let sum = 0;
+  //   let key = '';
+  //   nodes.map((node: any) => {
+  //     const item = contributions.find((i: any) => {
+  //       if (i.properties.id === node.key) return true;
+  //     });
+  //     sum += Number(item ? item.properties.treeCount : 0);
+  //     key = item.properties.id;
+  //   });
+  //   return (
+  //     <Marker key={key} coordinates={coordinates} anchor="bottom">
+  //       <div
+  //         onMouseOver={() => {
+  //           setContributionInfo(null);
+  //           clearTimeout(timer2);
+  //           setClusterInfo({ pointCount, sum });
+  //         }}
+  //         onMouseLeave={() => {
+  //           timer2 = setTimeout(() => setClusterInfo(null), 3000);
+  //         }}
+  //         className={styles.bigMarker}
+  //       >
+  //         {getFormattedRoundedNumber(i18n.language, sum, 2)}
+  //       </div>
+  //     </Marker>
+  //   );
+  // };
 
   return (
     <div className={styles.mapContainer}>
@@ -114,11 +111,13 @@ export default function MyTreesMap({
         {...viewport}
         style={style}
         containerStyle={{
-          height: '100%',
+          height: '560px',
           width: '100%',
+          paddingLeft: '36px',
+          paddingRight: '36px',
         }}
       >
-        {contributions && (
+        {/* {contributions && (
           <Cluster
             ClusterMarkerFactory={clusterMarker}
             zoomOnClick={true}
@@ -160,7 +159,7 @@ export default function MyTreesMap({
                   ))
               : null}
           </Cluster>
-        )}
+        )} */}
         {geoJson ? (
           <GeoJSONLayer
             data={geoJson}
