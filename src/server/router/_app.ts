@@ -2,8 +2,6 @@ import { PrismaClient } from '@prisma/client';
 import { router, procedure } from '../trpc';
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
-import { TRPC_ERROR_CODES_BY_KEY } from '@trpc/server/rpc';
-import { APIError } from '@planet-sdk/common';
 
 const prisma = new PrismaClient();
 prisma.$connect();
@@ -15,7 +13,20 @@ export const appRouter = router({
         profileId: z.string(),
       })
     )
-    .query(async ({ input }) => {
+    .query(async ({ input: { profileId } }) => {
+      const profile = await prisma.profile.findFirst({
+        where: {
+          guid: profileId,
+        },
+      });
+
+      if (!profile) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Profile not found',
+        });
+      }
+
       const data = await prisma.contribution.findMany({
         select: {
           purpose: true,
@@ -33,7 +44,7 @@ export const appRouter = router({
         },
         where: {
           profile: {
-            guid: input.profileId,
+            guid: profileId,
           },
           deleted_at: null,
           OR: [
@@ -62,7 +73,7 @@ export const appRouter = router({
         profileId: z.string(),
       })
     )
-    .query(async ({ input }) => {
+    .query(async ({ input: { profileId } }) => {
       interface QueryResult {
         tree_count: number;
         square_meters: number;
@@ -70,6 +81,19 @@ export const appRouter = router({
         projects: number;
         countries: number;
         donations: number;
+      }
+
+      const profile = await prisma.profile.findFirst({
+        where: {
+          guid: profileId,
+        },
+      });
+
+      if (!profile) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Profile not found',
+        });
       }
 
       const data = await prisma.$queryRaw<QueryResult[]>`
@@ -85,7 +109,7 @@ export const appRouter = router({
       LEFT JOIN plant_project pp ON c.plant_project_id = pp.id
       JOIN profile p ON p.id = c.profile_id
     WHERE
-      p.guid = ${input.profileId}
+      p.guid = ${profileId}
       AND c.deleted_at IS NULL
       AND (
         (
@@ -101,10 +125,6 @@ export const appRouter = router({
 
       return data;
     }),
-
-  // testError: procedure.query(async () => {
-  //   throw new TRPCError({ message: 'Boiii', code: 'BAD_REQUEST' });
-  // }),
 });
 
 // export type definition of API

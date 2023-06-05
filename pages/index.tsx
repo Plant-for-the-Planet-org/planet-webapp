@@ -55,33 +55,23 @@ export default function Donate({
   // });
   // console.log('==> contributionData', contributionData.data);
 
-  const contributionData = trpc.stats.useQuery({
-    profileId: 'prf_guid',
-  });
-  console.log('==> contributionData', contributionData.data);
+  const contributionData = trpc.stats.useQuery({ profileId: 'prof' });
 
-  // const testErr = trpc.testError.useQuery();
-  // useEffect(() => {
-  //   if (!testErr.isLoading) {
-  //     console.log(
-  //       '==> testErr',
-  //       testErr.error?.message,
-  //       testErr.error?.data?.httpStatus
-  //     );
-
-  //     console.log(
-  //       '==>',
-  //       handleError(
-  //         new APIError(testErr.error?.data?.httpStatus, testErr.error)
-  //       )
-  //     );
-  //     setErrors(
-  //       handleError(
-  //         new APIError(testErr.error?.data?.httpStatus, testErr.error)
-  //       )
-  //     );
-  //   }
-  // }, [testErr.isLoading]);
+  useEffect(() => {
+    if (!contributionData.isLoading) {
+      if (contributionData.error) {
+        setErrors(
+          handleError(
+            new APIError(
+              contributionData.error?.data?.httpStatus as number,
+              contributionData.error
+            )
+          )
+        );
+      }
+      console.log('==>', contributionData.data);
+    }
+  }, [contributionData.isLoading]);
 
   React.useEffect(() => {
     if (directGift) {
