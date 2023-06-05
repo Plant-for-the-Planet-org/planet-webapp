@@ -62,8 +62,7 @@ export default function ProjectSpending({
   const {
     register,
     handleSubmit,
-    errors,
-    formState,
+    formState: { errors, isDirty, isSubmitting },
     getValues,
     setValue,
     control,
@@ -113,8 +112,6 @@ export default function ProjectSpending({
       }
     },
   });
-
-  const { isDirty, isSubmitting } = formState;
 
   const onSubmit = async (pdf: any) => {
     setIsUploadingData(true);

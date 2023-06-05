@@ -23,7 +23,11 @@ export const EnterRedeemCode = ({
   redeemCode,
   closeRedeem,
 }: EnterRedeemCodeProps): ReactElement => {
-  const { register, errors, handleSubmit } = useForm({ mode: 'onBlur' });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ mode: 'onBlur' });
   const { t } = useTranslation(['redeem']);
   return (
     <div className={styles.routeRedeemModal}>

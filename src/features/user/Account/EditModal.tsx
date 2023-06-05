@@ -67,7 +67,12 @@ export const EditModal = ({
   const [userLang, setUserLang] = React.useState('en');
   const [disabled, setDisabled] = React.useState(false);
   const { t, i18n } = useTranslation(['me']);
-  const { register, handleSubmit, errors, control } = useForm({
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
     mode: 'all',
   });
   const { token, logoutUser } = useUserProps();

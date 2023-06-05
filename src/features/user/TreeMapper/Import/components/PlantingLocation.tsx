@@ -83,7 +83,13 @@ export default function PlantingLocation({
       },
     ],
   };
-  const { register, handleSubmit, errors, control, setValue } = useForm({
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    formState: { errors },
+  } = useForm({
     mode: 'onBlur',
     defaultValues: plantLocation ? plantLocation : defaultValues,
   });

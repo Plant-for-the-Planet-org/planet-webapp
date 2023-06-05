@@ -270,12 +270,12 @@ export default function BasicDetails({
   const {
     register,
     handleSubmit,
-    errors,
     control,
     reset,
     setValue,
     setError,
     clearErrors,
+    formState: { errors },
   } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
 
   const nextStep = () => {

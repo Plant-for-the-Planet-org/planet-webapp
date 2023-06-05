@@ -107,8 +107,15 @@ export default function CompleteSignup(): ReactElement | null {
   });
   const classes = useStylesAutoComplete();
 
-  const { register, handleSubmit, errors, control, reset, setValue, watch } =
-    useForm({ mode: 'onBlur' });
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm({ mode: 'onBlur' });
 
   const { user, setUser, auth0User, contextLoaded, logoutUser, token } =
     useUserProps();

@@ -135,7 +135,15 @@ export default function RegisterTrees({}: Props) {
     plantDate: new Date(),
     geometry: {},
   };
-  const { register, handleSubmit, errors, control } = useForm({
+  const {
+    register,
+    handleSubmit,
+    control,
+
+    formState: {
+      errors,
+    },
+  } = useForm({
     mode: 'onBlur',
     defaultValues: defaultBasicDetails,
   });

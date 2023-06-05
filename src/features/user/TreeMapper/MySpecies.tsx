@@ -28,7 +28,12 @@ export default function MySpecies({}: Props): ReactElement {
     aliases: '',
   };
 
-  const { register, handleSubmit, errors, control } = useForm({
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
     mode: 'onBlur',
     defaultValues: defaultMySpeciesValue,
   });

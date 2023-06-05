@@ -62,8 +62,15 @@ export default function EditProfileForm() {
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { t, ready } = useTranslation(['editProfile', 'donate']);
 
-  const { register, handleSubmit, errors, control, reset, setValue, watch } =
-    useForm<FormData>({ mode: 'onBlur' });
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<FormData>({ mode: 'onBlur' });
 
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);

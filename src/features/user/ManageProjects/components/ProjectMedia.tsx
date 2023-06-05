@@ -41,7 +41,11 @@ export default function ProjectMedia({
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
 
-  const { register, handleSubmit, errors } = useForm({ mode: 'all' });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ mode: 'all' });
 
   const [uploadedImages, setUploadedImages] = React.useState<Array<any>>([]);
 

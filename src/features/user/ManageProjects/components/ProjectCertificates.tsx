@@ -57,7 +57,12 @@ function ProjectCertificates({
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
 
-  const { register, errors, getValues, setValue } = useForm({ mode: 'all' });
+  const {
+    register,
+    getValues,
+    setValue,
+    formState: { errors },
+  } = useForm({ mode: 'all' });
 
   const [issueDate, setIssueDate] = React.useState(new Date());
 

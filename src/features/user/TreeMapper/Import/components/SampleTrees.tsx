@@ -57,8 +57,14 @@ export default function SampleTrees({
   const defaultValues = {
     sampleTrees: [],
   };
-  const { register, handleSubmit, errors, control, setValue, getValues } =
-    useForm({ mode: 'onBlur', defaultValues: defaultValues });
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = useForm({ mode: 'onBlur', defaultValues: defaultValues });
 
   const { fields, append, remove } = useFieldArray({
     control,

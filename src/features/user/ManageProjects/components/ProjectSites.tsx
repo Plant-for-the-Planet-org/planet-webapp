@@ -53,7 +53,12 @@ export default function ProjectSites({
   const { t, ready } = useTranslation(['manageProjects']);
   const { theme } = React.useContext(ThemeContext);
   const [features, setFeatures] = React.useState([]);
-  const { register, handleSubmit, errors, control } = useForm();
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -603,7 +608,13 @@ function EditSite({
 }: EditSiteProps) {
   const { theme } = React.useContext(ThemeContext);
   const { t } = useTranslation(['manageProjects']);
-  const { register, handleSubmit, errors, control } = useForm();
+  const {
+    register,
+    handleSubmit,
+    control,
+
+    formState: { errors },
+  } = useForm();
   const [geoJson, setGeoJson] = React.useState(geoJsonProp);
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');

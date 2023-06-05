@@ -221,7 +221,13 @@ export default function DetailedAnalysis({
           motivation: '',
         };
 
-  const { register, handleSubmit, errors, control, reset } = useForm({
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm({
     mode: 'onBlur',
     defaultValues: defaultDetailedAnalysis,
   });

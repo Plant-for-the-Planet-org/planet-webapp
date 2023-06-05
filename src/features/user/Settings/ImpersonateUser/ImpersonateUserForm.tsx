@@ -17,7 +17,11 @@ const ImpersonateUserForm = (): ReactElement => {
   const { t } = useTranslation('me');
   const [isInvalidEmail, setIsInvalidEmail] = useState(false);
   const { token, setUser, setIsImpersonationModeOn } = useUserProps();
-  const { register, errors, handleSubmit } = useForm<ImpersonationData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ImpersonationData>({
     mode: 'onSubmit',
   });
 

@@ -63,8 +63,6 @@ export default function SpeciesSelect(props: {
   });
   const classes = useStylesAutoComplete();
 
-  const { errors } = useForm({ mode: 'onBlur' });
-
   const [value, setValue] = React.useState<string>();
 
   React.useEffect(() => {

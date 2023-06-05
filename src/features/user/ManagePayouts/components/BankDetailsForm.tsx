@@ -42,7 +42,13 @@ const BankDetailsForm = ({
   isProcessing,
 }: Props): ReactElement | null => {
   const { t, ready } = useTranslation('managePayouts');
-  const { register, handleSubmit, errors, control, watch } = useForm<FormData>({
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm<FormData>({
     mode: 'onBlur',
     defaultValues: account ? extractFormValues(account) : {},
   });
