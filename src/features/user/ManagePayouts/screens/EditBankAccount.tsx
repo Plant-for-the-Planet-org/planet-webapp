@@ -13,12 +13,12 @@ import FormHeader from '../../../common/Layout/Forms/FormHeader';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
+import { BankAccount } from '../../../common/types/payouts';
 
 const EditBankAccount = (): ReactElement | null => {
   const { accounts, payoutMinAmounts, setAccounts } = usePayouts();
   const router = useRouter();
-  const [accountToEdit, setAccountToEdit] =
-    useState<Payouts.BankAccount | null>(null);
+  const [accountToEdit, setAccountToEdit] = useState<BankAccount | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountUpdated, setIsAccountUpdated] = useState(false);
   const { token, logoutUser } = useUserProps();
@@ -39,7 +39,7 @@ const EditBankAccount = (): ReactElement | null => {
     };
 
     try {
-      const res = await putAuthenticatedRequest<Payouts.BankAccount>(
+      const res = await putAuthenticatedRequest<BankAccount>(
         `/app/accounts/${accountToEdit?.id}`,
         accountData,
         token,

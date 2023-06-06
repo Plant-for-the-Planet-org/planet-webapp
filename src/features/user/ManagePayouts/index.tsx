@@ -22,6 +22,7 @@ import EditBankAccount from './screens/EditBankAccount';
 import AddBankAccount from './screens/AddBankAccount';
 import { useRouter } from 'next/router';
 import { handleError, APIError } from '@planet-sdk/common';
+import { BankAccount, PayoutMinAmounts } from '../../common/types/payouts';
 
 export enum ManagePayoutTabs {
   OVERVIEW = 'overview',
@@ -52,9 +53,7 @@ export default function ManagePayouts({
   const fetchPayoutMinAmounts = useCallback(async () => {
     if (!payoutMinAmounts) {
       try {
-        const res = await getRequest<Payouts.PayoutMinAmounts>(
-          '/app/payoutMinAmounts'
-        );
+        const res = await getRequest<PayoutMinAmounts>('/app/payoutMinAmounts');
         setPayoutMinAmounts(res);
       } catch (err) {
         setErrors(handleError(err as APIError));
@@ -71,7 +70,7 @@ export default function ManagePayouts({
       setIsDataLoading(true);
       setProgress && setProgress(70);
       try {
-        const res = await getAuthenticatedRequest<Payouts.BankAccount[]>(
+        const res = await getAuthenticatedRequest<BankAccount[]>(
           `/app/accounts`,
           token,
           logoutUser

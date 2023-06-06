@@ -6,6 +6,7 @@ import ReactHookFormSelect from './ReactHookFormSelect';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { useTranslation } from 'next-i18next';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
+import { BankAccount } from '../../../common/types/payouts';
 
 export type FormData = {
   currency: string;
@@ -28,8 +29,8 @@ interface Props {
   isProcessing: boolean;
 }
 
-const extractFormValues = (account: Payouts.BankAccount): FormData => {
-  const { currency } = account;
+const extractFormValues = (account: BankAccount): FormData => {
+	const { currency } = account;
   const { ['id']: _, ...accountWithoutId } = account;
   accountWithoutId.currency = currency || PayoutCurrency.DEFAULT;
   return accountWithoutId as FormData;
