@@ -8,7 +8,9 @@ export default function getStoredCurrency() {
     if (localStorage.getItem('currencyCode')) {
       currencyCode = localStorage.getItem('currencyCode');
     } else {
-      currencyCode = config.fallbackCurrency ? config.fallbackCurrency : 'EUR'; //This should be based on tenant config
+      currencyCode =
+        (config as { fallbackCurrency?: string }).fallbackCurrency || 'EUR';
+      //This should be based on tenant config
     }
   }
   return currencyCode;
