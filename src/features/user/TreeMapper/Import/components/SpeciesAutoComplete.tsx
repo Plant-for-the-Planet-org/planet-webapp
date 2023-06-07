@@ -5,7 +5,7 @@ import themeProperties from '../../../../../theme/themeProperties';
 import tenantConfig from '../../../../../../tenant.config';
 import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
 import { postRequest } from '../../../../../utils/apiRequests/api';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, Control, FieldValues, FieldPath } from 'react-hook-form';
 import { Autocomplete } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useTranslation } from 'next-i18next';
@@ -14,14 +14,27 @@ import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingCon
 
 const config = tenantConfig();
 
-export default function SpeciesSelect(props: {
+interface Props<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>
+> {
   label: React.ReactNode;
-  name: string;
-  defaultValue?: String | undefined;
+  name: TName;
   width?: string | undefined;
-  control: any;
-  mySpecies?: any;
-}) {
+  control: Control<TFieldValues>;
+  // mySpecies?: any;
+}
+
+export default function SpeciesSelect<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>
+>({
+  label,
+  name,
+  width,
+  // mySpecies,
+  control,
+}: Props<TFieldValues, TName>) {
   const [speciesSuggestion, setspeciesSuggestion] = React.useState<
     SpeciesType[]
   >([]);
@@ -41,7 +54,7 @@ export default function SpeciesSelect(props: {
           : `${themeProperties.dark.backgroundColor} !important`,
     },
     option: {
-      fontFamily: config!.font.primaryFontFamily,
+      fontFamily: config.font.primaryFontFamily,
       '&:hover': {
         backgroundColor:
           theme === 'theme-light'
@@ -63,32 +76,20 @@ export default function SpeciesSelect(props: {
   });
   const classes = useStylesAutoComplete();
 
-  const [value, setValue] = React.useState<string>();
-
-  React.useEffect(() => {
-    if (props.mySpecies && props.mySpecies.length > 0) {
-      const species = props.mySpecies.map((item: any) => ({
+  // Code below can be removed if no longer needed, along with the `mySpecies` prop
+  /* React.useEffect(() => {
+    if (mySpecies && mySpecies.length > 0) {
+      const species = mySpecies.map((item: any) => ({
         id: item.id,
         name: item.name,
         scientificName: item.scientificName,
       }));
       setspeciesSuggestion(species);
     }
-  }, [props.mySpecies]);
+  }, [mySpecies]); */
 
-  React.useEffect(() => {
-    if (speciesSuggestion) {
-      // create default object
-      const defaultSpecies = speciesSuggestion.filter(
-        (data: any) => data.id === props.defaultValue
-      );
-      if (defaultSpecies && defaultSpecies.length > 0) {
-        setValue(defaultSpecies[0]);
-      }
-    }
-  }, [speciesSuggestion]);
-
-  const suggestSpecies = async (value: any) => {
+  const suggestSpecies = async (value: string) => {
+    // Todo: debouncing
     if (value.length > 2) {
       try {
         const res = await postRequest(`/suggest.php`, {
@@ -128,51 +129,43 @@ export default function SpeciesSelect(props: {
 
   return (
     <Controller
-      onChange={(newValue: SpeciesType | null) => {
-        if (newValue) {
-          setValue(newValue);
-        }
+      name={name}
+      control={control}
+      rules={{
+        required: t('treemapper:speciesValidation'),
       }}
-      defaultValue={value}
-      name={props.name}
-      control={props.control}
-      render={({ onChange, ...renderProps }) => (
+      render={({ field: { onChange, ...fieldProps } }) => (
         <Autocomplete
           id="species-select"
-          style={{ width: props.width ? props.width : '100%' }}
-          options={speciesSuggestion as SpeciesType[]}
+          style={{ width: width ? width : '100%' }}
           classes={{
             option: classes.option,
             paper: classes.paper,
           }}
+          options={speciesSuggestion}
           autoHighlight
-          getOptionLabel={(option: SpeciesType) => `${option.scientificName}`}
-          isOptionEqualToValue={(option: SpeciesType, value: SpeciesType) =>
-            option.id === value.id
-          }
-          {...renderProps}
-          onChange={(e, data) => {
-            onChange(data);
+          getOptionLabel={(option) => `${option.scientificName}` || ''}
+          isOptionEqualToValue={(option, value) => option.id === value.id}
+          onInputChange={(_event, newInputValue) => {
+            setQuery(newInputValue);
           }}
+          onChange={(_event, newValue) => {
+            onChange(newValue);
+          }}
+          {...fieldProps}
           renderInput={(params) => (
             <MaterialTextField
               {...params}
-              label={props.label}
+              label={label}
               variant="outlined"
               inputProps={{
                 ...params.inputProps,
-                autoComplete: 'new-password', // disable autocomplete and autofill
-              }}
-              onChange={(event: any) => {
-                setQuery(event.target.value);
+                autoComplete: 'off', // disable autocomplete and autofill
               }}
             />
           )}
         />
       )}
-      rules={{
-        required: t('treemapper:speciesValidation'),
-      }}
     />
   );
 }
