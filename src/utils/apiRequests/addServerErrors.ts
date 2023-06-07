@@ -9,7 +9,7 @@ export default function addServerErrors<T>(
     if (errors[key as keyof T] && errors[key as keyof T].errors) {
       setError(key as keyof T, {
         type: 'server',
-        message: errors[key as keyof T].errors!.join('. '),
+        message: errors[key as keyof T]?.errors?.join('. ') || '',
       });
     }
   });
