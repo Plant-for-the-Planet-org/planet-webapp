@@ -22,7 +22,6 @@ function Profile({ userprofile, authenticatedType }: Props): ReactElement {
   // Internal States for authenticated users
 
   const [addTargetModalOpen, setAddTargetModalOpen] = React.useState(false);
-
   return (
     <div>
       {/* TO DO - find solution for this */}

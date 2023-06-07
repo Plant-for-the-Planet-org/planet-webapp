@@ -66,14 +66,14 @@
 
 .treeCounterDataField {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+  color:#4F4F4F;
+  // justify-content: center;
+  // align-items: center;
+  // height: 100%;
 }
 
 .treeCounterDataField > .countNumber {
-  color: $light;
+  color: #4F4F4F ;
   font-family: $primaryFontFamily;
   font-weight: bold;
   text-align: center;

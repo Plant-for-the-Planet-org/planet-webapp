@@ -10,10 +10,11 @@ import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
 import { styled } from '@mui/material/styles';
+import { PlantedTressBlackSvg } from '../../../../public/assets/images/ProfilePageIcons';
 
 const CircularProgress = styled(MuiCircularProgress)({
   '&.MuiCircularProgress-root': {
-    color: '#fff',
+    color: '#219653',
     animationDuration: '550ms',
   },
   '& > svg > circle': {
@@ -21,7 +22,7 @@ const CircularProgress = styled(MuiCircularProgress)({
   },
 });
 
-function FacebookCircularProgress(props: CircularProgressProps) {
+export function FacebookCircularProgress(props: CircularProgressProps) {
   return (
     <div style={{ position: 'relative' }}>
       <CircularProgress
@@ -69,15 +70,45 @@ export default function TpoProfile(props: any) {
       <FacebookCircularProgress value={progress} />
       <div className={treeCounterStyles.backgroundCircle} />
       <div className={treeCounterStyles.treeCounterData}>
-        <div className={treeCounterStyles.treeCounterDataField}>
-          <h1>
+        <div>
+          <PlantedTressBlackSvg />
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '10px',
+            width: '198px',
+          }}
+        >
+          <div
+            style={{ color: '#4F4F4F', fontWeight: 'bold', fontSize: '45px' }}
+          >
             {localizedAbbreviatedNumber(
               i18n.language,
               Number(props.planted),
               1
             )}
-          </h1>
-          <h2>
+          </div>
+          <div
+            style={{ color: '#4F4F4F', fontWeight: 'bold', fontSize: '45px' }}
+          >
+            {'of'}
+          </div>
+          {props?.target ? (
+            <div
+              style={{ color: '#4F4F4F', fontWeight: 'bold', fontSize: '45px' }}
+            >
+              {localizedAbbreviatedNumber(
+                i18n.language,
+                Number(props.target),
+                1
+              )}
+            </div>
+          ) : null}
+
+          {/* <h2>
             {t('me:treesPlanted_plural', {
               count: Number(props.planted),
               treeCount: getFormattedNumber(
@@ -85,28 +116,13 @@ export default function TpoProfile(props: any) {
                 Number(props.planted)
               ),
             })}
-          </h2>
+          </h2> */}
         </div>
+        <div style={{ fontSize: '24px' }}>{t('me:treesPlanted')}</div>
 
-        {props.target ? (
+        {/* {props.target ? (
           <div className={treeCounterStyles.treeCounterDataField}>
-            <h1>
-              {localizedAbbreviatedNumber(
-                i18n.language,
-                Number(props.target),
-                1
-              )}
-            </h1>
             <div className={treeCounterStyles.target}>
-              <h2
-                className={
-                  props.authenticatedType === 'public'
-                    ? treeCounterStyles.targetText
-                    : treeCounterStyles.targetTextForPrivate
-                }
-              >
-                {t('me:target')}
-              </h2>
               {props.authenticatedType === 'private' && (
                 <button
                   id={'treeCounterEdit'}
@@ -118,7 +134,7 @@ export default function TpoProfile(props: any) {
               )}
             </div>
           </div>
-        ) : null}
+        ) : null} */}
 
         {props.authenticatedType === 'private' && props.target === 0 && (
           <button

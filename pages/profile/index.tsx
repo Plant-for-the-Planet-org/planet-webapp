@@ -27,7 +27,7 @@ function ProfilePage(): ReactElement {
       }
     }
   }, [contextLoaded, user, router]);
-  console.log(authenticatedType);
+  console.log(authenticatedType, profile);
   return (
     <UserLayout>
       <Head>

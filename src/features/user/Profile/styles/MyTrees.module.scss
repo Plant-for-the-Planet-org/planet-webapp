@@ -125,8 +125,8 @@
 .mapContainer {
   height: 560px;
   width: 100%;
-  padding-left: 36px;
-  padding-right: 36px;
+  padding-left: 50px;
+  padding-right: 50px;
   canvas {
     border-radius: 12px;
  
@@ -227,4 +227,13 @@
   .myTreesSection {
     min-height: 600px;
   }
+}
+
+.treeCounterBackground {
+  background-color: #27AE601A;
+  background-image: url('../../../../../public/assets/images/treeCounterBackround.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 100%;
+  width: 100%;
 }

@@ -19,8 +19,8 @@ import themeProperties from '../../../../../theme/themeProperties';
 import { ThemeContext } from '../../../../../theme/themeContext';
 
 const Map = ReactMapboxGl({
-  customAttribution:
-    '<a>Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS</a>',
+  // customAttribution:
+  //   '<a>Esri Community Maps Contributors, Esri, HERE, Garmin, METI/NASA, USGS</a>',
   maxZoom: 16,
 });
 
@@ -113,8 +113,6 @@ export default function MyTreesMap(): ReactElement {
         containerStyle={{
           height: '560px',
           width: '100%',
-          paddingLeft: '36px',
-          paddingRight: '36px',
         }}
       >
         {/* {contributions && (
