@@ -1,40 +1,40 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DB_CONN_URL")
+    provider = "mysql"
+    url      = env("DB_CONN_URL")
 }
 
 model contribution {
-  id                Int            @id @default(autoincrement())
-  purpose           String?        @db.VarChar(16)
-  tree_count        Decimal?       @db.Decimal(14, 2)
-  quantity          Float?
-  deleted_at        DateTime?      @db.DateTime(0)
-  contribution_type String         @db.VarChar(20)
-  is_verified       Boolean?
-  payment_status    String?        @db.VarChar(20)
-  plant_project_id  Int?
-  plant_project     plant_project? @relation(fields: [plant_project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  profile           profile?       @relation(fields: [profile_id], references: [id])
-  profile_id        Int?
+    id               Int            @id @default(autoincrement())
+    purpose          String?        @db.VarChar(16)
+    treeCount        Decimal?       @map("tree_count") @db.Decimal(14, 2)
+    quantity         Float?
+    deletedAt        DateTime?      @map("deleted_at") @db.DateTime(0)
+    contributionType String         @map("contribution_type") @db.VarChar(20)
+    isVerified       Boolean?       @map("is_verified")
+    paymentStatus    String?        @map("payment_status") @db.VarChar(20)
+    plantProjectId   Int?           @map("plant_project_id")
+    plantProject     plant_project? @relation(fields: [plantProjectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    profile          profile?       @relation(fields: [profile_id], references: [id])
+    profile_id       Int?
 }
 
 model plant_project {
-  id            Int            @id @default(autoincrement())
-  country_code  String?        @db.VarChar(2)
-  unit          String?        @db.VarChar(255)
-  purpose       String         @db.VarChar(64)
-  location      String?        @db.LongText
-  geo_longitude Float?
-  geo_latitude  Float?
-  contribution  contribution[]
+    id           Int            @id @default(autoincrement())
+    countryCode  String?        @map("country_code") @db.VarChar(2)
+    unit         String?        @db.VarChar(255)
+    purpose      String         @db.VarChar(64)
+    location     String?        @db.LongText
+    geoLongitude Float?         @map("geo_longitude")
+    geoLatitude  Float?         @map("geo_latitude")
+    contribution contribution[]
 }
 
 model profile {
-  id           Int            @id @default(autoincrement())
-  guid         String         @db.VarChar(32)
-  contribution contribution[]
+    id           Int            @id @default(autoincrement())
+    guid         String         @db.VarChar(32)
+    contribution contribution[]
 }
