@@ -26,7 +26,7 @@ const Profile = ({ userProfile, authenticatedType }) => {
       </div>
       <div className={styles.userInfoContainer}>
         <div className={styles.userInfo}>{userProfile?.displayName}</div>
-        <div>{t('editProfile:member')}</div>
+        <div>{t('editProfile:member', { date: 'May 2012' })}</div>
       </div>
 
       {userProfile?.bio && (
@@ -55,7 +55,7 @@ const Profile = ({ userProfile, authenticatedType }) => {
           }
         >
           {authenticatedType === 'private'
-            ? t('me:registerTree')
+            ? t('me:registerTrees')
             : t('me:linkedIn')}
         </Button>
         <Button variant="contained" startIcon={<ShareSvg />}>

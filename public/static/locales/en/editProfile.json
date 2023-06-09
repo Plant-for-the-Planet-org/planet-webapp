@@ -33,5 +33,5 @@
   "cancel": "Cancel",
   "termAndCondition": "I agree to the <0>Terms and Conditions</0> of the Plant-for-the-Planet platform.",
   "termAndConditionError": "Please Accept the Terms and Conditions",
-  "member": "Member since May 2018"
+  "member": "Member since {{date}}"
 }
