@@ -12,6 +12,7 @@ const ProfileContainer = styled('div')(({ theme }) => ({
   marginTop: 170,
   marginBottom: 40,
   padding: 30,
+  maxWidth: 1070,
   '.MuiButton-root': {
     marginTop: 15,
   },

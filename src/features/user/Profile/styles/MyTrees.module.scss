@@ -127,10 +127,14 @@
   width: 100%;
   padding-left: 50px;
   padding-right: 50px;
+  max-width: 1163px;
+  @include xsPhoneView {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
   canvas {
     border-radius: 12px;
- 
-   }
+  }
 }
 
 .marker {

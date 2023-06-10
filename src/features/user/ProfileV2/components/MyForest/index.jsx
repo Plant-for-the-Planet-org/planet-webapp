@@ -99,7 +99,7 @@ export const DonationList = () => {
         <div className={myForestStyles.image}></div>
         <div className={myForestStyles.projectDetail}>
           <div>
-            <p style={{ fontWeight: 'bold', fontSize: '24px' }}>
+            <p className={myForestStyles.projectName}>
               {'Costa Rica - Ridge to Reef'}
             </p>
             <p>{'Costa Rica   By One Tree Planted'}</p>

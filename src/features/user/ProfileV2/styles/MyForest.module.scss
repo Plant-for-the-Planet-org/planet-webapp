@@ -1,4 +1,4 @@
-
+@import '../../../../../src//theme/theme';
 
 .plantedTreesRestoredContainer {
     display: flex;
@@ -90,6 +90,12 @@
     display: flex;
     gap: 12px;
     cursor: pointer;
+    @include mdTabletView {
+          margin-left: 50px;  
+    }
+    @include lgLaptopView {
+        margin-left: 0px; 
+    }
 }
 
 .InfoContainer {
@@ -131,6 +137,12 @@
     padding-right: 50px;
     margin-top: 100px;
     border-radius: 12px;
+    max-width: 1155px;
+    @include xsPhoneView {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+    
     > .treeCounterContainer {
         position: relative;
         background: #27AE601A;
@@ -147,7 +159,16 @@
     width: 400px;
     height: 400px;
     top: 72px;
-    left: 336px
+    left: 336px;
+    @include xsPhoneView {
+        left: -19px
+    }
+    @include mdTabletView {
+        left: 104px;
+    };
+    @include lgLaptopView {
+        left: 336px;
+    }
 }
 
 .donationListMainContainer {
@@ -166,6 +187,17 @@
         font-size: 24px;
         top: 255px;
         left: 355px;
+        @include xsPhoneView {
+            font-size: 19px;
+            left: 36px
+        }
+
+        @include mdTabletView {
+            left: 120px;
+        }
+        @include lgLaptopView {
+            left: 355px;
+        }
         > .hrLine {
             width: 176px;
             border: 1px  solid #6FCF97;
@@ -181,7 +213,24 @@
     top: 510px;
     left: 65px;
     display : flex;
-    gap: 12px
+    gap: 12px;
+    overflow: hidden;
+    flex-wrap: wrap;
+    @include xsPhoneView {
+        flex-wrap: nowrap;
+        overflow: scroll;
+        left: 12px
+    };
+    @include smTabletView  {
+        left: 65px;
+    }
+    @include mdTabletView {
+        left : 69px
+    };
+    @include lgLaptopView {
+        flex-wrap: nowrap
+    }
+   
   }
 
   .donationlistContainer {
@@ -192,6 +241,15 @@
     padding-right: 100px;
     padding-bottom: 35px;
     margin-top: 340px;
+    @include mdTabletView {
+        padding-left: 30px;
+        padding-right: 30px;
+
+    }
+    @include lgLaptopView {
+        padding-left: 100px ;
+        padding-right: 100px;
+    }
     > .donationDetail {
         display: flex;
         height: 181px;
@@ -199,12 +257,16 @@
         background: #FFFFFF;
         justify-content: center;
         align-items: center;
+      
         > .image {
             width: 210px;
             height: 141px;
             margin-top: 20px;
             margin-left: 20px;
             border-radius: 12px;
+            @include mdTabletView {
+                margin-top: 0px;
+            }
         }
         > .donateContainer {
             width: 185px;
@@ -217,6 +279,11 @@
             gap: 69px;
             align-items: center;
             padding-left: 25px;
+            padding-right: 0px;
+            @include mdTabletView {
+               padding-left: 0px; 
+               padding-right: 13px;
+            }
         }
     }
   }
@@ -227,7 +294,10 @@
     text-decoration-line: underline;
     color: #68B030;
     cursor: pointer;
-  }
+    @include mdTabletView {
+        font-size: 14px;
+    }
+}
   .projectDetail {
     width: 370px;
     height: 141px;
@@ -239,4 +309,11 @@
     gap: 30px
   }
 
-  
+  .projectName {
+    font-size: 24px;
+    font-weight: bold;
+    @include mdTabletView {
+        font-size: 16px;
+        margin-top: 6px;
+    }
+  }
