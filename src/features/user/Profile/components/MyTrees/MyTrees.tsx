@@ -13,7 +13,8 @@ import {
   PlantedTreesAndRestorationInfo,
   ConservedAreaInfo,
   OtherDonationInfo,
-  TreeCount,
+  AreaPlantedAndRestored,
+  AreaConserved,
 } from '../../../ProfileV2/components/MyForest';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
@@ -73,7 +74,11 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
         <ConservedAreaInfo />
         <OtherDonationInfo />
       </div>
-      <TreeCount userprofile={profile} authenticatedType={authenticatedType} />
+      {/* <AreaPlantedAndRestored
+        userprofile={profile}
+        authenticatedType={authenticatedType}
+      /> */}
+      <AreaConserved />
     </div>
   ) : null;
 }

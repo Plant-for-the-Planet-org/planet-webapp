@@ -267,5 +267,6 @@
   "wrongEntered": "Email id or Support pin is incorrect !!",
   "donatedTrees": "Donated Trees",
   "resetPin": "Reset Pin",
-  "treesPlantedAndAreaRestored": "Trees Planted & Areas Restored"
+  "treesPlantedAndAreaRestored": "Trees Planted & Areas Restored",
+  "areaConserved": "Areas Conserved"
 }

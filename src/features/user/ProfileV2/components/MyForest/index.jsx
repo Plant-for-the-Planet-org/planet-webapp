@@ -119,7 +119,7 @@ export const DonationList = () => {
   );
 };
 
-export const TreeCount = (props) => {
+export const AreaPlantedAndRestored = (props) => {
   const { t } = useTranslation(['me']);
   const [addTargetModalOpen, setAddTargetModalOpen] = React.useState(false);
   return (
@@ -164,6 +164,23 @@ export const TreeCount = (props) => {
           {t('me:treesPlantedAndAreaRestored')}
           <p className={myForestStyles.hrLine} />
         </div>
+        <DonationList />
+      </div>
+    </div>
+  );
+};
+
+export const AreaConserved = () => {
+  const { t } = useTranslation(['me']);
+  return (
+    <div className={myForestStyles.AreaConservedMainContainer}>
+      <div className={myForestStyles.textContainer}>
+        <div className={myForestStyles.conservedAreaText}>
+          <p>{t('me:areaConserved')}</p>
+          <p className={myForestStyles.hrLine} />
+        </div>
+      </div>
+      <div className={myForestStyles.AreaConservedContainer}>
         <DonationList />
       </div>
     </div>
