@@ -11,9 +11,20 @@ import {
 import Linkedin from '../../../../public/assets/images/icons/share/Linkedin';
 import getImageUrl from '../../../utils/getImageURL';
 import styles from '../ProfileV2/styles/MyProfile.module.scss';
+import { useRouter } from 'next/router';
 
 const Profile = ({ userProfile, authenticatedType }) => {
   const { t } = useTranslation(['editProfile', 'redeem', 'me']);
+  const router = useRouter();
+
+  const handleEditProfile = () => {
+    router.push('profile/edit');
+  };
+
+  const handleRegisterTree = () => {
+    router.push('profile/register-trees');
+  };
+
   return (
     <ProfileContainer>
       <Avatar
@@ -21,7 +32,7 @@ const Profile = ({ userProfile, authenticatedType }) => {
         src={getImageUrl('profile', 'avatar', userProfile?.image)}
         sx={{ width: 65, height: 65 }}
       />
-      <div className={styles.iconContainer}>
+      <div className={styles.iconContainer} onClick={handleEditProfile}>
         <EditIcon className={styles.icon} />
       </div>
       <div className={styles.userInfoContainer}>
@@ -53,6 +64,7 @@ const Profile = ({ userProfile, authenticatedType }) => {
               <Linkedin />
             )
           }
+          onClick={authenticatedType === 'private' && handleRegisterTree}
         >
           {authenticatedType === 'private'
             ? t('me:registerTrees')
