@@ -7,7 +7,7 @@ import { SetState } from '../../features/common/types/common';
 
 export function zoomToPlantLocation(
   coordinates: any,
-  viewport: Object,
+  viewport: any,
   isMobile: boolean,
   setViewPort: Function,
   duration = 1200
