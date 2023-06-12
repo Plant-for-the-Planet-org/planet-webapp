@@ -97,22 +97,24 @@ export const DonationList = () => {
     <div className={myForestStyles.donationlistContainer}>
       <div className={myForestStyles.donationDetail}>
         <div className={myForestStyles.image}></div>
-        <div className={myForestStyles.projectDetail}>
-          <div>
-            <p className={myForestStyles.projectName}>
-              {'Costa Rica - Ridge to Reef'}
-            </p>
-            <p>{'Costa Rica   By One Tree Planted'}</p>
+        <div className={myForestStyles.projectDetailContainer}>
+          <div className={myForestStyles.projectDetail}>
+            <div>
+              <p className={myForestStyles.projectName}>
+                {'Costa Rica - Ridge to Reef'}
+              </p>
+              <p>{'Costa Rica   By One Tree Planted'}</p>
+            </div>
+            <div style={{ fontWeight: '700', fontSize: '14px' }}>
+              <p>{'Aug 25, 2021'}</p>
+            </div>
           </div>
-          <div style={{ fontSize: '20px', fontWeight: 'bold' }}>
-            {'5 trees'}
+          <div className={myForestStyles.donateContainer}>
+            <div style={{ fontSize: '20px', fontWeight: 'bold' }}>
+              {'5 trees'}
+            </div>
+            <div className={myForestStyles.donate}>{'Donate Again'}</div>
           </div>
-        </div>
-        <div className={myForestStyles.donateContainer}>
-          <div style={{ marginTop: '5px' }}>
-            <p>{'Aug 25, 2021'}</p>
-          </div>
-          <div className={myForestStyles.donate}>{'Donate Again'}</div>
         </div>
       </div>
     </div>

@@ -252,6 +252,10 @@
     padding-right: 100px;
     padding-bottom: 35px;
     margin-top: 340px;
+    @include xsPhoneView {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
     @include mdTabletView {
         padding-left: 30px;
         padding-right: 30px;
@@ -266,8 +270,13 @@
         height: 181px;
         border-radius: 12px;
         background: #FFFFFF;
-        justify-content: center;
         align-items: center;
+        gap: 30px;
+        @include xsPhoneView {
+            height: 297px;
+            flex-direction: column;
+            gap: 15px
+        }
       
         > .image {
             width: 210px;
@@ -275,29 +284,36 @@
             margin-top: 20px;
             margin-left: 20px;
             border-radius: 12px;
+            background: #6FCF97;
             @include mdTabletView {
                 margin-top: 0px;
             }
-        }
-        > .donateContainer {
-            width: 185px;
-            height: 141px;
-            margin-top: 20px;
-            margin-left: 30px;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 69px;
-            align-items: center;
-            padding-left: 25px;
-            padding-right: 0px;
-            @include mdTabletView {
-               padding-left: 0px; 
-               padding-right: 13px;
+            @include xsPhoneView {
+                width: 274px;
+                margin-left: 0px;
             }
         }
+        
     }
   }
+
+  .donateContainer {
+    width: 100%;
+    border-radius: 12px;
+    display: flex;
+    gap: 409px;
+    align-items: center;
+    @include xsPhoneView {
+        gap: 109px;
+        margin-left: 16px;
+    }
+    @include mdTabletView {
+       gap: 176px
+    }
+    @include lgLaptopView {
+        gap : 448px
+    }
+}
 
   .donate {
     font-size: 16px;
@@ -309,23 +325,53 @@
         font-size: 14px;
     }
 }
-  .projectDetail {
-    width: 370px;
-    height: 141px;
-    margin-top: 20px;
-    margin-left: 20px;
-    border-radius: 12px;
+
+.projectDetailContainer {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 30px
+    justify-content: center;
+    gap: 50px;
+    padding-bottom: 25px;
+    @include xsPhoneView {
+        gap : 10px
+    }
+}
+  .projectDetail {
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 12px;
+    display: flex;
+    gap: 198px;
+    align-items: center;
+    @include xsPhoneView {
+        width: 275px;
+        gap : 10px;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 18px;
+        margin-top: 0px;
+    }
+    @include  mdTabletView {
+        gap: 50px;
+    }
+    @include lgLaptopView{
+        gap: 220px
+    }
   }
 
   .projectName {
     font-size: 24px;
     font-weight: bold;
+    @include xsPhoneView {
+        font-size: 16px;
+    }
     @include mdTabletView {
         font-size: 16px;
         margin-top: 6px;
+    }
+    @include lgLaptopView {
+        font-size: 24px;
     }
   }
 
@@ -343,13 +389,7 @@
         background-color: #48AADD1A ;
         width: 100%;
         height: 200px;
-        > .hrLine {
-            width: 176px;
-            border: 1px solid #48AADD;
-            margin-top: 16px;
-            margin-left: 8px;
         }
-       }
   }
 
   .conservedAreaText {
@@ -357,5 +397,11 @@
     font-size: 24px;
     position: absolute;
     top: 65px;
-    left: 500px
+    left: 500px;
+    > .hrLine {
+        width: 176px;
+        border: 1px solid #48AADD;
+        margin-top: 16px;
+        margin-left: 8px;
+    }
   }

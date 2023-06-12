@@ -74,11 +74,11 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
         <ConservedAreaInfo />
         <OtherDonationInfo />
       </div>
-      {/* <AreaPlantedAndRestored
+      <AreaPlantedAndRestored
         userprofile={profile}
         authenticatedType={authenticatedType}
-      /> */}
-      <AreaConserved />
+      />
+      {/* <AreaConserved /> */}
     </div>
   ) : null;
 }

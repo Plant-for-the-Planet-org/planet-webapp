@@ -33,5 +33,8 @@
     .userInfo {
         font-size: 45px;
         font-weight: bold;
+        @include xsPhoneView {
+            font-size: 25px;
+        }
     }
 }
