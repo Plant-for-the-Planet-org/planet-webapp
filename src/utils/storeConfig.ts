@@ -41,8 +41,9 @@ export async function storeConfig() {
 export function getStoredConfig(key: string) {
   let storedConfig;
   if (typeof Storage !== 'undefined') {
-    if (localStorage.getItem('config')) {
-      storedConfig = JSON.parse(localStorage.getItem('config'));
+    const getConfig = localStorage.getItem('config');
+    if (getConfig) {
+      storedConfig = JSON.parse(getConfig);
       if (storedConfig) {
         switch (key) {
           case 'clientIp':
