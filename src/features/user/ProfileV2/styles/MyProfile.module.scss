@@ -19,7 +19,6 @@
 .buttonContainer {
     display: flex;
     gap: 12px;
-    padding-top: 28px;
 }
 
 .userDescription {
@@ -28,14 +27,14 @@
 
 
 .userInfoContainer {
-    position: absolute;
-    left: 105px;
-    bottom : 155px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+   @include xsPhoneView {
+    display: contents;
+   }
     .userInfo {
-        font-size: 45px;
+        font-size: 4vw;
         font-weight: bold;
-        @include xsPhoneView {
-            font-size: 25px;
-        }
     }
 }

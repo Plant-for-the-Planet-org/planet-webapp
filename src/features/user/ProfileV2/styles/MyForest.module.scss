@@ -1,5 +1,12 @@
 @import '../../../../../src//theme/theme';
 
+
+.mapMainContainer {
+    position: relative;
+    width: 100%;
+    padding-bottom: 10px;
+}
+
 .plantedTreesRestoredContainer {
     display: flex;
     gap: 1px;
@@ -89,9 +96,8 @@
 .donationDetailContainer {
     display: flex;
     gap: 12px;
-    cursor: pointer;
     @include mdTabletView {
-          margin-left: 50px;  
+        margin-left: 50px;  
     }
     @include lgLaptopView {
         margin-left: 0px; 
@@ -203,6 +209,9 @@
             border: 1px  solid #6FCF97;
             margin-left: 93px;
             margin-top: 16px;
+            @include xsPhoneView {
+                margin-left: 50px;
+            }
         }
     }
   }
@@ -225,7 +234,7 @@
     left: 65px;
     display : flex;
     gap: 12px;
-    overflow: hidden;
+    // overflow: hidden;
     flex-wrap: wrap;
     @include xsPhoneView {
         flex-wrap: nowrap;

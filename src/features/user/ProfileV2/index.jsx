@@ -10,11 +10,14 @@ import {
 } from '../../../../public/assets/images/ProfilePageIcons';
 import Linkedin from '../../../../public/assets/images/icons/share/Linkedin';
 import getImageUrl from '../../../utils/getImageURL';
-import styles from '../ProfileV2/styles/MyProfile.module.scss';
+import myProfilestyle from '../ProfileV2/styles/MyProfile.module.scss';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
+import RedeemModal from '../Profile/components/RedeemModal';
 
 const Profile = ({ userProfile, authenticatedType }) => {
   const { t } = useTranslation(['editProfile', 'redeem', 'me']);
+  const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
   const router = useRouter();
 
   const handleEditProfile = () => {
@@ -25,31 +28,48 @@ const Profile = ({ userProfile, authenticatedType }) => {
     router.push('profile/register-trees');
   };
 
+  const handleRedeemModalOPen = () => {
+    setIsRedeemModalOpen(true);
+  };
+
+  const handleRedeemModalClose = () => {
+    setIsRedeemModalOpen(false);
+  };
+
   return (
     <ProfileContainer>
-      <Avatar
-        alt="user Image"
-        src={getImageUrl('profile', 'avatar', userProfile?.image)}
-        sx={{ width: 65, height: 65 }}
+      <div className={myProfilestyle.userInfoContainer}>
+        <Avatar
+          alt="user Image"
+          src={getImageUrl('profile', 'avatar', userProfile?.image)}
+          sx={{ width: 65, height: 65 }}
+        />
+
+        <div>
+          <div className={myProfilestyle.userInfo}>
+            {userProfile?.displayName}
+          </div>
+          <div>{t('editProfile:member', { date: 'May 2012' })}</div>
+        </div>
+      </div>
+      <div className={myProfilestyle.iconContainer} onClick={handleEditProfile}>
+        <EditIcon className={myProfilestyle.icon} />
+      </div>
+
+      <div className={myProfilestyle.userDescription}>
+        {userProfile?.bio && userProfile?.bio}
+      </div>
+      <RedeemModal
+        redeemModalOpen={isRedeemModalOpen}
+        handleRedeemModalClose={handleRedeemModalClose}
       />
-      <div className={styles.iconContainer} onClick={handleEditProfile}>
-        <EditIcon className={styles.icon} />
-      </div>
-      <div className={styles.userInfoContainer}>
-        <div className={styles.userInfo}>{userProfile?.displayName}</div>
-        <div>{t('editProfile:member', { date: 'May 2012' })}</div>
-      </div>
-
-      {userProfile?.bio && (
-        <div className={styles.userDescription}>{userProfile?.bio}</div>
-      )}
-
-      <div className={styles.buttonContainer}>
+      <div className={myProfilestyle.buttonContainer}>
         <Button
           variant="contained"
           startIcon={
             authenticatedType === 'private' ? <RedeemCodeSvg /> : <SupportSvg />
           }
+          onClick={authenticatedType === 'private' && handleRedeemModalOPen}
         >
           {authenticatedType === 'private'
             ? t('redeem:redeem')

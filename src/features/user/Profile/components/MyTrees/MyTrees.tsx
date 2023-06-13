@@ -67,11 +67,13 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   };
 
   return contributions?.length > 0 && ready ? (
-    <div style={{ position: 'relative', width: '100%', paddingBottom: '10px' }}>
+    <div className={myForestStyles.mapMainContainer}>
       <MyTreesMap />
       <div className={myForestStyles.mapButtonContainer}>
         <PlantedTreesAndRestorationInfo />
-        <ConservedAreaInfo />
+        <div>
+          <ConservedAreaInfo />
+        </div>
         <OtherDonationInfo />
       </div>
       <AreaPlantedAndRestored

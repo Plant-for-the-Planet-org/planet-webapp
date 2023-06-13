@@ -1,8 +1,11 @@
 import { styled } from '@mui/material';
 
 const ProfileContainer = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 10,
   position: 'relative',
-  height: 250,
+  height: 'max-content',
   backgroundColor: theme.palette.background.default,
   width: 'auto',
   borderRadius: 9,
