@@ -1,4 +1,13 @@
-export const selectUserType = (type: any, t: Function) => {
+export const selectUserType = (
+  type:
+    | 'individual'
+    | 'tpo'
+    | 'education'
+    | 'organization'
+    | 'company'
+    | 'government',
+  t: Function
+) => {
   let name;
   switch (type) {
     case 'individual':
