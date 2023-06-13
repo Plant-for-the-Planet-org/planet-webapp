@@ -1,6 +1,15 @@
 // This function removes all the null,  empty objects, "" (empty string values), undefined values from the object
 
-const cleanObject = (object) => {
+interface objectType {
+  purpose: string;
+  project: string;
+  prePaid: boolean;
+  comment: string;
+  treeCount: number;
+  gift: {};
+}
+
+const cleanObject = (object: objectType) => {
   Object.entries(object).forEach(([key, value]) => {
     if (value && typeof value === 'object') {
       cleanObject(value);
@@ -12,7 +21,7 @@ const cleanObject = (object) => {
       value === ''
     ) {
       if (Array.isArray(object)) {
-        object.splice(key, 1);
+        object.splice(Number(key), 1);
       } else {
         delete object[key];
       }
