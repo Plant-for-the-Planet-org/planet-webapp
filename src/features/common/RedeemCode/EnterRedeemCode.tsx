@@ -1,6 +1,6 @@
 import TextField from '@mui/material/TextField';
 import { useTranslation } from 'next-i18next';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { ReactElement } from 'react';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import styles from '../../../../src/features/user/Profile/styles/RedeemModal.module.scss';
@@ -16,6 +16,7 @@ export interface EnterRedeemCodeProps {
   closeRedeem: () => void;
 }
 
+// TODO - use rhf as a source of truth instead of combining both state and rhf
 export const EnterRedeemCode = ({
   isLoading,
   setInputCode,
@@ -24,7 +25,7 @@ export const EnterRedeemCode = ({
   closeRedeem,
 }: EnterRedeemCodeProps): ReactElement => {
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: 'onBlur' });
@@ -39,23 +40,25 @@ export const EnterRedeemCode = ({
       <div className={styles.redeemHeading}>{t('redeem:redeem')}</div>
       <div className={styles.note}>{t('redeem:redeemDescription')}</div>
       <div className={styles.inputField}>
-        <TextField
-          inputRef={register({
-            required: {
-              value: true,
-              message: t('redeem:enterRedeemCode'),
-            },
-          })}
-          onChange={(event) => {
-            setInputCode(event.target.value);
-          }}
-          value={inputCode}
-          name={'code'}
-          placeholder="XAD-1SA-5F1-A"
-          label=""
-          variant="outlined"
-          error={errors.code}
-          helperText={errors.code && errors.code.message}
+        <Controller
+          name="code"
+          control={control}
+          rules={{ required: t('redeem:enterRedeemCode') }}
+          render={({ field: { onChange, onBlur } }) => (
+            <TextField
+              onChange={(event) => {
+                setInputCode(event.target.value);
+                onChange(event.target.value);
+              }}
+              value={inputCode}
+              onBlur={onBlur}
+              placeholder="XAD-1SA-5F1-A"
+              label=""
+              variant="outlined"
+              error={errors.code !== undefined}
+              helperText={errors.code !== undefined && errors.code.message}
+            />
+          )}
         />
       </div>
 
