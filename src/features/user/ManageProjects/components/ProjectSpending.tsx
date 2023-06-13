@@ -60,9 +60,7 @@ export default function ProjectSpending({
   const { t, ready } = useTranslation(['manageProjects', 'common']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const {
-    register,
-    handleSubmit,
-    formState: { errors, isDirty, isSubmitting },
+    formState: { errors, isDirty },
     getValues,
     setValue,
     control,
@@ -236,24 +234,25 @@ export default function ProjectSpending({
               <div className={`${styles.formFieldHalf}`}>
                 <LocalizationProvider
                   dateAdapter={AdapterDateFns}
-                  locale={
+                  adapterLocale={
                     localeMapForDate[userLang]
                       ? localeMapForDate[userLang]
                       : localeMapForDate['en']
                   }
                 >
                   <Controller
-                    render={(properties) => (
+                    name="year"
+                    control={control}
+                    defaultValue={new Date()}
+                    rules={{
+                      required: t('manageProjects:spendingYearValidation'),
+                    }}
+                    render={({ field: { onChange, value } }) => (
                       <MuiDatePicker
-                        inputRef={register({
-                          required: {
-                            value: true,
-                            message: t('manageProjects:spendingYearValidation'),
-                          },
-                        })}
                         views={['year']}
-                        value={properties.value}
-                        onChange={properties.onChange}
+                        openTo="year"
+                        value={value}
+                        onChange={onChange}
                         label={t('manageProjects:spendingYear')}
                         renderInput={(props) => (
                           <MaterialTextField {...props} />
@@ -266,9 +265,6 @@ export default function ProjectSpending({
                         }}
                       />
                     )}
-                    defaultValue={new Date()}
-                    name="year"
-                    control={control}
                   />
                 </LocalizationProvider>
                 {errors.year && (
@@ -279,32 +275,38 @@ export default function ProjectSpending({
               </div>
               <div style={{ width: '20px' }}></div>
               <div className={`${styles.formFieldHalf}`}>
-                <MaterialTextField
-                  inputRef={register({
-                    validate: (value) => parseInt(value) > 0,
-                    required: {
-                      value: true,
-                      message: t('manageProjects:spendingAmountValidation'),
-                    },
-                  })}
-                  label={t('manageProjects:spendingAmount')}
-                  placeholder={0}
-                  type="number"
-                  onBlur={(e) => e.preventDefault()}
-                  variant="outlined"
+                <Controller
                   name="amount"
-                  onInput={(e) => {
-                    setAmount(e.target.value);
+                  control={control}
+                  rules={{
+                    required: t('manageProjects:spendingAmountValidation'),
+                    validate: (value) => parseInt(value) > 0,
                   }}
-                  InputProps={{
-                    startAdornment: (
-                      <p
-                        className={styles.inputStartAdornment}
-                        style={{ paddingRight: '4px' }}
-                      >{`€`}</p>
-                    ),
-                  }}
+                  defaultValue=""
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <MaterialTextField
+                      label={t('manageProjects:spendingAmount')}
+                      placeholder="0"
+                      type="number"
+                      variant="outlined"
+                      onChange={(e) => {
+                        setAmount(e.target.value);
+                        onChange(e.target.value);
+                      }}
+                      value={value}
+                      onBlur={onBlur}
+                      InputProps={{
+                        startAdornment: (
+                          <p
+                            className={styles.inputStartAdornment}
+                            style={{ paddingRight: '4px' }}
+                          >{`€`}</p>
+                        ),
+                      }}
+                    />
+                  )}
                 />
+
                 {errors.amount && (
                   <span className={styles.formErrors}>
                     {errors.amount.message}
