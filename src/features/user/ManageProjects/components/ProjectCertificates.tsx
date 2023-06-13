@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import styles from './../StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import { useDropzone } from 'react-dropzone';
 import {
@@ -58,15 +58,13 @@ function ProjectCertificates({
   const { logoutUser } = useUserProps();
 
   const {
-    register,
+    control,
     getValues,
     setValue,
     formState: { errors },
   } = useForm({ mode: 'all' });
 
-  const [issueDate, setIssueDate] = React.useState(new Date());
-
-  const [certifierName, setCertifierName] = React.useState('');
+  const { issueDate, certifierName } = getValues();
 
   const [uploadedFiles, setUploadedFiles] = React.useState<Array<any>>();
   const [showForm, setShowForm] = React.useState(true);
@@ -134,10 +132,9 @@ function ProjectCertificates({
 
   const onSubmit = async (pdf: any) => {
     setIsUploadingData(true);
-    const updatedAmount = getValues('certifierName');
     const submitData = {
       issueDate: issueDate.getFullYear(),
-      certifierName: updatedAmount,
+      certifierName: certifierName,
       pdfFile: pdf,
     };
 
@@ -156,7 +153,6 @@ function ProjectCertificates({
 
       newUploadedFiles.push(res);
       setUploadedFiles(newUploadedFiles);
-      setCertifierName('');
       setValue('certifierName', '', { shouldDirty: false });
       setIsUploadingData(false);
       setShowForm(false);
@@ -253,16 +249,22 @@ function ProjectCertificates({
         <>
           <div className={styles.formField}>
             <div className={styles.formFieldHalf}>
-              <MaterialTextField
-                inputRef={register({ required: true })}
-                label={t('manageProjects:certifierName')}
-                variant="outlined"
+              <Controller
                 name="certifierName"
-                onChange={(e) => {
-                  setCertifierName(e.target.value);
-                }}
+                rules={{ required: true }}
+                control={control}
                 defaultValue=""
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <MaterialTextField
+                    label={t('manageProjects:certifierName')}
+                    variant="outlined"
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                  />
+                )}
               />
+
               {errors.certifierName && (
                 <span className={styles.formErrors}>
                   {errors.certifierName.message}
@@ -273,31 +275,33 @@ function ProjectCertificates({
             <div className={styles.formFieldHalf}>
               <LocalizationProvider
                 dateAdapter={AdapterDateFns}
-                locale={
+                adapterLocale={
                   localeMapForDate[userLang]
                     ? localeMapForDate[userLang]
                     : localeMapForDate['en']
                 }
               >
-                <MuiDatePicker
-                  value={issueDate}
-                  onChange={setIssueDate}
-                  label={t('manageProjects:issueDate')}
+                <Controller
                   name="issueDate"
-                  renderInput={(props) => <MaterialTextField {...props} />}
-                  clearable
-                  disableFuture
-                  inputRef={register({
-                    required: {
-                      value: true,
-                      message: t('manageProjects:certificationDateValidation'),
-                    },
-                  })}
-                  maxDate={new Date()}
-                  minDate={tenYearsAgo}
-                  DialogProps={{
-                    sx: dialogSx,
+                  control={control}
+                  rules={{
+                    required: t('manageProjects:certificationDateValidation'),
                   }}
+                  render={({ field: { onChange, value } }) => (
+                    <MuiDatePicker
+                      label={t('manageProjects:issueDate')}
+                      renderInput={(props) => <MaterialTextField {...props} />}
+                      disableFuture
+                      // clearable
+                      maxDate={new Date()}
+                      minDate={tenYearsAgo}
+                      DialogProps={{
+                        sx: dialogSx,
+                      }}
+                      value={value}
+                      onChange={onChange}
+                    />
+                  )}
                 />
               </LocalizationProvider>
               {errors.issueDate && (
