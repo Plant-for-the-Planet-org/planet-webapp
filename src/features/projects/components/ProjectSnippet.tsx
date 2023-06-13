@@ -30,6 +30,7 @@ export default function ProjectSnippet({
   disableDonations = false,
 }: Props): ReactElement {
   const router = useRouter();
+  const storedCampaign = sessionStorage.getItem('campaign');
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
   const ImageSource = project.image
@@ -51,7 +52,7 @@ export default function ProjectSnippet({
       token,
       embed,
       callbackUrl,
-      utmCampaign
+      utmCampaign || storedCampaign
     );
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
@@ -66,6 +67,7 @@ export default function ProjectSnippet({
       ) : null}
       <div
         onClick={() => {
+          if (utmCampaign) sessionStorage.setItem('campaign', utmCampaign);
           router.push(
             `/${project.slug}/${
               embed === 'true'
