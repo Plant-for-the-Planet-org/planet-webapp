@@ -29,8 +29,13 @@ export const myForestRouter = router({
           purpose: true,
           treeCount: true,
           quantity: true,
+          donationIssueDate: true,
           plantProject: {
             select: {
+              guid: true,
+              name: true,
+              image: true,
+              description: true,
               countryCode: true,
               unit: true,
               location: true,

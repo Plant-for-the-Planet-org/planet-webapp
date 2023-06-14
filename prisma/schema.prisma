@@ -8,24 +8,29 @@ datasource db {
 }
 
 model contribution {
-    id               Int            @id @default(autoincrement())
-    purpose          String?        @db.VarChar(16)
-    treeCount        Decimal?       @map("tree_count") @db.Decimal(14, 2)
-    quantity         Float?
-    deletedAt        DateTime?      @map("deleted_at") @db.DateTime(0)
-    contributionType String         @map("contribution_type") @db.VarChar(20)
-    isVerified       Boolean?       @map("is_verified")
-    paymentStatus    String?        @map("payment_status") @db.VarChar(20)
-    plantProjectId   Int?           @map("plant_project_id")
-    plantProject     plant_project? @relation(fields: [plantProjectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-    profile          profile?       @relation(fields: [profile_id], references: [id])
-    profile_id       Int?
+    id                Int            @id @default(autoincrement())
+    purpose           String?        @db.VarChar(16)
+    treeCount         Decimal?       @map("tree_count") @db.Decimal(14, 2)
+    quantity          Float?
+    deletedAt         DateTime?      @map("deleted_at") @db.DateTime(0)
+    contributionType  String         @map("contribution_type") @db.VarChar(20)
+    isVerified        Boolean?       @map("is_verified")
+    paymentStatus     String?        @map("payment_status") @db.VarChar(20)
+    plantProjectId    Int?           @map("plant_project_id")
+    plantProject      plant_project? @relation(fields: [plantProjectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    profile           profile?       @relation(fields: [profile_id], references: [id])
+    donationIssueDate DateTime?      @map("dtn_issue_date") @db.DateTime(0)
+    profile_id        Int?
 }
 
 model plant_project {
     id           Int            @id @default(autoincrement())
+    guid         String         @db.VarChar(32)
+    name         String?        @db.VarChar(255)
+    description  String?        @db.LongText
     countryCode  String?        @map("country_code") @db.VarChar(2)
     unit         String?        @db.VarChar(255)
+    image        String?        @db.VarChar(255)
     purpose      String         @db.VarChar(64)
     location     String?        @db.LongText
     geoLongitude Float?         @map("geo_longitude")
