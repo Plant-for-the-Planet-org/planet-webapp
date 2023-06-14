@@ -52,7 +52,7 @@ const dialogSx: SxProps = {
 type FormData = {
   treeCount: string;
   species: string;
-  plantProject: string;
+  plantProject: string | null;
   plantDate: Date;
   geometry: any;
 };
@@ -139,7 +139,7 @@ export default function RegisterTrees({}: Props) {
   const defaultBasicDetails = {
     treeCount: '',
     species: '',
-    plantProject: '',
+    plantProject: user?.type === 'tpo' ? '' : null,
     plantDate: new Date(),
     geometry: {},
   };
