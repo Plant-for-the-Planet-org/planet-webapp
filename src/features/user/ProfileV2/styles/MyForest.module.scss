@@ -44,6 +44,38 @@
     }
 }
 
+.plantedTreesContainerX {
+    display: flex;
+    position: relative;
+    background-color: #FFFFFF99;
+    border-bottom-left-radius: 12px;
+    border-top-left-radius: 12px;
+    width: 183px;
+    height: 104px;
+    > .svgContainer {
+        position: absolute;
+        top: 24px;
+        left: 22px
+    }
+    > .plantedTreesLabel {
+        position: absolute;
+        top: 20px;
+        left: 45px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #333333;
+    }
+    > .countTrees {
+        position: absolute;
+        top: 44px;
+        left: 20px;
+        font-weight: bold;
+        font-size: 36px;
+        color: #219653;
+    }
+}
+
+
 .restoredAreaContainer {
     width: 183px;
     height: 104px;

@@ -16,6 +16,7 @@ import {
   AreaPlantedAndRestored,
   AreaConserved,
 } from '../../../ProfileV2/components/MyForest';
+import { trpc } from '../../../../../utils/trpc';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
@@ -30,57 +31,127 @@ interface Props {
 export default function MyTrees({ profile, authenticatedType, token }: Props) {
   const { ready } = useTranslation(['country', 'me']);
   const [contributions, setContributions] = React.useState();
+  const [donationOtherInfo, setDonationOtherInfo] = React.useState(undefined);
+  const [isTreePlantedButtonActive, setIsTreePlantedButtonActive] =
+    React.useState(false);
+  const [isConservedButtonActive, setIsConservedButtonActive] =
+    React.useState(false);
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
 
+  // React.useEffect(() => {
+  //   async function loadFunction() {
+  //     if (authenticatedType === 'private' && token) {
+  //       try {
+  //         const result = await getAuthenticatedRequest(
+  //           `/app/profile/contributions`,
+  //           token,
+  //           logoutUser
+  //         );
+  //         setContributions(result);
+  //       } catch (err) {
+  //         setErrors(handleError(err as APIError));
+  //         redirect('/profile');
+  //       }
+  //     } else {
+  //       try {
+  //         const result = await getRequest(
+  //           `/app/profiles/${profile.id}/contributions`
+  //         );
+  //         setContributions(result);
+  //       } catch (err) {
+  //         setErrors(handleError(err as APIError));
+  //       }
+  //     }
+  //   }
+  //   loadFunction();
+  // }, [profile]);
+
+  // const MapProps = {
+  //   contributions,
+  //   authenticatedType,
+  // };
+
+  const detailInfo = trpc.myForest.stats.useQuery({
+    profileId: `${profile.id}`,
+  });
+
+  const contributionData = trpc.myForest.contribution.useQuery({
+    profileId: `${profile.id}`,
+  });
+
   React.useEffect(() => {
-    async function loadFunction() {
-      if (authenticatedType === 'private' && token) {
-        try {
-          const result = await getAuthenticatedRequest(
-            `/app/profile/contributions`,
-            token,
-            logoutUser
-          );
-          setContributions(result);
-        } catch (err) {
-          setErrors(handleError(err as APIError));
-          redirect('/profile');
-        }
+    if (!contributionData.isLoading) {
+      if (contributionData.error) {
+        setErrors(
+          handleError(
+            new APIError(
+              contributionData.error?.data?.httpStatus as number,
+              contributionData.error
+            )
+          )
+        );
       } else {
-        try {
-          const result = await getRequest(
-            `/app/profiles/${profile.id}/contributions`
-          );
-          setContributions(result);
-        } catch (err) {
-          setErrors(handleError(err as APIError));
-        }
+        setContributions(contributionData.data);
+      }
+      console.log('==>', contributionData.data);
+    }
+  }, [contributionData.isLoading]);
+
+  React.useEffect(() => {
+    if (!detailInfo.isLoading) {
+      if (detailInfo.error) {
+        setErrors(
+          handleError(
+            new APIError(
+              detailInfo.error?.data?.httpStatus as number,
+              detailInfo.error
+            )
+          )
+        );
+      } else {
+        console.log('===>', detailInfo.data);
+        setDonationOtherInfo(detailInfo.data);
+        // console.log(donationOtherInfo);
       }
     }
-    loadFunction();
-  }, [profile]);
+  }, [detailInfo.isLoading]);
 
-  const MapProps = {
-    contributions,
-    authenticatedType,
-  };
-
-  return contributions?.length > 0 && ready ? (
+  return donationOtherInfo && contributions && ready ? (
     <div className={myForestStyles.mapMainContainer}>
       <MyTreesMap />
+      {console.log(contributions[0].plantProject)}
       <div className={myForestStyles.mapButtonContainer}>
-        <PlantedTreesAndRestorationInfo />
+        <PlantedTreesAndRestorationInfo
+          plantedTrees={donationOtherInfo[0].treeCount}
+          isTreePlantedButtonActive={isTreePlantedButtonActive}
+          setIsConservedButtonActive={setIsConservedButtonActive}
+          setIsTreePlantedButtonActive={setIsTreePlantedButtonActive}
+        />
         <div>
-          <ConservedAreaInfo />
+          <ConservedAreaInfo
+            setIsTreePlantedButtonActive={setIsTreePlantedButtonActive}
+            setIsConservedButtonActive={setIsConservedButtonActive}
+            isConservedButtonActive={isConservedButtonActive}
+          />
         </div>
-        <OtherDonationInfo />
+        <OtherDonationInfo
+          projects={donationOtherInfo[0]?.projects}
+          countries={donationOtherInfo[0]?.countries}
+          donations={donationOtherInfo[0]?.donations}
+        />
       </div>
-      <AreaPlantedAndRestored
-        userprofile={profile}
-        authenticatedType={authenticatedType}
-      />
-      {/* <AreaConserved /> */}
+      {isTreePlantedButtonActive && !isConservedButtonActive && (
+        <AreaPlantedAndRestored
+          // projectDetails={contributions[0].plantProject}
+          userprofile={profile}
+          authenticatedType={authenticatedType}
+        />
+      )}
+
+      {isConservedButtonActive && !isTreePlantedButtonActive && (
+        <AreaConserved isConservedButtonActive={isConservedButtonActive} />
+      )}
     </div>
   ) : null;
 }

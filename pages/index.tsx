@@ -50,30 +50,6 @@ export default function Donate({
       setDirectGift(JSON.parse(getdirectGift));
     }
   }, []);
-  // const contributionData = trpc.contribution.useQuery({
-  //   profileId: 'prf_guid',
-  // });
-  // console.log('==> contributionData', contributionData.data);
-
-  const contributionData = trpc.myForest.contribution.useQuery({
-    profileId: 'prof',
-  });
-
-  useEffect(() => {
-    if (!contributionData.isLoading) {
-      if (contributionData.error) {
-        setErrors(
-          handleError(
-            new APIError(
-              contributionData.error?.data?.httpStatus as number,
-              contributionData.error
-            )
-          )
-        );
-      }
-      console.log('==>', contributionData.data);
-    }
-  }, [contributionData.isLoading]);
 
   React.useEffect(() => {
     if (directGift) {

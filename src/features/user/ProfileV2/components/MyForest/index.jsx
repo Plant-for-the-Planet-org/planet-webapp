@@ -8,24 +8,51 @@ import {
   CountriesSvg,
   DonationsSvg,
   EditTargetSvg,
+  PlantedTreesGreenSvg,
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import Button from '@mui/material/Button';
 import TreeCounter from '../../../../common/TreeCounter/TreeCounter';
 import React from 'react';
 
-export const PlantedTreesAndRestorationInfo = () => {
+export const PlantedTreesAndRestorationInfo = ({
+  plantedTrees,
+  isTreePlantedButtonActive,
+  setIsConservedButtonActive,
+  setIsTreePlantedButtonActive,
+}) => {
   const { t } = useTranslation(['donate']);
+  const showTreesOnMap = () => {
+    if (isTreePlantedButtonActive) {
+      setIsTreePlantedButtonActive(false);
+    } else {
+      setIsTreePlantedButtonActive(true);
+      setIsConservedButtonActive(false);
+    }
+  };
   return (
-    <div className={myForestStyles.plantedTreesRestoredContainer}>
-      <div className={myForestStyles.plantedTreesContainer}>
+    <div
+      className={myForestStyles.plantedTreesRestoredContainer}
+      onClick={showTreesOnMap}
+    >
+      <div
+        className={`${
+          isTreePlantedButtonActive
+            ? myForestStyles.plantedTreesContainer
+            : myForestStyles.plantedTreesContainerX
+        }`}
+      >
         <div className={myForestStyles.svgContainer}>
-          <PlantedTreesSvg />
+          {isTreePlantedButtonActive ? (
+            <PlantedTreesSvg />
+          ) : (
+            <PlantedTreesGreenSvg />
+          )}
         </div>
         <div className={myForestStyles.plantedTreesLabel}>
           {t('donate:plantedTrees')}
         </div>
 
-        <div className={myForestStyles.countTrees}>34</div>
+        <div className={myForestStyles.countTrees}>{`${plantedTrees}`}</div>
       </div>
       <div className={myForestStyles.restoredAreaContainer}>
         <div className={myForestStyles.restoredAreaLabel}>
@@ -36,10 +63,25 @@ export const PlantedTreesAndRestorationInfo = () => {
   );
 };
 
-export const ConservedAreaInfo = () => {
+export const ConservedAreaInfo = ({
+  setIsTreePlantedButtonActive,
+  setIsConservedButtonActive,
+  isConservedButtonActive,
+}) => {
   const { t } = useTranslation(['donate']);
+  const handleClick = () => {
+    if (isConservedButtonActive) {
+      setIsConservedButtonActive(false);
+    } else {
+      setIsTreePlantedButtonActive(false);
+      setIsConservedButtonActive(true);
+    }
+  };
   return (
-    <div className={myForestStyles.conservedAreaContainer}>
+    <div
+      className={myForestStyles.conservedAreaContainer}
+      onClick={handleClick}
+    >
       <div className={myForestStyles.labelContainer}>
         <div className={myForestStyles.conservedSvg}>
           <ConservationTreeSvg />
@@ -57,7 +99,7 @@ export const ConservedAreaInfo = () => {
   );
 };
 
-export const OtherDonationInfo = () => {
+export const OtherDonationInfo = ({ projects, countries, donations }) => {
   const { t } = useTranslation(['maps', 'me']);
   return (
     <div className={myForestStyles.donationDetailContainer}>
@@ -68,7 +110,8 @@ export const OtherDonationInfo = () => {
           </div>
           <div className={myForestStyles.label}>{t('maps:projects')}</div>
         </div>
-        <div className={myForestStyles.value}>12</div>
+        {console.log('mc', projects)}
+        <div className={myForestStyles.value}>{`${projects}`}</div>
       </div>
       <div className={myForestStyles.InfoContainer}>
         <div className={myForestStyles.labelContainer}>
@@ -77,7 +120,7 @@ export const OtherDonationInfo = () => {
           </div>
           <div className={myForestStyles.label}>{t('maps:countries')}</div>
         </div>
-        <div className={myForestStyles.value}>12</div>
+        <div className={myForestStyles.value}>{`${countries}`}</div>
       </div>
       <div className={myForestStyles.InfoContainer}>
         <div className={myForestStyles.labelContainer}>
@@ -86,15 +129,18 @@ export const OtherDonationInfo = () => {
           </div>
           <div className={myForestStyles.label}>{t('me:donations')}</div>
         </div>
-        <div className={myForestStyles.value}>12</div>
+        <div className={myForestStyles.value}>{`${donations}`}</div>
       </div>
     </div>
   );
 };
 
-export const DonationList = () => {
+export const DonationList = ({ isConservedButtonActive }) => {
   return (
-    <div className={myForestStyles.donationlistContainer}>
+    <div
+      className={myForestStyles.donationlistContainer}
+      style={{ marginTop: isConservedButtonActive ? '0px' : '340px' }}
+    >
       <div className={myForestStyles.donationDetail}>
         <div className={myForestStyles.image}></div>
         <div className={myForestStyles.projectDetailContainer}>
@@ -166,13 +212,13 @@ export const AreaPlantedAndRestored = (props) => {
           {t('me:treesPlantedAndAreaRestored')}
           <p className={myForestStyles.hrLine} />
         </div>
-        <DonationList />
+        <DonationList isConservedButtonActive={undefined} />
       </div>
     </div>
   );
 };
 
-export const AreaConserved = () => {
+export const AreaConserved = ({ isConservedButtonActive }) => {
   const { t } = useTranslation(['me']);
   return (
     <div className={myForestStyles.AreaConservedMainContainer}>
@@ -183,7 +229,7 @@ export const AreaConserved = () => {
         </div>
       </div>
       <div className={myForestStyles.AreaConservedContainer}>
-        <DonationList />
+        <DonationList isConservedButtonActive={isConservedButtonActive} />
       </div>
     </div>
   );
