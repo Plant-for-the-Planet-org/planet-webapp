@@ -17,8 +17,7 @@
     display: flex;
     position: relative;
     background-color: #219653;
-    border-bottom-left-radius: 12px;
-    border-top-left-radius: 12px;
+    border-radius: 12px;
     width: 183px;
     height: 104px;
     > .svgContainer {
@@ -48,8 +47,7 @@
     display: flex;
     position: relative;
     background-color: #FFFFFF99;
-    border-bottom-left-radius: 12px;
-    border-top-left-radius: 12px;
+    border-radius: 12px;
     width: 183px;
     height: 104px;
     > .svgContainer {
@@ -326,6 +324,9 @@
             margin-left: 20px;
             border-radius: 12px;
             background: #6FCF97;
+            img {
+                border-radius: 12px;
+            };
             @include mdTabletView {
                 margin-top: 0px;
             }
@@ -342,17 +343,11 @@
     width: 100%;
     border-radius: 12px;
     display: flex;
-    gap: 409px;
     align-items: center;
+    justify-content: space-between;
+    padding-right: 30px;
     @include xsPhoneView {
-        gap: 109px;
         margin-left: 16px;
-    }
-    @include mdTabletView {
-       gap: 176px
-    }
-    @include lgLaptopView {
-        gap : 448px
     }
 }
 
@@ -383,21 +378,15 @@
     margin-top: 20px;
     border-radius: 12px;
     display: flex;
-    gap: 198px;
     align-items: center;
+    justify-content: space-between;
+    padding-right: 30px;
     @include xsPhoneView {
         width: 275px;
-        gap : 10px;
         flex-direction: column;
         align-items: flex-start;
         margin-left: 18px;
         margin-top: 0px;
-    }
-    @include  mdTabletView {
-        gap: 50px;
-    }
-    @include lgLaptopView{
-        gap: 220px
     }
   }
 

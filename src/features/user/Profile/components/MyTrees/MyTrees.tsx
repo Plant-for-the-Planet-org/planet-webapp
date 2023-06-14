@@ -73,11 +73,11 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   // };
 
   const detailInfo = trpc.myForest.stats.useQuery({
-    profileId: `${profile.id}`,
+    profileId: `prf_oYOzG6LrTeFkhtEomszwODcP`,
   });
 
   const contributionData = trpc.myForest.contribution.useQuery({
-    profileId: `${profile.id}`,
+    profileId: `prf_oYOzG6LrTeFkhtEomszwODcP`,
   });
 
   React.useEffect(() => {
@@ -118,9 +118,17 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   }, [detailInfo.isLoading]);
 
   return donationOtherInfo && contributions && ready ? (
-    <div className={myForestStyles.mapMainContainer}>
+    <div
+      className={myForestStyles.mapMainContainer}
+      style={{
+        paddingBottom:
+          !isTreePlantedButtonActive || !isConservedButtonActive
+            ? '110px'
+            : '10px',
+      }}
+    >
       <MyTreesMap />
-      {console.log(contributions[0].plantProject)}
+      {/* {console.log(contributions[0].plantProject)} */}
       <div className={myForestStyles.mapButtonContainer}>
         <PlantedTreesAndRestorationInfo
           plantedTrees={donationOtherInfo[0].treeCount}
@@ -143,7 +151,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
       </div>
       {isTreePlantedButtonActive && !isConservedButtonActive && (
         <AreaPlantedAndRestored
-          // projectDetails={contributions[0].plantProject}
+          contribution={contributions}
           userprofile={profile}
           authenticatedType={authenticatedType}
         />
