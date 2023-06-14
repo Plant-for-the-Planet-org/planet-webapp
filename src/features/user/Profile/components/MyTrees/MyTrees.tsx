@@ -73,11 +73,11 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   // };
 
   const detailInfo = trpc.myForest.stats.useQuery({
-    profileId: `prf_oYOzG6LrTeFkhtEomszwODcP`,
+    profileId: `${profile.id}`,
   });
 
   const contributionData = trpc.myForest.contribution.useQuery({
-    profileId: `prf_oYOzG6LrTeFkhtEomszwODcP`,
+    profileId: `${profile.id}`,
   });
 
   React.useEffect(() => {
