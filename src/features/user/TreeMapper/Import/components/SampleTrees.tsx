@@ -13,9 +13,22 @@ import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingCon
 interface Props {
   handleNext: Function;
   plantLocation: any;
-  setPlantLocation: Function;
   userLang: string;
 }
+
+type SampleTree = {
+  plantingDate: Date;
+  treeTag: string;
+  height: string;
+  diameter: string;
+  otherSpecies: string;
+  latitude: string;
+  longitude: string;
+};
+
+type FormData = {
+  sampleTrees: SampleTree[];
+};
 
 export default function SampleTrees({
   handleNext,
@@ -27,9 +40,24 @@ export default function SampleTrees({
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [uploadIndex, setUploadIndex] = React.useState(0);
   const [uploadStatus, setUploadStatus] = React.useState<string[]>([]);
-  const [sampleTrees, setSampleTrees] = React.useState<
-    Treemapper.SamplePlantLocation[]
-  >([]);
+  const [sampleTrees, setSampleTrees] = React.useState<SampleTree[]>([]);
+
+  const {
+    handleSubmit,
+    control,
+    getValues,
+    formState: { errors },
+  } = useForm<FormData>({ mode: 'onBlur', defaultValues: { sampleTrees: [] } });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'sampleTrees',
+  });
+
+  const addSampleTrees = (sampleTrees: SampleTree[]) => {
+    append(sampleTrees);
+  };
+
   const onDrop = React.useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: any) => {
       const reader = new FileReader();
@@ -41,7 +69,7 @@ export default function SampleTrees({
         Papa.parse(csv, {
           header: true,
           complete: (results: any) => {
-            const sampleTrees = results.data.map((sampleTree: any) => {
+            const sampleTrees = results.data.map((sampleTree: SampleTree) => {
               return {
                 ...sampleTree,
                 otherSpecies: sampleTree.otherSpecies,
@@ -54,24 +82,9 @@ export default function SampleTrees({
     });
   }, []);
 
-  const defaultValues = {
-    sampleTrees: [],
-  };
-  const { register, handleSubmit, errors, control, setValue, getValues } =
-    useForm({ mode: 'onBlur', defaultValues: defaultValues });
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'sampleTrees',
-  });
-
-  const addSampleTrees = (sampleTrees: Treemapper.SamplePlantLocation[]) => {
-    append(sampleTrees);
-  };
-
   const { token, logoutUser } = useUserProps();
 
-  const uploadSampleTree = async (sampleTree: any, index: number) => {
+  const uploadSampleTree = async (sampleTree: SampleTree, index: number) => {
     setUploadIndex(index);
     const newStatus = [...uploadStatus];
     newStatus[index] = 'uploading';
@@ -206,12 +219,10 @@ export default function SampleTrees({
               <SampleTreeCard
                 key={item.id}
                 index={index}
-                register={register}
                 remove={remove}
                 getValues={getValues}
                 control={control}
                 userLang={userLang}
-                setValue={setValue}
                 item={item}
                 plantLocation={plantLocation}
                 errors={errors}
