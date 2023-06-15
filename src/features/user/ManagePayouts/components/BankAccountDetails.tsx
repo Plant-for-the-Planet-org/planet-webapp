@@ -3,6 +3,7 @@ import { styled, Grid, Button, Divider } from '@mui/material';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
+import { BankAccount } from '../../../common/types/payouts';
 
 // TODOO - See if something can be made common between accounts of Manage Accounts and Planet Cash
 const AccountDetailsGrid = styled('article')(({ theme }) => ({
@@ -41,7 +42,7 @@ const SingleDetail = styled('div')(({ theme }) => ({
 }));
 
 interface BankAccountDetailsProps {
-  account: Payouts.BankAccount;
+  account: BankAccount;
 }
 
 const BankAccountDetails = ({

@@ -89,7 +89,7 @@ export function getFormattedNumber(langCode: string, number: number) {
   return formatter.format(number);
 }
 
-export function parseNumber(langCode: string, number: number) {
+export function parseNumber(langCode: string, number: string) {
   const parser = new NumberParser(langCode);
   return parser.parse(number);
 }
