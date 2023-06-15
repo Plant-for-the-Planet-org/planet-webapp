@@ -292,7 +292,6 @@ function ProjectCertificates({
                       label={t('manageProjects:issueDate')}
                       renderInput={(props) => <MaterialTextField {...props} />}
                       disableFuture
-                      // clearable
                       maxDate={new Date()}
                       minDate={tenYearsAgo}
                       DialogProps={{
