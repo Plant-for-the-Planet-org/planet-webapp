@@ -1,5 +1,5 @@
 // polyfill for Object.values
-const objectToValuesPolyfill = (object) => {
+const objectToValuesPolyfill = (object: Record<string, unknown>) => {
   return Object.keys(object).map((key) => object[key]);
 };
 Object.values = Object.values || objectToValuesPolyfill;
