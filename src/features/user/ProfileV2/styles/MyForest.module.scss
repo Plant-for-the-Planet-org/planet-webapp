@@ -7,69 +7,61 @@
     padding-bottom: 10px;
 }
 
-.plantedTreesRestoredContainer {
-    display: flex;
-    gap: 1px;
-    cursor: pointer;
-}
+
 
 .plantedTreesContainer {
     display: flex;
-    position: relative;
+    flex-direction: column;
     background-color: #219653;
     border-radius: 12px;
-    width: 183px;
     height: 104px;
-    > .svgContainer {
-        position: absolute;
-        top: 24px;
-        left: 22px
-    }
-    > .plantedTreesLabel {
-        position: absolute;
-        top: 20px;
-        left: 45px;
-        font-size: 16px;
+    cursor: pointer;
+
+    > .plantedTreesLabelContainer {
+        display: flex;
+        gap: 7px;
+        padding-left: 22px;
+        padding-top: 20px;
+        padding-right: 22px;
         font-weight: bold;
-        color: #FFFFFF;
+        > .plantedTreesLabel {
+            font-size: 16px;
+            color: #FFFFFF;
+        }
     }
     > .countTrees {
-        position: absolute;
-        top: 44px;
-        left: 20px;
-        font-weight: bold;
+        font-weight: 700;
         font-size: 36px;
         color: #FFFFFF;
+        padding-left: 20px;
+        padding-right: 20px;
     }
 }
 
 .plantedTreesContainerX {
     display: flex;
-    position: relative;
+    flex-direction: column;
     background-color: #FFFFFF99;
     border-radius: 12px;
-    width: 183px;
     height: 104px;
-    > .svgContainer {
-        position: absolute;
-        top: 24px;
-        left: 22px
-    }
-    > .plantedTreesLabel {
-        position: absolute;
-        top: 20px;
-        left: 45px;
-        font-size: 16px;
+    > .plantedTreesLabelContainer {
+        display: flex;
+        gap: 7px;
+        padding-left: 22px;
+        padding-top: 20px;
+        padding-right: 22px;
         font-weight: bold;
-        color: #333333;
+        > .plantedTreesLabel {
+            font-size: 16px;
+            color: #333333;
+        }
     }
     > .countTrees {
-        position: absolute;
-        top: 44px;
-        left: 20px;
-        font-weight: bold;
+        font-weight: 700;
         font-size: 36px;
         color: #219653;
+        padding-left: 20px;
+        padding-right: 20px;
     }
 }
 
@@ -92,37 +84,40 @@
 
 .conservedAreaContainer {
     position: relative;
-    width: 189px;
-    height: 104px;
     background-color: #FFFFFF99 ;
     border-radius: 12px;
     cursor: pointer;
     > .labelContainer {
         display: flex;
-        > .conservedSvg {
-            position: absolute;
-            top: 22px;
-            left: 24px
-        } 
+        padding-left: 24px;
+        padding-top: 20px;
         > .conservedLabel {
-            position: absolute;
-            top:  20px;
-            left: 45px;
+            margin-left: 9px;
             font-weight: bold;
             font-size: 16px;
         }
     }
   > .conservedAreaValue {
     display: flex;
-    gap: 24px;
-    > .svgContainer {
-        position: absolute;
-        left: 136px;
-        top: 64px
+    padding-left: 20px;
+    padding-right: 24px;
+    align-items: center;
+    justify-content: space-between;
+    >.value {
+        font-size: 36px;
+        font-weight: 700;
+        color: #48AADD;
+    }
+    >.unit {
+        color:#48AADD;
+        font-size: 30px;
+        font-weight: 400;
+        margin-right: 30px;
+        margin-top: 7px;
+        margin-left: 7px;
     }
   }
 }
-
 .donationDetailContainer {
     display: flex;
     gap: 12px;

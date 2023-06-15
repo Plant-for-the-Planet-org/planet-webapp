@@ -35,17 +35,15 @@ export const PlantedTreesAndRestorationInfo = ({
   };
   return (
     <div
-      className={myForestStyles.plantedTreesRestoredContainer}
+      className={`${
+        isTreePlantedButtonActive
+          ? myForestStyles.plantedTreesContainer
+          : myForestStyles.plantedTreesContainerX
+      }`}
       onClick={showTreesOnMap}
     >
-      <div
-        className={`${
-          isTreePlantedButtonActive
-            ? myForestStyles.plantedTreesContainer
-            : myForestStyles.plantedTreesContainerX
-        }`}
-      >
-        <div className={myForestStyles.svgContainer}>
+      <div className={myForestStyles.plantedTreesLabelContainer}>
+        <div>
           {isTreePlantedButtonActive ? (
             <PlantedTreesSvg />
           ) : (
@@ -55,15 +53,11 @@ export const PlantedTreesAndRestorationInfo = ({
         <div className={myForestStyles.plantedTreesLabel}>
           {t('donate:plantedTrees')}
         </div>
-
-        <div className={myForestStyles.countTrees}>{`${plantedTrees}`}</div>
       </div>
-      {/* {for future use} */}
-      {/* <div className={myForestStyles.restoredAreaContainer}>
-        <div className={myForestStyles.restoredAreaLabel}>
-          {t('donate:restored')}
-        </div>
-      </div> */}
+
+      <div className={myForestStyles.countTrees}>
+        <div>{`500`}</div>
+      </div>
     </div>
   );
 };
@@ -96,6 +90,10 @@ export const ConservedAreaInfo = ({
         </div>
       </div>
       <div className={myForestStyles.conservedAreaValue}>
+        <div style={{ fontSize: '36px', fontWeight: '700', color: '#48AADD' }}>
+          395.4
+        </div>
+        <div className={myForestStyles.unit}>{'m²'}</div>
         <div className={myForestStyles.svgContainer}>
           <ArrowSvg />
         </div>
@@ -115,7 +113,6 @@ export const OtherDonationInfo = ({ projects, countries, donations }) => {
           </div>
           <div className={myForestStyles.label}>{t('maps:projects')}</div>
         </div>
-        {console.log('mc', projects)}
         <div className={myForestStyles.value}>{`${projects}`}</div>
       </div>
       <div className={myForestStyles.InfoContainer}>
@@ -190,7 +187,7 @@ export const DonationList = ({
                 </div>
                 <div
                   className={myForestStyles.donate}
-                  // onClick={handleDonate(project.plantProject.guid)}
+                  onClick={() => handleDonate(project.plantProject.guid)}
                 >
                   {'Donate Again'}
                 </div>

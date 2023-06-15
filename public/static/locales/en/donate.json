@@ -115,5 +115,6 @@
   "perM2": "per m²",
   "plantedTrees": "Planted Trees",
   "restored": "Restored",
-  "donateAgain": "Donate Again"
+  "donateAgain": "Donate Again",
+  "conservDonate": "{{area}} m²"
 }
