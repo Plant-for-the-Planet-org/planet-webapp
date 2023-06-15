@@ -61,7 +61,7 @@
     "@trpc/next": "^10.25.0",
     "@trpc/react-query": "^10.25.0",
     "@trpc/server": "^10.25.0",
-    "@planet-sdk/common": "^0.1.12",
+    "@planet-sdk/common": "^0.1.15",
     "@sentry/browser": "^6.15.0",
     "@sentry/integrations": "^6.19.2",
     "@sentry/node": "^6.19.2",
