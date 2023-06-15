@@ -13,7 +13,7 @@ export async function getAccountInfo(
   token: string | null,
   impersonationData?: ImpersonationData
 ): Promise<any> {
-  const header: any = {
+  const header = {
     'tenant-key': `${TENANT_ID}`,
     'X-SESSION-ID': await getsessionId(),
     Authorization: `Bearer ${token}`,
@@ -42,7 +42,7 @@ export function getRequest<T>(
   version?: string
 ) {
   const lang = localStorage.getItem('language') || 'en';
-  const query: any = { ...queryParams, locale: lang };
+  const query = { ...queryParams, locale: lang };
   const queryString = getQueryString(query);
   const queryStringSuffix = queryString ? '?' + queryString : '';
   const fullUrl = isAbsoluteUrl(url)
@@ -84,12 +84,12 @@ export function getAuthenticatedRequest<T>(
   url: string,
   token: string | null,
   logoutUser: (value?: string | undefined) => void,
-  header: any = null,
+  header: Record<string, string> | null = null,
   queryParams?: { [key: string]: string },
   version?: string
 ) {
   const lang = localStorage.getItem('language') || 'en';
-  const query: any = { ...queryParams };
+  const query = { ...queryParams };
   const queryString = getQueryString(query);
   const queryStringSuffix = queryString ? '?' + queryString : '';
 
@@ -139,7 +139,7 @@ export function postAuthenticatedRequest<T>(
   data: any,
   token: string | null,
   logoutUser: (value?: string | undefined) => void,
-  headers?: any
+  headers?: Record<string, string>
 ) {
   return new Promise<T>((resolve, reject) => {
     (async () => {
