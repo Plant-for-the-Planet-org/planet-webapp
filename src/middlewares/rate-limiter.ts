@@ -1,16 +1,18 @@
+import { Request } from 'express';
 import rateLimit from 'express-rate-limit';
 import slowDown from 'express-slow-down';
 
-const getIP = (request) =>
-  request.ip ||
-  request.headers['x-forwarded-for'] ||
-  request.headers['x-real-ip'] ||
-  request.connection.remoteAddress;
+const getIP = (request: Request) =>
+  (request.ip ||
+    request.headers['x-forwarded-for'] ||
+    request.headers['x-real-ip'] ||
+    request.connection.remoteAddress) as string;
 
 export const rateLimiter = rateLimit({
   keyGenerator: getIP,
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 200, // limit each IP to 200 requests per windowMs
+  message: '{"error":"Too many requests, please try again later."}',
 });
 
 export const speedLimiter = slowDown({

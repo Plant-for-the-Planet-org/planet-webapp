@@ -7,11 +7,10 @@ import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorH
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
 import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
 import {
-  InputRedeemCode,
+  RedeemFailed,
   SuccessfullyRedeemed,
-  RedeemCodeFailed,
-} from '../../../src/features/common/RedeemMicro/RedeemCode';
-import { ClaimCode1 } from '../../claim/[type]/[code]';
+  EnterRedeemCode,
+} from '../../../src/features/common/RedeemCode';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
@@ -21,25 +20,14 @@ const ReedemCode: FC = () => {
   const { user, contextLoaded, token, logoutUser } = useUserProps();
   const { setErrors, errors } = useContext(ErrorHandlingContext);
 
-  const [code, setCode] = useState<string | string[] | null>('');
-  const [inputCode, setInputCode] = useState<ClaimCode1>('');
+  const [code, setCode] = useState<string | undefined>(undefined);
+  const [inputCode, setInputCode] = useState<string | undefined>(undefined);
   const [redeemedCodeData, setRedeemedCodeData] = useState<
     RedeemedCodeData | undefined
   >(undefined);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const router = useRouter();
-
-  const closeRedeem = () => {
-    if (typeof window !== 'undefined') {
-      router.push('/profile');
-    }
-  };
-
-  const handleCode = () => {
-    router.push(`/profile/redeem/${code}?inputCode=${true}`);
-    setRedeemedCodeData(undefined);
-    setInputCode('');
-  };
 
   useEffect(() => {
     if (contextLoaded) {
@@ -54,19 +42,22 @@ const ReedemCode: FC = () => {
   }, [contextLoaded, user, router]);
 
   useEffect(() => {
-    if (router && router.query.code) {
+    if (router && router.query.code && typeof router.query.code === 'string') {
       setCode(router.query.code);
     }
   }, [router]);
 
-  async function redeemingCode(data: string | string[]): Promise<void> {
+  async function redeemingCode(
+    data: string | string[] | undefined
+  ): Promise<void> {
+    setIsLoading(true);
     const submitData = {
       code: data,
     };
 
     if (contextLoaded && user) {
       try {
-        const res = await postAuthenticatedRequest(
+        const res = await postAuthenticatedRequest<RedeemedCodeData>(
           `/app/redeem`,
           submitData,
           token,
@@ -97,52 +88,70 @@ const ReedemCode: FC = () => {
         }
         setErrors(_serializedErrors);
         setRedeemedCodeData(undefined);
+        setIsLoading(false);
       }
     }
   }
 
   useEffect(() => {
-    if (contextLoaded && user && router && router.query.code) {
+    if (contextLoaded && user && router.query.code && !inputCode) {
       redeemingCode(router.query.code);
     }
   }, [user, contextLoaded, router.query.code]);
 
-  const changeRouteCode = () => {
-    router.push(`/profile/redeem/${inputCode}?inputCode=${false}`);
+  const redeemCode = () => {
+    setErrors(null);
+    router.push(`/profile/redeem/${inputCode}`);
+    redeemingCode(inputCode);
+  };
 
-    const codeFromUrl = router.query.code;
-    redeemingCode(codeFromUrl);
+  const redeemAnotherCode = () => {
+    router.push(`/profile/redeem/${code}`);
+    setErrors(null);
+    setInputCode('');
+    setIsLoading(false);
+    setRedeemedCodeData(undefined);
+  };
+
+  const closeRedeem = () => {
+    if (typeof window !== 'undefined') {
+      router.push('/profile');
+    }
   };
 
   return ready && user ? (
-    router.query.inputCode === 'true' ? (
+    !errors && !redeemedCodeData ? (
       // to input  redeem code
       <LandingSection>
-        <InputRedeemCode
+        <EnterRedeemCode
+          isLoading={isLoading}
           setInputCode={setInputCode}
           inputCode={inputCode}
-          changeRouteCode={changeRouteCode}
+          redeemCode={redeemCode}
           closeRedeem={closeRedeem}
         />
       </LandingSection>
     ) : (
       //after successful redeem
       <LandingSection>
-        {redeemedCodeData ? (
+        {redeemedCodeData && !errors && (
           <SuccessfullyRedeemed
             redeemedCodeData={redeemedCodeData}
-            redeemAnotherCode={handleCode}
+            redeemAnotherCode={redeemAnotherCode}
             closeRedeem={closeRedeem}
           />
-        ) : (
+        )}{' '}
+        {
+          errors && (
+            <RedeemFailed
+              errorMessages={errors}
+              inputCode={code}
+              redeemAnotherCode={redeemAnotherCode}
+              closeRedeem={closeRedeem}
+            />
+          )
           // if redeem code is invalid and  redeem process failed
-          <RedeemCodeFailed
-            errorMessages={errors}
-            code={code}
-            redeemAnotherCode={handleCode}
-            closeRedeem={closeRedeem}
-          />
-        )}
+        }
       </LandingSection>
     )
   ) : (
