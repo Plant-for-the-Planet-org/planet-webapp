@@ -1,29 +1,29 @@
 module.exports = {
   stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
-  addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
-    'storybook-addon-next',
-  ],
-  framework: '@storybook/react',
-  core: {
-    builder: 'webpack5',
+  addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-interactions'],
+  framework: {
+    name: '@storybook/nextjs',
+    options: {}
   },
-  webpackFinal: async (config, { configType }) => {
+  webpackFinal: async (config, {
+    configType
+  }) => {
     config.resolve = {
       ...config.resolve,
       fallback: {
         ...(config.resolve || {}).fallback,
-        fs: false,
-      },
+        fs: false
+      }
     };
 
     // Return the altered config
     return config;
   },
   features: {
-    emotionAlias: false,
+    emotionAlias: false
   },
   staticDirs: ['../public'],
+  docs: {
+    autodocs: true
+  }
 };
