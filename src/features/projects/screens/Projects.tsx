@@ -11,7 +11,6 @@ import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
-import { ProjectMapInfo } from '@planet-sdk/common';
 
 interface Props {
   projects: any;
@@ -42,9 +41,6 @@ function ProjectsList({
   const [searchMode, setSearchMode] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState('');
   const [trottledSearchValue, setTrottledSearchValue] = React.useState('');
-  const [searchProjectResults, setSearchProjectResults] = React.useState<
-    ProjectMapInfo[] | undefined
-  >();
 
   useDebouncedEffect(
     () => {
@@ -70,7 +66,7 @@ function ProjectsList({
     }
   }
 
-  function getSearchProjects(projects: Array<ProjectMapInfo>, keyword: string) {
+  function getSearchProjects(projects: Array<any>, keyword: string) {
     let resultProjects = [];
     if (keyword !== '') {
       const keywords = keyword.split(/[\s\-.,+]+/);
@@ -129,13 +125,10 @@ function ProjectsList({
     [projects]
   );
 
-  React.useEffect(() => {
-    const _searchProjectResults = getSearchProjects(
-      projects,
-      trottledSearchValue
-    );
-    setSearchProjectResults(_searchProjectResults);
-  }, [trottledSearchValue, projects]);
+  const searchProjectResults = React.useMemo(
+    () => getSearchProjects(projects, trottledSearchValue),
+    [trottledSearchValue, projects]
+  );
 
   const topProjects = React.useMemo(
     () => getProjects(projects, 'top'),
