@@ -129,10 +129,8 @@ const EditBankAccount = (): ReactElement | null => {
   return accountToEdit !== null && payoutMinAmounts && ready ? (
     <CenteredContainer>
       <FormHeader>
-        <Link href="/profile/payouts" passHref>
-          <a>
-            <BackArrow />
-          </a>
+        <Link href="/profile/payouts">
+          <BackArrow />
         </Link>
         <h2 className="formTitle">{t('editBankAccountTitle')}</h2>
       </FormHeader>
