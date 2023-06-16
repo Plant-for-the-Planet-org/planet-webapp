@@ -30,7 +30,11 @@ const PayoutScheduleForm = (): ReactElement | null => {
   const [isSaved, setIsSaved] = useState(false);
   const { token, user, setUser, logoutUser } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const { handleSubmit, errors, control } = useForm<FormData>({
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormData>({
     mode: 'onBlur',
   });
 

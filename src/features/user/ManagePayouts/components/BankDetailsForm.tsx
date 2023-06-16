@@ -1,15 +1,16 @@
 import { ChangeEvent, ReactElement, useCallback } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { Button, TextField, MenuItem, CircularProgress } from '@mui/material';
 import StyledForm from '../../../common/Layout/StyledForm';
 import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { useTranslation } from 'next-i18next';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
+import { BankAccount } from '../../../common/types/payouts';
 
 export type FormData = {
   currency: string;
-  payoutMinAmount?: number;
+  payoutMinAmount?: string;
   bankName: string;
   bankAddress: string;
   holderName: string;
@@ -23,16 +24,27 @@ export type FormData = {
 
 interface Props {
   payoutMinAmounts: { [key: string]: number } | null;
-  account?: Payouts.BankAccount;
+  account?: BankAccount;
   handleSave: (data: FormData) => Promise<void>;
   isProcessing: boolean;
 }
 
-const extractFormValues = (account: Payouts.BankAccount): FormData => {
-  const { currency } = account;
-  const { ['id']: _, ...accountWithoutId } = account;
-  accountWithoutId.currency = currency || PayoutCurrency.DEFAULT;
-  return accountWithoutId as FormData;
+const extractFormValues = (account?: BankAccount): FormData => {
+  const formValues = {
+    currency: account?.currency || PayoutCurrency.DEFAULT,
+    payoutMinAmount: account?.payoutMinAmount?.toString() || '',
+    bankName: account?.bankName || '',
+    bankAddress: account?.bankAddress || '',
+    holderName: account?.holderName || '',
+    holderAddress: account?.holderAddress || '',
+    accountNumber: account?.accountNumber || '',
+    routingNumber: account?.routingNumber || '',
+    bic: account?.bic || '',
+    branchCode: account?.branchCode || '',
+    remarks: account?.remarks || '',
+  };
+
+  return formValues;
 };
 
 const BankDetailsForm = ({
@@ -42,22 +54,29 @@ const BankDetailsForm = ({
   isProcessing,
 }: Props): ReactElement | null => {
   const { t, ready } = useTranslation('managePayouts');
-  const { register, handleSubmit, errors, control, watch } = useForm<FormData>({
+  const {
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm<FormData>({
     mode: 'onBlur',
-    defaultValues: account ? extractFormValues(account) : {},
+    defaultValues: extractFormValues(account),
   });
-  const currency = watch('currency', PayoutCurrency.DEFAULT);
+  const currency = watch('currency');
 
-  const handlePayoutChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  const handlePayoutChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ): void => {
     e.target.value = e.target.value.replace(/[^0-9]/g, '');
   };
 
   const validateMinPayout = useCallback(
-    (value: string): boolean | string | undefined => {
+    (value?: string): boolean | string | undefined => {
       if (payoutMinAmounts) {
         const minAmount = payoutMinAmounts[currency];
         return (
-          parseInt(value) >= minAmount ||
+          (value !== undefined && parseInt(value) >= minAmount) ||
           t('errors.payoutMinAmountTooLow', { currency, minAmount })
         );
       }
@@ -101,115 +120,196 @@ const BankDetailsForm = ({
             {renderCurrencyOptions()}
           </ReactHookFormSelect>
           {currency !== PayoutCurrency.DEFAULT && payoutMinAmounts !== null && (
-            <TextField
-              label={t('labels.payoutMinAmount') + '*'}
+            <Controller
               name="payoutMinAmount"
-              placeholder={t('placeholders.payoutMinAmount', {
-                currency,
-                minAmount: payoutMinAmounts[currency],
-              })}
-              onChange={handlePayoutChange}
-              inputRef={register({
-                valueAsNumber: true,
+              control={control}
+              rules={{
                 required: t('errors.payoutMinAmountRequired'),
                 validate: {
                   isLow: validateMinPayout,
                 },
-              })}
-              error={errors.payoutMinAmount !== undefined}
-              helperText={
-                errors.payoutMinAmount && errors.payoutMinAmount.message
-              }
-            ></TextField>
+              }}
+              render={({
+                field: { onChange: handleChange, value, onBlur },
+              }) => (
+                <TextField
+                  label={t('labels.payoutMinAmount') + '*'}
+                  placeholder={t('placeholders.payoutMinAmount', {
+                    currency,
+                    minAmount: payoutMinAmounts[currency],
+                  })}
+                  onChange={(event) => {
+                    handlePayoutChange(event);
+                    handleChange(event);
+                  }}
+                  value={value}
+                  onBlur={onBlur}
+                  error={errors.payoutMinAmount !== undefined}
+                  helperText={
+                    errors.payoutMinAmount !== undefined &&
+                    errors.payoutMinAmount.message
+                  }
+                />
+              )}
+            />
           )}
-          <TextField
-            label={t('labels.bankName') + '*'}
+          <Controller
             name="bankName"
-            inputRef={register({
-              required: t('errors.bankNameRequired'),
-            })}
-            placeholder={t('placeholders.bankName')}
-            error={errors.bankName !== undefined}
-            helperText={errors.bankName && errors.bankName.message}
-          ></TextField>
-          <TextField
-            multiline
-            minRows={2}
-            maxRows={4}
-            label={t('labels.bankAddress') + '*'}
+            control={control}
+            rules={{ required: t('errors.bankNameRequired') }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextField
+                label={t('labels.bankName') + '*'}
+                placeholder={t('placeholders.bankName')}
+                onChange={onChange}
+                value={value}
+                onBlur={onBlur}
+                error={errors.bankName !== undefined}
+                helperText={
+                  errors.bankName !== undefined && errors.bankName.message
+                }
+              />
+            )}
+          />
+          <Controller
             name="bankAddress"
-            placeholder={t('placeholders.bankAddress')}
-            inputRef={register({
-              required: t('errors.bankAddressRequired'),
-            })}
-            error={errors.bankAddress !== undefined}
-            helperText={errors.bankAddress && errors.bankAddress.message}
-          ></TextField>
-          <TextField
-            label={t('labels.holderName') + '*'}
+            control={control}
+            rules={{ required: t('errors.bankAddressRequired') }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextField
+                multiline
+                minRows={2}
+                maxRows={4}
+                label={t('labels.bankAddress') + '*'}
+                placeholder={t('placeholders.bankAddress')}
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
+                error={errors.bankAddress !== undefined}
+                helperText={
+                  errors.bankAddress !== undefined && errors.bankAddress.message
+                }
+              />
+            )}
+          />
+          <Controller
             name="holderName"
-            placeholder={t('placeholders.holderName')}
-            inputRef={register({
-              required: t('errors.holderNameRequired'),
-            })}
-            error={errors.holderName !== undefined}
-            helperText={errors.holderName && errors.holderName.message}
-          ></TextField>
-          <TextField
-            multiline
-            minRows={2}
-            maxRows={4}
-            label={t('labels.holderAddress') + '*'}
+            control={control}
+            rules={{ required: t('errors.holderNameRequired') }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextField
+                label={t('labels.holderName') + '*'}
+                placeholder={t('placeholders.holderName')}
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
+                error={errors.holderName !== undefined}
+                helperText={
+                  errors.holderName !== undefined && errors.holderName.message
+                }
+              />
+            )}
+          />
+          <Controller
             name="holderAddress"
-            placeholder={t('placeholders.holderAddress')}
-            inputRef={register({
-              required: t('errors.holderAddressRequired'),
-            })}
-            error={errors.holderAddress !== undefined}
-            helperText={errors.holderAddress && errors.holderAddress.message}
-          ></TextField>
+            control={control}
+            rules={{ required: t('errors.holderAddressRequired') }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextField
+                multiline
+                minRows={2}
+                maxRows={4}
+                label={t('labels.holderAddress') + '*'}
+                placeholder={t('placeholders.holderAddress')}
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
+                error={errors.holderAddress !== undefined}
+                helperText={
+                  errors.holderAddress !== undefined &&
+                  errors.holderAddress.message
+                }
+              />
+            )}
+          />
           <InlineFormDisplayGroup>
-            <TextField
-              label={t('labels.accountNumber') + '*'}
+            <Controller
               name="accountNumber"
-              inputRef={register({
-                required: t('errors.accountNumberRequired'),
-              })}
-              error={errors.accountNumber !== undefined}
-              helperText={errors.accountNumber && errors.accountNumber.message}
-            ></TextField>
-            <TextField
-              label={t('labels.routingNumber')}
+              control={control}
+              rules={{ required: t('errors.accountNumberRequired') }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextField
+                  label={t('labels.accountNumber') + '*'}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  error={errors.accountNumber !== undefined}
+                  helperText={
+                    errors.accountNumber !== undefined &&
+                    errors.accountNumber.message
+                  }
+                />
+              )}
+            />
+            <Controller
               name="routingNumber"
-              inputRef={register}
-            ></TextField>
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextField
+                  label={t('labels.routingNumber')}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                />
+              )}
+            />
           </InlineFormDisplayGroup>
           <InlineFormDisplayGroup>
-            <TextField
-              label={t('labels.bic') + '*'}
+            <Controller
               name="bic"
-              inputRef={register({
-                required: t('errors.bicRequired'),
-              })}
-              error={errors.bic !== undefined}
-              helperText={errors.bic && errors.bic.message}
-            ></TextField>
-            <TextField
-              label={t('labels.branchCode')}
+              control={control}
+              rules={{ required: t('errors.bicRequired') }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextField
+                  label={t('labels.bic') + '*'}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  error={errors.bic !== undefined}
+                  helperText={errors.bic !== undefined && errors.bic.message}
+                />
+              )}
+            />
+            <Controller
               name="branchCode"
-              inputRef={register}
-            ></TextField>
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextField
+                  label={t('labels.branchCode')}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                />
+              )}
+            />
           </InlineFormDisplayGroup>
-          <TextField
-            multiline
-            minRows={2}
-            maxRows={4}
-            label={t('labels.remarks')}
+          <Controller
             name="remarks"
-            placeholder={t('placeholders.remarks')}
-            helperText={t('helperText.remarks')}
-            inputRef={register}
-          ></TextField>
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextField
+                multiline
+                minRows={2}
+                maxRows={4}
+                label={t('labels.remarks')}
+                placeholder={t('placeholders.remarks')}
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
+                helperText={t('helperText.remarks')}
+              />
+            )}
+          />
         </div>
         <Button
           variant="contained"

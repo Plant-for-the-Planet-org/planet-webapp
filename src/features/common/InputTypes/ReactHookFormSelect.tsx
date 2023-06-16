@@ -1,54 +1,64 @@
 import { ReactElement, ReactNode } from 'react';
-import { Controller, Control, RegisterOptions } from 'react-hook-form';
-import { FormControl, TextField } from '@mui/material';
+import {
+  Controller,
+  FieldValues,
+  Control,
+  RegisterOptions,
+  FieldPath,
+} from 'react-hook-form';
+import { TextField } from '@mui/material';
 
-interface Props {
-  name: string;
+interface Props<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>
+> {
+  name: TName;
   label: string;
   size?: 'small' | 'medium';
   error?: boolean;
   helperText?: string;
-  control: Control;
+  defaultValue?: string;
+  control: Control<TFieldValues>;
   rules?: Exclude<
     RegisterOptions,
     'valueAsNumber' | 'valueAsDate' | 'setValueAs'
   >;
-  defaultValue?: unknown;
   children: ReactNode;
 }
 
-const ReactHookFormSelect = ({
+const ReactHookFormSelect = <
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>
+>({
   name,
   label,
   size,
   error,
   helperText,
+  defaultValue,
   control,
   rules,
-  defaultValue,
   children,
-  ...props
-}: Props): ReactElement => {
+}: Props<TFieldValues, TName>): ReactElement => {
   return (
-    <FormControl {...props}>
-      <Controller
-        as={
-          <TextField
-            select
-            label={label}
-            error={error}
-            helperText={helperText}
-            size={size}
-          >
-            {children}
-          </TextField>
-        }
-        name={name}
-        control={control}
-        defaultValue={defaultValue}
-        rules={rules}
-      />
-    </FormControl>
+    <Controller
+      name={name}
+      control={control}
+      rules={rules}
+      render={({ field: { onChange, value } }) => (
+        <TextField
+          select
+          label={label}
+          error={error}
+          helperText={helperText}
+          value={value || defaultValue}
+          size={size}
+          onChange={onChange}
+        >
+          {children}
+        </TextField>
+      )}
+    />
   );
 };
 export default ReactHookFormSelect;

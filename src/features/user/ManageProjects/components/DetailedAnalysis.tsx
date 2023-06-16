@@ -80,6 +80,7 @@ export default function DetailedAnalysis({
   const { t, ready } = useTranslation(['manageProjects', 'common']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
+  // TODO - simplify SiteOwner logic
   const [siteOwners, setSiteOwners] = React.useState([
     {
       id: 1,
@@ -120,6 +121,7 @@ export default function DetailedAnalysis({
   ]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { theme } = React.useContext(ThemeContext);
+  // TODO - simplify Planting Season logic
   const [plantingSeasons, setPlantingSeasons] = React.useState([
     { id: 1, title: ready ? t('common:january') : '', isSet: false },
     { id: 2, title: ready ? t('common:february') : '', isSet: false },
@@ -137,6 +139,7 @@ export default function DetailedAnalysis({
 
   const [minDensity, setMinDensity] = React.useState(0);
 
+  // TODO - remove code as not being used
   const useStylesAutoComplete = makeStyles({
     root: {
       color:
@@ -185,10 +188,11 @@ export default function DetailedAnalysis({
     }
   });
 
+  // TODO - set up better types for Form Data
   const defaultDetailedAnalysis =
     purpose === 'trees'
       ? {
-          yearAbandoned: '',
+          yearAbandoned: new Date(),
           firstTreePlanted: '',
           plantingDensity: '',
           maxPlantingDensity: '',
@@ -204,25 +208,27 @@ export default function DetailedAnalysis({
           motivation: '',
         }
       : {
+          actions: '',
+          benefits: '',
           employeesCount: '',
           acquisitionYear: '',
-          protectionStartedYear: '',
+          startingProtectionYear: '',
           areaProtected: '',
-          employeeCount: '',
-          timePeriod: '',
-          forestProtectionType: '',
-          conservationImpacts: '',
-          siteOwnerType: '',
+          siteOwnerType: '', //TODO - Simplify site owner logic
           siteOwnerName: '',
           mainChallenge: '',
           longTermPlan: '',
-          endangeredSpecies: '',
-          addAnotherSpecies: '',
           motivation: '',
         };
 
-  const { register, handleSubmit, errors, control, reset } = useForm({
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm({
     mode: 'onBlur',
+    // TODO - set up better form types to resolve this error
     defaultValues: defaultDetailedAnalysis,
   });
 
@@ -372,7 +378,6 @@ export default function DetailedAnalysis({
               siteOwnerName: projectDetails?.metadata?.siteOwnerName,
               landOwnershipType: projectDetails?.metadata?.landOwnershipType,
               longTermPlan: projectDetails?.metadata?.longTermPlan,
-              siteOwnerName: projectDetails?.metadata?.siteOwnerName,
               // ownershipType: projectDetails?.metadata?.ownershipType,
               benefits: projectDetails?.metadata?.benefits,
               actions: projectDetails?.metadata?.actions,
@@ -492,23 +497,24 @@ export default function DetailedAnalysis({
               <div className={`${styles.formFieldHalf} ${styles.formFieldFix}`}>
                 <LocalizationProvider
                   dateAdapter={AdapterDateFns}
-                  locale={
+                  adapterLocale={
                     localeMapForDate[userLang]
                       ? localeMapForDate[userLang]
                       : localeMapForDate['en']
                   }
                 >
                   <Controller
-                    render={(properties) => (
+                    name="yearAbandoned"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
                       <MuiDatePicker
                         views={['year']}
-                        value={properties.value}
-                        onChange={properties.onChange}
+                        value={value}
+                        onChange={onChange}
                         label={t('manageProjects:yearOfAbandonment')}
                         renderInput={(props) => (
                           <MaterialTextField {...props} />
                         )}
-                        autoOk
                         disableFuture
                         minDate={new Date(new Date().setFullYear(1950))}
                         maxDate={new Date()}
@@ -517,9 +523,6 @@ export default function DetailedAnalysis({
                         }}
                       />
                     )}
-                    name="yearAbandoned"
-                    control={control}
-                    defaultValue={new Date()}
                   />
                 </LocalizationProvider>
                 <div className={styles.infoIconDiv}>
@@ -535,18 +538,20 @@ export default function DetailedAnalysis({
               <div className={styles.formFieldHalf}>
                 <LocalizationProvider
                   dateAdapter={AdapterDateFns}
-                  locale={
+                  adapterLocale={
                     localeMapForDate[userLang]
                       ? localeMapForDate[userLang]
                       : localeMapForDate['en']
                   }
                 >
                   <Controller
-                    render={(properties) => (
+                    name="firstTreePlanted"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
                       <MuiDatePicker
                         label={t('manageProjects:firstTreePlanted')}
-                        value={properties.value}
-                        onChange={properties.onChange}
+                        value={value}
+                        onChange={onChange}
                         renderInput={(props) => (
                           <MaterialTextField {...props} />
                         )}
@@ -559,8 +564,6 @@ export default function DetailedAnalysis({
                         }}
                       />
                     )}
-                    name="firstTreePlanted"
-                    control={control}
                   />
                 </LocalizationProvider>
               </div>
@@ -568,21 +571,26 @@ export default function DetailedAnalysis({
           ) : (
             <div className={styles.formField}>
               <div className={`${styles.formFieldHalf} ${styles.formFieldFix}`}>
-                <MaterialTextField
-                  inputRef={register({
-                    required: {
-                      value: true,
-                      message: t('manageProjects:validation', {
-                        fieldName: t('manageProjects:areaProtected'),
-                      }),
-                    },
-                    validate: (value) => parseInt(value, 10) > 0,
-                  })}
-                  label={t('manageProjects:areaProtected')}
-                  variant="outlined"
+                <Controller
                   name="areaProtected"
-                  type="number"
-                  onBlur={(e) => e.preventDefault()}
+                  control={control}
+                  rules={{
+                    required: t('manageProjects:validation', {
+                      fieldName: t('manageProjects:areaProtected'),
+                    }),
+                    validate: (value) => parseInt(value, 10) > 0,
+                  }}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <MaterialTextField
+                      label={t('manageProjects:areaProtected')}
+                      variant="outlined"
+                      type="number"
+                      // onBlur={(e) => e.preventDefault()}
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                    />
+                  )}
                 />
                 {errors.areaProtected && (
                   <span className={styles.formErrors}>
@@ -602,26 +610,25 @@ export default function DetailedAnalysis({
               <div className={styles.formFieldHalf}>
                 <LocalizationProvider
                   dateAdapter={AdapterDateFns}
-                  locale={
+                  adapterLocale={
                     localeMapForDate[userLang]
                       ? localeMapForDate[userLang]
                       : localeMapForDate['en']
                   }
                 >
                   <Controller
-                    render={(properties) => (
+                    name="startingProtectionYear"
+                    control={control}
+                    rules={{
+                      required: t('manageProjects:validation', {
+                        fieldName: t('manageProjects:date'),
+                      }),
+                    }}
+                    render={({ field: { value, onChange } }) => (
                       <MuiDatePicker
-                        inputRef={register({
-                          required: {
-                            value: true,
-                            message: t('manageProjects:validation', {
-                              fieldName: t('manageProjects:date'),
-                            }),
-                          },
-                        })}
                         label={t('manageProjects:protectionStartedIN')}
-                        value={properties.value}
-                        onChange={properties.onChange}
+                        value={value}
+                        onChange={onChange}
                         renderInput={(props) => (
                           <MaterialTextField {...props} />
                         )}
@@ -634,14 +641,6 @@ export default function DetailedAnalysis({
                         }}
                       />
                     )}
-                    name="startingProtectionYear"
-                    control={control}
-                    rules={{
-                      required: t('manageProjects:validation', {
-                        fieldName: t('manageProjects:date'),
-                      }),
-                    }}
-                    // defaultValue=""
                   />
                 </LocalizationProvider>
                 {errors.startingProtectionYear && (
@@ -655,23 +654,29 @@ export default function DetailedAnalysis({
 
           <div className={styles.formField}>
             <div className={`${styles.formFieldHalf} ${styles.formFieldFix}`}>
-              <MaterialTextField
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: t('manageProjects:validation', {
-                      fieldName: t('manageProjects:employeeCount'),
-                    }),
-                  },
-                  validate: (value) => parseInt(value, 10) > 0,
-                })}
-                label={t('manageProjects:employeeCount')}
-                variant="outlined"
+              <Controller
                 name="employeesCount"
-                onInput={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9]./g, '');
+                control={control}
+                rules={{
+                  required: t('manageProjects:validation', {
+                    fieldName: t('manageProjects:employeeCount'),
+                  }),
+                  validate: (value) => parseInt(value, 10) > 0,
                 }}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <MaterialTextField
+                    label={t('manageProjects:employeeCount')}
+                    variant="outlined"
+                    onChange={(e) => {
+                      e.target.value = e.target.value.replace(/[^0-9]./g, '');
+                      onChange(e.target.value);
+                    }}
+                    value={value}
+                    onBlur={onBlur}
+                  />
+                )}
               />
+
               {errors.employeesCount && (
                 <span className={styles.formErrors}>
                   {errors.employeesCount.message}
@@ -690,24 +695,25 @@ export default function DetailedAnalysis({
             <div className={styles.formFieldHalf}>
               <LocalizationProvider
                 dateAdapter={AdapterDateFns}
-                locale={
+                adapterLocale={
                   localeMapForDate[userLang]
                     ? localeMapForDate[userLang]
                     : localeMapForDate['en']
                 }
               >
                 <Controller
-                  render={(properties) => (
+                  name="acquisitionYear"
+                  control={control}
+                  rules={{
+                    required: t('manageProjects:validation', {
+                      fieldName: t('manageProjects:acquisitionYear'),
+                    }),
+                  }}
+                  render={({ field: { onChange, value } }) => (
                     <MuiDatePicker
-                      inputRef={register({
-                        required: {
-                          value: true,
-                          message: t('manageProjects:employeeCountValidation'),
-                        },
-                      })}
                       label={t('manageProjects:acquisitionYear')}
-                      value={properties.value}
-                      onChange={properties.onChange}
+                      value={value}
+                      onChange={onChange}
                       renderInput={(props) => <MaterialTextField {...props} />}
                       disableFuture
                       minDate={new Date(new Date().setFullYear(1950))}
@@ -718,14 +724,6 @@ export default function DetailedAnalysis({
                       }}
                     />
                   )}
-                  name="acquisitionYear"
-                  control={control}
-                  rules={{
-                    required: t('manageProjects:validation', {
-                      fieldName: t('manageProjects:acquisitionYear'),
-                    }),
-                  }}
-                  // defaultValue=""
                 />
                 {errors.startingProtectionYear && (
                   <span className={styles.formErrors}>
@@ -787,28 +785,36 @@ export default function DetailedAnalysis({
                   data-test-id="plantingDensity"
                 >
                   {/* Integer - the planting density expressed in trees per ha */}
-                  <MaterialTextField
-                    label={t('manageProjects:plantingDensity')}
-                    variant="outlined"
+                  <Controller
                     name="plantingDensity"
-                    inputRef={register({
-                      required: {
-                        value: true,
-                        message: t('manageProjects:plantingDensityValidation'),
-                      },
+                    control={control}
+                    rules={{
+                      required: t('manageProjects:plantingDensityValidation'),
                       validate: (value) => parseInt(value, 10) > 1,
-                    })}
-                    onInput={(e) => {
-                      setMinDensity(e.target.value);
-                      e.target.value = e.target.value.replace(/[^0-9]/g, '');
                     }}
-                    InputProps={{
-                      endAdornment: (
-                        <p className={styles.inputEndAdornment}>
-                          {t('manageProjects:treePerHa')}
-                        </p>
-                      ),
-                    }}
+                    render={({ field: { onChange, value, onBlur } }) => (
+                      <MaterialTextField
+                        label={t('manageProjects:plantingDensity')}
+                        variant="outlined"
+                        InputProps={{
+                          endAdornment: (
+                            <p className={styles.inputEndAdornment}>
+                              {t('manageProjects:treePerHa')}
+                            </p>
+                          ),
+                        }}
+                        onChange={(e) => {
+                          setMinDensity(Number(e.target.value));
+                          e.target.value = e.target.value.replace(
+                            /[^0-9]./g,
+                            ''
+                          );
+                          onChange(e.target.value);
+                        }}
+                        value={value}
+                        onBlur={onBlur}
+                      />
+                    )}
                   />
                   {errors.plantingDensity && (
                     <span className={styles.formErrors}>
@@ -821,28 +827,37 @@ export default function DetailedAnalysis({
                   className={styles.formFieldHalf}
                   data-test-id="maxPlantingDensity"
                 >
-                  <MaterialTextField
-                    label={t('manageProjects:maxPlantingDensity')}
-                    variant="outlined"
+                  <Controller
                     name="maxPlantingDensity"
-                    inputRef={register({
+                    control={control}
+                    rules={{
                       min: {
                         value: minDensity,
                         message: t('manageProjects:errorForMaxPlantingDensity'),
                       },
-                      required: false,
-                    })}
-                    onInput={(e) => {
-                      e.target.value = e.target.value.replace(/[^0-9]/g, '');
                     }}
-                    InputProps={{
-                      endAdornment: (
-                        <p className={styles.inputEndAdornment}>
-                          {' '}
-                          {t('manageProjects:treePerHa')}
-                        </p>
-                      ),
-                    }}
+                    render={({ field: { onChange, value, onBlur } }) => (
+                      <MaterialTextField
+                        label={t('manageProjects:maxPlantingDensity')}
+                        variant="outlined"
+                        InputProps={{
+                          endAdornment: (
+                            <p className={styles.inputEndAdornment}>
+                              {t('manageProjects:treePerHa')}
+                            </p>
+                          ),
+                        }}
+                        onChange={(e) => {
+                          e.target.value = e.target.value.replace(
+                            /[^0-9]./g,
+                            ''
+                          );
+                          onChange(e.target.value);
+                        }}
+                        value={value}
+                        onBlur={onBlur}
+                      />
+                    )}
                   />
                   {errors.maxPlantingDensity && (
                     <span className={styles.formErrors}>
@@ -855,18 +870,20 @@ export default function DetailedAnalysis({
               <div className={styles.formFieldLarge} style={{ width: '100%' }}>
                 <LocalizationProvider
                   dateAdapter={AdapterDateFns}
-                  locale={
+                  adapterLocale={
                     localeMapForDate[userLang]
                       ? localeMapForDate[userLang]
                       : localeMapForDate['en']
                   }
                 >
                   <Controller
-                    render={(properties) => (
+                    name="degradationYear"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
                       <MuiDatePicker
                         views={['year']}
-                        value={properties.value}
-                        onChange={properties.onChange}
+                        value={value}
+                        onChange={onChange}
                         label={t('manageProjects:yearOfDegradation')}
                         renderInput={(props) => (
                           <MaterialTextField {...props} />
@@ -879,42 +896,55 @@ export default function DetailedAnalysis({
                         }}
                       />
                     )}
-                    name="degradationYear"
-                    control={control}
-                    defaultValue=""
                   />
                 </LocalizationProvider>
               </div>
             </div>
           ) : (
             <div className={`${styles.formFieldLarge} ${styles.formFieldFix}`}>
-              <MaterialTextField
-                inputRef={register({
+              <Controller
+                name="actions"
+                control={control}
+                rules={{
                   maxLength: {
                     value: 300,
                     message: t('manageProjects:max300Chars'),
                   },
-                })}
-                label={t('manageProjects:forestProtectionType')}
-                variant="outlined"
-                name="actions"
-                multiline
+                }}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <MaterialTextField
+                    label={t('manageProjects:forestProtectionType')}
+                    variant="outlined"
+                    multiline
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                  />
+                )}
               />
             </div>
           )}
           {purpose === 'trees' ? (
             <div className={`${styles.formFieldLarge} ${styles.formFieldFix}`}>
-              <MaterialTextField
-                label={t('manageProjects:causeOfDegradation')}
-                variant="outlined"
+              <Controller
                 name="degradationCause"
-                multiline
-                inputRef={register({
+                control={control}
+                rules={{
                   maxLength: {
                     value: 300,
                     message: t('manageProjects:max300Chars'),
                   },
-                })}
+                }}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <MaterialTextField
+                    label={t('manageProjects:causeOfDegradation')}
+                    variant="outlined"
+                    multiline
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                  />
+                )}
               />
               {errors.degradationCause && (
                 <span className={styles.formErrors}>
@@ -933,21 +963,29 @@ export default function DetailedAnalysis({
             </div>
           ) : (
             <div className={`${styles.formFieldLarge} ${styles.formFieldFix}`}>
-              <MaterialTextField
-                label={t('manageProjects:conservationImpacts')}
-                variant="outlined"
+              <Controller
                 name="benefits"
-                multiline
-                inputRef={register({
+                control={control}
+                rules={{
                   maxLength: {
                     value: 300,
                     message: t('manageProjects:max300Chars'),
                   },
-                })}
+                }}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <MaterialTextField
+                    label={t('manageProjects:conservationImpacts')}
+                    variant="outlined"
+                    multiline
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                  />
+                )}
               />
-              {errors.degradationCause && (
+              {errors.benefits && (
                 <span className={styles.formErrors}>
-                  {errors.degradationCause.message}
+                  {errors.benefits.message}
                 </span>
               )}
             </div>
@@ -956,17 +994,25 @@ export default function DetailedAnalysis({
           <div className={styles.formField}>
             <div className={`${styles.formFieldHalf} ${styles.formFieldFix}`}>
               {/* the main challenge the project is facing (max. 300 characters) */}
-              <MaterialTextField
-                inputRef={register({
+              <Controller
+                name="mainChallenge"
+                control={control}
+                rules={{
                   maxLength: {
                     value: 300,
                     message: t('manageProjects:max300Chars'),
                   },
-                })}
-                label={t('manageProjects:mainChallenge')}
-                variant="outlined"
-                name="mainChallenge"
-                multiline
+                }}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <MaterialTextField
+                    label={t('manageProjects:mainChallenge')}
+                    variant="outlined"
+                    multiline
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                  />
+                )}
               />
               {errors.mainChallenge && (
                 <span className={styles.formErrors}>
@@ -987,17 +1033,25 @@ export default function DetailedAnalysis({
             <div style={{ width: '20px' }}></div>
             <div className={`${styles.formFieldHalf} ${styles.formFieldFix}`}>
               {/* the reason this project has been created (max. 300 characters) */}
-              <MaterialTextField
-                inputRef={register({
+              <Controller
+                name="motivation"
+                control={control}
+                rules={{
                   maxLength: {
                     value: 300,
                     message: t('manageProjects:max300Chars'),
                   },
-                })}
-                label={t('manageProjects:whyThisSite')}
-                variant="outlined"
-                name="motivation"
-                multiline
+                }}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <MaterialTextField
+                    label={t('manageProjects:whyThisSite')}
+                    variant="outlined"
+                    multiline
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                  />
+                )}
               />
               {errors.motivation && (
                 <span className={styles.formErrors}>
@@ -1055,27 +1109,42 @@ export default function DetailedAnalysis({
           </div>
 
           <div className={`${styles.formFieldLarge} ${styles.formFieldFix}`}>
-            <MaterialTextField
-              label={t('manageProjects:ownerName')}
-              variant="outlined"
+            <Controller
               name="siteOwnerName"
-              inputRef={register()}
+              control={control}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <MaterialTextField
+                  label={t('manageProjects:ownerName')}
+                  variant="outlined"
+                  onChange={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                />
+              )}
             />
           </div>
 
           <div className={`${styles.formFieldLarge} ${styles.formFieldFix}`}>
-            <MaterialTextField
-              label={t('manageProjects:longTermPlan')}
-              variant="outlined"
+            {/* <Controller
               name="longTermPlan"
-              multiline
-              inputRef={register({
+              control={control}
+              rules={{
                 maxLength: {
                   value: 300,
                   message: t('manageProjects:max300Chars'),
                 },
-              })}
-            />
+              }}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <MaterialTextField
+                  label={t('manageProjects:longTermPlan')}
+                  variant="outlined"
+                  multiline
+                  onChange={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                />
+              )}
+            /> */}
             {errors.longTermPlan && (
               <span className={styles.formErrors}>
                 {errors.longTermPlan.message}

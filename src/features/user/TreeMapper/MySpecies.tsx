@@ -10,7 +10,7 @@ import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import SpeciesSelect from './Import/components/SpeciesAutoComplete';
 import styles from './MySpecies.module.scss';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
@@ -26,9 +26,14 @@ export default function MySpecies({}: Props): ReactElement {
 
   const defaultMySpeciesValue = {
     aliases: '',
+    scientificSpecies: null,
   };
 
-  const { register, handleSubmit, errors, control } = useForm({
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
     mode: 'onBlur',
     defaultValues: defaultMySpeciesValue,
   });
@@ -96,7 +101,7 @@ export default function MySpecies({}: Props): ReactElement {
           <div>
             <SpeciesSelect
               label={t('treemapper:species')}
-              name={`scientificSpecies`}
+              name="scientificSpecies"
               width="300px"
               control={control}
             />
@@ -107,18 +112,20 @@ export default function MySpecies({}: Props): ReactElement {
             )}
           </div>
           <div>
-            <MaterialTextField
-              label={t('treemapper:aliases')}
-              name={`aliases`}
-              inputRef={register({
-                required: {
-                  value: true,
-                  message: t('treemapper:aliasesValidation'),
-                },
-              })}
-              type={'text'}
-              style={{ width: '300px' }}
-              variant="outlined"
+            <Controller
+              name="aliases"
+              control={control}
+              rules={{ required: t('treemapper:aliasesValidation') }}
+              render={({ field: { onChange, value } }) => (
+                <MaterialTextField
+                  label={t('treemapper:aliases')}
+                  type={'text'}
+                  style={{ width: '300px' }}
+                  variant="outlined"
+                  onChange={onChange}
+                  value={value}
+                />
+              )}
             />
             <div>
               {errors.aliases && (
