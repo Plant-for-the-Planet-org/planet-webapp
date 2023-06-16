@@ -1,14 +1,14 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react';
 
 import RecipientsTable from '../components/RecipientsTable';
 
 export default {
-  title: `Components/RecipientsTable`,
+  title: 'Components/RecipientsTable',
   component: RecipientsTable,
-} as ComponentMeta<typeof RecipientsTable>;
+} as Meta<typeof RecipientsTable>;
 
-const Template: ComponentStory<typeof RecipientsTable> = (args) => (
+const Template: StoryFn<typeof RecipientsTable> = (args) => (
   <RecipientsTable {...args} />
 );
 

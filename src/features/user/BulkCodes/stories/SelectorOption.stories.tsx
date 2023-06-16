@@ -1,14 +1,14 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react';
 
 import SelectorOption from '../components/SelectorOption';
 
 export default {
-  title: `Components/SelectorOptions`,
+  title: 'Components/SelectorOptions',
   component: SelectorOption,
-} as ComponentMeta<typeof SelectorOption>;
+} as Meta<typeof SelectorOption>;
 
-const Template: ComponentStory<typeof SelectorOption> = (args) => (
+const Template: StoryFn<typeof SelectorOption> = (args) => (
   <SelectorOption {...args} />
 );
 

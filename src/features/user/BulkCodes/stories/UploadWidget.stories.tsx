@@ -1,14 +1,14 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react';
 
 import UploadWidget from '../components/UploadWidget';
 
 export default {
-  title: `Components/UploadWidget`,
+  title: 'Components/UploadWidget',
   component: UploadWidget,
-} as ComponentMeta<typeof UploadWidget>;
+} as Meta<typeof UploadWidget>;
 
-const Template: ComponentStory<typeof UploadWidget> = (args) => (
+const Template: StoryFn<typeof UploadWidget> = (args) => (
   <UploadWidget {...args} />
 );
 

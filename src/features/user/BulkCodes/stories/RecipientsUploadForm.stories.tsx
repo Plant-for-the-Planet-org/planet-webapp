@@ -1,14 +1,14 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react';
 
 import RecipientsUploadForm from '../components/RecipientsUploadForm';
 
 export default {
-  title: `Components/RecipientsUploadForm`,
+  title: 'Components/RecipientsUploadForm',
   component: RecipientsUploadForm,
-} as ComponentMeta<typeof RecipientsUploadForm>;
+} as Meta<typeof RecipientsUploadForm>;
 
-const Template: ComponentStory<typeof RecipientsUploadForm> = (args) => (
+const Template: StoryFn<typeof RecipientsUploadForm> = (args) => (
   <RecipientsUploadForm {...args} />
 );
 

@@ -1,14 +1,14 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react';
 
 import BulkGiftTotal from '../components/BulkGiftTotal';
 
 export default {
-  title: `Components/BulkGiftTotal`,
+  title: 'Components/BulkGiftTotal',
   component: BulkGiftTotal,
-} as ComponentMeta<typeof BulkGiftTotal>;
+} as Meta<typeof BulkGiftTotal>;
 
-const Template: ComponentStory<typeof BulkGiftTotal> = (args) => (
+const Template: StoryFn<typeof BulkGiftTotal> = (args) => (
   <BulkGiftTotal {...args} />
 );
 
