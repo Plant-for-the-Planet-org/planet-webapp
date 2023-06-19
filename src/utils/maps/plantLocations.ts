@@ -7,7 +7,7 @@ import { SetState } from '../../features/common/types/common';
 import { ViewPort } from '../../features/common/types/project';
 
 export function zoomToPlantLocation(
-  coordinates: any,
+  coordinates: turf.Position[],
   viewport: ViewPort,
   isMobile: boolean,
   setViewPort: Function,

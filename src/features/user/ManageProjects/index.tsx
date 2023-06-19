@@ -16,12 +16,12 @@ import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, ProjectExtended } from '@planet-sdk/common';
 
 interface Props {
-  GUID: string;
+  GUID?: string | null;
   token: string | null;
-  project: any;
+  project?: ProjectExtended | {};
 }
 
 export default function ManageProjects({ GUID, token, project }: Props) {
@@ -189,7 +189,6 @@ export default function ManageProjects({ GUID, token, project }: Props) {
       fetchProjectDetails();
     }
   }, [GUID, projectGUID]);
-
   const [userLang, setUserLang] = React.useState('en');
   React.useEffect(() => {
     if (localStorage.getItem('language')) {

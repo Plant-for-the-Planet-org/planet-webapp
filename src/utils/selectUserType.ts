@@ -1,13 +1,6 @@
-export const selectUserType = (
-  type:
-    | 'individual'
-    | 'tpo'
-    | 'education'
-    | 'organization'
-    | 'company'
-    | 'government',
-  t: Function
-) => {
+import { UserType } from '@planet-sdk/common';
+
+export const selectUserType = (type: UserType, t: Function) => {
   let name;
   switch (type) {
     case 'individual':

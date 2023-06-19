@@ -4,9 +4,9 @@ import * as turf from '@turf/turf';
 import { ViewPort } from '../../features/common/types/project';
 
 export default function zoomToProjectSite(
-  geoJson: Object | null,
+  geoJson: Record<string, unknown> | null,
   selectedSite: number,
-  viewport: ViewPort,
+  viewport: ViewPort | {},
   setViewPort: Function,
   setSiteViewPort: Function,
   duration = 1200

@@ -8,13 +8,16 @@ class NumberParser {
     const parts = format.formatToParts(12345.6);
     const numerals = Array.from({ length: 10 }).map((_, i) => format.format(i));
     const index = new Map(numerals.map((d, i) => [d, i]));
-    this._group = new RegExp(
-      `[${parts.find((d) => d.type === 'group').value}]`,
-      'g'
-    );
-    this._decimal = new RegExp(
-      `[${parts.find((d) => d.type === 'decimal').value}]`
-    );
+    const groupPart = parts.find((d) => d.type === 'group');
+    const decimalPart = parts.find((d) => d.type === 'decimal');
+
+    if (groupPart) {
+      this._group = new RegExp(`[${groupPart.value}]`, 'g');
+    }
+
+    if (decimalPart) {
+      this._decimal = new RegExp(`[${decimalPart.value}]`);
+    }
     this._numeral = new RegExp(`[${numerals.join('')}]`, 'g');
     this._index = (d) => index.get(d);
   }
@@ -23,7 +26,10 @@ class NumberParser {
       .trim()
       .replace(this._group, '')
       .replace(this._decimal, '.')
-      .replace(this._numeral, this._index);
+      .replace(this._numeral, (d) => {
+        const index = this._index(d);
+        return index !== undefined ? index.toString() : '';
+      });
     return string ? +string : NaN;
   }
 }
@@ -99,5 +105,5 @@ export function getFormattedNumber(langCode: string, number: number) {
 
 export function parseNumber(langCode: string, number: number) {
   const parser = new NumberParser(langCode);
-  return parser.parse(number);
+  return parser.parse(number.toString());
 }
