@@ -14,9 +14,8 @@
     flex-direction: column;
     background-color: #219653;
     border-radius: 12px;
-    height: 104px;
     cursor: pointer;
-
+    height: 104px;
     > .plantedTreesLabelContainer {
         display: flex;
         gap: 7px;
@@ -24,6 +23,7 @@
         padding-top: 20px;
         padding-right: 22px;
         font-weight: bold;
+        width: max-content;
         > .plantedTreesLabel {
             font-size: 16px;
             color: #FFFFFF;
@@ -44,6 +44,7 @@
     background-color: #FFFFFF99;
     border-radius: 12px;
     height: 104px;
+    cursor: pointer;
     > .plantedTreesLabelContainer {
         display: flex;
         gap: 7px;
@@ -51,6 +52,7 @@
         padding-top: 20px;
         padding-right: 22px;
         font-weight: bold;
+        width: max-content;
         > .plantedTreesLabel {
             font-size: 16px;
             color: #333333;
@@ -65,32 +67,17 @@
     }
 }
 
-
-.restoredAreaContainer {
-    width: 183px;
-    height: 104px;
-    background-color: #219653;
-    border-bottom-right-radius: 12px;
-    border-top-right-radius: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #FFFFFF ;
-    > .restoredAreaLabel {
-        position: absolute;
-        left: 232px;
-        top: 20px
-    }
-}
-
 .conservedAreaContainer {
     position: relative;
     background-color: #FFFFFF99 ;
     border-radius: 12px;
     cursor: pointer;
+    height: 104px;
     > .labelContainer {
         display: flex;
         padding-left: 24px;
         padding-top: 20px;
+        padding-right: 37px;
         > .conservedLabel {
             margin-left: 9px;
             font-weight: bold;
@@ -112,12 +99,91 @@
         color:#48AADD;
         font-size: 30px;
         font-weight: 400;
-        margin-right: 30px;
-        margin-top: 7px;
-        margin-left: 7px;
+        margin-right: 60px;
     }
   }
 }
+
+.conservedAreaContainerX {
+    position: relative;
+    background-color: #48AADD;
+    border-radius: 12px;
+    cursor: pointer;
+    height: 104px;
+    > .labelContainer {
+        display: flex;
+        padding-left: 24px;
+        padding-top: 20px;
+        padding-right: 37px;
+        > .conservedLabel {
+            margin-left: 9px;
+            font-weight: bold;
+            font-size: 16px;
+            color: #FFFFFF;
+        }
+    }
+  > .conservedAreaValue {
+    display: flex;
+    padding-left: 20px;
+    padding-right: 24px;
+    align-items: center;
+    justify-content: space-between;
+    >.value {
+        font-size: 36px;
+        font-weight: 700;
+        color: #FFFFFF;
+    }
+    >.unit {
+        color:#FFFFFF;
+        font-size: 30px;
+        font-weight: 400;
+        margin-right: 60px;
+    }
+  }
+}
+
+.InfoContainer {
+    display: flex;
+    flex-direction: column;
+    background-color: #2196531A;
+    border-radius: 12px;
+    width: max-content;
+    padding-left: 22px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    height: 104px;
+     > .labelContainer {
+     display: flex;
+     padding-right: 24px;
+     font-weight: 700;
+     font-size: 16px;
+     gap: 7px;
+     }
+     > .value {
+         font-size: 36px;
+         font-weight: 700;
+         padding-right: 20px;
+     }
+ }
+ 
+
+.restoredAreaContainer {
+    width: 183px;
+    height: 104px;
+    background-color: #219653;
+    border-bottom-right-radius: 12px;
+    border-top-right-radius: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #FFFFFF ;
+    > .restoredAreaLabel {
+        position: absolute;
+        left: 232px;
+        top: 20px
+    }
+}
+
+
 .donationDetailContainer {
     display: flex;
     gap: 12px;
@@ -129,36 +195,7 @@
     }
 }
 
-.InfoContainer {
-   position: relative;
-   width: 134px;
-   height: 104px;
-   background-color: #2196531A;
-   border-radius: 12px;
-}
-.labelContainer {
-    display: flex;
-    > .svgContainer {
-        position: absolute;
-        top: 22px;
-        left: 22px;
-    }
-    >  .label {
-        position: absolute;
-        left: 44px;
-        top: 20px;
-        font-weight: bold;
-        font-size: 16px;
-    }
-}
 
-.value {
-    position: absolute;
-    font-weight: bold;
-    font-size: 36px;
-    top: 44px;
-    left: 20px
-}
 
 
 .mainContainer {
@@ -175,32 +212,19 @@
     }
     
     > .treeCounterContainer {
-        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         background: #27AE601A;
         height: 260px;
         width: 100%;
+        > .treeCounter {
+            margin-top: 172px;
+        }
     }
 }
-.treeCounter {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    width: 400px;
-    height: 400px;
-    top: 72px;
-    left: 336px;
-    @include xsPhoneView {
-        left: -19px
-    }
-    @include mdTabletView {
-        left: 104px;
-    };
-    @include lgLaptopView {
-        left: 336px;
-    }
-}
+
 
 .donationListMainContainer {
     background-color: #27AE601A;

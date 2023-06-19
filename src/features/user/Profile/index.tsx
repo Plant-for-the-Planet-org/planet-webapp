@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import styles from './styles/Profile.module.scss';
-import AddTargetModal from './components/AddTargetModal';
+import AddTargetModal from '../ProfileV2/components/AddTargetModal';
 import LandingSection from '../../common/Layout/LandingSection';
 import { useTranslation } from 'next-i18next';
 import ReadMoreReact from 'read-more-react';
