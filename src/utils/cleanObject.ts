@@ -1,4 +1,6 @@
-// This function removes all the null,  empty objects, "" (empty string values), undefined values from the object
+/**
+ * Removes all the null,  empty objects, "" (empty string values), undefined values from the object
+ */
 
 const cleanObject = (object: Record<string, unknown>) => {
   Object.entries(object).forEach(([key, value]) => {

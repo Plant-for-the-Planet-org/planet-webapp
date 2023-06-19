@@ -1,3 +1,10 @@
+/**
+ * Retrieves the currency symbol for a given number.
+ * @param {string} langCode - The language code.
+ * @param {string} currency - The currency code.
+ * @param {number} number - The number used to determine the currency symbol.
+ */
+
 export default function getCurrencySymbolByCode(
   langCode: string,
   currency: string,

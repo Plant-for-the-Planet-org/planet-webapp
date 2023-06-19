@@ -51,11 +51,24 @@ const localizedAbbr: {
   },
 };
 
+/**
+ * Retrieves the localized abbreviation for a given language and abbreviation key.
+ * @param {string} langCode - The language code.
+ * @param {string} abbr - The abbreviation key.
+ */
+
 function getLocalizedAbbreviation(langCode: string, abbr: string) {
   return localizedAbbr[langCode]
     ? localizedAbbr[langCode][abbr]
     : localizedAbbr['en'][abbr];
 }
+
+/**
+ * Formats and rounds a number based on the provided language code and fraction digits.
+ * @param {string} langCode - The language code.
+ * @param {number} number - The number to format and round.
+ * @param {number} fractionDigits - The number of fraction digits to display
+ */
 
 export function getFormattedRoundedNumber(
   langCode: string,
@@ -75,6 +88,13 @@ export function getFormattedRoundedNumber(
   });
   return formatter.format(number);
 }
+
+/**
+ * Converts a number into a localized and abbreviated format based on the provided language code and fraction digits.
+ * @param {string} langCode - The language code.
+ * @param {number} number - The number to convert.
+ * @param {number} fractionDigits - The number of fraction digits to display.
+ */
 
 export function localizedAbbreviatedNumber(
   langCode: string,
@@ -97,13 +117,26 @@ export function localizedAbbreviatedNumber(
   return getFormattedRoundedNumber(langCode, number, fractionDigits);
 }
 
+/**
+ * Formats a number based on the provided language code.
+ * @param {string} langCode - The language code.
+ * @param {number} number - The number to format.
+ */
+
 export function getFormattedNumber(langCode: string, number: number) {
   // console.log("getFormattedNumber", langCode, number);
   const formatter = new Intl.NumberFormat(langCode);
   return formatter.format(number);
 }
 
-export function parseNumber(langCode: string, number: number) {
+/**
+ * Parses a number based on the provided language code.
+ * @param {string} langCode - The language code.
+ * @param {number} number - The number to parse.
+ * @returns {number} The parsed number.
+ */
+
+export function parseNumber(langCode: string, number: number): number {
   const parser = new NumberParser(langCode);
   return parser.parse(number.toString());
 }

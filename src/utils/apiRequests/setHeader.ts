@@ -1,5 +1,7 @@
 import { ImpersonationData } from '../../features/user/Settings/ImpersonateUser/ImpersonateUserForm';
-//this function set keys for header in impersonation mode
+/**
+ * Sets keys for header in impersonation mode
+ */
 export const setHeaderForImpersonation = (
   header: Record<string, string>,
   impersonationData?: ImpersonationData
