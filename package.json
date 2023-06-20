@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "npx prisma generate && next build",
     "analyze": "ANALYZE=true npm run build",
     "export": "next export",
     "start": "next start -p $PORT",
