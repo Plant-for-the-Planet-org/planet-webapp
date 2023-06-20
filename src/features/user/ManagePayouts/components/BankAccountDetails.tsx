@@ -124,10 +124,7 @@ const BankAccountDetails = ({
           <div className="detailInfo">{account.remarks || '-'}</div>
         </Grid>
         <Grid item xs={12}>
-          <Link
-            href={`/profile/payouts/edit-bank-details/${account.id}`}
-            passHref
-          >
+          <Link href={`/profile/payouts/edit-bank-details/${account.id}`}>
             <Button>{t('editAccountButton')}</Button>
           </Link>
         </Grid>

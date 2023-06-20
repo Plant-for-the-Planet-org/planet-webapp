@@ -14,7 +14,6 @@ import { useTranslation } from 'next-i18next';
 import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
-import Layout from '../src/features/common/Layout';
 import MapLayout from '../src/features/projects/components/ProjectsMap';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
@@ -45,6 +44,10 @@ const VideoContainer = dynamic(
     ssr: false,
   }
 );
+
+const Layout = dynamic(() => import('../src/features/common/Layout'), {
+  ssr: false,
+});
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
