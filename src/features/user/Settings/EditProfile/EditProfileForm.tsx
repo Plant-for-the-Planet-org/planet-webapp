@@ -11,7 +11,7 @@ import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import COUNTRY_ADDRESS_POSTALS from '../../../../utils/countryZipCode';
 import getImageUrl from '../../../../utils/getImageURL';
 import { selectUserType } from '../../../../utils/selectUserType';
-import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
+import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
