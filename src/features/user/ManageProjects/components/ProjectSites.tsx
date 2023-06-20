@@ -53,7 +53,13 @@ export default function ProjectSites({
   const { t, ready } = useTranslation(['manageProjects']);
   const { theme } = React.useContext(ThemeContext);
   const [features, setFeatures] = React.useState([]);
-  const { register, handleSubmit, errors, control } = useForm();
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    mode: 'onBlur',
+  });
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -432,19 +438,26 @@ export default function ProjectSites({
           <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
             <div className={styles.formField}>
               <div className={styles.formFieldHalf} data-test-id="siteName">
-                <MaterialTextField
-                  inputRef={register({
-                    required: {
-                      value: true,
-                      message: t('manageProjects:siteNameValidation'),
-                    },
-                  })}
-                  label={t('manageProjects:siteName')}
-                  variant="outlined"
+                <Controller
                   name="name"
-                  onChange={changeSiteDetails}
+                  control={control}
+                  rules={{ required: t('manageProjects:siteNameValidation') }}
                   defaultValue={siteDetails.name}
+                  render={({ field: { onChange, value, onBlur, name } }) => (
+                    <MaterialTextField
+                      label={t('manageProjects:siteName')}
+                      variant="outlined"
+                      onChange={(e) => {
+                        changeSiteDetails(e);
+                        onChange(e.target.value);
+                      }}
+                      value={value}
+                      onBlur={onBlur}
+                      name={name}
+                    />
+                  )}
                 />
+
                 {errors.name && (
                   <span className={styles.formErrors}>
                     {errors.name.message}
@@ -454,14 +467,24 @@ export default function ProjectSites({
               <div style={{ width: '20px' }}></div>
               <div className={styles.formFieldHalf} data-test-id="siteStatus">
                 <Controller
-                  as={
+                  name="status"
+                  rules={{
+                    required: t('manageProjects:selectProjectStatus'),
+                  }}
+                  control={control}
+                  defaultValue={siteDetails.status ? siteDetails.status : ''}
+                  render={({ field: { onChange, onBlur, name, value } }) => (
                     <MaterialTextField
                       label={t('manageProjects:siteStatus')}
                       variant="outlined"
-                      name="status"
-                      onChange={changeSiteDetails}
+                      name={name}
+                      onChange={(e) => {
+                        changeSiteDetails(e);
+                        onChange(e.target.value);
+                      }}
+                      onBlur={onBlur}
                       select
-                      value={siteDetails.status}
+                      value={value}
                     >
                       {status.map((option) => (
                         <MenuItem
@@ -476,13 +499,7 @@ export default function ProjectSites({
                         </MenuItem>
                       ))}
                     </MaterialTextField>
-                  }
-                  name="status"
-                  rules={{
-                    required: t('manageProjects:selectProjectStatus'),
-                  }}
-                  control={control}
-                  defaultValue={siteDetails.status ? siteDetails.status : ''}
+                  )}
                 />
                 {errors.status && (
                   <span className={styles.formErrors}>
@@ -603,13 +620,17 @@ function EditSite({
 }: EditSiteProps) {
   const { theme } = React.useContext(ThemeContext);
   const { t } = useTranslation(['manageProjects']);
-  const { register, handleSubmit, errors, control } = useForm();
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
   const [geoJson, setGeoJson] = React.useState(geoJsonProp);
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const { logoutUser } = React.useContext(UserPropsContext);
+  const { logoutUser } = useUserProps();
 
   const useStylesAutoComplete = makeStyles({
     root: {
@@ -710,25 +731,44 @@ function EditSite({
           <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
             <div className={styles.formField}>
               <div className={styles.formFieldHalf}>
-                <MaterialTextField
-                  inputRef={register({ required: true })}
-                  label={t('manageProjects:siteName')}
-                  variant="outlined"
+                <Controller
                   name="name"
-                  onChange={changeSiteDetails}
+                  control={control}
+                  rules={{ required: t('manageProjects:siteNameValidation') }}
                   defaultValue={siteDetails.name}
+                  render={({ field: { onChange, value, onBlur, name } }) => (
+                    <MaterialTextField
+                      label={t('manageProjects:siteName')}
+                      variant="outlined"
+                      onChange={(e) => {
+                        changeSiteDetails(e);
+                        onChange(e.target.value);
+                      }}
+                      value={value}
+                      onBlur={onBlur}
+                      name={name}
+                    />
+                  )}
                 />
               </div>
               <div className={styles.formFieldHalf}>
                 <Controller
-                  as={
+                  name="status"
+                  rules={{ required: t('manageProjects:selectProjectStatus') }}
+                  control={control}
+                  defaultValue={siteDetails.status ? siteDetails.status : ''}
+                  render={({ field: { onChange, onBlur, name, value } }) => (
                     <MaterialTextField
                       label={t('manageProjects:siteStatus')}
                       variant="outlined"
-                      name="status"
-                      onChange={changeSiteDetails}
+                      name={name}
+                      onChange={(e) => {
+                        changeSiteDetails(e);
+                        onChange(e.target.value);
+                      }}
+                      onBlur={onBlur}
                       select
-                      value={siteDetails.status}
+                      value={value}
                     >
                       {status.map((option) => (
                         <MenuItem
@@ -743,11 +783,7 @@ function EditSite({
                         </MenuItem>
                       ))}
                     </MaterialTextField>
-                  }
-                  name="status"
-                  rules={{ required: t('manageProjects:selectProjectStatus') }}
-                  control={control}
-                  defaultValue={siteDetails.status ? siteDetails.status : ''}
+                  )}
                 />
                 {errors.status && (
                   <span className={styles.formErrors}>
