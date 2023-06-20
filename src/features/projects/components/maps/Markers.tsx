@@ -34,7 +34,7 @@ export default function Markers({
     setOpen(false);
   };
   const markerBackgroundColor = (project) => {
-    return project.isTopProject
+    return project.isTopProject && project.isApproved
       ? 'topApproved'
       : project.allowDonations
       ? 'topUnapproved'
