@@ -10,7 +10,11 @@ import DonationInfo from '../../../ProfileV2/components/DonationInfo';
 import TreeContributedProjectList from '../../../ProfileV2/components/TreeContributedProjectList';
 import { trpc } from '../../../../../utils/trpc';
 import AreaConservedProjectList from '../../../ProfileV2/components/AreaConservedProjectList';
-
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import {
+  getAuthenticatedRequest,
+  getRequest,
+} from '../../../../../utils/apiRequests/api';
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
 });
@@ -18,18 +22,53 @@ const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
 interface Props {
   profile: any;
   authenticatedType: any;
-  // token: any;
+  token: any;
 }
 
-export default function MyTrees({ profile, authenticatedType }: Props) {
+export default function MyTrees({ profile, authenticatedType, token }: Props) {
   const { ready } = useTranslation(['country', 'me']);
   const [contributions, setContributions] = React.useState();
+  const [contributionsNew, setContributionsNew] = React.useState();
+  const { logoutUser } = useUserProps();
   const [donationOtherInfo, setDonationOtherInfo] = React.useState(undefined);
   const [isTreePlantedButtonActive, setIsTreePlantedButtonActive] =
     React.useState(false);
   const [isConservedButtonActive, setIsConservedButtonActive] =
     React.useState(false);
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
+
+  React.useEffect(() => {
+    async function loadFunction() {
+      if (authenticatedType === 'private' && token) {
+        try {
+          const result = await getAuthenticatedRequest(
+            `/app/profile/contributions`,
+            token,
+            logoutUser
+          );
+          setContributions(result);
+        } catch (err) {
+          setErrors(handleError(err as APIError));
+          redirect('/profile');
+        }
+      } else {
+        try {
+          const result = await getRequest(
+            `/app/profiles/${profile.id}/contributions`
+          );
+          setContributions(result);
+        } catch (err) {
+          setErrors(handleError(err as APIError));
+        }
+      }
+    }
+    loadFunction();
+  }, [profile]);
+
+  const MapProps = {
+    contributions,
+    authenticatedType,
+  };
 
   const detailInfo = trpc.myForest.stats.useQuery({
     profileId: `${profile.id}`,
@@ -51,7 +90,7 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
           )
         );
       } else {
-        setContributions(contributionData.data);
+        setContributionsNew(contributionData.data);
       }
       console.log('==>', contributionData.data);
     }
@@ -85,7 +124,7 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
             : '10px',
       }}
     >
-      <MyTreesMap />
+      <MyTreesMap {...MapProps} />
       <div className={myForestStyles.mapButtonContainer}>
         <PlantedTreesButton
           plantedTrees={donationOtherInfo[0].treeCount}
@@ -111,7 +150,7 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
         !isConservedButtonActive &&
         donationOtherInfo[0].treeCount > 0 && (
           <TreeContributedProjectList
-            contribution={contributions}
+            contribution={contributionsNew}
             userprofile={profile}
             authenticatedType={authenticatedType}
           />
