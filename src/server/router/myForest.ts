@@ -30,6 +30,7 @@ export const myForestRouter = router({
           treeCount: true,
           quantity: true,
           donationIssueDate: true,
+          contributionType: true,
           plantProject: {
             select: {
               guid: true,
