@@ -45,6 +45,8 @@ const RecipientsTable = ({
         <Table stickyHeader aria-label="sticky table" size="small">
           <TableHead>
             <TableRow>
+              {/* Empty header above the action column */}
+              <TableCell></TableCell>
               {headers.map((header) => {
                 const { key, displayText, helpText } = header;
                 return (

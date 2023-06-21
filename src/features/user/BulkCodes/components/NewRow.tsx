@@ -1,7 +1,15 @@
-import { TableRow, TableCell, TextField, MenuItem } from '@mui/material';
-import { useForm } from 'react-hook-form';
+import {
+  TableRow,
+  TableCell,
+  TextField,
+  MenuItem,
+  IconButton,
+} from '@mui/material';
+import { useForm, Controller } from 'react-hook-form';
 import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect';
 import { Recipient, TableHeader } from '../BulkCodesTypes';
+import PlusIcon from '../../../../../public/assets/images/icons/PlusIcon';
+import themeProperties from '../../../../theme/themeProperties';
 
 interface Props {
   handleSave: () => void;
@@ -9,16 +17,35 @@ interface Props {
 }
 
 const NewRow = ({ handleSave, headers }: Props) => {
-  const { register, control } = useForm<Recipient>({
+  const { control } = useForm<Recipient>({
     mode: 'onBlur',
   });
   return (
     <TableRow>
       <TableCell>
-        <TextField size="small" name="recipient_name" inputRef={register} />
+        <IconButton
+          size="small"
+          onClick={handleSave}
+          aria-label="add a recipient"
+          title="Add recipient to table" //TODO - translation
+          color="primary"
+        >
+          <PlusIcon color={themeProperties.primaryColor} />
+        </IconButton>
       </TableCell>
       <TableCell>
-        <TextField size="small" name="recipient_email" inputRef={register} />
+        <Controller
+          name="recipient_name"
+          control={control}
+          render={() => <TextField size="small" />}
+        />
+      </TableCell>
+      <TableCell>
+        <Controller
+          name="recipient_email"
+          control={control}
+          render={() => <TextField size="small" />}
+        />
       </TableCell>
       <TableCell>
         {/* <TextField
@@ -52,21 +79,30 @@ const NewRow = ({ handleSave, headers }: Props) => {
         </ReactHookFormSelect>
       </TableCell>
       <TableCell>
-        <TextField
-          size="small"
+        <Controller
           name="units"
-          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-          inputRef={register({ required: true })}
+          control={control}
+          rules={{ required: true }}
+          render={() => (
+            <TextField
+              size="small"
+              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+            />
+          )}
         />
       </TableCell>
       <TableCell>
-        <TextField
-          sx={{ minWidth: 200 }}
-          size="small"
-          multiline
-          maxRows={3}
+        <Controller
           name="recipient_message"
-          inputRef={register}
+          control={control}
+          render={() => (
+            <TextField
+              sx={{ minWidth: 200 }}
+              size="small"
+              multiline
+              maxRows={3}
+            />
+          )}
         />
       </TableCell>
     </TableRow>
