@@ -8,19 +8,22 @@ datasource db {
 }
 
 model contribution {
-    id                Int            @id @default(autoincrement())
-    purpose           String?        @db.VarChar(16)
-    treeCount         Decimal?       @map("tree_count") @db.Decimal(14, 2)
-    quantity          Float?
-    deletedAt         DateTime?      @map("deleted_at") @db.DateTime(0)
-    contributionType  String         @map("contribution_type") @db.VarChar(20)
-    isVerified        Boolean?       @map("is_verified")
-    paymentStatus     String?        @map("payment_status") @db.VarChar(20)
-    plantProjectId    Int?           @map("plant_project_id")
-    plantProject      plant_project? @relation(fields: [plantProjectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-    profile           profile?       @relation(fields: [profile_id], references: [id])
-    donationIssueDate DateTime?      @map("dtn_issue_date") @db.DateTime(0)
-    profile_id        Int?
+    id                   Int            @id @default(autoincrement())
+    purpose              String?        @db.VarChar(16)
+    treeCount            Decimal?       @map("tree_count") @db.Decimal(14, 2)
+    bouquetDonationId    Int?           @map("bouquet_donation_id")
+    quantity             Float?
+    deletedAt            DateTime?      @map("deleted_at") @db.DateTime(0)
+    contributionType     String         @map("contribution_type") @db.VarChar(20)
+    isVerified           Boolean?       @map("is_verified")
+    paymentStatus        String?        @map("payment_status") @db.VarChar(20)
+    plantProjectId       Int?           @map("plant_project_id")
+    plantProject         plant_project? @relation(fields: [plantProjectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    profile              profile?       @relation(fields: [profile_id], references: [id])
+    bouquet              contribution?  @relation("bouquet", fields: [bouquetDonationId], references: [id])
+    bouquetContributions contribution[] @relation("bouquet")
+    donationIssueDate    DateTime?      @map("dtn_issue_date") @db.DateTime(0)
+    profile_id           Int?
 }
 
 model plant_project {

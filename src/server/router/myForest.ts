@@ -31,6 +31,28 @@ export const myForestRouter = router({
           quantity: true,
           donationIssueDate: true,
           contributionType: true,
+          bouquetContributions: {
+            select: {
+              purpose: true,
+              treeCount: true,
+              quantity: true,
+              donationIssueDate: true,
+              contributionType: true,
+              plantProject: {
+                select: {
+                  guid: true,
+                  name: true,
+                  image: true,
+                  description: true,
+                  countryCode: true,
+                  unit: true,
+                  location: true,
+                  geoLatitude: true,
+                  geoLongitude: true,
+                },
+              },
+            },
+          },
           plantProject: {
             select: {
               guid: true,
@@ -56,13 +78,19 @@ export const myForestRouter = router({
               paymentStatus: 'paid',
               plantProject: {
                 purpose: {
-                  in: ['trees', 'conservation'],
+                  in: ['trees', 'conservation', 'bouquet'],
                 },
+              },
+              donationIssueDate: {
+                not: null,
               },
             },
             {
               contributionType: 'planting',
               isVerified: true,
+              donationIssueDate: {
+                not: null,
+              },
             },
           ],
         },
