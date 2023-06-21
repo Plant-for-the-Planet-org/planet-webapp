@@ -98,7 +98,7 @@ export default function ProjectsMap(): ReactElement {
     setPopupData({ ...popupData, show: false });
     setIsPolygonMenuOpen(false);
     setFilterOpen(false);
-    if (e.features?.length !== 0) {
+    if (e.features && e.features?.length !== 0) {
       if (e.features[0].layer?.source) {
         for (const key in plantLocations) {
           if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
@@ -116,7 +116,7 @@ export default function ProjectsMap(): ReactElement {
   };
 
   const onMapHover = (e: MapEvent) => {
-    if (e.features?.length !== 0) {
+    if (e.features && e.features?.length !== 0) {
       if (!hoveredPl || hoveredPl.type !== 'sample') {
         if (e.features[0].layer?.source) {
           for (const key in plantLocations) {
