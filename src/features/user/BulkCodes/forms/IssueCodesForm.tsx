@@ -19,7 +19,7 @@ import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import { Recipient as LocalRecipient } from '../BulkCodesTypes';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
-import StyledForm from '../../../common/Layout/StyledForm';
+import StyledFormContainer from '../../../common/Layout/StyledFormContainer';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 
 interface IssueCodesFormProps {}
@@ -211,7 +211,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
     if (!isSubmitted) {
       return (
         <CenteredContainer>
-          <StyledForm className="IssueCodesForm" onSubmit={handleSubmit}>
+          <StyledFormContainer className="IssueCodesForm" component={'section'}>
             <div className="inputContainer">
               <ProjectSelector
                 projectList={projectList || []}
@@ -254,26 +254,31 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
 
             <BulkCodesError />
 
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              className="formButton"
-              disabled={
-                !(
-                  user.planetCash &&
-                  !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
-                ) ||
-                isProcessing ||
-                (localRecipients.length === 0 &&
-                  (Number(codeQuantity) <= 0 || Number(unitsPerCode) <= 0))
-              }
-            >
-              {isProcessing
-                ? t('bulkCodes:issuingCodes')
-                : t('bulkCodes:issueCodes')}
-            </Button>
-          </StyledForm>
+            <form onSubmit={handleSubmit}>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                className="formButton"
+                disabled={
+                  !(
+                    user.planetCash &&
+                    !(
+                      user.planetCash.balance + user.planetCash.creditLimit <=
+                      0
+                    )
+                  ) ||
+                  isProcessing ||
+                  (localRecipients.length === 0 &&
+                    (Number(codeQuantity) <= 0 || Number(unitsPerCode) <= 0))
+                }
+              >
+                {isProcessing
+                  ? t('bulkCodes:issuingCodes')
+                  : t('bulkCodes:issueCodes')}
+              </Button>
+            </form>
+          </StyledFormContainer>
         </CenteredContainer>
       );
     } else {
