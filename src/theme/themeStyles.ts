@@ -106,6 +106,13 @@ const materialTheme = createTheme({
         },
       },
     },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          margin: '3px 6px 0',
+        },
+      },
+    },
     MuiTableCell: {
       styleOverrides: {
         head: {
