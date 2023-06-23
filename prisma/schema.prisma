@@ -39,10 +39,14 @@ model plant_project {
     geoLongitude Float?         @map("geo_longitude")
     geoLatitude  Float?         @map("geo_latitude")
     contribution contribution[]
+    tpoId        Int?           @map("tpo_id")
+    tpo          profile?       @relation(fields: [tpoId], references: [id])
 }
 
 model profile {
-    id           Int            @id @default(autoincrement())
-    guid         String         @db.VarChar(32)
+    id           Int             @id @default(autoincrement())
+    guid         String          @db.VarChar(32)
+    name         String?         @db.VarChar(255)
     contribution contribution[]
+    plantProject plant_project[]
 }
