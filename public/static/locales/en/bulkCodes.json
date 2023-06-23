@@ -74,6 +74,11 @@
     "invalidEmails": "recipient_email contains dummy/invalid emails on the following rows: {{rowList}}. Please remove invalid emails or add valid emails.",
     "generalError": "Something went wrong. Please try after a while."
   },
+  "errorAddRecipient": {
+    "unitsNotProvided": "Mandatory",
+    "requiredForNotifications": "Required (to email recipients)",
+    "emailInvalid": "Invalid email"
+  },
   "successUploadCSV": {
     "ignoredColumns": "Extra columns were ignored"
   },
@@ -98,5 +103,10 @@
     "default": "Something went wrong. Please try after a while.",
     "planet_cash_payment_failure": "The transaction failed. {{reason}}",
     "planet_cash_invalid_project": "You cannot make a donation to the selected project."
+  },
+  "titleAddRecipientButton": "Add recipient to table",
+  "notifyRecipientOptions": {
+    "yes": "Yes",
+    "no": "No"
   }
 }

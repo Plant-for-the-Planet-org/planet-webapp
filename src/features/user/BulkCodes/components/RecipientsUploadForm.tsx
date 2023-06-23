@@ -26,12 +26,12 @@ const acceptedHeaders: (keyof Recipient)[] = [
 const MAX_RECIPIENTS = 1000;
 
 interface RecipientsUploadFormProps {
-  onRecipientsUploaded: (recipients: Recipient[]) => void;
+  onRecipientsUpdated: (recipients: Recipient[]) => void;
   localRecipients: Recipient[];
 }
 
 const RecipientsUploadForm = ({
-  onRecipientsUploaded,
+  onRecipientsUpdated,
   localRecipients,
 }: RecipientsUploadFormProps): ReactElement => {
   const { t, ready } = useTranslation(['bulkCodes']);
@@ -232,7 +232,7 @@ const RecipientsUploadForm = ({
   };
 
   useEffect(() => {
-    onRecipientsUploaded(recipients);
+    onRecipientsUpdated(recipients);
   }, [recipients]);
 
   return (
@@ -260,7 +260,11 @@ const RecipientsUploadForm = ({
           <a href="/assets/recipient-upload-sample.csv">CSV template here</a>
         </Trans>
       </p>
-      <RecipientsTable headers={headers} recipients={recipients} />
+      <RecipientsTable
+        headers={headers}
+        recipients={recipients}
+        setRecipients={setRecipients}
+      />
     </>
   );
 };

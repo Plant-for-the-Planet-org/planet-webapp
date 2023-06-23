@@ -7,23 +7,26 @@ import {
   Box,
 } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 import { DevTool } from '@hookform/devtools';
 import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect';
-import { Recipient, TableHeader } from '../BulkCodesTypes';
+import { Recipient } from '../BulkCodesTypes';
 import PlusIcon from '../../../../../public/assets/images/icons/PlusIcon';
 import themeProperties from '../../../../theme/themeProperties';
 import { isEmailValid } from '../../../../utils/isEmailValid';
+import { SetState } from '../../../common/types/common';
 
 interface Props {
-  handleSave: () => void;
-  headers: TableHeader[];
+  setRecipients: SetState<Recipient[]>;
 }
 
-const NewRow = ({ handleSave, headers }: Props) => {
+const NewRow = ({ setRecipients }: Props) => {
+  const { t } = useTranslation('bulkCodes');
   const {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<Recipient>({
     mode: 'onBlur',
     defaultValues: {
@@ -34,13 +37,26 @@ const NewRow = ({ handleSave, headers }: Props) => {
       recipient_message: '',
     },
   });
-  console.log(errors);
+
+  const hasErrors = Object.keys(errors).length > 0;
+
+  const handleSave = (newRecipient: Recipient): void => {
+    setRecipients((currentRecipients) => [newRecipient, ...currentRecipients]);
+    reset();
+  };
+
+  const validateRequiredIfNotify = (
+    value: string,
+    formValues: Recipient
+  ): string | true => {
+    return formValues.recipient_notify === 'yes' && value.length === 0
+      ? t('errorAddRecipient.requiredForNotifications')
+      : true;
+  };
 
   return (
     <>
-      <TableRow
-        sx={Object.keys(errors).length > 0 ? { verticalAlign: 'top' } : {}}
-      >
+      <TableRow sx={hasErrors ? { verticalAlign: 'top' } : {}}>
         <TableCell>
           <form onSubmit={handleSubmit(handleSave)}>
             <Box
@@ -55,7 +71,7 @@ const NewRow = ({ handleSave, headers }: Props) => {
                 size="small"
                 type="submit"
                 aria-label="add a recipient"
-                title="Add recipient to table" //TODO - translation
+                title={t('titleAddRecipientButton')}
                 color="primary"
               >
                 <PlusIcon color={themeProperties.primaryColor} />
@@ -68,10 +84,9 @@ const NewRow = ({ handleSave, headers }: Props) => {
             name="recipient_name"
             control={control}
             rules={{
-              validate: (value, formValues) =>
-                !(
-                  formValues.recipient_notify === 'yes' && value.length === 0
-                ) || 'Name is needed to email recipients',
+              validate: {
+                requiredForNotifications: validateRequiredIfNotify,
+              },
             }}
             render={({ field }) => (
               <TextField
@@ -89,14 +104,11 @@ const NewRow = ({ handleSave, headers }: Props) => {
             control={control}
             rules={{
               validate: {
-                isRequired: (value, formValues) =>
-                  !(
-                    formValues.recipient_notify === 'yes' && value.length === 0
-                  ) || 'Email is needed to notify recipients',
-                isInvalid: (value) =>
+                requiredForNotifications: validateRequiredIfNotify,
+                emailInvalid: (value) =>
                   value.length === 0 ||
                   isEmailValid(value) ||
-                  'Invalid email entered',
+                  t('errorAddRecipient.emailInvalid'),
               },
             }}
             render={({ field }) => (
@@ -117,10 +129,10 @@ const NewRow = ({ handleSave, headers }: Props) => {
             size="small"
           >
             <MenuItem key="no" value="no">
-              No
+              {t('notifyRecipientOptions.no')}
             </MenuItem>
             <MenuItem key="yes" value="yes">
-              Yes
+              {t('notifyRecipientOptions.yes')}
             </MenuItem>
           </ReactHookFormSelect>
         </TableCell>
@@ -128,7 +140,7 @@ const NewRow = ({ handleSave, headers }: Props) => {
           <Controller
             name="units"
             control={control}
-            rules={{ required: 'Mandatory' }}
+            rules={{ required: t('errorAddRecipient.unitsNotProvided') }}
             render={({ field: { onChange, ..._field } }) => (
               <TextField
                 size="small"
@@ -163,4 +175,5 @@ const NewRow = ({ handleSave, headers }: Props) => {
     </>
   );
 };
+
 export default NewRow;
