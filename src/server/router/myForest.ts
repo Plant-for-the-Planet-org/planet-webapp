@@ -83,15 +83,15 @@ export const myForestRouter = router({
                   in: ['trees', 'conservation', 'bouquet'],
                 },
               },
-              donationIssueDate: {
-                not: null,
+              bouquetDonationId: {
+                equals: null,
               },
             },
             {
               contributionType: 'planting',
               isVerified: true,
-              donationIssueDate: {
-                not: null,
+              bouquetDonationId: {
+                equals: null,
               },
             },
           ],
