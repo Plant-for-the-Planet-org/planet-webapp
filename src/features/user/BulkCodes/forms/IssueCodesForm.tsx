@@ -1,7 +1,7 @@
 import React, { FormEvent, ReactElement, useContext, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { Button, TextField } from '@mui/material';
-import styles from '../../../../../src/features/user/BulkCodes';
+import styles from '../BulkCodes.module.scss';
 import { useRouter } from 'next/router';
 import ProjectSelector from '../components/ProjectSelector';
 import BulkGiftTotal from '../components/BulkGiftTotal';
@@ -22,9 +22,7 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledFormContainer from '../../../common/Layout/StyledFormContainer';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 
-interface IssueCodesFormProps {}
-
-const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
+const IssueCodesForm = (): ReactElement | null => {
   const { t, ready, i18n } = useTranslation(['common', 'bulkCodes']);
   const router = useRouter();
   const {
