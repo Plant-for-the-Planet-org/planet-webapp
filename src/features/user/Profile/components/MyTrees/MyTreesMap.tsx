@@ -30,10 +30,7 @@ const Map = ReactMapboxGl({
 //   contributions: any;
 // }
 
-export default function MyTreesMap({
-  contributions,
-  authenticatedType,
-}): ReactElement {
+export default function MyTreesMap(): ReactElement {
   const { i18n, t } = useTranslation('me');
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;
@@ -52,10 +49,10 @@ export default function MyTreesMap({
     layers: [],
   });
 
-  const [contributionInfo, setContributionInfo] = React.useState(null);
-  const [clusterInfo, setClusterInfo] = React.useState(null);
-  let timer1: NodeJS.Timeout;
-  let timer2: NodeJS.Timeout;
+  // const [contributionInfo, setContributionInfo] = React.useState(null);
+  // const [clusterInfo, setClusterInfo] = React.useState(null);
+  // let timer1: NodeJS.Timeout;
+  // let timer2: NodeJS.Timeout;
 
   React.useEffect(() => {
     const promise = getMapStyle('default');
@@ -66,57 +63,44 @@ export default function MyTreesMap({
     });
   }, []);
 
-  React.useEffect(() => {
-    if (
-      contributions &&
-      Array.isArray(contributions) &&
-      contributions.length !== 0
-    ) {
-      setGeoJson({
-        type: 'FeatureCollection',
-        features: contributions,
-      });
-    }
-  }, [contributions]);
-
-  const clusterMarker = (coordinates: any, pointCount: any, getLeaves: any) => {
-    const nodes = getLeaves(Infinity);
-    let sum = 0;
-    let key = '';
-    nodes.map((node: any) => {
-      const item = contributions.find((i: any) => {
-        if (i.properties.id === node.key) return true;
-      });
-      sum += Number(item ? item.properties.treeCount : 0);
-      key = item.properties.id;
-    });
-    return (
-      <Marker key={key} coordinates={coordinates} anchor="bottom">
-        <div
-          onMouseOver={() => {
-            setContributionInfo(null);
-            clearTimeout(timer2);
-            setClusterInfo({ pointCount, sum });
-          }}
-          onMouseLeave={() => {
-            timer2 = setTimeout(() => setClusterInfo(null), 3000);
-          }}
-          className={styles.bigMarkerContainer}
-        >
-          <div className={styles.bigMarker}>
-            <div className={styles.treeSvg}>
-              <PlantedTreesGreenSvg />
-            </div>
-          </div>
-          <div className={styles.label}>
-            {t('me:noOfTress', {
-              noOfTrees: `${getFormattedRoundedNumber(i18n.language, sum, 2)}`,
-            })}
-          </div>
-        </div>
-      </Marker>
-    );
-  };
+  // const clusterMarker = (coordinates: any, pointCount: any, getLeaves: any) => {
+  //   const nodes = getLeaves(Infinity);
+  //   let sum = 0;
+  //   let key = '';
+  //   nodes.map((node: any) => {
+  //     const item = contributions.find((i: any) => {
+  //       if (i.properties.id === node.key) return true;
+  //     });
+  //     sum += Number(item ? item.properties.treeCount : 0);
+  //     key = item.properties.id;
+  //   });
+  //   return (
+  //     <Marker key={key} coordinates={coordinates} anchor="bottom">
+  //       <div
+  //         onMouseOver={() => {
+  //           setContributionInfo(null);
+  //           clearTimeout(timer2);
+  //           setClusterInfo({ pointCount, sum });
+  //         }}
+  //         onMouseLeave={() => {
+  //           timer2 = setTimeout(() => setClusterInfo(null), 3000);
+  //         }}
+  //         className={styles.bigMarkerContainer}
+  //       >
+  //         <div className={styles.bigMarker}>
+  //           <div className={styles.treeSvg}>
+  //             <PlantedTreesGreenSvg />
+  //           </div>
+  //         </div>
+  //         <div className={styles.label}>
+  //           {t('me:noOfTress', {
+  //             noOfTrees: `${getFormattedRoundedNumber(i18n.language, sum, 2)}`,
+  //           })}
+  //         </div>
+  //       </div>
+  //     </Marker>
+  //   );
+  // };
 
   return (
     <div className={styles.mapContainer}>
@@ -128,7 +112,7 @@ export default function MyTreesMap({
           width: '100%',
         }}
       >
-        {contributions && (
+        {/* {contributions && (
           <Cluster
             ClusterMarkerFactory={clusterMarker}
             zoomOnClick={true}
@@ -170,7 +154,7 @@ export default function MyTreesMap({
                   ))
               : null}
           </Cluster>
-        )}
+        )} */}
         {geoJson ? (
           <GeoJSONLayer
             data={geoJson}
@@ -184,7 +168,7 @@ export default function MyTreesMap({
             }}
           />
         ) : null}
-        {contributionInfo ? (
+        {/* {contributionInfo ? (
           <>
             <div className={styles.contributionInfo}>
               <div key={contributionInfo.properties.id} className={styles.tree}>
@@ -309,7 +293,7 @@ export default function MyTreesMap({
               </div>
             </div>
           </>
-        ) : null}
+        ) : null} */}
         <ZoomControl position="bottom-right" />
       </Map>
     </div>
