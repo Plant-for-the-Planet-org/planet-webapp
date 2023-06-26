@@ -1,5 +1,5 @@
 import { useTranslation } from 'next-i18next';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import myForestStyles from '../styles/MyForest.module.scss';
 import TreeCounter from '../../../common/TreeCounter/TreeCounter';
@@ -7,9 +7,14 @@ import { EditTargetSvg } from '../../../../../public/assets/images/ProfilePageIc
 import AddTargetModal from '../../Profile/components/AddTargetModal';
 import ContributedProjectList from './ContributedProjectList';
 
-const TreeContributedProjectList = (props) => {
+const TreeContributedProjectList = ({
+  contribution,
+  userprofile,
+  authenticatedType,
+}) => {
   const { t } = useTranslation(['me']);
   const [isAddTargetModalOpen, setIsAddTargetModalOpen] = useState(false);
+  const [restorationProject, setRestorationProject] = useState([]);
 
   const handleAddTargetModalOpen = () => {
     setIsAddTargetModalOpen(true);
@@ -18,23 +23,33 @@ const TreeContributedProjectList = (props) => {
   const handleAddTargetModalClose = () => {
     setIsAddTargetModalOpen(false);
   };
+
+  useEffect(() => {
+    if (contribution) {
+      const _treesPlantedProject = contribution.filter((project) => {
+        if (project.purpose === 'trees' || project.purpose === 'bouquet')
+          return project;
+      });
+      setRestorationProject(_treesPlantedProject);
+    }
+  }, []);
+
   return (
     <div className={myForestStyles.mainContainer}>
       <div className={myForestStyles.treeCounterContainer}>
         <div className={myForestStyles.treeCounter}>
           {' '}
-          {props?.userprofile && (
+          {userprofile && (
             <TreeCounter
               handleAddTargetModalOpen={() => {
                 setIsAddTargetModalOpen(true);
               }}
-              authenticatedType={props.authenticatedType}
-              target={props.userprofile?.score?.target}
+              authenticatedType={authenticatedType}
+              target={userprofile?.score?.target}
               planted={
-                props.userprofile?.type === 'tpo'
-                  ? props.userprofile?.score.personal
-                  : props.userprofile?.score.personal +
-                    props.userprofile?.score.received
+                userprofile?.type === 'tpo'
+                  ? userprofile?.score.personal
+                  : userprofile?.score.personal + userprofile?.score.received
               }
             />
           )}
@@ -69,7 +84,7 @@ const TreeContributedProjectList = (props) => {
         </div>
         <ContributedProjectList
           isConservedButtonActive={undefined}
-          contributionProjectList={props.contribution}
+          contributionProjectList={restorationProject}
         />
       </div>
     </div>
