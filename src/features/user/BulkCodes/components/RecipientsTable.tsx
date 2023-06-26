@@ -15,6 +15,10 @@ import Tooltip from '@mui/material/Tooltip';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import NewRow from './NewRow';
 import styles from '../BulkCodes.module.scss';
+import { Box, IconButton } from '@mui/material';
+import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
+import DeleteIcon from '../../../../../public/assets/images/icons/DeleteIcon';
+import themeProperties from '../../../../theme/themeProperties';
 
 interface RecipientsTableProps {
   headers: TableHeader[];
@@ -77,9 +81,43 @@ const RecipientsTable = ({
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((recipient, index) => {
                 return (
-                  <TableRow hover tabIndex={-1} key={index}>
-                    {/* Empty cell - to add edit/delete actions here */}
-                    <TableCell></TableCell>
+                  <TableRow tabIndex={-1} key={index}>
+                    <TableCell align="center" sx={{ minWidth: '80px' }}>
+                      <Box
+                        sx={{
+                          display: 'inline-flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          margin: '0 3px',
+                        }}
+                      >
+                        <IconButton
+                          size="small"
+                          aria-label="edit recipient"
+                          title="Edit Recipient"
+                          color="primary"
+                        >
+                          <EditIcon color={themeProperties.primaryColor} />
+                        </IconButton>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: 'inline-flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          margin: '0 3px',
+                        }}
+                      >
+                        <IconButton
+                          size="small"
+                          aria-label="delete recipient"
+                          title="Delete Recipient"
+                          color="primary"
+                        >
+                          <DeleteIcon color={themeProperties.primaryColor} />
+                        </IconButton>
+                      </Box>
+                    </TableCell>
                     {headers.map((header) => {
                       const value = recipient[header.key];
                       return <TableCell key={header.key}>{value}</TableCell>;
