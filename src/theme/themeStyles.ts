@@ -84,13 +84,6 @@ const materialTheme = createTheme({
         },
       },
     },
-    MuiIconButton: {
-      styleOverrides: {
-        sizeSmall: {
-          padding: 0,
-        },
-      },
-    },
     MuiTab: {
       styleOverrides: {
         root: {

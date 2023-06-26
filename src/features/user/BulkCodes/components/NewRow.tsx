@@ -11,7 +11,7 @@ import { useTranslation } from 'next-i18next';
 import { DevTool } from '@hookform/devtools';
 import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect';
 import { Recipient } from '../BulkCodesTypes';
-import PlusIcon from '../../../../../public/assets/images/icons/PlusIcon';
+import AddIcon from '../../../../../public/assets/images/icons/AddIcon';
 import themeProperties from '../../../../theme/themeProperties';
 import { isEmailValid } from '../../../../utils/isEmailValid';
 import { SetState } from '../../../common/types/common';
@@ -68,13 +68,13 @@ const NewRow = ({ setRecipients }: Props) => {
               }}
             >
               <IconButton
-                size="small"
+                size="medium"
                 type="submit"
                 aria-label="add a recipient"
                 title={t('titleAddRecipientButton')}
                 color="primary"
               >
-                <PlusIcon color={themeProperties.primaryColor} />
+                <AddIcon color={themeProperties.primaryColor} />
               </IconButton>
             </Box>
           </form>
