@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState, ChangeEvent } from 'react';
 
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -19,6 +19,8 @@ import { Box, IconButton } from '@mui/material';
 import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
 import DeleteIcon from '../../../../../public/assets/images/icons/DeleteIcon';
 import themeProperties from '../../../../theme/themeProperties';
+import AcceptIcon from '../../../../../public/assets/images/icons/AcceptIcon';
+import RejectIcon from '../../../../../public/assets/images/icons/RejectIcon';
 
 interface RecipientsTableProps {
   headers: TableHeader[];
@@ -31,18 +33,32 @@ const RecipientsTable = ({
   recipients,
   setRecipients,
 }: RecipientsTableProps): ReactElement => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [isEditActive, setIsEditActive] = useState(false);
+  const [editIndex, setEditIndex] = useState<number | null>(null);
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const enterEditMode = (index: number): void => {
+    setIsEditActive(true);
+    setEditIndex(index);
+  };
+
+  const exitEditMode = (): void => {
+    setIsEditActive(false);
+    setEditIndex(null);
+  };
+
+  const handleChangePage = (event: unknown, newPage: number): void => {
     setPage(newPage);
+    exitEditMode();
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+    event: ChangeEvent<HTMLInputElement>
+  ): void => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+    exitEditMode();
   };
 
   return (
@@ -91,14 +107,30 @@ const RecipientsTable = ({
                           margin: '0 3px',
                         }}
                       >
-                        <IconButton
-                          size="small"
-                          aria-label="edit recipient"
-                          title="Edit Recipient"
-                          color="primary"
-                        >
-                          <EditIcon color={themeProperties.primaryColor} />
-                        </IconButton>
+                        {isEditActive ? (
+                          editIndex === index && (
+                            <IconButton
+                              size="small"
+                              aria-label="save edited recipient"
+                              title="Save Recipient"
+                              color="primary"
+                            >
+                              <AcceptIcon
+                                color={themeProperties.primaryColor}
+                              />
+                            </IconButton>
+                          )
+                        ) : (
+                          <IconButton
+                            size="small"
+                            aria-label="edit recipient"
+                            title="Edit Recipient"
+                            color="primary"
+                            onClick={() => enterEditMode(index)}
+                          >
+                            <EditIcon color={themeProperties.primaryColor} />
+                          </IconButton>
+                        )}
                       </Box>
                       <Box
                         sx={{
@@ -108,14 +140,30 @@ const RecipientsTable = ({
                           margin: '0 3px',
                         }}
                       >
-                        <IconButton
-                          size="small"
-                          aria-label="delete recipient"
-                          title="Delete Recipient"
-                          color="primary"
-                        >
-                          <DeleteIcon color={themeProperties.primaryColor} />
-                        </IconButton>
+                        {isEditActive ? (
+                          editIndex === index && (
+                            <IconButton
+                              size="small"
+                              aria-label="cancel"
+                              title="Cancel"
+                              color="primary"
+                              onClick={exitEditMode}
+                            >
+                              <RejectIcon
+                                color={themeProperties.primaryColor}
+                              />
+                            </IconButton>
+                          )
+                        ) : (
+                          <IconButton
+                            size="small"
+                            aria-label="delete recipient"
+                            title="Delete Recipient"
+                            color="primary"
+                          >
+                            <DeleteIcon color={themeProperties.primaryColor} />
+                          </IconButton>
+                        )}
                       </Box>
                     </TableCell>
                     {headers.map((header) => {
