@@ -20,7 +20,7 @@ interface Props {
   setLocalRecipients: SetState<Recipient[]>;
 }
 
-const NewRow = ({ setLocalRecipients }: Props) => {
+const AddRecipient = ({ setLocalRecipients }: Props) => {
   const { t } = useTranslation('bulkCodes');
   const {
     control,
@@ -179,4 +179,4 @@ const NewRow = ({ setLocalRecipients }: Props) => {
   );
 };
 
-export default NewRow;
+export default AddRecipient;

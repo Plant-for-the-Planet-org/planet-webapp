@@ -13,7 +13,7 @@ import { SetState } from '../../../common/types/common';
 import { Recipient, TableHeader } from '../BulkCodesTypes';
 import Tooltip from '@mui/material/Tooltip';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
-import NewRow from './NewRow';
+import AddRecipient from './AddRecipient';
 import styles from '../BulkCodes.module.scss';
 import { Box, IconButton } from '@mui/material';
 import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
@@ -92,7 +92,7 @@ const RecipientsTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            <NewRow setLocalRecipients={setLocalRecipients} />
+            <AddRecipient setLocalRecipients={setLocalRecipients} />
             {localRecipients
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((recipient, index) => {
