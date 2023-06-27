@@ -17,10 +17,10 @@ import { isEmailValid } from '../../../../utils/isEmailValid';
 import { SetState } from '../../../common/types/common';
 
 interface Props {
-  setRecipients: SetState<Recipient[]>;
+  setLocalRecipients: SetState<Recipient[]>;
 }
 
-const NewRow = ({ setRecipients }: Props) => {
+const NewRow = ({ setLocalRecipients }: Props) => {
   const { t } = useTranslation('bulkCodes');
   const {
     control,
@@ -41,7 +41,10 @@ const NewRow = ({ setRecipients }: Props) => {
   const hasErrors = Object.keys(errors).length > 0;
 
   const handleSave = (newRecipient: Recipient): void => {
-    setRecipients((currentRecipients) => [newRecipient, ...currentRecipients]);
+    setLocalRecipients((currentRecipients) => [
+      newRecipient,
+      ...currentRecipients,
+    ]);
     reset();
   };
 

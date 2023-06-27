@@ -24,14 +24,14 @@ import RejectIcon from '../../../../../public/assets/images/icons/RejectIcon';
 
 interface RecipientsTableProps {
   headers: TableHeader[];
-  recipients: Recipient[];
-  setRecipients: SetState<Recipient[]>;
+  localRecipients: Recipient[];
+  setLocalRecipients: SetState<Recipient[]>;
 }
 
 const RecipientsTable = ({
   headers,
-  recipients,
-  setRecipients,
+  localRecipients,
+  setLocalRecipients,
 }: RecipientsTableProps): ReactElement => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -92,8 +92,8 @@ const RecipientsTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            <NewRow setRecipients={setRecipients} />
-            {recipients
+            <NewRow setLocalRecipients={setLocalRecipients} />
+            {localRecipients
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((recipient, index) => {
                 return (
@@ -179,7 +179,7 @@ const RecipientsTable = ({
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={recipients.length}
+        count={localRecipients.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

@@ -1,4 +1,4 @@
-import { useState, ReactElement, useEffect, useMemo } from 'react';
+import { useState, ReactElement, useMemo } from 'react';
 import { parse, ParseResult } from 'papaparse';
 import { useTranslation, Trans } from 'next-i18next';
 import UploadWidget from './UploadWidget';
@@ -13,6 +13,7 @@ import {
 
 import styles from '../BulkCodes.module.scss';
 import { isEmailValid } from '../../../../utils/isEmailValid';
+import { SetState } from '../../../common/types/common';
 
 const acceptedHeaders: (keyof Recipient)[] = [
   'recipient_name',
@@ -26,12 +27,12 @@ const acceptedHeaders: (keyof Recipient)[] = [
 const MAX_RECIPIENTS = 1000;
 
 interface RecipientsUploadFormProps {
-  onRecipientsUpdated: (recipients: Recipient[]) => void;
+  setLocalRecipients: SetState<Recipient[]>;
   localRecipients: Recipient[];
 }
 
 const RecipientsUploadForm = ({
-  onRecipientsUpdated,
+  setLocalRecipients,
   localRecipients,
 }: RecipientsUploadFormProps): ReactElement => {
   const { t, ready } = useTranslation(['bulkCodes']);
@@ -39,9 +40,6 @@ const RecipientsUploadForm = ({
   const [status, setStatus] = useState<UploadStates>('empty');
   const [parseError, setParseError] = useState<FileImportError | null>(null);
   const [hasIgnoredColumns, setHasIgnoredColumns] = useState(false);
-  const [recipients, setRecipients] = useState<Recipient[]>(
-    localRecipients as Recipient[]
-  );
   const headers = useMemo<TableHeader[]>(() => {
     if (ready) {
       return acceptedHeaders.map((header) => ({
@@ -56,7 +54,7 @@ const RecipientsUploadForm = ({
   const handleStatusChange = (newStatus: UploadStates) => {
     setStatus(newStatus);
     if (newStatus !== 'success') {
-      setRecipients([]);
+      setLocalRecipients([]);
     }
   };
 
@@ -177,7 +175,7 @@ const RecipientsUploadForm = ({
     });
   };
 
-  const processFileContents = (fileContents: string) => {
+  const processFileContents = (fileContents: string): void => {
     parse(fileContents, {
       header: true,
       skipEmptyLines: 'greedy',
@@ -197,7 +195,7 @@ const RecipientsUploadForm = ({
             );
 
             if (validatedRecipients) {
-              setRecipients(validatedRecipients);
+              setLocalRecipients(validatedRecipients);
               setParseError(null);
               handleStatusChange('success');
             }
@@ -231,10 +229,6 @@ const RecipientsUploadForm = ({
     });
   };
 
-  useEffect(() => {
-    onRecipientsUpdated(recipients);
-  }, [recipients]);
-
   return (
     <>
       <UploadWidget
@@ -262,8 +256,8 @@ const RecipientsUploadForm = ({
       </p>
       <RecipientsTable
         headers={headers}
-        recipients={recipients}
-        setRecipients={setRecipients}
+        localRecipients={localRecipients}
+        setLocalRecipients={setLocalRecipients}
       />
     </>
   );
