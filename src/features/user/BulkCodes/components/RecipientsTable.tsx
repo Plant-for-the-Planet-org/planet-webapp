@@ -25,12 +25,14 @@ interface RecipientsTableProps {
   headers: TableHeader[];
   localRecipients: Recipient[];
   setLocalRecipients: SetState<Recipient[]>;
+  canAddRecipients?: boolean;
 }
 
 const RecipientsTable = ({
   headers,
   localRecipients,
   setLocalRecipients,
+  canAddRecipients = true,
 }: RecipientsTableProps): ReactElement => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -109,7 +111,7 @@ const RecipientsTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {!isEditActive && (
+            {!isEditActive && canAddRecipients && (
               <AddRecipient setLocalRecipients={setLocalRecipients} />
             )}
             {localRecipients

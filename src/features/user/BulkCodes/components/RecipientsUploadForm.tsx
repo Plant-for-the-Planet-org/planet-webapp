@@ -258,6 +258,7 @@ const RecipientsUploadForm = ({
         headers={headers}
         localRecipients={localRecipients}
         setLocalRecipients={setLocalRecipients}
+        canAddRecipients={localRecipients.length < MAX_RECIPIENTS}
       />
     </>
   );
