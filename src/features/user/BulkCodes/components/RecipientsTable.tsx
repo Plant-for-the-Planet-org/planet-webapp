@@ -70,6 +70,14 @@ const RecipientsTable = ({
     }
   };
 
+  const deleteRecipient = (deleteIndex: number): void => {
+    const absoluteDeleteIndex = page * rowsPerPage + deleteIndex;
+    const _localRecipients = localRecipients.filter(
+      (_recipient, index) => index !== absoluteDeleteIndex
+    );
+    setLocalRecipients(_localRecipients);
+  };
+
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
@@ -153,6 +161,7 @@ const RecipientsTable = ({
                             aria-label="delete recipient"
                             title="Delete Recipient"
                             color="primary"
+                            onClick={() => deleteRecipient(index)}
                           >
                             <DeleteIcon color={themeProperties.primaryColor} />
                           </IconButton>
