@@ -112,6 +112,7 @@ const RecipientsTable = ({
                     exitEditMode={exitEditMode}
                     recipient={recipient}
                     updateRecipient={updateRecipient}
+                    key={index}
                   />
                 ) : (
                   <TableRow tabIndex={-1} key={index}>
