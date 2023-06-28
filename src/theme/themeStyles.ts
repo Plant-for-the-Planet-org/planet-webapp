@@ -116,6 +116,13 @@ const materialTheme = createTheme({
         },
       },
     },
+    MuiAutocomplete: {
+      styleOverrides: {
+        option: {
+          fontSize: '0.875rem',
+        },
+      },
+    },
   },
 });
 

@@ -9,7 +9,7 @@ import {
   styled,
   TextField,
 } from '@mui/material';
-import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountryNew';
+import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 import { useForm, Controller } from 'react-hook-form';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';

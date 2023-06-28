@@ -1,9 +1,12 @@
 import CssBaseline from '@mui/material/CssBaseline';
+import { CacheProvider, EmotionCache } from '@emotion/react';
+import createEmotionCache from '../src/createEmotionCache';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
 import React from 'react';
 import TagManager from 'react-gtm-module';
 import Router from 'next/router';
+import { AppProps } from 'next/app';
 import { Auth0Provider } from '@auth0/auth0-react';
 import '../src/features/projects/styles/MapPopup.scss';
 import '../src/theme/global.scss';
@@ -96,7 +99,18 @@ const onRedirectCallback = (appState: any) => {
   if (appState) Router.replace(appState?.returnTo || '/');
 };
 
-const PlanetWeb = ({ Component, pageProps }: any) => {
+// Client-side cache, shared for the whole session of the user in the browser.
+const clientSideEmotionCache = createEmotionCache();
+
+export interface MyAppProps extends AppProps {
+  emotionCache?: EmotionCache;
+}
+
+const PlanetWeb = ({
+  Component,
+  pageProps,
+  emotionCache = clientSideEmotionCache,
+}: MyAppProps) => {
   const { i18n } = useTranslation();
   const router = useRouter();
   const [isMap, setIsMap] = React.useState(false);
@@ -204,87 +218,92 @@ const PlanetWeb = ({ Component, pageProps }: any) => {
     return <BrowserNotSupported />;
   } else {
     return (
-      <ErrorHandlingProvider>
-        <QueryParamsProvider>
-          <div>
-            <div
-              style={
-                showVideo &&
-                (config.tenantName === 'planet' || config.tenantName === 'ttc')
-                  ? {}
-                  : { display: 'none' }
-              }
-            >
-              {config.tenantName === 'planet' || config.tenantName === 'ttc' ? (
-                <VideoContainer setshowVideo={setshowVideo} />
-              ) : (
-                <></>
-              )}
-            </div>
-
-            <div
-              style={
-                showVideo &&
-                (config.tenantName === 'planet' || config.tenantName === 'ttc')
-                  ? { display: 'none' }
-                  : {}
-              }
-            >
-              <Auth0Provider
-                domain={process.env.AUTH0_CUSTOM_DOMAIN}
-                clientId={process.env.AUTH0_CLIENT_ID}
-                redirectUri={process.env.NEXTAUTH_URL}
-                audience={'urn:plant-for-the-planet'}
-                cacheLocation={'localstorage'}
-                onRedirectCallback={onRedirectCallback}
-                useRefreshTokens={true}
+      <CacheProvider value={emotionCache}>
+        <ErrorHandlingProvider>
+          <QueryParamsProvider>
+            <div>
+              <div
+                style={
+                  showVideo &&
+                  (config.tenantName === 'planet' ||
+                    config.tenantName === 'ttc')
+                    ? {}
+                    : { display: 'none' }
+                }
               >
-                <ThemeProvider>
-                  <MuiThemeProvider theme={materialTheme}>
-                    <CssBaseline />
-                    <UserPropsProvider>
-                      <PlanetCashProvider>
-                        <PayoutsProvider>
-                          <Layout>
-                            <ProjectPropsProvider>
-                              <BulkCodeProvider>
-                                <AnalyticsProvider>
-                                  {isMap ? (
-                                    <>
-                                      {project ? (
-                                        <MapLayout />
-                                      ) : projects ? (
-                                        <MapLayout />
-                                      ) : null}
-                                      <div
-                                        style={
-                                          config.tenantName === 'planet' ||
-                                          config.tenantName === 'ttc'
-                                            ? {}
-                                            : { display: 'none' }
-                                        }
-                                      >
-                                        <PlayButton
-                                          setshowVideo={setshowVideo}
-                                        />
-                                      </div>
-                                    </>
-                                  ) : null}
-                                  <Component {...ProjectProps} />
-                                </AnalyticsProvider>
-                              </BulkCodeProvider>
-                            </ProjectPropsProvider>
-                          </Layout>
-                        </PayoutsProvider>
-                      </PlanetCashProvider>
-                    </UserPropsProvider>
-                  </MuiThemeProvider>
-                </ThemeProvider>
-              </Auth0Provider>
+                {config.tenantName === 'planet' ||
+                config.tenantName === 'ttc' ? (
+                  <VideoContainer setshowVideo={setshowVideo} />
+                ) : (
+                  <></>
+                )}
+              </div>
+
+              <div
+                style={
+                  showVideo &&
+                  (config.tenantName === 'planet' ||
+                    config.tenantName === 'ttc')
+                    ? { display: 'none' }
+                    : {}
+                }
+              >
+                <Auth0Provider
+                  domain={process.env.AUTH0_CUSTOM_DOMAIN}
+                  clientId={process.env.AUTH0_CLIENT_ID}
+                  redirectUri={process.env.NEXTAUTH_URL}
+                  audience={'urn:plant-for-the-planet'}
+                  cacheLocation={'localstorage'}
+                  onRedirectCallback={onRedirectCallback}
+                  useRefreshTokens={true}
+                >
+                  <ThemeProvider>
+                    <MuiThemeProvider theme={materialTheme}>
+                      <CssBaseline />
+                      <UserPropsProvider>
+                        <PlanetCashProvider>
+                          <PayoutsProvider>
+                            <Layout>
+                              <ProjectPropsProvider>
+                                <BulkCodeProvider>
+                                  <AnalyticsProvider>
+                                    {isMap ? (
+                                      <>
+                                        {project ? (
+                                          <MapLayout />
+                                        ) : projects ? (
+                                          <MapLayout />
+                                        ) : null}
+                                        <div
+                                          style={
+                                            config.tenantName === 'planet' ||
+                                            config.tenantName === 'ttc'
+                                              ? {}
+                                              : { display: 'none' }
+                                          }
+                                        >
+                                          <PlayButton
+                                            setshowVideo={setshowVideo}
+                                          />
+                                        </div>
+                                      </>
+                                    ) : null}
+                                    <Component {...ProjectProps} />
+                                  </AnalyticsProvider>
+                                </BulkCodeProvider>
+                              </ProjectPropsProvider>
+                            </Layout>
+                          </PayoutsProvider>
+                        </PlanetCashProvider>
+                      </UserPropsProvider>
+                    </MuiThemeProvider>
+                  </ThemeProvider>
+                </Auth0Provider>
+              </div>
             </div>
-          </div>
-        </QueryParamsProvider>
-      </ErrorHandlingProvider>
+          </QueryParamsProvider>
+        </ErrorHandlingProvider>
+      </CacheProvider>
     );
   }
 };
