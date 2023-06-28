@@ -112,7 +112,7 @@ const materialTheme = createTheme({
           verticalAlign: 'top',
         },
         root: {
-          padding: '6px 8px',
+          padding: '6px',
         },
       },
     },
@@ -121,6 +121,18 @@ const materialTheme = createTheme({
         option: {
           fontSize: '0.875rem',
         },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        inputSizeSmall: {
+          padding: '8.5px',
+        },
+        multiline: ({ ownerState }) => ({
+          ...(ownerState.size === 'small' && {
+            padding: 0,
+          }),
+        }),
       },
     },
   },

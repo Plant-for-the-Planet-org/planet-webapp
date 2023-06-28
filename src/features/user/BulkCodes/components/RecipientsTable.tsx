@@ -19,8 +19,7 @@ import { Box, IconButton } from '@mui/material';
 import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
 import DeleteIcon from '../../../../../public/assets/images/icons/DeleteIcon';
 import themeProperties from '../../../../theme/themeProperties';
-import AcceptIcon from '../../../../../public/assets/images/icons/AcceptIcon';
-import RejectIcon from '../../../../../public/assets/images/icons/RejectIcon';
+import UpdateRecipient from './UpdateRecipient';
 
 interface RecipientsTableProps {
   headers: TableHeader[];
@@ -61,6 +60,16 @@ const RecipientsTable = ({
     exitEditMode();
   };
 
+  const updateRecipient = (updatedRecipient: Recipient): void => {
+    if (editIndex !== null) {
+      const absoluteEditIndex = page * rowsPerPage + editIndex;
+      const _localRecipients = [...localRecipients];
+      _localRecipients[absoluteEditIndex] = updatedRecipient;
+      setLocalRecipients(_localRecipients);
+      exitEditMode();
+    }
+  };
+
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
@@ -92,35 +101,31 @@ const RecipientsTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            <AddRecipient setLocalRecipients={setLocalRecipients} />
+            {!isEditActive && (
+              <AddRecipient setLocalRecipients={setLocalRecipients} />
+            )}
             {localRecipients
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((recipient, index) => {
-                return (
+                return isEditActive && editIndex === index ? (
+                  <UpdateRecipient
+                    exitEditMode={exitEditMode}
+                    recipient={recipient}
+                    updateRecipient={updateRecipient}
+                  />
+                ) : (
                   <TableRow tabIndex={-1} key={index}>
                     <TableCell align="center" sx={{ minWidth: '80px' }}>
                       <Box
                         sx={{
+                          height: 40,
                           display: 'inline-flex',
                           justifyContent: 'center',
                           alignItems: 'center',
                           margin: '0 3px',
                         }}
                       >
-                        {isEditActive ? (
-                          editIndex === index && (
-                            <IconButton
-                              size="small"
-                              aria-label="save edited recipient"
-                              title="Save Recipient"
-                              color="primary"
-                            >
-                              <AcceptIcon
-                                color={themeProperties.primaryColor}
-                              />
-                            </IconButton>
-                          )
-                        ) : (
+                        {!isEditActive && (
                           <IconButton
                             size="small"
                             aria-label="edit recipient"
@@ -134,27 +139,14 @@ const RecipientsTable = ({
                       </Box>
                       <Box
                         sx={{
+                          height: 40,
                           display: 'inline-flex',
                           justifyContent: 'center',
                           alignItems: 'center',
                           margin: '0 3px',
                         }}
                       >
-                        {isEditActive ? (
-                          editIndex === index && (
-                            <IconButton
-                              size="small"
-                              aria-label="cancel"
-                              title="Cancel"
-                              color="primary"
-                              onClick={exitEditMode}
-                            >
-                              <RejectIcon
-                                color={themeProperties.primaryColor}
-                              />
-                            </IconButton>
-                          )
-                        ) : (
+                        {!isEditActive && (
                           <IconButton
                             size="small"
                             aria-label="delete recipient"

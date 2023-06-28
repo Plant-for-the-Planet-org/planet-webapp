@@ -11,16 +11,22 @@ import { useTranslation } from 'next-i18next';
 import { DevTool } from '@hookform/devtools';
 import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect';
 import { Recipient } from '../BulkCodesTypes';
-import AddIcon from '../../../../../public/assets/images/icons/AddIcon';
 import themeProperties from '../../../../theme/themeProperties';
 import { isEmailValid } from '../../../../utils/isEmailValid';
-import { SetState } from '../../../common/types/common';
+import AcceptIcon from '../../../../../public/assets/images/icons/AcceptIcon';
+import RejectIcon from '../../../../../public/assets/images/icons/RejectIcon';
 
 interface Props {
-  setLocalRecipients: SetState<Recipient[]>;
+  recipient: Recipient;
+  updateRecipient: (updatedRecipient: Recipient) => void;
+  exitEditMode: () => void;
 }
 
-const AddRecipient = ({ setLocalRecipients }: Props) => {
+const UpdateRecipient = ({
+  recipient,
+  updateRecipient,
+  exitEditMode,
+}: Props) => {
   const { t } = useTranslation('bulkCodes');
   const {
     control,
@@ -29,22 +35,13 @@ const AddRecipient = ({ setLocalRecipients }: Props) => {
     reset,
   } = useForm<Recipient>({
     mode: 'onBlur',
-    defaultValues: {
-      recipient_name: '',
-      recipient_email: '',
-      recipient_notify: 'no',
-      units: '',
-      recipient_message: '',
-    },
+    defaultValues: recipient,
   });
 
   const hasErrors = Object.keys(errors).length > 0;
 
-  const handleSave = (newRecipient: Recipient): void => {
-    setLocalRecipients((currentRecipients) => [
-      newRecipient,
-      ...currentRecipients,
-    ]);
+  const handleUpdate = (updatedRecipient: Recipient): void => {
+    updateRecipient(updatedRecipient);
     reset();
   };
 
@@ -60,27 +57,50 @@ const AddRecipient = ({ setLocalRecipients }: Props) => {
   return (
     <>
       <TableRow sx={hasErrors ? { verticalAlign: 'top' } : {}}>
-        <TableCell>
-          <form onSubmit={handleSubmit(handleSave)}>
+        <TableCell align="center" sx={{ minWidth: '80px' }}>
+          <form
+            style={{ display: 'inline' }}
+            onSubmit={handleSubmit(handleUpdate)}
+          >
             <Box
               sx={{
                 height: 40,
-                display: 'flex',
+                display: 'inline-flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                margin: '0 3px',
               }}
             >
               <IconButton
-                size="medium"
-                type="submit"
-                aria-label="add a recipient"
-                title={t('titleAddRecipientButton')}
+                size="small"
+                aria-label="save edited recipient"
+                title="Save Recipient"
                 color="primary"
+                type="submit"
               >
-                <AddIcon color={themeProperties.primaryColor} />
+                <AcceptIcon color={themeProperties.primaryColor} />
               </IconButton>
             </Box>
           </form>
+          <Box
+            sx={{
+              height: 40,
+              display: 'inline-flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              margin: '0 3px',
+            }}
+          >
+            <IconButton
+              size="small"
+              aria-label="cancel"
+              title="Cancel"
+              color="primary"
+              onClick={exitEditMode}
+            >
+              <RejectIcon color={themeProperties.primaryColor} />
+            </IconButton>
+          </Box>
         </TableCell>
         <TableCell>
           <Controller
@@ -93,6 +113,7 @@ const AddRecipient = ({ setLocalRecipients }: Props) => {
             }}
             render={({ field }) => (
               <TextField
+                sx={{ minWidth: 100 }}
                 size="small"
                 {...field}
                 error={errors.recipient_name !== undefined}
@@ -146,7 +167,7 @@ const AddRecipient = ({ setLocalRecipients }: Props) => {
             rules={{ required: t('errorAddRecipient.unitsNotProvided') }}
             render={({ field: { onChange, ..._field } }) => (
               <TextField
-                sx={{ minWidth: 60 }}
+                sx={{ minWidth: 50 }}
                 size="small"
                 {..._field}
                 onChange={(e) => {
@@ -165,7 +186,7 @@ const AddRecipient = ({ setLocalRecipients }: Props) => {
             control={control}
             render={({ field }) => (
               <TextField
-                sx={{ minWidth: 180 }}
+                sx={{ minWidth: 200 }}
                 size="small"
                 multiline
                 maxRows={3}
@@ -180,4 +201,4 @@ const AddRecipient = ({ setLocalRecipients }: Props) => {
   );
 };
 
-export default AddRecipient;
+export default UpdateRecipient;
