@@ -11,6 +11,10 @@ import TreeContributedProjectList from '../../../ProfileV2/components/TreeContri
 import { trpc } from '../../../../../utils/trpc';
 import AreaConservedProjectList from '../../../ProfileV2/components/AreaConservedProjectList';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import {
+  getAuthenticatedRequest,
+  getRequest,
+} from '../../../../../utils/apiRequests/api';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
@@ -76,6 +80,39 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
       }
     }
   }, [detailInfo.isLoading]);
+
+  React.useEffect(() => {
+    async function loadFunction() {
+      if (authenticatedType === 'private' && token) {
+        try {
+          const result = await getAuthenticatedRequest(
+            `/app/profile/contributions`,
+            token,
+            logoutUser
+          );
+          setContributions(result);
+        } catch (err) {
+          setErrors(handleError(err as APIError));
+          redirect('/profile');
+        }
+      } else {
+        try {
+          const result = await getRequest(
+            `/app/profiles/${profile.id}/contributions`
+          );
+          setContributions(result);
+        } catch (err) {
+          setErrors(handleError(err as APIError));
+        }
+      }
+    }
+    loadFunction();
+  }, [profile]);
+
+  const MapProps = {
+    contributions,
+    authenticatedType,
+  };
   // const _contributions = [
   //   {
   //     purpose: 'trees',
@@ -197,7 +234,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   //   },
   // ];
 
-  return donationOtherInfo && contributions && ready ? (
+  return contributions && ready ? (
     <div
       className={myForestStyles.mapMainContainer}
       style={{
@@ -207,8 +244,8 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
             : '10px',
       }}
     >
-      <MyTreesMap />
-      <div className={myForestStyles.mapButtonContainer}>
+      <MyTreesMap {...MapProps} />
+      {/* <div className={myForestStyles.mapButtonContainer}>
         <PlantedTreesButton
           plantedTrees={donationOtherInfo[0].treeCount}
           isTreePlantedButtonActive={isTreePlantedButtonActive}
@@ -242,7 +279,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
           contribution={contributions}
           isConservedButtonActive={isConservedButtonActive}
         />
-      )}
+      )} */}
     </div>
   ) : null;
 }

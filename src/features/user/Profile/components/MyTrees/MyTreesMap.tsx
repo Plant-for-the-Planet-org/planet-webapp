@@ -25,12 +25,15 @@ const Map = ReactMapboxGl({
   maxZoom: 16,
 });
 
-// interface Props {
-//   authenticatedType: string;
-//   contributions: any;
-// }
+interface Props {
+  authenticatedType: string;
+  contributions: any;
+}
 
-export default function MyTreesMap(): ReactElement {
+export default function MyTreesMap({
+  contributions,
+  authenticatedType,
+}): ReactElement {
   const { i18n, t } = useTranslation('me');
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;
@@ -49,10 +52,10 @@ export default function MyTreesMap(): ReactElement {
     layers: [],
   });
 
-  // const [contributionInfo, setContributionInfo] = React.useState(null);
-  // const [clusterInfo, setClusterInfo] = React.useState(null);
-  // let timer1: NodeJS.Timeout;
-  // let timer2: NodeJS.Timeout;
+  const [contributionInfo, setContributionInfo] = React.useState(null);
+  const [clusterInfo, setClusterInfo] = React.useState(null);
+  let timer1: NodeJS.Timeout;
+  let timer2: NodeJS.Timeout;
 
   React.useEffect(() => {
     const promise = getMapStyle('default');
@@ -62,45 +65,45 @@ export default function MyTreesMap(): ReactElement {
       }
     });
   }, []);
-
-  // const clusterMarker = (coordinates: any, pointCount: any, getLeaves: any) => {
-  //   const nodes = getLeaves(Infinity);
-  //   let sum = 0;
-  //   let key = '';
-  //   nodes.map((node: any) => {
-  //     const item = contributions.find((i: any) => {
-  //       if (i.properties.id === node.key) return true;
-  //     });
-  //     sum += Number(item ? item.properties.treeCount : 0);
-  //     key = item.properties.id;
-  //   });
-  //   return (
-  //     <Marker key={key} coordinates={coordinates} anchor="bottom">
-  //       <div
-  //         onMouseOver={() => {
-  //           setContributionInfo(null);
-  //           clearTimeout(timer2);
-  //           setClusterInfo({ pointCount, sum });
-  //         }}
-  //         onMouseLeave={() => {
-  //           timer2 = setTimeout(() => setClusterInfo(null), 3000);
-  //         }}
-  //         className={styles.bigMarkerContainer}
-  //       >
-  //         <div className={styles.bigMarker}>
-  //           <div className={styles.treeSvg}>
-  //             <PlantedTreesGreenSvg />
-  //           </div>
-  //         </div>
-  //         <div className={styles.label}>
-  //           {t('me:noOfTress', {
-  //             noOfTrees: `${getFormattedRoundedNumber(i18n.language, sum, 2)}`,
-  //           })}
-  //         </div>
-  //       </div>
-  //     </Marker>
-  //   );
-  // };
+  console.log(contributions, authenticatedType, '==>');
+  const clusterMarker = (coordinates: any, pointCount: any, getLeaves: any) => {
+    const nodes = getLeaves(Infinity);
+    let sum = 0;
+    let key = '';
+    nodes.map((node: any) => {
+      const item = contributions.find((i: any) => {
+        if (i?.properties?.id === node.key) return true;
+      });
+      sum += Number(item ? item.properties.treeCount : 0);
+      key = item?.properties?.id;
+    });
+    return (
+      <Marker key={key} coordinates={coordinates} anchor="bottom">
+        <div
+          onMouseOver={() => {
+            setContributionInfo(null);
+            clearTimeout(timer2);
+            setClusterInfo({ pointCount, sum });
+          }}
+          onMouseLeave={() => {
+            timer2 = setTimeout(() => setClusterInfo(null), 3000);
+          }}
+          className={styles.bigMarkerContainer}
+        >
+          <div className={styles.bigMarker}>
+            <div className={styles.treeSvg}>
+              <PlantedTreesGreenSvg />
+            </div>
+          </div>
+          <div className={styles.label}>
+            {t('me:noOfTress', {
+              noOfTrees: `${getFormattedRoundedNumber(i18n.language, sum, 2)}`,
+            })}
+          </div>
+        </div>
+      </Marker>
+    );
+  };
 
   return (
     <div className={styles.mapContainer}>
@@ -112,7 +115,7 @@ export default function MyTreesMap(): ReactElement {
           width: '100%',
         }}
       >
-        {/* {contributions && (
+        {contributions && (
           <Cluster
             ClusterMarkerFactory={clusterMarker}
             zoomOnClick={true}
@@ -132,11 +135,15 @@ export default function MyTreesMap(): ReactElement {
                     >
                       <div
                         key={index}
-                        style={
-                          point.properties.type === 'registration'
-                            ? { background: '#3D67B1' }
-                            : {}
-                        }
+                        style={{
+                          height: '26px',
+                          width: '56px',
+                          backgroundColor: '#68B03033',
+                          borderRadius: '40px',
+                          display: 'flex',
+                          gap: '10px',
+                          alignItems: 'center',
+                        }}
                         onMouseOver={() => {
                           setClusterInfo(null);
                           clearTimeout(timer1);
@@ -148,152 +155,32 @@ export default function MyTreesMap(): ReactElement {
                           //   3000
                           // );
                         }}
-                        className={styles.marker}
-                      />
+                      >
+                        <div
+                          style={{
+                            width: '22px',
+                            height: '22px',
+                            backgroundColor: '#FFFFFF',
+                            borderRadius: '50%',
+                            margin: '2px',
+                            display: ' flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <div style={{ marginTop: '6px' }}>
+                            <PlantedTreesGreenSvg />
+                          </div>
+                        </div>
+                        <div style={{ fontWeight: 'bold', fontSize: '16px' }}>
+                          4
+                        </div>
+                      </div>
                     </Marker>
                   ))
               : null}
           </Cluster>
-        )} */}
-        {geoJson ? (
-          <GeoJSONLayer
-            data={geoJson}
-            fillPaint={{
-              'fill-color': '#fff',
-              'fill-opacity': 0.2,
-            }}
-            linePaint={{
-              'line-color': '#3D67B1',
-              'line-width': 2,
-            }}
-          />
-        ) : null}
-        {/* {contributionInfo ? (
-          <>
-            <div className={styles.contributionInfo}>
-              <div key={contributionInfo.properties.id} className={styles.tree}>
-                <div
-                  className={styles.dateRow}
-                  style={{
-                    backgroundColor:
-                      theme === 'theme-light'
-                        ? themeProperties.light.light
-                        : themeProperties.dark.backgroundColorDark,
-                  }}
-                >
-                  {formatDate(contributionInfo.properties.plantDate)}
-                </div>
-                <div className={styles.treeRow}>
-                  <div className={styles.textCol}>
-                    <div className={styles.title}>
-                      {contributionInfo.properties.type === 'registration'
-                        ? t('me:registered')
-                        : contributionInfo.properties.project?.name}
-                    </div>
-                    <div className={styles.country}>
-                      {contributionInfo.properties.country
-                        ? t(
-                            'country:' +
-                              contributionInfo.properties.country.toLowerCase()
-                          )
-                        : null}
-                    </div>
-                    {contributionInfo.properties.type === 'gift' ? (
-                      <div className={styles.source}>
-                        {contributionInfo.properties.giver.name
-                          ? t('me:receivedFrom', {
-                              name: contributionInfo.properties.giver.name,
-                            })
-                          : t('me:receivedTrees')}
-                      </div>
-                    ) : null}
-                    {contributionInfo.properties.type === 'redeem' ? (
-                      <div className={styles.source}>
-                        {t('me:redeemedTrees')}
-                      </div>
-                    ) : null}
-                    {contributionInfo.properties.type === 'donation' ? (
-                      <div className={styles.source}>
-                        {contributionInfo.properties.recipient
-                          ? t('me:giftToGiftee', {
-                              gifteeName:
-                                contributionInfo.properties.recipient.name,
-                            })
-                          : null}
-                      </div>
-                    ) : null}
-                  </div>
-                  <div className={styles.numberCol}>
-                    <div className={styles.treeIcon}>
-                      <div
-                        style={
-                          contributionInfo.properties.type === 'registration'
-                            ? { color: '#3D67B1' }
-                            : {}
-                        }
-                        className={styles.number}
-                      >
-                        {getFormattedNumber(
-                          i18n.language,
-                          Number(contributionInfo.properties.treeCount)
-                        )}
-                      </div>
-                      <div className={styles.icon}>
-                        {contributionInfo.properties.treeCount > 1 ? (
-                          <TreesIcon
-                            color={
-                              contributionInfo.properties.type ===
-                              'registration'
-                                ? '#3D67B1'
-                                : null
-                            }
-                          />
-                        ) : (
-                          <TreeIcon
-                            color={
-                              contributionInfo.properties.type ===
-                              'registration'
-                                ? '#3D67B1'
-                                : null
-                            }
-                          />
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </>
-        ) : null}
-        {clusterInfo ? (
-          <>
-            <div className={styles.contributionInfo}>
-              <div className={styles.tree}>
-                <div className={styles.treeRow}>
-                  <div className={styles.textCol}>
-                    <div className={styles.title}>
-                      {`${clusterInfo.pointCount} ${t('contributions')}`}
-                    </div>
-                  </div>
-                  <div className={styles.numberCol}>
-                    <div className={styles.treeIcon}>
-                      <div className={styles.number}>
-                        {getFormattedNumber(
-                          i18n.language,
-                          Number(clusterInfo.sum)
-                        )}
-                      </div>
-                      <div className={styles.icon}>
-                        {clusterInfo.sum > 1 ? <TreesIcon /> : <TreeIcon />}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </>
-        ) : null} */}
+        )}
         <ZoomControl position="bottom-right" />
       </Map>
     </div>
