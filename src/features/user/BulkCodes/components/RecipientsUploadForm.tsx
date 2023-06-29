@@ -237,6 +237,7 @@ const RecipientsUploadForm = ({
         onFileUploaded={processFileContents}
         parseError={parseError}
         hasIgnoredColumns={hasIgnoredColumns}
+        shouldWarn={localRecipients.length > 0}
       />
       <p className={styles.uploadInstructions}>
         <Trans i18nKey="bulkCodes:importInstructions">

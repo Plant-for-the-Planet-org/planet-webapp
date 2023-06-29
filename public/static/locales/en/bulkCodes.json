@@ -108,5 +108,6 @@
   "notifyRecipientOptions": {
     "yes": "Yes",
     "no": "No"
-  }
+  },
+  "fileUploadWarning": "This will remove your existing recipient data, do you want to continue?",
 }
