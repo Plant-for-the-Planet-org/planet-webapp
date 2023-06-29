@@ -15,17 +15,19 @@ import AddIcon from '../../../../../public/assets/images/icons/AddIcon';
 import themeProperties from '../../../../theme/themeProperties';
 import { isEmailValid } from '../../../../utils/isEmailValid';
 import { SetState } from '../../../common/types/common';
+import { useEffect } from 'react';
 
 interface Props {
   setLocalRecipients: SetState<Recipient[]>;
+  setIsAddingRecipient: SetState<boolean>;
 }
 
-const AddRecipient = ({ setLocalRecipients }: Props) => {
+const AddRecipient = ({ setLocalRecipients, setIsAddingRecipient }: Props) => {
   const { t } = useTranslation('bulkCodes');
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, dirtyFields },
     reset,
   } = useForm<Recipient>({
     mode: 'onBlur',
@@ -56,6 +58,13 @@ const AddRecipient = ({ setLocalRecipients }: Props) => {
       ? t('errorAddRecipient.requiredForNotifications')
       : true;
   };
+
+  useEffect(() => {
+    setIsAddingRecipient(Object.keys(dirtyFields).length !== 0);
+    return () => {
+      setIsAddingRecipient(false);
+    };
+  }, [Object.keys(dirtyFields).length]);
 
   return (
     <>

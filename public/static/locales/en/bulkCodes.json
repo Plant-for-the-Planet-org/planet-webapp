@@ -110,4 +110,5 @@
     "no": "No"
   },
   "fileUploadWarning": "This will remove your existing recipient data, do you want to continue?",
+  "unsavedDataWarning": "Some recipient data is unsaved. Do you wish to proceed? Unsaved data will be lost"
 }

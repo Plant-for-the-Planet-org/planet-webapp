@@ -29,11 +29,15 @@ const MAX_RECIPIENTS = 1000;
 interface RecipientsUploadFormProps {
   setLocalRecipients: SetState<Recipient[]>;
   localRecipients: Recipient[];
+  setIsAddingRecipient: SetState<boolean>;
+  setIsEditingRecipient: SetState<boolean>;
 }
 
 const RecipientsUploadForm = ({
   setLocalRecipients,
   localRecipients,
+  setIsAddingRecipient,
+  setIsEditingRecipient,
 }: RecipientsUploadFormProps): ReactElement => {
   const { t, ready } = useTranslation(['bulkCodes']);
 
@@ -260,6 +264,8 @@ const RecipientsUploadForm = ({
         localRecipients={localRecipients}
         setLocalRecipients={setLocalRecipients}
         canAddRecipients={localRecipients.length < MAX_RECIPIENTS}
+        setIsAddingRecipient={setIsAddingRecipient}
+        setIsEditingRecipient={setIsEditingRecipient}
       />
     </>
   );

@@ -26,6 +26,8 @@ interface RecipientsTableProps {
   localRecipients: Recipient[];
   setLocalRecipients: SetState<Recipient[]>;
   canAddRecipients?: boolean;
+  setIsAddingRecipient: SetState<boolean>;
+  setIsEditingRecipient: SetState<boolean>;
 }
 
 const RecipientsTable = ({
@@ -33,6 +35,8 @@ const RecipientsTable = ({
   localRecipients,
   setLocalRecipients,
   canAddRecipients = true,
+  setIsAddingRecipient,
+  setIsEditingRecipient,
 }: RecipientsTableProps): ReactElement => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -42,11 +46,13 @@ const RecipientsTable = ({
   const enterEditMode = (index: number): void => {
     setIsEditActive(true);
     setEditIndex(index);
+    setIsEditingRecipient(true);
   };
 
   const exitEditMode = (): void => {
     setIsEditActive(false);
     setEditIndex(null);
+    setIsEditingRecipient(false);
   };
 
   const handleChangePage = (event: unknown, newPage: number): void => {
@@ -112,7 +118,10 @@ const RecipientsTable = ({
           </TableHead>
           <TableBody>
             {!isEditActive && canAddRecipients && (
-              <AddRecipient setLocalRecipients={setLocalRecipients} />
+              <AddRecipient
+                setLocalRecipients={setLocalRecipients}
+                setIsAddingRecipient={setIsAddingRecipient}
+              />
             )}
             {localRecipients
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

@@ -44,6 +44,8 @@ const IssueCodesForm = (): ReactElement | null => {
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isEditingRecipient, setIsEditingRecipient] = useState(false);
+  const [isAddingRecipient, setIsAddingRecipient] = useState(false);
 
   const resetBulkContext = (): void => {
     setProject(null);
@@ -80,6 +82,11 @@ const IssueCodesForm = (): ReactElement | null => {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    if (isAddingRecipient || isEditingRecipient) {
+      const shouldSubmit = confirm(t('bulkCodes:unsavedDataWarning'));
+      if (!shouldSubmit) return;
+    }
+
     const token = await getAccessTokenSilently();
     setIsProcessing(true);
     if (project) {
@@ -239,6 +246,8 @@ const IssueCodesForm = (): ReactElement | null => {
                 <RecipientsUploadForm
                   setLocalRecipients={setLocalRecipients}
                   localRecipients={localRecipients}
+                  setIsAddingRecipient={setIsAddingRecipient}
+                  setIsEditingRecipient={setIsEditingRecipient}
                 />
               )}
               <BulkGiftTotal
