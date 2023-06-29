@@ -20,9 +20,14 @@ import { useEffect } from 'react';
 interface Props {
   setLocalRecipients: SetState<Recipient[]>;
   setIsAddingRecipient: SetState<boolean>;
+  afterSaveCallback: () => void;
 }
 
-const AddRecipient = ({ setLocalRecipients, setIsAddingRecipient }: Props) => {
+const AddRecipient = ({
+  setLocalRecipients,
+  setIsAddingRecipient,
+  afterSaveCallback,
+}: Props) => {
   const { t } = useTranslation('bulkCodes');
   const {
     control,
@@ -48,6 +53,7 @@ const AddRecipient = ({ setLocalRecipients, setIsAddingRecipient }: Props) => {
       ...currentRecipients,
     ]);
     reset();
+    afterSaveCallback();
   };
 
   const validateRequiredIfNotify = (

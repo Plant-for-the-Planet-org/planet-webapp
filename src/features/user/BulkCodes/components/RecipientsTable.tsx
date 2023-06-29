@@ -121,6 +121,7 @@ const RecipientsTable = ({
               <AddRecipient
                 setLocalRecipients={setLocalRecipients}
                 setIsAddingRecipient={setIsAddingRecipient}
+                afterSaveCallback={() => setPage(0)}
               />
             )}
             {localRecipients
