@@ -16,9 +16,12 @@ import {
   getRequest,
 } from '../../../../../utils/apiRequests/api';
 
-const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
-  loading: () => <p>loading</p>,
-});
+const MyTreesMap = dynamic(
+  () => import('../../../ProfileV2/components/MyForestMap'),
+  {
+    loading: () => <p>loading</p>,
+  }
+);
 
 interface Props {
   profile: any;
@@ -244,7 +247,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
             : '10px',
       }}
     >
-      <MyTreesMap {...MapProps} />
+      <MyTreesMap />
       {/* <div className={myForestStyles.mapButtonContainer}>
         <PlantedTreesButton
           plantedTrees={donationOtherInfo[0].treeCount}

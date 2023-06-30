@@ -65,7 +65,6 @@ export default function MyTreesMap({
       }
     });
   }, []);
-  console.log(contributions, authenticatedType, '==>');
   const clusterMarker = (coordinates: any, pointCount: any, getLeaves: any) => {
     const nodes = getLeaves(Infinity);
     let sum = 0;

@@ -1,0 +1,50 @@
+
+.singleMarkerContainer {
+    >.mapboxglPopup {
+        box-shadow: none;
+        border-radius: 0px;
+        overflow:auto;
+    }
+}
+
+.popUpContainer {
+    height: 65px;
+    width: 118px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popUpLabel {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.popUpDate {
+    font-size: 8px;
+    margin-left: 5px;
+}
+
+.markerContainer {
+    height: 26px;
+    width: 56px;
+    background-color: #68B03033 ;
+    border-radius: 40px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    >.svgContainer {
+        width: 22px;
+        height: 22px;
+        background-color:#FFFFFF ;
+        border-radius: 50%;
+        margin: 2px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    >.trees{
+         font-weight: 700;
+         font-size: 16px; 
+    }
+}
