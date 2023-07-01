@@ -2,6 +2,7 @@ import MapGL from 'react-map-gl';
 import { useState, useEffect, useRef } from 'react';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
 import SingleMarker from './SingleMarker';
+import ClusterMarker from './ClusterMarker';
 
 const MyForestMap = () => {
   const mapRef = useRef(null);
@@ -40,6 +41,7 @@ const MyForestMap = () => {
     <>
       <MapGL ref={mapRef} {...mapState} {...viewport}>
         <SingleMarker />
+        <ClusterMarker />
       </MapGL>
     </>
   );
