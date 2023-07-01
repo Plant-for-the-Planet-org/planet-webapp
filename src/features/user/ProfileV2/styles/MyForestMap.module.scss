@@ -49,6 +49,56 @@
     }
 }
 
+.popUpMainContainer {
+    >.mapboxglPopup {
+        box-shadow: none;
+        border-radius: 0px;
+        overflow:auto;
+    }
+}
+
+.donatePopUpContainer {
+    width: 208px;
+    height: 154px;
+    >.projectImageContainer {
+        height: 95px;
+        width: 100%;
+        background-color: green;
+        position: relative;
+        >.projectName {
+            position: absolute;
+            top:75px;
+            left:10px;
+            font-size: 10px;
+            font-weight: 10px;
+            color: #FFFFFF;
+        }
+    }
+}
+
+.projectInfoMainContainer {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    >.projectInfoContainer {
+        display: flex;
+        gap: 2px;
+        font-size: 8px;
+        position: relative;
+        >.area {
+            font-weight: 700;
+        }
+    }
+}
+.tpo {
+    margin-top: 7px;
+    >.tpoName {
+        font-size: 8px;
+    }
+    >.date {
+        font-size: 7px;
+    }
+}
 .clusterMarkerContainer {
     display: flex;
     justify-content: center;
@@ -77,3 +127,5 @@
         color: #FFFFFF;
     }
 }
+
+

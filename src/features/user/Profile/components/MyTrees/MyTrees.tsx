@@ -237,7 +237,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   //   },
   // ];
 
-  return contributions && ready ? (
+  return donationOtherInfo && contributions && ready ? (
     <div
       className={myForestStyles.mapMainContainer}
       style={{
@@ -248,7 +248,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
       }}
     >
       <MyTreesMap />
-      {/* <div className={myForestStyles.mapButtonContainer}>
+      <div className={myForestStyles.mapButtonContainer}>
         <PlantedTreesButton
           plantedTrees={donationOtherInfo[0].treeCount}
           isTreePlantedButtonActive={isTreePlantedButtonActive}
@@ -282,7 +282,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
           contribution={contributions}
           isConservedButtonActive={isConservedButtonActive}
         />
-      )} */}
+      )}
     </div>
   ) : null;
 }
