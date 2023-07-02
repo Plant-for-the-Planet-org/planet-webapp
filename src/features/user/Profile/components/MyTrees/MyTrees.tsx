@@ -84,38 +84,6 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
     }
   }, [detailInfo.isLoading]);
 
-  React.useEffect(() => {
-    async function loadFunction() {
-      if (authenticatedType === 'private' && token) {
-        try {
-          const result = await getAuthenticatedRequest(
-            `/app/profile/contributions`,
-            token,
-            logoutUser
-          );
-          setContributions(result);
-        } catch (err) {
-          setErrors(handleError(err as APIError));
-          redirect('/profile');
-        }
-      } else {
-        try {
-          const result = await getRequest(
-            `/app/profiles/${profile.id}/contributions`
-          );
-          setContributions(result);
-        } catch (err) {
-          setErrors(handleError(err as APIError));
-        }
-      }
-    }
-    loadFunction();
-  }, [profile]);
-
-  const MapProps = {
-    contributions,
-    authenticatedType,
-  };
   // const _contributions = [
   //   {
   //     purpose: 'trees',

@@ -1,8 +1,9 @@
-import MapGL from 'react-map-gl';
+import MapGL, { NavigationControl } from 'react-map-gl';
 import { useState, useEffect, useRef } from 'react';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
 import SingleMarker from './SingleMarker';
 import ClusterMarker from './ClusterMarker';
+import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 
 const MyForestMap = () => {
   const mapRef = useRef(null);
@@ -21,8 +22,8 @@ const MyForestMap = () => {
   const defaultMapCenter = [36.96, -28.5];
   const defaultZoom = 1.4;
   const [viewport, setViewPort] = useState({
-    width: '100vw',
-    height: '560px',
+    width: '100%',
+    height: '100%',
     latitude: defaultMapCenter[0],
     longitude: defaultMapCenter[1],
     zoom: defaultZoom,
@@ -37,13 +38,23 @@ const MyForestMap = () => {
     }
     loadMapStyle();
   }, []);
+  // handles viewport state
+  const _handleViewport = (newViewport) =>
+    setViewPort({ ...viewport, ...newViewport });
+
   return (
-    <>
-      <MapGL ref={mapRef} {...mapState} {...viewport}>
+    <div className={MyForestMapStyle.mapContainer}>
+      <MapGL
+        ref={mapRef}
+        {...mapState}
+        {...viewport}
+        onViewStateChange={_handleViewport}
+      >
         <SingleMarker />
         <ClusterMarker />
+        <NavigationControl showCompass={false} />
       </MapGL>
-    </>
+    </div>
   );
 };
 
