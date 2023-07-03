@@ -1,21 +1,14 @@
-import {
-  TableRow,
-  TableCell,
-  TextField,
-  MenuItem,
-  IconButton,
-  Box,
-} from '@mui/material';
-import { useForm, Controller } from 'react-hook-form';
+import { TableRow, TableCell, IconButton } from '@mui/material';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import { DevTool } from '@hookform/devtools';
-import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect';
+import { SetState } from '../../../common/types/common';
+import themeProperties from '../../../../theme/themeProperties';
 import { Recipient } from '../BulkCodesTypes';
 import AddIcon from '../../../../../public/assets/images/icons/AddIcon';
-import themeProperties from '../../../../theme/themeProperties';
-import { isEmailValid } from '../../../../utils/isEmailValid';
-import { SetState } from '../../../common/types/common';
-import { useEffect } from 'react';
+import RecipientFormFields from './RecipientFormFields';
+import ActionContainer from './ActionContainer';
 
 interface Props {
   setLocalRecipients: SetState<Recipient[]>;
@@ -56,15 +49,6 @@ const AddRecipient = ({
     afterSaveCallback();
   };
 
-  const validateRequiredIfNotify = (
-    value: string,
-    formValues: Recipient
-  ): string | true => {
-    return formValues.recipient_notify === 'yes' && value.length === 0
-      ? t('errorAddRecipient.requiredForNotifications')
-      : true;
-  };
-
   useEffect(() => {
     setIsAddingRecipient(Object.keys(dirtyFields).length !== 0);
     return () => {
@@ -75,16 +59,13 @@ const AddRecipient = ({
   return (
     <>
       <TableRow sx={hasErrors ? { verticalAlign: 'top' } : {}}>
-        <TableCell>
-          <form onSubmit={handleSubmit(handleSave)}>
-            <Box
-              sx={{
-                height: 40,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
+        {/* Actions */}
+        <TableCell align="center">
+          <form
+            style={{ display: 'inline' }}
+            onSubmit={handleSubmit(handleSave)}
+          >
+            <ActionContainer>
               <IconButton
                 size="medium"
                 type="submit"
@@ -94,101 +75,10 @@ const AddRecipient = ({
               >
                 <AddIcon color={themeProperties.primaryColor} />
               </IconButton>
-            </Box>
+            </ActionContainer>
           </form>
         </TableCell>
-        <TableCell>
-          <Controller
-            name="recipient_name"
-            control={control}
-            rules={{
-              validate: {
-                requiredForNotifications: validateRequiredIfNotify,
-              },
-            }}
-            render={({ field }) => (
-              <TextField
-                size="small"
-                {...field}
-                error={errors.recipient_name !== undefined}
-                helperText={errors.recipient_name?.message}
-              />
-            )}
-          />
-        </TableCell>
-        <TableCell>
-          <Controller
-            name="recipient_email"
-            control={control}
-            rules={{
-              validate: {
-                requiredForNotifications: validateRequiredIfNotify,
-                emailInvalid: (value) =>
-                  value.length === 0 ||
-                  isEmailValid(value) ||
-                  t('errorAddRecipient.emailInvalid'),
-              },
-            }}
-            render={({ field }) => (
-              <TextField
-                size="small"
-                {...field}
-                error={errors.recipient_email !== undefined}
-                helperText={errors.recipient_email?.message}
-              />
-            )}
-          />
-        </TableCell>
-        <TableCell>
-          <ReactHookFormSelect
-            name="recipient_notify"
-            label=""
-            control={control}
-            size="small"
-          >
-            <MenuItem key="no" value="no">
-              {t('notifyRecipientOptions.no')}
-            </MenuItem>
-            <MenuItem key="yes" value="yes">
-              {t('notifyRecipientOptions.yes')}
-            </MenuItem>
-          </ReactHookFormSelect>
-        </TableCell>
-        <TableCell>
-          <Controller
-            name="units"
-            control={control}
-            rules={{ required: t('errorAddRecipient.unitsNotProvided') }}
-            render={({ field: { onChange, ..._field } }) => (
-              <TextField
-                sx={{ minWidth: 60 }}
-                size="small"
-                {..._field}
-                onChange={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                  onChange(e.target.value);
-                }}
-                error={errors.units !== undefined}
-                helperText={errors.units?.message}
-              />
-            )}
-          />
-        </TableCell>
-        <TableCell>
-          <Controller
-            name="recipient_message"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                sx={{ minWidth: 180 }}
-                size="small"
-                multiline
-                maxRows={3}
-                {...field}
-              />
-            )}
-          />
-        </TableCell>
+        <RecipientFormFields control={control} errors={errors} />
       </TableRow>
       <DevTool control={control} />
     </>

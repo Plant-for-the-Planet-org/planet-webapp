@@ -1,7 +1,7 @@
 import { styled, Box } from '@mui/material';
 
 /**
- * Returns an empty flex column display `<form>` with
+ * Returns an empty flex column display form container
  * styles defined for formButton, formTitle and inputContainer
  */
 const StyledFormContainer = styled(Box)(() => ({
@@ -21,5 +21,6 @@ const StyledFormContainer = styled(Box)(() => ({
     width: '100%',
   },
 }));
+// Duplicates StyledForm which should be phased out slowly
 
 export default StyledFormContainer;
