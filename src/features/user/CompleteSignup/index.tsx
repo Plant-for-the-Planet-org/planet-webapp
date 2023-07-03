@@ -9,8 +9,7 @@ import {
   styled,
   TextField,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountryNew';
+import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 import { useForm, Controller } from 'react-hook-form';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
@@ -84,28 +83,6 @@ export default function CompleteSignup(): ReactElement | null {
   };
   let suggestion_counter = 0;
   const { theme } = React.useContext(ThemeContext);
-  const useStylesAutoComplete = makeStyles({
-    root: {
-      color:
-        theme === 'theme-light'
-          ? `${themeProperties.light.primaryFontColor} !important`
-          : `${themeProperties.dark.primaryFontColor} !important`,
-      backgroundColor:
-        theme === 'theme-light'
-          ? `${themeProperties.light.backgroundColor} !important`
-          : `${themeProperties.dark.backgroundColor} !important`,
-    },
-    option: {
-      // color: '#2F3336',
-      '&:hover': {
-        backgroundColor:
-          theme === 'theme-light'
-            ? `${themeProperties.light.backgroundColorDark} !important`
-            : `${themeProperties.dark.backgroundColorDark} !important`,
-      },
-    },
-  });
-  const classes = useStylesAutoComplete();
 
   const {
     handleSubmit,
@@ -292,10 +269,6 @@ export default function CompleteSignup(): ReactElement | null {
                   key={option.value}
                   value={option.value}
                   onClick={() => setAccountType(option.value)}
-                  classes={{
-                    // option: classes.option,
-                    root: classes.root,
-                  }}
                 >
                   {option.title}
                 </MenuItem>
