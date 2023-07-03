@@ -1,5 +1,4 @@
 import React, { ReactElement, useState, ChangeEvent } from 'react';
-
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,19 +7,16 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-
+import IconButton from '@mui/material/IconButton';
 import { SetState } from '../../../common/types/common';
 import { Recipient, TableHeader } from '../BulkCodesTypes';
-import Tooltip from '@mui/material/Tooltip';
-import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
-import AddRecipient from './AddRecipient';
-import styles from '../BulkCodes.module.scss';
-import { IconButton } from '@mui/material';
+import themeProperties from '../../../../theme/themeProperties';
 import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
 import DeleteIcon from '../../../../../public/assets/images/icons/DeleteIcon';
-import themeProperties from '../../../../theme/themeProperties';
+import AddRecipient from './AddRecipient';
 import UpdateRecipient from './UpdateRecipient';
 import ActionContainer from './ActionContainer';
+import RecipientHeader from './RecipientHeader';
 
 interface RecipientsTableProps {
   headers: TableHeader[];
@@ -95,26 +91,9 @@ const RecipientsTable = ({
             <TableRow>
               {/* Empty header above the action column */}
               <TableCell></TableCell>
-              {headers.map((header) => {
-                const { key, displayText, helpText } = header;
-                return (
-                  <TableCell key={key}>
-                    <h3 className={styles.tableHeaderContent}>
-                      {displayText}
-                      {helpText !== undefined && helpText.length > 0 && (
-                        <>
-                          {' '}
-                          <Tooltip title={helpText} arrow>
-                            <span className={styles.headerInfoIcon}>
-                              <InfoIcon />
-                            </span>
-                          </Tooltip>
-                        </>
-                      )}
-                    </h3>
-                  </TableCell>
-                );
-              })}
+              {headers.map((header) => (
+                <RecipientHeader header={header} key={header.key} />
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
