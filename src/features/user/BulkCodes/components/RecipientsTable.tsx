@@ -15,11 +15,12 @@ import Tooltip from '@mui/material/Tooltip';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import AddRecipient from './AddRecipient';
 import styles from '../BulkCodes.module.scss';
-import { Box, IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 import EditIcon from '../../../../../public/assets/images/icons/EditIcon';
 import DeleteIcon from '../../../../../public/assets/images/icons/DeleteIcon';
 import themeProperties from '../../../../theme/themeProperties';
 import UpdateRecipient from './UpdateRecipient';
+import ActionContainer from './ActionContainer';
 
 interface RecipientsTableProps {
   headers: TableHeader[];
@@ -137,15 +138,7 @@ const RecipientsTable = ({
                 ) : (
                   <TableRow tabIndex={-1} key={index}>
                     <TableCell align="center" sx={{ minWidth: '80px' }}>
-                      <Box
-                        sx={{
-                          height: 40,
-                          display: 'inline-flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          margin: '0 3px',
-                        }}
-                      >
+                      <ActionContainer>
                         {!isEditActive && (
                           <IconButton
                             size="small"
@@ -157,16 +150,8 @@ const RecipientsTable = ({
                             <EditIcon color={themeProperties.primaryColor} />
                           </IconButton>
                         )}
-                      </Box>
-                      <Box
-                        sx={{
-                          height: 40,
-                          display: 'inline-flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          margin: '0 3px',
-                        }}
-                      >
+                      </ActionContainer>
+                      <ActionContainer>
                         {!isEditActive && (
                           <IconButton
                             size="small"
@@ -178,7 +163,7 @@ const RecipientsTable = ({
                             <DeleteIcon color={themeProperties.primaryColor} />
                           </IconButton>
                         )}
-                      </Box>
+                      </ActionContainer>
                     </TableCell>
                     {headers.map((header) => {
                       const value = recipient[header.key];
