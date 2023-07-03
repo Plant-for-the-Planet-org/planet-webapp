@@ -40,6 +40,15 @@ export default function GrowingImpact() {
       bgColor: '#1C3326',
       partnerLogo: '/tenants/salesforce/images/partner-logo.png',
     },
+    {
+      id: 5,
+      copy: 'VTO Fitness-for-a-Cause Challenge 2023: Over 23,000 trees planted during Earthforce Champion month!',
+      image: '/tenants/salesforce/images/growing-impact/success-3.jpg',
+      foliage: '/tenants/salesforce/images/growing-impact/foliage-3.png',
+      link: '/vto-fitness-challenge',
+      linkCopy: 'Click here to learn more about the cause',
+      bgColor: '#0B827C',
+    },
   ];
 
   return (
@@ -72,6 +81,11 @@ export default function GrowingImpact() {
                 >
                   <h5>{article.copy}</h5>
                   <h5>{article.subCopy}</h5>
+                  {article.linkCopy !== undefined && (
+                    <a href={article.link} target="_blank" rel="noreferrer">
+                      {article.linkCopy}
+                    </a>
+                  )}
                   <img
                     src={article.foliage}
                     alt=""
