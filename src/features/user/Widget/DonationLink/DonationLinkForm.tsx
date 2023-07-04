@@ -1,7 +1,7 @@
 import { ReactElement, useState, useEffect } from 'react';
 import { useTranslation } from 'next-i18next';
 import { Button, Switch, TextField } from '@mui/material';
-import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
+import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import supportedLanguages from '../../../../utils/language/supportedLanguages.json';

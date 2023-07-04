@@ -1,12 +1,11 @@
 import { createContext, FC, useState, useContext } from 'react';
+import { BankAccount, PayoutMinAmounts } from '../types/payouts';
 
 interface PayoutsContextInterface {
-  accounts: Payouts.BankAccount[] | null;
-  setAccounts: (accounts: Payouts.BankAccount[] | null) => void;
-  payoutMinAmounts: Payouts.PayoutMinAmounts | null;
-  setPayoutMinAmounts: (
-    payoutMinAmounts: Payouts.PayoutMinAmounts | null
-  ) => void;
+  accounts: BankAccount[] | null;
+  setAccounts: (accounts: BankAccount[] | null) => void;
+  payoutMinAmounts: PayoutMinAmounts | null;
+  setPayoutMinAmounts: (payoutMinAmounts: PayoutMinAmounts | null) => void;
 }
 
 export const PayoutsContext = createContext<PayoutsContextInterface | null>(
@@ -14,9 +13,9 @@ export const PayoutsContext = createContext<PayoutsContextInterface | null>(
 );
 
 export const PayoutsProvider: FC = ({ children }) => {
-  const [accounts, setAccounts] = useState<Payouts.BankAccount[] | null>(null);
+  const [accounts, setAccounts] = useState<BankAccount[] | null>(null);
   const [payoutMinAmounts, setPayoutMinAmounts] =
-    useState<Payouts.PayoutMinAmounts | null>(null);
+    useState<PayoutMinAmounts | null>(null);
 
   return (
     <PayoutsContext.Provider

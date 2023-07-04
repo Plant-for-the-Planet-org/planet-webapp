@@ -10,6 +10,7 @@ import CustomSnackbar from '../../../common/CustomSnackbar';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
+import { BankAccount } from '../../../common/types/payouts';
 
 const AddBankAccount = (): ReactElement | null => {
   const { t } = useTranslation('managePayouts');
@@ -33,7 +34,7 @@ const AddBankAccount = (): ReactElement | null => {
         data.currency === PayoutCurrency.DEFAULT ? '' : data.payoutMinAmount,
     };
     try {
-      const res = await postAuthenticatedRequest<Payouts.BankAccount>(
+      const res = await postAuthenticatedRequest<BankAccount>(
         '/app/accounts',
         accountData,
         token,
