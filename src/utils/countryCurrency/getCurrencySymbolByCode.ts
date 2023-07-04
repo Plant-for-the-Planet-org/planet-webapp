@@ -1,14 +1,14 @@
 /**
- * Retrieves the currency symbol for a given number.
+ * Retrieves the appropriate currency symbol for a given currency and amount.
  * @param {string} langCode - The language code.
  * @param {string} currency - The currency code.
- * @param {number} number - The number used to determine the currency symbol.
+ * @param {amount} number - The amount/value in the specified currency
  */
 
 export default function getCurrencySymbolByCode(
   langCode: string,
   currency: string,
-  number: number
+  amount: number
 ) {
   const options = {
     // These options are needed to round to whole numbers if that's what you want.
@@ -18,7 +18,7 @@ export default function getCurrencySymbolByCode(
   };
   const formatter = new Intl.NumberFormat(langCode, options);
   const currencySymbol = formatter
-    .formatToParts(number)
+    .formatToParts(amount)
     .filter((part) => part.type == 'currency');
 
   return Array.isArray(currencySymbol) && currencySymbol.length > 0

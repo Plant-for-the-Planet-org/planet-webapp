@@ -21,7 +21,7 @@ import { handleError, APIError, ProjectExtended } from '@planet-sdk/common';
 interface Props {
   GUID?: string | null;
   token: string | null;
-  project?: ProjectExtended | {};
+  project?: ProjectExtended;
 }
 
 export default function ManageProjects({ GUID, token, project }: Props) {

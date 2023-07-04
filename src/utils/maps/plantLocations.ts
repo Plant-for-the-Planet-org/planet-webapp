@@ -10,7 +10,7 @@ export function zoomToPlantLocation(
   coordinates: turf.Position[],
   viewport: ViewPort,
   isMobile: boolean,
-  setViewPort: Function,
+  setViewPort: SetState<ViewPort>,
   duration = 1200
 ) {
   if (viewport.width && viewport.height) {
