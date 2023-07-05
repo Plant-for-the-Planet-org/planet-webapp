@@ -2,34 +2,62 @@ import React, { ReactElement } from 'react';
 import styles from '../Import.module.scss';
 import { useDropzone } from 'react-dropzone';
 import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { useTranslation } from 'next-i18next';
 import { useForm, useFieldArray } from 'react-hook-form';
 import SampleTreeCard from './SampleTreeCard';
 import Papa from 'papaparse';
+import { handleError, APIError } from '@planet-sdk/common';
+import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 
 interface Props {
   handleNext: Function;
-  errorMessage: String;
-  setErrorMessage: Function;
   plantLocation: any;
-  setPlantLocation: Function;
   userLang: string;
 }
 
+type SampleTree = {
+  plantingDate: Date;
+  treeTag: string;
+  height: string;
+  diameter: string;
+  otherSpecies: string;
+  latitude: string;
+  longitude: string;
+};
+
+type FormData = {
+  sampleTrees: SampleTree[];
+};
+
 export default function SampleTrees({
   handleNext,
-  setErrorMessage,
   plantLocation,
   userLang,
 }: Props): ReactElement {
-  const { t, ready } = useTranslation(['treemapper', 'common']);
+  const { t } = useTranslation(['treemapper', 'common']);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [uploadIndex, setUploadIndex] = React.useState(0);
   const [uploadStatus, setUploadStatus] = React.useState<string[]>([]);
-  const [sampleTrees, setSampleTrees] = React.useState<
-    Treemapper.SamplePlantLocation[]
-  >([]);
+  const [sampleTrees, setSampleTrees] = React.useState<SampleTree[]>([]);
+
+  const {
+    handleSubmit,
+    control,
+    getValues,
+    formState: { errors },
+  } = useForm<FormData>({ mode: 'onBlur', defaultValues: { sampleTrees: [] } });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'sampleTrees',
+  });
+
+  const addSampleTrees = (sampleTrees: SampleTree[]) => {
+    append(sampleTrees);
+  };
+
   const onDrop = React.useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: any) => {
       const reader = new FileReader();
@@ -41,7 +69,7 @@ export default function SampleTrees({
         Papa.parse(csv, {
           header: true,
           complete: (results: any) => {
-            const sampleTrees = results.data.map((sampleTree: any) => {
+            const sampleTrees = results.data.map((sampleTree: SampleTree) => {
               return {
                 ...sampleTree,
                 otherSpecies: sampleTree.otherSpecies,
@@ -54,53 +82,32 @@ export default function SampleTrees({
     });
   }, []);
 
-  const defaultValues = {
-    sampleTrees: [],
-  };
-  const { register, handleSubmit, errors, control, setValue, getValues } =
-    useForm({ mode: 'onBlur', defaultValues: defaultValues });
+  const { token, logoutUser } = useUserProps();
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'sampleTrees',
-  });
-
-  const addSampleTrees = (sampleTrees: Treemapper.SamplePlantLocation[]) => {
-    append(sampleTrees);
-  };
-
-  const { token, impersonatedEmail } = React.useContext(UserPropsContext);
-
-  const uploadSampleTree = async (sampleTree: any, index: number) => {
+  const uploadSampleTree = async (sampleTree: SampleTree, index: number) => {
     setUploadIndex(index);
     const newStatus = [...uploadStatus];
     newStatus[index] = 'uploading';
     setUploadStatus(newStatus);
-    const res = await postAuthenticatedRequest(
-      `/treemapper/plantLocations`,
-      sampleTree,
-      token,
-      impersonatedEmail
-    );
-    if (!res.code) {
-      setErrorMessage('');
+
+    try {
+      const res = await postAuthenticatedRequest(
+        `/treemapper/plantLocations`,
+        sampleTree,
+        token,
+        logoutUser
+      );
       const newSampleTrees = [...sampleTrees];
       newSampleTrees[index] = res;
       setSampleTrees(newSampleTrees);
       const newStatus = [...uploadStatus];
       newStatus[index] = 'success';
       setUploadStatus(newStatus);
-    } else {
+    } catch (err) {
       const newStatus = [...uploadStatus];
       newStatus[index] = 'error';
       setUploadStatus(newStatus);
-      if (res.code === 404) {
-        setErrorMessage(res.message);
-      } else if (res.code === 400) {
-        setErrorMessage(res.message);
-      } else {
-        setErrorMessage(res.message);
-      }
+      setErrors(handleError(err as APIError));
     }
   };
 
@@ -212,12 +219,10 @@ export default function SampleTrees({
               <SampleTreeCard
                 key={item.id}
                 index={index}
-                register={register}
                 remove={remove}
                 getValues={getValues}
                 control={control}
                 userLang={userLang}
-                setValue={setValue}
                 item={item}
                 plantLocation={plantLocation}
                 errors={errors}

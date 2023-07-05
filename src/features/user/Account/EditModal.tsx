@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { Controller, useForm } from 'react-hook-form';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import styles from './AccountHistory.module.scss';
 import {
@@ -22,6 +22,8 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
+import { handleError, APIError } from '@planet-sdk/common';
+import { Subscription } from '../../common/types/payments';
 
 // interface EditDonationProps {
 //   editModalOpen
@@ -47,24 +49,38 @@ const dialogSx: SxProps = {
   },
 };
 
+interface EditModalProps {
+  editModalOpen: boolean;
+  handleEditModalClose: () => void;
+  record: Subscription;
+  fetchRecurrentDonations: (next?: boolean | undefined) => void;
+}
+
+type FormData = {
+  amount: number;
+  frequency: string;
+  currentPeriodEnd: Date;
+};
+
 export const EditModal = ({
   editModalOpen,
   handleEditModalClose,
   record,
   fetchRecurrentDonations,
-}: any) => {
-  const [frequency, setFrequency] = React.useState(record?.frequency);
+}: EditModalProps) => {
   const { theme } = React.useContext(ThemeContext);
   const [userLang, setUserLang] = React.useState('en');
   const [disabled, setDisabled] = React.useState(false);
   const { t, i18n } = useTranslation(['me']);
-  const { register, handleSubmit, errors, setValue, control, getValues } =
-    useForm({
-      mode: 'all',
-    });
-  const { token, impersonatedEmail } = React.useContext(UserPropsContext);
-  const { handleError } = React.useContext(ErrorHandlingContext);
-
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormData>({
+    mode: 'all',
+  });
+  const { token, logoutUser } = useUserProps();
+  const { setErrors } = React.useContext(ErrorHandlingContext);
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
       const userLang = localStorage.getItem('language');
@@ -75,7 +91,7 @@ export const EditModal = ({
     setDisabled(false);
   }, [editModalOpen]);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: FormData) => {
     setDisabled(true);
     const bodyToSend = {
       nextBilling:
@@ -83,7 +99,7 @@ export const EditModal = ({
           ? new Date(data.currentPeriodEnd).toISOString().split('T')[0]
           : null,
       centAmount: Number(data.amount) * 100,
-      frequency: frequency,
+      frequency: data.frequency,
     };
     if (
       new Date(data.currentPeriodEnd).toDateString() ==
@@ -100,21 +116,22 @@ export const EditModal = ({
     }
 
     if (Object.keys(bodyToSend).length !== 0) {
-      putAuthenticatedRequest(
-        `/app/subscriptions/${record?.id}?scope=modify`,
-        bodyToSend,
-        token,
-        impersonatedEmail,
-        handleError
-      )
-        .then((res) => {
-          if (res?.status === 'action_required') {
-            window.open(res.response.confirmationUrl, '_blank');
-          }
-          handleEditModalClose();
-          fetchRecurrentDonations();
-        })
-        .catch((err) => console.log('Error editing recurring donation.'));
+      try {
+        const res = await putAuthenticatedRequest(
+          `/app/subscriptions/${record?.id}?scope=modify`,
+          bodyToSend,
+          token,
+          logoutUser
+        );
+        if (res?.status === 'action_required') {
+          window.open(res.response.confirmationUrl, '_blank');
+        }
+        handleEditModalClose();
+        fetchRecurrentDonations();
+      } catch (err) {
+        handleEditModalClose();
+        setErrors(handleError(err as APIError));
+      }
     } else {
       handleEditModalClose();
     }
@@ -135,13 +152,6 @@ export const EditModal = ({
       <Fade in={editModalOpen}>
         <div
           className={`${styles.manageDonationModal} ${styles.editDonationModal}`}
-          // style={{
-          //   width: '38vw',
-          //   minWidth: '38vw',
-          //   height: 'auto',
-          //   maxWidth: 'min-content',
-          //   overflow: 'auto',
-          // }}
         >
           <div className={styles.modalTexts}>
             <div
@@ -172,24 +182,36 @@ export const EditModal = ({
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className={styles.formRow}>
               <div className={styles.formRowInput}>
-                <MaterialTextField
-                  inputRef={register({ required: true })}
-                  label={t('donationAmount')}
-                  variant="outlined"
+                <Controller
                   name="amount"
+                  control={control}
+                  rules={{ required: true }}
                   defaultValue={record?.amount}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        {getCurrencySymbolByCode(
-                          i18n.language,
-                          record?.currency,
-                          record?.amount
-                        )}
-                      </InputAdornment>
-                    ),
-                  }}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <MaterialTextField
+                      label={t('donationAmount')}
+                      variant="outlined"
+                      onChange={(e) => {
+                        e.target.value = e.target.value.replace(/[^0-9.]/g, '');
+                        onChange(e);
+                      }}
+                      value={value}
+                      onBlur={onBlur}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            {getCurrencySymbolByCode(
+                              i18n.language,
+                              record?.currency,
+                              record?.amount
+                            )}
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  )}
                 />
+
                 {errors.amount && (
                   <span className={styles.formErrors}>
                     {t('donationAmountRequired')}
@@ -198,28 +220,36 @@ export const EditModal = ({
               </div>
               <div style={{ width: '20px' }} />
               <div className={styles.formRowInput}>
-                <Autocomplete
-                  disablePortal
-                  id="combo-box-demo"
-                  options={['monthly', 'yearly']}
+                <Controller
+                  name="frequency"
+                  control={control}
+                  rules={{ required: true }}
                   defaultValue={record?.frequency}
-                  onChange={(event: any, newValue: string) => {
-                    if (newValue) {
-                      setFrequency(newValue);
-                    }
-                  }}
-                  getOptionLabel={(option) => t(`${option.toLowerCase()}`)}
-                  renderInput={(params) => (
-                    <MaterialTextField
-                      {...params}
-                      inputRef={register({ required: true })}
-                      variant="outlined"
-                      label={t('frequency')}
-                      name="frequency"
-                      // defaultValue={"spme"}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <Autocomplete
+                      disablePortal
+                      id="combo-box-demo"
+                      options={['monthly', 'yearly']}
+                      onChange={(_event, newValue) => {
+                        onChange(newValue);
+                      }}
+                      value={value}
+                      onBlur={onBlur}
+                      getOptionLabel={(option) => {
+                        console.log(option);
+                        return t(`${option.toLowerCase()}`);
+                      }}
+                      renderInput={(params) => (
+                        <MaterialTextField
+                          {...params}
+                          variant="outlined"
+                          label={t('frequency')}
+                        />
+                      )}
                     />
                   )}
                 />
+
                 {errors.frequency && (
                   <span className={styles.formErrors}>
                     {t('frequencyRequired')}
@@ -239,11 +269,16 @@ export const EditModal = ({
                     }
                   >
                     <Controller
-                      render={(properties) => (
+                      name="currentPeriodEnd"
+                      control={control}
+                      defaultValue={
+                        new Date(new Date(record?.currentPeriodEnd).valueOf())
+                      }
+                      render={({ field: { onChange, value } }) => (
                         <MuiDatePicker
                           label={t('me:date')}
-                          value={properties.value}
-                          onChange={properties.onChange}
+                          value={value}
+                          onChange={onChange}
                           renderInput={(props) => (
                             <MaterialTextField {...props} />
                           )}
@@ -263,11 +298,6 @@ export const EditModal = ({
                           }}
                         />
                       )}
-                      name="currentPeriodEnd"
-                      control={control}
-                      defaultValue={
-                        new Date(new Date(record?.currentPeriodEnd).valueOf())
-                      }
                     />
                   </LocalizationProvider>
                   {errors.currentPeriodEnd && (

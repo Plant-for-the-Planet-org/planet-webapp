@@ -10,14 +10,12 @@ import MapGL, {
   FlyToInterpolator,
 } from 'react-map-gl';
 import * as d3 from 'd3-ease';
-import { makeStyles } from '@mui/styles';
 import { MenuItem } from '@mui/material';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info';
 import {
   postAuthenticatedRequest,
   putAuthenticatedRequest,
 } from '../../../../utils/apiRequests/api';
-import addServerErrors from '../../../../utils/apiRequests/addServerErrors';
 import {
   getFormattedNumber,
   parseNumber,
@@ -28,15 +26,39 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { handleError, APIError } from '@planet-sdk/common';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
+
+type FormData = {
+  name: string;
+  slug: string;
+  website: string;
+  description: string;
+  acceptDonations: boolean;
+  unitCost: string;
+  latitude: string;
+  longitude: string;
+  metadata: {
+    visitorAssistance: boolean;
+  };
+};
+
+type TreeFormData = FormData & {
+  classification: string;
+  countTarget: string;
+};
+
+type ConservationFormData = FormData & {
+  metadata: {
+    ecosystems: string;
+  };
+};
 
 interface Props {
   handleNext: Function;
   projectDetails: Object;
   setProjectDetails: Function;
-  errorMessage: String;
   setProjectGUID: Function;
-  setErrorMessage: Function;
   projectGUID: any;
   token: any;
   purpose: String;
@@ -47,9 +69,7 @@ export default function BasicDetails({
   token,
   projectDetails,
   setProjectDetails,
-  errorMessage,
   setProjectGUID,
-  setErrorMessage,
   projectGUID,
   purpose,
 }: Props): ReactElement {
@@ -65,7 +85,7 @@ export default function BasicDetails({
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   // Map setup
   const { theme } = React.useContext(ThemeContext);
-  const { impersonatedEmail } = React.useContext(UserPropsContext);
+  const { logoutUser } = useUserProps();
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
   const mapRef = React.useRef(null);
@@ -81,29 +101,7 @@ export default function BasicDetails({
   });
   const router = useRouter();
 
-  const useStylesAutoComplete = makeStyles({
-    root: {
-      color:
-        theme === 'theme-light'
-          ? `${themeProperties.light.primaryFontColor} !important`
-          : `${themeProperties.dark.primaryFontColor} !important`,
-      backgroundColor:
-        theme === 'theme-light'
-          ? `${themeProperties.light.backgroundColor} !important`
-          : `${themeProperties.dark.backgroundColor} !important`,
-    },
-    option: {
-      // color: '#2F3336',
-      '&:hover': {
-        backgroundColor:
-          theme === 'theme-light'
-            ? `${themeProperties.light.backgroundColorDark} !important`
-            : `${themeProperties.dark.backgroundColorDark} !important`,
-      },
-    },
-  });
-  const classes = useStylesAutoComplete();
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     //loads the default mapstyle
@@ -228,59 +226,52 @@ export default function BasicDetails({
       ? {
           name: '',
           slug: '',
-          classification: {
-            label: ready ? t('manageProjects:projectType') : '',
-            value: null,
-          },
-          countTarget: 0,
+          classification: '',
+          countTarget: '',
           website: '',
           description: '',
           acceptDonations: false,
-          unitCost: 0,
+          unitCost: '',
           publish: false,
           metadata: {
             visitorAssistance: false,
-            enablePlantLocations: false,
           },
-          currency: 'EUR',
-          latitude: 0,
-          longitude: 0,
+          latitude: '',
+          longitude: '',
         }
       : {
-          purpose: 'conservation',
+          // purpose: 'conservation',
           name: '',
           slug: '',
           description: '',
           acceptDonations: false,
-          unitCost: 0,
-          currency: 'EUR',
-          latitude: 0,
-          longitude: 0,
-          ecosystems: '',
+          unitCost: '',
+          latitude: '',
+          longitude: '',
           metadata: {
-            ecosystems: {
-              label: ready ? t('manageProjects:ecosystems') : '',
-              value: null,
-            },
-            impacts: {
+            ecosystems: '',
+            visitorAssistance: false,
+            /* impacts: {
               benefits: '',
               ecologicalBenefits: '',
               socialBenefits: '',
               coBenefits: '',
-            },
+            }, */
           },
         };
 
   const {
-    register,
     handleSubmit,
-    errors,
     control,
     reset,
     setValue,
     setError,
     clearErrors,
-  } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
+    formState: { errors },
+  } = useForm<TreeFormData | ConservationFormData>({
+    mode: 'onBlur',
+    defaultValues: defaultBasicDetails,
+  });
 
   const nextStep = () => {
     handleNext();
@@ -312,18 +303,15 @@ export default function BasicDetails({
                 i18n.language,
                 projectDetails.unitCost || 0
               ),
-
-              visitorAssistance: projectDetails.visitorAssistance,
-              enablePlantLocations: projectDetails.enablePlantLocations,
-              currency: projectDetails.currency,
+              metadata: {
+                visitorAssistance: projectDetails?.metadata?.visitorAssistance,
+              },
               latitude: projectDetails.geoLatitude,
               longitude: projectDetails.geoLongitude,
             }
           : {
-              purpose: projectDetails.purpose,
               name: projectDetails.name,
               slug: projectDetails.slug,
-
               website: projectDetails.website,
               description: projectDetails.description,
               acceptDonations: projectDetails.acceptDonations,
@@ -331,11 +319,12 @@ export default function BasicDetails({
                 i18n.language,
                 projectDetails.unitCost || 0
               ),
-              currency: projectDetails.currency,
               latitude: projectDetails.geoLatitude,
               longitude: projectDetails.geoLongitude,
-              ecosystems: projectDetails?.metadata?.ecosystems,
-              visitorAssistance: projectDetails?.metadata?.visitorAssistance,
+              metadata: {
+                visitorAssistance: projectDetails?.metadata?.visitorAssistance,
+                ecosystems: projectDetails?.metadata?.ecosystems,
+              },
             };
       if (projectDetails.geoLongitude && projectDetails.geoLatitude) {
         setProjectCoords([
@@ -356,17 +345,16 @@ export default function BasicDetails({
     }
   }, [projectDetails]);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: TreeFormData | ConservationFormData) => {
     setIsUploadingData(true);
     const submitData =
       purpose === 'trees'
         ? {
             name: data.name,
             slug: data.slug,
-            classification: data.classification,
+            classification: (data as TreeFormData).classification,
             metadata: {
-              visitorAssistance: data.visitorAssistance,
-              enablePlantLocations: data.enablePlantLocations,
+              visitorAssistance: data.metadata.visitorAssistance,
             },
             geometry: {
               type: 'Point',
@@ -375,7 +363,7 @@ export default function BasicDetails({
                 parseFloat(data.latitude),
               ],
             },
-            countTarget: Number(data.countTarget),
+            countTarget: Number((data as TreeFormData).countTarget),
             website: data.website,
             description: data.description,
             acceptDonations: data.acceptDonations,
@@ -400,82 +388,46 @@ export default function BasicDetails({
             acceptDonations: data.acceptDonations,
             unitCost: data.unitCost
               ? parseNumber(i18n.language, data.unitCost)
-              : null,
+              : undefined,
             currency: 'EUR',
             metadata: {
-              ecosystems: data.ecosystems,
-              visitorAssistance: data.visitorAssistance,
+              ecosystems: (data as ConservationFormData).metadata.ecosystems,
+              visitorAssistance: data.metadata.visitorAssistance,
             },
           };
 
     // Check if GUID is set use update instead of create project
     if (projectGUID) {
-      putAuthenticatedRequest(
-        `/app/projects/${projectGUID}`,
-        submitData,
-        token,
-        impersonatedEmail,
-        handleError
-      )
-        .then((res) => {
-          if (!res.code) {
-            setErrorMessage('');
-            setProjectDetails(res);
-            setIsUploadingData(false);
-            handleNext();
-          } else {
-            if (res.code === 404) {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-            } else if (res.code === 400) {
-              setIsUploadingData(false);
-              if (res.errors && res.errors.children) {
-                addServerErrors(res.errors.children, setError);
-              }
-            } else {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-            }
-          }
-        })
-        .catch((err) => {
-          setIsUploadingData(false);
-          setErrorMessage(err);
-        });
+      try {
+        const res = await putAuthenticatedRequest(
+          `/app/projects/${projectGUID}`,
+          submitData,
+          token,
+          logoutUser
+        );
+        setProjectDetails(res);
+        setIsUploadingData(false);
+        handleNext();
+      } catch (err) {
+        setIsUploadingData(false);
+        setErrors(handleError(err as APIError));
+      }
     } else {
-      postAuthenticatedRequest(
-        `/app/projects`,
-        submitData,
-        token,
-        impersonatedEmail,
-        handleError
-      )
-        .then((res) => {
-          if (!res.code) {
-            setErrorMessage('');
-            setProjectGUID(res.id);
-            setProjectDetails(res);
-            router.push(`/profile/projects/${res.id}?type=media`);
-            setIsUploadingData(false);
-          } else {
-            if (res.code === 404) {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-            } else if (res.code === 400) {
-              setIsUploadingData(false);
-              if (res.errors && res.errors.children) {
-                addServerErrors(res.errors.children, setError);
-              }
-            } else {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-            }
-          }
-        })
-        .catch((err) => {
-          setIsUploadingData(false);
-          setErrorMessage(err);
-        });
+      try {
+        const res = await postAuthenticatedRequest(
+          `/app/projects`,
+          submitData,
+          token,
+          logoutUser
+        );
+        setProjectGUID(res.id);
+        setProjectDetails(res);
+        router.push(`/profile/projects/${res.id}?type=media`);
+        setIsUploadingData(false);
+      } catch (err) {
+        setIsUploadingData(false);
+        setErrors(handleError(err as APIError));
+      }
     }
   };
   const geocoder = new GeocoderArcGIS(
@@ -496,17 +448,21 @@ export default function BasicDetails({
       >
         <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
           <div className={styles.formFieldLarge} data-test-id="projectName">
-            <MaterialTextField
-              inputRef={register({
-                required: {
-                  value: true,
-                  message: t('manageProjects:nameValidation'),
-                },
-              })}
-              label={t('manageProjects:name')}
-              variant="outlined"
+            <Controller
               name="name"
+              control={control}
+              rules={{ required: t('manageProjects:nameValidation') }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <MaterialTextField
+                  label={t('manageProjects:name')}
+                  variant="outlined"
+                  onChange={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                />
+              )}
             />
+
             {errors.name && (
               <span className={styles.formErrors}>{errors.name.message}</span>
             )}
@@ -514,21 +470,24 @@ export default function BasicDetails({
 
           <div className={styles.formField}>
             <div className={styles.formFieldHalf} data-test-id="slug" id="slug">
-              <MaterialTextField
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: t('manageProjects:slugValidation'),
-                  },
-                })}
-                label={t('manageProjects:slug')}
-                variant="outlined"
+              <Controller
                 name="slug"
-                InputProps={{
-                  startAdornment: (
-                    <p className={styles.inputStartAdornment}>pp.eco/</p>
-                  ),
-                }}
+                control={control}
+                rules={{ required: t('manageProjects:slugValidation') }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <MaterialTextField
+                    label={t('manageProjects:slug')}
+                    variant="outlined"
+                    InputProps={{
+                      startAdornment: (
+                        <p className={styles.inputStartAdornment}>pp.eco/</p>
+                      ),
+                    }}
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                  />
+                )}
               />
               {errors.slug && (
                 <span className={styles.formErrors}>{errors.slug.message}</span>
@@ -541,31 +500,27 @@ export default function BasicDetails({
                 data-test-id="classification"
               >
                 <Controller
-                  as={
-                    <MaterialTextField
-                      label={t('manageProjects:classification')}
-                      variant="outlined"
-                      select
-                    >
-                      {classifications.map((option) => (
-                        <MenuItem
-                          key={option.value}
-                          value={option.value}
-                          classes={{
-                            // option: classes.option,
-                            root: classes.root,
-                          }}
-                        >
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </MaterialTextField>
-                  }
                   name="classification"
                   rules={{
                     required: t('manageProjects:classificationValidation'),
                   }}
                   control={control}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <MaterialTextField
+                      label={t('manageProjects:classification')}
+                      variant="outlined"
+                      select
+                      onChange={onChange}
+                      value={value}
+                      onBlur={onBlur}
+                    >
+                      {classifications.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </MaterialTextField>
+                  )}
                 />
                 {errors.classification && (
                   <span className={styles.formErrors}>
@@ -576,35 +531,31 @@ export default function BasicDetails({
             ) : (
               <div className={styles.formFieldHalf}>
                 <Controller
-                  as={
-                    <MaterialTextField
-                      label={t('manageProjects:ecosystems')}
-                      variant="outlined"
-                      select
-                    >
-                      {ecosystemsType.map((option) => (
-                        <MenuItem
-                          key={option.value}
-                          value={option.value}
-                          classes={{
-                            // option: classes.option,
-                            root: classes.root,
-                          }}
-                        >
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </MaterialTextField>
-                  }
-                  name="ecosystems"
+                  name="metadata.ecosystems"
                   rules={{
                     required: t('manageProjects:ecosystemType'),
                   }}
                   control={control}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <MaterialTextField
+                      label={t('manageProjects:ecosystems')}
+                      variant="outlined"
+                      select
+                      onChange={onChange}
+                      value={value}
+                      onBlur={onBlur}
+                    >
+                      {ecosystemsType.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </MaterialTextField>
+                  )}
                 />
-                {errors.ecosystems && (
+                {errors.metadata?.ecosystems && (
                   <span className={styles.formErrors}>
-                    {errors.ecosystems.message}
+                    {errors.metadata.ecosystems.message}
                   </span>
                 )}
               </div>
@@ -614,22 +565,28 @@ export default function BasicDetails({
           {purpose === 'trees' ? (
             <div className={styles.formField}>
               <div className={styles.formFieldHalf} data-test-id="target">
-                <MaterialTextField
-                  inputRef={register({
-                    required: {
-                      value: true,
-                      message: t('manageProjects:countTargetValidation'),
-                    },
-                    validate: (value) => parseInt(value, 10) > 1,
-                  })}
-                  onInput={(e) => {
-                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                  }}
-                  label={t('manageProjects:countTarget')}
-                  variant="outlined"
+                <Controller
                   name="countTarget"
-                  placeholder={'0'}
+                  control={control}
+                  rules={{
+                    required: t('manageProjects:countTargetValidation'),
+                    validate: (value) => parseInt(value, 10) > 1,
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <MaterialTextField
+                      label={t('manageProjects:countTarget')}
+                      variant="outlined"
+                      placeholder={'0'}
+                      onChange={(e) => {
+                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                        onChange(e);
+                      }}
+                      value={value}
+                      onBlur={onBlur}
+                    />
+                  )}
                 />
+
                 {errors.countTarget && (
                   <span className={styles.formErrors}>
                     {errors.countTarget.message
@@ -643,22 +600,27 @@ export default function BasicDetails({
             <></>
           )}
           <div className={styles.formFieldHalf} data-test-id="website">
-            <MaterialTextField
-              label={t('manageProjects:website')}
-              variant="outlined"
+            <Controller
               name="website"
-              inputRef={register({
-                required: {
-                  value: true,
-                  message: t('manageProjects:websiteValidationRequired'),
-                },
+              control={control}
+              rules={{
+                required: t('manageProjects:websiteValidationRequired'),
                 pattern: {
                   //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
                   value:
                     /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
                   message: t('manageProjects:websiteValidationInvalid'),
                 },
-              })}
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <MaterialTextField
+                  label={t('manageProjects:website')}
+                  variant="outlined"
+                  onChange={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                />
+              )}
             />
             {errors.website && (
               <span className={styles.formErrors}>
@@ -668,17 +630,22 @@ export default function BasicDetails({
           </div>
 
           <div className={styles.formFieldLarge} data-test-id="aboutProject">
-            <MaterialTextField
-              label={t('manageProjects:aboutProject')}
-              variant="outlined"
+            <Controller
               name="description"
-              multiline
-              inputRef={register({
-                required: {
-                  value: true,
-                  message: t('manageProjects:aboutProjectValidation'),
-                },
-              })}
+              control={control}
+              rules={{
+                required: t('manageProjects:aboutProjectValidation'),
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <MaterialTextField
+                  label={t('manageProjects:aboutProject')}
+                  variant="outlined"
+                  multiline
+                  onChange={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                />
+              )}
             />
             {errors.description && (
               <span className={styles.formErrors}>
@@ -723,12 +690,12 @@ export default function BasicDetails({
                 <Controller
                   name="acceptDonations"
                   control={control}
-                  render={(properties) => (
+                  render={({ field: { onChange, value } }) => (
                     <ToggleSwitch
                       id="acceptDonations"
-                      checked={properties.value}
-                      onChange={(e: any) => {
-                        properties.onChange(e.target.checked);
+                      checked={value}
+                      onChange={(e) => {
+                        onChange(e.target.checked);
                         setAcceptDonations(e.target.checked);
                       }}
                       inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -739,8 +706,10 @@ export default function BasicDetails({
             </div>
             {acceptDonations ? (
               <div className={styles.formFieldHalf} data-test-id="treeCost">
-                <MaterialTextField
-                  inputRef={register({
+                <Controller
+                  name="unitCost"
+                  control={control}
+                  rules={{
                     required: {
                       value: acceptDonations,
                       message: t('manageProjects:treeCostValidaitonRequired'),
@@ -748,26 +717,30 @@ export default function BasicDetails({
                     validate: (value) =>
                       parseNumber(i18n.language, value) > 0 &&
                       parseNumber(i18n.language, value) <= 100,
-                  })}
-                  label={
-                    router.query.purpose === 'trees' ||
-                    projectDetails.purpose === 'trees'
-                      ? t('manageProjects:unitCost')
-                      : t('manageProjects:unitCostConservation')
-                  }
-                  variant="outlined"
-                  type="number"
-                  name="unitCost"
-                  placeholder={'0'}
-                  InputProps={{
-                    startAdornment: (
-                      <p
-                        className={styles.inputStartAdornment}
-                        style={{ paddingRight: '4px' }}
-                      >{`€`}</p>
-                    ),
                   }}
+                  render={() => (
+                    <MaterialTextField
+                      label={
+                        router.query.purpose === 'trees' ||
+                        projectDetails.purpose === 'trees'
+                          ? t('manageProjects:unitCost')
+                          : t('manageProjects:unitCostConservation')
+                      }
+                      variant="outlined"
+                      type="number"
+                      placeholder={'0'}
+                      InputProps={{
+                        startAdornment: (
+                          <p
+                            className={styles.inputStartAdornment}
+                            style={{ paddingRight: '4px' }}
+                          >{`€`}</p>
+                        ),
+                      }}
+                    />
+                  )}
                 />
+
                 {errors.unitCost && (
                   <span className={styles.formErrors}>
                     {errors.unitCost.message
@@ -864,30 +837,42 @@ export default function BasicDetails({
                 className={`${styles.formFieldHalf} ${styles.latlongField}`}
                 data-test-id="latitude"
               >
-                <MaterialTextField
-                  inputRef={register({
+                <Controller
+                  name="latitude"
+                  control={control}
+                  rules={{
                     required: true,
                     validate: (value) =>
                       parseFloat(value) > -90 && parseFloat(value) < 90,
-                  })}
-                  label={t('manageProjects:latitude')}
-                  variant="outlined"
-                  name={'latitude'}
-                  onChange={changeLat}
-                  className={styles.latitudeInput}
-                  onInput={(e) => {
-                    e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                   }}
-                  InputLabelProps={{
-                    shrink: true,
-                    style: {
-                      position: 'absolute',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      top: '-6px',
-                    },
-                  }}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <MaterialTextField
+                      label={t('manageProjects:latitude')}
+                      variant="outlined"
+                      className={styles.latitudeInput}
+                      InputLabelProps={{
+                        shrink: true,
+                        style: {
+                          position: 'absolute',
+                          left: '50%',
+                          transform: 'translateX(-50%)',
+                          top: '-6px',
+                        },
+                      }}
+                      onChange={(e) => {
+                        e.target.value = e.target.value.replace(
+                          /[^0-9.-]/g,
+                          ''
+                        );
+                        changeLat(e);
+                        onChange(e);
+                      }}
+                      value={value}
+                      onBlur={onBlur}
+                    />
+                  )}
                 />
+
                 {errors.latitude && (
                   <span
                     className={styles.formErrorsAbsolute}
@@ -903,29 +888,40 @@ export default function BasicDetails({
                 className={`${styles.formFieldHalf} ${styles.latlongField}`}
                 data-test-id="longitude"
               >
-                <MaterialTextField
-                  inputRef={register({
+                <Controller
+                  name="longitude"
+                  control={control}
+                  rules={{
                     required: true,
                     validate: (value) =>
                       parseFloat(value) > -180 && parseFloat(value) < 180,
-                  })}
-                  label={t('manageProjects:longitude')}
-                  variant="outlined"
-                  onChange={changeLon}
-                  name={'longitude'}
-                  className={styles.longitudeInput}
-                  onInput={(e) => {
-                    e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                   }}
-                  InputLabelProps={{
-                    shrink: true,
-                    style: {
-                      position: 'absolute',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      top: '-6px',
-                    },
-                  }}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <MaterialTextField
+                      label={t('manageProjects:longitude')}
+                      variant="outlined"
+                      className={styles.longitudeInput}
+                      InputLabelProps={{
+                        shrink: true,
+                        style: {
+                          position: 'absolute',
+                          left: '50%',
+                          transform: 'translateX(-50%)',
+                          top: '-6px',
+                        },
+                      }}
+                      onChange={(e) => {
+                        e.target.value = e.target.value.replace(
+                          /[^0-9.-]/g,
+                          ''
+                        );
+                        changeLon(e);
+                        onChange(e);
+                      }}
+                      value={value}
+                      onBlur={onBlur}
+                    />
+                  )}
                 />
                 {errors.longitude && (
                   <span
@@ -949,72 +945,19 @@ export default function BasicDetails({
                 {t('manageProjects:visitorAssistanceLabel')}
               </label>
               <Controller
-                name="visitorAssistance"
+                name="metadata.visitorAssistance"
                 control={control}
-                render={(properties) => (
+                render={({ field: { onChange, value } }) => (
                   <ToggleSwitch
                     id="visitorAssistance"
-                    checked={properties.value}
-                    onChange={(e) => properties.onChange(e.target.checked)}
+                    checked={value}
+                    onChange={(e) => onChange(e.target.checked)}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                   />
                 )}
               />
             </div>
           </div>
-
-          {/* <div className={styles.formFieldLarge} style={{ width: '320px' }}>
-            <div className={`${styles.formFieldRadio}`}>
-              <label
-                htmlFor={'publish'}
-                style={{ cursor: 'pointer' }}
-                data-test-id="publishProject"
-              >
-                {t('manageProjects:publishProject')}
-              </label>
-
-              <Controller
-                name="publish"
-                control={control}
-                render={(properties) => (
-                  <ToggleSwitch
-                    checked={properties.value}
-                    onChange={(e) => properties.onChange(e.target.checked)}
-                    id="publish"
-                    inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  />
-                )}
-              />
-            </div>
-          </div> */}
-
-          {/* <div className={styles.formFieldLarge} style={{ width: '320px' }}>
-            <div className={`${styles.formFieldRadio}`}>
-              <label htmlFor={'enablePlantLocations'}>
-                Detailed Project Analysis if projectstatus=Approved
-                Activate once all relevant data is submitted via Tree Mapper.
-                    </label>
-              <Controller
-                name="enablePlantLocations"
-                control={control}
-                render={properties => (
-
-                  <ToggleSwitch
-                    checked={properties.value}
-                    onChange={e => properties.onChange(e.target.checked)}
-                    id="enablePlantLocations"
-                    inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  />
-                )}
-              />
-            </div>
-          </div> */}
-
-          {errorMessage && errorMessage !== '' ? (
-            <div className={styles.formFieldLarge}>
-              <h4 className={styles.errorMessage}>{errorMessage}</h4>
-            </div>
-          ) : null}
         </div>
         <div className={styles.formField} style={{ marginTop: '48px' }}>
           {/* <div className={`${styles.formFieldHalf}`}>

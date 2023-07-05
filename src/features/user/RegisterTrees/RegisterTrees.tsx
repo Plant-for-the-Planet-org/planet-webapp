@@ -17,10 +17,11 @@ import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import getMapStyle from '../../../utils/maps/getMapStyle';
 import { getStoredConfig } from '../../../utils/storeConfig';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './RegisterModal.module.scss';
 import SingleContribution from './RegisterTrees/SingleContribution';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { handleError, APIError } from '@planet-sdk/common';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -48,12 +49,18 @@ const dialogSx: SxProps = {
   },
 };
 
+type FormData = {
+  treeCount: string;
+  species: string;
+  plantProject: string | null;
+  plantDate: Date;
+  geometry: any;
+};
+
 interface Props {}
 
 export default function RegisterTrees({}: Props) {
-  const { user, token, contextLoaded, impersonatedEmail } =
-    React.useContext(UserPropsContext);
-
+  const { user, token, contextLoaded, logoutUser } = useUserProps();
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {
     version: 8,
@@ -84,7 +91,7 @@ export default function RegisterTrees({}: Props) {
   const [userLocation, setUserLocation] = React.useState();
   const [registered, setRegistered] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
@@ -132,11 +139,15 @@ export default function RegisterTrees({}: Props) {
   const defaultBasicDetails = {
     treeCount: '',
     species: '',
-    plantProject: null,
+    plantProject: user?.type === 'tpo' ? '' : null,
     plantDate: new Date(),
     geometry: {},
   };
-  const { register, handleSubmit, errors, control } = useForm({
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormData>({
     mode: 'onBlur',
     defaultValues: defaultBasicDetails,
   });
@@ -149,7 +160,7 @@ export default function RegisterTrees({}: Props) {
     }
   };
 
-  const submitRegisterTrees = (data: any) => {
+  const submitRegisterTrees = async (data: any) => {
     if (data.treeCount < 10000000) {
       if (
         geometry &&
@@ -163,34 +174,23 @@ export default function RegisterTrees({}: Props) {
           plantDate: new Date(data.plantDate),
           geometry: geometry,
         };
-        postAuthenticatedRequest(
-          `/app/contributions`,
-          submitData,
-          token,
-          impersonatedEmail,
-          handleError
-        ).then((res) => {
-          if (!res.code) {
-            setErrorMessage('');
-            setContributionGUID(res.id);
-            setContributionDetails(res);
-            setIsUploadingData(false);
-            setRegistered(true);
-            // router.push('/c/[id]', `/c/${res.id}`);
-          } else {
-            if (res.code === 404) {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-              setRegistered(false);
-            } else {
-              setIsUploadingData(false);
-              setErrorMessage(res.message);
-              setRegistered(false);
-            }
-          }
-        });
-
-        // handleNext();
+        try {
+          const res = await postAuthenticatedRequest(
+            `/app/contributions`,
+            submitData,
+            token,
+            logoutUser
+          );
+          setErrorMessage('');
+          setContributionGUID(res.id);
+          setContributionDetails(res);
+          setIsUploadingData(false);
+          setRegistered(true);
+        } catch (err) {
+          setIsUploadingData(false);
+          setErrors(handleError(err as APIError));
+          setRegistered(false);
+        }
       } else {
         setErrorMessage(ready ? t('me:locationMissing') : '');
       }
@@ -200,16 +200,17 @@ export default function RegisterTrees({}: Props) {
   };
 
   async function loadProjects() {
-    await getAuthenticatedRequest(
-      '/app/profile/projects',
-      token,
-      impersonatedEmail,
-      {},
-      handleError,
-      '/profile'
-    ).then((projects: any) => {
+    try {
+      const projects = await getAuthenticatedRequest(
+        '/app/profile/projects',
+        token,
+        logoutUser
+      );
       setProjects(projects);
-    });
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+      redirect('/profile');
+    }
   }
 
   React.useEffect(() => {
@@ -240,21 +241,26 @@ export default function RegisterTrees({}: Props) {
             </div>
             <div className={styles.formField}>
               <div className={styles.formFieldHalf}>
-                <MaterialTextField
-                  inputRef={register({
-                    required: {
-                      value: true,
-                      message: t('me:treesRequired'),
-                    },
-                    validate: (value) => parseInt(value, 10) >= 1,
-                  })}
-                  onInput={(e) => {
-                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                  }}
-                  onChange={onTreeCountChange}
-                  label={t('me:noOfTrees')}
-                  variant="outlined"
+                <Controller
                   name="treeCount"
+                  control={control}
+                  rules={{
+                    required: t('me:treesRequired'),
+                    validate: (value) => parseInt(value, 10) >= 1,
+                  }}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <MaterialTextField
+                      label={t('me:noOfTrees')}
+                      variant="outlined"
+                      onChange={(e) => {
+                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                        onTreeCountChange(e);
+                        onChange(e.target.value);
+                      }}
+                      value={value}
+                      onBlur={onBlur}
+                    />
+                  )}
                 />
                 {errors.treeCount && (
                   <span className={styles.formErrors}>
@@ -267,18 +273,21 @@ export default function RegisterTrees({}: Props) {
               <div className={styles.formFieldHalf}>
                 <LocalizationProvider
                   dateAdapter={AdapterDateFns}
-                  locale={
+                  adapterLocale={
                     localeMapForDate[userLang]
                       ? localeMapForDate[userLang]
                       : localeMapForDate['en']
                   }
                 >
                   <Controller
-                    render={(properties) => (
+                    name="plantDate"
+                    control={control}
+                    defaultValue={new Date()}
+                    render={({ field: { onChange, value } }) => (
                       <MuiDatePicker
                         label={t('me:datePlanted')}
-                        value={properties.value}
-                        onChange={properties.onChange}
+                        value={value}
+                        onChange={onChange}
                         renderInput={(props) => (
                           <MaterialTextField {...props} />
                         )}
@@ -291,24 +300,24 @@ export default function RegisterTrees({}: Props) {
                         }}
                       />
                     )}
-                    name="plantDate"
-                    control={control}
-                    defaultValue={new Date()}
                   />
                 </LocalizationProvider>
               </div>
             </div>
             <div className={styles.formFieldLarge}>
-              <MaterialTextField
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: t('me:speciesIsRequired'),
-                  },
-                })}
-                label={t('me:treeSpecies')}
-                variant="outlined"
+              <Controller
                 name="species"
+                control={control}
+                rules={{ required: t('me:speciesIsRequired') }}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <MaterialTextField
+                    label={t('me:treeSpecies')}
+                    variant="outlined"
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                  />
+                )}
               />
               {errors.species && (
                 <span className={styles.formErrors}>
@@ -320,11 +329,16 @@ export default function RegisterTrees({}: Props) {
             {user && user.type === 'tpo' && (
               <div className={styles.formFieldLarge}>
                 <Controller
-                  as={
+                  name="plantProject"
+                  control={control}
+                  render={({ field: { onChange, value, onBlur } }) => (
                     <MaterialTextField
                       label={t('me:project')}
                       variant="outlined"
                       select
+                      onChange={onChange}
+                      value={value}
+                      onBlur={onBlur}
                     >
                       {projects.map((option) => (
                         <MenuItem
@@ -335,9 +349,7 @@ export default function RegisterTrees({}: Props) {
                         </MenuItem>
                       ))}
                     </MaterialTextField>
-                  }
-                  name="plantProject"
-                  control={control}
+                  )}
                 />
                 {errors.plantProject && (
                   <span className={styles.formErrors}>

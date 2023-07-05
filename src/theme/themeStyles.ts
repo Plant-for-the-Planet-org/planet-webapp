@@ -66,7 +66,7 @@ const materialTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 28,
-          textTransform: 'capitalize',
+          textTransform: 'none',
           padding: '12px 30px',
         },
         containedSizeSmall: {
@@ -96,6 +96,13 @@ const materialTheme = createTheme({
       styleOverrides: {
         root: {
           width: '100%',
+        },
+      },
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        option: {
+          fontSize: '0.875rem',
         },
       },
     },

@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import themeProperties from '../../../../../../theme/themeProperties';
 import { getFormattedNumber } from '../../../../../../utils/getFormattedNumber';
@@ -11,18 +11,14 @@ import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
 import { format } from 'date-fns';
 import { ApexOptions } from 'apexcharts';
 import { Container } from '../Container';
-import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
+import useNextRequest, {
+  HTTP_METHOD,
+} from '../../../../../../hooks/use-next-request';
+import { ISpeciesPlanted } from '../../../../../common/types/dataExplorer';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
 });
-
-interface Species {
-  other_species: null | string;
-  scientific_species_id: number;
-  name: null | string;
-  total_tree_count: number;
-}
 
 const getDownloadIcon = () => {
   return <DownloadSolid color="#6E8091" />;
@@ -36,7 +32,15 @@ export const SpeciesPlanted = () => {
 
   const { project, fromDate, toDate } = useAnalytics();
 
-  const { handleError } = useContext(ErrorHandlingContext);
+  const { makeRequest } = useNextRequest<{ data: ISpeciesPlanted[] }>({
+    url: '/api/data-explorer/species-planted',
+    method: HTTP_METHOD.POST,
+    body: {
+      projectId: project?.id,
+      startDate: fromDate,
+      endDate: toDate,
+    },
+  });
 
   const [series, setSeries] = useState<ApexOptions['series']>([
     {
@@ -135,7 +139,7 @@ export const SpeciesPlanted = () => {
       tickPlacement: 'on',
     },
     yaxis: {
-      logarithmic: true, //open bug that causes data labels to render wrong numbers
+      logarithmic: false, //open bug that causes data labels to render wrong numbers
       axisBorder: {
         show: true,
       },
@@ -148,7 +152,7 @@ export const SpeciesPlanted = () => {
     },
   });
 
-  const getPlotingData = (speciesData: Species[]) => {
+  const getPlotingData = (speciesData: ISpeciesPlanted[]) => {
     const speciesPlanted: number[] = [];
     const categories: string[] = [];
 
@@ -161,25 +165,10 @@ export const SpeciesPlanted = () => {
   };
 
   const fetchPlantedSpecies = async () => {
-    // TODO - Once error handling PR is merged refactor this fetch call with a makeNextRequest function
+    const res = await makeRequest();
 
-    try {
-      const res = await fetch('/api/data-explorer/species-planted', {
-        method: 'POST',
-        body: JSON.stringify({
-          projectId: project?.id,
-          startDate: fromDate,
-          endDate: toDate,
-        }),
-      });
-
-      // Show error pop-up for too many request
-      if (res.status === 429) {
-        handleError({ message: t('errors.tooManyRequest'), type: 'error' });
-        return;
-      }
-
-      const { data }: { data: Species[] } = await res.json();
+    if (res) {
+      const { data } = res;
 
       // In the graph Unknown species needs to be displayed at the end.
 
@@ -215,8 +204,6 @@ export const SpeciesPlanted = () => {
         ...options,
         xaxis: { ...options.xaxis, categories: categories },
       });
-    } catch (err) {
-      handleError({ message: t('wentWrong'), type: 'error' });
     }
   };
 

@@ -10,7 +10,8 @@ import SearchBar from '../components/projects/SearchBar';
 import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
-import { UserPropsContext } from '../../../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
+import { ProjectMapInfo } from '@planet-sdk/common';
 
 interface Props {
   projects: any;
@@ -32,25 +33,18 @@ function ProjectsList({
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 767;
   const { embed, showProjectList, email } = React.useContext(ParamsContext);
-  const { isImpersonationModeOn } = React.useContext(UserPropsContext);
+  const { isImpersonationModeOn } = useUserProps();
   const isEmbed = embed === 'true';
   const [scrollY, setScrollY] = React.useState(0);
   const [hideSidebar, setHideSidebar] = React.useState(isEmbed);
   const { t, ready } = useTranslation(['donate', 'country', 'maps']);
-
-  const featuredList = process.env.NEXT_PUBLIC_FEATURED_LIST;
-
-  const showFeaturedList =
-    featuredList === 'false' || featuredList === '0' ? false : true;
-
-  const [selectedTab, setSelectedTab] = React.useState('all');
+  const [selectedTab, setSelectedTab] = React.useState<'all' | 'top'>('all');
   const [searchMode, setSearchMode] = React.useState(false);
-  React.useEffect(() => {
-    showFeaturedList ? setSelectedTab('featured') : null;
-  }, []);
-
   const [searchValue, setSearchValue] = React.useState('');
   const [trottledSearchValue, setTrottledSearchValue] = React.useState('');
+  const [searchProjectResults, setSearchProjectResults] = React.useState<
+    ProjectMapInfo[] | undefined
+  >();
 
   useDebouncedEffect(
     () => {
@@ -63,17 +57,20 @@ function ProjectsList({
   const searchRef = React.useRef(null);
 
   function getProjects(projects: Array<any>, type: string) {
-    if (type === 'featured') {
+    if (type === 'top') {
       return projects.filter(
-        (project: { properties: { isFeatured: boolean } }) =>
-          project.properties.isFeatured === true
+        (project: {
+          properties: { isApproved: boolean; isTopProject: boolean };
+        }) =>
+          project.properties.isApproved === true &&
+          project.properties.isTopProject === true
       );
     } else if (type === 'all') {
       return projects;
     }
   }
 
-  function getSearchProjects(projects: Array<any>, keyword: string) {
+  function getSearchProjects(projects: Array<ProjectMapInfo>, keyword: string) {
     let resultProjects = [];
     if (keyword !== '') {
       const keywords = keyword.split(/[\s\-.,+]+/);
@@ -84,9 +81,11 @@ function ProjectsList({
             .replace(/[\u0300-\u036f]/g, '')
             .toLowerCase();
           const projectName = project.properties.name
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLowerCase();
+            ? project.properties.name
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase()
+            : '';
           const projectLocation = project.properties.location
             ? project.properties.location
                 .normalize('NFD')
@@ -130,17 +129,29 @@ function ProjectsList({
     [projects]
   );
 
-  const searchProjectResults = React.useMemo(
-    () => getSearchProjects(projects, trottledSearchValue),
-    [trottledSearchValue, projects]
-  );
+  React.useEffect(() => {
+    const _searchProjectResults = getSearchProjects(
+      projects,
+      trottledSearchValue
+    );
+    setSearchProjectResults(_searchProjectResults);
+  }, [trottledSearchValue, projects]);
 
-  const featuredProjects = React.useMemo(
-    () => getProjects(projects, 'featured'),
+  const topProjects = React.useMemo(
+    () => getProjects(projects, 'top'),
     [projects]
   );
 
-  const NoProjectFound = (props: any) => {
+  const showTopProjectsList =
+    process.env.NEXT_PUBLIC_SHOW_TOP_PROJECTS === 'true' &&
+    topProjects !== undefined &&
+    topProjects.length > 0;
+
+  React.useEffect(() => {
+    showTopProjectsList ? setSelectedTab('top') : null;
+  }, []);
+
+  const NoProjectFound = () => {
     return ready ? (
       <div className={'projectNotFound'}>
         <LazyLoad>
@@ -204,7 +215,7 @@ function ProjectsList({
                   />
                 ) : (
                   <Header
-                    showFeaturedList={showFeaturedList}
+                    showTopProjectsList={showTopProjectsList}
                     setSelectedTab={setSelectedTab}
                     selectedTab={selectedTab}
                     setSearchMode={setSearchMode}
@@ -221,6 +232,7 @@ function ProjectsList({
                         key={project.properties.id}
                         project={project.properties}
                         editMode={false}
+                        displayPopup={true}
                       />
                     ))
                   ) : (
@@ -233,17 +245,19 @@ function ProjectsList({
                         key={project.properties.id}
                         project={project.properties}
                         editMode={false}
+                        displayPopup={true}
                       />
                     ))
                   ) : (
                     <NoProjectFound />
                   )
-                ) : featuredProjects && featuredProjects.length > 0 ? (
-                  featuredProjects.map((project: any) => (
+                ) : topProjects && topProjects.length > 0 ? (
+                  topProjects.map((project: any) => (
                     <ProjectSnippet
                       key={project.properties.id}
                       project={project.properties}
                       editMode={false}
+                      displayPopup={true}
                     />
                   ))
                 ) : (

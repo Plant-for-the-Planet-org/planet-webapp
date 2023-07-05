@@ -5,13 +5,12 @@ import ReactHookFormSelect from '../components/ReactHookFormSelect';
 import StyledForm from '../../../common/Layout/StyledForm';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { useTranslation, Trans } from 'next-i18next';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { User } from '../../../common/types/user';
 import CustomSnackbar from '../../../common/CustomSnackbar';
-import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
 import { PaymentFrequencies } from '../../../../utils/constants/payoutConstants';
+import { handleError, APIError, User } from '@planet-sdk/common';
 
 const paymentFrequencies = [
   PaymentFrequencies.MANUAL,
@@ -29,27 +28,33 @@ const PayoutScheduleForm = (): ReactElement | null => {
   const { t, ready } = useTranslation('managePayouts');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const { token, user, setUser, impersonatedEmail } =
-    useContext(UserPropsContext);
-  const { handleError } = useContext(ErrorHandlingContext);
-  const { handleSubmit, errors, control } = useForm<FormData>({
+  const { token, user, setUser, logoutUser } = useUserProps();
+  const { setErrors } = useContext(ErrorHandlingContext);
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormData>({
     mode: 'onBlur',
   });
 
   const onSubmit = async (data: FormData): Promise<void> => {
     setIsProcessing(true);
-    const res = await putAuthenticatedRequest<User>(
-      '/app/profile',
-      { scheduleFrequency: data.scheduleFrequency },
-      token,
-      impersonatedEmail,
-      handleError
-    );
-    if (res?.id && !isApiCustomError(res)) {
+
+    try {
+      const res = await putAuthenticatedRequest<User>(
+        '/app/profile',
+        { scheduleFrequency: data.scheduleFrequency },
+        token,
+        logoutUser
+      );
       setUser(res);
       setIsSaved(true);
+      setIsProcessing(false);
+    } catch (err) {
+      setIsProcessing(false);
+      setErrors(handleError(err as APIError));
     }
-    setIsProcessing(false);
   };
 
   const renderPaymentFrequencyOptions = (): ReactElement[] => {
@@ -66,7 +71,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
     setIsSaved(false);
   };
 
-  if (ready) {
+  if (ready && user?.type === 'tpo') {
     return (
       <CenteredContainer>
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
