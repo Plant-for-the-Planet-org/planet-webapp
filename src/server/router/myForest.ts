@@ -43,7 +43,6 @@ export const myForestRouter = router({
                   guid: true,
                   name: true,
                   image: true,
-                  description: true,
                   countryCode: true,
                   unit: true,
                   location: true,
@@ -59,7 +58,6 @@ export const myForestRouter = router({
               guid: true,
               name: true,
               image: true,
-              description: true,
               countryCode: true,
               unit: true,
               location: true,
@@ -89,7 +87,7 @@ export const myForestRouter = router({
             },
             {
               contributionType: 'planting',
-              isVerified: true,
+              isVerified: 1,
               bouquetDonationId: {
                 equals: null,
               },

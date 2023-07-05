@@ -15,18 +15,19 @@ model contribution {
     quantity             Float?
     deletedAt            DateTime?      @map("deleted_at") @db.DateTime(0)
     contributionType     String         @map("contribution_type") @db.VarChar(20)
-    isVerified           Boolean?       @map("is_verified")
+    isVerified           Int?           @map("is_verified")
     paymentStatus        String?        @map("payment_status") @db.VarChar(20)
     plantProjectId       Int?           @map("plant_project_id")
-    plantProject         plant_project? @relation(fields: [plantProjectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    plantProject         project?       @relation(fields: [plantProjectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
     profile              profile?       @relation(fields: [profile_id], references: [id])
     bouquet              contribution?  @relation("bouquet", fields: [bouquetDonationId], references: [id])
     bouquetContributions contribution[] @relation("bouquet")
     donationIssueDate    DateTime?      @map("dtn_issue_date") @db.DateTime(0)
+    
     profile_id           Int?
 }
 
-model plant_project {
+model project {
     id           Int            @id @default(autoincrement())
     guid         String         @db.VarChar(32)
     name         String?        @db.VarChar(255)
@@ -44,9 +45,9 @@ model plant_project {
 }
 
 model profile {
-    id           Int             @id @default(autoincrement())
-    guid         String          @db.VarChar(32)
-    name         String?         @db.VarChar(255)
+    id           Int            @id @default(autoincrement())
+    guid         String         @db.VarChar(32)
+    name         String?        @db.VarChar(255)
     contribution contribution[]
-    plantProject plant_project[]
+    plantProject project[]
 }
