@@ -1,8 +1,11 @@
+type ObjectValue = number | string | boolean | GeneralArray | GeneralObject;
+type GeneralObject = { [key: string]: ObjectValue };
+type GeneralArray = Array<ObjectValue>;
+
 /**
  * Removes all the null,  empty objects, "" (empty string values), undefined values from the object
  */
-
-const cleanObject = (object: Record<string, unknown>) => {
+const cleanObject = (object: GeneralObject | GeneralArray) => {
   Object.entries(object).forEach(([key, value]) => {
     if (value && typeof value === 'object') {
       cleanObject(value);
