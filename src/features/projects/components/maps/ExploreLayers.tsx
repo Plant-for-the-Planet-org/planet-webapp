@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { Layer, Source } from 'react-map-gl';
-import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import { LayerManager, Layer as LayerM } from 'layer-manager/dist/components';
 import { PluginMapboxGl } from 'layer-manager';
 import TreeCoverLoss from '../../../../../public/data/layers/tree-cover-loss';
@@ -16,7 +16,7 @@ export default function ExploreLayers({}: Props): ReactElement {
     explorePotential,
     exploreDeforestation,
     layersSettings,
-  } = React.useContext(ProjectPropsContext);
+  } = useProjectProps();
   return (
     <>
       {exploreForests ? (

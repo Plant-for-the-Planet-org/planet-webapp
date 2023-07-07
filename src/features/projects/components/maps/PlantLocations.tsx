@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { Layer, Marker } from 'react-map-gl';
 import { Source } from 'react-map-gl';
-import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import styles from '../../styles/PlantLocation.module.scss';
 import * as turf from '@turf/turf';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
@@ -20,7 +20,7 @@ export default function PlantLocations({}: Props): ReactElement {
     satellite,
     setSamplePlantLocation,
     samplePlantLocation,
-  } = React.useContext(ProjectPropsContext);
+  } = useProjectProps();
 
   const { i18n, t } = useTranslation(['maps', 'common']);
 
