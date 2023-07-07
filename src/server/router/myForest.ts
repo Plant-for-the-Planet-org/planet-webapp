@@ -29,21 +29,21 @@ export const myForestRouter = router({
           purpose: true,
           treeCount: true,
           quantity: true,
-          donationIssueDate: true,
+          plantDate: true,
           contributionType: true,
           bouquetContributions: {
             select: {
               purpose: true,
               treeCount: true,
               quantity: true,
-              donationIssueDate: true,
+              plantDate: true,
               contributionType: true,
               plantProject: {
                 select: {
                   guid: true,
                   name: true,
                   image: true,
-                  countryCode: true,
+                  country: true,
                   unit: true,
                   location: true,
                   geoLatitude: true,
@@ -58,7 +58,7 @@ export const myForestRouter = router({
               guid: true,
               name: true,
               image: true,
-              countryCode: true,
+              country: true,
               unit: true,
               location: true,
               geoLatitude: true,

@@ -22,8 +22,7 @@ model contribution {
     profile              profile?       @relation(fields: [profile_id], references: [id])
     bouquet              contribution?  @relation("bouquet", fields: [bouquetDonationId], references: [id])
     bouquetContributions contribution[] @relation("bouquet")
-    donationIssueDate    DateTime?      @map("dtn_issue_date") @db.DateTime(0)
-    
+    plantDate            DateTime?      @map("plant_date") @db.DateTime(0)
     profile_id           Int?
 }
 
@@ -32,7 +31,7 @@ model project {
     guid         String         @db.VarChar(32)
     name         String?        @db.VarChar(255)
     description  String?        @db.LongText
-    countryCode  String?        @map("country_code") @db.VarChar(2)
+    country      String?        @map("country") @db.VarChar(2)
     unit         String?        @db.VarChar(255)
     image        String?        @db.VarChar(255)
     purpose      String         @db.VarChar(64)
