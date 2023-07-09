@@ -269,5 +269,7 @@
   "resetPin": "Reset Pin",
   "treesPlantedAndAreaRestored": "Trees Planted & Areas Restored",
   "areaConserved": "Areas Conserved",
-  "noOfTress": "{{noOfTrees}} Trees"
+  "plantedTrees": "{{noOfTrees}} Trees",
+  "tpoName": "By {{tpo}}",
+  "donate":  "Donate"
 }

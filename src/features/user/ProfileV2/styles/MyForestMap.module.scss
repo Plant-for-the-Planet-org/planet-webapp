@@ -63,14 +63,13 @@
     >.projectImageContainer {
         height: 95px;
         width: 100%;
-        background-color: green;
         position: relative;
         >.projectName {
             position: absolute;
             top:75px;
             left:10px;
             font-size: 10px;
-            font-weight: 10px;
+            font-weight: 600;
             color: #FFFFFF;
         }
     }
@@ -110,6 +109,35 @@
     border-radius: 40px;
     border-color:#FFFFFF ;
     background-color:#219653;
+    padding-left: 1px;
+    padding-right: 8px;
+    >.svgContainer {
+        height: 22px;
+        width: 22px;
+        border-radius: 50%;
+        background-color: #FFFFFF;
+        padding-top: 3px;
+        padding-left: 3px;
+    }
+    >.totalTreeCount {
+        padding-bottom: 2px;
+        font-weight: 700;
+        font-size: 16px;
+        color: #FFFFFF;
+    }
+}
+
+.conservationClusterMarkerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+    height: 25px;
+    border: 1px solid;
+    border-radius: 40px;
+    border-color:#FFFFFF ;
+    background-color:#48AADD;
     padding-left: 1px;
     padding-right: 8px;
     >.svgContainer {

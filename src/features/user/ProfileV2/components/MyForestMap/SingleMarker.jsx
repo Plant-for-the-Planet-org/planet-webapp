@@ -3,15 +3,15 @@ import { useState } from 'react';
 import { PlantedTreesGreenSvg } from '../../../../../../public/assets/images/ProfilePageIcons';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 
-const SingleMarker = () => {
+const SingleMarker = ({ coordinates }) => {
   const [showPopUp, setShowPopUp] = useState(false);
   return (
     <div className={MyForestMapStyle.singleMarkerContainer}>
       {showPopUp && (
         <Popup
           className={MyForestMapStyle.mapboxglPopup}
-          latitude={36.96}
-          longitude={-28.5}
+          latitude={coordinates?.geometry.coordinates[1]}
+          longitude={coordinates?.geometry.coordinates[0]}
           offsetTop={-15}
           offsetLeft={20}
           anchor="bottom"
@@ -25,7 +25,10 @@ const SingleMarker = () => {
           </div>
         </Popup>
       )}
-      <Marker latitude={36.96} longitude={-28.5}>
+      <Marker
+        latitude={coordinates?.geometry.coordinates[1]}
+        longitude={coordinates?.geometry.coordinates[0]}
+      >
         <div
           className={MyForestMapStyle.markerContainer}
           onMouseOver={() => setShowPopUp(true)}

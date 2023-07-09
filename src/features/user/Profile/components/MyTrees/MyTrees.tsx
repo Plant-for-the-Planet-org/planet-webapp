@@ -11,10 +11,6 @@ import TreeContributedProjectList from '../../../ProfileV2/components/TreeContri
 import { trpc } from '../../../../../utils/trpc';
 import AreaConservedProjectList from '../../../ProfileV2/components/AreaConservedProjectList';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import {
-  getAuthenticatedRequest,
-  getRequest,
-} from '../../../../../utils/apiRequests/api';
 
 const MyTreesMap = dynamic(
   () => import('../../../ProfileV2/components/MyForestMap'),
@@ -40,49 +36,49 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
     React.useState(false);
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
 
-  const detailInfo = trpc.myForest.stats.useQuery({
-    profileId: `${profile?.id}`,
-  });
+  // const detailInfo = trpc.myForest.stats.useQuery({
+  //   profileId: `${profile?.id}`,
+  // });
 
-  const contributionData = trpc.myForest.contribution.useQuery({
-    profileId: `${profile?.id}`,
-  });
+  // const contributionData = trpc.myForest.contribution.useQuery({
+  //   profileId: `${profile?.id}`,
+  // });
 
-  React.useEffect(() => {
-    if (!contributionData.isLoading) {
-      if (contributionData.error) {
-        setErrors(
-          handleError(
-            new APIError(
-              contributionData.error?.data?.httpStatus as number,
-              contributionData.error
-            )
-          )
-        );
-      } else {
-        setContributions(contributionData.data);
-      }
-      // console.log('==>', contributionData.data);
-    }
-  }, [contributionData.isLoading]);
+  // React.useEffect(() => {
+  //   if (!contributionData.isLoading) {
+  //     if (contributionData.error) {
+  //       setErrors(
+  //         handleError(
+  //           new APIError(
+  //             contributionData.error?.data?.httpStatus as number,
+  //             contributionData.error
+  //           )
+  //         )
+  //       );
+  //     } else {
+  //       setContributions(contributionData.data);
+  //     }
+  //     console.log('==>', contributionData.data);
+  //   }
+  // }, [contributionData.isLoading]);
 
-  React.useEffect(() => {
-    if (!detailInfo.isLoading) {
-      if (detailInfo.error) {
-        setErrors(
-          handleError(
-            new APIError(
-              detailInfo.error?.data?.httpStatus as number,
-              detailInfo.error
-            )
-          )
-        );
-      } else {
-        // console.log('===>', detailInfo.data);
-        setDonationOtherInfo(detailInfo.data);
-      }
-    }
-  }, [detailInfo.isLoading]);
+  // React.useEffect(() => {
+  //   if (!detailInfo.isLoading) {
+  //     if (detailInfo.error) {
+  //       setErrors(
+  //         handleError(
+  //           new APIError(
+  //             detailInfo.error?.data?.httpStatus as number,
+  //             detailInfo.error
+  //           )
+  //         )
+  //       );
+  //     } else {
+  //       // console.log('===>', detailInfo.data);
+  //       setDonationOtherInfo(detailInfo.data);
+  //     }
+  //   }
+  // }, [detailInfo.isLoading]);
 
   // const _contributions = [
   //   {
@@ -110,6 +106,54 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   //     },
   //   },
   //   {
+  //     purpose: 'trees',
+  //     treeCount: '1',
+  //     quantity: 1,
+  //     donationIssueDate: null,
+  //     contributionType: 'donation',
+  //     plantProject: {
+  //       guid: 'proj_s0Dt9sivTkYLAptM2OfJSleji',
+  //       name: 'Reforestation of our Forests in Germany',
+  //       image: '62f3bac270a37408634575.jpg',
+  //       description:
+  //         'Der Zustand unserer Wälder wird immer kritischer. Klimawandel und Monokulturen gefährden auf Dauer unsere Lebensgrundlagen. Mit unseren Aktionen möchten wir informieren und ein Bewusstsein für den Wald und die Umwelt schaffen. Unser Spessart ist das größte zusammenhängende Gebiet aus Laubmischwäldern in Deutschland und das soll auch so bleiben. Die für die Anpassung der Wälder an den Klimawandel geeigneten Baumarten sollten ökologisch und ökonomisch gut in unseren Wald integriert oder integrierbar sein. So können heimische wie auch alternative Baumarten zum Zuge kommen. Insbesondere nahe Verwandte zu heimischen Arten aus dem europäisch-asiatischen Kontaktbereich kommen hierbei in den Fokus. Dabei ist insbesondere die Herkunft des Vermehrungsgutes für Anpassungsfähigkeit und den erfolgreichen Anbau von entscheidender Bedeutung. (Auszug aus der Leitlinie für die Baumartenwahl im Klimawandel der Bayerischen Forstverwaltung)\r\nIn der praktischen Umsetzung gilt es vorrangig seltene heimische Arten zu stärken.\r\nAus dem Fächer der seltenen heimischen Baumarten wurden folgende ausgewählt: Edelkastanie, Feldahorn, Flatterulme, Kirsche, Sommerlinde, Wildbirne, Spitzahorn, Eibe, Baumhasel, Rotbuche, Hainbuche. \r\nAls Startschuss einer tollen Zusammenarbeit fand in Mainaschaff die erste Pflanzaktion am 30. Oktober 2021 statt. Unser nächstes Ziel sind nun 30,000 neue Bäume für unseren Spessart.',
+  //       countryCode: 'DE',
+  //       unit: 'tree',
+  //       location: null,
+  //       geoLatitude: 22.871808885231484,
+  //       geoLongitude: 45.8608330782088,
+  //       tpo: {
+  //         id: 22408,
+  //         guid: 'prf_u9acORF3K14cOnD4UmVZX5mz',
+  //         name: 'Klimahelden (Plant-for-the-Planet e.V.)',
+  //       },
+  //     },
+  //   },
+  //   {
+  //     purpose: 'conservation',
+  //     treeCount: '1',
+  //     quantity: 1,
+  //     donationIssueDate: null,
+  //     contributionType: 'donation',
+  //     plantProject: {
+  //       guid: 'proj_s0Dt9sivTkYLApfJSleb',
+  //       name: 'it is an conservation project',
+  //       image: '62f3bac270a37408634575.jpg',
+  //       description:
+  //         'Der Zustand unserer Wälder wird immer kritischer. Klimawandel und Monokulturen gefährden auf Dauer unsere Lebensgrundlagen. Mit unseren Aktionen möchten wir informieren und ein Bewusstsein für den Wald und die Umwelt schaffen. Unser Spessart ist das größte zusammenhängende Gebiet aus Laubmischwäldern in Deutschland und das soll auch so bleiben. Die für die Anpassung der Wälder an den Klimawandel geeigneten Baumarten sollten ökologisch und ökonomisch gut in unseren Wald integriert oder integrierbar sein. So können heimische wie auch alternative Baumarten zum Zuge kommen. Insbesondere nahe Verwandte zu heimischen Arten aus dem europäisch-asiatischen Kontaktbereich kommen hierbei in den Fokus. Dabei ist insbesondere die Herkunft des Vermehrungsgutes für Anpassungsfähigkeit und den erfolgreichen Anbau von entscheidender Bedeutung. (Auszug aus der Leitlinie für die Baumartenwahl im Klimawandel der Bayerischen Forstverwaltung)\r\nIn der praktischen Umsetzung gilt es vorrangig seltene heimische Arten zu stärken.\r\nAus dem Fächer der seltenen heimischen Baumarten wurden folgende ausgewählt: Edelkastanie, Feldahorn, Flatterulme, Kirsche, Sommerlinde, Wildbirne, Spitzahorn, Eibe, Baumhasel, Rotbuche, Hainbuche. \r\nAls Startschuss einer tollen Zusammenarbeit fand in Mainaschaff die erste Pflanzaktion am 30. Oktober 2021 statt. Unser nächstes Ziel sind nun 30,000 neue Bäume für unseren Spessart.',
+  //       countryCode: 'DE',
+  //       unit: 'm2',
+  //       location: null,
+  //       geoLatitude: 20.13785949722,
+  //       geoLongitude: 9.6402933227215,
+  //       tpo: {
+  //         id: 22408,
+  //         guid: 'prf_u9acORF3K14cOnD4UmVZX5mz',
+  //         name: 'Klimahelden (Plant-for-the-Planet e.V.)',
+  //       },
+  //     },
+  //   },
+  //   {
   //     purpose: 'conservation',
   //     treeCount: '1',
   //     quantity: 1,
@@ -124,8 +168,8 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   //       countryCode: 'DE',
   //       unit: 'm2',
   //       location: null,
-  //       geoLatitude: 50.13785949722,
-  //       geoLongitude: 9.6402933227215,
+  //       geoLatitude: -5.765074497682126,
+  //       geoLongitude: -55.80236804585672,
   //       tpo: {
   //         id: 22408,
   //         guid: 'prf_u9acORF3K14cOnD4UmVZX5mz',
@@ -205,7 +249,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
   //   },
   // ];
 
-  return donationOtherInfo && contributions && ready ? (
+  return ready ? (
     <div
       className={myForestStyles.mapMainContainer}
       style={{
@@ -216,7 +260,12 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
       }}
     >
       <MyTreesMap />
-      <div className={myForestStyles.mapButtonContainer}>
+      {/* <MyTreesMap
+        contribution={contributions}
+        isTreePlantedButtonActive={isTreePlantedButtonActive}
+        isConservedButtonActive={isConservedButtonActive}
+      /> */}
+      {/* <div className={myForestStyles.mapButtonContainer}>
         <PlantedTreesButton
           plantedTrees={donationOtherInfo[0].treeCount}
           isTreePlantedButtonActive={isTreePlantedButtonActive}
@@ -250,7 +299,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
           contribution={contributions}
           isConservedButtonActive={isConservedButtonActive}
         />
-      )}
+      )} */}
     </div>
   ) : null;
 }
