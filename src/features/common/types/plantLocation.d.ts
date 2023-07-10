@@ -1,48 +1,77 @@
-export interface PlantLocation {
-  nextMeasurementDate: any;
-  metadata: Metadata;
+import { DateString } from './common';
+import { Polygon, Point } from 'geojson';
+
+export interface PlantLocationBase {
   hid: string;
-  otherSpecies: any;
-  description: any;
-  geometryUpdatesCount: number;
-  type: string;
-  plantProjectSite: any;
-  statusReason: any;
-  plantDateEnd: any;
-  registrationDate: string;
-  sampleTreeCount: number;
   id: string;
-  plantDate: string;
-  image: any;
   idempotencyKey: string;
-  coordinates: Coordinate[];
-  history: any[];
-  samplePlantLocations: SamplePlantLocation[];
   plantProject: string;
-  plantedSpecies: PlantedSpecy[];
-  plantDateStart: any;
-  originalGeometry: OriginalGeometry2;
-  captureMode: string;
-  geometry: Geometry2;
-  captureStatus: string;
-  deviceLocation: DeviceLocation4;
-  status: any;
+  metadata: Metadata;
+  registrationDate: DateString;
+  plantDate: DateString;
+  coordinates: PlantLocationCoordinate[];
+  history: History[];
+  captureMode: CaptureMode;
+  captureStatus: CaptureStatus;
+  deviceLocation: DeviceLocation;
+  otherSpecies: string | null;
+  description: string | null;
+  geometryUpdatesCount: number;
+  plantProjectSite: string | null;
+  image: string | null; //deprecate if not being used?
+  status: string | null; // currently always null. Should we do something here?
+  statusReason: string | null; // currently always null. Should we do something here?
+}
+
+export interface PlantLocationSingle extends PlantLocationBase {
+  type: 'single';
+  scientificName: string | null;
+  scientificSpecies: string | null;
+  tag: string | null;
+  measurements: Measurements;
+  originalGeometry: Point;
+  geometry: Point;
+}
+
+export interface PlantLocationMulti extends PlantLocationBase {
+  type: 'multi';
+  nextMeasurementDate: DateString | null;
+  plantDateStart: DateString | null;
+  plantDateEnd: DateString | null;
+  sampleTreeCount: number;
+  samplePlantLocations: SamplePlantLocation[];
+  plantedSpecies: PlantedSpecies[];
+  originalGeometry: Polygon;
+  geometry: Polygon;
+}
+
+type PlantLocation = PlantLocationSingle | PlantLocationMulti;
+
+export interface SamplePlantLocation
+  extends Omit<PlantLocationBase, 'plantProject'> {
+  type: 'sample';
+  /** parent plant location */
+  parent: string;
+  /** tpo profile id */
+  profile: string;
+  nextMeasurementDate: DateString | null;
+  lastMeasurementDate: LastMeasurementDate;
+  scientificName: string;
+  scientificSpecies: string;
+  tag: string | null;
+  measurements: Measurements;
+  originalGeometry: Point;
+  geometry: Point;
 }
 
 export interface Metadata {
   app: App;
-  public: any[];
+  public: unknown[];
+  private?: unknown[];
 }
 
 export interface App {
-  appVersion: string;
-  deviceSystemName: string;
-  deviceSystemVersion: string;
-  deviceModel: string;
-  deviceManufacturer: string;
-  deviceBrand: string;
-  deviceLocation: DeviceLocation;
-  registrationDate?: string;
+  [key: string]: unknown;
 }
 
 export interface DeviceLocation {
@@ -50,64 +79,15 @@ export interface DeviceLocation {
   type: string;
 }
 
-export interface Coordinate {
+type PlantLocationType = 'single' | 'multi' | 'sample';
+
+export interface PlantLocationCoordinate {
   image?: string;
+  created: DateString;
   coordinateIndex: string;
   id: string;
+  updated: DateString;
   status: string;
-}
-
-export interface SamplePlantLocation {
-  parent: string;
-  nextMeasurementDate: any;
-  metadata: Metadata2;
-  hid: string;
-  scientificName?: string;
-  otherSpecies: any;
-  description: any;
-  geometryUpdatesCount: number;
-  type: string;
-  plantProjectSite: any;
-  statusReason: any;
-  registrationDate: string;
-  id: string;
-  tag: any;
-  plantDate: string;
-  measurements: Measurements;
-  image: any;
-  idempotencyKey: string;
-  profile: string;
-  coordinates: Coordinate2[];
-  scientificSpecies?: string;
-  history: History[];
-  originalGeometry: OriginalGeometry;
-  captureMode: string;
-  geometry: Geometry;
-  lastMeasurementDate: LastMeasurementDate;
-  captureStatus: string;
-  deviceLocation: DeviceLocation3;
-  status: any;
-}
-
-export interface Metadata2 {
-  app?: App2;
-  private: any;
-  public: any[];
-}
-
-export interface App2 {
-  appVersion: string;
-  deviceSystemName: string;
-  deviceSystemVersion: string;
-  deviceModel: string;
-  deviceManufacturer: string;
-  deviceBrand: string;
-  deviceLocation: DeviceLocation2;
-}
-
-export interface DeviceLocation2 {
-  coordinates: number[];
-  type: string;
 }
 
 export interface Measurements {
@@ -115,79 +95,43 @@ export interface Measurements {
   height: number;
 }
 
-export interface Coordinate2 {
-  image?: string;
-  created: string;
-  coordinateIndex: string;
-  id: string;
-  updated: string;
-  status: string;
-}
-
 export interface History {
   image?: string;
-  statusReason: any;
-  created: string;
-  eventName: string;
-  classification: any;
+  statusReason: string | null; //TODO - update with possible values
+  created: DateString;
+  eventName: HistoryEvent;
+  classification: string | null; //TODO - update with possible values
   eventDate: EventDate;
-  measurements: Measurements2;
-  status?: string;
+  measurements: Measurements;
+  status: TreeStatus | null;
 }
 
 export interface EventDate {
-  date: string;
+  date: DateString;
   timezone: string;
   timezone_type: number;
 }
 
-export interface Measurements2 {
-  width: number;
-  height: number;
-}
-
-export interface OriginalGeometry {
-  coordinates: number[];
-  type: string;
-}
-
-export interface Geometry {
-  coordinates: number[];
-  type: string;
-}
-
-export interface LastMeasurementDate {
-  date: string;
-  timezone: string;
-  timezone_type: number;
-}
-
-export interface DeviceLocation3 {
-  coordinates: number[];
-  type: string;
-}
-
-export interface PlantedSpecy {
+export interface PlantedSpecies {
   scientificName?: string;
   created: string;
   otherSpecies?: string;
   scientificSpecies?: string;
   treeCount: number;
   id: string;
-  updated: string;
+  updated: DateString;
 }
 
-export interface OriginalGeometry2 {
-  coordinates: number[][][];
-  type: string;
-}
+type TreeStatus = 'alive' | 'sick' | 'dead';
 
-export interface Geometry2 {
-  coordinates: number[][][];
-  type: string;
-}
+type CaptureMode = 'off-site' | 'on-site';
 
-export interface DeviceLocation4 {
-  coordinates: number[];
-  type: string;
+type CaptureStatus = 'partial' | 'complete';
+
+type HistoryEvent = 'created' | 'measurement' | 'skip-measurement' | 'status';
+
+export interface LastMeasurementDate {
+  date: DateString;
+  timezone: string;
+  timezone_type: number;
 }
