@@ -1,5 +1,5 @@
 import { Marker } from 'react-map-gl';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'next-i18next';
 import {
   ConservationBlueTreeSvg,
@@ -8,9 +8,22 @@ import {
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import CustomPopUp from './CustomPopUp';
 
-const TreePlantedClusterMarker = ({ project }) => {
+const TreePlantedClusterMarker = ({ project, treesInfo }) => {
   const { t, ready } = useTranslation(['me']);
   const [showPopUp, setShowPopUp] = useState(false);
+  const [totalTreesAnCluster, setTotalTreesAnCluster] = useState(undefined);
+
+  useEffect(() => {
+    if (treesInfo) {
+      const _result = treesInfo.filter((unit) => {
+        if (unit.clusterId === project?.properties?.cluster_id) {
+          return unit;
+        }
+      });
+      setTotalTreesAnCluster(_result[0].totalTrees, _result);
+    }
+  }, [project, treesInfo]);
+
   return (
     ready &&
     project && (
@@ -29,8 +42,7 @@ const TreePlantedClusterMarker = ({ project }) => {
               <PlantedTreesGreenSvg />
             </div>
             <div className={MyForestMapStyle.totalTreeCount}>
-              34 trees
-              {/* {t('me:plantedTrees', { noOfTrees: `${project.treeCount}` })} */}
+              {t('me:plantedTrees', { noOfTrees: `${totalTreesAnCluster}` })}
             </div>
           </div>
         </Marker>

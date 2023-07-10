@@ -1,13 +1,6 @@
-import MapGL, {
-  Layer,
-  Marker,
-  NavigationControl,
-  Source,
-  WebMercatorViewport,
-} from 'react-map-gl';
+import MapGL, { NavigationControl } from 'react-map-gl';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
-// import SingleMarker from './SingleMarker';
 import {
   ConservAreaClusterMarker,
   TreePlantedClusterMarker,
@@ -17,10 +10,6 @@ import Supercluster from 'supercluster';
 import SingleMarker from './SingleMarker';
 
 const MyForestMap = () => {
-  const supercluster = new Supercluster({
-    radius: 60,
-    maxZoom: 2,
-  });
   const mapRef = useRef(null);
   const EMPTY_STYLE = {
     version: 8,
@@ -29,6 +18,7 @@ const MyForestMap = () => {
   };
 
   const [clusters, setClusters] = useState([]);
+  const [totalTreesForAnCluster, setTotalTreesForAnCluster] = useState([]);
   const [mapState, setMapState] = useState({
     mapStyle: EMPTY_STYLE,
     dragPan: true,
@@ -117,7 +107,7 @@ const MyForestMap = () => {
       properties: {
         cluster: false,
         id: item.id,
-        trees: item.tree,
+        tree: item.tree,
       },
       geometry: {
         type: 'Point',
@@ -126,7 +116,35 @@ const MyForestMap = () => {
     }));
   }, [data]);
 
+  const _countTotaltreesOfAnCluster = (clusters, supercluster) => {
+    if (clusters) {
+      const _countTree = clusters.map((singleCluster) => {
+        // fetching list of markers associates to an cluster
+        const _leaves = supercluster.getLeaves(
+          singleCluster?.properties.cluster_id,
+          Infinity,
+          0
+        );
+        // adding  the total number of trees associates to an cluster
+        const _addingtreesAnCluster = _leaves.reduce((accumulator, point) => {
+          return accumulator + point?.properties?.tree;
+        }, 0);
+
+        const _treeInfo = {
+          totalTrees: _addingtreesAnCluster,
+          clusterId: singleCluster.properties.cluster_id,
+        };
+        return _treeInfo;
+      });
+      setTotalTreesForAnCluster(_countTree);
+    }
+  };
+
   const _fetchData = () => {
+    const supercluster = new Supercluster({
+      radius: 60,
+      maxZoom: 2,
+    });
     supercluster.load(points);
     const { zoom } = viewport;
 
@@ -135,19 +153,11 @@ const MyForestMap = () => {
     const bound = bounds ? [bounds[0], bounds[1], bounds[2], bounds[3]] : null;
 
     const _clusters = supercluster?.getClusters(bound, zoom);
-    // if (_clusters) {
-    //   const _leaves = _clusters.map((singleCluster) => {
-    //     return supercluster.getLeaves(
-    //       singleCluster?.properties.cluster_id,
-    //       Infinity,
-    //       0
-    //     );
-    //   });
-    // }
+    _countTotaltreesOfAnCluster(_clusters, supercluster);
     setClusters(_clusters);
     return _clusters;
   };
-  // console.log(mapState, viewport.viewState?.zoom, '==');
+
   useEffect(() => {
     _fetchData();
   }, [viewport]);
@@ -160,11 +170,16 @@ const MyForestMap = () => {
         {...viewport}
         onViewStateChange={_handleViewport}
       >
-        {/* {console.log(clusters, '==')} */}
         {clusters &&
           viewport.viewState?.zoom < 4.65 &&
           clusters.map((point, key) => {
-            return <TreePlantedClusterMarker key={key} project={point} />;
+            return (
+              <TreePlantedClusterMarker
+                key={key}
+                project={point}
+                treesInfo={totalTreesForAnCluster}
+              />
+            );
           })}
 
         {points &&

@@ -37,7 +37,9 @@ const SingleMarker = ({ coordinates }) => {
           <div className={MyForestMapStyle.svgContainer}>
             <PlantedTreesGreenSvg />
           </div>
-          <div className={MyForestMapStyle.trees}>4</div>
+          <div className={MyForestMapStyle.trees}>
+            {coordinates?.properties?.tree}
+          </div>
         </div>
       </Marker>
     </div>
