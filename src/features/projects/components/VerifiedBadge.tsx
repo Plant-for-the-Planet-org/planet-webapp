@@ -27,26 +27,28 @@ const VerifiedBadge = ({ displayPopup, project }: Props): ReactElement => {
           {...bindHover(verifiedPopupState)}
         />
       </span>
-      {displayPopup && (
-        <HoverPopover
-          {...bindPopover(verifiedPopupState)}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          <div className="topProjectReportsContainer">
-            <TopProjectReports projectReviews={project.reviews} />
-          </div>
-        </HoverPopover>
-      )}
+      {displayPopup &&
+        project.reviews !== undefined &&
+        project.reviews.length > 0 && (
+          <HoverPopover
+            {...bindPopover(verifiedPopupState)}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <div className="topProjectReportsContainer">
+              <TopProjectReports projectReviews={project.reviews} />
+            </div>
+          </HoverPopover>
+        )}
     </>
   );
 };

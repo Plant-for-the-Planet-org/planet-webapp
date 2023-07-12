@@ -218,9 +218,11 @@ function SingleProjectDetails({}: Props): ReactElement {
                   className={'projectCompleteInfo'}
                   style={{ marginTop: 24 }}
                 >
-                  {project?.isApproved && (
-                    <TopProjectReports projectReviews={project.reviews} />
-                  )}
+                  {project?.isApproved &&
+                    project.reviews !== undefined &&
+                    project.reviews.length > 0 && (
+                      <TopProjectReports projectReviews={project.reviews} />
+                    )}
                   <div className={'projectDescription'}>
                     <div className={'infoTitle'}>
                       {t('donate:aboutProject')}
