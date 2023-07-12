@@ -11,7 +11,11 @@ import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
-import { ProjectMapInfo } from '@planet-sdk/common';
+import {
+  ConservationProjectConcise,
+  ProjectMapInfo,
+  TreeProjectConcise,
+} from '@planet-sdk/common';
 
 interface Props {
   projects: any;
@@ -43,7 +47,8 @@ function ProjectsList({
   const [searchValue, setSearchValue] = React.useState('');
   const [trottledSearchValue, setTrottledSearchValue] = React.useState('');
   const [searchProjectResults, setSearchProjectResults] = React.useState<
-    ProjectMapInfo[] | undefined
+    | ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[]
+    | undefined
   >();
 
   useDebouncedEffect(

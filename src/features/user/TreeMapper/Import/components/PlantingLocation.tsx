@@ -21,7 +21,13 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../../../theme/themeProperties';
-import { handleError, APIError, ProjectMapInfo } from '@planet-sdk/common';
+import {
+  handleError,
+  APIError,
+  ProjectMapInfo,
+  TreeProjectConcise,
+  ConservationProjectConcise,
+} from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 
 const dialogSx: SxProps = {
@@ -99,11 +105,9 @@ export default function PlantingLocation({
 
   const loadProjects = async () => {
     try {
-      const projects = await getAuthenticatedRequest<ProjectMapInfo[]>(
-        '/app/profile/projects',
-        token,
-        logoutUser
-      );
+      const projects = await getAuthenticatedRequest<
+        ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[]
+      >('/app/profile/projects', token, logoutUser);
       setProjects(projects);
     } catch (err) {
       setErrors(handleError(err as APIError));

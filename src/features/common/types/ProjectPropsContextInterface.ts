@@ -1,5 +1,12 @@
-import { ProjectMapInfo } from '@planet-sdk/common/build/types/project/map';
-import { ProjectExtended } from '@planet-sdk/common/build/types/project/extended';
+import {
+  ProjectMapInfo,
+  TreeProjectConcise,
+  ConservationProjectConcise,
+} from '@planet-sdk/common/build/types/project/map';
+import {
+  TreeProjectExtended,
+  ConservationProjectExtended,
+} from '@planet-sdk/common/build/types/project/extended';
 import { ProjectPurposeTypes } from '@planet-sdk/common/build/types/project/common';
 import { FeatureCollection } from 'geojson';
 import { SetState } from './common';
@@ -73,9 +80,13 @@ export interface RasterData {
 
 interface ProjectPropsContextInterface {
   projects: ProjectMapInfo[] | null;
-  setProjects: SetState<ProjectMapInfo[] | null>;
-  project: ProjectExtended | null;
-  setProject: SetState<ProjectExtended | null>;
+  setProjects: SetState<
+    ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[] | null
+  >;
+  project: TreeProjectExtended | ConservationProjectExtended | null;
+  setProject: SetState<
+    TreeProjectExtended | ConservationProjectExtended | null
+  >;
   showSingleProject: boolean;
   setShowSingleProject: SetState<boolean>;
   showProjects: boolean;

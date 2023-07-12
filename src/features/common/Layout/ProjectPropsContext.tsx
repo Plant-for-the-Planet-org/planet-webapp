@@ -7,8 +7,15 @@ import React, {
   FC,
 } from 'react';
 import { ParamsContext } from './QueryParamsContext';
-import { ProjectMapInfo } from '@planet-sdk/common/build/types/project/map';
-import { ProjectExtended } from '@planet-sdk/common/build/types/project/extended';
+import {
+  ProjectMapInfo,
+  TreeProjectConcise,
+  ConservationProjectConcise,
+} from '@planet-sdk/common/build/types/project/map';
+import {
+  TreeProjectExtended,
+  ConservationProjectExtended,
+} from '@planet-sdk/common/build/types/project/extended';
 import { ProjectPurposeTypes } from '@planet-sdk/common/build/types/project/common';
 import { FeatureCollection } from 'geojson';
 import ProjectPropsContextInterface, {
@@ -38,8 +45,12 @@ export const useProjectProps = (): ProjectPropsContextInterface => {
 };
 
 const ProjectPropsProvider: FC = ({ children }) => {
-  const [projects, setProjects] = useState<ProjectMapInfo[] | null>(null);
-  const [project, setProject] = useState<ProjectExtended | null>(null);
+  const [projects, setProjects] = useState<
+    ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[] | null
+  >(null);
+  const [project, setProject] = useState<
+    TreeProjectExtended | ConservationProjectExtended | null
+  >(null);
   const [showSingleProject, setShowSingleProject] = useState(false);
   const [showProjects, setShowProjects] = useState(true);
   const [searchedProject, setsearchedProjects] = useState<ProjectMapInfo[]>([]);
