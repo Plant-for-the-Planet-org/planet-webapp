@@ -7,10 +7,14 @@ import {
 } from 'material-ui-popup-state/hooks';
 import TopProjectReports from './projectDetails/TopProjectReports';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
+import {
+  TreeProjectConcise,
+  TreeProjectExtended,
+} from '@planet-sdk/common/build/types/project';
 
 interface Props {
   displayPopup: boolean;
-  project: any;
+  project: TreeProjectConcise | TreeProjectExtended;
 }
 
 const VerifiedBadge = ({ displayPopup, project }: Props): ReactElement => {
