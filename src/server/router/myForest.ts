@@ -157,4 +157,92 @@ export const myForestRouter = router({
 
       return data;
     }),
+
+  contributionsGeoJson: procedure
+    .input(
+      z.object({
+        profileId: z.string(),
+      })
+    )
+    .query(async ({ input: { profileId } }) => {
+      const profile = await prisma.profile.findFirst({
+        where: {
+          guid: profileId,
+        },
+      });
+
+      if (!profile) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Profile not found',
+        });
+      }
+
+      const data = await prisma.contribution.findMany({
+        select: {
+          purpose: true,
+          treeCount: true,
+          quantity: true,
+          plantDate: true,
+          contributionType: true,
+          plantProject: {
+            select: {
+              guid: true,
+              name: true,
+              image: true,
+              country: true,
+              unit: true,
+              location: true,
+              geoLatitude: true,
+              geoLongitude: true,
+              tpo: true,
+            },
+          },
+        },
+        where: {
+          profile: {
+            guid: profileId,
+          },
+          deletedAt: null,
+          OR: [
+            {
+              contributionType: 'donation',
+              paymentStatus: 'paid',
+              plantProject: {
+                purpose: {
+                  in: ['trees', 'conservation'],
+                },
+              },
+            },
+            {
+              contributionType: 'planting',
+              isVerified: 1,
+            },
+          ],
+        },
+      });
+
+      return data.map((contribution) => {
+        return {
+          type: 'Feature',
+          properties: {
+            cluster: false,
+            tree: contribution.treeCount,
+            purpose: contribution.purpose,
+            treeCount: contribution.treeCount,
+            quantity: contribution.quantity,
+            plantDate: contribution.plantDate,
+            contributionType: contribution.contributionType,
+            plantProject: contribution.plantProject,
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [
+              contribution.plantProject?.geoLatitude,
+              contribution.plantProject?.geoLongitude,
+            ],
+          },
+        };
+      });
+    }),
 });
