@@ -162,9 +162,10 @@ export const myForestRouter = router({
     .input(
       z.object({
         profileId: z.string(),
+        purpose: z.nullable(z.string()),
       })
     )
-    .query(async ({ input: { profileId } }) => {
+    .query(async ({ input: { profileId, purpose } }) => {
       const profile = await prisma.profile.findFirst({
         where: {
           guid: profileId,
@@ -210,7 +211,7 @@ export const myForestRouter = router({
               paymentStatus: 'paid',
               plantProject: {
                 purpose: {
-                  in: ['trees', 'conservation'],
+                  in: purpose ? purpose : ['trees', 'conservation'],
                 },
               },
             },
