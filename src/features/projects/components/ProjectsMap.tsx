@@ -84,14 +84,6 @@ export default function ProjectsMap(): ReactElement {
     viewport,
     setViewPort,
   };
-  const projectProps = {
-    project,
-    viewport,
-    setViewPort,
-    mapRef,
-    mapState,
-    setMapState,
-  };
 
   const onMapClick = (e: MapEvent) => {
     setSamplePlantLocation(null);
@@ -175,9 +167,13 @@ export default function ProjectsMap(): ReactElement {
         {zoomLevel === 1 && searchedProject && showProjects && (
           <Home {...homeProps} />
         )}
-        {zoomLevel === 2 && project && (
+        {zoomLevel === 2 && project !== null && (
           <>
-            <Project {...projectProps} />
+            <Project
+              project={project}
+              viewport={viewport}
+              setViewPort={setViewPort}
+            />
             {selectedMode === 'location' && <PlantLocations />}
           </>
         )}

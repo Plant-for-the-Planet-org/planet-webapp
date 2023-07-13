@@ -8,12 +8,19 @@ import Location from './Location';
 import Sites from './Sites';
 import { useRouter } from 'next/router';
 import { zoomToPlantLocation } from '../../../../../src/utils/maps/plantLocations';
-import { handleError, APIError } from '@planet-sdk/common';
+import {
+  handleError,
+  APIError,
+  TreeProjectExtended,
+  ConservationProjectExtended,
+} from '@planet-sdk/common';
+import { ViewPort } from '../../../common/types/ProjectPropsContextInterface';
+import { SetState } from '../../../common/types/common';
 
 interface Props {
-  project: Object;
-  viewport: Object;
-  setViewPort: Function;
+  project: TreeProjectExtended | ConservationProjectExtended;
+  viewport: ViewPort;
+  setViewPort: SetState<ViewPort>;
 }
 
 export default function Project({
