@@ -3,15 +3,15 @@ import { useState } from 'react';
 import { PlantedTreesGreenSvg } from '../../../../../../public/assets/images/ProfilePageIcons';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 
-const SingleMarker = ({ coordinates }) => {
+const SingleMarker = ({ geoJson }) => {
   const [showPopUp, setShowPopUp] = useState(false);
   return (
     <div className={MyForestMapStyle.singleMarkerContainer}>
       {showPopUp && (
         <Popup
           className={MyForestMapStyle.mapboxglPopup}
-          latitude={coordinates?.geometry.coordinates[1]}
-          longitude={coordinates?.geometry.coordinates[0]}
+          latitude={geoJson.geometry.coordinates[1]}
+          longitude={geoJson?.geometry.coordinates[0]}
           offsetTop={-15}
           offsetLeft={20}
           anchor="bottom"
@@ -26,8 +26,8 @@ const SingleMarker = ({ coordinates }) => {
         </Popup>
       )}
       <Marker
-        latitude={coordinates?.geometry.coordinates[1]}
-        longitude={coordinates?.geometry.coordinates[0]}
+        latitude={geoJson?.geometry.coordinates[1]}
+        longitude={geoJson?.geometry.coordinates[0]}
       >
         <div
           className={MyForestMapStyle.markerContainer}
@@ -38,7 +38,7 @@ const SingleMarker = ({ coordinates }) => {
             <PlantedTreesGreenSvg />
           </div>
           <div className={MyForestMapStyle.trees}>
-            {coordinates?.properties?.tree}
+            {geoJson.properties?.quantity}
           </div>
         </div>
       </Marker>

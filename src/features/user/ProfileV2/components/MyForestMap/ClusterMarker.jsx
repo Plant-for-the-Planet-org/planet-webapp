@@ -1,5 +1,5 @@
 import { Marker } from 'react-map-gl';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import {
   ConservationBlueTreeSvg,
@@ -8,41 +8,19 @@ import {
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import CustomPopUp from './CustomPopUp';
 
-const TreePlantedClusterMarker = ({ project, treesInfo }) => {
+const TreePlantedClusterMarker = ({ totalTrees, coordinates }) => {
   const { t, ready } = useTranslation(['me']);
-  const [showPopUp, setShowPopUp] = useState(false);
-  const [totalTreesAnCluster, setTotalTreesAnCluster] = useState(undefined);
-
-  useEffect(() => {
-    if (treesInfo) {
-      const _result = treesInfo.filter((unit) => {
-        if (unit.clusterId === project?.properties?.cluster_id) {
-          return unit;
-        }
-      });
-      setTotalTreesAnCluster(_result[0].totalTrees, _result);
-    }
-  }, [project, treesInfo]);
-
   return (
     ready &&
-    project && (
+    totalTrees && (
       <>
-        {showPopUp && <CustomPopUp projectInfo={project} />}
-        <Marker
-          latitude={project?.geometry?.coordinates[1]}
-          longitude={project?.geometry?.coordinates[0]}
-        >
-          <div
-            className={MyForestMapStyle.clusterMarkerContainer}
-            onMouseOver={() => setShowPopUp(true)}
-            onMouseLeave={() => setShowPopUp(false)}
-          >
+        <Marker latitude={coordinates[0]} longitude={coordinates[1]}>
+          <div className={MyForestMapStyle.clusterMarkerContainer}>
             <div className={MyForestMapStyle.svgContainer}>
               <PlantedTreesGreenSvg />
             </div>
             <div className={MyForestMapStyle.totalTreeCount}>
-              {t('me:plantedTrees', { noOfTrees: `${totalTreesAnCluster}` })}
+              {t('me:plantedTrees', { noOfTrees: `${totalTrees}` })}
             </div>
           </div>
         </Marker>

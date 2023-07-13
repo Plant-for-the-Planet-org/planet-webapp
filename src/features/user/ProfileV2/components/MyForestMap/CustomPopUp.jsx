@@ -1,12 +1,12 @@
 import { Popup } from 'react-map-gl';
 import { Button } from '@mui/material';
-// import { useContext } from 'react';
+import { useContext } from 'react';
 import { useTranslation } from 'next-i18next';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
-// import getImageUrl from '../../../../../utils/getImageURL';
-// import { getDonationUrl } from '../../../../../utils/getDonationUrl';
-// import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-// import { ParamsContext } from '../../../../common/Layout/QueryParamsContext';
+import getImageUrl from '../../../../../utils/getImageURL';
+import { getDonationUrl } from '../../../../../utils/getDonationUrl';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import { ParamsContext } from '../../../../common/Layout/QueryParamsContext';
 
 const CustomPopUp = ({ projectInfo }) => {
   const { t, ready } = useTranslation(['me']);
@@ -33,7 +33,7 @@ const CustomPopUp = ({ projectInfo }) => {
               className={MyForestMapStyle.projectImageContainer}
               style={{ backgroundColor: 'green' }}
             >
-              {/* <img
+              <img
                 src={getImageUrl(
                   'project',
                   'medium',
@@ -41,7 +41,7 @@ const CustomPopUp = ({ projectInfo }) => {
                 )}
                 width="100%"
                 height="100%"
-              /> */}
+              />
               <div className={MyForestMapStyle.projectName}>
                 {'Yucatan'}
                 {/* {projectInfo.plantProject.name} */}
