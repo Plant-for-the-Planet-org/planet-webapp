@@ -34,8 +34,8 @@ export default function Index(props) {
       </Text>
       <List>
         <li>
-          <Link href="https://subdomain-10.vercel.sh">
-            subdomain-10.vercel.sh
+          <Link href="https://subdomain-10.vercel.app">
+            subdomain-10.vercel.app
           </Link>
         </li>
         <li>
