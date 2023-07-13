@@ -17,6 +17,11 @@ const hostnamesDB = [
     description: 'Subdomain only',
     subdomain: 'subdomain-3',
   },
+  {
+    name: 'Site 10',
+    description: 'Subdomain only',
+    subdomain: 'subdomain-10',
+  },
 ];
 const DEFAULT_HOST = hostnamesDB.find((h) => h.defaultForPreview);
 

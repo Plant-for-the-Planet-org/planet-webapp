@@ -1,7 +1,10 @@
 import { useRouter } from 'next/router';
 import { Layout, Page, Text, Link, List } from '@vercel/examples-ui';
 
-import { getHostnameDataBySubdomain, getSubdomainPaths } from '../../../src/utils/db';
+import {
+  getHostnameDataBySubdomain,
+  getSubdomainPaths,
+} from '../../../src/utils/db';
 
 export default function Index(props) {
   const router = useRouter();
@@ -16,7 +19,7 @@ export default function Index(props) {
   }
 
   return (
-    <Page>
+    <Page style={{ marginTop: '300px' }}>
       <Text variant="h1" className="mb-6">
         {props.name}
       </Text>
@@ -31,8 +34,8 @@ export default function Index(props) {
       </Text>
       <List>
         <li>
-          <Link href="https://subdomain-1.vercel.sh">
-            subdomain-1.vercel.sh
+          <Link href="https://subdomain-10.vercel.sh">
+            subdomain-10.vercel.sh
           </Link>
         </li>
         <li>
