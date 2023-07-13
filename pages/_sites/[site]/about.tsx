@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Layout, Page, Text, Link } from '@vercel/examples-ui'
 
