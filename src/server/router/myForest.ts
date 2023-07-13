@@ -228,7 +228,7 @@ export const myForestRouter = router({
           type: 'Feature',
           properties: {
             cluster: false,
-            purpose: contribution.purpose,
+            category: contribution.purpose,
             quantity: contribution.quantity,
             plantDate: contribution.plantDate,
             contributionType: contribution.contributionType,
