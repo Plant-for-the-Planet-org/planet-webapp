@@ -13,9 +13,19 @@ import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import VerifiedBadge from './VerifiedBadge';
 import TopProjectBadge from './TopProjectBadge';
+import {
+  ConservationProjectConcise,
+  ConservationProjectExtended,
+  TreeProjectConcise,
+  TreeProjectExtended,
+} from '@planet-sdk/common';
 
 interface Props {
-  project: any;
+  project:
+    | TreeProjectConcise
+    | ConservationProjectConcise
+    | TreeProjectExtended
+    | ConservationProjectExtended;
   editMode: boolean;
   displayPopup: boolean;
 }
@@ -34,7 +44,10 @@ export default function ProjectSnippet({
 
   const { selectedPl, hoveredPl } = useProjectProps();
 
-  let progressPercentage = (project.countPlanted / project.countTarget) * 100;
+  let progressPercentage = 0;
+
+  if (project.purpose === 'trees' && project.countTarget !== null)
+    progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
   if (progressPercentage > 100) {
     progressPercentage = 100;
@@ -81,16 +94,18 @@ export default function ProjectSnippet({
             }}
           ></div>
         ) : null}
-        {project.isTopProject && project.isApproved && (
-          <TopProjectBadge displayPopup={true} />
-        )}
+        {project.purpose === 'trees' &&
+          project.isTopProject &&
+          project.isApproved && <TopProjectBadge displayPopup={true} />}
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
-            {project.classification && t(`donate:${project.classification}`)}
+            {project.purpose === 'trees' &&
+              project.classification &&
+              t(`donate:${project.classification}`)}
           </div>
           <p className={'projectName'}>
             {truncateString(project.name, 54)}
-            {project.isApproved && (
+            {project.purpose === 'trees' && project.isApproved && (
               <VerifiedBadge displayPopup={displayPopup} project={project} />
             )}
           </p>

@@ -118,7 +118,7 @@ function SingleProjectDetails({}: Props): ReactElement {
     }
   };
 
-  return ready ? (
+  return ready && project !== null ? (
     <>
       {/* <Explore /> */}
       {geoJson && <SitesDropdown />}

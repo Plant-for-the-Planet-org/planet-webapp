@@ -16,12 +16,15 @@ import {
   ProjectMapInfo,
   TreeProjectConcise,
 } from '@planet-sdk/common';
+import { SetState } from '../../common/types/common';
 
 interface Props {
-  projects: any;
+  projects: ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[];
   showProjects: Boolean;
   setShowProjects: Function;
-  setsearchedProjects: any;
+  setsearchedProjects: SetState<
+    ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[]
+  >;
 }
 
 const ProjectSnippet = dynamic(() => import('../components/ProjectSnippet'), {
@@ -61,12 +64,16 @@ function ProjectsList({
 
   const searchRef = React.useRef(null);
 
-  function getProjects(projects: Array<any>, type: string) {
+  function getProjects(
+    projects: ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[],
+    type: string
+  ):
+    | ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[]
+    | undefined {
     if (type === 'top') {
       return projects.filter(
-        (project: {
-          properties: { isApproved: boolean; isTopProject: boolean };
-        }) =>
+        (project) =>
+          project.properties.purpose === 'trees' &&
           project.properties.isApproved === true &&
           project.properties.isTopProject === true
       );
@@ -75,7 +82,10 @@ function ProjectsList({
     }
   }
 
-  function getSearchProjects(projects: Array<ProjectMapInfo>, keyword: string) {
+  function getSearchProjects(
+    projects: ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[],
+    keyword: string
+  ) {
     let resultProjects = [];
     if (keyword !== '') {
       const keywords = keyword.split(/[\s\-.,+]+/);
@@ -91,12 +101,14 @@ function ProjectsList({
                 .replace(/[\u0300-\u036f]/g, '')
                 .toLowerCase()
             : '';
-          const projectLocation = project.properties.location
-            ? project.properties.location
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-                .toLowerCase()
-            : '';
+          const projectLocation =
+            project.properties.purpose === 'trees' &&
+            project.properties.location
+              ? project.properties.location
+                  .normalize('NFD')
+                  .replace(/[\u0300-\u036f]/g, '')
+                  .toLowerCase()
+              : '';
           const projectTpoName = project.properties.tpo.name
             ? project.properties.tpo.name
                 .normalize('NFD')
@@ -232,7 +244,7 @@ function ProjectsList({
               <div className={'projectsContainer'}>
                 {trottledSearchValue !== '' ? (
                   searchProjectResults && searchProjectResults.length > 0 ? (
-                    searchProjectResults.map((project: any) => (
+                    searchProjectResults.map((project) => (
                       <ProjectSnippet
                         key={project.properties.id}
                         project={project.properties}
@@ -245,7 +257,7 @@ function ProjectsList({
                   )
                 ) : selectedTab === 'all' ? (
                   allProjects && allProjects.length > 0 ? (
-                    allProjects.map((project: any) => (
+                    allProjects.map((project) => (
                       <ProjectSnippet
                         key={project.properties.id}
                         project={project.properties}
@@ -257,7 +269,7 @@ function ProjectsList({
                     <NoProjectFound />
                   )
                 ) : topProjects && topProjects.length > 0 ? (
-                  topProjects.map((project: any) => (
+                  topProjects.map((project) => (
                     <ProjectSnippet
                       key={project.properties.id}
                       project={project.properties}
