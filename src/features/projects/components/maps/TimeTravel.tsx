@@ -5,9 +5,7 @@ import ImageDropdown from './ImageDropdown';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import ZoomButtons from './ZoomButtons';
 
-interface Props {}
-
-export default function TimeTravel({}: Props): ReactElement {
+export default function TimeTravel(): ReactElement {
   const { mapRef, geoJson, rasterData, isMobile, siteViewPort, selectedMode } =
     useProjectProps();
 
