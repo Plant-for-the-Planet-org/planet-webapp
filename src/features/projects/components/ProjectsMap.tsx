@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useRef, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import MapGL, { MapEvent, NavigationControl, Popup } from 'react-map-gl';
 import getMapStyle from '../../../utils/maps/getMapStyle';
 import styles from '../styles/ProjectsMap.module.scss';
@@ -15,18 +15,13 @@ import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 export default function ProjectsMap(): ReactElement {
   const {
     project,
-    showSingleProject,
     showProjects,
-    setShowProjects,
     searchedProject,
     viewport,
     setViewPort,
-    setExploreProjects,
     mapState,
     setMapState,
     isMobile,
-    exploreProjects,
-    loaded,
     setLoaded,
     mapRef,
     defaultMapCenter,
@@ -44,7 +39,6 @@ export default function ProjectsMap(): ReactElement {
     setIsPolygonMenuOpen,
     setFilterOpen,
     setSamplePlantLocation,
-    samplePlantLocation,
   } = useProjectProps();
 
   const { t } = useTranslation(['maps']);
@@ -110,8 +104,8 @@ export default function ProjectsMap(): ReactElement {
   const onMapHover = (e: MapEvent) => {
     if (e.features && e.features?.length !== 0) {
       if (!hoveredPl || hoveredPl.type !== 'sample') {
-        if (e.features[0].layer?.source) {
-          for (const key in plantLocations) {
+        if (e.features[0].layer?.source && plantLocations) {
+          for (const key of plantLocations) {
             if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
               const element = plantLocations[key];
               if (element.id === e.features[0].layer?.source) {
