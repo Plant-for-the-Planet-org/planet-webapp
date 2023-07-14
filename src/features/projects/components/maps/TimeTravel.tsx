@@ -4,6 +4,7 @@ import MapboxCompare from 'mapbox-gl-compare';
 import ImageDropdown from './ImageDropdown';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import ZoomButtons from './ZoomButtons';
+import { Imagery } from '../../../common/types/ProjectPropsContextInterface';
 
 export default function TimeTravel(): ReactElement {
   const { mapRef, geoJson, rasterData, isMobile, siteViewPort, selectedMode } =
@@ -11,8 +12,10 @@ export default function TimeTravel(): ReactElement {
 
   const [before, setBefore] = React.useState();
   const [after, setAfter] = React.useState();
-  const [selectedSource1, setSelectedSource1] = React.useState('esri');
-  const [selectedSource2, setSelectedSource2] = React.useState('esri');
+  const [selectedSource1, setSelectedSource1] =
+    React.useState<keyof Imagery>('esri');
+  const [selectedSource2, setSelectedSource2] =
+    React.useState<keyof Imagery>('esri');
   const [selectedYear1, setSelectedYear1] = React.useState('2014');
   const [selectedYear2, setSelectedYear2] = React.useState('2021');
 
