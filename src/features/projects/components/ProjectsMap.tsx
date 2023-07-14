@@ -11,6 +11,7 @@ import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
 import { useTranslation } from 'next-i18next';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import { PopupData } from './maps/Markers';
 
 export default function ProjectsMap(): ReactElement {
   const {
@@ -48,7 +49,7 @@ export default function ProjectsMap(): ReactElement {
   const _onViewportChange = (view: any) => setViewPort({ ...view });
 
   // Projects
-  const [popupData, setPopupData] = useState({ show: false });
+  const [popupData, setPopupData] = useState<PopupData>({ show: false });
 
   // Use Effects
   useEffect(() => {
@@ -81,7 +82,7 @@ export default function ProjectsMap(): ReactElement {
 
   const onMapClick = (e: MapEvent) => {
     setSamplePlantLocation(null);
-    setPopupData({ ...popupData, show: false });
+    setPopupData({ show: false });
     setIsPolygonMenuOpen(false);
     setFilterOpen(false);
     if (e.features && e.features?.length !== 0) {
@@ -189,7 +190,7 @@ export default function ProjectsMap(): ReactElement {
             longitude={showDetails.coordinates[0]}
             closeButton={false}
             closeOnClick={false}
-            onClose={() => setPopupData({ ...popupData, show: false })}
+            onClose={() => setPopupData({ show: false })}
             anchor="bottom"
             dynamicPosition={false}
             offsetTop={-5}
