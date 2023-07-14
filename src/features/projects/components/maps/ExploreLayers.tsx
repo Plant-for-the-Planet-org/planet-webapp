@@ -6,9 +6,7 @@ import { PluginMapboxGl } from 'layer-manager';
 import TreeCoverLoss from '../../../../../public/data/layers/tree-cover-loss';
 import { getParams } from '../../../../utils/LayerManagerUtils';
 
-interface Props {}
-
-export default function ExploreLayers({}: Props): ReactElement {
+export default function ExploreLayers(): ReactElement {
   const {
     loaded,
     mapRef,
