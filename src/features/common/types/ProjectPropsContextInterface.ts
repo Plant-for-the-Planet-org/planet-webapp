@@ -105,7 +105,7 @@ interface ProjectPropsContextInterface {
   // Evaluate - possible to remove infoRef
   infoRef: RefObject<HTMLDivElement>;
   exploreContainerRef: RefObject<HTMLDivElement>;
-  mapRef: Ref<MapRef>; //Perhaps move this down
+  mapRef: RefObject<MapRef>; //Perhaps move this down
   exploreExpanded: boolean;
   setExploreExpanded: SetState<boolean>;
   exploreForests: boolean;
