@@ -1,13 +1,19 @@
 import React, { ReactElement } from 'react';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import { useTranslation } from 'next-i18next';
+import { SetState } from '../../../common/types/common';
+import {
+  ConservationProjectConcise,
+  ProjectMapInfo,
+  TreeProjectConcise,
+} from '@planet-sdk/common';
 
 interface Props {
   showTopProjectsList: boolean;
-  setSelectedTab: Function;
+  setSelectedTab: SetState<'top' | 'all'>;
   selectedTab: 'top' | 'all';
-  setSearchMode: Function;
-  projects: any;
+  setSearchMode: SetState<boolean>;
+  projects: ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[];
 }
 
 function Header({
