@@ -31,7 +31,7 @@ export interface ViewPort {
   zoom: number;
   transitionDuration?: number;
   transitionInterpolator?: FlyToInterpolator;
-  transitionEasing?: number;
+  transitionEasing?: (val: number) => number;
 }
 
 export interface SiteViewPort {
