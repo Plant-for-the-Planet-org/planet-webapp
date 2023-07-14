@@ -183,7 +183,7 @@ export default function Markers({
           >
             <PopupProject
               key={popupData.project.properties.id}
-              project={popupData.project}
+              project={popupData.project.properties}
               buttonRef={buttonRef}
               popupRef={popupRef}
               open={open}

@@ -9,9 +9,13 @@ import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import VerifiedBadge from './VerifiedBadge';
 import TopProjectBadge from './TopProjectBadge';
+import {
+  ConservationProjectConcise,
+  TreeProjectConcise,
+} from '@planet-sdk/common/build/types/project/map';
 
 interface Props {
-  project: any;
+  project: TreeProjectConcise | ConservationProjectConcise;
   open: boolean;
   handleOpen: Function;
   handleClose: Function;
@@ -27,23 +31,28 @@ export default function PopupProject({
   const { token } = useUserProps();
   const { embed } = React.useContext(ParamsContext);
 
-  const ImageSource = project.properties.image
-    ? getImageUrl('project', 'medium', project.properties.image)
+  const ImageSource = project.image
+    ? getImageUrl('project', 'medium', project.image)
     : '';
-  const progressPercentage =
-    (project.properties.countPlanted / project.properties.countTarget) * 100 +
-    '%';
+
+  let progressPercentage = 0;
+
+  if (project.purpose === 'trees' && project.countTarget !== null)
+    progressPercentage = (project.countPlanted / project.countTarget) * 100;
+
+  if (progressPercentage > 100) {
+    progressPercentage = 100;
+  }
 
   const handleDonationOpen = () => {
-    const url = getDonationUrl(project.properties.slug, token);
+    const url = getDonationUrl(project.slug, token);
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
 
   return ready ? (
     <>
       <div className={'projectImage'}>
-        {project.properties.image &&
-        typeof project.properties.image !== 'undefined' ? (
+        {project.image && typeof project.image !== 'undefined' ? (
           <div
             className={'projectImageFile'}
             style={{
@@ -52,18 +61,19 @@ export default function PopupProject({
             }}
           ></div>
         ) : null}
-        {project.properties.isTopProject && project.properties.isApproved && (
-          <TopProjectBadge displayPopup={false} />
-        )}
+        {project.purpose === 'trees' &&
+          project.isTopProject &&
+          project.isApproved && <TopProjectBadge displayPopup={false} />}
         <div className={'projectImageBlock'}>
-          <div className={'projectType'}>
-            {project.properties.classification &&
-              t(`donate:${project.properties.classification}`)}
-          </div>
+          {project.purpose === 'trees' && (
+            <div className={'projectType'}>
+              {project.classification && t(`donate:${project.classification}`)}
+            </div>
+          )}
 
           <p className={'projectName'}>
-            {truncateString(project.properties.name, 54)}
-            {project.properties.isApproved && (
+            {truncateString(project.name, 54)}
+            {project.purpose === 'trees' && project.isApproved && (
               <VerifiedBadge displayPopup={false} project={project} />
             )}
           </p>
@@ -83,33 +93,33 @@ export default function PopupProject({
         <div className={'projectData'}>
           <div className={'targetLocation'}>
             <div className={'target'}>
-              {project.properties.purpose === 'trees' && (
+              {project.purpose === 'trees' && (
                 <>
                   {localizedAbbreviatedNumber(
                     i18n.language,
-                    Number(project.properties.countPlanted),
+                    Number(project.countPlanted),
                     1
                   )}{' '}
                   {t('common:tree', {
-                    count: Number(project.properties.countPlanted),
+                    count: Number(project.countPlanted),
                   })}{' '}
                   •{' '}
                 </>
               )}
               <span style={{ fontWeight: 400 }}>
-                {t('country:' + project.properties.country.toLowerCase())}
+                {t('country:' + project.country.toLowerCase())}
               </span>
             </div>
           </div>
           <div className={'projectTPOName'}>
             {t('common:by', {
-              tpoName: project.properties.tpo.name,
+              tpoName: project.tpo.name,
             })}
           </div>
         </div>
-        {project.properties.allowDonations && (
+        {project.allowDonations && (
           <div className={'projectCost'}>
-            {project.properties.unitCost ? (
+            {project.unitCost ? (
               <>
                 <button
                   id={`ProjPopDonate${project.id}`}
@@ -122,11 +132,11 @@ export default function PopupProject({
                 <div className={'perTreeCost'}>
                   {getFormatedCurrency(
                     i18n.language,
-                    project.properties.currency,
-                    project.properties.unitCost
+                    project.currency,
+                    project.unitCost
                   )}{' '}
                   <span>
-                    {project.properties.purpose === 'conservation'
+                    {project.purpose === 'conservation'
                       ? t('donate:perM2')
                       : t('donate:perTree')}
                   </span>
