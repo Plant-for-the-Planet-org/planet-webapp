@@ -7,13 +7,8 @@ import { useTranslation } from 'next-i18next';
 import styles from './styles/ProjectsContainer.module.scss';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import {
-  handleError,
-  APIError,
-  ProjectMapInfo,
-  TreeProjectConcise,
-  ConservationProjectConcise,
-} from '@planet-sdk/common';
+import { handleError, APIError } from '@planet-sdk/common';
+import { MapProject } from '../../common/types/ProjectPropsContextInterface';
 
 const ProjectSnippet = dynamic(
   () => import('../../projects/components/ProjectSnippet'),
@@ -24,18 +19,17 @@ const ProjectSnippet = dynamic(
 
 export default function ProjectsContainer({ profile }: any) {
   const { t, ready, i18n } = useTranslation(['donate', 'manageProjects']);
-  const [projects, setProjects] = React.useState<
-    ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[]
-  >([]);
+  const [projects, setProjects] = React.useState<MapProject[]>([]);
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
   async function loadProjects() {
     try {
-      const projects = await getRequest<
-        ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[]
-      >(`/app/profiles/${profile.id}/projects`, {
-        locale: i18n.language,
-      });
+      const projects = await getRequest<MapProject[]>(
+        `/app/profiles/${profile.id}/projects`,
+        {
+          locale: i18n.language,
+        }
+      );
       setProjects(projects);
     } catch (err) {
       setErrors(handleError(err as APIError));

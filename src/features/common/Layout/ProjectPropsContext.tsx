@@ -8,11 +8,6 @@ import React, {
 } from 'react';
 import { ParamsContext } from './QueryParamsContext';
 import {
-  ProjectMapInfo,
-  TreeProjectConcise,
-  ConservationProjectConcise,
-} from '@planet-sdk/common/build/types/project/map';
-import {
   TreeProjectExtended,
   ConservationProjectExtended,
 } from '@planet-sdk/common/build/types/project/extended';
@@ -22,6 +17,7 @@ import ProjectPropsContextInterface, {
   ExploreOption,
   LayerSettings,
   MapMode,
+  MapProject,
   MapState,
   RasterData,
   SiteViewPort,
@@ -45,15 +41,13 @@ export const useProjectProps = (): ProjectPropsContextInterface => {
 };
 
 const ProjectPropsProvider: FC = ({ children }) => {
-  const [projects, setProjects] = useState<
-    ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[] | null
-  >(null);
+  const [projects, setProjects] = useState<MapProject[] | null>(null);
   const [project, setProject] = useState<
     TreeProjectExtended | ConservationProjectExtended | null
   >(null);
   const [showSingleProject, setShowSingleProject] = useState(false);
   const [showProjects, setShowProjects] = useState(true);
-  const [searchedProject, setsearchedProjects] = useState<ProjectMapInfo[]>([]);
+  const [searchedProject, setsearchedProjects] = useState<MapProject[]>([]);
   const [geoJson, setGeoJson] = useState<FeatureCollection | null>(null);
   const [siteExists, setsiteExists] = useState(false);
   const [selectedSite, setSelectedSite] = useState(0);
@@ -80,8 +74,9 @@ const ProjectPropsProvider: FC = ({ children }) => {
   const [openModal, setModalOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [satellite, setSatellite] = useState(false);
-  const [filteredProjects, setFilteredProjects] =
-    useState<ProjectMapInfo | null>(null);
+  const [filteredProjects, setFilteredProjects] = useState<MapProject[] | null>(
+    null
+  );
   const [filtersOpen, setFilterOpen] = useState(false);
   const [purpose, setPurpose] = useState<ProjectPurposeTypes>('trees');
   const [plantLocationsLoaded, setPlantLocationsLoaded] = useState(false);

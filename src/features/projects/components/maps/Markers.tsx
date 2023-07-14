@@ -4,12 +4,8 @@ import { Marker, Popup } from 'react-map-gl';
 import PopupProject from '../PopupProject';
 import styles from '../../styles/ProjectsMap.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import {
-  ConservationProjectConcise,
-  ProjectMapInfo,
-  TreeProjectConcise,
-} from '@planet-sdk/common/build/types/project/map';
 import { SetState } from '../../../common/types/common';
+import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 
 type PopupClosedData = {
   show: false;
@@ -19,15 +15,13 @@ type PopupOpenData = {
   show: true;
   lat: number;
   long: number;
-  project: ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>;
+  project: MapProject;
 };
 
 export type PopupData = PopupClosedData | PopupOpenData;
 
 interface Props {
-  searchedProject: ProjectMapInfo<
-    TreeProjectConcise | ConservationProjectConcise
-  >[];
+  searchedProject: MapProject[];
   setPopupData: SetState<PopupData>;
   popupData: PopupData;
   isMobile: boolean;

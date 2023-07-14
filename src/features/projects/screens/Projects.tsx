@@ -11,20 +11,14 @@ import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
-import {
-  ConservationProjectConcise,
-  ProjectMapInfo,
-  TreeProjectConcise,
-} from '@planet-sdk/common';
 import { SetState } from '../../common/types/common';
+import { MapProject } from '../../common/types/ProjectPropsContextInterface';
 
 interface Props {
-  projects: ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[];
+  projects: MapProject[];
   showProjects: Boolean;
   setShowProjects: Function;
-  setsearchedProjects: SetState<
-    ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[]
-  >;
+  setsearchedProjects: SetState<MapProject[]>;
 }
 
 const ProjectSnippet = dynamic(() => import('../components/ProjectSnippet'), {
@@ -50,8 +44,7 @@ function ProjectsList({
   const [searchValue, setSearchValue] = React.useState('');
   const [trottledSearchValue, setTrottledSearchValue] = React.useState('');
   const [searchProjectResults, setSearchProjectResults] = React.useState<
-    | ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[]
-    | undefined
+    MapProject[] | undefined
   >();
 
   useDebouncedEffect(
@@ -65,11 +58,9 @@ function ProjectsList({
   const searchRef = React.useRef(null);
 
   function getProjects(
-    projects: ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[],
+    projects: MapProject[],
     type: string
-  ):
-    | ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[]
-    | undefined {
+  ): MapProject[] | undefined {
     if (type === 'top') {
       return projects.filter(
         (project) =>
@@ -82,10 +73,7 @@ function ProjectsList({
     }
   }
 
-  function getSearchProjects(
-    projects: ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[],
-    keyword: string
-  ) {
+  function getSearchProjects(projects: MapProject[], keyword: string) {
     let resultProjects = [];
     if (keyword !== '') {
       const keywords = keyword.split(/[\s\-.,+]+/);

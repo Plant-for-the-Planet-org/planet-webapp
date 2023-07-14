@@ -6,14 +6,9 @@ import { Project, useAnalytics } from '../../../common/Layout/AnalyticsContext';
 import { DataExplorerGridContainer } from './components/DataExplorerGridContainer';
 import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import {
-  APIError,
-  ConservationProjectConcise,
-  ProjectMapInfo,
-  TreeProjectConcise,
-  handleError,
-} from '@planet-sdk/common';
+import { APIError, handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 
 const Analytics = () => {
   const { t, ready } = useTranslation('treemapperAnalytics');
@@ -23,9 +18,11 @@ const Analytics = () => {
 
   const fetchProjects = async () => {
     try {
-      const res = await getAuthenticatedRequest<
-        ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[]
-      >('/app/profile/projects?scope=map', token, logoutUser);
+      const res = await getAuthenticatedRequest<MapProject[]>(
+        '/app/profile/projects?scope=map',
+        token,
+        logoutUser
+      );
       const projects: Project[] = [];
 
       res.forEach((_proj) => {

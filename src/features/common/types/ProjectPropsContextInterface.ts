@@ -78,13 +78,13 @@ export interface RasterData {
   imagery: Imagery;
 }
 
+export type MapProject = ProjectMapInfo<
+  TreeProjectConcise | ConservationProjectConcise
+>;
+
 interface ProjectPropsContextInterface {
-  projects:
-    | ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[]
-    | null;
-  setProjects: SetState<
-    ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[] | null
-  >;
+  projects: MapProject[] | null;
+  setProjects: SetState<MapProject[] | null>;
   project: TreeProjectExtended | ConservationProjectExtended | null;
   setProject: SetState<
     TreeProjectExtended | ConservationProjectExtended | null
@@ -93,12 +93,8 @@ interface ProjectPropsContextInterface {
   setShowSingleProject: SetState<boolean>;
   showProjects: boolean;
   setShowProjects: SetState<boolean>;
-  searchedProject: ProjectMapInfo<
-    TreeProjectConcise | ConservationProjectConcise
-  >[];
-  setsearchedProjects: SetState<
-    ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[]
-  >;
+  searchedProject: MapProject[];
+  setsearchedProjects: SetState<MapProject[]>;
   geoJson: FeatureCollection | null;
   setGeoJson: SetState<FeatureCollection | null>;
   selectedSite: number;
@@ -158,12 +154,8 @@ interface ProjectPropsContextInterface {
   setIsPolygonMenuOpen: SetState<boolean>;
   siteViewPort: SiteViewPort | null;
   setSiteViewPort: SetState<SiteViewPort | null>;
-  filteredProjects:
-    | ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[]
-    | null;
-  setFilteredProjects: SetState<
-    ProjectMapInfo<TreeProjectConcise | ConservationProjectConcise>[] | null
-  >;
+  filteredProjects: MapProject[] | null;
+  setFilteredProjects: SetState<MapProject[] | null>;
   filtersOpen: boolean;
   setFilterOpen: SetState<boolean>;
   purpose: ProjectPurposeTypes;

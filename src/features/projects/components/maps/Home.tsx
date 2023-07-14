@@ -3,17 +3,13 @@ import { FlyToInterpolator } from 'react-map-gl';
 import Markers, { PopupData } from './Markers';
 import * as d3 from 'd3-ease';
 import {
-  ConservationProjectConcise,
-  ProjectMapInfo,
-  TreeProjectConcise,
-} from '@planet-sdk/common';
-import { ViewPort } from '../../../common/types/ProjectPropsContextInterface';
+  MapProject,
+  ViewPort,
+} from '../../../common/types/ProjectPropsContextInterface';
 import { SetState } from '../../../common/types/common';
 
 interface Props {
-  searchedProject: ProjectMapInfo<
-    TreeProjectConcise | ConservationProjectConcise
-  >[];
+  searchedProject: MapProject[];
   setPopupData: SetState<PopupData>;
   popupData: PopupData;
   isMobile: boolean;
