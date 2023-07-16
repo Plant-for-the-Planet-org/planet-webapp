@@ -18,10 +18,10 @@ const ConservationButton = ({
     if (isConservedButtonActive) {
       setIsConservedButtonActive(false);
     } else {
-      if (conservedArea > 0) {
-        setIsTreePlantedButtonActive(false);
-        setIsConservedButtonActive(true);
-      }
+      setIsTreePlantedButtonActive(false);
+      setIsConservedButtonActive(true);
+      // if (conservedArea > 0) {
+      // }
     }
   };
   return (

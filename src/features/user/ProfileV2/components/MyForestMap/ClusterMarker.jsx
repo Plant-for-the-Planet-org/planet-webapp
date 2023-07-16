@@ -1,12 +1,10 @@
 import { Marker } from 'react-map-gl';
-import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import {
   ConservationBlueTreeSvg,
   PlantedTreesGreenSvg,
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
-import CustomPopUp from './CustomPopUp';
 
 const TreePlantedClusterMarker = ({ totalTrees, coordinates }) => {
   const { t, ready } = useTranslation(['me']);
@@ -14,7 +12,7 @@ const TreePlantedClusterMarker = ({ totalTrees, coordinates }) => {
     ready &&
     totalTrees && (
       <>
-        <Marker latitude={coordinates[0]} longitude={coordinates[1]}>
+        <Marker latitude={coordinates[1]} longitude={coordinates[0]}>
           <div className={MyForestMapStyle.clusterMarkerContainer}>
             <div className={MyForestMapStyle.svgContainer}>
               <PlantedTreesGreenSvg />
@@ -29,28 +27,29 @@ const TreePlantedClusterMarker = ({ totalTrees, coordinates }) => {
   );
 };
 
-const ConservAreaClusterMarker = ({ latitude, longitude }) => {
-  const [showPopUp, setShowPopUp] = useState(false);
+const ConservAreaClusterMarker = ({ totalTrees, coordinates }) => {
+  const { t, ready } = useTranslation(['me']);
   return (
-    <>
-      {showPopUp && <CustomPopUp latitude={latitude} longitude={longitude} />}
-      <Marker latitude={latitude} longitude={longitude}>
-        <div
-          className={MyForestMapStyle.conservationClusterMarkerContainer}
-          onMouseOver={() => setShowPopUp(true)}
-          onMouseLeave={() => setShowPopUp(false)}
-          style={{ backgroundColor: '#48AADD' }}
-        >
+    ready && (
+      <>
+        <Marker latitude={coordinates[1]} longitude={coordinates[0]}>
           <div
-            className={MyForestMapStyle.svgContainer}
-            style={{ paddingTop: '3px', paddingLeft: '4px' }}
+            className={MyForestMapStyle.conservationClusterMarkerContainer}
+            style={{ backgroundColor: '#48AADD' }}
           >
-            <ConservationBlueTreeSvg />
+            <div
+              className={MyForestMapStyle.svgContainer}
+              style={{ paddingTop: '3px', paddingLeft: '4px' }}
+            >
+              <ConservationBlueTreeSvg />
+            </div>
+            <div className={MyForestMapStyle.totalTreeCount}>
+              {t('me:area', { areaConserved: `${totalTrees}` })}
+            </div>
           </div>
-          <div className={MyForestMapStyle.totalTreeCount}>4 trees</div>
-        </div>
-      </Marker>
-    </>
+        </Marker>
+      </>
+    )
   );
 };
 

@@ -270,6 +270,7 @@
   "treesPlantedAndAreaRestored": "Trees Planted & Areas Restored",
   "areaConserved": "Areas Conserved",
   "plantedTrees": "{{noOfTrees}} Trees",
+  "area": "{{areaConserved}} m²",
   "tpoName": "By {{tpo}}",
   "donate":  "Donate"
 }

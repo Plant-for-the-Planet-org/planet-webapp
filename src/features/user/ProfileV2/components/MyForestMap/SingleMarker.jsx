@@ -1,9 +1,15 @@
 import { Marker, Popup } from 'react-map-gl';
 import { useState } from 'react';
-import { PlantedTreesGreenSvg } from '../../../../../../public/assets/images/ProfilePageIcons';
+import {
+  ConservationBlueTreeSvg,
+  PlantedTreesGreenSvg,
+} from '../../../../../../public/assets/images/ProfilePageIcons';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
+import { useTranslation } from 'next-i18next';
+import { format } from 'date-fns';
 
 const SingleMarker = ({ geoJson }) => {
+  const { t } = useTranslation(['me']);
   const [showPopUp, setShowPopUp] = useState(false);
   return (
     <div className={MyForestMapStyle.singleMarkerContainer}>
@@ -19,7 +25,13 @@ const SingleMarker = ({ geoJson }) => {
         >
           <div className={MyForestMapStyle.popUpContainer}>
             <div>
-              <p className={MyForestMapStyle.popUpLabel}>Donated</p>
+              <p className={MyForestMapStyle.popUpLabel}>
+                {geoJson.properties?.category === 'conservation'
+                  ? 'conserved'
+                  : geoJson.properties?.category === 'trees'
+                  ? geoJson.properties.contributionType
+                  : null}
+              </p>
               <p className={MyForestMapStyle.popUpDate}>April 4, 2023</p>
             </div>
           </div>
@@ -35,10 +47,20 @@ const SingleMarker = ({ geoJson }) => {
           onMouseLeave={() => setShowPopUp(false)}
         >
           <div className={MyForestMapStyle.svgContainer}>
-            <PlantedTreesGreenSvg />
+            {geoJson.properties?.category === 'conservation' ? (
+              <ConservationBlueTreeSvg />
+            ) : (
+              <PlantedTreesGreenSvg />
+            )}
           </div>
           <div className={MyForestMapStyle.trees}>
-            {geoJson.properties?.quantity}
+            {geoJson.properties?.category === 'conservation'
+              ? t('me:area', {
+                  areaConserved: `${geoJson.properties.quantity}`,
+                })
+              : t('me:plantedTrees', {
+                  noOfTrees: `${geoJson.properties.quantity}`,
+                })}
           </div>
         </div>
       </Marker>
