@@ -88,15 +88,14 @@ function ProjectContactDetails({ project }: Props): ReactElement {
           prefetch={false}
           href="/t/[id]"
           as={`/t/${contactDetails[0].link}`}
+          target={embed === 'true' ? '_top' : '_self'}
         >
-          <a target={embed === 'true' ? '_top' : null}>
-            <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
-              {contactDetails[0].icon}
-              <span style={{ flexGrow: 1, cursor: 'pointer' }}>
-                {contactDetails[0].text}
-              </span>
-            </div>
-          </a>
+          <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
+            {contactDetails[0].icon}
+            <span style={{ flexGrow: 1, cursor: 'pointer' }}>
+              {contactDetails[0].text}
+            </span>
+          </div>
         </Link>
 
         {contactDetails.slice(1).map((contact) => {
