@@ -6,8 +6,11 @@ import styles from '../../styles/ProjectsMap.module.scss';
 import BootstrapInput from '../../../common/InputTypes/BootstrapInput';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-import { SingleProjectGeojson } from '../../../../features/common/types/project';
-interface Props {}
+import {
+  ConservationProjectExtended,
+  TreeProjectExtended,
+} from '@planet-sdk/common/build/types/project/extended';
+import { FeatureCollection } from 'geojson';
 
 export default function SitesDropdown(): ReactElement {
   const {
@@ -23,12 +26,16 @@ export default function SitesDropdown(): ReactElement {
   const { embed } = React.useContext(ParamsContext);
   const router = useRouter();
 
-  const handleChangeSite = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleChangeSite = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+    project: TreeProjectExtended | ConservationProjectExtended,
+    geoJson: FeatureCollection
+  ) => {
     setSelectedPl(null);
-    setSelectedSite(event.target.value as number);
+    setSelectedSite(event.target.value as unknown as number);
     router.push(
       `/${project.slug}/?site=${
-        geoJson.features[event.target.value].properties.id
+        geoJson.features[event.target.value as unknown as number].properties.id
       }`
     );
 
@@ -52,52 +59,48 @@ export default function SitesDropdown(): ReactElement {
       : ''
   }`;
 
-  return (
+  return project !== null && geoJson !== null && geoJson.features.length > 1 ? (
     <>
-      {geoJson.features.length > 1 && (
-        <>
-          {!isPolygonMenuOpen ? (
-            <div
-              onMouseOver={() => {
-                if (isMobile) setIsPolygonMenuOpen(true);
-              }}
-              onClick={() => {
-                if (!isMobile) setIsPolygonMenuOpen(true);
-              }}
-              className={projectSitesButtonClasses}
-            >
-              <PolygonIcon />
-            </div>
-          ) : null}
-          {isPolygonMenuOpen ? (
-            <div className={dropdownContainerClasses}>
-              <div className={styles.projectSitesDropdown}>
-                <FormControl variant="standard">
-                  <div className={styles.polygonIcon}>
-                    <PolygonIcon />
-                  </div>
-                  <NativeSelect
-                    id="customized-select-native"
-                    value={selectedSite}
-                    onChange={handleChangeSite}
-                    input={<BootstrapInput />}
-                  >
-                    {geoJson?.features.map(
-                      (site: SingleProjectGeojson, index: number) => {
-                        return (
-                          <option key={index} value={index}>
-                            {site.properties.name}
-                          </option>
-                        );
-                      }
-                    )}
-                  </NativeSelect>
-                </FormControl>
+      {!isPolygonMenuOpen ? (
+        <div
+          onMouseOver={() => {
+            if (isMobile) setIsPolygonMenuOpen(true);
+          }}
+          onClick={() => {
+            if (!isMobile) setIsPolygonMenuOpen(true);
+          }}
+          className={projectSitesButtonClasses}
+        >
+          <PolygonIcon />
+        </div>
+      ) : null}
+      {isPolygonMenuOpen ? (
+        <div className={dropdownContainerClasses}>
+          <div className={styles.projectSitesDropdown}>
+            <FormControl variant="standard">
+              <div className={styles.polygonIcon}>
+                <PolygonIcon />
               </div>
-            </div>
-          ) : null}
-        </>
-      )}
+              <NativeSelect
+                id="customized-select-native"
+                value={selectedSite}
+                onChange={(e) => handleChangeSite(e, project, geoJson)}
+                input={<BootstrapInput />}
+              >
+                {geoJson?.features.map((site, index) => {
+                  return (
+                    <option key={index} value={index}>
+                      {site.properties.name}
+                    </option>
+                  );
+                })}
+              </NativeSelect>
+            </FormControl>
+          </div>
+        </div>
+      ) : null}
     </>
+  ) : (
+    <></>
   );
 }
