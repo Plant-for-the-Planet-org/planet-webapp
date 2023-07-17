@@ -38,8 +38,8 @@ const SingleMarker = ({ geoJson }) => {
         </Popup>
       )}
       <Marker
-        latitude={geoJson?.geometry.coordinates[1]}
-        longitude={geoJson?.geometry.coordinates[0]}
+        latitude={geoJson?.geometry.coordinates[0]}
+        longitude={geoJson?.geometry.coordinates[1]}
       >
         <div
           className={MyForestMapStyle.markerContainer}

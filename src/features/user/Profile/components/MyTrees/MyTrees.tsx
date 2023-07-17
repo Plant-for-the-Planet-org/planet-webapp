@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import myForestStyles from '../../../ProfileV2/styles/MyForest.module.scss';
 import dynamic from 'next/dynamic';
 import { useTranslation } from 'next-i18next';
@@ -10,8 +10,8 @@ import DonationInfo from '../../../ProfileV2/components/DonationInfo';
 import TreeContributedProjectList from '../../../ProfileV2/components/TreeContributedProjectList';
 import { trpc } from '../../../../../utils/trpc';
 import AreaConservedProjectList from '../../../ProfileV2/components/AreaConservedProjectList';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { ProjectPropsContext } from '../../../../common/Layout/ProjectPropsContext';
+import { Purpose } from '../../../../../utils/constants/myForest';
 
 const MyTreesMap = dynamic(
   () => import('../../../ProfileV2/components/MyForestMap'),
@@ -26,181 +26,105 @@ interface Props {
   token: any;
 }
 
-export default function MyTrees({ profile, authenticatedType, token }: Props) {
+export default function MyTrees({ profile, authenticatedType }: Props) {
   const { ready } = useTranslation(['country', 'me']);
-  const [contributions, setContributions] = React.useState();
-  const { logoutUser } = useUserProps();
-  const [donationOtherInfo, setDonationOtherInfo] = React.useState(undefined);
+  const [contribution, setContribution] = React.useState([]);
+  const [otherDonationInfo, setOthercontributionInfo] =
+    React.useState(undefined);
   const [isTreePlantedButtonActive, setIsTreePlantedButtonActive] =
     React.useState(false);
   const [isConservedButtonActive, setIsConservedButtonActive] =
     React.useState(false);
-  const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
-  const { conservationProjects, treePlantedProjects } =
+  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { setConservationProjects, setTreePlantedProjects } =
     useContext(ProjectPropsContext);
-  console.log(conservationProjects, treePlantedProjects, '==0');
 
-  // const detailInfo = trpc.myForest.stats.useQuery({
-  //   profileId: `prf_oYOzG6LrTeFkhtEomszwODcP`,
-  // });
+  const detailInfo = trpc.myForest.stats.useQuery({
+    profileId: `${profile.id}`,
+  });
 
-  // const contributionData = trpc.myForest.contributionsGeoJson.useQuery({
-  //   profileId:,
-  //   purpose: 'trees',
-  // });
+  const _contributionData = trpc.myForest.contributions.useQuery({
+    profileId: `${profile.id}`,
+  });
+  const _conservationGeoJsonData = trpc.myForest.contributionsGeoJson.useQuery({
+    profileId: `${profile.id}`,
+    purpose: Purpose.CONSERVATION,
+  });
 
-  // React.useEffect(() => {
-  //   if (!contributionData.isLoading) {
-  //     if (contributionData.error) {
-  //       setErrors(
-  //         handleError(
-  //           new APIError(
-  //             contributionData.error?.data?.httpStatus as number,
-  //             contributionData.error
-  //           )
-  //         )
-  //       );
-  //     } else {
-  //       setContributions(contributionData.data);
-  //     }
-  //     console.log('==>', contributionData.data);
-  //   }
-  // }, [contributionData.isLoading]);
+  const _treePlantedData = trpc.myForest.contributionsGeoJson.useQuery({
+    profileId: `${profile.id}`,
+    purpose: Purpose.TREES,
+  });
 
-  // React.useEffect(() => {
-  //   if (!detailInfo.isLoading) {
-  //     if (detailInfo.error) {
-  //       setErrors(
-  //         handleError(
-  //           new APIError(
-  //             detailInfo.error?.data?.httpStatus as number,
-  //             detailInfo.error
-  //           )
-  //         )
-  //       );
-  //     } else {
-  //       console.log('===>', detailInfo.data);
-  //       setDonationOtherInfo(detailInfo.data);
-  //     }
-  //   }
-  // }, [detailInfo.isLoading]);
-  // // console.log(donationOtherInfo, '==');
+  React.useEffect(() => {
+    if (!_contributionData.isLoading) {
+      if (_contributionData.error) {
+        setErrors(
+          handleError(
+            new APIError(
+              _contributionData.error?.data?.httpStatus as number,
+              _contributionData.error
+            )
+          )
+        );
+      } else {
+        setContribution(_contributionData.data);
+      }
+    }
+  }, [_contributionData.isLoading]);
 
-  const _dataConserv = [
-    {
-      type: 'Feature',
-      properties: {
-        cluster: false,
-        category: 'conservation',
-        quantity: 1,
-        donationIssueDate: null,
-        contributionType: 'donation',
-        plantProject: {
-          guid: '1',
-          name: 'Reforestation of our Forests in Germany',
-          image: '62f3bac270a37408634575.jpg',
-          countryCode: 'DE',
-          unit: 'm2',
-          location: null,
-          tpo: {
-            id: 22408,
-            guid: 'prf_u9acORF3K14cOnD4UmVZX5mz',
-            name: 'Klimahelden (Plant-for-the-Planet e.V.)',
-          },
-        },
-      },
-      geometry: {
-        type: 'Point',
-        coordinates: [73.4445770458133, 26.711311847277106],
-      },
-    },
-    {
-      type: 'Feature',
-      properties: {
-        cluster: false,
-        category: 'conservation',
-        quantity: 1,
-        donationIssueDate: null,
-        contributionType: 'donation',
-        plantProject: {
-          guid: '2',
-          name: 'Reforestation of our Forests in Germany',
-          image: '62f3bac270a37408634575.jpg',
-          countryCode: 'DE',
-          unit: 'm2',
-          location: null,
-          tpo: {
-            id: 22408,
-            guid: 'prf_u9acORF3K14cOnD4UmVZX5mz',
-            name: 'Klimahelden (Plant-for-the-Planet e.V.)',
-          },
-        },
-      },
-      geometry: {
-        type: 'Point',
-        coordinates: [72.4445770458133, 26.711311847277106],
-      },
-    },
-  ];
+  React.useEffect(() => {
+    if (!_conservationGeoJsonData.isLoading) {
+      if (_conservationGeoJsonData.error) {
+        setErrors(
+          handleError(
+            new APIError(
+              _conservationGeoJsonData.error?.data?.httpStatus as number,
+              _conservationGeoJsonData.error
+            )
+          )
+        );
+      } else {
+        setConservationProjects(_conservationGeoJsonData.data);
+      }
+    }
+  }, [_conservationGeoJsonData.isLoading]);
 
-  const _treePlantedData = [
-    {
-      type: 'Feature',
-      properties: {
-        cluster: false,
-        category: 'trees',
-        quantity: 1,
-        donationIssueDate: null,
-        contributionType: 'donation',
-        plantProject: {
-          guid: '1',
-          name: 'Reforestation of our Forests in Germany',
-          image: '62f3bac270a37408634575.jpg',
-          countryCode: 'DE',
-          unit: 'm2',
-          location: null,
-          tpo: {
-            id: 22408,
-            guid: 'prf_u9acORF3K14cOnD4UmVZX5mz',
-            name: 'Klimahelden (Plant-for-the-Planet e.V.)',
-          },
-        },
-      },
-      geometry: {
-        type: 'Point',
-        coordinates: [85.03951524546366, 40.1906804591513],
-      },
-    },
-    {
-      type: 'Feature',
-      properties: {
-        cluster: false,
-        category: 'trees',
-        quantity: 1,
-        donationIssueDate: null,
-        contributionType: 'donation',
-        plantProject: {
-          guid: '2',
-          name: 'Reforestation of our Forests in Germany',
-          image: '62f3bac270a37408634575.jpg',
-          countryCode: 'DE',
-          unit: 'm2',
-          location: null,
-          tpo: {
-            id: 22408,
-            guid: 'prf_u9acORF3K14cOnD4UmVZX5mz',
-            name: 'Klimahelden (Plant-for-the-Planet e.V.)',
-          },
-        },
-      },
-      geometry: {
-        type: 'Point',
-        coordinates: [86.4445770458133, 41.7113118477106],
-      },
-    },
-  ];
+  React.useEffect(() => {
+    if (!_treePlantedData.isLoading) {
+      if (_treePlantedData.error) {
+        setErrors(
+          handleError(
+            new APIError(
+              _treePlantedData.error?.data?.httpStatus as number,
+              _treePlantedData.error
+            )
+          )
+        );
+      } else {
+        setTreePlantedProjects(_treePlantedData.data);
+      }
+    }
+  }, [_treePlantedData.isLoading]);
 
-  return ready ? (
+  React.useEffect(() => {
+    if (!detailInfo.isLoading) {
+      if (detailInfo.error) {
+        setErrors(
+          handleError(
+            new APIError(
+              detailInfo.error?.data?.httpStatus as number,
+              detailInfo.error
+            )
+          )
+        );
+      } else {
+        setOthercontributionInfo(detailInfo.data);
+      }
+    }
+  }, [detailInfo.isLoading]);
+
+  return ready && otherDonationInfo ? (
     <div
       className={myForestStyles.mapMainContainer}
       style={{
@@ -211,36 +135,34 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
       }}
     >
       <MyTreesMap
-        coservAreaData={_dataConserv}
-        treePlantedData={_treePlantedData}
         isTreePlantedButtonActive={isTreePlantedButtonActive}
         isConservedButtonActive={isConservedButtonActive}
       />
       <div className={myForestStyles.mapButtonContainer}>
         <PlantedTreesButton
-          plantedTrees={donationOtherInfo?.treeCount}
+          plantedTrees={otherDonationInfo[0]?.treeCount}
           isTreePlantedButtonActive={isTreePlantedButtonActive}
           setIsConservedButtonActive={setIsConservedButtonActive}
           setIsTreePlantedButtonActive={setIsTreePlantedButtonActive}
         />
         <div>
           <ConservationButton
-            conservedArea={donationOtherInfo?.conserved}
+            conservedArea={otherDonationInfo[0]?.conserved}
             setIsTreePlantedButtonActive={setIsTreePlantedButtonActive}
             setIsConservedButtonActive={setIsConservedButtonActive}
             isConservedButtonActive={isConservedButtonActive}
           />
         </div>
         <DonationInfo
-          projects={donationOtherInfo?.projects}
-          countries={donationOtherInfo?.countries}
-          donations={donationOtherInfo?.donations}
+          projects={otherDonationInfo[0]?.projects}
+          countries={otherDonationInfo[0]?.countries}
+          donations={otherDonationInfo[0]?.donations}
         />
       </div>
 
       {isTreePlantedButtonActive && !isConservedButtonActive && (
         <TreeContributedProjectList
-          contribution={treePlantedProjects}
+          contribution={contribution}
           userprofile={profile}
           authenticatedType={authenticatedType}
         />
@@ -248,7 +170,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
 
       {isConservedButtonActive && !isTreePlantedButtonActive && (
         <AreaConservedProjectList
-          contribution={conservationProjects}
+          contribution={contribution}
           isConservedButtonActive={isConservedButtonActive}
         />
       )}

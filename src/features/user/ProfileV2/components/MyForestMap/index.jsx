@@ -6,8 +6,6 @@ import TreesPlantedMarkers from './TreesPlantedMarkers';
 import ConservationMarkers from './ConservationMarkers';
 
 const MyForestMap = ({
-  coservAreaData,
-  treePlantedData,
   isTreePlantedButtonActive,
   isConservedButtonActive,
 }) => {
@@ -25,7 +23,7 @@ const MyForestMap = ({
     maxZoom: 25,
   });
   const defaultMapCenter = [36.96, -28.5];
-  let defaultZoom = 1.4;
+  let defaultZoom = 1;
   const [viewport, setViewport] = useState({
     width: '100%',
     height: '100%',
@@ -67,7 +65,6 @@ const MyForestMap = ({
         {(_activeMarker() ||
           (isTreePlantedButtonActive && !isConservedButtonActive)) && (
           <TreesPlantedMarkers
-            data={treePlantedData}
             viewport={viewport}
             setViewport={setViewport}
             mapRef={mapRef}
@@ -76,7 +73,6 @@ const MyForestMap = ({
         {(_activeMarker() ||
           (!isTreePlantedButtonActive && isConservedButtonActive)) && (
           <ConservationMarkers
-            data={coservAreaData}
             viewport={viewport}
             setViewport={setViewport}
             mapRef={mapRef}

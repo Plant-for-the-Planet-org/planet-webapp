@@ -5,7 +5,7 @@ import { useState, useEffect, useContext } from 'react';
 import { ProjectPropsContext } from '../../../../common/Layout/ProjectPropsContext';
 
 export const _clusterConfig = {
-  radius: 50,
+  radius: 40,
   maxZoom: 5,
   map: (props) => ({
     totalTrees: props.quantity,
@@ -16,12 +16,13 @@ export const _clusterConfig = {
     }
   },
 };
-const TreesPlantedMarkers = ({ data, viewport, setViewport, mapRef }) => {
-  const { setTreePlantedProjects } = useContext(ProjectPropsContext);
+const TreesPlantedMarkers = ({ viewport, mapRef }) => {
+  const { treePlantedProjects } = useContext(ProjectPropsContext);
   const [clusters, setClusters] = useState([]);
   const supercluster = new Supercluster(_clusterConfig);
+
   const _fetch = () => {
-    supercluster.load(data);
+    supercluster.load(treePlantedProjects);
     const { viewState } = viewport;
     const zoom = viewState?.zoom;
     const map = mapRef.current ? mapRef.current.getMap() : null;
@@ -34,16 +35,15 @@ const TreesPlantedMarkers = ({ data, viewport, setViewport, mapRef }) => {
     }
   };
   useEffect(() => {
-    if (data) {
+    if (treePlantedProjects) {
       _fetch();
-      setTreePlantedProjects(data);
     }
   }, [viewport]);
 
   return (
     clusters && (
       <>
-        {clusters.map((singleCluster) => {
+        {clusters.map((singleCluster, key) => {
           if (singleCluster.id) {
             return (
               <TreePlantedClusterMarker
@@ -53,12 +53,7 @@ const TreesPlantedMarkers = ({ data, viewport, setViewport, mapRef }) => {
               />
             );
           } else {
-            return (
-              <SingleMarker
-                key={singleCluster.properties.plantProject.guid}
-                geoJson={singleCluster}
-              />
-            );
+            return <SingleMarker key={key} geoJson={singleCluster} />;
           }
         })}
       </>

@@ -33,7 +33,6 @@ const TreeContributedProjectList = ({
       setRestorationProject(_treesPlantedProject);
     }
   }, []);
-
   return (
     <div className={myForestStyles.mainContainer}>
       <div className={myForestStyles.treeCounterContainer}>

@@ -4,10 +4,12 @@ import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import myForestStyles from '../styles/MyForest.module.scss';
 import { useContext } from 'react';
+import { useTranslation } from 'next-i18next';
 
 const Project = ({ key, projectInfo }) => {
   const { token } = useUserProps();
   const { embed } = useContext(ParamsContext);
+  const { t } = useTranslation(['me']);
   const handleDonate = (slug) => {
     const url = getDonationUrl(slug, token);
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
@@ -44,7 +46,11 @@ const Project = ({ key, projectInfo }) => {
           </div>
           <div className={myForestStyles.donateContainer}>
             <div style={{ fontSize: '20px', fontWeight: 'bold' }}>
-              {`${projectInfo.treeCount} trees`}
+              {projectInfo.purpose === 'conservation'
+                ? t('me:area', { areaConserved: `${projectInfo.quantity}` })
+                : t('me:plantedTrees', {
+                    noOfTrees: `${projectInfo.quantity}`,
+                  })}
             </div>
             <div
               className={myForestStyles.donate}
@@ -69,23 +75,16 @@ const ContributedProjectList = ({
         className={myForestStyles.donationlistContainer}
         style={{ marginTop: isConservedButtonActive ? '0px' : '340px' }}
       >
-        {contributionProjectList.map((project) => {
+        {contributionProjectList.map((project, key) => {
           if (project.purpose !== 'bouquet') {
-            return (
-              <Project key={project.plantProject.guid} projectInfo={project} />
-            );
+            return <Project key={key} projectInfo={project} />;
           }
         })}
 
         {contributionProjectList.map((project) => {
           if (project.purpose === 'bouquet') {
-            return project?.bouquetContributions?.map((bouquetProject) => {
-              return (
-                <Project
-                  key={bouquetProject.plantProject.guid}
-                  projectInfo={bouquetProject}
-                />
-              );
+            return project?.bouquetContributions?.map((bouquetProject, key) => {
+              return <Project key={key} projectInfo={bouquetProject} />;
             });
           }
         })}

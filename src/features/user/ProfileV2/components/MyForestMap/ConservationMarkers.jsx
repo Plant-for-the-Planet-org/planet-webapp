@@ -5,13 +5,12 @@ import { useEffect, useState, useContext } from 'react';
 import { ProjectPropsContext } from '../../../../common/Layout/ProjectPropsContext';
 import { _clusterConfig } from './TreesPlantedMarkers';
 
-const ConservationMarker = ({ data, viewport, setViewport, mapRef }) => {
-  const { setConservationProjects } = useContext(ProjectPropsContext);
+const ConservationMarker = ({ viewport, mapRef }) => {
+  const { conservationProjects } = useContext(ProjectPropsContext);
   const [clusters, setClusters] = useState([]);
-
   const superclusterConserv = new Supercluster(_clusterConfig);
   const _fetch = () => {
-    superclusterConserv.load(data);
+    superclusterConserv.load(conservationProjects);
     const { viewState } = viewport;
     const zoom = viewState?.zoom;
     const map = mapRef.current ? mapRef.current.getMap() : null;
@@ -24,15 +23,14 @@ const ConservationMarker = ({ data, viewport, setViewport, mapRef }) => {
     }
   };
   useEffect(() => {
-    if (data) {
-      setConservationProjects(data);
+    if (conservationProjects) {
       _fetch();
     }
   }, [viewport]);
 
   return (
     <>
-      {clusters.map((singleCluster) => {
+      {clusters.map((singleCluster, key) => {
         if (singleCluster.id) {
           return (
             <ConservAreaClusterMarker
@@ -42,12 +40,7 @@ const ConservationMarker = ({ data, viewport, setViewport, mapRef }) => {
             />
           );
         } else {
-          return (
-            <SingleMarker
-              key={singleCluster.properties.plantProject.guid}
-              geoJson={singleCluster}
-            />
-          );
+          return <SingleMarker key={key} geoJson={singleCluster} />;
         }
       })}
     </>
