@@ -2,9 +2,10 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { router, procedure } from '../trpc';
 import prisma from '../../../prisma/client';
+import { Purpose } from '../../utils/constants/myForest';
 
 export const myForestRouter = router({
-  contribution: procedure
+  contributions: procedure
     .input(
       z.object({
         profileId: z.string(),
@@ -134,11 +135,11 @@ export const myForestRouter = router({
         SUM(CASE WHEN pp.purpose = 'trees' AND pp.unit = 'm2' THEN COALESCE(c.quantity, c.tree_count) ELSE 0 END) AS squareMeters,
         SUM(CASE WHEN pp.purpose = 'conservation' THEN c.quantity ELSE 0 END) AS conserved,
         COUNT(DISTINCT pp.id) AS projects,
-        COUNT(DISTINCT pp.country_code) AS countries,
+        COUNT(DISTINCT pp.country) AS countries,
         COUNT(*) AS donations
       FROM
         contribution c
-        LEFT JOIN plant_project pp ON c.plant_project_id = pp.id
+        LEFT JOIN project pp ON c.plant_project_id = pp.id
         JOIN profile p ON p.id = c.profile_id
       WHERE
         p.guid = ${profileId}
@@ -162,7 +163,7 @@ export const myForestRouter = router({
     .input(
       z.object({
         profileId: z.string(),
-        purpose: z.nullable(z.string()),
+        purpose: z.nullable(z.nativeEnum(Purpose)).optional(),
       })
     )
     .query(async ({ input: { profileId, purpose } }) => {
