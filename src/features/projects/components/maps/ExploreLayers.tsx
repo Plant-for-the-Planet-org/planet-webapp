@@ -31,9 +31,9 @@ export default function ExploreLayers(): ReactElement {
       ) : null}
 
       {loaded ? (
-        <LayerManager map={mapRef?.current.getMap()} plugin={PluginMapboxGl}>
+        <LayerManager map={mapRef?.current?.getMap()} plugin={PluginMapboxGl}>
           {exploreDeforestation &&
-            TreeCoverLoss.map((layer: any) => {
+            TreeCoverLoss.map((layer) => {
               const { id, decodeConfig, timelineConfig, decodeFunction } =
                 layer;
 
