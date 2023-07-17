@@ -6,7 +6,6 @@ import UrbanRestoration from '../../../../public/assets/images/icons/project/Urb
 import Conservation from '../../../../public/assets/images/icons/project/Conservation';
 import ManagedRegeneration from '../../../../public/assets/images/icons/project/ManagedRegeneration';
 import TreePlanting from '../../../../public/assets/images/icons/project/TreePlanting';
-import OtherRestoration from '../../../../public/assets/images/icons/project/OtherRestoration';
 interface Props {
   projectType: string;
 }
