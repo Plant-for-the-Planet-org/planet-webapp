@@ -13,15 +13,15 @@ const Alert = styled(MuiAlert)(({ theme }) => {
 });
 
 interface Props {
-  text: any;
-  isButton: any;
+  text: string;
+  isButton: boolean;
 }
 
 export default function CopyToClipboard({
   text,
   isButton,
 }: Props): ReactElement {
-  const { t, i18n } = useTranslation(['common']);
+  const { t } = useTranslation(['common']);
   const [open, setOpen] = React.useState(false);
 
   const handleClick = async () => {
@@ -33,7 +33,10 @@ export default function CopyToClipboard({
     }
   };
 
-  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
     if (reason === 'clickaway') {
       return;
     }
