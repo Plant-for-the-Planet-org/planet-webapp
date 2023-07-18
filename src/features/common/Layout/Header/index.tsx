@@ -3,8 +3,9 @@ import tenantConfig from '../../../../../tenant.config';
 import { useTheme } from '../../../../theme/themeContext';
 import styles from './Header.module.scss';
 import locales from '../../../../../public/static/localeList.json';
+import ConfigType from '../../types/commonConfig';
 
-const config = tenantConfig();
+const config: ConfigType = tenantConfig();
 export default function Header() {
   const { theme: themeType } = useTheme();
   return (
