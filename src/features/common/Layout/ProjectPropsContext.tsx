@@ -12,7 +12,6 @@ import {
   ConservationProjectExtended,
 } from '@planet-sdk/common/build/types/project/extended';
 import { ProjectPurposeTypes } from '@planet-sdk/common/build/types/project/common';
-import { FeatureCollection } from 'geojson';
 import ProjectPropsContextInterface, {
   ExploreOption,
   LayerSettings,
@@ -21,6 +20,7 @@ import ProjectPropsContextInterface, {
   MapState,
   RasterData,
   SiteViewPort,
+  SitesGeoJSON,
   ViewPort,
 } from '../types/ProjectPropsContextInterface';
 import { MapRef } from 'react-map-gl/src/components/static-map';
@@ -48,7 +48,7 @@ const ProjectPropsProvider: FC = ({ children }) => {
   const [showSingleProject, setShowSingleProject] = useState(false);
   const [showProjects, setShowProjects] = useState(true);
   const [searchedProject, setsearchedProjects] = useState<MapProject[]>([]);
-  const [geoJson, setGeoJson] = useState<FeatureCollection | null>(null);
+  const [geoJson, setGeoJson] = useState<SitesGeoJSON | null>(null);
   const [siteExists, setsiteExists] = useState(false);
   const [selectedSite, setSelectedSite] = useState(0);
 

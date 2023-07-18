@@ -10,7 +10,7 @@ import {
   ConservationProjectExtended,
   TreeProjectExtended,
 } from '@planet-sdk/common/build/types/project/extended';
-import { FeatureCollection } from 'geojson';
+import { SitesGeoJSON } from '../../../common/types/ProjectPropsContextInterface';
 
 export default function SitesDropdown(): ReactElement {
   const {
@@ -29,7 +29,7 @@ export default function SitesDropdown(): ReactElement {
   const handleChangeSite = (
     event: React.ChangeEvent<HTMLSelectElement>,
     project: TreeProjectExtended | ConservationProjectExtended,
-    geoJson: FeatureCollection
+    geoJson: SitesGeoJSON
   ) => {
     setSelectedPl(null);
     setSelectedSite(event.target.value as unknown as number);

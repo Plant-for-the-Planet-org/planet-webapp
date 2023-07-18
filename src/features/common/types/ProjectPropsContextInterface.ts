@@ -7,8 +7,11 @@ import {
   TreeProjectExtended,
   ConservationProjectExtended,
 } from '@planet-sdk/common/build/types/project/extended';
-import { ProjectPurposeTypes } from '@planet-sdk/common/build/types/project/common';
-import { FeatureCollection } from 'geojson';
+import {
+  ProjectPurposeTypes,
+  ProjectSite,
+} from '@planet-sdk/common/build/types/project/common';
+import { FeatureCollection, Polygon, MultiPolygon } from 'geojson';
 import { SetState } from './common';
 import { RefObject } from 'react';
 import { MapRef } from 'react-map-gl/src/components/static-map';
@@ -82,6 +85,11 @@ export type MapProject = ProjectMapInfo<
   TreeProjectConcise | ConservationProjectConcise
 >;
 
+export type SitesGeoJSON = FeatureCollection<
+  Polygon | MultiPolygon | null,
+  ProjectSite
+>;
+
 interface ProjectPropsContextInterface {
   projects: MapProject[] | null;
   setProjects: SetState<MapProject[] | null>;
@@ -95,8 +103,8 @@ interface ProjectPropsContextInterface {
   setShowProjects: SetState<boolean>;
   searchedProject: MapProject[];
   setsearchedProjects: SetState<MapProject[]>;
-  geoJson: FeatureCollection | null;
-  setGeoJson: SetState<FeatureCollection | null>;
+  geoJson: SitesGeoJSON | null;
+  setGeoJson: SetState<SitesGeoJSON | null>;
   selectedSite: number;
   setSelectedSite: SetState<number>;
   siteExists: boolean;
