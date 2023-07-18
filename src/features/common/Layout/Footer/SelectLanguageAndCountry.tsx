@@ -20,22 +20,38 @@ import tenantConfig from '../../../../../tenant.config';
 
 interface MapCountryProps {
   value: string;
-  handleChange: Function;
+  handleChange: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    value: string
+  ) => void;
 }
 interface MapLanguageProps {
   value: string;
-  handleChange: Function;
+  handleChange: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    value: string
+  ) => void;
 }
 interface TransitionsModalProps {
   openModal: boolean;
-  handleModalClose: Function;
+  handleModalClose: () => void;
   setLanguage: Function;
-  language: any;
+  language: string;
   setSelectedCurrency: Function;
-  selectedCountry: any;
+  selectedCountry: string;
   setSelectedCountry: Function;
   setCurrencyCode?: Function;
 }
+
+interface countryInterface {
+  countryName: string;
+  countryCode: string;
+  currencyName: string;
+  currencyCode: string;
+  currencyCountryFlag: string;
+  languageCode: string;
+}
+
 const config = tenantConfig();
 
 // reduce the allowed languages to the languages listed in the tenants config file
@@ -85,7 +101,7 @@ function MapCountry({ value, handleChange }: MapCountryProps) {
         onChange={handleChange}
         className={styles.currencyGrid}
       >
-        {sortedCountriesData.map((country) => (
+        {sortedCountriesData.map((country: countryInterface) => (
           <FormControlLabel
             key={country.countryCode}
             value={country.countryCode}
@@ -118,12 +134,12 @@ export default function TransitionsModal({
   const { theme } = React.useContext(ThemeContext);
 
   // changes the language in when a language is selected
-  const handleLanguageChange = (event) => {
+  const handleLanguageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setModalLanguage(event.target.value);
   };
 
   // changes the country code in when a country is selected
-  const handleCountryChange = (event) => {
+  const handleCountryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedModalCountry(event.target.value);
   };
 
@@ -136,9 +152,8 @@ export default function TransitionsModal({
     window.localStorage.setItem('language', modalLanguage);
     window.localStorage.setItem('countryCode', selectedModalCountry);
     setSelectedCountry(selectedModalCountry);
-    const currencyCode = getCountryDataBy(
-      'countryCode',
-      selectedModalCountry
+    const currencyCode = (
+      getCountryDataBy('countryCode', selectedModalCountry) as countryInterface
     ).currencyCode;
     if (currencyCode) {
       window.localStorage.setItem('currencyCode', currencyCode);
