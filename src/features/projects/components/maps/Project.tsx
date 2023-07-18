@@ -14,8 +14,13 @@ import {
   TreeProjectExtended,
   ConservationProjectExtended,
 } from '@planet-sdk/common';
-import { ViewPort } from '../../../common/types/ProjectPropsContextInterface';
+import {
+  Imagery,
+  RasterData,
+  ViewPort,
+} from '../../../common/types/ProjectPropsContextInterface';
 import { SetState } from '../../../common/types/common';
+import { Position } from 'geojson';
 
 interface Props {
   project: TreeProjectExtended | ConservationProjectExtended;
@@ -38,26 +43,28 @@ export default function Project({
     setRasterData,
     isMobile,
     setSiteViewPort,
-    samplePlantLocation,
   } = useProjectProps();
 
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const router = useRouter();
-  const [plantPolygonCoordinates, setPlantPolygonCoordinates] =
-    React.useState(null);
+  const [plantPolygonCoordinates, setPlantPolygonCoordinates] = React.useState<
+    Position[] | null
+  >(null);
 
   async function loadRasterData() {
     let result;
     let result2;
 
     try {
-      result = await getRasterData('');
+      result = await getRasterData<{ imagery: Imagery }>('');
     } catch (err) {
       setErrors(handleError(err as APIError));
     }
 
     try {
-      result2 = await getRasterData(project.id);
+      result2 = await getRasterData<
+        RasterData | { message: string; evi: never }
+      >(project.id);
     } catch (err) {
       setErrors(handleError(err as APIError));
     }
@@ -68,7 +75,7 @@ export default function Project({
       setRasterData({
         ...rasterData,
         imagery: result.imagery,
-        evi: result2.evi,
+        evi: result2.evi || '',
       });
     } else if (result) {
       setRasterData({ ...rasterData, imagery: result.imagery });
@@ -76,18 +83,11 @@ export default function Project({
   }
 
   React.useEffect(() => {
-    if (!selectedPl?.parent && selectedPl?.type !== 'single') {
-      if (plantLocations && selectedPl) {
-        setPlantPolygonCoordinates(selectedPl?.geometry.coordinates[0]);
-      }
+    if (plantLocations && selectedPl && selectedPl.type === 'multi') {
+      setPlantPolygonCoordinates(selectedPl.geometry.coordinates[0]);
     }
+    if (selectedPl) router.push(`/${project.slug}?ploc=${selectedPl?.hid}`);
   }, [selectedPl]);
-
-  React.useEffect(() => {
-    if (selectedPl && plantPolygonCoordinates && !selectedPl?.parent) {
-      router.push(`/${project.slug}?ploc=${selectedPl?.hid}`);
-    }
-  }, [selectedPl, plantPolygonCoordinates]);
 
   React.useEffect(() => {
     if (siteExists && !router.query.ploc) {
@@ -103,21 +103,16 @@ export default function Project({
         setSiteViewPort,
         4000
       );
-    } else if (
-      !selectedPl?.parent &&
-      selectedPl?.type === 'multi' &&
-      plantPolygonCoordinates &&
-      plantLocations &&
-      router.query.ploc &&
-      selectedPl
-    ) {
-      zoomToPlantLocation(
-        plantPolygonCoordinates,
-        viewport,
-        isMobile,
-        setViewPort,
-        1200
-      );
+    } else if (plantLocations && router.query.ploc && selectedPl) {
+      if (selectedPl?.type === 'multi' && plantPolygonCoordinates) {
+        zoomToPlantLocation(
+          plantPolygonCoordinates,
+          viewport,
+          isMobile,
+          setViewPort,
+          1200
+        );
+      }
     } else {
       zoomToLocation(
         viewport,
