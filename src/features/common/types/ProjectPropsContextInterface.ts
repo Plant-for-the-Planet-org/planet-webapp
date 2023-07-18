@@ -10,10 +10,10 @@ import {
 import { ProjectPurposeTypes } from '@planet-sdk/common/build/types/project/common';
 import { FeatureCollection } from 'geojson';
 import { SetState } from './common';
-import { RefObject, Ref } from 'react';
+import { RefObject } from 'react';
 import { MapRef } from 'react-map-gl/src/components/static-map';
 import { FlyToInterpolator } from 'react-map-gl';
-import { PlantLocation } from './plantLocation';
+import { PlantLocation, SamplePlantLocation } from './plantLocation';
 
 export type ExploreOption =
   | 'Deforestation'
@@ -140,16 +140,16 @@ interface ProjectPropsContextInterface {
   setPlantLocations: SetState<PlantLocation[] | null>;
   selectedPl: PlantLocation | null; //HERE
   setSelectedPl: SetState<PlantLocation | null>;
-  samplePlantLocation: PlantLocation | null;
-  setSamplePlantLocation: SetState<PlantLocation | null>;
+  samplePlantLocation: SamplePlantLocation | null;
+  setSamplePlantLocation: SetState<SamplePlantLocation | null>;
   zoomLevel: number;
   setZoomLevel: SetState<number>;
   satellite: boolean;
   setSatellite: SetState<boolean>;
   plIds: string[] | null;
   setPlIds: SetState<string[] | null>;
-  hoveredPl: PlantLocation | null;
-  setHoveredPl: SetState<PlantLocation | null>;
+  hoveredPl: PlantLocation | SamplePlantLocation | null;
+  setHoveredPl: SetState<PlantLocation | SamplePlantLocation | null>;
   isPolygonMenuOpen: boolean;
   setIsPolygonMenuOpen: SetState<boolean>;
   siteViewPort: SiteViewPort | null;

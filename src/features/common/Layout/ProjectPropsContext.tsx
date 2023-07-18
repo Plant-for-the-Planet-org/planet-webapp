@@ -24,7 +24,7 @@ import ProjectPropsContextInterface, {
   ViewPort,
 } from '../types/ProjectPropsContextInterface';
 import { MapRef } from 'react-map-gl/src/components/static-map';
-import { PlantLocation } from '../types/plantLocation';
+import { PlantLocation, SamplePlantLocation } from '../types/plantLocation';
 
 const ProjectPropsContext = createContext<ProjectPropsContextInterface | null>(
   null
@@ -57,7 +57,7 @@ const ProjectPropsProvider: FC = ({ children }) => {
   );
   const [selectedPl, setSelectedPl] = useState<PlantLocation | null>(null);
   const [samplePlantLocation, setSamplePlantLocation] =
-    useState<PlantLocation | null>(null);
+    useState<SamplePlantLocation | null>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
 
   const infoRef = useRef<HTMLDivElement>(null);
@@ -120,7 +120,9 @@ const ProjectPropsProvider: FC = ({ children }) => {
   });
   const [plIds, setPlIds] = useState<string[] | null>(null);
   const [isPolygonMenuOpen, setIsPolygonMenuOpen] = useState(false);
-  const [hoveredPl, setHoveredPl] = useState<PlantLocation | null>(null);
+  const [hoveredPl, setHoveredPl] = useState<
+    PlantLocation | SamplePlantLocation | null
+  >(null);
   const [siteViewPort, setSiteViewPort] = useState<SiteViewPort | null>(null);
 
   useEffect(() => {
