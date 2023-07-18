@@ -76,7 +76,7 @@ export default function Project({
   }
 
   React.useEffect(() => {
-    if (!selectedPl?.parent) {
+    if (!selectedPl?.parent && selectedPl?.type !== 'single') {
       if (plantLocations && selectedPl) {
         setPlantPolygonCoordinates(selectedPl?.geometry.coordinates[0]);
       }
@@ -105,6 +105,7 @@ export default function Project({
       );
     } else if (
       !selectedPl?.parent &&
+      selectedPl?.type === 'multi' &&
       plantPolygonCoordinates &&
       plantLocations &&
       router.query.ploc &&
