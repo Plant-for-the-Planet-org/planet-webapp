@@ -272,5 +272,7 @@
   "plantedTrees": "{{noOfTrees}} Trees",
   "area": "{{areaConserved}} m²",
   "tpoName": "By {{tpo}}",
-  "donate":  "Donate"
+  "donate":  "Donate",
+  "donated": "donated",
+  "conserved": "conserved"
 }

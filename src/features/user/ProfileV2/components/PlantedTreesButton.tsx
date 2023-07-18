@@ -16,8 +16,10 @@ const PlantedTreesButton = ({
     if (isTreePlantedButtonActive) {
       setIsTreePlantedButtonActive(false);
     } else {
-      setIsTreePlantedButtonActive(true);
-      setIsConservedButtonActive(false);
+      if (plantedTrees > 0) {
+        setIsTreePlantedButtonActive(true);
+        setIsConservedButtonActive(false);
+      }
     }
   };
   return (
@@ -43,7 +45,7 @@ const PlantedTreesButton = ({
       </div>
 
       <div className={myForestStyles.countTrees}>
-        <div>{plantedTrees}</div>
+        <div>{plantedTrees ? plantedTrees : 0}</div>
       </div>
     </div>
   );

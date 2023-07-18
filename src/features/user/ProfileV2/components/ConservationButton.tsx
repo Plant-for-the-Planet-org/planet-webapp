@@ -18,10 +18,10 @@ const ConservationButton = ({
     if (isConservedButtonActive) {
       setIsConservedButtonActive(false);
     } else {
-      setIsTreePlantedButtonActive(false);
-      setIsConservedButtonActive(true);
-      // if (conservedArea > 0) {
-      // }
+      if (conservedArea > 0) {
+        setIsTreePlantedButtonActive(false);
+        setIsConservedButtonActive(true);
+      }
     }
   };
   return (
@@ -46,7 +46,9 @@ const ConservationButton = ({
         </div>
       </div>
       <div className={myForestStyles.conservedAreaValue}>
-        <div className={myForestStyles.value}>{conservedArea}</div>
+        <div className={myForestStyles.value}>
+          {conservedArea ? conservedArea : 0}
+        </div>
         <div className={myForestStyles.unit}>{'m²'}</div>
         <div className={myForestStyles.svgContainer}>
           {isConservedButtonActive ? <DownWardArrowSvg /> : <ArrowSvg />}

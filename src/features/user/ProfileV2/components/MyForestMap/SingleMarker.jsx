@@ -27,19 +27,23 @@ const SingleMarker = ({ geoJson }) => {
             <div>
               <p className={MyForestMapStyle.popUpLabel}>
                 {geoJson.properties?.category === 'conservation'
-                  ? 'conserved'
+                  ? t('me:conserved')
                   : geoJson.properties?.category === 'trees'
-                  ? geoJson.properties.contributionType
+                  ? geoJson.properties.contributionType === 'donation'
+                    ? t('me:donated')
+                    : t('me:registered')
                   : null}
               </p>
-              <p className={MyForestMapStyle.popUpDate}>April 4, 2023</p>
+              <p className={MyForestMapStyle.popUpDate}>
+                {format(geoJson.properties.plantDate, 'MMMM d, yyyy')}
+              </p>
             </div>
           </div>
         </Popup>
       )}
       <Marker
-        latitude={geoJson?.geometry.coordinates[0]}
-        longitude={geoJson?.geometry.coordinates[1]}
+        latitude={geoJson?.geometry.coordinates[1]}
+        longitude={geoJson?.geometry.coordinates[0]}
       >
         <div
           className={MyForestMapStyle.markerContainer}
