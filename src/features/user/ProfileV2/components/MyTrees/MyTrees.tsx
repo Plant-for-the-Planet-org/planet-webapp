@@ -37,19 +37,19 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
     useContext(ProjectPropsContext);
 
   const detailInfo = trpc.myForest.stats.useQuery({
-    profileId: `prf_oYOzG6LrTeFkhtEomszwODcP`,
+    profileId: `${profile.id}`,
   });
 
   const _contributionData = trpc.myForest.contributions.useQuery({
-    profileId: `prf_oYOzG6LrTeFkhtEomszwODcP`,
+    profileId: `${profile.id}`,
   });
   const _conservationGeoJsonData = trpc.myForest.contributionsGeoJson.useQuery({
-    profileId: `prf_oYOzG6LrTeFkhtEomszwODcP`,
+    profileId: `${profile.id}`,
     purpose: Purpose.CONSERVATION,
   });
 
   const _treePlantedData = trpc.myForest.contributionsGeoJson.useQuery({
-    profileId: `prf_oYOzG6LrTeFkhtEomszwODcP`,
+    profileId: `${profile.id}`,
     purpose: Purpose.TREES,
   });
 
