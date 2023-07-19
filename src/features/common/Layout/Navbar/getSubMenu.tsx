@@ -8,14 +8,7 @@ import ChangeChocolateIcon from '../../../../../public/assets/images/icons/megaM
 import StopTalkingStartPlantingIcon from '../../../../../public/assets/images/icons/megaMenuIcons/stoptalkingstartplanting';
 
 interface Props {
-  title:
-    | 'overview'
-    | 'childrenAndYouth'
-    | 'trillionTrees'
-    | 'yucatan'
-    | 'partners'
-    | 'changeChocolate'
-    | 'stopTalkingStartPlanting';
+  title: string;
 }
 
 function GetSubMenu({ title }: Props): ReactElement {

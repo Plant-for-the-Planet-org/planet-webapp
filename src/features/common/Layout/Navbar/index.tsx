@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import Me from '../../../../../public/assets/images/navigation/Me';
 import MeSelected from '../../../../../public/assets/images/navigation/MeSelected';
@@ -18,9 +18,9 @@ import ConfigType from '../../types/commonConfig';
 
 // used to detect window resize and return the current width of the window
 const useWidth = () => {
-  const [width, setWidth] = React.useState(0); // default width, detect on server.
+  const [width, setWidth] = useState(0); // default width, detect on server.
   const handleResize = () => setWidth(window.innerWidth);
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener('resize', handleResize);
     handleResize();
     return () => window.removeEventListener('resize', handleResize);
@@ -41,11 +41,11 @@ export default function NavbarComponent() {
     changeChocolate: 'change-chocolate',
     stopTalkingStartPlanting: 'stop-talking-start-planting',
   };
-  const [menu, setMenu] = React.useState(false);
-  const [isMobile, setIsMobile] = React.useState(false);
-  const [mobileWidth, setMobileWidth] = React.useState(false);
-  const { embed } = React.useContext(ParamsContext);
-  React.useEffect(() => {
+  const [menu, setMenu] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [mobileWidth, setMobileWidth] = useState(false);
+  const { embed } = useContext(ParamsContext);
+  useEffect(() => {
     if (typeof window !== 'undefined') {
       if (window.innerWidth > 767) {
         setMobileWidth(false);
@@ -57,7 +57,7 @@ export default function NavbarComponent() {
   const width = useWidth();
 
   // changes the isMobile state to true if the window width is less than 768px
-  React.useEffect(() => {
+  useEffect(() => {
     setIsMobile(width < 768);
   }, [width]);
 
@@ -86,7 +86,7 @@ export default function NavbarComponent() {
     }
   }
 
-  const { theme } = React.useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   // if (isLoading) {
   //   return <div></div>;
@@ -188,7 +188,7 @@ export default function NavbarComponent() {
                 ...SingleLink,
                 onclick: aboutOnclick,
               };
-              if (hasSubMenu) {
+              if (hasSubMenu && SingleLink.subMenu) {
                 SingleLink.subMenu[0].onclick = aboutOnclick;
               }
             }
