@@ -3,7 +3,7 @@ import React, { ReactElement, useEffect } from 'react';
 import { useUserProps } from '../../src/features/common/Layout/UserPropsContext';
 import Profile from '../../src/features/user/ProfileV2';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
-import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees';
+import MyTrees from '../../src/features/user/ProfileV2/components/MyTrees/MyTrees';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';

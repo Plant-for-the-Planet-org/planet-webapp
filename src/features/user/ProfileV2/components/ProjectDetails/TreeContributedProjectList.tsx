@@ -1,10 +1,10 @@
 import { useTranslation } from 'next-i18next';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
-import myForestStyles from '../styles/MyForest.module.scss';
-import TreeCounter from '../../../common/TreeCounter/TreeCounter';
-import { EditTargetSvg } from '../../../../../public/assets/images/ProfilePageIcons';
-import AddTargetModal from '../../Profile/components/AddTargetModal';
+import myForestStyles from '../../styles/MyForest.module.scss';
+import TreeCounter from '../../../../common/TreeCounter/TreeCounter';
+import { EditTargetSvg } from '../../../../../../public/assets/images/ProfilePageIcons';
+import AddTargetModal from '../../../Profile/components/AddTargetModal';
 import ContributedProjectList from './ContributedProjectList';
 
 const TreeContributedProjectList = ({
@@ -78,6 +78,7 @@ const TreeContributedProjectList = ({
           {t('me:treesPlantedAndAreaRestored')}
           <p className={myForestStyles.hrLine} />
         </div>
+
         <ContributedProjectList
           isConservedButtonActive={undefined}
           contributionProjectList={restorationProject}

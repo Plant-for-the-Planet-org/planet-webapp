@@ -1,8 +1,8 @@
 import {
   PlantedTreesSvg,
   PlantedTreesGreenSvg,
-} from '../../../../../public/assets/images/ProfilePageIcons';
-import myForestStyles from '../styles/MyForest.module.scss';
+} from '../../../../../../public/assets/images/ProfilePageIcons';
+import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 
 const PlantedTreesButton = ({

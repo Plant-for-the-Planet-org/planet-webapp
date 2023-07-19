@@ -1,4 +1,4 @@
-import myForestStyles from '../styles/MyForest.module.scss';
+import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import { useEffect, useState } from 'react';
 import ContributedProjectList from './ContributedProjectList';

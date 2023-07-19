@@ -4,21 +4,18 @@ import dynamic from 'next/dynamic';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
-import PlantedTreesButton from '../../../ProfileV2/components/PlantedTreesButton';
-import ConservationButton from '../../../ProfileV2/components/ConservationButton';
-import DonationInfo from '../../../ProfileV2/components/DonationInfo';
-import TreeContributedProjectList from '../../../ProfileV2/components/TreeContributedProjectList';
+import PlantedTreesButton from '../ProjectDetails/PlantedTreesButton';
+import ConservationButton from '../ProjectDetails/ConservationButton';
+import DonationInfo from '../ProjectDetails/DonationInfo';
+import TreeContributedProjectList from '../ProjectDetails/TreeContributedProjectList';
 import { trpc } from '../../../../../utils/trpc';
-import AreaConservedProjectList from '../../../ProfileV2/components/AreaConservedProjectList';
+import AreaConservedProjectList from '../ProjectDetails/AreaConservedProjectList';
 import { ProjectPropsContext } from '../../../../common/Layout/ProjectPropsContext';
 import { Purpose } from '../../../../../utils/constants/myForest';
 
-const MyTreesMap = dynamic(
-  () => import('../../../ProfileV2/components/MyForestMap'),
-  {
-    loading: () => <p>loading</p>,
-  }
-);
+const MyTreesMap = dynamic(() => import('../MyForestMap'), {
+  loading: () => <p>loading</p>,
+});
 
 interface Props {
   profile: any;
@@ -40,19 +37,19 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
     useContext(ProjectPropsContext);
 
   const detailInfo = trpc.myForest.stats.useQuery({
-    profileId: `${profile.id}`,
+    profileId: `prf_oYOzG6LrTeFkhtEomszwODcP`,
   });
 
   const _contributionData = trpc.myForest.contributions.useQuery({
-    profileId: `${profile.id}`,
+    profileId: `prf_oYOzG6LrTeFkhtEomszwODcP`,
   });
   const _conservationGeoJsonData = trpc.myForest.contributionsGeoJson.useQuery({
-    profileId: `${profile.id}`,
+    profileId: `prf_oYOzG6LrTeFkhtEomszwODcP`,
     purpose: Purpose.CONSERVATION,
   });
 
   const _treePlantedData = trpc.myForest.contributionsGeoJson.useQuery({
-    profileId: `${profile.id}`,
+    profileId: `prf_oYOzG6LrTeFkhtEomszwODcP`,
     purpose: Purpose.TREES,
   });
 

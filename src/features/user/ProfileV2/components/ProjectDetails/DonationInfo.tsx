@@ -1,10 +1,10 @@
 import { useTranslation } from 'next-i18next';
-import myForestStyles from '../styles/MyForest.module.scss';
+import myForestStyles from '../../styles/MyForest.module.scss';
 import {
   ProjectsSvg,
   CountriesSvg,
   DonationsSvg,
-} from '../../../../../public/assets/images/ProfilePageIcons';
+} from '../../../../../../public/assets/images/ProfilePageIcons';
 
 const DonationInfo = ({ projects, countries, donations }) => {
   const { t } = useTranslation(['maps', 'me']);
