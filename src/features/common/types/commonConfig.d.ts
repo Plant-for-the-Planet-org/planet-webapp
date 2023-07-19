@@ -8,6 +8,7 @@ export default interface ConfigType {
   showUNDecadeLogo?: boolean;
   darkModeEnabled?: boolean;
   showUNEPLogo?: boolean;
+  showRedeemHint?: boolean;
   font: {
     primaryFontFamily: string;
     secondaryFontFamily: string;
