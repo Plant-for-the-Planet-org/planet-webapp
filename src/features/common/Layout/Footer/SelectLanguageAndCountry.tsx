@@ -5,7 +5,7 @@ import {
   FormControlLabel,
   RadioGroup,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import {
   getCountryDataBy,
   sortCountriesByTranslation,
@@ -20,17 +20,11 @@ import tenantConfig from '../../../../../tenant.config';
 
 interface MapCountryProps {
   value: string;
-  handleChange: (
-    event: React.ChangeEvent<HTMLInputElement>,
-    value: string
-  ) => void;
+  handleChange: (event: ChangeEvent<HTMLInputElement>, value: string) => void;
 }
 interface MapLanguageProps {
   value: string;
-  handleChange: (
-    event: React.ChangeEvent<HTMLInputElement>,
-    value: string
-  ) => void;
+  handleChange: (event: ChangeEvent<HTMLInputElement>, value: string) => void;
 }
 interface TransitionsModalProps {
   openModal: boolean;
@@ -131,15 +125,15 @@ export default function TransitionsModal({
 
   const { t, i18n, ready } = useTranslation(['common', 'country']);
 
-  const { theme } = React.useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   // changes the language in when a language is selected
-  const handleLanguageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLanguageChange = (event: ChangeEvent<HTMLInputElement>) => {
     setModalLanguage(event.target.value);
   };
 
   // changes the country code in when a country is selected
-  const handleCountryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCountryChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSelectedModalCountry(event.target.value);
   };
 

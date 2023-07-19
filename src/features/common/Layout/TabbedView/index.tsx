@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, ReactNode, useEffect, useState } from 'react';
 import { Grid, styled } from '@mui/material';
 import TabSteps from './TabSteps';
 import { TabItem } from './TabbedViewTypes';
@@ -19,7 +19,7 @@ const TabContainer = styled('div')(() => ({
 }));
 
 interface TabbedViewProps {
-  children: React.ReactNode;
+  children: ReactNode;
   step: number | string;
   tabItems: TabItem[];
 }

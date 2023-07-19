@@ -1,5 +1,12 @@
 import router, { useRouter } from 'next/router';
-import React, { ReactElement } from 'react';
+import React, {
+  Dispatch,
+  ReactElement,
+  ReactNode,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import { useTranslation } from 'next-i18next';
 import MenuIcon from '../../../../../public/assets/images/icons/Sidebar/MenuIcon';
 import DownArrow from '../../../../../public/assets/images/icons/DownArrow';
@@ -34,7 +41,7 @@ interface NavLinkType {
   key: number;
   title: string;
   path?: string; // The question mark makes the 'path' property optional
-  icon: React.ReactNode;
+  icon: ReactNode;
   flag?: string;
   accessLevel?: string[];
   hideSubMenu?: boolean;
@@ -46,12 +53,12 @@ interface NavLinkType {
 function LanguageSwitcher() {
   const { i18n, ready } = useTranslation(['common', 'me']);
 
-  const [language, setLanguage] = React.useState(i18n.language);
-  const [openModal, setOpenModal] = React.useState(false);
-  const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
-  const [selectedCountry, setSelectedCountry] = React.useState('DE');
+  const [language, setLanguage] = useState(i18n.language);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedCurrency, setSelectedCurrency] = useState('EUR');
+  const [selectedCountry, setSelectedCountry] = useState('DE');
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (typeof Storage !== 'undefined') {
       //fetching language from browser's local storage
       if (localStorage.getItem('language')) {
@@ -61,7 +68,7 @@ function LanguageSwitcher() {
     }
   }, [language]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (typeof Storage !== 'undefined') {
       //fetching currencycode from browser's localstorage
       if (localStorage.getItem('currencyCode')) {
@@ -107,10 +114,10 @@ function LanguageSwitcher() {
 }
 interface NavLinkProps {
   link: NavLinkType;
-  setactiveLink: React.Dispatch<React.SetStateAction<string>>;
+  setactiveLink: Dispatch<SetStateAction<string>>;
   activeLink: string;
   activeSubMenu: string;
-  setActiveSubMenu: React.Dispatch<React.SetStateAction<string>>;
+  setActiveSubMenu: Dispatch<SetStateAction<string>>;
   user: User;
   key: number;
   closeMenu: () => void;
@@ -123,8 +130,8 @@ function NavLink({
   setActiveSubMenu,
   user,
 }: NavLinkProps) {
-  const [isSubMenuActive, setisSubMenuActive] = React.useState(false);
-  React.useEffect(() => {
+  const [isSubMenuActive, setisSubMenuActive] = useState(false);
+  useEffect(() => {
     // Check if array of submenu has activeSubLink
     if (link.subMenu && link.subMenu.length > 0) {
       const subMenuItem = link.subMenu.find((subMenuItem: SubMenuItemType) => {
@@ -416,11 +423,11 @@ function UserLayout(props: any): ReactElement {
     },
   ];
 
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const [activeLink, setactiveLink] = React.useState('/profile');
-  const [activeSubMenu, setActiveSubMenu] = React.useState('');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeLink, setactiveLink] = useState('/profile');
+  const [activeSubMenu, setActiveSubMenu] = useState('');
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router) {
       for (const link of navLinks) {
         //checks whether the path belongs to menu or Submenu
@@ -447,7 +454,7 @@ function UserLayout(props: any): ReactElement {
     }
   }, [router]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (contextLoaded) {
       //checks whether user is login
       if (router.asPath) {
