@@ -1,4 +1,4 @@
-
+@import '../../../../theme/theme';
 .singleMarkerContainer {
     >.mapboxglPopup {
         box-shadow: none;
@@ -163,5 +163,15 @@
     height: 560px;
     padding-left: 50px;
     padding-right: 50px;
+    >div >div >div {
+         border-radius: 12px ;
+    };
+}
+
+@include xsPhoneView {
+    .mapContainer{
+        padding-left: 25px;
+        padding-right: 25px;
+    }   
 }
 

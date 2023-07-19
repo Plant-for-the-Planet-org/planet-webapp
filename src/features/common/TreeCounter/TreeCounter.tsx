@@ -4,11 +4,7 @@ import MuiCircularProgress, {
 import React from 'react';
 import treeCounterStyles from './TreeCounter.module.scss';
 import { useTranslation } from 'next-i18next';
-import EditIcon from '../../../../public/assets/images/icons/manageProjects/Pencil';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
-import { getFormattedNumber } from '../../../utils/getFormattedNumber';
-import themeProperties from '../../../theme/themeProperties';
-import { ThemeContext } from '../../../theme/themeContext';
 import { styled } from '@mui/material/styles';
 import { PlantedTressBlackSvg } from '../../../../public/assets/images/ProfilePageIcons';
 
@@ -24,10 +20,10 @@ const CircularProgress = styled(MuiCircularProgress)({
 
 export function FacebookCircularProgress(props: CircularProgressProps) {
   return (
-    <div style={{ position: 'relative' }}>
+    <div className={treeCounterStyles.circularProgreesContainer}>
       <CircularProgress
         variant="determinate"
-        size={320}
+        size={403}
         thickness={3}
         {...props}
       />
@@ -37,7 +33,6 @@ export function FacebookCircularProgress(props: CircularProgressProps) {
 
 export default function TpoProfile(props: any) {
   const [progress, setProgress] = React.useState(0);
-  const { theme } = React.useContext(ThemeContext);
 
   const { t, i18n, ready } = useTranslation(['me']);
   React.useEffect(() => {
@@ -107,53 +102,8 @@ export default function TpoProfile(props: any) {
               )}
             </div>
           ) : null}
-
-          {/* <h2>
-            {t('me:treesPlanted_plural', {
-              count: Number(props.planted),
-              treeCount: getFormattedNumber(
-                i18n.language,
-                Number(props.planted)
-              ),
-            })}
-          </h2> */}
         </div>
         <div style={{ fontSize: '24px' }}>{t('me:treesPlanted')}</div>
-
-        {/* {props.target ? (
-          <div className={treeCounterStyles.treeCounterDataField}>
-            <div className={treeCounterStyles.target}>
-              {props.authenticatedType === 'private' && (
-                <button
-                  id={'treeCounterEdit'}
-                  className={treeCounterStyles.editTragetContainer}
-                  onClick={() => props.handleAddTargetModalOpen()}
-                >
-                  <EditIcon color="white"></EditIcon>
-                </button>
-              )}
-            </div>
-          </div>
-        ) : null} */}
-
-        {props.authenticatedType === 'private' && props.target === 0 && (
-          <button
-            id={'addTarget'}
-            onClick={() => props.handleAddTargetModalOpen()}
-            className={treeCounterStyles.addTargetButton}
-          >
-            <p
-              style={{
-                color:
-                  theme === 'theme-light'
-                    ? themeProperties.light.light
-                    : themeProperties.dark.dark,
-              }}
-            >
-              {t('me:addTarget')}{' '}
-            </p>
-          </button>
-        )}
       </div>
     </div>
   ) : null;

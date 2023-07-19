@@ -59,24 +59,21 @@ const TreeContributedProjectList = ({
         </div>
       </div>
       <div className={myForestStyles.donationListMainContainer}>
-        <Button
-          variant="contained"
-          startIcon={<EditTargetSvg />}
-          onClick={handleAddTargetModalOpen}
-          sx={{
-            width: '126px',
-            height: '31px',
-            backgroundColor: '#219653',
-            padding: '0px 0px',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            position: 'absolute',
-            top: '180px',
-            left: '465px',
-          }}
-        >
-          {t('me:editTarget')}
-        </Button>
+        <div className={myForestStyles.editButtonContainer}>
+          <Button
+            variant="contained"
+            startIcon={<EditTargetSvg />}
+            onClick={handleAddTargetModalOpen}
+            sx={{
+              width: '138px',
+              height: '34px',
+              backgroundColor: '#219653',
+              padding: '0px 0px',
+            }}
+          >
+            {t('me:editTarget')}
+          </Button>
+        </div>
         <div className={myForestStyles.text}>
           {t('me:treesPlantedAndAreaRestored')}
           <p className={myForestStyles.hrLine} />

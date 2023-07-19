@@ -64,10 +64,10 @@
 }
 
 .backgroundCircle {
-  border: 5px solid $light;
+  border: 20px solid $light;
   border-radius: 50%;
-  height: 300px;
-  width: 300px;
+  height: 400px;
+  width: 400px;
   position: absolute;
   // top: 10px;
   opacity: 0.7;
@@ -88,4 +88,13 @@
 .addTargetButton > p {
   opacity: 1;
   font-size: $fontMedium;
+}
+
+.circularProgreesContainer {
+  position: relative;
+  z-index: 2;
+  span {
+    width: 403px;
+    height: 393px;
+  }
 }
