@@ -24,12 +24,12 @@ export default function Header() {
         />
         <meta property="og:locale" content={config.meta.locale} />
         {locales.map((locale) => {
-          if (locale !== config.meta.locale) {
+          if (locale.value !== config.meta.locale) {
             return (
               <meta
                 key="og:locale:alternate"
                 property="og:locale:alternate"
-                content={locale}
+                content={locale.value}
               />
             );
           }
