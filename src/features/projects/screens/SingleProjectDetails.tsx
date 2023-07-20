@@ -272,10 +272,6 @@ function SingleProjectDetails({}: Props): ReactElement {
                       ) : null}
                     </div>
                     <ProjectInfo project={project} />
-                    {/*  {financialReports? <FinancialReports financialReports={financialReports} /> : null}
-                    {species ? <PlantSpecies species={species} /> : null }
-                    {co2 ? (<CarbonCaptured co2={co2} />) : null} */}
-
                     <ProjectContactDetails project={project} />
                   </div>
                 </div>
