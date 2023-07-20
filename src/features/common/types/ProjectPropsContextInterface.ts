@@ -86,7 +86,7 @@ export type MapProject = ProjectMapInfo<
 >;
 
 export type SitesGeoJSON = FeatureCollection<
-  Polygon | MultiPolygon | null,
+  Polygon | MultiPolygon,
   ProjectSite
 >;
 
