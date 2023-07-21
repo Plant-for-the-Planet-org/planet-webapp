@@ -1,21 +1,21 @@
 // polyfill for Object.values
-const objectToValuesPolyfill = (object) => {
+const objectToValuesPolyfill = (object: Record<string, unknown>) => {
   return Object.keys(object).map((key) => object[key]);
 };
 Object.values = Object.values || objectToValuesPolyfill;
 
 // build a 'comparator' object for various comparison checks
-const comparator = {
-  '<': function (a, b) {
+const comparator: { [key: string]: (a: number, b: number) => boolean } = {
+  '<': function (a: number, b: number) {
     return a < b;
   },
-  '<=': function (a, b) {
+  '<=': function (a: number, b: number) {
     return a <= b;
   },
-  '>': function (a, b) {
+  '>': function (a: number, b: number) {
     return a > b;
   },
-  '>=': function (a, b) {
+  '>=': function (a: number, b: number) {
     return a >= b;
   },
 };
@@ -24,10 +24,14 @@ const comparator = {
 function compareVersion(version: string, range: string) {
   const string = range + '';
   const n = +(string.match(/\d+/) || NaN);
-  const op = string.match(/^[<>]=?|/)[0];
-  return comparator[op] ? comparator[op](version, n) : version == n || n !== n;
-}
+  const matchOp = string.match(/^[<>]=?|/);
+  const op = matchOp ? matchOp[0] : '';
+  const versionNumber = parseFloat(version); // Convert version to a number
 
+  return comparator[op]
+    ? comparator[op](versionNumber, n)
+    : versionNumber == n || n !== n;
+}
 // check for safari version, but not if Android device
 function safari(range: string, userAgent: string) {
   const match = userAgent.match(/version\/(\d+).+?safari/);
