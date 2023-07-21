@@ -33,7 +33,7 @@ function ProjectsList({
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 767;
-  const { embed, showProjectList, email } = React.useContext(ParamsContext);
+  const { embed, showProjectList } = React.useContext(ParamsContext);
   const { isImpersonationModeOn } = useUserProps();
   const isEmbed = embed === 'true';
   const [scrollY, setScrollY] = React.useState(0);
