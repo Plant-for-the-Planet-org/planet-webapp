@@ -360,7 +360,6 @@ export default function ManageProjects({ GUID, token, project }: any) {
         <div
           style={{
             marginTop: '40px',
-            width: '1000px',
             display: 'flex',
           }}
         >
