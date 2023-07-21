@@ -11,7 +11,7 @@ const NoBankAccount = (): ReactElement | null => {
     return (
       <CenteredContainer>
         <p className="centered-text">{t('noBankAccountText')}</p>
-        <Link href="/profile/payouts/add-bank-details" passHref>
+        <Link href="/profile/payouts/add-bank-details">
           <Button variant="contained" color="primary">
             {t('addBankDetailsButton')}
           </Button>

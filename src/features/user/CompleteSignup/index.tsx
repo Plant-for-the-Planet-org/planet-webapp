@@ -9,8 +9,7 @@ import {
   styled,
   TextField,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountryNew';
+import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 import { useForm, Controller } from 'react-hook-form';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
@@ -84,31 +83,15 @@ export default function CompleteSignup(): ReactElement | null {
   };
   let suggestion_counter = 0;
   const { theme } = React.useContext(ThemeContext);
-  const useStylesAutoComplete = makeStyles({
-    root: {
-      color:
-        theme === 'theme-light'
-          ? `${themeProperties.light.primaryFontColor} !important`
-          : `${themeProperties.dark.primaryFontColor} !important`,
-      backgroundColor:
-        theme === 'theme-light'
-          ? `${themeProperties.light.backgroundColor} !important`
-          : `${themeProperties.dark.backgroundColor} !important`,
-    },
-    option: {
-      // color: '#2F3336',
-      '&:hover': {
-        backgroundColor:
-          theme === 'theme-light'
-            ? `${themeProperties.light.backgroundColorDark} !important`
-            : `${themeProperties.dark.backgroundColorDark} !important`,
-      },
-    },
-  });
-  const classes = useStylesAutoComplete();
 
-  const { register, handleSubmit, errors, control, reset, setValue, watch } =
-    useForm({ mode: 'onBlur' });
+  const {
+    handleSubmit,
+    control,
+    reset,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm({ mode: 'onBlur' });
 
   const { user, setUser, auth0User, contextLoaded, logoutUser, token } =
     useUserProps();
@@ -286,10 +269,6 @@ export default function CompleteSignup(): ReactElement | null {
                   key={option.value}
                   value={option.value}
                   onClick={() => setAccountType(option.value)}
-                  classes={{
-                    // option: classes.option,
-                    root: classes.root,
-                  }}
                 >
                   {option.title}
                 </MenuItem>
@@ -297,57 +276,102 @@ export default function CompleteSignup(): ReactElement | null {
             </MuiTextField>
 
             <InlineFormDisplayGroup>
-              <MuiTextField
-                label={t('donate:firstName')}
-                inputRef={register({ required: true })}
-                name={'firstname'}
-                defaultValue={auth0User.given_name ? auth0User.given_name : ''}
-                error={errors.firstname}
-                helperText={errors.firstname && t('donate:firstNameRequired')}
+              <Controller
+                name="firstname"
+                control={control}
+                rules={{ required: true }}
+                defaultValue={auth0User?.given_name || ''}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <MuiTextField
+                    label={t('donate:firstName')}
+                    error={errors.firstname !== undefined}
+                    helperText={
+                      errors.firstname !== undefined &&
+                      t('donate:firstNameRequired')
+                    }
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                  />
+                )}
               />
-              <MuiTextField
-                label={t('donate:lastName')}
-                inputRef={register({ required: true })}
-                name={'lastname'}
-                defaultValue={
-                  auth0User.family_name ? auth0User.family_name : ''
-                }
-                error={errors.lastname}
-                helperText={errors.lastname && t('donate:firstNameRequired')}
+              <Controller
+                name="lastname"
+                control={control}
+                rules={{ required: true }}
+                defaultValue={auth0User?.family_name || ''}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <MuiTextField
+                    label={t('donate:lastName')}
+                    error={errors.lastname !== undefined}
+                    helperText={
+                      errors.lastname !== undefined &&
+                      t('donate:lastNameRequired')
+                    }
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                  />
+                )}
               />
             </InlineFormDisplayGroup>
 
             {type !== 'individual' ? (
-              <MuiTextField
-                label={t('editProfile:profileName', {
-                  type: selectUserType(type, t),
-                })}
-                inputRef={register({ required: true })}
-                name={'name'}
-                error={errors.name}
-                helperText={errors.name && t('editProfile:nameValidation')}
+              <Controller
+                name="name"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <MuiTextField
+                    label={t('editProfile:profileName', {
+                      type: selectUserType(type, t),
+                    })}
+                    error={errors.name !== undefined}
+                    helperText={
+                      errors.name !== undefined &&
+                      t('editProfile:nameValidation')
+                    }
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                  />
+                )}
               />
             ) : null}
 
             <MuiTextField
-              defaultValue={auth0User.email}
+              defaultValue={auth0User?.email}
               label={t('donate:email')}
               disabled
             />
 
             {type === 'tpo' ? (
               <>
-                <MuiTextField
-                  label={t('donate:address')}
-                  inputRef={register({ required: true })}
-                  name={'address'}
-                  onChange={(event) => {
-                    suggestAddress(event.target.value);
-                  }}
-                  onBlur={() => setaddressSugggestions([])}
-                  error={errors.address}
-                  helperText={errors.address && t('donate:addressRequired')}
+                <Controller
+                  name="address"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <MuiTextField
+                      label={t('donate:address')}
+                      error={errors.address !== undefined}
+                      helperText={
+                        errors.address !== undefined &&
+                        t('donate:addressRequired')
+                      }
+                      onChange={(event) => {
+                        suggestAddress(event.target.value);
+                        onChange(event.target.value);
+                      }}
+                      onBlur={() => {
+                        setaddressSugggestions([]);
+                        onBlur();
+                      }}
+                      value={value}
+                    />
+                  )}
                 />
+
                 {addressSugggestions
                   ? addressSugggestions.length > 0 && (
                       <div className="suggestions-container">
@@ -368,9 +392,10 @@ export default function CompleteSignup(): ReactElement | null {
                     )
                   : null}
                 <InlineFormDisplayGroup>
-                  <MuiTextField
-                    label={t('donate:city')}
-                    inputRef={register({ required: true })}
+                  <Controller
+                    name="city"
+                    control={control}
+                    rules={{ required: true }}
                     defaultValue={
                       getStoredConfig('loc').city === 'T1' ||
                       getStoredConfig('loc').city === 'XX' ||
@@ -378,17 +403,23 @@ export default function CompleteSignup(): ReactElement | null {
                         ? ''
                         : getStoredConfig('loc').city
                     }
-                    name={'city'}
-                    error={errors.city}
-                    helperText={errors.city && t('donate:cityRequired')}
+                    render={({ field: { onChange, value, onBlur } }) => (
+                      <MuiTextField
+                        label={t('donate:city')}
+                        error={errors.city !== undefined}
+                        helperText={
+                          errors.city !== undefined && t('donate:cityRequired')
+                        }
+                        onChange={onChange}
+                        value={value}
+                        onBlur={onBlur}
+                      />
+                    )}
                   />
-                  <MuiTextField
-                    label={t('donate:zipCode')}
+                  <Controller
                     name="zipCode"
-                    inputRef={register({
-                      pattern: postalRegex,
-                      required: true,
-                    })}
+                    control={control}
+                    rules={{ required: true, pattern: postalRegex }}
                     defaultValue={
                       getStoredConfig('loc').postalCode === 'T1' ||
                       getStoredConfig('loc').postalCode === 'XX' ||
@@ -396,10 +427,19 @@ export default function CompleteSignup(): ReactElement | null {
                         ? ''
                         : getStoredConfig('loc').postalCode
                     }
-                    error={errors.zipCode}
-                    helperText={
-                      errors.zipCode && t('donate:zipCodeAlphaNumValidation')
-                    }
+                    render={({ field: { onChange, value, onBlur } }) => (
+                      <MuiTextField
+                        label={t('donate:zipCode')}
+                        error={errors.zipCode !== undefined}
+                        helperText={
+                          errors.zipCode !== undefined &&
+                          t('donate:zipCodeAlphaNumValidation')
+                        }
+                        onChange={onChange}
+                        value={value}
+                        onBlur={onBlur}
+                      />
+                    )}
                   />
                 </InlineFormDisplayGroup>
               </>
@@ -434,14 +474,12 @@ export default function CompleteSignup(): ReactElement | null {
               </div>
               <Controller
                 name="isPrivate"
-                id="isPrivate"
                 control={control}
-                inputRef={register()}
                 defaultValue={false}
-                render={(props: any) => (
+                render={({ field: { onChange, value } }) => (
                   <ToggleSwitch
-                    checked={props.value}
-                    onChange={(e) => props.onChange(e.target.checked)}
+                    checked={value}
+                    onChange={onChange}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                     id="isPrivate"
                   />
@@ -457,15 +495,13 @@ export default function CompleteSignup(): ReactElement | null {
               </div>
               <Controller
                 name="getNews"
-                id="getNews"
                 control={control}
-                inputRef={register()}
                 defaultValue={true}
-                render={(props: any) => {
+                render={({ field: { onChange, value } }) => {
                   return (
                     <ToggleSwitch
-                      checked={props.value}
-                      onChange={(e) => props.onChange(e.target.checked)}
+                      checked={value}
+                      onChange={(e) => onChange(e.target.checked)}
                       inputProps={{ 'aria-label': 'secondary checkbox' }}
                       id="getNews"
                     />

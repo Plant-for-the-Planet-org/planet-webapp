@@ -1,7 +1,7 @@
 import { Button, styled, TextField } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Controller, useForm } from 'react-hook-form';
 import { User } from '@planet-sdk/common/build/types/user';
@@ -11,7 +11,7 @@ import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import COUNTRY_ADDRESS_POSTALS from '../../../../utils/countryZipCode';
 import getImageUrl from '../../../../utils/getImageURL';
 import { selectUserType } from '../../../../utils/selectUserType';
-import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
+import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import styles from './EditProfile.module.scss';
@@ -62,8 +62,34 @@ export default function EditProfileForm() {
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { t, ready } = useTranslation(['editProfile', 'donate']);
 
-  const { register, handleSubmit, errors, control, reset, setValue, watch } =
-    useForm<FormData>({ mode: 'onBlur' });
+  const defaultProfileDetails = useMemo(() => {
+    return {
+      firstname: user?.firstname ? user.firstname : '',
+      lastname: user?.lastname ? user.lastname : '',
+      address:
+        user?.address && user.address.address ? user.address.address : '',
+      city: user?.address && user.address.city ? user.address.city : '',
+      zipCode:
+        user?.address && user.address.zipCode ? user.address.zipCode : '',
+      isPrivate: user?.isPrivate ? user.isPrivate : false,
+      getNews: user?.getNews ? user.getNews : false,
+      bio: user?.bio ? user.bio : '',
+      url: user?.url ? user.url : '',
+      name: user?.type !== 'individual' && user?.name ? user.name : '',
+    };
+  }, [user]);
+
+  const {
+    handleSubmit,
+    control,
+    reset,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<FormData>({
+    mode: 'onBlur',
+    defaultValues: defaultProfileDetails,
+  });
 
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
@@ -81,24 +107,8 @@ export default function EditProfileForm() {
   const [country, setCountry] = React.useState<string>(user?.country || 'DE');
 
   React.useEffect(() => {
-    if (user) {
-      const defaultProfileDetails = {
-        firstname: user.firstname ? user.firstname : '',
-        lastname: user.lastname ? user.lastname : '',
-        address:
-          user.address && user.address.address ? user.address.address : '',
-        city: user.address && user.address.city ? user.address.city : '',
-        zipCode:
-          user.address && user.address.zipCode ? user.address.zipCode : '',
-        isPrivate: user.isPrivate ? user.isPrivate : false,
-        getNews: user.getNews ? user.getNews : false,
-        bio: user.bio ? user.bio : '',
-        url: user.url ? user.url : '',
-        name: user.type !== 'individual' && user?.name ? user.name : '',
-      };
-      reset(defaultProfileDetails);
-    }
-  }, [user]);
+    reset(defaultProfileDetails);
+  }, [defaultProfileDetails]);
 
   const [updatingPic, setUpdatingPic] = React.useState(false);
 
@@ -332,20 +342,40 @@ export default function EditProfileForm() {
           />
         ) : null}
         <InlineFormDisplayGroup>
-          <TextField
-            label={t('donate:firstName')}
+          <Controller
             name="firstname"
-            inputRef={register({ required: t('donate:firstNameRequired') })}
-            error={errors.firstname !== undefined}
-            helperText={errors.firstname && errors.firstname.message}
-          ></TextField>
-          <TextField
-            label={t('donate:lastName')}
+            control={control}
+            rules={{ required: t('donate:firstNameRequired') }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                label={t('donate:firstName')}
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
+                error={errors.firstname !== undefined}
+                helperText={
+                  errors.firstname !== undefined && errors.firstname.message
+                }
+              />
+            )}
+          />
+          <Controller
             name="lastname"
-            inputRef={register({ required: t('donate:lastNameRequired') })}
-            error={errors.lastname !== undefined}
-            helperText={errors.lastname && errors.lastname.message}
-          ></TextField>
+            control={control}
+            rules={{ required: t('donate:lastNameRequired') }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                label={t('donate:lastName')}
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
+                error={errors.lastname !== undefined}
+                helperText={
+                  errors.lastname !== undefined && errors.lastname.message
+                }
+              />
+            )}
+          />
         </InlineFormDisplayGroup>
         <TextField
           label={t('donate:email')}
@@ -354,28 +384,50 @@ export default function EditProfileForm() {
           disabled
         ></TextField>
         {type && type !== 'individual' && (
-          <TextField
-            label={t('editProfile:profileName', {
-              type: selectUserType(type, t),
-            })}
+          <Controller
             name="name"
-            inputRef={register({ required: t('editProfile:nameValidation') })}
-            error={errors.name !== undefined}
-            helperText={errors.name && errors.name.message}
-          ></TextField>
+            control={control}
+            rules={{ required: t('editProfile:nameValidation') }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                label={t('editProfile:profileName', {
+                  type: selectUserType(type, t),
+                })}
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
+                error={errors.name !== undefined}
+                helperText={errors.name !== undefined && errors.name.message}
+              />
+            )}
+          />
         )}
         <div className={styles.formFieldLarge}>
-          <TextField
-            label={t('donate:address')}
+          <Controller
             name="address"
-            inputRef={register({ required: t('donate:addressRequired') })}
-            onChange={(event) => {
-              suggestAddress(event.target.value);
-            }}
-            onBlur={() => setaddressSugggestions([])}
-            error={errors.address !== undefined}
-            helperText={errors.address && errors.address.message}
-          ></TextField>
+            control={control}
+            rules={{ required: t('donate:addressRequired') }}
+            render={({
+              field: { onChange: handleChange, value, onBlur: handleBlur },
+            }) => (
+              <TextField
+                label={t('donate:address')}
+                onChange={(event) => {
+                  suggestAddress(event.target.value);
+                  handleChange(event);
+                }}
+                onBlur={() => {
+                  setaddressSugggestions([]);
+                  handleBlur();
+                }}
+                value={value}
+                error={errors.address !== undefined}
+                helperText={
+                  errors.address !== undefined && errors.address.message
+                }
+              />
+            )}
+          />
           {addressSugggestions
             ? addressSugggestions.length > 0 && (
                 <div className="suggestions-container">
@@ -397,23 +449,41 @@ export default function EditProfileForm() {
             : null}
         </div>
         <InlineFormDisplayGroup>
-          <TextField
-            label={t('donate:city')}
+          <Controller
             name="city"
-            inputRef={register({ required: t('donate:cityRequired') })}
-            error={errors.city !== undefined}
-            helperText={errors.city && errors.city.message}
-          ></TextField>
-          <TextField
-            label={t('donate:zipCode')}
+            control={control}
+            rules={{ required: t('donate:cityRequired') }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                label={t('donate:city')}
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
+                error={errors.city !== undefined}
+                helperText={errors.city !== undefined && errors.city.message}
+              />
+            )}
+          />
+          <Controller
             name="zipCode"
-            inputRef={register({
-              pattern: postalRegex,
+            control={control}
+            rules={{
               required: t('donate:zipCodeAlphaNumValidation'),
-            })}
-            error={errors.zipCode !== undefined}
-            helperText={errors.zipCode && errors.zipCode.message}
-          ></TextField>
+              pattern: postalRegex,
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                label={t('donate:zipCode')}
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
+                error={errors.zipCode !== undefined}
+                helperText={
+                  errors.zipCode !== undefined && errors.zipCode.message
+                }
+              />
+            )}
+          />
         </InlineFormDisplayGroup>
         <AutoCompleteCountry
           defaultValue={country}
@@ -441,12 +511,10 @@ export default function EditProfileForm() {
           <Controller
             name="isPrivate"
             control={control}
-            inputRef={register()}
-            defaultValue={false}
-            render={(props) => (
+            render={({ field: { onChange, value } }) => (
               <ToggleSwitch
-                checked={props.value}
-                onChange={(e) => props.onChange(e.target.checked)}
+                checked={value}
+                onChange={onChange}
                 inputProps={{ 'aria-label': 'secondary checkbox' }}
                 id="editPrivate"
               />
@@ -466,12 +534,10 @@ export default function EditProfileForm() {
           <Controller
             name="getNews"
             control={control}
-            inputRef={register()}
-            defaultValue={false}
-            render={(props) => (
+            render={({ field: { onChange, value } }) => (
               <ToggleSwitch
-                checked={props.value}
-                onChange={(e) => props.onChange(e.target.checked)}
+                checked={value}
+                onChange={onChange}
                 inputProps={{ 'aria-label': 'secondary checkbox' }}
                 id="editGetNews"
               />
@@ -481,35 +547,51 @@ export default function EditProfileForm() {
 
         <div className={styles.horizontalLine} />
 
-        <TextField
-          label={t('editProfile:profileDescription')}
-          multiline
-          rows={4}
+        <Controller
           name="bio"
-          inputRef={register({
+          control={control}
+          rules={{
             maxLength: {
               value: 300,
               message: t('editProfile:descriptionRequired'),
             },
-          })}
-          error={errors.bio !== undefined}
-          helperText={errors.bio && errors.bio.message}
-        ></TextField>
+          }}
+          render={({ field: { onChange, value, onBlur } }) => (
+            <TextField
+              label={t('editProfile:profileDescription')}
+              onChange={onChange}
+              onBlur={onBlur}
+              value={value}
+              multiline
+              rows={4}
+              error={errors.bio !== undefined}
+              helperText={errors.bio !== undefined && errors.bio.message}
+            />
+          )}
+        />
 
-        <TextField
-          label={t('editProfile:website')}
+        <Controller
           name="url"
-          inputRef={register({
+          control={control}
+          rules={{
             pattern: {
               //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
               value:
                 /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
               message: t('editProfile:websiteRequired'),
             },
-          })}
-          error={errors.url !== undefined}
-          helperText={errors.url && errors.url.message}
-        ></TextField>
+          }}
+          render={({ field: { onChange, value, onBlur } }) => (
+            <TextField
+              label={t('editProfile:website')}
+              onChange={onChange}
+              onBlur={onBlur}
+              value={value}
+              error={errors.url !== undefined}
+              helperText={errors.url !== undefined && errors.url.message}
+            />
+          )}
+        />
       </div>
       <Button
         id={'editProfileSaveProfile'}
