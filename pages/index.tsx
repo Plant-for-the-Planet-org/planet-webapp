@@ -9,7 +9,9 @@ import Credits from '../src/features/projects/components/maps/Credits';
 import Filters from '../src/features/projects/components/projects/Filters';
 import { TENANT_ID } from '../src/utils/constants/environment';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
-import DirectGift from '../src/features/donations/components/DirectGift';
+import DirectGift, {
+  DirectGiftI,
+} from '../src/features/donations/components/DirectGift';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import nextI18NextConfig from '../next-i18next.config';
@@ -40,8 +42,8 @@ export default function Donate({
   const { i18n } = useTranslation();
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
-  const [directGift, setDirectGift] = React.useState(null);
-  const [showdirectGift, setShowDirectGift] = React.useState(true);
+  const [directGift, setDirectGift] = React.useState<DirectGiftI | null>(null);
+  const [showDirectGift, setShowDirectGift] = React.useState(true);
   const [internalLanguage, setInternalLanguage] = React.useState('');
   React.useEffect(() => {
     const getdirectGift = localStorage.getItem('directGift');
@@ -115,11 +117,6 @@ export default function Donate({
     setCurrencyCode,
   };
 
-  const GiftProps = {
-    setShowDirectGift,
-    directGift,
-  };
-
   return (
     <>
       {initialized ? (
@@ -128,8 +125,11 @@ export default function Donate({
             <GetAllProjectsMeta />
             <ProjectsList {...ProjectsProps} />
             {directGift ? (
-              showdirectGift ? (
-                <DirectGift {...GiftProps} />
+              showDirectGift ? (
+                <DirectGift
+                  directGift={directGift}
+                  setShowDirectGift={setShowDirectGift}
+                />
               ) : null
             ) : null}
             <Credits setCurrencyCode={setCurrencyCode} />
