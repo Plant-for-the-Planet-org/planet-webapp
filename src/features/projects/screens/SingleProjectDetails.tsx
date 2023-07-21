@@ -23,8 +23,6 @@ const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
   ssr: false,
 });
 
-interface Props {}
-
 const ImageSlider = dynamic(
   () => import('../components/projectDetails/ImageSlider'),
   {
@@ -33,7 +31,7 @@ const ImageSlider = dynamic(
   }
 );
 
-function SingleProjectDetails({}: Props): ReactElement {
+function SingleProjectDetails(): ReactElement {
   const router = useRouter();
 
   const { t, ready } = useTranslation(['donate', 'common', 'country', 'maps']);
@@ -47,6 +45,7 @@ function SingleProjectDetails({}: Props): ReactElement {
     setSelectedPl,
     samplePlantLocation,
   } = useProjectProps();
+
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
@@ -55,12 +54,6 @@ function SingleProjectDetails({}: Props): ReactElement {
     useContext(ParamsContext);
   const isEmbed = embed === 'true';
   const [hideProjectContainer, setHideProjectContainer] = useState(isEmbed);
-
-  let progressPercentage = (project.countPlanted / project.countTarget) * 100;
-
-  if (progressPercentage > 100) {
-    progressPercentage = 100;
-  }
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -86,7 +79,7 @@ function SingleProjectDetails({}: Props): ReactElement {
   };
 
   const goBack = () => {
-    if (selectedPl || hoveredPl) {
+    if (project && (selectedPl || hoveredPl)) {
       setHoveredPl(null);
       setSelectedPl(null);
       router.push(
@@ -218,7 +211,8 @@ function SingleProjectDetails({}: Props): ReactElement {
                   className={'projectCompleteInfo'}
                   style={{ marginTop: 24 }}
                 >
-                  {project?.isApproved &&
+                  {project.purpose === 'trees' &&
+                    project.isApproved &&
                     project.reviews !== undefined &&
                     project.reviews.length > 0 && (
                       <TopProjectReports projectReviews={project.reviews} />
@@ -238,7 +232,8 @@ function SingleProjectDetails({}: Props): ReactElement {
                   </div>
 
                   <div className={'projectInfoProperties'}>
-                    {ReactPlayer.canPlay(project.videoUrl) ? (
+                    {project.videoUrl !== null &&
+                    ReactPlayer.canPlay(project.videoUrl) ? (
                       <ReactPlayer
                         className={'projectVideoContainer'}
                         width="100%"

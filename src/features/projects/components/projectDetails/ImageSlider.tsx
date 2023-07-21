@@ -5,7 +5,7 @@ import styles from './../../styles/ProjectDetails.module.scss';
 
 export type SliderImage = {
   image?: string;
-  description?: string;
+  description?: string | null;
 };
 
 interface Props {
