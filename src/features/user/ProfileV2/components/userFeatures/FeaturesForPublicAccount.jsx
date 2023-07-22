@@ -7,18 +7,34 @@ import {
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import myProfilestyle from '../../styles/MyProfile.module.scss';
 import { useRouter } from 'next/router';
+import tenantConfig from '../../../../../../tenant.config';
+import SharePlatforms from './SharePlatfroms';
 
-const FeaturesForPublicAccount = ({ profile }) => {
+const config = tenantConfig();
+
+const FeaturesForPublicAccount = ({
+  handleShare,
+  userprofile,
+  showSocialButton,
+  setShowSocialButton,
+}) => {
   const { t } = useTranslation(['me']);
   const router = useRouter();
 
   const handleSupport = () => {
-    router.push(`/s/${profile.slug}`);
+    router.push(`/s/${userprofile.slug}`);
   };
 
+  const handleShareOnLinkedIn = () => {
+    if (config && userprofile) {
+      const linkToShare = `${config.tenantURL}/t/${userprofile.slug}`;
+      const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?&url=${linkToShare}`;
+      window.open(shareUrl, '_blank');
+    }
+  };
   return (
     <div className={myProfilestyle.buttonContainer}>
-      {profile?.type !== 'tpo' && (
+      {userprofile?.type !== 'tpo' && (
         <Button
           variant="contained"
           startIcon={<SupportSvg />}
@@ -28,12 +44,28 @@ const FeaturesForPublicAccount = ({ profile }) => {
         </Button>
       )}
 
-      <Button variant="contained" startIcon={<LinkedInIcon />}>
+      <Button
+        variant="contained"
+        startIcon={<LinkedInIcon />}
+        onClick={handleShareOnLinkedIn}
+      >
         {t('me:linkedIn')}
       </Button>
-      <Button variant="contained" startIcon={<ShareSvg />}>
-        {t('me:share')}
-      </Button>
+
+      {showSocialButton ? (
+        <SharePlatforms
+          setShowSocialButton={setShowSocialButton}
+          userprofile={userprofile}
+        />
+      ) : (
+        <Button
+          variant="contained"
+          startIcon={<ShareSvg />}
+          onClick={handleShare}
+        >
+          {showSocialButton ? '' : t('me:share')}
+        </Button>
+      )}
     </div>
   );
 };

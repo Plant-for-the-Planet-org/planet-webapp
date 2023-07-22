@@ -1,46 +1,56 @@
-import { Avatar } from '@mui/material';
+import { useState } from 'react';
 import ProfileContainer from './styles/ProfileContainer';
 import { useTranslation } from 'next-i18next';
-import EditIcon from '@mui/icons-material/Edit';
-import getImageUrl from '../../../utils/getImageURL';
-import myProfilestyle from './styles/MyProfile.module.scss';
-import { useRouter } from 'next/router';
+import tenantConfig from '../../../../tenant.config';
 import FeaturesForPrivateAccount from './components/userFeatures/FeaturesForPrivateAccount';
 import FeaturesForPublicAccount from './components/userFeatures/FeaturesForPublicAccount';
+import UserInfo from './components/MicroComponents/UserInfo';
+
+const config = tenantConfig();
 
 const Profile = ({ userProfile }) => {
-  const { t } = useTranslation(['editProfile', 'redeem', 'me']);
-  const router = useRouter();
-  const handleEditProfile = () => {
-    router.push('profile/edit');
+  const { t, ready } = useTranslation(['donate']);
+  const [showSocialButton, setShowSocialButton] = useState(false);
+
+  const handleShare = () => {
+    if (navigator?.share) {
+      navigator
+        ?.share({
+          title: ready ? t('donate:shareTextTitle') : '',
+          url: `${process.env.SCHEME}://${config.tenantURL}/t/${userProfile.slug}`,
+          text: ready
+            ? t('donate:textToShare', { name: userProfile.displayName })
+            : '',
+        })
+        .then(() => {
+          console.log('thanks for sharing');
+        })
+        .catch(() => {
+          console.log('error in sharing');
+        });
+    } else {
+      setShowSocialButton(true);
+    }
   };
 
   return (
     <ProfileContainer>
-      <div className={myProfilestyle.userInfoContainer}>
-        <Avatar
-          alt="user Image"
-          src={getImageUrl('profile', 'avatar', userProfile?.image)}
-          sx={{ width: 65, height: 65 }}
+      <UserInfo userProfile={userProfile} />
+      {userProfile.isPrivate && (
+        <FeaturesForPrivateAccount
+          handleShare={handleShare}
+          userprofile={userProfile}
+          showSocialButton={showSocialButton}
+          setShowSocialButton={setShowSocialButton}
         />
-
-        <div>
-          <div className={myProfilestyle.userInfo}>
-            {userProfile?.displayName}
-          </div>
-          <div>{t('editProfile:member', { date: 'May 2012' })}</div>
-        </div>
-      </div>
-      <div className={myProfilestyle.iconContainer} onClick={handleEditProfile}>
-        <EditIcon className={myProfilestyle.icon} />
-      </div>
-
-      <div className={myProfilestyle.userDescription}>
-        {userProfile?.bio && userProfile?.bio}
-      </div>
-      {userProfile.isPrivate && <FeaturesForPrivateAccount />}
+      )}
       {!userProfile.isPrivate && (
-        <FeaturesForPublicAccount profile={userProfile} />
+        <FeaturesForPublicAccount
+          handleShare={handleShare}
+          userprofile={userProfile}
+          showSocialButton={showSocialButton}
+          setShowSocialButton={setShowSocialButton}
+        />
       )}
     </ProfileContainer>
   );

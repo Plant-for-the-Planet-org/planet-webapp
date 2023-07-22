@@ -274,14 +274,22 @@
    
   }
 
+  .mapButtonMainContainer {
+    width: 100vw;
+    padding-left: 42px;
+    padding-right: 12px;
+    overflow: hidden;
+  }
+
   .mapButtonContainer {
     width: 100%;
+    max-width: 82%;
     position: absolute;
     top: 510px;
     display : flex;
     gap: 12px;
-    overflow: hidden;
-    left:10px;
+    overflow: auto;
+    left:auto;
   
     @include xsPhoneView {
         overflow: scroll;

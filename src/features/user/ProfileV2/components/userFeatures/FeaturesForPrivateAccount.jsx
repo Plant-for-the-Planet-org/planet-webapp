@@ -9,11 +9,18 @@ import RedeemModal from '../../../Profile/components/RedeemModal';
 import myProfilestyle from '../../styles/MyProfile.module.scss';
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
+import SharePlatforms from './SharePlatfroms';
 
-const FeaturesForPrivateAccount = () => {
+const FeaturesForPrivateAccount = ({
+  handleShare,
+  userprofile,
+  showSocialButton,
+  setShowSocialButton,
+}) => {
   const { t } = useTranslation(['me']);
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
   const router = useRouter();
+
   const handleRegisterTree = () => {
     router.push('profile/register-trees');
   };
@@ -25,6 +32,7 @@ const FeaturesForPrivateAccount = () => {
   const handleRedeemModalClose = () => {
     setIsRedeemModalOpen(false);
   };
+
   return (
     <div className={myProfilestyle.buttonContainer}>
       <Button
@@ -45,9 +53,20 @@ const FeaturesForPrivateAccount = () => {
       >
         {t('me:registerTrees')}
       </Button>
-      <Button variant="contained" startIcon={<ShareSvg />}>
-        {t('me:share')}
-      </Button>
+      {showSocialButton ? (
+        <SharePlatforms
+          setShowSocialButton={setShowSocialButton}
+          userprofile={userprofile}
+        />
+      ) : (
+        <Button
+          variant="contained"
+          startIcon={<ShareSvg />}
+          onClick={handleShare}
+        >
+          {showSocialButton ? '' : t('me:share')}
+        </Button>
+      )}
     </div>
   );
 };

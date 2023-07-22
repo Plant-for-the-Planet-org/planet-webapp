@@ -135,26 +135,28 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
         isTreePlantedButtonActive={isTreePlantedButtonActive}
         isConservedButtonActive={isConservedButtonActive}
       />
-      <div className={myForestStyles.mapButtonContainer}>
-        <PlantedTreesButton
-          plantedTrees={otherDonationInfo[0]?.treeCount}
-          isTreePlantedButtonActive={isTreePlantedButtonActive}
-          setIsConservedButtonActive={setIsConservedButtonActive}
-          setIsTreePlantedButtonActive={setIsTreePlantedButtonActive}
-        />
-        <div>
+      <div className={myForestStyles.mapButtonMainContainer}>
+        <div className={myForestStyles.mapButtonContainer}>
+          <PlantedTreesButton
+            plantedTrees={otherDonationInfo[0]?.treeCount}
+            isTreePlantedButtonActive={isTreePlantedButtonActive}
+            setIsConservedButtonActive={setIsConservedButtonActive}
+            setIsTreePlantedButtonActive={setIsTreePlantedButtonActive}
+          />
+
           <ConservationButton
             conservedArea={otherDonationInfo[0]?.conserved}
             setIsTreePlantedButtonActive={setIsTreePlantedButtonActive}
             setIsConservedButtonActive={setIsConservedButtonActive}
             isConservedButtonActive={isConservedButtonActive}
           />
+
+          <DonationInfo
+            projects={otherDonationInfo[0]?.projects}
+            countries={otherDonationInfo[0]?.countries}
+            donations={otherDonationInfo[0]?.donations}
+          />
         </div>
-        <DonationInfo
-          projects={otherDonationInfo[0]?.projects}
-          countries={otherDonationInfo[0]?.countries}
-          donations={otherDonationInfo[0]?.donations}
-        />
       </div>
 
       {isTreePlantedButtonActive && !isConservedButtonActive && (
