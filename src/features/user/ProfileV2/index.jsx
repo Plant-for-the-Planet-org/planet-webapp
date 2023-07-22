@@ -6,6 +6,7 @@ import getImageUrl from '../../../utils/getImageURL';
 import myProfilestyle from './styles/MyProfile.module.scss';
 import { useRouter } from 'next/router';
 import FeaturesForPrivateAccount from './components/userFeatures/FeaturesForPrivateAccount';
+import FeaturesForPublicAccount from './components/userFeatures/FeaturesForPublicAccount';
 
 const Profile = ({ userProfile }) => {
   const { t } = useTranslation(['editProfile', 'redeem', 'me']);
@@ -38,6 +39,9 @@ const Profile = ({ userProfile }) => {
         {userProfile?.bio && userProfile?.bio}
       </div>
       {userProfile.isPrivate && <FeaturesForPrivateAccount />}
+      {!userProfile.isPrivate && (
+        <FeaturesForPublicAccount profile={userProfile} />
+      )}
     </ProfileContainer>
   );
 };

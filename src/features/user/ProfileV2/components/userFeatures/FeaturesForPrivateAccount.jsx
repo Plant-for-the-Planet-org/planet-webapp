@@ -26,31 +26,29 @@ const FeaturesForPrivateAccount = () => {
     setIsRedeemModalOpen(false);
   };
   return (
-    <>
-      <div className={myProfilestyle.buttonContainer}>
-        <Button
-          variant="contained"
-          startIcon={<RedeemCodeSvg />}
-          onClick={handleRedeemModalOPen}
-        >
-          {t('redeem:redeem')}
-        </Button>
-        <RedeemModal
-          redeemModalOpen={isRedeemModalOpen}
-          handleRedeemModalClose={handleRedeemModalClose}
-        />
-        <Button
-          variant="contained"
-          startIcon={<RegisteredTreeSvg />}
-          onClick={handleRegisterTree}
-        >
-          {t('me:registerTrees')}
-        </Button>
-        <Button variant="contained" startIcon={<ShareSvg />}>
-          {t('me:share')}
-        </Button>
-      </div>
-    </>
+    <div className={myProfilestyle.buttonContainer}>
+      <Button
+        variant="contained"
+        startIcon={<RedeemCodeSvg />}
+        onClick={handleRedeemModalOPen}
+      >
+        {t('redeem:redeem')}
+      </Button>
+      <RedeemModal
+        redeemModalOpen={isRedeemModalOpen}
+        handleRedeemModalClose={handleRedeemModalClose}
+      />
+      <Button
+        variant="contained"
+        startIcon={<RegisteredTreeSvg />}
+        onClick={handleRegisterTree}
+      >
+        {t('me:registerTrees')}
+      </Button>
+      <Button variant="contained" startIcon={<ShareSvg />}>
+        {t('me:share')}
+      </Button>
+    </div>
   );
 };
 

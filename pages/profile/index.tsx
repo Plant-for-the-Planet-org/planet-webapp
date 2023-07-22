@@ -27,7 +27,7 @@ function ProfilePage(): ReactElement {
       }
     }
   }, [contextLoaded, user, router]);
-  // console.log(profile);
+
   return (
     <UserLayout>
       <Head>
