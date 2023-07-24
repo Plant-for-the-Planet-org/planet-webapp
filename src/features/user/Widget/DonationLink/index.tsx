@@ -8,8 +8,9 @@ import DonationLinkForm from './DonationLinkForm';
 import SingleColumnView from '../../../common/Layout/SingleColumnView';
 import { ProjectOption } from '../../../common/types/project';
 import { TENANT_ID } from '../../../../utils/constants/environment';
-import { handleError, APIError, ProjectMapInfo } from '@planet-sdk/common';
+import { handleError, APIError } from '@planet-sdk/common';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
+import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 
 export default function DonationLink(): ReactElement | null {
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -18,7 +19,7 @@ export default function DonationLink(): ReactElement | null {
 
   async function fetchProjectList() {
     try {
-      const projectsList = await getRequest<ProjectMapInfo[]>(`/app/projects`, {
+      const projectsList = await getRequest<MapProject[]>(`/app/projects`, {
         _scope: 'map',
         'filter[purpose]': 'trees,restoration',
         tenant: TENANT_ID,

@@ -17,7 +17,8 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
-import { handleError, APIError, ProjectMapInfo } from '@planet-sdk/common';
+import { handleError, APIError } from '@planet-sdk/common';
+import { MapProject } from '../../common/types/ProjectPropsContextInterface';
 
 export enum BulkCodeSteps {
   SELECT_METHOD = 'select_method',
@@ -72,7 +73,7 @@ export default function BulkCodes({
   const fetchProjectList = useCallback(async () => {
     if (planetCashAccount && !projectList) {
       try {
-        const fetchedProjects = await getRequest<ProjectMapInfo[]>(
+        const fetchedProjects = await getRequest<MapProject[]>(
           `/app/projects`,
           {
             _scope: 'map',
