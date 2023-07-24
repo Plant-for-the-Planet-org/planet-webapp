@@ -6,7 +6,6 @@ import UnderReview from '../../../../../public/assets/images/icons/manageProject
 import { useTranslation } from 'next-i18next';
 import NotReviewed from '../../../../../public/assets/images/icons/manageProjects/NotReviewed';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
-import { useForm } from 'react-hook-form';
 import router from 'next/router';
 
 interface Props {
@@ -37,7 +36,6 @@ function SubmitForReview({
   });
 
   function UnderReviewComponent() {
-    const { control } = useForm({ mode: 'onBlur' });
     const [publish, setPublish] = React.useState(projectDetails.publish);
 
     return (
@@ -105,7 +103,6 @@ function SubmitForReview({
   }
 
   function NotSubmittedReview() {
-    const { control } = useForm({ mode: 'onBlur' });
     const [publish, setPublish] = React.useState(projectDetails.publish);
 
     return (
