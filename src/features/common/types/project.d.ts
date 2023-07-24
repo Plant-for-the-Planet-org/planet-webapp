@@ -1,4 +1,4 @@
-export interface Project {
+export interface ProjectOption {
   guid: string;
   slug: string;
   name: string;
