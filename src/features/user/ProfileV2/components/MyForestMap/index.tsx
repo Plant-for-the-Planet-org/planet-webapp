@@ -5,6 +5,10 @@ import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import TreesPlantedMarkers from './TreesPlantedMarkers';
 import ConservationMarkers from './ConservationMarkers';
 
+// interface MyForestProps {
+//   isTreePlantedButtonActive: boolean;
+//   isConservedButtonActive: boolean;
+// }
 const MyForestMap = ({
   isTreePlantedButtonActive,
   isConservedButtonActive,
@@ -31,7 +35,6 @@ const MyForestMap = ({
     longitude: defaultMapCenter[1],
     zoom: defaultZoom,
   });
-
   useEffect(() => {
     //loads the default mapstyle
     async function loadMapStyle() {

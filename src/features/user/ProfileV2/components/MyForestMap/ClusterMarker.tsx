@@ -6,7 +6,13 @@ import {
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 
+// interface MarkerProps {
+//   totalTrees: {
+
+//   }
+// }
 const TreePlantedClusterMarker = ({ totalTrees, coordinates }) => {
+  console.log(totalTrees, '==');
   const { t, ready } = useTranslation(['me']);
   return (
     ready &&

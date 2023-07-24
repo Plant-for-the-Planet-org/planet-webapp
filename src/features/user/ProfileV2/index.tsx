@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, ReactElement } from 'react';
 import ProfileContainer from './styles/ProfileContainer';
 import { useTranslation } from 'next-i18next';
 import tenantConfig from '../../../../tenant.config';

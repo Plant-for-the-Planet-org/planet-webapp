@@ -7,7 +7,7 @@ import MyTrees from '../../src/features/user/ProfileV2/components/MyTrees/MyTree
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { User } from '@planet-sdk/common';
+import { User } from '@planet-sdk/common/build/types/user';
 
 function ProfilePage(): ReactElement {
   const { t } = useTranslation('me');
@@ -35,10 +35,7 @@ function ProfilePage(): ReactElement {
       </Head>
       {profile && (
         <>
-          <Profile
-            userProfile={profile}
-            authenticatedType={authenticatedType}
-          />
+          <Profile userProfile={profile} />
           <MyTrees
             authenticatedType={authenticatedType}
             profile={profile}

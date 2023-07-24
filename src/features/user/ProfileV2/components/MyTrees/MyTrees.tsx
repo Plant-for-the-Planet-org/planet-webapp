@@ -3,7 +3,7 @@ import myForestStyles from '../../../ProfileV2/styles/MyForest.module.scss';
 import dynamic from 'next/dynamic';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, User } from '@planet-sdk/common';
 import PlantedTreesButton from '../ProjectDetails/PlantedTreesButton';
 import ConservationButton from '../ProjectDetails/ConservationButton';
 import DonationInfo from '../ProjectDetails/DonationInfo';
@@ -18,25 +18,27 @@ const MyTreesMap = dynamic(() => import('../MyForestMap'), {
 });
 
 interface Props {
-  profile: any;
-  authenticatedType: any;
-  token: any;
+  profile: User;
+  authenticatedType: string;
 }
 
-export default function MyTrees({ profile, authenticatedType }: Props) {
+export default function MyTrees({
+  profile,
+  authenticatedType,
+}: Props): React.FC {
   const { ready } = useTranslation(['country', 'me']);
   const [contribution, setContribution] = React.useState([]);
   const [otherDonationInfo, setOthercontributionInfo] =
     React.useState(undefined);
   const [isTreePlantedButtonActive, setIsTreePlantedButtonActive] =
-    React.useState(false);
+    React.useState<boolean>(false);
   const [isConservedButtonActive, setIsConservedButtonActive] =
-    React.useState(false);
+    React.useState<boolean>(false);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const { setConservationProjects, setTreePlantedProjects } =
     useContext(ProjectPropsContext);
 
-  const detailInfo = trpc.myForest.stats.useQuery({
+  const _detailInfo = trpc.myForest.stats.useQuery({
     profileId: `${profile.id}`,
   });
 
@@ -105,21 +107,21 @@ export default function MyTrees({ profile, authenticatedType }: Props) {
   }, [_treePlantedData.isLoading]);
 
   React.useEffect(() => {
-    if (!detailInfo.isLoading) {
-      if (detailInfo.error) {
+    if (!_detailInfo.isLoading) {
+      if (_detailInfo.error) {
         setErrors(
           handleError(
             new APIError(
-              detailInfo.error?.data?.httpStatus as number,
-              detailInfo.error
+              _detailInfo.error?.data?.httpStatus as number,
+              _detailInfo.error
             )
           )
         );
       } else {
-        setOthercontributionInfo(detailInfo.data);
+        setOthercontributionInfo(_detailInfo.data);
       }
     }
-  }, [detailInfo.isLoading]);
+  }, [_detailInfo.isLoading]);
 
   return ready && otherDonationInfo ? (
     <div
