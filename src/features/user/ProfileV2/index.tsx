@@ -29,7 +29,7 @@ const Profile = ({ userProfile }) => {
           console.log('error in sharing');
         });
     } else {
-      setShowSocialButton(true);
+      setShowSocialButton(!showSocialButton);
     }
   };
 
