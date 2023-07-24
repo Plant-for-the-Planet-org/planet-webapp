@@ -9,6 +9,7 @@ datasource db {
 
 model contribution {
     id                   Int            @id @default(autoincrement())
+    guid                 String?        @unique @db.VarChar(32)
     purpose              String?        @db.VarChar(16)
     treeCount            Decimal?       @map("tree_count") @db.Decimal(14, 2)
     bouquetDonationId    Int?           @map("bouquet_donation_id")
