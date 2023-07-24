@@ -193,5 +193,11 @@
   "Since": "Since",
   "and": "and",
   "errorForMaxPlantingDensity": "This value should be greater than planting density",
-  "managePayoutsButton": "Manage Payouts"
+  "managePayoutsButton": "Manage Payouts",
+  "reviewNote": "<bold>Important Note</bold> : Plant-for-the-Planet will review and validate your data. To continue with the onboarding and verification process, and to approve your project for donations, several Documents must be provided:",
+  "legalAccreditation" : "Legal accreditation (Registration certificate/ registration number) showcasing the charitable/ non-profit status of your organization – not older than 2 years!",
+  "taxExemption": "Tax exemption documentation (if applicable in your country)",
+  "annualReport": "Latest annual report",
+  "financialReport" : "Latest audited financial report",
+  "PlantingReport" : "Planting report"
 }
