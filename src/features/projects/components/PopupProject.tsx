@@ -39,6 +39,19 @@ export default function PopupProject({
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
 
+  const donateButtonBackgroundColor = !project.properties.allowDonations
+    ? 'notDonatable'
+    : project.properties.isTopProject && project.properties.isApproved
+    ? 'topApproved'
+    : 'topUnapproved';
+
+  const progressBarBackgroundColor =
+    project.properties.isTopProject && project.properties.isApproved
+      ? 'topApproved'
+      : project.properties.allowDonations
+      ? 'topUnapproved'
+      : 'notDonatable';
+
   return ready ? (
     <>
       <div className={'projectImage'}>
@@ -72,7 +85,7 @@ export default function PopupProject({
 
       <div className={'progressBar'}>
         <div
-          className={'progressBarHighlight'}
+          className={`progressBarHighlight ${progressBarBackgroundColor}`}
           style={{ width: progressPercentage }}
         />
       </div>
@@ -115,7 +128,8 @@ export default function PopupProject({
                   id={`ProjPopDonate${project.id}`}
                   ref={buttonRef}
                   onClick={handleDonationOpen}
-                  className={'donateButton'}
+                  className={`donateButton ${donateButtonBackgroundColor}`}
+                  disabled={!project.allowDonations}
                 >
                   {t('common:donate')}
                 </button>

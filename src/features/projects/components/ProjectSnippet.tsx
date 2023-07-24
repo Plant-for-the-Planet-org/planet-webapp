@@ -58,7 +58,6 @@ export default function ProjectSnippet({
       : project.allowDonations
       ? 'topUnapproved'
       : 'notDonatable';
-  console.log(project);
 
   return ready ? (
     <div className={'singleProject'}>
