@@ -18,6 +18,7 @@ const Analytics = () => {
 
   const fetchProjects = async () => {
     try {
+      // TODO - update project type, this does not match completely
       const res = await getAuthenticatedRequest<MapProject[]>(
         '/app/profile/projects?scope=map',
         token,
