@@ -10,13 +10,15 @@ import myProfilestyle from '../../styles/MyProfile.module.scss';
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import SharePlatforms from './SharePlatfroms';
+import { ReactElement } from 'react';
+import { UserFeaturesProps } from '../../../../common/types/profile';
 
 const FeaturesForPrivateAccount = ({
   handleShare,
   userprofile,
   showSocialButton,
   setShowSocialButton,
-}) => {
+}: UserFeaturesProps): ReactElement => {
   const { t } = useTranslation(['me']);
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
   const router = useRouter();

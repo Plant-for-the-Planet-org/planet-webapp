@@ -4,8 +4,10 @@ import { useRouter } from 'next/router';
 import { Avatar } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { useTranslation } from 'next-i18next';
+import { ProfileProps } from '../../../../common/types/profile';
+import { ReactElement } from 'react';
 
-const UserInfo = ({ userProfile }) => {
+const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
   const { t } = useTranslation(['editProfile']);
   const router = useRouter();
   const handleEditProfile = () => {

@@ -3,7 +3,7 @@ import myForestStyles from '../../../ProfileV2/styles/MyForest.module.scss';
 import dynamic from 'next/dynamic';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError, User } from '@planet-sdk/common';
+import { handleError, APIError } from '@planet-sdk/common';
 import PlantedTreesButton from '../ProjectDetails/PlantedTreesButton';
 import ConservationButton from '../ProjectDetails/ConservationButton';
 import DonationInfo from '../ProjectDetails/DonationInfo';
@@ -12,24 +12,23 @@ import { trpc } from '../../../../../utils/trpc';
 import AreaConservedProjectList from '../ProjectDetails/AreaConservedProjectList';
 import { ProjectPropsContext } from '../../../../common/Layout/ProjectPropsContext';
 import { Purpose } from '../../../../../utils/constants/myForest';
+import { Contributions } from '../../../../common/types/contribution';
+import { QueryResult } from '../../../../../server/router/myForest';
+import { MyTreesProps } from '../../../../common/types/map';
 
 const MyTreesMap = dynamic(() => import('../MyForestMap'), {
   loading: () => <p>loading</p>,
 });
 
-interface Props {
-  profile: User;
-  authenticatedType: string;
-}
-
 export default function MyTrees({
   profile,
   authenticatedType,
-}: Props): React.FC {
+}: MyTreesProps): React.ReactElement | null {
   const { ready } = useTranslation(['country', 'me']);
-  const [contribution, setContribution] = React.useState([]);
-  const [otherDonationInfo, setOthercontributionInfo] =
-    React.useState(undefined);
+  const [contribution, setContribution] = React.useState<Contributions[]>([]);
+  const [otherDonationInfo, setOthercontributionInfo] = React.useState<
+    QueryResult[]
+  >([]);
   const [isTreePlantedButtonActive, setIsTreePlantedButtonActive] =
     React.useState<boolean>(false);
   const [isConservedButtonActive, setIsConservedButtonActive] =
@@ -118,6 +117,7 @@ export default function MyTrees({
           )
         );
       } else {
+        console.log(_detailInfo.data, '==');
         setOthercontributionInfo(_detailInfo.data);
       }
     }

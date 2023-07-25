@@ -4,6 +4,16 @@ import { router, procedure } from '../trpc';
 import prisma from '../../../prisma/client';
 import { Purpose } from '../../utils/constants/myForest';
 
+
+export interface QueryResult {
+  treeCount: number;
+  squareMeters: number;
+  conserved: number;
+  projects: number;
+  countries: number;
+  donations: number;
+}
+
 export const myForestRouter = router({
   contributions: procedure
     .input(
@@ -107,15 +117,7 @@ export const myForestRouter = router({
       })
     )
     .query(async ({ input: { profileId } }) => {
-      interface QueryResult {
-        treeCount: number;
-        squareMeters: number;
-        conserved: number;
-        projects: number;
-        countries: number;
-        donations: number;
-      }
-
+      
       const profile = await prisma.profile.findFirst({
         where: {
           guid: profileId,

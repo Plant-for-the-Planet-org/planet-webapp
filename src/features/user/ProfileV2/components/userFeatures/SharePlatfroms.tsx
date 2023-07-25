@@ -6,10 +6,15 @@ import CloseIcon from '@mui/icons-material/Close';
 import tenantConfig from '../../../../../../tenant.config';
 import { useTranslation } from 'next-i18next';
 import myProfilestyle from '../../styles/MyProfile.module.scss';
+import { ReactElement } from 'react';
+import { SharePlatformsProps } from '../../../../common/types/profile';
 
 const config = tenantConfig();
 
-const SharePlatforms = ({ setShowSocialButton, userprofile }) => {
+const SharePlatforms = ({
+  setShowSocialButton,
+  userprofile,
+}: SharePlatformsProps): ReactElement => {
   const { t, ready } = useTranslation(['donate']);
   const linkToShare = `${config.tenantURL}/t/${userprofile?.slug}`;
   const textToShare = ready
@@ -18,7 +23,7 @@ const SharePlatforms = ({ setShowSocialButton, userprofile }) => {
   const textToShareLinkedin = ready
     ? t('donate:textToShareLinkedin', { name: userprofile?.displayName })
     : '';
-  const handleShare = (shareUrl) => {
+  const handleShare = (shareUrl: string) => {
     window.open(shareUrl, '_blank');
   };
   return (

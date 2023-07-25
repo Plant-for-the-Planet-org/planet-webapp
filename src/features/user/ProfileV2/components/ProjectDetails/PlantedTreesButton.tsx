@@ -4,19 +4,20 @@ import {
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
+import { PlantedTreesButtonProps } from '../../../../common/types/contribution';
 
 const PlantedTreesButton = ({
   plantedTrees,
   isTreePlantedButtonActive,
   setIsConservedButtonActive,
   setIsTreePlantedButtonActive,
-}) => {
+}: PlantedTreesButtonProps) => {
   const { t } = useTranslation(['donate']);
   const handleClick = () => {
     if (isTreePlantedButtonActive) {
       setIsTreePlantedButtonActive(false);
     } else {
-      if (plantedTrees > 0) {
+      if (plantedTrees && plantedTrees > 0) {
         setIsTreePlantedButtonActive(true);
         setIsConservedButtonActive(false);
       }

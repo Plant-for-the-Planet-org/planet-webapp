@@ -5,8 +5,14 @@ import {
   CountriesSvg,
   DonationsSvg,
 } from '../../../../../../public/assets/images/ProfilePageIcons';
+import { ReactElement } from 'react';
+import { DonationInfoProps } from '../../../../common/types/contribution';
 
-const DonationInfo = ({ projects, countries, donations }) => {
+const DonationInfo = ({
+  projects,
+  countries,
+  donations,
+}: DonationInfoProps): ReactElement => {
   const { t } = useTranslation(['maps', 'me']);
   return (
     <div className={myForestStyles.donationDetailContainer}>

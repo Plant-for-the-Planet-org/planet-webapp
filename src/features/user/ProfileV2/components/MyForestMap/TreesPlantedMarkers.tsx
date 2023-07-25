@@ -1,37 +1,56 @@
 import { TreePlantedClusterMarker } from './ClusterMarker';
 import SingleMarker from './SingleMarker';
 import Supercluster from 'supercluster';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, ReactElement } from 'react';
 import { ProjectPropsContext } from '../../../../common/Layout/ProjectPropsContext';
+import React from 'react';
+import {
+  TestPointProps,
+  TestClusterProps,
+  Cluster,
+  ClusterMarkerProps,
+  Bound,
+} from '../../../../common/types/map';
 
 export const _clusterConfig = {
   radius: 40,
   maxZoom: 5,
-  map: (props) => ({
+  map: (props: TestPointProps): TestClusterProps => ({
     totalTrees: props.quantity,
   }),
-  reduce: (accumulator, props) => {
+  reduce: (accumulator: any, props: any) => {
     if (props.totalTrees) {
       accumulator.totalTrees = accumulator.totalTrees + props.totalTrees;
     }
   },
 };
-const TreesPlantedMarkers = ({ viewport, mapRef }) => {
+
+const TreesPlantedMarkers = ({
+  viewport,
+  mapRef,
+}: ClusterMarkerProps): ReactElement => {
   const { treePlantedProjects } = useContext(ProjectPropsContext);
-  const [clusters, setClusters] = useState([]);
-  const supercluster = new Supercluster(_clusterConfig);
+  const [clusters, setClusters] = useState<Cluster[]>([]);
+  const superclusterConserv = new Supercluster(_clusterConfig);
 
   const _fetch = () => {
-    supercluster.load(treePlantedProjects);
+    superclusterConserv.load(treePlantedProjects);
     const { viewState } = viewport;
     const zoom = viewState?.zoom;
-    const map = mapRef.current ? mapRef.current.getMap() : null;
-    const bounds = map ? map.getBounds().toArray().flat() : null;
-    const bound = bounds ? [bounds[0], bounds[1], bounds[2], bounds[3]] : null;
-    if (viewport?.viewState?.zoom) {
-      const _clusters = supercluster?.getClusters(bound, zoom);
-      setClusters(_clusters);
-      return _clusters;
+    if (mapRef && mapRef.current !== null) {
+      const map = mapRef.current.getMap();
+      const bounds = map.getBounds().toArray().flat();
+      const bound: Bound = bounds && [
+        bounds[0],
+        bounds[1],
+        bounds[2],
+        bounds[3],
+      ];
+      if (viewport?.viewState?.zoom) {
+        const _clusters = superclusterConserv?.getClusters(bound, zoom);
+        setClusters(_clusters);
+        return _clusters;
+      }
     }
   };
   useEffect(() => {

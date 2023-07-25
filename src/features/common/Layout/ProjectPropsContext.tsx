@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { ParamsContext } from './QueryParamsContext';
-
+import { Contributions } from '../../common/types/contribution';
 interface Props {}
 
 export const ProjectPropsContext = React.createContext({
@@ -84,7 +84,7 @@ export const ProjectPropsContext = React.createContext({
   plantLocationsLoaded: false,
   setPlantLocationsLoaded: (value: boolean) => {},
   treePlantedProjects: null || [],
-  setTreePlantedProjects: (value: []) => [],
+  setTreePlantedProjects: (value: Contributions[]) => [],
   conservationProjects: null || [],
   setConservationProjects: (value: []) => [],
 });
@@ -117,8 +117,12 @@ function ProjectPropsProvider({ children }: any): ReactElement {
   const [filtersOpen, setFilterOpen] = React.useState(false);
   const [purpose, setPurpose] = React.useState('trees');
   const [plantLocationsLoaded, setPlantLocationsLoaded] = React.useState(false);
-  const [treePlantedProjects, setTreePlantedProjects] = React.useState([]);
-  const [conservationProjects, setConservationProjects] = React.useState([]);
+  const [treePlantedProjects, setTreePlantedProjects] = React.useState<
+    Contributions[]
+  >([]);
+  const [conservationProjects, setConservationProjects] = React.useState<
+    Contributions[]
+  >([]);
   const { embed, showProjectList } = React.useContext(ParamsContext);
 
   const mapRef = React.useRef(null);

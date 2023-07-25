@@ -1,18 +1,16 @@
 import MapGL, { NavigationControl } from 'react-map-gl';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, ReactElement } from 'react';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import TreesPlantedMarkers from './TreesPlantedMarkers';
 import ConservationMarkers from './ConservationMarkers';
+import { ViewportProps } from 'react-map-gl';
+import { MyForestProps } from '../../../../common/types/map';
 
-// interface MyForestProps {
-//   isTreePlantedButtonActive: boolean;
-//   isConservedButtonActive: boolean;
-// }
 const MyForestMap = ({
   isTreePlantedButtonActive,
   isConservedButtonActive,
-}) => {
+}: MyForestProps): ReactElement => {
   const mapRef = useRef(null);
   const EMPTY_STYLE = {
     version: 8,
@@ -27,8 +25,8 @@ const MyForestMap = ({
     maxZoom: 25,
   });
   const defaultMapCenter = [36.96, -28.5];
-  let defaultZoom = 1;
-  const [viewport, setViewport] = useState({
+  const defaultZoom = 1;
+  const [viewport, setViewport] = useState<ViewportProps>({
     width: '100%',
     height: '100%',
     latitude: defaultMapCenter[0],
@@ -46,7 +44,7 @@ const MyForestMap = ({
     loadMapStyle();
   }, []);
   // handles viewport state
-  const _handleViewport = (newViewport) =>
+  const _handleViewport = (newViewport: ViewportProps) =>
     setViewport({ ...viewport, ...newViewport });
 
   const _activeMarker = () => {

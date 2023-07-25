@@ -6,27 +6,34 @@ import TreeCounter from '../../../../common/TreeCounter/TreeCounter';
 import { EditTargetSvg } from '../../../../../../public/assets/images/ProfilePageIcons';
 import AddTargetModal from '../../../Profile/components/AddTargetModal';
 import ContributedProjectList from './ContributedProjectList';
+import { ReactElement } from 'react';
+import {
+  Contributions,
+  TreeContributedProjectListProps,
+} from '../../../../common/types/contribution';
 
 const TreeContributedProjectList = ({
   contribution,
   userprofile,
   authenticatedType,
-}) => {
+}: TreeContributedProjectListProps): ReactElement => {
   const { t } = useTranslation(['me']);
   const [isAddTargetModalOpen, setIsAddTargetModalOpen] = useState(false);
-  const [restorationProject, setRestorationProject] = useState([]);
+  const [restorationProject, setRestorationProject] = useState<Contributions[]>(
+    []
+  );
 
-  const handleAddTargetModalOpen = () => {
+  const handleAddTargetModalOpen = (): void => {
     setIsAddTargetModalOpen(true);
   };
 
-  const handleAddTargetModalClose = () => {
+  const handleAddTargetModalClose = (): void => {
     setIsAddTargetModalOpen(false);
   };
 
   useEffect(() => {
     if (contribution) {
-      const _treesPlantedProject = contribution.filter((project) => {
+      const _treesPlantedProject = contribution.filter((project: any) => {
         if (project.purpose === 'trees' || project.purpose === 'bouquet')
           return project;
       });

@@ -6,19 +6,21 @@ import {
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
+import { ReactElement } from 'react';
+import { ConservationButtonProps } from '../../../../common/types/contribution';
 
 const ConservationButton = ({
   conservedArea,
   setIsTreePlantedButtonActive,
   setIsConservedButtonActive,
   isConservedButtonActive,
-}) => {
+}: ConservationButtonProps): ReactElement => {
   const { t } = useTranslation(['donate']);
   const handleClick = () => {
     if (isConservedButtonActive) {
       setIsConservedButtonActive(false);
     } else {
-      if (conservedArea > 0) {
+      if (conservedArea && conservedArea > 0) {
         setIsTreePlantedButtonActive(false);
         setIsConservedButtonActive(true);
       }

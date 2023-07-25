@@ -5,10 +5,11 @@ import tenantConfig from '../../../../tenant.config';
 import FeaturesForPrivateAccount from './components/userFeatures/FeaturesForPrivateAccount';
 import FeaturesForPublicAccount from './components/userFeatures/FeaturesForPublicAccount';
 import UserInfo from './components/MicroComponents/UserInfo';
+import { ProfileProps } from '../../common/types/profile';
 
 const config = tenantConfig();
 
-const Profile = ({ userProfile }) => {
+const Profile = ({ userProfile }: ProfileProps): ReactElement => {
   const { t, ready } = useTranslation(['donate']);
   const [showSocialButton, setShowSocialButton] = useState(false);
 

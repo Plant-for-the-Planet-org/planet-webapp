@@ -9,6 +9,8 @@ import myProfilestyle from '../../styles/MyProfile.module.scss';
 import { useRouter } from 'next/router';
 import tenantConfig from '../../../../../../tenant.config';
 import SharePlatforms from './SharePlatfroms';
+import { UserFeaturesProps } from '../../../../common/types/profile';
+import { ReactElement } from 'react';
 
 const config = tenantConfig();
 
@@ -17,7 +19,7 @@ const FeaturesForPublicAccount = ({
   userprofile,
   showSocialButton,
   setShowSocialButton,
-}) => {
+}: UserFeaturesProps): ReactElement => {
   const { t } = useTranslation(['me']);
   const router = useRouter();
 

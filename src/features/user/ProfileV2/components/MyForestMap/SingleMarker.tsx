@@ -1,5 +1,5 @@
 import { Marker, Popup } from 'react-map-gl';
-import { useState } from 'react';
+import { useState, ReactElement } from 'react';
 import {
   ConservationBlueTreeSvg,
   PlantedTreesGreenSvg,
@@ -7,11 +7,12 @@ import {
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import { useTranslation } from 'next-i18next';
 import { format } from 'date-fns';
+import { SingleMarkerProps } from '../../../../common/types/map';
 
-const SingleMarker = ({ geoJson }) => {
-  const { t } = useTranslation(['me']);
+const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
+  const { t, ready } = useTranslation(['me']);
   const [showPopUp, setShowPopUp] = useState(false);
-  return (
+  return ready ? (
     <div className={MyForestMapStyle.singleMarkerContainer}>
       {showPopUp && (
         <Popup
@@ -69,6 +70,8 @@ const SingleMarker = ({ geoJson }) => {
         </div>
       </Marker>
     </div>
+  ) : (
+    <></>
   );
 };
 
