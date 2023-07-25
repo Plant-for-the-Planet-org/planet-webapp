@@ -46,8 +46,6 @@ export default function Donate({
     setShowSingleProject,
     setZoomLevel,
     setPlantLocations,
-    selectedPl,
-    hoveredPl,
     setPlantLocationsLoaded,
   } = useProjectProps();
 
@@ -115,13 +113,6 @@ export default function Donate({
     }
   }, [project]);
 
-  const ProjectProps = {
-    project,
-    currencyCode,
-    setCurrencyCode,
-    plantLocation: hoveredPl ? hoveredPl : selectedPl,
-  };
-
   React.useEffect(() => {
     if (router.asPath) {
       const isDonation = router.asPath.search('#donate');
@@ -173,7 +164,7 @@ export default function Donate({
 
   return (
     <>
-      {project ? <GetProjectMeta {...ProjectProps} /> : null}
+      {project ? <GetProjectMeta project={project} /> : null}
       {initialized ? (
         project ? (
           <>
