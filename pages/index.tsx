@@ -16,11 +16,13 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import nextI18NextConfig from '../next-i18next.config';
 import { handleError, APIError } from '@planet-sdk/common';
+import { SetState } from '../src/features/common/types/common';
+import { MapProject } from '../src/features/common/types/ProjectPropsContextInterface';
 
 interface Props {
   initialized: Boolean;
-  currencyCode: any;
-  setCurrencyCode: Function;
+  currencyCode: string;
+  setCurrencyCode: SetState<string>;
 }
 
 export default function Donate({
@@ -88,7 +90,7 @@ export default function Donate({
         setCurrencyCode(currency);
         setInternalLanguage(i18n.language);
         try {
-          const projects = await getRequest(`/app/projects`, {
+          const projects = await getRequest<MapProject[]>(`/app/projects`, {
             _scope: 'map',
             currency: currency,
             tenant: TENANT_ID,
@@ -108,8 +110,7 @@ export default function Donate({
     loadProjects();
   }, [currencyCode, i18n.language]);
 
-  const ProjectsProps = {
-    projects: filteredProjects,
+  const OtherProjectListProps = {
     showProjects,
     setShowProjects,
     setsearchedProjects,
@@ -123,7 +124,10 @@ export default function Donate({
         filteredProjects && initialized ? (
           <>
             <GetAllProjectsMeta />
-            <ProjectsList {...ProjectsProps} />
+            <ProjectsList
+              projects={filteredProjects}
+              {...OtherProjectListProps}
+            />
             {directGift ? (
               showDirectGift ? (
                 <DirectGift
