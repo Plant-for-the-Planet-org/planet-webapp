@@ -135,7 +135,7 @@ export default function Filters({}: Props): ReactElement {
                       <FormControlLabel
                         control={
                           <Switch
-                            checked={type[filter] !== undefined}
+                            checked={type[filter]}
                             onChange={handleTypeChange}
                             name={filter}
                           />

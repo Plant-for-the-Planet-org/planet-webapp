@@ -2,7 +2,7 @@ import format from 'date-fns/format';
 import parseISO from 'date-fns/parseISO';
 import { localeMapForDate } from '../language/getLanguageName';
 
-export default function formatDate(dateString: any) {
+export default function formatDate(dateString: string) {
   if (dateString) {
     try {
       return format(parseISO(dateString), 'LLLL d, yyyy', {

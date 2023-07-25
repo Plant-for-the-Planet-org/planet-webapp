@@ -4,12 +4,13 @@ import * as turf from '@turf/turf';
 import { getRequest } from '../apiRequests/api';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 import { SetState } from '../../features/common/types/common';
+import { ViewPort } from '../../features/common/types/ProjectPropsContextInterface';
 
 export function zoomToPlantLocation(
-  coordinates: any,
-  viewport: Object,
+  coordinates: turf.Position[],
+  viewport: ViewPort,
   isMobile: boolean,
-  setViewPort: Function,
+  setViewPort: SetState<ViewPort>,
   duration = 1200
 ) {
   if (viewport.width && viewport.height) {

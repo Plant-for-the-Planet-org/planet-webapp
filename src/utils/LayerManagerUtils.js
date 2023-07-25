@@ -5,6 +5,11 @@ import parseISO from 'date-fns/parseISO';
 
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
+/**
+ * Calculates the difference in days between two given dates.
+ * @returns {number} The difference in days between the two dates.
+ */
+
 // a and b are javascript Date objects
 export const dateDiffInDays = (startDate, endDate) => {
   const a = new Date(endDate);
@@ -60,10 +65,11 @@ export const getParams = (config = [], params = {}) => {
   };
 
   let { startDate, endDate, trimEndDate, maxAbsoluteDate } = newParams;
-  if (typeof startDate == "string") startDate = parseISO(startDate)
-  if (typeof endDate == "string") endDate = parseISO(endDate)
-  if (typeof trimEndDate == "string") trimEndDate = parseISO(trimEndDate)
-  if (typeof maxAbsoluteDate == "string") maxAbsoluteDate = parseISO(maxAbsoluteDate)
+  if (typeof startDate == 'string') startDate = parseISO(startDate);
+  if (typeof endDate == 'string') endDate = parseISO(endDate);
+  if (typeof trimEndDate == 'string') trimEndDate = parseISO(trimEndDate);
+  if (typeof maxAbsoluteDate == 'string')
+    maxAbsoluteDate = parseISO(maxAbsoluteDate);
 
   const start = startDate;
   const end = endDate > maxAbsoluteDate ? maxAbsoluteDate : endDate;
