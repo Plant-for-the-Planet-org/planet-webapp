@@ -39,11 +39,10 @@ export default function PopupProject({
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
 
-  const donateButtonBackgroundColor = !project.properties.allowDonations
-    ? 'notDonatable'
-    : project.properties.isTopProject && project.properties.isApproved
-    ? 'topApproved'
-    : 'topUnapproved';
+  const donateButtonBackgroundColor =
+    project.properties.isTopProject && project.properties.isApproved
+      ? 'topApproved'
+      : 'topUnapproved';
 
   const progressBarBackgroundColor =
     project.properties.isTopProject && project.properties.isApproved
@@ -129,7 +128,6 @@ export default function PopupProject({
                   ref={buttonRef}
                   onClick={handleDonationOpen}
                   className={`donateButton ${donateButtonBackgroundColor}`}
-                  disabled={!project.allowDonations}
                 >
                   {t('common:donate')}
                 </button>
