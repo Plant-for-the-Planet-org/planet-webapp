@@ -3,9 +3,7 @@ import styles from './Stories.module.scss';
 import { useTranslation } from 'next-i18next';
 import { lang_path } from '../../../../utils/constants/wpLanguages';
 
-interface Props {}
-
-export default function Stories({}: Props): ReactElement {
+export default function Stories(): ReactElement {
   const { i18n, t, ready } = useTranslation(['planet']);
   return (
     <>

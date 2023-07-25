@@ -14,9 +14,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
 import { handleError, APIError } from '@planet-sdk/common';
 
-interface Props {}
-
-function ManageSingleProject({}: Props): ReactElement {
+function ManageSingleProject(): ReactElement {
   const { t } = useTranslation(['manageProjects', 'common']);
   const [projectGUID, setProjectGUID] = React.useState(null);
   const [ready, setReady] = React.useState(false);

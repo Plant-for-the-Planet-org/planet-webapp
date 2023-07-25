@@ -1,8 +1,6 @@
 import React, { ReactElement } from 'react';
 
-interface Props {}
-
-export default function PlusIcon({}: Props): ReactElement {
+export default function PlusIcon(): ReactElement {
   return (
     <svg
       width="29"
