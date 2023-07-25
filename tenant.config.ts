@@ -16,7 +16,57 @@ import sitex from './public/tenants/sitex/config';
 import T3pleset from './public/tenants/3pleset/config';
 import weareams from './public/tenants/weareams/config';
 
-export default function tenantConfig() {
+interface ConfigType {
+  tenantName: string;
+  tenantURL: string;
+  languages: string[];
+  fallbackCurrency?: string;
+  tenantGoal?: number | null;
+  showUNDecadeLogo?: boolean;
+  darkModeEnabled?: boolean;
+  showUNEPLogo?: boolean;
+  showRedeemHint?: boolean;
+  font: {
+    primaryFontFamily: string;
+    secondaryFontFamily: string;
+    primaryFontURL?: string;
+    secondaryFontURL?: string;
+  };
+  header: {
+    isSecondaryTenant: boolean;
+    tenantLogoURL: string;
+    mobileLogoURL?: string;
+    tenantLogoLink: string;
+    items: {
+      [key: string]: {
+        title: string;
+        loggedInTitle?: string;
+        onclick: string;
+        visible: boolean;
+        subMenu?: {
+          title: string;
+          onclick: string;
+          visible: boolean;
+        }[];
+      };
+    };
+  };
+  meta: {
+    title: string;
+    appTitle?: string;
+    description: string;
+    image: string;
+    twitterHandle: string;
+    locale: string;
+  };
+  footerLinks: string[];
+  manifest?: string;
+  home?: {
+    image: string;
+  };
+}
+
+export default function tenantConfig(): ConfigType {
   switch (process.env.TENANT) {
     case 'planet':
       return planetConfig;

@@ -36,6 +36,7 @@ module.exports = {
         caughtErrorsIgnorePattern: '^_',
       },
     ],
+
     'react/react-in-jsx-scope': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/jsx-filename-extension': [
