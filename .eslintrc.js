@@ -23,7 +23,8 @@ module.exports = {
   rules: {
     'no-undef': 'warn',
     'no-unsafe-optional-chaining': 'warn',
-    'no-use-before-define': 'warn',
+    'no-use-before-define': 'off',
+    '@typescript-eslint/no-use-before-define': 'warn',
     'no-empty-pattern': 'warn',
     // base rule disabled as it can report incorrect errors
     'no-unused-vars': 'off',
@@ -35,6 +36,7 @@ module.exports = {
         caughtErrorsIgnorePattern: '^_',
       },
     ],
+
     'react/react-in-jsx-scope': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/jsx-filename-extension': [

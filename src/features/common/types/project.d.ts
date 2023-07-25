@@ -1,3 +1,4 @@
+import { FlyToInterpolator } from 'react-map-gl';
 export interface Project {
   guid: string;
   slug: string;
@@ -25,28 +26,37 @@ export interface MapSingleProject {
 }
 
 export interface SingleProjectGeojson {
-  geometry: Geometry
-  type: string
-  properties: Properties
+  geometry: Geometry;
+  type: string;
+  properties: Properties;
 }
 
 export interface Geometry {
-  coordinates: number[][][]
-  type: string
+  coordinates: number[][][];
+  type: string;
 }
 
 export interface Properties {
-  lastUpdated: LastUpdated
-  name: string
-  description: string
-  id: string
-  status: string
+  lastUpdated: LastUpdated;
+  name: string;
+  description: string;
+  id: string;
+  status: string;
 }
 
 export interface LastUpdated {
-  date: string
-  timezone: string
-  timezone_type: number
+  date: string;
+  timezone: string;
+  timezone_type: number;
 }
 
-
+export interface ViewPort {
+  width: number;
+  height: number;
+  latitude: number;
+  longitude: number;
+  zoom: number;
+  transitionDuration?: number;
+  transitionInterpolator?: FlyToInterpolator;
+  transitionEasing?: number;
+}

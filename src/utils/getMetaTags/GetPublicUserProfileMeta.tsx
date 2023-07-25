@@ -1,11 +1,12 @@
 import React, { ReactElement } from 'react';
 import tenantConfig from '../../../tenant.config';
 import Head from 'next/head';
+import { PublicUser } from '../../features/common/types/user';
 
 const config = tenantConfig();
 
 interface Props {
-  userprofile: any;
+  userprofile: PublicUser | null;
 }
 
 export default function GetPublicUserProfileMeta({
