@@ -1,7 +1,7 @@
 import { FlyToInterpolator, WebMercatorViewport } from 'react-map-gl';
 import * as d3 from 'd3-ease';
 import * as turf from '@turf/turf';
-import { ViewPort } from '../../features/common/types/project';
+import { ViewPort } from '../../features/common/types/ProjectPropsContextInterface';
 
 export default function zoomToProjectSite(
   geoJson: Object | null,

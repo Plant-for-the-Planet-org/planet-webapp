@@ -4,7 +4,7 @@ import * as turf from '@turf/turf';
 import { getRequest } from '../apiRequests/api';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 import { SetState } from '../../features/common/types/common';
-import { ViewPort } from '../../features/common/types/project';
+import { ViewPort } from '../../features/common/types/ProjectPropsContextInterface';
 
 export function zoomToPlantLocation(
   coordinates: turf.Position[],

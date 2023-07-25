@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
-import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../src/features/common/Layout/ProjectPropsContext';
 import Credits from '../src/features/projects/components/maps/Credits';
 import SingleProjectDetails from '../src/features/projects/screens/SingleProjectDetails';
 import { getRequest } from '../src/utils/apiRequests/api';
@@ -43,7 +43,7 @@ export default function Donate({
     selectedPl,
     hoveredPl,
     setPlantLocationsLoaded,
-  } = React.useContext(ProjectPropsContext);
+  } = useProjectProps();
 
   React.useEffect(() => {
     setZoomLevel(2);

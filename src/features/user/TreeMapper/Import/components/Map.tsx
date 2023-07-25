@@ -15,7 +15,7 @@ import MapGL, {
 import { localizedAbbreviatedNumber } from '../../../../../utils/getFormattedNumber';
 import LayerIcon from '../../../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../../../public/assets/images/icons/LayerDisabled';
-import { ProjectPropsContext } from '../../../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
 import SatelliteLayer from '../../../../projects/components/maps/SatelliteLayer';
@@ -27,7 +27,7 @@ export default function MyTreesMap({}: Props): ReactElement {
 
   const { i18n, t } = useTranslation('me');
 
-  const { isMobile } = React.useContext(ProjectPropsContext);
+  const { isMobile } = useProjectProps();
   const [satellite, setSatellite] = React.useState(false);
 
   const defaultMapCenter = [-28.5, 36.96];
