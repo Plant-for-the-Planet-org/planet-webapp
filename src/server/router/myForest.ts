@@ -19,9 +19,12 @@ export const myForestRouter = router({
     .input(
       z.object({
         profileId: z.string(),
+        limit: z.number(),
+        cursor: z.string().nullish(),
+        skip: z.number().optional(),
       })
     )
-    .query(async ({ input: { profileId } }) => {
+    .query(async ({ input: { profileId, limit, cursor, skip } }) => {
       const profile = await prisma.profile.findFirst({
         where: {
           guid: profileId,
@@ -37,6 +40,7 @@ export const myForestRouter = router({
 
       const data = await prisma.contribution.findMany({
         select: {
+          guid: true,
           purpose: true,
           treeCount: true,
           quantity: true,
@@ -105,9 +109,21 @@ export const myForestRouter = router({
             },
           ],
         },
+        skip: skip,
+        take: limit + 1,
+        cursor: cursor ? { guid: cursor } : undefined,
       });
 
-      return data;
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (data.length > limit) {
+        const nextItem = data.pop();
+        nextCursor = nextItem?.guid;
+      }
+
+      return {
+        data,
+        nextCursor,
+      };
     }),
 
   stats: procedure
