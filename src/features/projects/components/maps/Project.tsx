@@ -90,7 +90,7 @@ export default function Project({
   }, [selectedPl]);
 
   React.useEffect(() => {
-    if (siteExists && !router.query.ploc) {
+    if (project.sites && siteExists && !router.query.ploc) {
       loadRasterData();
       zoomToProjectSite(
         {
