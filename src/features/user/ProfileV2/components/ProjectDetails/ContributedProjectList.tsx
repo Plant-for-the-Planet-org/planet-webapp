@@ -75,28 +75,28 @@ const ContributedProjectList = ({
   contributionProjectList,
 }: ContributedProjectListProps): ReactElement => {
   return (
-    contributionProjectList && (
-      <div
-        className={myForestStyles.donationlistContainer}
-        style={{ marginTop: isConservedButtonActive ? '0px' : '340px' }}
-      >
-        {contributionProjectList.map((project: any, key: number) => {
-          if (project.purpose !== 'bouquet') {
-            return <Project key={key} projectInfo={project} />;
+    <div
+      className={myForestStyles.donationlistContainer}
+      style={{ marginTop: isConservedButtonActive ? '0px' : '340px' }}
+    >
+      {contributionProjectList.map((arrayOfProject: any, key: number) => {
+        return arrayOfProject.map((singleProject) => {
+          if (singleProject.purpose !== 'bouquet') {
+            return <Project key={key} projectInfo={singleProject} />;
           }
-        })}
+        });
+      })}
 
-        {contributionProjectList.map((project: any) => {
-          if (project.purpose === 'bouquet') {
-            return project?.bouquetContributions?.map(
-              (bouquetProject: any, key: number) => {
-                return <Project key={key} projectInfo={bouquetProject} />;
-              }
-            );
-          }
-        })}
-      </div>
-    )
+      {contributionProjectList.map((project: any) => {
+        if (project.purpose === 'bouquet') {
+          return project?.bouquetContributions?.map(
+            (bouquetProject: any, key: number) => {
+              return <Project key={key} projectInfo={bouquetProject} />;
+            }
+          );
+        }
+      })}
+    </div>
   );
 };
 

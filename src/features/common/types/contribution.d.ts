@@ -34,7 +34,7 @@ export interface Stats {
  
   interface BouquetContribution {
     purpose: string | null
-    treeCount: Decimal | null
+    treeCount: number | null
     quantity: number | null
     plantDate: number | Date
     contributionType: string
@@ -44,7 +44,7 @@ export interface Stats {
  
  export  interface Contributions { // procedure returns Contributions
     purpose: string | null
-    treeCount: Decimal | null
+    treeCount: number | null
     quantity: number | null
     plantDate: number | Date
     contributionType: string
@@ -102,19 +102,6 @@ interface PlantProject {
     guid: string
     name: string | null
   }
-
-  export interface AreaConservedProjectListProps {
-    contribution: Contributions[];
-    isConservedButtonActive: boolean;
-  }
-
-  export  interface ConservationButtonProps {
-    conservedArea: number | null;
-    setIsTreePlantedButtonActive: SetState<boolean>;
-    setIsConservedButtonActive: SetState<boolean>;
-    isConservedButtonActive: boolean;
-  }
-
   export  interface ProjectProps {
     key: number;
     projectInfo: Contributions;
@@ -137,11 +124,23 @@ interface PlantProject {
     setIsConservedButtonActive: SetState<boolean>;
     setIsTreePlantedButtonActive: SetState<boolean>;
   }
-
+  export  interface ConservationButtonProps {
+    conservedArea: number | null;
+    setIsTreePlantedButtonActive: SetState<boolean>;
+    setIsConservedButtonActive: SetState<boolean>;
+    isConservedButtonActive: boolean;
+  }
   export interface TreeContributedProjectListProps {
     contribution: Contributions[];
     userprofile: User;
     authenticatedType: string;
+    handleFetchNextPage: () => void
+  }
+
+  export interface AreaConservedProjectListProps {
+    contribution: Contributions[];
+    isConservedButtonActive: boolean;
+    handleFetchNextPage: () => void
   }
 
  

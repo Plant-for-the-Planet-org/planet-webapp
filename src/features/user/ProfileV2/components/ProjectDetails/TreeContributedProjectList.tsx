@@ -16,12 +16,14 @@ const TreeContributedProjectList = ({
   contribution,
   userprofile,
   authenticatedType,
+  handleFetchNextPage,
 }: TreeContributedProjectListProps): ReactElement => {
   const { t } = useTranslation(['me']);
   const [isAddTargetModalOpen, setIsAddTargetModalOpen] = useState(false);
   const [restorationProject, setRestorationProject] = useState<Contributions[]>(
     []
   );
+  const [isLoadButtonActive, setIsLoadButtonActive] = useState(true);
 
   const handleAddTargetModalOpen = (): void => {
     setIsAddTargetModalOpen(true);
@@ -32,14 +34,30 @@ const TreeContributedProjectList = ({
   };
 
   useEffect(() => {
-    if (contribution) {
-      const _treesPlantedProject = contribution.filter((project: any) => {
-        if (project.purpose === 'trees' || project.purpose === 'bouquet')
-          return project;
+    const data: Contributions[] = [];
+    const _fetchProjectlist = () => {
+      const _fetchTreePlantedProjects = contribution.map((singlePageData) => {
+        if (singlePageData?.nextCursor === undefined)
+          setIsLoadButtonActive(false);
+        return singlePageData?.data.filter((singleProject: Contributions) => {
+          if (
+            singleProject.purpose === 'trees' ||
+            singleProject.purpose === 'bouquet'
+          )
+            return singleProject;
+        });
       });
-      setRestorationProject(_treesPlantedProject);
-    }
-  }, []);
+
+      if (_fetchTreePlantedProjects) {
+        _fetchTreePlantedProjects.map((singleProject) => {
+          data.push(singleProject);
+        });
+        setRestorationProject(data);
+      }
+    };
+    if (contribution) _fetchProjectlist();
+  }, [contribution]);
+
   return (
     <div className={myForestStyles.mainContainer}>
       <div className={myForestStyles.treeCounterContainer}>
@@ -90,6 +108,17 @@ const TreeContributedProjectList = ({
           isConservedButtonActive={undefined}
           contributionProjectList={restorationProject}
         />
+        {isLoadButtonActive && (
+          <div className={myForestStyles.loadProjectButtonContainer}>
+            <Button
+              style={{ maxWidth: 'fit-content' }}
+              variant="contained"
+              onClick={handleFetchNextPage}
+            >
+              {t('me:loadProjects')}
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

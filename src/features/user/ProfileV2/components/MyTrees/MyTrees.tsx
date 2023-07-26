@@ -29,6 +29,7 @@ export default function MyTrees({
   const [otherDonationInfo, setOthercontributionInfo] = React.useState<
     QueryResult[]
   >([]);
+  const [page, setPage] = React.useState(0);
   const [isTreePlantedButtonActive, setIsTreePlantedButtonActive] =
     React.useState<boolean>(false);
   const [isConservedButtonActive, setIsConservedButtonActive] =
@@ -41,9 +42,6 @@ export default function MyTrees({
     profileId: `${profile.id}`,
   });
 
-  const _contributionData = trpc.myForest.contributions.useQuery({
-    profileId: `${profile.id}`,
-  });
   const _conservationGeoJsonData = trpc.myForest.contributionsGeoJson.useQuery({
     profileId: `${profile.id}`,
     purpose: Purpose.CONSERVATION,
@@ -53,6 +51,19 @@ export default function MyTrees({
     profileId: `${profile.id}`,
     purpose: Purpose.TREES,
   });
+
+  const _contributionData = trpc.myForest.contributions.useInfiniteQuery(
+    {
+      profileId: `${profile.id}`,
+      limit: 15,
+    },
+    { getNextPageParam: (lastPage) => lastPage.nextCursor }
+  );
+
+  const handleFetchNextPage = (): void => {
+    _contributionData.fetchNextPage();
+    setPage((prev) => prev + 1);
+  };
 
   React.useEffect(() => {
     if (!_contributionData.isLoading) {
@@ -65,11 +76,10 @@ export default function MyTrees({
             )
           )
         );
-      } else {
-        setContribution(_contributionData.data);
       }
+      setContribution(_contributionData.data?.pages);
     }
-  }, [_contributionData.isLoading]);
+  }, [_contributionData.isLoading, _contributionData.data]);
 
   React.useEffect(() => {
     if (!_conservationGeoJsonData.isLoading) {
@@ -117,7 +127,6 @@ export default function MyTrees({
           )
         );
       } else {
-        console.log(_detailInfo.data, '==');
         setOthercontributionInfo(_detailInfo.data);
       }
     }
@@ -166,6 +175,7 @@ export default function MyTrees({
           contribution={contribution}
           userprofile={profile}
           authenticatedType={authenticatedType}
+          handleFetchNextPage={handleFetchNextPage}
         />
       )}
 
@@ -173,6 +183,7 @@ export default function MyTrees({
         <AreaConservedProjectList
           contribution={contribution}
           isConservedButtonActive={isConservedButtonActive}
+          handleFetchNextPage={handleFetchNextPage}
         />
       )}
     </div>

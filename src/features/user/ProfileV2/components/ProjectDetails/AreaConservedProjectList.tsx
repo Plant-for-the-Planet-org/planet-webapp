@@ -5,27 +5,39 @@ import ContributedProjectList from './ContributedProjectList';
 import { Contributions } from '../../../../common/types/contribution';
 import { ReactElement } from 'react';
 import { AreaConservedProjectListProps } from '../../../../common/types/contribution';
+import { Button } from '@mui/material';
 
 const AreaConservedProjectList = ({
   contribution,
   isConservedButtonActive,
+  handleFetchNextPage,
 }: AreaConservedProjectListProps): ReactElement => {
   const { t } = useTranslation(['me']);
   const [contributionProjectList, setContributionProjectList] = useState<
     Contributions[]
   >([]);
+  const [isLoadButtonActive, setIsLoadButtonActive] = useState(true);
 
   useEffect(() => {
-    if (contribution) {
-      const _conservationProjects = contribution.filter(
-        (project: Contributions) => {
-          if (project.purpose === 'conservation') return project;
-        }
-      );
-      if (_conservationProjects)
-        setContributionProjectList(_conservationProjects);
-    }
-  }, []);
+    const data: Contributions[] = [];
+    const _fetchProjectlist = () => {
+      const _fetchConservAreaProjects = contribution.map((singlePageData) => {
+        if (singlePageData?.nextCursor === undefined)
+          setIsLoadButtonActive(false);
+        return singlePageData?.data.filter((singleProject: Contributions) => {
+          if (singleProject.purpose === 'conservation') return singleProject;
+        });
+      });
+
+      if (_fetchConservAreaProjects) {
+        _fetchConservAreaProjects.map((singleProject) => {
+          data.push(singleProject);
+        });
+        setContributionProjectList(data);
+      }
+    };
+    if (contribution) _fetchProjectlist();
+  }, [contribution]);
 
   const projectListProps = {
     isConservedButtonActive,
@@ -42,6 +54,13 @@ const AreaConservedProjectList = ({
       </div>
       <div className={myForestStyles.AreaConservedContainer}>
         <ContributedProjectList {...projectListProps} />
+        {isLoadButtonActive && (
+          <div className={myForestStyles.loadProjectButtonContainer}>
+            <Button variant="contained" onClick={handleFetchNextPage}>
+              Load More Projects
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

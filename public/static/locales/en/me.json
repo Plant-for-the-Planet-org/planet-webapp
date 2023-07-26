@@ -274,5 +274,6 @@
   "tpoName": "By {{tpo}}",
   "donate":  "Donate",
   "donated": "donated",
-  "conserved": "conserved"
+  "conserved": "conserved",
+  "loadProjects": "Load More Projects"
 }
