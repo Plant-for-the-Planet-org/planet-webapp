@@ -6,8 +6,6 @@ import {
   getAuthenticatedRequest,
   postAuthenticatedRequest,
 } from '../../../../utils/apiRequests/api';
-import MaterialButton from '../../../common/InputTypes/MaterialButton';
-import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import SpeciesSelect from '../Import/components/SpeciesAutoComplete';
 import styles from './MySpecies.module.scss';
@@ -16,6 +14,7 @@ import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
+import { Button, TextField } from '@mui/material';
 
 export default function MySpeciesForm() {
   const { t } = useTranslation(['treemapper', 'me', 'common']);
@@ -97,55 +96,50 @@ export default function MySpeciesForm() {
       <div className="inputContainer">
         <form onSubmit={handleSubmit(addSpecies)}>
           <InlineFormDisplayGroup>
-            <div>
-              <SpeciesSelect
-                label={t('treemapper:species')}
-                name="scientificSpecies"
-                width="300px"
-                control={control}
-              />
-              {errors.scientificSpecies && (
-                <span className={styles.formError}>
-                  {errors.scientificSpecies.message}
-                </span>
-              )}
-            </div>
+            <SpeciesSelect
+              label={t('treemapper:species')}
+              name="scientificSpecies"
+              width="300px"
+              control={control}
+              error={errors.scientificSpecies !== undefined}
+              helperText={
+                errors.scientificSpecies !== undefined &&
+                errors.scientificSpecies.message
+              }
+            />
             <div>
               <Controller
                 name="aliases"
                 control={control}
                 rules={{ required: t('treemapper:aliasesValidation') }}
                 render={({ field: { onChange, value } }) => (
-                  <MaterialTextField
+                  <TextField
                     label={t('treemapper:aliases')}
                     type={'text'}
                     style={{ width: '300px' }}
                     variant="outlined"
                     onChange={onChange}
                     value={value}
+                    error={errors.aliases !== undefined}
+                    helperText={
+                      errors.aliases !== undefined && errors.aliases.message
+                    }
                   />
                 )}
               />
-              <div>
-                {errors.aliases && (
-                  <span className={styles.formError}>
-                    {errors.aliases.message}
-                  </span>
-                )}
-              </div>
             </div>
-
-            <MaterialButton
-              id="addSpecies"
+            <Button
+              id={'addSpecies'}
               onClick={handleSubmit(addSpecies)}
-              width="120px"
+              variant="contained"
+              color="primary"
             >
               {isUploadingData ? (
                 <div className={styles.spinner}></div>
               ) : (
                 t('common:add')
               )}
-            </MaterialButton>
+            </Button>
           </InlineFormDisplayGroup>
         </form>
         <div className={styles.mySpeciesContainer}>

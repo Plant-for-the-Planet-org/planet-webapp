@@ -1,9 +1,8 @@
 /* eslint-disable no-use-before-define */
 import React from 'react';
-import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
 import { postRequest } from '../../../../../utils/apiRequests/api';
 import { Controller, Control, FieldValues, FieldPath } from 'react-hook-form';
-import { Autocomplete } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 
 import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
@@ -17,6 +16,8 @@ interface Props<
   name: TName;
   width?: string | undefined;
   control: Control<TFieldValues>;
+  error?: boolean | undefined;
+  helperText?: React.ReactNode;
   // mySpecies?: any;
 }
 
@@ -29,6 +30,8 @@ export default function SpeciesSelect<
   width,
   // mySpecies,
   control,
+  error,
+  helperText,
 }: Props<TFieldValues, TName>) {
   const [speciesSuggestion, setspeciesSuggestion] = React.useState<
     SpeciesType[]
@@ -111,7 +114,7 @@ export default function SpeciesSelect<
           }}
           {...fieldProps}
           renderInput={(params) => (
-            <MaterialTextField
+            <TextField
               {...params}
               label={label}
               variant="outlined"
@@ -119,6 +122,8 @@ export default function SpeciesSelect<
                 ...params.inputProps,
                 autoComplete: 'off', // disable autocomplete and autofill
               }}
+              error={error}
+              helperText={helperText}
             />
           )}
         />

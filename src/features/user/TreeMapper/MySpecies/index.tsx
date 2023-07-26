@@ -10,7 +10,7 @@ export default function MySpecies({}: Props): ReactElement {
   const { t } = useTranslation('me');
 
   return (
-    <DashboardView title={t('me:mySpecies')} subtitle={null}>
+    <DashboardView title={t('me:mySpecies')} subtitle={null} variant="compact">
       <CenteredContainer>
         <MySpeciesForm />
       </CenteredContainer>
