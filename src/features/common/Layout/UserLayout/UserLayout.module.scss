@@ -40,6 +40,15 @@
 .profilePageWrapper {
   width: 100%;
   min-height: 100vh;
+  .widgetsContainer {
+    padding: 0px; 
+    margin-top: 130px;
+  }
+    @include xsPhoneView {    
+      & .widgetsContainer {
+          padding-top: 80px !important;
+        }
+    }
 }
 
 .profileImpersonation {
