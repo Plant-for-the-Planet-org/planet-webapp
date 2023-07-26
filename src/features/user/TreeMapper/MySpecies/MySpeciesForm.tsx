@@ -15,6 +15,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
+import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 
 export default function MySpeciesForm() {
   const { t } = useTranslation(['treemapper', 'me', 'common']);
@@ -95,7 +96,7 @@ export default function MySpeciesForm() {
     <StyledForm>
       <div className="inputContainer">
         <form onSubmit={handleSubmit(addSpecies)}>
-          <div className={styles.addSpecies}>
+          <InlineFormDisplayGroup>
             <div>
               <SpeciesSelect
                 label={t('treemapper:species')}
@@ -145,7 +146,7 @@ export default function MySpeciesForm() {
                 t('common:add')
               )}
             </MaterialButton>
-          </div>
+          </InlineFormDisplayGroup>
         </form>
         <div className={styles.mySpeciesContainer}>
           {species.map((species: any) => {
