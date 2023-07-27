@@ -3,14 +3,14 @@ import styles from '../../styles/Filters.module.scss';
 import { useTranslation } from 'next-i18next';
 import { FormControlLabel, FormGroup } from '@mui/material';
 import Switch from '../../../common/InputTypes/ToggleSwitch';
-import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 
 interface Props {}
 
 export default function Filters({}: Props): ReactElement {
   const { t, ready } = useTranslation(['donate']);
   const { projects, setFilteredProjects, filtersOpen, setFilterOpen } =
-    React.useContext(ProjectPropsContext);
+    useProjectProps();
 
   const [purpose, setPurpose] = React.useState({
     restoration: true,
@@ -135,7 +135,7 @@ export default function Filters({}: Props): ReactElement {
                       <FormControlLabel
                         control={
                           <Switch
-                            checked={type[filter] !== undefined}
+                            checked={type[filter]}
                             onChange={handleTypeChange}
                             name={filter}
                           />

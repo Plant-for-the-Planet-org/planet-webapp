@@ -1,3 +1,9 @@
+/**
+ * Retrieves a random image based on the first letter of the name.
+ * @param {string} name - The name used to determine the image.
+ * @returns {string} The URL of the random image.
+ */
+
 export default function getRandomImage(name: string) {
   const upperCaseName = name.toUpperCase();
   const firstAlphabet = upperCaseName ? upperCaseName.charAt(0) : '';

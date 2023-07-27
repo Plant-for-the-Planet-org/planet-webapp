@@ -2,14 +2,14 @@ import React, { ReactElement } from 'react';
 import mapboxgl from 'mapbox-gl';
 import MapboxCompare from 'mapbox-gl-compare';
 import ImageDropdown from './ImageDropdown';
-import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import ZoomButtons from './ZoomButtons';
 
 interface Props {}
 
 export default function TimeTravel({}: Props): ReactElement {
   const { mapRef, geoJson, rasterData, isMobile, siteViewPort, selectedMode } =
-    React.useContext(ProjectPropsContext);
+    useProjectProps();
 
   const [before, setBefore] = React.useState();
   const [after, setAfter] = React.useState();

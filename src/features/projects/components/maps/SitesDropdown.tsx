@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import PolygonIcon from '../../../../../public/assets/images/icons/PolygonIcon';
 import styles from '../../styles/ProjectsMap.module.scss';
 import BootstrapInput from '../../../common/InputTypes/BootstrapInput';
-import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { SingleProjectGeojson } from '../../../../features/common/types/project';
 interface Props {}
@@ -19,7 +19,7 @@ export default function SitesDropdown(): ReactElement {
     isMobile,
     isPolygonMenuOpen,
     setIsPolygonMenuOpen,
-  } = React.useContext(ProjectPropsContext);
+  } = useProjectProps();
   const { embed } = React.useContext(ParamsContext);
   const router = useRouter();
 
