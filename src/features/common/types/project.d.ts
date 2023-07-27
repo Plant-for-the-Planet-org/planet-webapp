@@ -1,4 +1,3 @@
-import { FlyToInterpolator } from 'react-map-gl';
 export interface Project {
   guid: string;
   slug: string;
@@ -48,15 +47,4 @@ export interface LastUpdated {
   date: string;
   timezone: string;
   timezone_type: number;
-}
-
-export interface ViewPort {
-  width: number;
-  height: number;
-  latitude: number;
-  longitude: number;
-  zoom: number;
-  transitionDuration?: number;
-  transitionInterpolator?: FlyToInterpolator;
-  transitionEasing?: number;
 }

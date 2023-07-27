@@ -17,17 +17,13 @@ import { useTranslation } from 'next-i18next';
 import * as Sentry from '@sentry/node';
 import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
-import MapLayout from '../src/features/projects/components/ProjectsMap';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
 import tenantConfig from '../tenant.config';
 import { browserNotCompatible } from '../src/utils/browsercheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
-import ProjectPropsProvider, {
-  ProjectPropsContext,
-} from '../src/features/common/Layout/ProjectPropsContext';
+import ProjectPropsProvider from '../src/features/common/Layout/ProjectPropsContext';
 import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
-import PlayButton from '../src/features/common/LandingVideo/PlayButton';
 import ErrorHandlingProvider from '../src/features/common/Layout/ErrorHandlingContext';
 import dynamic from 'next/dynamic';
 import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext';
@@ -39,6 +35,7 @@ import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashCont
 import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
 import { appWithTranslation } from 'next-i18next';
 import nextI18NextConfig from '../next-i18next.config.js';
+import MapHolder from '../src/features/projects/components/maps/MapHolder';
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -212,8 +209,6 @@ const PlanetWeb = ({
     setshowVideo(localShowVideo);
   }, [localShowVideo]);
 
-  const { project, projects } = React.useContext(ProjectPropsContext);
-
   if (browserCompatible) {
     return <BrowserNotSupported />;
   } else {
@@ -268,25 +263,7 @@ const PlanetWeb = ({
                                 <BulkCodeProvider>
                                   <AnalyticsProvider>
                                     {isMap ? (
-                                      <>
-                                        {project ? (
-                                          <MapLayout />
-                                        ) : projects ? (
-                                          <MapLayout />
-                                        ) : null}
-                                        <div
-                                          style={
-                                            config.tenantName === 'planet' ||
-                                            config.tenantName === 'ttc'
-                                              ? {}
-                                              : { display: 'none' }
-                                          }
-                                        >
-                                          <PlayButton
-                                            setshowVideo={setshowVideo}
-                                          />
-                                        </div>
-                                      </>
+                                      <MapHolder setshowVideo={setshowVideo} />
                                     ) : null}
                                     <Component {...ProjectProps} />
                                   </AnalyticsProvider>

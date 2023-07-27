@@ -5,7 +5,7 @@ import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber
 import * as turf from '@turf/turf';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import dynamic from 'next/dynamic';
-import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 
 const ImageSlider = dynamic(
@@ -36,7 +36,7 @@ export default function PlantLocationDetails({
     plantLocations,
     setSamplePlantLocation,
     setHoveredPl,
-  } = React.useContext(ProjectPropsContext);
+  } = useProjectProps();
   const { t, i18n } = useTranslation(['maps']);
   const [treeCount, setTreeCount] = React.useState(1);
   const [plantationArea, setPlantationArea] = React.useState(0);

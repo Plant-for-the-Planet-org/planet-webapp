@@ -13,7 +13,7 @@ import ExpandIcon from '../../../../public/assets/images/icons/ExpandIcon';
 import ProjectInfo from '../components/projectDetails/ProjectInfo';
 import ProjectSnippet from '../components/ProjectSnippet';
 import SitesDropdown from '../components/maps/SitesDropdown';
-import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
 import ProjectTabs from '../components/maps/ProjectTabs';
 import PlantLocationDetails from '../components/PlantLocation/PlantLocationDetails';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
@@ -46,7 +46,7 @@ function SingleProjectDetails({}: Props): ReactElement {
     setHoveredPl,
     setSelectedPl,
     samplePlantLocation,
-  } = useContext(ProjectPropsContext);
+  } = useProjectProps();
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
