@@ -47,6 +47,7 @@
     @include xsPhoneView {    
       & .widgetsContainer {
           padding-top: 80px !important;
+          margin-top: 80px;
         }
     }
 }
