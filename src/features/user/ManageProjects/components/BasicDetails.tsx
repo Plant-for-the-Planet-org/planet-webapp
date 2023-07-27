@@ -718,7 +718,7 @@ export default function BasicDetails({
                       parseNumber(i18n.language, value) > 0 &&
                       parseNumber(i18n.language, value) <= 100,
                   }}
-                  render={() => (
+                  render={({ field: { onChange, value, onBlur } }) => (
                     <MaterialTextField
                       label={
                         router.query.purpose === 'trees' ||
@@ -729,6 +729,9 @@ export default function BasicDetails({
                       variant="outlined"
                       type="number"
                       placeholder={'0'}
+                      onChange={onChange}
+                      value={value}
+                      onBlur={onBlur}
                       InputProps={{
                         startAdornment: (
                           <p
