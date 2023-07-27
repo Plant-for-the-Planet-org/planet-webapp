@@ -4,7 +4,6 @@ import { router, procedure } from '../trpc';
 import prisma from '../../../prisma/client';
 import { Purpose } from '../../utils/constants/myForest';
 
-
 export interface QueryResult {
   treeCount: number;
   squareMeters: number;
@@ -133,7 +132,6 @@ export const myForestRouter = router({
       })
     )
     .query(async ({ input: { profileId } }) => {
-      
       const profile = await prisma.profile.findFirst({
         where: {
           guid: profileId,
@@ -149,8 +147,8 @@ export const myForestRouter = router({
 
       const data = await prisma.$queryRaw<QueryResult[]>`
       SELECT
-        SUM(CASE WHEN pp.purpose = 'trees' AND pp.unit = 'tree' THEN COALESCE(c.quantity, c.tree_count) ELSE 0 END) AS treeCount,
-        SUM(CASE WHEN pp.purpose = 'trees' AND pp.unit = 'm2' THEN COALESCE(c.quantity, c.tree_count) ELSE 0 END) AS squareMeters,
+        SUM(CASE WHEN pp.purpose = 'trees' AND pp.unit_type = 'tree' THEN COALESCE(c.quantity, c.tree_count) ELSE 0 END) AS treeCount,
+        SUM(CASE WHEN pp.purpose = 'trees' AND pp.unit_type = 'm2' THEN COALESCE(c.quantity, c.tree_count) ELSE 0 END) AS squareMeters,
         SUM(CASE WHEN pp.purpose = 'conservation' THEN c.quantity ELSE 0 END) AS conserved,
         COUNT(DISTINCT pp.id) AS projects,
         COUNT(DISTINCT pp.country) AS countries,
