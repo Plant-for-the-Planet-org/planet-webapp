@@ -174,7 +174,7 @@ export const myForestRouter = router({
           )
         )`;
 
-      return data;
+      return data[0];
     }),
 
   contributionsGeoJson: procedure

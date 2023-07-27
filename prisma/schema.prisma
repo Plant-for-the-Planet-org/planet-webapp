@@ -33,7 +33,7 @@ model project {
     name         String?        @db.VarChar(255)
     description  String?        @db.LongText
     country      String?        @map("country") @db.VarChar(2)
-    unit         String?        @db.VarChar(255)
+    unit         String?        @map("unit_type") @db.VarChar(255)
     image        String?        @db.VarChar(255)
     purpose      String         @db.VarChar(64)
     location     String?        @db.LongText
