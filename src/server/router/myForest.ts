@@ -3,27 +3,24 @@ import { TRPCError } from '@trpc/server';
 import { router, procedure } from '../trpc';
 import prisma from '../../../prisma/client';
 import { Purpose } from '../../utils/constants/myForest';
-
-export interface QueryResult {
-  treeCount: number;
-  squareMeters: number;
-  conserved: number;
-  projects: number;
-  countries: number;
-  donations: number;
-}
+import { Prisma } from '@prisma/client';
+import {
+  ContributionsGeoJsonQueryResult,
+  StatsQueryResult,
+} from '../../features/common/types/contribution';
 
 export const myForestRouter = router({
   contributions: procedure
     .input(
       z.object({
         profileId: z.string(),
+        purpose: z.nullable(z.nativeEnum(Purpose)).optional(),
         limit: z.number(),
         cursor: z.string().nullish(),
         skip: z.number().optional(),
       })
     )
-    .query(async ({ input: { profileId, limit, cursor, skip } }) => {
+    .query(async ({ input: { profileId, limit, cursor, skip, purpose } }) => {
       const profile = await prisma.profile.findFirst({
         where: {
           guid: profileId,
@@ -92,7 +89,11 @@ export const myForestRouter = router({
               paymentStatus: 'paid',
               plantProject: {
                 purpose: {
-                  in: ['trees', 'conservation', 'bouquet'],
+                  in: !purpose
+                    ? ['trees', 'conservation', 'bouquet']
+                    : purpose === Purpose.TREES
+                    ? ['trees', 'bouquet']
+                    : ['conservation', 'bouquet'],
                 },
               },
               bouquetDonationId: {
@@ -100,11 +101,15 @@ export const myForestRouter = router({
               },
             },
             {
-              contributionType: 'planting',
-              isVerified: 1,
-              bouquetDonationId: {
-                equals: null,
-              },
+              ...(purpose === undefined || purpose === Purpose.TREES
+                ? {
+                    contributionType: 'planting',
+                    isVerified: 1,
+                    bouquetDonationId: {
+                      equals: null,
+                    },
+                  }
+                : {}),
             },
           ],
         },
@@ -145,7 +150,7 @@ export const myForestRouter = router({
         });
       }
 
-      const data = await prisma.$queryRaw<QueryResult[]>`
+      const data = await prisma.$queryRaw<StatsQueryResult[]>`
       SELECT
         SUM(CASE WHEN pp.purpose = 'trees' AND pp.unit_type = 'tree' THEN COALESCE(c.quantity, c.tree_count) ELSE 0 END) AS treeCount,
         SUM(CASE WHEN pp.purpose = 'trees' AND pp.unit_type = 'm2' THEN COALESCE(c.quantity, c.tree_count) ELSE 0 END) AS squareMeters,
@@ -196,66 +201,71 @@ export const myForestRouter = router({
         });
       }
 
-      const data = await prisma.contribution.findMany({
-        select: {
-          purpose: true,
-          treeCount: true,
-          quantity: true,
-          plantDate: true,
-          contributionType: true,
-          plantProject: {
-            select: {
-              guid: true,
-              name: true,
-              image: true,
-              country: true,
-              unit: true,
-              location: true,
-              geoLatitude: true,
-              geoLongitude: true,
-              tpo: true,
-            },
-          },
-        },
-        where: {
-          profile: {
-            guid: profileId,
-          },
-          deletedAt: null,
-          OR: [
-            {
-              contributionType: 'donation',
-              paymentStatus: 'paid',
-              plantProject: {
-                purpose: {
-                  in: purpose ? purpose : ['trees', 'conservation'],
-                },
-              },
-            },
-            {
-              contributionType: 'planting',
-              isVerified: 1,
-            },
-          ],
-        },
-      });
+      let purposes;
+      let join = Prisma.sql`LEFT JOIN project pp ON c.plant_project_id = pp.id`;
+
+      if (purpose) {
+        purposes = [purpose];
+        if (purpose === Purpose.CONSERVATION) {
+          join = Prisma.sql`JOIN project pp ON c.plant_project_id = pp.id`;
+        }
+      } else {
+        purposes = ['trees', 'conservation'];
+      }
+
+      const data = await prisma.$queryRaw<ContributionsGeoJsonQueryResult[]>`
+      SELECT c.purpose, c.tree_count, c.quantity, c.contribution_type, c.plant_date, pp.location, pp.country, 
+        pp.unit_type, pp.guid, pp.name, pp.image, pp.geo_latitude, pp.geo_longitude, 
+        tpo.name AS tpo, tpo.guid AS tpoGuid
+      FROM contribution c
+              ${join}
+              JOIN profile p ON p.id = c.profile_id
+              LEFT JOIN profile tpo ON pp.tpo_id = tpo.id
+      WHERE p.guid = ${profileId}
+        AND c.deleted_at IS null
+        AND (
+              (
+                c.contribution_type = 'donation'
+                AND c.payment_status = 'paid'
+                AND pp.purpose in (${Prisma.join(purposes)})
+              )
+              OR (
+                c.contribution_type = 'planting'
+                AND c.is_verified = 1
+              )
+          )`;
 
       return data.map((contribution) => {
         return {
           type: 'Feature',
           properties: {
             cluster: false,
-            category: contribution.purpose,
-            quantity: contribution.quantity,
-            plantDate: contribution.plantDate,
-            contributionType: contribution.contributionType,
-            plantProject: contribution.plantProject,
+            purpose: contribution.purpose,
+            quantity: contribution.tree_count
+              ? contribution.tree_count
+              : contribution.quantity,
+            plantDate: contribution.plant_date,
+            contributionType: contribution.contribution_type,
+            plantProject: {
+              guid: contribution.guid,
+              name: contribution.name,
+              image: contribution.image,
+              country: contribution.country,
+              unit: contribution.unit_type,
+              location: contribution.location,
+              geoLatitude: contribution.geo_latitude,
+              geoLongitude: contribution.geo_longitude,
+              tpo: {
+                guid: contribution.tpoGuid,
+                name: contribution.name,
+              },
+            },
           },
           geometry: {
             type: 'Point',
             coordinates: [
-              contribution.plantProject?.geoLatitude,
-              contribution.plantProject?.geoLongitude,
+              contribution.geo_latitude,
+              contribution.geo_longitude,
             ],
           },
         };
