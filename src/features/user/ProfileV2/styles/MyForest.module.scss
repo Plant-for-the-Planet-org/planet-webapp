@@ -214,7 +214,8 @@
         align-items: center;
         justify-content: center;
         background: #27AE601A;
-        border-radius: 12px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
         height: 370px;
         width: 100%;
         > .treeCounter {
@@ -234,7 +235,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    border-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
     > .text {
         position: absolute;
         font-weight: bold;
@@ -271,7 +273,9 @@
     background-size: 100% 100%;
     display: flex;
     justify-content: center;
-    border-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    padding-bottom: 15px;
   }
 
   .mapButtonMainContainer {
@@ -335,7 +339,6 @@
     padding-left: 100px;
     padding-right: 100px;
     padding-bottom: 35px;
-    margin-top: 340px;
     @include xsPhoneView {
         padding-left: 25px;
         padding-right: 25px;
@@ -351,7 +354,7 @@
     }
     > .donationDetail {
         display: flex;
-        height: 181px;
+        height: 100%;
         width: 100%;
         border-radius: 12px;
         background: #FFFFFF;
@@ -365,11 +368,12 @@
       
         > .image {
             width: 285px;
-            height: 141px;
-            margin-top: 20px;
+            height: 100%;
             margin-left: 20px;
             border-radius: 12px;
-            background: #6FCF97;
+            padding-top: 25px;
+            padding-bottom: 25px;
+           
             img {
                 border-radius: 12px;
             };
@@ -379,6 +383,7 @@
             @include xsPhoneView {
                 width: 274px;
                 margin-left: 0px;
+                padding-bottom: 0px;
             }
         }
         
@@ -389,11 +394,16 @@
     width: 100%;
     border-radius: 12px;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-right: 30px;
+    align-items: flex-end;
+    justify-content: center;
+    flex-direction: column;
+    gap:100px;
+    padding-right: 25px;
+    margin-left: 0px;
     @include xsPhoneView {
-        margin-left: 16px;
+        flex-direction: row;
+        gap: 70px;
+        margin-left: 17px;
     }
 }
 
@@ -411,22 +421,23 @@
 .projectDetailContainer {
     width: 100%;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     gap: 25px;
     padding-bottom: 25px;
+    padding-top: 20px;
+    flex-direction: row;
     @include xsPhoneView {
-        gap : 10px
+        gap : 10px;
+        padding-top: 0px;
+        flex-direction: column;
     }
 }
   .projectDetail {
     width: 100%;
-    margin-top: 20px;
     border-radius: 12px;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: space-between;
-    padding-right: 30px;
     @include xsPhoneView {
         width: 275px;
         flex-direction: column;
@@ -454,7 +465,7 @@
   .areaConservedMainContainer {
     width: 100%;
     max-width: 1165px;
-    height: 804px;
+    height: 100%;
     padding-left: 50px;
     padding-right: 50px;
     padding-bottom: 10px;
@@ -464,10 +475,18 @@
         background-color: #48AADD1A ;
         width: 100%;
         height: 200px;
-        border-radius: 12px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
         }
   }
 
+  @include xsPhoneView {
+    .areaConservedMainContainer {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+}
+  
   .conservedAreaText {
     font-weight: 700;
     font-size: 24px;
@@ -481,6 +500,18 @@
         margin-left: 8px;
     }
   }
+  @include xsPhoneView {
+    .conservedAreaText {
+        left: 100px
+    }
+}
+
+@include mdTabletView {
+    .conservedAreaText {
+        left: 265px
+    }
+}
+
 .plantingDate {
     font-size: 14px ;
     font-weight: 700;
@@ -489,11 +520,11 @@
 .treeCount {
     font-size: 20px;
     font-weight: 700;
+    margin-top: 10px;
 }
 
 .loadProjectButtonContainer {
     display: flex;
-    justify-content: flex-end;
-    padding-right: 25px;
+    justify-content: center;
     padding-bottom: 25px;
 }

@@ -13,11 +13,6 @@ export interface MarkerProps {
     mapRef: null;
   }
 
-export interface MyForestProps {
-    isTreePlantedButtonActive: boolean;
-    isConservedButtonActive: boolean;
-  }
-
 export type Cluster  = (
     | Supercluster.PointFeature<any>
     | Supercluster.ClusterFeature<{

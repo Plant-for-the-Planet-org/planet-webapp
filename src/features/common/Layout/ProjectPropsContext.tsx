@@ -87,6 +87,10 @@ export const ProjectPropsContext = React.createContext({
   setTreePlantedProjects: (value: Contributions[]) => [],
   conservationProjects: null || [],
   setConservationProjects: (value: []) => [],
+  isTreePlantedButtonActive: false,
+  setIsTreePlantedButtonActive: (value: boolean) => {},
+  isConservedButtonActive: false,
+  setIsConservedButtonActive: (value: boolean) => {},
 });
 
 function ProjectPropsProvider({ children }: any): ReactElement {
@@ -123,6 +127,10 @@ function ProjectPropsProvider({ children }: any): ReactElement {
   const [conservationProjects, setConservationProjects] = React.useState<
     Contributions[]
   >([]);
+  const [isTreePlantedButtonActive, setIsTreePlantedButtonActive] =
+    React.useState<boolean>(false);
+  const [isConservedButtonActive, setIsConservedButtonActive] =
+    React.useState<boolean>(false);
   const { embed, showProjectList } = React.useContext(ParamsContext);
 
   const mapRef = React.useRef(null);
@@ -320,6 +328,10 @@ function ProjectPropsProvider({ children }: any): ReactElement {
         setTreePlantedProjects,
         conservationProjects,
         setConservationProjects,
+        isTreePlantedButtonActive,
+        setIsTreePlantedButtonActive,
+        isConservedButtonActive,
+        setIsConservedButtonActive,
       }}
     >
       {children}

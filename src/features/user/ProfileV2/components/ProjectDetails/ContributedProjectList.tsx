@@ -11,6 +11,7 @@ import {
   ProjectProps,
   ContributedProjectListProps,
 } from '../../../../common/types/contribution';
+import { ProjectPropsContext } from '../../../../common/Layout/ProjectPropsContext';
 
 const Project = ({ key, projectInfo }: ProjectProps): ReactElement => {
   const { token } = useUserProps();
@@ -36,7 +37,7 @@ const Project = ({ key, projectInfo }: ProjectProps): ReactElement => {
         </div>
         <div className={myForestStyles.projectDetailContainer}>
           <div className={myForestStyles.projectDetail}>
-            <div>
+            <div style={{ maxWidth: '345px' }}>
               <p className={myForestStyles.projectName}>
                 {projectInfo.plantProject.name}
               </p>
@@ -45,17 +46,17 @@ const Project = ({ key, projectInfo }: ProjectProps): ReactElement => {
                 {projectInfo.plantProject.tpo.name}
               </div>
             </div>
-            <div className={myForestStyles.plantingDate}>
-              <p> {format(projectInfo.plantDate, 'MMMM d, yyyy')}</p>
-            </div>
-          </div>
-          <div className={myForestStyles.donateContainer}>
             <div className={myForestStyles.treeCount}>
               {projectInfo.purpose === 'conservation'
                 ? t('me:area', { areaConserved: `${projectInfo.quantity}` })
                 : t('me:plantedTrees', {
                     noOfTrees: `${projectInfo.quantity}`,
                   })}
+            </div>
+          </div>
+          <div className={myForestStyles.donateContainer}>
+            <div className={myForestStyles.plantingDate}>
+              {format(projectInfo.plantDate, 'MMMM d, yyyy')}
             </div>
             <div
               className={myForestStyles.donate}
@@ -71,9 +72,9 @@ const Project = ({ key, projectInfo }: ProjectProps): ReactElement => {
 };
 
 const ContributedProjectList = ({
-  isConservedButtonActive,
   contributionProjectList,
 }: ContributedProjectListProps): ReactElement => {
+  const { isConservedButtonActive } = useContext(ProjectPropsContext);
   return (
     <div
       className={myForestStyles.donationlistContainer}

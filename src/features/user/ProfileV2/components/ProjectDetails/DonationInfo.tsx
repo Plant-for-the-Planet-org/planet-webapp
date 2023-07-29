@@ -23,7 +23,9 @@ const DonationInfo = ({
           </div>
           <div className={myForestStyles.label}>{t('maps:projects')}</div>
         </div>
-        <div className={myForestStyles.value}>{`${projects}`}</div>
+        <div className={myForestStyles.value}>{`${
+          projects ? projects : 0
+        }`}</div>
       </div>
       <div className={myForestStyles.InfoContainer}>
         <div className={myForestStyles.labelContainer}>
@@ -32,7 +34,9 @@ const DonationInfo = ({
           </div>
           <div className={myForestStyles.label}>{t('maps:countries')}</div>
         </div>
-        <div className={myForestStyles.value}>{`${countries}`}</div>
+        <div className={myForestStyles.value}>{`${
+          countries ? countries : 0
+        }`}</div>
       </div>
       <div className={myForestStyles.InfoContainer}>
         <div className={myForestStyles.labelContainer}>
@@ -41,7 +45,9 @@ const DonationInfo = ({
           </div>
           <div className={myForestStyles.label}>{t('me:donations')}</div>
         </div>
-        <div className={myForestStyles.value}>{`${donations}`}</div>
+        <div className={myForestStyles.value}>{`${
+          donations ? donations : 0
+        }`}</div>
       </div>
     </div>
   );

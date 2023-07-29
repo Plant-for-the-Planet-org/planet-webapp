@@ -9,23 +9,27 @@ import { Button } from '@mui/material';
 
 const AreaConservedProjectList = ({
   contribution,
-  isConservedButtonActive,
   handleFetchNextPage,
 }: AreaConservedProjectListProps): ReactElement => {
-  const { t } = useTranslation(['me']);
+  const { t, ready } = useTranslation(['me']);
   const [contributionProjectList, setContributionProjectList] = useState<
     Contributions[]
   >([]);
-  const [isLoadButtonActive, setIsLoadButtonActive] = useState(true);
+  const [isLoadButtonActive, setIsLoadButtonActive] = useState(false);
 
   useEffect(() => {
     const data: Contributions[] = [];
     const _fetchProjectlist = () => {
       const _fetchConservAreaProjects = contribution.map((singlePageData) => {
-        if (singlePageData?.nextCursor === undefined)
-          setIsLoadButtonActive(false);
         return singlePageData?.data.filter((singleProject: Contributions) => {
-          if (singleProject.purpose === 'conservation') return singleProject;
+          if (singleProject.purpose === 'conservation') {
+            if (singlePageData?.nextCursor !== undefined) {
+              setIsLoadButtonActive(true);
+            } else {
+              setIsLoadButtonActive(false);
+            }
+            return singleProject;
+          }
         });
       });
 
@@ -40,11 +44,10 @@ const AreaConservedProjectList = ({
   }, [contribution]);
 
   const projectListProps = {
-    isConservedButtonActive,
     contributionProjectList,
   };
 
-  return (
+  return ready ? (
     <div className={myForestStyles.areaConservedMainContainer}>
       <div className={myForestStyles.textContainer}>
         <div className={myForestStyles.conservedAreaText}>
@@ -56,13 +59,19 @@ const AreaConservedProjectList = ({
         <ContributedProjectList {...projectListProps} />
         {isLoadButtonActive && (
           <div className={myForestStyles.loadProjectButtonContainer}>
-            <Button variant="contained" onClick={handleFetchNextPage}>
+            <Button
+              variant="contained"
+              sx={{ backgroundColor: '#48AADD' }}
+              onClick={handleFetchNextPage}
+            >
               Load More Projects
             </Button>
           </div>
         )}
       </div>
     </div>
+  ) : (
+    <></>
   );
 };
 

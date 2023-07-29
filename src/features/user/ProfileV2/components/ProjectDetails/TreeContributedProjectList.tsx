@@ -23,7 +23,7 @@ const TreeContributedProjectList = ({
   const [restorationProject, setRestorationProject] = useState<Contributions[]>(
     []
   );
-  const [isLoadButtonActive, setIsLoadButtonActive] = useState(true);
+  const [isLoadButtonActive, setIsLoadButtonActive] = useState(false);
 
   const handleAddTargetModalOpen = (): void => {
     setIsAddTargetModalOpen(true);
@@ -37,14 +37,18 @@ const TreeContributedProjectList = ({
     const data: Contributions[] = [];
     const _fetchProjectlist = () => {
       const _fetchTreePlantedProjects = contribution.map((singlePageData) => {
-        if (singlePageData?.nextCursor === undefined)
-          setIsLoadButtonActive(false);
         return singlePageData?.data.filter((singleProject: Contributions) => {
           if (
             singleProject.purpose === 'trees' ||
             singleProject.purpose === 'bouquet'
-          )
+          ) {
+            if (singlePageData?.nextCursor !== undefined) {
+              setIsLoadButtonActive(true);
+            } else {
+              setIsLoadButtonActive(false);
+            }
             return singleProject;
+          }
         });
       });
 

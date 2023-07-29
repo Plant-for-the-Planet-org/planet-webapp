@@ -30,13 +30,13 @@ export default function MyTrees({
     QueryResult[]
   >([]);
   const [page, setPage] = React.useState(0);
-  const [isTreePlantedButtonActive, setIsTreePlantedButtonActive] =
-    React.useState<boolean>(false);
-  const [isConservedButtonActive, setIsConservedButtonActive] =
-    React.useState<boolean>(false);
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const { setConservationProjects, setTreePlantedProjects } =
-    useContext(ProjectPropsContext);
+  const {
+    setConservationProjects,
+    setTreePlantedProjects,
+    isConservedButtonActive,
+    isTreePlantedButtonActive,
+  } = useContext(ProjectPropsContext);
 
   const _detailInfo = trpc.myForest.stats.useQuery({
     profileId: `prf_6RaZcCpeJIlTA4DKEPKje1T6`,
@@ -56,7 +56,7 @@ export default function MyTrees({
     {
       profileId: `prf_6RaZcCpeJIlTA4DKEPKje1T6`,
       limit: 15,
-      purpose: Purpose.CONSERVATION,
+      purpose: isConservedButtonActive ? Purpose.CONSERVATION : Purpose.TREES,
     },
     { getNextPageParam: (lastPage) => lastPage.nextCursor }
   );
@@ -144,26 +144,11 @@ export default function MyTrees({
             : '10px',
       }}
     >
-      <MyTreesMap
-        isTreePlantedButtonActive={isTreePlantedButtonActive}
-        isConservedButtonActive={isConservedButtonActive}
-      />
+      <MyTreesMap />
       <div className={myForestStyles.mapButtonMainContainer}>
         <div className={myForestStyles.mapButtonContainer}>
-          <PlantedTreesButton
-            plantedTrees={otherDonationInfo?.treeCount}
-            isTreePlantedButtonActive={isTreePlantedButtonActive}
-            setIsConservedButtonActive={setIsConservedButtonActive}
-            setIsTreePlantedButtonActive={setIsTreePlantedButtonActive}
-          />
-
-          <ConservationButton
-            conservedArea={otherDonationInfo?.conserved}
-            setIsTreePlantedButtonActive={setIsTreePlantedButtonActive}
-            setIsConservedButtonActive={setIsConservedButtonActive}
-            isConservedButtonActive={isConservedButtonActive}
-          />
-
+          <PlantedTreesButton plantedTrees={otherDonationInfo?.treeCount} />
+          <ConservationButton conservedArea={otherDonationInfo?.conserved} />
           <DonationInfo
             projects={otherDonationInfo?.projects}
             countries={otherDonationInfo?.countries}
@@ -184,7 +169,6 @@ export default function MyTrees({
       {isConservedButtonActive && !isTreePlantedButtonActive && (
         <AreaConservedProjectList
           contribution={contribution}
-          isConservedButtonActive={isConservedButtonActive}
           handleFetchNextPage={handleFetchNextPage}
         />
       )}

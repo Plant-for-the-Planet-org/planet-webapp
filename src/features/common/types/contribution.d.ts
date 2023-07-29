@@ -117,15 +117,9 @@ export interface DonationInfoProps {
 
 export interface PlantedTreesButtonProps {
   plantedTrees: number | null;
-  isTreePlantedButtonActive: boolean;
-  setIsConservedButtonActive: SetState<boolean>;
-  setIsTreePlantedButtonActive: SetState<boolean>;
 }
 export interface ConservationButtonProps {
   conservedArea: number | null;
-  setIsTreePlantedButtonActive: SetState<boolean>;
-  setIsConservedButtonActive: SetState<boolean>;
-  isConservedButtonActive: boolean;
 }
 export interface TreeContributedProjectListProps {
   contribution: Contributions[];
@@ -136,7 +130,6 @@ export interface TreeContributedProjectListProps {
 
 export interface AreaConservedProjectListProps {
   contribution: Contributions[];
-  isConservedButtonActive: boolean;
   handleFetchNextPage: () => void;
 }
 
