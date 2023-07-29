@@ -39,23 +39,24 @@ export default function MyTrees({
     useContext(ProjectPropsContext);
 
   const _detailInfo = trpc.myForest.stats.useQuery({
-    profileId: `${profile.id}`,
+    profileId: `prf_6RaZcCpeJIlTA4DKEPKje1T6`,
   });
 
   const _conservationGeoJsonData = trpc.myForest.contributionsGeoJson.useQuery({
-    profileId: `${profile.id}`,
+    profileId: `prf_6RaZcCpeJIlTA4DKEPKje1T6`,
     purpose: Purpose.CONSERVATION,
   });
 
   const _treePlantedData = trpc.myForest.contributionsGeoJson.useQuery({
-    profileId: `${profile.id}`,
+    profileId: `prf_6RaZcCpeJIlTA4DKEPKje1T6`,
     purpose: Purpose.TREES,
   });
 
   const _contributionData = trpc.myForest.contributions.useInfiniteQuery(
     {
-      profileId: `${profile.id}`,
+      profileId: `prf_6RaZcCpeJIlTA4DKEPKje1T6`,
       limit: 15,
+      purpose: Purpose.CONSERVATION,
     },
     { getNextPageParam: (lastPage) => lastPage.nextCursor }
   );
@@ -77,6 +78,7 @@ export default function MyTrees({
           )
         );
       }
+
       setContribution(_contributionData.data?.pages);
     }
   }, [_contributionData.isLoading, _contributionData.data]);
@@ -149,23 +151,23 @@ export default function MyTrees({
       <div className={myForestStyles.mapButtonMainContainer}>
         <div className={myForestStyles.mapButtonContainer}>
           <PlantedTreesButton
-            plantedTrees={otherDonationInfo[0]?.treeCount}
+            plantedTrees={otherDonationInfo?.treeCount}
             isTreePlantedButtonActive={isTreePlantedButtonActive}
             setIsConservedButtonActive={setIsConservedButtonActive}
             setIsTreePlantedButtonActive={setIsTreePlantedButtonActive}
           />
 
           <ConservationButton
-            conservedArea={otherDonationInfo[0]?.conserved}
+            conservedArea={otherDonationInfo?.conserved}
             setIsTreePlantedButtonActive={setIsTreePlantedButtonActive}
             setIsConservedButtonActive={setIsConservedButtonActive}
             isConservedButtonActive={isConservedButtonActive}
           />
 
           <DonationInfo
-            projects={otherDonationInfo[0]?.projects}
-            countries={otherDonationInfo[0]?.countries}
-            donations={otherDonationInfo[0]?.donations}
+            projects={otherDonationInfo?.projects}
+            countries={otherDonationInfo?.countries}
+            donations={otherDonationInfo?.donations}
           />
         </div>
       </div>

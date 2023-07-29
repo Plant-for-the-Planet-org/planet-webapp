@@ -27,9 +27,9 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
           <div className={MyForestMapStyle.popUpContainer}>
             <div>
               <p className={MyForestMapStyle.popUpLabel}>
-                {geoJson.properties?.category === 'conservation'
+                {geoJson.properties?.purpose === 'conservation'
                   ? t('me:conserved')
-                  : geoJson.properties?.category === 'trees'
+                  : geoJson.properties?.purpose === 'trees'
                   ? geoJson.properties.contributionType === 'donation'
                     ? t('me:donated')
                     : t('me:registered')
@@ -42,33 +42,35 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
           </div>
         </Popup>
       )}
-      <Marker
-        latitude={geoJson?.geometry.coordinates[1]}
-        longitude={geoJson?.geometry.coordinates[0]}
-      >
-        <div
-          className={MyForestMapStyle.markerContainer}
-          onMouseOver={() => setShowPopUp(true)}
-          onMouseLeave={() => setShowPopUp(false)}
+      {geoJson?.geometry.coordinates[1] !== null && (
+        <Marker
+          latitude={geoJson?.geometry.coordinates[1]}
+          longitude={geoJson?.geometry.coordinates[0]}
         >
-          <div className={MyForestMapStyle.svgContainer}>
-            {geoJson.properties?.category === 'conservation' ? (
-              <ConservationBlueTreeSvg />
-            ) : (
-              <PlantedTreesGreenSvg />
-            )}
+          <div
+            className={MyForestMapStyle.markerContainer}
+            onMouseOver={() => setShowPopUp(true)}
+            onMouseLeave={() => setShowPopUp(false)}
+          >
+            <div className={MyForestMapStyle.svgContainer}>
+              {geoJson.properties?.purpose === 'conservation' ? (
+                <ConservationBlueTreeSvg />
+              ) : (
+                <PlantedTreesGreenSvg />
+              )}
+            </div>
+            <div className={MyForestMapStyle.trees}>
+              {geoJson.properties?.purpose === 'conservation'
+                ? t('me:area', {
+                    areaConserved: `${geoJson.properties.quantity}`,
+                  })
+                : t('me:plantedTrees', {
+                    noOfTrees: `${geoJson.properties.quantity}`,
+                  })}
+            </div>
           </div>
-          <div className={MyForestMapStyle.trees}>
-            {geoJson.properties?.category === 'conservation'
-              ? t('me:area', {
-                  areaConserved: `${geoJson.properties.quantity}`,
-                })
-              : t('me:plantedTrees', {
-                  noOfTrees: `${geoJson.properties.quantity}`,
-                })}
-          </div>
-        </div>
-      </Marker>
+        </Marker>
+      )}
     </div>
   ) : (
     <></>

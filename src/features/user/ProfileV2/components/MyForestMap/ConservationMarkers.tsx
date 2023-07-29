@@ -41,11 +41,11 @@ const ConservationMarker = ({
     if (conservationProjects) {
       _fetch();
     }
-  }, [viewport]);
+  }, [viewport, conservationProjects]);
 
   return (
     <>
-      {clusters.map((singleCluster, key) => {
+      {clusters.map((singleCluster) => {
         if (singleCluster.id) {
           return (
             <ConservAreaClusterMarker
@@ -54,7 +54,11 @@ const ConservationMarker = ({
               coordinates={singleCluster.geometry.coordinates}
             />
           );
-        } else {
+        }
+      })}
+
+      {clusters.map((singleCluster, key) => {
+        if (!singleCluster.id) {
           return <SingleMarker key={key} geoJson={singleCluster} />;
         }
       })}

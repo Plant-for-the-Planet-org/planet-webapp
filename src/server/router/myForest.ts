@@ -264,8 +264,8 @@ export const myForestRouter = router({
           geometry: {
             type: 'Point',
             coordinates: [
-              contribution.geo_latitude,
               contribution.geo_longitude,
+              contribution.geo_latitude,
             ],
           },
         };

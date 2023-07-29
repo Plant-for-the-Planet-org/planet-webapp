@@ -45,14 +45,14 @@ const AreaConservedProjectList = ({
   };
 
   return (
-    <div className={myForestStyles.AreaConservedMainContainer}>
+    <div className={myForestStyles.areaConservedMainContainer}>
       <div className={myForestStyles.textContainer}>
         <div className={myForestStyles.conservedAreaText}>
           <p>{t('me:areaConserved')}</p>
           <p className={myForestStyles.hrLine} />
         </div>
       </div>
-      <div className={myForestStyles.AreaConservedContainer}>
+      <div className={myForestStyles.areaConservedContainer}>
         <ContributedProjectList {...projectListProps} />
         {isLoadButtonActive && (
           <div className={myForestStyles.loadProjectButtonContainer}>

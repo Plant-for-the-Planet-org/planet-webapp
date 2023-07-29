@@ -20,7 +20,8 @@ export const _clusterConfig = {
   }),
   reduce: (accumulator: any, props: any) => {
     if (props.totalTrees) {
-      accumulator.totalTrees = accumulator.totalTrees + props.totalTrees;
+      accumulator.totalTrees =
+        Number(accumulator.totalTrees) + Number(props.totalTrees);
     }
   },
 };
@@ -31,10 +32,10 @@ const TreesPlantedMarkers = ({
 }: ClusterMarkerProps): ReactElement => {
   const { treePlantedProjects } = useContext(ProjectPropsContext);
   const [clusters, setClusters] = useState<Cluster[]>([]);
-  const superclusterConserv = new Supercluster(_clusterConfig);
+  const supercluster = new Supercluster(_clusterConfig);
 
+  supercluster.load(treePlantedProjects);
   const _fetch = () => {
-    superclusterConserv.load(treePlantedProjects);
     const { viewState } = viewport;
     const zoom = viewState?.zoom;
     if (mapRef && mapRef.current !== null) {
@@ -47,7 +48,7 @@ const TreesPlantedMarkers = ({
         bounds[3],
       ];
       if (viewport?.viewState?.zoom) {
-        const _clusters = superclusterConserv?.getClusters(bound, zoom);
+        const _clusters = supercluster?.getClusters(bound, zoom);
         setClusters(_clusters);
         return _clusters;
       }
@@ -57,12 +58,11 @@ const TreesPlantedMarkers = ({
     if (treePlantedProjects) {
       _fetch();
     }
-  }, [viewport]);
-
+  }, [viewport, treePlantedProjects]);
   return (
     clusters && (
       <>
-        {clusters.map((singleCluster, key) => {
+        {clusters.map((singleCluster) => {
           if (singleCluster.id) {
             return (
               <TreePlantedClusterMarker
@@ -71,7 +71,10 @@ const TreesPlantedMarkers = ({
                 coordinates={singleCluster.geometry.coordinates}
               />
             );
-          } else {
+          }
+        })}
+        {clusters.map((singleCluster, key) => {
+          if (!singleCluster.id) {
             return <SingleMarker key={key} geoJson={singleCluster} />;
           }
         })}
