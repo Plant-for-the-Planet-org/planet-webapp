@@ -9,10 +9,8 @@ import InfoIcon from '../../../../../public/assets/images/icons/manageProjects/I
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import { useRouter } from 'next/router';
-import { makeStyles } from '@mui/styles';
 import { SxProps } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
-import { ThemeContext } from '../../../../theme/themeContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
@@ -120,7 +118,6 @@ export default function DetailedAnalysis({
     },
   ]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const { theme } = React.useContext(ThemeContext);
   // TODO - simplify Planting Season logic
   const [plantingSeasons, setPlantingSeasons] = React.useState([
     { id: 1, title: ready ? t('common:january') : '', isSet: false },
@@ -138,30 +135,6 @@ export default function DetailedAnalysis({
   ]);
 
   const [minDensity, setMinDensity] = React.useState(0);
-
-  // TODO - remove code as not being used
-  const useStylesAutoComplete = makeStyles({
-    root: {
-      color:
-        theme === 'theme-light'
-          ? `${themeProperties.light.primaryFontColor} !important`
-          : `${themeProperties.dark.primaryFontColor} !important`,
-      backgroundColor:
-        theme === 'theme-light'
-          ? `${themeProperties.light.backgroundColor} !important`
-          : `${themeProperties.dark.backgroundColor} !important`,
-    },
-    option: {
-      // color: '#2F3336',
-      '&:hover': {
-        backgroundColor:
-          theme === 'theme-light'
-            ? `${themeProperties.light.backgroundColorDark} !important`
-            : `${themeProperties.dark.backgroundColorDark} !important`,
-      },
-    },
-  });
-  const classes = useStylesAutoComplete();
 
   const handleSetPlantingSeasons = (id: any) => {
     const month = plantingSeasons[id - 1];

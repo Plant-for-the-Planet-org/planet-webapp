@@ -7,20 +7,16 @@ import MaterialTextField from '../../../../features/common/InputTypes/MaterialTe
 import { postRequest } from '../../../../utils/apiRequests/api';
 import Link from 'next/link';
 import getImageUrl from '../../../../utils/getImageURL';
-import { Autocomplete } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import tenantConfig from '../../../../../tenant.config';
+
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import getRandomImage from '../../../../utils/getRandomImage';
-import { ThemeContext } from '../../../../theme/themeContext';
-import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
+import { MuiAutoComplete } from '../../../../features/common/InputTypes/MuiAutoComplete';
 
 interface Props {
   leaderboard: any;
 }
-const config = tenantConfig();
 
 export default function LeaderBoardSection(leaderboard: Props) {
   const [selectedTab, setSelectedTab] = React.useState('recent');
@@ -28,42 +24,6 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const { t, i18n, ready } = useTranslation(['leaderboard', 'common']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const [users, setUsers] = React.useState([]);
-
-  const { theme } = React.useContext(ThemeContext);
-  const useStylesAutoComplete = makeStyles({
-    paper: {
-      color:
-        theme === 'theme-light'
-          ? `${themeProperties.light.primaryFontColor} !important`
-          : `${themeProperties.dark.primaryFontColor} !important`,
-      backgroundColor:
-        theme === 'theme-light'
-          ? `${themeProperties.light.backgroundColor} !important`
-          : `${themeProperties.dark.backgroundColor} !important`,
-    },
-    option: {
-      // color: '#2F3336',
-      fontFamily: config!.font.primaryFontFamily,
-      '&:hover': {
-        backgroundColor:
-          theme === 'theme-light'
-            ? `${themeProperties.light.backgroundColorDark} !important`
-            : `${themeProperties.dark.backgroundColorDark} !important`,
-      },
-      '&:active': {
-        backgroundColor:
-          theme === 'theme-light'
-            ? `${themeProperties.light.backgroundColorDark} !important`
-            : `${themeProperties.dark.backgroundColorDark} !important`,
-      },
-      fontSize: '14px',
-      '& > span': {
-        marginRight: 10,
-        fontSize: 18,
-      },
-    },
-  });
-  const classes = useStylesAutoComplete();
 
   const fetchUsers = async (query: any) => {
     try {
@@ -167,15 +127,11 @@ export default function LeaderBoardSection(leaderboard: Props) {
                   marginBottom: '420px',
                 }}
               >
-                <Autocomplete
+                <MuiAutoComplete
                   freeSolo
                   disableClearable
                   getOptionLabel={(option) => option.name}
                   options={users}
-                  classes={{
-                    option: classes.option,
-                    paper: classes.paper,
-                  }}
                   renderOption={(props, option) => (
                     <li
                       {...props}
@@ -185,6 +141,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
                         prefetch={false}
                         href="/t/[id]"
                         as={`/t/${option.slug}`}
+                        className={styles['autocomplete-option']}
                       >
                         <div
                           className={styles.searchedUserCard}

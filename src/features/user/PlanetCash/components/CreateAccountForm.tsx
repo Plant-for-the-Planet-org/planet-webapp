@@ -1,6 +1,6 @@
 import { ReactElement, useState, useContext, FormEvent } from 'react';
 import { Button, CircularProgress } from '@mui/material';
-import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
+import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { useTranslation } from 'next-i18next';

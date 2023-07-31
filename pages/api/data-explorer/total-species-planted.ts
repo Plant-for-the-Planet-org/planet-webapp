@@ -43,7 +43,7 @@ handler.post(async (req, response) => {
             FROM planted_species ps \
         INNER JOIN plant_location pl ON ps.plant_location_id = pl.id \
         LEFT JOIN scientific_species ss ON ps.scientific_species_id = ss.id \
-        JOIN plant_project pp ON pl.plant_project_id = pp.id \
+        JOIN project pp ON pl.plant_project_id = pp.id \
         WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ?";
 
     const res = await db.query<TotalSpeciesPlanted[]>(query, [

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { Layer, Source } from 'react-map-gl';
-import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 
 interface Props {
   id?: string | undefined;
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function ProjectPolygon({ id, geoJson }: Props): ReactElement {
-  const { selectedMode, satellite } = React.useContext(ProjectPropsContext);
+  const { selectedMode, satellite } = useProjectProps();
 
   return (
     <>

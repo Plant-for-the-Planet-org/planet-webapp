@@ -7,7 +7,7 @@ import EditIcon from '../../../../public/assets/images/icons/manageProjects/Penc
 import Link from 'next/link';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
-import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
@@ -32,7 +32,7 @@ export default function ProjectSnippet({
     ? getImageUrl('project', 'medium', project.image)
     : '';
 
-  const { selectedPl, hoveredPl } = React.useContext(ProjectPropsContext);
+  const { selectedPl, hoveredPl } = useProjectProps();
 
   let progressPercentage = (project.countPlanted / project.countTarget) * 100;
 

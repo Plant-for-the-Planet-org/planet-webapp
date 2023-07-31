@@ -52,7 +52,7 @@ handler.post(async (req, response) => {
           pl.plant_date AS plantedDate, \
           SUM(pl.trees_planted) AS treesPlanted \
         FROM plant_location pl \
-        JOIN plant_project pp ON pl.plant_project_id = pp.id \
+        JOIN project pp ON pl.plant_project_id = pp.id \
         WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ? \
         GROUP BY pl.plant_date \
         ORDER BY pl.plant_date';
@@ -68,7 +68,7 @@ handler.post(async (req, response) => {
           YEAR(pl.plant_date) AS year, \
           SUM(pl.trees_planted) AS treesPlanted \
         FROM plant_location pl \
-        JOIN plant_project pp ON pl.plant_project_id = pp.id \
+        JOIN project pp ON pl.plant_project_id = pp.id \
         WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ? \
         GROUP BY weekNum, weekStartDate, weekEndDate, month, year \
         ORDER BY pl.plant_date';
@@ -81,7 +81,7 @@ handler.post(async (req, response) => {
           YEAR(pl.plant_date) AS year, \
           SUM(pl.trees_planted) AS treesPlanted \
         FROM plant_location pl \
-        JOIN plant_project pp ON pl.plant_project_id = pp.id \
+        JOIN project pp ON pl.plant_project_id = pp.id \
         WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ? \
         GROUP BY month, year \
         ORDER BY pl.plant_date;';
@@ -93,7 +93,7 @@ handler.post(async (req, response) => {
           YEAR(pl.plant_date) AS year, \
           SUM(pl.trees_planted) AS treesPlanted \
         FROM plant_location pl \
-        JOIN plant_project pp ON pl.plant_project_id = pp.id \
+        JOIN project pp ON pl.plant_project_id = pp.id \
         WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ? \
         GROUP BY year \
         ORDER BY pl.plant_date';
@@ -105,7 +105,7 @@ handler.post(async (req, response) => {
             YEAR(pl.plant_date) AS year, \
             SUM(pl.trees_planted) AS treesPlanted \
           FROM plant_location pl \
-          JOIN plant_project pp ON pl.plant_project_id = pp.id \
+          JOIN project pp ON pl.plant_project_id = pp.id \
           WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ? \
           GROUP BY year \
           ORDER BY pl.plant_date';

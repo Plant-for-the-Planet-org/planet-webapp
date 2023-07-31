@@ -1,18 +1,13 @@
 /* eslint-disable no-use-before-define */
 import React from 'react';
-import { ThemeContext } from '../../../../../theme/themeContext';
-import themeProperties from '../../../../../theme/themeProperties';
-import tenantConfig from '../../../../../../tenant.config';
 import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
 import { postRequest } from '../../../../../utils/apiRequests/api';
 import { Controller, Control, FieldValues, FieldPath } from 'react-hook-form';
 import { Autocomplete } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+
 import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-
-const config = tenantConfig();
 
 interface Props<
   TFieldValues extends FieldValues,
@@ -40,41 +35,7 @@ export default function SpeciesSelect<
   >([]);
   const [query, setQuery] = React.useState('');
   const { t } = useTranslation(['treemapper']);
-  const { theme } = React.useContext(ThemeContext);
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const useStylesAutoComplete = makeStyles({
-    paper: {
-      color:
-        theme === 'theme-light'
-          ? `${themeProperties.light.primaryFontColor} !important`
-          : `${themeProperties.dark.primaryFontColor} !important`,
-      backgroundColor:
-        theme === 'theme-light'
-          ? `${themeProperties.light.backgroundColor} !important`
-          : `${themeProperties.dark.backgroundColor} !important`,
-    },
-    option: {
-      fontFamily: config.font.primaryFontFamily,
-      '&:hover': {
-        backgroundColor:
-          theme === 'theme-light'
-            ? `${themeProperties.light.backgroundColorDark} !important`
-            : `${themeProperties.dark.backgroundColorDark} !important`,
-      },
-      '&:active': {
-        backgroundColor:
-          theme === 'theme-light'
-            ? `${themeProperties.light.backgroundColorDark} !important`
-            : `${themeProperties.dark.backgroundColorDark} !important`,
-      },
-      fontSize: '14px',
-      '& > span': {
-        marginRight: 10,
-        fontSize: 18,
-      },
-    },
-  });
-  const classes = useStylesAutoComplete();
 
   // Code below can be removed if no longer needed, along with the `mySpecies` prop
   /* React.useEffect(() => {
@@ -138,10 +99,6 @@ export default function SpeciesSelect<
         <Autocomplete
           id="species-select"
           style={{ width: width ? width : '100%' }}
-          classes={{
-            option: classes.option,
-            paper: classes.paper,
-          }}
           options={speciesSuggestion}
           autoHighlight
           getOptionLabel={(option) => `${option.scientificName}` || ''}

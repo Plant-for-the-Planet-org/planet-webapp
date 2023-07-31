@@ -10,7 +10,6 @@ import MapGL, {
   FlyToInterpolator,
 } from 'react-map-gl';
 import * as d3 from 'd3-ease';
-import { makeStyles } from '@mui/styles';
 import { MenuItem } from '@mui/material';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info';
 import {
@@ -102,28 +101,6 @@ export default function BasicDetails({
   });
   const router = useRouter();
 
-  const useStylesAutoComplete = makeStyles({
-    root: {
-      color:
-        theme === 'theme-light'
-          ? `${themeProperties.light.primaryFontColor} !important`
-          : `${themeProperties.dark.primaryFontColor} !important`,
-      backgroundColor:
-        theme === 'theme-light'
-          ? `${themeProperties.light.backgroundColor} !important`
-          : `${themeProperties.dark.backgroundColor} !important`,
-    },
-    option: {
-      // color: '#2F3336',
-      '&:hover': {
-        backgroundColor:
-          theme === 'theme-light'
-            ? `${themeProperties.light.backgroundColorDark} !important`
-            : `${themeProperties.dark.backgroundColorDark} !important`,
-      },
-    },
-  });
-  const classes = useStylesAutoComplete();
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
@@ -538,14 +515,7 @@ export default function BasicDetails({
                       onBlur={onBlur}
                     >
                       {classifications.map((option) => (
-                        <MenuItem
-                          key={option.value}
-                          value={option.value}
-                          classes={{
-                            // option: classes.option,
-                            root: classes.root,
-                          }}
-                        >
+                        <MenuItem key={option.value} value={option.value}>
                           {option.label}
                         </MenuItem>
                       ))}
@@ -576,14 +546,7 @@ export default function BasicDetails({
                       onBlur={onBlur}
                     >
                       {ecosystemsType.map((option) => (
-                        <MenuItem
-                          key={option.value}
-                          value={option.value}
-                          classes={{
-                            // option: classes.option,
-                            root: classes.root,
-                          }}
-                        >
+                        <MenuItem key={option.value} value={option.value}>
                           {option.label}
                         </MenuItem>
                       ))}
@@ -755,7 +718,7 @@ export default function BasicDetails({
                       parseNumber(i18n.language, value) > 0 &&
                       parseNumber(i18n.language, value) <= 100,
                   }}
-                  render={() => (
+                  render={({ field: { onChange, value, onBlur } }) => (
                     <MaterialTextField
                       label={
                         router.query.purpose === 'trees' ||
@@ -766,6 +729,9 @@ export default function BasicDetails({
                       variant="outlined"
                       type="number"
                       placeholder={'0'}
+                      onChange={onChange}
+                      value={value}
+                      onBlur={onBlur}
                       InputProps={{
                         startAdornment: (
                           <p

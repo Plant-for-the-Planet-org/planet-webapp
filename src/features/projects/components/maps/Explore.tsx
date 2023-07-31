@@ -20,7 +20,7 @@ import ExploreInfoModal from './ExploreInfoModal';
 import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../../theme/themeContext';
-import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
@@ -56,7 +56,7 @@ export default function Explore({}: Props): ReactElement {
     defaultMapCenter,
     isMobile,
     exploreProjects,
-  } = React.useContext(ProjectPropsContext);
+  } = useProjectProps();
 
   const { t } = useTranslation(['maps']);
   const router = useRouter();
@@ -413,7 +413,7 @@ export default function Explore({}: Props): ReactElement {
 
 const ExploreLayers = () => {
   const { exploreForests, explorePotential, exploreDeforestation } =
-    React.useContext(ProjectPropsContext);
+    useProjectProps();
   return (
     <>
       {exploreForests ? (

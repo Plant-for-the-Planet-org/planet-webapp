@@ -3,7 +3,7 @@ import { getRasterData } from '../../../../utils/apiRequests/api';
 import zoomToLocation from '../../../../utils/maps/zoomToLocation';
 import zoomToProjectSite from '../../../../utils/maps/zoomToProjectSite';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import Location from './Location';
 import Sites from './Sites';
 import { useRouter } from 'next/router';
@@ -32,7 +32,7 @@ export default function Project({
     isMobile,
     setSiteViewPort,
     samplePlantLocation,
-  } = React.useContext(ProjectPropsContext);
+  } = useProjectProps();
 
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const router = useRouter();

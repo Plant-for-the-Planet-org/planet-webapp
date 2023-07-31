@@ -4,7 +4,7 @@ import ProjectsList from '../src/features/projects/screens/Projects';
 import GetAllProjectsMeta from '../src/utils/getMetaTags/GetAllProjectsMeta';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import { getRequest } from '../src/utils/apiRequests/api';
-import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../src/features/common/Layout/ProjectPropsContext';
 import Credits from '../src/features/projects/components/maps/Credits';
 import Filters from '../src/features/projects/components/projects/Filters';
 import { TENANT_ID } from '../src/utils/constants/environment';
@@ -35,7 +35,7 @@ export default function Donate({
     setsearchedProjects,
     setZoomLevel,
     filteredProjects,
-  } = React.useContext(ProjectPropsContext);
+  } = useProjectProps();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { i18n } = useTranslation();
   const router = useRouter();
