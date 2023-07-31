@@ -7,7 +7,7 @@ import {
 import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import { ReactElement } from 'react';
-import { ConservationButtonProps } from '../../../../common/types/contribution';
+import { ConservationButtonProps } from '../../../../common/types/myForest';
 import { useContext } from 'react';
 import { ProjectPropsContext } from '../../../../common/Layout/ProjectPropsContext';
 

@@ -12,7 +12,7 @@ import { trpc } from '../../../../../utils/trpc';
 import AreaConservedProjectList from '../ProjectDetails/AreaConservedProjectList';
 import { ProjectPropsContext } from '../../../../common/Layout/ProjectPropsContext';
 import { Purpose } from '../../../../../utils/constants/myForest';
-import { Contributions } from '../../../../common/types/contribution';
+import { Contributions } from '../../../../common/types/myForest';
 import { QueryResult } from '../../../../../server/router/myForest';
 import { MyTreesProps } from '../../../../common/types/map';
 
@@ -25,7 +25,10 @@ export default function MyTrees({
   authenticatedType,
 }: MyTreesProps): React.ReactElement | null {
   const { ready } = useTranslation(['country', 'me']);
-  const [contribution, setContribution] = React.useState<Contributions[]>([]);
+  const [projectsForTreePlantaion, setProjectsForTreePlantaion] =
+    React.useState<Contributions[]>([]);
+  const [projectsForAreaConservation, setProjectsForAreaConservation] =
+    React.useState<Contributions[]>([]);
   const [otherDonationInfo, setOthercontributionInfo] = React.useState<
     QueryResult[]
   >([]);
@@ -52,17 +55,31 @@ export default function MyTrees({
     purpose: Purpose.TREES,
   });
 
+  const _contributionDataForPlantedtrees =
+    trpc.myForest.contributions.useInfiniteQuery(
+      {
+        profileId: `prf_6RaZcCpeJIlTA4DKEPKje1T6`,
+        limit: 15,
+        purpose: Purpose.TREES,
+      },
+      { getNextPageParam: (lastPage) => lastPage.nextCursor }
+    );
+
   const _contributionData = trpc.myForest.contributions.useInfiniteQuery(
     {
       profileId: `prf_6RaZcCpeJIlTA4DKEPKje1T6`,
       limit: 15,
-      purpose: isConservedButtonActive ? Purpose.CONSERVATION : Purpose.TREES,
+      purpose: Purpose.CONSERVATION,
     },
     { getNextPageParam: (lastPage) => lastPage.nextCursor }
   );
 
   const handleFetchNextPage = (): void => {
     _contributionData.fetchNextPage();
+    setPage((prev) => prev + 1);
+  };
+  const handleFetchNextPageforPlantedTrees = (): void => {
+    _contributionDataForPlantedtrees.fetchNextPage();
     setPage((prev) => prev + 1);
   };
 
@@ -79,9 +96,30 @@ export default function MyTrees({
         );
       }
 
-      setContribution(_contributionData.data?.pages);
+      setProjectsForAreaConservation(_contributionData.data?.pages);
     }
   }, [_contributionData.isLoading, _contributionData.data]);
+
+  React.useEffect(() => {
+    if (!_contributionDataForPlantedtrees.isLoading) {
+      if (_contributionDataForPlantedtrees.error) {
+        setErrors(
+          handleError(
+            new APIError(
+              _contributionDataForPlantedtrees.error?.data
+                ?.httpStatus as number,
+              _contributionDataForPlantedtrees.error
+            )
+          )
+        );
+      }
+
+      setProjectsForTreePlantaion(_contributionDataForPlantedtrees.data?.pages);
+    }
+  }, [
+    _contributionDataForPlantedtrees.isLoading,
+    _contributionDataForPlantedtrees.data,
+  ]);
 
   React.useEffect(() => {
     if (!_conservationGeoJsonData.isLoading) {
@@ -159,16 +197,16 @@ export default function MyTrees({
 
       {isTreePlantedButtonActive && !isConservedButtonActive && (
         <TreeContributedProjectList
-          contribution={contribution}
+          contribution={projectsForTreePlantaion}
           userprofile={profile}
           authenticatedType={authenticatedType}
-          handleFetchNextPage={handleFetchNextPage}
+          handleFetchNextPage={handleFetchNextPageforPlantedTrees}
         />
       )}
 
       {isConservedButtonActive && !isTreePlantedButtonActive && (
         <AreaConservedProjectList
-          contribution={contribution}
+          contribution={projectsForAreaConservation}
           handleFetchNextPage={handleFetchNextPage}
         />
       )}

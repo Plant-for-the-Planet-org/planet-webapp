@@ -6,7 +6,7 @@ import {
   DonationsSvg,
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import { ReactElement } from 'react';
-import { DonationInfoProps } from '../../../../common/types/contribution';
+import { DonationInfoProps } from '../../../../common/types/myForest';
 
 const DonationInfo = ({
   projects,

@@ -1,5 +1,5 @@
 import { useTranslation } from 'next-i18next';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Button from '@mui/material/Button';
 import myForestStyles from '../../styles/MyForest.module.scss';
 import TreeCounter from '../../../../common/TreeCounter/TreeCounter';
@@ -7,10 +7,7 @@ import { EditTargetSvg } from '../../../../../../public/assets/images/ProfilePag
 import AddTargetModal from '../../../Profile/components/AddTargetModal';
 import ContributedProjectList from './ContributedProjectList';
 import { ReactElement } from 'react';
-import {
-  Contributions,
-  TreeContributedProjectListProps,
-} from '../../../../common/types/contribution';
+import { TreeContributedProjectListProps } from '../../../../common/types/myForest';
 
 const TreeContributedProjectList = ({
   contribution,
@@ -20,9 +17,6 @@ const TreeContributedProjectList = ({
 }: TreeContributedProjectListProps): ReactElement => {
   const { t } = useTranslation(['me']);
   const [isAddTargetModalOpen, setIsAddTargetModalOpen] = useState(false);
-  const [restorationProject, setRestorationProject] = useState<Contributions[]>(
-    []
-  );
   const [isLoadButtonActive, setIsLoadButtonActive] = useState(false);
 
   const handleAddTargetModalOpen = (): void => {
@@ -32,36 +26,6 @@ const TreeContributedProjectList = ({
   const handleAddTargetModalClose = (): void => {
     setIsAddTargetModalOpen(false);
   };
-
-  useEffect(() => {
-    const data: Contributions[] = [];
-    const _fetchProjectlist = () => {
-      const _fetchTreePlantedProjects = contribution.map((singlePageData) => {
-        return singlePageData?.data.filter((singleProject: Contributions) => {
-          if (
-            singleProject.purpose === 'trees' ||
-            singleProject.purpose === 'bouquet'
-          ) {
-            if (singlePageData?.nextCursor !== undefined) {
-              setIsLoadButtonActive(true);
-            } else {
-              setIsLoadButtonActive(false);
-            }
-            return singleProject;
-          }
-        });
-      });
-
-      if (_fetchTreePlantedProjects) {
-        _fetchTreePlantedProjects.map((singleProject) => {
-          data.push(singleProject);
-        });
-        setRestorationProject(data);
-      }
-    };
-    if (contribution) _fetchProjectlist();
-  }, [contribution]);
-
   return (
     <div className={myForestStyles.mainContainer}>
       <div className={myForestStyles.treeCounterContainer}>
@@ -107,22 +71,14 @@ const TreeContributedProjectList = ({
           {t('me:treesPlantedAndAreaRestored')}
           <p className={myForestStyles.hrLine} />
         </div>
-
-        <ContributedProjectList
-          isConservedButtonActive={undefined}
-          contributionProjectList={restorationProject}
-        />
-        {isLoadButtonActive && (
-          <div className={myForestStyles.loadProjectButtonContainer}>
-            <Button
-              style={{ maxWidth: 'fit-content' }}
-              variant="contained"
-              onClick={handleFetchNextPage}
-            >
-              {t('me:loadProjects')}
-            </Button>
-          </div>
-        )}
+        <div>
+          <ContributedProjectList
+            contributionProjectList={contribution}
+            setIsLoadButtonActive={setIsLoadButtonActive}
+            isLoadButtonActive={isLoadButtonActive}
+            handleFetchNextPage={handleFetchNextPage}
+          />
+        </div>
       </div>
     </div>
   );

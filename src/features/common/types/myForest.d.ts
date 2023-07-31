@@ -105,8 +105,10 @@ export interface ProjectProps {
 }
 
 export interface ContributedProjectListProps {
-  isConservedButtonActive?: boolean;
+  handleFetchNextPage: () => void
   contributionProjectList: Contributions[];
+  isLoadButtonActive: boolean;
+  setIsLoadButtonActive: SetState<boolean>
 }
 
 export interface DonationInfoProps {

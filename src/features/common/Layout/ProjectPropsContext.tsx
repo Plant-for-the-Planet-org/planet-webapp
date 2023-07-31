@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { ParamsContext } from './QueryParamsContext';
-import { Contributions } from '../../common/types/contribution';
+import { Contributions } from '../types/myForest';
 interface Props {}
 
 export const ProjectPropsContext = React.createContext({

@@ -4,7 +4,7 @@ import {
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
-import { PlantedTreesButtonProps } from '../../../../common/types/contribution';
+import { PlantedTreesButtonProps } from '../../../../common/types/myForest';
 import { ProjectPropsContext } from '../../../../common/Layout/ProjectPropsContext';
 import { useContext } from 'react';
 

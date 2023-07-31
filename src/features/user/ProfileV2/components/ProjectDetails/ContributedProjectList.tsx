@@ -10,8 +10,9 @@ import { format } from 'date-fns';
 import {
   ProjectProps,
   ContributedProjectListProps,
-} from '../../../../common/types/contribution';
+} from '../../../../common/types/myForest';
 import { ProjectPropsContext } from '../../../../common/Layout/ProjectPropsContext';
+import { Button } from '@mui/material';
 
 const Project = ({ key, projectInfo }: ProjectProps): ReactElement => {
   const { token } = useUserProps();
@@ -73,30 +74,68 @@ const Project = ({ key, projectInfo }: ProjectProps): ReactElement => {
 
 const ContributedProjectList = ({
   contributionProjectList,
+  setIsLoadButtonActive,
+  isLoadButtonActive,
+  handleFetchNextPage,
 }: ContributedProjectListProps): ReactElement => {
   const { isConservedButtonActive } = useContext(ProjectPropsContext);
+  const { t } = useTranslation(['me']);
   return (
     <div
       className={myForestStyles.donationlistContainer}
       style={{ marginTop: isConservedButtonActive ? '0px' : '340px' }}
     >
-      {contributionProjectList.map((arrayOfProject: any, key: number) => {
-        return arrayOfProject.map((singleProject) => {
-          if (singleProject.purpose !== 'bouquet') {
-            return <Project key={key} projectInfo={singleProject} />;
+      {contributionProjectList.map((singlePage: any) => {
+        if (singlePage?.nextCursor === undefined) {
+          setIsLoadButtonActive(false);
+        } else {
+          setIsLoadButtonActive(true);
+        }
+        return singlePage?.data?.map((singleProject: any) => {
+          if (
+            singleProject.purpose !== 'bouquet' &&
+            singleProject.contributionType !== 'planting'
+          ) {
+            return (
+              <Project
+                key={singleProject.plantProject.guid}
+                projectInfo={singleProject}
+              />
+            );
           }
         });
       })}
 
-      {contributionProjectList.map((project: any) => {
-        if (project.purpose === 'bouquet') {
-          return project?.bouquetContributions?.map(
-            (bouquetProject: any, key: number) => {
-              return <Project key={key} projectInfo={bouquetProject} />;
-            }
-          );
-        }
+      {contributionProjectList.map((singlePage: any) => {
+        return singlePage?.data?.map((singleProject: any) => {
+          if (singleProject.purpose === 'bouquet') {
+            return singleProject.bouquetContributions.map(
+              (bouquetProject: any) => {
+                return (
+                  <Project
+                    key={bouquetProject.plantProject.guid}
+                    projectInfo={bouquetProject}
+                  />
+                );
+              }
+            );
+          }
+        });
       })}
+      {isLoadButtonActive && (
+        <div className={myForestStyles.loadProjectButtonContainer}>
+          <Button
+            style={{
+              maxWidth: 'fit-content',
+              backgroundColor: isConservedButtonActive ? '#48AADD' : '',
+            }}
+            variant="contained"
+            onClick={handleFetchNextPage}
+          >
+            {t('me:loadProjects')}
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

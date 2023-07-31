@@ -506,9 +506,20 @@
     }
 }
 
+@include smTabletView {
+    .conservedAreaText {
+        left: 485px
+    }
+}
+
 @include mdTabletView {
     .conservedAreaText {
-        left: 265px
+        left: 245px
+    }
+}
+@include lgLaptopView {
+    .conservedAreaText {
+        left: 430px
     }
 }
 

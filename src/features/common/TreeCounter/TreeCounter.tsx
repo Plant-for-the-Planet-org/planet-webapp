@@ -23,7 +23,7 @@ export function FacebookCircularProgress(props: CircularProgressProps) {
     <div className={treeCounterStyles.circularProgreesContainer}>
       <CircularProgress
         variant="determinate"
-        size={403}
+        size={355}
         thickness={3}
         {...props}
       />

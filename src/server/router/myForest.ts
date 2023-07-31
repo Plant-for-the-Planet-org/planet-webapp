@@ -7,7 +7,7 @@ import { Prisma } from '@prisma/client';
 import {
   ContributionsGeoJsonQueryResult,
   StatsQueryResult,
-} from '../../features/common/types/contribution';
+} from '../../features/common/types/myForest';
 
 export const myForestRouter = router({
   contributions: procedure
