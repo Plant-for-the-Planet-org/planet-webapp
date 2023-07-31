@@ -11,8 +11,8 @@ import {
   ProjectProps,
   ContributedProjectListProps,
 } from '../../../../common/types/myForest';
-import { ProjectPropsContext } from '../../../../common/Layout/ProjectPropsContext';
 import { Button } from '@mui/material';
+import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 
 const Project = ({ key, projectInfo }: ProjectProps): ReactElement => {
   const { token } = useUserProps();
@@ -78,7 +78,7 @@ const ContributedProjectList = ({
   isLoadButtonActive,
   handleFetchNextPage,
 }: ContributedProjectListProps): ReactElement => {
-  const { isConservedButtonActive } = useContext(ProjectPropsContext);
+  const { isConservedButtonActive } = useProjectProps();
   const { t } = useTranslation(['me']);
   return (
     <div

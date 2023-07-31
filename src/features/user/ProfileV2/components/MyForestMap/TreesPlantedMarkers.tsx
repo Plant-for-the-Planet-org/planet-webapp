@@ -2,7 +2,6 @@ import { TreePlantedClusterMarker } from './ClusterMarker';
 import SingleMarker from './SingleMarker';
 import Supercluster from 'supercluster';
 import { useState, useEffect, useContext, ReactElement } from 'react';
-import { ProjectPropsContext } from '../../../../common/Layout/ProjectPropsContext';
 import React from 'react';
 import {
   TestPointProps,
@@ -11,6 +10,7 @@ import {
   ClusterMarkerProps,
   Bound,
 } from '../../../../common/types/map';
+import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 
 export const _clusterConfig = {
   radius: 40,
@@ -30,7 +30,7 @@ const TreesPlantedMarkers = ({
   viewport,
   mapRef,
 }: ClusterMarkerProps): ReactElement => {
-  const { treePlantedProjects } = useContext(ProjectPropsContext);
+  const { treePlantedProjects } = useProjectProps();
   const [clusters, setClusters] = useState<Cluster[]>([]);
   const supercluster = new Supercluster(_clusterConfig);
 

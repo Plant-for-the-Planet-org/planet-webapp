@@ -1,8 +1,8 @@
 import { ConservAreaClusterMarker } from './ClusterMarker';
 import SingleMarker from './SingleMarker';
 import Supercluster from 'supercluster';
-import { useEffect, useState, useContext, ReactElement } from 'react';
-import { ProjectPropsContext } from '../../../../common/Layout/ProjectPropsContext';
+import { useEffect, useState, ReactElement } from 'react';
+import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 import { _clusterConfig } from './TreesPlantedMarkers';
 import {
   ClusterMarkerProps,
@@ -14,7 +14,7 @@ const ConservationMarker = ({
   viewport,
   mapRef,
 }: ClusterMarkerProps): ReactElement => {
-  const { conservationProjects } = useContext(ProjectPropsContext);
+  const { conservationProjects } = useProjectProps();
   const [clusters, setClusters] = useState<Cluster[]>([]);
   const superclusterConserv = new Supercluster(_clusterConfig);
   const _fetch = () => {

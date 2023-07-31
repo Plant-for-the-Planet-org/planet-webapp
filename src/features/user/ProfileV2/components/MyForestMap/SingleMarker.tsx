@@ -8,12 +8,12 @@ import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import { useTranslation } from 'next-i18next';
 import { format } from 'date-fns';
 import { SingleMarkerProps } from '../../../../common/types/map';
-import { ProjectPropsContext } from '../../../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 
 const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
   const { t, ready } = useTranslation(['me']);
   const { isConservedButtonActive, isTreePlantedButtonActive } =
-    useContext(ProjectPropsContext);
+    useProjectProps();
   const [showPopUp, setShowPopUp] = useState(false);
   return ready ? (
     <div className={MyForestMapStyle.singleMarkerContainer}>

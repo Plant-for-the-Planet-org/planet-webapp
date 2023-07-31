@@ -5,15 +5,15 @@ import {
 import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import { PlantedTreesButtonProps } from '../../../../common/types/myForest';
-import { ProjectPropsContext } from '../../../../common/Layout/ProjectPropsContext';
 import { useContext } from 'react';
+import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 
 const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
   const {
     isTreePlantedButtonActive,
     setIsTreePlantedButtonActive,
     setIsConservedButtonActive,
-  } = useContext(ProjectPropsContext);
+  } = useProjectProps();
   const { t } = useTranslation(['donate']);
   const handleClick = () => {
     if (isTreePlantedButtonActive) {

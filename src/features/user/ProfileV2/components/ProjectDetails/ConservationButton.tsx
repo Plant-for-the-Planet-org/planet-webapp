@@ -8,8 +8,7 @@ import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import { ReactElement } from 'react';
 import { ConservationButtonProps } from '../../../../common/types/myForest';
-import { useContext } from 'react';
-import { ProjectPropsContext } from '../../../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 
 const ConservationButton = ({
   conservedArea,
@@ -18,7 +17,7 @@ const ConservationButton = ({
     isConservedButtonActive,
     setIsConservedButtonActive,
     setIsTreePlantedButtonActive,
-  } = useContext(ProjectPropsContext);
+  } = useProjectProps();
   const { t } = useTranslation(['donate']);
   const handleClick = () => {
     if (isConservedButtonActive) {

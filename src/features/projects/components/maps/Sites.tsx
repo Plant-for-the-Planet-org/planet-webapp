@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 import zoomToProjectSite from '../../../../utils/maps/zoomToProjectSite';
-import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import PlantLocations from './PlantLocations';
 import ProjectPolygon from './ProjectPolygon';
 import SatelliteLayer from './SatelliteLayer';
@@ -24,7 +24,7 @@ export default function Sites({}: Props): ReactElement {
     satellite,
     setSiteViewPort,
     plantLocationsLoaded,
-  } = React.useContext(ProjectPropsContext);
+  } = useProjectProps();
 
   React.useEffect(() => {
     zoomToProjectSite(

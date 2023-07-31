@@ -5,7 +5,7 @@ import styles from '../styles/ProjectsMap.module.scss';
 import Project from '../components/maps/Project';
 import ExploreLayers from './maps/ExploreLayers';
 import Home from './maps/Home';
-import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
 import PlantLocations from './maps/PlantLocations';
 import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
@@ -45,7 +45,7 @@ export default function ProjectsMap(): ReactElement {
     setFilterOpen,
     setSamplePlantLocation,
     samplePlantLocation,
-  } = React.useContext(ProjectPropsContext);
+  } = useProjectProps();
 
   const { t } = useTranslation(['maps']);
   const { embed, showProjectList } = React.useContext(ParamsContext);

@@ -10,7 +10,7 @@ import DonationInfo from '../ProjectDetails/DonationInfo';
 import TreeContributedProjectList from '../ProjectDetails/TreeContributedProjectList';
 import { trpc } from '../../../../../utils/trpc';
 import AreaConservedProjectList from '../ProjectDetails/AreaConservedProjectList';
-import { ProjectPropsContext } from '../../../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 import { Purpose } from '../../../../../utils/constants/myForest';
 import { Contributions } from '../../../../common/types/myForest';
 import { QueryResult } from '../../../../../server/router/myForest';
@@ -39,7 +39,7 @@ export default function MyTrees({
     setTreePlantedProjects,
     isConservedButtonActive,
     isTreePlantedButtonActive,
-  } = useContext(ProjectPropsContext);
+  } = useProjectProps();
 
   const _detailInfo = trpc.myForest.stats.useQuery({
     profileId: `${profile.id}`,

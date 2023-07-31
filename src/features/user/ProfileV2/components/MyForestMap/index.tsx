@@ -1,10 +1,10 @@
 import MapGL, { NavigationControl } from 'react-map-gl';
-import { useState, useEffect, useRef, ReactElement, useContext } from 'react';
+import { useState, useEffect, useRef, ReactElement } from 'react';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import TreesPlantedMarkers from './TreesPlantedMarkers';
 import ConservationMarkers from './ConservationMarkers';
-import { ProjectPropsContext } from '../../../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 import { ViewportProps } from 'react-map-gl';
 
 const MyForestMap = (): ReactElement => {
@@ -15,7 +15,7 @@ const MyForestMap = (): ReactElement => {
     layers: [],
   };
   const { isConservedButtonActive, isTreePlantedButtonActive } =
-    useContext(ProjectPropsContext);
+    useProjectProps();
   const [mapState, setMapState] = useState({
     mapStyle: EMPTY_STYLE,
     dragPan: true,
