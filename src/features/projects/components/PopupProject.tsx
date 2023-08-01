@@ -65,6 +65,12 @@ export default function PopupProject({
           project.isTopProject &&
           project.isApproved && <TopProjectBadge displayPopup={false} />}
         <div className={'projectImageBlock'}>
+          {project.ecosystem !== null && (
+            <div className={'projectEcosystem'}>
+              {t(`manageProjects:ecosystemTypes.${project.ecosystem}`)}
+              {project.purpose === 'trees' && ' /'}
+            </div>
+          )}
           {project.purpose === 'trees' && (
             <div className={'projectType'}>
               {project.classification && t(`donate:${project.classification}`)}
