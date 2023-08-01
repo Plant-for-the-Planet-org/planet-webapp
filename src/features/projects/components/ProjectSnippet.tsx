@@ -36,7 +36,12 @@ export default function ProjectSnippet({
   displayPopup,
 }: Props): ReactElement {
   const router = useRouter();
-  const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
+  const { t, i18n, ready } = useTranslation([
+    'donate',
+    'common',
+    'country',
+    'manageProjects',
+  ]);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
@@ -53,11 +58,17 @@ export default function ProjectSnippet({
     progressPercentage = 100;
   }
 
+  const ecosystem =
+    project._scope === 'extended'
+      ? project.metadata.ecosystem
+      : project.ecosystem;
+
   const { token } = useUserProps();
   const handleOpen = () => {
     const url = getDonationUrl(project.slug, token, embed, callbackUrl);
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
+
   return ready ? (
     <div className={'singleProject'}>
       {editMode ? (
@@ -98,6 +109,12 @@ export default function ProjectSnippet({
           project.isTopProject &&
           project.isApproved && <TopProjectBadge displayPopup={true} />}
         <div className={'projectImageBlock'}>
+          {ecosystem !== null && (
+            <div className={'projectEcosystem'}>
+              {t(`manageProjects:ecosystemTypes.${ecosystem}`)}
+              {project.purpose === 'trees' && ' /'}
+            </div>
+          )}
           <div className={'projectType'}>
             {project.purpose === 'trees' &&
               project.classification &&
