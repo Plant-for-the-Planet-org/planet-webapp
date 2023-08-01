@@ -151,7 +151,9 @@ export default function ImportData({}: Props): ReactElement {
       <div className={styles.pageContainer}>
         <div className={styles.listContainer}>
           <div className={styles.pageTitle}>{t('treemapper:importData')}</div>
-          <p>{t('treemapper:importExplanation')}</p>
+          <p className={styles.pageSubtitle}>
+            {t('treemapper:importExplanation')}
+          </p>
           <div className={styles.stepperContainer}>
             <Stepper
               activeStep={activeStep}
