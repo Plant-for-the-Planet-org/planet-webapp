@@ -28,20 +28,21 @@ model contribution {
 }
 
 model project {
-    id           Int            @id @default(autoincrement())
-    guid         String         @db.VarChar(32)
-    name         String?        @db.VarChar(255)
-    description  String?        @db.LongText
-    country      String?        @map("country") @db.VarChar(2)
-    unit         String?        @map("unit_type") @db.VarChar(255)
-    image        String?        @db.VarChar(255)
-    purpose      String         @db.VarChar(64)
-    location     String?        @db.LongText
-    geoLongitude Float?         @map("geo_longitude")
-    geoLatitude  Float?         @map("geo_latitude")
-    contribution contribution[]
-    tpoId        Int?           @map("tpo_id")
-    tpo          profile?       @relation(fields: [tpoId], references: [id])
+    id             Int            @id @default(autoincrement())
+    guid           String         @db.VarChar(32)
+    name           String?        @db.VarChar(255)
+    description    String?        @db.LongText
+    country        String?        @map("country") @db.VarChar(2)
+    unit           String?        @map("unit_type") @db.VarChar(255)
+    image          String?        @db.VarChar(255)
+    purpose        String         @db.VarChar(64)
+    location       String?        @db.LongText
+    geoLongitude   Float?         @map("geo_longitude")
+    geoLatitude    Float?         @map("geo_latitude")
+    contribution   contribution[]
+    tpoId          Int?           @map("tpo_id")
+    bouquetPurpose String?        @map("bouquet_purpose") @db.VarChar(16)
+    tpo            profile?       @relation(fields: [tpoId], references: [id])
 }
 
 model profile {

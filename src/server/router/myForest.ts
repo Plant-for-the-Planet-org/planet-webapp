@@ -95,6 +95,14 @@ export const myForestRouter = router({
                     ? ['trees', 'bouquet']
                     : ['conservation', 'bouquet'],
                 },
+                ...(purpose
+                  ? {
+                      OR: [
+                        { bouquetPurpose: purpose },
+                        { bouquetPurpose: null },
+                      ],
+                    }
+                  : {}),
               },
               bouquetDonationId: {
                 equals: null,
