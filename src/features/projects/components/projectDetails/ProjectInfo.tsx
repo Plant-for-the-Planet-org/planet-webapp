@@ -171,7 +171,7 @@ function ProjectInfo({ project }: Props): ReactElement {
           project.metadata.firstTreePlanted !== null && (
             <div className={styles.projectMoreInfoHalf}>
               <div className={styles.infoTitle}>
-                {t('manageProjects:firstTreePlanted')}
+                {t('manageProjects:labelRestorationStarted')}
               </div>
               <div className={styles.infoText}>
                 {formatDate(
@@ -247,7 +247,7 @@ function ProjectInfo({ project }: Props): ReactElement {
           project.metadata.plantingSeasons.length > 0 && (
             <div className={styles.projectMoreInfoHalf}>
               <div className={styles.infoTitle}>
-                {t('manageProjects:plantingSeasons')}
+                {t('manageProjects:labelRestorationSeasons')}
               </div>
               <div className={styles.infoText}>
                 {project.metadata.plantingSeasons.map(

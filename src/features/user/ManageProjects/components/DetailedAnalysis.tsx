@@ -522,7 +522,7 @@ export default function DetailedAnalysis({
                     control={control}
                     render={({ field: { onChange, value } }) => (
                       <MuiDatePicker
-                        label={t('manageProjects:firstTreePlanted')}
+                        label={t('manageProjects:labelRestorationStarted')}
                         value={value}
                         onChange={onChange}
                         renderInput={(props) => (
@@ -712,7 +712,7 @@ export default function DetailedAnalysis({
               <p className={styles.plantingSeasonsLabel}>
                 {' '}
                 {purpose === 'trees'
-                  ? t('manageProjects:plantingSeasons')
+                  ? t('manageProjects:labelRestorationSeasons')
                   : t('manageProjects:protectionSeasons')}{' '}
               </p>
               {plantingSeasons.map((month) => {
