@@ -6,6 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useTranslation } from 'next-i18next';
 import { ProfileProps } from '../../../../common/types/profile';
 import { ReactElement } from 'react';
+import { format } from 'date-fns';
 
 const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
   const { t } = useTranslation(['editProfile']);
@@ -29,7 +30,11 @@ const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
           <div className={myProfilestyle.userInfo}>
             {userProfile?.displayName}
           </div>
-          <div>{t('editProfile:member', { date: 'May 2012' })}</div>
+          <div>
+            {t('editProfile:member', {
+              date: `${format(new Date(userProfile?.created), 'MMMM d, yyyy')}`,
+            })}
+          </div>
         </div>
       </div>
       <div className={myProfilestyle.iconContainer} onClick={handleEditProfile}>

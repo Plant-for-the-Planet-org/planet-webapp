@@ -37,7 +37,7 @@ const Profile = ({ userProfile }: ProfileProps): ReactElement => {
   return (
     <ProfileContainer>
       <UserInfo userProfile={userProfile} />
-      {userProfile.isPrivate && (
+      {userProfile?.isPrivate && (
         <FeaturesForPrivateAccount
           handleShare={handleShare}
           userprofile={userProfile}
@@ -45,7 +45,7 @@ const Profile = ({ userProfile }: ProfileProps): ReactElement => {
           setShowSocialButton={setShowSocialButton}
         />
       )}
-      {!userProfile.isPrivate && (
+      {!userProfile?.isPrivate && (
         <FeaturesForPublicAccount
           handleShare={handleShare}
           userprofile={userProfile}

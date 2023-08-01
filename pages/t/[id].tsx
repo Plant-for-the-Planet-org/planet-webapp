@@ -5,7 +5,7 @@ import { useUserProps } from '../../src/features/common/Layout/UserPropsContext'
 import { getRequest } from '../../src/utils/apiRequests/api';
 import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import Footer from '../../src/features/common/Layout/Footer';
-import Profile from '../../src/features/user/Profile';
+import Profile from '../../src/features/user/ProfileV2';
 import MyTrees from '../../src/features/user/ProfileV2/components/MyTrees/MyTrees';
 import ProjectsContainer from '../../src/features/user/Profile/ProjectsContainer';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
@@ -50,11 +50,10 @@ function User(): ReactElement {
       }
     }
   }, [contextLoaded, user, router]);
-
   return profile ? (
     <>
       <GetPublicUserProfileMeta userprofile={profile} />
-      <Profile userprofile={profile} authenticatedType={authenticatedType} />
+      <Profile userProfile={profile} authenticatedType={authenticatedType} />
       {profile && profile.type !== 'tpo' && (
         <MyTrees
           authenticatedType={authenticatedType}

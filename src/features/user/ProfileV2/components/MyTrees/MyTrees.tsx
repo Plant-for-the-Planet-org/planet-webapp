@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useEffect, useContext, useState, ReactElement } from 'react';
 import myForestStyles from '../../../ProfileV2/styles/MyForest.module.scss';
 import dynamic from 'next/dynamic';
 import { useTranslation } from 'next-i18next';
@@ -23,17 +23,18 @@ const MyTreesMap = dynamic(() => import('../MyForestMap'), {
 export default function MyTrees({
   profile,
   authenticatedType,
-}: MyTreesProps): React.ReactElement | null {
+}: MyTreesProps): ReactElement | null {
   const { ready } = useTranslation(['country', 'me']);
-  const [projectsForTreePlantaion, setProjectsForTreePlantaion] =
-    React.useState<Contributions[]>([]);
-  const [projectsForAreaConservation, setProjectsForAreaConservation] =
-    React.useState<Contributions[]>([]);
-  const [otherDonationInfo, setOthercontributionInfo] = React.useState<
-    QueryResult[]
+  const [projectsForTreePlantaion, setProjectsForTreePlantaion] = useState<
+    Contributions[]
   >([]);
-  const [page, setPage] = React.useState(0);
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const [projectsForAreaConservation, setProjectsForAreaConservation] =
+    useState<Contributions[]>([]);
+  const [otherDonationInfo, setOthercontributionInfo] = useState<QueryResult[]>(
+    []
+  );
+  const [page, setPage] = useState(0);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const {
     setConservationProjects,
     setTreePlantedProjects,
@@ -83,7 +84,7 @@ export default function MyTrees({
     setPage((prev) => prev + 1);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!_contributionData.isLoading) {
       if (_contributionData.error) {
         setErrors(
@@ -100,7 +101,7 @@ export default function MyTrees({
     }
   }, [_contributionData.isLoading, _contributionData.data]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!_contributionDataForPlantedtrees.isLoading) {
       if (_contributionDataForPlantedtrees.error) {
         setErrors(
@@ -121,7 +122,7 @@ export default function MyTrees({
     _contributionDataForPlantedtrees.data,
   ]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!_conservationGeoJsonData.isLoading) {
       if (_conservationGeoJsonData.error) {
         setErrors(
@@ -138,7 +139,7 @@ export default function MyTrees({
     }
   }, [_conservationGeoJsonData.isLoading]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!_treePlantedData.isLoading) {
       if (_treePlantedData.error) {
         setErrors(
@@ -155,7 +156,7 @@ export default function MyTrees({
     }
   }, [_treePlantedData.isLoading]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!_detailInfo.isLoading) {
       if (_detailInfo.error) {
         setErrors(
@@ -173,15 +174,7 @@ export default function MyTrees({
   }, [_detailInfo.isLoading]);
 
   return ready && otherDonationInfo ? (
-    <div
-      className={myForestStyles.mapMainContainer}
-      style={{
-        paddingBottom:
-          !isTreePlantedButtonActive || !isConservedButtonActive
-            ? '110px'
-            : '10px',
-      }}
-    >
+    <div className={myForestStyles.mapMainContainer}>
       <MyTreesMap />
       <div className={myForestStyles.mapButtonMainContainer}>
         <div className={myForestStyles.mapButtonContainer}>
