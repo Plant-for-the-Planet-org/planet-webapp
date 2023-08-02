@@ -16,6 +16,7 @@ const ConservationMarker = ({
 }: ClusterMarkerProps): ReactElement => {
   const { conservationProjects } = useProjectProps();
   const [clusters, setClusters] = useState<Cluster[]>([]);
+
   const superclusterConserv = new Supercluster(_clusterConfig);
   const _fetch = () => {
     superclusterConserv.load(conservationProjects);
@@ -45,15 +46,9 @@ const ConservationMarker = ({
 
   return (
     <>
-      {clusters.map((singleCluster) => {
-        if (singleCluster.id) {
-          return (
-            <ConservAreaClusterMarker
-              key={singleCluster.id}
-              totalTrees={singleCluster.properties.totalTrees}
-              coordinates={singleCluster.geometry.coordinates}
-            />
-          );
+      {clusters.map((singleCluster, key) => {
+        if (singleCluster.id || singleCluster?.properties?.totalContribution) {
+          return <ConservAreaClusterMarker key={key} geoJson={singleCluster} />;
         }
       })}
 

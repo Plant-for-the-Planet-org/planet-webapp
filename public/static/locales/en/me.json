@@ -275,5 +275,6 @@
   "donate":  "Donate",
   "donated": "donated",
   "conserved": "conserved",
-  "loadProjects": "Load More Projects"
+  "loadProjects": "Load More Projects",
+  "numberOfContributions": "{{total}} Contributions"
 }

@@ -1,6 +1,7 @@
 import { ViewportProps } from 'react-map-gl';
 import Supercluster from 'supercluster';
 import { User } from '@planet-sdk/common';
+import { Contributions } from './myForest';
 
 export interface MarkerProps {
     totalTrees: number;
@@ -33,7 +34,10 @@ export interface TestClusterProps {
     totalTrees: string;
   }
   
-
+export interface CustomPopupMarkerProps {
+  geoJson: Contributions;
+  showPopUp: boolean
+}
 export type Bound = [number, number, number, number]
 
 export interface MyTreesProps {

@@ -1,50 +1,21 @@
-import { Marker, Popup } from 'react-map-gl';
-import { useState, ReactElement, useContext } from 'react';
+import { Marker } from 'react-map-gl';
+import { useState, ReactElement } from 'react';
 import {
   ConservationBlueTreeSvg,
   PlantedTreesGreenSvg,
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import { useTranslation } from 'next-i18next';
-import { format } from 'date-fns';
 import { SingleMarkerProps } from '../../../../common/types/map';
-import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
+import CustomPopupMarker from './CustomPopupMarker';
 
 const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
   const { t, ready } = useTranslation(['me']);
-  const { isConservedButtonActive, isTreePlantedButtonActive } =
-    useProjectProps();
   const [showPopUp, setShowPopUp] = useState(false);
+
   return ready ? (
-    <div className={MyForestMapStyle.singleMarkerContainer}>
-      {showPopUp && (isConservedButtonActive || isTreePlantedButtonActive) && (
-        <Popup
-          className={MyForestMapStyle.mapboxglPopup}
-          latitude={geoJson.geometry.coordinates[1]}
-          longitude={geoJson?.geometry.coordinates[0]}
-          offsetTop={-15}
-          offsetLeft={20}
-          anchor="bottom"
-          closeButton={false}
-        >
-          <div className={MyForestMapStyle.popUpContainer}>
-            <div>
-              <p className={MyForestMapStyle.popUpLabel}>
-                {geoJson.properties?.purpose === 'conservation'
-                  ? t('me:conserved')
-                  : geoJson.properties?.purpose === 'trees'
-                  ? geoJson.properties.contributionType === 'donation'
-                    ? t('me:donated')
-                    : t('me:registered')
-                  : null}
-              </p>
-              <p className={MyForestMapStyle.popUpDate}>
-                {format(geoJson.properties.plantDate, 'MMMM d, yyyy')}
-              </p>
-            </div>
-          </div>
-        </Popup>
-      )}
+    <>
+      <CustomPopupMarker geoJson={geoJson} showPopUp={showPopUp} />
       {geoJson?.geometry.coordinates[1] !== null && (
         <Marker
           latitude={geoJson?.geometry.coordinates[1]}
@@ -74,7 +45,7 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
           </div>
         </Marker>
       )}
-    </div>
+    </>
   ) : (
     <></>
   );
