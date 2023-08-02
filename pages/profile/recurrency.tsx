@@ -4,12 +4,12 @@ import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgress
 import { useUserProps } from '../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
-import Recurrency from '../../src/features/user/Account/Recurrency';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
 import { Subscription } from '../../src/features/common/types/payments';
+import RecurrentPayments from '../../src/features/user/Account/RecurrentPayments';
 
 interface Props {}
 
@@ -81,7 +81,7 @@ function RecurrentDonations({}: Props): ReactElement {
         <Head>
           <title>{t('recurrency')}</title>
         </Head>
-        <Recurrency {...RecurrencyProps} />
+        <RecurrentPayments {...RecurrencyProps} />
       </UserLayout>
     </>
   );

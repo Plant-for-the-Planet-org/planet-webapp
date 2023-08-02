@@ -9,6 +9,7 @@ import { CancelModal } from './CancelModal';
 import { ReactivateModal } from './ReactivateModal';
 import { EditModal } from './EditModal';
 import { Subscription } from '../../common/types/payments';
+import StyledForm from '../../common/Layout/StyledForm';
 
 interface Props {
   isDataLoading: boolean;
@@ -66,11 +67,9 @@ export default function Recurrency({
   };
 
   return (
-    <div className="profilePage">
+    <StyledForm>
       <>
-        <div className={'profilePageTitle'}>{t('me:payments')}</div>
-        <div className={'profilePageSubTitle'}>{t('me:donationsSubTitle')}</div>
-        <div className={styles.pageContainer}>
+        <div className="inputContainer">
           <div className={`${styles.section} ${styles.recurrencySection}`}>
             <div className={styles.recurrency}>
               <div className={styles.recurrencyList}>
@@ -151,6 +150,6 @@ export default function Recurrency({
           )}
         </div>
       </>
-    </div>
+    </StyledForm>
   );
 }
