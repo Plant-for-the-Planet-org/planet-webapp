@@ -237,7 +237,7 @@
   text-decoration: none;
 }
 
-.perTreeCost {
+.perUnitCost {
   font-family: $secondaryFontFamily;
   font-size: $fontXSmall;
   color: $primaryFontColor;
@@ -246,7 +246,7 @@
   text-align: right;
 }
 
-.perTreeCost > span {
+.perUnitCost > span {
   font-family: $primaryFontFamily;
   font-weight: 400;
 }

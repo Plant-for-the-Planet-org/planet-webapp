@@ -135,16 +135,15 @@ export default function PopupProject({
                 >
                   {t('common:donate')}
                 </button>
-                <div className={'perTreeCost'}>
+                <div className={'perUnitCost'}>
                   {getFormatedCurrency(
                     i18n.language,
                     project.currency,
                     project.unitCost
                   )}{' '}
                   <span>
-                    {project.purpose === 'conservation'
-                      ? t('donate:perM2')
-                      : t('donate:perTree')}
+                    {project.unitType === 'tree' && t('donate:perTree')}
+                    {project.unitType === 'm2' && t('donate:perM2')}
                   </span>
                 </div>
               </>
