@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { useTranslation } from 'next-i18next';
 import TransactionListLoader from '../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../public/assets/images/icons/TransactionsNotFound';
 import styles from './AccountHistory.module.scss';
@@ -22,7 +21,6 @@ export default function Recurrency({
   recurrencies,
   fetchRecurrentDonations,
 }: Props): ReactElement {
-  const { t } = useTranslation(['me']);
   const [selectedRecord, setSelectedRecord] = React.useState<number | null>(0);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [editModalOpen, seteditModalOpen] = React.useState(false);
