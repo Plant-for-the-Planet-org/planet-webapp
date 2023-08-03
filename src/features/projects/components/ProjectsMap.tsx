@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useRef, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import MapGL, { MapEvent, NavigationControl, Popup } from 'react-map-gl';
 import getMapStyle from '../../../utils/maps/getMapStyle';
 import styles from '../styles/ProjectsMap.module.scss';
@@ -11,22 +11,18 @@ import LayerIcon from '../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../public/assets/images/icons/LayerDisabled';
 import { useTranslation } from 'next-i18next';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import { PopupData } from './maps/Markers';
 
 export default function ProjectsMap(): ReactElement {
   const {
     project,
-    showSingleProject,
     showProjects,
-    setShowProjects,
     searchedProject,
     viewport,
     setViewPort,
-    setExploreProjects,
     mapState,
     setMapState,
     isMobile,
-    exploreProjects,
-    loaded,
     setLoaded,
     mapRef,
     defaultMapCenter,
@@ -44,7 +40,6 @@ export default function ProjectsMap(): ReactElement {
     setIsPolygonMenuOpen,
     setFilterOpen,
     setSamplePlantLocation,
-    samplePlantLocation,
   } = useProjectProps();
 
   const { t } = useTranslation(['maps']);
@@ -54,7 +49,7 @@ export default function ProjectsMap(): ReactElement {
   const _onViewportChange = (view: any) => setViewPort({ ...view });
 
   // Projects
-  const [popupData, setPopupData] = useState({ show: false });
+  const [popupData, setPopupData] = useState<PopupData>({ show: false });
 
   // Use Effects
   useEffect(() => {
@@ -84,18 +79,10 @@ export default function ProjectsMap(): ReactElement {
     viewport,
     setViewPort,
   };
-  const projectProps = {
-    project,
-    viewport,
-    setViewPort,
-    mapRef,
-    mapState,
-    setMapState,
-  };
 
   const onMapClick = (e: MapEvent) => {
     setSamplePlantLocation(null);
-    setPopupData({ ...popupData, show: false });
+    setPopupData({ show: false });
     setIsPolygonMenuOpen(false);
     setFilterOpen(false);
     if (e.features && e.features?.length !== 0) {
@@ -118,8 +105,8 @@ export default function ProjectsMap(): ReactElement {
   const onMapHover = (e: MapEvent) => {
     if (e.features && e.features?.length !== 0) {
       if (!hoveredPl || hoveredPl.type !== 'sample') {
-        if (e.features[0].layer?.source) {
-          for (const key in plantLocations) {
+        if (e.features[0].layer?.source && plantLocations) {
+          for (const key of plantLocations) {
             if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
               const element = plantLocations[key];
               if (element.id === e.features[0].layer?.source) {
@@ -175,9 +162,13 @@ export default function ProjectsMap(): ReactElement {
         {zoomLevel === 1 && searchedProject && showProjects && (
           <Home {...homeProps} />
         )}
-        {zoomLevel === 2 && project && (
+        {zoomLevel === 2 && project !== null && (
           <>
-            <Project {...projectProps} />
+            <Project
+              project={project}
+              viewport={viewport}
+              setViewPort={setViewPort}
+            />
             {selectedMode === 'location' && <PlantLocations />}
           </>
         )}
@@ -199,7 +190,7 @@ export default function ProjectsMap(): ReactElement {
             longitude={showDetails.coordinates[0]}
             closeButton={false}
             closeOnClick={false}
-            onClose={() => setPopupData({ ...popupData, show: false })}
+            onClose={() => setPopupData({ show: false })}
             anchor="bottom"
             dynamicPosition={false}
             offsetTop={-5}

@@ -3,11 +3,15 @@ import tenantConfig from '../../../tenant.config';
 import getImageUrl from '../getImageURL';
 import Head from 'next/head';
 import { truncateString } from '../getTruncatedString';
+import {
+  ConservationProjectExtended,
+  TreeProjectExtended,
+} from '@planet-sdk/common';
 
 const config = tenantConfig();
 
 interface Props {
-  project: any;
+  project: TreeProjectExtended | ConservationProjectExtended;
 }
 
 export default function GetProjectMeta({ project }: Props): ReactElement {
@@ -28,7 +32,7 @@ export default function GetProjectMeta({ project }: Props): ReactElement {
         property="og:image"
         content={getImageUrl('project', 'medium', project.image)}
       />
-      <meta property="og:video" content={project.videoUrl} />
+      <meta property="og:video" content={project.videoUrl || undefined} />
       {config.tenantName === 'planet' ? (
         <link rel="alternate" href="android-app://org.pftp/projects" />
       ) : null}
