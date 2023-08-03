@@ -99,16 +99,18 @@ export default function PopupProject({
         <div className={'projectData'}>
           <div className={'targetLocation'}>
             <div className={'target'}>
-              {project.purpose === 'trees' && (
+              {project.purpose === 'trees' && project.countPlanted > 0 && (
                 <>
                   {localizedAbbreviatedNumber(
                     i18n.language,
                     Number(project.countPlanted),
                     1
                   )}{' '}
-                  {t('common:tree', {
-                    count: Number(project.countPlanted),
-                  })}{' '}
+                  {project.unitType === 'tree'
+                    ? t('common:tree', {
+                        count: Number(project.countPlanted),
+                      })
+                    : t('common:m2')}{' '}
                   •{' '}
                 </>
               )}
