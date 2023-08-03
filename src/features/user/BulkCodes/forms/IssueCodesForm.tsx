@@ -1,7 +1,7 @@
 import React, { FormEvent, ReactElement, useContext, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { Button, TextField } from '@mui/material';
-import styles from '../BulkCodes.module.scss';
+import styles from '../../../../../src/features/user/BulkCodes/BulkCodes.module.scss';
 import { useRouter } from 'next/router';
 import ProjectSelector from '../components/ProjectSelector';
 import BulkGiftTotal from '../components/BulkGiftTotal';

@@ -15,7 +15,7 @@ import Locale from '@date-io/date-fns';
  */
 // @ankit please check this function always
 // eslint-disable-next-line consistent-return
-export default function getLanguageName(code: any) {
+export default function getLanguageName(code: string) {
   // Finds required language name from the code
   for (let i = 0; i < supportedLanguages.length; i++) {
     if (supportedLanguages[i].langCode === code) {
