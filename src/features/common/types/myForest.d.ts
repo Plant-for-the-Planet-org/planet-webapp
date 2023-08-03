@@ -146,18 +146,20 @@ export interface StatsQueryResult {
 
 export interface ContributionsGeoJsonQueryResult {
   purpose: string;
-  tree_count: number;
+  treeCount: number;
   quantity: number;
   contribution_type: string;
-  plant_date: string;
   location: string;
   country: string;
   unit_type: string;
   guid: string;
   name: string;
   image: string;
-  geo_latitude: number;
-  geo_longitude: number;
+  geoLatitude: number;
+  geoLongitude: number;
   tpoGuid: string;
   tpo: string;
+  startDate: string;
+  endDate: string;
+  totalContribution: number;
 }

@@ -222,9 +222,13 @@ export const myForestRouter = router({
       }
 
       const data = await prisma.$queryRaw<ContributionsGeoJsonQueryResult[]>`
-      SELECT c.purpose, c.tree_count, c.quantity, c.contribution_type, c.plant_date, pp.location, pp.country, 
-        pp.unit_type, pp.guid, pp.name, pp.image, pp.geo_latitude, pp.geo_longitude, 
-        tpo.name AS tpo, tpo.guid AS tpoGuid
+      SELECT COUNT(pp.guid) AS totalContribution, SUM(c.tree_count) AS treeCount, 
+	      quantity,  c.purpose, MIN(c.plant_date) AS startDate,
+	      MAX(c.plant_date) AS endDate, c.contribution_type, c.plant_date, pp.location, pp.country, 
+        pp.unit_type, pp.guid, pp.name, pp.image,
+        CASE WHEN c.contribution_type = 'planting' THEN JSON_EXTRACT(c.geometry, '$.coordinates[0]') ELSE pp.geo_latitude END AS geoLatitude,
+        CASE WHEN c.contribution_type = 'planting' THEN JSON_EXTRACT(c.geometry, '$.coordinates[1]') ELSE pp.geo_longitude END AS geoLongitude,
+        c.geometry, tpo.name AS tpo, tpo.guid AS tpoGuid
       FROM contribution c
               ${join}
               JOIN profile p ON p.id = c.profile_id
@@ -241,7 +245,8 @@ export const myForestRouter = router({
                 c.contribution_type = 'planting'
                 AND c.is_verified = 1
               )
-          )`;
+          )
+      GROUP BY pp.guid, c.geometry`;
 
       return data.map((contribution) => {
         return {
@@ -249,11 +254,13 @@ export const myForestRouter = router({
           properties: {
             cluster: false,
             purpose: contribution.purpose,
-            quantity: contribution.tree_count
-              ? contribution.tree_count
+            quantity: contribution.treeCount
+              ? contribution.treeCount
               : contribution.quantity,
-            plantDate: contribution.plant_date,
+            startDate: contribution.startDate,
+            endDate: contribution.endDate,
             contributionType: contribution.contribution_type,
+            totalContribution: contribution.totalContribution,
             plantProject: {
               guid: contribution.guid,
               name: contribution.name,
@@ -261,8 +268,6 @@ export const myForestRouter = router({
               country: contribution.country,
               unit: contribution.unit_type,
               location: contribution.location,
-              geoLatitude: contribution.geo_latitude,
-              geoLongitude: contribution.geo_longitude,
               tpo: {
                 guid: contribution.tpoGuid,
                 name: contribution.name,
@@ -272,8 +277,8 @@ export const myForestRouter = router({
           geometry: {
             type: 'Point',
             coordinates: [
-              contribution.geo_longitude,
-              contribution.geo_latitude,
+              contribution.geoLatitude,
+              contribution.geoLongitude,
             ],
           },
         };
