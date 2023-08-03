@@ -235,6 +235,7 @@
   border-radius: 100px;
   width: 100%;
   margin-bottom: 10px;
+  gap:15px;
   .importTab {
     display: flex;
     flex-direction: column;
@@ -242,7 +243,6 @@
     justify-content: center;
     width: 100px;
     height: 32px;
-    font-weight: 700;
     cursor: pointer;
     &.active {
       color: $backgroundColor;

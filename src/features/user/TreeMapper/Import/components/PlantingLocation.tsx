@@ -356,15 +356,15 @@ export default function PlantingLocation({
       <div className={styles.formFieldLarge}>
         <div className={styles.importTabs}>
           {importMethods.map((method, index) => (
-            <div
+            <Button
               key={index}
               onClick={() => setActiveMethod(method)}
-              className={`${styles.importTab} ${
-                activeMethod === method ? styles.active : ''
-              }`}
+              className={`${styles.importTab}`}
+              variant="contained"
+              color={activeMethod === method ? 'primary' : 'inherit'}
             >
               {t(`treemapper:${method}`)}
-            </div>
+            </Button>
           ))}
         </div>
         {getMethod(activeMethod)}
