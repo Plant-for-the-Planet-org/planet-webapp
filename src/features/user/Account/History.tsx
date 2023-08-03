@@ -1,11 +1,11 @@
-import React, { ReactElement, useContext, useEffect } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { useTranslation } from 'next-i18next';
 import TransactionListLoader from '../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../public/assets/images/icons/TransactionsNotFound';
 import AccountRecord from './components/AccountRecord';
 import styles from './AccountHistory.module.scss';
 import { useRouter } from 'next/router';
-import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
 import { Filters, PaymentHistory } from '../../common/types/payments';
 
 interface Props {
@@ -30,7 +30,7 @@ export default function History({
     null
   );
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const { isMobile } = useContext(ProjectPropsContext);
+  const { isMobile } = useProjectProps();
   const router = useRouter();
 
   const handleRecordToggle = (index: number | undefined) => {

@@ -87,9 +87,6 @@
   justify-content: center;
   margin-left: 0px;
   margin-top: 0px;
-  @include xsPhoneView {
-    margin-left: -54px;
-  }
   @include smTabletView {
     margin-left: -18px;
   }
@@ -112,6 +109,25 @@
   justify-content: space-between;
   align-items: center;
 }
+.listOfReport {
+  margin-left: 45px;
+  margin-top: 13px;
+}
+
+.toggleContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: absolute;
+  top: 212px;
+  left: 245px;
+  @include xsPhoneView {
+   top: 306px;
+   left: 85px
+  }
+}
+
+
 .formField {
   display: flex;
   flex-direction: row;

@@ -5,17 +5,22 @@ import styles from '../../styles/VegetationChange.module.scss';
 import sources from '../../../../../public/data/maps/sources.json';
 import SourceIcon from '../../../../../public/assets/images/icons/SourceIcon';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import {
+  Imagery,
+  RasterData,
+} from '../../../common/types/ProjectPropsContextInterface';
+import { SetState } from '../../../common/types/common';
 
 interface Props {
   selectedYear1: string;
   selectedYear2: string;
-  setSelectedYear1: Function;
-  setSelectedYear2: Function;
-  rasterData: Object | null;
-  selectedSource1: string;
-  setSelectedSource1: Function;
-  selectedSource2: string;
-  setSelectedSource2: Function;
+  setSelectedYear1: SetState<string>;
+  setSelectedYear2: SetState<string>;
+  rasterData: RasterData;
+  selectedSource1: keyof Imagery;
+  setSelectedSource1: SetState<keyof Imagery>;
+  selectedSource2: keyof Imagery;
+  setSelectedSource2: SetState<keyof Imagery>;
   isMobile: boolean;
 }
 
@@ -40,22 +45,20 @@ export default function ImageDropdown({
     isMobile ? false : true
   );
 
-  const handleChangeYear1 = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setSelectedYear1(event.target.value as string);
+  const handleChangeYear1 = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedYear1(event.target.value);
   };
-  const handleChangeYear2 = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setSelectedYear2(event.target.value as string);
+  const handleChangeYear2 = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedYear2(event.target.value);
   };
-  const handleChangeSource1 = (
-    event: React.ChangeEvent<{ value: unknown }>
-  ) => {
-    setSelectedSource1(event.target.value as string);
+  const handleChangeSource1 = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSource1(event.target.value as keyof Imagery);
     if (isMobile) setIsSource1MenuOpen(false);
   };
   const handleChangeSource2 = (
     event: React.ChangeEvent<{ value: unknown }>
   ) => {
-    setSelectedSource2(event.target.value as string);
+    setSelectedSource2(event.target.value as keyof Imagery);
     if (isMobile) setIsSource2MenuOpen(false);
   };
 
@@ -77,7 +80,7 @@ export default function ImageDropdown({
               onChange={handleChangeYear1}
               input={<BootstrapInput />}
             >
-              {rasterData.imagery[selectedSource1].map((item: any) => {
+              {rasterData.imagery[selectedSource1]?.map((item) => {
                 return (
                   <option key={item.year} value={item.year}>
                     {item.year}
@@ -105,10 +108,10 @@ export default function ImageDropdown({
                 onChange={handleChangeSource1}
                 input={<BootstrapInput />}
               >
-                {Object.keys(rasterData.imagery).map((item: any) => {
+                {Object.keys(rasterData.imagery).map((item) => {
                   return (
                     <option key={item} value={item}>
-                      {sources[item]}
+                      {sources[item as keyof Imagery]}
                     </option>
                   );
                 })}
@@ -136,10 +139,10 @@ export default function ImageDropdown({
                 onChange={handleChangeSource2}
                 input={<BootstrapInput />}
               >
-                {Object.keys(rasterData.imagery).map((item: any) => {
+                {Object.keys(rasterData.imagery).map((item) => {
                   return (
                     <option key={item} value={item}>
-                      {sources[item]}
+                      {sources[item as keyof Imagery]}
                     </option>
                   );
                 })}
@@ -153,7 +156,7 @@ export default function ImageDropdown({
               onChange={handleChangeYear2}
               input={<BootstrapInput />}
             >
-              {rasterData.imagery[selectedSource2].map((item: any) => {
+              {rasterData.imagery[selectedSource2]?.map((item) => {
                 return (
                   <option key={item.year} value={item.year}>
                     {item.year}
