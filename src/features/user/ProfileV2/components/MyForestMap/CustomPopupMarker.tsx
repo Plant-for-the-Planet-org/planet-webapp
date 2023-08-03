@@ -11,19 +11,21 @@ const CustomPopupMarker = ({ geoJson, showPopUp }: CustomPopupMarkerProps) => {
     useProjectProps();
   return (
     <div className={MyForestMapStyle.singleMarkerContainer}>
-      {showPopUp && (isConservedButtonActive || isTreePlantedButtonActive) ? (
+      {showPopUp &&
+      (isConservedButtonActive || isTreePlantedButtonActive) &&
+      geoJson.properties.totalContribution ? (
         <Popup
           className={MyForestMapStyle.mapboxglPopup}
-          latitude={geoJson.geometry.coordinates[1]}
-          longitude={geoJson?.geometry.coordinates[0]}
+          latitude={Number(geoJson.geometry.coordinates[1])}
+          longitude={Number(geoJson?.geometry.coordinates[0])}
           offsetTop={-15}
           offsetLeft={20}
           anchor="bottom"
           closeButton={false}
         >
           <div className={MyForestMapStyle.popUpContainer}>
-            <div>
-              <p className={MyForestMapStyle.popUpLabel}>
+            <div className={MyForestMapStyle.popUp}>
+              <div className={MyForestMapStyle.popUpLabel}>
                 {geoJson.properties?.purpose === 'conservation'
                   ? t('me:conserved')
                   : geoJson.properties?.purpose === 'trees'
@@ -31,14 +33,29 @@ const CustomPopupMarker = ({ geoJson, showPopUp }: CustomPopupMarkerProps) => {
                     ? t('me:donated')
                     : t('me:registered')
                   : null}
-              </p>
-              <p className={MyForestMapStyle.popUpDate}>
-                {geoJson.properties.totalContribution
-                  ? t('me:numberOfContributions', {
-                      total: `${geoJson.properties.totalContribution}`,
-                    })
-                  : format(geoJson.properties.plantDate, 'MMMM d, yyyy')}
-              </p>
+              </div>
+              <div className={MyForestMapStyle.popUpDate}>
+                {geoJson.properties.totalContribution &&
+                  t('me:numberOfContributions', {
+                    total: `${geoJson.properties.totalContribution}`,
+                  })}
+              </div>
+              {geoJson.properties.totalContribution > 1 && (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <div className={MyForestMapStyle.popUpDate}>
+                    {format(geoJson.properties.startDate, 'MMMM d, yyyy')}
+                  </div>
+                  <div style={{ marginBottom: '3px' }}>-</div>
+                  <div className={MyForestMapStyle.popUpDate}>
+                    {format(geoJson.properties.endDate, 'MMMM d, yyyy')}
+                  </div>
+                </div>
+              )}
+              {geoJson.properties.totalContribution < 2 && (
+                <div className={MyForestMapStyle.popUpDate}>
+                  {format(geoJson?.properties?.startDate, 'MMMM d, yyyy')}
+                </div>
+              )}
             </div>
           </div>
         </Popup>

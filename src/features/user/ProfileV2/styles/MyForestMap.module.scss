@@ -8,11 +8,14 @@
 }
 
 .popUpContainer {
-    height: 65px;
-    width: 118px;
+    height: 75px;
+    width: 150px;
+}
+.popUp {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    padding-top: 10px;
 }
 
 .popUpLabel {
@@ -21,8 +24,7 @@
 }
 
 .popUpDate {
-    font-size: 8px;
-    margin-left: 5px;
+    font-size: 8px
 }
 
 .markerContainer {
@@ -43,6 +45,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        padding-top: 3px
     }
     >.trees{
          font-weight: 700;

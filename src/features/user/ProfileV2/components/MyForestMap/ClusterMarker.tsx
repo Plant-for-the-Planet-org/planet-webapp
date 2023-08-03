@@ -10,21 +10,37 @@ import { MarkerProps } from '../../../../common/types/map';
 import CustomPopupMarker from './CustomPopupMarker';
 
 export const TreePlantedClusterMarker = ({
-  totalTrees,
-  coordinates,
+  geoJson,
 }: MarkerProps): ReactElement => {
   const { t, ready } = useTranslation(['me']);
+  const [showPopUp, setShowPopUp] = useState(false);
   return ready ? (
-    <Marker latitude={coordinates[1]} longitude={coordinates[0]}>
-      <div className={MyForestMapStyle.clusterMarkerContainer}>
-        <div className={MyForestMapStyle.svgContainer}>
-          <PlantedTreesGreenSvg />
+    <>
+      <CustomPopupMarker geoJson={geoJson} showPopUp={showPopUp} />
+      <Marker
+        latitude={Number(geoJson.geometry.coordinates[1])}
+        longitude={Number(geoJson.geometry.coordinates[0])}
+      >
+        <div
+          className={MyForestMapStyle.clusterMarkerContainer}
+          onMouseOver={() => setShowPopUp(true)}
+          onMouseLeave={() => setShowPopUp(false)}
+        >
+          <div className={MyForestMapStyle.svgContainer}>
+            <PlantedTreesGreenSvg />
+          </div>
+          <div className={MyForestMapStyle.totalTreeCount}>
+            {t('me:plantedTrees', {
+              noOfTrees: `${
+                geoJson.properties.totalTrees
+                  ? geoJson.properties.totalTrees
+                  : geoJson.properties.quantity
+              }`,
+            })}
+          </div>
         </div>
-        <div className={MyForestMapStyle.totalTreeCount}>
-          {t('me:plantedTrees', { noOfTrees: `${totalTrees}` })}
-        </div>
-      </div>
-    </Marker>
+      </Marker>
+    </>
   ) : (
     <></>
   );
@@ -37,13 +53,10 @@ export const ConservAreaClusterMarker = ({
   const [showPopUp, setShowPopUp] = useState(false);
   return ready ? (
     <div>
-      {geoJson?.properties?.totalContribution && (
-        <CustomPopupMarker geoJson={geoJson} showPopUp={showPopUp} />
-      )}
-
+      <CustomPopupMarker geoJson={geoJson} showPopUp={showPopUp} />
       <Marker
-        latitude={geoJson.geometry.coordinates[1]}
-        longitude={geoJson.geometry.coordinates[0]}
+        latitude={Number(geoJson.geometry.coordinates[1])}
+        longitude={Number(geoJson.geometry.coordinates[0])}
       >
         <div
           className={MyForestMapStyle.conservationClusterMarkerContainer}
@@ -53,13 +66,17 @@ export const ConservAreaClusterMarker = ({
         >
           <div
             className={MyForestMapStyle.svgContainer}
-            style={{ paddingTop: '3px', paddingLeft: '4px' }}
+            style={{ paddingLeft: '4px' }}
           >
             <ConservationBlueTreeSvg />
           </div>
           <div className={MyForestMapStyle.totalTreeCount}>
             {t('me:area', {
-              areaConserved: `${geoJson.properties.quantity}`,
+              areaConserved: `${
+                geoJson.properties.totalTrees
+                  ? geoJson.properties.totalTrees
+                  : geoJson.properties.quantity
+              }`,
             })}
           </div>
         </div>

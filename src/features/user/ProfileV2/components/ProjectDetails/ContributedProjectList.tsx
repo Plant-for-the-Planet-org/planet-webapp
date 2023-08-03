@@ -91,17 +91,12 @@ const ContributedProjectList = ({
         } else {
           setIsLoadButtonActive(true);
         }
-        return singlePage?.data?.map((singleProject: any) => {
+        return singlePage?.data?.map((singleProject: any, key) => {
           if (
             singleProject.purpose !== 'bouquet' &&
             singleProject.contributionType !== 'planting'
           ) {
-            return (
-              <Project
-                key={singleProject.plantProject.guid}
-                projectInfo={singleProject}
-              />
-            );
+            return <Project key={key} projectInfo={singleProject} />;
           }
         });
       })}
@@ -110,13 +105,8 @@ const ContributedProjectList = ({
         return singlePage?.data?.map((singleProject: any) => {
           if (singleProject.purpose === 'bouquet') {
             return singleProject.bouquetContributions.map(
-              (bouquetProject: any) => {
-                return (
-                  <Project
-                    key={bouquetProject.plantProject.guid}
-                    projectInfo={bouquetProject}
-                  />
-                );
+              (bouquetProject: any, key) => {
+                return <Project key={key} projectInfo={bouquetProject} />;
               }
             );
           }

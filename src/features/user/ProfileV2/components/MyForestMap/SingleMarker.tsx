@@ -12,14 +12,13 @@ import CustomPopupMarker from './CustomPopupMarker';
 const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
   const { t, ready } = useTranslation(['me']);
   const [showPopUp, setShowPopUp] = useState(false);
-
   return ready ? (
     <>
       <CustomPopupMarker geoJson={geoJson} showPopUp={showPopUp} />
       {geoJson?.geometry.coordinates[1] !== null && (
         <Marker
-          latitude={geoJson?.geometry.coordinates[1]}
-          longitude={geoJson?.geometry.coordinates[0]}
+          latitude={Number(geoJson?.geometry.coordinates[1])}
+          longitude={Number(geoJson?.geometry.coordinates[0])}
         >
           <div
             className={MyForestMapStyle.markerContainer}

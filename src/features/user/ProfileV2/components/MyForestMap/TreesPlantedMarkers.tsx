@@ -1,7 +1,7 @@
 import { TreePlantedClusterMarker } from './ClusterMarker';
 import SingleMarker from './SingleMarker';
 import Supercluster from 'supercluster';
-import { useState, useEffect, useContext, ReactElement } from 'react';
+import { useState, useEffect, ReactElement } from 'react';
 import React from 'react';
 import {
   TestPointProps,
@@ -59,22 +59,28 @@ const TreesPlantedMarkers = ({
       _fetch();
     }
   }, [viewport, treePlantedProjects]);
+
   return (
     clusters && (
       <>
         {clusters.map((singleCluster) => {
-          if (singleCluster.id) {
+          if (
+            singleCluster.id ||
+            singleCluster?.properties?.totalContribution > 1
+          ) {
             return (
               <TreePlantedClusterMarker
                 key={singleCluster.id}
-                totalTrees={singleCluster.properties.totalTrees}
-                coordinates={singleCluster.geometry.coordinates}
+                geoJson={singleCluster}
               />
             );
           }
         })}
         {clusters.map((singleCluster, key) => {
-          if (!singleCluster.id) {
+          if (
+            !singleCluster.id &&
+            singleCluster?.properties?.totalContribution < 2
+          ) {
             return <SingleMarker key={key} geoJson={singleCluster} />;
           }
         })}

@@ -277,8 +277,8 @@ export const myForestRouter = router({
           geometry: {
             type: 'Point',
             coordinates: [
-              contribution.geoLatitude,
               contribution.geoLongitude,
+              contribution.geoLatitude,
             ],
           },
         };
