@@ -35,22 +35,11 @@ const CustomPopupMarker = ({ geoJson, showPopUp }: CustomPopupMarkerProps) => {
                   : null}
               </div>
               <div className={MyForestMapStyle.popUpDate}>
-                {geoJson.properties.totalContribution &&
+                {geoJson.properties.totalContribution > 1 &&
                   t('me:numberOfContributions', {
                     total: `${geoJson.properties.totalContribution}`,
                   })}
               </div>
-              {geoJson.properties.totalContribution > 1 && (
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <div className={MyForestMapStyle.popUpDate}>
-                    {format(geoJson.properties.startDate, 'MMMM d, yyyy')}
-                  </div>
-                  <div style={{ marginBottom: '3px' }}>-</div>
-                  <div className={MyForestMapStyle.popUpDate}>
-                    {format(geoJson.properties.endDate, 'MMMM d, yyyy')}
-                  </div>
-                </div>
-              )}
               {geoJson.properties.totalContribution < 2 && (
                 <div className={MyForestMapStyle.popUpDate}>
                   {format(geoJson?.properties?.startDate, 'MMMM d, yyyy')}

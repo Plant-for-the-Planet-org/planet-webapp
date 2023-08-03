@@ -5,7 +5,6 @@ import {
 import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import { PlantedTreesButtonProps } from '../../../../common/types/myForest';
-import { useContext } from 'react';
 import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 
 const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
