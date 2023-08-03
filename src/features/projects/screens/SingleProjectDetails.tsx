@@ -13,16 +13,15 @@ import ExpandIcon from '../../../../public/assets/images/icons/ExpandIcon';
 import ProjectInfo from '../components/projectDetails/ProjectInfo';
 import ProjectSnippet from '../components/ProjectSnippet';
 import SitesDropdown from '../components/maps/SitesDropdown';
-import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
 import ProjectTabs from '../components/maps/ProjectTabs';
 import PlantLocationDetails from '../components/PlantLocation/PlantLocationDetails';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import TopProjectReports from '../components/projectDetails/TopProjectReports';
 
 const TimeTravel = dynamic(() => import('../components/maps/TimeTravel'), {
   ssr: false,
 });
-
-interface Props {}
 
 const ImageSlider = dynamic(
   () => import('../components/projectDetails/ImageSlider'),
@@ -32,25 +31,21 @@ const ImageSlider = dynamic(
   }
 );
 
-function SingleProjectDetails({}: Props): ReactElement {
+function SingleProjectDetails(): ReactElement {
   const router = useRouter();
-  const { t, i18n, ready } = useTranslation([
-    'donate',
-    'common',
-    'country',
-    'maps',
-  ]);
+
+  const { t, ready } = useTranslation(['donate', 'common', 'country', 'maps']);
   const {
     project,
     geoJson,
     rasterData,
-    selectedMode,
     hoveredPl,
     selectedPl,
     setHoveredPl,
     setSelectedPl,
     samplePlantLocation,
-  } = useContext(ProjectPropsContext);
+  } = useProjectProps();
+
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 768;
@@ -60,16 +55,9 @@ function SingleProjectDetails({}: Props): ReactElement {
   const isEmbed = embed === 'true';
   const [hideProjectContainer, setHideProjectContainer] = useState(isEmbed);
 
-  let progressPercentage = (project.countPlanted / project.countTarget) * 100;
-
-  if (progressPercentage > 100) {
-    progressPercentage = 100;
-  }
-
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
   const [openModal, setModalOpen] = React.useState(false);
   const handleModalClose = () => {
     setModalOpen(false);
@@ -91,7 +79,7 @@ function SingleProjectDetails({}: Props): ReactElement {
   };
 
   const goBack = () => {
-    if (selectedPl || hoveredPl) {
+    if (project && (selectedPl || hoveredPl)) {
       setHoveredPl(null);
       setSelectedPl(null);
       router.push(
@@ -106,6 +94,9 @@ function SingleProjectDetails({}: Props): ReactElement {
         }`
       );
     } else {
+      if (document.referrer) {
+        window.history.go(-2);
+      }
       router.replace(
         `/${
           isEmbed
@@ -114,13 +105,13 @@ function SingleProjectDetails({}: Props): ReactElement {
                   ? `?embed=true&callback=${callbackUrl}`
                   : '?embed=true'
               }`
-            : ''
+            : ``
         }`
       );
     }
   };
 
-  return ready ? (
+  return ready && project !== null ? (
     <>
       {/* <Explore /> */}
       {geoJson && <SitesDropdown />}
@@ -207,16 +198,25 @@ function SingleProjectDetails({}: Props): ReactElement {
             )}
             <div className={'projectSnippetContainer'}>
               <ProjectSnippet
-                keyString={project.id}
                 project={project}
                 editMode={false}
+                displayPopup={false}
               />
             </div>
             {hoveredPl || selectedPl ? (
               <PlantLocationDetails {...ProjectProps} />
             ) : (
               <div className={'singleProjectDetails'}>
-                <div className={'projectCompleteInfo'}>
+                <div
+                  className={'projectCompleteInfo'}
+                  style={{ marginTop: 24 }}
+                >
+                  {project.purpose === 'trees' &&
+                    project.isApproved &&
+                    project.reviews !== undefined &&
+                    project.reviews.length > 0 && (
+                      <TopProjectReports projectReviews={project.reviews} />
+                    )}
                   <div className={'projectDescription'}>
                     <div className={'infoTitle'}>
                       {t('donate:aboutProject')}
@@ -232,7 +232,8 @@ function SingleProjectDetails({}: Props): ReactElement {
                   </div>
 
                   <div className={'projectInfoProperties'}>
-                    {ReactPlayer.canPlay(project.videoUrl) ? (
+                    {project.videoUrl !== null &&
+                    ReactPlayer.canPlay(project.videoUrl) ? (
                       <ReactPlayer
                         className={'projectVideoContainer'}
                         width="100%"
@@ -266,10 +267,6 @@ function SingleProjectDetails({}: Props): ReactElement {
                       ) : null}
                     </div>
                     <ProjectInfo project={project} />
-                    {/*  {financialReports? <FinancialReports financialReports={financialReports} /> : null}
-                    {species ? <PlantSpecies species={species} /> : null }
-                    {co2 ? (<CarbonCaptured co2={co2} />) : null} */}
-
                     <ProjectContactDetails project={project} />
                   </div>
                 </div>

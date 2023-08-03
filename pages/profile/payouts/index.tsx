@@ -7,10 +7,13 @@ import ManagePayouts, {
 } from '../../../src/features/user/ManagePayouts';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
+import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 
 export default function OverviewPage(): ReactElement {
   const { t, ready } = useTranslation('me');
   const [progress, setProgress] = useState(0);
+  const { user } = useUserProps();
 
   return (
     <>
@@ -23,10 +26,14 @@ export default function OverviewPage(): ReactElement {
         <Head>
           <title>{ready ? t('managePayouts.titleOverview') : ''}</title>
         </Head>
-        <ManagePayouts
-          step={ManagePayoutTabs.OVERVIEW}
-          setProgress={setProgress}
-        />
+        {user?.type === 'tpo' ? (
+          <ManagePayouts
+            step={ManagePayoutTabs.OVERVIEW}
+            setProgress={setProgress}
+          />
+        ) : (
+          <AccessDeniedLoader />
+        )}
       </UserLayout>
     </>
   );

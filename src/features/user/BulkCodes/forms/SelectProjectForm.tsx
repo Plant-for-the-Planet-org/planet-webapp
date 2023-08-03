@@ -1,27 +1,26 @@
-import React, { ReactElement, useContext, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
-import {
-  useBulkCode,
-  // PlanetCashAccount,
-  Project,
-} from '../../../common/Layout/BulkCodeContext';
+import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
 
 import ProjectSelector from '../components/ProjectSelector';
 import BulkCodesError from '../components/BulkCodesError';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
+import { ProjectOption } from '../../../common/types/project';
 
 const SelectProjectForm = (): ReactElement | null => {
   const router = useRouter();
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
   const { method } = router.query;
   const { project, setProject, projectList, planetCashAccount } = useBulkCode();
-  const { user } = useContext(UserPropsContext);
+  const { user } = useUserProps();
 
-  const [localProject, setLocalProject] = useState<Project | null>(project);
+  const [localProject, setLocalProject] = useState<ProjectOption | null>(
+    project
+  );
 
   const handleFormSubmit = () => {
     if (localProject) {

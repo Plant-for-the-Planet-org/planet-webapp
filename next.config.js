@@ -19,6 +19,7 @@ const {
   SOURCE_VERSION,
   COMMIT_REF,
   SITE_IMAGERY_API_URL,
+  DB_CONN_URL,
 } = process.env;
 
 // allow source map uploads from Vercel, Heroku and Netlify deployments
@@ -45,7 +46,8 @@ const nextauthUrl = process.env.NEXTAUTH_URL
 const hasAssetPrefix =
   process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
-const nextConfig =  {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   productionBrowserSourceMaps: true,
   i18n,
   serverRuntimeConfig: {
@@ -119,6 +121,7 @@ const nextConfig =  {
     SITE_IMAGERY_API_URL: SITE_IMAGERY_API_URL,
     WIDGET_URL: process.env.WIDGET_URL,
     CONFIG_URL: process.env.CONFIG_URL,
+    ENABLE_ANALYTICS: DB_CONN_URL ? true : false,
   },
   trailingSlash: false,
   reactStrictMode: true,
@@ -194,7 +197,9 @@ const nextConfig =  {
       },
     ];
   },
-  assetPrefix: hasAssetPrefix ? `${scheme}://${process.env.ASSET_PREFIX}` : undefined,
+  assetPrefix: hasAssetPrefix
+    ? `${scheme}://${process.env.ASSET_PREFIX}`
+    : undefined,
   // Asset Prefix allows to use CDN for the generated js files
   // https://nextjs.org/docs/api-reference/next.config.js/cdn-support-with-asset-prefix
 };

@@ -1,6 +1,6 @@
 {
-  "tree": "Árvore",
-  "tree_plural": "Árvores",
+  "tree_one": "Árvore",
+  "tree_other": "Árvores",
   "by": "Por {{tpoName}}",
   "to_project_by_tpo": "Para {{projectName}} por {{tpoName}}",
   "for": "para",
@@ -86,10 +86,10 @@
   "changeChocolate": "O Chocolate da Mudança",
   "stopTalkingStartPlanting": "Pare de falar. Comece a plantar.",
   "underMaintenance": "Em Manutenção",
+  "forbidden": "Não está autorizado a ver esta página!",
+  "validationFailed": "Validação falhou!",
+  "add": "Adicionar",
   "notFound": "A página solicitada não foi encontrada.",
   "unauthorized": "Alguma coisa correu mal. Por favor, tente sair e volte a entrar novamente.",
-  "forbidden": "Não está autorizado a ver esta página!",
-  "internalServerError": "Erro do Servidor Interno - Por favor tente novamente mais tarde!",
-  "validationFailed": "Validação falhou!",
-  "add": "Adicionar"
+  "internalServerError": "Erro do Servidor Interno - Por favor tente novamente mais tarde!"
 }

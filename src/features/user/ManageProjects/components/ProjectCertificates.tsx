@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import styles from './../StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import { useDropzone } from 'react-dropzone';
 import {
@@ -20,6 +20,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { SxProps } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
+import { handleError, APIError } from '@planet-sdk/common';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -51,23 +53,18 @@ function ProjectCertificates({
   setIsUploadingData,
   userLang,
 }: Props): ReactElement {
-  const { t, i18n, ready } = useTranslation(['manageProjects']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { t, ready } = useTranslation(['manageProjects']);
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { logoutUser } = useUserProps();
 
   const {
-    register,
-    handleSubmit,
-    errors,
     control,
-    formState,
     getValues,
     setValue,
+    formState: { errors },
   } = useForm({ mode: 'all' });
-  const { isDirty } = formState;
 
-  const [issueDate, setIssueDate] = React.useState(new Date());
-
-  const [certifierName, setCertifierName] = React.useState('');
+  const { issueDate, certifierName } = getValues();
 
   const [uploadedFiles, setUploadedFiles] = React.useState<Array<any>>();
   const [showForm, setShowForm] = React.useState(true);
@@ -92,24 +89,27 @@ function ProjectCertificates({
 
   React.useEffect(() => {
     // Fetch certificates of the project
-    if (projectGUID && token) {
-      getAuthenticatedRequest(
-        `/app/profile/projects/${projectGUID}?_scope=certificates`,
-        token,
-        {},
-        handleError,
-        '/profile'
-      ).then((result) => {
-        if (result && result.certificates && result.certificates.length > 0) {
-          setShowForm(false);
-          setShowToggle(false);
-        } else {
-          setShowToggle(true);
-          setisCertified(false);
-          setShowForm(true);
-        }
+
+    const fetchCertificates = async () => {
+      try {
+        const result = await getAuthenticatedRequest(
+          `/app/profile/projects/${projectGUID}?_scope=certificates`,
+          token,
+          logoutUser
+        );
+        setShowForm(false);
+        setShowToggle(false);
         setUploadedFiles(result.certificates);
-      });
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+        redirect('/profile');
+        setShowToggle(true);
+        setisCertified(false);
+        setShowForm(true);
+      }
+    };
+    if (projectGUID && token) {
+      fetchCertificates();
     }
   }, [projectGUID]);
 
@@ -130,66 +130,51 @@ function ProjectCertificates({
     },
   });
 
-  const onSubmit = (pdf: any) => {
+  const onSubmit = async (pdf: any) => {
     setIsUploadingData(true);
-    const updatedAmount = getValues('certifierName');
     const submitData = {
       issueDate: issueDate.getFullYear(),
-      certifierName: updatedAmount,
+      certifierName: certifierName,
       pdfFile: pdf,
     };
 
-    postAuthenticatedRequest(
-      `/app/projects/${projectGUID}/certificates`,
-      submitData,
-      token,
-      handleError
-    )
-      .then((res) => {
-        if (!res.code) {
-          let newUploadedFiles = uploadedFiles;
+    try {
+      const res = await postAuthenticatedRequest(
+        `/app/projects/${projectGUID}/certificates`,
+        submitData,
+        token,
+        logoutUser
+      );
+      let newUploadedFiles = uploadedFiles;
 
-          if (newUploadedFiles === undefined) {
-            newUploadedFiles = [];
-          }
+      if (newUploadedFiles === undefined) {
+        newUploadedFiles = [];
+      }
 
-          newUploadedFiles.push(res);
-          setUploadedFiles(newUploadedFiles);
-
-          setCertifierName('');
-          setValue('certifierName', '', { shouldDirty: false });
-          setIsUploadingData(false);
-          setShowForm(false);
-          setErrorMessage('');
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          }
-        }
-      })
-      .catch((err) => {
-        setIsUploadingData(false);
-        setErrorMessage(err);
-      });
+      newUploadedFiles.push(res);
+      setUploadedFiles(newUploadedFiles);
+      setValue('certifierName', '', { shouldDirty: false });
+      setIsUploadingData(false);
+      setShowForm(false);
+      setErrorMessage('');
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
   };
 
-  const deleteProjectCertificate = (id: any) => {
-    deleteAuthenticatedRequest(
-      `/app/projects/${projectGUID}/certificates/${id}`,
-      token,
-      handleError
-    ).then((res) => {
-      if (res !== 404) {
-        const uploadedFilesTemp = uploadedFiles.filter(
-          (item) => item.id !== id
-        );
-        setUploadedFiles(uploadedFilesTemp);
-      }
-    });
+  const deleteProjectCertificate = async (id: any) => {
+    try {
+      await deleteAuthenticatedRequest(
+        `/app/projects/${projectGUID}/certificates/${id}`,
+        token,
+        logoutUser
+      );
+      const uploadedFilesTemp = uploadedFiles!.filter((item) => item.id !== id);
+      setUploadedFiles(uploadedFilesTemp);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
   };
 
   React.useEffect(() => {
@@ -264,16 +249,22 @@ function ProjectCertificates({
         <>
           <div className={styles.formField}>
             <div className={styles.formFieldHalf}>
-              <MaterialTextField
-                inputRef={register({ required: true })}
-                label={t('manageProjects:certifierName')}
-                variant="outlined"
+              <Controller
                 name="certifierName"
-                onChange={(e) => {
-                  setCertifierName(e.target.value);
-                }}
+                rules={{ required: true }}
+                control={control}
                 defaultValue=""
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <MaterialTextField
+                    label={t('manageProjects:certifierName')}
+                    variant="outlined"
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                  />
+                )}
               />
+
               {errors.certifierName && (
                 <span className={styles.formErrors}>
                   {errors.certifierName.message}
@@ -284,31 +275,32 @@ function ProjectCertificates({
             <div className={styles.formFieldHalf}>
               <LocalizationProvider
                 dateAdapter={AdapterDateFns}
-                locale={
+                adapterLocale={
                   localeMapForDate[userLang]
                     ? localeMapForDate[userLang]
                     : localeMapForDate['en']
                 }
               >
-                <MuiDatePicker
-                  value={issueDate}
-                  onChange={setIssueDate}
-                  label={t('manageProjects:issueDate')}
+                <Controller
                   name="issueDate"
-                  renderInput={(props) => <MaterialTextField {...props} />}
-                  clearable
-                  disableFuture
-                  inputRef={register({
-                    required: {
-                      value: true,
-                      message: t('manageProjects:certificationDateValidation'),
-                    },
-                  })}
-                  maxDate={new Date()}
-                  minDate={tenYearsAgo}
-                  DialogProps={{
-                    sx: dialogSx,
+                  control={control}
+                  rules={{
+                    required: t('manageProjects:certificationDateValidation'),
                   }}
+                  render={({ field: { onChange, value } }) => (
+                    <MuiDatePicker
+                      label={t('manageProjects:issueDate')}
+                      renderInput={(props) => <MaterialTextField {...props} />}
+                      disableFuture
+                      maxDate={new Date()}
+                      minDate={tenYearsAgo}
+                      DialogProps={{
+                        sx: dialogSx,
+                      }}
+                      value={value}
+                      onChange={onChange}
+                    />
+                  )}
                 />
               </LocalizationProvider>
               {errors.issueDate && (

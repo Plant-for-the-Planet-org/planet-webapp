@@ -7,12 +7,16 @@ import Email from '../../../../../public/assets/images/icons/project/Email';
 import Location from '../../../../../public/assets/images/icons/project/Location';
 import WorldWeb from '../../../../../public/assets/images/icons/project/WorldWeb';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import {
+  ConservationProjectExtended,
+  TreeProjectExtended,
+} from '@planet-sdk/common';
 
 interface Props {
-  project: Object;
+  project: TreeProjectExtended | ConservationProjectExtended;
 }
 
-function ProjectContactDetails({ project }: Props): ReactElement {
+function ProjectContactDetails({ project }: Props): ReactElement | null {
   const { t, ready } = useTranslation(['donate']);
   const { embed } = React.useContext(ParamsContext);
   const contactAddress =
@@ -81,36 +85,39 @@ function ProjectContactDetails({ project }: Props): ReactElement {
     },
   ];
   return ready ? (
-    <div className={styles.projectMoreInfo}>
-      <div className={styles.infoTitle}>{t('donate:contactDetails')}</div>
-      <Link prefetch={false} href="/t/[id]" as={`/t/${contactDetails[0].link}`}>
-        <a target={embed === 'true' ? '_top' : null}>
+    <div className={styles.projectContactDetails}>
+      <div className={styles.projectMoreInfo}>
+        <div className={styles.infoTitle}>{t('donate:contactDetails')}</div>
+        <Link
+          prefetch={false}
+          href="/t/[id]"
+          as={`/t/${contactDetails[0].link}`}
+          target={embed === 'true' ? '_top' : '_self'}
+        >
           <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
             {contactDetails[0].icon}
-            <span
-              style={{ marginLeft: '16px', flexGrow: 1, cursor: 'pointer' }}
-            >
+            <span style={{ flexGrow: 1, cursor: 'pointer' }}>
               {contactDetails[0].text}
             </span>
           </div>
-        </a>
-      </Link>
+        </Link>
 
-      {contactDetails.slice(1).map((contact) => {
-        return (
-          <a
-            key={contact.id}
-            href={contact.link ? contact.link : '#'}
-            target={contact.link ? '_blank' : '_self'}
-            rel="noreferrer noopener"
-          >
-            <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
-              {contact.icon}
-              <span>{contact.text}</span>
-            </div>
-          </a>
-        );
-      })}
+        {contactDetails.slice(1).map((contact) => {
+          return (
+            <a
+              key={contact.id}
+              href={contact.link ? contact.link : '#'}
+              target={contact.link ? '_blank' : '_self'}
+              rel="noreferrer noopener"
+            >
+              <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
+                {contact.icon}
+                <span>{contact.text}</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
     </div>
   ) : null;
 }

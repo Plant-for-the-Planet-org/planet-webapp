@@ -1,4 +1,4 @@
-import { useTranslation } from 'next-i18next';
+import { useTranslation, Trans } from 'next-i18next';
 import React, {
   ReactElement,
   useEffect,
@@ -12,12 +12,13 @@ import CreationMethodForm from './forms/CreationMethodForm';
 import SelectProjectForm from './forms/SelectProjectForm';
 import IssueCodesForm from './forms/IssueCodesForm';
 import { useBulkCode } from '../../common/Layout/BulkCodeContext';
-import { MapSingleProject } from '../../common/types/project';
 import { TENANT_ID } from '../../../utils/constants/environment';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
+import { handleError, APIError } from '@planet-sdk/common';
+import { MapProject } from '../../common/types/ProjectPropsContextInterface';
 
 export enum BulkCodeSteps {
   SELECT_METHOD = 'select_method',
@@ -41,8 +42,8 @@ export default function BulkCodes({
     bulkMethod,
     project,
   } = useBulkCode();
-  const { handleError } = useContext(ErrorHandlingContext);
-  const { contextLoaded, user } = useContext(UserPropsContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
+  const { contextLoaded, user } = useUserProps();
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
 
   useEffect(() => {
@@ -72,10 +73,8 @@ export default function BulkCodes({
   const fetchProjectList = useCallback(async () => {
     if (planetCashAccount && !projectList) {
       try {
-        const fetchedProjects = await getRequest<MapSingleProject[]>(
+        const fetchedProjects = await getRequest<MapProject[]>(
           `/app/projects`,
-          handleError,
-          undefined,
           {
             _scope: 'map',
             currency: planetCashAccount.currency,
@@ -117,7 +116,7 @@ export default function BulkCodes({
           );
         }
       } catch (err) {
-        console.log(err);
+        setErrors(handleError(err as APIError));
       }
     }
   }, [planetCashAccount?.currency, i18n.language]);
@@ -156,11 +155,26 @@ export default function BulkCodes({
     <DashboardView
       title={t('bulkCodes:bulkCodesTitle')}
       subtitle={
-        <p>
-          {t('bulkCodes:bulkCodesDescription1')}
-          <br />
-          {t('bulkCodes:bulkCodesDescription2')}
-        </p>
+        <div>
+          <p>
+            <Trans i18nKey="bulkCodes:partnerSignupInfo">
+              Use of this feature by Companies is subject to partnership with
+              Plant-for-the-Planet. Please contact{' '}
+              <a
+                className="planet-links"
+                href="mailto:partner@plant-for-the-planet.org"
+              >
+                partner@plant-for-the-planet.org
+              </a>{' '}
+              for details.
+            </Trans>
+          </p>
+          <p>
+            {t('bulkCodes:bulkCodesDescription1')}
+            <br />
+            {t('bulkCodes:bulkCodesDescription2')}
+          </p>
+        </div>
       }
     >
       <TabbedView step={step} tabItems={tabConfig}>

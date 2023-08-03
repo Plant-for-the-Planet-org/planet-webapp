@@ -5,7 +5,7 @@ import {
   useContext,
   useCallback,
 } from 'react';
-import { useTranslation } from 'next-i18next';
+import { Trans, useTranslation } from 'next-i18next';
 import DashboardView from '../../common/Layout/DashboardView';
 import TabbedView from '../../common/Layout/TabbedView';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
@@ -13,10 +13,11 @@ import CreateAccount from './screens/CreateAccount';
 import Accounts from './screens/Accounts';
 import Transactions from './screens/Transactions';
 import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
 import { useRouter } from 'next/router';
+import { handleError, APIError } from '@planet-sdk/common';
 
 export enum PlanetCashTabs {
   ACCOUNTS = 'accounts',
@@ -35,9 +36,9 @@ export default function PlanetCash({
 }: PlanetCashProps): ReactElement | null {
   const { t, ready, i18n } = useTranslation('planetcash');
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
-  const { token, contextLoaded } = useContext(UserPropsContext);
+  const { token, contextLoaded, logoutUser } = useUserProps();
   const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
-  const { handleError } = useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const router = useRouter();
 
@@ -78,20 +79,22 @@ export default function PlanetCash({
 
   const fetchAccounts = useCallback(async () => {
     if (!accounts) {
-      setIsDataLoading(true);
-      setProgress && setProgress(70);
-      const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
-        `/app/planetCash`,
-        token,
-        {},
-        handleError
-      );
-      redirectIfNeeded(accounts);
-      const sortedAccounts = sortAccountsByActive(accounts);
-      setIsPlanetCashActive(accounts.some((account) => account.isActive));
-      setAccounts(sortedAccounts);
+      try {
+        setIsDataLoading(true);
+        setProgress && setProgress(70);
+        const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
+          `/app/planetCash`,
+          token,
+          logoutUser
+        );
+        redirectIfNeeded(accounts);
+        const sortedAccounts = sortAccountsByActive(accounts);
+        setIsPlanetCashActive(accounts.some((account) => account.isActive));
+        setAccounts(sortedAccounts);
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+      }
       setIsDataLoading(false);
-
       if (setProgress) {
         setProgress(100);
         setTimeout(() => setProgress(0), 1000);
@@ -146,26 +149,41 @@ export default function PlanetCash({
     <DashboardView
       title={t('title')}
       subtitle={
-        <p>
-          {t('description')}{' '}
-          <a
-            className="planet-links"
-            href="https://www.plant-for-the-planet.org/planetcash/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            {t('learnMoreText')}
-          </a>
-          <br />
-          <a
-            className="planet-links"
-            href="https://www.plant-for-the-planet.org/terms-and-conditions/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            {t('termsText')}
-          </a>
-        </p>
+        <div>
+          <p>
+            <Trans i18nKey="planetcash:partnerSignupInfo">
+              Use of this feature by Companies is subject to partnership with
+              Plant-for-the-Planet. Please contact{' '}
+              <a
+                className="planet-links"
+                href="mailto:partner@plant-for-the-planet.org"
+              >
+                partner@plant-for-the-planet.org
+              </a>{' '}
+              for details.
+            </Trans>
+          </p>
+          <p>
+            {t('description')}{' '}
+            <a
+              className="planet-links"
+              href={`https://pp.eco/${i18n.language}/planetcash/`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {t('learnMoreText')}
+            </a>
+            <br />
+            <a
+              className="planet-links"
+              href={`https://pp.eco/legal/${i18n.language}/terms`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {t('termsText')}
+            </a>
+          </p>
+        </div>
       }
     >
       <TabbedView step={step} tabItems={tabConfig}>

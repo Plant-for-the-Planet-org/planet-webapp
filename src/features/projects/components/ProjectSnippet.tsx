@@ -7,46 +7,59 @@ import EditIcon from '../../../../public/assets/images/icons/manageProjects/Penc
 import Link from 'next/link';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
-import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
+import VerifiedBadge from './VerifiedBadge';
+import TopProjectBadge from './TopProjectBadge';
+import {
+  ConservationProjectConcise,
+  ConservationProjectExtended,
+  TreeProjectConcise,
+  TreeProjectExtended,
+} from '@planet-sdk/common';
 
 interface Props {
-  project: any;
-  keyString: string;
-  editMode: Boolean;
+  project:
+    | TreeProjectConcise
+    | ConservationProjectConcise
+    | TreeProjectExtended
+    | ConservationProjectExtended;
+  editMode: boolean;
+  displayPopup: boolean;
 }
 
 export default function ProjectSnippet({
   project,
-  keyString,
   editMode,
+  displayPopup,
 }: Props): ReactElement {
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
-
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
     : '';
 
-  const { selectedPl, hoveredPl } = React.useContext(ProjectPropsContext);
+  const { selectedPl, hoveredPl } = useProjectProps();
 
-  let progressPercentage = (project.countPlanted / project.countTarget) * 100;
+  let progressPercentage = 0;
+
+  if (project.purpose === 'trees' && project.countTarget !== null)
+    progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
   if (progressPercentage > 100) {
     progressPercentage = 100;
   }
 
-  const { token } = React.useContext(UserPropsContext);
+  const { token } = useUserProps();
   const handleOpen = () => {
     const url = getDonationUrl(project.slug, token, embed, callbackUrl);
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
-
   return ready ? (
-    <div className={'singleProject'} key={keyString}>
+    <div className={'singleProject'}>
       {editMode ? (
         <Link href={`/profile/projects/${project.id}`}>
           <button id={'projectSnipEdit'} className={'projectEditBlock'}>
@@ -81,14 +94,21 @@ export default function ProjectSnippet({
             }}
           ></div>
         ) : null}
-
+        {project.purpose === 'trees' &&
+          project.isTopProject &&
+          project.isApproved && <TopProjectBadge displayPopup={true} />}
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
-            {project.classification && t(`donate:${project.classification}`)}
+            {project.purpose === 'trees' &&
+              project.classification &&
+              t(`donate:${project.classification}`)}
           </div>
-          <div className={'projectName'}>
+          <p className={'projectName'}>
             {truncateString(project.name, 54)}
-          </div>
+            {project.purpose === 'trees' && project.isApproved && (
+              <VerifiedBadge displayPopup={displayPopup} project={project} />
+            )}
+          </p>
         </div>
       </div>
 
@@ -109,7 +129,7 @@ export default function ProjectSnippet({
                     Number(project.countPlanted),
                     1
                   )}{' '}
-                  {t('common:tree_plural', {
+                  {t('common:tree', {
                     count: Number(project.countPlanted),
                   })}{' '}
                   •{' '}

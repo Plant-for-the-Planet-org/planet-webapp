@@ -4,17 +4,20 @@ import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayou
 import MySpecies from '../../../src/features/user/TreeMapper/MySpecies';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
+import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 
 interface Props {}
 
 export default function MySpeciesPage({}: Props): ReactElement {
   const { t } = useTranslation('me');
+  const { user } = useUserProps();
   return (
     <UserLayout>
       <Head>
         <title>{t('mySpecies')}</title>
       </Head>
-      <MySpecies />
+      {user?.type === 'tpo' ? <MySpecies /> : <AccessDeniedLoader />}
     </UserLayout>
   );
 }

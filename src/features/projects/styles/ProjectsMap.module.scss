@@ -732,3 +732,9 @@
     left: 350px;
   }
 }
+
+@include xsPhoneView {
+  .exploreButton {
+    top: 149px;
+  }
+}

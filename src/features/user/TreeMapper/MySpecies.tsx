@@ -7,39 +7,61 @@ import {
 } from '../../../utils/apiRequests/api';
 import MaterialButton from '../../common/InputTypes/MaterialButton';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import SpeciesSelect from './Import/components/SpeciesAutoComplete';
 import styles from './MySpecies.module.scss';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { handleError, APIError } from '@planet-sdk/common';
 
 interface Props {}
 
 export default function MySpecies({}: Props): ReactElement {
   const { t } = useTranslation(['treemapper', 'me', 'common']);
-  const { token, contextLoaded } = React.useContext(UserPropsContext);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { token, contextLoaded, logoutUser } = useUserProps();
+  const { setErrors } = React.useContext(ErrorHandlingContext);
   const [species, setSpecies] = React.useState<any[]>([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
 
   const defaultMySpeciesValue = {
     aliases: '',
+    scientificSpecies: null,
   };
 
-  const { register, handleSubmit, errors, control } = useForm({
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
     mode: 'onBlur',
     defaultValues: defaultMySpeciesValue,
   });
 
   const fetchMySpecies = async () => {
-    const result = await getAuthenticatedRequest('/treemapper/species', token);
-    setSpecies(result);
+    try {
+      const result = await getAuthenticatedRequest(
+        '/treemapper/species',
+        token,
+        logoutUser
+      );
+      setSpecies(result);
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
   };
 
   const deleteSpecies = async (id: number) => {
-    await deleteAuthenticatedRequest(`/treemapper/species/${id}`, token);
-    fetchMySpecies();
+    try {
+      await deleteAuthenticatedRequest(
+        `/treemapper/species/${id}`,
+        token,
+        logoutUser
+      );
+      fetchMySpecies();
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
   };
 
   const addSpecies = async (species: any) => {
@@ -51,12 +73,16 @@ export default function MySpecies({}: Props): ReactElement {
           : species.scientificSpecies.name,
       scientificSpecies: species.scientificSpecies.id,
     };
-    const result = await postAuthenticatedRequest(
-      `/treemapper/species`,
-      data,
-      token,
-      handleError
-    );
+    try {
+      await postAuthenticatedRequest(
+        `/treemapper/species`,
+        data,
+        token,
+        logoutUser
+      );
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
     fetchMySpecies();
     setIsUploadingData(false);
   };
@@ -75,7 +101,7 @@ export default function MySpecies({}: Props): ReactElement {
           <div>
             <SpeciesSelect
               label={t('treemapper:species')}
-              name={`scientificSpecies`}
+              name="scientificSpecies"
               width="300px"
               control={control}
             />
@@ -86,18 +112,20 @@ export default function MySpecies({}: Props): ReactElement {
             )}
           </div>
           <div>
-            <MaterialTextField
-              label={t('treemapper:aliases')}
-              name={`aliases`}
-              inputRef={register({
-                required: {
-                  value: true,
-                  message: t('treemapper:aliasesValidation'),
-                },
-              })}
-              type={'text'}
-              style={{ width: '300px' }}
-              variant="outlined"
+            <Controller
+              name="aliases"
+              control={control}
+              rules={{ required: t('treemapper:aliasesValidation') }}
+              render={({ field: { onChange, value } }) => (
+                <MaterialTextField
+                  label={t('treemapper:aliases')}
+                  type={'text'}
+                  style={{ width: '300px' }}
+                  variant="outlined"
+                  onChange={onChange}
+                  value={value}
+                />
+              )}
             />
             <div>
               {errors.aliases && (

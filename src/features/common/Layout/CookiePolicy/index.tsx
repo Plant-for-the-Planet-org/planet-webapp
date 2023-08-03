@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './CookiePolicy.module.scss';
-import { UserPropsContext } from '../UserPropsContext';
+import { useUserProps } from '../UserPropsContext';
 import { useTranslation } from 'next-i18next';
 
 export default function CookiePolicy() {
   const [showCookieNotice, setShowCookieNotice] = useState(false);
   const { t, ready } = useTranslation(['leaderboard']);
-  const { user, contextLoaded, loginWithRedirect } =
-    React.useContext(UserPropsContext);
+  const { user, contextLoaded } = useUserProps();
 
   React.useEffect(() => {
     if (contextLoaded && user) {

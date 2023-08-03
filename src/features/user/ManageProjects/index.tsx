@@ -7,6 +7,7 @@ import ProjectSelection from './components/ProjectSelection';
 import DetailedAnalysis from './components/DetailedAnalysis';
 import ProjectSites from './components/ProjectSites';
 import ProjectSpending from './components/ProjectSpending';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import {
   getAuthenticatedRequest,
   putAuthenticatedRequest,
@@ -15,10 +16,18 @@ import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { handleError, APIError, ProjectExtended } from '@planet-sdk/common';
 
-export default function ManageProjects({ GUID, token, project }: any) {
+interface Props {
+  GUID?: string | null;
+  token: string | null;
+  project?: ProjectExtended;
+}
+
+export default function ManageProjects({ GUID, token, project }: Props) {
   const { t, ready } = useTranslation(['manageProjects']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { logoutUser } = useUserProps();
   const router = useRouter();
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -30,7 +39,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
     project ? project : {}
   );
 
-  const formRouteHandler = (val) => {
+  const formRouteHandler = (val: number) => {
     if (router.query.purpose) return;
     switch (val) {
       case 1:
@@ -74,7 +83,7 @@ export default function ManageProjects({ GUID, token, project }: any) {
     setTabSelected((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = (message) => {
+  const handleReset = (message: string) => {
     setErrorMessage(message);
     setActiveStep(0);
   };
@@ -115,73 +124,71 @@ export default function ManageProjects({ GUID, token, project }: any) {
       handleNext();
     }
   };
-  const submitForReview = () => {
+  const submitForReview = async () => {
     setIsUploadingData(true);
     const submitData = {
       reviewRequested: true,
     };
-    putAuthenticatedRequest(
-      `/app/projects/${projectGUID}`,
-      submitData,
-      token,
-      handleError
-    ).then((res) => {
-      if (!res.code) {
-        setProjectDetails(res);
-        setErrorMessage('');
-        setIsUploadingData(false);
-      } else {
-        if (res.code === 404) {
-          setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-          setIsUploadingData(false);
-        } else {
-          setErrorMessage(res.message);
-          setIsUploadingData(false);
-        }
-      }
-    });
+
+    try {
+      const res = await putAuthenticatedRequest(
+        `/app/projects/${projectGUID}`,
+        submitData,
+        token,
+        logoutUser
+      );
+      setProjectDetails(res);
+      setErrorMessage('');
+      setIsUploadingData(false);
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
   };
 
-  const handlePublishChange = (val) => {
+  const handlePublishChange = async (val: boolean) => {
+    setIsUploadingData(true);
     const submitData = {
       publish: val,
     };
-    putAuthenticatedRequest(
-      `/app/projects/${projectGUID}`,
-      submitData,
-      token,
-      handleError
-    ).then((res) => {
-      if (!res.code) {
-        setProjectDetails(res);
-        setErrorMessage('');
-        setIsUploadingData(false);
-      } else {
-        if (res.code === 404) {
-          setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-          setIsUploadingData(false);
-        } else {
-          setErrorMessage(res.message);
-          setIsUploadingData(false);
-        }
-      }
-    });
+
+    try {
+      const res = await putAuthenticatedRequest(
+        `/app/projects/${projectGUID}`,
+        submitData,
+        token,
+        logoutUser
+      );
+      setProjectDetails(res);
+      setErrorMessage('');
+      setIsUploadingData(false);
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
   };
 
   React.useEffect(() => {
     // Fetch details of the project
-    if (projectGUID && token)
-      getAuthenticatedRequest(
-        `/app/profile/projects/${projectGUID}`,
-        token,
-        {},
-        handleError,
-        '/profile'
-      ).then((result) => {
-        setProjectDetails(result);
-      });
-  }, [GUID, projectGUID]);
 
+    const fetchProjectDetails = async () => {
+      try {
+        const res = await getAuthenticatedRequest(
+          `/app/profile/projects/${projectGUID}`,
+          token,
+          logoutUser
+        );
+        setProjectDetails(res);
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+        redirect('/profile');
+      }
+    };
+
+    if (projectGUID && token) {
+      fetchProjectDetails();
+    }
+  }, [GUID, projectGUID]);
   const [userLang, setUserLang] = React.useState('en');
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -232,10 +239,8 @@ export default function ManageProjects({ GUID, token, project }: any) {
             token={token}
             projectDetails={projectDetails}
             setProjectDetails={setProjectDetails}
-            errorMessage={errorMessage}
             setProjectGUID={setProjectGUID}
             projectGUID={projectGUID}
-            setErrorMessage={setErrorMessage}
             purpose={
               project?.purpose ? project?.purpose : router.query?.purpose
             }
@@ -360,7 +365,6 @@ export default function ManageProjects({ GUID, token, project }: any) {
         <div
           style={{
             marginTop: '40px',
-            width: '1000px',
             display: 'flex',
           }}
         >

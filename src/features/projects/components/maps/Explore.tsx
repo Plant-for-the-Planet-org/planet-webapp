@@ -11,35 +11,30 @@ import {
   LegendListItem,
   LegendItemTimeStep,
 } from 'vizzuality-components';
-import { LayerManager, Layer as LayerM } from 'layer-manager/dist/components';
-import { PluginMapboxGl } from 'layer-manager';
-import { FlyToInterpolator, Layer, Source } from 'react-map-gl';
+import { FlyToInterpolator } from 'react-map-gl';
 import TreeCoverLoss from '../../../../../public/data/layers/tree-cover-loss';
 import { getParams } from '../../../../utils/LayerManagerUtils';
 import ExploreInfoModal from './ExploreInfoModal';
 import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../../theme/themeContext';
-import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
-interface Props {}
-
-export default function Explore({}: Props): ReactElement {
+export default function Explore(): ReactElement {
   const {
-    showSingleProject,
     setShowProjects,
     exploreExpanded,
     setExploreExpanded,
-    exploreForests,
-    setExploreForests,
+    /* 24 Apr 2023 - temp. disable "Current Forests" / "Restoration Potential" toggles on map */
+    /* exploreForests,
+    setExploreForests, 
     explorePotential,
-    setExplorePotential,
+    setExplorePotential,*/
     exploreDeforestation,
     setExploreDeforestation,
-    explorePlanted,
-    setExplorePlanted,
     infoExpanded,
     setInfoExpanded,
     openModal,
@@ -52,37 +47,31 @@ export default function Explore({}: Props): ReactElement {
     setViewPort,
     setExploreProjects,
     defaultMapCenter,
-    mapState,
-    setMapState,
     isMobile,
     exploreProjects,
-  } = React.useContext(ProjectPropsContext);
+  } = useProjectProps();
 
   const { t } = useTranslation(['maps']);
   const router = useRouter();
 
   const { theme } = React.useContext(ThemeContext);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
+  const { isImpersonationModeOn } = useUserProps();
 
   const handleModalClose = () => {
     setModalOpen(false);
   };
-  const handleModalOpen = () => {
-    setModalOpen(true);
-  };
 
   // Event Handlers
-  const handleExploreForestsChange = (event: any) => {
+  /* 24 Apr 2023 - temp. disable "Current Forests" / "Restoration Potential" toggles on map */
+  /* const handleExploreForestsChange = (event: any) => {
     setExploreForests(event.target.checked);
   };
   const handleExplorePotentialChange = (event: any) => {
     setExplorePotential(event.target.checked);
-  };
+  }; */
   const handleExploreDeforestationChange = (event: any) => {
     setExploreDeforestation(event.target.checked);
-  };
-  const handleExplorePlantedChange = (event: any) => {
-    setExplorePlanted(event.target.checked);
   };
 
   // LEGEND
@@ -219,7 +208,14 @@ export default function Explore({}: Props): ReactElement {
           onClick={() => {
             setExploreExpanded(!exploreExpanded);
           }}
-          style={exploreExpanded ? { padding: '4px 10px' } : {}}
+          style={
+            exploreExpanded
+              ? {
+                  padding: '4px 10px',
+                  marginTop: isImpersonationModeOn ? '46px' : '',
+                }
+              : { marginTop: isImpersonationModeOn ? '46px' : '' }
+          }
         >
           {exploreExpanded ? <CancelIcon /> : <ExploreIcon />}
           {exploreExpanded ? null : isMobile ? null : (
@@ -242,12 +238,13 @@ export default function Explore({}: Props): ReactElement {
             >
               {/* <div> */}
               <FormGroup style={{ width: '100%' }}>
-                <div className={styles.exploreToggleRow}>
+                {/* 24 Apr 2023 - temp. disable "Current Forests" / "Restoration Potential" toggles on map */}
+                {/* <div className={styles.exploreToggleRow}>
                   <FormControlLabel
                     control={
                       <Switch
+                        disabled={true}
                         color="#448149"
-                        className={styles.toggleForest}
                         checked={exploreForests}
                         onChange={handleExploreForestsChange}
                         name="forest"
@@ -269,6 +266,7 @@ export default function Explore({}: Props): ReactElement {
                   <FormControlLabel
                     control={
                       <Switch
+                        disabled={true}
                         checked={explorePotential}
                         onChange={handleExplorePotentialChange}
                         name="potential"
@@ -286,7 +284,7 @@ export default function Explore({}: Props): ReactElement {
                   >
                     <InfoIcon />
                   </div>
-                </div>
+                </div> */}
 
                 <div className={styles.exploreToggleRow}>
                   <FormControlLabel
@@ -346,19 +344,6 @@ export default function Explore({}: Props): ReactElement {
                     </Legend>
                   </div>
                 ) : null}
-                {/* <div className={styles.exploreToggleRow}>
-                                    <FormControlLabel
-                                    control={
-                                        <Switch
-                                        color="#E7C746"
-                                        checked={explorePlanted}
-                                        onChange={handleExplorePlantedChange}
-                                        name="planted"
-                                        />
-                                    }
-                                    label="Planted Trees"
-                                    />
-                                </div> */}
                 <div className={styles.exploreToggleRow}>
                   <FormControlLabel
                     control={
@@ -399,64 +384,3 @@ export default function Explore({}: Props): ReactElement {
     </>
   );
 }
-
-const ExploreLayers = () => {
-  const { exploreForests, explorePotential, exploreDeforestation } =
-    React.useContext(ProjectPropsContext);
-  return (
-    <>
-      {exploreForests ? (
-        <Source
-          id="forests"
-          type="raster"
-          tiles={[
-            'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Forest_Denisty_V2/MapServer/tile/{z}/{y}/{x}',
-          ]}
-          tileSize={128}
-        >
-          <Layer id="forest-layer" source="forests" type="raster" />
-        </Source>
-      ) : null}
-
-      {loaded ? (
-        <LayerManager map={mapRef?.current.getMap()} plugin={PluginMapboxGl}>
-          {exploreDeforestation &&
-            TreeCoverLoss.map((layer) => {
-              const { id, decodeConfig, timelineConfig, decodeFunction } =
-                layer;
-
-              const lSettings = layersSettings[id] || {};
-
-              const l = {
-                ...layer,
-                ...layer.config,
-                ...lSettings,
-                ...(!!decodeConfig && {
-                  decodeParams: getParams(decodeConfig, {
-                    ...timelineConfig,
-                    ...lSettings.decodeParams,
-                  }),
-                  decodeFunction,
-                }),
-              };
-
-              return <LayerM key={layer.id} {...l} />;
-            })}
-        </LayerManager>
-      ) : null}
-
-      {explorePotential ? (
-        <Source
-          id="potential"
-          type="raster"
-          tiles={[
-            'https://tiles.arcgis.com/tiles/lKUTwQ0dhJzktt4g/arcgis/rest/services/Restoration_Potential_Bastin_2019_V3/MapServer/tile/{z}/{y}/{x}',
-          ]}
-          tileSize={128}
-        >
-          <Layer id="potential-layer" source="potential" type="raster" />
-        </Source>
-      ) : null}
-    </>
-  );
-};

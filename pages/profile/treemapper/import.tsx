@@ -4,17 +4,19 @@ import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayou
 import { useTranslation } from 'next-i18next';
 import ImportData from '../../../src/features/user/TreeMapper/Import';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-
+import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
+import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 interface Props {}
 
 export default function Import({}: Props): ReactElement {
   const { t } = useTranslation('treemapper');
+  const { user } = useUserProps();
   return (
     <UserLayout>
       <Head>
         <title>{t('treemapper:importData')}</title>
       </Head>
-      <ImportData />
+      {user?.type === 'tpo' ? <ImportData /> : <AccessDeniedLoader />}
     </UserLayout>
   );
 }

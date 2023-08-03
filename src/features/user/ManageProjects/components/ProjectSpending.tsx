@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement } from 'react';
 import styles from './../StepForm.module.scss';
 import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
 import { useForm, Controller } from 'react-hook-form';
@@ -20,6 +20,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { SxProps } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
+import { handleError, APIError } from '@planet-sdk/common';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 const yearDialogSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
@@ -55,13 +57,10 @@ export default function ProjectSpending({
   projectGUID,
   handleReset,
 }: Props): ReactElement {
-  const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { t, ready } = useTranslation(['manageProjects', 'common']);
+  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const {
-    register,
-    handleSubmit,
-    errors,
-    formState,
+    formState: { errors, isDirty },
     getValues,
     setValue,
     control,
@@ -73,6 +72,7 @@ export default function ProjectSpending({
 
   const [showForm, setShowForm] = React.useState(true);
   const [uploadedFiles, setUploadedFiles] = React.useState([]);
+  const { logoutUser } = useUserProps();
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {
       handleReset(ready ? t('manageProjects:resetMessage') : '');
@@ -94,7 +94,7 @@ export default function ProjectSpending({
     [uploadedFiles]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     accept: '.pdf',
     multiple: false,
     maxSize: 10485760,
@@ -111,9 +111,7 @@ export default function ProjectSpending({
     },
   });
 
-  const { isDirty, isSubmitting } = formState;
-
-  const onSubmit = (pdf: any) => {
+  const onSubmit = async (pdf: any) => {
     setIsUploadingData(true);
     const updatedAmount = getValues('amount');
     const year = getValues('year');
@@ -124,71 +122,67 @@ export default function ProjectSpending({
       pdfFile: pdf,
     };
 
-    postAuthenticatedRequest(
-      `/app/projects/${projectGUID}/expenses`,
-      submitData,
-      token,
-      handleError
-    )
-      .then((res) => {
-        if (!res.code) {
-          const newUploadedFiles = uploadedFiles;
-          newUploadedFiles.push(res);
-          setUploadedFiles(newUploadedFiles);
-          setAmount(0);
-          setValue('amount', 0, { shouldDirty: false });
-          setIsUploadingData(false);
-          setShowForm(false);
-          setErrorMessage('');
-          handleNext();
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(ready ? t('manageProjects:projectNotFound') : '');
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(res.message);
-          }
-        }
-      })
-      .catch((err) => {
-        setIsUploadingData(false);
-        setErrorMessage(err);
-      });
-  };
-
-  const deleteProjectSpending = (id: any) => {
-    setIsUploadingData(true);
-    deleteAuthenticatedRequest(
-      `/app/projects/${projectGUID}/expenses/${id}`,
-      token,
-      handleError
-    ).then((res) => {
-      if (res !== 404) {
-        const uploadedFilesTemp = uploadedFiles.filter(
-          (item) => item.id !== id
-        );
-        setUploadedFiles(uploadedFilesTemp);
-        setIsUploadingData(false);
-      }
-    });
-  };
-
-  React.useEffect(() => {
-    // Fetch spending of the project
-    if (projectGUID && token)
-      getAuthenticatedRequest(
-        `/app/profile/projects/${projectGUID}?_scope=expenses`,
+    try {
+      const res = await postAuthenticatedRequest(
+        `/app/projects/${projectGUID}/expenses`,
+        submitData,
         token,
-        {},
-        handleError,
-        '/profile'
-      ).then((result) => {
+        logoutUser
+      );
+      const newUploadedFiles = uploadedFiles;
+      newUploadedFiles.push(res);
+      setUploadedFiles(newUploadedFiles);
+      setAmount(0);
+      setValue('amount', 0, { shouldDirty: false });
+      setIsUploadingData(false);
+      setShowForm(false);
+      setErrorMessage('');
+      handleNext();
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
+  };
+
+  const deleteProjectSpending = async (id: any) => {
+    try {
+      setIsUploadingData(true);
+      await deleteAuthenticatedRequest(
+        `/app/projects/${projectGUID}/expenses/${id}`,
+        token,
+        logoutUser
+      );
+      const uploadedFilesTemp = uploadedFiles.filter((item) => item.id !== id);
+      setUploadedFiles(uploadedFilesTemp);
+      setIsUploadingData(false);
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
+  };
+
+  const fetchProjSpending = async () => {
+    try {
+      // Fetch spending of the project
+      if (projectGUID && token) {
+        const result = await getAuthenticatedRequest(
+          `/app/profile/projects/${projectGUID}?_scope=expenses`,
+          token,
+          logoutUser
+        );
         if (result?.expenses && result.expenses.length > 0) {
           setShowForm(false);
         }
         setUploadedFiles(result.expenses);
-      });
+      }
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+      redirect('/profile');
+    }
+  };
+
+  React.useEffect(() => {
+    fetchProjSpending();
   }, [projectGUID]);
 
   const fiveYearsAgo = new Date();
@@ -240,24 +234,25 @@ export default function ProjectSpending({
               <div className={`${styles.formFieldHalf}`}>
                 <LocalizationProvider
                   dateAdapter={AdapterDateFns}
-                  locale={
+                  adapterLocale={
                     localeMapForDate[userLang]
                       ? localeMapForDate[userLang]
                       : localeMapForDate['en']
                   }
                 >
                   <Controller
-                    render={(properties) => (
+                    name="year"
+                    control={control}
+                    defaultValue={new Date()}
+                    rules={{
+                      required: t('manageProjects:spendingYearValidation'),
+                    }}
+                    render={({ field: { onChange, value } }) => (
                       <MuiDatePicker
-                        inputRef={register({
-                          required: {
-                            value: true,
-                            message: t('manageProjects:spendingYearValidation'),
-                          },
-                        })}
                         views={['year']}
-                        value={properties.value}
-                        onChange={properties.onChange}
+                        openTo="year"
+                        value={value}
+                        onChange={onChange}
                         label={t('manageProjects:spendingYear')}
                         renderInput={(props) => (
                           <MaterialTextField {...props} />
@@ -270,9 +265,6 @@ export default function ProjectSpending({
                         }}
                       />
                     )}
-                    defaultValue={new Date()}
-                    name="year"
-                    control={control}
                   />
                 </LocalizationProvider>
                 {errors.year && (
@@ -283,32 +275,38 @@ export default function ProjectSpending({
               </div>
               <div style={{ width: '20px' }}></div>
               <div className={`${styles.formFieldHalf}`}>
-                <MaterialTextField
-                  inputRef={register({
-                    validate: (value) => parseInt(value) > 0,
-                    required: {
-                      value: true,
-                      message: t('manageProjects:spendingAmountValidation'),
-                    },
-                  })}
-                  label={t('manageProjects:spendingAmount')}
-                  placeholder={0}
-                  type="number"
-                  onBlur={(e) => e.preventDefault()}
-                  variant="outlined"
+                <Controller
                   name="amount"
-                  onInput={(e) => {
-                    setAmount(e.target.value);
+                  control={control}
+                  rules={{
+                    required: t('manageProjects:spendingAmountValidation'),
+                    validate: (value) => parseInt(value) > 0,
                   }}
-                  InputProps={{
-                    startAdornment: (
-                      <p
-                        className={styles.inputStartAdornment}
-                        style={{ paddingRight: '4px' }}
-                      >{`€`}</p>
-                    ),
-                  }}
+                  defaultValue=""
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <MaterialTextField
+                      label={t('manageProjects:spendingAmount')}
+                      placeholder="0"
+                      type="number"
+                      variant="outlined"
+                      onChange={(e) => {
+                        setAmount(e.target.value);
+                        onChange(e.target.value);
+                      }}
+                      value={value}
+                      onBlur={onBlur}
+                      InputProps={{
+                        startAdornment: (
+                          <p
+                            className={styles.inputStartAdornment}
+                            style={{ paddingRight: '4px' }}
+                          >{`€`}</p>
+                        ),
+                      }}
+                    />
+                  )}
                 />
+
                 {errors.amount && (
                   <span className={styles.formErrors}>
                     {errors.amount.message}

@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
 import { useRouter } from 'next/router';
 import ManageProjects from '../../../src/features/user/ManageProjects';
-import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../../src/features/common/Layout/Footer';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -13,8 +13,7 @@ export default function AddProjectType(): ReactElement {
   const router = useRouter();
   const { t } = useTranslation(['donate', 'manageProjects']);
   const [isPurpose, setIsPurpose] = React.useState(false);
-  const { user, contextLoaded, token, loginWithRedirect } =
-    React.useContext(UserPropsContext);
+  const { user, contextLoaded, token, loginWithRedirect } = useUserProps();
   const [accessDenied, setAccessDenied] = React.useState(false);
   const [setupAccess, setSetupAccess] = React.useState(false);
   React.useEffect(() => {
@@ -25,7 +24,7 @@ export default function AddProjectType(): ReactElement {
 
   React.useEffect(() => {
     async function loadUserData() {
-      const usertype = user.type;
+      const usertype = user?.type;
       if (usertype === 'tpo') {
         setAccessDenied(false);
         setSetupAccess(true);
@@ -115,8 +114,11 @@ export default function AddProjectType(): ReactElement {
                     )
                     :
                     null} */}
-
-        <ManageProjects token={token} />
+        {user?.type === 'tpo' ? (
+          <ManageProjects token={token} />
+        ) : (
+          <AccessDeniedLoader />
+        )}
       </UserLayout>
     </div>
   );

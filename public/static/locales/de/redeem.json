@@ -11,6 +11,7 @@
   "invalidCode": "Dieser Code ist ungültig.",
   "alreadyRedeemed": "Der Code wurde bereits eingelöst",
   "redeemCode": "Code einlösen",
+  "redeemingCode": "Löse Code ein...",
   "redeem": "Einlösen",
   "redeemDescription": "Löse Baumgutscheine und andere Codes ein.",
   "successfullyRedeemed": "Erfolgreich eingelöst",

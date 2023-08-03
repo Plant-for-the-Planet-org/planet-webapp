@@ -193,5 +193,11 @@
   "Since": "Seit",
   "and": "und",
   "errorForMaxPlantingDensity": "Dieser Wert sollte größer sein als die Bepflanzungsdichte",
-  "managePayoutsButton": "Auszahlungen verwalten"
+  "managePayoutsButton": "Auszahlungen verwalten",
+  "reviewNote": "<bold>Wichtiger Hinweis:</bold> Plant-for-the-Planet wird Ihre Daten überprüfen und validieren. Um mit dem Onboarding- und Verifizierungsprozess fortzufahren und Ihr Projekt für Spenden zu genehmigen, müssen mehrere Dokumente vorgelegt werden:",
+  "legalAccreditation": "Rechtliche Akkreditierung (Registrierungsbescheinigung/Registrierungsnummer), die den Status der Gemeinnützigkeit Ihrer Organisation belegt - nicht älter als 2 Jahre!",
+  "taxExemption": "Steuerbefreiungsdokumente (falls in Ihrem Land zutreffend)",
+  "annualReport": "Letzter Jahresbericht",
+  "financialReport": "Letzter geprüfter Finanzbericht",
+  "PlantingReport": "Projekt Fortschritt Bericht"
 }

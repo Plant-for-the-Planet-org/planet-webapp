@@ -9,7 +9,8 @@ import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-
+import { handleError, APIError } from '@planet-sdk/common';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 interface Props {
   contribution: any;
   contributionGUID: any;
@@ -23,8 +24,6 @@ export default function UploadImages({
 }: Props): ReactElement {
   const [uploadedImages, setUploadedImages] = React.useState([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [files, setFiles] = React.useState([]);
-  const [errorMessage, setErrorMessage] = React.useState(null);
   const { t, ready } = useTranslation(['me', 'common']);
   const onDrop = React.useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: any) => {
@@ -37,43 +36,31 @@ export default function UploadImages({
       };
     });
   }, []);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { logoutUser } = useUserProps();
 
-  // React.useEffect(() => {
-  //   // Fetch images of the project
-  //   setUploadedImages(contribution.contributionImages);
-  // }, [contribution]);
-
-  const uploadPhotos = (image: any) => {
+  const uploadPhotos = async (image: any) => {
     setIsUploadingData(true);
     const submitData = {
       imageFile: image,
       description: '',
     };
-    postAuthenticatedRequest(
-      `/app/contributions/${contributionGUID}/images`,
-      submitData,
-      token,
-      handleError
-    )
-      .then((res) => {
-        if (!res.code) {
-          const newUploadedImages = uploadedImages;
-          newUploadedImages.push(res);
-          setUploadedImages(newUploadedImages);
-          setIsUploadingData(false);
-          setErrorMessage(null);
-        } else {
-          if (res.code === 404) {
-            setIsUploadingData(false);
-            setErrorMessage(ready ? t('me:contribNotFound') : '');
-          } else {
-            setIsUploadingData(false);
-            setErrorMessage(ready ? t('me:errorOccured') : '');
-          }
-        }
-      })
-      .catch((e) => console.log(e));
+
+    try {
+      const res = await postAuthenticatedRequest(
+        `/app/contributions/${contributionGUID}/images`,
+        submitData,
+        token,
+        logoutUser
+      );
+      const newUploadedImages = uploadedImages;
+      newUploadedImages.push(res);
+      setUploadedImages(newUploadedImages);
+      setIsUploadingData(false);
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -86,25 +73,26 @@ export default function UploadImages({
     onFileDialogCancel: () => setIsUploadingData(false),
   });
 
-  const deleteContributionImage = (id: any) => {
-    deleteAuthenticatedRequest(
-      `/app/contributions/${contributionGUID}/images/${id}`,
-      token,
-      handleError
-    ).then((res) => {
-      if (res !== 404) {
-        const uploadedImagesTemp = uploadedImages;
-        const index = uploadedImagesTemp.findIndex((item) => {
-          return item.id === id;
-        });
-        if (index !== -1) {
-          uploadedImagesTemp.splice(index, 1);
-          setUploadedImages(uploadedImagesTemp);
-        } else {
-          console.log('image not found');
-        }
+  const deleteContributionImage = async (id: any) => {
+    try {
+      await deleteAuthenticatedRequest(
+        `/app/contributions/${contributionGUID}/images/${id}`,
+        token,
+        logoutUser
+      );
+      const uploadedImagesTemp = uploadedImages;
+      const index = uploadedImagesTemp.findIndex((item) => {
+        return item.id === id;
+      });
+      if (index !== -1) {
+        uploadedImagesTemp.splice(index, 1);
+        setUploadedImages(uploadedImagesTemp);
+      } else {
+        console.log('image not found');
       }
-    });
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
   };
 
   return ready ? (

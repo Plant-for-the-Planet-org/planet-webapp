@@ -1,60 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
-import { ThemeContext } from '../../../../theme/themeContext';
-import { getRequest } from '../../../../utils/apiRequests/api';
-import getStoredCurrency from '../../../../utils/countryCurrency/getStoredCurrency';
 import gridStyles from './../styles/Grid.module.scss';
 import styles from './../styles/SeaOfTrees.module.scss';
 
 export default function SeaOfTrees() {
-  const projectID = 'proj_7gmlF7Q8aL65V7j7AG9NW8Yy';
-  const { handleError } = React.useContext(ErrorHandlingContext);
-
-  const [project, setProject] = useState(null);
-  useEffect(() => {
-    async function loadProject() {
-      const currencyCode = getStoredCurrency();
-      const project = await getRequest(
-        `/app/projects/${projectID}`,
-        handleError,
-        '/',
-        {
-          _scope: 'extended',
-          currency: currencyCode,
-        }
-      );
-      setProject(project);
-    }
-    if (projectID) {
-      loadProject();
-    }
-  }, [projectID]);
-
-  const { theme } = useContext(ThemeContext);
-
-  const [open, setOpen] = useState(false);
-  const handleClose = (reason: string) => {
-    if (reason !== 'backdropClick') {
-      setOpen(false);
-    }
-  };
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
   return (
     <div>
-      {/* {project && <Modal
-        className={`modal ${theme} modalContainer`}
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        hideBackdrop
-      >
-        <DonationsPopup project={project} onClose={handleClose} />
-      </Modal>
-      } */}
       <div className={`${styles.seaOfTreesContainer}`}>
         <div className={`${gridStyles.fluidContainer} ${styles.seaOfTrees}`}>
           <div
@@ -82,10 +31,8 @@ export default function SeaOfTrees() {
                 increase resilience, enhance food security, and help secure
                 livelihoods.
               </p>
-              <a href="https://trees.salesforce.com/ridge-to-reef">
-                <button onClick={handleOpen}>
-                  Donate to Blue Carbon Projects
-                </button>
+              <a href="https://trees.salesforce.com/restoring-guatemala">
+                <button>Donate to Blue Carbon Projects</button>
               </a>
             </div>
           </div>

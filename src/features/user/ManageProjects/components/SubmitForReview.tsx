@@ -3,10 +3,9 @@ import BackArrow from '../../../../../public/assets/images/icons/headerIcons/Bac
 import styles from './../StepForm.module.scss';
 import SubmitForReviewImage from '../../../../../public/assets/images/icons/manageProjects/SubmitForReviewImage';
 import UnderReview from '../../../../../public/assets/images/icons/manageProjects/UnderReview';
-import { useTranslation } from 'next-i18next';
+import { useTranslation, Trans } from 'next-i18next';
 import NotReviewed from '../../../../../public/assets/images/icons/manageProjects/NotReviewed';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
-import { useForm } from 'react-hook-form';
 import router from 'next/router';
 
 interface Props {
@@ -28,7 +27,7 @@ function SubmitForReview({
   projectDetails,
   handlePublishChange,
 }: Props): ReactElement {
-  const { t, i18n, ready } = useTranslation(['manageProjects']);
+  const { t, ready } = useTranslation(['manageProjects']);
 
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {
@@ -37,7 +36,6 @@ function SubmitForReview({
   });
 
   function UnderReviewComponent() {
-    const { control } = useForm({ mode: 'onBlur' });
     const [publish, setPublish] = React.useState(projectDetails.publish);
 
     return (
@@ -105,39 +103,50 @@ function SubmitForReview({
   }
 
   function NotSubmittedReview() {
-    const { control } = useForm({ mode: 'onBlur' });
     const [publish, setPublish] = React.useState(projectDetails.publish);
 
     return (
       <div className={(styles.stepContainer, styles.reviewContent)}>
-        <div
-          className={styles.formFieldLarge}
-          style={{ width: '320px', marginRight: '70px' }}
-        >
-          <div
-            className={`${styles.formFieldRadio}`}
-            style={{ marginLeft: '100px', marginBottom: '38px' }}
-          >
-            <label
-              htmlFor={'publish'}
-              style={{ cursor: 'pointer' }}
-              data-test-id="publishProject"
-            >
-              {t('manageProjects:publishProject')}
-            </label>
-
-            <ToggleSwitch
-              checked={publish}
-              onChange={(e) => handlePublishChange(e.target.checked)}
-              id="publish"
-              inputProps={{ 'aria-label': 'secondary checkbox' }}
-            />
+        <div className={styles.formFieldLarge} style={{ position: 'relative' }}>
+          <div>
+            <div>
+              <Trans
+                i18nKey="manageProjects:reviewNote"
+                components={{ bold: <strong /> }}
+              />
+            </div>
+            <ul className={styles.listOfReport}>
+              <li>{t('manageProjects:legalAccreditation')}</li>
+              <li>{t('manageProjects:taxExemption')}</li>
+              <li>{t('manageProjects:annualReport')}</li>
+              <li>{t('manageProjects:financialReport')}</li>
+              <li>{t('manageProjects:PlantingReport')}</li>
+            </ul>
+          </div>
+          <div className={styles.toggleContainer}>
+            <div>
+              <label
+                htmlFor={'publish'}
+                style={{ cursor: 'pointer' }}
+                data-test-id="publishProject"
+              >
+                {t('manageProjects:publishProject')}
+              </label>
+            </div>
+            <div>
+              <ToggleSwitch
+                checked={publish}
+                onChange={(e) => handlePublishChange(e.target.checked)}
+                id="publish"
+                inputProps={{ 'aria-label': 'secondary checkbox' }}
+              />
+            </div>
           </div>
         </div>
 
         <div>
           <div className={(styles.formFieldLarge, styles.reviewImage)}>
-            <div style={{ height: '240px', width: '100%' }}>
+            <div style={{ height: '240px', width: '100%', marginTop: '65px' }}>
               <NotReviewed />
             </div>
             <p

@@ -11,9 +11,11 @@ import TransactionListLoader from '../../../../../public/assets/images/icons/Tra
 import { Button, CircularProgress } from '@mui/material';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import NoTransactionsFound from '../components/NoTransactionsFound';
+import { handleError, APIError } from '@planet-sdk/common';
+import { PaymentHistory } from '../../../common/types/payments';
 
 interface TransactionsProps {
   setProgress?: (progress: number) => void;
@@ -23,11 +25,11 @@ const Transactions = ({
   setProgress,
 }: TransactionsProps): ReactElement | null => {
   const { t } = useTranslation('me');
-  const { token, contextLoaded } = useContext(UserPropsContext);
-  const { handleError } = useContext(ErrorHandlingContext);
+  const { token, contextLoaded, logoutUser } = useUserProps();
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { accounts } = usePlanetCash();
   const [transactionHistory, setTransactionHistory] =
-    useState<Payments.PaymentHistory | null>(null);
+    useState<PaymentHistory | null>(null);
   const [selectedRecord, setSelectedRecord] = useState<number | null>(null);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,38 +46,43 @@ const Transactions = ({
 
   const fetchTransactions = useCallback(
     async (next = false) => {
-      setIsDataLoading(true);
-      setProgress && setProgress(70);
+      try {
+        setIsDataLoading(true);
+        setProgress && setProgress(70);
 
-      const nextPage =
-        next && transactionHistory?._links?.next
-          ? transactionHistory._links.next.split('?').pop()
-          : undefined;
+        const nextPage =
+          next && transactionHistory?._links?.next
+            ? transactionHistory._links.next.split('?').pop()
+            : undefined;
 
-      const apiUrl =
-        next && transactionHistory?._links?.next
-          ? `/app/paymentHistory?filter=planet-cash&limit=15&${nextPage}`
-          : `/app/paymentHistory?filter=planet-cash&limit=15`;
+        const apiUrl =
+          next && transactionHistory?._links?.next
+            ? `/app/paymentHistory?filter=planet-cash&limit=15&${nextPage}`
+            : `/app/paymentHistory?filter=planet-cash&limit=15`;
 
-      const newTransactionHistory: Payments.PaymentHistory =
-        await getAuthenticatedRequest(
-          apiUrl,
-          token,
-          {},
-          handleError,
-          '/profile/planetcash'
-        );
+        const newTransactionHistory =
+          await getAuthenticatedRequest<PaymentHistory>(
+            apiUrl,
+            token,
+            logoutUser
+          );
 
-      if (transactionHistory) {
-        setTransactionHistory({
-          ...transactionHistory,
-          items: [...transactionHistory.items, ...newTransactionHistory.items],
-          _links: newTransactionHistory._links,
-        });
-      } else {
-        setTransactionHistory(newTransactionHistory);
+        if (transactionHistory) {
+          setTransactionHistory({
+            ...transactionHistory,
+            items: [
+              ...transactionHistory.items,
+              ...newTransactionHistory.items,
+            ],
+            _links: newTransactionHistory._links,
+          });
+        } else {
+          setTransactionHistory(newTransactionHistory);
+        }
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+        redirect('/profile/planetcash');
       }
-
       setIsDataLoading(false);
       if (setProgress) {
         setProgress(100);

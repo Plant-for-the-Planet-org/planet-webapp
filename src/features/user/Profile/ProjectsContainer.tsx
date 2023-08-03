@@ -7,6 +7,8 @@ import { useTranslation } from 'next-i18next';
 import styles from './styles/ProjectsContainer.module.scss';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { handleError, APIError } from '@planet-sdk/common';
+import { MapProject } from '../../common/types/ProjectPropsContextInterface';
 
 const ProjectSnippet = dynamic(
   () => import('../../projects/components/ProjectSnippet'),
@@ -17,20 +19,21 @@ const ProjectSnippet = dynamic(
 
 export default function ProjectsContainer({ profile }: any) {
   const { t, ready, i18n } = useTranslation(['donate', 'manageProjects']);
-  const [projects, setProjects] = React.useState([]);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const [projects, setProjects] = React.useState<MapProject[]>([]);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
 
   async function loadProjects() {
-    await getRequest(
-      `/app/profiles/${profile.id}/projects`,
-      handleError,
-      undefined,
-      {
-        locale: i18n.language,
-      }
-    ).then((projects) => {
+    try {
+      const projects = await getRequest<MapProject[]>(
+        `/app/profiles/${profile.id}/projects`,
+        {
+          locale: i18n.language,
+        }
+      );
       setProjects(projects);
-    });
+    } catch (err) {
+      setErrors(handleError(err as APIError));
+    }
   }
 
   // This effect is used to get and update UserInfo if the isAuthenticated changes
@@ -53,16 +56,16 @@ export default function ProjectsContainer({ profile }: any) {
           <div className={styles.listProjects}>
             <h6 className={styles.projectsTitleText}>{t('donate:Projects')}</h6>
 
-            {projects.map((project: any) => {
+            {projects.map((project) => {
               return (
                 <div
                   className={styles.singleProject}
                   key={project.properties.id}
                 >
                   <ProjectSnippet
-                    key={project.properties.id}
                     project={project.properties}
                     editMode={false}
+                    displayPopup={true}
                   />
                 </div>
               );

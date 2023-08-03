@@ -10,19 +10,19 @@ import BackArrow from '../../../../../public/assets/images/icons/headerIcons/Bac
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import FormHeader from '../../../common/Layout/Forms/FormHeader';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
-import isApiCustomError from '../../../../utils/apiRequests/isApiCustomError';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
+import { handleError, APIError, SerializedError } from '@planet-sdk/common';
+import { BankAccount } from '../../../common/types/payouts';
 
 const EditBankAccount = (): ReactElement | null => {
   const { accounts, payoutMinAmounts, setAccounts } = usePayouts();
   const router = useRouter();
-  const [accountToEdit, setAccountToEdit] =
-    useState<Payouts.BankAccount | null>(null);
+  const [accountToEdit, setAccountToEdit] = useState<BankAccount | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountUpdated, setIsAccountUpdated] = useState(false);
-  const { token } = useContext(UserPropsContext);
-  const { handleError } = useContext(ErrorHandlingContext);
+  const { token, logoutUser } = useUserProps();
+  const { setErrors, errors } = useContext(ErrorHandlingContext);
   const { t, ready } = useTranslation('managePayouts');
 
   const closeSnackbar = (): void => {
@@ -37,13 +37,14 @@ const EditBankAccount = (): ReactElement | null => {
       payoutMinAmount:
         data.currency === PayoutCurrency.DEFAULT ? '' : data.payoutMinAmount,
     };
-    const res = await putAuthenticatedRequest<Payouts.BankAccount>(
-      `/app/accounts/${accountToEdit?.id}`,
-      accountData,
-      token,
-      handleError
-    );
-    if (res?.id && !isApiCustomError(res)) {
+
+    try {
+      const res = await putAuthenticatedRequest<BankAccount>(
+        `/app/accounts/${accountToEdit?.id}`,
+        accountData,
+        token,
+        logoutUser
+      );
       // update accounts in context
       if (accounts) {
         const updatedAccounts = accounts.map((account) => {
@@ -57,42 +58,44 @@ const EditBankAccount = (): ReactElement | null => {
       setTimeout(() => {
         router.push('/profile/payouts');
       }, 3000);
-    } else {
+    } catch (err) {
       setIsProcessing(false);
-      if (isApiCustomError(res) && res['error_type'] === 'account_error') {
-        switch (res['error_code']) {
+      const serializedErrors = handleError(err as APIError);
+      const _serializedErrors: SerializedError[] = [];
+
+      for (const error of serializedErrors) {
+        switch (error.message) {
           case 'min_amount_range':
-            handleError({
-              code: 400,
-              message: t(`accountError.${res['error_code']}`, {
-                ...res.parameters,
+            _serializedErrors.push({
+              message: t('accountError.min_amount_range', {
+                ...error.parameters,
               }),
             });
             break;
+
           case 'account_duplicate':
-            handleError({
-              code: 400,
-              message: t(`accountError.${res['error_code']}`, {
-                currency: res.parameters?.currency
-                  ? res.parameters.currency
+            _serializedErrors.push({
+              message: t('accountError.account_duplicate', {
+                currency: error.parameters?.currency
+                  ? error.parameters.currency
                   : t('defaultCurrency').toLowerCase(),
               }),
             });
             break;
+
           case 'min_amount_forbidden':
-            handleError({
-              code: 400,
-              message: t(`accountError.${res['error_code']}`),
+            _serializedErrors.push({
+              message: t('accountError.min_amount_forbidden'),
             });
             break;
+
           default:
-            handleError({
-              code: 400,
-              message: t(`accountError.default`),
-            });
+            _serializedErrors.push(error);
             break;
         }
       }
+
+      setErrors(_serializedErrors);
     }
   };
 
@@ -104,9 +107,20 @@ const EditBankAccount = (): ReactElement | null => {
       if (foundAccount) {
         setAccountToEdit(foundAccount);
       } else {
-        handleError({
-          message: t('errors.noAccountFound'),
-        });
+        if (errors) {
+          setErrors([
+            ...errors,
+            {
+              message: t('errors.noAccountFound'),
+            },
+          ]);
+        } else {
+          setErrors([
+            {
+              message: t('errors.noAccountFound'),
+            },
+          ]);
+        }
         router.push('/profile/payouts');
       }
     }
@@ -115,10 +129,8 @@ const EditBankAccount = (): ReactElement | null => {
   return accountToEdit !== null && payoutMinAmounts && ready ? (
     <CenteredContainer>
       <FormHeader>
-        <Link href="/profile/payouts" passHref>
-          <a>
-            <BackArrow />
-          </a>
+        <Link href="/profile/payouts">
+          <BackArrow />
         </Link>
         <h2 className="formTitle">{t('editBankAccountTitle')}</h2>
       </FormHeader>

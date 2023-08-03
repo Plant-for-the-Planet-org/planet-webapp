@@ -3,33 +3,38 @@ import { Autocomplete, TextField, styled } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
-import { Project } from '../../../common/Layout/BulkCodeContext';
+import { ProjectOption } from '../../../common/types/project';
 
-const MuiAutocomplete = styled(Autocomplete)((/* { theme } */) => {
-  return {
-    '& .MuiAutocomplete-popupIndicatorOpen': {
-      transform: 'none',
-    },
-    '& .Mui-disabled .iconFillColor': {
-      fillOpacity: '38%',
-    },
-  };
-});
+const MuiAutocomplete = styled(Autocomplete<ProjectOption>)(
+  (/* { theme } */) => {
+    return {
+      '& .MuiAutocomplete-popupIndicatorOpen': {
+        transform: 'none',
+      },
+      '& .Mui-disabled .iconFillColor': {
+        fillOpacity: '38%',
+      },
+    };
+  }
+);
 
 interface ProjectSelectAutocompleteProps {
-  projectList: Project[];
-  project: Project | null;
-  handleProjectChange?: (project: Project | null) => void;
+  projectList: ProjectOption[];
+  project: ProjectOption | null;
+  handleProjectChange?: (project: ProjectOption | null) => void;
   active?: boolean;
 }
 
+// TODO - move this to a common folder
 const ProjectSelectAutocomplete = ({
   projectList,
   project,
   handleProjectChange,
   active = true,
 }: ProjectSelectAutocompleteProps): ReactElement | null => {
-  const [localProject, setLocalProject] = useState<Project | null>(project);
+  const [localProject, setLocalProject] = useState<ProjectOption | null>(
+    project
+  );
   const { t, ready } = useTranslation(['bulkCodes']);
 
   useEffect(() => {
@@ -47,17 +52,13 @@ const ProjectSelectAutocomplete = ({
       <MuiAutocomplete
         popupIcon={SearchIcon()}
         options={projectList}
-        getOptionLabel={(option) => (option as Project).name}
-        isOptionEqualToValue={(option, value) =>
-          (option as Project).guid === (value as Project).guid
-        }
+        getOptionLabel={(option) => option.name}
+        isOptionEqualToValue={(option, value) => option.guid === value.guid}
         value={localProject}
-        onChange={(_event, newValue: unknown) =>
-          setLocalProject(newValue as Project | null)
-        }
+        onChange={(_event, newValue) => setLocalProject(newValue)}
         renderOption={(props, option) => (
-          <span {...props} key={(option as Project).guid}>
-            {(option as Project).name}
+          <span {...props} key={option.guid}>
+            {option.name}
           </span>
         )}
         renderInput={(params) => (

@@ -6,8 +6,9 @@ import { useTranslation } from 'next-i18next';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../theme/themeContext';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { handleError, APIError } from '@planet-sdk/common';
 
 interface Props {
   embedModalOpen: boolean;
@@ -25,7 +26,7 @@ export default function EmbedModal({
   setEmbedModalOpen,
 }: Props) {
   const { t, ready } = useTranslation(['editProfile']);
-  const { handleError } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
   const [isPrivate, setIsPrivate] = React.useState(false);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [severity, setSeverity] = React.useState('success');
@@ -34,11 +35,10 @@ export default function EmbedModal({
   const router = useRouter();
   // This effect is used to get and update UserInfo if the isAuthenticated changes
 
-  const { user, setUser, contextLoaded, token } =
-    React.useContext(UserPropsContext);
+  const { user, setUser, contextLoaded, token, logoutUser } = useUserProps();
 
   React.useEffect(() => {
-    if (user && user.isPrivate) {
+    if (user && user?.isPrivate) {
       setIsPrivate(true);
     }
   }, [user]);
@@ -63,33 +63,25 @@ export default function EmbedModal({
     };
     if (contextLoaded && token) {
       try {
-        putAuthenticatedRequest(`/app/profile`, bodyToSend, token, handleError)
-          .then((res) => {
-            setSeverity('success');
-            setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');
-            setEmbedModalOpen(false);
-            setIsUploadingData(false);
-            setUser(res);
-          })
-          .catch((error) => {
-            setSeverity('error');
-            setSnackbarMessage(ready ? t('editProfile:profileSaveFailed') : '');
-            handleSnackbarOpen();
-            setIsUploadingData(false);
-            console.log(error);
-          });
-      } catch (e) {
-        setSeverity('error');
-        setSnackbarMessage(ready ? t('editProfile:profileSaveFailed') : '');
+        const res = await putAuthenticatedRequest(
+          `/app/profile`,
+          bodyToSend,
+          token,
+          logoutUser
+        );
+        setSeverity('success');
+        setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');
         handleSnackbarOpen();
+        setEmbedModalOpen(false);
         setIsUploadingData(false);
+        setUser(res);
+      } catch (err) {
+        setIsUploadingData(false);
+        setErrors(handleError(err as APIError));
       }
     }
   };
 
-  // React.useEffect(() => {
-  //     console.log(isPrivate);
-  // }, [isPrivate]);
   const { theme } = React.useContext(ThemeContext);
 
   return (

@@ -1,16 +1,22 @@
 import { FlyToInterpolator, WebMercatorViewport } from 'react-map-gl';
 import * as d3 from 'd3-ease';
 import * as turf from '@turf/turf';
+import {
+  SiteViewPort,
+  SitesGeoJSON,
+  ViewPort,
+} from '../../features/common/types/ProjectPropsContextInterface';
+import { SetState } from '../../features/common/types/common';
 
 export default function zoomToProjectSite(
-  geoJson: Object | null,
+  geoJson: SitesGeoJSON | null,
   selectedSite: number,
-  viewport: Object,
-  setViewPort: Function,
-  setSiteViewPort: Function,
+  viewport: ViewPort,
+  setViewPort: SetState<ViewPort>,
+  setSiteViewPort: SetState<SiteViewPort | null>,
   duration = 1200
 ) {
-  if (viewport.width && viewport.height) {
+  if (viewport.width && viewport.height && geoJson) {
     // decide which paddings to use (for mobile or normal)
     let isPortrait = true;
     if (screen.orientation) {
@@ -24,7 +30,6 @@ export default function zoomToProjectSite(
 
     const bbox = turf.bbox(geoJson.features[selectedSite]);
 
-   
     const { longitude, latitude, zoom } = new WebMercatorViewport(
       viewport
     ).fitBounds(
@@ -44,8 +49,7 @@ export default function zoomToProjectSite(
     let defaultZoom = 15;
     if (zoom < defaultZoom) {
       defaultZoom = zoom;
-     }
-    
+    }
     const newViewport = {
       ...viewport,
       longitude,
