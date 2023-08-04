@@ -64,9 +64,13 @@ export default function History({
   const adSpaceLanguage = i18n.language === 'de' ? 'de' : 'en';
 
   return (
-    <div className="profilePage">
-      <div className={'profilePageTitle'}>{t('me:payments')}</div>
-      <div className={'profilePageSubTitle'}>{t('me:donationsSubTitle')}</div>
+    <div className={'profilePage'}>
+      <div className={`profilePageTitle ${styles.historyTitle}`}>
+        {t('me:payments')}
+      </div>
+      <div className={`profilePageSubTitle ${styles.historySubtitle}`}>
+        {t('me:donationsSubTitle')}
+      </div>
       <div className={styles.pageContainer}>
         <div className={styles.filterRow}>
           {accountingFilters &&
