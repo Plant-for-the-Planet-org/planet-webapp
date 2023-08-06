@@ -111,8 +111,8 @@ export function localizedAbbreviatedNumber(
       getFormattedRoundedNumber(langCode, number / 1000000, fractionDigits) +
       getLocalizedAbbreviation(langCode, 'm')
     );
-  if (number >= 1000)
-   return getFormattedRoundedNumber(langCode, number/1000, fractionDigits) + getLocalizedAbbreviation(langCode, 'k');
+  // if (number >= 1000)
+  //  return getFormattedRoundedNumber(langCode, number/1000, fractionDigits) + getLocalizedAbbreviation(langCode, 'k');
 
   return getFormattedRoundedNumber(langCode, number, fractionDigits);
 }

@@ -17,7 +17,7 @@ import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 const Project = ({ key, projectInfo }: ProjectProps): ReactElement => {
   const { token } = useUserProps();
   const { embed } = useContext(ParamsContext);
-  const { t } = useTranslation(['me']);
+  const { t } = useTranslation(['me', 'country']);
   const handleDonate = (slug: string) => {
     const url = getDonationUrl(slug, token);
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
@@ -26,32 +26,44 @@ const Project = ({ key, projectInfo }: ProjectProps): ReactElement => {
     projectInfo && (
       <div className={myForestStyles.donationDetail} key={key}>
         <div className={myForestStyles.image}>
-          <img
-            src={getImageUrl(
-              'project',
-              'medium',
-              projectInfo.plantProject.image
-            )}
-            width="100%"
-            height="100%"
-          />
+          {projectInfo?.plantProject !== null && (
+            <img
+              src={getImageUrl(
+                'project',
+                'medium',
+                projectInfo.plantProject.image
+              )}
+              width="100%"
+              height="100%"
+            />
+          )}
         </div>
         <div className={myForestStyles.projectDetailContainer}>
           <div className={myForestStyles.projectDetail}>
             <div style={{ maxWidth: '345px' }}>
               <p className={myForestStyles.projectName}>
-                {projectInfo.plantProject.name}
+                {projectInfo?.plantProject !== null
+                  ? projectInfo.plantProject.name
+                  : 'Registered Trees'}
               </p>
-              <div>
-                {projectInfo.plantProject.country}-
-                {projectInfo.plantProject.tpo.name}
-              </div>
+              {projectInfo?.plantProject !== null && (
+                <div>
+                  {t(
+                    'country:' + projectInfo.plantProject.country.toLowerCase()
+                  )}
+                  -{projectInfo.plantProject.tpo.name}
+                </div>
+              )}
             </div>
             <div className={myForestStyles.treeCount}>
               {projectInfo.purpose === 'conservation'
                 ? t('me:area', { areaConserved: `${projectInfo.quantity}` })
                 : t('me:plantedTrees', {
-                    noOfTrees: `${projectInfo.quantity}`,
+                    noOfTrees: `${
+                      projectInfo?.plantProject !== null
+                        ? projectInfo.quantity
+                        : projectInfo?.treeCount
+                    }`,
                   })}
             </div>
           </div>
@@ -59,12 +71,14 @@ const Project = ({ key, projectInfo }: ProjectProps): ReactElement => {
             <div className={myForestStyles.plantingDate}>
               {format(projectInfo.plantDate, 'MMMM d, yyyy')}
             </div>
-            <div
-              className={myForestStyles.donate}
-              onClick={() => handleDonate(projectInfo.plantProject.guid)}
-            >
-              {'Donate Again'}
-            </div>
+            {projectInfo?.plantProject !== null && (
+              <div
+                className={myForestStyles.donate}
+                onClick={() => handleDonate(projectInfo.plantProject.guid)}
+              >
+                {'Donate Again'}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -92,10 +106,7 @@ const ContributedProjectList = ({
           setIsLoadButtonActive(true);
         }
         return singlePage?.data?.map((singleProject: any, key) => {
-          if (
-            singleProject.purpose !== 'bouquet' &&
-            singleProject.contributionType !== 'planting'
-          ) {
+          if (singleProject.purpose !== 'bouquet') {
             return <Project key={key} projectInfo={singleProject} />;
           }
         });

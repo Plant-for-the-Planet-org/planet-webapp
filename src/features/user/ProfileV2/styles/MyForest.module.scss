@@ -4,7 +4,7 @@
 .mapMainContainer {
     position: relative;
     width: 100%;
-    padding-bottom: 10px;
+    padding-bottom: 120px;
 }
 
 
@@ -368,7 +368,6 @@
       
         > .image {
             width: 285px;
-            height: 100%;
             margin-left: 20px;
             border-radius: 12px;
             padding-top: 25px;
@@ -404,6 +403,7 @@
         flex-direction: row;
         gap: 70px;
         margin-left: 17px;
+        justify-content: flex-start;
     }
 }
 

@@ -68,33 +68,18 @@ export default function TpoProfile(props: any) {
         <div>
           <PlantedTressBlackSvg />
         </div>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: '10px',
-            width: '198px',
-          }}
-        >
-          <div
-            style={{ color: '#4F4F4F', fontWeight: 'bold', fontSize: '45px' }}
-          >
+        <div className={treeCounterStyles.dataContainer}>
+          <div>
             {localizedAbbreviatedNumber(
               i18n.language,
               Number(props.planted),
               1
             )}
           </div>
-          <div
-            style={{ color: '#4F4F4F', fontWeight: 'bold', fontSize: '45px' }}
-          >
-            {'of'}
-          </div>
+          {props?.target && <div>{'of'}</div>}
+
           {props?.target ? (
-            <div
-              style={{ color: '#4F4F4F', fontWeight: 'bold', fontSize: '45px' }}
-            >
+            <div>
               {localizedAbbreviatedNumber(
                 i18n.language,
                 Number(props.target),

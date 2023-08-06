@@ -6,13 +6,14 @@ import FeaturesForPrivateAccount from './components/userFeatures/FeaturesForPriv
 import FeaturesForPublicAccount from './components/userFeatures/FeaturesForPublicAccount';
 import UserInfo from './components/MicroComponents/UserInfo';
 import { ProfileProps } from '../../common/types/profile';
+import { useRouter } from 'next/router';
 
 const config = tenantConfig();
 
 const Profile = ({ userProfile }: ProfileProps): ReactElement => {
   const { t, ready } = useTranslation(['donate']);
   const [showSocialButton, setShowSocialButton] = useState(false);
-
+  const router = useRouter();
   const handleShare = () => {
     if (navigator?.share) {
       navigator
@@ -37,16 +38,16 @@ const Profile = ({ userProfile }: ProfileProps): ReactElement => {
   return (
     <ProfileContainer>
       <UserInfo userProfile={userProfile} />
-      {userProfile?.isPrivate && (
-        <FeaturesForPrivateAccount
+
+      {!userProfile?.isPrivate && router.asPath !== '/profile' ? (
+        <FeaturesForPublicAccount
           handleShare={handleShare}
           userprofile={userProfile}
           showSocialButton={showSocialButton}
           setShowSocialButton={setShowSocialButton}
         />
-      )}
-      {!userProfile?.isPrivate && (
-        <FeaturesForPublicAccount
+      ) : (
+        <FeaturesForPrivateAccount
           handleShare={handleShare}
           userprofile={userProfile}
           showSocialButton={showSocialButton}

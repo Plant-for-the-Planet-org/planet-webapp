@@ -98,3 +98,14 @@
     height: 393px;
   }
 }
+
+.dataContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 198px;
+  color: #4F4F4F;
+  font-weight: bold;
+  font-size: 45px;
+}
