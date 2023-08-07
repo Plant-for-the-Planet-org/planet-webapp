@@ -2,11 +2,16 @@ import React from 'react';
 import { Marker } from 'react-map-gl';
 import styles from '../../styles/ProjectsMap.module.scss';
 import ProjectPolygon from './ProjectPolygon';
+import { FeatureCollection } from 'geojson';
+import {
+  ConservationProjectExtended,
+  TreeProjectExtended,
+} from '@planet-sdk/common/build/types/project/extended';
 
 interface Props {
   siteExists: boolean;
-  geoJson: Object | null;
-  project: Object;
+  geoJson: FeatureCollection | null;
+  project: TreeProjectExtended | ConservationProjectExtended;
 }
 
 export default function Location({ siteExists, geoJson, project }: Props) {
@@ -29,7 +34,9 @@ export default function Location({ siteExists, geoJson, project }: Props) {
           />
         </Marker>
       ) : (
-        <ProjectPolygon id="locationPolygon" geoJson={geoJson} />
+        geoJson !== null && (
+          <ProjectPolygon id="locationPolygon" geoJson={geoJson} />
+        )
       )}
     </>
   );

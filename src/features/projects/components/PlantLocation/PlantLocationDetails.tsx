@@ -7,6 +7,11 @@ import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import dynamic from 'next/dynamic';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
+import {
+  PlantLocation,
+  SamplePlantLocation,
+} from '../../../common/types/plantLocation';
+import { SliderImage } from '../../components/PlantLocation/ImageSlider';
 
 const ImageSlider = dynamic(
   () => import('../../components/PlantLocation/ImageSlider'),
@@ -25,7 +30,7 @@ const ImageSliderSingle = dynamic(
 );
 
 interface Props {
-  plantLocation: Object;
+  plantLocation: PlantLocation | SamplePlantLocation | null;
 }
 
 export default function PlantLocationDetails({
@@ -40,11 +45,17 @@ export default function PlantLocationDetails({
   const { t, i18n } = useTranslation(['maps']);
   const [treeCount, setTreeCount] = React.useState(1);
   const [plantationArea, setPlantationArea] = React.useState(0);
-  const [sampleTreeImages, setSampleTreeImages] = React.useState([]);
+  const [sampleTreeImages, setSampleTreeImages] = React.useState<SliderImage[]>(
+    []
+  );
 
   React.useEffect(() => {
     let count = 0;
-    if (plantLocation && plantLocation.plantedSpecies) {
+    if (
+      plantLocation &&
+      plantLocation.type === 'multi' &&
+      plantLocation.plantedSpecies
+    ) {
       for (const key in plantLocation.plantedSpecies) {
         if (
           Object.prototype.hasOwnProperty.call(
@@ -67,10 +78,11 @@ export default function PlantLocationDetails({
   React.useEffect(() => {
     if (
       plantLocation &&
+      plantLocation.type === 'multi' &&
       plantLocation.samplePlantLocations &&
       plantLocation.samplePlantLocations.length > 0
     ) {
-      const images = [];
+      const images: SliderImage[] = [];
       for (const key in plantLocation.samplePlantLocations) {
         if (
           Object.prototype.hasOwnProperty.call(
@@ -82,7 +94,7 @@ export default function PlantLocationDetails({
 
           if (element.coordinates?.[0]) {
             images.push({
-              image: element.coordinates[0].image,
+              image: element.coordinates[0].image || '',
               description: `${t('sampleTree')} ${
                 element.tag ? '#' + element.tag : ''
               }`,
@@ -96,9 +108,13 @@ export default function PlantLocationDetails({
     }
   }, [plantLocation]);
 
-  const openSampleTree = (id: any) => {
+  const openSampleTree = (id: string) => {
     setHoveredPl(null);
-    if (plantLocation && plantLocation.samplePlantLocations) {
+    if (
+      plantLocation &&
+      plantLocation.type === 'multi' &&
+      plantLocation.samplePlantLocations
+    ) {
       for (const key in plantLocation.samplePlantLocations) {
         if (
           Object.prototype.hasOwnProperty.call(
@@ -114,7 +130,7 @@ export default function PlantLocationDetails({
     }
   };
 
-  const openParent = (id: any) => {
+  const openParent = (id: string) => {
     if (plantLocations) {
       for (const key in plantLocations) {
         if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
@@ -237,7 +253,7 @@ export default function PlantLocationDetails({
                 <div className={styles.detailTitle}>
                   {t('speciesPlanted')} ({plantLocation.plantedSpecies.length})
                 </div>
-                {plantLocation.plantedSpecies.map((sp: any, index: number) => {
+                {plantLocation.plantedSpecies.map((sp, index) => {
                   // const speciesName = getSpeciesName(sp.scientificSpecies);
                   return (
                     <div key={index} className={styles.detailValue}>
@@ -259,31 +275,29 @@ export default function PlantLocationDetails({
                   {plantLocation?.samplePlantLocations?.length})
                 </div>
                 {plantLocation.samplePlantLocations &&
-                  plantLocation.samplePlantLocations.map(
-                    (spl: any, index: number) => {
-                      // const speciesName = getSpeciesName(spl.scientificSpecies);
-                      return (
-                        <div key={index} className={styles.detailValue}>
-                          {index + 1}.{' '}
-                          <span
-                            onClick={() => openSampleTree(spl.id)}
-                            className={styles.link}
-                          >
-                            {spl.scientificName
-                              ? spl.scientificName
-                              : spl.scientificSpecies
-                              ? spl.scientificSpecies
-                              : t('unknown')}
-                          </span>
-                          <br />
-                          {spl.tag ? `${t('tag')} #${spl.tag} • ` : null}
-                          {spl?.measurements?.height}
-                          {t('meterHigh')} • {spl?.measurements?.width}
-                          {t('cmWide')}
-                        </div>
-                      );
-                    }
-                  )}
+                  plantLocation.samplePlantLocations.map((spl, index) => {
+                    // const speciesName = getSpeciesName(spl.scientificSpecies);
+                    return (
+                      <div key={index} className={styles.detailValue}>
+                        {index + 1}.{' '}
+                        <span
+                          onClick={() => openSampleTree(spl.id)}
+                          className={styles.link}
+                        >
+                          {spl.scientificName
+                            ? spl.scientificName
+                            : spl.scientificSpecies
+                            ? spl.scientificSpecies
+                            : t('unknown')}
+                        </span>
+                        <br />
+                        {spl.tag ? `${t('tag')} #${spl.tag} • ` : null}
+                        {spl?.measurements?.height}
+                        {t('meterHigh')} • {spl?.measurements?.width}
+                        {t('cmWide')}
+                      </div>
+                    );
+                  })}
               </div>
             )}
             {(plantLocation.type === 'sample' ||
