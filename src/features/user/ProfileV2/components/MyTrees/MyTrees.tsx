@@ -15,6 +15,7 @@ import { Purpose } from '../../../../../utils/constants/myForest';
 import { Contributions } from '../../../../common/types/myForest';
 import { QueryResult } from '../../../../../server/router/myForest';
 import { MyTreesProps } from '../../../../common/types/map';
+import SwipeLeftIcon from '@mui/icons-material/SwipeLeft';
 
 const MyTreesMap = dynamic(() => import('../MyForestMap'), {
   loading: () => <p>loading</p>,
@@ -187,7 +188,9 @@ export default function MyTrees({
           />
         </div>
       </div>
-
+      <div className={myForestStyles.swipeConatiner}>
+        <SwipeLeftIcon />
+      </div>
       {isTreePlantedButtonActive && !isConservedButtonActive && (
         <TreeContributedProjectList
           contribution={projectsForTreePlantaion}

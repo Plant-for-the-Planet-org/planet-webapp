@@ -539,3 +539,25 @@
     justify-content: center;
     padding-bottom: 25px;
 }
+
+.swipeConatiner {
+    position: absolute;
+    top: 625px;
+    left: 320px;
+    @include xsPhoneView {
+     left: 200px;
+    }
+    @include smTabletView {
+        visibility: hidden;
+    }
+    @include mdTabletView {
+        left: 315px;
+        visibility: visible;
+    }
+    @include lgLaptopView {
+        visibility: hidden;
+    }
+}
+
+
+
