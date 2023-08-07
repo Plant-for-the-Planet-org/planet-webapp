@@ -1,7 +1,7 @@
 import { useTranslation } from 'next-i18next';
 import { ReactElement } from 'react';
 import { RedeemedCodeData } from '../types/redeem';
-import styles from '../../../../src/features/user/Profile/styles/RedeemModal.module.scss';
+import styles from '../../../../src/features/user/ProfileV2/styles/RedeemModal.module.scss';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import Button from '@mui/material/Button';

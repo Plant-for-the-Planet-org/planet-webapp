@@ -2,13 +2,13 @@ import React from 'react';
 import Modal from '@mui/material/Modal';
 import { useForm, Controller } from 'react-hook-form';
 import Fade from '@mui/material/Fade';
-import styles from '../styles/RedeemModal.module.scss';
-import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
+import styles from '../../styles/RedeemModal.module.scss';
+import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
 import { useTranslation } from 'next-i18next';
-import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { ThemeContext } from '../../../../theme/themeContext';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { putAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
+import { ThemeContext } from '../../../../../theme/themeContext';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
 
 type FormData = {

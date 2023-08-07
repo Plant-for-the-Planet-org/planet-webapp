@@ -5,7 +5,7 @@ import {
   ShareSvg,
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import { useRouter } from 'next/router';
-import RedeemModal from '../../../Profile/components/RedeemModal';
+import RedeemModal from './RedeemModal';
 import myProfilestyle from '../../styles/MyProfile.module.scss';
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';

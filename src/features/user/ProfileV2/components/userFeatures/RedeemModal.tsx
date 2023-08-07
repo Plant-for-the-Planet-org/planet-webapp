@@ -2,17 +2,17 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'next-i18next';
-import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { ThemeContext } from '../../../../theme/themeContext';
-import { useUserProps } from '../../../common/Layout/UserPropsContext';
+import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
+import { ThemeContext } from '../../../../../theme/themeContext';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { RedeemedCodeData } from '../../../common/types/redeem';
+import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
+import { RedeemedCodeData } from '../../../../common/types/redeem';
 import {
   RedeemFailed,
   SuccessfullyRedeemed,
   EnterRedeemCode,
-} from '../../../common/RedeemCode';
+} from '../../../../common/RedeemCode';
 
 interface RedeemModal {
   redeemModalOpen: boolean;

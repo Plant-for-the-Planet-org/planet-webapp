@@ -3,7 +3,7 @@ import { useTranslation } from 'next-i18next';
 import { Controller, useForm } from 'react-hook-form';
 import { ReactElement } from 'react';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
-import styles from '../../../../src/features/user/Profile/styles/RedeemModal.module.scss';
+import styles from '../../../../src/features/user/ProfileV2/styles/RedeemModal.module.scss';
 import Button from '@mui/material/Button';
 import React from 'react';
 import { SetState } from '../types/common';
