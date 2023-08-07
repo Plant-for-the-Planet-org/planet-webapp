@@ -9,17 +9,21 @@ import Credits from '../src/features/projects/components/maps/Credits';
 import Filters from '../src/features/projects/components/projects/Filters';
 import { TENANT_ID } from '../src/utils/constants/environment';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
-import DirectGift from '../src/features/donations/components/DirectGift';
+import DirectGift, {
+  DirectGiftI,
+} from '../src/features/donations/components/DirectGift';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import nextI18NextConfig from '../next-i18next.config';
 import { handleError, APIError } from '@planet-sdk/common';
 import { trpc } from '../src/utils/trpc';
+import { SetState } from '../src/features/common/types/common';
+import { MapProject } from '../src/features/common/types/ProjectPropsContextInterface';
 
 interface Props {
   initialized: Boolean;
-  currencyCode: any;
-  setCurrencyCode: Function;
+  currencyCode: string;
+  setCurrencyCode: SetState<string>;
 }
 
 export default function Donate({
@@ -41,8 +45,8 @@ export default function Donate({
   const { i18n } = useTranslation();
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
-  const [directGift, setDirectGift] = React.useState(null);
-  const [showdirectGift, setShowDirectGift] = React.useState(true);
+  const [directGift, setDirectGift] = React.useState<DirectGiftI | null>(null);
+  const [showDirectGift, setShowDirectGift] = React.useState(true);
   const [internalLanguage, setInternalLanguage] = React.useState('');
   React.useEffect(() => {
     const getdirectGift = localStorage.getItem('directGift');
@@ -87,7 +91,7 @@ export default function Donate({
         setCurrencyCode(currency);
         setInternalLanguage(i18n.language);
         try {
-          const projects = await getRequest(`/app/projects`, {
+          const projects = await getRequest<MapProject[]>(`/app/projects`, {
             _scope: 'map',
             currency: currency,
             tenant: TENANT_ID,
@@ -107,18 +111,12 @@ export default function Donate({
     loadProjects();
   }, [currencyCode, i18n.language]);
 
-  const ProjectsProps = {
-    projects: filteredProjects,
+  const OtherProjectListProps = {
     showProjects,
     setShowProjects,
     setsearchedProjects,
     currencyCode,
     setCurrencyCode,
-  };
-
-  const GiftProps = {
-    setShowDirectGift,
-    directGift,
   };
 
   return (
@@ -127,10 +125,16 @@ export default function Donate({
         filteredProjects && initialized ? (
           <>
             <GetAllProjectsMeta />
-            <ProjectsList {...ProjectsProps} />
+            <ProjectsList
+              projects={filteredProjects}
+              {...OtherProjectListProps}
+            />
             {directGift ? (
-              showdirectGift ? (
-                <DirectGift {...GiftProps} />
+              showDirectGift ? (
+                <DirectGift
+                  directGift={directGift}
+                  setShowDirectGift={setShowDirectGift}
+                />
               ) : null
             ) : null}
             <Credits setCurrencyCode={setCurrencyCode} />

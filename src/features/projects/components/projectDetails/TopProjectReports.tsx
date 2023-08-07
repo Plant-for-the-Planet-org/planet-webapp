@@ -6,16 +6,12 @@ import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { Trans } from 'react-i18next';
 import { useTranslation } from 'next-i18next';
+import { Review } from '@planet-sdk/common/build/types/project/common';
 
-//will be shifted to a common type definition file
-interface reviewType {
-  id: string;
-  issueMonth: string;
-  pdf: string;
-}
 interface Props {
-  projectReviews: reviewType[];
+  projectReviews: Review[];
 }
+
 export default function TopProjectReports({ projectReviews }: Props) {
   const { t, ready } = useTranslation(['common']);
   const displayDate = (date: string) => {
@@ -26,12 +22,12 @@ export default function TopProjectReports({ projectReviews }: Props) {
       <div className={styles.reports_container}>
         <VerifiedIcon sx={{ color: '#42A5F5' }} />
         <div className={styles.reports_description}>
-          {projectReviews?.map((review) => (
+          {projectReviews.map((review) => (
             <div key={review.id}>
               <p id="child-modal-description">
                 <Trans i18nKey="common:reviewInfo">
                   The project was inspected in a multiday field review in{' '}
-                  {displayDate(review?.issueMonth)} and fullfills our{' '}
+                  {displayDate(review.issueMonth)} and fullfills our{' '}
                   <a
                     target="_blank"
                     href={t('standardsLink')}

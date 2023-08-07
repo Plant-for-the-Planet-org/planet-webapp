@@ -8,9 +8,7 @@ import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import styles from '../../styles/VegetationChange.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
-interface Props {}
-
-export default function ProjectTabs({}: Props): ReactElement {
+export default function ProjectTabs(): ReactElement {
   const { embed, showProjectDetails } = React.useContext(ParamsContext);
   const { pathname } = useRouter();
   const { t } = useTranslation(['maps']);

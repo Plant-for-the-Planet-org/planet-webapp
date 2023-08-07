@@ -1,8 +1,6 @@
 import React, { ReactElement } from 'react';
 
-interface Props {}
-
-export default function MinusIcon({}: Props): ReactElement {
+export default function MinusIcon(): ReactElement {
   return (
     <svg
       width="29"

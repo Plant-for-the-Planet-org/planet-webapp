@@ -45,7 +45,7 @@ export interface PlantLocationMulti extends PlantLocationBase {
   geometry: Polygon;
 }
 
-type PlantLocation = PlantLocationSingle | PlantLocationMulti;
+export type PlantLocation = PlantLocationSingle | PlantLocationMulti;
 
 export interface SamplePlantLocation
   extends Omit<PlantLocationBase, 'plantProject'> {

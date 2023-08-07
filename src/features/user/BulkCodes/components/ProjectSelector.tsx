@@ -1,11 +1,9 @@
 import React, { ReactElement } from 'react';
 import { getRequest } from '../../../../utils/apiRequests/api';
-import {
-  PlanetCashAccount,
-  Project,
-} from '../../../common/Layout/BulkCodeContext';
+import { PlanetCashAccount } from '../../../common/Layout/BulkCodeContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { PaymentOptions } from '../BulkCodesTypes';
+import { ProjectOption } from '../../../common/types/project';
 // import i18next from '../../../../../i18n';
 
 import ProjectSelectAutocomplete from './ProjectSelectAutocomplete';
@@ -15,9 +13,9 @@ import { handleError, APIError } from '@planet-sdk/common';
 // const { useTranslation } = i18next;
 
 interface ProjectSelectorProps {
-  projectList: Project[];
-  project: Project | null;
-  setProject?: (project: Project | null) => void;
+  projectList: ProjectOption[];
+  project: ProjectOption | null;
+  setProject?: (project: ProjectOption | null) => void;
   active?: boolean;
   planetCashAccount: PlanetCashAccount | null;
 }
@@ -32,7 +30,7 @@ const ProjectSelector = ({
   // const { t, ready } = useTranslation(['common', 'bulkCodes']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
-  const defaultUnit = (project: Project | null) => {
+  const defaultUnit = (project: ProjectOption | null) => {
     if (project?.purpose === 'conservation') return 'm2';
 
     return 'tree';
@@ -48,7 +46,7 @@ const ProjectSelector = ({
     return paymentOptions;
   };
 
-  const handleProjectChange = async (project: Project | null) => {
+  const handleProjectChange = async (project: ProjectOption | null) => {
     // fetch project details
     if (project) {
       try {
