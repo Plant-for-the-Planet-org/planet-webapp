@@ -11,9 +11,7 @@ import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
 import { Subscription } from '../../src/features/common/types/payments';
 
-interface Props {}
-
-function RecurrentDonations({}: Props): ReactElement {
+function RecurrentDonations(): ReactElement {
   const { t } = useTranslation(['me']);
   const { token, contextLoaded, logoutUser } = useUserProps();
 

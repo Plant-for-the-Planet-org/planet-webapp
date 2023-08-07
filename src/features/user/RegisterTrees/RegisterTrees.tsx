@@ -57,9 +57,7 @@ type FormData = {
   geometry: any;
 };
 
-interface Props {}
-
-export default function RegisterTrees({}: Props) {
+export default function RegisterTrees() {
   const { user, token, contextLoaded, logoutUser } = useUserProps();
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {
