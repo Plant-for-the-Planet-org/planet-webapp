@@ -21,8 +21,9 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../../../theme/themeProperties';
-import { handleError, APIError, ProjectMapInfo } from '@planet-sdk/common';
+import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
+import { MapProject } from '../../../../common/types/ProjectPropsContextInterface';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -65,7 +66,7 @@ export default function PlantingLocation({
   const { user, token, contextLoaded, logoutUser } = useUserProps();
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [projects, setProjects] = React.useState<ProjectMapInfo[]>([]);
+  const [projects, setProjects] = React.useState<MapProject[]>([]);
   const importMethods = ['import', 'editor'];
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [mySpecies, setMySpecies] = React.useState(null);
@@ -99,7 +100,7 @@ export default function PlantingLocation({
 
   const loadProjects = async () => {
     try {
-      const projects = await getAuthenticatedRequest<ProjectMapInfo[]>(
+      const projects = await getAuthenticatedRequest<MapProject[]>(
         '/app/profile/projects',
         token,
         logoutUser

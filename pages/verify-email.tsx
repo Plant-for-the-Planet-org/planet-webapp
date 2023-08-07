@@ -4,9 +4,7 @@ import LandingSection from '../src/features/common/Layout/LandingSection';
 import VerifyEmailComponent from './../src/features/common/VerifyEmail/VerifyEmail';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-interface Props {}
-
-function VerifyEmail({}: Props): ReactElement {
+function VerifyEmail(): ReactElement {
   return (
     <div>
       <LandingSection>

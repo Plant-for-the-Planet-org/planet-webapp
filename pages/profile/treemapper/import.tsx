@@ -6,9 +6,8 @@ import ImportData from '../../../src/features/user/TreeMapper/Import';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
-interface Props {}
 
-export default function Import({}: Props): ReactElement {
+export default function Import(): ReactElement {
   const { t } = useTranslation('treemapper');
   const { user } = useUserProps();
   return (

@@ -14,14 +14,14 @@ import {
   MuiAutoComplete,
   StyledAutoCompleteOption,
 } from '../../../common/InputTypes/MuiAutoComplete';
-import { Project } from '../../../common/types/project';
+import { ProjectOption } from '../../../common/types/project';
 import { allCountries } from '../../../../utils/constants/countries';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import StyledForm from '../../../common/Layout/StyledForm';
 import QRCode from 'qrcode';
 
 interface DonationLinkFormProps {
-  projectsList: Project[] | null;
+  projectsList: ProjectOption[] | null;
 }
 
 interface LanguageType {
@@ -40,7 +40,7 @@ const DonationLinkForm = ({
   });
   const [donationUrl, setDonationUrl] = useState<string>('');
   const { t, ready } = useTranslation(['donationLink', 'country', 'me']);
-  const [localProject, setLocalProject] = useState<Project | null>(null);
+  const [localProject, setLocalProject] = useState<ProjectOption | null>(null);
   const [isSupport, setIsSupport] = useState<boolean>(!user.isPrivate);
   const [isTesting, setIsTesting] = useState<boolean>(false);
   const [isArrayUpdated, setIsArrayUpdated] = useState<boolean>(false);
@@ -78,7 +78,7 @@ const DonationLinkForm = ({
     setDonationUrl(url);
   };
 
-  const handleProjectChange = async (project: Project | null) => {
+  const handleProjectChange = async (project: ProjectOption | null) => {
     setLocalProject(project);
   };
 

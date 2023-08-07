@@ -7,21 +7,24 @@ import React, {
   FC,
 } from 'react';
 import { ParamsContext } from './QueryParamsContext';
-import { ProjectMapInfo } from '@planet-sdk/common/build/types/project/map';
-import { ProjectExtended } from '@planet-sdk/common/build/types/project/extended';
+import {
+  TreeProjectExtended,
+  ConservationProjectExtended,
+} from '@planet-sdk/common/build/types/project/extended';
 import { ProjectPurposeTypes } from '@planet-sdk/common/build/types/project/common';
-import { FeatureCollection } from 'geojson';
 import ProjectPropsContextInterface, {
   ExploreOption,
   LayerSettings,
   MapMode,
+  MapProject,
   MapState,
   RasterData,
   SiteViewPort,
+  SitesGeoJSON,
   ViewPort,
 } from '../types/ProjectPropsContextInterface';
 import { MapRef } from 'react-map-gl/src/components/static-map';
-import { PlantLocation } from '../types/plantLocation';
+import { PlantLocation, SamplePlantLocation } from '../types/plantLocation';
 
 const ProjectPropsContext = createContext<ProjectPropsContextInterface | null>(
   null
@@ -38,12 +41,14 @@ export const useProjectProps = (): ProjectPropsContextInterface => {
 };
 
 const ProjectPropsProvider: FC = ({ children }) => {
-  const [projects, setProjects] = useState<ProjectMapInfo[] | null>(null);
-  const [project, setProject] = useState<ProjectExtended | null>(null);
+  const [projects, setProjects] = useState<MapProject[] | null>(null);
+  const [project, setProject] = useState<
+    TreeProjectExtended | ConservationProjectExtended | null
+  >(null);
   const [showSingleProject, setShowSingleProject] = useState(false);
   const [showProjects, setShowProjects] = useState(true);
-  const [searchedProject, setsearchedProjects] = useState<ProjectMapInfo[]>([]);
-  const [geoJson, setGeoJson] = useState<FeatureCollection | null>(null);
+  const [searchedProject, setsearchedProjects] = useState<MapProject[]>([]);
+  const [geoJson, setGeoJson] = useState<SitesGeoJSON | null>(null);
   const [siteExists, setsiteExists] = useState(false);
   const [selectedSite, setSelectedSite] = useState(0);
 
@@ -52,7 +57,7 @@ const ProjectPropsProvider: FC = ({ children }) => {
   );
   const [selectedPl, setSelectedPl] = useState<PlantLocation | null>(null);
   const [samplePlantLocation, setSamplePlantLocation] =
-    useState<PlantLocation | null>(null);
+    useState<SamplePlantLocation | null>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
 
   const infoRef = useRef<HTMLDivElement>(null);
@@ -69,8 +74,9 @@ const ProjectPropsProvider: FC = ({ children }) => {
   const [openModal, setModalOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [satellite, setSatellite] = useState(false);
-  const [filteredProjects, setFilteredProjects] =
-    useState<ProjectMapInfo | null>(null);
+  const [filteredProjects, setFilteredProjects] = useState<MapProject[] | null>(
+    null
+  );
   const [filtersOpen, setFilterOpen] = useState(false);
   const [purpose, setPurpose] = useState<ProjectPurposeTypes>('trees');
   const [plantLocationsLoaded, setPlantLocationsLoaded] = useState(false);
@@ -114,7 +120,9 @@ const ProjectPropsProvider: FC = ({ children }) => {
   });
   const [plIds, setPlIds] = useState<string[] | null>(null);
   const [isPolygonMenuOpen, setIsPolygonMenuOpen] = useState(false);
-  const [hoveredPl, setHoveredPl] = useState<PlantLocation | null>(null);
+  const [hoveredPl, setHoveredPl] = useState<
+    PlantLocation | SamplePlantLocation | null
+  >(null);
   const [siteViewPort, setSiteViewPort] = useState<SiteViewPort | null>(null);
 
   useEffect(() => {

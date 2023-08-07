@@ -1,8 +1,6 @@
 import React, { ReactElement } from 'react';
 
-interface Props {}
-
-export default function PlayIcon({}: Props): ReactElement {
+export default function PlayIcon(): ReactElement {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
       <path
