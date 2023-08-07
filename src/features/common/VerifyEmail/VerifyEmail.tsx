@@ -6,9 +6,7 @@ import { useUserProps } from '../Layout/UserPropsContext';
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
 
-interface Props {}
-
-function VerifyEmailComponent({}: Props): ReactElement {
+function VerifyEmailComponent(): ReactElement {
   const { t, ready } = useTranslation(['common']);
 
   const { loginWithRedirect } = useUserProps();
