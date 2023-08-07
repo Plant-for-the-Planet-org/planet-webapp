@@ -519,7 +519,7 @@ function UserLayout(props: any): ReactElement {
       </div>
     </div>
   ) : (
-    <UserProfileLoader />
+    <></>
   );
 }
 
