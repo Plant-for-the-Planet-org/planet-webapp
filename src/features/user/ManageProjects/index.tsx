@@ -165,7 +165,6 @@ export default function ManageProjects({
       fetchProjectDetails();
     }
   }, [GUID, projectGUID]);
-
   const [userLang, setUserLang] = React.useState('en');
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -333,17 +332,19 @@ export default function ManageProjects({
           />
         );
       case ProjectCreationTabs.REVIEW:
-        return (
-          <SubmitForReview
-            handleBack={handleBack}
-            projectDetails={projectDetails}
-            submitForReview={submitForReview}
-            isUploadingData={isUploadingData}
-            projectGUID={projectGUID}
-            handleReset={handleReset}
-            handlePublishChange={handlePublishChange}
-          />
-        );
+        if (projectDetails && projectGUID)
+          return (
+            <SubmitForReview
+              handleBack={handleBack}
+              projectDetails={projectDetails}
+              submitForReview={submitForReview}
+              isUploadingData={isUploadingData}
+              projectGUID={projectGUID}
+              handleReset={handleReset}
+              handlePublishChange={handlePublishChange}
+            />
+          );
+        break;
       default:
         return <ProjectSelection setTabSelected={setTabSelected} />;
     }

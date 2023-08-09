@@ -10,41 +10,38 @@
 .hyphen {
   font-size: 40px;
   margin-top: 16px;
-  width:fit-content;
+  width: fit-content;
   position: absolute;
   @include xsPhoneView {
-    writing-mode: vertical-rl; 
+    writing-mode: vertical-rl;
     top: 40px;
     left: 125px;
-    font-size: 60px
-    
+    font-size: 60px;
   }
   @include smTabletView {
-    writing-mode: vertical-rl; 
-    left: 254px
+    writing-mode: vertical-rl;
+    left: 254px;
   }
   @include mdTabletView {
     writing-mode: horizontal-tb;
-    top:-20px;
-    left:254px
+    top: -20px;
+    left: 254px;
   }
   @include lgLaptopView {
-    left: 335px
+    left: 335px;
   }
-  
 }
 .density {
- display: flex;
- @include xsPhoneView {
-   flex-direction: column;
- }
- @include smTabletView {
-  flex-direction: column;
-}
-@include mdTabletView {
-  flex-direction: row;
-}
-
+  display: flex;
+  @include xsPhoneView {
+    flex-direction: column;
+  }
+  @include smTabletView {
+    flex-direction: column;
+  }
+  @include mdTabletView {
+    flex-direction: row;
+  }
 }
 
 .reviewContent {
@@ -54,9 +51,6 @@
   justify-content: center;
   margin-left: 0px;
   margin-top: 0px;
-  @include xsPhoneView {
-    margin-left: -54px;
-  }
   @include smTabletView {
     margin-left: -18px;
   }
@@ -77,8 +71,27 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center
+  justify-content: center;
+}
+
+.listOfReport {
+  margin-left: 45px;
+  margin-top: 13px;
+}
+
+.toggleContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: absolute;
+  top: 212px;
+  left: 245px;
+  @include xsPhoneView {
+    top: 306px;
+    left: 85px;
   }
+}
+
 .formField {
   display: flex;
   flex-direction: row;
@@ -86,7 +99,7 @@
   max-width: 320px;
   justify-content: space-between;
   align-items: center;
- }
+}
 
 .reviewButtons {
   display: flex;
@@ -117,7 +130,7 @@
   align-items: flex-start;
   flex-wrap: wrap;
   max-width: 320px;
-  min-width: 320px
+  min-width: 320px;
 }
 
 .formFieldFix {
@@ -129,7 +142,7 @@
     border-radius: 28px !important;
     border-top-right-radius: 0px !important;
     border-bottom-right-radius: 0px !important;
-    background-color: #E2EEE8;
+    background-color: #e2eee8;
   }
   div,
   input {
@@ -148,7 +161,7 @@
     border-radius: 28px !important;
     border-top-left-radius: 0px !important;
     border-bottom-left-radius: 0px !important;
-    background-color: #E2EEE8;
+    background-color: #e2eee8;
   }
   div,
   input {
@@ -160,7 +173,7 @@
     text-align: center !important;
     transform: translateX(0px, 20px);
   }
-  }
+}
 .latlongField {
   width: fit-content;
   position: relative;
@@ -172,13 +185,13 @@
 }
 
 .basicDetailsCoordinatesContainer {
-    display: flex;
-    justify-content: center;
-    position: absolute;
-    top: 290px;
-    left: 10px;
-    overflow: hidden;
-    width: inherit;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 290px;
+  left: 10px;
+  overflow: hidden;
+  width: inherit;
 }
 
 .layerSwitcher {
@@ -708,7 +721,7 @@
     text-align: center;
     border: 2px solid $primaryColor;
     display: none;
-    left: -290px
+    left: -290px;
   }
   &:hover,
   &:active {
@@ -723,12 +736,12 @@
   position: absolute;
   top: -9px;
   left: 275px;
-  width:fit-content;
+  width: fit-content;
   @include mdTabletView {
     left: 227px;
   }
   @include lgLaptopView {
-    left: 308px
+    left: 308px;
   }
 }
 
@@ -737,16 +750,15 @@
   left: 655px;
   top: -9px;
   @include xsPhoneView {
-    left: 275px
+    left: 275px;
   }
   @include mdTabletView {
     left: 498px;
   }
   @include lgLaptopView {
-    left: 655px
+    left: 655px;
   }
 }
-
 
 // white modal
 .modal {
@@ -769,7 +781,6 @@
   margin-top: 20px;
   display: flex;
   flex-direction: row;
- 
 
   @include xsPhoneView {
     flex-direction: column;
@@ -784,7 +795,7 @@
   .reviewButton,
   .backButton {
     height: 50px;
-   }
+  }
   .skipButton,
   .saveAndContinueButton {
     margin-left: 10px;
@@ -795,8 +806,6 @@
     }
   }
 }
-
-
 
 .projectTypes {
   display: flex;
@@ -810,13 +819,13 @@
   margin-top: 24px;
 }
 
-.reviewImageContainer{
+.reviewImageContainer {
   height: 240px;
   width: 100%;
 }
 
 .addProjectTitle {
-  >div > span {
+  > div > span {
     color: $primaryColor;
   }
   .note {

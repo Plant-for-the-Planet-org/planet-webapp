@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import styles from '../StepForm.module.scss';
 import { TextField, Button } from '@mui/material';
@@ -40,7 +40,14 @@ export default function ProjectMedia({
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
 
-  const { register, handleSubmit, errors } = useForm({ mode: 'all' });
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    mode: 'all',
+    defaultValues: { youtubeURL: projectDetails?.videoUrl || '' },
+  });
 
   const [uploadedImages, setUploadedImages] = React.useState<UploadImage[]>([]);
 
@@ -139,8 +146,6 @@ export default function ProjectMedia({
     },
   });
 
-  const [youtubeURL, setYoutubeURL] = React.useState('');
-
   React.useEffect(
     () => () => {
       // Make sure to revoke the data uris to avoid memory leaks
@@ -187,12 +192,6 @@ export default function ProjectMedia({
       setErrors(handleError(err as APIError));
     }
   };
-
-  React.useEffect(() => {
-    if (projectDetails) {
-      setYoutubeURL(projectDetails?.videoUrl);
-    }
-  }, [projectDetails]);
 
   const setDefaultImage = async (id: any, index: any) => {
     setIsUploadingData(true);
@@ -253,22 +252,29 @@ export default function ProjectMedia({
             width: 'inherit',
           }}
         >
-          <TextField
-            inputRef={register({
+          <Controller
+            name="youtubeURL"
+            control={control}
+            rules={{
               pattern: {
                 value:
                   /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|\?v=)([^#&?]*).*/,
                 message: t('manageProjects:youtubeURLValidation'),
               },
-            })}
-            label={t('manageProjects:youtubeURL')}
-            variant="outlined"
-            name="youtubeURL"
-            onChange={(e) => setYoutubeURL(e.target.value)}
-            defaultValue={youtubeURL}
-            value={youtubeURL}
-            error={errors.youtubeURL}
-            helperText={errors.youtubeURL && errors.youtubeURL.message}
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                label={t('manageProjects:youtubeURL')}
+                variant="outlined"
+                onChange={onChange}
+                value={value}
+                onBlur={onBlur}
+                error={errors.youtubeURL !== undefined}
+                helperText={
+                  errors.youtubeURL !== undefined && errors.youtubeURL.message
+                }
+              />
+            )}
           />
 
           {/* Change to field array of react hook form  */}

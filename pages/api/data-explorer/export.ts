@@ -5,6 +5,7 @@ import {
   rateLimiter,
   speedLimiter,
 } from '../../../src/middlewares/rate-limiter';
+import { IExportData } from '../../../src/features/common/types/dataExplorer';
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
@@ -12,7 +13,7 @@ handler.use(rateLimiter);
 handler.use(speedLimiter);
 
 handler.post(async (req, response) => {
-  const { projectId, startDate, endDate } = JSON.parse(req.body);
+  const { projectId, startDate, endDate } = req.body;
   try {
     const query =
       "SELECT \
@@ -33,10 +34,10 @@ handler.post(async (req, response) => {
       FROM plant_location pl \
       LEFT JOIN planted_species ps ON ps.plant_location_id = pl.id \
       LEFT JOIN scientific_species ss ON ps.scientific_species_id = ss.id \
-      JOIN plant_project pp ON pl.plant_project_id = pp.id \
+      JOIN project pp ON pl.plant_project_id = pp.id \
       WHERE pp.guid=? AND pl.type IN ('multi','single') AND pl.deleted_at IS NULL AND pl.plant_date BETWEEN ? AND ?";
 
-    const res = await db.query(query, [
+    const res = await db.query<IExportData[]>(query, [
       projectId,
       startDate,
       `${endDate} 23:59:59.999`,

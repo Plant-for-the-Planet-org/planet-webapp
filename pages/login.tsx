@@ -4,15 +4,19 @@ import { useRouter } from 'next/router';
 import { useUserProps } from '../src/features/common/Layout/UserPropsContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-interface Props {}
-
-function Login({}: Props): ReactElement {
+function Login(): ReactElement {
   const router = useRouter();
 
   // if the user is authenticated check if we have slug, and if we do, send user to slug
   // else send user to login flow
 
-  const { user, contextLoaded, loginWithRedirect } = useUserProps();
+  const {
+    user,
+    contextLoaded,
+    loginWithRedirect,
+    isAuthenticated,
+    auth0Error,
+  } = useUserProps();
 
   React.useEffect(() => {
     async function loadFunction() {
@@ -32,7 +36,10 @@ function Login({}: Props): ReactElement {
     if (contextLoaded) {
       if (user) {
         loadFunction();
-      } else if (user === null) {
+      } else if (
+        user === null &&
+        (isAuthenticated || auth0Error?.message === '401')
+      ) {
         // wait for context to redirect to complete signup
       } else {
         loginWithRedirect({

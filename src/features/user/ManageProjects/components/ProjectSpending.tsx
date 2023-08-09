@@ -44,6 +44,11 @@ const yearDialogSx: SxProps = {
   },
 };
 
+type FormData = {
+  year: Date;
+  amount: number;
+};
+
 export default function ProjectSpending({
   handleBack,
   token,
@@ -55,14 +60,11 @@ export default function ProjectSpending({
   const { t, ready } = useTranslation(['manageProjects', 'common']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const {
-    register,
-    handleSubmit,
-    errors,
-    formState,
+    formState: { errors, isDirty },
     getValues,
     setValue,
     control,
-  } = useForm({ mode: 'all' });
+  } = useForm<FormData>({ mode: 'all' });
 
   const [amount, setAmount] = React.useState<number | string>(0);
   const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
@@ -73,12 +75,14 @@ export default function ProjectSpending({
     []
   );
   const { logoutUser } = useUserProps();
+
   React.useEffect(() => {
     if (!projectGUID || projectGUID === '') {
       handleReset(ready ? t('manageProjects:resetMessage') : '');
     }
   });
-  const onSubmit = async (pdf: any) => {
+
+  const onSubmit = async (pdf: string | ArrayBuffer | null | undefined) => {
     setIsUploadingData(true);
     const updatedAmount = getValues('amount');
     const year = getValues('year');
@@ -110,9 +114,10 @@ export default function ProjectSpending({
       setErrors(handleError(err as APIError));
     }
   };
+
   const onDrop = React.useCallback(
-    (acceptedFiles) => {
-      acceptedFiles.forEach((file: any) => {
+    (acceptedFiles: File[]) => {
+      acceptedFiles.forEach((file) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onabort = () => console.log('file reading was aborted');
@@ -142,9 +147,7 @@ export default function ProjectSpending({
     },
   });
 
-  const { isDirty, isSubmitting } = formState;
-
-  const deleteProjectSpending = async (id: any) => {
+  const deleteProjectSpending = async (id: string) => {
     try {
       setIsUploadingData(true);
       await deleteAuthenticatedRequest(
@@ -232,30 +235,33 @@ export default function ProjectSpending({
             <InlineFormDisplayGroup>
               <LocalizationProvider
                 dateAdapter={AdapterDateFns}
-                locale={
+                adapterLocale={
                   localeMapForDate[userLang]
                     ? localeMapForDate[userLang]
                     : localeMapForDate['en']
                 }
               >
                 <Controller
-                  render={(properties) => (
+                  name="year"
+                  control={control}
+                  defaultValue={new Date()}
+                  rules={{
+                    required: t('manageProjects:spendingYearValidation'),
+                  }}
+                  render={({ field: { onChange, value } }) => (
                     <MuiDatePicker
-                      inputRef={register({
-                        required: {
-                          value: true,
-                          message: t('manageProjects:spendingYearValidation'),
-                        },
-                      })}
                       views={['year']}
-                      value={properties.value}
-                      onChange={properties.onChange}
+                      openTo="year"
+                      value={value}
+                      onChange={onChange}
                       label={t('manageProjects:spendingYear')}
                       renderInput={(props) => (
                         <TextField
                           {...props}
-                          error={errors.year}
-                          helperText={errors.year && errors.year.message}
+                          error={errors.year !== undefined}
+                          helperText={
+                            errors.year !== undefined && errors.year.message
+                          }
                         />
                       )}
                       disableFuture
@@ -266,38 +272,41 @@ export default function ProjectSpending({
                       }}
                     />
                   )}
-                  defaultValue={new Date()}
-                  name="year"
-                  control={control}
                 />
               </LocalizationProvider>
-              <TextField
-                inputRef={register({
-                  validate: (value) => parseInt(value) > 0,
-                  required: {
-                    value: true,
-                    message: t('manageProjects:spendingAmountValidation'),
-                  },
-                })}
-                label={t('manageProjects:spendingAmount')}
-                placeholder="0"
-                type="number"
-                onBlur={(e) => e.preventDefault()}
-                variant="outlined"
+              <Controller
                 name="amount"
-                onInput={(e: React.ChangeEvent<HTMLInputElement>): void => {
-                  setAmount(e.target.value);
+                control={control}
+                rules={{
+                  required: t('manageProjects:spendingAmountValidation'),
+                  validate: (value) => value > 0,
                 }}
-                InputProps={{
-                  startAdornment: (
-                    <p
-                      className={styles.inputStartAdornment}
-                      style={{ paddingRight: '4px' }}
-                    >{`€`}</p>
-                  ),
-                }}
-                error={errors.amount}
-                helperText={errors.amount && errors.amount.message}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <TextField
+                    label={t('manageProjects:spendingAmount')}
+                    placeholder="0"
+                    type="number"
+                    variant="outlined"
+                    onChange={(e) => {
+                      setAmount(e.target.value);
+                      onChange(e.target.value);
+                    }}
+                    value={value}
+                    onBlur={onBlur}
+                    InputProps={{
+                      startAdornment: (
+                        <p
+                          className={styles.inputStartAdornment}
+                          style={{ paddingRight: '4px' }}
+                        >{`€`}</p>
+                      ),
+                    }}
+                    error={errors.amount !== undefined}
+                    helperText={
+                      errors.amount !== undefined && errors.amount.message
+                    }
+                  />
+                )}
               />
             </InlineFormDisplayGroup>
 

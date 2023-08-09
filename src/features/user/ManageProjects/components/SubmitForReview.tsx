@@ -3,7 +3,7 @@ import BackArrow from '../../../../../public/assets/images/icons/headerIcons/Bac
 import styles from './../StepForm.module.scss';
 import SubmitForReviewImage from '../../../../../public/assets/images/icons/manageProjects/SubmitForReviewImage';
 import UnderReview from '../../../../../public/assets/images/icons/manageProjects/UnderReview';
-import { useTranslation } from 'next-i18next';
+import { useTranslation, Trans } from 'next-i18next';
 import NotReviewed from '../../../../../public/assets/images/icons/manageProjects/NotReviewed';
 import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import router from 'next/router';
@@ -27,6 +27,7 @@ function SubmitForReview({
       handleReset(ready ? t('manageProjects:resetMessage') : '');
     }
   });
+
   function UnderReviewComponent() {
     const [publish, setPublish] = React.useState<boolean>(
       projectDetails.publish
@@ -86,6 +87,21 @@ function SubmitForReview({
 
     return (
       <>
+        <div>
+          <div>
+            <Trans
+              i18nKey="manageProjects:reviewNote"
+              components={{ bold: <strong /> }}
+            />
+          </div>
+          <ul className={styles.listOfReport}>
+            <li>{t('manageProjects:legalAccreditation')}</li>
+            <li>{t('manageProjects:taxExemption')}</li>
+            <li>{t('manageProjects:annualReport')}</li>
+            <li>{t('manageProjects:financialReport')}</li>
+            <li>{t('manageProjects:PlantingReport')}</li>
+          </ul>
+        </div>
         <div className={styles.formFieldRadio} style={{ marginBottom: '10px' }}>
           <div>
             <label
@@ -159,23 +175,23 @@ function SubmitForReview({
           <p className={styles.reviewMessage}>
             {t('manageProjects:acceptedReview')}
           </p>
-          <div className={styles.buttonsForProjectCreationForm}>
-            <Button
-              onClick={() => handleBack(ProjectCreationTabs.PROJECT_SPENDING)}
-              variant="outlined"
-              className={styles.backButton}
-            >
-              <BackArrow />
-              <p>{t('manageProjects:backToSpending')}</p>
-            </Button>
-            <Button
-              className={styles.skipButton}
-              variant="contained"
-              onClick={() => router.push('/profile/projects')}
-            >
-              <p>{t('manageProjects:exit')}</p>
-            </Button>
-          </div>
+        </div>
+        <div className={styles.buttonsForProjectCreationForm}>
+          <Button
+            onClick={() => handleBack(ProjectCreationTabs.PROJECT_SPENDING)}
+            variant="outlined"
+            className={styles.backButton}
+          >
+            <BackArrow />
+            <p>{t('manageProjects:backToSpending')}</p>
+          </Button>
+          <Button
+            className={styles.skipButton}
+            variant="contained"
+            onClick={() => router.push('/profile/projects')}
+          >
+            <p>{t('manageProjects:exit')}</p>
+          </Button>
         </div>
       </>
     );

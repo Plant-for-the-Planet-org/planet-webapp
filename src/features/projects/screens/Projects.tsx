@@ -11,12 +11,14 @@ import { useDebouncedEffect } from '../../../utils/useDebouncedEffect';
 import Explore from '../components/maps/Explore';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
+import { SetState } from '../../common/types/common';
+import { MapProject } from '../../common/types/ProjectPropsContextInterface';
 
 interface Props {
-  projects: any;
+  projects: MapProject[];
   showProjects: Boolean;
   setShowProjects: Function;
-  setsearchedProjects: any;
+  setsearchedProjects: SetState<MapProject[]>;
 }
 
 const ProjectSnippet = dynamic(() => import('../components/ProjectSnippet'), {
@@ -31,7 +33,7 @@ function ProjectsList({
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = screenWidth <= 767;
-  const { embed, showProjectList, email } = React.useContext(ParamsContext);
+  const { embed, showProjectList } = React.useContext(ParamsContext);
   const { isImpersonationModeOn } = useUserProps();
   const isEmbed = embed === 'true';
   const [scrollY, setScrollY] = React.useState(0);
@@ -41,6 +43,9 @@ function ProjectsList({
   const [searchMode, setSearchMode] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState('');
   const [trottledSearchValue, setTrottledSearchValue] = React.useState('');
+  const [searchProjectResults, setSearchProjectResults] = React.useState<
+    MapProject[] | undefined
+  >();
 
   useDebouncedEffect(
     () => {
@@ -52,12 +57,14 @@ function ProjectsList({
 
   const searchRef = React.useRef(null);
 
-  function getProjects(projects: Array<any>, type: string) {
+  function getProjects(
+    projects: MapProject[],
+    type: string
+  ): MapProject[] | undefined {
     if (type === 'top') {
       return projects.filter(
-        (project: {
-          properties: { isApproved: boolean; isTopProject: boolean };
-        }) =>
+        (project) =>
+          project.properties.purpose === 'trees' &&
           project.properties.isApproved === true &&
           project.properties.isTopProject === true
       );
@@ -66,7 +73,7 @@ function ProjectsList({
     }
   }
 
-  function getSearchProjects(projects: Array<any>, keyword: string) {
+  function getSearchProjects(projects: MapProject[], keyword: string) {
     let resultProjects = [];
     if (keyword !== '') {
       const keywords = keyword.split(/[\s\-.,+]+/);
@@ -77,15 +84,19 @@ function ProjectsList({
             .replace(/[\u0300-\u036f]/g, '')
             .toLowerCase();
           const projectName = project.properties.name
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLowerCase();
-          const projectLocation = project.properties.location
-            ? project.properties.location
+            ? project.properties.name
                 .normalize('NFD')
                 .replace(/[\u0300-\u036f]/g, '')
                 .toLowerCase()
             : '';
+          const projectLocation =
+            project.properties.purpose === 'trees' &&
+            project.properties.location
+              ? project.properties.location
+                  .normalize('NFD')
+                  .replace(/[\u0300-\u036f]/g, '')
+                  .toLowerCase()
+              : '';
           const projectTpoName = project.properties.tpo.name
             ? project.properties.tpo.name
                 .normalize('NFD')
@@ -123,10 +134,13 @@ function ProjectsList({
     [projects]
   );
 
-  const searchProjectResults = React.useMemo(
-    () => getSearchProjects(projects, trottledSearchValue),
-    [trottledSearchValue, projects]
-  );
+  React.useEffect(() => {
+    const _searchProjectResults = getSearchProjects(
+      projects,
+      trottledSearchValue
+    );
+    setSearchProjectResults(_searchProjectResults);
+  }, [trottledSearchValue, projects]);
 
   const topProjects = React.useMemo(
     () => getProjects(projects, 'top'),
@@ -218,7 +232,7 @@ function ProjectsList({
               <div className={'projectsContainer'}>
                 {trottledSearchValue !== '' ? (
                   searchProjectResults && searchProjectResults.length > 0 ? (
-                    searchProjectResults.map((project: any) => (
+                    searchProjectResults.map((project) => (
                       <ProjectSnippet
                         key={project.properties.id}
                         project={project.properties}
@@ -231,7 +245,7 @@ function ProjectsList({
                   )
                 ) : selectedTab === 'all' ? (
                   allProjects && allProjects.length > 0 ? (
-                    allProjects.map((project: any) => (
+                    allProjects.map((project) => (
                       <ProjectSnippet
                         key={project.properties.id}
                         project={project.properties}
@@ -243,7 +257,7 @@ function ProjectsList({
                     <NoProjectFound />
                   )
                 ) : topProjects && topProjects.length > 0 ? (
-                  topProjects.map((project: any) => (
+                  topProjects.map((project) => (
                     <ProjectSnippet
                       key={project.properties.id}
                       project={project.properties}

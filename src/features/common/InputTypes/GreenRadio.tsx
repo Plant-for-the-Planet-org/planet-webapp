@@ -1,18 +1,16 @@
-import Radio from '@mui/material/Radio';
-import { withStyles } from '@mui/styles';
+import Radio, { RadioProps } from '@mui/material/Radio';
+import { styled } from '@mui/material';
+import { ReactElement } from 'react';
 
-const GreenRadio = withStyles({
-  root: {
-    color: '#000000',
-    '&$checked': {
-      color: '#68B030',
-    },
+const StyledRadio = styled(Radio)({
+  color: '#000000',
+  '&.Mui-checked .MuiSvgIcon-root path': {
+    fill: '#68B030',
   },
-  checked: {
-    '& .MuiSvgIcon-root path': {
-      fill: '#68B030',
-    },
-  },
-})((props) => <Radio color="default" {...props} />);
+});
+
+const GreenRadio = (props: RadioProps): ReactElement => (
+  <StyledRadio color="default" {...props} />
+);
 
 export default GreenRadio;

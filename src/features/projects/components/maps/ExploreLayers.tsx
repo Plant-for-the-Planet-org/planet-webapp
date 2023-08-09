@@ -1,14 +1,12 @@
 import React, { ReactElement } from 'react';
 import { Layer, Source } from 'react-map-gl';
-import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import { LayerManager, Layer as LayerM } from 'layer-manager/dist/components';
 import { PluginMapboxGl } from 'layer-manager';
 import TreeCoverLoss from '../../../../../public/data/layers/tree-cover-loss';
 import { getParams } from '../../../../utils/LayerManagerUtils';
 
-interface Props {}
-
-export default function ExploreLayers({}: Props): ReactElement {
+export default function ExploreLayers(): ReactElement {
   const {
     loaded,
     mapRef,
@@ -16,7 +14,7 @@ export default function ExploreLayers({}: Props): ReactElement {
     explorePotential,
     exploreDeforestation,
     layersSettings,
-  } = React.useContext(ProjectPropsContext);
+  } = useProjectProps();
   return (
     <>
       {exploreForests ? (
@@ -33,9 +31,9 @@ export default function ExploreLayers({}: Props): ReactElement {
       ) : null}
 
       {loaded ? (
-        <LayerManager map={mapRef?.current.getMap()} plugin={PluginMapboxGl}>
+        <LayerManager map={mapRef?.current?.getMap()} plugin={PluginMapboxGl}>
           {exploreDeforestation &&
-            TreeCoverLoss.map((layer: any) => {
+            TreeCoverLoss.map((layer) => {
               const { id, decodeConfig, timelineConfig, decodeFunction } =
                 layer;
 

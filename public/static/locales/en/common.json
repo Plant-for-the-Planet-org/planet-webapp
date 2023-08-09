@@ -96,6 +96,7 @@
   "deleteCondition": "Before proceeding, make sure you've cancelled all subscriptions.",
   "showSubscriptions": "Show my Subscriptions",
   "notFound": "Resource not found",
+  "tooManyRequest": "Too many requests. Please wait and try again later or contact the system administrator for assistance.",
   "unauthorized": "Not Authorized",
   "validationError": "Validation Error",
   "internalServerError": "Internal Server Error - Please try again later!",
@@ -126,5 +127,6 @@
   "viewReport": "View Report",
   "reviewInfo": " The project was inspected in a multiday field review in <2>month</2> and fullfills our <5>standards.</5>",
   "standardsLink": "https://www.plant-for-the-planet.org/standards/",
-  "project": "Project"
+  "project": "Project",
+  "top_project_standards_fulfilled": "The project inspection revealed that this project fulfilled at least 12 of the 19 Top Project <2>standards.</2>"
 }

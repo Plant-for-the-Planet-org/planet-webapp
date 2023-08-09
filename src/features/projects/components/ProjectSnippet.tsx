@@ -7,24 +7,27 @@ import EditIcon from '../../../../public/assets/images/icons/manageProjects/Penc
 import Link from 'next/link';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { truncateString } from '../../../utils/getTruncatedString';
-import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
-import VerifiedIcon from '@mui/icons-material/Verified';
-import TopProjectReports from './projectDetails/TopProjectReports';
-import Typography from '@mui/material/Typography';
-import HoverPopover from 'material-ui-popup-state/HoverPopover';
+import VerifiedBadge from './VerifiedBadge';
+import TopProjectBadge from './TopProjectBadge';
 import {
-  usePopupState,
-  bindHover,
-  bindPopover,
-} from 'material-ui-popup-state/hooks';
+  ConservationProjectConcise,
+  ConservationProjectExtended,
+  TreeProjectConcise,
+  TreeProjectExtended,
+} from '@planet-sdk/common';
 
 interface Props {
-  project: any;
-  editMode: Boolean;
-  displayPopup: Boolean;
+  project:
+    | TreeProjectConcise
+    | ConservationProjectConcise
+    | TreeProjectExtended
+    | ConservationProjectExtended;
+  editMode: boolean;
+  displayPopup: boolean;
 }
 
 export default function ProjectSnippet({
@@ -35,18 +38,16 @@ export default function ProjectSnippet({
   const router = useRouter();
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
-  const popupState = usePopupState({
-    variant: 'popover',
-    popupId: 'demoPopover',
-  });
-
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
     : '';
 
-  const { selectedPl, hoveredPl } = React.useContext(ProjectPropsContext);
+  const { selectedPl, hoveredPl } = useProjectProps();
 
-  let progressPercentage = (project.countPlanted / project.countTarget) * 100;
+  let progressPercentage = 0;
+
+  if (project.purpose === 'trees' && project.countTarget !== null)
+    progressPercentage = (project.countPlanted / project.countTarget) * 100;
 
   if (progressPercentage > 100) {
     progressPercentage = 100;
@@ -93,45 +94,21 @@ export default function ProjectSnippet({
             }}
           ></div>
         ) : null}
-        {project.isTopProject && project.isApproved && (
-          <div className={'topProjectBadge'}>{t('common:topProject')}</div>
-        )}
+        {project.purpose === 'trees' &&
+          project.isTopProject &&
+          project.isApproved && <TopProjectBadge displayPopup={true} />}
         <div className={'projectImageBlock'}>
           <div className={'projectType'}>
-            {project.classification && t(`donate:${project.classification}`)}
+            {project.purpose === 'trees' &&
+              project.classification &&
+              t(`donate:${project.classification}`)}
           </div>
-          <div className={'projectName'}>
+          <p className={'projectName'}>
             {truncateString(project.name, 54)}
-            {project.isApproved && (
-              <>
-                <VerifiedIcon
-                  sx={{ color: '#fff' }}
-                  className={'verifiedIcon'}
-                  {...bindHover(popupState)}
-                />
-                {displayPopup && (
-                  <HoverPopover
-                    {...bindPopover(popupState)}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'center',
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'left',
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <Typography style={{ margin: 10 }}>
-                      <TopProjectReports projectReviews={project.reviews} />
-                    </Typography>
-                  </HoverPopover>
-                )}
-              </>
+            {project.purpose === 'trees' && project.isApproved && (
+              <VerifiedBadge displayPopup={displayPopup} project={project} />
             )}
-          </div>
+          </p>
         </div>
       </div>
 

@@ -23,6 +23,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
+import { MapProject } from '../../../../common/types/ProjectPropsContextInterface';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -65,7 +66,7 @@ export default function PlantingLocation({
   const { user, token, contextLoaded, logoutUser } = useUserProps();
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [projects, setProjects] = React.useState([]);
+  const [projects, setProjects] = React.useState<MapProject[]>([]);
   const importMethods = ['import', 'editor'];
   const [geoJsonError, setGeoJsonError] = React.useState(false);
   const [mySpecies, setMySpecies] = React.useState(null);
@@ -83,7 +84,11 @@ export default function PlantingLocation({
       },
     ],
   };
-  const { register, handleSubmit, errors, control, setValue } = useForm({
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
     mode: 'onBlur',
     defaultValues: plantLocation ? plantLocation : defaultValues,
   });
@@ -95,7 +100,7 @@ export default function PlantingLocation({
 
   const loadProjects = async () => {
     try {
-      const projects = await getAuthenticatedRequest(
+      const projects = await getAuthenticatedRequest<MapProject[]>(
         '/app/profile/projects',
         token,
         logoutUser
@@ -285,18 +290,21 @@ export default function PlantingLocation({
         <div className={styles.formFieldLarge}>
           <LocalizationProvider
             dateAdapter={AdapterDateFns}
-            locale={
+            adapterLocale={
               localeMapForDate[userLang]
                 ? localeMapForDate[userLang]
                 : localeMapForDate['en']
             }
           >
             <Controller
-              render={(properties) => (
+              name="plantDate"
+              control={control}
+              rules={{ required: t('me:datePlantedRequired') }}
+              render={({ field: { onChange, value } }) => (
                 <MuiDatePicker
                   label={t('me:datePlanted')}
-                  value={properties.value}
-                  onChange={properties.onChange}
+                  value={value}
+                  onChange={onChange}
                   renderInput={(props) => <MaterialTextField {...props} />}
                   disableFuture
                   inputFormat="MMMM d, yyyy"
@@ -305,15 +313,6 @@ export default function PlantingLocation({
                   }}
                 />
               )}
-              inputRef={register({
-                required: {
-                  value: true,
-                  message: t('me:datePlantedRequired'),
-                },
-              })}
-              name="plantDate"
-              control={control}
-              defaultValue={new Date()}
             />
           </LocalizationProvider>
           {errors.plantDate && (
@@ -327,11 +326,19 @@ export default function PlantingLocation({
       {user && user?.type === 'tpo' && (
         <div className={styles.formFieldLarge}>
           <Controller
-            as={
+            name="plantProject"
+            control={control}
+            rules={{
+              required: t('treemapper:projectRequired'),
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
               <MaterialTextField
                 label={t('me:project')}
                 variant="outlined"
                 select
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
               >
                 {projects.map((option) => (
                   <MenuItem
@@ -342,12 +349,7 @@ export default function PlantingLocation({
                   </MenuItem>
                 ))}
               </MaterialTextField>
-            }
-            name="plantProject"
-            control={control}
-            rules={{
-              required: t('treemapper:projectRequired'),
-            }}
+            )}
           />
           {errors.plantProject && (
             <span className={styles.errorMessage}>
@@ -383,11 +385,8 @@ export default function PlantingLocation({
               key={index}
               index={index}
               t={t}
-              register={register}
               remove={remove}
-              setValue={setValue}
               errors={errors}
-              mySpecies={mySpecies}
               item={item}
               control={control}
             />
@@ -425,11 +424,8 @@ export default function PlantingLocation({
 interface SpeciesProps {
   index: number;
   t: Function;
-  register: Function;
   remove: Function;
-  setValue: Function;
   errors: any;
-  mySpecies: any;
   item: any;
   control: any;
 }
@@ -437,11 +433,8 @@ interface SpeciesProps {
 function PlantedSpecies({
   index,
   t,
-  register,
   remove,
-  setValue,
   errors,
-  mySpecies,
   item,
   control,
 }: SpeciesProps): ReactElement {
@@ -449,19 +442,22 @@ function PlantedSpecies({
     <div key={item.id} className={styles.speciesFieldGroup}>
       <div className={styles.speciesNameField}>
         {/* <SpeciesSelect label={t('treemapper:species')} name={`plantedSpecies[${index}].species`} mySpecies={mySpecies} control={control} /> */}
-        <MaterialTextField
-          inputRef={register({
-            required: index
-              ? false
-              : {
-                  value: true,
-                  message: t('treemapper:atLeastOneSpeciesRequired'),
-                },
-          })}
-          label={t('treeSpecies')}
-          variant="outlined"
+        <Controller
           name={`plantedSpecies[${index}].otherSpecies`}
-          defaultValue={item.otherSpecies ? item.otherSpecies : ''}
+          control={control}
+          rules={{
+            required:
+              index > 0 ? false : t('treemapper:atLeastOneSpeciesRequired'),
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <MaterialTextField
+              label={t('treeSpecies')}
+              variant="outlined"
+              onChange={onChange}
+              onBlur={onBlur}
+              value={value}
+            />
+          )}
         />
         {errors.plantedSpecies &&
           errors.plantedSpecies[index]?.otherSpecies && (
@@ -472,24 +468,31 @@ function PlantedSpecies({
           )}
       </div>
       <div className={styles.speciesCountField}>
-        <MaterialTextField
-          inputRef={register({
-            required: index
-              ? false
-              : {
-                  value: true,
-                  message: t('treemapper:treesRequired'),
-                },
-            validate: (value: any) => parseInt(value, 10) >= 1,
-          })}
-          onInput={(e: any) => {
-            e.target.value = e.target.value.replace(/[^0-9]/g, '');
-          }}
-          label={t('treemapper:count')}
-          variant="outlined"
+        <Controller
           name={`plantedSpecies[${index}].treeCount`}
-          defaultValue={item.treeCount ? item.treeCount : ''}
+          control={control}
+          rules={{
+            required: index > 0 ? false : t('treemapper:treesRequired'),
+            validate: (value: any) => {
+              return parseInt(value, 10) >= 1
+                ? true
+                : t('treemapper:treesRequired');
+            },
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <MaterialTextField
+              label={t('treemapper:count')}
+              variant="outlined"
+              onChange={(e: any) => {
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                onChange(e.target.value);
+              }}
+              value={value > 0 ? value : ''}
+              onBlur={onBlur}
+            />
+          )}
         />
+
         {errors.plantedSpecies && errors.plantedSpecies[index]?.treeCount && (
           <span className={styles.errorMessage}>
             {errors.plantedSpecies[index]?.treeCount &&

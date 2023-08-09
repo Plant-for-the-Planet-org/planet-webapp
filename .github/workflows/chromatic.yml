@@ -7,9 +7,7 @@ name: 'Chromatic'
 on:
   push:
     branches:
-      - develop
-      - main
-      - feature/fix-storybook-module-not-found
+      - feature/update-storybook-to-v7
 # List of jobs
 jobs:
   chromatic-deployment:

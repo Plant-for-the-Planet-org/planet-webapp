@@ -1,15 +1,20 @@
 import React, { ReactElement } from 'react';
 import { Layer, Marker } from 'react-map-gl';
 import { Source } from 'react-map-gl';
-import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import styles from '../../styles/PlantLocation.module.scss';
 import * as turf from '@turf/turf';
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import { useTranslation } from 'next-i18next';
+import { Feature, Point, Polygon } from 'geojson';
+import {
+  PlantLocation,
+  PlantLocationMulti,
+  PlantLocationSingle,
+  SamplePlantLocation,
+} from '../../../common/types/plantLocation';
 
-interface Props {}
-
-export default function PlantLocations({}: Props): ReactElement {
+export default function PlantLocations(): ReactElement {
   const {
     plantLocations,
     hoveredPl,
@@ -20,19 +25,28 @@ export default function PlantLocations({}: Props): ReactElement {
     satellite,
     setSamplePlantLocation,
     samplePlantLocation,
-  } = React.useContext(ProjectPropsContext);
+  } = useProjectProps();
 
   const { i18n, t } = useTranslation(['maps', 'common']);
 
-  const openPl = (pl: any) => {
-    setSamplePlantLocation(pl);
+  const openPl = (pl: PlantLocationSingle | SamplePlantLocation) => {
+    switch (pl.type) {
+      case 'sample':
+        setSamplePlantLocation(pl);
+        break;
+      case 'single':
+        setSelectedPl(pl);
+        break;
+      default:
+        break;
+    }
   };
 
-  const onHover = (pl: Object) => {
+  const onHover = (pl: PlantLocationSingle | SamplePlantLocation) => {
     setHoveredPl(pl);
   };
 
-  const onHoverEnd = (pl: Object) => {
+  const onHoverEnd = () => {
     if (
       hoveredPl &&
       (hoveredPl.type === 'single' || hoveredPl.type === 'sample')
@@ -40,7 +54,7 @@ export default function PlantLocations({}: Props): ReactElement {
       setHoveredPl(null);
   };
 
-  const getPlTreeCount = (pl: any) => {
+  const getPlTreeCount = (pl: PlantLocationMulti) => {
     let count = 0;
     if (pl && pl.plantedSpecies) {
       for (const key in pl.plantedSpecies) {
@@ -55,7 +69,7 @@ export default function PlantLocations({}: Props): ReactElement {
     }
   };
 
-  const getPlArea = (pl: any) => {
+  const getPlArea = (pl: PlantLocationMulti) => {
     if (pl && pl.type === 'multi') {
       const area = turf.area(pl.geometry);
       return area / 10000;
@@ -64,7 +78,7 @@ export default function PlantLocations({}: Props): ReactElement {
     }
   };
 
-  const getPolygonColor = (pl: any) => {
+  const getPolygonColor = (pl: PlantLocationMulti) => {
     const treeCount = getPlTreeCount(pl);
     const plantationArea = getPlArea(pl);
     const density = treeCount / plantationArea;
@@ -81,7 +95,7 @@ export default function PlantLocations({}: Props): ReactElement {
     }
   };
 
-  const getDateDiff = (pl: any) => {
+  const getDateDiff = (pl: PlantLocation) => {
     const today = new Date();
     const plantationDate = new Date(pl.plantDate?.substr(0, 10));
     const differenceInTime = today.getTime() - plantationDate.getTime();
@@ -103,26 +117,28 @@ export default function PlantLocations({}: Props): ReactElement {
     <>
       {plantLocations &&
         plantLocations
-          .filter((item: any) => {
+          .filter((item) => {
             if (item.captureStatus === 'complete') {
               return true;
             } else {
               return false;
             }
           })
-          .map((pl: any) => {
-            const newPl = pl.geometry;
-            newPl.properties = {};
-            newPl.properties.id = pl.id;
+          .map((pl) => {
             if (pl.type === 'multi') {
               const dateDiff = getDateDiff(pl);
+              const data: Feature<Point | Polygon> = {
+                type: 'Feature',
+                geometry: { ...pl.geometry },
+                properties: { id: pl.id },
+              };
               return (
                 <React.Fragment key={pl.id}>
                   <Source
                     key={`${pl.id}-source`}
                     id={pl.id}
                     type="geojson"
-                    data={newPl}
+                    data={data}
                   >
                     <Layer
                       key={`${pl.id}-layer`}
@@ -168,14 +184,14 @@ export default function PlantLocations({}: Props): ReactElement {
                     pl.id === selectedPl?.id &&
                     pl.samplePlantLocations &&
                     pl.samplePlantLocations
-                      .filter((item: any) => {
+                      .filter((item) => {
                         if (item.captureStatus === 'complete') {
                           return true;
                         } else {
                           return false;
                         }
                       })
-                      .map((spl: any) => {
+                      .map((spl) => {
                         return (
                           <Marker
                             key={`${spl.id}-sample`}
@@ -194,7 +210,7 @@ export default function PlantLocations({}: Props): ReactElement {
                                 tabIndex={0}
                                 onClick={() => openPl(spl)}
                                 onMouseEnter={() => onHover(spl)}
-                                onMouseLeave={() => onHoverEnd(spl)}
+                                onMouseLeave={onHoverEnd}
                               />
                             )}
                           </Marker>
@@ -206,8 +222,8 @@ export default function PlantLocations({}: Props): ReactElement {
               return (
                 <Marker
                   key={`${pl.id}-single`}
-                  latitude={newPl.coordinates[1]}
-                  longitude={newPl.coordinates[0]}
+                  latitude={pl.geometry.coordinates[1]}
+                  longitude={pl.geometry.coordinates[0]}
                   // offsetLeft={5}
                   // offsetTop={-16}
                   // style={{ left: '28px' }}
@@ -217,7 +233,7 @@ export default function PlantLocations({}: Props): ReactElement {
                       key={`${pl.id}-marker`}
                       onClick={() => openPl(pl)}
                       onMouseEnter={() => onHover(pl)}
-                      onMouseLeave={() => onHoverEnd(pl)}
+                      onMouseLeave={onHoverEnd}
                       className={`${styles.single} ${
                         pl.id === selectedPl?.id ? styles.singleSelected : ''
                       }`}

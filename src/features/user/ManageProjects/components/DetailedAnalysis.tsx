@@ -159,8 +159,48 @@ export default function DetailedAnalysis({
     }
   });
 
-  const { register, handleSubmit, errors, control, reset } = useForm({
+  // TODO - set up better types for Form Data
+  const defaultDetailedAnalysis =
+    purpose === 'trees'
+      ? {
+          yearAbandoned: new Date(),
+          firstTreePlanted: '',
+          plantingDensity: '',
+          maxPlantingDensity: '',
+          employeesCount: '',
+          mainChallenge: '',
+          siteOwnerType: '',
+          siteOwnerName: '',
+          acquisitionYear: '',
+          degradationYear: '',
+          degradationCause: '',
+          longTermPlan: '',
+          plantingSeasons: '',
+          motivation: '',
+        }
+      : {
+          actions: '',
+          benefits: '',
+          employeesCount: '',
+          acquisitionYear: '',
+          startingProtectionYear: '',
+          areaProtected: '',
+          siteOwnerType: '', //TODO - Simplify site owner logic
+          siteOwnerName: '',
+          mainChallenge: '',
+          longTermPlan: '',
+          motivation: '',
+        };
+
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm({
     mode: 'onBlur',
+    // TODO - set up better form types to resolve this error
+    defaultValues: defaultDetailedAnalysis,
   });
 
   const owners: string[] = [];
@@ -423,21 +463,23 @@ export default function DetailedAnalysis({
             <InlineFormDisplayGroup>
               <LocalizationProvider
                 dateAdapter={AdapterDateFns}
-                locale={
+                adapterLocale={
                   localeMapForDate[userLang]
                     ? localeMapForDate[userLang]
                     : localeMapForDate['en']
                 }
               >
                 <Controller
-                  render={(properties) => (
+                  name="yearAbandoned"
+                  control={control}
+                  defaultValue={new Date()}
+                  render={({ field: { onChange, value } }) => (
                     <MuiDatePicker
                       views={['year']}
-                      value={properties.value}
-                      onChange={properties.onChange}
+                      value={value}
+                      onChange={onChange}
                       label={t('manageProjects:yearOfAbandonment')}
                       renderInput={(props) => <TextField {...props} />}
-                      autoOk
                       disableFuture
                       minDate={new Date(new Date().setFullYear(1950))}
                       maxDate={new Date()}
@@ -446,9 +488,6 @@ export default function DetailedAnalysis({
                       }}
                     />
                   )}
-                  name="yearAbandoned"
-                  control={control}
-                  defaultValue={new Date()}
                 />
               </LocalizationProvider>
               <div className={styles.infoIconDiv}>
@@ -462,18 +501,20 @@ export default function DetailedAnalysis({
 
               <LocalizationProvider
                 dateAdapter={AdapterDateFns}
-                locale={
+                adapterLocale={
                   localeMapForDate[userLang]
                     ? localeMapForDate[userLang]
                     : localeMapForDate['en']
                 }
               >
                 <Controller
-                  render={(properties) => (
+                  name="firstTreePlanted"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
                     <MuiDatePicker
                       label={t('manageProjects:firstTreePlanted')}
-                      value={properties.value}
-                      onChange={properties.onChange}
+                      value={value}
+                      onChange={onChange}
                       renderInput={(props) => (
                         <TextField {...props} className="besideInfoTag" />
                       )}
@@ -486,31 +527,36 @@ export default function DetailedAnalysis({
                       }}
                     />
                   )}
-                  name="firstTreePlanted"
-                  control={control}
                 />
               </LocalizationProvider>
             </InlineFormDisplayGroup>
           </>
         ) : (
           <InlineFormDisplayGroup>
-            <TextField
-              inputRef={register({
-                required: {
-                  value: true,
-                  message: t('manageProjects:validation', {
-                    fieldName: t('manageProjects:areaProtected'),
-                  }),
-                },
-                validate: (value) => parseInt(value, 10) > 0,
-              })}
-              label={t('manageProjects:areaProtected')}
-              variant="outlined"
+            <Controller
               name="areaProtected"
-              type="number"
-              onBlur={(e) => e.preventDefault()}
-              error={errors.areaProtected}
-              helperText={errors.areaProtected && errors.areaProtected.message}
+              control={control}
+              rules={{
+                required: t('manageProjects:validation', {
+                  fieldName: t('manageProjects:areaProtected'),
+                }),
+                validate: (value) => parseInt(value, 10) > 0,
+              }}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <TextField
+                  label={t('manageProjects:areaProtected')}
+                  variant="outlined"
+                  type="number"
+                  onBlur={onBlur}
+                  onChange={onChange}
+                  value={value}
+                  error={errors.areaProtected !== undefined}
+                  helperText={
+                    errors.areaProtected !== undefined &&
+                    errors.areaProtected.message
+                  }
+                />
+              )}
             />
             <div className={styles.infoIconDiv}>
               <div className={styles.popover}>
@@ -522,33 +568,32 @@ export default function DetailedAnalysis({
             </div>
             <LocalizationProvider
               dateAdapter={AdapterDateFns}
-              locale={
+              adapterLocale={
                 localeMapForDate[userLang]
                   ? localeMapForDate[userLang]
                   : localeMapForDate['en']
               }
             >
               <Controller
-                render={(properties) => (
+                name="startingProtectionYear"
+                control={control}
+                rules={{
+                  required: t('manageProjects:validation', {
+                    fieldName: t('manageProjects:date'),
+                  }),
+                }}
+                render={({ field: { value, onChange } }) => (
                   <MuiDatePicker
-                    inputRef={register({
-                      required: {
-                        value: true,
-                        message: t('manageProjects:validation', {
-                          fieldName: t('manageProjects:date'),
-                        }),
-                      },
-                    })}
                     label={t('manageProjects:protectionStartedIN')}
-                    value={properties.value}
-                    onChange={properties.onChange}
+                    value={value}
+                    onChange={onChange}
                     renderInput={(props) => (
                       <TextField
                         {...props}
-                        error={errors?.startingProtectionYear}
+                        error={errors.startingProtectionYear !== undefined}
                         helperText={
-                          errors?.startingProtectionYear &&
-                          errors?.startingProtectionYear.message
+                          errors.startingProtectionYear !== undefined &&
+                          errors.startingProtectionYear.message
                         }
                       />
                     )}
@@ -561,40 +606,39 @@ export default function DetailedAnalysis({
                     }}
                   />
                 )}
-                name="startingProtectionYear"
-                control={control}
-                rules={{
-                  required: t('manageProjects:validation', {
-                    fieldName: t('manageProjects:date'),
-                  }),
-                }}
-                // defaultValue=""
               />
             </LocalizationProvider>
           </InlineFormDisplayGroup>
         )}
 
         <InlineFormDisplayGroup>
-          <TextField
-            inputRef={register({
-              required: {
-                value: true,
-                message: t('manageProjects:validation', {
-                  fieldName: t('manageProjects:employeeCount'),
-                }),
-              },
-              validate: (value) => parseInt(value, 10) > 0,
-            })}
-            label={t('manageProjects:employeeCount')}
-            variant="outlined"
+          <Controller
             name="employeesCount"
-            onInput={(e: React.ChangeEvent<HTMLInputElement>): void => {
-              e.target.value = e.target.value.replace(/[^0-9]./g, '');
+            control={control}
+            rules={{
+              required: t('manageProjects:validation', {
+                fieldName: t('manageProjects:employeeCount'),
+              }),
+              validate: (value) => parseInt(value, 10) > 0,
             }}
-            error={errors.employeesCount}
-            helperText={errors.employeesCount && errors.employeesCount.message}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                label={t('manageProjects:employeeCount')}
+                variant="outlined"
+                onChange={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]./g, '');
+                  onChange(e.target.value);
+                }}
+                value={value}
+                onBlur={onBlur}
+                error={errors.employeesCount !== undefined}
+                helperText={
+                  errors.employeesCount !== undefined &&
+                  errors.employeesCount.message
+                }
+              />
+            )}
           />
-
           <div className={styles.infoIconDiv}>
             <div className={styles.popover}>
               <InfoIcon />
@@ -605,30 +649,31 @@ export default function DetailedAnalysis({
           </div>
           <LocalizationProvider
             dateAdapter={AdapterDateFns}
-            locale={
+            adapterLocale={
               localeMapForDate[userLang]
                 ? localeMapForDate[userLang]
                 : localeMapForDate['en']
             }
           >
             <Controller
-              render={(properties) => (
+              name="acquisitionYear"
+              control={control}
+              rules={{
+                required: t('manageProjects:validation', {
+                  fieldName: t('manageProjects:acquisitionYear'),
+                }),
+              }}
+              render={({ field: { onChange, value } }) => (
                 <MuiDatePicker
-                  inputRef={register({
-                    required: {
-                      value: true,
-                      message: t('manageProjects:employeeCountValidation'),
-                    },
-                  })}
                   label={t('manageProjects:acquisitionYear')}
-                  value={properties.value}
-                  onChange={properties.onChange}
+                  value={value}
+                  onChange={onChange}
                   renderInput={(props) => (
                     <TextField
                       {...props}
-                      error={errors.startingProtectionYear}
+                      error={errors.startingProtectionYear !== undefined}
                       helperText={
-                        errors.startingProtectionYear &&
+                        errors.startingProtectionYear !== undefined &&
                         errors.startingProtectionYear.message
                       }
                     />
@@ -642,14 +687,6 @@ export default function DetailedAnalysis({
                   }}
                 />
               )}
-              name="acquisitionYear"
-              control={control}
-              rules={{
-                required: t('manageProjects:validation', {
-                  fieldName: t('manageProjects:acquisitionYear'),
-                }),
-              }}
-              // defaultValue=""
             />
           </LocalizationProvider>
         </InlineFormDisplayGroup>
@@ -698,77 +735,93 @@ export default function DetailedAnalysis({
         {purpose === 'trees' ? (
           <>
             <InlineFormDisplayGroup>
-              <TextField
-                label={t('manageProjects:plantingDensity')}
-                variant="outlined"
+              {/* Integer - the planting density expressed in trees per ha */}
+              <Controller
                 name="plantingDensity"
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: t('manageProjects:plantingDensityValidation'),
-                  },
+                control={control}
+                rules={{
+                  required: t('manageProjects:plantingDensityValidation'),
                   validate: (value) => parseInt(value, 10) > 1,
-                })}
-                onInput={(e: React.ChangeEvent<HTMLInputElement>): void => {
-                  setMinDensity(e.target.value);
-                  e.target.value = e.target.value.replace(/[^0-9]/g, '');
                 }}
-                InputProps={{
-                  endAdornment: (
-                    <p className={styles.inputEndAdornment}>
-                      {t('manageProjects:treePerHa')}
-                    </p>
-                  ),
-                }}
-                error={errors.plantingDensity}
-                helperText={
-                  errors.plantingDensity && errors.plantingDensity.message
-                }
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <TextField
+                    label={t('manageProjects:plantingDensity')}
+                    variant="outlined"
+                    InputProps={{
+                      endAdornment: (
+                        <p className={styles.inputEndAdornment}>
+                          {t('manageProjects:treePerHa')}
+                        </p>
+                      ),
+                    }}
+                    onChange={(e) => {
+                      setMinDensity(Number(e.target.value));
+                      e.target.value = e.target.value.replace(/[^0-9]./g, '');
+                      onChange(e.target.value);
+                    }}
+                    value={value}
+                    onBlur={onBlur}
+                    error={errors.plantingDensity !== undefined}
+                    helperText={
+                      errors.plantingDensity !== undefined &&
+                      errors.plantingDensity.message
+                    }
+                  />
+                )}
               />
               <p className={styles.hyphen}>-</p>
-              <TextField
-                label={t('manageProjects:maxPlantingDensity')}
-                variant="outlined"
+              <Controller
                 name="maxPlantingDensity"
-                inputRef={register({
+                control={control}
+                rules={{
                   min: {
                     value: minDensity,
                     message: t('manageProjects:errorForMaxPlantingDensity'),
                   },
-                  required: false,
-                })}
-                onInput={(e: React.ChangeEvent<HTMLInputElement>): void => {
-                  e.target.value = e.target.value.replace(/[^0-9]/g, '');
                 }}
-                InputProps={{
-                  endAdornment: (
-                    <p className={styles.inputEndAdornment}>
-                      {' '}
-                      {t('manageProjects:treePerHa')}
-                    </p>
-                  ),
-                }}
-                error={errors.maxPlantingDensity}
-                helperText={
-                  errors.maxPlantingDensity && errors.maxPlantingDensity.message
-                }
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <TextField
+                    label={t('manageProjects:maxPlantingDensity')}
+                    variant="outlined"
+                    InputProps={{
+                      endAdornment: (
+                        <p className={styles.inputEndAdornment}>
+                          {t('manageProjects:treePerHa')}
+                        </p>
+                      ),
+                    }}
+                    onChange={(e) => {
+                      e.target.value = e.target.value.replace(/[^0-9]./g, '');
+                      onChange(e.target.value);
+                    }}
+                    value={value}
+                    onBlur={onBlur}
+                    error={errors.maxPlantingDensity !== undefined}
+                    helperText={
+                      errors.maxPlantingDensity !== undefined &&
+                      errors.maxPlantingDensity.message
+                    }
+                  />
+                )}
               />
             </InlineFormDisplayGroup>
 
             <LocalizationProvider
               dateAdapter={AdapterDateFns}
-              locale={
+              adapterLocale={
                 localeMapForDate[userLang]
                   ? localeMapForDate[userLang]
                   : localeMapForDate['en']
               }
             >
               <Controller
-                render={(properties) => (
+                name="degradationYear"
+                control={control}
+                render={({ field: { onChange, value } }) => (
                   <MuiDatePicker
                     views={['year']}
-                    value={properties.value}
-                    onChange={properties.onChange}
+                    value={value}
+                    onChange={onChange}
                     label={t('manageProjects:yearOfDegradation')}
                     renderInput={(props) => <TextField {...props} />}
                     disableFuture
@@ -779,45 +832,57 @@ export default function DetailedAnalysis({
                     }}
                   />
                 )}
-                name="degradationYear"
-                control={control}
-                defaultValue=""
               />
             </LocalizationProvider>
           </>
         ) : (
-          <TextField
-            inputRef={register({
+          <Controller
+            name="actions"
+            control={control}
+            rules={{
               maxLength: {
                 value: 300,
                 message: t('manageProjects:max300Chars'),
               },
-            })}
-            label={t('manageProjects:forestProtectionType')}
-            variant="outlined"
-            name="actions"
-            multiline
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                label={t('manageProjects:forestProtectionType')}
+                variant="outlined"
+                multiline
+                onChange={onChange}
+                value={value}
+                onBlur={onBlur}
+              />
+            )}
           />
         )}
         {purpose === 'trees' ? (
           <InlineFormDisplayGroup>
-            <TextField
-              label={t('manageProjects:causeOfDegradation')}
-              variant="outlined"
+            <Controller
               name="degradationCause"
-              multiline
-              inputRef={register({
+              control={control}
+              rules={{
                 maxLength: {
                   value: 300,
                   message: t('manageProjects:max300Chars'),
                 },
-              })}
-              error={errors.degradationCause}
-              helperText={
-                errors.degradationCause && errors.degradationCause.message
-              }
+              }}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <TextField
+                  label={t('manageProjects:causeOfDegradation')}
+                  variant="outlined"
+                  multiline
+                  onChange={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                  error={errors.degradationCause !== undefined}
+                  helperText={
+                    errors.degradationCause && errors.degradationCause.message
+                  }
+                />
+              )}
             />
-
             <div className={styles.infoIconDivForLargeField}>
               <div className={styles.popover}>
                 <InfoIcon />
@@ -828,41 +893,60 @@ export default function DetailedAnalysis({
             </div>
           </InlineFormDisplayGroup>
         ) : (
-          <TextField
-            label={t('manageProjects:conservationImpacts')}
-            variant="outlined"
+          <Controller
             name="benefits"
-            multiline
-            inputRef={register({
+            control={control}
+            rules={{
               maxLength: {
                 value: 300,
                 message: t('manageProjects:max300Chars'),
               },
-            })}
-            error={errors.degradationCause}
-            helperText={
-              errors.degradationCause && errors.degradationCause.message
-            }
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                label={t('manageProjects:conservationImpacts')}
+                variant="outlined"
+                multiline
+                onChange={onChange}
+                value={value}
+                onBlur={onBlur}
+                error={errors.degradationCause !== undefined}
+                helperText={
+                  errors.degradationCause !== undefined &&
+                  errors.degradationCause.message
+                }
+              />
+            )}
           />
         )}
 
         <InlineFormDisplayGroup>
           {/* the main challenge the project is facing (max. 300 characters) */}
-          <TextField
-            inputRef={register({
+          <Controller
+            name="mainChallenge"
+            control={control}
+            rules={{
               maxLength: {
                 value: 300,
                 message: t('manageProjects:max300Chars'),
               },
-            })}
-            label={t('manageProjects:mainChallenge')}
-            variant="outlined"
-            name="mainChallenge"
-            multiline
-            error={errors.mainChallenge}
-            helperText={errors.mainChallenge && errors.mainChallenge.message}
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                label={t('manageProjects:mainChallenge')}
+                variant="outlined"
+                multiline
+                onChange={onChange}
+                value={value}
+                onBlur={onBlur}
+                error={errors.mainChallenge !== undefined}
+                helperText={
+                  errors.mainChallenge !== undefined &&
+                  errors.mainChallenge.message
+                }
+              />
+            )}
           />
-
           <div className={styles.infoIconDiv}>
             <div className={styles.popover}>
               <InfoIcon />
@@ -875,21 +959,30 @@ export default function DetailedAnalysis({
           </div>
 
           {/* the reason this project has been created (max. 300 characters) */}
-          <TextField
-            inputRef={register({
+          <Controller
+            name="motivation"
+            control={control}
+            rules={{
               maxLength: {
                 value: 300,
                 message: t('manageProjects:max300Chars'),
               },
-            })}
-            label={t('manageProjects:whyThisSite')}
-            variant="outlined"
-            name="motivation"
-            multiline
-            error={errors.motivation}
-            helperText={errors.motivation && errors.motivation.message}
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                label={t('manageProjects:whyThisSite')}
+                variant="outlined"
+                multiline
+                onChange={onChange}
+                value={value}
+                onBlur={onBlur}
+                error={errors.motivation !== undefined}
+                helperText={
+                  errors.motivation !== undefined && errors.motivation.message
+                }
+              />
+            )}
           />
-
           <div className={styles.infoIconDiv}>
             <div className={styles.popover}>
               <InfoIcon />
@@ -936,27 +1029,42 @@ export default function DetailedAnalysis({
             );
           })}
         </div>
-
-        <TextField
-          label={t('manageProjects:ownerName')}
-          variant="outlined"
+        <Controller
           name="siteOwnerName"
-          inputRef={register()}
+          control={control}
+          render={({ field: { onChange, value, onBlur } }) => (
+            <TextField
+              label={t('manageProjects:ownerName')}
+              variant="outlined"
+              onChange={onChange}
+              value={value}
+              onBlur={onBlur}
+            />
+          )}
         />
-
-        <TextField
-          label={t('manageProjects:longTermPlan')}
-          variant="outlined"
+        <Controller
           name="longTermPlan"
-          multiline
-          inputRef={register({
+          control={control}
+          rules={{
             maxLength: {
               value: 300,
               message: t('manageProjects:max300Chars'),
             },
-          })}
-          error={errors.longTermPlan}
-          helperText={errors.longTermPlan && errors.longTermPlan.message}
+          }}
+          render={({ field: { onChange, value, onBlur } }) => (
+            <TextField
+              label={t('manageProjects:longTermPlan')}
+              variant="outlined"
+              multiline
+              onChange={onChange}
+              value={value}
+              onBlur={onBlur}
+              error={errors.longTermPlan !== undefined}
+              helperText={
+                errors.longTermPlan !== undefined && errors.longTermPlan.message
+              }
+            />
+          )}
         />
 
         <ProjectCertificates

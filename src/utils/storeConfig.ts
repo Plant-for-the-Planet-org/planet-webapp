@@ -3,12 +3,6 @@ import countriesData from '../utils/countryCurrency/countriesData.json';
 import { TENANT_ID } from './constants/environment';
 
 export async function storeConfig() {
-  let userLang;
-  if (localStorage) {
-    userLang = localStorage.getItem('language') || 'en';
-  } else {
-    userLang = 'en';
-  }
   await fetch(`${process.env.CONFIG_URL}`, {
     headers: {
       'tenant-key': `${TENANT_ID}`,
@@ -41,8 +35,9 @@ export async function storeConfig() {
 export function getStoredConfig(key: string) {
   let storedConfig;
   if (typeof Storage !== 'undefined') {
-    if (localStorage.getItem('config')) {
-      storedConfig = JSON.parse(localStorage.getItem('config'));
+    const jsonConfig = localStorage.getItem('config');
+    if (jsonConfig) {
+      storedConfig = JSON.parse(jsonConfig);
       if (storedConfig) {
         switch (key) {
           case 'clientIp':

@@ -203,6 +203,7 @@
   "payments": "Platby",
   "stripe-sepa_debit": "SEPA (Stripe)",
   "sepa_debit": "SEPA (Stripe)",
+  "offline": "Offline",
   "offline-offline": "Offline",
   "profile": "Profil",
   "projects": "Projekty",

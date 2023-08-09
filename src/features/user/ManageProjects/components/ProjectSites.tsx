@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ChangeEvent, ReactElement } from 'react';
 import styles from './../StepForm.module.scss';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
@@ -15,10 +15,8 @@ import {
   putAuthenticatedRequest,
 } from '../../../../utils/apiRequests/api';
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
-import { makeStyles } from '@mui/styles';
 import { Fade, Modal, MenuItem, Button, TextField } from '@mui/material';
 import { ThemeContext } from '../../../../theme/themeContext';
-import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
@@ -34,7 +32,6 @@ import {
   EditSiteProps,
   Project,
   Site,
-  Option,
 } from '../../../common/types/project';
 import { FeatureCollection as GeoJson } from 'geojson';
 
@@ -66,36 +63,17 @@ function EditSite({
 }: EditSiteProps) {
   const { theme } = React.useContext(ThemeContext);
   const { t } = useTranslation(['manageProjects']);
-  const { register, handleSubmit, errors, control } = useForm();
+  const {
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm();
   const [geoJson, setGeoJson] = React.useState<GeoJson | null>(geoJsonProp);
   const [geoJsonError, setGeoJsonError] = React.useState<boolean>(false);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
-
-  const useStylesAutoComplete = makeStyles({
-    root: {
-      color:
-        theme === 'theme-light'
-          ? `${themeProperties.light.primaryFontColor} !important`
-          : `${themeProperties.dark.primaryFontColor} !important`,
-      backgroundColor:
-        theme === 'theme-light'
-          ? `${themeProperties.light.backgroundColor} !important`
-          : `${themeProperties.dark.backgroundColor} !important`,
-    },
-    option: {
-      // color: '#2F3336',
-      '&:hover': {
-        backgroundColor:
-          theme === 'theme-light'
-            ? `${themeProperties.light.backgroundColorDark} !important`
-            : `${themeProperties.dark.backgroundColorDark} !important`,
-      },
-    },
-  });
-  const classes = useStylesAutoComplete();
 
   const MapProps = {
     geoJson,
@@ -173,46 +151,60 @@ function EditSite({
           <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
             <div className={styles.formField}>
               <div className={styles.formFieldHalf}>
-                <TextField
-                  inputRef={register({ required: true })}
-                  label={t('manageProjects:siteName')}
-                  variant="outlined"
+                <Controller
                   name="name"
-                  onChange={changeSiteDetails}
+                  control={control}
+                  rules={{ required: t('manageProjects:siteNameValidation') }}
                   defaultValue={siteDetails.name}
+                  render={({ field: { onChange, value, onBlur, name } }) => (
+                    <TextField
+                      label={t('manageProjects:siteName')}
+                      variant="outlined"
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        changeSiteDetails(e);
+                        onChange(e.target.value);
+                      }}
+                      value={value}
+                      onBlur={onBlur}
+                      name={name}
+                      error={errors.name !== undefined}
+                      helperText={
+                        errors.name !== undefined && errors.name.message
+                      }
+                    />
+                  )}
                 />
               </div>
               <div className={styles.formFieldHalf}>
                 <Controller
-                  as={
-                    <TextField
-                      label={t('manageProjects:siteStatus')}
-                      variant="outlined"
-                      name="status"
-                      onChange={changeSiteDetails}
-                      select
-                      value={siteDetails.status}
-                    >
-                      {status.map((option: Option) => (
-                        <MenuItem
-                          key={option.value}
-                          value={option.value}
-                          classes={{
-                            // option: classes.option,
-                            root: classes.root,
-                          }}
-                        >
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  }
                   name="status"
                   rules={{ required: t('manageProjects:selectProjectStatus') }}
                   control={control}
                   defaultValue={siteDetails.status ? siteDetails.status : ''}
-                  error={errors.status}
-                  helperText={errors.status && errors.status.message}
+                  render={({ field: { onChange, onBlur, name, value } }) => (
+                    <TextField
+                      label={t('manageProjects:siteStatus')}
+                      variant="outlined"
+                      name={name}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        changeSiteDetails(e);
+                        onChange(e.target.value);
+                      }}
+                      onBlur={onBlur}
+                      select
+                      value={value}
+                      error={errors.status !== undefined}
+                      helperText={
+                        errors.status !== undefined && errors.status.message
+                      }
+                    >
+                      {status.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  )}
                 />
               </div>
             </div>
@@ -261,9 +253,12 @@ export default function ProjectSites({
   projectDetails,
 }: ProjectSitesProps): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
-  const { theme } = React.useContext(ThemeContext);
   const [features, setFeatures] = React.useState([]);
-  const { register, handleSubmit, errors, control } = useForm();
+  const {
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm();
   const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
   const [geoJsonError, setGeoJsonError] = React.useState<boolean>(false);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
@@ -300,28 +295,6 @@ export default function ProjectSites({
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
 
-  const useStylesAutoComplete = makeStyles({
-    root: {
-      color:
-        theme === 'theme-light'
-          ? `${themeProperties.light.primaryFontColor} !important`
-          : `${themeProperties.dark.primaryFontColor} !important`,
-      backgroundColor:
-        theme === 'theme-light'
-          ? `${themeProperties.light.backgroundColor} !important`
-          : `${themeProperties.dark.backgroundColor} !important`,
-    },
-    option: {
-      // color: '#2F3336',
-      '&:hover': {
-        backgroundColor:
-          theme === 'theme-light'
-            ? `${themeProperties.light.backgroundColorDark} !important`
-            : `${themeProperties.dark.backgroundColorDark} !important`,
-      },
-    },
-  });
-  const classes = useStylesAutoComplete();
   // Assigning defaultSiteDetails as default
 
   const changeSiteDetails = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -626,53 +599,60 @@ export default function ProjectSites({
             style={{ width: 'inherit' }}
           >
             <InlineFormDisplayGroup>
-              <TextField
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: t('manageProjects:siteNameValidation'),
-                  },
-                })}
-                label={t('manageProjects:siteName')}
-                variant="outlined"
+              <Controller
                 name="name"
-                onChange={changeSiteDetails}
+                control={control}
+                rules={{ required: t('manageProjects:siteNameValidation') }}
                 defaultValue={siteDetails.name}
-                error={errors.name}
-                helperText={errors.name && errors.name.message}
+                render={({ field: { onChange, value, onBlur, name } }) => (
+                  <TextField
+                    label={t('manageProjects:siteName')}
+                    variant="outlined"
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      changeSiteDetails(e);
+                      onChange(e.target.value);
+                    }}
+                    value={value}
+                    onBlur={onBlur}
+                    name={name}
+                    error={errors.name !== undefined}
+                    helperText={
+                      errors.name !== undefined && errors.name.message
+                    }
+                  />
+                )}
               />
               <Controller
-                as={
-                  <TextField
-                    label={t('manageProjects:siteStatus')}
-                    variant="outlined"
-                    name="status"
-                    onChange={changeSiteDetails}
-                    select
-                    value={siteDetails.status}
-                  >
-                    {status.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                        classes={{
-                          // option: classes.option,
-                          root: classes.root,
-                        }}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                }
                 name="status"
                 rules={{
                   required: t('manageProjects:selectProjectStatus'),
                 }}
                 control={control}
                 defaultValue={siteDetails.status ? siteDetails.status : ''}
-                error={errors.status}
-                helperText={errors.status && errors.status.message}
+                render={({ field: { onChange, onBlur, name, value } }) => (
+                  <TextField
+                    label={t('manageProjects:siteStatus')}
+                    variant="outlined"
+                    name={name}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      changeSiteDetails(e);
+                      onChange(e.target.value);
+                    }}
+                    onBlur={onBlur}
+                    select
+                    value={value}
+                    error={errors.status !== undefined}
+                    helperText={
+                      errors.status !== undefined && errors.status.message
+                    }
+                  >
+                    {status.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                )}
               />
             </InlineFormDisplayGroup>
 
