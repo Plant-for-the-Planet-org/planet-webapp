@@ -778,9 +778,9 @@
 
 // button for projectCreation
 .buttonsForProjectCreationForm {
-  margin-top: 20px;
   display: flex;
   flex-direction: row;
+  gap: 10px;
 
   @include xsPhoneView {
     flex-direction: column;
@@ -835,4 +835,12 @@
     display: flex;
     flex-direction: row;
   }
+}
+
+.tooltipIcon {
+  display: inline-block;
+  width: 1em;
+  min-width: 1em;
+  vertical-align: middle;
+  margin-left: 5px;
 }

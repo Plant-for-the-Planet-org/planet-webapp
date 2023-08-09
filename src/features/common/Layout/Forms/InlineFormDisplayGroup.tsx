@@ -14,7 +14,7 @@ const InlineFormGroup = styled('div')({
     alignItems: 'center',
     flexWrap: 'nowrap',
   },
-  '& .MuiTextField-root': {
+  '& .MuiTextField-root, & .MuiFormControlLabel-root': {
     flex: 1,
     minWidth: 180,
   },
