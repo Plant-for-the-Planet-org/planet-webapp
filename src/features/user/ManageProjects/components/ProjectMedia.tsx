@@ -247,7 +247,9 @@ export default function ProjectMedia({
     <CenteredContainer>
       <StyledForm>
         <div
-          className={`${isUploadingData ? styles.shallowOpacity : ''}`}
+          className={`inputContainer ${
+            isUploadingData ? styles.shallowOpacity : ''
+          }`}
           style={{
             width: 'inherit',
           }}
