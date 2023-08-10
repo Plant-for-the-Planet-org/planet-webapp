@@ -22,7 +22,7 @@ const AreaConservedProjectList = ({
       </div>
       <div className={myForestStyles.areaConservedContainer}>
         <ContributedProjectList
-          contributionProjectList={contribution}
+          contributionProjectList={contribution?.pages}
           setIsLoadButtonActive={setIsLoadButtonActive}
           isLoadButtonActive={isLoadButtonActive}
           handleFetchNextPage={handleFetchNextPage}

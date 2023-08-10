@@ -85,93 +85,49 @@ export default function MyTrees({
     setPage((prev) => prev + 1);
   };
 
-  useEffect(() => {
-    if (!_contributionData.isLoading) {
-      if (_contributionData.error) {
+  const _handleErrors = (
+    trpcProcedure: any,
+    stateUpdaterFunction: any
+  ): void => {
+    if (!trpcProcedure.isLoading) {
+      if (trpcProcedure.error) {
         setErrors(
           handleError(
             new APIError(
-              _contributionData.error?.data?.httpStatus as number,
-              _contributionData.error
+              trpcProcedure.error?.data?.httpStatus as number,
+              trpcProcedure.error
             )
           )
         );
       }
-
-      setProjectsForAreaConservation(_contributionData.data?.pages);
+      stateUpdaterFunction(trpcProcedure?.data);
     }
+  };
+
+  useEffect(() => {
+    _handleErrors(_contributionData, setProjectsForAreaConservation);
   }, [_contributionData.isLoading, _contributionData.data]);
 
   useEffect(() => {
-    if (!_contributionDataForPlantedtrees.isLoading) {
-      if (_contributionDataForPlantedtrees.error) {
-        setErrors(
-          handleError(
-            new APIError(
-              _contributionDataForPlantedtrees.error?.data
-                ?.httpStatus as number,
-              _contributionDataForPlantedtrees.error
-            )
-          )
-        );
-      }
-
-      setProjectsForTreePlantaion(_contributionDataForPlantedtrees.data?.pages);
-    }
+    _handleErrors(
+      _contributionDataForPlantedtrees,
+      setProjectsForTreePlantaion
+    );
   }, [
     _contributionDataForPlantedtrees.isLoading,
     _contributionDataForPlantedtrees.data,
   ]);
 
   useEffect(() => {
-    if (!_conservationGeoJsonData.isLoading) {
-      if (_conservationGeoJsonData.error) {
-        setErrors(
-          handleError(
-            new APIError(
-              _conservationGeoJsonData.error?.data?.httpStatus as number,
-              _conservationGeoJsonData.error
-            )
-          )
-        );
-      } else {
-        setConservationProjects(_conservationGeoJsonData.data);
-      }
-    }
+    _handleErrors(_conservationGeoJsonData, setConservationProjects);
   }, [_conservationGeoJsonData.isLoading]);
 
   useEffect(() => {
-    if (!_treePlantedData.isLoading) {
-      if (_treePlantedData.error) {
-        setErrors(
-          handleError(
-            new APIError(
-              _treePlantedData.error?.data?.httpStatus as number,
-              _treePlantedData.error
-            )
-          )
-        );
-      } else {
-        setTreePlantedProjects(_treePlantedData.data);
-      }
-    }
+    _handleErrors(_treePlantedData, setTreePlantedProjects);
   }, [_treePlantedData.isLoading]);
 
   useEffect(() => {
-    if (!_detailInfo.isLoading) {
-      if (_detailInfo.error) {
-        setErrors(
-          handleError(
-            new APIError(
-              _detailInfo.error?.data?.httpStatus as number,
-              _detailInfo.error
-            )
-          )
-        );
-      } else {
-        setOthercontributionInfo(_detailInfo.data);
-      }
-    }
+    _handleErrors(_detailInfo, setOthercontributionInfo);
   }, [_detailInfo.isLoading]);
 
   return ready && otherDonationInfo ? (

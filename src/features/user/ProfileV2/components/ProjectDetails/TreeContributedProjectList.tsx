@@ -73,7 +73,7 @@ const TreeContributedProjectList = ({
         </div>
         <div>
           <ContributedProjectList
-            contributionProjectList={contribution}
+            contributionProjectList={contribution?.pages}
             setIsLoadButtonActive={setIsLoadButtonActive}
             isLoadButtonActive={isLoadButtonActive}
             handleFetchNextPage={handleFetchNextPage}

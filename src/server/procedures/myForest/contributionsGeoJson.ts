@@ -45,8 +45,8 @@ export const contributionsGeoJson = procedure
       quantity,  c.purpose, MIN(c.plant_date) AS startDate,
       MAX(c.plant_date) AS endDate, c.contribution_type, c.plant_date, pp.location, pp.country, 
     pp.unit_type, pp.guid, pp.name, pp.image,
-    CASE WHEN c.contribution_type = 'planting' THEN JSON_EXTRACT(c.geometry, '$.coordinates[0]') ELSE pp.geo_latitude END AS geoLatitude,
-    CASE WHEN c.contribution_type = 'planting' THEN JSON_EXTRACT(c.geometry, '$.coordinates[1]') ELSE pp.geo_longitude END AS geoLongitude,
+    CASE WHEN c.contribution_type = 'planting' THEN JSON_EXTRACT(c.geometry, '$.coordinates[1]') ELSE pp.geo_latitude END AS geoLatitude,
+    CASE WHEN c.contribution_type = 'planting' THEN JSON_EXTRACT(c.geometry, '$.coordinates[0]') ELSE pp.geo_longitude END AS geoLongitude,
     c.geometry, tpo.name AS tpo, tpo.guid AS tpoGuid
   FROM contribution c
           ${join}
