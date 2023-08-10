@@ -12,17 +12,23 @@ import PDFRed from '../../../../../public/assets/images/icons/manageProjects/PDF
 import { getPDFFile } from '../../../../utils/getImageURL';
 import TrashIcon from '../../../../../public/assets/images/icons/manageProjects/Trash';
 import { localeMapForDate } from '../../../../utils/language/getLanguageName';
-import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { SxProps, TextField, Button } from '@mui/material';
+import {
+  SxProps,
+  TextField,
+  Button,
+  FormControlLabel,
+  Switch,
+} from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import { handleError, APIError, Certificate } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 import { ProjectCertificatesProps } from '../../../common/types/project';
+import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -53,12 +59,13 @@ function ProjectCertificates({
 
   const {
     control,
-    getValues,
     setValue,
     formState: { errors },
+    watch,
+    getValues,
   } = useForm({ mode: 'all' });
 
-  const { issueDate, certifierName } = getValues();
+  const certifierName = watch('certifierName');
   const [uploadedFiles, setUploadedFiles] = React.useState<Certificate[]>([]);
   const [showForm, setShowForm] = React.useState<boolean>(true);
   const [errorMessage, setErrorMessage] = React.useState<string | undefined>(
@@ -125,6 +132,7 @@ function ProjectCertificates({
   });
 
   const onSubmit = async (pdf: any) => {
+    const { issueDate, certifierName } = getValues();
     setIsUploadingData(true);
     const submitData = {
       issueDate: issueDate.getFullYear(),
@@ -183,25 +191,21 @@ function ProjectCertificates({
   tenYearsAgo.setFullYear(tenYearsAgo.getFullYear() - 10);
 
   return ready ? (
-    <div>
+    <div className={styles.certificateContainer}>
       {showToggle && (
-        <div className={styles.formField}>
-          <div className={styles.formFieldHalf}>
-            <div className={`${styles.formFieldRadio}`}>
-              <label htmlFor="isCertified" style={{ cursor: 'pointer' }}>
-                {t('manageProjects:isCertified')}
-              </label>
-              <ToggleSwitch
-                checked={isCertified}
-                onChange={() => setisCertified(!isCertified)}
-                name="isCertified"
-                id="isCertified"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-              />
-            </div>
-          </div>
-          <div style={{ width: '20px' }}></div>
-        </div>
+        <FormControlLabel
+          label={t('manageProjects:isCertified')}
+          labelPlacement="end"
+          control={
+            <Switch
+              name="isCertified"
+              id="isCertified"
+              checked={isCertified}
+              onChange={() => setisCertified(!isCertified)}
+              inputProps={{ 'aria-label': 'secondary checkbox' }}
+            />
+          }
+        />
       )}
 
       {uploadedFiles && uploadedFiles.length > 0 ? (
@@ -241,72 +245,69 @@ function ProjectCertificates({
 
       {showForm && isCertified ? (
         <>
-          <div className={styles.formField}>
-            <div className={styles.formFieldHalf}>
+          <InlineFormDisplayGroup>
+            <Controller
+              name="certifierName"
+              rules={{ required: true }}
+              control={control}
+              defaultValue=""
+              render={({ field: { onChange, value, onBlur } }) => (
+                <TextField
+                  label={t('manageProjects:certifierName')}
+                  variant="outlined"
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  error={errors.certifierName !== undefined}
+                  helperText={
+                    errors.certifierName !== undefined &&
+                    errors.certifierName.message
+                  }
+                />
+              )}
+            />
+
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
+              adapterLocale={
+                localeMapForDate[userLang]
+                  ? localeMapForDate[userLang]
+                  : localeMapForDate['en']
+              }
+            >
               <Controller
-                name="certifierName"
-                rules={{ required: true }}
+                name="issueDate"
                 control={control}
-                defaultValue=""
-                render={({ field: { onChange, value, onBlur } }) => (
-                  <TextField
-                    label={t('manageProjects:certifierName')}
-                    variant="outlined"
-                    onChange={onChange}
-                    onBlur={onBlur}
+                rules={{
+                  required: t('manageProjects:certificationDateValidation'),
+                }}
+                defaultValue={new Date()}
+                render={({ field: { onChange, value } }) => (
+                  <MuiDatePicker
+                    label={t('manageProjects:issueDate')}
+                    renderInput={(props) => (
+                      <TextField
+                        {...props}
+                        error={errors.issueDate !== undefined}
+                        helperText={
+                          errors.issueDate !== undefined &&
+                          errors.issueDate.message
+                        }
+                      />
+                    )}
+                    disableFuture
+                    maxDate={new Date()}
+                    minDate={tenYearsAgo}
+                    DialogProps={{
+                      sx: dialogSx,
+                    }}
                     value={value}
-                    error={errors.certifierName !== undefined}
-                    helperText={
-                      errors.certifierName !== undefined &&
-                      errors.certifierName.message
-                    }
+                    onChange={onChange}
                   />
                 )}
               />
-            </div>
-            <div style={{ width: '20px' }}></div>
-            <div className={styles.formFieldHalf}>
-              <LocalizationProvider
-                dateAdapter={AdapterDateFns}
-                adapterLocale={
-                  localeMapForDate[userLang]
-                    ? localeMapForDate[userLang]
-                    : localeMapForDate['en']
-                }
-              >
-                <Controller
-                  name="issueDate"
-                  control={control}
-                  rules={{
-                    required: t('manageProjects:certificationDateValidation'),
-                  }}
-                  render={({ field: { onChange, value } }) => (
-                    <MuiDatePicker
-                      label={t('manageProjects:issueDate')}
-                      renderInput={(props) => (
-                        <TextField
-                          {...props}
-                          error={errors.issueDate !== undefined}
-                          helperText={
-                            errors.issueDate !== undefined &&
-                            errors.issueDate.message
-                          }
-                        />
-                      )}
-                      disableFuture
-                      maxDate={new Date()}
-                      minDate={tenYearsAgo}
-                      DialogProps={{
-                        sx: dialogSx,
-                      }}
-                      value={value}
-                      onChange={onChange}
-                    />
-                  )}
-                />
-              </LocalizationProvider>
-            </div>
-          </div>
+            </LocalizationProvider>
+          </InlineFormDisplayGroup>
 
           {errorMessage && errorMessage !== '' ? (
             <div className={styles.formFieldLarge}>
@@ -315,7 +316,7 @@ function ProjectCertificates({
           ) : null}
 
           {errors.certifierName || errors.issueDate || certifierName === '' ? (
-            <div className={styles.formFieldLarge} style={{ opacity: 0.35 }}>
+            <div style={{ opacity: 0.35 }}>
               <div className={styles.fileUploadContainer}>
                 <Button variant="contained">
                   {t('manageProjects:uploadCertificate')}
@@ -326,7 +327,7 @@ function ProjectCertificates({
               </div>
             </div>
           ) : (
-            <div className={styles.formFieldLarge} {...getRootProps()}>
+            <div {...getRootProps()}>
               <div className={styles.fileUploadContainer}>
                 <Button variant="contained">
                   <input {...getInputProps()} />

@@ -7,30 +7,30 @@
   font-size: 14px;
 }
 
-.hyphen {
+/* .hyphen {
   font-size: 40px;
   margin-top: 16px;
   width: fit-content;
-  position: absolute;
+  // position: absolute;
   @include xsPhoneView {
     writing-mode: vertical-rl;
-    top: 40px;
-    left: 125px;
+    // top: 40px;
+    // left: 125px;
     font-size: 60px;
   }
   @include smTabletView {
     writing-mode: vertical-rl;
-    left: 254px;
+    // left: 254px;
   }
   @include mdTabletView {
     writing-mode: horizontal-tb;
-    top: -20px;
-    left: 254px;
+    // top: -20px;
+    // left: 254px;
   }
   @include lgLaptopView {
-    left: 335px;
+    // left: 335px;
   }
-}
+} */
 .density {
   display: flex;
   @include xsPhoneView {
@@ -265,7 +265,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 25px;
 }
 
 .inlineLinkButton {
@@ -833,4 +832,10 @@
   min-width: 1em;
   vertical-align: middle;
   margin-left: 5px;
+}
+
+.certificateContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
