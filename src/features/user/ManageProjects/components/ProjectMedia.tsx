@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import styles from '../StepForm.module.scss';
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, IconButton } from '@mui/material';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import {
   deleteAuthenticatedRequest,
@@ -280,7 +280,7 @@ export default function ProjectMedia({
           {/* Change to field array of react hook form  */}
           {uploadedImages && uploadedImages.length > 0 ? (
             <InlineFormDisplayGroup>
-              {uploadedImages.map((image, index: any) => {
+              {uploadedImages.map((image, index) => {
                 return (
                   <div className={styles.uploadedImageContainer} key={index}>
                     <img src={getImageUrl('project', 'medium', image.image)} />
@@ -294,21 +294,23 @@ export default function ProjectMedia({
                     />
 
                     <div className={styles.uploadedImageButtonContainer}>
-                      <Button
+                      <IconButton
                         id={'DelProjCert'}
                         onClick={() => deleteProjectCertificate(image.id)}
+                        size="small"
                       >
                         <DeleteIcon />
-                      </Button>
-                      <Button
+                      </IconButton>
+                      <IconButton
                         id={'setDefaultImg'}
                         onClick={() => setDefaultImage(image.id, index)}
+                        size="small"
                       >
                         <Star
-                          color={image.isDefault ? '#ECB641' : '#aaa'}
+                          color={image.isDefault ? '#ECB641' : '#2f3336'}
                           className={image.isDefault ? 'selected' : ''}
                         />
-                      </Button>
+                      </IconButton>
                     </div>
                   </div>
                 );
@@ -338,9 +340,9 @@ export default function ProjectMedia({
           <Button
             variant="outlined"
             onClick={() => handleBack(ProjectCreationTabs.BASIC_DETAILS)}
-            className={styles.backButton}
+            className="formButton"
+            startIcon={<BackArrow />}
           >
-            <BackArrow />
             <p>{t('manageProjects:backToBasic')}</p>
           </Button>
 
@@ -349,7 +351,7 @@ export default function ProjectMedia({
             onClick={handleSubmit(onSubmit)}
             data-test-id="projMediaCont"
             variant="contained"
-            className={styles.saveAndContinueButton}
+            className="formButton"
           >
             {isUploadingData ? (
               <div className={styles.spinner}></div>
@@ -360,7 +362,7 @@ export default function ProjectMedia({
           <Button
             onClick={() => handleNext(ProjectCreationTabs.DETAILED_ANALYSIS)}
             variant="contained"
-            className={styles.skipButton}
+            className="formButton"
           >
             {t('manageProjects:skip')}
           </Button>
