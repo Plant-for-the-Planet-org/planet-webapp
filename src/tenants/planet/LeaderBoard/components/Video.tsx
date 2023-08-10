@@ -4,9 +4,7 @@ import { useTranslation } from 'next-i18next';
 import ReactPlayer from 'react-player/lazy';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 
-interface Props {}
-
-function Video({}: Props): ReactElement {
+function Video(): ReactElement {
   const { t, ready } = useTranslation(['leaderboard', 'common']);
 
   const videoUrl = 'https://www.youtube.com/watch?v=9V981RXcmH8';

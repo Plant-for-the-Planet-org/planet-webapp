@@ -50,7 +50,7 @@ type TreeFormData = FormData & {
 
 type ConservationFormData = FormData & {
   metadata: {
-    ecosystems: string;
+    ecosystem: string;
   };
 };
 
@@ -249,7 +249,7 @@ export default function BasicDetails({
           latitude: '',
           longitude: '',
           metadata: {
-            ecosystems: '',
+            ecosystem: '',
             visitorAssistance: false,
             /* impacts: {
               benefits: '',
@@ -323,7 +323,7 @@ export default function BasicDetails({
               longitude: projectDetails.geoLongitude,
               metadata: {
                 visitorAssistance: projectDetails?.metadata?.visitorAssistance,
-                ecosystems: projectDetails?.metadata?.ecosystems,
+                ecosystem: projectDetails?.metadata?.ecosystem,
               },
             };
       if (projectDetails.geoLongitude && projectDetails.geoLatitude) {
@@ -391,7 +391,7 @@ export default function BasicDetails({
               : undefined,
             currency: 'EUR',
             metadata: {
-              ecosystems: (data as ConservationFormData).metadata.ecosystems,
+              ecosystem: (data as ConservationFormData).metadata.ecosystem,
               visitorAssistance: data.metadata.visitorAssistance,
             },
           };
@@ -531,7 +531,7 @@ export default function BasicDetails({
             ) : (
               <div className={styles.formFieldHalf}>
                 <Controller
-                  name="metadata.ecosystems"
+                  name="metadata.ecosystem"
                   rules={{
                     required: t('manageProjects:ecosystemType'),
                   }}
@@ -553,9 +553,9 @@ export default function BasicDetails({
                     </MaterialTextField>
                   )}
                 />
-                {errors.metadata?.ecosystems && (
+                {errors.metadata?.ecosystem && (
                   <span className={styles.formErrors}>
-                    {errors.metadata.ecosystems.message}
+                    {errors.metadata.ecosystem.message}
                   </span>
                 )}
               </div>
@@ -718,7 +718,7 @@ export default function BasicDetails({
                       parseNumber(i18n.language, value) > 0 &&
                       parseNumber(i18n.language, value) <= 100,
                   }}
-                  render={() => (
+                  render={({ field: { onChange, value, onBlur } }) => (
                     <MaterialTextField
                       label={
                         router.query.purpose === 'trees' ||
@@ -729,6 +729,9 @@ export default function BasicDetails({
                       variant="outlined"
                       type="number"
                       placeholder={'0'}
+                      onChange={onChange}
+                      value={value}
+                      onBlur={onBlur}
                       InputProps={{
                         startAdornment: (
                           <p

@@ -2,10 +2,12 @@ import React, { ReactElement } from 'react';
 import { Layer, Source } from 'react-map-gl';
 
 interface Props {
-  beforeId: string;
+  beforeId?: string;
 }
 
-export default function SatelliteLayer({ beforeId }: Props): ReactElement {
+export default function SatelliteLayer({
+  beforeId = 'locationPolygon',
+}: Props): ReactElement {
   return (
     <>
       <Source
@@ -18,7 +20,7 @@ export default function SatelliteLayer({ beforeId }: Props): ReactElement {
       >
         <Layer
           id="satellite-layer"
-          beforeId={beforeId ? beforeId : 'locationPolygon'}
+          beforeId={beforeId}
           source="satellite"
           type="raster"
         />

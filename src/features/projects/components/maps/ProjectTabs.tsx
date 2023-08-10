@@ -4,18 +4,15 @@ import { useTranslation } from 'next-i18next';
 import LocationIcon from '../../../../../public/assets/images/icons/LocationIcon';
 import ResearchIcon from '../../../../../public/assets/images/icons/ResearchIcon';
 import SatelliteIcon from '../../../../../public/assets/images/icons/SatelliteIcon';
-import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import styles from '../../styles/VegetationChange.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
-interface Props {}
-
-export default function ProjectTabs({}: Props): ReactElement {
+export default function ProjectTabs(): ReactElement {
   const { embed, showProjectDetails } = React.useContext(ParamsContext);
   const { pathname } = useRouter();
   const { t } = useTranslation(['maps']);
-  const { selectedMode, setSelectedMode, rasterData } =
-    React.useContext(ProjectPropsContext);
+  const { selectedMode, setSelectedMode, rasterData } = useProjectProps();
 
   const containerClasses =
     embed !== 'true'

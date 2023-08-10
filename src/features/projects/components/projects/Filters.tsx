@@ -3,14 +3,13 @@ import styles from '../../styles/Filters.module.scss';
 import { useTranslation } from 'next-i18next';
 import { FormControlLabel, FormGroup } from '@mui/material';
 import Switch from '../../../common/InputTypes/ToggleSwitch';
-import { ProjectPropsContext } from '../../../common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
+import { TreeProjectClassification } from '@planet-sdk/common/build/types/project/common';
 
-interface Props {}
-
-export default function Filters({}: Props): ReactElement {
+export default function Filters(): ReactElement {
   const { t, ready } = useTranslation(['donate']);
   const { projects, setFilteredProjects, filtersOpen, setFilterOpen } =
-    React.useContext(ProjectPropsContext);
+    useProjectProps();
 
   const [purpose, setPurpose] = React.useState({
     restoration: true,
@@ -31,14 +30,19 @@ export default function Filters({}: Props): ReactElement {
 
   React.useEffect(() => {
     function filterProjects() {
-      const filteredProjects = projects.filter((project: any) => {
-        const { classification } = project?.properties;
-        if (type[classification]) {
-          return true;
-        } else {
-          return false;
-        }
-      });
+      const filteredProjects = projects
+        ? projects.filter((project) => {
+            const classification =
+              project.properties.purpose === 'trees'
+                ? project.properties.classification
+                : null;
+            if (classification && type[classification]) {
+              return true;
+            } else {
+              return false;
+            }
+          })
+        : [];
       setFilteredProjects(filteredProjects);
     }
     if (projects) {
@@ -52,12 +56,21 @@ export default function Filters({}: Props): ReactElement {
 
   React.useEffect(() => {
     function getFilters() {
-      const filters = projects.map((project) => {
-        const { classification } = project?.properties;
-        if (classification) {
-          return classification;
-        }
-      });
+      const filters =
+        projects !== null
+          ? (projects
+              .map((project) => project.properties)
+              .map((projectProperties) => {
+                const classification =
+                  projectProperties.purpose === 'trees'
+                    ? projectProperties.classification
+                    : null;
+                return classification;
+              })
+              .filter(
+                (classification) => classification !== null
+              ) as TreeProjectClassification[])
+          : [];
       const uniqueFilters = [...new Set(filters)];
       return uniqueFilters;
     }

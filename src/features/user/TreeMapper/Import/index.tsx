@@ -34,14 +34,12 @@ const Step = styled(MuiStep)({
   },
 });
 
-interface Props {}
-
 const MapComponent = dynamic(() => import('./components/MapComponent'), {
   ssr: false,
   loading: () => <p></p>,
 });
 
-export default function ImportData({}: Props): ReactElement {
+export default function ImportData(): ReactElement {
   const router = useRouter();
   const { t, ready } = useTranslation(['treemapper']);
   const { token, logoutUser } = useUserProps();
