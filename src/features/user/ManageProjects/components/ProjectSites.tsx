@@ -15,7 +15,14 @@ import {
   putAuthenticatedRequest,
 } from '../../../../utils/apiRequests/api';
 import EditIcon from '../../../../../public/assets/images/icons/manageProjects/Pencil';
-import { Fade, Modal, MenuItem, Button, TextField } from '@mui/material';
+import {
+  Fade,
+  Modal,
+  MenuItem,
+  Button,
+  TextField,
+  IconButton,
+} from '@mui/material';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
@@ -538,16 +545,17 @@ export default function ProjectSites({
                         .find((e) => site.status == e.value)
                         ?.label.toUpperCase()}
                     </div>
-                    <Button
+                    <IconButton
                       id={'trashIconProjS'}
                       onClick={() => {
                         deleteProjectSite(site.id);
                       }}
+                      size="small"
                       className={styles.uploadedMapDeleteButton}
                     >
                       <TrashIcon color={'#000'} />
-                    </Button>
-                    <div
+                    </IconButton>
+                    <IconButton
                       id={'edit'}
                       onClick={() => {
                         editSite(site);
@@ -555,7 +563,7 @@ export default function ProjectSites({
                       className={styles.uploadedMapEditButton}
                     >
                       <EditIcon color={'#000'} />
-                    </div>
+                    </IconButton>
                     <MapStatic
                       {...viewport}
                       center={[longitude, latitude]}
@@ -697,16 +705,16 @@ export default function ProjectSites({
           <Button
             onClick={() => handleBack(ProjectCreationTabs.DETAILED_ANALYSIS)}
             variant="outlined"
-            className={styles.backButton}
+            className="formButton"
+            startIcon={<BackArrow />}
           >
-            <BackArrow />
-            <p>{t('manageProjects:backToAnalysis')}</p>
+            {t('manageProjects:backToAnalysis')}
           </Button>
 
           <Button
             onClick={handleSubmit(uploadProjectSiteNext)}
             variant="contained"
-            className={styles.saveAndContinueButton}
+            className="formButton"
           >
             {isUploadingData ? (
               <div className={styles.spinner}></div>
@@ -718,7 +726,7 @@ export default function ProjectSites({
           <Button
             onClick={() => handleNext(ProjectCreationTabs.PROJECT_SPENDING)}
             variant="contained"
-            className={styles.skipButton}
+            className="formButton"
           >
             {t('manageProjects:skip')}
           </Button>

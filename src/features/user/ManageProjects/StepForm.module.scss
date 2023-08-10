@@ -749,6 +749,7 @@
 .buttonsForProjectCreationForm {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: 10px;
 
   @include xsPhoneView {
@@ -758,7 +759,7 @@
   }
   @include smTabletView {
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
   }
   .reviewButton,
