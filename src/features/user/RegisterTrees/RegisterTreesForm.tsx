@@ -49,9 +49,7 @@ const dialogSx: SxProps = {
   },
 };
 
-interface Props {}
-
-export default function RegisterTreesForm({}: Props) {
+export default function RegisterTreesForm() {
   const { user, token, contextLoaded, logoutUser } = useUserProps();
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {
@@ -131,11 +129,15 @@ export default function RegisterTreesForm({}: Props) {
   const defaultBasicDetails = {
     treeCount: '',
     species: '',
-    plantProject: null,
+    plantProject: user?.type === 'tpo' ? '' : null,
     plantDate: new Date(),
     geometry: {},
   };
-  const { register, handleSubmit, errors, control } = useForm({
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormData>({
     mode: 'onBlur',
     defaultValues: defaultBasicDetails,
   });
@@ -222,47 +224,58 @@ export default function RegisterTreesForm({}: Props) {
     <StyledForm>
       {!registered ? (
         <>
-          <div className="inputContainer">
+          <form
+            className="inputContainer"
+            onSubmit={handleSubmit(submitRegisterTrees)}
+          >
             <div className={styles.note}>
               <p>{t('me:registerTreesDescription')}</p>
             </div>
             <InlineFormDisplayGroup>
-              <TextField
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: t('me:treesRequired'),
-                  },
-                  validate: (value) => parseInt(value, 10) >= 1,
-                })}
-                onInput={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                }}
-                onChange={onTreeCountChange}
-                label={t('me:noOfTrees')}
-                variant="outlined"
+              <Controller
                 name="treeCount"
-                error={errors.treeCount !== undefined}
-                helperText={
-                  errors.treeCount && errors.treeCount.message
-                    ? errors.treeCount.message
-                    : t('me:moreThanOne')
-                }
+                control={control}
+                rules={{
+                  required: t('me:treesRequired'),
+                  validate: (value) => parseInt(value, 10) >= 1,
+                }}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <TextField
+                    label={t('me:noOfTrees')}
+                    variant="outlined"
+                    onChange={(e) => {
+                      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                      onTreeCountChange(e);
+                      onChange(e.target.value);
+                    }}
+                    value={value}
+                    onBlur={onBlur}
+                    error={errors && errors.treeCount !== undefined}
+                    helperText={
+                      errors && errors.treeCount && errors.treeCount.message
+                        ? errors.treeCount.message
+                        : t('me:moreThanOne')
+                    }
+                  />
+                )}
               />
               <LocalizationProvider
                 dateAdapter={AdapterDateFns}
-                locale={
+                adapterLocale={
                   localeMapForDate[userLang]
                     ? localeMapForDate[userLang]
                     : localeMapForDate['en']
                 }
               >
                 <Controller
-                  render={(properties) => (
+                  name="plantDate"
+                  control={control}
+                  defaultValue={new Date()}
+                  render={({ field: { onChange, value } }) => (
                     <MuiDatePicker
                       label={t('me:datePlanted')}
-                      value={properties.value}
-                      onChange={properties.onChange}
+                      value={value}
+                      onChange={onChange}
                       renderInput={(props) => <TextField {...props} />}
                       disableFuture
                       minDate={new Date(new Date().setFullYear(1950))}
@@ -273,29 +286,46 @@ export default function RegisterTreesForm({}: Props) {
                       }}
                     />
                   )}
-                  name="plantDate"
-                  control={control}
-                  defaultValue={new Date()}
                 />
               </LocalizationProvider>
             </InlineFormDisplayGroup>
-            <TextField
-              inputRef={register({
-                required: {
-                  value: true,
-                  message: t('me:speciesIsRequired'),
-                },
-              })}
-              label={t('me:treeSpecies')}
-              variant="outlined"
+            <Controller
               name="species"
-              error={errors.species !== undefined}
-              helperText={errors.species && errors.species.message}
+              control={control}
+              rules={{ required: t('me:speciesIsRequired') }}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <TextField
+                  label={t('me:treeSpecies')}
+                  variant="outlined"
+                  onChange={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                  error={errors && errors.species !== undefined}
+                  helperText={
+                    errors && errors.species && errors.species.message
+                  }
+                />
+              )}
             />
             {user && user.type === 'tpo' && (
               <Controller
-                as={
-                  <TextField label={t('me:project')} variant="outlined" select>
+                name="plantProject"
+                control={control}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <TextField
+                    label={t('me:project')}
+                    variant="outlined"
+                    select
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                    error={errors && errors.plantProject !== undefined}
+                    helperText={
+                      errors &&
+                      errors.plantProject &&
+                      errors.plantProject.message
+                    }
+                  >
                     {projects.map((option) => (
                       <MenuItem
                         key={option.properties.id}
@@ -305,11 +335,7 @@ export default function RegisterTreesForm({}: Props) {
                       </MenuItem>
                     ))}
                   </TextField>
-                }
-                name="plantProject"
-                control={control}
-                error={errors.plantProject !== undefined}
-                helperText={errors.plantProject && errors.plantProject.message}
+                )}
               />
             )}
             <div className={styles.mapNote}>
@@ -368,25 +394,25 @@ export default function RegisterTreesForm({}: Props) {
                 </MapGL>
               )}
             </div>
-            {errorMessage !== '' ? (
-              <div className={styles.center}>
-                <p className={styles.formErrors}>{`${errorMessage}`}</p>
-              </div>
-            ) : null}
-          </div>
-          <Button
-            id={'RegTressSubmit'}
-            onClick={handleSubmit(submitRegisterTrees)}
-            variant="contained"
-            color="primary"
-          >
-            {' '}
-            {isUploadingData ? (
-              <div className={'spinner'}></div>
-            ) : (
-              t('me:registerButton')
-            )}
-          </Button>
+            {/* {errorMessage !== '' ? ( */}
+            <div className={styles.center}>
+              <p className={styles.formErrors}>{`${errorMessage}`}</p>
+            </div>
+            {/* ) : null} */}
+            <Button
+              id={'RegTressSubmit'}
+              onClick={handleSubmit(submitRegisterTrees)}
+              variant="contained"
+              color="primary"
+            >
+              {' '}
+              {isUploadingData ? (
+                <div className={'spinner'}></div>
+              ) : (
+                t('me:registerButton')
+              )}
+            </Button>
+          </form>
         </>
       ) : (
         <SingleContribution {...ContributionProps} />
