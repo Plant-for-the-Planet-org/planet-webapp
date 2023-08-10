@@ -3,9 +3,7 @@ import { useTranslation } from 'next-i18next';
 import SelectLanguageAndCountry from './SelectLanguageAndCountry';
 import styles from './AccountFooter.module.scss';
 
-interface Props {}
-
-export default function AccountFooter({}: Props): ReactElement {
+export default function AccountFooter(): ReactElement {
   const { t, i18n, ready } = useTranslation(['common']);
   const [footerLang, setFooterLang] = React.useState('en');
   const [language, setLanguage] = React.useState(i18n.language);

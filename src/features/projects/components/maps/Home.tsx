@@ -1,16 +1,21 @@
 import React, { ReactElement } from 'react';
 import { FlyToInterpolator } from 'react-map-gl';
-import Markers from './Markers';
+import Markers, { PopupData } from './Markers';
 import * as d3 from 'd3-ease';
+import {
+  MapProject,
+  ViewPort,
+} from '../../../common/types/ProjectPropsContextInterface';
+import { SetState } from '../../../common/types/common';
 
 interface Props {
-  searchedProject: Array<Object>;
-  setPopupData: Function;
-  popupData: Object;
-  isMobile: Boolean;
-  viewport: Object;
-  setViewPort: Function;
-  defaultMapCenter: Array<number>;
+  searchedProject: MapProject[];
+  setPopupData: SetState<PopupData>;
+  popupData: PopupData;
+  isMobile: boolean;
+  viewport: ViewPort;
+  setViewPort: SetState<ViewPort>;
+  defaultMapCenter: number[];
   defaultZoom: number;
 }
 

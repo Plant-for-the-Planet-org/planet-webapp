@@ -5,8 +5,7 @@ import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-interface Props {}
-export default function DonationLinkPage({}: Props): ReactElement {
+export default function DonationLinkPage(): ReactElement {
   const { t, ready } = useTranslation(['me']);
   return (
     <UserLayout>

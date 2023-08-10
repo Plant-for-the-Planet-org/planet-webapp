@@ -5,8 +5,7 @@ import { useTranslation } from 'next-i18next';
 import GiftFunds from '../../../src/features/user/GiftFunds';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-interface Props {}
-export default function Register({}: Props): ReactElement {
+export default function Register(): ReactElement {
   const { t } = useTranslation('me');
   return (
     <UserLayout>

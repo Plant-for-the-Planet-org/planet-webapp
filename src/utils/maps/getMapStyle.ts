@@ -1,36 +1,7 @@
 import defaultStyle from '../../../public/data/styles/root.json';
 import openStreetMap from '../../../public/data/styles/OpenStreetMap.json';
 
-export default async function getMapStyle(style: any) {
-  if (style === 'default') {
-    const result = await fetchTiles(
-      defaultStyle,
-      'https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer'
-    );
-    return result;
-  } else if (style === 'openStreetMap') {
-    const result = await fetchTiles(
-      openStreetMap,
-      'https://basemaps.arcgis.com/arcgis/rest/services/OpenStreetMap_v2/VectorTileServer'
-    );
-    return result;
-  } else {
-    return null;
-  }
-}
-
-async function fetchTiles(style: any, metadataUrl: any) {
-  try {
-    const res = await fetch(metadataUrl);
-    const response = res.status === 200 ? await res.json() : null;
-    return format(style, response, metadataUrl);
-  } catch (e: any) {
-    console.log('Error:', e);
-    return null;
-  }
-}
-
-function format(style: any, metadata: any, metadataUrl: any) {
+function format(style: any, metadata: any, metadataUrl: string) {
   // ArcGIS Pro published vector services dont prepend tile or tileMap urls with a /
   style.sources.esri = {
     type: 'vector',
@@ -48,4 +19,33 @@ more info: https://github.com/mapbox/mapbox-gl-js/pull/1377
     name: metadata.name,
   };
   return style;
+}
+
+async function fetchTiles(style: any, metadataUrl: string) {
+  try {
+    const res = await fetch(metadataUrl);
+    const response = res.status === 200 ? await res.json() : null;
+    return format(style, response, metadataUrl);
+  } catch (e: any) {
+    console.log('Error:', e);
+    return null;
+  }
+}
+
+export default async function getMapStyle(style: string) {
+  if (style === 'default') {
+    const result = await fetchTiles(
+      defaultStyle,
+      'https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer'
+    );
+    return result;
+  } else if (style === 'openStreetMap') {
+    const result = await fetchTiles(
+      openStreetMap,
+      'https://basemaps.arcgis.com/arcgis/rest/services/OpenStreetMap_v2/VectorTileServer'
+    );
+    return result;
+  } else {
+    return null;
+  }
 }

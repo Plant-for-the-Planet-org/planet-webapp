@@ -5,9 +5,7 @@ import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 
-interface Props {}
-
-export default function Register({}: Props): ReactElement {
+export default function Register(): ReactElement {
   const { t } = useTranslation('me');
 
   const RegisterTrees = dynamic(
