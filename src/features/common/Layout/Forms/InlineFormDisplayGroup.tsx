@@ -18,30 +18,34 @@ const InlineFormGroup = styled('div')({
     flex: 1,
     minWidth: 180,
   },
+  '&.InlineFormGroup--no-spacing': {
+    columnGap: 0,
+  },
 });
 
 interface Props {
   /** Use type='other' to specify inline groups that do not contain only text field elements */
   type?: 'field' | 'other';
   children: ReactNode;
+  spacing?: 'none' | 'regular';
 }
 
 /**
  * Responsive element that groups fields/other form elements that need to be arranged in one line
  */
 const InlineFormDisplayGroup = ({
+  spacing = 'regular',
   type = 'field',
   children,
 }: Props): ReactElement => {
-  return (
-    <InlineFormGroup
-      className={
-        type === 'field' ? 'InlineFormGroup--fields' : 'InlineFormGroup--other'
-      }
-    >
-      {children}
-    </InlineFormGroup>
-  );
+  let classes =
+    type === 'field' ? 'InlineFormGroup--fields' : 'InlineFormGroup--other';
+  classes +=
+    spacing === 'none'
+      ? ' InlineFormGroup--no-spacing'
+      : ' InlineFormGroup--regular-spacing';
+
+  return <InlineFormGroup className={classes}>{children}</InlineFormGroup>;
 };
 
 export default InlineFormDisplayGroup;

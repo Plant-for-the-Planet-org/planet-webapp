@@ -750,7 +750,7 @@ export default function DetailedAnalysis({
 
           {purpose === 'trees' ? (
             <>
-              <InlineFormDisplayGroup>
+              <InlineFormDisplayGroup spacing="none">
                 {/* Integer - the planting density expressed in trees per ha */}
                 <Controller
                   name="plantingDensity"
@@ -785,7 +785,7 @@ export default function DetailedAnalysis({
                     />
                   )}
                 />
-                {/* <p className={styles.hyphen}>-</p> */}
+                <p className={styles.hyphen}>-</p>
                 <Controller
                   name="maxPlantingDensity"
                   control={control}
