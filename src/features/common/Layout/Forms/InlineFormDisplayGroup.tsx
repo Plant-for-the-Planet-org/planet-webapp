@@ -8,8 +8,6 @@ const InlineFormGroup = styled('div')({
   rowGap: 24,
   alignItems: 'flex-start',
   flexWrap: 'wrap',
-  width: 'inherit',
-  position: 'relative',
   '&.InlineFormGroup--other': {
     alignItems: 'center',
     flexWrap: 'nowrap',
