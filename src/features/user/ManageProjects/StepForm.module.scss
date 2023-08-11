@@ -815,7 +815,8 @@
   margin-left: 5px;
 }
 
-.certificateContainer {
+.certificateContainer,
+.expenseContainer {
   display: flex;
   flex-direction: column;
   gap: 24px;

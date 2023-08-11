@@ -17,7 +17,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { SxProps, Button, TextField } from '@mui/material';
+import { SxProps, Button, TextField, IconButton } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
@@ -215,13 +215,13 @@ export default function ProjectSpending({
                   {/* <div className={styles.reportEditButton} style={{ marginRight: '8px' }}>
                                         <PencilIcon color={"#000"} />
                                     </div> */}
-                  <Button
+                  <IconButton
                     id={'trashIconProjSpend'}
                     onClick={() => deleteProjectSpending(report.id)}
                     className={styles.reportEditButton}
                   >
                     <TrashIcon />
-                  </Button>
+                  </IconButton>
                 </div>
               );
             })}
@@ -229,7 +229,9 @@ export default function ProjectSpending({
         ) : null}
         {showForm ? (
           <div
-            className={`${isUploadingData ? styles.shallowOpacity : ''}`}
+            className={`${styles.expenseContainer} ${
+              isUploadingData ? styles.shallowOpacity : ''
+            }`}
             style={{ width: 'inherit' }}
           >
             <InlineFormDisplayGroup>
@@ -311,7 +313,7 @@ export default function ProjectSpending({
             </InlineFormDisplayGroup>
 
             {errors.amount || errors.year || !isDirty || amount === 0 ? (
-              <div style={{ opacity: 0.35, marginTop: '25px' }}>
+              <div style={{ opacity: 0.35 }}>
                 <div className={styles.fileUploadContainer}>
                   <Button variant="contained">
                     {t('manageProjects:uploadReport')}
@@ -356,9 +358,9 @@ export default function ProjectSpending({
           <Button
             onClick={() => handleBack(ProjectCreationTabs.PROJECT_SITES)}
             variant="outlined"
-            className={styles.backButton}
+            className="formButton"
+            startIcon={<BackArrow />}
           >
-            <BackArrow />
             <p>{t('manageProjects:backToSites')}</p>
           </Button>
 
@@ -371,7 +373,7 @@ export default function ProjectSpending({
               }
             }}
             variant="contained"
-            className={styles.saveAndContinueButton}
+            className="formButton"
           >
             {isUploadingData ? (
               <div className={styles.spinner}></div>
@@ -381,7 +383,7 @@ export default function ProjectSpending({
           </Button>
 
           <Button
-            className={styles.skipButton}
+            className="formButton"
             variant="contained"
             onClick={() => handleNext(ProjectCreationTabs.REVIEW)}
           >
