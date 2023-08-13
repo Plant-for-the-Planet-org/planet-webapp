@@ -9,6 +9,7 @@ import { useTranslation } from 'next-i18next';
 import { ReactElement } from 'react';
 import { ConservationButtonProps } from '../../../../common/types/myForest';
 import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
+import { CircularProgress } from '@mui/material';
 
 const ConservationButton = ({
   conservedArea,
@@ -38,27 +39,35 @@ const ConservationButton = ({
       }`}
       onClick={handleClick}
     >
-      <div className={myForestStyles.labelContainer}>
-        <div className={myForestStyles.conservedSvg}>
-          {isConservedButtonActive ? (
-            <ConservationWhiteTreeSvg />
-          ) : (
-            <ConservationBlueTreeSvg />
-          )}
+      {conservedArea === undefined ? (
+        <div className={myForestStyles.circularProgressContainer}>
+          <CircularProgress style={{ color: '#48AADD' }} />
         </div>
-        <div className={myForestStyles.conservedLabel}>
-          {t('donate:conservation')}
-        </div>
-      </div>
-      <div className={myForestStyles.conservedAreaValue}>
-        <div className={myForestStyles.value}>
-          {conservedArea ? conservedArea : 0}
-        </div>
-        <div className={myForestStyles.unit}>{'m²'}</div>
-        <div className={myForestStyles.svgContainer}>
-          {isConservedButtonActive ? <DownWardArrowSvg /> : <ArrowSvg />}
-        </div>
-      </div>
+      ) : (
+        <>
+          <div className={myForestStyles.labelContainer}>
+            <div className={myForestStyles.conservedSvg}>
+              {isConservedButtonActive ? (
+                <ConservationWhiteTreeSvg />
+              ) : (
+                <ConservationBlueTreeSvg />
+              )}
+            </div>
+            <div className={myForestStyles.conservedLabel}>
+              {t('donate:conservation')}
+            </div>
+          </div>
+          <div className={myForestStyles.conservedAreaValue}>
+            <div className={myForestStyles.value}>
+              {conservedArea ? conservedArea : 0}
+            </div>
+            <div className={myForestStyles.unit}>{'m²'}</div>
+            <div className={myForestStyles.svgContainer}>
+              {isConservedButtonActive ? <DownWardArrowSvg /> : <ArrowSvg />}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

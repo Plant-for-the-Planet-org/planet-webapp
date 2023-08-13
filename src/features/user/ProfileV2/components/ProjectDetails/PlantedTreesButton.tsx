@@ -5,6 +5,7 @@ import {
 import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import { PlantedTreesButtonProps } from '../../../../common/types/myForest';
+import { CircularProgress } from '@mui/material';
 import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 
 const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
@@ -33,22 +34,30 @@ const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
       }`}
       onClick={handleClick}
     >
-      <div className={myForestStyles.plantedTreesLabelContainer}>
-        <div>
-          {isTreePlantedButtonActive ? (
-            <PlantedTreesSvg />
-          ) : (
-            <PlantedTreesGreenSvg />
-          )}
+      {plantedTrees === undefined ? (
+        <div className={myForestStyles.circularProgressContainer}>
+          <CircularProgress color="success" />
         </div>
-        <div className={myForestStyles.plantedTreesLabel}>
-          {t('donate:plantedTrees')}
-        </div>
-      </div>
+      ) : (
+        <>
+          <div className={myForestStyles.plantedTreesLabelContainer}>
+            <div>
+              {isTreePlantedButtonActive ? (
+                <PlantedTreesSvg />
+              ) : (
+                <PlantedTreesGreenSvg />
+              )}
+            </div>
+            <div className={myForestStyles.plantedTreesLabel}>
+              {t('donate:plantedTrees')}
+            </div>
+          </div>
 
-      <div className={myForestStyles.countTrees}>
-        <div>{plantedTrees ? plantedTrees : 0}</div>
-      </div>
+          <div className={myForestStyles.countTrees}>
+            <div>{plantedTrees ? plantedTrees : 0}</div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

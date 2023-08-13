@@ -273,7 +273,7 @@
   "area": "{{areaConserved}} m²",
   "tpoName": "By {{tpo}}",
   "donate":  "Donate",
-  "donated": "donated",
+  "donated": "Donated",
   "conserved": "conserved",
   "loadProjects": "Load More Donations",
   "numberOfContributions": "{{total}} Contributions"
