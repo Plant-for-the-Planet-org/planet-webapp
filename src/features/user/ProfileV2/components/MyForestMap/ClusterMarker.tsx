@@ -16,7 +16,10 @@ export const TreePlantedClusterMarker = ({
   const [showPopUp, setShowPopUp] = useState(false);
   return ready ? (
     <>
-      <CustomPopupMarker geoJson={geoJson} showPopUp={showPopUp} />
+      {geoJson.id === undefined && (
+        <CustomPopupMarker geoJson={geoJson} showPopUp={showPopUp} />
+      )}
+
       <Marker
         latitude={Number(geoJson.geometry.coordinates[1])}
         longitude={Number(geoJson.geometry.coordinates[0])}
@@ -53,7 +56,10 @@ export const ConservAreaClusterMarker = ({
   const [showPopUp, setShowPopUp] = useState(false);
   return ready ? (
     <div>
-      <CustomPopupMarker geoJson={geoJson} showPopUp={showPopUp} />
+      {geoJson.id === undefined && (
+        <CustomPopupMarker geoJson={geoJson} showPopUp={showPopUp} />
+      )}
+
       <Marker
         latitude={Number(geoJson.geometry.coordinates[1])}
         longitude={Number(geoJson.geometry.coordinates[0])}

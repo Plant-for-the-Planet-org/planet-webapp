@@ -9,11 +9,10 @@ const CustomPopupMarker = ({ geoJson, showPopUp }: CustomPopupMarkerProps) => {
   const { t } = useTranslation(['me']);
   const { isConservedButtonActive, isTreePlantedButtonActive } =
     useProjectProps();
+
   return (
     <div className={MyForestMapStyle.singleMarkerContainer}>
-      {showPopUp &&
-      (isConservedButtonActive || isTreePlantedButtonActive) &&
-      geoJson.properties.totalContribution ? (
+      {showPopUp && (isConservedButtonActive || isTreePlantedButtonActive) ? (
         <Popup
           className={MyForestMapStyle.mapboxglPopup}
           latitude={Number(geoJson.geometry.coordinates[1])}
@@ -28,10 +27,11 @@ const CustomPopupMarker = ({ geoJson, showPopUp }: CustomPopupMarkerProps) => {
               <div className={MyForestMapStyle.popUpLabel}>
                 {geoJson.properties?.purpose === 'conservation'
                   ? t('me:conserved')
-                  : geoJson.properties?.purpose === 'trees'
-                  ? geoJson.properties.contributionType === 'donation'
-                    ? t('me:donated')
-                    : t('me:registered')
+                  : geoJson.properties?.purpose === 'trees' ||
+                    geoJson.properties?.purpose === null
+                  ? geoJson.properties.contributionType === 'planting'
+                    ? t('me:registered')
+                    : t('me:donated')
                   : null}
               </div>
               <div className={MyForestMapStyle.popUpDate}>
