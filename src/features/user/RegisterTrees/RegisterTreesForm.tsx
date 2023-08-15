@@ -20,6 +20,7 @@ import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './RegisterModal.module.scss';
 import SingleContribution from './RegisterTrees/SingleContribution';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { handleError, APIError } from '@planet-sdk/common';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -47,6 +48,14 @@ const dialogSx: SxProps = {
   '.MuiDialogActions-root': {
     paddingBottom: '12px',
   },
+};
+
+type FormData = {
+  treeCount: string;
+  species: string;
+  plantProject: string | null;
+  plantDate: Date;
+  geometry: any;
 };
 
 export default function RegisterTreesForm() {
