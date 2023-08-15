@@ -566,3 +566,10 @@
     padding-left: 70px;
     padding-top: 30px;
 }
+
+.registerTreeIcon {
+    padding-left: 30px;
+    @include xsPhoneView {
+        padding-left: 90px;
+    }
+}

@@ -13,6 +13,8 @@ import {
 } from '../../../../common/types/myForest';
 import { Button } from '@mui/material';
 import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
+import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
+import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 
 const Project = ({ key, projectInfo }: ProjectProps): ReactElement => {
   const { token } = useUserProps();
@@ -26,7 +28,7 @@ const Project = ({ key, projectInfo }: ProjectProps): ReactElement => {
     projectInfo && (
       <div className={myForestStyles.donationDetail} key={key}>
         <div className={myForestStyles.image}>
-          {projectInfo?.plantProject !== null && (
+          {projectInfo?.plantProject !== null ? (
             <img
               src={getImageUrl(
                 'project',
@@ -36,6 +38,10 @@ const Project = ({ key, projectInfo }: ProjectProps): ReactElement => {
               width="100%"
               height="100%"
             />
+          ) : (
+            <div className={myForestStyles.registerTreeIcon}>
+              {projectInfo?.treeCount > 1 ? <TreesIcon /> : <TreeIcon />}
+            </div>
           )}
         </div>
         <div className={myForestStyles.projectDetailContainer}>

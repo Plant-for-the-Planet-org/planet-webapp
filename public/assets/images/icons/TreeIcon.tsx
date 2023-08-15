@@ -4,8 +4,8 @@ function TreeIcon(props: any) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="19"
-      height="19.25"
+      width="100"
+      height="100"
       viewBox="0 0 19 19.25"
     >
       <g
