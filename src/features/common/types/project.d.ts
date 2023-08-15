@@ -7,6 +7,9 @@ import {
   OwnershipTypes,
   SurvivalRateStatus,
   ProjectExpense,
+  CountryCode,
+  TreeProjectExtended,
+  ConservationProjectExtended,
 } from '@planet-sdk/common';
 import { FeatureCollection as GeoJson } from 'geojson';
 import { SetState } from './common';
@@ -105,19 +108,21 @@ export interface Project {
 export interface ManageProjectsProps {
   GUID: string;
   token: string;
-  project: Project;
+  project?: ProfileProjectTrees | ProfileProjectConservation;
 }
 
 // basic Detail
 
 export interface BasicDetailsProps {
   handleNext: (arg: number) => void;
-  projectDetails: Project | undefined;
-  setProjectDetails: SetState<Project | undefined>;
+  projectDetails: ProfileProjectTrees | ProfileProjectConservation | null;
+  setProjectDetails: SetState<
+    ProfileProjectTrees | ProfileProjectConservation | null
+  >;
   setProjectGUID: SetState<string>;
   projectGUID: string | unknown;
   token: string;
-  purpose: string | string[] | undefined;
+  purpose: 'trees' | 'conservation';
 }
 
 export interface ViewPort {
@@ -257,3 +262,92 @@ export interface ProjectOption {
   purpose: string;
   allowDonations: boolean;
 }
+
+export interface ProfileProjectConservation
+  extends Omit<
+    ConservationProjectExtended,
+    | '_scope'
+    | 'certificates'
+    | 'fixedRates'
+    | 'images'
+    | 'isPublished'
+    | 'lastUpdated'
+    | 'minQuantity'
+    | 'options'
+    | 'sites'
+    | 'taxDeductionCountries'
+    | 'yearAcquired'
+    | 'treeCost'
+    | 'coordinates'
+    | 'expenses'
+    | 'geoLocation'
+    | 'reviews'
+    | 'tpo'
+  > {
+  publish: boolean;
+  taxDeductibleCountries: CountryCode[];
+  isFeatured: boolean;
+  isVerified: boolean;
+  verificationStatus: VerificationStatus;
+  acceptDonations: boolean;
+  geoLongitude: number;
+  geoLatitude: number;
+  isApproved: boolean;
+  isTopProject: boolean;
+  classification: null;
+}
+
+export interface ProfileProjectTrees
+  extends Omit<
+    TreeProjectExtended,
+    | '_scope'
+    | 'certificates'
+    | 'fixedRates'
+    | 'images'
+    | 'isPublished'
+    | 'lastUpdated'
+    | 'minQuantity'
+    | 'options'
+    | 'sites'
+    | 'taxDeductionCountries'
+    | 'yearAcquired'
+    | 'coordinates'
+    | 'countDonated'
+    | 'countPlanted'
+    | 'countRegistered'
+    | 'expenses'
+    | 'geoLocation'
+    | 'isCertified'
+    | 'location'
+    | 'minTreeCount'
+    | 'paymentDefaults'
+    | 'reviews'
+    | 'tpo'
+    | 'degradationCause'
+    | 'degradationYear'
+    | 'employeesCount'
+    | 'longTermPlan'
+    | 'mainChallenge'
+    | 'motivation'
+    | 'plantingDensity'
+    | 'plantingSeasons'
+    | 'siteOwnerName'
+    | 'yearAbandoned'
+  > {
+  publish: boolean;
+  taxDeductibleCountries: CountryCode[];
+  isFeatured: boolean;
+  isVerified: boolean;
+  verificationStatus: VerificationStatus;
+  acceptDonations: boolean;
+  geoLongitude: number;
+  geoLatitude: number;
+  revisionPeriodicityLevel: null;
+}
+
+type VerificationStatus =
+  | 'incomplete'
+  | 'accepted'
+  | 'processing'
+  | 'denied'
+  | 'pending';
