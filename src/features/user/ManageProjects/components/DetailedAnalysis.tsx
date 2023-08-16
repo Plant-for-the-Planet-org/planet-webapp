@@ -864,6 +864,8 @@ export default function DetailedAnalysis({
                   label={t('manageProjects:forestProtectionType')}
                   variant="outlined"
                   multiline
+                  minRows={2}
+                  maxRows={4}
                   onChange={onChange}
                   value={value}
                   onBlur={onBlur}
@@ -887,6 +889,8 @@ export default function DetailedAnalysis({
                     label={t('manageProjects:causeOfDegradation')}
                     variant="outlined"
                     multiline
+                    minRows={2}
+                    maxRows={4}
                     onChange={onChange}
                     value={value}
                     onBlur={onBlur}
@@ -922,6 +926,8 @@ export default function DetailedAnalysis({
                   label={t('manageProjects:conservationImpacts')}
                   variant="outlined"
                   multiline
+                  minRows={2}
+                  maxRows={4}
                   onChange={onChange}
                   value={value}
                   onBlur={onBlur}
@@ -935,81 +941,111 @@ export default function DetailedAnalysis({
             />
           )}
 
-          <InlineFormDisplayGroup>
-            {/* the main challenge the project is facing (max. 300 characters) */}
-            <Controller
-              name="mainChallenge"
-              control={control}
-              rules={{
-                maxLength: {
-                  value: 300,
-                  message: t('manageProjects:max300Chars'),
-                },
-              }}
-              render={({ field: { onChange, value, onBlur } }) => (
-                <TextField
-                  label={t('manageProjects:mainChallenge')}
-                  variant="outlined"
-                  multiline
-                  onChange={onChange}
-                  value={value}
-                  onBlur={onBlur}
-                  error={errors.mainChallenge !== undefined}
-                  helperText={
-                    errors.mainChallenge !== undefined &&
-                    errors.mainChallenge.message
-                  }
-                  InputProps={{
-                    endAdornment: (
-                      <Tooltip
-                        title={t('manageProjects:mainChallengeInfo')}
-                        arrow
-                      >
-                        <span className={styles.tooltipIcon}>
-                          <InfoIcon />
-                        </span>
-                      </Tooltip>
-                    ),
-                  }}
-                />
-              )}
-            />
+          {/* the main challenge the project is facing (max. 300 characters) */}
+          <Controller
+            name="mainChallenge"
+            control={control}
+            rules={{
+              maxLength: {
+                value: 300,
+                message: t('manageProjects:max300Chars'),
+              },
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                label={t('manageProjects:mainChallenge')}
+                variant="outlined"
+                multiline
+                minRows={2}
+                maxRows={4}
+                onChange={onChange}
+                value={value}
+                onBlur={onBlur}
+                error={errors.mainChallenge !== undefined}
+                helperText={
+                  errors.mainChallenge !== undefined &&
+                  errors.mainChallenge.message
+                }
+                InputProps={{
+                  endAdornment: (
+                    <Tooltip
+                      title={t('manageProjects:mainChallengeInfo')}
+                      arrow
+                    >
+                      <span className={styles.tooltipIcon}>
+                        <InfoIcon />
+                      </span>
+                    </Tooltip>
+                  ),
+                }}
+              />
+            )}
+          />
 
-            {/* the reason this project has been created (max. 300 characters) */}
-            <Controller
-              name="motivation"
-              control={control}
-              rules={{
-                maxLength: {
-                  value: 300,
-                  message: t('manageProjects:max300Chars'),
-                },
-              }}
-              render={({ field: { onChange, value, onBlur } }) => (
-                <TextField
-                  label={t('manageProjects:whyThisSite')}
-                  variant="outlined"
-                  multiline
-                  onChange={onChange}
-                  value={value}
-                  onBlur={onBlur}
-                  error={errors.motivation !== undefined}
-                  helperText={
-                    errors.motivation !== undefined && errors.motivation.message
-                  }
-                  InputProps={{
-                    endAdornment: (
-                      <Tooltip title={t('manageProjects:max300Chars')} arrow>
-                        <span className={styles.tooltipIcon}>
-                          <InfoIcon />
-                        </span>
-                      </Tooltip>
-                    ),
-                  }}
-                />
-              )}
-            />
-          </InlineFormDisplayGroup>
+          {/* the reason this project has been created (max. 300 characters) */}
+          <Controller
+            name="motivation"
+            control={control}
+            rules={{
+              maxLength: {
+                value: 300,
+                message: t('manageProjects:max300Chars'),
+              },
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                label={t('manageProjects:whyThisSite')}
+                variant="outlined"
+                multiline
+                minRows={2}
+                maxRows={4}
+                onChange={onChange}
+                value={value}
+                onBlur={onBlur}
+                error={errors.motivation !== undefined}
+                helperText={
+                  errors.motivation !== undefined && errors.motivation.message
+                }
+                InputProps={{
+                  endAdornment: (
+                    <Tooltip title={t('manageProjects:max300Chars')} arrow>
+                      <span className={styles.tooltipIcon}>
+                        <InfoIcon />
+                      </span>
+                    </Tooltip>
+                  ),
+                }}
+              />
+            )}
+          />
+
+          <Controller
+            name="longTermPlan"
+            control={control}
+            rules={{
+              maxLength: {
+                value: 300,
+                message: t('manageProjects:max300Chars'),
+              },
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                label={t('manageProjects:longTermPlan')}
+                variant="outlined"
+                multiline
+                minRows={2}
+                maxRows={4}
+                onChange={onChange}
+                value={value}
+                onBlur={onBlur}
+                error={errors.longTermPlan !== undefined}
+                helperText={
+                  errors.longTermPlan !== undefined &&
+                  errors.longTermPlan.message
+                }
+              />
+            )}
+          />
 
           <div className={styles.plantingSeasons}>
             <p className={styles.plantingSeasonsLabel}>
@@ -1057,31 +1093,6 @@ export default function DetailedAnalysis({
                 onChange={onChange}
                 value={value}
                 onBlur={onBlur}
-              />
-            )}
-          />
-          <Controller
-            name="longTermPlan"
-            control={control}
-            rules={{
-              maxLength: {
-                value: 300,
-                message: t('manageProjects:max300Chars'),
-              },
-            }}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <TextField
-                label={t('manageProjects:longTermPlan')}
-                variant="outlined"
-                multiline
-                onChange={onChange}
-                value={value}
-                onBlur={onBlur}
-                error={errors.longTermPlan !== undefined}
-                helperText={
-                  errors.longTermPlan !== undefined &&
-                  errors.longTermPlan.message
-                }
               />
             )}
           />
