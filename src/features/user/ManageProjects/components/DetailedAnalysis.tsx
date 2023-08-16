@@ -520,12 +520,10 @@ export default function DetailedAnalysis({
                     control={control}
                     render={({ field: { onChange, value } }) => (
                       <MuiDatePicker
-                        label={t('manageProjects:firstTreePlanted')}
+                        label={t('manageProjects:labelRestorationStarted')}
                         value={value}
                         onChange={onChange}
-                        renderInput={(props) => (
-                          <TextField {...props} className="besideInfoTag" />
-                        )}
+                        renderInput={(props) => <TextField {...props} />}
                         disableFuture
                         minDate={new Date(new Date().setFullYear(1950))}
                         inputFormat="d MMMM yyyy"
@@ -711,7 +709,7 @@ export default function DetailedAnalysis({
             <p className={styles.plantingSeasonsLabel}>
               {' '}
               {purpose === 'trees'
-                ? t('manageProjects:plantingSeasons')
+                ? t('manageProjects:labelRestorationSeasons')
                 : t('manageProjects:protectionSeasons')}{' '}
             </p>
             {plantingSeasons.map((month) => {
