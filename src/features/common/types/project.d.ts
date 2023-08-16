@@ -154,8 +154,10 @@ export interface DetailedAnalysisProps {
   userLang: string;
   token: string;
   handleNext: (arg: number) => void;
-  projectDetails: Project | undefined;
-  setProjectDetails: SetState<Project | undefined>;
+  projectDetails: ProfileProjectTrees | ProfileProjectConservation | undefined;
+  setProjectDetails: SetState<
+    ProfileProjectTrees | ProfileProjectConservation | undefined
+  >;
   projectGUID: string;
   handleReset: (arg: string) => void;
   purpose: string | string[] | undefined;

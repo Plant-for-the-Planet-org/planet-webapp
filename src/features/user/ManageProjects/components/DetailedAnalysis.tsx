@@ -24,8 +24,9 @@ import {
   DetailedAnalysisProps,
   SiteOwners,
   PlantingSeason,
+  ProfileProjectTrees,
+  ProfileProjectConservation,
 } from '../../../common/types/project';
-import { Project } from '../../../common/types/project';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -59,6 +60,33 @@ const yearDialogSx: SxProps = {
   '.MuiDialogActions-root': {
     paddingBottom: '12px',
   },
+};
+
+type FormData = {
+  employeesCount: string;
+  acquisitionYear: Date | null;
+  mainChallenge: string;
+  motivation: string;
+  longTermPlan: string;
+  siteOwnerName: string;
+};
+
+type TreeFormData = FormData & {
+  purpose: 'trees';
+  yearAbandoned: Date | null;
+  firstTreePlanted: Date | null;
+  plantingDensity: string;
+  maxPlantingDensity: string;
+  degradationYear: Date | null;
+  degradationCause: string;
+};
+
+type ConservationFormData = FormData & {
+  purpose: 'conservation';
+  areaProtected: string;
+  startingProtectionYear: Date | null;
+  actions: string;
+  benefits: string;
 };
 
 export default function DetailedAnalysis({
@@ -160,32 +188,31 @@ export default function DetailedAnalysis({
   });
 
   // TODO - set up better types for Form Data
-  const defaultDetailedAnalysis =
+  const defaultFormData: TreeFormData | ConservationFormData =
     purpose === 'trees'
       ? {
+          purpose: 'trees',
           yearAbandoned: new Date(),
-          firstTreePlanted: '',
+          firstTreePlanted: null,
           plantingDensity: '',
           maxPlantingDensity: '',
           employeesCount: '',
           mainChallenge: '',
-          siteOwnerType: '',
           siteOwnerName: '',
-          acquisitionYear: '',
-          degradationYear: '',
+          acquisitionYear: null,
+          degradationYear: null,
           degradationCause: '',
           longTermPlan: '',
-          plantingSeasons: '',
           motivation: '',
         }
       : {
+          purpose: 'conservation',
           actions: '',
           benefits: '',
           employeesCount: '',
-          acquisitionYear: '',
-          startingProtectionYear: '',
+          acquisitionYear: null,
+          startingProtectionYear: null,
           areaProtected: '',
-          siteOwnerType: '', //TODO - Simplify site owner logic
           siteOwnerName: '',
           mainChallenge: '',
           longTermPlan: '',
@@ -197,10 +224,10 @@ export default function DetailedAnalysis({
     control,
     reset,
     formState: { errors },
-  } = useForm({
+  } = useForm<TreeFormData | ConservationFormData>({
     mode: 'onBlur',
     // TODO - set up better form types to resolve this error
-    defaultValues: defaultDetailedAnalysis,
+    defaultValues: defaultFormData,
   });
 
   const owners: string[] = [];
@@ -219,21 +246,29 @@ export default function DetailedAnalysis({
   }
   // for validating maxplanting density value > planting density value
   React.useEffect(() => {
-    if (projectDetails && router.query.type === 'detail-analysis') {
+    if (
+      projectDetails &&
+      projectDetails.purpose === 'trees' &&
+      router.query.type === 'detail-analysis'
+    ) {
       setMinDensity(projectDetails.metadata.plantingDensity);
     }
   }, [router.query.type]);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: TreeFormData | ConservationFormData) => {
     setIsUploadingData(true);
     const submitData =
-      purpose === 'trees'
+      data.purpose === 'trees'
         ? {
             metadata: {
               degradationCause: data.degradationCause,
-              degradationYear: data.degradationYear.getFullYear(),
+              degradationYear: data.degradationYear
+                ? data.degradationYear.getFullYear()
+                : null,
               employeesCount: data.employeesCount,
-              acquisitionYear: data.acquisitionYear.getFullYear(),
+              acquisitionYear: data.acquisitionYear
+                ? data.acquisitionYear.getFullYear()
+                : null,
               longTermPlan: data.longTermPlan,
               mainChallenge: data.mainChallenge,
               motivation: data.motivation,
@@ -242,21 +277,27 @@ export default function DetailedAnalysis({
               plantingSeasons: months,
               siteOwnerName: data.siteOwnerName,
               siteOwnerType: owners,
-              yearAbandoned: data.yearAbandoned.getFullYear()
+              yearAbandoned: data.yearAbandoned
                 ? data.yearAbandoned.getFullYear()
                 : null,
-              firstTreePlanted: `${data.firstTreePlanted.getFullYear()}-${
-                data.firstTreePlanted.getMonth() + 1
-              }-${data.firstTreePlanted.getDate()}`,
+              firstTreePlanted: data.firstTreePlanted
+                ? `${data.firstTreePlanted.getFullYear()}-${
+                    data.firstTreePlanted.getMonth() + 1
+                  }-${data.firstTreePlanted.getDate()}`
+                : null,
             },
           }
         : {
             metadata: {
-              acquisitionYear: data.acquisitionYear.getFullYear(),
+              acquisitionYear: data.acquisitionYear
+                ? data.acquisitionYear.getFullYear()
+                : null,
               activitySeasons: months,
               areaProtected: data.areaProtected,
               employeesCount: data.employeesCount,
-              startingProtectionYear: data.startingProtectionYear.getFullYear(),
+              startingProtectionYear: data.startingProtectionYear
+                ? data.startingProtectionYear.getFullYear()
+                : null,
               landOwnershipType: owners,
               actions: data.actions,
               mainChallenge: data.mainChallenge,
@@ -268,12 +309,9 @@ export default function DetailedAnalysis({
           };
 
     try {
-      const res = await putAuthenticatedRequest<Project>(
-        `/app/projects/${projectGUID}`,
-        submitData,
-        token,
-        logoutUser
-      );
+      const res = await putAuthenticatedRequest<
+        ProfileProjectTrees | ProfileProjectConservation
+      >(`/app/projects/${projectGUID}`, submitData, token, logoutUser);
       setProjectDetails(res);
       setIsUploadingData(false);
       handleNext(ProjectCreationTabs.PROJECT_SITES);
@@ -287,90 +325,60 @@ export default function DetailedAnalysis({
 
   React.useEffect(() => {
     if (projectDetails) {
-      const detailedAnalysis =
-        purpose === 'trees'
+      const { metadata, purpose: projectPurpose } = projectDetails;
+      const formData: TreeFormData | ConservationFormData =
+        projectPurpose === 'trees'
           ? {
-              acquisitionYear: projectDetails?.metadata?.acquisitionYear
-                ? new Date(
-                    new Date().setFullYear(
-                      projectDetails?.metadata?.acquisitionYear
-                    )
-                  )
+              purpose: 'trees',
+              yearAbandoned: metadata.yearAbandoned
+                ? new Date(new Date().setFullYear(metadata.yearAbandoned))
                 : new Date(),
-              yearAbandoned: projectDetails?.metadata?.yearAbandoned
-                ? new Date(
-                    new Date().setFullYear(
-                      projectDetails?.metadata?.yearAbandoned
-                    )
-                  )
+              firstTreePlanted: metadata.firstTreePlanted
+                ? new Date(metadata.firstTreePlanted)
                 : new Date(),
-              plantingSeasons: projectDetails?.metadata?.plantingSeasons,
-              plantingDensity: projectDetails?.metadata?.plantingDensity,
-              maxPlantingDensity: projectDetails?.metadata?.maxPlantingDensity,
-              employeesCount: projectDetails?.metadata?.employeesCount,
-              siteOwnerName: projectDetails?.metadata?.siteOwnerName,
-              degradationYear: projectDetails?.metadata?.degradationYear
-                ? new Date(
-                    new Date().setFullYear(
-                      projectDetails?.metadata?.degradationYear
-                    )
-                  )
+              plantingDensity: metadata.plantingDensity?.toString() || '',
+              maxPlantingDensity: metadata.maxPlantingDensity?.toString() || '',
+              employeesCount: metadata.employeesCount?.toString() || '',
+              mainChallenge: metadata.mainChallenge || '',
+              siteOwnerName: metadata.siteOwnerName || '',
+              acquisitionYear: metadata.acquisitionYear
+                ? new Date(new Date().setFullYear(metadata.acquisitionYear))
                 : new Date(),
-              degradationCause: projectDetails?.metadata?.degradationCause,
-
-              firstTreePlanted: projectDetails?.metadata?.firstTreePlanted
-                ? new Date(projectDetails?.metadata?.firstTreePlanted)
+              degradationYear: metadata.degradationYear
+                ? new Date(new Date().setFullYear(metadata.degradationYear))
                 : new Date(),
-              mainChallenge: projectDetails?.metadata?.mainChallenge,
-              longTermPlan: projectDetails?.metadata?.longTermPlan,
-              motivation: projectDetails?.metadata?.motivation,
+              degradationCause: metadata.degradationCause || '',
+              longTermPlan: metadata.longTermPlan || '',
+              motivation: metadata.motivation || '',
             }
           : {
-              areaProtected: projectDetails?.metadata?.areaProtected,
-              activitySeasons: projectDetails?.metadata?.plantingSeasons,
-              startingProtectionYear: projectDetails?.metadata
-                ?.startingProtectionYear
+              purpose: 'conservation',
+              actions: metadata.actions || '',
+              benefits: metadata.benefits || '',
+              employeesCount: metadata.employeesCount?.toString() || '',
+              acquisitionYear: metadata.acquisitionYear
+                ? new Date(new Date().setFullYear(metadata.acquisitionYear))
+                : new Date(),
+              startingProtectionYear: metadata.startingProtectionYear
                 ? new Date(
-                    new Date().setFullYear(
-                      projectDetails?.metadata?.startingProtectionYear
-                    )
+                    new Date().setFullYear(metadata.startingProtectionYear)
                   )
                 : new Date(),
-              acquisitionYear: projectDetails?.metadata?.acquisitionYear
-                ? new Date(
-                    new Date().setFullYear(
-                      projectDetails.metadata?.acquisitionYear
-                    )
-                  )
-                : new Date(),
-
-              employeesCount: projectDetails?.metadata?.employeesCount,
-              mainChallenge: projectDetails?.metadata?.mainChallenge,
-              siteOwnerName: projectDetails?.metadata?.siteOwnerName,
-              landOwnershipType: projectDetails?.metadata?.landOwnershipType,
-              longTermPlan: projectDetails?.metadata?.longTermPlan,
-              // ownershipType: projectDetails?.metadata?.ownershipType,
-              benefits: projectDetails?.metadata?.benefits,
-              actions: projectDetails?.metadata?.actions,
-              motivation: projectDetails?.metadata?.motivation,
+              areaProtected: metadata.areaProtected?.toString() || '',
+              mainChallenge: metadata.mainChallenge || '',
+              siteOwnerName: metadata.siteOwnerName || '',
+              longTermPlan: metadata.longTermPlan || '',
+              motivation: metadata.motivation || '',
             };
       // set planting seasons
 
-      if (purpose === 'trees') {
-        if (
-          projectDetails?.metadata?.plantingSeasons &&
-          projectDetails?.metadata?.plantingSeasons.length > 0
-        ) {
+      if (projectPurpose === 'trees') {
+        if (metadata.plantingSeasons && metadata.plantingSeasons.length > 0) {
           const updatedPlantingSeasons = plantingSeasons;
-          for (
-            let i = 0;
-            i < projectDetails.metadata?.plantingSeasons.length;
-            i++
-          ) {
+          for (let i = 0; i < metadata.plantingSeasons.length; i++) {
             for (let j = 0; j < updatedPlantingSeasons.length; j++) {
               if (
-                updatedPlantingSeasons[j].id ===
-                projectDetails?.metadata?.plantingSeasons[i]
+                updatedPlantingSeasons[j].id === metadata.plantingSeasons[i]
               ) {
                 updatedPlantingSeasons[j].isSet = true;
               }
@@ -379,20 +387,12 @@ export default function DetailedAnalysis({
           setPlantingSeasons(updatedPlantingSeasons);
         }
       } else {
-        if (
-          projectDetails?.metadata?.activitySeasons &&
-          projectDetails?.metadata?.activitySeasons.length > 0
-        ) {
+        if (metadata.activitySeasons && metadata.activitySeasons.length > 0) {
           const updatedActivitySeasons = plantingSeasons;
-          for (
-            let i = 0;
-            i < projectDetails?.metadata?.activitySeasons.length;
-            i++
-          ) {
+          for (let i = 0; i < metadata.activitySeasons.length; i++) {
             for (let j = 0; j < updatedActivitySeasons.length; j++) {
               if (
-                updatedActivitySeasons[j].id ===
-                projectDetails?.metadata?.activitySeasons[i]
+                updatedActivitySeasons[j].id === metadata.activitySeasons[i]
               ) {
                 updatedActivitySeasons[j].isSet = true;
               }
@@ -404,22 +404,12 @@ export default function DetailedAnalysis({
 
       // set owner type
 
-      if (purpose === 'trees') {
-        if (
-          projectDetails?.metadata?.siteOwnerType &&
-          projectDetails?.metadata?.siteOwnerType.length > 0
-        ) {
+      if (projectPurpose === 'trees') {
+        if (metadata.siteOwnerType && metadata.siteOwnerType.length > 0) {
           const newSiteOwners = siteOwners;
-          for (
-            let i = 0;
-            i < projectDetails?.metadata?.siteOwnerType.length;
-            i++
-          ) {
+          for (let i = 0; i < metadata.siteOwnerType.length; i++) {
             for (let j = 0; j < newSiteOwners.length; j++) {
-              if (
-                newSiteOwners[j].value ===
-                projectDetails?.metadata?.siteOwnerType[i]
-              ) {
+              if (newSiteOwners[j].value === metadata.siteOwnerType[i]) {
                 newSiteOwners[j].isSet = true;
               }
             }
@@ -450,7 +440,7 @@ export default function DetailedAnalysis({
         }
       }
 
-      reset(detailedAnalysis);
+      reset(formData);
     }
   }, [projectDetails]);
 
@@ -546,7 +536,7 @@ export default function DetailedAnalysis({
                   required: t('manageProjects:validation', {
                     fieldName: t('manageProjects:areaProtected'),
                   }),
-                  validate: (value) => parseInt(value, 10) > 0,
+                  validate: (value) => (value ? parseInt(value, 10) > 0 : true),
                 }}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
@@ -754,7 +744,6 @@ export default function DetailedAnalysis({
                   name="plantingDensity"
                   control={control}
                   rules={{
-                    required: t('manageProjects:plantingDensityValidation'),
                     validate: (value) => parseInt(value, 10) > 1,
                   }}
                   render={({ field: { onChange, value, onBlur } }) => (
