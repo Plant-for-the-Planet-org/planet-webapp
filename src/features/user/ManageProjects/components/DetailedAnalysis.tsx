@@ -471,6 +471,7 @@ export default function DetailedAnalysis({
                         label={t('manageProjects:yearOfAbandonment')}
                         renderInput={(props) => (
                           <TextField
+                            required
                             {...props}
                             InputProps={{
                               endAdornment: (
@@ -513,7 +514,9 @@ export default function DetailedAnalysis({
                         label={t('manageProjects:labelRestorationStarted')}
                         value={value}
                         onChange={onChange}
-                        renderInput={(props) => <TextField {...props} />}
+                        renderInput={(props) => (
+                          <TextField {...props} required />
+                        )}
                         disableFuture
                         minDate={new Date(new Date().setFullYear(1950))}
                         inputFormat="d MMMM yyyy"
@@ -540,6 +543,7 @@ export default function DetailedAnalysis({
                 }}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
+                    required
                     label={t('manageProjects:areaProtected')}
                     variant="outlined"
                     type="number"
@@ -589,6 +593,7 @@ export default function DetailedAnalysis({
                       onChange={onChange}
                       renderInput={(props) => (
                         <TextField
+                          required
                           {...props}
                           error={errors.startingProtectionYear !== undefined}
                           helperText={
@@ -623,6 +628,7 @@ export default function DetailedAnalysis({
               }}
               render={({ field: { onChange, value, onBlur } }) => (
                 <TextField
+                  required
                   label={t('manageProjects:employeeCount')}
                   variant="outlined"
                   onChange={(e) => {
@@ -674,6 +680,7 @@ export default function DetailedAnalysis({
                     onChange={onChange}
                     renderInput={(props) => (
                       <TextField
+                        required
                         {...props}
                         error={errors.startingProtectionYear !== undefined}
                         helperText={
@@ -744,7 +751,8 @@ export default function DetailedAnalysis({
                   name="plantingDensity"
                   control={control}
                   rules={{
-                    validate: (value) => parseInt(value, 10) > 1,
+                    validate: (value) =>
+                      value.length === 0 || parseInt(value, 10) > 1,
                   }}
                   render={({ field: { onChange, value, onBlur } }) => (
                     <TextField

@@ -39,7 +39,7 @@
   "firstTreePlanted": "First tree planted",
   "labelRestorationStarted": "Restoration Started",
   "plantingDensity": "Planting Density",
-  "maxPlantingDensity": "Max Planting Density (optional)",
+  "maxPlantingDensity": "Max Planting Density",
   "employeeCount": "Employee Count",
   "endangeredSpeciesValidation": "Not a Valid Input",
   "endangeredSpecies": "Endangered Species",
