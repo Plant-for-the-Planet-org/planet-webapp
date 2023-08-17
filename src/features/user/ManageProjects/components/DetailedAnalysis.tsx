@@ -186,6 +186,9 @@ export default function DetailedAnalysis({
   const [mainInterventions, setMainInterventions] = React.useState<
     InterventionTypes[]
   >([]);
+  const [isInterventionsMissing, setIsInterventionsMissing] = React.useState<
+    boolean | null
+  >(null);
 
   const [minDensity, setMinDensity] = React.useState<number | string | null>(0);
 
@@ -215,6 +218,9 @@ export default function DetailedAnalysis({
           ? [intervention, !isSet]
           : [intervention, isSet];
       }
+    );
+    setIsInterventionsMissing(
+      !updatedInterventions.some(([_intervention, isSet]) => isSet === true)
     );
     setInterventionOptions(updatedInterventions);
   };
@@ -304,6 +310,10 @@ export default function DetailedAnalysis({
   }, [router.query.type]);
 
   const onSubmit = async (data: TreeFormData | ConservationFormData) => {
+    if (mainInterventions.length === 0) {
+      setIsInterventionsMissing(true);
+      return;
+    }
     setIsUploadingData(true);
     const submitData =
       data.purpose === 'trees'
@@ -364,6 +374,7 @@ export default function DetailedAnalysis({
       >(`/app/projects/${projectGUID}`, submitData, token, logoutUser);
       setProjectDetails(res);
       setIsUploadingData(false);
+      setIsInterventionsMissing(null);
       handleNext(ProjectCreationTabs.PROJECT_SITES);
     } catch (err) {
       setIsUploadingData(false);
@@ -676,7 +687,6 @@ export default function DetailedAnalysis({
               </LocalizationProvider>
             </InlineFormDisplayGroup>
           )}
-
           <InlineFormDisplayGroup>
             <Controller
               name="employeesCount"
@@ -762,47 +772,52 @@ export default function DetailedAnalysis({
               />
             </LocalizationProvider>
           </InlineFormDisplayGroup>
-
-          <div className={styles.plantingSeasons}>
-            <p className={styles.plantingSeasonsLabel}>
-              {t('manageProjects:labelMainInterventions')}
-            </p>
-            {interventionOptions.map(([intervention, isSet]) => {
-              return (
-                <div
-                  className={styles.multiSelectInput}
-                  key={intervention}
-                  onClick={() => updateMainInterventions(intervention)}
-                >
+          <div className={styles.multiSelectContainer}>
+            <div className={styles.multiSelectField}>
+              <p className={styles.multiSelectLabel}>
+                {t('manageProjects:labelMainInterventions') + '*'}
+              </p>
+              {interventionOptions.map(([intervention, isSet]) => {
+                return (
                   <div
-                    className={`${styles.multiSelectInputCheck} ${
-                      isSet ? styles.multiSelectInputCheckTrue : ''
-                    }`}
+                    className={styles.multiSelectInput}
+                    key={intervention}
+                    onClick={() => updateMainInterventions(intervention)}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="13.02"
-                      height="9.709"
-                      viewBox="0 0 13.02 9.709"
+                    <div
+                      className={`${styles.multiSelectInputCheck} ${
+                        isSet ? styles.multiSelectInputCheckTrue : ''
+                      }`}
                     >
-                      <path
-                        id="check-solid"
-                        d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z"
-                        transform="translate(0 -65.098)"
-                        fill="#fff"
-                      />
-                    </svg>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="13.02"
+                        height="9.709"
+                        viewBox="0 0 13.02 9.709"
+                      >
+                        <path
+                          id="check-solid"
+                          d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z"
+                          transform="translate(0 -65.098)"
+                          fill="#fff"
+                        />
+                      </svg>
+                    </div>
+                    <p style={{ color: 'var(--dark)' }}>
+                      {t(`manageProjects:interventionTypes.${intervention}`)}
+                    </p>
                   </div>
-                  <p style={{ color: 'var(--dark)' }}>
-                    {t(`manageProjects:interventionTypes.${intervention}`)}
-                  </p>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
+            {isInterventionsMissing === true && (
+              <span className={styles.formErrors}>
+                {t('manageProjects:missingInterventionsError')}
+              </span>
+            )}
           </div>
-
-          <div className={styles.plantingSeasons}>
-            <p className={styles.plantingSeasonsLabel}>
+          <div className={styles.multiSelectField}>
+            <p className={styles.multiSelectLabel}>
               {' '}
               {purpose === 'trees'
                 ? t('manageProjects:labelRestorationSeasons')
@@ -841,7 +856,6 @@ export default function DetailedAnalysis({
               );
             })}
           </div>
-
           {purpose === 'trees' ? (
             <>
               <InlineFormDisplayGroup spacing="none">
@@ -1036,7 +1050,6 @@ export default function DetailedAnalysis({
               )}
             />
           )}
-
           {/* the main challenge the project is facing (max. 300 characters) */}
           <Controller
             name="mainChallenge"
@@ -1077,7 +1090,6 @@ export default function DetailedAnalysis({
               />
             )}
           />
-
           {/* the reason this project has been created (max. 300 characters) */}
           <Controller
             name="motivation"
@@ -1114,7 +1126,6 @@ export default function DetailedAnalysis({
               />
             )}
           />
-
           <Controller
             name="longTermPlan"
             control={control}
@@ -1142,9 +1153,8 @@ export default function DetailedAnalysis({
               />
             )}
           />
-
-          <div className={styles.plantingSeasons}>
-            <p className={styles.plantingSeasonsLabel}>
+          <div className={styles.multiSelectField}>
+            <p className={styles.multiSelectLabel}>
               {t('manageProjects:siteOwner')}
             </p>
             {siteOwners.map((owner) => {
@@ -1192,7 +1202,6 @@ export default function DetailedAnalysis({
               />
             )}
           />
-
           <ProjectCertificates
             projectGUID={projectGUID}
             token={token}

@@ -92,6 +92,7 @@
     "soil-improvement": "Soil Improvement",
     "stop-tree-harvesting": "Stop Tree Harvesting"
   },
+  "missingInterventionsError": "Please select at least one intervention",
   "timePeriod": "Time Period",
   "max300Chars": "Maximum 300 characters allowed",
   "longTermPlanInfo": "What measures are in place to project the forest in the long term? How is this funded? What resources will be extracted from the site?",
