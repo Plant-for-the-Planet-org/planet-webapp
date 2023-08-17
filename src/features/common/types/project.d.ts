@@ -10,6 +10,7 @@ import {
   CountryCode,
   TreeProjectExtended,
   ConservationProjectExtended,
+  InterventionTypes,
 } from '@planet-sdk/common';
 import { FeatureCollection as GeoJson } from 'geojson';
 import { SetState } from './common';
@@ -162,6 +163,9 @@ export interface DetailedAnalysisProps {
   handleReset: (arg: string) => void;
   purpose: string | string[] | undefined;
 }
+
+export type InterventionOption = [InterventionTypes, boolean];
+
 export interface SiteOwners {
   id: number;
   title: string;

@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import styles from './../StepForm.module.scss';
@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 import { SxProps, TextField, Button, Tooltip } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, InterventionTypes } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -26,6 +26,7 @@ import {
   PlantingSeason,
   ProfileProjectTrees,
   ProfileProjectConservation,
+  InterventionOption,
 } from '../../../common/types/project';
 
 const dialogSx: SxProps = {
@@ -160,6 +161,32 @@ export default function DetailedAnalysis({
     { id: 12, title: ready ? t('common:december') : '', isSet: false },
   ]);
 
+  const [interventionOptions, setInterventionOptions] = React.useState<
+    InterventionOption[]
+  >([
+    ['assisting-seed-rain', false],
+    ['control-remove-livestock', false],
+    ['cut-suppressing-grass', false],
+    ['direct-seeding', false],
+    ['enrichment-planting', false],
+    ['establish-firebreaks', false],
+    ['fire-patrols', false],
+    ['fire-suppression-team', false],
+    ['liberating-regenerants', false],
+    ['maintenance', false],
+    ['marking-regenerants', false],
+    ['other-interventions', false],
+    ['planting-trees', false],
+    ['removal-contaminated-soil', false],
+    ['removal-invasive-species', false],
+    ['soil-improvement', false],
+    ['stop-tree-harvesting', false],
+  ]);
+
+  const [mainInterventions, setMainInterventions] = React.useState<
+    InterventionTypes[]
+  >([]);
+
   const [minDensity, setMinDensity] = React.useState<number | string | null>(0);
 
   const handleSetPlantingSeasons = (id: number) => {
@@ -179,6 +206,27 @@ export default function DetailedAnalysis({
     updatedSiteOwners[id - 1] = updatedOwner;
     setSiteOwners([...updatedSiteOwners]);
   };
+
+  const updateMainInterventions = (interventionToUpdate: InterventionTypes) => {
+    const updatedInterventions: InterventionOption[] = interventionOptions.map(
+      (interventionOption) => {
+        const [intervention, isSet] = interventionOption;
+        return intervention === interventionToUpdate
+          ? [intervention, !isSet]
+          : [intervention, isSet];
+      }
+    );
+    setInterventionOptions(updatedInterventions);
+  };
+
+  useEffect(() => {
+    setMainInterventions(
+      interventionOptions
+        .filter(([_intervention, isSet]) => isSet)
+        .map(([intervention, _isSet]) => intervention)
+    );
+  }, [interventionOptions]);
+
   const router = useRouter();
 
   React.useEffect(() => {
@@ -269,6 +317,7 @@ export default function DetailedAnalysis({
               acquisitionYear: data.acquisitionYear
                 ? data.acquisitionYear.getFullYear()
                 : null,
+              mainInterventions: mainInterventions,
               longTermPlan: data.longTermPlan,
               mainChallenge: data.mainChallenge,
               motivation: data.motivation,
@@ -295,6 +344,7 @@ export default function DetailedAnalysis({
               activitySeasons: months,
               areaProtected: data.areaProtected,
               employeesCount: data.employeesCount,
+              mainInterventions: mainInterventions,
               startingProtectionYear: data.startingProtectionYear
                 ? data.startingProtectionYear.getFullYear()
                 : null,
@@ -438,6 +488,17 @@ export default function DetailedAnalysis({
           }
           setSiteOwners(newSiteOwners);
         }
+      }
+
+      // set main interventions
+      if (metadata.mainInterventions.length > 0) {
+        const initialInterventionOptions: InterventionOption[] =
+          interventionOptions.map(([intervention, isSet]) =>
+            metadata.mainInterventions.includes(intervention)
+              ? [intervention, true]
+              : [intervention, isSet]
+          );
+        setInterventionOptions(initialInterventionOptions);
       }
 
       reset(formData);
@@ -701,6 +762,44 @@ export default function DetailedAnalysis({
               />
             </LocalizationProvider>
           </InlineFormDisplayGroup>
+
+          <div className={styles.plantingSeasons}>
+            <p className={styles.plantingSeasonsLabel}>
+              {t('manageProjects:labelMainInterventions')}
+            </p>
+            {interventionOptions.map(([intervention, isSet]) => {
+              return (
+                <div
+                  className={styles.multiSelectInput}
+                  key={intervention}
+                  onClick={() => updateMainInterventions(intervention)}
+                >
+                  <div
+                    className={`${styles.multiSelectInputCheck} ${
+                      isSet ? styles.multiSelectInputCheckTrue : ''
+                    }`}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="13.02"
+                      height="9.709"
+                      viewBox="0 0 13.02 9.709"
+                    >
+                      <path
+                        id="check-solid"
+                        d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z"
+                        transform="translate(0 -65.098)"
+                        fill="#fff"
+                      />
+                    </svg>
+                  </div>
+                  <p style={{ color: 'var(--dark)' }}>
+                    {t(`manageProjects:interventionTypes.${intervention}`)}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
 
           <div className={styles.plantingSeasons}>
             <p className={styles.plantingSeasonsLabel}>
