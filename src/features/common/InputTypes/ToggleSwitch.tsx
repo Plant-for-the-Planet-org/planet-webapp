@@ -1,13 +1,14 @@
 import { Switch } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import theme from '../../../theme/themeProperties';
+import { ChangeEvent, InputHTMLAttributes } from 'react';
 
 interface ToggleSwitchProps {
   checked: boolean;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   id?: string;
-  inputProps?: React.InputHTMLAttributes<HTMLInputElement> | undefined;
+  inputProps?: InputHTMLAttributes<HTMLInputElement> | undefined;
   name?: string;
   color?: string;
 }

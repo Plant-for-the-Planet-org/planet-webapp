@@ -1,32 +1,20 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import SelectLanguageAndCountry from './SelectLanguageAndCountry';
 import styles from './AccountFooter.module.scss';
 
 export default function AccountFooter(): ReactElement {
-  const { t, i18n, ready } = useTranslation(['common']);
-  const [footerLang, setFooterLang] = React.useState('en');
-  const [language, setLanguage] = React.useState(i18n.language);
-  const [openModal, setOpenModal] = React.useState(false);
-  const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
-  const [selectedCountry, setSelectedCountry] = React.useState('DE');
-
-  const handleModalOpen = () => {
-    setOpenModal(true);
-  };
+  const { i18n, ready } = useTranslation(['common']);
+  const [language, setLanguage] = useState(i18n.language);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedCurrency, setSelectedCurrency] = useState('EUR');
+  const [selectedCountry, setSelectedCountry] = useState('DE');
 
   const handleModalClose = () => {
     setOpenModal(false);
   };
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      let footerLang = localStorage.getItem('language') || 'en';
-      footerLang = footerLang.toLowerCase(); // need lowercase locals for Wordpress website links
-      setFooterLang(footerLang);
-    }
-  }, [language]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (typeof Storage !== 'undefined') {
       if (localStorage.getItem('currencyCode')) {
         const currencyCode = localStorage.getItem('currencyCode');
