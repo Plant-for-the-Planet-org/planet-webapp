@@ -54,7 +54,7 @@ export default function ProjectsContainer({ profile }: any) {
           </div>
         ) : (
           <div className={styles.listProjects}>
-            <h6 className={styles.projectsTitleText}>{t('donate:PROJECTS')}</h6>
+            <h6 className={styles.projectsTitleText}>{t('donate:projects')}</h6>
 
             {projects.map((project) => {
               return (
