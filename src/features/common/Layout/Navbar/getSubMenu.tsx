@@ -8,7 +8,7 @@ import ChangeChocolateIcon from '../../../../../public/assets/images/icons/megaM
 import StopTalkingStartPlantingIcon from '../../../../../public/assets/images/icons/megaMenuIcons/stoptalkingstartplanting';
 
 interface Props {
-  title: any;
+  title: string;
 }
 
 function GetSubMenu({ title }: Props): ReactElement {
@@ -83,6 +83,8 @@ function GetSubMenu({ title }: Props): ReactElement {
       return <ChangeChocolate />;
     case 'stopTalkingStartPlanting':
       return <StopTalkingStartPlanting />;
+    default:
+      return <></>;
   }
 }
 

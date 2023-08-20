@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, SyntheticEvent, useState } from 'react';
 import CopyIcon from '../../../../public/assets/images/icons/CopyIcon';
 import styles from './styles.module.scss';
 import Snackbar from '@mui/material/Snackbar';
@@ -13,16 +13,16 @@ const Alert = styled(MuiAlert)(({ theme }) => {
 });
 
 interface Props {
-  text: any;
-  isButton: any;
+  text: string;
+  isButton: boolean;
 }
 
 export default function CopyToClipboard({
   text,
   isButton,
 }: Props): ReactElement {
-  const { t, i18n } = useTranslation(['common']);
-  const [open, setOpen] = React.useState(false);
+  const { t } = useTranslation(['common']);
+  const [open, setOpen] = useState(false);
 
   const handleClick = async () => {
     try {
@@ -33,7 +33,7 @@ export default function CopyToClipboard({
     }
   };
 
-  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+  const handleClose = (event?: SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
