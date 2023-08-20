@@ -35,9 +35,7 @@ export const TreePlantedClusterMarker = ({
           <div className={MyForestMapStyle.totalTreeCount}>
             {t('me:plantedTrees', {
               noOfTrees: `${
-                geoJson.properties.totalTrees
-                  ? geoJson.properties.totalTrees
-                  : geoJson.properties.quantity
+                geoJson.properties.totalTrees || geoJson.properties.quantity
               }`,
             })}
           </div>
@@ -79,9 +77,7 @@ export const ConservAreaClusterMarker = ({
           <div className={MyForestMapStyle.totalTreeCount}>
             {t('me:area', {
               areaConserved: `${
-                geoJson.properties.totalTrees
-                  ? geoJson.properties.totalTrees
-                  : geoJson.properties.quantity
+                geoJson.properties.totalTrees || geoJson.properties.quantity
               }`,
             })}
           </div>

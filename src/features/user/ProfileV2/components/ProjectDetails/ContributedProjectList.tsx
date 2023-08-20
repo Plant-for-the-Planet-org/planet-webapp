@@ -66,9 +66,7 @@ const Project = ({ key, projectInfo }: ProjectProps): ReactElement => {
                 ? t('me:area', { areaConserved: `${projectInfo.quantity}` })
                 : t('me:plantedTrees', {
                     noOfTrees: `${
-                      projectInfo?.plantProject !== null
-                        ? projectInfo.quantity
-                        : projectInfo?.treeCount
+                      projectInfo.quantity || projectInfo?.treeCount
                     }`,
                   })}
             </div>

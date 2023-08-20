@@ -52,7 +52,7 @@ export default function MyTrees({
     purpose: Purpose.CONSERVATION,
   });
 
-  const _treePlantedData = trpc.myForest.contributionsGeoJson.useQuery({
+  const _treePlantedGeoJsonData = trpc.myForest.contributionsGeoJson.useQuery({
     profileId: `${profile.id}`,
     purpose: Purpose.TREES,
   });
@@ -123,8 +123,8 @@ export default function MyTrees({
   }, [_conservationGeoJsonData.isLoading]);
 
   useEffect(() => {
-    _handleErrors(_treePlantedData, setTreePlantedProjects);
-  }, [_treePlantedData.isLoading]);
+    _handleErrors(_treePlantedGeoJsonData, setTreePlantedProjects);
+  }, [_treePlantedGeoJsonData.isLoading]);
 
   useEffect(() => {
     _handleErrors(_detailInfo, setOthercontributionInfo);
