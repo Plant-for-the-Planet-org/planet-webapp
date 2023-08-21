@@ -6,8 +6,8 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
-interface Props {}
-export default function Register({}: Props): ReactElement {
+
+export default function Register(): ReactElement {
   const { t } = useTranslation('me');
   const { user } = useUserProps();
 

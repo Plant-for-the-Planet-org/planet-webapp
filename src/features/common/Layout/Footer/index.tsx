@@ -9,11 +9,12 @@ import tenantConfig from '../../../../../tenant.config';
 import UNDecadeLogo from '../../../../../public/assets/images/footer/UNDecadeLogo';
 import PlanetCJLogo from '../../../../../public/assets/images/footer/PlanetCJLogo';
 import DarkModeSwitch from '../DarkModeSwitch.tsx';
+import ConfigType from '../../types/commonConfig';
 
 // let styles = require('./Footer.module.css');
 export default function Footer(): ReactElement | null {
   const { t, i18n, ready } = useTranslation(['common']);
-  const config = tenantConfig();
+  const config: ConfigType = tenantConfig();
   const [openModal, setOpenModal] = useState(false);
   const [language, setLanguage] = useState(i18n.language);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
@@ -396,16 +397,17 @@ export default function Footer(): ReactElement | null {
 
               {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
               {config.footerLinks &&
-                config.footerLinks.map((key: any) => {
+                config.footerLinks.map((key) => {
+                  const footerLinkKey = key as keyof typeof FooterLinks;
                   return (
                     <a
-                      key={FooterLinks[key].title}
-                      href={FooterLinks[key].link}
+                      key={FooterLinks[footerLinkKey].title}
+                      href={FooterLinks[footerLinkKey].link}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       <p className={styles.footer_links}>
-                        {FooterLinks[key].title}
+                        {FooterLinks[footerLinkKey].title}
                       </p>
                     </a>
                   );
