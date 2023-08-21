@@ -147,3 +147,7 @@ export interface ContributionsGeoJsonQueryResult {
   endDate: string;
   totalContribution: number;
 }
+
+export interface RestoredButtonProps {
+  restoredArea : number | null;
+}

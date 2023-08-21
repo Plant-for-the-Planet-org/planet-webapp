@@ -1,6 +1,5 @@
 import {
-  ConservationBlueTreeSvg,
-  ConservationWhiteTreeSvg,
+  ConservationTreeSvg,
   DownWardArrowSvg,
   ArrowSvg,
 } from '../../../../../../public/assets/images/ProfilePageIcons';
@@ -47,11 +46,9 @@ const ConservationButton = ({
         <>
           <div className={myForestStyles.labelContainer}>
             <div className={myForestStyles.conservedSvg}>
-              {isConservedButtonActive ? (
-                <ConservationWhiteTreeSvg />
-              ) : (
-                <ConservationBlueTreeSvg />
-              )}
+              <ConservationTreeSvg
+                color={isConservedButtonActive ? 'white' : '#48AADD'}
+              />
             </div>
             <div className={myForestStyles.conservedLabel}>
               {t('donate:conservation')}
@@ -63,7 +60,11 @@ const ConservationButton = ({
             </div>
             <div className={myForestStyles.unit}>{'m²'}</div>
             <div className={myForestStyles.svgContainer}>
-              {isConservedButtonActive ? <DownWardArrowSvg /> : <ArrowSvg />}
+              {isConservedButtonActive ? (
+                <DownWardArrowSvg />
+              ) : (
+                <ArrowSvg color={'#48AADD'} />
+              )}
             </div>
           </div>
         </>

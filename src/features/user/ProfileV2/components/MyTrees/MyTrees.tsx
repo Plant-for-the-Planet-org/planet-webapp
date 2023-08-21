@@ -16,6 +16,7 @@ import { Contributions } from '../../../../common/types/myForest';
 import { QueryResult } from '../../../../../server/router/myForest';
 import { MyTreesProps } from '../../../../common/types/map';
 import SwipeLeftIcon from '@mui/icons-material/SwipeLeft';
+import RestoredButton from '../ProjectDetails/RestoredButton';
 
 const MyTreesMap = dynamic(() => import('../MyForestMap'), {
   loading: () => <p>loading</p>,
@@ -39,28 +40,30 @@ export default function MyTrees({
   const {
     setConservationProjects,
     setTreePlantedProjects,
+    setIsTreePlantedButtonActive,
     isConservedButtonActive,
+    setIsConservedButtonActive,
     isTreePlantedButtonActive,
   } = useProjectProps();
 
   const _detailInfo = trpc.myForest.stats.useQuery({
-    profileId: `${profile.id}`,
+    profileId: `prf_6RaZcCpeJIlTA4DKEPKje1T6`,
   });
-
+  console.log(_detailInfo.data, '===');
   const _conservationGeoJsonData = trpc.myForest.contributionsGeoJson.useQuery({
-    profileId: `${profile.id}`,
+    profileId: `prf_6RaZcCpeJIlTA4DKEPKje1T6`,
     purpose: Purpose.CONSERVATION,
   });
 
   const _treePlantedGeoJsonData = trpc.myForest.contributionsGeoJson.useQuery({
-    profileId: `${profile.id}`,
+    profileId: `prf_6RaZcCpeJIlTA4DKEPKje1T6`,
     purpose: Purpose.TREES,
   });
 
   const _contributionDataForPlantedtrees =
     trpc.myForest.contributions.useInfiniteQuery(
       {
-        profileId: `${profile.id}`,
+        profileId: `prf_6RaZcCpeJIlTA4DKEPKje1T6`,
         limit: 15,
         purpose: Purpose.TREES,
       },
@@ -69,7 +72,7 @@ export default function MyTrees({
 
   const _contributionData = trpc.myForest.contributions.useInfiniteQuery(
     {
-      profileId: `${profile.id}`,
+      profileId: `prf_6RaZcCpeJIlTA4DKEPKje1T6`,
       limit: 15,
       purpose: Purpose.CONSERVATION,
     },
@@ -130,12 +133,26 @@ export default function MyTrees({
     _handleErrors(_detailInfo, setOthercontributionInfo);
   }, [_detailInfo.isLoading]);
 
+  const handleClick = () => {
+    if (isTreePlantedButtonActive) {
+      setIsTreePlantedButtonActive(false);
+    } else {
+      if (otherDonationInfo?.treeCount && otherDonationInfo?.treeCount > 0) {
+        setIsTreePlantedButtonActive(true);
+        setIsConservedButtonActive(false);
+      }
+    }
+  };
+
   return ready && otherDonationInfo ? (
     <div className={myForestStyles.mapMainContainer}>
-      <MyTreesMap />
+      {/* <MyTreesMap /> */}
       <div className={myForestStyles.mapButtonMainContainer}>
         <div className={myForestStyles.mapButtonContainer}>
-          <PlantedTreesButton plantedTrees={otherDonationInfo?.treeCount} />
+          <div style={{ display: 'flex', gap: '1px' }} onClick={handleClick}>
+            <PlantedTreesButton plantedTrees={otherDonationInfo?.treeCount} />
+            <RestoredButton restoredArea={otherDonationInfo?.squareMeters} />
+          </div>
           <ConservationButton conservedArea={otherDonationInfo?.conserved} />
           <DonationInfo
             projects={otherDonationInfo?.projects}
@@ -147,7 +164,7 @@ export default function MyTrees({
       <div className={myForestStyles.swipeConatiner}>
         <SwipeLeftIcon />
       </div>
-      {isTreePlantedButtonActive && !isConservedButtonActive && (
+      {/* {isTreePlantedButtonActive && !isConservedButtonActive && (
         <TreeContributedProjectList
           contribution={projectsForTreePlantaion}
           userprofile={profile}
@@ -161,7 +178,7 @@ export default function MyTrees({
           contribution={projectsForAreaConservation}
           handleFetchNextPage={handleFetchNextPage}
         />
-      )}
+      )} */}
     </div>
   ) : null;
 }

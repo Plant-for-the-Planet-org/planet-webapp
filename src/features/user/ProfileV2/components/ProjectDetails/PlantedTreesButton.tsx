@@ -9,22 +9,9 @@ import { CircularProgress } from '@mui/material';
 import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 
 const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
-  const {
-    isTreePlantedButtonActive,
-    setIsTreePlantedButtonActive,
-    setIsConservedButtonActive,
-  } = useProjectProps();
+  const { isTreePlantedButtonActive } = useProjectProps();
   const { t } = useTranslation(['donate']);
-  const handleClick = () => {
-    if (isTreePlantedButtonActive) {
-      setIsTreePlantedButtonActive(false);
-    } else {
-      if (plantedTrees && plantedTrees > 0) {
-        setIsTreePlantedButtonActive(true);
-        setIsConservedButtonActive(false);
-      }
-    }
-  };
+
   return (
     <div
       className={`${
@@ -32,7 +19,6 @@ const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
           ? myForestStyles.plantedTreesContainer
           : myForestStyles.plantedTreesContainerX
       }`}
-      onClick={handleClick}
     >
       {plantedTrees === undefined ? (
         <div className={myForestStyles.circularProgressContainer}>
@@ -42,11 +28,9 @@ const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
         <>
           <div className={myForestStyles.plantedTreesLabelContainer}>
             <div>
-              {isTreePlantedButtonActive ? (
-                <PlantedTreesSvg />
-              ) : (
-                <PlantedTreesGreenSvg />
-              )}
+              <PlantedTreesSvg
+                color={isTreePlantedButtonActive ? 'white' : '#219653'}
+              />
             </div>
             <div className={myForestStyles.plantedTreesLabel}>
               {t('donate:plantedTrees')}
