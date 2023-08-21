@@ -140,7 +140,7 @@ export interface ContributionsGeoJsonQueryResult {
   image: string;
   geoLatitude: number;
   geoLongitude: number;
-  geometry: Geometry;
+  geometry: Geometry | null;
   tpoGuid: string;
   tpo: string;
   startDate: string;
