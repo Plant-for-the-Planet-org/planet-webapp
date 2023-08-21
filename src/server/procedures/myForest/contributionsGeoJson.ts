@@ -1,11 +1,27 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { Prisma } from '@prisma/client';
+import centerOfMass from '@turf/center-of-mass';
+import { multiPoint } from '@turf/helpers';
+import { Position } from '@turf/turf';
 
 import { procedure } from '../../trpc';
 import { Purpose } from '../../../utils/constants/myForest';
 import prisma from '../../../../prisma/client';
 import { ContributionsGeoJsonQueryResult } from '../../../features/common/types/myForest';
+
+const getCoordinates = (contribution: ContributionsGeoJsonQueryResult) => {
+  if (contribution.geometry.type === 'Polygon') {
+    const polygonCoordinates = contribution.geometry
+      .coordinates[0] as Position[];
+    return centerOfMass(multiPoint(polygonCoordinates)).geometry?.coordinates;
+  } else if (contribution.geometry.type === 'Point') {
+    return [
+      contribution.geometry.coordinates[0],
+      contribution.geometry.coordinates[1],
+    ];
+  } else return [contribution.geoLongitude, contribution.geoLatitude];
+};
 
 export const contributionsGeoJson = procedure
   .input(
@@ -47,12 +63,10 @@ export const contributionsGeoJson = procedure
 
     const data = await prisma.$queryRaw<ContributionsGeoJsonQueryResult[]>`
   SELECT COUNT(pp.guid) AS totalContribution, SUM(c.tree_count) AS treeCount, 
-      quantity,  c.purpose, MIN(c.plant_date) AS startDate,
-      MAX(c.plant_date) AS endDate, c.contribution_type, c.plant_date, pp.location, pp.country, 
-    pp.unit_type, pp.guid, pp.name, pp.image,
-    CASE WHEN c.contribution_type = 'planting' THEN JSON_EXTRACT(c.geometry, '$.coordinates[1]') ELSE pp.geo_latitude END AS geoLatitude,
-    CASE WHEN c.contribution_type = 'planting' THEN JSON_EXTRACT(c.geometry, '$.coordinates[0]') ELSE pp.geo_longitude END AS geoLongitude,
-    c.geometry, tpo.name AS tpo, tpo.guid AS tpoGuid
+    quantity,  c.purpose, MIN(c.plant_date) AS startDate,
+    MAX(c.plant_date) AS endDate, c.contribution_type, c.plant_date, pp.location, pp.country, 
+    pp.unit_type, pp.guid, pp.name, pp.image, pp.geo_latitude AS geoLatitude, 
+    pp.geo_longitude AS geoLongitude, c.geometry, tpo.name AS tpo, tpo.guid AS tpoGuid
   FROM contribution c
           ${join}
           JOIN profile p ON p.id = c.profile_id
@@ -97,7 +111,7 @@ export const contributionsGeoJson = procedure
         },
         geometry: {
           type: 'Point',
-          coordinates: [contribution.geoLongitude, contribution.geoLatitude],
+          coordinates: getCoordinates(contribution),
         },
       };
     });

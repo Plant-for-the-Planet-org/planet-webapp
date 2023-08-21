@@ -1,5 +1,6 @@
 import { SetState } from './common';
 import { User } from '@planet-sdk/common';
+import { Geometry } from '@turf/turf';
 
 export interface StatsParam {
   profileId: string;
@@ -55,12 +56,6 @@ enum Purpose {
   CONSERVATION = 'conservation',
 }
 
-export interface ContributionsGeoJsonParams {
-  profileId: string;
-  // purpose: null fetches both trees as well as conservation projects
-  purpose: Purpose | null;
-}
-
 interface Properties {
   cluster: boolean;
   purpose: string;
@@ -68,18 +63,6 @@ interface Properties {
   plantDate: number | Date;
   contributionType: string;
   plantProject: PlantProject;
-}
-
-interface Geometry {
-  type: string;
-  coordinates: number[];
-}
-
-export interface ContributionsGeoJson {
-  // procedure returns ContributionsGeoJson
-  type: string;
-  properties: Properties;
-  geometry: Geometry;
 }
 
 interface PlantProject {
@@ -105,10 +88,10 @@ export interface ProjectProps {
 }
 
 export interface ContributedProjectListProps {
-  handleFetchNextPage: () => void
+  handleFetchNextPage: () => void;
   contributionProjectList: Contributions[];
   isLoadButtonActive: boolean;
-  setIsLoadButtonActive: SetState<boolean>
+  setIsLoadButtonActive: SetState<boolean>;
 }
 
 export interface DonationInfoProps {
@@ -157,6 +140,7 @@ export interface ContributionsGeoJsonQueryResult {
   image: string;
   geoLatitude: number;
   geoLongitude: number;
+  geometry: Geometry;
   tpoGuid: string;
   tpo: string;
   startDate: string;
