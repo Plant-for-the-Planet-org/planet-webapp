@@ -84,7 +84,7 @@ function SingleProject({ project }: any) {
   );
 }
 
-export default function ProjectsContainer({}: any) {
+export default function ProjectsContainer() {
   const { t, ready } = useTranslation(['donate', 'manageProjects']);
   const [projects, setProjects] = React.useState([]);
   const [loader, setLoader] = React.useState(true);
