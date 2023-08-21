@@ -27,7 +27,7 @@ export const stats = procedure
 
   const data = await prisma.$queryRaw<StatsQueryResult[]>`
   SELECT
-    SUM(CASE WHEN pp.purpose = 'trees' OR c.contribution_type = 'planting' THEN COALESCE(c.quantity, c.tree_count) ELSE 0 END) AS treeCount,
+    SUM(CASE WHEN (pp.purpose = 'trees' AND pp.unit_type = 'tree') OR c.contribution_type = 'planting' THEN COALESCE(c.quantity, c.tree_count) ELSE 0 END) AS treeCount,
     SUM(CASE WHEN pp.purpose = 'trees' AND pp.unit_type = 'm2' THEN COALESCE(c.quantity, c.tree_count) ELSE 0 END) AS squareMeters,
     SUM(CASE WHEN pp.purpose = 'conservation' THEN c.quantity ELSE 0 END) AS conserved,
     COUNT(DISTINCT pp.id) AS projects,
