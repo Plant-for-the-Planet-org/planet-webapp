@@ -10,6 +10,15 @@ import { Purpose } from '../../../utils/constants/myForest';
 import prisma from '../../../../prisma/client';
 import { ContributionsGeoJsonQueryResult } from '../../../features/common/types/myForest';
 
+/**
+ *
+ * Check different types of contribution's geometry and
+ * returns appropriate coordinates
+ *
+ * @param {ContributionsGeoJsonQueryResult} contribution Single contribution from the resulting list of contributionsGeoJson Query
+ * @returns {Position} Point Coordinate
+ */
+
 const getCoordinates = (contribution: ContributionsGeoJsonQueryResult) => {
   if (contribution.geometry.type === 'Polygon') {
     const polygonCoordinates = contribution.geometry
