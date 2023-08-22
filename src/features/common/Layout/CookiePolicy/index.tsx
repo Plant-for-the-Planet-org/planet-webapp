@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './CookiePolicy.module.scss';
 import { useUserProps } from '../UserPropsContext';
@@ -9,13 +9,13 @@ export default function CookiePolicy() {
   const { t, ready } = useTranslation(['leaderboard']);
   const { user, contextLoaded } = useUserProps();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (contextLoaded && user) {
       setShowCookieNotice(false);
     }
   }, [contextLoaded, user]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const prev = localStorage.getItem('cookieNotice');
     if (!prev) {
       setShowCookieNotice(true);
@@ -24,7 +24,7 @@ export default function CookiePolicy() {
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     localStorage.setItem('cookieNotice', showCookieNotice);
   }, [showCookieNotice]);
 

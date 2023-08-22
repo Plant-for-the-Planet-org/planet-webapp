@@ -32,7 +32,7 @@ function SingleProject({ project }: any) {
         <p className={styles.projectName}>{project.name}</p>
         <p className={styles.projectClassification}>
           {project?.purpose === 'conservation'
-            ? project?.metadata?.ecosystems
+            ? project?.metadata?.ecosystem
             : project?.classification}{' '}
           •{' '}
           {project.country === null ? (
@@ -84,7 +84,7 @@ function SingleProject({ project }: any) {
   );
 }
 
-export default function ProjectsContainer({}: any) {
+export default function ProjectsContainer() {
   const { t, ready } = useTranslation(['donate', 'manageProjects']);
   const [projects, setProjects] = React.useState([]);
   const [loader, setLoader] = React.useState(true);

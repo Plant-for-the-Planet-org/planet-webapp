@@ -14,9 +14,7 @@ import {
   PaymentHistory,
 } from '../../src/features/common/types/payments';
 
-interface Props {}
-
-function AccountHistory({}: Props): ReactElement {
+function AccountHistory(): ReactElement {
   const { t } = useTranslation(['me']);
   const { token, contextLoaded, logoutUser } = useUserProps();
 
