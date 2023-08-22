@@ -59,9 +59,7 @@ export default function ProjectSnippet({
   }
 
   const ecosystem =
-    project._scope === 'extended'
-      ? project.metadata.ecosystem
-      : project.ecosystem;
+    project._scope === 'map' ? project.ecosystem : project.metadata.ecosystem;
 
   const { token } = useUserProps();
   const handleOpen = () => {
