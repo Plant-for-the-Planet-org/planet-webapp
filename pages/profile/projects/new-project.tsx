@@ -8,14 +8,15 @@ import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Proj
 import Footer from '../../../src/features/common/Layout/Footer';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
+import { ProjectCreationTabs } from '../../../src/features/user/ManageProjects';
 
 export default function AddProjectType(): ReactElement {
   const router = useRouter();
   const { t } = useTranslation(['donate', 'manageProjects']);
-  const [isPurpose, setIsPurpose] = React.useState(false);
+  const [isPurpose, setIsPurpose] = React.useState<boolean>(false);
+  const [accessDenied, setAccessDenied] = React.useState<boolean>(false);
+  const [setupAccess, setSetupAccess] = React.useState<boolean>(false);
   const { user, contextLoaded, token, loginWithRedirect } = useUserProps();
-  const [accessDenied, setAccessDenied] = React.useState(false);
-  const [setupAccess, setSetupAccess] = React.useState(false);
   React.useEffect(() => {
     if (router.query.purpose) {
       setIsPurpose(true);
@@ -61,66 +62,17 @@ export default function AddProjectType(): ReactElement {
   }
 
   return (
-    <div className={'profilePage'}>
-      <UserLayout>
-        <Head>
-          <title>{t('manageProjects:addNewProject')}</title>
-        </Head>
+    <UserLayout>
+      <Head>
+        <title>{t('manageProjects:addNewProject')}</title>
+      </Head>
 
-        <div className="profilePageHeader">
-          <div>
-            <div className={'profilePageTitle'}>
-              {' '}
-              {t('manageProjects:addNewProject')}
-            </div>
-          </div>
-        </div>
-        <div className={'add-project-title'}>
-          <p>
-            {t('manageProjects:addProjetDescription')}
-            <br />
-            {t('manageProjects:addProjetContact')}
-            <span>{t('manageProjects:supportLink')}</span>
-          </p>
-        </div>
-
-        {/* {!isPurpose ?
-                    <div className={'add-project-container'}>
-                        <div className={'add-project'}>
-                            <button
-                                id={'addProjectBut'}
-                                className={'add-projects-button'}
-                                onClick={() => router.push('/profile/projects/new-project/?purpose=trees')}
-                            >
-                                {t('manageProjects:restorationProject')}
-                            </button>
-
-                            <button
-                                id={'conservationProj'}
-                                className={'add-projects-button'}
-                                onClick={() => router.push('/profile/projects/new-project/?purpose=conservation')}
-                            >
-                                {t('manageProjects:conservationProject')}
-                            </button>
-                        </div>
-                    </div>
-                    : null
-                }
-
-
-                {isPurpose ?
-                    (
-                        <ManageProjects token={token} />
-                    )
-                    :
-                    null} */}
-        {user?.type === 'tpo' ? (
-          <ManageProjects token={token} />
-        ) : (
-          <AccessDeniedLoader />
-        )}
-      </UserLayout>
-    </div>
+      {user?.type === 'tpo' ? (
+        <ManageProjects step={ProjectCreationTabs.PROJECT_TYPE} token={token} />
+      ) : (
+        <AccessDeniedLoader />
+      )}
+    </UserLayout>
   );
 }
 

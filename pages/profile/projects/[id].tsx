@@ -13,15 +13,18 @@ import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorH
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
 import { handleError, APIError } from '@planet-sdk/common';
+import { Project } from '../../../src/features/common/types/project';
 
 function ManageSingleProject(): ReactElement {
   const { t } = useTranslation(['manageProjects', 'common']);
-  const [projectGUID, setProjectGUID] = React.useState(null);
-  const [ready, setReady] = React.useState(false);
+  const [projectGUID, setProjectGUID] = React.useState<
+    string | string[] | null
+  >(null);
+  const [ready, setReady] = React.useState<boolean>(false);
   const router = useRouter();
-  const [accessDenied, setAccessDenied] = React.useState(false);
-  const [setupAccess, setSetupAccess] = React.useState(false);
-  const [project, setProject] = React.useState({});
+  const [accessDenied, setAccessDenied] = React.useState<boolean>(false);
+  const [setupAccess, setSetupAccess] = React.useState<boolean>(false);
+  const [project, setProject] = React.useState<Project | unknown>(undefined);
   const { user, contextLoaded, token, logoutUser } = useUserProps();
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
 
@@ -70,25 +73,9 @@ function ManageSingleProject(): ReactElement {
     ready && token && !accessDenied ? (
       <UserLayout>
         <Head>
-          <title>{`${t('common:edit')} - ${project.name}`}</title>
+          <title>{`${t('common:edit')} - ${project?.name}`}</title>
         </Head>
-        <div className="profilePage">
-          <div className="profilePageHeader">
-            <div>
-              <div className={'profilePageTitle'}>{project.name}</div>
-              <div style={{ marginBottom: 15 }}>
-                {t('manageProjects:onlyEnglish')}
-              </div>
-            </div>
-          </div>
-          <div style={{ marginTop: '60px' }}>
-            <ManageProjects
-              GUID={projectGUID}
-              token={token}
-              project={project}
-            />
-          </div>
-        </div>
+        <ManageProjects GUID={projectGUID} token={token} project={project} />
       </UserLayout>
     ) : (
       <UserLayout>

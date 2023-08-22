@@ -1,41 +1,5 @@
 @import './../../../theme/theme';
 
-.mainContainer {
-  max-width: 1000px;
-  display: flex;
-  flex-direction: column;
-  background-color: $backgroundColor;
-  > div {
-    background-color: $backgroundBase;
-    padding-left: 0%;
-  }
-}
-
-.stepContainer {
-  margin-top: -60px;
-  margin-left: 100px;
-  font-family: $primaryFontFamily;
-  display: flex;
-  background-color: $backgroundBase;
-  color: $primaryFontColor;
-  @include xsPhoneView {
-    margin-left: -15px;
-    margin-top: 5px;
-  }
-  @include smTabletView {
-    margin-left: -8px;
-    margin-top: 5px;
-  }
-  @include mdTabletView {
-    margin-left: -8px;
-    margin-top: 5px;
-  }
-  @include lgLaptopView {
-    margin-top: -60px;
-    margin-left: 40px;
-  }
-}
-
 .inputEndAdornment {
   margin-left: 4px;
   width: 100%;
@@ -45,39 +9,19 @@
 
 .hyphen {
   font-size: 40px;
-  margin-top: 16px;
-  @include xsPhoneView {
-    writing-mode: vertical-rl; 
-    margin-top: 0;
-    margin-bottom: -19px;
-    margin-right: 126px;
-  }
-  @include smTabletView {
-    writing-mode: vertical-rl; 
-    margin-top: 0;
-    margin-bottom: -19px;
-    margin-right: 126px;    
-  }
-  @include mdTabletView {
-    writing-mode: horizontal-tb;
-    margin-top: 14px;
-    margin-bottom: 0;
-    margin-right: 0; 
-  }
-  
-}
-.density {
- display: flex;
- @include xsPhoneView {
-   flex-direction: column;
- }
- @include smTabletView {
-  flex-direction: column;
-}
-@include mdTabletView {
-  flex-direction: row;
 }
 
+.density {
+  display: flex;
+  @include xsPhoneView {
+    flex-direction: column;
+  }
+  @include smTabletView {
+    flex-direction: column;
+  }
+  @include mdTabletView {
+    flex-direction: row;
+  }
 }
 
 .reviewContent {
@@ -105,10 +49,11 @@
 .formFieldRadio {
   width: 100%;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
+
 .listOfReport {
   margin-left: 45px;
   margin-top: 13px;
@@ -122,11 +67,10 @@
   top: 212px;
   left: 245px;
   @include xsPhoneView {
-   top: 306px;
-   left: 85px
+    top: 306px;
+    left: 85px;
   }
 }
-
 
 .formField {
   display: flex;
@@ -135,28 +79,6 @@
   max-width: 320px;
   justify-content: space-between;
   align-items: center;
- }
-
-
-.skipBasicButton {
-  width: 89px;
-  padding: 15px, 30px, 15px, 30px;
-  margin-left: 10px;
-  margin-top: 0px;
-  @include xsPhoneView {
-    margin-top: 10px;
-  }
-}
-
-.skipDetailAnalysis {
-  width: 89px;
-  margin-right: 45px;
-}
-
-.saveAndContinueDetailAnalysis {
-  width:169px;
-  height: 46px;
-  margin-right: 20px;
 }
 
 .reviewButtons {
@@ -172,27 +94,6 @@
     flex-direction: row;
   }
 }
-
-.basicDetailButton {
-  display: flex;
-  @include xsPhoneView {
-    flex-direction: column;
-  }
-}
-
-.mediaButtons {
-  display: flex;
-  @include xsPhoneView {
-    flex-direction: column;
-  }
-  @include smTabletView {
-    flex-direction: column;
-  }
-  @include mdTabletView {
-    flex-direction: row;
-  }
-}
-
 .formFieldHalf {
   margin-top: 24px;
   display: flex;
@@ -215,12 +116,13 @@
 .formFieldFix {
   position: relative;
 }
-.latitudeInput {
+/* .latitudeInput {
   width: fit-content !important;
   div {
     border-radius: 28px !important;
     border-top-right-radius: 0px !important;
     border-bottom-right-radius: 0px !important;
+    background-color: #e2eee8;
   }
   div,
   input {
@@ -239,6 +141,7 @@
     border-radius: 28px !important;
     border-top-left-radius: 0px !important;
     border-bottom-left-radius: 0px !important;
+    background-color: #e2eee8;
   }
   div,
   input {
@@ -250,14 +153,30 @@
     text-align: center !important;
     transform: translateX(0px, 20px);
   }
-}
+} */
 .latlongField {
+  width: fit-content;
   position: relative;
   div,
   input {
     width: 120px !important;
     position: relative;
   }
+}
+
+.latLongInput {
+  background: #fff;
+  border-radius: 0;
+}
+
+.basicDetailsCoordinatesContainer {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 290px;
+  overflow: hidden;
+  width: inherit;
+  gap: 5px;
 }
 
 .layerSwitcher {
@@ -292,9 +211,6 @@
 }
 
 @include mdTabletView {
-  .mainContainer {
-    max-width: 780px;
-  }
   .formField {
     max-width: 660px;
   }
@@ -455,9 +371,6 @@
 
 .mapboxContainer {
   position: relative;
-  > div > div > div {
-    border-radius: 10px;
-  }
   > p {
     position: absolute;
     padding: 6px 18px;
@@ -598,6 +511,7 @@
 }
 
 .uploadedImageContainer {
+  margin-top: 10px;
   position: relative;
   height: min-content;
   > img {
@@ -662,16 +576,6 @@
       box-shadow: 0 7px 12px -6px rgba(60, 60, 60, 1);
       transition-duration: 0.4s;
       transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-      svg {
-        path {
-          fill: $primaryFontColor;
-        }
-      }
-      svg .selected {
-        path {
-          fill: '#ECB641';
-        }
-      }
       &:hover {
         cursor: pointer;
       }
@@ -711,7 +615,6 @@
   justify-content: space-between;
   align-items: center;
   max-width: 320px;
-  margin-top: 20px;
   > a > svg {
     height: 48px;
   }
@@ -741,6 +644,7 @@
 }
 
 .shallowOpacity {
+  width: 100%;
   opacity: 0.5;
 }
 
@@ -778,6 +682,7 @@
 .popover {
   position: relative;
   width: fit-content !important;
+  background-color: white;
   .popoverContent {
     position: absolute;
     z-index: 10;
@@ -787,7 +692,7 @@
     text-align: center;
     border: 2px solid $primaryColor;
     display: none;
-    left: -290px
+    left: -290px;
   }
   &:hover,
   &:active {
@@ -801,13 +706,29 @@
 .infoIconDiv {
   position: absolute;
   top: -9px;
-  right: -292px;
-  width:fit-content
+  left: 275px;
+  width: fit-content;
+  @include mdTabletView {
+    left: 227px;
+  }
+  @include lgLaptopView {
+    left: 308px;
+  }
 }
 
-.causeOfDegradation {
+.infoIconDivForLargeField {
   position: absolute;
-  right: 13px;
+  left: 655px;
+  top: -9px;
+  @include xsPhoneView {
+    left: 275px;
+  }
+  @include mdTabletView {
+    left: 498px;
+  }
+  @include lgLaptopView {
+    left: 655px;
+  }
 }
 
 // white modal
@@ -824,4 +745,81 @@
 
 :export {
   primaryFontColor: $primaryFontColor;
+}
+
+// button for projectCreation
+.buttonsForProjectCreationForm {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  @include xsPhoneView {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  @include smTabletView {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .reviewButton,
+  .backButton {
+    height: 50px;
+  }
+  .skipButton,
+  .saveAndContinueButton {
+    margin-left: 10px;
+    font-size: 1rem;
+    height: 50px;
+    @include xsPhoneView {
+      margin-top: 14px;
+    }
+  }
+}
+
+.projectTypes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.reviewMessage {
+  text-align: center;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.reviewImageContainer {
+  height: 240px;
+  width: 100%;
+}
+
+.addProjectTitle {
+  > div > span {
+    color: $primaryColor;
+  }
+  .note {
+    font-weight: bold;
+  }
+  .editProjectInfo {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+.tooltipIcon {
+  display: inline-block;
+  width: 1em;
+  min-width: 1em;
+  vertical-align: middle;
+  margin-left: 5px;
+}
+
+.certificateContainer,
+.expenseContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
