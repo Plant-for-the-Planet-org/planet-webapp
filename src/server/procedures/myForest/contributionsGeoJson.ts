@@ -20,15 +20,17 @@ import { ContributionsGeoJsonQueryResult } from '../../../features/common/types/
  */
 
 const getCoordinates = (contribution: ContributionsGeoJsonQueryResult) => {
-  if (contribution.geometry.type === 'Polygon') {
-    const polygonCoordinates = contribution.geometry
-      .coordinates[0] as Position[];
-    return centerOfMass(multiPoint(polygonCoordinates)).geometry?.coordinates;
-  } else if (contribution.geometry.type === 'Point') {
-    return [
-      contribution.geometry.coordinates[0],
-      contribution.geometry.coordinates[1],
-    ];
+  if (contribution.geometry) {
+    if (contribution.geometry.type === 'Polygon') {
+      const polygonCoordinates = contribution.geometry
+        .coordinates[0] as Position[];
+      return centerOfMass(multiPoint(polygonCoordinates)).geometry?.coordinates;
+    } else if (contribution.geometry.type === 'Point') {
+      return [
+        contribution.geometry.coordinates[0],
+        contribution.geometry.coordinates[1],
+      ];
+    }
   } else return [contribution.geoLongitude, contribution.geoLatitude];
 };
 
