@@ -28,12 +28,13 @@ import GeocoderArcGIS from 'geocoder-arcgis';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, UnitTypes } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ProjectCreationTabs } from '..';
 import {
   BasicDetailsProps,
-  Project,
+  ProfileProjectConservation,
+  ProfileProjectTrees,
   ViewPort,
 } from '../../../common/types/project';
 
@@ -48,19 +49,17 @@ type FormData = {
   longitude: string;
   metadata: {
     visitorAssistance: boolean;
+    ecosystem: string;
   };
 };
 
 type TreeFormData = FormData & {
   classification: string;
   countTarget: string;
+  unitType: 'tree' | 'm2';
 };
 
-type ConservationFormData = FormData & {
-  metadata: {
-    ecosystem: string;
-  };
-};
+type ConservationFormData = FormData;
 
 export default function BasicDetails({
   handleNext,
@@ -160,64 +159,24 @@ export default function BasicDetails({
     },
   ];
 
-  const ecosystemsType = [
-    {
-      label: ready ? t('manageProjects:tropicalMoistForest') : '',
-      value: 'tropical-moist-forests',
-    },
-    {
-      label: ready ? t('manageProjects:tropicalDryForests') : '',
-      value: 'tropical-dry-forests',
-    },
-    {
-      label: ready ? t('manageProjects:tropicalConiferousForests') : '',
-      value: 'tropical-coniferous-forests',
-    },
-    {
-      label: ready ? t('manageProjects:tropicalGrasslandsForests') : '',
-      value: 'tropical-grasslands-forests',
-    },
-    {
-      label: ready ? t('manageProjects:temperateBroadleafForests') : '',
-      value: 'temperate-broadleaf-forests',
-    },
-    {
-      label: ready ? t('manageProjects:temperateGrasslandsForests') : '',
-      value: 'temperate-grasslands-forests',
-    },
-    {
-      label: ready ? t('manageProjects:mediterraneanForests') : '',
-      value: 'mediterranean-forests',
-    },
-    {
-      label: ready ? t('manageProjects:mangroves') : '',
-      value: 'mangroves',
-    },
-    {
-      label: ready ? t('manageProjects:deserts') : '',
-      value: 'deserts',
-    },
-    {
-      label: ready ? t('manageProjects:floodedGrasslands') : '',
-      value: 'flooded-grasslands',
-    },
-    {
-      label: ready ? t('manageProjects:montaneGrasslands') : '',
-      value: 'montane-grasslands',
-    },
-    {
-      label: ready ? t('manageProjects:borealForests') : '',
-      value: 'boreal-forests',
-    },
-    {
-      label: ready ? t('manageProjects:tundra') : '',
-      value: 'tundra',
-    },
-    {
-      label: ready ? t('manageProjects:temperateConiferousForests') : '',
-      value: 'temperate-coniferous-forests',
-    },
+  const ecosystemTypes = [
+    'tropical-moist-forests',
+    'tropical-dry-forests',
+    'tropical-coniferous-forests',
+    'tropical-grasslands-forests',
+    'temperate-broadleaf-forests',
+    'temperate-coniferous-forests',
+    'temperate-grasslands-forests',
+    'mediterranean-forests',
+    'mangroves',
+    'deserts',
+    'flooded-grasslands',
+    'montane-grasslands',
+    'boreal-forests',
+    'tundra',
   ];
+
+  const unitTypeOptions: UnitTypes[] = ['tree', 'm2'];
 
   // Default Form Fields
   const defaultBasicDetails =
@@ -225,23 +184,24 @@ export default function BasicDetails({
       ? {
           name: '',
           slug: '',
-          classification: '',
-          countTarget: '',
           website: '',
           description: '',
           acceptDonations: false,
           unitCost: '',
-          publish: false,
-          metadata: {
-            visitorAssistance: false,
-          },
+          unitType: '',
           latitude: '',
           longitude: '',
+          metadata: {
+            ecosystem: '',
+            visitorAssistance: false,
+          },
+          classification: '',
+          countTarget: '',
         }
       : {
-          // purpose: 'conservation',
           name: '',
           slug: '',
+          website: '',
           description: '',
           acceptDonations: false,
           unitCost: '',
@@ -274,8 +234,6 @@ export default function BasicDetails({
     }
   }, [router]);
 
-  // const treeCost = watch('treeCost');
-
   React.useEffect(() => {
     if (projectDetails) {
       const basicDetails =
@@ -283,36 +241,40 @@ export default function BasicDetails({
           ? {
               name: projectDetails.name,
               slug: projectDetails.slug,
-              classification: projectDetails.classification,
-              countTarget: projectDetails.countTarget,
-              website: projectDetails.website,
+              website: projectDetails.website || '',
               description: projectDetails.description,
               acceptDonations: projectDetails.acceptDonations,
+              unitType: projectDetails.unitType,
               unitCost: getFormattedNumber(
                 i18n.language,
                 projectDetails.unitCost || 0
               ),
+              latitude: projectDetails.geoLatitude.toString(),
+              longitude: projectDetails.geoLongitude.toString(),
               metadata: {
-                visitorAssistance: projectDetails?.metadata?.visitorAssistance,
+                visitorAssistance:
+                  projectDetails.metadata.visitorAssistance || false,
+                ecosystem: projectDetails.metadata.ecosystem || '',
               },
-              latitude: projectDetails.geoLatitude,
-              longitude: projectDetails.geoLongitude,
+              classification: projectDetails.classification || '',
+              countTarget: projectDetails.countTarget || '',
             }
           : {
               name: projectDetails.name,
               slug: projectDetails.slug,
-              website: projectDetails.website,
+              website: projectDetails.website || '',
               description: projectDetails.description,
               acceptDonations: projectDetails.acceptDonations,
               unitCost: getFormattedNumber(
                 i18n.language,
                 projectDetails.unitCost || 0
               ),
-              latitude: projectDetails.geoLatitude,
-              longitude: projectDetails.geoLongitude,
+              latitude: projectDetails.geoLatitude.toString(),
+              longitude: projectDetails.geoLongitude.toString(),
               metadata: {
-                visitorAssistance: projectDetails?.metadata?.visitorAssistance,
-                ecosystem: projectDetails?.metadata?.ecosystem,
+                visitorAssistance:
+                  projectDetails.metadata.visitorAssistance || false,
+                ecosystem: projectDetails.metadata.ecosystem || '',
               },
             };
       if (projectDetails.geoLongitude && projectDetails.geoLatitude) {
@@ -341,8 +303,18 @@ export default function BasicDetails({
         ? {
             name: data.name,
             slug: data.slug,
+            website: data.website,
+            description: data.description,
+            acceptDonations: data.acceptDonations,
+            unitCost: data.unitCost
+              ? parseNumber(i18n.language, Number(data.unitCost))
+              : undefined,
+            unitType: (data as TreeFormData).unitType,
+            currency: 'EUR',
             classification: (data as TreeFormData).classification,
+            countTarget: Number((data as TreeFormData).countTarget),
             metadata: {
+              ecosystem: data.metadata.ecosystem,
               visitorAssistance: data.metadata.visitorAssistance,
             },
             geometry: {
@@ -352,20 +324,22 @@ export default function BasicDetails({
                 parseFloat(data.latitude),
               ],
             },
-            countTarget: Number((data as TreeFormData).countTarget),
-            website: data.website,
-            description: data.description,
-            acceptDonations: data.acceptDonations,
-            unitCost: data.unitCost
-              ? parseNumber(i18n.language, data.unitCost)
-              : undefined,
-            currency: 'EUR',
           }
         : {
             purpose: 'conservation',
             name: data.name,
             slug: data.slug,
             website: data.website,
+            description: data.description,
+            acceptDonations: data.acceptDonations,
+            unitCost: data.unitCost
+              ? parseNumber(i18n.language, Number(data.unitCost))
+              : undefined,
+            currency: 'EUR',
+            metadata: {
+              ecosystem: data.metadata.ecosystem,
+              visitorAssistance: data.metadata.visitorAssistance,
+            },
             geometry: {
               type: 'Point',
               coordinates: [
@@ -373,27 +347,14 @@ export default function BasicDetails({
                 parseFloat(data.latitude),
               ],
             },
-            description: data.description,
-            acceptDonations: data.acceptDonations,
-            unitCost: data.unitCost
-              ? parseNumber(i18n.language, data.unitCost)
-              : undefined,
-            currency: 'EUR',
-            metadata: {
-              ecosystem: (data as ConservationFormData).metadata.ecosystem,
-              visitorAssistance: data.metadata.visitorAssistance,
-            },
           };
 
     // Check if GUID is set use update instead of create project
     if (projectGUID) {
       try {
-        const res = await putAuthenticatedRequest<Project>(
-          `/app/projects/${projectGUID}`,
-          submitData,
-          token,
-          logoutUser
-        );
+        const res = await putAuthenticatedRequest<
+          ProfileProjectTrees | ProfileProjectConservation
+        >(`/app/projects/${projectGUID}`, submitData, token, logoutUser);
         setProjectDetails(res);
         setIsUploadingData(false);
         handleNext(ProjectCreationTabs.PROJECT_MEDIA);
@@ -403,12 +364,9 @@ export default function BasicDetails({
       }
     } else {
       try {
-        const res = await postAuthenticatedRequest<Project>(
-          `/app/projects`,
-          submitData,
-          token,
-          logoutUser
-        );
+        const res = await postAuthenticatedRequest<
+          ProfileProjectTrees | ProfileProjectConservation
+        >(`/app/projects`, submitData, token, logoutUser);
         setProjectGUID(res.id);
         setProjectDetails(res);
         router.push(`/profile/projects/${res.id}?type=media`);
@@ -419,6 +377,7 @@ export default function BasicDetails({
       }
     }
   };
+
   const geocoder = new GeocoderArcGIS(
     process.env.ESRI_CLIENT_SECRET
       ? {
@@ -427,6 +386,7 @@ export default function BasicDetails({
         }
       : {}
   );
+
   return ready ? (
     <CenteredContainer>
       <StyledForm>
@@ -449,27 +409,34 @@ export default function BasicDetails({
           />
           <InlineFormDisplayGroup>
             <Controller
-              name="slug"
+              name="metadata.ecosystem"
+              rules={{
+                required: t('manageProjects:ecosystemType'),
+              }}
               control={control}
-              rules={{ required: t('manageProjects:slugValidation') }}
-              render={({ field: { onChange, onBlur, value } }) => (
+              render={({ field: { onChange, value, onBlur } }) => (
                 <TextField
-                  label={t('manageProjects:slug')}
+                  label={t('manageProjects:ecosystem')}
                   variant="outlined"
-                  InputProps={{
-                    startAdornment: (
-                      <p className={styles.inputStartAdornment}>pp.eco/</p>
-                    ),
-                  }}
+                  select
                   onChange={onChange}
                   value={value}
                   onBlur={onBlur}
-                  error={errors.slug !== undefined}
-                  helperText={errors.slug !== undefined && errors.slug.message}
-                />
+                  error={errors.metadata?.ecosystem !== undefined}
+                  helperText={
+                    errors.metadata?.ecosystem !== undefined &&
+                    errors.metadata.ecosystem.message
+                  }
+                >
+                  {ecosystemTypes.map((ecosystem) => (
+                    <MenuItem key={ecosystem} value={ecosystem}>
+                      {t(`manageProjects:ecosystemTypes.${ecosystem}`)}
+                    </MenuItem>
+                  ))}
+                </TextField>
               )}
             />
-            {purpose === 'trees' ? (
+            {purpose === 'trees' && (
               <Controller
                 name="classification"
                 rules={{
@@ -498,65 +465,37 @@ export default function BasicDetails({
                   </TextField>
                 )}
               />
-            ) : (
+            )}
+          </InlineFormDisplayGroup>
+          {purpose === 'trees' && (
+            <InlineFormDisplayGroup>
               <Controller
-                name="metadata.ecosystem"
+                name="unitType"
                 rules={{
-                  required: t('manageProjects:ecosystemType'),
+                  required: t('manageProjects:unitTypeRequired'),
                 }}
                 control={control}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
-                    label={t('manageProjects:ecosystems')}
+                    label={t('manageProjects:unitType')}
                     variant="outlined"
                     select
                     onChange={onChange}
                     value={value}
                     onBlur={onBlur}
-                    error={errors.metadata?.ecosystem !== undefined}
+                    error={errors.unitType !== undefined}
                     helperText={
-                      errors.metadata?.ecosystem !== undefined &&
-                      errors.metadata.ecosystem.message
+                      errors.unitType !== undefined && errors.unitType.message
                     }
                   >
-                    {ecosystemsType.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
+                    {unitTypeOptions.map((unitType) => (
+                      <MenuItem key={unitType} value={unitType}>
+                        {t(`manageProjects:unitTypes.${unitType}`)}
                       </MenuItem>
                     ))}
                   </TextField>
                 )}
               />
-            )}
-          </InlineFormDisplayGroup>
-          <InlineFormDisplayGroup>
-            <Controller
-              name="website"
-              control={control}
-              rules={{
-                required: t('manageProjects:websiteValidationRequired'),
-                pattern: {
-                  //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
-                  value:
-                    /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
-                  message: t('manageProjects:websiteValidationInvalid'),
-                },
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextField
-                  label={t('manageProjects:website')}
-                  variant="outlined"
-                  onChange={onChange}
-                  value={value}
-                  onBlur={onBlur}
-                  error={errors.website !== undefined}
-                  helperText={
-                    errors.website !== undefined && errors.website.message
-                  }
-                />
-              )}
-            />
-            {purpose === 'trees' && (
               <Controller
                 name="countTarget"
                 control={control}
@@ -584,7 +523,56 @@ export default function BasicDetails({
                   />
                 )}
               />
-            )}
+            </InlineFormDisplayGroup>
+          )}
+          <InlineFormDisplayGroup>
+            <Controller
+              name="slug"
+              control={control}
+              rules={{ required: t('manageProjects:slugValidation') }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextField
+                  label={t('manageProjects:slug')}
+                  variant="outlined"
+                  InputProps={{
+                    startAdornment: (
+                      <p className={styles.inputStartAdornment}>pp.eco/</p>
+                    ),
+                  }}
+                  onChange={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                  error={errors.slug !== undefined}
+                  helperText={errors.slug !== undefined && errors.slug.message}
+                />
+              )}
+            />
+            <Controller
+              name="website"
+              control={control}
+              rules={{
+                required: t('manageProjects:websiteValidationRequired'),
+                pattern: {
+                  //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
+                  value:
+                    /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
+                  message: t('manageProjects:websiteValidationInvalid'),
+                },
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextField
+                  label={t('manageProjects:website')}
+                  variant="outlined"
+                  onChange={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                  error={errors.website !== undefined}
+                  helperText={
+                    errors.website !== undefined && errors.website.message
+                  }
+                />
+              )}
+            />
           </InlineFormDisplayGroup>
           <Controller
             name="description"
@@ -649,20 +637,15 @@ export default function BasicDetails({
                 rules={{
                   required: {
                     value: acceptDonations,
-                    message: t('manageProjects:treeCostValidaitonRequired'),
+                    message: t('manageProjects:unitCostRequired'),
                   },
                   validate: (value) =>
-                    parseNumber(i18n.language, value) > 0 &&
-                    parseNumber(i18n.language, value) <= 100,
+                    parseNumber(i18n.language, Number(value)) > 0 &&
+                    parseNumber(i18n.language, Number(value)) <= 100,
                 }}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
-                    label={
-                      router.query.purpose === 'trees' ||
-                      projectDetails?.purpose === 'trees'
-                        ? t('manageProjects:unitCost')
-                        : t('manageProjects:unitCostConservation')
-                    }
+                    label={t('manageProjects:unitCost')}
                     variant="outlined"
                     type="number"
                     placeholder={'0'}
@@ -681,12 +664,7 @@ export default function BasicDetails({
                     helperText={
                       errors.unitCost !== undefined &&
                       (errors.unitCost.message ||
-                        t(
-                          router.query.purpose === 'trees' ||
-                            projectDetails?.purpose === 'trees'
-                            ? 'manageProjects:treeCostValidation'
-                            : 'manageProjects:conservationCostValidation'
-                        ))
+                        t('manageProjects:invalidUnitCost'))
                     }
                   />
                 )}
@@ -749,8 +727,8 @@ export default function BasicDetails({
                   transitionInterpolator: new FlyToInterpolator(),
                   transitionEasing: d3.easeCubic,
                 });
-                setValue('latitude', latLong.latitude);
-                setValue('longitude', latLong.longitude);
+                setValue('latitude', latLong.latitude.toString());
+                setValue('longitude', latLong.longitude.toString());
               }}
             >
               {projectCoords ? (

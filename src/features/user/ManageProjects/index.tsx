@@ -19,7 +19,11 @@ import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import { handleError, APIError } from '@planet-sdk/common';
 import DashboardView from '../../common/Layout/DashboardView';
 import styles from '../../../../src/features/user/ManageProjects/StepForm.module.scss';
-import { Project, ManageProjectsProps } from '../../common/types/project';
+import {
+  ManageProjectsProps,
+  ProfileProjectTrees,
+  ProfileProjectConservation,
+} from '../../common/types/project';
 
 export enum ProjectCreationTabs {
   PROJECT_TYPE = 0,
@@ -51,8 +55,8 @@ export default function ManageProjects({
   );
   const [tablist, setTabList] = React.useState<TabItem[]>([]);
   const [projectDetails, setProjectDetails] = React.useState<
-    Project | undefined
-  >(undefined);
+    ProfileProjectTrees | ProfileProjectConservation | null
+  >(null);
 
   const formRouteHandler = (val: number) => {
     if (router.query.purpose) return;
@@ -149,11 +153,9 @@ export default function ManageProjects({
 
     const fetchProjectDetails = async () => {
       try {
-        const res = await getAuthenticatedRequest(
-          `/app/profile/projects/${projectGUID}`,
-          token,
-          logoutUser
-        );
+        const res = await getAuthenticatedRequest<
+          ProfileProjectTrees | ProfileProjectConservation
+        >(`/app/profile/projects/${projectGUID}`, token, logoutUser);
         setProjectDetails(res);
       } catch (err) {
         setErrors(handleError(err as APIError));
@@ -277,7 +279,11 @@ export default function ManageProjects({
             setProjectGUID={setProjectGUID}
             projectGUID={projectGUID}
             purpose={
-              project?.purpose ? project?.purpose : router.query?.purpose
+              project !== undefined
+                ? project.purpose
+                : router.query.purpose === 'conservation'
+                ? 'conservation'
+                : 'trees'
             }
           />
         );

@@ -277,7 +277,7 @@
   margin: 0 auto;
 }
 
-.plantingSeasons {
+.multiSelectField {
   border-radius: 10px;
   background-color: $backgroundColorDark;
   padding: 16px;
@@ -286,7 +286,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   position: relative;
-  .plantingSeasonsLabel {
+  .multiSelectLabel {
     position: absolute;
     top: -8px;
     font-size: $fontXSmall;
@@ -330,8 +330,8 @@
   font-family: $primaryFontFamily;
   font-size: $fontXSmall;
   color: $dangerColor;
-  margin-left: 6px;
-  margin-top: 6px;
+  margin-left: 14px;
+  margin-top: 3px;
   max-width: 320px;
 }
 

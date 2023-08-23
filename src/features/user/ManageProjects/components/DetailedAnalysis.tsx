@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import styles from './../StepForm.module.scss';
@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 import { SxProps, TextField, Button, Tooltip } from '@mui/material';
 import themeProperties from '../../../../theme/themeProperties';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, InterventionTypes } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -24,8 +24,10 @@ import {
   DetailedAnalysisProps,
   SiteOwners,
   PlantingSeason,
+  ProfileProjectTrees,
+  ProfileProjectConservation,
+  InterventionOption,
 } from '../../../common/types/project';
-import { Project } from '../../../common/types/project';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -59,6 +61,33 @@ const yearDialogSx: SxProps = {
   '.MuiDialogActions-root': {
     paddingBottom: '12px',
   },
+};
+
+type FormData = {
+  employeesCount: string;
+  acquisitionYear: Date | null;
+  mainChallenge: string;
+  motivation: string;
+  longTermPlan: string;
+  siteOwnerName: string;
+};
+
+type TreeFormData = FormData & {
+  purpose: 'trees';
+  yearAbandoned: Date | null;
+  firstTreePlanted: Date | null;
+  plantingDensity: string;
+  maxPlantingDensity: string;
+  degradationYear: Date | null;
+  degradationCause: string;
+};
+
+type ConservationFormData = FormData & {
+  purpose: 'conservation';
+  areaProtected: string;
+  startingProtectionYear: Date | null;
+  actions: string;
+  benefits: string;
 };
 
 export default function DetailedAnalysis({
@@ -132,6 +161,35 @@ export default function DetailedAnalysis({
     { id: 12, title: ready ? t('common:december') : '', isSet: false },
   ]);
 
+  const [interventionOptions, setInterventionOptions] = React.useState<
+    InterventionOption[]
+  >([
+    ['assisting-seed-rain', false],
+    ['control-remove-livestock', false],
+    ['cut-suppressing-grass', false],
+    ['direct-seeding', false],
+    ['enrichment-planting', false],
+    ['establish-firebreaks', false],
+    ['fire-patrols', false],
+    ['fire-suppression-team', false],
+    ['liberating-regenerants', false],
+    ['maintenance', false],
+    ['marking-regenerants', false],
+    ['other-interventions', false],
+    ['planting-trees', false],
+    ['removal-contaminated-soil', false],
+    ['removal-invasive-species', false],
+    ['soil-improvement', false],
+    ['stop-tree-harvesting', false],
+  ]);
+
+  const [mainInterventions, setMainInterventions] = React.useState<
+    InterventionTypes[]
+  >([]);
+  const [isInterventionsMissing, setIsInterventionsMissing] = React.useState<
+    boolean | null
+  >(null);
+
   const [minDensity, setMinDensity] = React.useState<number | string | null>(0);
 
   const handleSetPlantingSeasons = (id: number) => {
@@ -151,6 +209,30 @@ export default function DetailedAnalysis({
     updatedSiteOwners[id - 1] = updatedOwner;
     setSiteOwners([...updatedSiteOwners]);
   };
+
+  const updateMainInterventions = (interventionToUpdate: InterventionTypes) => {
+    const updatedInterventions: InterventionOption[] = interventionOptions.map(
+      (interventionOption) => {
+        const [intervention, isSet] = interventionOption;
+        return intervention === interventionToUpdate
+          ? [intervention, !isSet]
+          : [intervention, isSet];
+      }
+    );
+    setIsInterventionsMissing(
+      !updatedInterventions.some(([_intervention, isSet]) => isSet === true)
+    );
+    setInterventionOptions(updatedInterventions);
+  };
+
+  useEffect(() => {
+    setMainInterventions(
+      interventionOptions
+        .filter(([_intervention, isSet]) => isSet)
+        .map(([intervention, _isSet]) => intervention)
+    );
+  }, [interventionOptions]);
+
   const router = useRouter();
 
   React.useEffect(() => {
@@ -160,32 +242,31 @@ export default function DetailedAnalysis({
   });
 
   // TODO - set up better types for Form Data
-  const defaultDetailedAnalysis =
+  const defaultFormData: TreeFormData | ConservationFormData =
     purpose === 'trees'
       ? {
+          purpose: 'trees',
           yearAbandoned: new Date(),
-          firstTreePlanted: '',
+          firstTreePlanted: null,
           plantingDensity: '',
           maxPlantingDensity: '',
           employeesCount: '',
           mainChallenge: '',
-          siteOwnerType: '',
           siteOwnerName: '',
-          acquisitionYear: '',
-          degradationYear: '',
+          acquisitionYear: null,
+          degradationYear: null,
           degradationCause: '',
           longTermPlan: '',
-          plantingSeasons: '',
           motivation: '',
         }
       : {
+          purpose: 'conservation',
           actions: '',
           benefits: '',
           employeesCount: '',
-          acquisitionYear: '',
-          startingProtectionYear: '',
+          acquisitionYear: null,
+          startingProtectionYear: null,
           areaProtected: '',
-          siteOwnerType: '', //TODO - Simplify site owner logic
           siteOwnerName: '',
           mainChallenge: '',
           longTermPlan: '',
@@ -197,10 +278,10 @@ export default function DetailedAnalysis({
     control,
     reset,
     formState: { errors },
-  } = useForm({
+  } = useForm<TreeFormData | ConservationFormData>({
     mode: 'onBlur',
     // TODO - set up better form types to resolve this error
-    defaultValues: defaultDetailedAnalysis,
+    defaultValues: defaultFormData,
   });
 
   const owners: string[] = [];
@@ -219,21 +300,34 @@ export default function DetailedAnalysis({
   }
   // for validating maxplanting density value > planting density value
   React.useEffect(() => {
-    if (projectDetails && router.query.type === 'detail-analysis') {
+    if (
+      projectDetails &&
+      projectDetails.purpose === 'trees' &&
+      router.query.type === 'detail-analysis'
+    ) {
       setMinDensity(projectDetails.metadata.plantingDensity);
     }
   }, [router.query.type]);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: TreeFormData | ConservationFormData) => {
+    if (mainInterventions.length === 0) {
+      setIsInterventionsMissing(true);
+      return;
+    }
     setIsUploadingData(true);
     const submitData =
-      purpose === 'trees'
+      data.purpose === 'trees'
         ? {
             metadata: {
               degradationCause: data.degradationCause,
-              degradationYear: data.degradationYear.getFullYear(),
+              degradationYear: data.degradationYear
+                ? data.degradationYear.getFullYear()
+                : null,
               employeesCount: data.employeesCount,
-              acquisitionYear: data.acquisitionYear.getFullYear(),
+              acquisitionYear: data.acquisitionYear
+                ? data.acquisitionYear.getFullYear()
+                : null,
+              mainInterventions: mainInterventions,
               longTermPlan: data.longTermPlan,
               mainChallenge: data.mainChallenge,
               motivation: data.motivation,
@@ -242,21 +336,28 @@ export default function DetailedAnalysis({
               plantingSeasons: months,
               siteOwnerName: data.siteOwnerName,
               siteOwnerType: owners,
-              yearAbandoned: data.yearAbandoned.getFullYear()
+              yearAbandoned: data.yearAbandoned
                 ? data.yearAbandoned.getFullYear()
                 : null,
-              firstTreePlanted: `${data.firstTreePlanted.getFullYear()}-${
-                data.firstTreePlanted.getMonth() + 1
-              }-${data.firstTreePlanted.getDate()}`,
+              firstTreePlanted: data.firstTreePlanted
+                ? `${data.firstTreePlanted.getFullYear()}-${
+                    data.firstTreePlanted.getMonth() + 1
+                  }-${data.firstTreePlanted.getDate()}`
+                : null,
             },
           }
         : {
             metadata: {
-              acquisitionYear: data.acquisitionYear.getFullYear(),
+              acquisitionYear: data.acquisitionYear
+                ? data.acquisitionYear.getFullYear()
+                : null,
               activitySeasons: months,
               areaProtected: data.areaProtected,
               employeesCount: data.employeesCount,
-              startingProtectionYear: data.startingProtectionYear.getFullYear(),
+              mainInterventions: mainInterventions,
+              startingProtectionYear: data.startingProtectionYear
+                ? data.startingProtectionYear.getFullYear()
+                : null,
               landOwnershipType: owners,
               actions: data.actions,
               mainChallenge: data.mainChallenge,
@@ -268,14 +369,12 @@ export default function DetailedAnalysis({
           };
 
     try {
-      const res = await putAuthenticatedRequest<Project>(
-        `/app/projects/${projectGUID}`,
-        submitData,
-        token,
-        logoutUser
-      );
+      const res = await putAuthenticatedRequest<
+        ProfileProjectTrees | ProfileProjectConservation
+      >(`/app/projects/${projectGUID}`, submitData, token, logoutUser);
       setProjectDetails(res);
       setIsUploadingData(false);
+      setIsInterventionsMissing(null);
       handleNext(ProjectCreationTabs.PROJECT_SITES);
     } catch (err) {
       setIsUploadingData(false);
@@ -287,90 +386,60 @@ export default function DetailedAnalysis({
 
   React.useEffect(() => {
     if (projectDetails) {
-      const detailedAnalysis =
-        purpose === 'trees'
+      const { metadata, purpose: projectPurpose } = projectDetails;
+      const formData: TreeFormData | ConservationFormData =
+        projectPurpose === 'trees'
           ? {
-              acquisitionYear: projectDetails?.metadata?.acquisitionYear
-                ? new Date(
-                    new Date().setFullYear(
-                      projectDetails?.metadata?.acquisitionYear
-                    )
-                  )
+              purpose: 'trees',
+              yearAbandoned: metadata.yearAbandoned
+                ? new Date(new Date().setFullYear(metadata.yearAbandoned))
                 : new Date(),
-              yearAbandoned: projectDetails?.metadata?.yearAbandoned
-                ? new Date(
-                    new Date().setFullYear(
-                      projectDetails?.metadata?.yearAbandoned
-                    )
-                  )
+              firstTreePlanted: metadata.firstTreePlanted
+                ? new Date(metadata.firstTreePlanted)
                 : new Date(),
-              plantingSeasons: projectDetails?.metadata?.plantingSeasons,
-              plantingDensity: projectDetails?.metadata?.plantingDensity,
-              maxPlantingDensity: projectDetails?.metadata?.maxPlantingDensity,
-              employeesCount: projectDetails?.metadata?.employeesCount,
-              siteOwnerName: projectDetails?.metadata?.siteOwnerName,
-              degradationYear: projectDetails?.metadata?.degradationYear
-                ? new Date(
-                    new Date().setFullYear(
-                      projectDetails?.metadata?.degradationYear
-                    )
-                  )
+              plantingDensity: metadata.plantingDensity?.toString() || '',
+              maxPlantingDensity: metadata.maxPlantingDensity?.toString() || '',
+              employeesCount: metadata.employeesCount?.toString() || '',
+              mainChallenge: metadata.mainChallenge || '',
+              siteOwnerName: metadata.siteOwnerName || '',
+              acquisitionYear: metadata.acquisitionYear
+                ? new Date(new Date().setFullYear(metadata.acquisitionYear))
                 : new Date(),
-              degradationCause: projectDetails?.metadata?.degradationCause,
-
-              firstTreePlanted: projectDetails?.metadata?.firstTreePlanted
-                ? new Date(projectDetails?.metadata?.firstTreePlanted)
+              degradationYear: metadata.degradationYear
+                ? new Date(new Date().setFullYear(metadata.degradationYear))
                 : new Date(),
-              mainChallenge: projectDetails?.metadata?.mainChallenge,
-              longTermPlan: projectDetails?.metadata?.longTermPlan,
-              motivation: projectDetails?.metadata?.motivation,
+              degradationCause: metadata.degradationCause || '',
+              longTermPlan: metadata.longTermPlan || '',
+              motivation: metadata.motivation || '',
             }
           : {
-              areaProtected: projectDetails?.metadata?.areaProtected,
-              activitySeasons: projectDetails?.metadata?.plantingSeasons,
-              startingProtectionYear: projectDetails?.metadata
-                ?.startingProtectionYear
+              purpose: 'conservation',
+              actions: metadata.actions || '',
+              benefits: metadata.benefits || '',
+              employeesCount: metadata.employeesCount?.toString() || '',
+              acquisitionYear: metadata.acquisitionYear
+                ? new Date(new Date().setFullYear(metadata.acquisitionYear))
+                : new Date(),
+              startingProtectionYear: metadata.startingProtectionYear
                 ? new Date(
-                    new Date().setFullYear(
-                      projectDetails?.metadata?.startingProtectionYear
-                    )
+                    new Date().setFullYear(metadata.startingProtectionYear)
                   )
                 : new Date(),
-              acquisitionYear: projectDetails?.metadata?.acquisitionYear
-                ? new Date(
-                    new Date().setFullYear(
-                      projectDetails.metadata?.acquisitionYear
-                    )
-                  )
-                : new Date(),
-
-              employeesCount: projectDetails?.metadata?.employeesCount,
-              mainChallenge: projectDetails?.metadata?.mainChallenge,
-              siteOwnerName: projectDetails?.metadata?.siteOwnerName,
-              landOwnershipType: projectDetails?.metadata?.landOwnershipType,
-              longTermPlan: projectDetails?.metadata?.longTermPlan,
-              // ownershipType: projectDetails?.metadata?.ownershipType,
-              benefits: projectDetails?.metadata?.benefits,
-              actions: projectDetails?.metadata?.actions,
-              motivation: projectDetails?.metadata?.motivation,
+              areaProtected: metadata.areaProtected?.toString() || '',
+              mainChallenge: metadata.mainChallenge || '',
+              siteOwnerName: metadata.siteOwnerName || '',
+              longTermPlan: metadata.longTermPlan || '',
+              motivation: metadata.motivation || '',
             };
       // set planting seasons
 
-      if (purpose === 'trees') {
-        if (
-          projectDetails?.metadata?.plantingSeasons &&
-          projectDetails?.metadata?.plantingSeasons.length > 0
-        ) {
+      if (projectPurpose === 'trees') {
+        if (metadata.plantingSeasons && metadata.plantingSeasons.length > 0) {
           const updatedPlantingSeasons = plantingSeasons;
-          for (
-            let i = 0;
-            i < projectDetails.metadata?.plantingSeasons.length;
-            i++
-          ) {
+          for (let i = 0; i < metadata.plantingSeasons.length; i++) {
             for (let j = 0; j < updatedPlantingSeasons.length; j++) {
               if (
-                updatedPlantingSeasons[j].id ===
-                projectDetails?.metadata?.plantingSeasons[i]
+                updatedPlantingSeasons[j].id === metadata.plantingSeasons[i]
               ) {
                 updatedPlantingSeasons[j].isSet = true;
               }
@@ -379,20 +448,12 @@ export default function DetailedAnalysis({
           setPlantingSeasons(updatedPlantingSeasons);
         }
       } else {
-        if (
-          projectDetails?.metadata?.activitySeasons &&
-          projectDetails?.metadata?.activitySeasons.length > 0
-        ) {
+        if (metadata.activitySeasons && metadata.activitySeasons.length > 0) {
           const updatedActivitySeasons = plantingSeasons;
-          for (
-            let i = 0;
-            i < projectDetails?.metadata?.activitySeasons.length;
-            i++
-          ) {
+          for (let i = 0; i < metadata.activitySeasons.length; i++) {
             for (let j = 0; j < updatedActivitySeasons.length; j++) {
               if (
-                updatedActivitySeasons[j].id ===
-                projectDetails?.metadata?.activitySeasons[i]
+                updatedActivitySeasons[j].id === metadata.activitySeasons[i]
               ) {
                 updatedActivitySeasons[j].isSet = true;
               }
@@ -404,22 +465,12 @@ export default function DetailedAnalysis({
 
       // set owner type
 
-      if (purpose === 'trees') {
-        if (
-          projectDetails?.metadata?.siteOwnerType &&
-          projectDetails?.metadata?.siteOwnerType.length > 0
-        ) {
+      if (projectPurpose === 'trees') {
+        if (metadata.siteOwnerType && metadata.siteOwnerType.length > 0) {
           const newSiteOwners = siteOwners;
-          for (
-            let i = 0;
-            i < projectDetails?.metadata?.siteOwnerType.length;
-            i++
-          ) {
+          for (let i = 0; i < metadata.siteOwnerType.length; i++) {
             for (let j = 0; j < newSiteOwners.length; j++) {
-              if (
-                newSiteOwners[j].value ===
-                projectDetails?.metadata?.siteOwnerType[i]
-              ) {
+              if (newSiteOwners[j].value === metadata.siteOwnerType[i]) {
                 newSiteOwners[j].isSet = true;
               }
             }
@@ -450,7 +501,18 @@ export default function DetailedAnalysis({
         }
       }
 
-      reset(detailedAnalysis);
+      // set main interventions
+      if (metadata.mainInterventions.length > 0) {
+        const initialInterventionOptions: InterventionOption[] =
+          interventionOptions.map(([intervention, isSet]) =>
+            metadata.mainInterventions.includes(intervention)
+              ? [intervention, true]
+              : [intervention, isSet]
+          );
+        setInterventionOptions(initialInterventionOptions);
+      }
+
+      reset(formData);
     }
   }, [projectDetails]);
 
@@ -481,6 +543,7 @@ export default function DetailedAnalysis({
                         label={t('manageProjects:yearOfAbandonment')}
                         renderInput={(props) => (
                           <TextField
+                            required
                             {...props}
                             InputProps={{
                               endAdornment: (
@@ -524,7 +587,7 @@ export default function DetailedAnalysis({
                         value={value}
                         onChange={onChange}
                         renderInput={(props) => (
-                          <TextField {...props} className="besideInfoTag" />
+                          <TextField {...props} required />
                         )}
                         disableFuture
                         minDate={new Date(new Date().setFullYear(1950))}
@@ -548,10 +611,11 @@ export default function DetailedAnalysis({
                   required: t('manageProjects:validation', {
                     fieldName: t('manageProjects:areaProtected'),
                   }),
-                  validate: (value) => parseInt(value, 10) > 0,
+                  validate: (value) => (value ? parseInt(value, 10) > 0 : true),
                 }}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
+                    required
                     label={t('manageProjects:areaProtected')}
                     variant="outlined"
                     type="number"
@@ -601,6 +665,7 @@ export default function DetailedAnalysis({
                       onChange={onChange}
                       renderInput={(props) => (
                         <TextField
+                          required
                           {...props}
                           error={errors.startingProtectionYear !== undefined}
                           helperText={
@@ -622,7 +687,6 @@ export default function DetailedAnalysis({
               </LocalizationProvider>
             </InlineFormDisplayGroup>
           )}
-
           <InlineFormDisplayGroup>
             <Controller
               name="employeesCount"
@@ -635,6 +699,7 @@ export default function DetailedAnalysis({
               }}
               render={({ field: { onChange, value, onBlur } }) => (
                 <TextField
+                  required
                   label={t('manageProjects:employeeCount')}
                   variant="outlined"
                   onChange={(e) => {
@@ -686,6 +751,7 @@ export default function DetailedAnalysis({
                     onChange={onChange}
                     renderInput={(props) => (
                       <TextField
+                        required
                         {...props}
                         error={errors.startingProtectionYear !== undefined}
                         helperText={
@@ -706,9 +772,52 @@ export default function DetailedAnalysis({
               />
             </LocalizationProvider>
           </InlineFormDisplayGroup>
-
-          <div className={styles.plantingSeasons}>
-            <p className={styles.plantingSeasonsLabel}>
+          <div className={styles.multiSelectContainer}>
+            <div className={styles.multiSelectField}>
+              <p className={styles.multiSelectLabel}>
+                {t('manageProjects:labelMainInterventions') + '*'}
+              </p>
+              {interventionOptions.map(([intervention, isSet]) => {
+                return (
+                  <div
+                    className={styles.multiSelectInput}
+                    key={intervention}
+                    onClick={() => updateMainInterventions(intervention)}
+                  >
+                    <div
+                      className={`${styles.multiSelectInputCheck} ${
+                        isSet ? styles.multiSelectInputCheckTrue : ''
+                      }`}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="13.02"
+                        height="9.709"
+                        viewBox="0 0 13.02 9.709"
+                      >
+                        <path
+                          id="check-solid"
+                          d="M4.422,74.617.191,70.385a.651.651,0,0,1,0-.921l.921-.921a.651.651,0,0,1,.921,0l2.851,2.85,6.105-6.105a.651.651,0,0,1,.921,0l.921.921a.651.651,0,0,1,0,.921L5.343,74.617a.651.651,0,0,1-.921,0Z"
+                          transform="translate(0 -65.098)"
+                          fill="#fff"
+                        />
+                      </svg>
+                    </div>
+                    <p style={{ color: 'var(--dark)' }}>
+                      {t(`manageProjects:interventionTypes.${intervention}`)}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+            {isInterventionsMissing === true && (
+              <span className={styles.formErrors}>
+                {t('manageProjects:missingInterventionsError')}
+              </span>
+            )}
+          </div>
+          <div className={styles.multiSelectField}>
+            <p className={styles.multiSelectLabel}>
               {' '}
               {purpose === 'trees'
                 ? t('manageProjects:labelRestorationSeasons')
@@ -747,7 +856,6 @@ export default function DetailedAnalysis({
               );
             })}
           </div>
-
           {purpose === 'trees' ? (
             <>
               <InlineFormDisplayGroup spacing="none">
@@ -756,8 +864,8 @@ export default function DetailedAnalysis({
                   name="plantingDensity"
                   control={control}
                   rules={{
-                    required: t('manageProjects:plantingDensityValidation'),
-                    validate: (value) => parseInt(value, 10) > 1,
+                    validate: (value) =>
+                      value.length === 0 || parseInt(value, 10) > 1,
                   }}
                   render={({ field: { onChange, value, onBlur } }) => (
                     <TextField
@@ -866,6 +974,8 @@ export default function DetailedAnalysis({
                   label={t('manageProjects:forestProtectionType')}
                   variant="outlined"
                   multiline
+                  minRows={2}
+                  maxRows={4}
                   onChange={onChange}
                   value={value}
                   onBlur={onBlur}
@@ -889,6 +999,8 @@ export default function DetailedAnalysis({
                     label={t('manageProjects:causeOfDegradation')}
                     variant="outlined"
                     multiline
+                    minRows={2}
+                    maxRows={4}
                     onChange={onChange}
                     value={value}
                     onBlur={onBlur}
@@ -924,6 +1036,8 @@ export default function DetailedAnalysis({
                   label={t('manageProjects:conservationImpacts')}
                   variant="outlined"
                   multiline
+                  minRows={2}
+                  maxRows={4}
                   onChange={onChange}
                   value={value}
                   onBlur={onBlur}
@@ -936,85 +1050,111 @@ export default function DetailedAnalysis({
               )}
             />
           )}
-
-          <InlineFormDisplayGroup>
-            {/* the main challenge the project is facing (max. 300 characters) */}
-            <Controller
-              name="mainChallenge"
-              control={control}
-              rules={{
-                maxLength: {
-                  value: 300,
-                  message: t('manageProjects:max300Chars'),
-                },
-              }}
-              render={({ field: { onChange, value, onBlur } }) => (
-                <TextField
-                  label={t('manageProjects:mainChallenge')}
-                  variant="outlined"
-                  multiline
-                  onChange={onChange}
-                  value={value}
-                  onBlur={onBlur}
-                  error={errors.mainChallenge !== undefined}
-                  helperText={
-                    errors.mainChallenge !== undefined &&
-                    errors.mainChallenge.message
-                  }
-                  InputProps={{
-                    endAdornment: (
-                      <Tooltip
-                        title={t('manageProjects:mainChallengeInfo')}
-                        arrow
-                      >
-                        <span className={styles.tooltipIcon}>
-                          <InfoIcon />
-                        </span>
-                      </Tooltip>
-                    ),
-                  }}
-                />
-              )}
-            />
-
-            {/* the reason this project has been created (max. 300 characters) */}
-            <Controller
-              name="motivation"
-              control={control}
-              rules={{
-                maxLength: {
-                  value: 300,
-                  message: t('manageProjects:max300Chars'),
-                },
-              }}
-              render={({ field: { onChange, value, onBlur } }) => (
-                <TextField
-                  label={t('manageProjects:whyThisSite')}
-                  variant="outlined"
-                  multiline
-                  onChange={onChange}
-                  value={value}
-                  onBlur={onBlur}
-                  error={errors.motivation !== undefined}
-                  helperText={
-                    errors.motivation !== undefined && errors.motivation.message
-                  }
-                  InputProps={{
-                    endAdornment: (
-                      <Tooltip title={t('manageProjects:max300Chars')} arrow>
-                        <span className={styles.tooltipIcon}>
-                          <InfoIcon />
-                        </span>
-                      </Tooltip>
-                    ),
-                  }}
-                />
-              )}
-            />
-          </InlineFormDisplayGroup>
-
-          <div className={styles.plantingSeasons}>
-            <p className={styles.plantingSeasonsLabel}>
+          {/* the main challenge the project is facing (max. 300 characters) */}
+          <Controller
+            name="mainChallenge"
+            control={control}
+            rules={{
+              maxLength: {
+                value: 300,
+                message: t('manageProjects:max300Chars'),
+              },
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                label={t('manageProjects:mainChallenge')}
+                variant="outlined"
+                multiline
+                minRows={2}
+                maxRows={4}
+                onChange={onChange}
+                value={value}
+                onBlur={onBlur}
+                error={errors.mainChallenge !== undefined}
+                helperText={
+                  errors.mainChallenge !== undefined &&
+                  errors.mainChallenge.message
+                }
+                InputProps={{
+                  endAdornment: (
+                    <Tooltip
+                      title={t('manageProjects:mainChallengeInfo')}
+                      arrow
+                    >
+                      <span className={styles.tooltipIcon}>
+                        <InfoIcon />
+                      </span>
+                    </Tooltip>
+                  ),
+                }}
+              />
+            )}
+          />
+          {/* the reason this project has been created (max. 300 characters) */}
+          <Controller
+            name="motivation"
+            control={control}
+            rules={{
+              maxLength: {
+                value: 300,
+                message: t('manageProjects:max300Chars'),
+              },
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                label={t('manageProjects:whyThisSite')}
+                variant="outlined"
+                multiline
+                minRows={2}
+                maxRows={4}
+                onChange={onChange}
+                value={value}
+                onBlur={onBlur}
+                error={errors.motivation !== undefined}
+                helperText={
+                  errors.motivation !== undefined && errors.motivation.message
+                }
+                InputProps={{
+                  endAdornment: (
+                    <Tooltip title={t('manageProjects:max300Chars')} arrow>
+                      <span className={styles.tooltipIcon}>
+                        <InfoIcon />
+                      </span>
+                    </Tooltip>
+                  ),
+                }}
+              />
+            )}
+          />
+          <Controller
+            name="longTermPlan"
+            control={control}
+            rules={{
+              maxLength: {
+                value: 300,
+                message: t('manageProjects:max300Chars'),
+              },
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                label={t('manageProjects:longTermPlan')}
+                variant="outlined"
+                multiline
+                minRows={2}
+                maxRows={4}
+                onChange={onChange}
+                value={value}
+                onBlur={onBlur}
+                error={errors.longTermPlan !== undefined}
+                helperText={
+                  errors.longTermPlan !== undefined &&
+                  errors.longTermPlan.message
+                }
+              />
+            )}
+          />
+          <div className={styles.multiSelectField}>
+            <p className={styles.multiSelectLabel}>
               {t('manageProjects:siteOwner')}
             </p>
             {siteOwners.map((owner) => {
@@ -1062,32 +1202,6 @@ export default function DetailedAnalysis({
               />
             )}
           />
-          <Controller
-            name="longTermPlan"
-            control={control}
-            rules={{
-              maxLength: {
-                value: 300,
-                message: t('manageProjects:max300Chars'),
-              },
-            }}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <TextField
-                label={t('manageProjects:longTermPlan')}
-                variant="outlined"
-                multiline
-                onChange={onChange}
-                value={value}
-                onBlur={onBlur}
-                error={errors.longTermPlan !== undefined}
-                helperText={
-                  errors.longTermPlan !== undefined &&
-                  errors.longTermPlan.message
-                }
-              />
-            )}
-          />
-
           <ProjectCertificates
             projectGUID={projectGUID}
             token={token}
