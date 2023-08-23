@@ -2,8 +2,8 @@ import { Marker } from 'react-map-gl';
 import { useTranslation } from 'next-i18next';
 import { ReactElement, useState } from 'react';
 import {
-  ConservationBlueTreeSvg,
-  PlantedTreesGreenSvg,
+  ConservationTreeSvg,
+  PlantedTreesSvg,
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import { MarkerProps } from '../../../../common/types/map';
@@ -30,7 +30,7 @@ export const TreePlantedClusterMarker = ({
           onMouseLeave={() => setShowPopUp(false)}
         >
           <div className={MyForestMapStyle.svgContainer}>
-            <PlantedTreesGreenSvg />
+            <PlantedTreesSvg color={'#219653'} />
           </div>
           <div className={MyForestMapStyle.totalTreeCount}>
             {t('me:plantedTrees', {
@@ -72,7 +72,7 @@ export const ConservAreaClusterMarker = ({
             className={MyForestMapStyle.svgContainer}
             style={{ paddingLeft: '4px' }}
           >
-            <ConservationBlueTreeSvg />
+            <ConservationTreeSvg color={'#48AADD'} />
           </div>
           <div className={MyForestMapStyle.totalTreeCount}>
             {t('me:area', {

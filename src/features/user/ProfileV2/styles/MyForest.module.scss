@@ -7,231 +7,140 @@
     padding-bottom: 120px;
 }
 
+.areaRestoredContainerActive,
+.areaRestoredContainer,
+.plantedTreesContainer,
+.plantedTreesContainerActive {
+    border:  1px solid #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    min-width: 183px;
+    cursor: pointer;
+    height: 104px;
+}
+
+.areaRestored,
+.countTrees {
+    font-weight: 700;
+    font-size: 36px;
+    padding-left: 20px;   
+}
+.countTrees {
+    padding-right: 20px;
+}
+
+.areaRestoredLabelContainer,
+.plantedTreesLabelContainer {
+    display: flex;
+    gap: 7px;
+    padding-left: 22px;
+    padding-top: 20px;
+    padding-right: 22px;
+    font-weight: bold;
+    width: max-content;
+    > .plantedTreesLabel {
+        font-size: 16px;
+    }
+}
 
 
+.plantedTreesContainer,
+.plantedTreesContainerActive {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.areaRestoredContainerActive,
+.areaRestoredContainer{
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.areaRestoredContainerActive,
+.plantedTreesContainerActive {
+    background-color: #219653;
+    color: #FFFFFF;  
+}
+
+.areaRestoredContainer,
 .plantedTreesContainer {
-    display: flex;
-    flex-direction: column;
-    background-color: #219653;
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
-    min-width: 183px;
-    cursor: pointer;
-    height: 104px;
-    >.plantedTreesLabelContainer {
-        display: flex;
-        gap: 7px;
-        padding-left: 22px;
-        padding-top: 20px;
-        padding-right: 22px;
-        font-weight: bold;
-        width: max-content;
-        > .plantedTreesLabel {
-            font-size: 16px;
-            color: #FFFFFF;
-        }
-    }
-    .countTrees {
-        font-weight: 700;
-        font-size: 36px;
-        color: #FFFFFF;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-}
-
-.plantedTreesContainerX {
-    display: flex;
-    flex-direction: column;
     background-color: #FFFFFF99;
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
-    min-width: 183px;
-    height: 104px;
-    cursor: pointer;
-    > .plantedTreesLabelContainer {
-        display: flex;
-        gap: 7px;
-        padding-left: 22px;
-        padding-top: 20px;
-        padding-right: 22px;
-        font-weight: bold;
-        width: max-content;
-        > .plantedTreesLabel {
-            font-size: 16px;
-            color: #333333;
-        }
-    }
-    .countTrees {
-        font-weight: 700;
-        font-size: 36px;
-        color: #219653;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
+    .plantedTreesLabelContainer {
+        color: #333333;
+   }   
+   .restoredUnit,
+   .areaRestored,
+   .countTrees {
+       color: #219653;
+   }
 }
 
-.areaRestoredContainer {
+.valueContainer {
     display: flex;
-    flex-direction: column;
-    background-color: #219653;
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
-    min-width: 183px;
-    width: 183px;
-    height: 104px;
-    cursor: pointer;
-    >.restoredlabelContainer {
-        display: flex;
-        gap: 7px;
-        padding-left: 22px;
-        padding-top: 20px;
-        padding-right: 22px;
-        font-weight: bold;
-        width: max-content;
-        >.restoredLabel {
-            font-size: 16px;
-            color: #FFFFFF;
-        }
-    }
-    .valueContainer {
-        display: flex;
-        gap:3px;
-        align-items: baseline;
-        .areaRestored {
-            font-weight: 700;
-            font-size: 36px;
-            color: #FFFFFF;
-            padding-left: 20px;
-        }
-        .unit{
-            color: #FFFFFF;
-            font-size: 30px;
-            font-weight: 400;
-            margin-right: 40px;
-        }
-        .svgContainer{
-            padding-right: 10px;
-        }
-    }
-}
-.areaRestoredContainerX {
-    display: flex;
-    flex-direction: column;
-    background-color: #FFFFFF99;
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
-    min-width: 183px;
-    width: 183px;
-    height: 104px;
-    cursor: pointer;
-    >.restoredlabelContainer {
-        display: flex;
-        gap: 7px;
-        padding-left: 22px;
-        padding-top: 20px;
-        padding-right: 22px;
-        font-weight: bold;
-        width: max-content;
-        >.restoredLabel {
-            font-size: 16px;
-            color: #333333;
-        }
-    }
-    .valueContainer {
-        display: flex;
-        gap:3px;
-        align-items: baseline;
-        color: #219653;
-        .areaRestored {
-            font-weight: 700;
-            font-size: 36px;
-            padding-left: 20px;
-        }
-        .unit{
-            font-size: 30px;
-            font-weight: 400;
-            margin-right: 40px;
-        }
-    }
+    align-items: center;
 }
 
-.conservedAreaContainer {
+.restoredUnit {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-right: 30px;
+    margin-left: 8px;
+    margin-top: 5px;
+}
+
+
+
+.conservedAreaButtonContainerActive,
+.conservedAreaButtonContainer {
+    border:  2px solid #FFFFFF;
     position: relative;
-    background-color: #FFFFFF99 ;
     border-radius: 12px;
     cursor: pointer;
+    max-width: fit-content;
     height: 104px;
-    > .labelContainer {
+     .labelContainer {
         display: flex;
         padding-left: 24px;
         padding-top: 20px;
         padding-right: 37px;
-        > .conservedLabel {
+         .conservedLabel {
             margin-left: 9px;
             font-weight: bold;
             font-size: 16px;
         }
     }
-  > .conservedAreaValue {
+   .conservedAreaValue {
     display: flex;
     padding-left: 20px;
     padding-right: 24px;
     align-items: center;
     justify-content: space-between;
-    >.value {
+    .value {
         font-size: 36px;
         font-weight: 700;
-        color: #48AADD;
     }
-    >.unit {
-        color:#48AADD;
-        font-size: 30px;
+    .unit {
+        font-size: 1.5rem;
         font-weight: 400;
         margin-right: 60px;
+        margin-top: 5px;
+        margin-left: 8px;
     }
   }
 }
 
-.conservedAreaContainerX {
-    position: relative;
+.conservedAreaButtonContainer {
+    background-color: #FFFFFF99;
+    color: #48AADD
+}
+
+.conservedAreaButtonContainerActive {
     background-color: #48AADD;
-    border-radius: 12px;
-    cursor: pointer;
-    height: 104px;
-    > .labelContainer {
-        display: flex;
-        padding-left: 24px;
-        padding-top: 20px;
-        padding-right: 37px;
-        > .conservedLabel {
-            margin-left: 9px;
-            font-weight: bold;
-            font-size: 16px;
-            color: #FFFFFF;
-        }
-    }
-  > .conservedAreaValue {
-    display: flex;
-    padding-left: 20px;
-    padding-right: 24px;
-    align-items: center;
-    justify-content: space-between;
-    >.value {
-        font-size: 36px;
-        font-weight: 700;
-        color: #FFFFFF;
-    }
-    >.unit {
-        color:#FFFFFF;
-        font-size: 30px;
-        font-weight: 400;
-        margin-right: 60px;
-    }
-  }
+    color: #FFFFFF; 
 }
 
 .InfoContainer {
+    border:  2px solid #FFFFFF;
     display: flex;
     flex-direction: column;
     background-color: #2196531A;
@@ -629,6 +538,14 @@
     padding-bottom: 25px;
 }
 
+.loadconservation,
+.loadTreePlantaion {
+    max-width: fit-content;
+}
+.loadconservation {
+    background-color: #48AADD !important;
+}
+
 .swipeConatiner {
     position: absolute;
     top: 625px;
@@ -658,4 +575,8 @@
     @include xsPhoneView {
         padding-left: 90px;
     }
+}
+
+.treePlantationButtonConatiner {
+    display: flex;
 }

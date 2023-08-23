@@ -1,8 +1,8 @@
 import { Marker } from 'react-map-gl';
 import { useState, ReactElement } from 'react';
 import {
-  ConservationBlueTreeSvg,
-  PlantedTreesGreenSvg,
+  ConservationTreeSvg,
+  PlantedTreesSvg,
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import { useTranslation } from 'next-i18next';
@@ -27,9 +27,9 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
           >
             <div className={MyForestMapStyle.svgContainer}>
               {geoJson.properties?.purpose === 'conservation' ? (
-                <ConservationBlueTreeSvg />
+                <ConservationTreeSvg color={'#48AADD'} />
               ) : (
-                <PlantedTreesGreenSvg />
+                <PlantedTreesSvg color={'#219653'} />
               )}
             </div>
             <div className={MyForestMapStyle.trees}>

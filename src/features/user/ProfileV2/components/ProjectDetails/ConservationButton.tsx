@@ -33,8 +33,8 @@ const ConservationButton = ({
     <div
       className={`${
         isConservedButtonActive
-          ? myForestStyles.conservedAreaContainerX
-          : myForestStyles.conservedAreaContainer
+          ? myForestStyles.conservedAreaButtonContainerActive
+          : myForestStyles.conservedAreaButtonContainer
       }`}
       onClick={handleClick}
     >

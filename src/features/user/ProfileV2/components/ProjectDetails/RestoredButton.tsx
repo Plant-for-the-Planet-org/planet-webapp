@@ -20,8 +20,8 @@ const RestoredButton = ({
     <div
       className={
         isTreePlantedButtonActive
-          ? myForestStyles.areaRestoredContainer
-          : myForestStyles.areaRestoredContainerX
+          ? myForestStyles.areaRestoredContainerActive
+          : myForestStyles.areaRestoredContainer
       }
     >
       {restoredArea === undefined ? (
@@ -30,13 +30,13 @@ const RestoredButton = ({
         </div>
       ) : (
         <>
-          <div className={myForestStyles.restoredlabelContainer}>
+          <div className={myForestStyles.areaRestoredLabelContainer}>
             <div>
               <RestoredSvg
                 color={isTreePlantedButtonActive ? 'white' : '#219653'}
               />
             </div>
-            <div className={myForestStyles.restoredLabel}>
+            <div className={myForestStyles.plantedTreesLabel}>
               {t('donate:restored')}
             </div>
           </div>
@@ -44,7 +44,7 @@ const RestoredButton = ({
             <div className={myForestStyles.areaRestored}>
               <div>{restoredArea ? restoredArea : 0}</div>
             </div>
-            <div className={myForestStyles.unit}>{'m²'}</div>
+            <div className={myForestStyles.restoredUnit}>{'m²'}</div>
             <div className={myForestStyles.svgContainer}>
               {isTreePlantedButtonActive ? (
                 <DownWardArrowSvg />

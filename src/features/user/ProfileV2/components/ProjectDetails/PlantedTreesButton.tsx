@@ -1,7 +1,4 @@
-import {
-  PlantedTreesSvg,
-  PlantedTreesGreenSvg,
-} from '../../../../../../public/assets/images/ProfilePageIcons';
+import { PlantedTreesSvg } from '../../../../../../public/assets/images/ProfilePageIcons';
 import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import { PlantedTreesButtonProps } from '../../../../common/types/myForest';
@@ -16,8 +13,8 @@ const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
     <div
       className={`${
         isTreePlantedButtonActive
-          ? myForestStyles.plantedTreesContainer
-          : myForestStyles.plantedTreesContainerX
+          ? myForestStyles.plantedTreesContainerActive
+          : myForestStyles.plantedTreesContainer
       }`}
     >
       {plantedTrees === undefined ? (
