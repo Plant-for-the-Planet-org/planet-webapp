@@ -15,9 +15,7 @@ import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
 
-interface Props {}
-
-export default function MySpecies({}: Props): ReactElement {
+export default function MySpecies(): ReactElement {
   const { t } = useTranslation(['treemapper', 'me', 'common']);
   const { token, contextLoaded, logoutUser } = useUserProps();
   const { setErrors } = React.useContext(ErrorHandlingContext);

@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useContext } from 'react';
 import { useRouter } from 'next/router';
 import PlayIcon from '../../../../public/assets/images/icons/PlayIcon';
 import styles from './styles.module.scss';
@@ -14,8 +14,7 @@ export default function PlayButton({
   setshowVideo,
 }: Props): ReactElement | null {
   const { isImpersonationModeOn } = useUserProps();
-  const { embed, enableIntro, isContextLoaded } =
-    React.useContext(ParamsContext);
+  const { embed, enableIntro, isContextLoaded } = useContext(ParamsContext);
   const { t } = useTranslation(['common']);
   const { pathname } = useRouter();
 

@@ -5,9 +5,7 @@ import TreeMapper from '../../../src/features/user/TreeMapper';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 
-interface Props {}
-
-function TreeMapperPage({}: Props): ReactElement {
+function TreeMapperPage(): ReactElement {
   // TODO - remove this
   // if (typeof window !== 'undefined') {
   //   router.push('/');

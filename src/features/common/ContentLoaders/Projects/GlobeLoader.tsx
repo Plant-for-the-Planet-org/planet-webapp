@@ -2,9 +2,7 @@ import { motion } from 'framer-motion';
 import React, { ReactElement } from 'react';
 import GlobeLoader from '../../../../../public/assets/images/icons/Globe';
 
-interface Props {}
-
-function GlobeContentLoader({}: Props): ReactElement {
+function GlobeContentLoader(): ReactElement {
   return (
     <motion.div
       animate={{

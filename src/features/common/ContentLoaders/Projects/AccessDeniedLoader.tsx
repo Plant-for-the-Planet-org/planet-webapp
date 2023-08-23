@@ -1,9 +1,7 @@
 import React, { ReactElement } from 'react';
 import AccessDenied from '../../../../../public/assets/images/icons/manageProjects/AccessDenied';
 
-interface Props {}
-
-function AccessDeniedLoader({}: Props): ReactElement {
+function AccessDeniedLoader(): ReactElement {
   return (
     <div className="accessDeniedContainer">
       <AccessDenied width={'320px'} height={'229px'} />
