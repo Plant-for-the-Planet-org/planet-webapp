@@ -1,7 +1,7 @@
 {
-  "bulkCodesTitle": "Issue Bulk Codes",
+  "bulkCodesTitle": "Issue Tree Certificates & Codes",
   "partnerSignupInfo": "Use of this feature by Companies is subject to partnership with Plant-for-the-Planet. Please contact <2>partner@plant-for-the-planet.org</2> for details.",
-  "bulkCodesDescription1": "Using PlanetCash you can generate thousands of codes in a single operation.",
+  "bulkCodesDescription1": "Using PlanetCash you can generate thousands of codes in a single operation. Generating tree certificates will increase your tree count.",
   "bulkCodesDescription2": "You can use this feature to create codes for custom certificates, gift cards, donations on behalf of users and redeemable codes that you can associate with your products.",
   "tabCreationMethod": "Creation Method",
   "tabSelectProject": "Select Project",
@@ -9,8 +9,8 @@
   "issueCodes": "Issue Codes",
   "issuingCodes": "Issuing Codes...",
   "importMethodText": {
-    "title": "Import File",
-    "subtitle": "Use this method if one of the following criteria match your use case:",
+    "title": "Create Custom Tree Certificates",
+    "subtitle": "Use this method (for a maximum of 1000 recipients in one transaction) if one of the following criteria match your use case:",
     "details": [
       "I want to provide the Recipient's name or Email for each code.",
       "I want Plant-for-the-Planet to automatically email the recipients once it has been generated (optional).",
@@ -91,9 +91,9 @@
     "recipient_message": "Message"
   },
   "tableHeaderHelpText": {
-    "recipient_name": "Mandatory. Name of the recipient, shown on the certificate and if opted in, in the mail sent to the recipient",
-    "recipient_email": "Optional. When provided and Send Email? is yes, then the certificate will be sent to this email adress of the recipient.",
-    "recipient_notify": "Optional. yes = Certificate will be instantly sent via email to the recpient; no/empty = no email will be sent",
+    "recipient_name": "Optional. Name of the recipient, shown on the certificate and if opted in, in the mail sent to the recipient. Required if you want to send emails.",
+    "recipient_email": "Optional. Requied to send certificate to the recipient by email.",
+    "recipient_notify": "Optional. Select Yes if you want Plant-for-the-Planet to inform the recipient via email automatically.",
     "units": "Mandatory. Number of trees that are given to the recipient, e.g., 5 for 5 trees",
     "recipient_message": "Optional. Message to the recipient that is included in the email if notify is yes. A default message will be sent if not provided."
   },
