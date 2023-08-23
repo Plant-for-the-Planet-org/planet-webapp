@@ -708,9 +708,12 @@ export default function BasicDetails({
                       setError('latitude', {
                         message: '',
                       });
+                      setError('longitude', {
+                        message: '',
+                      });
                     } else {
                       setWrongCoordinatesMessage(false);
-                      clearErrors('latitude');
+                      clearErrors(['latitude', 'longitude']);
                     }
                   })
                   .catch((error: string) => {
@@ -759,17 +762,8 @@ export default function BasicDetails({
                   render={({ field: { onChange, value, onBlur } }) => (
                     <TextField
                       label={t('manageProjects:latitude')}
-                      variant="outlined"
-                      className={styles.latitudeInput}
-                      InputLabelProps={{
-                        shrink: true,
-                        style: {
-                          position: 'absolute',
-                          left: '50%',
-                          transform: 'translateX(-50%)',
-                          top: '-6px',
-                        },
-                      }}
+                      variant="filled"
+                      className={styles.latLongInput}
                       onChange={(e) => {
                         e.target.value = e.target.value.replace(
                           /[^0-9.-]/g,
@@ -782,9 +776,10 @@ export default function BasicDetails({
                       onBlur={onBlur}
                       error={errors.latitude !== undefined}
                       helperText={
-                        wrongCoordinatesMessage
+                        errors.latitude !== undefined &&
+                        (wrongCoordinatesMessage
                           ? t('manageProjects:wrongCoordinates')
-                          : t('manageProjects:latitudeRequired')
+                          : t('manageProjects:latitudeRequired'))
                       }
                     />
                   )}
@@ -805,17 +800,8 @@ export default function BasicDetails({
                   render={({ field: { onChange, value, onBlur } }) => (
                     <TextField
                       label={t('manageProjects:longitude')}
-                      variant="outlined"
-                      className={styles.longitudeInput}
-                      InputLabelProps={{
-                        shrink: true,
-                        style: {
-                          position: 'absolute',
-                          left: '50%',
-                          transform: 'translateX(-50%)',
-                          top: '-6px',
-                        },
-                      }}
+                      variant="filled"
+                      className={styles.latLongInput}
                       onChange={(e) => {
                         e.target.value = e.target.value.replace(
                           /[^0-9.-]/g,
@@ -829,7 +815,9 @@ export default function BasicDetails({
                       error={errors.longitude !== undefined}
                       helperText={
                         errors.longitude !== undefined &&
-                        t('manageProjects:longitudeRequired')
+                        (wrongCoordinatesMessage
+                          ? t('manageProjects:wrongCoordinates')
+                          : t('manageProjects:longitudeRequired'))
                       }
                     />
                   )}

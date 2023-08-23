@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import MoonIcon from '../../../../../public/assets/images/footer/MoonIcon';
 import SunIcon from '../../../../../public/assets/images/footer/SunIcon';
 import { ThemeContext } from '../../../../theme/themeContext';
 import styles from './DarkModeSwitch.module.scss';
 
 function DarkModeSwitch() {
-  const { theme, setTheme } = React.useContext(ThemeContext);
+  const { theme, setTheme } = useContext(ThemeContext);
 
   return (
     <button style={{ position: 'relative' }}>

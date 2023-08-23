@@ -3,9 +3,7 @@ import { useTranslation } from 'next-i18next';
 import UnderMaintenanceImage from '../../../../../public/assets/images/icons/UnderMaintenance';
 import styles from './UnderMaintenance.module.scss';
 
-interface Props {}
-
-export default function UnderMaintenance({}: Props): ReactElement {
+export default function UnderMaintenance(): ReactElement {
   const { t } = useTranslation('common');
   return (
     <div className={styles.underMaintenance}>
