@@ -1,6 +1,7 @@
 {
   "tree_one": "Tree",
   "tree_other": "Trees",
+  "m2": "m²",
   "by": "By {{tpoName}}",
   "to_project_by_tpo": "To {{projectName}} by {{tpoName}}",
   "for": "for",

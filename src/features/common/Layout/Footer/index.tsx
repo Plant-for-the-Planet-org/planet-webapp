@@ -9,12 +9,11 @@ import tenantConfig from '../../../../../tenant.config';
 import UNDecadeLogo from '../../../../../public/assets/images/footer/UNDecadeLogo';
 import PlanetCJLogo from '../../../../../public/assets/images/footer/PlanetCJLogo';
 import DarkModeSwitch from '../DarkModeSwitch.tsx';
-import ConfigType from '../../types/commonConfig';
 
 // let styles = require('./Footer.module.css');
 export default function Footer(): ReactElement | null {
   const { t, i18n, ready } = useTranslation(['common']);
-  const config: ConfigType = tenantConfig();
+  const config = tenantConfig();
   const [openModal, setOpenModal] = useState(false);
   const [language, setLanguage] = useState(i18n.language);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');

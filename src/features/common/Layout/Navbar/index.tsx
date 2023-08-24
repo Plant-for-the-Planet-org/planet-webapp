@@ -14,7 +14,6 @@ import GetSubMenu from './getSubMenu';
 import { lang_path } from '../../../../utils/constants/wpLanguages';
 import { ParamsContext } from '../QueryParamsContext';
 import ImpersonationActivated from '../../../user/Settings/ImpersonateUser/ImpersonationActivated';
-import ConfigType from '../../types/commonConfig';
 
 // used to detect window resize and return the current width of the window
 const useWidth = () => {
@@ -28,7 +27,7 @@ const useWidth = () => {
   return width;
 };
 
-const config: ConfigType = tenantConfig();
+const config = tenantConfig();
 export default function NavbarComponent() {
   const { t, ready, i18n } = useTranslation(['common']);
   const router = useRouter();
@@ -241,44 +240,38 @@ export default function NavbarComponent() {
                 <div className={`subMenuItems ${menu ? 'showSubMenu' : ''}`}>
                   {SingleLink.subMenu &&
                     SingleLink.subMenu.length > 0 &&
-                    SingleLink.subMenu.map(
-                      (submenu: {
-                        title: string;
-                        onclick: string;
-                        visible: boolean;
-                      }) => {
-                        return (
-                          <a
-                            key={submenu.title}
-                            className={'menuRow'}
-                            href={`https://a.plant-for-the-planet.org/${
-                              lang_path[i18n.language as keyof typeof lang_path]
-                                ? lang_path[
-                                    i18n.language as keyof typeof lang_path
-                                  ]
-                                : 'en'
-                            }/${
-                              subMenuPath[
-                                submenu.title as keyof typeof subMenuPath
-                              ]
-                            }`}
+                    SingleLink.subMenu.map((submenu) => {
+                      return (
+                        <a
+                          key={submenu.title}
+                          className={'menuRow'}
+                          href={`https://a.plant-for-the-planet.org/${
+                            lang_path[i18n.language as keyof typeof lang_path]
+                              ? lang_path[
+                                  i18n.language as keyof typeof lang_path
+                                ]
+                              : 'en'
+                          }/${
+                            subMenuPath[
+                              submenu.title as keyof typeof subMenuPath
+                            ]
+                          }`}
+                        >
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}
                           >
-                            <div
-                              style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                              }}
-                            >
-                              <GetSubMenu title={submenu.title} />
-                              <div className={'menuText'}>
-                                {t('common:' + submenu.title)}
-                              </div>
+                            <GetSubMenu title={submenu.title} />
+                            <div className={'menuText'}>
+                              {t('common:' + submenu.title)}
                             </div>
-                          </a>
-                        );
-                      }
-                    )}
+                          </div>
+                        </a>
+                      );
+                    })}
                 </div>
               </div>
             ) : (

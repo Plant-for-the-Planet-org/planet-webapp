@@ -36,7 +36,12 @@ export default function ProjectSnippet({
   displayPopup,
 }: Props): ReactElement {
   const router = useRouter();
-  const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
+  const { t, i18n, ready } = useTranslation([
+    'donate',
+    'common',
+    'country',
+    'manageProjects',
+  ]);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
@@ -53,11 +58,15 @@ export default function ProjectSnippet({
     progressPercentage = 100;
   }
 
+  const ecosystem =
+    project._scope === 'map' ? project.ecosystem : project.metadata.ecosystem;
+
   const { token } = useUserProps();
   const handleOpen = () => {
     const url = getDonationUrl(project.slug, token, embed, callbackUrl);
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
+
   return ready ? (
     <div className={'singleProject'}>
       {editMode ? (
@@ -98,6 +107,12 @@ export default function ProjectSnippet({
           project.isTopProject &&
           project.isApproved && <TopProjectBadge displayPopup={true} />}
         <div className={'projectImageBlock'}>
+          {ecosystem !== null && (
+            <div className={'projectEcosystem'}>
+              {t(`manageProjects:ecosystemTypes.${ecosystem}`)}
+              {project.purpose === 'trees' && ' /'}
+            </div>
+          )}
           <div className={'projectType'}>
             {project.purpose === 'trees' &&
               project.classification &&
@@ -122,20 +137,20 @@ export default function ProjectSnippet({
         <div className={'projectData'}>
           <div className={'targetLocation'}>
             <div className={'target'}>
-              {project.purpose === 'trees' ? (
+              {project.purpose === 'trees' && project.countPlanted > 0 && (
                 <>
                   {localizedAbbreviatedNumber(
                     i18n.language,
                     Number(project.countPlanted),
                     1
                   )}{' '}
-                  {t('common:tree', {
-                    count: Number(project.countPlanted),
-                  })}{' '}
+                  {project.unitType === 'tree'
+                    ? t('common:tree', {
+                        count: Number(project.countPlanted),
+                      })
+                    : t('common:m2')}{' '}
                   •{' '}
                 </>
-              ) : (
-                []
               )}
               <span style={{ fontWeight: 400 }}>
                 {t('country:' + project.country.toLowerCase())}
@@ -168,16 +183,15 @@ export default function ProjectSnippet({
                 >
                   {t('common:donate')}
                 </button>
-                <div className={'perTreeCost'}>
+                <div className={'perUnitCost'}>
                   {getFormatedCurrency(
                     i18n.language,
                     project.currency,
                     project.unitCost
                   )}{' '}
                   <span>
-                    {project.purpose === 'conservation'
-                      ? t('donate:perM2')
-                      : t('donate:perTree')}
+                    {project.unitType === 'tree' && t('donate:perTree')}
+                    {project.unitType === 'm2' && t('donate:perM2')}
                   </span>
                 </div>
               </>

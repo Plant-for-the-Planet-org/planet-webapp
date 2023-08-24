@@ -1,7 +1,7 @@
 import { ReactElement, useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, MenuItem, CircularProgress } from '@mui/material';
-import ReactHookFormSelect from '../components/ReactHookFormSelect';
+import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect';
 import StyledForm from '../../../common/Layout/StyledForm';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { useTranslation, Trans } from 'next-i18next';
