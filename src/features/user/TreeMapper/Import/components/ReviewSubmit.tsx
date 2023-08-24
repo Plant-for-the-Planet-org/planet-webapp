@@ -3,9 +3,10 @@ import styles from '../Import.module.scss';
 import { useTranslation } from 'next-i18next';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { useRouter } from 'next/router';
+import { PlantLocation } from '../../Treemapper';
 
 interface Props {
-  plantLocation: Treemapper.PlantLocation | null;
+  plantLocation: PlantLocation | null;
   handleBack: () => void;
   errorMessage: string;
   setErrorMessage: (errorMessage: string) => void;
