@@ -9,6 +9,7 @@ import SampleTreeCard from './SampleTreeCard';
 import Papa from 'papaparse';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
+import { Button } from '@mui/material';
 
 interface Props {
   handleNext: Function;
@@ -201,14 +202,14 @@ export default function SampleTrees({
           className={styles.fileUploadContainer}
           {...getRootProps()}
         >
-          <button className="primaryButton" style={{ maxWidth: '200px' }}>
+          <Button variant="contained" color="primary">
             <input {...getInputProps()} />
             {isUploadingData ? (
               <div className={styles.spinner}></div>
             ) : (
               t('treemapper:importCSV')
             )}
-          </button>
+          </Button>
           <p style={{ marginTop: '18px' }}>{t('treemapper:fileFormatCSV')}</p>
         </label>
       </div>
@@ -251,22 +252,30 @@ export default function SampleTrees({
       </div>
       <div className={styles.formField}>
         <div className={styles.formFieldHalf}>
-          <button onClick={handleSubmit(onSubmit)} className="primaryButton">
+          <Button
+            onClick={handleSubmit(onSubmit)}
+            variant="contained"
+            color="primary"
+          >
             {isUploadingData ? (
               <div className={styles.spinner}></div>
             ) : (
               t('treemapper:continue')
             )}
-          </button>
+          </Button>
         </div>
         <div className={styles.formFieldHalf}>
-          <button onClick={() => handleNext()} className="secondaryButton">
+          <Button
+            onClick={() => handleNext()}
+            variant="contained"
+            color="inherit"
+          >
             {isUploadingData ? (
               <div className={styles.spinner}></div>
             ) : (
               t('treemapper:skip')
             )}
-          </button>
+          </Button>
         </div>
       </div>
     </>
