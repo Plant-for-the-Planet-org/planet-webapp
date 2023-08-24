@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { useTranslation } from 'next-i18next';
 import TransactionListLoader from '../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../public/assets/images/icons/TransactionsNotFound';
 import styles from './AccountHistory.module.scss';
@@ -9,6 +8,7 @@ import { CancelModal } from './CancelModal';
 import { ReactivateModal } from './ReactivateModal';
 import { EditModal } from './EditModal';
 import { Subscription } from '../../common/types/payments';
+import StyledForm from '../../common/Layout/StyledForm';
 
 interface Props {
   isDataLoading: boolean;
@@ -21,7 +21,6 @@ export default function Recurrency({
   recurrencies,
   fetchRecurrentDonations,
 }: Props): ReactElement {
-  const { t } = useTranslation(['me']);
   const [selectedRecord, setSelectedRecord] = React.useState<number | null>(0);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [editModalOpen, seteditModalOpen] = React.useState(false);
@@ -66,11 +65,9 @@ export default function Recurrency({
   };
 
   return (
-    <div className="profilePage">
+    <StyledForm>
       <>
-        <div className={'profilePageTitle'}>{t('me:payments')}</div>
-        <div className={'profilePageSubTitle'}>{t('me:donationsSubTitle')}</div>
-        <div className={styles.pageContainer}>
+        <div className="inputContainer">
           <div className={`${styles.section} ${styles.recurrencySection}`}>
             <div className={styles.recurrency}>
               <div className={styles.recurrencyList}>
@@ -151,6 +148,6 @@ export default function Recurrency({
           )}
         </div>
       </>
-    </div>
+    </StyledForm>
   );
 }
