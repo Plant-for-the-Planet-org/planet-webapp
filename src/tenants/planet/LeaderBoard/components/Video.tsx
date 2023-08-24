@@ -1,3 +1,4 @@
+// Not used currently. Left as a reference.
 import React, { ReactElement } from 'react';
 import styles from './Video.module.scss';
 import { useTranslation } from 'next-i18next';
@@ -7,7 +8,7 @@ import BackArrow from '../../../../../public/assets/images/icons/headerIcons/Bac
 function Video(): ReactElement {
   const { t, ready } = useTranslation(['leaderboard', 'common']);
 
-  const videoUrl = 'https://www.youtube.com/watch?v=9V981RXcmH8';
+  const videoUrl = 'Some dummy url (to be replaced)';
   return ready ? (
     <div className={styles.videoSection}>
       <div className={styles.videoTitle}>
