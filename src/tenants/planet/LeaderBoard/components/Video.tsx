@@ -44,3 +44,44 @@ function Video(): ReactElement {
 }
 
 export default Video;
+
+/* Note: Video may need to be blocked in certain countries. This is a possible list of countries that was used earlier
+const blockedCountries =  [
+	"CK",
+	"TH",
+	"KW",
+	"CN",
+	"TL",
+	"AF",
+	"KH",
+	"TW",
+	"CY",
+	"MM",
+	"MO",
+	"MN",
+	"ID",
+	"OM",
+	"WS",
+	"IQ",
+	"SA",
+	"IR",
+	"SG",
+	"QA",
+	"MY",
+	"FM",
+	"BH",
+	"AE",
+	"BN",
+	"TO",
+	"YE",
+	"HK",
+	"JO",
+	"LB",
+	"MT",
+	"LA",
+	"PG",
+	"VN",
+	"LY",
+	"SY"
+]
+ */
