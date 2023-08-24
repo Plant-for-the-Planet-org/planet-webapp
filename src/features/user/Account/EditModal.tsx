@@ -262,7 +262,7 @@ export const EditModal = ({
                 <div className={styles.formRowInput}>
                   <LocalizationProvider
                     dateAdapter={AdapterDateFns}
-                    locale={
+                    adapterLocale={
                       localeMapForDate[userLang]
                         ? localeMapForDate[userLang]
                         : localeMapForDate['en']
