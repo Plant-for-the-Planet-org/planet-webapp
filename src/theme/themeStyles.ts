@@ -106,6 +106,13 @@ const materialTheme = createTheme({
         },
       },
     },
+    MuiFormControlLabel: {
+      styleOverrides: {
+        label: {
+          fontSize: '1rem !important',
+        },
+      },
+    },
   },
 });
 
