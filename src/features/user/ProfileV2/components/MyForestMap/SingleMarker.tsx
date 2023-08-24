@@ -3,6 +3,7 @@ import { useState, ReactElement } from 'react';
 import {
   ConservationTreeSvg,
   PlantedTreesSvg,
+  RestoredSvg,
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import { useTranslation } from 'next-i18next';
@@ -26,20 +27,18 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
             onMouseLeave={() => setShowPopUp(false)}
           >
             <div className={MyForestMapStyle.svgContainer}>
-              {geoJson.properties?.purpose === 'conservation' ? (
-                <ConservationTreeSvg color={'#48AADD'} />
+              {geoJson.properties?.purpose === 'trees' ? (
+                geoJson?.properties?.plantProject?.unit === 'm2' ? (
+                  <RestoredSvg color={'#219653'} />
+                ) : (
+                  <PlantedTreesSvg color={'#219653'} />
+                )
               ) : (
-                <PlantedTreesSvg color={'#219653'} />
+                <ConservationTreeSvg color={'#48AADD'} />
               )}
             </div>
             <div className={MyForestMapStyle.trees}>
-              {geoJson.properties?.purpose === 'conservation'
-                ? t('me:area', {
-                    areaConserved: `${geoJson.properties.quantity}`,
-                  })
-                : t('me:plantedTrees', {
-                    noOfTrees: `${geoJson.properties.quantity}`,
-                  })}
+              {geoJson.properties.quantity}
             </div>
           </div>
         </Marker>

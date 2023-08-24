@@ -4,6 +4,7 @@ import { ReactElement, useState } from 'react';
 import {
   ConservationTreeSvg,
   PlantedTreesSvg,
+  RestoredSvg,
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import { MarkerProps } from '../../../../common/types/map';
@@ -30,7 +31,11 @@ export const TreePlantedClusterMarker = ({
           onMouseLeave={() => setShowPopUp(false)}
         >
           <div className={MyForestMapStyle.svgContainer}>
-            <PlantedTreesSvg color={'#219653'} />
+            {geoJson?.properties?.plantProject?.unit === 'm2' ? (
+              <RestoredSvg color={'#219653'} />
+            ) : (
+              <PlantedTreesSvg color={'#219653'} />
+            )}
           </div>
           <div className={MyForestMapStyle.totalTreeCount}>
             {t('me:plantedTrees', {

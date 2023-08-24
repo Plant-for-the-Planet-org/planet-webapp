@@ -1,14 +1,9 @@
 import { ConservAreaClusterMarker } from './ClusterMarker';
 import SingleMarker from './SingleMarker';
-import Supercluster from 'supercluster';
 import { useEffect, useState, ReactElement } from 'react';
 import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
-import { _clusterConfig } from './TreesPlantedMarkers';
-import {
-  ClusterMarkerProps,
-  Cluster,
-  Bound,
-} from '../../../../common/types/map';
+import { ClusterMarkerProps, Cluster } from '../../../../common/types/map';
+import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
 
 const ConservationMarker = ({
   viewport,
@@ -16,32 +11,15 @@ const ConservationMarker = ({
 }: ClusterMarkerProps): ReactElement => {
   const { conservationProjects } = useProjectProps();
   const [clusters, setClusters] = useState<Cluster[]>([]);
-  const superclusterConserv = new Supercluster(_clusterConfig);
-  const _fetch = () => {
-    superclusterConserv.load(conservationProjects);
-    const { viewState } = viewport;
-    const zoom = viewState?.zoom;
-    if (mapRef && mapRef?.current !== null) {
-      const map = mapRef.current.getMap();
-      const bounds = map.getBounds().toArray().flat();
-      const bound: Bound = bounds && [
-        bounds[0],
-        bounds[1],
-        bounds[2],
-        bounds[3],
-      ];
-      if (viewport?.viewState?.zoom) {
-        const _clusters = superclusterConserv?.getClusters(bound, zoom);
-        setClusters(_clusters);
-        return _clusters;
-      }
-    }
-  };
+  const { viewState } = viewport;
+
   useEffect(() => {
     if (conservationProjects) {
-      _fetch();
+      const data = _getClusterGeojson(viewState, mapRef, conservationProjects);
+      setClusters(data);
     }
   }, [viewport, conservationProjects]);
+
   return (
     <>
       {clusters.map((singleCluster, key) => {
