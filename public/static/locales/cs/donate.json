@@ -1,6 +1,5 @@
 {
   "myTreesPlantedByOnLocation_0": "Můj {{treeCount}} strom se sází v {{location}}.",
-  "PROJECTS": "Projekty",
   "topProjects": "Nejlepší projekty",
   "allCountProjects": "Všech [{{projectCount}}] projektů",
   "searchProjects": "Prohledat projekty ...",
