@@ -75,7 +75,7 @@ export default function ProjectMedia({
     fetchImages();
   }, [projectGUID]);
 
-  const uploadPhotos = async (image: any) => {
+  const uploadPhotos = async (image: string) => {
     setIsUploadingData(true);
 
     const submitData = {
@@ -115,14 +115,16 @@ export default function ProjectMedia({
   const [files, setFiles] = React.useState([]);
 
   const onDrop = React.useCallback(
-    (acceptedFiles) => {
-      acceptedFiles.forEach((file: any) => {
+    (acceptedFiles: File[]) => {
+      acceptedFiles.forEach((file) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onabort = () => console.log('file reading was aborted');
         reader.onerror = () => console.log('file reading has failed');
         reader.onload = (event: ProgressEvent<FileReader>): void => {
-          uploadPhotos(event?.target?.result);
+          const result = event?.target?.result;
+          if (typeof result !== 'string') return;
+          uploadPhotos(result);
         };
       });
     },
@@ -154,7 +156,7 @@ export default function ProjectMedia({
     [files]
   );
 
-  const deleteProjectCertificate = async (id: any) => {
+  const deleteProjectCertificate = async (id: string) => {
     try {
       await deleteAuthenticatedRequest(
         `/app/projects/${projectGUID}/images/${id}`,
@@ -169,7 +171,7 @@ export default function ProjectMedia({
   };
 
   // For uploading the Youtube field
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: { youtubeURL: string }) => {
     // Add isDirty test here
     setIsUploadingData(true);
     const submitData = {
@@ -193,7 +195,7 @@ export default function ProjectMedia({
     }
   };
 
-  const setDefaultImage = async (id: any, index: any) => {
+  const setDefaultImage = async (id: string, index: number) => {
     setIsUploadingData(true);
     const submitData = {
       isDefault: true,
@@ -220,7 +222,11 @@ export default function ProjectMedia({
     }
   };
 
-  const uploadCaption = async (id: any, index: any, e: any) => {
+  const uploadCaption = async (
+    id: string,
+    index: number,
+    e: React.FocusEvent<HTMLInputElement, Element>
+  ) => {
     setIsUploadingData(true);
     const submitData = {
       description: e.target.value,
@@ -292,7 +298,7 @@ export default function ProjectMedia({
                       onBlur={(e) => uploadCaption(image.id, index, e)}
                       type="text"
                       placeholder={t('manageProjects:addCaption')}
-                      defaultValue={image.description}
+                      defaultValue={image.description ? '' : undefined}
                     />
 
                     <div className={styles.uploadedImageButtonContainer}>
