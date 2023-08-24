@@ -1,10 +1,11 @@
-import { useState, ReactElement, useEffect } from 'react';
+import { useState, ReactElement, useMemo } from 'react';
 import { parse, ParseResult } from 'papaparse';
 import { useTranslation, Trans } from 'next-i18next';
 import UploadWidget from './UploadWidget';
 import RecipientsTable from './RecipientsTable';
 import {
   Recipient,
+  TableHeader,
   FileImportError,
   UploadStates,
   ExtendedRecipient,
@@ -12,6 +13,7 @@ import {
 
 import styles from '../BulkCodes.module.scss';
 import { isEmailValid } from '../../../../utils/isEmailValid';
+import { SetState } from '../../../common/types/common';
 
 const acceptedHeaders: (keyof Recipient)[] = [
   'recipient_name',
@@ -25,27 +27,38 @@ const acceptedHeaders: (keyof Recipient)[] = [
 const MAX_RECIPIENTS = 1000;
 
 interface RecipientsUploadFormProps {
-  onRecipientsUploaded: (recipients: Recipient[]) => void;
+  setLocalRecipients: SetState<Recipient[]>;
   localRecipients: Recipient[];
+  setIsAddingRecipient: SetState<boolean>;
+  setIsEditingRecipient: SetState<boolean>;
 }
 
 const RecipientsUploadForm = ({
-  onRecipientsUploaded,
+  setLocalRecipients,
   localRecipients,
+  setIsAddingRecipient,
+  setIsEditingRecipient,
 }: RecipientsUploadFormProps): ReactElement => {
+  const { t, ready } = useTranslation(['bulkCodes']);
+
   const [status, setStatus] = useState<UploadStates>('empty');
   const [parseError, setParseError] = useState<FileImportError | null>(null);
   const [hasIgnoredColumns, setHasIgnoredColumns] = useState(false);
-  const [headers, setHeaders] = useState<(keyof Recipient)[]>([]);
-  const [recipients, setRecipients] = useState<Recipient[]>(
-    localRecipients as Recipient[]
-  );
-  const { t, ready } = useTranslation(['bulkCodes']);
+  const headers = useMemo<TableHeader[]>(() => {
+    if (ready) {
+      return acceptedHeaders.map((header) => ({
+        key: header,
+        displayText: t(`bulkCodes:tableHeaders.${header}`),
+        helpText: t(`bulkCodes:tableHeaderHelpText.${header}`),
+      }));
+    }
+    return [];
+  }, [t, ready]);
 
   const handleStatusChange = (newStatus: UploadStates) => {
     setStatus(newStatus);
     if (newStatus !== 'success') {
-      setRecipients([]);
+      setLocalRecipients([]);
     }
   };
 
@@ -166,7 +179,7 @@ const RecipientsUploadForm = ({
     });
   };
 
-  const processFileContents = (fileContents: string) => {
+  const processFileContents = (fileContents: string): void => {
     parse(fileContents, {
       header: true,
       skipEmptyLines: 'greedy',
@@ -176,8 +189,6 @@ const RecipientsUploadForm = ({
           const parsedData = results.data;
           const headerValidity = checkHeaderValidity(parsedHeaders);
           if (headerValidity.isValid) {
-            setHeaders(acceptedHeaders);
-
             // Check if any columns in uploaded csv were ignored
             parsedHeaders.length > 5 //To be updated when occasion is added
               ? setHasIgnoredColumns(true)
@@ -188,7 +199,7 @@ const RecipientsUploadForm = ({
             );
 
             if (validatedRecipients) {
-              setRecipients(validatedRecipients);
+              setLocalRecipients(validatedRecipients);
               setParseError(null);
               handleStatusChange('success');
             }
@@ -222,10 +233,6 @@ const RecipientsUploadForm = ({
     });
   };
 
-  useEffect(() => {
-    onRecipientsUploaded(recipients);
-  }, [recipients]);
-
   return (
     <>
       <UploadWidget
@@ -234,6 +241,7 @@ const RecipientsUploadForm = ({
         onFileUploaded={processFileContents}
         parseError={parseError}
         hasIgnoredColumns={hasIgnoredColumns}
+        shouldWarn={localRecipients.length > 0}
       />
       <p className={styles.uploadInstructions}>
         <Trans i18nKey="bulkCodes:importInstructions">
@@ -251,9 +259,14 @@ const RecipientsUploadForm = ({
           <a href="/assets/recipient-upload-sample.csv">CSV template here</a>
         </Trans>
       </p>
-      {recipients.length > 0 && (
-        <RecipientsTable headers={headers} recipients={recipients} />
-      )}
+      <RecipientsTable
+        headers={headers}
+        localRecipients={localRecipients}
+        setLocalRecipients={setLocalRecipients}
+        canAddRecipients={localRecipients.length < MAX_RECIPIENTS}
+        setIsAddingRecipient={setIsAddingRecipient}
+        setIsEditingRecipient={setIsEditingRecipient}
+      />
     </>
   );
 };
