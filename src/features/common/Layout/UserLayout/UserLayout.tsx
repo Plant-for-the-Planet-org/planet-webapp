@@ -1,7 +1,7 @@
 import router, { useRouter } from 'next/router';
 import React, {
   Dispatch,
-  ReactElement,
+  FC,
   ReactNode,
   SetStateAction,
   useEffect,
@@ -134,7 +134,7 @@ function NavLink({
   useEffect(() => {
     // Check if array of submenu has activeSubLink
     if (link.subMenu && link.subMenu.length > 0) {
-      const subMenuItem = link.subMenu.find((subMenuItem: SubMenuItemType) => {
+      const subMenuItem = link.subMenu.find((subMenuItem) => {
         return subMenuItem.path === activeSubMenu;
       });
       if (subMenuItem) {
@@ -195,7 +195,7 @@ function NavLink({
         link.subMenu &&
         link.subMenu.length > 0 &&
         !link.hideSubMenu &&
-        link.subMenu.map((subLink: SubMenuItemType, index: number) => {
+        link.subMenu.map((subLink, index) => {
           if (!subLink.hideItem) {
             return (
               <div
@@ -222,7 +222,7 @@ function NavLink({
   );
 }
 
-function UserLayout(props: any): ReactElement {
+const UserLayout: FC = ({ children }) => {
   const { t } = useTranslation(['common', 'me']);
   // const { asPath } = useRouter();
   const router = useRouter();
@@ -555,12 +555,12 @@ function UserLayout(props: any): ReactElement {
           isImpersonationModeOn ? ` ${styles.profileImpersonation}` : ''
         }`}
       >
-        {props.children}
+        {children}
       </div>
     </div>
   ) : (
     <UserProfileLoader />
   );
-}
+};
 
 export default UserLayout;

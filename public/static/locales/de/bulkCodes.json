@@ -1,7 +1,7 @@
 {
-  "bulkCodesTitle": "Bulk-Codes erzeugen",
+  "bulkCodesTitle": "Baumurkunden & Codes erzeugen",
   "partnerSignupInfo": "Unsere Funktion Planet Cash / Bulk-Codes ist eine neue Funktion speziell für Partner von Plant-for-the-Planet. Melden Sie sich gerne bei Interesse bei <2>partner@plant-for-the-planet.org</2>.",
-  "bulkCodesDescription1": "Mit PlanetCash kannst du Tausende von Codes auf einmal erzeugen.",
+  "bulkCodesDescription1": "Mit PlanetCash kannst du Tausende von Codes auf einmal erzeugen. Das Erzeugen von Urkunden und Codes wird deine Baumzahl steigen lassen.",
   "bulkCodesDescription2": "Mit dieser Funktion kannst du Codes für benutzerdefinierte Zertifikate, Geschenkkarten, Spenden im Namen von Nutzern und einlösbare Codes erstellen, die du mit deinen Produkten verknüpfen kannst.",
   "tabCreationMethod": "Herstellungsmethode",
   "tabSelectProject": "Projekt aussuchen",
@@ -9,8 +9,8 @@
   "issueCodes": "Codes erzeugen",
   "issuingCodes": "erzeuge Codes...",
   "importMethodText": {
-    "title": "Importieren",
-    "subtitle": "Verwende diese Methode, wenn eines der folgenden Kriterien auf deinen Anwendungsfall zutrifft:",
+    "title": "Erstelle personalisierte Baumurkunden",
+    "subtitle": "Verwende diese Methode (maximal 1000 Empfänger in einer Operation), wenn eines der folgenden Kriterien auf deinen Anwendungsfall zutrifft:",
     "details": ["Ich möchte für jeden Code den Namen des Empfängers oder seine E-Mail-Adresse angeben.", "Ich möchte, dass Plant-for-the-Planet nach der Erstellung automatisch eine E-Mail an die Empfänger sendet (optional).", "Ich möchte Codes für verschiedene Zahlen von Bäumen vergeben."]
   },
   "genericMethodText": {
@@ -32,7 +32,7 @@
   "occasion": "Anlass",
   "total": "Insgesamt",
   "chargeConsentText": "Indem du auf Codes erzeugen klickst, erklärst du dich damit einverstanden, dass der oben genannte Betrag von deinem Konto abgebucht wird.",
-  "invalidEmailWarningText": "Bitte stelle sicher, dass recipient_email eine gültige E-Mail ist. Die Verwendung von Pseudo-E-Mails oder ungültigen E-Mails führt zur Sperrung des Kontos in Übereinstimmung mit den Geschäftsbedingungen der Plattform.",
+  "invalidEmailWarningText": "Bitte stelle sicher, dass die Empfängeremail eine gültige E-Mail ist. Die Verwendung von Pseudo-E-Mails oder ungültigen E-Mails führt zur Sperrung des Kontos in Übereinstimmung mit den Geschäftsbedingungen der Plattform.",
   "projectRequired": "Es wurde kein Projekt ausgewählt.",
   "unitsPerCodeRequired": "Jeder Code sollte mindestens eine Einheit enthalten.",
   "codeQuantityRequired": "Du musst mindestens einen Code erstellen.",
@@ -66,15 +66,41 @@
     "invalidEmails": "recipient_email enthält falsche/ungültige E-Mails in den folgenden Zeilen: {{rowList}}. Bitte entferne ungültige Emails oder füge gültige Emails hinzu.",
     "generalError": "Es ist ein Fehler aufgetreten. Bitte versuche es nach einer Weile erneut."
   },
+  "errorAddRecipient": {
+    "unitsNotProvided": "Pflicht",
+    "requiredForNotifications": "Benötigt (für Email Empfänger)",
+    "emailInvalid": "Ungültige Email"
+  },
   "successUploadCSV": {
     "ignoredColumns": "Zusätzliche Spalten wurden ignoriert"
   },
   "importInstructions": "Bitte lesen Sie die <2>Dokumentation hier</2>, lade die <5>Excel-Vorlage hier</5> und die <8>CSV-Vorlage hier</8> herunter.",
+  "tableHeaders": {
+    "recipient_name": "Empfängername",
+    "recipient_email": "Empfängeremail",
+    "recipient_notify": "Email senden?",
+    "units": "Einheiten",
+    "recipient_message": "Nachricht"
+  },
+  "tableHeaderHelpText": {
+    "recipient_name": "Optional. Name des Empfängers, wird auf der Urkunde angezeigt, und falls eingewilligt, in der Email, die an diesen geschickt wird. Benötigt, wenn Emails verschickt werden sollen.",
+    "recipient_email": "Optional. Benötigt um die Urkunde per Email an den Empfänger zu schicken.",
+    "recipient_notify": "Optional. Wähle \"Ja\", wenn du möchtest, dass Plant-for-the-Planet den Empfänger automatisch per Email informiert.",
+    "units": "Pflicht. Anzahl der Bäume für den Empfänger, z.B, 5 für 5 Bäume.",
+    "recipient_message": "Optional. Nachricht an den Empfänger, die in der Email enthalten ist, wenn Benachrichtigen auf \"Ja\" steht. Wenn nichts angegeben wird, wird eine Standardnachricht gesendet."
+  },
   "donationSuccess": "Deine Spende war erfolgreich. Du wirst in Kürze zur Anzeige der Spendendetails weitergeleitet...",
   "donationError": {
     "planet_cash_insufficient_credit": "Verfügbares Guthaben = {{availableBalance}}. Bitte lade Guthaben auf dein PlanetCash-Konto auf, um diese Spende zu tätigen.",
     "default": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es nach einer Weile erneut.",
     "planet_cash_payment_failure": "Die Transaktion ist fehlgeschlagen. {{reason}}",
     "planet_cash_invalid_project": "Du kannst für das ausgewählte Projekt nicht spenden."
-  }
+  },
+  "titleAddRecipientButton": "Empfänger zur Tabelle hinzufügen",
+  "notifyRecipientOptions": {
+    "yes": "Ja",
+    "no": "Nein"
+  },
+  "fileUploadWarning": "Dies wird die bestehenden Empfängerdaten löschen, möchtest du fortfahren?",
+  "unsavedDataWarning": "Einige Empfängerdaten sind nicht gespeichert. Möchtest du fortfahren? Nicht gespeicherte Daten gehen verloren."
 }

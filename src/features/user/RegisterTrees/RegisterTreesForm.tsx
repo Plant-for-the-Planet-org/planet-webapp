@@ -1,4 +1,4 @@
-import { MenuItem, SxProps } from '@mui/material';
+import { MenuItem, SxProps, TextField, Button } from '@mui/material';
 import * as d3 from 'd3-ease';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -16,7 +16,6 @@ import {
 import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import getMapStyle from '../../../utils/maps/getMapStyle';
 import { getStoredConfig } from '../../../utils/storeConfig';
-import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './RegisterModal.module.scss';
 import SingleContribution from './RegisterTrees/SingleContribution';
@@ -26,6 +25,8 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
+import StyledForm from '../../common/Layout/StyledForm';
+import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   ssr: false,
@@ -57,7 +58,7 @@ type FormData = {
   geometry: any;
 };
 
-export default function RegisterTrees() {
+export default function RegisterTreesForm() {
   const { user, token, contextLoaded, logoutUser } = useUserProps();
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {
@@ -229,134 +230,123 @@ export default function RegisterTrees() {
   };
 
   return ready ? (
-    <div className="profilePage">
-      <h2 className={'profilePageTitle'}>{t('me:registerTrees')}</h2>
-      <div className={styles.registerTreesPage}>
-        {!registered ? (
-          <form onSubmit={handleSubmit(submitRegisterTrees)}>
+    <StyledForm>
+      {!registered ? (
+        <>
+          <form
+            className="inputContainer"
+            onSubmit={handleSubmit(submitRegisterTrees)}
+          >
             <div className={styles.note}>
               <p>{t('me:registerTreesDescription')}</p>
             </div>
-            <div className={styles.formField}>
-              <div className={styles.formFieldHalf}>
-                <Controller
-                  name="treeCount"
-                  control={control}
-                  rules={{
-                    required: t('me:treesRequired'),
-                    validate: (value) => parseInt(value, 10) >= 1,
-                  }}
-                  render={({ field: { onChange, value, onBlur } }) => (
-                    <MaterialTextField
-                      label={t('me:noOfTrees')}
-                      variant="outlined"
-                      onChange={(e) => {
-                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                        onTreeCountChange(e);
-                        onChange(e.target.value);
-                      }}
-                      value={value}
-                      onBlur={onBlur}
-                    />
-                  )}
-                />
-                {errors.treeCount && (
-                  <span className={styles.formErrors}>
-                    {errors.treeCount.message
-                      ? errors.treeCount.message
-                      : t('me:moreThanOne')}
-                  </span>
-                )}
-              </div>
-              <div className={styles.formFieldHalf}>
-                <LocalizationProvider
-                  dateAdapter={AdapterDateFns}
-                  adapterLocale={
-                    localeMapForDate[userLang]
-                      ? localeMapForDate[userLang]
-                      : localeMapForDate['en']
-                  }
-                >
-                  <Controller
-                    name="plantDate"
-                    control={control}
-                    defaultValue={new Date()}
-                    render={({ field: { onChange, value } }) => (
-                      <MuiDatePicker
-                        label={t('me:datePlanted')}
-                        value={value}
-                        onChange={onChange}
-                        renderInput={(props) => (
-                          <MaterialTextField {...props} />
-                        )}
-                        disableFuture
-                        minDate={new Date(new Date().setFullYear(1950))}
-                        inputFormat="MMMM d, yyyy"
-                        maxDate={new Date()}
-                        DialogProps={{
-                          sx: dialogSx,
-                        }}
-                      />
-                    )}
-                  />
-                </LocalizationProvider>
-              </div>
-            </div>
-            <div className={styles.formFieldLarge}>
+            <InlineFormDisplayGroup>
               <Controller
-                name="species"
+                name="treeCount"
                 control={control}
-                rules={{ required: t('me:speciesIsRequired') }}
+                rules={{
+                  required: t('me:treesRequired'),
+                  validate: (value) => parseInt(value, 10) >= 1,
+                }}
                 render={({ field: { onChange, value, onBlur } }) => (
-                  <MaterialTextField
-                    label={t('me:treeSpecies')}
+                  <TextField
+                    label={t('me:noOfTrees')}
                     variant="outlined"
-                    onChange={onChange}
+                    onChange={(e) => {
+                      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                      onTreeCountChange(e);
+                      onChange(e.target.value);
+                    }}
                     value={value}
                     onBlur={onBlur}
+                    error={errors && errors.treeCount !== undefined}
+                    helperText={
+                      errors && errors.treeCount && errors.treeCount.message
+                        ? errors.treeCount.message
+                        : t('me:moreThanOne')
+                    }
                   />
                 )}
               />
-              {errors.species && (
-                <span className={styles.formErrors}>
-                  {errors.species.message}
-                </span>
-              )}
-            </div>
-
-            {user && user.type === 'tpo' && (
-              <div className={styles.formFieldLarge}>
+              <LocalizationProvider
+                dateAdapter={AdapterDateFns}
+                adapterLocale={
+                  localeMapForDate[userLang]
+                    ? localeMapForDate[userLang]
+                    : localeMapForDate['en']
+                }
+              >
                 <Controller
-                  name="plantProject"
+                  name="plantDate"
                   control={control}
-                  render={({ field: { onChange, value, onBlur } }) => (
-                    <MaterialTextField
-                      label={t('me:project')}
-                      variant="outlined"
-                      select
-                      onChange={onChange}
+                  defaultValue={new Date()}
+                  render={({ field: { onChange, value } }) => (
+                    <MuiDatePicker
+                      label={t('me:datePlanted')}
                       value={value}
-                      onBlur={onBlur}
-                    >
-                      {projects.map((option) => (
-                        <MenuItem
-                          key={option.properties.id}
-                          value={option.properties.id}
-                        >
-                          {option.properties.name}
-                        </MenuItem>
-                      ))}
-                    </MaterialTextField>
+                      onChange={onChange}
+                      renderInput={(props) => <TextField {...props} />}
+                      disableFuture
+                      minDate={new Date(new Date().setFullYear(1950))}
+                      inputFormat="MMMM d, yyyy"
+                      maxDate={new Date()}
+                      DialogProps={{
+                        sx: dialogSx,
+                      }}
+                    />
                   )}
                 />
-                {errors.plantProject && (
-                  <span className={styles.formErrors}>
-                    {errors.plantProject.message}
-                  </span>
+              </LocalizationProvider>
+            </InlineFormDisplayGroup>
+            <Controller
+              name="species"
+              control={control}
+              rules={{ required: t('me:speciesIsRequired') }}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <TextField
+                  label={t('me:treeSpecies')}
+                  variant="outlined"
+                  onChange={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                  error={errors && errors.species !== undefined}
+                  helperText={
+                    errors && errors.species && errors.species.message
+                  }
+                />
+              )}
+            />
+            {user && user.type === 'tpo' && (
+              <Controller
+                name="plantProject"
+                control={control}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <TextField
+                    label={t('me:project')}
+                    variant="outlined"
+                    select
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                    error={errors && errors.plantProject !== undefined}
+                    helperText={
+                      errors &&
+                      errors.plantProject &&
+                      errors.plantProject.message
+                    }
+                  >
+                    {projects.map((option) => (
+                      <MenuItem
+                        key={option.properties.id}
+                        value={option.properties.id}
+                      >
+                        {option.properties.name}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 )}
-              </div>
+              />
             )}
-
             <div className={styles.mapNote}>
               {isMultiple ? (
                 <p>{t('me:drawPolygon')}</p>
@@ -364,7 +354,6 @@ export default function RegisterTrees() {
                 <p>{t('me:selectLocation')}</p>
               )}
             </div>
-
             <div className={`${styles.locationMap}`}>
               {isMultiple ? (
                 <DrawMap
@@ -414,32 +403,29 @@ export default function RegisterTrees() {
                 </MapGL>
               )}
             </div>
-
-            {/* {errorMessage !== '' ? */}
-            <div className={`${styles.formFieldLarge} ${styles.center}`}>
+            {/* {errorMessage !== '' ? ( */}
+            <div className={styles.center}>
               <p className={styles.formErrors}>{`${errorMessage}`}</p>
             </div>
-            {/* : null
-              } */}
-            <div className={styles.nextButton}>
-              <button
-                id={'RegTressSubmit'}
-                onClick={handleSubmit(submitRegisterTrees)}
-                className="primaryButton"
-              >
-                {' '}
-                {isUploadingData ? (
-                  <div className={styles.spinner}></div>
-                ) : (
-                  t('me:registerButton')
-                )}
-              </button>
-            </div>
+            {/* ) : null} */}
+            <Button
+              id={'RegTressSubmit'}
+              onClick={handleSubmit(submitRegisterTrees)}
+              variant="contained"
+              color="primary"
+            >
+              {' '}
+              {isUploadingData ? (
+                <div className={'spinner'}></div>
+              ) : (
+                t('me:registerButton')
+              )}
+            </Button>
           </form>
-        ) : (
-          <SingleContribution {...ContributionProps} />
-        )}
-      </div>
-    </div>
+        </>
+      ) : (
+        <SingleContribution {...ContributionProps} />
+      )}
+    </StyledForm>
   ) : null;
 }

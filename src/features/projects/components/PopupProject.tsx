@@ -65,6 +65,12 @@ export default function PopupProject({
           project.isTopProject &&
           project.isApproved && <TopProjectBadge displayPopup={false} />}
         <div className={'projectImageBlock'}>
+          {project.ecosystem !== null && (
+            <div className={'projectEcosystem'}>
+              {t(`manageProjects:ecosystemTypes.${project.ecosystem}`)}
+              {project.purpose === 'trees' && ' /'}
+            </div>
+          )}
           {project.purpose === 'trees' && (
             <div className={'projectType'}>
               {project.classification && t(`donate:${project.classification}`)}
@@ -93,16 +99,18 @@ export default function PopupProject({
         <div className={'projectData'}>
           <div className={'targetLocation'}>
             <div className={'target'}>
-              {project.purpose === 'trees' && (
+              {project.purpose === 'trees' && project.countPlanted > 0 && (
                 <>
                   {localizedAbbreviatedNumber(
                     i18n.language,
                     Number(project.countPlanted),
                     1
                   )}{' '}
-                  {t('common:tree', {
-                    count: Number(project.countPlanted),
-                  })}{' '}
+                  {project.unitType === 'tree'
+                    ? t('common:tree', {
+                        count: Number(project.countPlanted),
+                      })
+                    : t('common:m2')}{' '}
                   •{' '}
                 </>
               )}
@@ -129,16 +137,15 @@ export default function PopupProject({
                 >
                   {t('common:donate')}
                 </button>
-                <div className={'perTreeCost'}>
+                <div className={'perUnitCost'}>
                   {getFormatedCurrency(
                     i18n.language,
                     project.currency,
                     project.unitCost
                   )}{' '}
                   <span>
-                    {project.purpose === 'conservation'
-                      ? t('donate:perM2')
-                      : t('donate:perTree')}
+                    {project.unitType === 'tree' && t('donate:perTree')}
+                    {project.unitType === 'm2' && t('donate:perM2')}
                   </span>
                 </div>
               </>
