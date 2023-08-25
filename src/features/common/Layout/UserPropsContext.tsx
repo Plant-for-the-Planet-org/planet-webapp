@@ -70,6 +70,8 @@ export const UserPropsProvider: FC = ({ children }) => {
   const logoutUser = (
     returnUrl: string | undefined = `${process.env.NEXTAUTH_URL}/`
   ) => {
+    localStorage.removeItem('impersonationData');
+    localStorage.removeItem('redirectLink');
     logout({ returnTo: returnUrl });
   };
 
