@@ -112,7 +112,7 @@ export const contributionsGeoJson = procedure
             name: contribution.name,
             image: contribution.image,
             country: contribution.country,
-            unit: contribution.unit_type,
+            unitType: contribution.unit_type,
             location: contribution.location,
             tpo: {
               guid: contribution.tpoGuid,
