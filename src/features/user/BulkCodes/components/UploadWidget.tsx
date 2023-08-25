@@ -14,6 +14,7 @@ interface UploadWidgetInterface {
   onStatusChange: (newStatus: UploadStates) => void;
   parseError: FileImportError | null;
   hasIgnoredColumns: boolean;
+  shouldWarn: boolean;
 }
 
 const UploadWidget = ({
@@ -22,6 +23,7 @@ const UploadWidget = ({
   onFileUploaded,
   parseError,
   hasIgnoredColumns,
+  shouldWarn = false,
 }: UploadWidgetInterface): ReactElement | null => {
   const { t, ready } = useTranslation(['bulkCodes']);
   const [error, setError] = useState<FileImportError | null>(null);
@@ -144,6 +146,12 @@ const UploadWidget = ({
     return (
       <div
         {...getRootProps({
+          onClick: (e) => {
+            if (shouldWarn) {
+              const shouldContinue = confirm(t('bulkCodes:fileUploadWarning'));
+              if (!shouldContinue) e.stopPropagation();
+            }
+          },
           className: `${styles.uploadWidget} ${
             styles[`uploadWidget--${status}`]
           }`,

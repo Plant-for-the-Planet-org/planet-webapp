@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { Dispatch, ReactElement, SetStateAction } from 'react';
 import styles from '../AccountHistory.module.scss';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
@@ -218,13 +218,18 @@ export function ManageDonation({
     !record?.endsAt;
   const showReactivate =
     record?.status === 'paused' || new Date(record?.endsAt) > new Date();
+
+  const openModal = (e, setModalOpen: Dispatch<SetStateAction<boolean>>) => {
+    e.preventDefault();
+    setModalOpen(true);
+  };
   return (
     <div className={styles.manageDonations}>
       {showEdit ? (
         <button
           className={styles.options}
           style={{ color: themeProperties.primaryColor }}
-          onClick={() => seteditDonation(true)}
+          onClick={(e) => openModal(e, seteditDonation)}
         >
           {t('editDonation')}
         </button>
@@ -235,7 +240,7 @@ export function ManageDonation({
         <button
           className={styles.options}
           style={{ color: themeProperties.light.safeColor }}
-          onClick={() => setreactivateDonation(true)}
+          onClick={(e) => openModal(e, setreactivateDonation)}
         >
           {record?.status === 'paused'
             ? t('resumeDonation')
@@ -248,7 +253,7 @@ export function ManageDonation({
         <button
           className={styles.options}
           style={{ color: themeProperties.light.secondaryColor }}
-          onClick={() => setpauseDonation(true)}
+          onClick={(e) => openModal(e, setpauseDonation)}
         >
           {t('pauseDonation')}
         </button>
@@ -259,7 +264,7 @@ export function ManageDonation({
         <button
           className={styles.options}
           style={{ color: themeProperties.light.dangerColor }}
-          onClick={() => setcancelDonation(true)}
+          onClick={(e) => openModal(e, setcancelDonation)}
         >
           {t('cancelDonation')}
         </button>

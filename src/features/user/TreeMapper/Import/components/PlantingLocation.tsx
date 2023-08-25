@@ -14,7 +14,7 @@ import { useDropzone } from 'react-dropzone';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
 import JSONInput from 'react-json-editor-ajrm';
 import locale from 'react-json-editor-ajrm/locale/en';
-import { MenuItem, SxProps } from '@mui/material';
+import { Button, MenuItem, SxProps, TextField } from '@mui/material';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import {
   getAuthenticatedRequest,
@@ -350,14 +350,14 @@ export default function PlantingLocation({
               className={styles.fileUploadContainer}
               {...getRootProps()}
             >
-              <button className="primaryButton" style={{ maxWidth: '200px' }}>
+              <Button variant="contained" color="primary">
                 <input {...getInputProps()} />
                 {isUploadingData ? (
                   <div className={styles.spinner}></div>
                 ) : (
                   t('treemapper:uploadFile')
                 )}
-              </button>
+              </Button>
               <p style={{ marginTop: '18px' }}>
                 {t('treemapper:fileFormatKML')}
               </p>
@@ -407,7 +407,7 @@ export default function PlantingLocation({
                   label={t('me:datePlanted')}
                   value={value}
                   onChange={onChange}
-                  renderInput={(props) => <MaterialTextField {...props} />}
+                  renderInput={(props) => <TextField {...props} />}
                   disableFuture
                   inputFormat="MMMM d, yyyy"
                   DialogProps={{
@@ -434,13 +434,15 @@ export default function PlantingLocation({
               required: t('treemapper:projectRequired'),
             }}
             render={({ field: { onChange, value, onBlur } }) => (
-              <MaterialTextField
+              <TextField
                 label={t('me:project')}
                 variant="outlined"
                 select
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}
+                error={errors.plantProject}
+                helperText={errors.plantProject && errors.plantProject.message}
               >
                 {projects.map((option) => (
                   <MenuItem
@@ -450,28 +452,23 @@ export default function PlantingLocation({
                     {option.properties.name}
                   </MenuItem>
                 ))}
-              </MaterialTextField>
+              </TextField>
             )}
           />
-          {errors.plantProject && (
-            <span className={styles.errorMessage}>
-              {errors.plantProject.message}
-            </span>
-          )}
         </div>
       )}
       <div className={styles.formFieldLarge}>
         <div className={styles.importTabs}>
           {importMethods.map((method, index) => (
-            <div
+            <Button
               key={index}
               onClick={() => setActiveMethod(method)}
-              className={`${styles.importTab} ${
-                activeMethod === method ? styles.active : ''
-              }`}
+              className={`${styles.importTab}`}
+              variant="contained"
+              color={activeMethod === method ? 'primary' : 'inherit'}
             >
               {t(`treemapper:${method}`)}
-            </div>
+            </Button>
           ))}
         </div>
         {getMethod(activeMethod)}
@@ -507,18 +504,18 @@ export default function PlantingLocation({
       </div>
 
       <div className={`${styles.formFieldLarge}`}>
-        <button
+        <Button
           id={'basicDetailsCont'}
           onClick={handleSubmit(onSubmit)}
-          className="primaryButton"
-          style={{ minWidth: '240px' }}
+          variant="contained"
+          color="primary"
         >
           {isUploadingData ? (
             <div className={styles.spinner}></div>
           ) : (
             t('treemapper:continue')
           )}
-        </button>
+        </Button>
       </div>
     </>
   );
