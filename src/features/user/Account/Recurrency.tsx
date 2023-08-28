@@ -8,7 +8,6 @@ import { CancelModal } from './CancelModal';
 import { ReactivateModal } from './ReactivateModal';
 import { EditModal } from './EditModal';
 import { Subscription } from '../../common/types/payments';
-import StyledForm from '../../common/Layout/StyledForm';
 
 interface Props {
   isDataLoading: boolean;
@@ -65,89 +64,85 @@ export default function Recurrency({
   };
 
   return (
-    <StyledForm>
-      <>
-        <div className="inputContainer">
-          <div className={`${styles.section} ${styles.recurrencySection}`}>
-            <div className={styles.recurrency}>
-              <div className={styles.recurrencyList}>
-                {!recurrencies && isDataLoading ? (
-                  <>
-                    <TransactionListLoader />
-                    <TransactionListLoader />
-                    <TransactionListLoader />
-                  </>
-                ) : recurrencies && recurrencies.length === 0 ? (
-                  <div className={styles.notFound}>
-                    <TransactionsNotFound />
-                  </div>
-                ) : (
-                  recurrencies &&
-                  !isDataLoading &&
-                  Array.isArray(recurrencies) &&
-                  recurrencies?.map((record, index) => {
-                    return (
-                      <RecurrencyRecord
-                        key={index}
-                        handleRecordToggle={handleRecordToggle}
-                        index={index}
-                        selectedRecord={selectedRecord}
-                        record={record}
-                        recurrencies={recurrencies}
-                        seteditDonation={seteditModalOpen}
-                        setpauseDonation={setpauseModalOpen}
-                        setcancelDonation={setcancelModalOpen}
-                        setreactivateDonation={setreactivateModalOpen}
-                      />
-                    );
-                  })
-                )}
+    <div className={styles.pageContainer}>
+      <div className={`${styles.section} ${styles.recurrencySection}`}>
+        <div className={styles.recurrency}>
+          <div className={styles.recurrencyList}>
+            {!recurrencies && isDataLoading ? (
+              <>
+                <TransactionListLoader />
+                <TransactionListLoader />
+                <TransactionListLoader />
+              </>
+            ) : recurrencies && recurrencies.length === 0 ? (
+              <div className={styles.notFound}>
+                <TransactionsNotFound />
               </div>
-            </div>
-            {isModalOpen && recurrencies?.length && selectedRecord !== null && (
-              <RecurrencyRecord
-                isModal={true}
-                handleRecordToggle={handleRecordToggle}
-                selectedRecord={selectedRecord}
-                record={recurrencies[selectedRecord]}
-                recurrencies={recurrencies}
-                seteditDonation={seteditModalOpen}
-                setpauseDonation={setpauseModalOpen}
-                setcancelDonation={setcancelModalOpen}
-                setreactivateDonation={setreactivateModalOpen}
-              />
+            ) : (
+              recurrencies &&
+              !isDataLoading &&
+              Array.isArray(recurrencies) &&
+              recurrencies?.map((record, index) => {
+                return (
+                  <RecurrencyRecord
+                    key={index}
+                    handleRecordToggle={handleRecordToggle}
+                    index={index}
+                    selectedRecord={selectedRecord}
+                    record={record}
+                    recurrencies={recurrencies}
+                    seteditDonation={seteditModalOpen}
+                    setpauseDonation={setpauseModalOpen}
+                    setcancelDonation={setcancelModalOpen}
+                    setreactivateDonation={setreactivateModalOpen}
+                  />
+                );
+              })
             )}
           </div>
-          {currentRecord !== null && (
-            <>
-              <PauseModal
-                pauseModalOpen={pauseModalOpen}
-                handlePauseModalClose={handlePauseModalClose}
-                record={currentRecord}
-                fetchRecurrentDonations={fetchRecurrentDonations}
-              />
-              <CancelModal
-                cancelModalOpen={cancelModalOpen}
-                handleCancelModalClose={handleCancelModalClose}
-                record={currentRecord}
-                fetchRecurrentDonations={fetchRecurrentDonations}
-              />
-              <EditModal
-                editModalOpen={editModalOpen}
-                handleEditModalClose={handleEditModalClose}
-                record={currentRecord}
-                fetchRecurrentDonations={fetchRecurrentDonations}
-              />
-              <ReactivateModal
-                reactivateModalOpen={reactivateModalOpen}
-                handleReactivateModalClose={handleReactivateModalClose}
-                record={currentRecord}
-                fetchRecurrentDonations={fetchRecurrentDonations}
-              />
-            </>
-          )}
         </div>
-      </>
-    </StyledForm>
+        {isModalOpen && recurrencies?.length && selectedRecord !== null && (
+          <RecurrencyRecord
+            isModal={true}
+            handleRecordToggle={handleRecordToggle}
+            selectedRecord={selectedRecord}
+            record={recurrencies[selectedRecord]}
+            recurrencies={recurrencies}
+            seteditDonation={seteditModalOpen}
+            setpauseDonation={setpauseModalOpen}
+            setcancelDonation={setcancelModalOpen}
+            setreactivateDonation={setreactivateModalOpen}
+          />
+        )}
+      </div>
+      {currentRecord !== null && (
+        <>
+          <PauseModal
+            pauseModalOpen={pauseModalOpen}
+            handlePauseModalClose={handlePauseModalClose}
+            record={currentRecord}
+            fetchRecurrentDonations={fetchRecurrentDonations}
+          />
+          <CancelModal
+            cancelModalOpen={cancelModalOpen}
+            handleCancelModalClose={handleCancelModalClose}
+            record={currentRecord}
+            fetchRecurrentDonations={fetchRecurrentDonations}
+          />
+          <EditModal
+            editModalOpen={editModalOpen}
+            handleEditModalClose={handleEditModalClose}
+            record={currentRecord}
+            fetchRecurrentDonations={fetchRecurrentDonations}
+          />
+          <ReactivateModal
+            reactivateModalOpen={reactivateModalOpen}
+            handleReactivateModalClose={handleReactivateModalClose}
+            record={currentRecord}
+            fetchRecurrentDonations={fetchRecurrentDonations}
+          />
+        </>
+      )}
+    </div>
   );
 }
