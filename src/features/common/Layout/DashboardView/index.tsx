@@ -7,6 +7,7 @@ interface DashboardViewProps {
   subtitle: ReactElement | null;
   children: ReactNode;
   variant?: 'full-width' | 'compact';
+  multiColumn: boolean;
 }
 
 const DashboardGridContainer = styled(Box)(({ theme }) => ({
@@ -19,7 +20,6 @@ const DashboardGridContainer = styled(Box)(({ theme }) => ({
       padding: 40,
     },
     padding: '80px 20px 20px 20px',
-    maxWidth: 1060,
     gap: 24,
     alignItems: 'flex-start',
   },
@@ -50,11 +50,16 @@ export default function DashboardView({
   subtitle,
   children,
   variant = 'full-width',
+  multiColumn = false,
 }: DashboardViewProps): ReactElement {
   return (
     <ThemeProvider theme={materialTheme}>
       <DashboardGridContainer className="DashboardView">
-        <Grid container className="dashboardGrid">
+        <Grid
+          container
+          className="dashboardGrid"
+          style={{ maxWidth: multiColumn ? '100%' : 1060 }}
+        >
           <Grid
             item
             container
@@ -70,13 +75,23 @@ export default function DashboardView({
               {subtitle}
             </Grid>
           </Grid>
-          <Grid
-            item
-            component="main"
-            className={`dashboardContent--${variant}`}
-          >
-            {children}
-          </Grid>
+          {!multiColumn ? (
+            <Grid
+              item
+              component="main"
+              className={`dashboardContent--${variant}`}
+            >
+              {children}
+            </Grid>
+          ) : (
+            <Grid
+              container
+              component="main"
+              className={`dashboardContent--${variant}`}
+            >
+              {children}
+            </Grid>
+          )}
         </Grid>
       </DashboardGridContainer>
     </ThemeProvider>
