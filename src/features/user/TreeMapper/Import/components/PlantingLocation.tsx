@@ -111,7 +111,7 @@ function PlantedSpecies({
             <MaterialTextField
               label={t('treemapper:count')}
               variant="outlined"
-              onChange={(e) => {
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
                 onChange(e.target.value);
               }}
