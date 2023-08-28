@@ -102,7 +102,7 @@ export default function UploadImages({
       {/* Change to field array of react hook form  */}
       {uploadedImages && uploadedImages.length > 0 ? (
         <InlineFormDisplayGroup>
-          {uploadedImages.map((image, index) => {
+          {uploadedImages.map((image) => {
             return (
               <div key={image.id}>
                 <div className={styles.uploadedImageContainer}>
