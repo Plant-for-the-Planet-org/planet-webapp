@@ -7,7 +7,7 @@ interface DashboardViewProps {
   subtitle: ReactElement | null;
   children: ReactNode;
   variant?: 'full-width' | 'compact';
-  multiColumn: boolean;
+  multiColumn?: boolean;
 }
 
 const DashboardGridContainer = styled(Box)(({ theme }) => ({

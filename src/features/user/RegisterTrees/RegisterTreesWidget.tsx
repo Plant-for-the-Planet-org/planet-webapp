@@ -50,17 +50,17 @@ const dialogSx: SxProps = {
   },
 };
 
-interface RenderUnRegisteredTreesFormProps {
+interface RegisterTreesFormProps {
   setContributionGUID: React.Dispatch<React.SetStateAction<string>>;
   setContributionDetails: React.Dispatch<React.SetStateAction<{}>>;
   setRegistered: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function RenderUnRegisteredTreesForm({
+function RegisterTreesForm({
   setContributionGUID,
   setContributionDetails,
   setRegistered,
-}: RenderUnRegisteredTreesFormProps) {
+}: RegisterTreesFormProps) {
   const { user, token, contextLoaded, logoutUser } = useUserProps();
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {
@@ -420,7 +420,7 @@ type FormData = {
   geometry: any;
 };
 
-export default function RegisterTreesForm() {
+export default function RegisterTreesWidget() {
   const { user, token } = useUserProps();
   const { t, ready } = useTranslation(['me', 'common']);
   const [contributionGUID, setContributionGUID] = React.useState('');
@@ -437,7 +437,7 @@ export default function RegisterTreesForm() {
   return ready ? (
     <>
       {!registered ? (
-        <RenderUnRegisteredTreesForm
+        <RegisterTreesForm
           setContributionGUID={setContributionGUID}
           setContributionDetails={setContributionDetails}
           setRegistered={setRegistered}
