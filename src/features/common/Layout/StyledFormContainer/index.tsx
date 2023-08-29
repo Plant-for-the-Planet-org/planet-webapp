@@ -1,12 +1,13 @@
-import { styled } from '@mui/material';
+import { styled, Box } from '@mui/material';
 
 /**
- * Returns an empty flex column display `<form>` with
+ * Returns an empty flex column display form container
  * styles defined for formButton, formTitle and inputContainer
  *
- * Note: if you need just the container without a <form> tag, use `StyledFormContainer`
+ *
+ * Note: if you need a <form> tag, use `StyledFormContainer`
  */
-const StyledForm = styled('form')(() => ({
+const StyledFormContainer = styled(Box)(() => ({
   width: '100%',
   display: 'flex',
   flexDirection: 'column',
@@ -23,5 +24,6 @@ const StyledForm = styled('form')(() => ({
     width: '100%',
   },
 }));
+// Duplicates StyledForm which should be phased out slowly
 
-export default StyledForm;
+export default StyledFormContainer;
