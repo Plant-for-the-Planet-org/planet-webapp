@@ -4,6 +4,7 @@ import { useTranslation } from 'next-i18next';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { useRouter } from 'next/router';
 import { PlantLocation } from '../../Treemapper';
+import { Button } from '@mui/material';
 
 interface Props {
   plantLocation: PlantLocation | null;
@@ -36,12 +37,13 @@ export default function ReviewSubmit({
           <div className={styles.successContainer}>
             <h2>{t('treemapper:submittedSuccess')}</h2>
             <p>{t('treemapper:submittedSuccessDescription')}</p>
-            <button
+            <Button
               onClick={() => router.push('/profile/treemapper')}
-              className={'primaryButton'}
+              variant="contained"
+              color="primary"
             >
               {t('myPlantLocations')}
-            </button>
+            </Button>
           </div>
         </>
       ) : (
@@ -126,22 +128,30 @@ export default function ReviewSubmit({
               )}
               <div className={`${styles.formField}`}>
                 <div className={styles.formFieldHalf}>
-                  <button onClick={handleBack} className="secondaryButton">
+                  <Button
+                    onClick={handleBack}
+                    variant="contained"
+                    color="inherit"
+                  >
                     {isUploadingData ? (
                       <div className={styles.spinner}></div>
                     ) : (
                       t('treemapper:back')
                     )}
-                  </button>
+                  </Button>
                 </div>
                 <div className={styles.formFieldHalf}>
-                  <button onClick={handleSubmit} className="primaryButton">
+                  <Button
+                    onClick={handleSubmit}
+                    variant="contained"
+                    color="primary"
+                  >
                     {isUploadingData ? (
                       <div className={styles.spinner}></div>
                     ) : (
                       t('treemapper:submit')
                     )}
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>

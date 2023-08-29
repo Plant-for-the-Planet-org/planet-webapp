@@ -7,6 +7,7 @@ import styles from './AccountHistory.module.scss';
 import { useRouter } from 'next/router';
 import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
 import { Filters, PaymentHistory } from '../../common/types/payments';
+import Grid from '@mui/material/Grid';
 
 interface Props {
   filter: string | null;
@@ -64,10 +65,8 @@ export default function History({
   const adSpaceLanguage = i18n.language === 'de' ? 'de' : 'en';
 
   return (
-    <div className="profilePage">
-      <div className={'profilePageTitle'}>{t('me:payments')}</div>
-      <div className={'profilePageSubTitle'}>{t('me:donationsSubTitle')}</div>
-      <div className={styles.pageContainer}>
+    <div className={styles.pageContainer}>
+      <Grid item style={{ width: '100%' }}>
         <div className={styles.filterRow}>
           {accountingFilters &&
             Object.entries(accountingFilters).map((item) => {
@@ -84,6 +83,8 @@ export default function History({
               );
             })}
         </div>
+      </Grid>
+      <Grid item>
         <iframe
           src={`https://www5.plant-for-the-planet.org/membership-cta/${adSpaceLanguage}/`}
           className={styles.topAdSpace}
@@ -171,7 +172,7 @@ export default function History({
               record={paymentHistory.items[selectedRecord]}
             />
           )}
-      </div>
+      </Grid>
     </div>
   );
 }

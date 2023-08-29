@@ -1,11 +1,10 @@
 import React, { ReactElement } from 'react';
-import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
 import { useTranslation } from 'next-i18next';
 import styles from '../Import.module.scss';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
 import { Controller } from 'react-hook-form';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
-import { InputAdornment, MenuItem, SxProps } from '@mui/material';
+import { InputAdornment, MenuItem, SxProps, TextField } from '@mui/material';
 
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -105,7 +104,7 @@ export default function SampleTreeCard({
                     label={t('plantingDate')}
                     value={value}
                     onChange={onChange}
-                    renderInput={(props) => <MaterialTextField {...props} />}
+                    renderInput={(props) => <TextField {...props} />}
                     disableFuture
                     inputFormat="MMMM d, yyyy"
                     DialogProps={{
@@ -121,7 +120,7 @@ export default function SampleTreeCard({
               name={`sampleTrees[${index}].treeTag`}
               control={control}
               render={({ field: { onChange, value, onBlur } }) => (
-                <MaterialTextField
+                <TextField
                   onChange={onChange}
                   value={value}
                   onBlur={onBlur}
@@ -144,7 +143,7 @@ export default function SampleTreeCard({
                 },
               }}
               render={({ field: { onChange, value, onBlur } }) => (
-                <MaterialTextField
+                <TextField
                   onChange={onChange}
                   value={value}
                   onBlur={onBlur}
@@ -155,14 +154,11 @@ export default function SampleTreeCard({
                       <InputAdornment position="end">{t('m')}</InputAdornment>
                     ),
                   }}
+                  error={errors?.sampleTrees?.[index]?.height}
+                  helperText={errors?.sampleTrees?.[index]?.height?.message}
                 />
               )}
             />
-            {errors?.sampleTrees?.[index]?.height && (
-              <span className={styles.errorMessage}>
-                {errors?.sampleTrees?.[index]?.height?.message}
-              </span>
-            )}
           </div>
           <div className={styles.formFieldHalf}>
             <Controller
@@ -175,7 +171,7 @@ export default function SampleTreeCard({
                 },
               }}
               render={({ field: { onChange, value, onBlur } }) => (
-                <MaterialTextField
+                <TextField
                   onChange={onChange}
                   value={value}
                   onBlur={onBlur}
@@ -186,14 +182,11 @@ export default function SampleTreeCard({
                       <InputAdornment position="end">{t('cm')}</InputAdornment>
                     ),
                   }}
+                  error={errors?.sampleTrees?.[index]?.diameter}
+                  helperText={errors?.sampleTrees?.[index]?.diameter?.message}
                 />
               )}
             />
-            {errors?.sampleTrees?.[index]?.diameter && (
-              <span className={styles.errorMessage}>
-                {errors?.sampleTrees?.[index]?.diameter?.message}
-              </span>
-            )}
           </div>
         </div>
 
@@ -209,20 +202,17 @@ export default function SampleTreeCard({
                 },
               }}
               render={({ field: { onChange, value, onBlur } }) => (
-                <MaterialTextField
+                <TextField
                   onChange={onChange}
                   value={value}
                   onBlur={onBlur}
                   label={t('latitude')}
                   variant="outlined"
+                  error={errors?.sampleTrees?.[index]?.latitude}
+                  helperText={errors?.sampleTrees?.[index]?.latitude?.message}
                 />
               )}
             />
-            {errors?.sampleTrees?.[index]?.latitude && (
-              <span className={styles.errorMessage}>
-                {errors?.sampleTrees?.[index]?.latitude?.message}
-              </span>
-            )}
           </div>
           <div className={styles.formFieldHalf}>
             <Controller
@@ -235,20 +225,17 @@ export default function SampleTreeCard({
                 },
               }}
               render={({ field: { onChange, value, onBlur } }) => (
-                <MaterialTextField
+                <TextField
                   onChange={onChange}
                   value={value}
                   onBlur={onBlur}
                   label={t('longitude')}
                   variant="outlined"
+                  error={errors?.sampleTrees?.[index]?.longitude}
+                  helperText={errors?.sampleTrees?.[index]?.longitude?.message}
                 />
               )}
             />
-            {errors?.sampleTrees?.[index]?.longitude && (
-              <span className={styles.errorMessage}>
-                {errors?.sampleTrees?.[index]?.longitude?.message}
-              </span>
-            )}
           </div>
         </div>
         <div className={styles.formFieldLarge}>
@@ -256,7 +243,7 @@ export default function SampleTreeCard({
             name={`sampleTrees[${index}].otherSpecies`}
             control={control}
             render={({ field: { onChange, value, onBlur } }) => (
-              <MaterialTextField
+              <TextField
                 label={t('treeSpecies')}
                 variant="outlined"
                 onChange={onChange}
@@ -295,7 +282,7 @@ export default function SampleTreeCard({
                     }
                   }
                 )}
-              </MaterialTextField>
+              </TextField>
             )}
           />
           {/* <SpeciesSelect label={t('treemapper:species')} name={`scientificSpecies`} width='300px' control={control} /> */}

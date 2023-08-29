@@ -14,6 +14,7 @@ interface Props<
 > {
   name: TName;
   label: string;
+  size?: 'small' | 'medium';
   error?: boolean;
   helperText?: string;
   defaultValue?: string;
@@ -31,6 +32,7 @@ const ReactHookFormSelect = <
 >({
   name,
   label,
+  size,
   error,
   helperText,
   defaultValue,
@@ -50,6 +52,7 @@ const ReactHookFormSelect = <
           error={error}
           helperText={helperText}
           value={value || defaultValue}
+          size={size}
           onChange={onChange}
         >
           {children}

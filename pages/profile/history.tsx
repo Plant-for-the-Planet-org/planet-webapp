@@ -13,6 +13,7 @@ import {
   Filters,
   PaymentHistory,
 } from '../../src/features/common/types/payments';
+import DashboardView from '../../src/features/common/Layout/DashboardView';
 
 function AccountHistory(): ReactElement {
   const { t } = useTranslation(['me']);
@@ -125,7 +126,14 @@ function AccountHistory(): ReactElement {
         <Head>
           <title>{t('history')}</title>
         </Head>
-        <History {...HistoryProps} />
+        <DashboardView
+          title={t('me:payments')}
+          subtitle={t('me:donationsSubTitle')}
+          multiColumn={true}
+        >
+          <History {...HistoryProps} />
+        </DashboardView>
+
         {/* <UnderMaintenance/> */}
       </UserLayout>
     </>

@@ -502,10 +502,14 @@ export default function DetailedAnalysis({
       }
 
       // set main interventions
-      if (metadata.mainInterventions.length > 0) {
+      if (
+        metadata.mainInterventions !== null &&
+        metadata.mainInterventions.length > 0
+      ) {
+        const { mainInterventions } = metadata;
         const initialInterventionOptions: InterventionOption[] =
           interventionOptions.map(([intervention, isSet]) =>
-            metadata.mainInterventions.includes(intervention)
+            mainInterventions.includes(intervention)
               ? [intervention, true]
               : [intervention, isSet]
           );

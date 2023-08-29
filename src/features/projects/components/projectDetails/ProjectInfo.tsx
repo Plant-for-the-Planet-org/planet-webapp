@@ -271,20 +271,21 @@ function ProjectInfo({ project }: Props): ReactElement {
           </div>
         )}
 
-      {project.metadata.mainInterventions.length > 0 && (
-        <div className={styles.projectMoreInfo}>
-          <div className={styles.infoTitle}>
-            {t('manageProjects:labelMainInterventions')}
+      {project.metadata.mainInterventions !== null &&
+        project.metadata.mainInterventions.length > 0 && (
+          <div className={styles.projectMoreInfo}>
+            <div className={styles.infoTitle}>
+              {t('manageProjects:labelMainInterventions')}
+            </div>
+            <div className={styles.infoText}>
+              {project.metadata.mainInterventions
+                .map((intervention) =>
+                  t(`manageProjects:interventionTypes.${intervention}`)
+                )
+                .join(', ')}
+            </div>
           </div>
-          <div className={styles.infoText}>
-            {project.metadata.mainInterventions
-              .map((intervention) =>
-                t(`manageProjects:interventionTypes.${intervention}`)
-              )
-              .join(', ')}
-          </div>
-        </div>
-      )}
+        )}
 
       {project.metadata.mainChallenge !== null && (
         <div className={styles.projectMoreInfo}>
