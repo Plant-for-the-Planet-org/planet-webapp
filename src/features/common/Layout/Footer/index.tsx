@@ -396,16 +396,17 @@ export default function Footer(): ReactElement | null {
 
               {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
               {config.footerLinks &&
-                config.footerLinks.map((key: any) => {
+                config.footerLinks.map((key) => {
+                  const footerLinkKey = key as keyof typeof FooterLinks;
                   return (
                     <a
-                      key={FooterLinks[key].title}
-                      href={FooterLinks[key].link}
+                      key={FooterLinks[footerLinkKey].title}
+                      href={FooterLinks[footerLinkKey].link}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       <p className={styles.footer_links}>
-                        {FooterLinks[key].title}
+                        {FooterLinks[footerLinkKey].title}
                       </p>
                     </a>
                   );

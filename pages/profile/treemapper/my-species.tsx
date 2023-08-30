@@ -7,9 +7,7 @@ import { useTranslation } from 'next-i18next';
 import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 
-interface Props {}
-
-export default function MySpeciesPage({}: Props): ReactElement {
+export default function MySpeciesPage(): ReactElement {
   const { t } = useTranslation('me');
   const { user } = useUserProps();
   return (

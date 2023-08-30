@@ -1,7 +1,7 @@
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { Grid } from '@mui/material';
 interface SingleColumnViewProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 /**

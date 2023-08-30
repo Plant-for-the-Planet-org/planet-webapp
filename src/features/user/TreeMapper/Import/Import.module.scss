@@ -18,9 +18,10 @@
 }
 
 .pageTitle {
-  font-size: $fontXLarge;
+  font-size: 2.25rem;
   font-weight: 700;
   width: 100%;
+  margin-bottom: 10px;
 }
 
 .listContainer {
@@ -41,6 +42,11 @@
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.25);
+  margin-bottom: 24px;
+}
+
+.pageSubtitle {
+  font-size: 1rem;
 }
 
 .stepperContainer {
@@ -229,6 +235,7 @@
   border-radius: 100px;
   width: 100%;
   margin-bottom: 10px;
+  gap:15px;
   .importTab {
     display: flex;
     flex-direction: column;
@@ -236,7 +243,6 @@
     justify-content: center;
     width: 100px;
     height: 32px;
-    font-weight: 700;
     cursor: pointer;
     &.active {
       color: $backgroundColor;
@@ -425,6 +431,7 @@
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
     box-shadow: none;
+    padding-top: 65px;
   }
   .mapContainer {
     top: 80px;

@@ -22,7 +22,7 @@
     "**/*.ts",
     "**/*.tsx",
     "./src/**/*",
-    "tenant.config.js",
+    "tenant.config.ts",
     "public/assets"
   ]
 }

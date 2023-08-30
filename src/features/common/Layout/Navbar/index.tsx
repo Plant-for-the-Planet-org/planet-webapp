@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import Me from '../../../../../public/assets/images/navigation/Me';
 import MeSelected from '../../../../../public/assets/images/navigation/MeSelected';
@@ -17,9 +17,9 @@ import ImpersonationActivated from '../../../user/Settings/ImpersonateUser/Imper
 
 // used to detect window resize and return the current width of the window
 const useWidth = () => {
-  const [width, setWidth] = React.useState(0); // default width, detect on server.
+  const [width, setWidth] = useState(0); // default width, detect on server.
   const handleResize = () => setWidth(window.innerWidth);
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener('resize', handleResize);
     handleResize();
     return () => window.removeEventListener('resize', handleResize);
@@ -28,7 +28,7 @@ const useWidth = () => {
 };
 
 const config = tenantConfig();
-export default function NavbarComponent(props: any) {
+export default function NavbarComponent() {
   const { t, ready, i18n } = useTranslation(['common']);
   const router = useRouter();
   const subMenuPath = {
@@ -40,11 +40,11 @@ export default function NavbarComponent(props: any) {
     changeChocolate: 'change-chocolate',
     stopTalkingStartPlanting: 'stop-talking-start-planting',
   };
-  const [menu, setMenu] = React.useState(false);
-  const [isMobile, setIsMobile] = React.useState(false);
-  const [mobileWidth, setMobileWidth] = React.useState(false);
-  const { embed } = React.useContext(ParamsContext);
-  React.useEffect(() => {
+  const [menu, setMenu] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [mobileWidth, setMobileWidth] = useState(false);
+  const { embed } = useContext(ParamsContext);
+  useEffect(() => {
     if (typeof window !== 'undefined') {
       if (window.innerWidth > 767) {
         setMobileWidth(false);
@@ -56,7 +56,7 @@ export default function NavbarComponent(props: any) {
   const width = useWidth();
 
   // changes the isMobile state to true if the window width is less than 768px
-  React.useEffect(() => {
+  useEffect(() => {
     setIsMobile(width < 768);
   }, [width]);
 
@@ -85,7 +85,7 @@ export default function NavbarComponent(props: any) {
     }
   }
 
-  const { toggleTheme, theme } = React.useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   // if (isLoading) {
   //   return <div></div>;
@@ -143,7 +143,8 @@ export default function NavbarComponent(props: any) {
     return links ? (
       <div className={'menuItems'}>
         {links.map((link) => {
-          let SingleLink = config.header.items[link];
+          const linkKey = link as keyof typeof config.header.items;
+          let SingleLink = config.header.items[linkKey];
           const hasSubMenu =
             SingleLink.subMenu && SingleLink.subMenu.length > 0;
           if (SingleLink) {
@@ -176,8 +177,8 @@ export default function NavbarComponent(props: any) {
               let aboutOnclick = `${SingleLink.onclick}${
                 (process.env.TENANT === 'planet' ||
                   process.env.TENANT === 'ttc') &&
-                lang_path[i18n.language]
-                  ? lang_path[i18n.language]
+                lang_path[i18n.language as keyof typeof lang_path]
+                  ? lang_path[i18n.language as keyof typeof lang_path]
                   : ''
               }`;
 
@@ -186,7 +187,7 @@ export default function NavbarComponent(props: any) {
                 ...SingleLink,
                 onclick: aboutOnclick,
               };
-              if (hasSubMenu) {
+              if (hasSubMenu && SingleLink.subMenu) {
                 SingleLink.subMenu[0].onclick = aboutOnclick;
               }
             }
@@ -239,16 +240,22 @@ export default function NavbarComponent(props: any) {
                 <div className={`subMenuItems ${menu ? 'showSubMenu' : ''}`}>
                   {SingleLink.subMenu &&
                     SingleLink.subMenu.length > 0 &&
-                    SingleLink.subMenu.map((submenu: any) => {
+                    SingleLink.subMenu.map((submenu) => {
                       return (
                         <a
                           key={submenu.title}
                           className={'menuRow'}
                           href={`https://a.plant-for-the-planet.org/${
-                            lang_path[i18n.language]
-                              ? lang_path[i18n.language]
+                            lang_path[i18n.language as keyof typeof lang_path]
+                              ? lang_path[
+                                  i18n.language as keyof typeof lang_path
+                                ]
                               : 'en'
-                          }/${subMenuPath[submenu.title]}`}
+                          }/${
+                            subMenuPath[
+                              submenu.title as keyof typeof subMenuPath
+                            ]
+                          }`}
                         >
                           <div
                             style={{

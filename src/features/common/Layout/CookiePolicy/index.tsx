@@ -9,7 +9,7 @@ export default function CookiePolicy() {
   const { t, ready } = useTranslation(['leaderboard']);
   const { user, contextLoaded } = useUserProps();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (contextLoaded && user) {
       setShowCookieNotice(false);
     }
@@ -31,7 +31,7 @@ export default function CookiePolicy() {
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     localStorage.setItem('cookieNotice', showCookieNotice);
   }, [showCookieNotice]);
 

@@ -4,12 +4,23 @@ import * as turf from '@turf/turf';
 import { getRequest } from '../apiRequests/api';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 import { SetState } from '../../features/common/types/common';
+import { PlantLocation } from '../../features/common/types/plantLocation';
+import { Position } from 'geojson';
+import { ViewPort } from '../../features/common/types/ProjectPropsContextInterface';
 
+/**
+ * Zooms the map to a multiple tree plant location
+ * @param {Position} coordinates
+ * @param {ViewPort} viewport
+ * @param {boolean} isMobile
+ * @param setViewPort - function to set the viewport
+ * @param {number} duration - in ms
+ */
 export function zoomToPlantLocation(
-  coordinates: any,
-  viewport: Object,
+  coordinates: Position[],
+  viewport: ViewPort,
   isMobile: boolean,
-  setViewPort: Function,
+  setViewPort: SetState<ViewPort>,
   duration = 1200
 ) {
   if (viewport.width && viewport.height) {
@@ -55,9 +66,9 @@ export async function getAllPlantLocations(
   project: string,
   setErrors: SetState<SerializedError[] | null>,
   redirect: (url: string) => void
-) {
+): Promise<PlantLocation[] | null | void> {
   try {
-    const result = await getRequest(
+    const result = await getRequest<PlantLocation[]>(
       `/app/plantLocations/${project}`,
       {
         _scope: 'extended',

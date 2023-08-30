@@ -1,6 +1,11 @@
-// This function removes all the null,  empty objects, "" (empty string values), undefined values from the object
+type ObjectValue = number | string | boolean | GeneralArray | GeneralObject;
+type GeneralObject = { [key: string]: ObjectValue };
+type GeneralArray = Array<ObjectValue>;
 
-const cleanObject = (object) => {
+/**
+ * Removes all the null,  empty objects, "" (empty string values), undefined values from the object
+ */
+const cleanObject = (object: GeneralObject | GeneralArray) => {
   Object.entries(object).forEach(([key, value]) => {
     if (value && typeof value === 'object') {
       cleanObject(value);
@@ -12,7 +17,7 @@ const cleanObject = (object) => {
       value === ''
     ) {
       if (Array.isArray(object)) {
-        object.splice(key, 1);
+        object.splice(Number(key), 1);
       } else {
         delete object[key];
       }
