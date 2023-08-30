@@ -75,9 +75,7 @@ export default function PopupProject({
           {project.purpose === 'trees' && (
             <div className={'projectType'}>
               <div className={'projectTypeIcon'}>
-                <ProjectTypeIcon
-                  projectType={project.properties.classification}
-                />
+                <ProjectTypeIcon projectType={project.classification} />
               </div>
               {project.classification && t(`donate:${project.classification}`)}
             </div>
