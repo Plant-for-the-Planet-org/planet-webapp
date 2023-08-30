@@ -74,7 +74,7 @@ export const contributionsGeoJson = procedure
 
     const data = await prisma.$queryRaw<ContributionsGeoJsonQueryResult[]>`
   SELECT COUNT(pp.guid) AS totalContribution, SUM(c.tree_count) AS treeCount, 
-    quantity,  c.purpose, MIN(c.plant_date) AS startDate,
+    SUM(c.quantity) AS quantity,  c.purpose, MIN(c.plant_date) AS startDate,
     MAX(c.plant_date) AS endDate, c.contribution_type, c.plant_date, pp.location, pp.country, 
     pp.unit_type, pp.guid, pp.name, pp.image, pp.geo_latitude AS geoLatitude, 
     pp.geo_longitude AS geoLongitude, c.geometry, tpo.name AS tpo, tpo.guid AS tpoGuid
