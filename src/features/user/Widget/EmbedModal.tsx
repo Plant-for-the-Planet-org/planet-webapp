@@ -8,7 +8,8 @@ import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../theme/themeContext';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, User } from '@planet-sdk/common';
+import { AlertColor } from '@mui/lab';
 
 interface Props {
   embedModalOpen: boolean;
@@ -29,7 +30,7 @@ export default function EmbedModal({
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const [isPrivate, setIsPrivate] = React.useState(false);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [severity, setSeverity] = React.useState('success');
+  const [severity, setSeverity] = React.useState<AlertColor>('success');
   const [snackbarMessage, setSnackbarMessage] = React.useState('OK');
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const router = useRouter();
@@ -63,7 +64,7 @@ export default function EmbedModal({
     };
     if (contextLoaded && token) {
       try {
-        const res = await putAuthenticatedRequest(
+        const res: User = await putAuthenticatedRequest(
           `/app/profile`,
           bodyToSend,
           token,
@@ -143,7 +144,7 @@ export default function EmbedModal({
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={2000}
-        onClose={handleSnackbarClose}
+        onClose={() => handleSnackbarClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <div>
