@@ -1,8 +1,6 @@
 import React, { ReactElement } from 'react';
 
-interface Props {}
-
-export default function UnderMaintenanceImage({}: Props): ReactElement {
+export default function UnderMaintenanceImage(): ReactElement {
   return (
     <svg
       id="e43251fe-2b99-4b63-8176-d5da4893f038"

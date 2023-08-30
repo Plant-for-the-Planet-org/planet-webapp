@@ -43,8 +43,7 @@
   "monitoringPlotsData": "Monitoring Plot Daten",
   "dataIntervals": "Datenintervalle",
   "errors": {
-    "emptyExportData": "Für das angegebene Intervall sind keine Daten verfügbar. Versuchen Sie es mit einem anderen Zeitbereich oder prüfen Sie, ob die Daten für diesen Zeitraum aufgezeichnet wurden.",
-    "tooManyRequest": "Zu viele Anfragen. Bitte warten Sie und versuchen Sie es später noch einmal oder wenden Sie sich an den Systemadministrator, um Hilfe zu erhalten."
+    "emptyExportData": "Für das angegebene Intervall sind keine Daten verfügbar. Versuchen Sie es mit einem anderen Zeitbereich oder prüfen Sie, ob die Daten für diesen Zeitraum aufgezeichnet wurden."
   },
   "timeFrame": "Zeitrahmen",
   "scientificName": "Wissenschaftlicher Name",

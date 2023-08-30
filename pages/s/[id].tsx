@@ -6,9 +6,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths } from 'next';
 import { handleError, APIError } from '@planet-sdk/common';
 
-interface Props {}
-
-export default function DirectGift({}: Props): ReactElement {
+export default function DirectGift(): ReactElement {
   const router = useRouter();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 

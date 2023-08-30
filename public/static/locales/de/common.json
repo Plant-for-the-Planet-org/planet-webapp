@@ -1,6 +1,7 @@
 {
   "tree_one": "Baum",
   "tree_other": "Bäume",
+  "m2": "m²",
   "by": "Von {{tpoName}}",
   "to_project_by_tpo": "An {{projectName}} von {{tpoName}}",
   "for": "für",
@@ -46,7 +47,6 @@
   "december": "Dezember",
   "approx": "Ungefähr",
   "view": "Ansehen",
-  "opening_native_app": "Diese Seite ist nur in unserer iOS- oder Android-App verfügbar.",
   "verifyEmailHeader": "Bitte bestätige Deine E-Mail.",
   "verifyEmailText": "Um Dein Konto zu sichern, müssen wir Deine E-Mail verifizieren. Bitte überprüfe Deinen Posteingang oder Deinen Spam- bzw. Junk-Ordner auf eine Bestätigungs-E-Mail und fahre dann mit dem Login fort.",
   "verifyEmailInfo": "Wenn Du keine E-Mail erhalten hast, versuche bitte erneut, Dich anzumelden, und wir senden Dir eine weitere E-Mail.",
@@ -96,6 +96,7 @@
   "deleteCondition": "Bevor du fortfährst, vergewissere dich, dass alle Dauerspenden beendet sind.",
   "showSubscriptions": "Meine Dauerspenden anzeigen",
   "notFound": "Ressource nicht gefunden",
+  "tooManyRequest": "Zu viele Anfragen. Bitte warten Sie und versuchen Sie es später erneut oder wenden Sie sich an den Systemadministrator, um Unterstützung zu erhalten.",
   "unauthorized": "Nicht autorisiert",
   "validationError": "Validierungsfehler",
   "internalServerError": "Interner Serverfehler - Bitte versuche es später noch einmal!",
@@ -126,5 +127,6 @@
   "viewReport": "Report anzeigen",
   "reviewInfo": "Das Projekt wurde im Rahmen einer mehrtägigen Überprüfung vor Ort im <2>month</2> geprüft und erfüllt unsere <5>Standards.</5>",
   "standardsLink": "https://www.plant-for-the-planet.org/de/standards/",
-  "project": "Projekt"
+  "project": "Projekt",
+  "top_project_standards_fulfilled": "Die Projektprüfung hat gezeigt, dass dieses Projekt mindestens 12 der 19 Top Projekt <2>Standards</2> erfüllte."
 }

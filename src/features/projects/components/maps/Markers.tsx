@@ -5,12 +5,27 @@ import PopupProject from '../PopupProject';
 import styles from '../../styles/ProjectsMap.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import ProjectTypeIcon from '../ProjectTypeIcon';
+import { SetState } from '../../../common/types/common';
+import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
+
+type PopupClosedData = {
+  show: false;
+};
+
+type PopupOpenData = {
+  show: true;
+  lat: number;
+  long: number;
+  project: MapProject;
+};
+
+export type PopupData = PopupClosedData | PopupOpenData;
 
 interface Props {
-  searchedProject: Array<Object>;
-  setPopupData: Function;
-  popupData: Object;
-  isMobile: Boolean;
+  searchedProject: MapProject[];
+  setPopupData: SetState<PopupData>;
+  popupData: PopupData;
+  isMobile: boolean;
 }
 
 export default function Markers({
@@ -42,7 +57,7 @@ export default function Markers({
   };
   return (
     <>
-      {searchedProject.map((projectMarker: any, index: any) => (
+      {searchedProject.map((projectMarker, index) => (
         <Marker
           key={index}
           latitude={projectMarker.geometry.coordinates[1]}
@@ -120,7 +135,7 @@ export default function Markers({
           longitude={popupData.long}
           closeButton={false}
           closeOnClick={false}
-          onClose={() => setPopupData({ ...popupData, show: false })}
+          onClose={() => setPopupData({ show: false })}
           anchor="bottom"
           dynamicPosition={false}
           offsetTop={-15}
@@ -187,7 +202,7 @@ export default function Markers({
             onMouseLeave={() => {
               if (!open) {
                 setTimeout(() => {
-                  setPopupData({ ...popupData, show: false });
+                  setPopupData({ show: false });
                 }, 300);
                 handleClose();
               }
@@ -195,7 +210,7 @@ export default function Markers({
           >
             <PopupProject
               key={popupData.project.properties.id}
-              project={popupData.project}
+              project={popupData.project.properties}
               buttonRef={buttonRef}
               popupRef={popupRef}
               open={open}

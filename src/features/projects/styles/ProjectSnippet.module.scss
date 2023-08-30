@@ -105,7 +105,8 @@
   left: 7px;
 }
 
-.projectType {
+.projectType,
+.projectEcosystem {
   font-family: $primaryFontFamily;
   font-size: $fontXXSmall;
   color: $light;
@@ -236,7 +237,7 @@
   text-decoration: none;
 }
 
-.perTreeCost {
+.perUnitCost {
   font-family: $secondaryFontFamily;
   font-size: $fontXSmall;
   color: $primaryFontColor;
@@ -245,7 +246,7 @@
   text-align: right;
 }
 
-.perTreeCost > span {
+.perUnitCost > span {
   font-family: $primaryFontFamily;
   font-weight: 400;
 }

@@ -1,5 +1,12 @@
 import router, { useRouter } from 'next/router';
-import React, { ReactElement } from 'react';
+import React, {
+  Dispatch,
+  FC,
+  ReactNode,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import { useTranslation } from 'next-i18next';
 import MenuIcon from '../../../../../public/assets/images/icons/Sidebar/MenuIcon';
 import DownArrow from '../../../../../public/assets/images/icons/DownArrow';
@@ -21,16 +28,37 @@ import RegisterTreeIcon from '../../../../../public/assets/images/icons/Sidebar/
 import NotionLinkIcon from '../../../../../public/assets/images/icons/Sidebar/NotionLinkIcon';
 import SupportPin from '../../../user/Settings/ImpersonateUser/SupportPin';
 import FiberPinIcon from '@mui/icons-material/FiberPin';
+import { User } from '@planet-sdk/common/build/types/user';
+
+interface SubMenuItemType {
+  title: string;
+  path: string;
+  flag?: string;
+  hideItem?: boolean;
+}
+
+interface NavLinkType {
+  key: number;
+  title: string;
+  path?: string; // The question mark makes the 'path' property optional
+  icon: ReactNode;
+  flag?: string;
+  accessLevel?: string[];
+  hideSubMenu?: boolean;
+  subMenu?: SubMenuItemType[];
+  hideItem?: boolean;
+  hasRelatedLinks?: boolean;
+}
 
 function LanguageSwitcher() {
   const { i18n, ready } = useTranslation(['common', 'me']);
 
-  const [language, setLanguage] = React.useState(i18n.language);
-  const [openModal, setOpenModal] = React.useState(false);
-  const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
-  const [selectedCountry, setSelectedCountry] = React.useState('DE');
+  const [language, setLanguage] = useState(i18n.language);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedCurrency, setSelectedCurrency] = useState('EUR');
+  const [selectedCountry, setSelectedCountry] = useState('DE');
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (typeof Storage !== 'undefined') {
       //fetching language from browser's local storage
       if (localStorage.getItem('language')) {
@@ -40,7 +68,7 @@ function LanguageSwitcher() {
     }
   }, [language]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (typeof Storage !== 'undefined') {
       //fetching currencycode from browser's localstorage
       if (localStorage.getItem('currencyCode')) {
@@ -84,7 +112,16 @@ function LanguageSwitcher() {
     <></>
   );
 }
-
+interface NavLinkProps {
+  link: NavLinkType;
+  setactiveLink: Dispatch<SetStateAction<string>>;
+  activeLink: string;
+  activeSubMenu: string;
+  setActiveSubMenu: Dispatch<SetStateAction<string>>;
+  user: User;
+  key: number;
+  closeMenu: () => void;
+}
 function NavLink({
   link,
   setactiveLink,
@@ -92,16 +129,16 @@ function NavLink({
   activeSubMenu,
   setActiveSubMenu,
   user,
-}: any) {
-  const [isSubMenuActive, setisSubMenuActive] = React.useState(false);
-  React.useEffect(() => {
+}: NavLinkProps) {
+  const [isSubMenuActive, setisSubMenuActive] = useState(false);
+  useEffect(() => {
     // Check if array of submenu has activeSubLink
     if (link.subMenu && link.subMenu.length > 0) {
-      const subMenuItem = link.subMenu.find((subMenuItem: any) => {
+      const subMenuItem = link.subMenu.find((subMenuItem) => {
         return subMenuItem.path === activeSubMenu;
       });
       if (subMenuItem) {
-        setactiveLink(link.path);
+        link.path && setactiveLink(link.path);
         setActiveSubMenu(subMenuItem.path);
         if (activeSubMenu && subMenuItem.path === activeSubMenu) {
           setisSubMenuActive(true);
@@ -130,7 +167,7 @@ function NavLink({
             setactiveLink(link.path);
             setActiveSubMenu('');
           } else {
-            if (link.hideSubMenu) {
+            if (link.hideSubMenu && link.path) {
               router.push(link.path);
             } else {
               setisSubMenuActive(!isSubMenuActive);
@@ -158,7 +195,7 @@ function NavLink({
         link.subMenu &&
         link.subMenu.length > 0 &&
         !link.hideSubMenu &&
-        link.subMenu.map((subLink: any, index: any) => {
+        link.subMenu.map((subLink, index) => {
           if (!subLink.hideItem) {
             return (
               <div
@@ -170,7 +207,7 @@ function NavLink({
                 key={index}
                 onClick={() => {
                   //this is to shift to the submenu pages
-                  setactiveLink(link.path);
+                  link.path && setactiveLink(link.path);
                   setActiveSubMenu(subLink.path);
                   router.push(subLink.path);
                 }}
@@ -185,7 +222,7 @@ function NavLink({
   );
 }
 
-function UserLayout(props: any): ReactElement {
+const UserLayout: FC = ({ children }) => {
   const { t } = useTranslation(['common', 'me']);
   // const { asPath } = useRouter();
   const router = useRouter();
@@ -194,7 +231,7 @@ function UserLayout(props: any): ReactElement {
 
   // Flags can be added to show labels on the right
   // TO DO - remove arrow when link is selected
-  const navLinks = [
+  const navLinks: NavLinkType[] = [
     {
       key: 1,
       title: t('me:profile'),
@@ -386,27 +423,30 @@ function UserLayout(props: any): ReactElement {
     },
   ];
 
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const [activeLink, setactiveLink] = React.useState('/profile');
-  const [activeSubMenu, setActiveSubMenu] = React.useState('');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeLink, setactiveLink] = useState('/profile');
+  const [activeSubMenu, setActiveSubMenu] = useState('');
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router) {
       for (const link of navLinks) {
         //checks whether the path belongs to menu or Submenu
-        if (router.router?.asPath === link.path) {
+        if (router.asPath === link.path) {
           setactiveLink(link.path);
         } else if (link.subMenu && link.subMenu.length > 0) {
-          const subMenuItem = link.subMenu.find((subMenuItem: any) => {
-            return subMenuItem.path === router.router?.asPath;
-          });
+          const subMenuItem = link.subMenu.find(
+            (subMenuItem: SubMenuItemType) => {
+              return subMenuItem.path === router.asPath;
+            }
+          );
           if (subMenuItem) {
-            setactiveLink(link.path);
+            link.path && setactiveLink(link.path);
             setActiveSubMenu(subMenuItem.path);
           }
         } else if (
           link.hasRelatedLinks &&
-          router.router?.asPath.includes(link.path)
+          link.path &&
+          router.asPath.includes(link.path)
         ) {
           setactiveLink(link.path);
         }
@@ -414,7 +454,7 @@ function UserLayout(props: any): ReactElement {
     }
   }, [router]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (contextLoaded) {
       //checks whether user is login
       if (router.asPath) {
@@ -458,7 +498,7 @@ function UserLayout(props: any): ReactElement {
                 <button className={styles.navlinkTitle}>{t('close')}</button>
               </div>
             </div>
-            {navLinks.map((link: any, index: any) => (
+            {navLinks.map((link: NavLinkType, index: number) => (
               <NavLink
                 link={link}
                 setactiveLink={setactiveLink}
@@ -515,12 +555,12 @@ function UserLayout(props: any): ReactElement {
           isImpersonationModeOn ? ` ${styles.profileImpersonation}` : ''
         }`}
       >
-        {props.children}
+        {children}
       </div>
     </div>
   ) : (
     <UserProfileLoader />
   );
-}
+};
 
 export default UserLayout;
