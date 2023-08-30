@@ -1,7 +1,7 @@
 {
-  "bulkCodesTitle": "Issue Bulk Codes",
+  "bulkCodesTitle": "Issue Tree Certificates & Codes",
   "partnerSignupInfo": "Use of this feature by Companies is subject to partnership with Plant-for-the-Planet. Please contact <2>partner@plant-for-the-planet.org</2> for details.",
-  "bulkCodesDescription1": "Using PlanetCash you can generate thousands of codes in a single operation.",
+  "bulkCodesDescription1": "Using PlanetCash you can generate thousands of codes in a single operation. Generating tree certificates will increase your tree count.",
   "bulkCodesDescription2": "You can use this feature to create codes for custom certificates, gift cards, donations on behalf of users and redeemable codes that you can associate with your products.",
   "tabCreationMethod": "Creation Method",
   "tabSelectProject": "Select Project",
@@ -9,8 +9,8 @@
   "issueCodes": "Issue Codes",
   "issuingCodes": "Issuing Codes...",
   "importMethodText": {
-    "title": "Import File",
-    "subtitle": "Use this method if one of the following criteria match your use case:",
+    "title": "Create Custom Tree Certificates",
+    "subtitle": "Use this method (for a maximum of 1000 recipients in one transaction) if one of the following criteria match your use case:",
     "details": ["I want to provide the Recipient's name or Email for each code.", "I want Plant-for-the-Planet to automatically email the recipients once it has been generated (optional).", "I want to issue codes for different tree counts."]
   },
   "genericMethodText": {
@@ -32,7 +32,7 @@
   "occasion": "Occasion",
   "total": "Total",
   "chargeConsentText": "By clicking Issue Codes, you agree that above amount will be charged to your account.",
-  "invalidEmailWarningText": "Please make sure that that recipient_email is a valid email. Using dummy or invalid emails will lead to account suspension in accordance with Platform terms and conditions.",
+  "invalidEmailWarningText": "Please make sure that that Recipient Email is a valid email. Using dummy or invalid emails will lead to account suspension in accordance with Platform terms and conditions.",
   "projectRequired": "No project is selected.",
   "unitsPerCodeRequired": "Each code should contain at least 1 unit.",
   "codeQuantityRequired": "You need to create at least 1 code.",
@@ -66,15 +66,41 @@
     "invalidEmails": "recipient_email contains dummy/invalid emails on the following rows: {{rowList}}. Please remove invalid emails or add valid emails.",
     "generalError": "Something went wrong. Please try after a while."
   },
+  "errorAddRecipient": {
+    "unitsNotProvided": "Mandatory",
+    "requiredForNotifications": "Required (to email recipients)",
+    "emailInvalid": "Invalid email"
+  },
   "successUploadCSV": {
     "ignoredColumns": "Extra columns were ignored"
   },
   "importInstructions": "Please refer to the <2>documentation here</2>, download <5>Excel template here</5>, and <8>CSV template here.</8>",
+  "tableHeaders": {
+    "recipient_name": "Recipient Name",
+    "recipient_email": "Recipient Email",
+    "recipient_notify": "Send Email?",
+    "units": "Units",
+    "recipient_message": "Message"
+  },
+  "tableHeaderHelpText": {
+    "recipient_name": "Optional. Name of the recipient, shown on the certificate and if opted in, in the mail sent to the recipient. Required if you want to send emails.",
+    "recipient_email": "Optional. Required to send certificate to the recipient by email.",
+    "recipient_notify": "Optional. Select Yes if you want Plant-for-the-Planet to inform the recipient via email automatically.",
+    "units": "Mandatory. Number of trees that are given to the recipient, e.g., 5 for 5 trees",
+    "recipient_message": "Optional. Message to the recipient that is included in the email if notify is yes. A default message will be sent if not provided."
+  },
   "donationSuccess": "Your donation was successful. Redirecting you to view donation details shortly...",
   "donationError": {
     "planet_cash_insufficient_credit": "Available credit = {{availableBalance}}. Please load balance in your PlanetCash account to make this donation.",
     "default": "Something went wrong. Please try after a while.",
     "planet_cash_payment_failure": "The transaction failed. {{reason}}",
     "planet_cash_invalid_project": "You cannot make a donation to the selected project."
-  }
+  },
+  "titleAddRecipientButton": "Add recipient to table",
+  "notifyRecipientOptions": {
+    "yes": "Yes",
+    "no": "No"
+  },
+  "fileUploadWarning": "This will remove your existing recipient data, do you want to continue?",
+  "unsavedDataWarning": "Some recipient data is unsaved. Do you wish to proceed? Unsaved data will be lost"
 }

@@ -267,13 +267,6 @@
 }
 
 @include mdTabletView {
-  .mainContainer {
-    max-height: calc(100vh - 60px);
-    position: relative;
-    // top: 60px;
-    overflow-y: visible;
-  }
-
   .container,
   .embedContainer {
     overflow: visible;

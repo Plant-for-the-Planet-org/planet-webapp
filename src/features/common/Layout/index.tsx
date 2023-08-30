@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import theme from '../../../theme/theme';
 import { useTheme } from '../../../theme/themeContext';
 import CookiePolicy from './CookiePolicy';
@@ -10,7 +10,7 @@ import { ParamsContext } from './QueryParamsContext';
 
 const Layout: FC = ({ children }) => {
   const { theme: themeType } = useTheme();
-  const { embed } = React.useContext(ParamsContext);
+  const { embed } = useContext(ParamsContext);
 
   const isEmbed = embed === 'true';
 

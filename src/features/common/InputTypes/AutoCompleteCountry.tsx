@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import { useState, ReactElement, useEffect } from 'react';
+import { useState, ReactElement, useEffect, ReactNode } from 'react';
 import { TextField } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'next-i18next';
@@ -20,7 +20,7 @@ function countryToFlag(isoCode: string) {
 }
 
 interface CountrySelectProps {
-  label: React.ReactNode;
+  label: ReactNode;
   name: string | undefined;
   defaultValue: string | undefined; //This will be a country code e.g. DE, IN, US
   onChange: (value: string) => void;
@@ -43,7 +43,7 @@ export default function CountrySelect({
   );
 
   // use default country passed to create default object & set country details
-  React.useEffect(() => {
+  useEffect(() => {
     // create default object
     const defaultCountry = countries.filter(
       (data) => data.code === defaultValue
@@ -57,7 +57,7 @@ export default function CountrySelect({
   }, []);
 
   // Set country everytime value changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedCountry) {
       onChange(selectedCountry.code);
     }

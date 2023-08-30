@@ -1,7 +1,7 @@
 import React, { FormEvent, ReactElement, useContext, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { Button, TextField } from '@mui/material';
-import styles from '../../../../../src/features/user/BulkCodes';
+import styles from '../../../../../src/features/user/BulkCodes/BulkCodes.module.scss';
 import { useRouter } from 'next/router';
 import ProjectSelector from '../components/ProjectSelector';
 import BulkGiftTotal from '../components/BulkGiftTotal';
@@ -19,12 +19,10 @@ import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import { Recipient as LocalRecipient } from '../BulkCodesTypes';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
-import StyledForm from '../../../common/Layout/StyledForm';
+import StyledFormContainer from '../../../common/Layout/StyledFormContainer';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 
-interface IssueCodesFormProps {}
-
-const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
+const IssueCodesForm = (): ReactElement | null => {
   const { t, ready, i18n } = useTranslation(['common', 'bulkCodes']);
   const router = useRouter();
   const {
@@ -46,6 +44,8 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isEditingRecipient, setIsEditingRecipient] = useState(false);
+  const [isAddingRecipient, setIsAddingRecipient] = useState(false);
 
   const resetBulkContext = (): void => {
     setProject(null);
@@ -82,6 +82,11 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    if (isAddingRecipient || isEditingRecipient) {
+      const shouldSubmit = confirm(t('bulkCodes:unsavedDataWarning'));
+      if (!shouldSubmit) return;
+    }
+
     const token = await getAccessTokenSilently();
     setIsProcessing(true);
     if (project) {
@@ -211,7 +216,7 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
     if (!isSubmitted) {
       return (
         <CenteredContainer>
-          <StyledForm className="IssueCodesForm" onSubmit={handleSubmit}>
+          <StyledFormContainer className="IssueCodesForm" component={'section'}>
             <div className="inputContainer">
               <ProjectSelector
                 projectList={projectList || []}
@@ -239,8 +244,10 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
               )}
               {bulkMethod === 'import' && (
                 <RecipientsUploadForm
-                  onRecipientsUploaded={setLocalRecipients}
+                  setLocalRecipients={setLocalRecipients}
                   localRecipients={localRecipients}
+                  setIsAddingRecipient={setIsAddingRecipient}
+                  setIsEditingRecipient={setIsEditingRecipient}
                 />
               )}
               <BulkGiftTotal
@@ -254,26 +261,31 @@ const IssueCodesForm = ({}: IssueCodesFormProps): ReactElement | null => {
 
             <BulkCodesError />
 
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              className="formButton"
-              disabled={
-                !(
-                  user.planetCash &&
-                  !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
-                ) ||
-                isProcessing ||
-                (localRecipients.length === 0 &&
-                  (Number(codeQuantity) <= 0 || Number(unitsPerCode) <= 0))
-              }
-            >
-              {isProcessing
-                ? t('bulkCodes:issuingCodes')
-                : t('bulkCodes:issueCodes')}
-            </Button>
-          </StyledForm>
+            <form onSubmit={handleSubmit}>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                className="formButton"
+                disabled={
+                  !(
+                    user.planetCash &&
+                    !(
+                      user.planetCash.balance + user.planetCash.creditLimit <=
+                      0
+                    )
+                  ) ||
+                  isProcessing ||
+                  (localRecipients.length === 0 &&
+                    (Number(codeQuantity) <= 0 || Number(unitsPerCode) <= 0))
+                }
+              >
+                {isProcessing
+                  ? t('bulkCodes:issuingCodes')
+                  : t('bulkCodes:issueCodes')}
+              </Button>
+            </form>
+          </StyledFormContainer>
         </CenteredContainer>
       );
     } else {

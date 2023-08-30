@@ -1,15 +1,14 @@
+// Not used currently. Left as a reference.
 import React, { ReactElement } from 'react';
 import styles from './Video.module.scss';
 import { useTranslation } from 'next-i18next';
 import ReactPlayer from 'react-player/lazy';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 
-interface Props {}
-
-function Video({}: Props): ReactElement {
+function Video(): ReactElement {
   const { t, ready } = useTranslation(['leaderboard', 'common']);
 
-  const videoUrl = 'https://www.youtube.com/watch?v=9V981RXcmH8';
+  const videoUrl = 'Some dummy url (to be replaced)';
   return ready ? (
     <div className={styles.videoSection}>
       <div className={styles.videoTitle}>
@@ -45,3 +44,44 @@ function Video({}: Props): ReactElement {
 }
 
 export default Video;
+
+/* Note: Video may need to be blocked in certain countries. This is a possible list of countries that was used earlier
+const blockedCountries =  [
+	"CK",
+	"TH",
+	"KW",
+	"CN",
+	"TL",
+	"AF",
+	"KH",
+	"TW",
+	"CY",
+	"MM",
+	"MO",
+	"MN",
+	"ID",
+	"OM",
+	"WS",
+	"IQ",
+	"SA",
+	"IR",
+	"SG",
+	"QA",
+	"MY",
+	"FM",
+	"BH",
+	"AE",
+	"BN",
+	"TO",
+	"YE",
+	"HK",
+	"JO",
+	"LB",
+	"MT",
+	"LA",
+	"PG",
+	"VN",
+	"LY",
+	"SY"
+]
+ */

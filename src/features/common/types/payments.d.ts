@@ -116,15 +116,15 @@ export interface Subscription {
   cycleType: string;
   frequency: string;
   currency: string;
-  startDate?: any;
+  startDate?: string | null;
   currentPeriodStart: string;
   currentPeriodEnd: string;
   trialPeriodStart: string;
   trialPeriodEnd: string;
-  endsAt?: any;
+  endsAt?: string | null;
   status: string;
   isSynced: boolean;
-  pauseUntil?: any;
+  pauseUntil?: string | null;
   donorName?: string;
   bankAccount: BankAccount | null;
 }

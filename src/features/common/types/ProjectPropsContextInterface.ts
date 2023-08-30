@@ -1,12 +1,22 @@
-import { ProjectMapInfo } from '@planet-sdk/common/build/types/project/map';
-import { ProjectExtended } from '@planet-sdk/common/build/types/project/extended';
-import { ProjectPurposeTypes } from '@planet-sdk/common/build/types/project/common';
-import { FeatureCollection } from 'geojson';
+import {
+  ProjectMapInfo,
+  TreeProjectConcise,
+  ConservationProjectConcise,
+} from '@planet-sdk/common/build/types/project/map';
+import {
+  TreeProjectExtended,
+  ConservationProjectExtended,
+} from '@planet-sdk/common/build/types/project/extended';
+import {
+  ProjectPurposeTypes,
+  ProjectSite,
+} from '@planet-sdk/common/build/types/project/common';
+import { FeatureCollection, Polygon, MultiPolygon } from 'geojson';
 import { SetState } from './common';
-import { RefObject, Ref } from 'react';
+import { RefObject } from 'react';
 import { MapRef } from 'react-map-gl/src/components/static-map';
 import { FlyToInterpolator } from 'react-map-gl';
-import { PlantLocation } from './plantLocation';
+import { PlantLocation, SamplePlantLocation } from './plantLocation';
 
 export type ExploreOption =
   | 'Deforestation'
@@ -24,7 +34,7 @@ export interface ViewPort {
   zoom: number;
   transitionDuration?: number;
   transitionInterpolator?: FlyToInterpolator;
-  transitionEasing?: number;
+  transitionEasing?: (val: number) => number;
 }
 
 export interface SiteViewPort {
@@ -71,19 +81,30 @@ export interface RasterData {
   imagery: Imagery;
 }
 
+export type MapProject = ProjectMapInfo<
+  TreeProjectConcise | ConservationProjectConcise
+>;
+
+export type SitesGeoJSON = FeatureCollection<
+  Polygon | MultiPolygon,
+  ProjectSite
+>;
+
 interface ProjectPropsContextInterface {
-  projects: ProjectMapInfo[] | null;
-  setProjects: SetState<ProjectMapInfo[] | null>;
-  project: ProjectExtended | null;
-  setProject: SetState<ProjectExtended | null>;
+  projects: MapProject[] | null;
+  setProjects: SetState<MapProject[] | null>;
+  project: TreeProjectExtended | ConservationProjectExtended | null;
+  setProject: SetState<
+    TreeProjectExtended | ConservationProjectExtended | null
+  >;
   showSingleProject: boolean;
   setShowSingleProject: SetState<boolean>;
   showProjects: boolean;
   setShowProjects: SetState<boolean>;
-  searchedProject: ProjectMapInfo[];
-  setsearchedProjects: SetState<ProjectMapInfo[]>;
-  geoJson: FeatureCollection | null;
-  setGeoJson: SetState<FeatureCollection | null>;
+  searchedProject: MapProject[];
+  setsearchedProjects: SetState<MapProject[]>;
+  geoJson: SitesGeoJSON | null;
+  setGeoJson: SetState<SitesGeoJSON | null>;
   selectedSite: number;
   setSelectedSite: SetState<number>;
   siteExists: boolean;
@@ -92,7 +113,7 @@ interface ProjectPropsContextInterface {
   // Evaluate - possible to remove infoRef
   infoRef: RefObject<HTMLDivElement>;
   exploreContainerRef: RefObject<HTMLDivElement>;
-  mapRef: Ref<MapRef>; //Perhaps move this down
+  mapRef: RefObject<MapRef>; //Perhaps move this down
   exploreExpanded: boolean;
   setExploreExpanded: SetState<boolean>;
   exploreForests: boolean;
@@ -127,22 +148,22 @@ interface ProjectPropsContextInterface {
   setPlantLocations: SetState<PlantLocation[] | null>;
   selectedPl: PlantLocation | null; //HERE
   setSelectedPl: SetState<PlantLocation | null>;
-  samplePlantLocation: PlantLocation | null;
-  setSamplePlantLocation: SetState<PlantLocation | null>;
+  samplePlantLocation: SamplePlantLocation | null;
+  setSamplePlantLocation: SetState<SamplePlantLocation | null>;
   zoomLevel: number;
   setZoomLevel: SetState<number>;
   satellite: boolean;
   setSatellite: SetState<boolean>;
   plIds: string[] | null;
   setPlIds: SetState<string[] | null>;
-  hoveredPl: PlantLocation | null;
-  setHoveredPl: SetState<PlantLocation | null>;
+  hoveredPl: PlantLocation | SamplePlantLocation | null;
+  setHoveredPl: SetState<PlantLocation | SamplePlantLocation | null>;
   isPolygonMenuOpen: boolean;
   setIsPolygonMenuOpen: SetState<boolean>;
   siteViewPort: SiteViewPort | null;
   setSiteViewPort: SetState<SiteViewPort | null>;
-  filteredProjects: ProjectMapInfo | null;
-  setFilteredProjects: SetState<ProjectMapInfo | null>;
+  filteredProjects: MapProject[] | null;
+  setFilteredProjects: SetState<MapProject[] | null>;
   filtersOpen: boolean;
   setFilterOpen: SetState<boolean>;
   purpose: ProjectPurposeTypes;

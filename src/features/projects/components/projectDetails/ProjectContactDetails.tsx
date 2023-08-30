@@ -7,12 +7,16 @@ import Email from '../../../../../public/assets/images/icons/project/Email';
 import Location from '../../../../../public/assets/images/icons/project/Location';
 import WorldWeb from '../../../../../public/assets/images/icons/project/WorldWeb';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import {
+  ConservationProjectExtended,
+  TreeProjectExtended,
+} from '@planet-sdk/common';
 
 interface Props {
-  project: Object;
+  project: TreeProjectExtended | ConservationProjectExtended;
 }
 
-function ProjectContactDetails({ project }: Props): ReactElement {
+function ProjectContactDetails({ project }: Props): ReactElement | null {
   const { t, ready } = useTranslation(['donate']);
   const { embed } = React.useContext(ParamsContext);
   const contactAddress =
