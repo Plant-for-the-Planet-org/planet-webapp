@@ -50,14 +50,14 @@ export default function PopupProject({
   };
 
   const donateButtonBackgroundColor =
-    project.properties.isTopProject && project.properties.isApproved
+    project.isTopProject && project.isApproved
       ? 'topApproved'
       : 'topUnapproved';
 
   const progressBarBackgroundColor =
-    project.properties.isTopProject && project.properties.isApproved
+    project.isTopProject && project.isApproved
       ? 'topApproved'
-      : project.properties.allowDonations
+      : project.allowDonations
       ? 'topUnapproved'
       : 'notDonatable';
 
