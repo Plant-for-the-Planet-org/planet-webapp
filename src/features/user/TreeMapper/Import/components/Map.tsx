@@ -1,31 +1,12 @@
 import React, { ReactElement } from 'react';
 import styles from '../../TreeMapper.module.scss';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
-import { useTranslation } from 'next-i18next';
-import * as turf from '@turf/turf';
-import MapGL, {
-  FlyToInterpolator,
-  Layer,
-  MapEvent,
-  Marker,
-  NavigationControl,
-  Source,
-  WebMercatorViewport,
-} from 'react-map-gl';
-import { localizedAbbreviatedNumber } from '../../../../../utils/getFormattedNumber';
+import MapGL, { NavigationControl } from 'react-map-gl';
 import LayerIcon from '../../../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../../../public/assets/images/icons/LayerDisabled';
-import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
-import * as d3 from 'd3-ease';
-import { useRouter } from 'next/router';
 import SatelliteLayer from '../../../../projects/components/maps/SatelliteLayer';
 
 export default function MyTreesMap(): ReactElement {
-  const router = useRouter();
-
-  const { i18n, t } = useTranslation('me');
-
-  const { isMobile } = useProjectProps();
   const [satellite, setSatellite] = React.useState(false);
 
   const defaultMapCenter = [-28.5, 36.96];

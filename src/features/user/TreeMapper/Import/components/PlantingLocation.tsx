@@ -338,7 +338,7 @@ export default function PlantingLocation({
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}
-                error={errors.plantProject}
+                error={Boolean(errors.plantProject)}
                 helperText={errors.plantProject && errors.plantProject.message}
               >
                 {projects.map((option) => (
@@ -374,20 +374,7 @@ export default function PlantingLocation({
         </div>
       </div>
       <div className={styles.formSubTitle}>{t('maps:speciesPlanted')}</div>
-      {mySpecies &&
-        fields.map((item, index) => {
-          return (
-            <PlantedSpecies
-              key={index}
-              index={index}
-              t={t}
-              remove={remove}
-              errors={errors}
-              item={item}
-              control={control}
-            />
-          );
-        })}
+
       <div
         onClick={() => {
           append({

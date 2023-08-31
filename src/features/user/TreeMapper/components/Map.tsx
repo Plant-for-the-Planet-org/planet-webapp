@@ -47,12 +47,8 @@ export default function MyTreesMap({
     zoom: defaultZoom,
   });
   const [satellite, setSatellite] = React.useState(false);
-
-  const [geoJson, setGeoJson] = React.useState();
-  const [plIds, setPlIds] = React.useState(null);
-  const [imagePopup, setImagePopup] = React.useState(null);
-  let timer: NodeJS.Timeout;
-
+  const [geoJson, setGeoJson] = React.useState<undefined>(undefined);
+  const [plIds, setPlIds] = React.useState<string[] | null>(null);
   const [style, setStyle] = React.useState({
     version: 8,
     sources: {},
@@ -101,6 +97,7 @@ export default function MyTreesMap({
   };
 
   const getDateDiff = (pl: any) => {
+    console.log(pl, '==');
     const today = new Date();
     const plantationDate = new Date(pl.plantDate?.substr(0, 10));
     const differenceInTime = today.getTime() - plantationDate.getTime();
@@ -118,7 +115,7 @@ export default function MyTreesMap({
     }
   };
 
-  const zoomToLocation = (geometry: any) => {
+  const zoomToLocation = (geometry: string) => {
     if (viewport.width && viewport.height) {
       const bbox = turf.bbox(geometry);
       const { longitude, latitude, zoom } = new WebMercatorViewport(
@@ -194,7 +191,7 @@ export default function MyTreesMap({
       zoomToLocation(locations[0].geometry);
     } else {
       setPlIds(null);
-      setGeoJson(null);
+      setGeoJson(undefined);
     }
   }, [locations]);
 
@@ -264,7 +261,7 @@ export default function MyTreesMap({
                       'fill-opacity': getPolygonColor(pl),
                     }}
                   />
-                  {selectedLocation && selectedLocation.id === pl.id && (
+                  {selectedLocation && selectedLocation?.id === pl.id && (
                     <Layer
                       key={`${pl.id}-selected`}
                       id={`${pl.id}-selected-layer`}
@@ -276,27 +273,12 @@ export default function MyTreesMap({
                       }}
                     />
                   )}
-                  {/* {dateDiff && (
-                    <Layer
-                      key={`${pl.id}-label`}
-                      id={`${pl.id}-label`}
-                      type="symbol"
-                      source={pl.id}
-                      layout={{
-                        'text-field': dateDiff,
-                        'text-anchor': 'center',
-                        'text-font': ['Ubuntu Regular'],
-                      }}
-                      paint={{
-                        'text-color': satellite ? '#ffffff' : '#2f3336',
-                      }}
-                    />
-                  )} */}
                 </Source>
                 {pl &&
                   pl.samplePlantLocations &&
                   pl.samplePlantLocations
                     .filter((item: any) => {
+                      console.log(item, '==');
                       if (item.captureStatus === 'complete') {
                         return true;
                       } else {
