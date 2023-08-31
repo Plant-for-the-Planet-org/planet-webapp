@@ -27,11 +27,12 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import StyledForm from '../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
-
+import { Image, TreeProjectExtended } from '@planet-sdk/common';
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   ssr: false,
   loading: () => <p></p>,
 });
+import { ViewportProps } from 'react-map-gl';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -56,6 +57,36 @@ interface RegisterTreesFormProps {
   setRegistered: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+interface RegisterTreeProps {
+  treeCount: number;
+  plantDate: number;
+  contributionImages: Image[];
+  treeSpecies: number;
+  treeClassification: null;
+  treeScientificName: null;
+  id: string;
+  plantProject: string;
+}
+
+interface RegisterProjectGeoJsonProps {
+  type: string;
+  geometry: {
+    type: string;
+    coordinates: number[];
+  };
+  properties: TreeProjectExtended;
+}
+
+interface RegisterTreeSubmitData {
+  geometry: {};
+  plantDate: Date;
+  plantProject: string;
+  species: string;
+  treeCount: string | number;
+}
+
+interface Geometry {}
+
 function RegisterTreesForm({
   setContributionGUID,
   setContributionDetails,
@@ -77,9 +108,11 @@ function RegisterTreesForm({
   const isMobile = screenWidth <= 767;
   const defaultMapCenter = isMobile ? [22.54, 9.59] : [36.96, -28.5];
   const defaultZoom = isMobile ? 1 : 1.4;
-  const [plantLocation, setplantLocation] = React.useState();
-  const [geometry, setGeometry] = React.useState();
-  const [viewport, setViewPort] = React.useState({
+  const [plantLocation, setplantLocation] = React.useState<
+    number[] | undefined
+  >(undefined);
+  const [geometry, setGeometry] = React.useState(undefined);
+  const [viewport, setViewPort] = React.useState<ViewportProps>({
     height: '100%',
     width: '100%',
     latitude: defaultMapCenter[0],
@@ -87,8 +120,10 @@ function RegisterTreesForm({
     zoom: defaultZoom,
   });
   const [userLang, setUserLang] = React.useState('en');
-  const [userLocation, setUserLocation] = React.useState();
-  const [projects, setProjects] = React.useState([]);
+  const [userLocation, setUserLocation] = React.useState<number[] | null>(null);
+  const [projects, setProjects] = React.useState<RegisterProjectGeoJsonProps[]>(
+    []
+  );
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
@@ -158,8 +193,9 @@ function RegisterTreesForm({
     }
   };
 
-  const submitRegisterTrees = async (data: any) => {
-    if (data.treeCount < 10000000) {
+  const submitRegisterTrees = async (data: FormData): Promise<void> => {
+    console.log(data, '==');
+    if (data.treeCount < String(10000000)) {
       if (
         geometry &&
         (geometry.type === 'Point' || geometry.features?.length >= 1)
@@ -173,12 +209,13 @@ function RegisterTreesForm({
           geometry: geometry,
         };
         try {
-          const res = await postAuthenticatedRequest(
+          const res = await postAuthenticatedRequest<RegisterTreeProps>(
             `/app/contributions`,
             submitData,
             token,
             logoutUser
           );
+          console.log(res, '==');
           setErrorMessage('');
           setContributionGUID(res.id);
           setContributionDetails(res);
@@ -199,11 +236,10 @@ function RegisterTreesForm({
 
   async function loadProjects() {
     try {
-      const projects = await getAuthenticatedRequest(
-        '/app/profile/projects',
-        token,
-        logoutUser
-      );
+      const projects = await getAuthenticatedRequest<
+        RegisterProjectGeoJsonProps[]
+      >('/app/profile/projects', token, logoutUser);
+      console.log(projects, '==');
       setProjects(projects);
     } catch (err) {
       setErrors(handleError(err as APIError));
@@ -422,7 +458,7 @@ type FormData = {
 
 export default function RegisterTreesWidget() {
   const { user, token } = useUserProps();
-  const { t, ready } = useTranslation(['me', 'common']);
+  const { ready } = useTranslation(['me', 'common']);
   const [contributionGUID, setContributionGUID] = React.useState('');
   const [contributionDetails, setContributionDetails] = React.useState({});
   const [registered, setRegistered] = React.useState(false);
@@ -431,7 +467,7 @@ export default function RegisterTreesWidget() {
     token,
     contribution: contributionDetails,
     contributionGUID,
-    slug: user.slug,
+    slug: user !== null ? user.slug : null,
   };
 
   return ready ? (
