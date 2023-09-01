@@ -299,14 +299,20 @@
         left: 45px
     };
     @include smTabletView  {
-        overflow: scroll;
+        overflow-y: hidden;
     }
     @include mdTabletView {
         left: 70px;
-        overflow: scroll;
+        overflow-y: hidden;
     }
     @include lgLaptopView{
-       overflow: hidden;
+        overflow-y: hidden;
+    }
+    @include  xlDesktopView{
+        overflow-y: hidden;
+    }
+    @media screen and (min-width: 1400px) {
+        overflow: hidden;
     }
    
   }
@@ -555,14 +561,22 @@
      left: 200px;
     }
     @include smTabletView {
-        visibility: hidden;
+        visibility: visible;
     }
     @include mdTabletView {
         left: 315px;
         visibility: visible;
     }
     @include lgLaptopView {
-        visibility: hidden;
+        left: 400px;
+        visibility: visible;
+    }
+    @include xlDesktopView  {
+        left: 595px;
+        visibility: visible;
+    }
+    @media screen and (min-width: 1400px) {
+        visibility: hidden
     }
 }
 
