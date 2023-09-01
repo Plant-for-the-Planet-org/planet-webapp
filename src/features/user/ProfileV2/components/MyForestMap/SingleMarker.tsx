@@ -11,7 +11,7 @@ import { SingleMarkerProps } from '../../../../common/types/map';
 import CustomPopupMarker from './CustomPopupMarker';
 
 const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
-  const { t, ready } = useTranslation(['me']);
+  const { ready } = useTranslation(['me']);
   const [showPopUp, setShowPopUp] = useState(false);
   return ready ? (
     <>
@@ -27,13 +27,13 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
             onMouseLeave={() => setShowPopUp(false)}
           >
             <div className={MyForestMapStyle.svgContainer}>
-              {geoJson.properties?.purpose === 'trees' ? (
-                geoJson?.properties?.plantProject?.unit === 'm2' ? (
-                  <RestoredSvg color={'#219653'} />
-                ) : (
-                  <PlantedTreesSvg color={'#219653'} />
-                )
-              ) : (
+              {geoJson.properties?.plantProject?.unitType === 'tree' && (
+                <PlantedTreesSvg color={'#219653'} />
+              )}
+              {geoJson.properties?.plantProject?.unitType === 'm2' && (
+                <RestoredSvg color={'#219653'} />
+              )}
+              {geoJson.properties?.plantProject?.purpose === 'conservation' && (
                 <ConservationTreeSvg color={'#48AADD'} />
               )}
             </div>

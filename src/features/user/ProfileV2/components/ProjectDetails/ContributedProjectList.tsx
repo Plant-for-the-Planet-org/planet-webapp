@@ -15,7 +15,7 @@ const ContributedProjectList = ({
   const { isConservedButtonActive } = useProjectProps();
   const { t } = useTranslation(['me']);
 
-  return (
+  return contributionProjectList ? (
     <div
       className={myForestStyles.donationlistContainer}
       style={{ marginTop: isConservedButtonActive ? '0px' : '340px' }}
@@ -60,6 +60,8 @@ const ContributedProjectList = ({
         </div>
       )}
     </div>
+  ) : (
+    <></>
   );
 };
 
