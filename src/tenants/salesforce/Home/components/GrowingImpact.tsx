@@ -42,7 +42,7 @@ export default function GrowingImpact() {
     },
     {
       id: 5,
-      copy: 'VTO Fitness-for-a-Cause Challenge 2023: Over 23,000 trees planted during Earthforce Champion month!',
+      copy: '2023 Fitness-for-a-Cause Challenge: Over 23,000 trees planted during Earthforce Champion month!',
       image: '/tenants/salesforce/images/growing-impact/success-3.jpg',
       foliage: '/tenants/salesforce/images/growing-impact/foliage-3.png',
       link: '/vto-fitness-challenge',
