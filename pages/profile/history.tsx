@@ -13,10 +13,9 @@ import {
   Filters,
   PaymentHistory,
 } from '../../src/features/common/types/payments';
+import DashboardView from '../../src/features/common/Layout/DashboardView';
 
-interface Props {}
-
-function AccountHistory({}: Props): ReactElement {
+function AccountHistory(): ReactElement {
   const { t } = useTranslation(['me']);
   const { token, contextLoaded, logoutUser } = useUserProps();
 
@@ -127,7 +126,14 @@ function AccountHistory({}: Props): ReactElement {
         <Head>
           <title>{t('history')}</title>
         </Head>
-        <History {...HistoryProps} />
+        <DashboardView
+          title={t('me:payments')}
+          subtitle={t('me:donationsSubTitle')}
+          multiColumn={true}
+        >
+          <History {...HistoryProps} />
+        </DashboardView>
+
         {/* <UnderMaintenance/> */}
       </UserLayout>
     </>

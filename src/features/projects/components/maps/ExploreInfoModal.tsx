@@ -1,14 +1,16 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, RefObject } from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
 import { useTranslation } from 'next-i18next';
 import OpenLink from '../../../../../public/assets/images/icons/OpenLink';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
+import { ExploreOption } from '../../../common/types/ProjectPropsContextInterface';
+import { SetState } from '../../../common/types/common';
 
 interface Props {
-  infoRef: any;
-  infoExpanded: any;
-  setInfoExpanded: Function;
-  setModalOpen: Function;
+  infoRef: RefObject<HTMLDivElement>;
+  infoExpanded: ExploreOption;
+  setInfoExpanded: SetState<ExploreOption | null>;
+  setModalOpen: SetState<boolean>;
 }
 
 function ExploreInfoModal({
@@ -17,7 +19,7 @@ function ExploreInfoModal({
   setInfoExpanded,
   setModalOpen,
 }: Props): ReactElement {
-  const { t, i18n, ready } = useTranslation(['maps']);
+  const { t, ready } = useTranslation(['maps']);
 
   return (
     <>
@@ -117,6 +119,6 @@ function ExploreInfoModal({
   );
 }
 
-export default React.forwardRef((props: Props, ref) => (
+export default React.forwardRef((props: Props) => (
   <ExploreInfoModal {...props} />
 ));

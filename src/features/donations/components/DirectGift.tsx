@@ -3,10 +3,17 @@ import styles from '../styles/DirectGift.module.scss';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
+import { SetState } from '../../common/types/common';
 
+export interface DirectGiftI {
+  id: string;
+  displayName: string;
+  type: string;
+  show: boolean;
+}
 interface Props {
-  directGift: any;
-  setShowDirectGift: Function;
+  directGift: DirectGiftI;
+  setShowDirectGift: SetState<boolean>;
 }
 
 export default function DirectGift({ directGift, setShowDirectGift }: Props) {

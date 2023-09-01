@@ -5,15 +5,19 @@ import { getPDFFile } from '../../../../utils/getImageURL';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import InfoIcon from '../../../../../public/assets/images/icons/manageProjects/Info';
+import {
+  ConservationProjectExtended,
+  TreeProjectExtended,
+} from '@planet-sdk/common/build/types/project/extended';
 
 interface Props {
-  project: any;
+  project: TreeProjectExtended | ConservationProjectExtended;
 }
 
 function ProjectInfo({ project }: Props): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects', 'common']);
 
-  const plantingSeasons = [
+  const seasons = [
     { id: 0, title: ready ? t('common:january') : '' },
     { id: 1, title: ready ? t('common:february') : '' },
     { id: 2, title: ready ? t('common:march') : '' },
@@ -60,16 +64,24 @@ function ProjectInfo({ project }: Props): ReactElement {
       value: 'other',
     },
   ];
-  const [ownerTypes, setOwnerTypes] = React.useState([]);
+  const [ownerTypes, setOwnerTypes] = React.useState<string[]>([]);
   React.useEffect(() => {
-    if (ready && project.siteOwnerType && project.siteOwnerType.length > 0) {
-      const updatedSiteOwners = [];
+    if (
+      ready &&
+      project.purpose === 'trees' &&
+      project.metadata.siteOwnerType &&
+      project.metadata.siteOwnerType.length > 0
+    ) {
+      const updatedSiteOwners: string[] = [];
+      const { siteOwnerType } = project.metadata;
 
-      for (let i = 0; i < project.siteOwnerType.length; i++) {
+      for (let i = 0; i < siteOwnerType.length; i++) {
         const translatedOwnerType = siteOwners.find(
-          (element) => element.value === project.siteOwnerType[i]
+          (element) => element.value === siteOwnerType[i]
         );
-        updatedSiteOwners.push(translatedOwnerType.title);
+        if (translatedOwnerType) {
+          updatedSiteOwners.push(translatedOwnerType.title);
+        }
       }
 
       setOwnerTypes(updatedSiteOwners);
@@ -79,30 +91,34 @@ function ProjectInfo({ project }: Props): ReactElement {
   React.useEffect(() => {
     if (
       ready &&
+      project.purpose === 'conservation' &&
       project.metadata.landOwnershipType &&
       project.metadata.landOwnershipType.length > 0
     ) {
       const updatedSiteOwners = [];
+      const { landOwnershipType } = project.metadata;
 
-      for (let i = 0; i < project.metadata.landOwnershipType.length; i++) {
+      for (let i = 0; i < landOwnershipType.length; i++) {
         const translatedOwnerType = siteOwners.find(
-          (element) => element.value === project.metadata.landOwnershipType[i]
+          (element) => element.value === landOwnershipType[i]
         );
-        updatedSiteOwners.push(translatedOwnerType.title);
+        if (translatedOwnerType) {
+          updatedSiteOwners.push(translatedOwnerType.title);
+        }
       }
 
       setOwnerTypes(updatedSiteOwners);
     }
   }, [ready, i18n.language]);
 
-  const expenseAmount = project.expenses.map((expense: any) => expense.amount);
-  const calculatePercentage = (amount: any) => {
+  const expenseAmount = project.expenses.map((expense) => expense.amount);
+  const calculatePercentage = (amount: number) => {
     const maxAmount = Math.max(...expenseAmount);
     const percentage = (amount / maxAmount) * 100;
     return `${percentage}%`;
   };
 
-  const addZeroToDate = (val) => {
+  const addZeroToDate = (val: string) => {
     const arr = val.split('-');
     const newDateArr = [arr[0]];
     if (arr[1].length === 1) {
@@ -121,137 +137,157 @@ function ProjectInfo({ project }: Props): ReactElement {
   return ready ? (
     <div className={styles.projectInfoContainer}>
       <div className={styles.projectMoreInfoHalfContainer}>
-        {project?.metadata?.yearAbandoned !== 0 && (
-          <div className={styles.projectMoreInfoHalf}>
-            <div className={styles.infoTitle}>
-              {t('manageProjects:abandonment')}
-              <div
-                style={{
-                  position: 'absolute',
-                  width: 'fit-content',
-                  top: '0px',
-                  right: '18px',
-                }}
-              >
-                <div className={styles.popover}>
-                  <InfoIcon />
-                  <div
-                    className={styles.popoverContent}
-                    style={{ left: '-140px' }}
-                  >
-                    <p>{t('manageProjects:yearAbandonedInfo')}</p>
+        {project.purpose === 'trees' &&
+          project.metadata.yearAbandoned !== null &&
+          project.metadata.yearAbandoned !== 0 && (
+            <div className={styles.projectMoreInfoHalf}>
+              <div className={styles.infoTitle}>
+                {t('manageProjects:abandonment')}
+                <div
+                  style={{
+                    position: 'absolute',
+                    width: 'fit-content',
+                    top: '0px',
+                    right: '18px',
+                  }}
+                >
+                  <div className={styles.popover}>
+                    <InfoIcon />
+                    <div
+                      className={styles.popoverContent}
+                      style={{ left: '-140px' }}
+                    >
+                      <p>{t('manageProjects:yearAbandonedInfo')}</p>
+                    </div>
                   </div>
                 </div>
               </div>
+              <div className={styles.infoText}>
+                {t('common:approx')} {project.metadata.yearAbandoned}
+              </div>
             </div>
-            <div className={styles.infoText}>
-              {t('common:approx')} {project.yearAbandoned}
-            </div>
-          </div>
-        )}
-        {project && project.metadata && project.metadata.firstTreePlanted && (
-          <div className={styles.projectMoreInfoHalf}>
-            <div className={styles.infoTitle}>
-              {t('manageProjects:firstTreePlanted')}
-            </div>
-            <div className={styles.infoText}>
-              {formatDate(
-                project.metadata.firstTreePlanted?.split('-')[1].length === 1 ||
-                  project.metadata.firstTreePlanted?.split('-')[2].length === 1
-                  ? addZeroToDate(project.metadata.firstTreePlanted)
-                  : project.metadata.firstTreePlanted
-              )}
-            </div>
-          </div>
-        )}
-
-        {project?.plantingDensity && (
-          <div className={styles.projectMoreInfoHalf}>
-            <div className={styles.infoTitle}>
-              {t('manageProjects:plantingDensity')}
-            </div>
-            <div className={styles.infoText}>
-              {project.plantingDensity}
-              {project?.metadata?.maxPlantingDensity
-                ? `-${project.metadata.maxPlantingDensity} ${t(
-                    'manageProjects:treePerHa'
-                  )}`
-                : ` ${t('manageProjects:treePerHa')}`}
-            </div>
-          </div>
-        )}
-
-        {project?.metadata?.employeesCount !== 0 && (
-          <div className={styles.projectMoreInfoHalf}>
-            <div className={styles.infoTitle}>
-              {t('manageProjects:employees')}
-            </div>
-            <div className={styles.infoText}>
-              {project.metadata.employeesCount}
-            </div>
-          </div>
-        )}
-
-        {project?.metadata?.activitySeasons &&
-          project?.metadata?.activitySeasons.length > 0 && (
+          )}
+        {project.purpose === 'trees' &&
+          project.metadata.firstTreePlanted !== null && (
             <div className={styles.projectMoreInfoHalf}>
               <div className={styles.infoTitle}>
-                {t('manageProjects:protectionSeasons')}
+                {t('manageProjects:labelRestorationStarted')}
               </div>
               <div className={styles.infoText}>
-                {project.metadata.activitySeasons.map(
-                  (season: any, index: any) => {
-                    return (
-                      <React.Fragment key={plantingSeasons[season - 1].title}>
-                        {plantingSeasons[season - 1].title}
-                        {index ===
-                        project.metadata.activitySeasons.length - 2 ? (
-                          <> {t('manageProjects:and')} </>
-                        ) : index ===
-                          project.metadata.activitySeasons.length - 1 ? (
-                          '.'
-                        ) : (
-                          ', '
-                        )}
-                      </React.Fragment>
-                    );
-                  }
+                {formatDate(
+                  project.metadata.firstTreePlanted.split('-')[1].length ===
+                    1 ||
+                    project.metadata.firstTreePlanted.split('-')[2].length === 1
+                    ? addZeroToDate(project.metadata.firstTreePlanted)
+                    : project.metadata.firstTreePlanted
                 )}
               </div>
             </div>
           )}
 
-        {project?.metadata?.plantingSeasons &&
-          project?.metadata?.plantingSeasons.length > 0 && (
+        {project.purpose === 'trees' &&
+          project.metadata.plantingDensity !== null && (
             <div className={styles.projectMoreInfoHalf}>
               <div className={styles.infoTitle}>
-                {t('manageProjects:plantingSeasons')}
+                {t('manageProjects:plantingDensity')}
               </div>
               <div className={styles.infoText}>
-                {project.metadata.plantingSeasons.map(
-                  (season: any, index: any) => {
-                    return (
-                      <React.Fragment key={plantingSeasons[season - 1].title}>
-                        {plantingSeasons[season - 1].title}
-                        {index ===
-                        project.metadata.plantingSeasons.length - 2 ? (
-                          <> {t('manageProjects:and')} </>
-                        ) : index ===
-                          project.metadata.plantingSeasons.length - 1 ? (
-                          '.'
-                        ) : (
-                          ', '
-                        )}
-                      </React.Fragment>
-                    );
-                  }
-                )}
+                {project.metadata.plantingDensity}
+                {project.metadata.maxPlantingDensity !== null
+                  ? `-${project.metadata.maxPlantingDensity} ${t(
+                      'manageProjects:treePerHa'
+                    )}`
+                  : ` ${t('manageProjects:treePerHa')}`}
+              </div>
+            </div>
+          )}
+
+        {project.metadata.employeesCount !== null &&
+          project.metadata.employeesCount !== 0 && (
+            <div className={styles.projectMoreInfoHalf}>
+              <div className={styles.infoTitle}>
+                {t('manageProjects:employees')}
+              </div>
+              <div className={styles.infoText}>
+                {project.metadata.employeesCount}
               </div>
             </div>
           )}
       </div>
 
-      {project && project.metadata && project.metadata.mainChallenge && (
+      {project.purpose === 'conservation' &&
+        project.metadata.activitySeasons !== null &&
+        project.metadata.activitySeasons.length > 0 && (
+          <div className={styles.projectMoreInfo}>
+            <div className={styles.infoTitle}>
+              {t('manageProjects:protectionSeasons')}
+            </div>
+            <div className={styles.infoText}>
+              {project.metadata.activitySeasons.map(
+                (season, index, activitySeasons) => {
+                  return (
+                    <React.Fragment key={seasons[season - 1].title}>
+                      {seasons[season - 1].title}
+                      {index === activitySeasons.length - 2 ? (
+                        <> {t('manageProjects:and')} </>
+                      ) : index === activitySeasons.length - 1 ? (
+                        '.'
+                      ) : (
+                        ', '
+                      )}
+                    </React.Fragment>
+                  );
+                }
+              )}
+            </div>
+          </div>
+        )}
+
+      {project.purpose === 'trees' &&
+        project.metadata.plantingSeasons !== null &&
+        project.metadata.plantingSeasons.length > 0 && (
+          <div className={styles.projectMoreInfo}>
+            <div className={styles.infoTitle}>
+              {t('manageProjects:labelRestorationSeasons')}
+            </div>
+            <div className={styles.infoText}>
+              {project.metadata.plantingSeasons.map(
+                (season, index, plantingSeasons) => {
+                  return (
+                    <React.Fragment key={seasons[season - 1].title}>
+                      {seasons[season - 1].title}
+                      {index === plantingSeasons.length - 2 ? (
+                        <> {t('manageProjects:and')} </>
+                      ) : index === plantingSeasons.length - 1 ? (
+                        '.'
+                      ) : (
+                        ', '
+                      )}
+                    </React.Fragment>
+                  );
+                }
+              )}
+            </div>
+          </div>
+        )}
+
+      {project.metadata.mainInterventions !== null &&
+        project.metadata.mainInterventions.length > 0 && (
+          <div className={styles.projectMoreInfo}>
+            <div className={styles.infoTitle}>
+              {t('manageProjects:labelMainInterventions')}
+            </div>
+            <div className={styles.infoText}>
+              {project.metadata.mainInterventions
+                .map((intervention) =>
+                  t(`manageProjects:interventionTypes.${intervention}`)
+                )
+                .join(', ')}
+            </div>
+          </div>
+        )}
+
+      {project.metadata.mainChallenge !== null && (
         <div className={styles.projectMoreInfo}>
           <div className={styles.infoTitle}>
             {t('manageProjects:mainChallenge')}
@@ -262,18 +298,18 @@ function ProjectInfo({ project }: Props): ReactElement {
         </div>
       )}
 
-      <div style={{ display: 'flex' }}>
-        {project?.metadata?.siteOwnerType && (
-          <div className={styles.projectMoreInfo}>
-            <div className={styles.infoTitle}>
-              {t('manageProjects:siteOwnership')}
-            </div>
-            {project?.metadata?.siteOwnerType && (
+      {project.purpose === 'trees' &&
+        project.metadata.siteOwnerType !== null && (
+          <div style={{ display: 'flex' }}>
+            <div className={styles.projectMoreInfo}>
+              <div className={styles.infoTitle}>
+                {t('manageProjects:siteOwnership')}
+              </div>
               <div className={styles.infoText}>
-                {ownerTypes.map((ownerType: any, index: any) => {
+                {ownerTypes.map((ownerType, index) => {
                   return (
                     <React.Fragment key={ownerType}>
-                      {`${ownerType}`}
+                      {ownerType}
                       {index === ownerTypes.length - 2 ? (
                         <> {t('manageProjects:and')} </>
                       ) : index === ownerTypes.length - 1 ? (
@@ -285,44 +321,41 @@ function ProjectInfo({ project }: Props): ReactElement {
                   );
                 })}
               </div>
-            )}
-            {project?.metadata?.siteOwnerName ||
-            project?.metadata?.acquisitionYear ? (
-              <div className={styles.infoText}>
-                {project?.metadata?.siteOwnerName}{' '}
-                {project?.metadata?.siteOwnerName &&
-                project?.metadata?.acquisitionYear ? (
-                  <> {t('manageProjects:since')} </>
-                ) : (
-                  <></>
-                )}
-                {!project?.metadata?.siteOwnerName &&
-                project?.metadata?.acquisitionYear ? (
-                  <> {t('manageProjects:Since')} </>
-                ) : (
-                  <></>
-                )}
-                {project?.metadata?.acquisitionYear}
-              </div>
-            ) : (
-              <></>
-            )}
+              {/* TODO - cleanup */}
+              {project.metadata.siteOwnerName !== null ||
+              project.metadata.acquisitionYear !== null ? (
+                <div className={styles.infoText}>
+                  {project.metadata.siteOwnerName}{' '}
+                  {project.metadata.acquisitionYear !== null && (
+                    <>
+                      {project.metadata.siteOwnerName === null ? (
+                        <> {t('manageProjects:Since')} </>
+                      ) : (
+                        <> {t('manageProjects:since')} </>
+                      )}{' '}
+                      {project.metadata.acquisitionYear}
+                    </>
+                  )}
+                </div>
+              ) : (
+                <></>
+              )}
+            </div>
           </div>
         )}
-      </div>
 
-      {project?.metadata?.landOwnershipType && (
-        <div style={{ display: 'flex' }}>
-          <div className={styles.projectMoreInfo}>
-            <div className={styles.infoTitle}>
-              {t('manageProjects:siteOwnership')}
-            </div>
-            {project?.metadata?.landOwnershipType && (
+      {project.purpose === 'conservation' &&
+        project.metadata.landOwnershipType !== null && (
+          <div style={{ display: 'flex' }}>
+            <div className={styles.projectMoreInfo}>
+              <div className={styles.infoTitle}>
+                {t('manageProjects:siteOwnership')}
+              </div>
               <div className={styles.infoText}>
-                {ownerTypes.map((ownerType: any, index: any) => {
+                {ownerTypes.map((ownerType, index) => {
                   return (
                     <React.Fragment key={ownerType}>
-                      {t(`manageProjects:${ownerType}`)}
+                      {ownerType}
                       {index === ownerTypes.length - 2 ? (
                         <> {t('manageProjects:and')} </>
                       ) : index === ownerTypes.length - 1 ? (
@@ -334,44 +367,41 @@ function ProjectInfo({ project }: Props): ReactElement {
                   );
                 })}
               </div>
-            )}
-            {project?.metadata?.siteOwnerName ||
-            project?.metadata?.acquisitionYear ? (
-              <div className={styles.infoText}>
-                {project?.metadata?.siteOwnerName}
-                {project?.metadata?.siteOwnerName &&
-                project?.metadata?.acquisitionYear ? (
-                  <> {t('manageProjects:since')} </>
-                ) : (
-                  <></>
-                )}
-                {!project?.metadata?.siteOwnerName &&
-                project?.metadata?.acquisitionYear ? (
-                  <> {t('manageProjects:Since')} </>
-                ) : (
-                  <></>
-                )}{' '}
-                {project?.metadata?.acquisitionYear}
-              </div>
-            ) : (
-              <></>
-            )}
+              {project.metadata.siteOwnerName !== null ||
+              project.metadata.acquisitionYear !== null ? (
+                <div className={styles.infoText}>
+                  {project.metadata.siteOwnerName}
+                  {project.metadata.acquisitionYear !== null && (
+                    <>
+                      {project.metadata.siteOwnerName ? (
+                        <> {t('manageProjects:Since')} </>
+                      ) : (
+                        <> {t('manageProjects:since')} </>
+                      )}{' '}
+                      {project.metadata.acquisitionYear}
+                    </>
+                  )}
+                </div>
+              ) : (
+                <></>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {project && project.metadata && project.metadata.degradationCause && (
-        <div className={styles.projectMoreInfo}>
-          <div className={styles.infoTitle}>
-            {t('manageProjects:causeOfDegradation')}
+      {project.purpose === 'trees' &&
+        project.metadata.degradationCause !== null && (
+          <div className={styles.projectMoreInfo}>
+            <div className={styles.infoTitle}>
+              {t('manageProjects:causeOfDegradation')}
+            </div>
+            <div className={styles.infoText}>
+              {project.metadata.degradationCause}
+            </div>
           </div>
-          <div className={styles.infoText}>
-            {project.metadata.degradationCause}
-          </div>
-        </div>
-      )}
+        )}
 
-      {project && project.metadata && project.metadata.motivation && (
+      {project.metadata.motivation !== null && (
         <div className={styles.projectMoreInfo}>
           <div className={styles.infoTitle}>
             {t('manageProjects:whyThisSite')}
@@ -380,7 +410,7 @@ function ProjectInfo({ project }: Props): ReactElement {
         </div>
       )}
 
-      {project && project.metadata && project.metadata.longTermPlan && (
+      {project.metadata.longTermPlan !== null && (
         <div className={styles.projectMoreInfo}>
           <div className={styles.infoTitle}>
             {t('manageProjects:longTermProtection')}
@@ -389,13 +419,13 @@ function ProjectInfo({ project }: Props): ReactElement {
         </div>
       )}
 
-      {project.certificates && project.certificates.length > 0 && (
+      {project.certificates.length > 0 && (
         <div className={styles.projectMoreInfo}>
           <div className={styles.infoTitle}>
             {t('manageProjects:externalCertifications')}
           </div>
 
-          {project.certificates.map((certificate: any) => {
+          {project.certificates.map((certificate) => {
             return (
               <div key={certificate.id} className={styles.infoText}>
                 {certificate.certifierName}
@@ -413,13 +443,13 @@ function ProjectInfo({ project }: Props): ReactElement {
         </div>
       )}
 
-      {project.expenses && project.expenses.length > 0 && (
+      {project.expenses.length > 0 && (
         <div className={styles.projectMoreInfo}>
           <div className={styles.infoTitle}>
             {t('manageProjects:projectSpendingFinancial')}
           </div>
 
-          {project.expenses.map((expense: any) => {
+          {project.expenses.map((expense) => {
             return (
               <div
                 key={expense.id}

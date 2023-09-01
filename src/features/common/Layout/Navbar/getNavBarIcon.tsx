@@ -12,11 +12,22 @@ import HomeLogo from '../../../../../public/assets/images/navigation/HomoLogo';
 import DonateSelected from '../../../../../public/assets/images/navigation/DonateSelected';
 import Donate from '../../../../../public/assets/images/navigation/Donate';
 import OceanforceChallengeIcon from '../../../../../public/assets/images/navigation/OceanforceChallengeIcon';
+import { NextRouter } from 'next/router';
 
 interface Props {
-  mainKey: any;
-  router: any;
-  item: any;
+  mainKey: string;
+  router: NextRouter;
+  item: {
+    title: string;
+    loggedInTitle?: string;
+    onclick: string;
+    visible: boolean;
+    subMenu?: {
+      title: string;
+      onclick: string;
+      visible: boolean;
+    }[];
+  };
   tenantName: string;
 }
 

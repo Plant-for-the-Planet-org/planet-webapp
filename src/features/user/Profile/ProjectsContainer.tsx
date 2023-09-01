@@ -8,6 +8,7 @@ import styles from './styles/ProjectsContainer.module.scss';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
+import { MapProject } from '../../common/types/ProjectPropsContextInterface';
 
 const ProjectSnippet = dynamic(
   () => import('../../projects/components/ProjectSnippet'),
@@ -18,12 +19,12 @@ const ProjectSnippet = dynamic(
 
 export default function ProjectsContainer({ profile }: any) {
   const { t, ready, i18n } = useTranslation(['donate', 'manageProjects']);
-  const [projects, setProjects] = React.useState([]);
+  const [projects, setProjects] = React.useState<MapProject[]>([]);
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
   async function loadProjects() {
     try {
-      const projects = await getRequest(
+      const projects = await getRequest<MapProject[]>(
         `/app/profiles/${profile.id}/projects`,
         {
           locale: i18n.language,
@@ -53,9 +54,9 @@ export default function ProjectsContainer({ profile }: any) {
           </div>
         ) : (
           <div className={styles.listProjects}>
-            <h6 className={styles.projectsTitleText}>{t('donate:Projects')}</h6>
+            <h6 className={styles.projectsTitleText}>{t('donate:projects')}</h6>
 
-            {projects.map((project: any) => {
+            {projects.map((project) => {
               return (
                 <div
                   className={styles.singleProject}

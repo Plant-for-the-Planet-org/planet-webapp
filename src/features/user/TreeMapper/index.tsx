@@ -11,13 +11,11 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
 
-interface Props {}
-
 const PlantLocationMap = dynamic(() => import('./components/Map'), {
   loading: () => <p>loading</p>,
 });
 
-function TreeMapper({}: Props): ReactElement {
+function TreeMapper(): ReactElement {
   const router = useRouter();
   const { token, contextLoaded, logoutUser } = useUserProps();
   const { t } = useTranslation(['treemapper']);

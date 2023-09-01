@@ -7,6 +7,7 @@ import styles from '../RegisterModal.module.scss';
 import UploadImages from './UploadImages';
 import { useTranslation } from 'next-i18next';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
+import { Button } from '@mui/material';
 
 interface Props {
   token: any;
@@ -35,7 +36,7 @@ export default function SingleContribution({
   const { t, ready } = useTranslation(['me', 'common']);
 
   return ready ? (
-    <>
+    <div className="inputContainer">
       <div className={styles.checkMark}>
         <CheckCircle width="36px" color={`${styles.primaryColor}`} />
       </div>
@@ -58,22 +59,19 @@ export default function SingleContribution({
         </div>
       </div>
 
-      <div className={styles.uploadImages}>
+      <div>
         <UploadImages {...UploadProps} />
       </div>
-      <div className={styles.nextButton}>
-        <button
-          id={'singleControCont'}
-          onClick={() =>
-            router.push(`/t/${slug}`, undefined, { shallow: true })
-          }
-          className="primaryButton"
-          style={{ maxWidth: '100px', marginTop: '24px' }}
-        >
-          {t('me:save')}
-        </button>
-      </div>
-    </>
+      <Button
+        id={'singleControCont'}
+        onClick={() => router.push(`/t/${slug}`, undefined, { shallow: true })}
+        variant="contained"
+        color="primary"
+        style={{ maxWidth: '100px', marginTop: '24px' }}
+      >
+        {t('me:save')}
+      </Button>
+    </div>
   ) : (
     <></>
   );
