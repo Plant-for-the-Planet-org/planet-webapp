@@ -30,9 +30,10 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
               {geoJson.properties?.plantProject?.unitType === 'tree' && (
                 <PlantedTreesSvg color={'#219653'} />
               )}
-              {geoJson.properties?.plantProject?.unitType === 'm2' && (
-                <RestoredSvg color={'#219653'} />
-              )}
+              {geoJson.properties?.plantProject?.unitType === 'm2' &&
+                geoJson.properties?.purpose === 'trees' && (
+                  <RestoredSvg color={'#219653'} />
+                )}
               {geoJson.properties?.purpose === 'conservation' && (
                 <ConservationTreeSvg color={'#48AADD'} />
               )}

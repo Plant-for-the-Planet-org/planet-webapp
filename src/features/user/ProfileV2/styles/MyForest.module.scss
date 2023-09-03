@@ -97,7 +97,7 @@
     border-radius: 12px;
     cursor: pointer;
     max-width: fit-content;
-    min-width: 183px;
+    min-width: fit-content;
     height: 104px;
      .labelContainer {
         display: flex;
@@ -244,7 +244,7 @@
         left: 355px;
         @include xsPhoneView {
             font-size: 19px;
-            left: 25px
+            left: 40px
         }
 
         @include mdTabletView {

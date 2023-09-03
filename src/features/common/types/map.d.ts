@@ -76,6 +76,5 @@ export type Bound = [number, number, number, number]
 
 export interface MyTreesProps {
     profile: User;
-    authenticatedType: string;
     token?: string | null
   }

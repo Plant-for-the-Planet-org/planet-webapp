@@ -12,7 +12,6 @@ import { TreeContributedProjectListProps } from '../../../../common/types/myFore
 const TreeContributedProjectList = ({
   contribution,
   userprofile,
-  authenticatedType,
   handleFetchNextPage,
 }: TreeContributedProjectListProps): ReactElement => {
   const { t } = useTranslation(['me']);
@@ -36,7 +35,6 @@ const TreeContributedProjectList = ({
               handleAddTargetModalOpen={() => {
                 setIsAddTargetModalOpen(true);
               }}
-              authenticatedType={authenticatedType}
               target={userprofile?.score?.target}
               planted={
                 userprofile?.type === 'tpo'

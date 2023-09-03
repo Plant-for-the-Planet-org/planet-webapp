@@ -36,11 +36,7 @@ function ProfilePage(): ReactElement {
       {profile && (
         <>
           <Profile userProfile={profile} />
-          <MyTrees
-            authenticatedType={authenticatedType}
-            profile={profile}
-            token={token}
-          />
+          <MyTrees profile={profile} token={token} />
         </>
       )}
     </UserLayout>

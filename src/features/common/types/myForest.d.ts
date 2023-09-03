@@ -109,7 +109,6 @@ export interface ConservationButtonProps {
 export interface TreeContributedProjectListProps {
   contribution: Contributions[];
   userprofile: User;
-  authenticatedType: string;
   handleFetchNextPage: () => void;
 }
 

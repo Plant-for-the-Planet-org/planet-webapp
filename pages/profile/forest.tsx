@@ -5,6 +5,7 @@ import { useUserProps } from '../../src/features/common/Layout/UserPropsContext'
 import MyTrees from '../../src/features/user/ProfileV2/components/MyTrees/MyTrees';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import { User } from '@planet-sdk/common';
 
 function ProfilePage(): ReactElement {
   const { t } = useTranslation('me');
@@ -12,7 +13,7 @@ function ProfilePage(): ReactElement {
   const { user, contextLoaded, token } = useUserProps();
 
   // Internal states
-  const [profile, setProfile] = React.useState<null | Object>();
+  const [profile, setProfile] = React.useState<null | User>();
   const [authenticatedType, setAuthenticatedType] = React.useState('');
 
   useEffect(() => {
@@ -28,11 +29,9 @@ function ProfilePage(): ReactElement {
         <title>{t('myForest')}</title>
       </Head>
       {profile && (
-        <MyTrees
-          authenticatedType={authenticatedType}
-          profile={profile}
-          token={token}
-        />
+        <div style={{ marginTop: '189px' }}>
+          <MyTrees profile={profile} token={token} />
+        </div>
       )}
     </UserLayout>
   );

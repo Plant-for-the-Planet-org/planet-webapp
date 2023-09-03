@@ -24,7 +24,6 @@ const MyTreesMap = dynamic(() => import('../MyForestMap'), {
 
 export default function MyTrees({
   profile,
-  authenticatedType,
 }: MyTreesProps): ReactElement | null {
   const { ready } = useTranslation(['country', 'me']);
   const [projectsForTreePlantaion, setProjectsForTreePlantaion] = useState<
@@ -174,7 +173,6 @@ export default function MyTrees({
         <TreeContributedProjectList
           contribution={projectsForTreePlantaion}
           userprofile={profile}
-          authenticatedType={authenticatedType}
           handleFetchNextPage={handleFetchNextPageforPlantedTrees}
         />
       )}
