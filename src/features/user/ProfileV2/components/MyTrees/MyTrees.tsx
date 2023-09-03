@@ -13,7 +13,7 @@ import AreaConservedProjectList from '../ProjectDetails/AreaConservedProjectList
 import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 import { Purpose } from '../../../../../utils/constants/myForest';
 import { Contributions } from '../../../../common/types/myForest';
-import { QueryResult } from '../../../../../server/router/myForest';
+import { StatsQueryResult } from '../../../../common/types/myForest';
 import { MyTreesProps } from '../../../../common/types/map';
 import SwipeLeftIcon from '@mui/icons-material/SwipeLeft';
 import RestoredButton from '../ProjectDetails/RestoredButton';
@@ -32,9 +32,9 @@ export default function MyTrees({
   >([]);
   const [projectsForAreaConservation, setProjectsForAreaConservation] =
     useState<Contributions[]>([]);
-  const [otherDonationInfo, setOthercontributionInfo] = useState<QueryResult[]>(
-    []
-  );
+  const [otherDonationInfo, setOthercontributionInfo] = useState<
+    StatsQueryResult | undefined
+  >(undefined);
   const [page, setPage] = useState(0);
   const { setErrors } = useContext(ErrorHandlingContext);
   const {
@@ -135,12 +135,14 @@ export default function MyTrees({
     if (isTreePlantedButtonActive) {
       setIsTreePlantedButtonActive(false);
     } else {
-      if (
-        otherDonationInfo?.treeCount > 0 ||
-        otherDonationInfo?.squareMeters > 0
-      ) {
-        setIsTreePlantedButtonActive(true);
-        setIsConservedButtonActive(false);
+      if (otherDonationInfo?.treeCount || otherDonationInfo?.squareMeters) {
+        if (
+          otherDonationInfo?.treeCount > 0 ||
+          otherDonationInfo?.squareMeters > 0
+        ) {
+          setIsTreePlantedButtonActive(true);
+          setIsConservedButtonActive(false);
+        }
       }
     }
   };

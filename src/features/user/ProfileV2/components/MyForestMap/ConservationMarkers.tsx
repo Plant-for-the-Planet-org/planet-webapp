@@ -10,7 +10,7 @@ const ConservationMarker = ({
   mapRef,
 }: ClusterMarkerProps): ReactElement => {
   const { conservationProjects } = useProjectProps();
-  const [clusters, setClusters] = useState<Cluster[]>([]);
+  const [clusters, setClusters] = useState<Cluster[] | undefined>(undefined);
   const { viewState } = viewport;
 
   useEffect(() => {
@@ -22,23 +22,27 @@ const ConservationMarker = ({
 
   return (
     <>
-      {clusters.map((singleCluster, key) => {
-        if (
-          singleCluster.id ||
-          singleCluster?.properties?.totalContribution > 1
-        ) {
-          return <ConservAreaClusterMarker key={key} geoJson={singleCluster} />;
-        }
-      })}
+      {clusters &&
+        clusters.map((singleCluster, key) => {
+          if (
+            singleCluster.id ||
+            singleCluster?.properties?.totalContribution > 1
+          ) {
+            return (
+              <ConservAreaClusterMarker key={key} geoJson={singleCluster} />
+            );
+          }
+        })}
 
-      {clusters.map((singleCluster, key) => {
-        if (
-          !singleCluster.id &&
-          singleCluster?.properties?.totalContribution < 2
-        ) {
-          return <SingleMarker key={key} geoJson={singleCluster} />;
-        }
-      })}
+      {clusters &&
+        clusters.map((singleCluster, key) => {
+          if (
+            !singleCluster.id &&
+            singleCluster?.properties?.totalContribution < 2
+          ) {
+            return <SingleMarker key={key} geoJson={singleCluster} />;
+          }
+        })}
     </>
   );
 };

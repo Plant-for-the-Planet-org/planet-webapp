@@ -1,5 +1,11 @@
 import MapGL, { NavigationControl } from 'react-map-gl';
-import { useState, useEffect, useRef, ReactElement } from 'react';
+import {
+  useState,
+  useEffect,
+  useRef,
+  ReactElement,
+  MutableRefObject,
+} from 'react';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import TreesPlantedMarkers from './TreesPlantedMarkers';
@@ -8,7 +14,7 @@ import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 import { ViewportProps } from 'react-map-gl';
 
 const MyForestMap = (): ReactElement => {
-  const mapRef = useRef(null);
+  const mapRef: MutableRefObject<null> = useRef(null);
   const EMPTY_STYLE = {
     version: 8,
     sources: {},

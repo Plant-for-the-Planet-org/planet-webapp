@@ -31,7 +31,7 @@ export const TreePlantedClusterMarker = ({
           onMouseLeave={() => setShowPopUp(false)}
         >
           <div className={MyForestMapStyle.svgContainer}>
-            {geoJson?.properties?.plantProject?.unit === 'm2' ? (
+            {geoJson?.properties?.plantProject?.unitType === 'm2' ? (
               <RestoredSvg color={'#219653'} />
             ) : (
               <PlantedTreesSvg color={'#219653'} />

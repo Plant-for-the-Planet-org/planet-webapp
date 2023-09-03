@@ -2,16 +2,25 @@ import { TreePlantedClusterMarker } from './ClusterMarker';
 import SingleMarker from './SingleMarker';
 import { useState, useEffect, ReactElement } from 'react';
 import React from 'react';
-import { Cluster, ClusterMarkerProps } from '../../../../common/types/map';
+import {
+  Cluster,
+  ClusterMarkerProps,
+  TestClusterProps,
+  TestPointProps,
+} from '../../../../common/types/map';
 import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
+import { ClusterFeature, PointFeature } from 'supercluster';
 
 const TreesPlantedMarkers = ({
   viewport,
   mapRef,
 }: ClusterMarkerProps): ReactElement => {
   const { treePlantedProjects } = useProjectProps();
-  const [clusters, setClusters] = useState<Cluster[]>([]);
+  const [clusters, setClusters] = useState<
+    | (ClusterFeature<TestClusterProps> | PointFeature<TestPointProps>)[]
+    | undefined
+  >(undefined);
   const { viewState } = viewport;
 
   useEffect(() => {

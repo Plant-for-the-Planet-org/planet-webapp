@@ -15,4 +15,5 @@ export interface SharePlatformsProps {
 
  export interface ProfileProps {
     userProfile: User;
+    authenticatedType?: string;
   }

@@ -34,7 +34,11 @@ const Project = ({ projectInfo }: ProjectProps): ReactElement => {
             />
           ) : (
             <div className={myForestStyles.registerTreeIcon}>
-              {projectInfo?.treeCount > 1 ? <TreesIcon /> : <TreeIcon />}
+              {projectInfo?.treeCount && projectInfo?.treeCount > 1 ? (
+                <TreesIcon />
+              ) : (
+                <TreeIcon />
+              )}
             </div>
           )}
         </div>
