@@ -85,7 +85,10 @@ interface RegisterTreeSubmitData {
   treeCount: string | number;
 }
 
-interface Geometry {}
+interface PlantLocation {
+  coordinates: number[];
+  type: string;
+}
 
 function RegisterTreesForm({
   setContributionGUID,
@@ -102,8 +105,8 @@ function RegisterTreesForm({
   const [mapState, setMapState] = React.useState({
     mapStyle: EMPTY_STYLE,
   });
-  const [isMultiple, setIsMultiple] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState('');
+  const [isMultiple, setIsMultiple] = React.useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = React.useState<null | string>('');
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 767;
   const defaultMapCenter = isMobile ? [22.54, 9.59] : [36.96, -28.5];
@@ -111,7 +114,9 @@ function RegisterTreesForm({
   const [plantLocation, setplantLocation] = React.useState<
     number[] | undefined
   >(undefined);
-  const [geometry, setGeometry] = React.useState(undefined);
+  const [geometry, setGeometry] = React.useState<PlantLocation | undefined>(
+    undefined
+  );
   const [viewport, setViewPort] = React.useState<ViewportProps>({
     height: '100%',
     width: '100%',
@@ -119,7 +124,7 @@ function RegisterTreesForm({
     longitude: defaultMapCenter[1],
     zoom: defaultZoom,
   });
-  const [userLang, setUserLang] = React.useState('en');
+  const [userLang, setUserLang] = React.useState<string>('en');
   const [userLocation, setUserLocation] = React.useState<number[] | null>(null);
   const [projects, setProjects] = React.useState<RegisterProjectGeoJsonProps[]>(
     []
@@ -168,7 +173,7 @@ function RegisterTreesForm({
     }
   }, [userLocation]);
 
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
+  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
   const defaultBasicDetails = {
     treeCount: '',
     species: '',
@@ -194,7 +199,6 @@ function RegisterTreesForm({
   };
 
   const submitRegisterTrees = async (data: FormData): Promise<void> => {
-    console.log(data, '==');
     if (data.treeCount < String(10000000)) {
       if (
         geometry &&
@@ -215,7 +219,6 @@ function RegisterTreesForm({
             token,
             logoutUser
           );
-          console.log(res, '==');
           setErrorMessage('');
           setContributionGUID(res.id);
           setContributionDetails(res);
@@ -239,7 +242,6 @@ function RegisterTreesForm({
       const projects = await getAuthenticatedRequest<
         RegisterProjectGeoJsonProps[]
       >('/app/profile/projects', token, logoutUser);
-      console.log(projects, '==');
       setProjects(projects);
     } catch (err) {
       setErrors(handleError(err as APIError));
@@ -453,7 +455,7 @@ type FormData = {
   species: string;
   plantProject: string | null;
   plantDate: Date;
-  geometry: any;
+  geometry: PlantLocation | undefined;
 };
 
 export default function RegisterTreesWidget() {

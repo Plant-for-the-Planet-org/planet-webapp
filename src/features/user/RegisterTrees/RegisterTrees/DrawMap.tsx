@@ -5,10 +5,11 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import styles from '../RegisterModal.module.scss';
 import { useTranslation } from 'next-i18next';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
+import { ViewportProps } from 'react-map-gl';
 
 interface Props {
   setGeometry: Function;
-  userLocation: Array<number>;
+  userLocation: number[] | null;
 }
 
 const Map = ReactMapboxGl({
@@ -22,7 +23,7 @@ export default function MapComponent({
 }: Props): ReactElement {
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;
-  const [viewport, setViewPort] = React.useState({
+  const [viewport, setViewPort] = React.useState<ViewportProps>({
     height: '100%',
     width: '100%',
     center: defaultMapCenter,
@@ -44,8 +45,9 @@ export default function MapComponent({
     });
   }, []);
   const { t, ready } = useTranslation(['me', 'common']);
-  const [drawing, setDrawing] = React.useState(false);
-  const drawControlRef = React.useRef();
+  const [drawing, setDrawing] = React.useState<boolean>(false);
+  const drawControlRef = React.useRef(undefined);
+
   const onDrawCreate = ({ features }: any) => {
     if (drawControlRef.current) {
       setGeometry(drawControlRef.current.draw.getAll());
@@ -63,7 +65,12 @@ export default function MapComponent({
   };
 
   React.useEffect(() => {
-    if (userLocation && userLocation !== [0, 0]) {
+    if (
+      userLocation &&
+      userLocation.length === 2 &&
+      userLocation[0] !== 0 &&
+      userLocation[1] !== 0
+    ) {
       const newViewport = {
         ...viewport,
         center: userLocation,
