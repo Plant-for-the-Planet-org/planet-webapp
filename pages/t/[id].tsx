@@ -14,7 +14,7 @@ import { GetStaticPaths } from 'next';
 import { handleError, APIError } from '@planet-sdk/common';
 import { User } from '@planet-sdk/common';
 
-function User(): ReactElement {
+function SingleUser(): ReactElement {
   // External imports
   const router = useRouter();
   const { user, contextLoaded, token } = useUserProps();
@@ -110,4 +110,4 @@ export async function getStaticProps({ locale }) {
   };
 }
 
-export default User;
+export default SingleUser;
