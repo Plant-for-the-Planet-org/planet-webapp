@@ -77,13 +77,13 @@ interface RegisterProjectGeoJsonProps {
   properties: TreeProjectExtended;
 }
 
-interface RegisterTreeSubmitData {
-  geometry: {};
-  plantDate: Date;
-  plantProject: string;
-  species: string;
-  treeCount: string | number;
-}
+// interface RegisterTreeSubmitData {
+//   geometry: {};
+//   plantDate: Date;
+//   plantProject: string;
+//   species: string;
+//   treeCount: string | number;
+// }
 
 interface PlantLocation {
   coordinates: number[];
@@ -199,7 +199,8 @@ function RegisterTreesForm({
   };
 
   const submitRegisterTrees = async (data: FormData): Promise<void> => {
-    if (data.treeCount < String(10000000)) {
+    const treeCount = parseInt(data.treeCount);
+    if (treeCount < 10000000) {
       if (
         geometry &&
         (geometry.type === 'Point' || geometry.features?.length >= 1)
@@ -386,7 +387,7 @@ function RegisterTreesForm({
                 {...mapState}
                 {...viewport}
                 onViewportChange={_onViewportChange}
-                onStateChange={_onStateChange}
+                onViewStateChange={_onStateChange}
                 onClick={(event) => {
                   setplantLocation(event.lngLat);
                   setGeometry({

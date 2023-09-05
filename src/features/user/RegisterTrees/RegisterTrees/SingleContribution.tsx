@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
-import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import CheckCircle from '../../../../../public/assets/images/icons/CheckCircle';
 import styles from '../RegisterModal.module.scss';
 import UploadImages from './UploadImages';
@@ -10,10 +9,10 @@ import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { Button } from '@mui/material';
 
 interface Props {
-  token: any;
-  contributionGUID: any;
+  token: string;
+  contributionGUID: string;
   contribution: any;
-  slug: any;
+  slug?: string | null;
 }
 
 const StaticMap = dynamic(() => import('./StaticMap'), {

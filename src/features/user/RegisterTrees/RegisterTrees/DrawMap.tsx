@@ -46,21 +46,24 @@ export default function MapComponent({
   }, []);
   const { t, ready } = useTranslation(['me', 'common']);
   const [drawing, setDrawing] = React.useState<boolean>(false);
-  const drawControlRef = React.useRef(undefined);
+  const drawControlRef = React.useRef<DrawControl | null>(null);
 
-  const onDrawCreate = ({ features }: any) => {
-    if (drawControlRef.current) {
-      setGeometry(drawControlRef.current.draw.getAll());
+  const onDrawCreate = () => {
+    if (drawControlRef.current?.draw) {
+      const drawControl = drawControlRef.current as any;
+      setGeometry(drawControl.draw.getAll());
     }
   };
-  const onDrawUpdate = ({ features }: any) => {
+  const onDrawUpdate = () => {
     if (drawControlRef.current) {
-      setGeometry(drawControlRef.current.draw.getAll());
+      const drawControl = drawControlRef.current as any;
+      setGeometry(drawControl.draw.getAll());
     }
   };
-  const onDrawDelete = ({ features }: any) => {
+  const onDrawDelete = () => {
     if (drawControlRef.current) {
-      setGeometry(drawControlRef.current.draw.getAll());
+      const drawControl = drawControlRef.current as any;
+      setGeometry(drawControl.draw.getAll());
     }
   };
 
@@ -90,7 +93,8 @@ export default function MapComponent({
               <div
                 onClick={() => {
                   setDrawing(true);
-                  drawControlRef.current?.draw.changeMode('draw_polygon');
+                  if (drawControlRef.current?.draw)
+                    drawControlRef.current?.draw.changeMode('draw_polygon');
                 }}
                 className="primaryButton"
                 style={{ maxWidth: '150px' }}

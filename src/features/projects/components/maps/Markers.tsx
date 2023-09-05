@@ -36,9 +36,9 @@ export default function Markers({
   let timer: NodeJS.Timeout;
   const router = useRouter();
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState<boolean>(false);
   const buttonRef = React.useRef(null);
-  const popupRef = React.useRef(null);
+  const popupRef = React.useRef<HTMLDivElement | null>(null);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
 
   const handleOpen = () => {
@@ -149,7 +149,7 @@ export default function Markers({
                       shallow: true,
                     }
                   );
-                } else if (!popupRef.current.contains(event.target)) {
+                } else if (!popupRef.current.contains(event.target as Node)) {
                   router.push(
                     `/${popupData.project.properties.slug}/${
                       embed === 'true'
