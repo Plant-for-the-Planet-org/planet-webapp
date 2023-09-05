@@ -11,7 +11,7 @@ import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { GetStaticPaths } from 'next';
+import { GetStaticPaths, GetStaticPropsContext } from 'next';
 import { handleError, APIError } from '@planet-sdk/common';
 import { Project } from '../../../src/features/common/types/project';
 
@@ -96,11 +96,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

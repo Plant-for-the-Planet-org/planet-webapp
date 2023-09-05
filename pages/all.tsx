@@ -6,6 +6,7 @@ import { TENANT_ID } from '../src/utils/constants/environment';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { handleError, APIError } from '@planet-sdk/common';
+import { GetStaticPropsContext } from 'next';
 
 interface Props {
   initialized: Boolean;
@@ -78,11 +79,11 @@ export default function Home({ initialized }: Props) {
   );
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

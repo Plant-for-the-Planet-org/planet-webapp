@@ -12,7 +12,7 @@ import {
   EnterRedeemCode,
 } from '../../../src/features/common/RedeemCode';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { GetStaticPaths } from 'next';
+import { GetStaticPaths, GetStaticPropsContext } from 'next';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 
 const ReedemCode: FC = () => {
@@ -21,7 +21,7 @@ const ReedemCode: FC = () => {
   const { setErrors, errors } = useContext(ErrorHandlingContext);
 
   const [code, setCode] = useState<string | undefined>(undefined);
-  const [inputCode, setInputCode] = useState<string | undefined>(undefined);
+  const [inputCode, setInputCode] = useState<string | null>(null);
   const [redeemedCodeData, setRedeemedCodeData] = useState<
     RedeemedCodeData | undefined
   >(undefined);
@@ -47,9 +47,7 @@ const ReedemCode: FC = () => {
     }
   }, [router]);
 
-  async function redeemingCode(
-    data: string | string[] | undefined
-  ): Promise<void> {
+  async function redeemingCode(data: string | string[] | null): Promise<void> {
     setIsLoading(true);
     const submitData = {
       code: data,
@@ -166,11 +164,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

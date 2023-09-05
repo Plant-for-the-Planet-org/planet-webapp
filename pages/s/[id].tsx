@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { getRequest } from '../../src/utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { GetStaticPaths } from 'next';
+import { GetStaticPaths, GetStaticPropsContext } from 'next';
 import { handleError, APIError } from '@planet-sdk/common';
 
 export default function DirectGift(): ReactElement {
@@ -47,11 +47,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

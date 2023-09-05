@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
 import { useTranslation } from 'next-i18next';
-import { GetStaticPaths } from 'next';
+import { GetStaticPaths, GetStaticPropsContext } from 'next';
 import LandingSection from '../../../src/features/common/Layout/LandingSection';
 import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
@@ -162,11 +162,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export async function getStaticProps({ locale }: any) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

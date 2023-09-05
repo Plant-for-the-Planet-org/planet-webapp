@@ -9,6 +9,7 @@ import Footer from '../../../src/features/common/Layout/Footer';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
 import { ProjectCreationTabs } from '../../../src/features/user/ManageProjects';
+import { GetStaticPropsContext } from 'next';
 
 export default function AddProjectType(): ReactElement {
   const router = useRouter();
@@ -76,11 +77,11 @@ export default function AddProjectType(): ReactElement {
   );
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

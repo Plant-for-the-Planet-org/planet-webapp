@@ -10,7 +10,7 @@ import GetProjectMeta from '../src/utils/getMetaTags/GetProjectMeta';
 import { getAllPlantLocations } from '../src/utils/maps/plantLocations';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { GetStaticPaths } from 'next';
+import { GetStaticPaths, GetStaticPropsContext } from 'next';
 import {
   handleError,
   APIError,
@@ -22,8 +22,8 @@ import { PlantLocation } from '../src/features/common/types/plantLocation';
 
 interface Props {
   initialized: boolean;
-  currencyCode: string;
-  setCurrencyCode: SetState<string>;
+  currencyCode: string | null | undefined;
+  setCurrencyCode: SetState<string | null | undefined>;
 }
 
 export default function Donate({
@@ -32,9 +32,11 @@ export default function Donate({
   setCurrencyCode,
 }: Props) {
   const router = useRouter();
-  const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
+  const [internalCurrencyCode, setInternalCurrencyCode] = React.useState<
+    string | undefined | null
+  >(undefined);
   const [internalLanguage, setInternalLanguage] = React.useState('');
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState<boolean>(false);
   const { i18n } = useTranslation();
   const {
     geoJson,
@@ -186,11 +188,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export async function getStaticProps({ locale }: any) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

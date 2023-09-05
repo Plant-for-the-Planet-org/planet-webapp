@@ -14,6 +14,7 @@ import {
   PaymentHistory,
 } from '../../src/features/common/types/payments';
 import DashboardView from '../../src/features/common/Layout/DashboardView';
+import { GetStaticPropsContext } from 'next';
 
 function AccountHistory(): ReactElement {
   const { t } = useTranslation(['me']);
@@ -142,11 +143,11 @@ function AccountHistory(): ReactElement {
 
 export default AccountHistory;
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

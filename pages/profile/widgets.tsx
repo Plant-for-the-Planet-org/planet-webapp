@@ -7,6 +7,7 @@ import Head from 'next/head';
 import { TENANT_ID } from '../../src/utils/constants/environment';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import { GetStaticPropsContext } from 'next';
 
 function ProfilePage(): ReactElement {
   const { t } = useTranslation('me');
@@ -55,11 +56,11 @@ function ProfilePage(): ReactElement {
 
 export default ProfilePage;
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

@@ -2,6 +2,7 @@ import Custom404Image from '../public/assets/images/Custom404Image';
 import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Footer from '../src/features/common/Layout/Footer';
+import { GetStaticPropsContext } from 'next';
 
 interface Props {
   initialized: Boolean;
@@ -35,11 +36,11 @@ export default function Custom404(initialized: Props) {
   );
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

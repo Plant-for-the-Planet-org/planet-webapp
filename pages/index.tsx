@@ -18,6 +18,7 @@ import nextI18NextConfig from '../next-i18next.config';
 import { handleError, APIError } from '@planet-sdk/common';
 import { SetState } from '../src/features/common/types/common';
 import { MapProject } from '../src/features/common/types/ProjectPropsContextInterface';
+import { GetStaticPropsContext } from 'next';
 
 interface Props {
   initialized: Boolean;
@@ -147,11 +148,11 @@ export default function Donate({
   );
 }
 
-export async function getStaticProps({ locale }: any) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

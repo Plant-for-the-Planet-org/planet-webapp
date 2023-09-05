@@ -108,7 +108,7 @@ export interface Project {
 
 export interface ManageProjectsProps {
   GUID: string;
-  token: string;
+  token: string ;
   project?: ProfileProjectTrees | ProfileProjectConservation;
 }
 
