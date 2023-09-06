@@ -4,7 +4,7 @@ import { getRequest } from '../../src/utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths, GetStaticPropsContext } from 'next';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, UserPublicProfile } from '@planet-sdk/common';
 
 export default function DirectGift(): ReactElement {
   const router = useRouter();
@@ -12,7 +12,9 @@ export default function DirectGift(): ReactElement {
 
   async function loadPublicUserData() {
     try {
-      const newProfile = await getRequest(`/app/profiles/${router.query.id}`);
+      const newProfile = await getRequest<UserPublicProfile>(
+        `/app/profiles/${router.query.id}`
+      );
       if (newProfile.type !== 'tpo') {
         localStorage.setItem(
           'directGift',

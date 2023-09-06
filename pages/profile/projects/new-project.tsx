@@ -1,28 +1,19 @@
 import { useTranslation } from 'next-i18next';
 import React, { ReactElement } from 'react';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
-import { useRouter } from 'next/router';
 import ManageProjects from '../../../src/features/user/ManageProjects';
 import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../../src/features/common/Layout/Footer';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
-import { ProjectCreationTabs } from '../../../src/features/user/ManageProjects';
 import { GetStaticPropsContext } from 'next';
 
 export default function AddProjectType(): ReactElement {
-  const router = useRouter();
   const { t } = useTranslation(['donate', 'manageProjects']);
-  const [isPurpose, setIsPurpose] = React.useState<boolean>(false);
   const [accessDenied, setAccessDenied] = React.useState<boolean>(false);
   const [setupAccess, setSetupAccess] = React.useState<boolean>(false);
   const { user, contextLoaded, token, loginWithRedirect } = useUserProps();
-  React.useEffect(() => {
-    if (router.query.purpose) {
-      setIsPurpose(true);
-    } else setIsPurpose(false);
-  }, [router]);
 
   React.useEffect(() => {
     async function loadUserData() {
@@ -68,8 +59,8 @@ export default function AddProjectType(): ReactElement {
         <title>{t('manageProjects:addNewProject')}</title>
       </Head>
 
-      {user?.type === 'tpo' ? (
-        <ManageProjects step={ProjectCreationTabs.PROJECT_TYPE} token={token} />
+      {user?.type === 'tpo' && token !== null ? (
+        <ManageProjects token={token} />
       ) : (
         <AccessDeniedLoader />
       )}

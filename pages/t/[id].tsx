@@ -25,7 +25,7 @@ function User(): ReactElement {
   const [authenticatedType, setAuthenticatedType] = React.useState('');
 
   // Loads the public user profile
-  async function loadPublicProfile(id: any) {
+  async function loadPublicProfile(id: string) {
     try {
       const profileData = await getRequest<PublicUser>(`/app/profiles/${id}`);
       setProfile(profileData);

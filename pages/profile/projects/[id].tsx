@@ -13,23 +13,26 @@ import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorH
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths, GetStaticPropsContext } from 'next';
 import { handleError, APIError } from '@planet-sdk/common';
-import { Project } from '../../../src/features/common/types/project';
+import {
+  ProfileProjectConservation,
+  ProfileProjectTrees,
+} from '../../../src/features/common/types/project';
 
 function ManageSingleProject(): ReactElement {
   const { t } = useTranslation(['manageProjects', 'common']);
-  const [projectGUID, setProjectGUID] = React.useState<
-    string | string[] | null
-  >(null);
+  const [projectGUID, setProjectGUID] = React.useState<string | null>(null);
   const [ready, setReady] = React.useState<boolean>(false);
   const router = useRouter();
   const [accessDenied, setAccessDenied] = React.useState<boolean>(false);
   const [setupAccess, setSetupAccess] = React.useState<boolean>(false);
-  const [project, setProject] = React.useState<Project | unknown>(undefined);
+  const [project, setProject] = React.useState<
+    ProfileProjectTrees | ProfileProjectConservation | null
+  >(null);
   const { user, contextLoaded, token, logoutUser } = useUserProps();
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
 
   useEffect(() => {
-    if (router && router.query.id) {
+    if (router && router.query.id && !Array.isArray(router.query.id)) {
       setProjectGUID(router.query.id);
       setReady(true);
     }
@@ -38,11 +41,9 @@ function ManageSingleProject(): ReactElement {
   useEffect(() => {
     async function loadProject() {
       try {
-        const result = await getAuthenticatedRequest(
-          `/app/profile/projects/${projectGUID}`,
-          token,
-          logoutUser
-        );
+        const result = await getAuthenticatedRequest<
+          ProfileProjectTrees | ProfileProjectConservation
+        >(`/app/profile/projects/${projectGUID}`, token, logoutUser);
         setProject(result);
         setSetupAccess(true);
       } catch (err) {
@@ -70,7 +71,7 @@ function ManageSingleProject(): ReactElement {
   // Showing error to other TPOs is left
 
   return setupAccess ? (
-    ready && token && !accessDenied ? (
+    ready && token && !accessDenied && projectGUID && project ? (
       <UserLayout>
         <Head>
           <title>{`${t('common:edit')} - ${project?.name}`}</title>

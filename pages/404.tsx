@@ -16,7 +16,7 @@ export default function Custom404(initialized: Props) {
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-  };
+  } as const;
   const router = useRouter();
 
   return (

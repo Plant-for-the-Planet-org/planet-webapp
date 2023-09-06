@@ -77,7 +77,7 @@ function AccountHistory(): ReactElement {
         }
       } else {
         try {
-          const paymentHistory = await getAuthenticatedRequest(
+          const paymentHistory = await getAuthenticatedRequest<PaymentHistory>(
             `${
               filter && accountingFilters
                 ? accountingFilters[filter] + '&limit=15'

@@ -23,8 +23,6 @@ function ClaimDonation(): ReactElement {
     useUserProps();
 
   const { errors, setErrors } = React.useContext(ErrorHandlingContext);
-
-  const [errorMessage, setErrorMessage] = React.useState('');
   const [code, setCode] = React.useState<string>('');
   const [redeemedCodeData, setRedeemedCodeData] = React.useState<
     RedeemedCodeData | undefined
@@ -38,18 +36,14 @@ function ClaimDonation(): ReactElement {
       typeof router.query.code === 'string'
     ) {
       if (router.query.type !== 'donation' && router.query.type !== 'gift') {
-        setErrorMessage(ready ? t('redeem:invalidType') : '');
         setCode(router.query.code);
-      } else {
-        setErrorMessage('');
       }
     }
   }, [router, router.query.type, ready]);
+
   const redeemAnotherCode = () => {
     router.push(`/profile/redeem/${code}?inputCode=${true}`);
-
     setRedeemedCodeData(undefined);
-    setErrorMessage('');
   };
 
   const closeRedeem = () => {
@@ -58,7 +52,7 @@ function ClaimDonation(): ReactElement {
     }
   };
 
-  async function redeemingCode(code: string | string[]): Promise<void> {
+  async function redeemingCode(code: string): Promise<void> {
     const submitData = {
       code: code,
     };
@@ -124,7 +118,12 @@ function ClaimDonation(): ReactElement {
   React.useEffect(() => {
     //redeem code using route
     if (user && contextLoaded) {
-      if (ready && router.query.type && router.query.code) {
+      if (
+        ready &&
+        router.query.type &&
+        router.query.code &&
+        !Array.isArray(router.query.code)
+      ) {
         redeemingCode(router.query.code);
       }
     }

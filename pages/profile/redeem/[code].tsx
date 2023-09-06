@@ -47,7 +47,7 @@ const ReedemCode: FC = () => {
     }
   }, [router]);
 
-  async function redeemingCode(data: string | string[] | null): Promise<void> {
+  async function redeemingCode(data: string): Promise<void> {
     setIsLoading(true);
     const submitData = {
       code: data,
@@ -92,15 +92,23 @@ const ReedemCode: FC = () => {
   }
 
   useEffect(() => {
-    if (contextLoaded && user && router.query.code && !inputCode) {
+    if (
+      contextLoaded &&
+      user &&
+      router.query.code &&
+      !Array.isArray(router.query.code) &&
+      !inputCode
+    ) {
       redeemingCode(router.query.code);
     }
   }, [user, contextLoaded, router.query.code]);
 
   const redeemCode = () => {
-    setErrors(null);
-    router.push(`/profile/redeem/${inputCode}`);
-    redeemingCode(inputCode);
+    if (inputCode) {
+      setErrors(null);
+      router.push(`/profile/redeem/${inputCode}`);
+      redeemingCode(inputCode);
+    }
   };
 
   const redeemAnotherCode = () => {

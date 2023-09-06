@@ -14,7 +14,6 @@ import DirectGift, {
 } from '../src/features/donations/components/DirectGift';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-import nextI18NextConfig from '../next-i18next.config';
 import { handleError, APIError } from '@planet-sdk/common';
 import { SetState } from '../src/features/common/types/common';
 import { MapProject } from '../src/features/common/types/ProjectPropsContextInterface';
@@ -173,7 +172,7 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
           'tenants',
           'treemapper',
         ],
-        nextI18NextConfig,
+        null,
         ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
       )),
     },

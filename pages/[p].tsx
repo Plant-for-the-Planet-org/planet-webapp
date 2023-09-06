@@ -36,7 +36,6 @@ export default function Donate({
     string | undefined | null
   >(undefined);
   const [internalLanguage, setInternalLanguage] = React.useState('');
-  const [open, setOpen] = React.useState<boolean>(false);
   const { i18n } = useTranslation();
   const {
     geoJson,
@@ -55,9 +54,6 @@ export default function Donate({
     setZoomLevel(2);
   }, []);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
@@ -114,15 +110,6 @@ export default function Donate({
       loadPl(project);
     }
   }, [project]);
-
-  React.useEffect(() => {
-    if (router.asPath) {
-      const isDonation = router.asPath.search('#donate');
-      if (isDonation && isDonation != -1) {
-        handleOpen();
-      }
-    }
-  }, [router.asPath]);
 
   React.useEffect(() => {
     if (geoJson && !router.query.site && !router.query.ploc && project) {
