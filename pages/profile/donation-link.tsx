@@ -4,6 +4,7 @@ import DonationLink from '../../src/features/user/Widget/DonationLink';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticPropsContext } from 'next';
 
 export default function DonationLinkPage(): ReactElement {
   const { t, ready } = useTranslation(['me']);
@@ -17,11 +18,11 @@ export default function DonationLinkPage(): ReactElement {
   );
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

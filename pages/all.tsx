@@ -6,19 +6,26 @@ import { TENANT_ID } from '../src/utils/constants/environment';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { handleError, APIError } from '@planet-sdk/common';
+import { GetStaticPropsContext } from 'next';
+import {
+  LeaderBoardList,
+  TenantScore,
+} from '../src/features/common/types/leaderboard';
 
 interface Props {
   initialized: Boolean;
 }
 
 export default function Home({ initialized }: Props) {
-  const [leaderboard, setLeaderboard] = React.useState(null);
+  const [leaderboard, setLeaderboard] = React.useState<LeaderBoardList | null>(
+    null
+  );
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     async function loadLeaderboard() {
       try {
-        const newLeaderboard = await getRequest(
+        const newLeaderboard = await getRequest<LeaderBoardList>(
           `/app/leaderboard/${TENANT_ID}`
         );
         setLeaderboard(newLeaderboard);
@@ -30,12 +37,14 @@ export default function Home({ initialized }: Props) {
     loadLeaderboard();
   }, []);
 
-  const [tenantScore, setTenantScore] = React.useState(null);
+  const [tenantScore, setTenantScore] = React.useState<TenantScore | null>(
+    null
+  );
 
   React.useEffect(() => {
     async function loadTenantScore() {
       try {
-        const newTenantScore = await getRequest(
+        const newTenantScore = await getRequest<TenantScore>(
           `/app/tenantScore/${TENANT_ID}`
         );
         setTenantScore(newTenantScore);
@@ -78,11 +87,11 @@ export default function Home({ initialized }: Props) {
   );
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

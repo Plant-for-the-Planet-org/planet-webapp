@@ -10,6 +10,7 @@ import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
 import { Subscription } from '../../src/features/common/types/payments';
 import RecurrentPayments from '../../src/features/user/Account/RecurrentPayments';
+import { GetStaticPropsContext } from 'next';
 
 function RecurrentDonations(): ReactElement {
   const { t } = useTranslation(['me']);
@@ -87,11 +88,11 @@ function RecurrentDonations(): ReactElement {
 
 export default RecurrentDonations;
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',
