@@ -26,7 +26,7 @@ function TreeMapper(): ReactElement {
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const [plantLocations, setPlantLocations] = React.useState<
-    PlantLocation | SamplePlantLocation | null
+    PlantLocation[] | SamplePlantLocation[] | null
   >(null);
   const [selectedLocation, setselectedLocation] = React.useState<string>('');
   const [links, setLinks] = React.useState<{
