@@ -10,9 +10,8 @@ function Icon(props) {
       height="32px"
       enableBackground="new 0 0 448 448"
       version="1.1"
-      viewBox="0 0 448 448"
-      xmlSpace="preserve"
       viewBox="0 0 512 512"
+      xmlSpace="preserve"
     >
       <path
         fill={props.color ? props.color : 'black'}

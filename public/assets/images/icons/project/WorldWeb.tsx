@@ -1,6 +1,7 @@
 import React from 'react';
+import { IconProps } from '../../../../../src/features/common/types/common';
 
-function WorldWeb({ color }: any) {
+function WorldWeb({ color }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

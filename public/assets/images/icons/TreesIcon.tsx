@@ -1,6 +1,7 @@
 import React from 'react';
+import { IconProps } from '../../../../src/features/common/types/common';
 
-function TreesIcon(props: any) {
+function TreesIcon(props: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

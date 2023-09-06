@@ -1,6 +1,11 @@
 import React from 'react';
 
-function AccessDenied(props: any) {
+interface Props {
+  height?: string;
+  width?: string;
+}
+
+function AccessDenied(props: Props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

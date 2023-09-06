@@ -1,6 +1,7 @@
 import React from 'react';
+import { IconProps } from '../../../../src/features/common/types/common';
 
-function Me(props: any) {
+function Me(props: IconProps) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
       <path
