@@ -10,6 +10,7 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../../../theme/themeProperties';
+import { Treemapper } from '../../Treemapper';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -35,7 +36,7 @@ interface Props {
   control: any;
   userLang: string;
   item: any;
-  plantLocation: Treemapper.PlantLocation;
+  plantLocation: Treemapper.PlantLocation | null;
   errors: any;
   key: string;
 }
@@ -51,7 +52,7 @@ export default function SampleTreeCard({
   errors,
 }: Props): ReactElement {
   const sampleTrees = getValues();
-  const { t, ready } = useTranslation(['treemapper', 'common']);
+  const { t } = useTranslation(['treemapper', 'common']);
   return (
     <div className={styles.sampleTreeFieldGroup}>
       <div className={styles.sampleTreeName}>
@@ -250,9 +251,10 @@ export default function SampleTreeCard({
                 value={value}
                 select
               >
-                {plantLocation.plantedSpecies.map(
+                {plantLocation?.plantedSpecies.map(
                   (species: Treemapper.PlantedSpecies, index: number) => {
-                    if (plantLocation.plantedSpecies.length === 1) {
+                    if (!species.otherSpecies) return;
+                    if (plantLocation?.plantedSpecies.length === 1) {
                       return (
                         <MenuItem
                           key={index}
