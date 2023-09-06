@@ -4,6 +4,7 @@ import { useTranslation } from 'next-i18next';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
+import { Treemapper } from '../../Treemapper';
 
 interface Props {
   plantLocation: Treemapper.PlantLocation | null;
@@ -15,8 +16,6 @@ interface Props {
 export default function ReviewSubmit({
   plantLocation,
   handleBack,
-  errorMessage,
-  setErrorMessage,
 }: Props): ReactElement {
   const router = useRouter();
   const { t } = useTranslation(['treemapper', 'common']);
@@ -79,7 +78,7 @@ export default function ReviewSubmit({
               <div className={styles.gridItemValue}>
                 <span>
                   {plantLocation.plantedSpecies
-                    ? plantLocation.plantedSpecies.map((species: any) => {
+                    ? plantLocation.plantedSpecies.map((species) => {
                         return (
                           <p key={species.id}>
                             {species.treeCount}{' '}
@@ -102,12 +101,12 @@ export default function ReviewSubmit({
                   <div className={styles.gridItemValue}>
                     {plantLocation.samplePlantLocations &&
                       plantLocation.samplePlantLocations.map(
-                        (spl: any, index: number) => {
+                        (spl, index: number) => {
                           return (
                             <div key={index} className={styles.value}>
                               {index + 1}.{' '}
                               <span className={styles.link}>
-                                {spl.otherSpecies}
+                                {'otherSpecies' in spl && spl.otherSpecies}
                               </span>
                               <br />
                               {spl.tag
