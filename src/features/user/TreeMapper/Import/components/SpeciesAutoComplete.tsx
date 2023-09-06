@@ -53,12 +53,12 @@ export default function SpeciesSelect<
     // Todo: debouncing
     if (value.length > 2) {
       try {
-        const res = await postRequest(`/suggest.php`, {
+        const res: SpeciesType[] = await postRequest(`/suggest.php`, {
           q: value,
           t: 'species',
         });
-        if (res && res.length > 0) {
-          const species = res.map((item: any) => ({
+        if (res) {
+          const species = res.map((item) => ({
             id: item.id,
             name: item.name,
             scientificName: item.scientificName,
@@ -76,7 +76,7 @@ export default function SpeciesSelect<
   }, [query]);
 
   speciesSuggestion &&
-    speciesSuggestion.sort((a: any, b: any) => {
+    speciesSuggestion.sort((a, b) => {
       const nameA = `${a.name}`;
       const nameB = `${b.name}`;
       if (nameA > nameB) {
