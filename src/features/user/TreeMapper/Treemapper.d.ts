@@ -1,3 +1,4 @@
+import { DateString } from '../../common/types/common';
 declare namespace Treemapper {
   export interface DeviceLocation {
     coordinates: number[];
@@ -52,7 +53,7 @@ declare namespace Treemapper {
     scientificSpecies: string;
     geometryUpdatesCount: number;
     type: string;
-    plantProjectSite?: any;
+    plantProjectSite?: string | null;
     registrationDate: string;
     originalGeometry: OriginalGeometry;
     captureMode: string;
@@ -68,7 +69,7 @@ declare namespace Treemapper {
   export interface PlantedSpecies {
     scientificName: string;
     created: string;
-    otherSpecies?: any;
+    otherSpecies?: string | null;
     scientificSpecies: string;
     treeCount: number;
     id: string;
@@ -82,12 +83,12 @@ declare namespace Treemapper {
     coordinates: Coordinate[];
     geometryUpdatesCount: number;
     type: string;
-    plantProjectSite?: any;
+    plantProjectSite?: string | null;
     samplePlantLocations: SamplePlantLocation[];
     plantProject: string;
     plantedSpecies: PlantedSpecies[];
-    plantDateEnd?: any;
-    plantDateStart?: any;
+    plantDateEnd?: DateString | null;
+    plantDateStart?: DateString | null;
     registrationDate: string;
     originalGeometry: OriginalGeometry;
     sampleTreeCount: number;
