@@ -10,11 +10,15 @@ import Papa from 'papaparse';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { Button } from '@mui/material';
+import { Treemapper } from '../../Treemapper';
 
 interface Props {
   handleNext: Function;
-  plantLocation: any;
+  plantLocation: Treemapper.PlantLocation | null;
   userLang: string;
+  setPlantLocation: React.Dispatch<
+    React.SetStateAction<Treemapper.PlantLocation | null>
+  >;
 }
 
 type SampleTree = {
@@ -39,7 +43,6 @@ export default function SampleTrees({
   const { t } = useTranslation(['treemapper', 'common']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [uploadIndex, setUploadIndex] = React.useState(0);
   const [uploadStatus, setUploadStatus] = React.useState<string[]>([]);
   const [sampleTrees, setSampleTrees] = React.useState<SampleTree[]>([]);
 
@@ -60,17 +63,18 @@ export default function SampleTrees({
   };
 
   const onDrop = React.useCallback((acceptedFiles) => {
-    acceptedFiles.forEach((file: any) => {
+    acceptedFiles.forEach((file: File) => {
       const reader = new FileReader();
       reader.readAsText(file);
       reader.onabort = () => console.log('file reading was aborted');
       reader.onerror = () => console.log('file reading has failed');
-      reader.onload = (event: any) => {
-        const csv = event.target.result;
+      reader.onload = (event) => {
+        const csv = event.target?.result;
         Papa.parse(csv, {
           header: true,
-          complete: (results: any) => {
-            const sampleTrees = results.data.map((sampleTree: SampleTree) => {
+          complete: (results) => {
+            const resultsData: SampleTree[] = results.data;
+            const sampleTrees: SampleTree[] = resultsData.map((sampleTree) => {
               return {
                 ...sampleTree,
                 otherSpecies: sampleTree.otherSpecies,
@@ -85,14 +89,26 @@ export default function SampleTrees({
 
   const { token, logoutUser } = useUserProps();
 
-  const uploadSampleTree = async (sampleTree: SampleTree, index: number) => {
-    setUploadIndex(index);
+  const uploadSampleTree = async (
+    sampleTree: {
+      type: string;
+      captureMode: string;
+      geometry: { coordinates: number[]; type: string };
+      plantDate: string;
+      registrationDate: string;
+      measurements: { height: number; width: number };
+      tag: string;
+      otherSpecies: string;
+      parent: string | undefined;
+    },
+    index: number
+  ) => {
     const newStatus = [...uploadStatus];
     newStatus[index] = 'uploading';
     setUploadStatus(newStatus);
 
     try {
-      const res = await postAuthenticatedRequest(
+      const res: SampleTree = await postAuthenticatedRequest(
         `/treemapper/plantLocations`,
         sampleTree,
         token,
@@ -112,7 +128,7 @@ export default function SampleTrees({
     }
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FormData) => {
     if (data.sampleTrees?.length > 0) {
       setIsUploadingData(true);
       for (const [index, sampleTree] of data.sampleTrees.entries()) {
@@ -134,7 +150,7 @@ export default function SampleTrees({
           },
           tag: sampleTree.treeTag,
           otherSpecies: sampleTree.otherSpecies,
-          parent: plantLocation.id,
+          parent: plantLocation?.id,
         };
         await uploadSampleTree(samplePl, index);
       }
