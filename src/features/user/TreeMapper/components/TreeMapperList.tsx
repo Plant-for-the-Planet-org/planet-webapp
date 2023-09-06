@@ -4,15 +4,26 @@ import TransactionsNotFound from '../../../../../public/assets/images/icons/Tran
 import PlantLocation from './PlantLocation';
 import styles from '../TreeMapper.module.scss';
 import { useTranslation } from 'next-i18next';
+import {
+  SamplePlantLocation,
+  PlantLocation as PlantLocationType,
+} from '../../../common/types/plantLocation';
 
 interface Props {
   selectedLocation: string;
   setselectedLocation: Function;
-  plantLocations: Object;
+  plantLocations: PlantLocationType[] | SamplePlantLocation[] | null;
   isDataLoading: boolean;
-  location: any;
+  location: string;
   fetchTreemapperData: Function;
-  links: any;
+  links:
+    | {
+        self: string;
+        first: string;
+        last: string;
+        next: string;
+      }
+    | undefined;
 }
 
 export default function TreeMapperList({
@@ -24,7 +35,7 @@ export default function TreeMapperList({
   fetchTreemapperData,
   links,
 }: Props): ReactElement {
-  const { t, i18n } = useTranslation('treemapper');
+  const { t } = useTranslation('treemapper');
 
   return (
     <div
@@ -53,7 +64,7 @@ export default function TreeMapperList({
       ) : (
         <>
           {plantLocations ? (
-            plantLocations.map((location: any, index: number) => {
+            plantLocations.map((location, index: number) => {
               if (location.type !== 'sample')
                 return (
                   <PlantLocation
