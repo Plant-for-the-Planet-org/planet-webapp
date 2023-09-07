@@ -61,7 +61,7 @@ export default function ImportData(): ReactElement {
   const [userLang, setUserLang] = React.useState('en');
   const [geoJson, setGeoJson] = React.useState(null);
 
-  const fetchPlantLocation = async (id: string | string[]) => {
+  const fetchPlantLocation = async (id: string) => {
     try {
       const result: Treemapper.PlantLocation = await getAuthenticatedRequest(
         `/treemapper/plantLocations/${id}?_scope=extended`,
@@ -75,7 +75,7 @@ export default function ImportData(): ReactElement {
   };
 
   React.useEffect(() => {
-    if (router && router.query.loc) {
+    if (router && router.query.loc && !Array.isArray(router.query.loc)) {
       fetchPlantLocation(router.query.loc);
     }
   }, [router]);
