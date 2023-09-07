@@ -1,11 +1,6 @@
 import React from 'react';
 
-interface Props {
-  width?: String;
-  height?: String;
-}
-
-function Share(props: Props) {
+function Share(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
