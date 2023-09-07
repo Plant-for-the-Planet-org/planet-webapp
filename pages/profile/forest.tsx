@@ -6,6 +6,7 @@ import MyTrees from '../../src/features/user/ProfileV2/components/MyTrees/MyTree
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { User } from '@planet-sdk/common';
+import { GetStaticPropsContext } from 'next';
 
 function ProfilePage(): ReactElement {
   const { t } = useTranslation('me');
@@ -39,11 +40,11 @@ function ProfilePage(): ReactElement {
 
 export default ProfilePage;
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

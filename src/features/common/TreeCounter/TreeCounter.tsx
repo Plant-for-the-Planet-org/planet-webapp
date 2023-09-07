@@ -1,7 +1,7 @@
 import MuiCircularProgress, {
   CircularProgressProps,
 } from '@mui/material/CircularProgress';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import treeCounterStyles from './TreeCounter.module.scss';
 import { useTranslation } from 'next-i18next';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
@@ -32,10 +32,9 @@ export function FacebookCircularProgress(props: CircularProgressProps) {
 }
 
 export default function TpoProfile(props: any) {
-  const [progress, setProgress] = React.useState(0);
-
+  const [progress, setProgress] = useState(0);
   const { t, i18n, ready } = useTranslation(['me']);
-  React.useEffect(() => {
+  useEffect(() => {
     let percentage = 0;
     if (props.target > 0) {
       percentage = (props.planted / props.target) * 100;

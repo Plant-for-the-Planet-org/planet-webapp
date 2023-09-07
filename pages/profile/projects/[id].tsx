@@ -11,22 +11,28 @@ import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { GetStaticPaths } from 'next';
+import { GetStaticPaths, GetStaticPropsContext } from 'next';
 import { handleError, APIError } from '@planet-sdk/common';
+import {
+  ProfileProjectConservation,
+  ProfileProjectTrees,
+} from '../../../src/features/common/types/project';
 
 function ManageSingleProject(): ReactElement {
   const { t } = useTranslation(['manageProjects', 'common']);
-  const [projectGUID, setProjectGUID] = React.useState(null);
-  const [ready, setReady] = React.useState(false);
+  const [projectGUID, setProjectGUID] = React.useState<string | null>(null);
+  const [ready, setReady] = React.useState<boolean>(false);
   const router = useRouter();
-  const [accessDenied, setAccessDenied] = React.useState(false);
-  const [setupAccess, setSetupAccess] = React.useState(false);
-  const [project, setProject] = React.useState({});
+  const [accessDenied, setAccessDenied] = React.useState<boolean>(false);
+  const [setupAccess, setSetupAccess] = React.useState<boolean>(false);
+  const [project, setProject] = React.useState<
+    ProfileProjectTrees | ProfileProjectConservation | null
+  >(null);
   const { user, contextLoaded, token, logoutUser } = useUserProps();
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
 
   useEffect(() => {
-    if (router && router.query.id) {
+    if (router && router.query.id && !Array.isArray(router.query.id)) {
       setProjectGUID(router.query.id);
       setReady(true);
     }
@@ -35,11 +41,9 @@ function ManageSingleProject(): ReactElement {
   useEffect(() => {
     async function loadProject() {
       try {
-        const result = await getAuthenticatedRequest(
-          `/app/profile/projects/${projectGUID}`,
-          token,
-          logoutUser
-        );
+        const result = await getAuthenticatedRequest<
+          ProfileProjectTrees | ProfileProjectConservation
+        >(`/app/profile/projects/${projectGUID}`, token, logoutUser);
         setProject(result);
         setSetupAccess(true);
       } catch (err) {
@@ -67,28 +71,12 @@ function ManageSingleProject(): ReactElement {
   // Showing error to other TPOs is left
 
   return setupAccess ? (
-    ready && token && !accessDenied ? (
+    ready && token && !accessDenied && projectGUID && project ? (
       <UserLayout>
         <Head>
-          <title>{`${t('common:edit')} - ${project.name}`}</title>
+          <title>{`${t('common:edit')} - ${project?.name}`}</title>
         </Head>
-        <div className="profilePage">
-          <div className="profilePageHeader">
-            <div>
-              <div className={'profilePageTitle'}>{project.name}</div>
-              <div style={{ marginBottom: 15 }}>
-                {t('manageProjects:onlyEnglish')}
-              </div>
-            </div>
-          </div>
-          <div style={{ marginTop: '60px' }}>
-            <ManageProjects
-              GUID={projectGUID}
-              token={token}
-              project={project}
-            />
-          </div>
-        </div>
+        <ManageProjects GUID={projectGUID} token={token} project={project} />
       </UserLayout>
     ) : (
       <UserLayout>
@@ -109,11 +97,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

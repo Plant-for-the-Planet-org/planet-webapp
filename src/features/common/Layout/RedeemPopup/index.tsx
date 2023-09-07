@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './RedeemPopup.module.scss';
 import { useTranslation } from 'next-i18next';
@@ -20,13 +20,13 @@ export default function RedeemPopup() {
     });
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (contextLoaded && user) {
       setShowRedeemPopup(false);
     }
   }, [contextLoaded && user]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (config.showRedeemHint) {
       const prev = localStorage.getItem('redeemPopup');
       if (!prev) {
@@ -37,7 +37,7 @@ export default function RedeemPopup() {
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     localStorage.setItem('redeemPopup', showRedeemPopup);
   }, [showRedeemPopup]);
 

@@ -1,26 +1,19 @@
 import { useTranslation } from 'next-i18next';
 import React, { ReactElement } from 'react';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
-import { useRouter } from 'next/router';
 import ManageProjects from '../../../src/features/user/ManageProjects';
 import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
 import Footer from '../../../src/features/common/Layout/Footer';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
+import { GetStaticPropsContext } from 'next';
 
 export default function AddProjectType(): ReactElement {
-  const router = useRouter();
   const { t } = useTranslation(['donate', 'manageProjects']);
-  const [isPurpose, setIsPurpose] = React.useState(false);
+  const [accessDenied, setAccessDenied] = React.useState<boolean>(false);
+  const [setupAccess, setSetupAccess] = React.useState<boolean>(false);
   const { user, contextLoaded, token, loginWithRedirect } = useUserProps();
-  const [accessDenied, setAccessDenied] = React.useState(false);
-  const [setupAccess, setSetupAccess] = React.useState(false);
-  React.useEffect(() => {
-    if (router.query.purpose) {
-      setIsPurpose(true);
-    } else setIsPurpose(false);
-  }, [router]);
 
   React.useEffect(() => {
     async function loadUserData() {
@@ -61,74 +54,25 @@ export default function AddProjectType(): ReactElement {
   }
 
   return (
-    <div className={'profilePage'}>
-      <UserLayout>
-        <Head>
-          <title>{t('manageProjects:addNewProject')}</title>
-        </Head>
+    <UserLayout>
+      <Head>
+        <title>{t('manageProjects:addNewProject')}</title>
+      </Head>
 
-        <div className="profilePageHeader">
-          <div>
-            <div className={'profilePageTitle'}>
-              {' '}
-              {t('manageProjects:addNewProject')}
-            </div>
-          </div>
-        </div>
-        <div className={'add-project-title'}>
-          <p>
-            {t('manageProjects:addProjetDescription')}
-            <br />
-            {t('manageProjects:addProjetContact')}
-            <span>{t('manageProjects:supportLink')}</span>
-          </p>
-        </div>
-
-        {/* {!isPurpose ?
-                    <div className={'add-project-container'}>
-                        <div className={'add-project'}>
-                            <button
-                                id={'addProjectBut'}
-                                className={'add-projects-button'}
-                                onClick={() => router.push('/profile/projects/new-project/?purpose=trees')}
-                            >
-                                {t('manageProjects:restorationProject')}
-                            </button>
-
-                            <button
-                                id={'conservationProj'}
-                                className={'add-projects-button'}
-                                onClick={() => router.push('/profile/projects/new-project/?purpose=conservation')}
-                            >
-                                {t('manageProjects:conservationProject')}
-                            </button>
-                        </div>
-                    </div>
-                    : null
-                }
-
-
-                {isPurpose ?
-                    (
-                        <ManageProjects token={token} />
-                    )
-                    :
-                    null} */}
-        {user?.type === 'tpo' ? (
-          <ManageProjects token={token} />
-        ) : (
-          <AccessDeniedLoader />
-        )}
-      </UserLayout>
-    </div>
+      {user?.type === 'tpo' && token !== null ? (
+        <ManageProjects token={token} />
+      ) : (
+        <AccessDeniedLoader />
+      )}
+    </UserLayout>
   );
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

@@ -1,7 +1,5 @@
 import React from 'react';
-import { Tabs, Tab } from '@mui/material';
 import BasicDetails from './components/BasicDetails';
-import styles from './StepForm.module.scss';
 import ProjectMedia from './components/ProjectMedia';
 import ProjectSelection from './components/ProjectSelection';
 import DetailedAnalysis from './components/DetailedAnalysis';
@@ -16,28 +14,49 @@ import SubmitForReview from './components/SubmitForReview';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError, ProjectExtended } from '@planet-sdk/common';
+import TabbedView from '../../common/Layout/TabbedView';
+import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
+import { handleError, APIError } from '@planet-sdk/common';
+import DashboardView from '../../common/Layout/DashboardView';
+import styles from '../../../../src/features/user/ManageProjects/StepForm.module.scss';
+import {
+  ManageProjectsProps,
+  ProfileProjectTrees,
+  ProfileProjectConservation,
+} from '../../common/types/project';
 
-interface Props {
-  GUID?: string | null;
-  token: string | null;
-  project?: ProjectExtended;
+export enum ProjectCreationTabs {
+  PROJECT_TYPE = 0,
+  BASIC_DETAILS = 1,
+  PROJECT_MEDIA = 2,
+  DETAILED_ANALYSIS = 3,
+  PROJECT_SITES = 4,
+  PROJECT_SPENDING = 5,
+  REVIEW = 6,
 }
-
-export default function ManageProjects({ GUID, token, project }: Props) {
-  const { t, ready } = useTranslation(['manageProjects']);
+export default function ManageProjects({
+  GUID,
+  token,
+  project,
+}: ManageProjectsProps) {
+  const { t, i18n } = useTranslation(['manageProjects']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
   const router = useRouter();
 
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [errorMessage, setErrorMessage] = React.useState('');
-  const [tabSelected, setTabSelected] = React.useState(0);
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [projectGUID, setProjectGUID] = React.useState(GUID ? GUID : '');
-  const [projectDetails, setProjectDetails] = React.useState(
-    project ? project : {}
+  const [activeStep, setActiveStep] = React.useState<number>(0);
+  const [errorMessage, setErrorMessage] = React.useState<string | undefined>(
+    undefined
   );
+  const [tabSelected, setTabSelected] = React.useState<number>(0);
+  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
+  const [projectGUID, setProjectGUID] = React.useState<string | unknown>(
+    GUID ? GUID : ''
+  );
+  const [tablist, setTabList] = React.useState<TabItem[]>([]);
+  const [projectDetails, setProjectDetails] = React.useState<
+    ProfileProjectTrees | ProfileProjectConservation | null
+  >(null);
 
   const formRouteHandler = (val: number) => {
     if (router.query.purpose) return;
@@ -72,58 +91,19 @@ export default function ManageProjects({ GUID, token, project }: Props) {
   };
 
   // for moving next tab
-  const handleNext = () => {
-    formRouteHandler(tabSelected + 1);
-    setTabSelected((prevTabSelected) => prevTabSelected + 1);
+  const handleNext = (nextTab: number): void => {
+    formRouteHandler(nextTab);
   };
-
   //for moving previous tab
-  const handleBack = () => {
-    formRouteHandler(tabSelected - 1);
-    setTabSelected((prevActiveStep) => prevActiveStep - 1);
+  const handleBack = (previousTab: number): void => {
+    formRouteHandler(previousTab);
   };
 
-  const handleReset = (message: string) => {
+  const handleReset = (message: string): void => {
     setErrorMessage(message);
     setActiveStep(0);
   };
 
-  const handleChange = (e: React.ChangeEvent<{}>, newValue: number) => {
-    //restrict the access of Tab
-    if (router.asPath === '/profile/projects/new-project') {
-      e.preventDefault();
-      return;
-    }
-    //show the same route as respective form
-
-    formRouteHandler(newValue);
-
-    //if project selected don't let it change
-    if (newValue < 1) {
-      e.preventDefault();
-      return;
-    }
-
-    //if the Project is not created then lock it to basic details
-    if (projectGUID === '') {
-      e.preventDefault();
-      return;
-    }
-    setTabSelected(newValue);
-    //for getting access to other tab for edit of individual project
-    if (router.query.id) {
-      setTabSelected(newValue);
-    }
-
-    // A project type should be selected to move to the next step
-    if (!router.query.purpose) {
-      return;
-    }
-
-    if (router.query.id) {
-      handleNext();
-    }
-  };
   const submitForReview = async () => {
     setIsUploadingData(true);
     const submitData = {
@@ -138,7 +118,7 @@ export default function ManageProjects({ GUID, token, project }: Props) {
         logoutUser
       );
       setProjectDetails(res);
-      setErrorMessage('');
+      setErrorMessage(undefined);
       setIsUploadingData(false);
     } catch (err) {
       setIsUploadingData(false);
@@ -173,11 +153,9 @@ export default function ManageProjects({ GUID, token, project }: Props) {
 
     const fetchProjectDetails = async () => {
       try {
-        const res = await getAuthenticatedRequest(
-          `/app/profile/projects/${projectGUID}`,
-          token,
-          logoutUser
-        );
+        const res = await getAuthenticatedRequest<
+          ProfileProjectTrees | ProfileProjectConservation
+        >(`/app/profile/projects/${projectGUID}`, token, logoutUser);
         setProjectDetails(res);
       } catch (err) {
         setErrors(handleError(err as APIError));
@@ -199,11 +177,9 @@ export default function ManageProjects({ GUID, token, project }: Props) {
 
   React.useEffect(() => {
     if (router.query.purpose) {
-      handleNext();
+      setTabSelected(1);
     }
-  }, [router]);
 
-  React.useEffect(() => {
     switch (router.query.type) {
       case 'basic-details':
         setTabSelected(1);
@@ -226,13 +202,74 @@ export default function ManageProjects({ GUID, token, project }: Props) {
       default:
         null;
     }
-  }, [router.query.screen]);
+  }, [tabSelected, router.query.type]);
 
-  function getStepContent(step: number) {
-    switch (step) {
-      case 0:
-        return <ProjectSelection />;
-      case 1:
+  React.useEffect(() => {
+    if (router.query.type && project) {
+      setTabList([
+        {
+          label: t('manageProjects:basicDetails'),
+          link: `/profile/projects/${projectGUID}?type=basic-details`,
+          step: ProjectCreationTabs.BASIC_DETAILS,
+        },
+        {
+          label: t('manageProjects:projectMedia'),
+          link: `/profile/projects/${projectGUID}?type=media`,
+          step: ProjectCreationTabs.PROJECT_MEDIA,
+        },
+        {
+          label: t('manageProjects:detailedAnalysis'),
+          link: `/profile/projects/${projectGUID}?type=detail-analysis`,
+          step: ProjectCreationTabs.DETAILED_ANALYSIS,
+        },
+        {
+          label: t('manageProjects:projectSites'),
+          link: `/profile/projects/${projectGUID}?type=project-sites`,
+          step: ProjectCreationTabs.PROJECT_SITES,
+        },
+        {
+          label: t('manageProjects:projectSpending'),
+          link: `/profile/projects/${projectGUID}?type=project-spendings`,
+          step: ProjectCreationTabs.PROJECT_SPENDING,
+        },
+        {
+          label: t('manageProjects:review'),
+          link: `/profile/projects/${projectGUID}?type=review`,
+          step: ProjectCreationTabs.REVIEW,
+        },
+      ]);
+    } else if (router.query.purpose === 'trees' && !project) {
+      setTabList([
+        {
+          label: t('manageProjects:basicDetails'),
+          link: '/profile/projects/new-project?purpose=trees',
+          step: ProjectCreationTabs.BASIC_DETAILS,
+        },
+      ]);
+    } else if (router.query.purpose === 'conservation' && !project) {
+      setTabList([
+        {
+          label: t('manageProjects:basicDetails'),
+          link: '/profile/projects/new-project?purpose=conservation',
+          step: ProjectCreationTabs.BASIC_DETAILS,
+        },
+      ]);
+    } else {
+      setTabList([
+        {
+          label: t('manageProjects:projectType'),
+          link: '/profile/projects/new-project',
+          step: ProjectCreationTabs.PROJECT_TYPE,
+        },
+      ]);
+    }
+  }, [tabSelected, router.query.purpose, i18n?.language]);
+
+  function getStepContent() {
+    switch (tabSelected) {
+      case ProjectCreationTabs.PROJECT_TYPE:
+        return <ProjectSelection setTabSelected={setTabSelected} />;
+      case ProjectCreationTabs.BASIC_DETAILS:
         return (
           <BasicDetails
             handleNext={handleNext}
@@ -242,11 +279,15 @@ export default function ManageProjects({ GUID, token, project }: Props) {
             setProjectGUID={setProjectGUID}
             projectGUID={projectGUID}
             purpose={
-              project?.purpose ? project?.purpose : router.query?.purpose
+              project !== undefined
+                ? project.purpose
+                : router.query.purpose === 'conservation'
+                ? 'conservation'
+                : 'trees'
             }
           />
         );
-      case 2:
+      case ProjectCreationTabs.PROJECT_MEDIA:
         return (
           <ProjectMedia
             handleNext={handleNext}
@@ -258,7 +299,7 @@ export default function ManageProjects({ GUID, token, project }: Props) {
             handleReset={handleReset}
           />
         );
-      case 3:
+      case ProjectCreationTabs.DETAILED_ANALYSIS:
         return (
           <DetailedAnalysis
             userLang={userLang}
@@ -274,7 +315,7 @@ export default function ManageProjects({ GUID, token, project }: Props) {
             }
           />
         );
-      case 4:
+      case ProjectCreationTabs.PROJECT_SITES:
         return (
           <ProjectSites
             handleNext={handleNext}
@@ -285,7 +326,7 @@ export default function ManageProjects({ GUID, token, project }: Props) {
             projectDetails={projectDetails}
           />
         );
-      case 5:
+      case ProjectCreationTabs.PROJECT_SPENDING:
         return (
           <ProjectSpending
             userLang={userLang}
@@ -296,81 +337,50 @@ export default function ManageProjects({ GUID, token, project }: Props) {
             handleReset={handleReset}
           />
         );
-      case 6:
-        return (
-          <SubmitForReview
-            handleBack={handleBack}
-            projectDetails={projectDetails}
-            submitForReview={submitForReview}
-            isUploadingData={isUploadingData}
-            projectGUID={projectGUID}
-            handleReset={handleReset}
-            handlePublishChange={handlePublishChange}
-          />
-        );
+      case ProjectCreationTabs.REVIEW:
+        if (projectDetails && projectGUID)
+          return (
+            <SubmitForReview
+              handleBack={handleBack}
+              projectDetails={projectDetails}
+              submitForReview={submitForReview}
+              isUploadingData={isUploadingData}
+              projectGUID={projectGUID}
+              handleReset={handleReset}
+              handlePublishChange={handlePublishChange}
+            />
+          );
+        break;
       default:
-        return <ProjectSelection />;
+        return <ProjectSelection setTabSelected={setTabSelected} />;
     }
   }
 
-  return ready ? (
-    <div
-      className={styles.mainContainer}
-      style={{ display: 'flex', flexDirection: 'row' }}
-    >
-      <div className={'project-form-flow'} style={{ display: 'flex' }}>
-        <div
-          style={{
-            display: 'flex',
-            flexBasis: '10%',
-            flexDirection: 'column',
-          }}
-        >
-          <div className="tab-box">
-            <Tabs
-              value={tabSelected}
-              onChange={handleChange}
-              orientation={'vertical'}
-              variant="scrollable"
-              className={'custom-tab'}
-            >
-              <Tab
-                label={t('manageProjects:projectType')}
-                className={'tab-flow'}
-              ></Tab>
-              <Tab
-                label={t('manageProjects:basicDetails')}
-                className={'tab-flow'}
-              ></Tab>
-              <Tab
-                label={t('manageProjects:projectMedia')}
-                className={'tab-flow'}
-              ></Tab>
-              <Tab
-                label={t('manageProjects:detailedAnalysis')}
-                className={'tab-flow'}
-              />
-              <Tab
-                label={t('manageProjects:projectSites')}
-                className={'tab-flow'}
-              />
-              <Tab
-                label={t('manageProjects:projectSpending')}
-                className={'tab-flow'}
-              />
-              <Tab label={t('manageProjects:review')} className={'tab-flow'} />
-            </Tabs>
+  return (
+    <DashboardView
+      title={projectGUID ? project?.name : t('manageProjects:addNewProject')}
+      subtitle={
+        projectGUID ? (
+          t('manageProjects:onlyEnglish')
+        ) : (
+          <div className={styles.addProjectTitle}>
+            <div>{t('manageProjects:addProjetDescription')}</div>
+            <div className={styles.editProjectInfo}>
+              <div className={styles.note}>{t('manageProjects:important')}</div>
+              <div>{t('manageProjects:englishOnly')}</div>
+            </div>
+            <div>
+              {' '}
+              {t('manageProjects:addProjetContact')}{' '}
+              <span>{t('manageProjects:supportLink')}</span>{' '}
+            </div>
           </div>
-        </div>
-        <div
-          style={{
-            marginTop: '40px',
-            display: 'flex',
-          }}
-        >
-          {getStepContent(tabSelected)}
-        </div>
-      </div>
-    </div>
-  ) : null;
+        )
+      }
+    >
+      <TabbedView step={tabSelected} tabItems={tablist}>
+        {getStepContent()}
+      </TabbedView>
+    </DashboardView>
+  );
 }

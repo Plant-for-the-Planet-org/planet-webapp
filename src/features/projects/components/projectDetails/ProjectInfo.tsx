@@ -171,7 +171,7 @@ function ProjectInfo({ project }: Props): ReactElement {
           project.metadata.firstTreePlanted !== null && (
             <div className={styles.projectMoreInfoHalf}>
               <div className={styles.infoTitle}>
-                {t('manageProjects:firstTreePlanted')}
+                {t('manageProjects:labelRestorationStarted')}
               </div>
               <div className={styles.infoText}>
                 {formatDate(
@@ -213,63 +213,79 @@ function ProjectInfo({ project }: Props): ReactElement {
               </div>
             </div>
           )}
-
-        {project.purpose === 'conservation' &&
-          project.metadata.activitySeasons !== null &&
-          project.metadata.activitySeasons.length > 0 && (
-            <div className={styles.projectMoreInfoHalf}>
-              <div className={styles.infoTitle}>
-                {t('manageProjects:protectionSeasons')}
-              </div>
-              <div className={styles.infoText}>
-                {project.metadata.activitySeasons.map(
-                  (season, index, activitySeasons) => {
-                    return (
-                      <React.Fragment key={seasons[season - 1].title}>
-                        {seasons[season - 1].title}
-                        {index === activitySeasons.length - 2 ? (
-                          <> {t('manageProjects:and')} </>
-                        ) : index === activitySeasons.length - 1 ? (
-                          '.'
-                        ) : (
-                          ', '
-                        )}
-                      </React.Fragment>
-                    );
-                  }
-                )}
-              </div>
-            </div>
-          )}
-
-        {project.purpose === 'trees' &&
-          project.metadata.plantingSeasons !== null &&
-          project.metadata.plantingSeasons.length > 0 && (
-            <div className={styles.projectMoreInfoHalf}>
-              <div className={styles.infoTitle}>
-                {t('manageProjects:plantingSeasons')}
-              </div>
-              <div className={styles.infoText}>
-                {project.metadata.plantingSeasons.map(
-                  (season, index, plantingSeasons) => {
-                    return (
-                      <React.Fragment key={seasons[season - 1].title}>
-                        {seasons[season - 1].title}
-                        {index === plantingSeasons.length - 2 ? (
-                          <> {t('manageProjects:and')} </>
-                        ) : index === plantingSeasons.length - 1 ? (
-                          '.'
-                        ) : (
-                          ', '
-                        )}
-                      </React.Fragment>
-                    );
-                  }
-                )}
-              </div>
-            </div>
-          )}
       </div>
+
+      {project.purpose === 'conservation' &&
+        project.metadata.activitySeasons !== null &&
+        project.metadata.activitySeasons.length > 0 && (
+          <div className={styles.projectMoreInfo}>
+            <div className={styles.infoTitle}>
+              {t('manageProjects:protectionSeasons')}
+            </div>
+            <div className={styles.infoText}>
+              {project.metadata.activitySeasons.map(
+                (season, index, activitySeasons) => {
+                  return (
+                    <React.Fragment key={seasons[season - 1].title}>
+                      {seasons[season - 1].title}
+                      {index === activitySeasons.length - 2 ? (
+                        <> {t('manageProjects:and')} </>
+                      ) : index === activitySeasons.length - 1 ? (
+                        '.'
+                      ) : (
+                        ', '
+                      )}
+                    </React.Fragment>
+                  );
+                }
+              )}
+            </div>
+          </div>
+        )}
+
+      {project.purpose === 'trees' &&
+        project.metadata.plantingSeasons !== null &&
+        project.metadata.plantingSeasons.length > 0 && (
+          <div className={styles.projectMoreInfo}>
+            <div className={styles.infoTitle}>
+              {t('manageProjects:labelRestorationSeasons')}
+            </div>
+            <div className={styles.infoText}>
+              {project.metadata.plantingSeasons.map(
+                (season, index, plantingSeasons) => {
+                  return (
+                    <React.Fragment key={seasons[season - 1].title}>
+                      {seasons[season - 1].title}
+                      {index === plantingSeasons.length - 2 ? (
+                        <> {t('manageProjects:and')} </>
+                      ) : index === plantingSeasons.length - 1 ? (
+                        '.'
+                      ) : (
+                        ', '
+                      )}
+                    </React.Fragment>
+                  );
+                }
+              )}
+            </div>
+          </div>
+        )}
+
+      {project.metadata.mainInterventions !== null &&
+        project.metadata.mainInterventions.length > 0 && (
+          <div className={styles.projectMoreInfo}>
+            <div className={styles.infoTitle}>
+              {t('manageProjects:labelMainInterventions')}
+            </div>
+            <div className={styles.infoText}>
+              {project.metadata.mainInterventions
+                .map((intervention) =>
+                  t(`manageProjects:interventionTypes.${intervention}`)
+                )
+                .join(', ')}
+            </div>
+          </div>
+        )}
 
       {project.metadata.mainChallenge !== null && (
         <div className={styles.projectMoreInfo}>
