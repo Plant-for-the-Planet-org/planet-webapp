@@ -16,6 +16,8 @@ import {
   APIError,
   TreeProjectExtended,
   ConservationProjectExtended,
+  ProjectExtended,
+  ClientError,
 } from '@planet-sdk/common';
 import { SetState } from '../src/features/common/types/common';
 import { PlantLocation } from '../src/features/common/types/plantLocation';
@@ -69,18 +71,29 @@ export default function Donate({
         setCurrencyCode(currency);
         try {
           const { p } = router.query;
-          const project = await getRequest<
-            TreeProjectExtended | ConservationProjectExtended
-          >(encodeURI(`/app/projects/${p}`), {
-            _scope: 'extended',
-            currency: currency,
-            locale: i18n.language,
-          });
-          setProject(project);
-          setShowSingleProject(true);
-          setZoomLevel(2);
+          const project = await getRequest<ProjectExtended>(
+            encodeURI(`/app/projects/${p}`),
+            {
+              _scope: 'extended',
+              currency: currency || '',
+              locale: i18n.language,
+            }
+          );
+          if (
+            project.purpose === 'conservation' ||
+            project.purpose === 'trees'
+          ) {
+            setProject(project);
+            setShowSingleProject(true);
+            setZoomLevel(2);
+          } else {
+            throw new ClientError(404, {
+              error_type: 'project_not_available',
+              error_code: 'project_not_available',
+            });
+          }
         } catch (err) {
-          setErrors(handleError(err as APIError));
+          setErrors(handleError(err as APIError | ClientError));
           redirect('/');
         }
       }

@@ -123,6 +123,7 @@
   "active_account_exists": "Active PlanetCash account already exists",
   "duplicate_account": "Account already exists",
   "token_expired": "Token Expired. Please login again",
+  "project_not_available": "Project details are currently unavailable",
   "topProject": "Top Project",
   "viewReport": "View Report",
   "reviewInfo": " The project was inspected in a multiday field review in <2>month</2> and fullfills our <5>standards.</5>",
