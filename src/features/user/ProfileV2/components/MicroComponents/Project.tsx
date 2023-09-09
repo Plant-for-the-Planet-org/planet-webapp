@@ -8,7 +8,7 @@ import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 import getImageUrl from '../../../../../utils/getImageURL';
 import { useTranslation } from 'next-i18next';
 import { getDonationUrl } from '../../../../../utils/getDonationUrl';
-import format from 'date-fns/format';
+import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 
 const Project = ({ projectInfo }: ProjectProps): ReactElement => {
   const { token } = useUserProps();
@@ -71,7 +71,7 @@ const Project = ({ projectInfo }: ProjectProps): ReactElement => {
           </div>
           <div className={myForestStyles.donateContainer}>
             <div className={myForestStyles.plantingDate}>
-              {format(projectInfo.plantDate, 'MMMM d, yyyy')}
+              {formatDate(projectInfo.plantDate)}
             </div>
             {projectInfo?.plantProject !== null && (
               <div

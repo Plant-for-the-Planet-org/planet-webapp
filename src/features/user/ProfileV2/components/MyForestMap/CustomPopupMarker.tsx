@@ -1,9 +1,9 @@
-import { format } from 'date-fns';
 import { Popup } from 'react-map-gl';
 import { useTranslation } from 'next-i18next';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 import { CustomPopupMarkerProps } from '../../../../common/types/map';
+import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 
 const CustomPopupMarker = ({ geoJson, showPopUp }: CustomPopupMarkerProps) => {
   const { t } = useTranslation(['me']);
@@ -45,7 +45,7 @@ const CustomPopupMarker = ({ geoJson, showPopUp }: CustomPopupMarkerProps) => {
                 geoJson.properties.totalContribution < 2 && (
                   <div className={MyForestMapStyle.popUpDate}>
                     {geoJson?.properties?.startDate &&
-                      format(geoJson?.properties?.startDate, 'MMMM d, yyyy')}
+                      formatDate(geoJson?.properties?.startDate)}
                   </div>
                 )}
             </div>
