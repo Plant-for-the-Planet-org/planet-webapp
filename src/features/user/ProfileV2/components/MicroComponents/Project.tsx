@@ -63,9 +63,7 @@ const Project = ({ projectInfo }: ProjectProps): ReactElement => {
               {projectInfo?.plantProject?.unit === 'm2'
                 ? t('me:area', { areaConserved: `${projectInfo.quantity}` })
                 : t('me:plantedTrees', {
-                    noOfTrees: `${
-                      projectInfo.quantity || projectInfo?.treeCount
-                    }`,
+                    count: projectInfo.quantity || projectInfo?.treeCount || 0
                   })}
             </div>
           </div>
@@ -78,7 +76,7 @@ const Project = ({ projectInfo }: ProjectProps): ReactElement => {
                 className={myForestStyles.donate}
                 onClick={() => handleDonate(projectInfo.plantProject.guid)}
               >
-                {'Donate Again'}
+                {t('me:donateAgain')}
               </div>
             )}
           </div>
