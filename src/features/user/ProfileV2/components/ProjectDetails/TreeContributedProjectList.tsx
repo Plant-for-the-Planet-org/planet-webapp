@@ -50,32 +50,34 @@ const TreeContributedProjectList = ({
         </div>
       </div>
       <div className={myForestStyles.donationListMainContainer}>
-        <div className={myForestStyles.editButtonContainer}>
-          <Button
-            variant="contained"
-            startIcon={<EditTargetSvg />}
-            onClick={handleAddTargetModalOpen}
-            sx={{
-              width: '138px',
-              height: '34px',
-              backgroundColor: '#219653',
-              padding: '0px 0px',
-            }}
-          >
-            {t('me:editTarget')}
-          </Button>
-        </div>
-        <div className={myForestStyles.text}>
-          {t('me:treesPlantedAndAreaRestored')}
-          <p className={myForestStyles.hrLine} />
-        </div>
-        <div>
-          <ContributedProjectList
-            contributionProjectList={contribution?.pages}
-            setIsLoadButtonActive={setIsLoadButtonActive}
-            isLoadButtonActive={isLoadButtonActive}
-            handleFetchNextPage={handleFetchNextPage}
-          />
+        <div className={myForestStyles.donationList}>
+          <div className={myForestStyles.editButtonContainer}>
+            <Button
+              variant="contained"
+              startIcon={<EditTargetSvg />}
+              onClick={handleAddTargetModalOpen}
+              sx={{
+                width: '138px',
+                height: '34px',
+                backgroundColor: '#219653',
+                padding: '0px 0px',
+              }}
+            >
+              {t('me:editTarget')}
+            </Button>
+          </div>
+          <div className={myForestStyles.text}>
+            {t('me:treesPlantedAndAreaRestored')}
+            <p className={myForestStyles.hrLine} />
+          </div>
+          <div>
+            <ContributedProjectList
+              contributionProjectList={contribution?.pages}
+              setIsLoadButtonActive={setIsLoadButtonActive}
+              isLoadButtonActive={isLoadButtonActive}
+              handleFetchNextPage={handleFetchNextPage}
+            />
+          </div>
         </div>
       </div>
     </div>

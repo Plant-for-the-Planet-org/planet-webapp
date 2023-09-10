@@ -19,10 +19,7 @@ const ContributedProjectList = ({
   const { t } = useTranslation(['me']);
 
   return contributionProjectList ? (
-    <div
-      className={myForestStyles.donationlistContainer}
-      style={{ marginTop: isConservedButtonActive ? '0px' : '340px' }}
-    >
+    <div className={myForestStyles.donationlistContainer}>
       {contributionProjectList.map((singlePage: any) => {
         if (singlePage?.nextCursor === undefined) {
           setIsLoadButtonActive(false);

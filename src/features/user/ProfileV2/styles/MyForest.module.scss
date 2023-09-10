@@ -187,7 +187,7 @@
     display: flex;
     gap: 12px;
     @include lgLaptopView {
-        margin-left: 0px; 
+        margin-left: 0px;
     }
 }
 
@@ -231,36 +231,23 @@
     background-size: 100% 100%;
     width: 100%;
     position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     border-bottom-left-radius: 12px;
     border-bottom-right-radius: 12px;
-    > .text {
-        position: absolute;
+    .donationList {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 115px;
+        gap: 45px
+    }
+    div>.text {
         font-weight: bold;
         font-size: 24px;
-        top: 255px;
-        left: 355px;
-        @include xsPhoneView {
-            font-size: 19px;
-            left: 40px
-        }
-
-        @include mdTabletView {
-            left: 120px;
-        }
-        @include lgLaptopView {
-            left: 355px;
-        }
         > .hrLine {
             width: 176px;
             border: 1px  solid #6FCF97;
             margin-left: 93px;
             margin-top: 16px;
-            @include xsPhoneView {
-                margin-left: 50px;
-            }
         }
     }
   }
@@ -318,9 +305,6 @@
   }
 
   .editButtonContainer {
-    position: absolute;
-    top: 180px;
-    left: 465px;
     font-size: 14px;
     font-weight: bold;
     @include xsPhoneView {
@@ -365,10 +349,32 @@
         background: #FFFFFF;
         align-items: center;
         gap: 30px;
+        padding-left: 0px;
+        padding-right: 0px;
         @include xsPhoneView {
             height: max-content;
             flex-direction: column;
-            gap: 15px
+            gap: 15px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        @include smTabletView {
+            flex-direction: column;
+            gap: 20px;
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+
+        @include  mdTabletView {
+            flex-direction: row;
+            gap: 20px;
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+
+        @include lgLaptopView  {
+            padding-left: 0px;
+            padding-right: 0px;
         }
       
         > .image {
@@ -381,8 +387,11 @@
             img {
                 border-radius: 12px;
             };
+            @include smTabletView {
+                margin-left: 0px;
+            }
             @include mdTabletView {
-                margin-top: 0px;
+                margin-left:  20px;
             }
             @include xsPhoneView {
                 width: 274px;
@@ -410,6 +419,14 @@
         margin-left: 17px;
         justify-content: flex-start;
     }
+    @include smTabletView {
+        flex-direction: row;
+        gap: 67px
+    }
+    @include  mdTabletView {
+        flex-direction: column;
+        gap: 67px
+    }
 }
 
   .donate {
@@ -435,6 +452,18 @@
         gap : 10px;
         padding-top: 0px;
         flex-direction: column;
+    }
+    @include smTabletView {
+        flex-direction: column;
+        padding-top: 0px
+    }
+    @include  mdTabletView {
+        flex-direction: row;
+        padding-top: 0px
+    }
+    @include lgLaptopView  {
+        padding-bottom: 15px;
+
     }
 }
   .projectDetail {
@@ -478,6 +507,9 @@
     position: relative;
     > .textContainer {
         background-color: #48AADD1A ;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 100%;
         height: 200px;
         border-top-left-radius: 12px;
@@ -495,38 +527,12 @@
   .conservedAreaText {
     font-weight: 700;
     font-size: 24px;
-    position: absolute;
-    top: 65px;
-    left: 500px;
     > .hrLine {
         width: 176px;
         border: 1px solid #48AADD;
         margin-top: 16px;
-        margin-left: 8px;
     }
   }
-  @include xsPhoneView {
-    .conservedAreaText {
-        left: 100px
-    }
-}
-
-@include smTabletView {
-    .conservedAreaText {
-        left: 485px
-    }
-}
-
-@include mdTabletView {
-    .conservedAreaText {
-        left: 245px
-    }
-}
-@include lgLaptopView {
-    .conservedAreaText {
-        left: 430px
-    }
-}
 
 .plantingDate {
     font-size: 14px ;
