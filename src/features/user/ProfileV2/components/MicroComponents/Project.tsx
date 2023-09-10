@@ -8,7 +8,7 @@ import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 import getImageUrl from '../../../../../utils/getImageURL';
 import { useTranslation } from 'next-i18next';
 import { getDonationUrl } from '../../../../../utils/getDonationUrl';
-import format from 'date-fns/format';
+import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 
 const Project = ({ projectInfo }: ProjectProps): ReactElement => {
   const { token } = useUserProps();
@@ -63,22 +63,20 @@ const Project = ({ projectInfo }: ProjectProps): ReactElement => {
               {projectInfo?.plantProject?.unit === 'm2'
                 ? t('me:area', { areaConserved: `${projectInfo.quantity}` })
                 : t('me:plantedTrees', {
-                    noOfTrees: `${
-                      projectInfo.quantity || projectInfo?.treeCount
-                    }`,
+                    count: projectInfo.quantity || projectInfo?.treeCount || 0
                   })}
             </div>
           </div>
           <div className={myForestStyles.donateContainer}>
             <div className={myForestStyles.plantingDate}>
-              {format(projectInfo.plantDate, 'MMMM d, yyyy')}
+              {formatDate(projectInfo.plantDate)}
             </div>
             {projectInfo?.plantProject !== null && (
               <div
                 className={myForestStyles.donate}
                 onClick={() => handleDonate(projectInfo.plantProject.guid)}
               >
-                {'Donate Again'}
+                {t('me:donateAgain')}
               </div>
             )}
           </div>

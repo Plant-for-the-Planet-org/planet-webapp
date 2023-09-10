@@ -32,5 +32,6 @@
   "continue": "Weiter",
   "cancel": "Abbrechen",
   "termAndCondition": "Ich stimme den <0>Nutzungsbedingungen</0> der Plant-for-the-Planet Plattform zu.",
-  "termAndConditionError": "Bitte stimme den Nutzungsbedingungen zu"
+  "termAndConditionError": "Bitte stimme den Nutzungsbedingungen zu",
+  "member": "Mitglied seit {{date}}"
 }

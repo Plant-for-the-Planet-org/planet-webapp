@@ -269,12 +269,14 @@
   "resetPin": "Reset Pin",
   "treesPlantedAndAreaRestored": "Trees Planted & Areas Restored",
   "areaConserved": "Areas Conserved",
-  "plantedTrees": "{{noOfTrees}} Trees",
+  "plantedTrees_one": "{{count}} Tree",
+  "plantedTrees_other": "{{count}} Trees",
   "area": "{{areaConserved}} m²",
   "tpoName": "By {{tpo}}",
   "donate":  "Donate",
   "donated": "Donated",
-  "conserved": "conserved",
+  "conserved": "Conserved",
   "loadProjects": "Load More Donations",
-  "numberOfContributions": "{{total}} Contributions"
+  "numberOfContributions": "{{total}} Contributions",
+  "donateAgain": "Donate Again"
 }
