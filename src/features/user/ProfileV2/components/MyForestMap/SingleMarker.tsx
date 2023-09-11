@@ -53,7 +53,7 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
               )}
               {t(
                 geoJson.properties?.plantProject?.unitType === 'tree'
-                  ? 'me:plantedTrees_one'
+                  ? 'me:plantedTrees'
                   : '',
                 {
                   count:
