@@ -46,22 +46,22 @@ export default function MyTrees({
   } = useProjectProps();
 
   const _detailInfo = trpc.myForest.stats.useQuery({
-    profileId: `prf_6RaZcCpeJIlTA4DKEPKje1T6`,
+    profileId: `${profile.id}`,
   });
   const _conservationGeoJsonData = trpc.myForest.contributionsGeoJson.useQuery({
-    profileId: `prf_6RaZcCpeJIlTA4DKEPKje1T6`,
+    profileId: `${profile.id}`,
     purpose: Purpose.CONSERVATION,
   });
 
   const _treePlantedGeoJsonData = trpc.myForest.contributionsGeoJson.useQuery({
-    profileId: `prf_6RaZcCpeJIlTA4DKEPKje1T6`,
+    profileId: `${profile.id}`,
     purpose: Purpose.TREES,
   });
 
   const _contributionDataForPlantedtrees =
     trpc.myForest.contributions.useInfiniteQuery(
       {
-        profileId: `prf_6RaZcCpeJIlTA4DKEPKje1T6`,
+        profileId: `${profile.id}`,
         limit: 15,
         purpose: Purpose.TREES,
       },
@@ -69,7 +69,7 @@ export default function MyTrees({
     );
   const _contributionData = trpc.myForest.contributions.useInfiniteQuery(
     {
-      profileId: `prf_6RaZcCpeJIlTA4DKEPKje1T6`,
+      profileId: `${profile.id}`,
       limit: 15,
       purpose: Purpose.CONSERVATION,
     },
