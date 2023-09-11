@@ -11,7 +11,7 @@ import { SingleMarkerProps } from '../../../../common/types/map';
 import CustomPopupMarker from './CustomPopupMarker';
 
 const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
-  const { ready } = useTranslation(['me']);
+  const { t, ready } = useTranslation(['me']);
   const [showPopUp, setShowPopUp] = useState(false);
   return ready ? (
     <>
@@ -39,7 +39,29 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
               )}
             </div>
             <div className={MyForestMapStyle.trees}>
-              {geoJson.properties.quantity}
+              {t(
+                geoJson.properties?.purpose === 'conservation' ||
+                  geoJson.properties?.plantProject?.unitType === 'm2'
+                  ? 'me:area'
+                  : '',
+                {
+                  areaConserved:
+                    geoJson.properties.totalTrees ||
+                    geoJson.properties.quantity ||
+                    0,
+                }
+              )}
+              {t(
+                geoJson.properties?.plantProject?.unitType === 'tree'
+                  ? 'me:plantedTrees_one'
+                  : '',
+                {
+                  count:
+                    geoJson.properties.totalTrees ||
+                    geoJson.properties.quantity ||
+                    0,
+                }
+              )}
             </div>
           </div>
         </Marker>

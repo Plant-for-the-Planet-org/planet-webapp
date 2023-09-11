@@ -38,8 +38,11 @@ export const TreePlantedClusterMarker = ({
             )}
           </div>
           <div className={MyForestMapStyle.totalTreeCount}>
-            {t('me:plantedTrees', {
-              count: geoJson.properties.totalTrees || geoJson.properties.quantity || 0
+            {t('me:plantedTrees_other', {
+              count:
+                geoJson.properties.totalTrees ||
+                geoJson.properties.quantity ||
+                0,
             })}
           </div>
         </div>

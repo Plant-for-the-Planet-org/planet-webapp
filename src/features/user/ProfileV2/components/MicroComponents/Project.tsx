@@ -60,11 +60,21 @@ const Project = ({ projectInfo }: ProjectProps): ReactElement => {
               )}
             </div>
             <div className={myForestStyles.treeCount}>
+              {console.log(projectInfo.quantity, projectInfo?.treeCount, '===')}
               {projectInfo?.plantProject?.unit === 'm2'
                 ? t('me:area', { areaConserved: `${projectInfo.quantity}` })
-                : t('me:plantedTrees', {
-                    count: projectInfo.quantity || projectInfo?.treeCount || 0
-                  })}
+                : t(
+                    (projectInfo?.quantity !== null &&
+                      projectInfo?.quantity > 1) ||
+                      (projectInfo?.treeCount !== null &&
+                        projectInfo?.treeCount > 1)
+                      ? 'plantedTrees_other'
+                      : 'me:plantedTrees_one',
+                    {
+                      count:
+                        projectInfo.quantity || projectInfo?.treeCount || 0,
+                    }
+                  )}
             </div>
           </div>
           <div className={myForestStyles.donateContainer}>
