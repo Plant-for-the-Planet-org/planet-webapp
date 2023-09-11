@@ -76,12 +76,8 @@
   .singleProject {
     margin-right: 24px;
   }
-  .singleProject:last-of-type {
-    // margin-right:0px;
-  }
 }
-@include mdTabletView {
-}
+
 @include lgLaptopView {
   .projectsTitleText {
     text-align: left;
@@ -89,6 +85,4 @@
   .listProjects {
     justify-content: left;
   }
-}
-@include xlDesktopView {
 }
