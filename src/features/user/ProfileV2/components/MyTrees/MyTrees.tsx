@@ -26,7 +26,7 @@ export default function MyTrees({
   profile,
 }: MyTreesProps): ReactElement | null {
   const { ready } = useTranslation(['country', 'me']);
-  const [projectsForTreePlantaion, setProjectsForTreePlantaion] = useState<
+  const [projectsForTreePlantaion, setProjectsForTreePlantation] = useState<
     Contributions[]
   >([]);
   const [projectsForAreaConservation, setProjectsForAreaConservation] =
@@ -111,7 +111,7 @@ export default function MyTrees({
   useEffect(() => {
     _handleErrors(
       _contributionDataForPlantedtrees,
-      setProjectsForTreePlantaion
+      setProjectsForTreePlantation
     );
   }, [
     _contributionDataForPlantedtrees.isLoading,

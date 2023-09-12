@@ -47,7 +47,7 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
                 {
                   areaConserved:
                     geoJson.properties.totalTrees ||
-                    geoJson.properties.quantity ||
+                    parseInt(geoJson.properties.quantity) ||
                     0,
                 }
               )}
@@ -58,7 +58,7 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
                 {
                   count:
                     geoJson.properties.totalTrees ||
-                    geoJson.properties.quantity ||
+                    parseInt(geoJson.properties.quantity) ||
                     0,
                 }
               )}

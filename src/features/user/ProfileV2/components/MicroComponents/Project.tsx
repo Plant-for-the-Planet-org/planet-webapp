@@ -16,7 +16,9 @@ const Project = ({ projectInfo }: ProjectProps): ReactElement => {
   const { t } = useTranslation(['me', 'country']);
   const handleDonate = (slug: string) => {
     const url = getDonationUrl(slug, token);
-    embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
+    embed === 'true'
+      ? window.open(url, '_blank')
+      : (window.location.href = url);
   };
   return (
     projectInfo && (
@@ -48,7 +50,7 @@ const Project = ({ projectInfo }: ProjectProps): ReactElement => {
               <p className={myForestStyles.projectName}>
                 {projectInfo?.plantProject !== null
                   ? projectInfo.plantProject.name
-                  : 'Registered Trees'}
+                  : t('me:registerTrees')}
               </p>
               {projectInfo?.plantProject !== null && (
                 <div>
@@ -63,7 +65,10 @@ const Project = ({ projectInfo }: ProjectProps): ReactElement => {
               {projectInfo?.plantProject?.unit === 'm2'
                 ? t('me:area', { areaConserved: `${projectInfo.quantity}` })
                 : t('me:plantedTrees', {
-                    count: projectInfo.quantity || projectInfo?.treeCount || 0,
+                    count:
+                      projectInfo.quantity ||
+                      parseInt(`${projectInfo?.treeCount}`) ||
+                      0,
                   })}
             </div>
           </div>
