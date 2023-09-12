@@ -37,9 +37,14 @@ const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
           </div>
         </div>
       </div>
-      <div className={myProfilestyle.iconContainer} onClick={handleEditProfile}>
-        <EditIcon className={myProfilestyle.icon} />
-      </div>
+      {!router.query.id && (
+        <div
+          className={myProfilestyle.iconContainer}
+          onClick={handleEditProfile}
+        >
+          <EditIcon className={myProfilestyle.icon} />
+        </div>
+      )}
 
       <div className={myProfilestyle.userDescription}>
         {userProfile?.bio && userProfile?.bio}

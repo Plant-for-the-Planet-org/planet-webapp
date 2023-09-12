@@ -11,7 +11,6 @@ import { SingleMarkerProps } from '../../../../common/types/map';
 import CustomPopupMarker from './CustomPopupMarker';
 
 const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
-  console.log(geoJson, '===');
   const { t, ready } = useTranslation(['me']);
   const [showPopUp, setShowPopUp] = useState(false);
   return ready ? (
