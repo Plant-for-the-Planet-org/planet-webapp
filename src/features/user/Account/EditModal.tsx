@@ -23,7 +23,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
-import { Subscription } from '../../common/types/payments';
+import { ModifyDonations, Subscription } from '../../common/types/payments';
 
 // interface EditDonationProps {
 //   editModalOpen
@@ -91,9 +91,15 @@ export const EditModal = ({
     setDisabled(false);
   }, [editModalOpen]);
 
+  interface bodyToSendType {
+    nextBilling?: string | null;
+    centAmount?: number;
+    frequency?: string;
+  }
+
   const onSubmit = async (data: FormData) => {
     setDisabled(true);
-    const bodyToSend = {
+    const bodyToSend: bodyToSendType = {
       nextBilling:
         record.method !== 'paypal'
           ? new Date(data.currentPeriodEnd).toISOString().split('T')[0]
@@ -117,13 +123,13 @@ export const EditModal = ({
 
     if (Object.keys(bodyToSend).length !== 0) {
       try {
-        const res = await putAuthenticatedRequest(
+        const res: ModifyDonations = await putAuthenticatedRequest(
           `/app/subscriptions/${record?.id}?scope=modify`,
           bodyToSend,
           token,
           logoutUser
         );
-        if (res?.status === 'action_required') {
+        if (res?.status !== 'action_required') {
           window.open(res.response.confirmationUrl, '_blank');
         }
         handleEditModalClose();
@@ -236,7 +242,6 @@ export const EditModal = ({
                       value={value}
                       onBlur={onBlur}
                       getOptionLabel={(option) => {
-                        console.log(option);
                         return t(`${option.toLowerCase()}`);
                       }}
                       renderInput={(params) => (
