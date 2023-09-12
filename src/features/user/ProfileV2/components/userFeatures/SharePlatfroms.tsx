@@ -1,5 +1,6 @@
 import { Button } from '@mui/material';
 import TwitterIcon from '@mui/icons-material/Twitter';
+import IconButton from '@mui/material/IconButton';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import CloseIcon from '@mui/icons-material/Close';
@@ -30,18 +31,24 @@ const SharePlatforms = ({
     <div className={myProfilestyle.socialPlatformOptionConatiner}>
       <Button
         variant="outlined"
-        startIcon={<CloseIcon />}
+        startIcon={<CloseIcon sx={{ marginLeft: '12px' }} />}
         onClick={() => setShowSocialButton(false)}
       />
 
-      <TwitterIcon
-        sx={{ color: '#68B030', cursor: 'pointer' }}
+      <IconButton
+        sx={{ cursor: 'pointer' }}
         onClick={() =>
           handleShare(
             `https://twitter.com/intent/tweet?hashtags=StopTalkingStartPlanting,TrillionTrees&via=trilliontrees&url=${linkToShare}&text=${textToShare}`
           )
         }
-      />
+      >
+        <img
+          width="50px"
+          height="50px"
+          src="/assets/images/x_icon_green_bg.svg"
+        />
+      </IconButton>
 
       <FacebookIcon
         sx={{ color: '#68B030', cursor: 'pointer' }}
