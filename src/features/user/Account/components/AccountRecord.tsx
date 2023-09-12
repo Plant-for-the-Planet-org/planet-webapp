@@ -72,7 +72,11 @@ export function RecordHeader({
     >
       <div className={styles.left}>
         {getRecordTitle()}
-        <p>{formatDate(record.created)}</p>
+        <p>
+          {formatDate(
+            new Date(new Date(record.created).valueOf()).toISOString()
+          )}
+        </p>
       </div>
       <div className={styles.right}>
         <p className={`${styles.top} ${styles[netAmountStatus]}`}>
@@ -109,19 +113,33 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
       {record.created && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('created')}</p>
-          <p>{formatDate(record.created)}</p>
+          <p>
+            {formatDate(
+              new Date(new Date(record.created).valueOf()).toISOString()
+            )}
+          </p>
         </div>
       )}
       {record.lastUpdate && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('lastUpdate')}</p>
-          <p>{formatDate(record.lastUpdate)}</p>
+          <p>
+            {formatDate(
+              new Date(new Date(record.lastUpdate).valueOf()).toISOString()
+            )}
+          </p>
         </div>
       )}
       {record.details?.paymentDate && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('paymentDate')}</p>
-          <p>{formatDate(record.details?.paymentDate)}</p>
+          <p>
+            {formatDate(
+              new Date(
+                new Date(record.details?.paymentDate).valueOf()
+              ).toISOString()
+            )}
+          </p>
         </div>
       )}
       {record.details?.paidAmount && (
@@ -359,13 +377,22 @@ export function BankDetails({ recipientBank }: BankDetailsProps): ReactElement {
       {recipientBank?.created && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('created')}</p>
-          <p>{formatDate(recipientBank.created)}</p>
+          <p>
+            {formatDate(
+              new Date(new Date(recipientBank.created).valueOf()).toISOString()
+            )}
+          </p>
         </div>
       )}
       {recipientBank?.updated && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('updated')}</p>
-          <p>{formatDate(recipientBank.updated)}</p>
+          <p>
+            {' '}
+            {formatDate(
+              new Date(new Date(recipientBank.updated).valueOf()).toISOString()
+            )}
+          </p>
         </div>
       )}
     </>
