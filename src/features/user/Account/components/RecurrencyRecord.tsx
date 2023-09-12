@@ -149,7 +149,13 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
       {record.firstDonation?.created && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('firstDonation')}</p>
-          <p>{formatDate(record.firstDonation.created)}</p>
+          <p>
+            {formatDate(
+              new Date(
+                new Date(record.firstDonation.created).valueOf()
+              ).toISOString()
+            )}
+          </p>
         </div>
       )}
       {record?.destination?.type === 'planet-cash' ? (
@@ -217,9 +223,12 @@ export function ManageDonation({
     (record?.status === 'active' || record?.status === 'trialing') &&
     !record?.endsAt;
   const showReactivate =
-    record?.status === 'paused' || new Date(record?.endsAt) > new Date();
+    record?.status === 'paused' || new Date(record?.endsAt || '') > new Date();
 
-  const openModal = (e, setModalOpen: Dispatch<SetStateAction<boolean>>) => {
+  const openModal = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    setModalOpen: Dispatch<SetStateAction<boolean>>
+  ) => {
     e.preventDefault();
     setModalOpen(true);
   };
