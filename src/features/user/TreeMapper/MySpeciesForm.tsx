@@ -9,7 +9,7 @@ import MaterialButton from '../../common/InputTypes/MaterialButton';
 import MaterialTextField from '../../common/InputTypes/MaterialTextField';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import SpeciesSelect from './Import/components/SpeciesAutoComplete';
-import styles from './MySpecies.module.scss';
+import styles from './MySpecies/MySpecies.module.scss';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
