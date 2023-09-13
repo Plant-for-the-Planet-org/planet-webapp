@@ -20,7 +20,12 @@ import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedC
 import { Recipient as LocalRecipient } from '../BulkCodesTypes';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledFormContainer from '../../../common/Layout/StyledFormContainer';
-import { handleError, APIError, SerializedError } from '@planet-sdk/common';
+import {
+  handleError,
+  APIError,
+  SerializedError,
+  Donation,
+} from '@planet-sdk/common';
 
 const IssueCodesForm = (): ReactElement | null => {
   const { t, ready, i18n } = useTranslation(['common', 'bulkCodes']);
@@ -119,7 +124,7 @@ const IssueCodesForm = (): ReactElement | null => {
       const cleanedData = cleanObject(donationData);
 
       try {
-        const res = await postAuthenticatedRequest(
+        const res: Donation = await postAuthenticatedRequest(
           `/app/donations`,
           cleanedData,
           token,
@@ -269,7 +274,7 @@ const IssueCodesForm = (): ReactElement | null => {
                 className="formButton"
                 disabled={
                   !(
-                    user.planetCash &&
+                    user?.planetCash &&
                     !(
                       user.planetCash.balance + user.planetCash.creditLimit <=
                       0
