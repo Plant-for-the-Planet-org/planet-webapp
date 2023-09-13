@@ -10,8 +10,8 @@ function Icon({ color }) {
       height="32px"
       enableBackground="new 0 0 448 448"
       version="1.1"
-      viewBox="0 0 512 512"
       xmlSpace="preserve"
+      viewBox="0 0 512 512"
     >
       <path
         fill={color ? color : 'black'}

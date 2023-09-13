@@ -7,6 +7,7 @@ import PlanetCash, {
 } from '../../../src/features/user/PlanetCash';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticPropsContext } from 'next';
 
 export default function PlanetCashPage(): ReactElement {
   const { t, ready } = useTranslation('me');
@@ -36,11 +37,11 @@ export default function PlanetCashPage(): ReactElement {
   );
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

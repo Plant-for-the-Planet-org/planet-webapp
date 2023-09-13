@@ -11,7 +11,7 @@ import { SetState } from '../types/common';
 export interface EnterRedeemCodeProps {
   isLoading: boolean;
   setInputCode: SetState<string | null>;
-  inputCode: string | undefined;
+  inputCode: string | null;
   redeemCode: () => void;
   closeRedeem: () => void;
 }

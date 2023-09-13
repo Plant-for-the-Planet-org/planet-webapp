@@ -8,6 +8,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
+import { GetStaticPropsContext } from 'next';
 export default function PayoutSchedulePage(): ReactElement {
   const { t, ready } = useTranslation('me');
   const { user } = useUserProps();
@@ -25,11 +26,11 @@ export default function PayoutSchedulePage(): ReactElement {
   );
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

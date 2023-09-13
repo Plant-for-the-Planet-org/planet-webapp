@@ -172,7 +172,7 @@ function ProjectCertificates({
         token,
         logoutUser
       );
-      const uploadedFilesTemp = uploadedFiles!.filter((item) => item.id !== id);
+      const uploadedFilesTemp = uploadedFiles.filter((item) => item.id !== id);
       setUploadedFiles(uploadedFilesTemp);
     } catch (err) {
       setErrors(handleError(err as APIError));
