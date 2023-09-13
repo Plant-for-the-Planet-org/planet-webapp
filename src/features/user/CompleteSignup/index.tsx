@@ -8,6 +8,7 @@ import {
   MenuItem,
   styled,
   TextField,
+  AlertColor,
 } from '@mui/material';
 import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
@@ -23,7 +24,15 @@ import { postRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslation, Trans } from 'next-i18next';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
-import { handleError, APIError } from '@planet-sdk/common';
+import {
+  handleError,
+  APIError,
+  User,
+  UserType,
+  CreateUserRequest,
+  CountryCode,
+} from '@planet-sdk/common';
+import { AddressSuggestionsType } from '../../common/types/user';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -41,8 +50,12 @@ export default function CompleteSignup(): ReactElement | null {
   const router = useRouter();
   const { i18n, t, ready } = useTranslation(['editProfile', 'donate']);
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
-  const [addressSugggestions, setaddressSugggestions] = React.useState([]);
+  const [addressSugggestions, setaddressSugggestions] = React.useState<
+    AddressSuggestionsType[]
+  >([]);
   const [isProcessing, setIsProcessing] = React.useState<boolean>(false);
+  const [country, setCountry] = useState<CountryCode | null>(null);
+
   const geocoder = new GeocoderArcGIS(
     process.env.ESRI_CLIENT_SECRET
       ? {
@@ -51,11 +64,21 @@ export default function CompleteSignup(): ReactElement | null {
         }
       : {}
   );
-  const suggestAddress = (value) => {
+
+  const {
+    handleSubmit,
+    control,
+    reset,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<CreateUserRequest>({ mode: 'onBlur' });
+
+  const suggestAddress = (value: string) => {
     if (value.length > 3) {
       geocoder
         .suggest(value, { category: 'Address', countryCode: country })
-        .then((result) => {
+        .then((result: { suggestions: AddressSuggestionsType[] }) => {
           const filterdSuggestions = result.suggestions.filter((suggestion) => {
             return !suggestion.isCollection;
           });
@@ -64,7 +87,7 @@ export default function CompleteSignup(): ReactElement | null {
         .catch(console.log);
     }
   };
-  const getAddress = (value) => {
+  const getAddress = (value: string) => {
     geocoder
       .findAddressCandidates(value, { outfields: '*' })
       .then((result) => {
@@ -83,15 +106,6 @@ export default function CompleteSignup(): ReactElement | null {
   };
   let suggestion_counter = 0;
   const { theme } = React.useContext(ThemeContext);
-
-  const {
-    handleSubmit,
-    control,
-    reset,
-    setValue,
-    watch,
-    formState: { errors },
-  } = useForm({ mode: 'onBlur' });
 
   const { user, setUser, auth0User, contextLoaded, logoutUser, token } =
     useUserProps();
@@ -130,12 +144,11 @@ export default function CompleteSignup(): ReactElement | null {
     setSnackbarOpen(false);
   };
 
-  const [type, setAccountType] = useState('individual');
+  const [type, setAccountType] = useState<UserType>('individual');
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
-  const [severity, setSeverity] = useState('info');
+  const [severity, setSeverity] = useState<AlertColor>('info');
   const [requestSent, setRequestSent] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState<boolean | null>(null);
-  const [country, setCountry] = useState('');
 
   const [postalRegex, setPostalRegex] = React.useState(
     COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal
@@ -147,11 +160,25 @@ export default function CompleteSignup(): ReactElement | null {
     setPostalRegex(fiteredCountry[0]?.postal);
   }, [country]);
 
-  const sendRequest = async (bodyToSend: any) => {
+  const checkUserType = (value: string) => {
+    const userTypes: UserType[] = [
+      'individual',
+      'tpo',
+      'organization',
+      'education',
+      'company',
+      'government',
+    ];
+    if (userTypes.includes(value as UserType)) {
+      return value as UserType;
+    }
+  };
+
+  const sendRequest = async (bodyToSend: CreateUserRequest) => {
     setRequestSent(true);
     setIsProcessing(true);
     try {
-      const res = await postRequest(`/app/profile`, bodyToSend);
+      const res: User = await postRequest(`/app/profile`, bodyToSend);
       setRequestSent(false);
       // successful signup -> goto me page
       setUser(res);
@@ -199,20 +226,22 @@ export default function CompleteSignup(): ReactElement | null {
     reset();
   }, [type]);
 
-  const createButtonClicked = async (data: any) => {
+  const createButtonClicked = async (data: CreateUserRequest) => {
     if (!acceptTerms) {
       handleTermsAndCondition(false);
       return;
     }
     setSubmit(true);
-    if (contextLoaded && token) {
-      const submitData = {
-        ...data,
-        country,
-        type,
-        oAuthAccessToken: token,
-      };
-      sendRequest(submitData);
+    if (country != null) {
+      if (contextLoaded && token) {
+        const submitData = {
+          ...data,
+          country,
+          type,
+          oAuthAccessToken: token,
+        };
+        sendRequest(submitData);
+      }
     }
   };
 
@@ -268,7 +297,9 @@ export default function CompleteSignup(): ReactElement | null {
                 <MenuItem
                   key={option.value}
                   value={option.value}
-                  onClick={() => setAccountType(option.value)}
+                  onClick={() =>
+                    setAccountType(checkUserType(option.value) || 'individual')
+                  }
                 >
                   {option.title}
                 </MenuItem>
@@ -447,7 +478,7 @@ export default function CompleteSignup(): ReactElement | null {
             <AutoCompleteCountry
               label={t('donate:country')}
               name="country"
-              onChange={setCountry}
+              onChange={() => setCountry}
               defaultValue={
                 getStoredConfig('loc').countryCode === 'T1' ||
                 getStoredConfig('loc').countryCode === 'XX' ||
@@ -562,7 +593,7 @@ export default function CompleteSignup(): ReactElement | null {
         <Snackbar
           open={snackbarOpen}
           autoHideDuration={2000}
-          onClose={handleSnackbarClose}
+          onClose={() => handleSnackbarClose}
         >
           <div>
             <Alert
