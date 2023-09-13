@@ -6,6 +6,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
+import { GetStaticPropsContext } from 'next';
 
 function TreeMapperAnalytics(): ReactElement {
   const { t, ready } = useTranslation('treemapperAnalytics');
@@ -33,11 +34,11 @@ function TreeMapperAnalytics(): ReactElement {
 
 export default TreeMapperAnalytics;
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         ['common', 'me', 'country', 'treemapperAnalytics'],
         null,
         ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']

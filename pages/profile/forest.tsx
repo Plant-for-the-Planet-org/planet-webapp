@@ -5,6 +5,7 @@ import { useUserProps } from '../../src/features/common/Layout/UserPropsContext'
 import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import { GetStaticPropsContext } from 'next';
 
 function ProfilePage(): ReactElement {
   const { t } = useTranslation('me');
@@ -40,11 +41,11 @@ function ProfilePage(): ReactElement {
 
 export default ProfilePage;
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

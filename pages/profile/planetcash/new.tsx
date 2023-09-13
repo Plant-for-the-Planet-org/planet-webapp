@@ -7,10 +7,11 @@ import PlanetCash, {
 } from '../../../src/features/user/PlanetCash';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticPropsContext } from 'next';
 
 export default function PlanetCashCreatePage(): ReactElement {
   const { t, ready } = useTranslation('me');
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
     // Cleanup function to reset state and address Warning: Can't perform a React state update on an unmounted component.
@@ -39,11 +40,11 @@ export default function PlanetCashCreatePage(): ReactElement {
   );
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

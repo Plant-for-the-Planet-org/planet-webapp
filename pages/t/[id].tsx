@@ -10,7 +10,7 @@ import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees'
 import ProjectsContainer from '../../src/features/user/Profile/ProjectsContainer';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { GetStaticPaths } from 'next';
+import { GetStaticPaths, GetStaticPropsContext } from 'next';
 import { handleError, APIError } from '@planet-sdk/common';
 import { PublicUser } from '../../src/features/common/types/user';
 
@@ -25,7 +25,7 @@ function User(): ReactElement {
   const [authenticatedType, setAuthenticatedType] = React.useState('');
 
   // Loads the public user profile
-  async function loadPublicProfile(id: any) {
+  async function loadPublicProfile(id: string) {
     try {
       const profileData = await getRequest<PublicUser>(`/app/profiles/${id}`);
       setProfile(profileData);
@@ -79,11 +79,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

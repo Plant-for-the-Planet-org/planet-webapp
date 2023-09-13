@@ -9,6 +9,7 @@ import { useBulkCode } from '../../../../src/features/common/Layout/BulkCodeCont
 import { BulkCodeMethods } from '../../../../src/utils/constants/bulkCodeConstants';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import { GetStaticPropsContext } from 'next';
 
 export default function BulkCodeSelectProjectPage(): ReactElement {
   const { t, ready } = useTranslation('me');
@@ -50,11 +51,11 @@ export const getStaticPaths = async () => {
   };
 };
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',
