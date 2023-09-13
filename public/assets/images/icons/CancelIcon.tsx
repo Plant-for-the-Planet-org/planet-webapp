@@ -1,11 +1,12 @@
 import React from 'react';
+import { IconProps } from '../../../../src/features/common/types/common';
 
-function CancelIcon(props: any) {
+function CancelIcon({ width }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 320 512"
-      width={props.width ? props.width : null}
+      width={width ? width : undefined}
     >
       <path
         className="iconFillColor"

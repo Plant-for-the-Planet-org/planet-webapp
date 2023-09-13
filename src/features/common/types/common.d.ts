@@ -11,6 +11,7 @@ export type DateString = string;
 
 export interface IconProps {
     color?: string;
-    width?: string;
-    height?: string
+    width?: string | number | undefined;
+    height?: string | number | undefined
+    className?: string | undefined
   }
