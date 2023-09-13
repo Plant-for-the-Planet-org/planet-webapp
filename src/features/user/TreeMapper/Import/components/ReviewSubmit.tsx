@@ -3,12 +3,11 @@ import styles from '../Import.module.scss';
 import { useTranslation } from 'next-i18next';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { useRouter } from 'next/router';
-import { PlantLocation } from '../../Treemapper';
 import { Button } from '@mui/material';
 import { Treemapper } from '../../Treemapper';
 
 interface Props {
-  plantLocation: PlantLocation | null;
+  plantLocation: Treemapper.PlantLocation | null;
   handleBack: () => void;
   errorMessage: string;
   setErrorMessage: (errorMessage: string) => void;
