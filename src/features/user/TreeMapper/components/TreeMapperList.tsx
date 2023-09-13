@@ -8,6 +8,7 @@ import {
   SamplePlantLocation,
   PlantLocation as PlantLocationType,
 } from '../../../common/types/plantLocation';
+import { Links } from '../../../common/types/payments';
 
 interface Props {
   selectedLocation: string;
@@ -16,14 +17,7 @@ interface Props {
   isDataLoading: boolean;
   location: string;
   fetchTreemapperData: Function;
-  links:
-    | {
-        self: string;
-        first: string;
-        last: string;
-        next: string;
-      }
-    | undefined;
+  links: Links | undefined;
 }
 
 export default function TreeMapperList({
