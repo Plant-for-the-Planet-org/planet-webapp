@@ -11,9 +11,11 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
 import {
+  ExtendedPlantLocations,
   PlantLocation,
   SamplePlantLocation,
 } from '../../common/types/plantLocation';
+import { Links } from '../../common/types/payments';
 
 const PlantLocationMap = dynamic(() => import('./components/Map'), {
   loading: () => <p>loading</p>,
@@ -29,12 +31,7 @@ function TreeMapper(): ReactElement {
     PlantLocation[] | SamplePlantLocation[] | null
   >(null);
   const [selectedLocation, setselectedLocation] = React.useState<string>('');
-  const [links, setLinks] = React.useState<{
-    self: string;
-    first: string;
-    last: string;
-    next: string;
-  }>();
+  const [links, setLinks] = React.useState<Links>();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
   async function fetchTreemapperData(next = false) {
@@ -43,7 +40,7 @@ function TreeMapper(): ReactElement {
 
     if (next && links?.next) {
       try {
-        const response = await getAuthenticatedRequest(
+        const response: ExtendedPlantLocations = await getAuthenticatedRequest(
           links.next,
           token,
           logoutUser,
@@ -52,8 +49,7 @@ function TreeMapper(): ReactElement {
           '1.0.4'
         );
         if (response) {
-          const newPlantLocations: PlantLocation[] | SamplePlantLocation[] =
-            response?.items;
+          const newPlantLocations = response?.items;
           for (const itr in newPlantLocations) {
             if (Object.prototype.hasOwnProperty.call(newPlantLocations, itr)) {
               const ind = Number(itr);
@@ -83,7 +79,7 @@ function TreeMapper(): ReactElement {
       }
     } else {
       try {
-        const response = await getAuthenticatedRequest(
+        const response: ExtendedPlantLocations = await getAuthenticatedRequest(
           '/treemapper/plantLocations?_scope=extended&limit=15',
           token,
           logoutUser,
@@ -100,8 +96,8 @@ function TreeMapper(): ReactElement {
             for (const itr in plantLocations) {
               if (Object.prototype.hasOwnProperty.call(plantLocations, itr)) {
                 const location = plantLocations[itr];
-                if (location.type === 'multi') {
-                  plantLocations[itr].sampleTrees = [];
+                if (location.type === 'multi' && 'sampleTrees' in location) {
+                  location.sampleTrees = [];
                   for (const key in plantLocations) {
                     if (
                       Object.prototype.hasOwnProperty.call(plantLocations, key)

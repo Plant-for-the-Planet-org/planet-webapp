@@ -1,5 +1,6 @@
 import { DateString } from './common';
 import { Polygon, Point } from 'geojson';
+import { Links } from './payments';
 
 export interface PlantLocationBase {
   hid: string;
@@ -143,4 +144,22 @@ export interface Species {
   image: string | null;
   scientificName: string;
   scientificSpecies: string;
+}
+
+interface Filters {
+  all: string;
+  'location-partial': string;
+  'location-complete': string;
+  'location-single': string;
+  'location-multi': string;
+  'location-sample': string;
+  'revision-pending': string;
+}
+
+export interface ExtendedPlantLocations {
+  items: PlantLocation[] | SamplePlantLocation[];
+  total: number;
+  count: number;
+  _links: Links;
+  _filters: Filters;
 }
