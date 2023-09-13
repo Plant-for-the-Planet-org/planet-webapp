@@ -154,7 +154,7 @@ interface Props {
   userLang: string;
   plantLocation: Treemapper.PlantLocation | null;
   setPlantLocation: Function;
-  geoJson: Geometry;
+  geoJson: Geometry | null;
   setGeoJson: Function;
   activeMethod: string;
   setActiveMethod: Function;
