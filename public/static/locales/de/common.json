@@ -123,6 +123,7 @@
   "active_account_exists": "Aktives PlanetCash-Konto existiert bereits",
   "duplicate_account": "Konto existiert bereits",
   "token_expired": "Der Token ist abgelaufen. Bitte erneut anmelden",
+  "project_not_available": "Projektdetails sind derzeit nicht verfügbar",
   "topProject": "Top Projekt",
   "viewReport": "Report anzeigen",
   "reviewInfo": "Das Projekt wurde im Rahmen einer mehrtägigen Überprüfung vor Ort im <2>month</2> geprüft und erfüllt unsere <5>Standards.</5>",
