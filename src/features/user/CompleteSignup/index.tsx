@@ -178,7 +178,7 @@ export default function CompleteSignup(): ReactElement | null {
     setRequestSent(true);
     setIsProcessing(true);
     try {
-      const res: User = await postRequest(`/app/profile`, bodyToSend);
+      const res = await postRequest<User>(`/app/profile`, bodyToSend);
       setRequestSent(false);
       // successful signup -> goto me page
       setUser(res);

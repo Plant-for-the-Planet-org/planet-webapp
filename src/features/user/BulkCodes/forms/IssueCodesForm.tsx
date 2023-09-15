@@ -124,7 +124,7 @@ const IssueCodesForm = (): ReactElement | null => {
       const cleanedData = cleanObject(donationData);
 
       try {
-        const res: Donation = await postAuthenticatedRequest(
+        const res = await postAuthenticatedRequest<Donation>(
           `/app/donations`,
           cleanedData,
           token,
