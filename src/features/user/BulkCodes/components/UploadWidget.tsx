@@ -1,5 +1,5 @@
 import { ReactElement, useCallback, useEffect, useState } from 'react';
-import { useDropzone, ErrorCode } from 'react-dropzone';
+import { useDropzone, ErrorCode, FileRejection } from 'react-dropzone';
 import { useTranslation } from 'next-i18next';
 import FileUploadIcon from '../../../../../public/assets/images/icons/FileUploadIcon';
 import FileProcessingIcon from '../../../../../public/assets/images/icons/FileProcessingIcon';
@@ -78,7 +78,7 @@ const UploadWidget = ({
     setError(null);
   }, []);
 
-  const onDropRejected = useCallback((fileRejections) => {
+  const onDropRejected = useCallback((fileRejections: FileRejection[]) => {
     const error = fileRejections[0].errors[0].code;
     handleUploadError(error);
   }, []);
