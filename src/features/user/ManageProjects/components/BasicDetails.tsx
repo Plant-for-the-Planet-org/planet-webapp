@@ -1,4 +1,11 @@
-import React, { ReactElement, useState } from 'react';
+import React, {
+  ChangeEvent,
+  ReactElement,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, FormControlLabel, Switch, Tooltip } from '@mui/material';
 import { useTranslation } from 'next-i18next';
@@ -78,19 +85,19 @@ export default function BasicDetails({
   };
 
   const [IsSkipButtonVisible, setIsSkipButtonVisible] =
-    React.useState<boolean>(false);
+    useState<boolean>(false);
 
-  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
+  const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   // Map setup
-  const { theme } = React.useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const { logoutUser } = useUserProps();
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
-  const mapRef = React.useRef(null);
-  const [style, setStyle] = React.useState(EMPTY_STYLE);
+  const mapRef = useRef(null);
+  const [style, setStyle] = useState(EMPTY_STYLE);
   const [wrongCoordinatesMessage, setWrongCoordinatesMessage] =
-    React.useState<boolean>(false);
-  const [viewport, setViewPort] = React.useState<ViewPort>({
+    useState<boolean>(false);
+  const [viewport, setViewPort] = useState<ViewPort>({
     width: 760,
     height: 400,
     latitude: defaultMapCenter[0],
@@ -99,9 +106,9 @@ export default function BasicDetails({
   });
   const router = useRouter();
 
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
 
-  React.useEffect(() => {
+  useEffect(() => {
     //loads the default mapstyle
     async function loadMapStyle() {
       const result = await getMapStyle('openStreetMap');
@@ -112,9 +119,9 @@ export default function BasicDetails({
     loadMapStyle();
   }, []);
 
-  const [projectCoords, setProjectCoords] = React.useState<number[]>([0, 0]);
+  const [projectCoords, setProjectCoords] = useState<number[]>([0, 0]);
 
-  const changeLat = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeLat = (e: ChangeEvent<HTMLInputElement>) => {
     const latNumericValue = Number(e.target.value);
     if (latNumericValue && latNumericValue > -90 && latNumericValue < 90) {
       setProjectCoords([
@@ -123,7 +130,7 @@ export default function BasicDetails({
       ]);
     }
   };
-  const changeLon = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeLon = (e: ChangeEvent<HTMLInputElement>) => {
     const lonNumericValue = Number(e.target.value);
     if (lonNumericValue && lonNumericValue > -180 && lonNumericValue < 180) {
       setProjectCoords([
@@ -230,13 +237,13 @@ export default function BasicDetails({
 
   const [acceptDonations, setAcceptDonations] = useState(false);
   //if project is already had created then user can visit to  other forms using skip button
-  React.useEffect(() => {
+  useEffect(() => {
     if (projectDetails?.id) {
       setIsSkipButtonVisible(true);
     }
   }, [router]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (projectDetails) {
       const basicDetails =
         purpose === 'trees'
@@ -518,7 +525,7 @@ export default function BasicDetails({
                     label={t('manageProjects:countTarget')}
                     variant="outlined"
                     placeholder={'0'}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
                       e.target.value = e.target.value.replace(/[^0-9]/g, '');
                       onChange(e);
                     }}
@@ -634,7 +641,7 @@ export default function BasicDetails({
                   control={
                     <Switch
                       checked={value}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
                         onChange(e.target.checked);
                         setAcceptDonations(e.target.checked);
                       }}
@@ -778,7 +785,7 @@ export default function BasicDetails({
                       label={t('manageProjects:latitude')}
                       variant="filled"
                       className={styles.latLongInput}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
                         e.target.value = e.target.value.replace(
                           /[^0-9.-]/g,
                           ''
@@ -816,7 +823,7 @@ export default function BasicDetails({
                       label={t('manageProjects:longitude')}
                       variant="filled"
                       className={styles.latLongInput}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
                         e.target.value = e.target.value.replace(
                           /[^0-9.-]/g,
                           ''
@@ -850,7 +857,7 @@ export default function BasicDetails({
                 control={
                   <Switch
                     checked={value}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
                       onChange(e.target.checked);
                     }}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
