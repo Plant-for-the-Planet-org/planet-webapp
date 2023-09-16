@@ -9,12 +9,11 @@ import getImageUrl from '../../../../utils/getImageURL';
 import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects/Delete';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, Image } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { Button } from '@mui/material';
 interface Props {
-  contribution: any;
   contributionGUID: string;
   token: string | null;
 }
@@ -23,13 +22,13 @@ export default function UploadImages({
   contributionGUID,
   token,
 }: Props): ReactElement {
-  const [uploadedImages, setUploadedImages] = React.useState<any[]>([]);
+  const [uploadedImages, setUploadedImages] = React.useState<Image[]>([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { t, ready } = useTranslation(['me', 'common']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
 
-  const uploadPhotos = async (image: any) => {
+  const uploadPhotos = async (image: string) => {
     setIsUploadingData(true);
     const submitData = {
       imageFile: image,
@@ -37,13 +36,13 @@ export default function UploadImages({
     };
 
     try {
-      const res = await postAuthenticatedRequest(
+      const res = await postAuthenticatedRequest<Image>(
         `/app/contributions/${contributionGUID}/images`,
         submitData,
         token,
         logoutUser
       );
-      const newUploadedImages = uploadedImages;
+      const newUploadedImages: Image[] = uploadedImages;
       newUploadedImages.push(res);
       setUploadedImages(newUploadedImages);
       setIsUploadingData(false);
@@ -60,7 +59,9 @@ export default function UploadImages({
       reader.onabort = () => console.log('file reading was aborted');
       reader.onerror = () => console.log('file reading has failed');
       reader.onload = (event) => {
-        uploadPhotos(event.target?.result);
+        if (typeof event.target?.result === 'string') {
+          uploadPhotos(event.target?.result);
+        }
       };
     });
   }, []);
@@ -131,7 +132,7 @@ export default function UploadImages({
           {...getRootProps()}
         >
           <Button
-            onClick={uploadPhotos}
+            onClick={() => uploadPhotos}
             variant="contained"
             color="primary"
             style={{ maxWidth: '200px' }}
