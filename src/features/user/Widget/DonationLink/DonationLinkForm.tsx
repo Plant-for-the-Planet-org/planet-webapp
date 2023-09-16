@@ -119,7 +119,7 @@ const DonationLinkForm = ({
     }
   };
 
-  if (isArrayUpdated && ready) {
+  if (isArrayUpdated && ready && user) {
     return (
       <StyledForm>
         <div className="inputContainer">
@@ -197,10 +197,10 @@ const DonationLinkForm = ({
                 onChange={() => {
                   setIsSupport(!isSupport);
                 }}
-                disabled={user?.isPrivate}
+                disabled={user.isPrivate}
               />
             </InlineFormDisplayGroup>
-            {user?.isPrivate && (
+            {user.isPrivate && (
               <h6>{t('donationLink:treeCounterPrivateAccountSubtitle')}</h6>
             )}
           </div>
