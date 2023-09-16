@@ -53,7 +53,7 @@ interface SpeciesProps {
   index: number;
   t: Function;
   remove: Function;
-  errors: FieldErrors<Record<number, any>>;
+  errors: any;
   item: Record<'id', string>;
   control: Control<any, any>;
 }
@@ -78,22 +78,24 @@ function PlantedSpecies({
               index > 0 ? false : t('treemapper:atLeastOneSpeciesRequired'),
           }}
           render={({ field: { onChange, onBlur, value } }) => (
-            <MaterialTextField
+            <TextField
               label={t('treeSpecies')}
               variant="outlined"
               onChange={onChange}
               onBlur={onBlur}
               value={value}
+              error={
+                errors.plantedSpecies &&
+                errors.plantedSpecies[index]?.otherSpecies
+              }
+              helperText={
+                errors.plantedSpecies &&
+                errors.plantedSpecies[index]?.otherSpecies &&
+                errors.plantedSpecies[index]?.otherSpecies.message
+              }
             />
           )}
         />
-        {errors.plantedSpecies &&
-          errors.plantedSpecies[index]?.otherSpecies && (
-            <span className={styles.errorMessage}>
-              {errors.plantedSpecies[index]?.otherSpecies &&
-                errors.plantedSpecies[index]?.otherSpecies.message}
-            </span>
-          )}
       </div>
       <div className={styles.speciesCountField}>
         <Controller
@@ -101,32 +103,33 @@ function PlantedSpecies({
           control={control}
           rules={{
             required: index > 0 ? false : t('treemapper:treesRequired'),
-            validate: (value) => {
+            validate: (value: any) => {
               return parseInt(value, 10) >= 1
                 ? true
                 : t('treemapper:treesRequired');
             },
           }}
           render={({ field: { onChange, onBlur, value } }) => (
-            <MaterialTextField
+            <TextField
               label={t('treemapper:count')}
               variant="outlined"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              onChange={(e: any) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
                 onChange(e.target.value);
               }}
               value={value > 0 ? value : ''}
               onBlur={onBlur}
+              error={
+                errors.plantedSpecies && errors.plantedSpecies[index]?.treeCount
+              }
+              helperText={
+                errors.plantedSpecies &&
+                errors.plantedSpecies[index]?.treeCount &&
+                errors.plantedSpecies[index]?.treeCount.message
+              }
             />
           )}
         />
-
-        {errors.plantedSpecies && errors.plantedSpecies[index]?.treeCount && (
-          <span className={styles.errorMessage}>
-            {errors.plantedSpecies[index]?.treeCount &&
-              errors.plantedSpecies[index]?.treeCount.message}
-          </span>
-        )}
       </div>
       {index > 0 ? (
         <div
