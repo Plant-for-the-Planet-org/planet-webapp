@@ -1,4 +1,11 @@
-import React, { ReactElement } from 'react';
+import React, {
+  ReactElement,
+  useCallback,
+  useEffect,
+  FocusEvent,
+  useContext,
+  useState,
+} from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import styles from '../StepForm.module.scss';
@@ -37,7 +44,7 @@ export default function ProjectMedia({
   handleReset,
 }: ProjectMediaProps): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
-  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
 
   const {
@@ -49,10 +56,10 @@ export default function ProjectMedia({
     defaultValues: { youtubeURL: projectDetails?.videoUrl || '' },
   });
 
-  const [uploadedImages, setUploadedImages] = React.useState<UploadImage[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<UploadImage[]>([]);
 
-  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = React.useState<string | null>('');
+  const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>('');
 
   const fetchImages = async () => {
     try {
@@ -71,7 +78,7 @@ export default function ProjectMedia({
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchImages();
   }, [projectGUID]);
 
@@ -106,15 +113,13 @@ export default function ProjectMedia({
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!projectGUID || projectGUID === '') {
       handleReset(ready ? t('manageProjects:resetMessage') : '');
     }
   });
 
-  const [files, setFiles] = React.useState([]);
-
-  const onDrop = React.useCallback(
+  const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       acceptedFiles.forEach((file) => {
         const reader = new FileReader();
@@ -147,14 +152,6 @@ export default function ProjectMedia({
       }
     },
   });
-
-  React.useEffect(
-    () => () => {
-      // Make sure to revoke the data uris to avoid memory leaks
-      files.forEach((file) => URL.revokeObjectURL(file?.preview));
-    },
-    [files]
-  );
 
   const deleteProjectCertificate = async (id: string) => {
     try {
@@ -225,7 +222,7 @@ export default function ProjectMedia({
   const uploadCaption = async (
     id: string,
     index: number,
-    e: React.FocusEvent<HTMLInputElement, Element>
+    e: FocusEvent<HTMLInputElement, Element>
   ) => {
     setIsUploadingData(true);
     const submitData = {
@@ -298,7 +295,7 @@ export default function ProjectMedia({
                       onBlur={(e) => uploadCaption(image.id, index, e)}
                       type="text"
                       placeholder={t('manageProjects:addCaption')}
-                      defaultValue={image.description ? '' : undefined}
+                      defaultValue=""
                     />
 
                     <div className={styles.uploadedImageButtonContainer}>
