@@ -91,7 +91,7 @@ export const EditModal = ({
     setDisabled(false);
   }, [editModalOpen]);
 
-  interface bodyToSendType {
+  interface BodyToSendType {
     nextBilling?: string | null;
     centAmount?: number;
     frequency?: string;
@@ -99,7 +99,7 @@ export const EditModal = ({
 
   const onSubmit = async (data: FormData) => {
     setDisabled(true);
-    const bodyToSend: bodyToSendType = {
+    const bodyToSend: BodyToSendType = {
       nextBilling:
         record.method !== 'paypal'
           ? new Date(data.currentPeriodEnd).toISOString().split('T')[0]
