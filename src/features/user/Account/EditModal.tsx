@@ -129,7 +129,7 @@ export const EditModal = ({
           token,
           logoutUser
         );
-        if (res?.status !== 'action_required') {
+        if (res?.status === 'action_required') {
           window.open(res.response.confirmationUrl, '_blank');
         }
         handleEditModalClose();
