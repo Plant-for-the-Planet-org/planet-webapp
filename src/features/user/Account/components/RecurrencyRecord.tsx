@@ -149,13 +149,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
       {record.firstDonation?.created && (
         <div className={styles.singleDetail}>
           <p className={styles.title}>{t('firstDonation')}</p>
-          <p>
-            {formatDate(
-              new Date(
-                new Date(record.firstDonation.created).valueOf()
-              ).toISOString()
-            )}
-          </p>
+          <p>{formatDate(record.firstDonation.created)}</p>
         </div>
       )}
       {record?.destination?.type === 'planet-cash' ? (
