@@ -123,7 +123,7 @@ export const EditModal = ({
 
     if (Object.keys(bodyToSend).length !== 0) {
       try {
-        const res: ModifyDonations = await putAuthenticatedRequest(
+        const res = await putAuthenticatedRequest<ModifyDonations>(
           `/app/subscriptions/${record?.id}?scope=modify`,
           bodyToSend,
           token,
