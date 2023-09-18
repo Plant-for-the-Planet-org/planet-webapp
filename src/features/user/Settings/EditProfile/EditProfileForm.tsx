@@ -28,7 +28,7 @@ import StyledForm from '../../../common/Layout/StyledForm';
 import {
   AddressSuggestionsType,
   AddressType,
-} from '../../../common/types/user';
+} from '../../../common/types/geocoder';
 import { AlertColor } from '@mui/lab';
 import { APIError, handleError } from '@planet-sdk/common';
 
