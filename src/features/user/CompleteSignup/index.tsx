@@ -160,20 +160,6 @@ export default function CompleteSignup(): ReactElement | null {
     setPostalRegex(fiteredCountry[0]?.postal);
   }, [country]);
 
-  const checkUserType = (value: string) => {
-    const userTypes: UserType[] = [
-      'individual',
-      'tpo',
-      'organization',
-      'education',
-      'company',
-      'government',
-    ];
-    if (userTypes.includes(value as UserType)) {
-      return value as UserType;
-    }
-  };
-
   const sendRequest = async (bodyToSend: CreateUserRequest) => {
     setRequestSent(true);
     setIsProcessing(true);
@@ -219,7 +205,7 @@ export default function CompleteSignup(): ReactElement | null {
       title: ready ? t('editProfile:education') : '',
       value: 'education',
     },
-  ];
+  ] as const;
 
   React.useEffect(() => {
     // This will remove field values which do not exist for the new type
@@ -297,9 +283,7 @@ export default function CompleteSignup(): ReactElement | null {
                 <MenuItem
                   key={option.value}
                   value={option.value}
-                  onClick={() =>
-                    setAccountType(checkUserType(option.value) || 'individual')
-                  }
+                  onClick={() => setAccountType(option.value)}
                 >
                   {option.title}
                 </MenuItem>
