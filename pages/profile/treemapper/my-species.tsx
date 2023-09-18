@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import React, { ReactElement } from 'react';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
-import MySpecies from '../../../src/features/user/TreeMapper/MySpeciesForm';
+import MySpecies from '../../../src/features/user/TreeMapper/MySpecies';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
