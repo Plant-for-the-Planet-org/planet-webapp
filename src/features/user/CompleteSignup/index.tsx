@@ -46,6 +46,11 @@ const MuiTextField = styled(TextField)(() => {
   };
 });
 
+type FormData = Omit<
+  CreateUserRequest,
+  'type' | 'country' | 'oAuthAccessToken'
+>;
+
 export default function CompleteSignup(): ReactElement | null {
   const router = useRouter();
   const { i18n, t, ready } = useTranslation(['editProfile', 'donate']);
@@ -72,7 +77,7 @@ export default function CompleteSignup(): ReactElement | null {
     setValue,
     watch,
     formState: { errors },
-  } = useForm<CreateUserRequest>({ mode: 'onBlur' });
+  } = useForm<FormData>({ mode: 'onBlur' });
 
   const suggestAddress = (value: string) => {
     if (value.length > 3) {
@@ -212,7 +217,7 @@ export default function CompleteSignup(): ReactElement | null {
     reset();
   }, [type]);
 
-  const createButtonClicked = async (data: CreateUserRequest) => {
+  const createButtonClicked = async (data: FormData) => {
     if (!acceptTerms) {
       handleTermsAndCondition(false);
       return;
