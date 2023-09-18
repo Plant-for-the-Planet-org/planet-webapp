@@ -7,11 +7,22 @@ import UploadImages from './UploadImages';
 import { useTranslation } from 'next-i18next';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { Button } from '@mui/material';
+import { Image } from '@planet-sdk/common';
 
-interface Props {
-  token: string;
+export interface ContributionProps {
+  contributionImages: Image[];
+  id: string;
+  plantDate: string;
+  plantProject: string | null;
+  treeClassification: string | null;
+  treeCount: number;
+  treeScientificName: string | null;
+  treeSpecies: string;
+}
+interface SingleContributionProps {
+  token: string | null;
+  contribution: ContributionProps;
   contributionGUID: string;
-  contribution: any;
   slug?: string | null;
 }
 
@@ -25,15 +36,16 @@ export default function SingleContribution({
   contribution,
   contributionGUID,
   slug,
-}: Props): ReactElement {
+}: SingleContributionProps): ReactElement {
   const router = useRouter();
   const UploadProps = {
     contribution,
     contributionGUID,
     token,
   };
-  const { t, ready } = useTranslation(['me', 'common']);
 
+  const { t, ready } = useTranslation(['me', 'common']);
+  console.log(contribution, '==');
   return ready ? (
     <div className="inputContainer">
       <div className={styles.checkMark}>

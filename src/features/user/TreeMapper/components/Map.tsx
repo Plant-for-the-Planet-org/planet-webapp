@@ -47,14 +47,13 @@ export default function MyTreesMap({
     zoom: defaultZoom,
   });
   const [satellite, setSatellite] = React.useState(false);
-  const [geoJson, setGeoJson] = React.useState<undefined>(undefined);
+  const [geoJson, setGeoJson] = React.useState(null);
   const [plIds, setPlIds] = React.useState<string[] | null>(null);
   const [style, setStyle] = React.useState({
     version: 8,
     sources: {},
     layers: [],
   });
-
   const getPlTreeCount = (pl: any) => {
     let count = 0;
     if (pl && pl.plantedSpecies) {
@@ -97,7 +96,6 @@ export default function MyTreesMap({
   };
 
   const getDateDiff = (pl: any) => {
-    console.log(pl, '==');
     const today = new Date();
     const plantationDate = new Date(pl.plantDate?.substr(0, 10));
     const differenceInTime = today.getTime() - plantationDate.getTime();
@@ -191,7 +189,7 @@ export default function MyTreesMap({
       zoomToLocation(locations[0].geometry);
     } else {
       setPlIds(null);
-      setGeoJson(undefined);
+      setGeoJson(null);
     }
   }, [locations]);
 
@@ -278,7 +276,6 @@ export default function MyTreesMap({
                   pl.samplePlantLocations &&
                   pl.samplePlantLocations
                     .filter((item: any) => {
-                      console.log(item, '==');
                       if (item.captureStatus === 'complete') {
                         return true;
                       } else {

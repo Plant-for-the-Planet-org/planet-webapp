@@ -5,7 +5,7 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import styles from '../RegisterModal.module.scss';
 import { useTranslation } from 'next-i18next';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
-import { ViewportProps } from 'react-map-gl';
+import { ViewportProps } from '../../../common/types/map';
 
 interface Props {
   setGeometry: Function;
@@ -45,7 +45,7 @@ export default function MapComponent({
     });
   }, []);
   const { t, ready } = useTranslation(['me', 'common']);
-  const [drawing, setDrawing] = React.useState<boolean>(false);
+  const [drawing, setDrawing] = React.useState(false);
   const drawControlRef = React.useRef<DrawControl | null>(null);
 
   const onDrawCreate = () => {
@@ -66,13 +66,11 @@ export default function MapComponent({
       setGeometry(drawControl.draw.getAll());
     }
   };
-
   React.useEffect(() => {
     if (
       userLocation &&
       userLocation.length === 2 &&
-      userLocation[0] !== 0 &&
-      userLocation[1] !== 0
+      !(userLocation[0] === 0 && userLocation[1] === 0)
     ) {
       const newViewport = {
         ...viewport,

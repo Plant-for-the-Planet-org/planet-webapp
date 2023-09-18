@@ -18,7 +18,9 @@ import getMapStyle from '../../../utils/maps/getMapStyle';
 import { getStoredConfig } from '../../../utils/storeConfig';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './RegisterModal.module.scss';
-import SingleContribution from './RegisterTrees/SingleContribution';
+import SingleContribution, {
+  ContributionProps,
+} from './RegisterTrees/SingleContribution';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
@@ -27,12 +29,16 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import StyledForm from '../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
-import { Image, TreeProjectExtended } from '@planet-sdk/common';
+import {
+  RegisterTreesFormProps,
+  RegisterTreeGeometry,
+  ProjectGeoJsonProps,
+} from '../../common/types/map';
+
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   ssr: false,
   loading: () => <p></p>,
 });
-import { ViewportProps } from 'react-map-gl';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -51,45 +57,6 @@ const dialogSx: SxProps = {
   },
 };
 
-interface RegisterTreesFormProps {
-  setContributionGUID: React.Dispatch<React.SetStateAction<string>>;
-  setContributionDetails: React.Dispatch<React.SetStateAction<{}>>;
-  setRegistered: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-interface RegisterTreeProps {
-  treeCount: number;
-  plantDate: number;
-  contributionImages: Image[];
-  treeSpecies: number;
-  treeClassification: null;
-  treeScientificName: null;
-  id: string;
-  plantProject: string;
-}
-
-interface RegisterProjectGeoJsonProps {
-  type: string;
-  geometry: {
-    type: string;
-    coordinates: number[];
-  };
-  properties: TreeProjectExtended;
-}
-
-// interface RegisterTreeSubmitData {
-//   geometry: {};
-//   plantDate: Date;
-//   plantProject: string;
-//   species: string;
-//   treeCount: string | number;
-// }
-
-interface PlantLocation {
-  coordinates: number[];
-  type: string;
-}
-
 function RegisterTreesForm({
   setContributionGUID,
   setContributionDetails,
@@ -105,8 +72,8 @@ function RegisterTreesForm({
   const [mapState, setMapState] = React.useState({
     mapStyle: EMPTY_STYLE,
   });
-  const [isMultiple, setIsMultiple] = React.useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = React.useState<null | string>('');
+  const [isMultiple, setIsMultiple] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState<null | string>(null);
   const screenWidth = window.innerWidth;
   const isMobile = screenWidth <= 767;
   const defaultMapCenter = isMobile ? [22.54, 9.59] : [36.96, -28.5];
@@ -114,21 +81,19 @@ function RegisterTreesForm({
   const [plantLocation, setplantLocation] = React.useState<
     number[] | undefined
   >(undefined);
-  const [geometry, setGeometry] = React.useState<PlantLocation | undefined>(
-    undefined
-  );
-  const [viewport, setViewPort] = React.useState<ViewportProps>({
+  const [geometry, setGeometry] = React.useState<
+    RegisterTreeGeometry | undefined
+  >(undefined);
+  const [viewport, setViewPort] = React.useState({
     height: '100%',
     width: '100%',
     latitude: defaultMapCenter[0],
     longitude: defaultMapCenter[1],
     zoom: defaultZoom,
   });
-  const [userLang, setUserLang] = React.useState<string>('en');
+  const [userLang, setUserLang] = React.useState('en');
   const [userLocation, setUserLocation] = React.useState<number[] | null>(null);
-  const [projects, setProjects] = React.useState<RegisterProjectGeoJsonProps[]>(
-    []
-  );
+  const [projects, setProjects] = React.useState<ProjectGeoJsonProps[]>([]);
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
@@ -173,7 +138,7 @@ function RegisterTreesForm({
     }
   }, [userLocation]);
 
-  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
+  const [isUploadingData, setIsUploadingData] = React.useState(false);
   const defaultBasicDetails = {
     treeCount: '',
     species: '',
@@ -214,7 +179,7 @@ function RegisterTreesForm({
           geometry: geometry,
         };
         try {
-          const res = await postAuthenticatedRequest<RegisterTreeProps>(
+          const res = await postAuthenticatedRequest<ContributionProps>(
             `/app/contributions`,
             submitData,
             token,
@@ -240,9 +205,11 @@ function RegisterTreesForm({
 
   async function loadProjects() {
     try {
-      const projects = await getAuthenticatedRequest<
-        RegisterProjectGeoJsonProps[]
-      >('/app/profile/projects', token, logoutUser);
+      const projects = await getAuthenticatedRequest<ProjectGeoJsonProps[]>(
+        '/app/profile/projects',
+        token,
+        logoutUser
+      );
       setProjects(projects);
     } catch (err) {
       setErrors(handleError(err as APIError));
@@ -425,11 +392,12 @@ function RegisterTreesForm({
               </MapGL>
             )}
           </div>
-          {/* {errorMessage !== '' ? ( */}
-          <div className={styles.center}>
-            <p className={styles.formErrors}>{`${errorMessage}`}</p>
-          </div>
-          {/* ) : null} */}
+          {errorMessage !== null && (
+            <div className={styles.center}>
+              <p className={styles.formErrors}>{`${errorMessage}`}</p>
+            </div>
+          )}
+
           <div>
             <Button
               id={'RegTressSubmit'}
@@ -456,7 +424,7 @@ type FormData = {
   species: string;
   plantProject: string | null;
   plantDate: Date;
-  geometry: PlantLocation | undefined;
+  geometry: RegisterTreeGeometry | undefined;
 };
 
 export default function RegisterTreesWidget() {

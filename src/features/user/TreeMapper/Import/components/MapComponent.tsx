@@ -7,7 +7,7 @@ import getMapStyle from '../../../../../utils/maps/getMapStyle';
 import { GeoJSON } from 'geojson';
 
 interface Props {
-  geoJson: GeoJSON;
+  geoJson: GeoJSON | null;
 }
 
 const Map = ReactMapboxGl({ maxZoom: 15, accessToken: undefined });

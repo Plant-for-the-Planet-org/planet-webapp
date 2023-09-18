@@ -36,7 +36,7 @@ export default function Markers({
   let timer: NodeJS.Timeout;
   const router = useRouter();
 
-  const [open, setOpen] = React.useState<boolean>(false);
+  const [open, setOpen] = React.useState(false);
   const buttonRef = React.useRef(null);
   const popupRef = React.useRef<HTMLDivElement | null>(null);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
