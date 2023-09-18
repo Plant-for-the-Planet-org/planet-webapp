@@ -28,7 +28,6 @@ export default function EmbedModal({
 }: Props) {
   const { t, ready } = useTranslation(['editProfile']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const [isPrivate, setIsPrivate] = React.useState(false);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [severity, setSeverity] = React.useState<AlertColor>('success');
   const [snackbarMessage, setSnackbarMessage] = React.useState('OK');
@@ -36,13 +35,7 @@ export default function EmbedModal({
   const router = useRouter();
   // This effect is used to get and update UserInfo if the isAuthenticated changes
 
-  const { user, setUser, contextLoaded, token, logoutUser } = useUserProps();
-
-  React.useEffect(() => {
-    if (user && user?.isPrivate) {
-      setIsPrivate(true);
-    }
-  }, [user]);
+  const { setUser, contextLoaded, token, logoutUser } = useUserProps();
 
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
@@ -64,7 +57,7 @@ export default function EmbedModal({
     };
     if (contextLoaded && token) {
       try {
-        const res: User = await putAuthenticatedRequest(
+        const res = await putAuthenticatedRequest<User>(
           `/app/profile`,
           bodyToSend,
           token,
