@@ -45,7 +45,6 @@ export default function SingleContribution({
   };
 
   const { t, ready } = useTranslation(['me', 'common']);
-  console.log(contribution, '==');
   return ready ? (
     <div className="inputContainer">
       <div className={styles.checkMark}>

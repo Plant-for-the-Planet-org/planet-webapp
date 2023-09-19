@@ -8,7 +8,6 @@ import {
     UnitTypes
 } from "@planet-sdk/common"
 import { Nullable } from '@planet-sdk/common/build/types/util';
-import { Polygon, Point } from 'geojson';
 import { ContributionProps } from "../../user/RegisterTrees/RegisterTrees/SingleContribution";
 
 
@@ -56,10 +55,11 @@ export interface ProjectGeoJsonProps {
     };
   }
   
+  
   export interface RegisterTreeGeometry {
-    coordinates: Polygon | Point;
+    coordinates: [number, number] | number[][];
     type: 'Polygon' | 'Point';
-  }
+}
 
   export interface RegisterTreesFormProps {
     setContributionGUID: React.Dispatch<React.SetStateAction<string>>;

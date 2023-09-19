@@ -29,6 +29,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import StyledForm from '../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
+import { ViewportProps } from '../../common/types/map';
 import {
   RegisterTreesFormProps,
   RegisterTreeGeometry,
@@ -84,7 +85,7 @@ function RegisterTreesForm({
   const [geometry, setGeometry] = React.useState<
     RegisterTreeGeometry | undefined
   >(undefined);
-  const [viewport, setViewPort] = React.useState({
+  const [viewport, setViewPort] = React.useState<ViewportProps>({
     height: '100%',
     width: '100%',
     latitude: defaultMapCenter[0],
@@ -95,15 +96,17 @@ function RegisterTreesForm({
   const [userLocation, setUserLocation] = React.useState<number[] | null>(null);
   const [projects, setProjects] = React.useState<ProjectGeoJsonProps[]>([]);
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
+  const [isStyleReady, setIsStyleReady] = React.useState(false);
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
     promise.then((style) => {
       if (style) {
         setMapState({ ...mapState, mapStyle: style });
+        setIsStyleReady(true);
       }
     });
-  }, []);
+  }, [isStyleReady]);
 
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -224,7 +227,6 @@ function RegisterTreesForm({
   }, [contextLoaded]);
 
   const _onStateChange = (state: any) => setMapState({ ...state });
-
   const _onViewportChange = (view: any) => setViewPort({ ...view });
   return (
     <>
@@ -347,7 +349,7 @@ function RegisterTreesForm({
             )}
           </div>
           <div className={`${styles.locationMap}`}>
-            {isMultiple ? (
+            {isMultiple && isStyleReady ? (
               <DrawMap setGeometry={setGeometry} userLocation={userLocation} />
             ) : (
               <MapGL
