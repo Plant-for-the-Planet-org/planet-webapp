@@ -220,7 +220,7 @@ export default function PlantingLocation({
 
   const loadMySpecies = async () => {
     try {
-      const species: Species = await getAuthenticatedRequest(
+      const species = await getAuthenticatedRequest<Species[]>(
         '/treemapper/species',
         token,
         logoutUser

@@ -24,6 +24,10 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslation, Trans } from 'next-i18next';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError, APIError } from '@planet-sdk/common';
+import {
+  AddressSuggestionsType,
+  AddressType,
+} from '../../common/types/geocoder';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -41,7 +45,9 @@ export default function CompleteSignup(): ReactElement | null {
   const router = useRouter();
   const { i18n, t, ready } = useTranslation(['editProfile', 'donate']);
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
-  const [addressSugggestions, setaddressSugggestions] = React.useState([]);
+  const [addressSugggestions, setaddressSugggestions] = React.useState<
+    AddressSuggestionsType[]
+  >([]);
   const [isProcessing, setIsProcessing] = React.useState<boolean>(false);
   const geocoder = new GeocoderArcGIS(
     process.env.ESRI_CLIENT_SECRET
@@ -55,7 +61,7 @@ export default function CompleteSignup(): ReactElement | null {
     if (value.length > 3) {
       geocoder
         .suggest(value, { category: 'Address', countryCode: country })
-        .then((result) => {
+        .then((result: { suggestions: AddressSuggestionsType[] }) => {
           const filterdSuggestions = result.suggestions.filter((suggestion) => {
             return !suggestion.isCollection;
           });
@@ -67,7 +73,7 @@ export default function CompleteSignup(): ReactElement | null {
   const getAddress = (value) => {
     geocoder
       .findAddressCandidates(value, { outfields: '*' })
-      .then((result) => {
+      .then((result: AddressType) => {
         setValue('address', result.candidates[0].attributes.ShortLabel, {
           shouldValidate: true,
         });

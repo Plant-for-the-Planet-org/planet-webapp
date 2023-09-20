@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
-import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import CheckCircle from '../../../../../public/assets/images/icons/CheckCircle';
 import styles from '../RegisterModal.module.scss';
 import UploadImages from './UploadImages';
@@ -29,7 +28,6 @@ export default function SingleContribution({
 }: Props): ReactElement {
   const router = useRouter();
   const UploadProps = {
-    contribution,
     contributionGUID,
     token,
   };
