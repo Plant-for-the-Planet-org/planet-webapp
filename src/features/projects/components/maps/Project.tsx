@@ -56,7 +56,10 @@ export default function Project({
     let result2;
 
     try {
-      result = await getRasterData<{ imagery: Imagery }>('');
+      result = await getRasterData<
+        | { imagery: Imagery; message: never }
+        | { imagery: never; message: string }
+      >('');
     } catch (err) {
       setErrors(handleError(err as APIError));
     }
@@ -69,16 +72,20 @@ export default function Project({
       setErrors(handleError(err as APIError));
     }
 
-    if (result && result2) {
-      // Raster data for multipolygons is not supported and is returned with an error message (but a 200 response) for such projects.
-      // In this case rasterData.evi will not exist and is not set as a result
-      setRasterData({
-        ...rasterData,
-        imagery: result.imagery,
-        evi: result2.evi || '',
-      });
-    } else if (result) {
-      setRasterData({ ...rasterData, imagery: result.imagery });
+    // If result does not exist or does not contain imagery, the raster data will not be set.
+    // This is an error scenario which could happen if GEE does not provide expected data
+    if (result && result.imagery) {
+      if (result2) {
+        // Raster data for multipolygons is not supported and is returned with an error message (but a 200 response) for such projects.
+        // In this case rasterData.evi will not exist and is not set as a result
+        setRasterData({
+          ...rasterData,
+          imagery: result.imagery,
+          evi: result2.evi || '',
+        });
+      } else {
+        setRasterData({ ...rasterData, imagery: result.imagery });
+      }
     }
   }
 
