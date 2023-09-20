@@ -50,7 +50,7 @@ export default function ManageProjects({
   );
   const [tabSelected, setTabSelected] = React.useState<number>(0);
   const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
-  const [projectGUID, setProjectGUID] = React.useState<string | unknown>(
+  const [projectGUID, setProjectGUID] = React.useState<string>(
     GUID ? GUID : ''
   );
   const [tablist, setTabList] = React.useState<TabItem[]>([]);
@@ -352,7 +352,11 @@ export default function ManageProjects({
 
   return (
     <DashboardView
-      title={projectGUID ? project?.name : t('manageProjects:addNewProject')}
+      title={
+        project && projectGUID
+          ? project?.name
+          : t('manageProjects:addNewProject')
+      }
       subtitle={
         projectGUID ? (
           t('manageProjects:onlyEnglish')
