@@ -17,9 +17,3 @@ export interface PublicUser {
   /** @deprecated do not use */
   hasLogoLicense?: boolean;
 }
-
-export interface AddressSuggestionsType {
-  isCollection: boolean;
-  magicKey: string;
-  text: string;
-}
