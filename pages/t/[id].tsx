@@ -6,13 +6,13 @@ import { getRequest } from '../../src/utils/apiRequests/api';
 import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import Footer from '../../src/features/common/Layout/Footer';
 import Profile from '../../src/features/user/ProfileV2';
-import MyTrees from '../../src/features/user/ProfileV2/components/MyTrees/MyTrees';
 import ProjectsContainer from '../../src/features/user/Profile/ProjectsContainer';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths, GetStaticPropsContext } from 'next';
 import { handleError, APIError } from '@planet-sdk/common';
-import { User } from '@planet-sdk/common';
+import { PublicUser } from '../../src/features/common/types/user';
+import MyContributions from '../../src/features/user/ProfileV2/components/MyTrees/MyContributions';
 
 function SingleUser(): ReactElement {
   // External imports
@@ -21,15 +21,13 @@ function SingleUser(): ReactElement {
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
   // Internal states
-  const [profile, setProfile] = React.useState<null | User>();
-  const [authenticatedType, setAuthenticatedType] = React.useState('');
+  const [profile, setProfile] = React.useState<null | PublicUser>();
 
   // Loads the public user profile
   async function loadPublicProfile(id: string) {
     try {
-      const profileData = await getRequest<User>(`/app/profiles/${id}`);
+      const profileData = await getRequest<PublicUser>(`/app/profiles/${id}`);
       setProfile(profileData);
-      setAuthenticatedType('public');
     } catch (err) {
       setErrors(handleError(err as APIError));
       redirect('/');
@@ -53,13 +51,9 @@ function SingleUser(): ReactElement {
   return profile ? (
     <>
       <GetPublicUserProfileMeta userprofile={profile} />
-      <Profile userProfile={profile} authenticatedType={authenticatedType} />
+      <Profile userProfile={profile} />
       {profile && profile.type !== 'tpo' && (
-        <MyTrees
-          authenticatedType={authenticatedType}
-          profile={profile}
-          token={token}
-        />
+        <MyContributions profile={profile} token={token} />
       )}
       {profile && profile.type === 'tpo' && (
         <ProjectsContainer profile={profile} />

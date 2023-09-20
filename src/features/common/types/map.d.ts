@@ -1,8 +1,8 @@
 import { ViewportProps } from 'react-map-gl';
-import Supercluster, { PointFeature } from 'supercluster';
+import Supercluster from 'supercluster';
 import { User } from '@planet-sdk/common';
-import { Contributions } from './myForest';
 import { MutableRefObject } from 'react';
+import { PublicUser } from './user';
 
 interface ClusterMarker {
   geometry: {
@@ -74,7 +74,7 @@ export interface CustomPopupMarkerProps {
 }
 export type Bound = [number, number, number, number]
 
-export interface MyTreesProps {
-    profile: User;
+export interface MyContributionsProps {
+    profile: User | PublicUser;
     token?: string | null
   }

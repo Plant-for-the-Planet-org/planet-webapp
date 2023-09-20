@@ -65,7 +65,7 @@ export default function TpoProfile(props: any) {
       <div className={treeCounterStyles.backgroundCircle} />
       <div className={treeCounterStyles.treeCounterData}>
         <div>
-          <PlantedTressBlackSvg />
+          <PlantedTressBlackSvg color={'#4F4F4F'} />
         </div>
         <div className={treeCounterStyles.dataContainer}>
           <div>

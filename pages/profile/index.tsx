@@ -3,7 +3,7 @@ import React, { ReactElement, useEffect } from 'react';
 import { useUserProps } from '../../src/features/common/Layout/UserPropsContext';
 import Profile from '../../src/features/user/ProfileV2';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
-import MyTrees from '../../src/features/user/ProfileV2/components/MyTrees/MyTrees';
+import MyContributions from '../../src/features/user/ProfileV2/components/MyTrees/MyContributions';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -18,13 +18,11 @@ function ProfilePage(): ReactElement {
 
   // Internal states
   const [profile, setProfile] = React.useState<null | User>();
-  const [authenticatedType, setAuthenticatedType] = React.useState('');
 
   useEffect(() => {
     if (contextLoaded) {
       if (user) {
         setProfile(user);
-        setAuthenticatedType('private');
       }
     }
   }, [contextLoaded, user, router]);
@@ -37,7 +35,7 @@ function ProfilePage(): ReactElement {
       {profile && (
         <>
           <Profile userProfile={profile} />
-          <MyTrees profile={profile} token={token} />
+          <MyContributions profile={profile} token={token} />
         </>
       )}
     </UserLayout>

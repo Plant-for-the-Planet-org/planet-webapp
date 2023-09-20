@@ -61,7 +61,7 @@ const ConservationButton = ({
             <div className={myForestStyles.unit}>{'m²'}</div>
             <div className={myForestStyles.svgContainer}>
               {isConservedButtonActive ? (
-                <DownWardArrowSvg />
+                <DownWardArrowSvg color={'#FFFFFF'} />
               ) : (
                 <ArrowSvg color={'#48AADD'} />
               )}

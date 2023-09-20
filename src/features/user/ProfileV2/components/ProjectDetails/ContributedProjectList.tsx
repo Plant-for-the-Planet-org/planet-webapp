@@ -7,28 +7,25 @@ import {
 } from '../../../../common/types/myForest';
 import { Button } from '@mui/material';
 import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
-import Project from '../MicroComponents/Project';
+import ContributedProject from '../MicroComponents/ContributedProject';
 
 const ContributedProjectList = ({
   contributionProjectList,
-  setIsLoadButtonActive,
-  isLoadButtonActive,
   handleFetchNextPage,
 }: ContributedProjectListProps): ReactElement => {
   const { isConservedButtonActive } = useProjectProps();
   const { t } = useTranslation(['me']);
 
+  const _isLoadButtonActive = contributionProjectList.some((singlePage) => {
+    return singlePage?.nextCursor === undefined;
+  });
+
   return contributionProjectList ? (
     <div className={myForestStyles.donationlistContainer}>
       {contributionProjectList.map((singlePage: any) => {
-        if (singlePage?.nextCursor === undefined) {
-          setIsLoadButtonActive(false);
-        } else {
-          setIsLoadButtonActive(true);
-        }
         return singlePage?.data?.map((singleProject: any, key) => {
           if (singleProject.purpose !== 'bouquet') {
-            return <Project key={key} projectInfo={singleProject} />;
+            return <ContributedProject key={key} projectInfo={singleProject} />;
           }
         });
       })}
@@ -38,13 +35,15 @@ const ContributedProjectList = ({
           if (singleProject.purpose === 'bouquet') {
             return singleProject.bouquetContributions.map(
               (bouquetProject: Contributions, key) => {
-                return <Project key={key} projectInfo={bouquetProject} />;
+                return (
+                  <ContributedProject key={key} projectInfo={bouquetProject} />
+                );
               }
             );
           }
         });
       })}
-      {isLoadButtonActive && (
+      {!_isLoadButtonActive && (
         <div className={myForestStyles.loadProjectButtonContainer}>
           <Button
             className={

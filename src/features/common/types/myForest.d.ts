@@ -1,6 +1,7 @@
-import { SetState } from './common';
+
 import { User } from '@planet-sdk/common';
 import { Geometry } from '@turf/turf';
+import { PublicUser } from './user';
 
 export interface StatsParam {
   profileId: string;
@@ -82,16 +83,10 @@ interface Tpo {
   guid: string;
   name: string | null;
 }
-export interface ProjectProps {
-  key: number;
-  projectInfo: Contributions;
-}
 
 export interface ContributedProjectListProps {
   handleFetchNextPage: () => void;
   contributionProjectList: Contributions[];
-  isLoadButtonActive: boolean;
-  setIsLoadButtonActive: SetState<boolean>;
 }
 
 export interface DonationInfoProps {
@@ -108,7 +103,7 @@ export interface ConservationButtonProps {
 }
 export interface TreeContributedProjectListProps {
   contribution: Contributions[];
-  userprofile: User;
+  userprofile: User | PublicUser;
   handleFetchNextPage: () => void;
 }
 

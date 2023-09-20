@@ -47,7 +47,7 @@ const RestoredButton = ({
             <div className={myForestStyles.restoredUnit}>{'m²'}</div>
             <div className={myForestStyles.svgContainer}>
               {isTreePlantedButtonActive ? (
-                <DownWardArrowSvg />
+                <DownWardArrowSvg color={'#FFFFFF'} />
               ) : (
                 <ArrowSvg color={'#219653'} />
               )}

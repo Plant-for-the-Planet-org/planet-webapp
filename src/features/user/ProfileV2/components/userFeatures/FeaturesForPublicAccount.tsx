@@ -39,7 +39,7 @@ const FeaturesForPublicAccount = ({
       {userprofile?.type !== 'tpo' && (
         <Button
           variant="contained"
-          startIcon={<SupportSvg />}
+          startIcon={<SupportSvg color={'#FFFFFF'} />}
           onClick={handleSupport}
         >
           {t('me:support')}
@@ -62,7 +62,7 @@ const FeaturesForPublicAccount = ({
       ) : (
         <Button
           variant="contained"
-          startIcon={<ShareSvg />}
+          startIcon={<ShareSvg color={'#FFFFFF'} />}
           onClick={handleShare}
         >
           {showSocialButton ? '' : t('me:share')}

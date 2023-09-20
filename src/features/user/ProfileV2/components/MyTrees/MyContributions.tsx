@@ -14,7 +14,7 @@ import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 import { Purpose } from '../../../../../utils/constants/myForest';
 import { Contributions } from '../../../../common/types/myForest';
 import { StatsQueryResult } from '../../../../common/types/myForest';
-import { MyTreesProps } from '../../../../common/types/map';
+import { MyContributionsProps } from '../../../../common/types/map';
 import SwipeLeftIcon from '@mui/icons-material/SwipeLeft';
 import RestoredButton from '../ProjectDetails/RestoredButton';
 
@@ -22,9 +22,9 @@ const MyTreesMap = dynamic(() => import('../MyForestMap'), {
   loading: () => <p>loading</p>,
 });
 
-export default function MyTrees({
+export default function MyContributions({
   profile,
-}: MyTreesProps): ReactElement | null {
+}: MyContributionsProps): ReactElement | null {
   const { ready } = useTranslation(['country', 'me']);
   const [projectsForTreePlantaion, setProjectsForTreePlantation] = useState<
     Contributions[]
@@ -46,22 +46,22 @@ export default function MyTrees({
   } = useProjectProps();
 
   const _detailInfo = trpc.myForest.stats.useQuery({
-    profileId: `prf_uJVxB5dphRaKU8KBo4q5H2RG`,
+    profileId: `${profile.id}`,
   });
   const _conservationGeoJsonData = trpc.myForest.contributionsGeoJson.useQuery({
-    profileId: `prf_uJVxB5dphRaKU8KBo4q5H2RG`,
+    profileId: `${profile.id}`,
     purpose: Purpose.CONSERVATION,
   });
 
   const _treePlantedGeoJsonData = trpc.myForest.contributionsGeoJson.useQuery({
-    profileId: `prf_uJVxB5dphRaKU8KBo4q5H2RG`,
+    profileId: `${profile.id}`,
     purpose: Purpose.TREES,
   });
 
   const _contributionDataForPlantedtrees =
     trpc.myForest.contributions.useInfiniteQuery(
       {
-        profileId: `prf_uJVxB5dphRaKU8KBo4q5H2RG`,
+        profileId: `${profile.id}`,
         limit: 15,
         purpose: Purpose.TREES,
       },
@@ -69,7 +69,7 @@ export default function MyTrees({
     );
   const _contributionData = trpc.myForest.contributions.useInfiniteQuery(
     {
-      profileId: `prf_uJVxB5dphRaKU8KBo4q5H2RG`,
+      profileId: `${profile.id}`,
       limit: 15,
       purpose: Purpose.CONSERVATION,
     },

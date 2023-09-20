@@ -39,7 +39,7 @@ const FeaturesForPrivateAccount = ({
     <div className={myProfilestyle.buttonContainer}>
       <Button
         variant="contained"
-        startIcon={<RedeemCodeSvg />}
+        startIcon={<RedeemCodeSvg color={'#FFFFFF'} />}
         onClick={handleRedeemModalOPen}
       >
         {t('redeem:redeem')}
@@ -50,7 +50,7 @@ const FeaturesForPrivateAccount = ({
       />
       <Button
         variant="contained"
-        startIcon={<RegisteredTreeSvg />}
+        startIcon={<RegisteredTreeSvg color={'#FFFFFF'} />}
         onClick={handleRegisterTree}
       >
         {t('me:registerTrees')}
@@ -63,7 +63,7 @@ const FeaturesForPrivateAccount = ({
       ) : (
         <Button
           variant="contained"
-          startIcon={<ShareSvg />}
+          startIcon={<ShareSvg color={'#FFFFFF'} />}
           onClick={handleShare}
         >
           {showSocialButton ? '' : t('me:share')}

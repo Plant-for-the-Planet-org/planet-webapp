@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React from 'react';
 import ProjectsList from '../src/features/projects/screens/Projects';
 import GetAllProjectsMeta from '../src/utils/getMetaTags/GetAllProjectsMeta';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
@@ -15,7 +15,6 @@ import DirectGift, {
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
-import { trpc } from '../src/utils/trpc';
 import { SetState } from '../src/features/common/types/common';
 import { MapProject } from '../src/features/common/types/ProjectPropsContextInterface';
 import { GetStaticPropsContext } from 'next';

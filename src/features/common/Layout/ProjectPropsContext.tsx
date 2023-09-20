@@ -88,9 +88,8 @@ const ProjectPropsProvider: FC = ({ children }) => {
     Contributions[]
   >([]);
   const [isTreePlantedButtonActive, setIsTreePlantedButtonActive] =
-    useState<boolean>(false);
-  const [isConservedButtonActive, setIsConservedButtonActive] =
-    useState<boolean>(false);
+    useState(false);
+  const [isConservedButtonActive, setIsConservedButtonActive] = useState(false);
   const { embed, showProjectList } = useContext(ParamsContext);
 
   const EMPTY_STYLE = {

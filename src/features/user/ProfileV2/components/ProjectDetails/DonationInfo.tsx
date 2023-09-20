@@ -19,7 +19,7 @@ const DonationInfo = ({
       <div className={myForestStyles.InfoContainer}>
         <div className={myForestStyles.labelContainer}>
           <div className={myForestStyles.svgContainer}>
-            <ProjectsSvg />
+            <ProjectsSvg color={'#4F4F4F'} />
           </div>
           <div className={myForestStyles.label}>{t('maps:projects')}</div>
         </div>
@@ -30,7 +30,7 @@ const DonationInfo = ({
       <div className={myForestStyles.InfoContainer}>
         <div className={myForestStyles.labelContainer}>
           <div className={myForestStyles.svgContainer}>
-            <CountriesSvg />
+            <CountriesSvg color={'#4F4F4F'} />
           </div>
           <div className={myForestStyles.label}>{t('maps:countries')}</div>
         </div>
@@ -41,7 +41,7 @@ const DonationInfo = ({
       <div className={myForestStyles.InfoContainer}>
         <div className={myForestStyles.labelContainer}>
           <div className={myForestStyles.svgContainer}>
-            <DonationsSvg />
+            <DonationsSvg color={'#4F4F4F'} />
           </div>
           <div className={myForestStyles.label}>{t('me:donations')}</div>
         </div>

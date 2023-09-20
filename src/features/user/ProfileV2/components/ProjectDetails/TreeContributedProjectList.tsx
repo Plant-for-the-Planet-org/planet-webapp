@@ -16,7 +16,6 @@ const TreeContributedProjectList = ({
 }: TreeContributedProjectListProps): ReactElement => {
   const { t } = useTranslation(['me']);
   const [isAddTargetModalOpen, setIsAddTargetModalOpen] = useState(false);
-  const [isLoadButtonActive, setIsLoadButtonActive] = useState(false);
 
   const handleAddTargetModalOpen = (): void => {
     setIsAddTargetModalOpen(true);
@@ -54,7 +53,7 @@ const TreeContributedProjectList = ({
           <div className={myForestStyles.editButtonContainer}>
             <Button
               variant="contained"
-              startIcon={<EditTargetSvg />}
+              startIcon={<EditTargetSvg color={'#FFFFFF'} />}
               onClick={handleAddTargetModalOpen}
               sx={{
                 width: '138px',
@@ -73,8 +72,6 @@ const TreeContributedProjectList = ({
           <div>
             <ContributedProjectList
               contributionProjectList={contribution?.pages}
-              setIsLoadButtonActive={setIsLoadButtonActive}
-              isLoadButtonActive={isLoadButtonActive}
               handleFetchNextPage={handleFetchNextPage}
             />
           </div>
