@@ -1,12 +1,5 @@
 import React, { ReactElement } from 'react';
-import {
-  Controller,
-  useForm,
-  useFieldArray,
-  FieldErrors,
-  Control,
-} from 'react-hook-form';
-import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
+import { Controller, useForm, useFieldArray, Control } from 'react-hook-form';
 import styles from '../Import.module.scss';
 import { useTranslation } from 'next-i18next';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
@@ -216,7 +209,7 @@ export default function PlantingLocation({
 
   const loadMySpecies = async () => {
     try {
-      const species: Species[] = await getAuthenticatedRequest(
+      const species = await getAuthenticatedRequest<Species[]>(
         '/treemapper/species',
         token,
         logoutUser
