@@ -116,13 +116,6 @@
   }
 }
 
-.timelineDesktop {
-  display: none;
-  @include lgLaptopView {
-    display: flex;
-  }
-}
-
 .timelineDesktop,
 .timelineMobile {
   overflow-x: hidden;

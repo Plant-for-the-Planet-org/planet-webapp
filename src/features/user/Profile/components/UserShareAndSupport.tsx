@@ -138,7 +138,7 @@ export default function UserShareAndSupport({ userprofile }: any) {
             </div>
           ) : (
             <div className={styles.bottomIconBg} onClick={handleShare}>
-              <Share width="39px" paddingLeft="10px" color="white" solid />
+              <Share width="39px" color="white" solid />
             </div>
           )}
           {showSocialBtn ? (

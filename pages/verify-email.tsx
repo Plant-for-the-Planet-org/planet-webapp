@@ -3,6 +3,7 @@ import Footer from '../src/features/common/Layout/Footer';
 import LandingSection from '../src/features/common/Layout/LandingSection';
 import VerifyEmailComponent from './../src/features/common/VerifyEmail/VerifyEmail';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticPropsContext } from 'next';
 
 function VerifyEmail(): ReactElement {
   return (
@@ -18,11 +19,11 @@ function VerifyEmail(): ReactElement {
 
 export default VerifyEmail;
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',
