@@ -186,7 +186,6 @@ export interface ProjectSitesProps {
   token: string;
   handleNext: (arg: number) => void;
   projectGUID: string;
-  handleReset: (arg: string) => void;
   projectDetails: ProfileProjectTrees | ProfileProjectConservation | null;
 }
 export interface SiteDetails {
@@ -234,7 +233,6 @@ export interface ProjectSpendingProps {
   handleNext: (arg: number) => void;
   userLang: string;
   projectGUID: string | unknown;
-  handleReset: (arg: string) => void;
 }
 
 // project review
@@ -244,7 +242,6 @@ export interface SubmitForReviewProps {
   handleBack: (arg: number) => void;
   isUploadingData: Boolean;
   projectGUID: string;
-  handleReset: (arg: string) => void;
   projectDetails: ProfileProjectTrees | ProfileProjectConservation | null;
   handlePublishChange: (arg: boolean) => Promise<void>;
 }
