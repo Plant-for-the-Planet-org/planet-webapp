@@ -135,3 +135,12 @@ export interface LastMeasurementDate {
   timezone: string;
   timezone_type: number;
 }
+
+export interface Species {
+  aliases: string;
+  description: string | null;
+  id: string;
+  image: string | null;
+  scientificName: string;
+  scientificSpecies: string;
+}

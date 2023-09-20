@@ -1,4 +1,11 @@
-import React, { ReactElement, useState } from 'react';
+import React, {
+  ChangeEvent,
+  ReactElement,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, FormControlLabel, Switch, Tooltip } from '@mui/material';
 import { useTranslation } from 'next-i18next';
@@ -28,7 +35,7 @@ import GeocoderArcGIS from 'geocoder-arcgis';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledForm from '../../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
-import { handleError, APIError, UnitTypes } from '@planet-sdk/common';
+import { handleError, APIError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ProjectCreationTabs } from '..';
 import {
@@ -78,19 +85,19 @@ export default function BasicDetails({
   };
 
   const [IsSkipButtonVisible, setIsSkipButtonVisible] =
-    React.useState<boolean>(false);
+    useState<boolean>(false);
 
-  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
+  const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   // Map setup
-  const { theme } = React.useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const { logoutUser } = useUserProps();
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
-  const mapRef = React.useRef(null);
-  const [style, setStyle] = React.useState(EMPTY_STYLE);
+  const mapRef = useRef(null);
+  const [style, setStyle] = useState(EMPTY_STYLE);
   const [wrongCoordinatesMessage, setWrongCoordinatesMessage] =
-    React.useState<boolean>(false);
-  const [viewport, setViewPort] = React.useState<ViewPort>({
+    useState<boolean>(false);
+  const [viewport, setViewPort] = useState<ViewPort>({
     width: 760,
     height: 400,
     latitude: defaultMapCenter[0],
@@ -99,9 +106,9 @@ export default function BasicDetails({
   });
   const router = useRouter();
 
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
 
-  React.useEffect(() => {
+  useEffect(() => {
     //loads the default mapstyle
     async function loadMapStyle() {
       const result = await getMapStyle('openStreetMap');
@@ -112,25 +119,27 @@ export default function BasicDetails({
     loadMapStyle();
   }, []);
 
-  const [projectCoords, setProjectCoords] = React.useState<number[]>([0, 0]);
+  const [projectCoords, setProjectCoords] = useState<number[]>([0, 0]);
 
-  const changeLat = (e: any) => {
-    if (e.target.value && e.target.value > -90 && e.target.value < 90) {
+  const changeLat = (e: ChangeEvent<HTMLInputElement>) => {
+    const latNumericValue = Number(e.target.value);
+    if (latNumericValue && latNumericValue > -90 && latNumericValue < 90) {
       setProjectCoords([
         projectCoords ? projectCoords[0] : 0,
         parseFloat(e.target.value),
       ]);
     }
   };
-  const changeLon = (e: any) => {
-    if (e.target.value && e.target.value > -180 && e.target.value < 180) {
+  const changeLon = (e: ChangeEvent<HTMLInputElement>) => {
+    const lonNumericValue = Number(e.target.value);
+    if (lonNumericValue && lonNumericValue > -180 && lonNumericValue < 180) {
       setProjectCoords([
         parseFloat(e.target.value),
         projectCoords ? projectCoords[1] : 0,
       ]);
     }
   };
-  const _onViewportChange = (view: any) => setViewPort({ ...view });
+  const _onViewportChange = (view: ViewPort) => setViewPort({ ...view });
 
   const classifications = [
     {
@@ -176,7 +185,7 @@ export default function BasicDetails({
     'tundra',
   ];
 
-  const unitTypeOptions: UnitTypes[] = ['tree', 'm2'];
+  const unitTypeOptions = ['tree', 'm2'];
 
   // Default Form Fields
   const defaultBasicDetails =
@@ -228,13 +237,13 @@ export default function BasicDetails({
 
   const [acceptDonations, setAcceptDonations] = useState(false);
   //if project is already had created then user can visit to  other forms using skip button
-  React.useEffect(() => {
+  useEffect(() => {
     if (projectDetails?.id) {
       setIsSkipButtonVisible(true);
     }
   }, [router]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (projectDetails) {
       const basicDetails =
         purpose === 'trees'
@@ -451,8 +460,12 @@ export default function BasicDetails({
                     onChange={onChange}
                     value={value}
                     onBlur={onBlur}
-                    error={errors.classification !== undefined}
+                    error={
+                      'classification' in errors &&
+                      errors.classification !== undefined
+                    }
                     helperText={
+                      'classification' in errors &&
                       errors.classification !== undefined &&
                       errors.classification?.message
                     }
@@ -483,9 +496,13 @@ export default function BasicDetails({
                     onChange={onChange}
                     value={value}
                     onBlur={onBlur}
-                    error={errors.unitType !== undefined}
+                    error={
+                      'unitType' in errors && errors.unitType !== undefined
+                    }
                     helperText={
-                      errors.unitType !== undefined && errors.unitType.message
+                      'unitType' in errors &&
+                      errors.unitType !== undefined &&
+                      errors.unitType.message
                     }
                   >
                     {unitTypeOptions.map((unitType) => (
@@ -508,14 +525,18 @@ export default function BasicDetails({
                     label={t('manageProjects:countTarget')}
                     variant="outlined"
                     placeholder={'0'}
-                    onChange={(e) => {
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
                       e.target.value = e.target.value.replace(/[^0-9]/g, '');
                       onChange(e);
                     }}
                     value={value}
                     onBlur={onBlur}
-                    error={errors.countTarget !== undefined}
+                    error={
+                      'countTarget' in errors &&
+                      errors.countTarget !== undefined
+                    }
                     helperText={
+                      'countTarget' in errors &&
                       errors.countTarget !== undefined &&
                       (errors.countTarget.message ||
                         t('manageProjects:countTargetValidation2'))
@@ -620,7 +641,7 @@ export default function BasicDetails({
                   control={
                     <Switch
                       checked={value}
-                      onChange={(e) => {
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
                         onChange(e.target.checked);
                         setAcceptDonations(e.target.checked);
                       }}
@@ -764,7 +785,7 @@ export default function BasicDetails({
                       label={t('manageProjects:latitude')}
                       variant="filled"
                       className={styles.latLongInput}
-                      onChange={(e) => {
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
                         e.target.value = e.target.value.replace(
                           /[^0-9.-]/g,
                           ''
@@ -802,7 +823,7 @@ export default function BasicDetails({
                       label={t('manageProjects:longitude')}
                       variant="filled"
                       className={styles.latLongInput}
-                      onChange={(e) => {
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
                         e.target.value = e.target.value.replace(
                           /[^0-9.-]/g,
                           ''
@@ -836,7 +857,7 @@ export default function BasicDetails({
                 control={
                   <Switch
                     checked={value}
-                    onChange={(e) => {
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
                       onChange(e.target.checked);
                     }}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}

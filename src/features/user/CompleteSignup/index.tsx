@@ -32,7 +32,10 @@ import {
   CreateUserRequest,
   CountryCode,
 } from '@planet-sdk/common';
-import { AddressSuggestionsType } from '../../common/types/user';
+import {
+  AddressSuggestionsType,
+  AddressType,
+} from '../../common/types/geocoder';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -95,7 +98,7 @@ export default function CompleteSignup(): ReactElement | null {
   const getAddress = (value: string) => {
     geocoder
       .findAddressCandidates(value, { outfields: '*' })
-      .then((result) => {
+      .then((result: AddressType) => {
         setValue('address', result.candidates[0].attributes.ShortLabel, {
           shouldValidate: true,
         });
