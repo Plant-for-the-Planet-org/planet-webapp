@@ -19,7 +19,6 @@
 
 .listContainer {
   overflow: visible;
-  width: fit-content;
   max-width: 100%;
   width: 390px;
   z-index: 2;
@@ -61,7 +60,7 @@
     align-items: center;
     width: 100%;
     > .locationHeader {
-      padding: 20px 20px;
+      padding: 20px;
       position: relative;
       display: flex;
       flex-direction: row;
@@ -164,7 +163,7 @@
   > img {
     height: 100px;
     width: auto;
-    margin: 10px 10px;
+    margin: 10px;
     border-radius: 10px;
   }
 }
@@ -309,7 +308,7 @@
 .markerSample {
   width: 12px;
   height: 12px;
-  border-radius: 50% 50% 50% 50%;
+  border-radius: 50%;
   background: #ff6200;
   position: absolute;
   // -webkit-transform: rotate(-45deg);

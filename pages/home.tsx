@@ -9,6 +9,11 @@ import { getRequest } from '../src/utils/apiRequests/api';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { handleError, APIError } from '@planet-sdk/common';
+import { GetStaticPropsContext } from 'next';
+import {
+  LeaderBoardList,
+  TenantScore,
+} from '../src/features/common/types/leaderboard';
 
 interface Props {
   initialized: Boolean;
@@ -17,14 +22,20 @@ interface Props {
 export default function Home(initialized: Props) {
   const router = useRouter();
   const config = tenantConfig();
-  const [leaderboard, setLeaderboard] = React.useState(null);
-  const [tenantScore, setTenantScore] = React.useState(null);
+  const [leaderboard, setLeaderboard] = React.useState<LeaderBoardList | null>(
+    null
+  );
+  const [tenantScore, setTenantScore] = React.useState<TenantScore | null>(
+    null
+  );
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
     async function loadTenantScore() {
       try {
-        const newTenantScore = await getRequest(`/app/tenantScore`);
+        const newTenantScore = await getRequest<TenantScore>(
+          `/app/tenantScore`
+        );
         setTenantScore(newTenantScore);
       } catch (err) {
         setErrors(handleError(err as APIError));
@@ -37,7 +48,9 @@ export default function Home(initialized: Props) {
   React.useEffect(() => {
     async function loadLeaderboard() {
       try {
-        const newLeaderBoard = await getRequest(`/app/leaderboard`);
+        const newLeaderBoard = await getRequest<LeaderBoardList>(
+          `/app/leaderboard`
+        );
         setLeaderboard(newLeaderBoard);
       } catch (err) {
         setErrors(handleError(err as APIError));
@@ -90,11 +103,11 @@ export default function Home(initialized: Props) {
   );
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

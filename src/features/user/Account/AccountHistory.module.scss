@@ -5,6 +5,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  width: 100%;
 }
 
 .historyTitle {
@@ -226,7 +227,6 @@
   justify-content: flex-start;
   align-items: flex-start;
   // box-shadow: 1px 2px 8px -6px #707070;
-  background-color: $light;
   border-radius: 10px;
   padding: 20px;
   gap: 20px;

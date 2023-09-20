@@ -71,6 +71,7 @@
   "employeesCountInfo": "Entspricht einer 40-Stunden-Woche. D.h. zwei Halbzeitbeschäftigte zählen als einer.",
   "labelRestorationSeasons": "Renaturierungszeiten",
   "labelMainInterventions": "Hauptinterventionen",
+  "missingInterventionsError": "Bitte wählen Sie mindestens eine Maßnahme aus",
   "timePeriod": "Zeitraum",
   "max300Chars": "Maximal 300 Zeichen erlaubt",
   "longTermPlanInfo": "Welche Massnahmen gibt es, um den Wald langfristig zu projizieren? Wie wird dies finanziert? Welche Ressourcen werden dem Standort entnommen?",

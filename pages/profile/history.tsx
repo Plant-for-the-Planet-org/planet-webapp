@@ -13,6 +13,8 @@ import {
   Filters,
   PaymentHistory,
 } from '../../src/features/common/types/payments';
+import DashboardView from '../../src/features/common/Layout/DashboardView';
+import { GetStaticPropsContext } from 'next';
 
 function AccountHistory(): ReactElement {
   const { t } = useTranslation(['me']);
@@ -75,7 +77,7 @@ function AccountHistory(): ReactElement {
         }
       } else {
         try {
-          const paymentHistory = await getAuthenticatedRequest(
+          const paymentHistory = await getAuthenticatedRequest<PaymentHistory>(
             `${
               filter && accountingFilters
                 ? accountingFilters[filter] + '&limit=15'
@@ -125,7 +127,14 @@ function AccountHistory(): ReactElement {
         <Head>
           <title>{t('history')}</title>
         </Head>
-        <History {...HistoryProps} />
+        <DashboardView
+          title={t('me:payments')}
+          subtitle={t('me:donationsSubTitle')}
+          multiColumn={true}
+        >
+          <History {...HistoryProps} />
+        </DashboardView>
+
         {/* <UnderMaintenance/> */}
       </UserLayout>
     </>
@@ -134,11 +143,11 @@ function AccountHistory(): ReactElement {
 
 export default AccountHistory;
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

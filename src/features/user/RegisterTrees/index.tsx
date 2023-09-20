@@ -2,7 +2,7 @@ import { useTranslation } from 'next-i18next';
 import { ReactElement } from 'react';
 import DashboardView from '../../common/Layout/DashboardView';
 import SingleColumnView from '../../common/Layout/SingleColumnView';
-import RegisterTreesForm from './RegisterTreesForm';
+import RegisterTreesWidget from './RegisterTreesWidget';
 import CenteredContainer from '../../common/Layout/CenteredContainer';
 
 export default function RegisterTrees(): ReactElement | null {
@@ -12,7 +12,7 @@ export default function RegisterTrees(): ReactElement | null {
     <DashboardView title={t('registerTrees')} subtitle={null}>
       <SingleColumnView>
         <CenteredContainer>
-          <RegisterTreesForm />
+          <RegisterTreesWidget />
         </CenteredContainer>
       </SingleColumnView>
     </DashboardView>
