@@ -142,10 +142,11 @@ export interface ProjectMediaProps {
   handleBack: (arg: number) => void;
   token: string;
   handleNext: (arg: number) => void;
-  projectDetails: Project | undefined;
-  setProjectDetails: SetState<Project | undefined>;
+  projectDetails: ProfileProjectTrees | ProfileProjectConservation | null;
+  setProjectDetails: SetState<
+    ProfileProjectTrees | ProfileProjectConservation | null
+  >;
   projectGUID: string | unknown;
-  handleReset: (arg: string) => void;
 }
 
 // Detail Analysis
@@ -155,12 +156,11 @@ export interface DetailedAnalysisProps {
   userLang: string;
   token: string;
   handleNext: (arg: number) => void;
-  projectDetails: ProfileProjectTrees | ProfileProjectConservation | undefined;
+  projectDetails: ProfileProjectTrees | ProfileProjectConservation | null;
   setProjectDetails: SetState<
-    ProfileProjectTrees | ProfileProjectConservation | undefined
+    ProfileProjectTrees | ProfileProjectConservation | null
   >;
   projectGUID: string;
-  handleReset: (arg: string) => void;
   purpose: string | string[] | undefined;
 }
 
@@ -187,7 +187,7 @@ export interface ProjectSitesProps {
   handleNext: (arg: number) => void;
   projectGUID: string;
   handleReset: (arg: string) => void;
-  projectDetails: Project;
+  projectDetails: ProfileProjectTrees | ProfileProjectConservation | null;
 }
 export interface SiteDetails {
   geometry: {};
@@ -245,7 +245,7 @@ export interface SubmitForReviewProps {
   isUploadingData: Boolean;
   projectGUID: string;
   handleReset: (arg: string) => void;
-  projectDetails: Project;
+  projectDetails: ProfileProjectTrees | ProfileProjectConservation | null;
   handlePublishChange: (arg: boolean) => Promise<void>;
 }
 

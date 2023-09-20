@@ -111,12 +111,9 @@ export default function ManageProjects({
     };
 
     try {
-      const res = await putAuthenticatedRequest(
-        `/app/projects/${projectGUID}`,
-        submitData,
-        token,
-        logoutUser
-      );
+      const res = await putAuthenticatedRequest<
+        ProfileProjectTrees | ProfileProjectConservation
+      >(`/app/projects/${projectGUID}`, submitData, token, logoutUser);
       setProjectDetails(res);
       setErrorMessage(undefined);
       setIsUploadingData(false);
@@ -133,12 +130,9 @@ export default function ManageProjects({
     };
 
     try {
-      const res = await putAuthenticatedRequest(
-        `/app/projects/${projectGUID}`,
-        submitData,
-        token,
-        logoutUser
-      );
+      const res = await putAuthenticatedRequest<
+        ProfileProjectTrees | ProfileProjectConservation
+      >(`/app/projects/${projectGUID}`, submitData, token, logoutUser);
       setProjectDetails(res);
       setErrorMessage('');
       setIsUploadingData(false);
