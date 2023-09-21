@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconProps } from '../../../../src/features/common/types/common';
 
-function TreeIcon({ color }: IconProps) {
+function TreeIcon({ color = '#68B030' }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -19,7 +19,7 @@ function TreeIcon({ color }: IconProps) {
           data-name="tree (1)"
           d="M11,21V16.74A4.379,4.379,0,0,1,9.5,17,4.481,4.481,0,0,1,5,12.5,4.413,4.413,0,0,1,6.36,9.27,4.505,4.505,0,0,1,14.25,5h.25A5.5,5.5,0,1,1,13,15.79V21Z"
           transform="translate(13)"
-          fill={color ? color : '#68B030'}
+          fill={color}
           stroke="#fff"
           strokeWidth="0.5"
         />
@@ -31,7 +31,7 @@ function TreeIcon({ color }: IconProps) {
           rx="9.5"
           ry="1"
           transform="translate(16 20)"
-          fill={color ? color : '#68B030'}
+          fill={color}
         />
       </g>
     </svg>

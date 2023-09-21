@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconProps } from '../../../../src/features/common/types/common';
 
-function PolygonIcon({ color }: IconProps) {
+function PolygonIcon({ color = '#2F3336' }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -17,7 +17,7 @@ function PolygonIcon({ color }: IconProps) {
         <path
           d="M 2.5 3.360080718994141 L 2.5 17.5 L 17.5 17.5 L 17.5 7.860080718994141 L 2.5 3.360080718994141 M 0 0 L 20 6 L 20 20 L 0 20 L 0 0 Z"
           stroke="none"
-          fill={color ? color : '#2F3336'}
+          fill={color}
         />
       </g>
     </svg>
