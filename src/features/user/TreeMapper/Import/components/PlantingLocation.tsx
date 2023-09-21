@@ -41,16 +41,6 @@ const dialogSx: SxProps = {
   },
 };
 
-interface Props {
-  handleNext: () => void;
-  userLang: string;
-  plantLocation: any;
-  setPlantLocation: Function;
-  geoJson: any;
-  setGeoJson: Function;
-  activeMethod: string;
-  setActiveMethod: Function;
-}
 interface SpeciesProps {
   index: number;
   t: Function;
@@ -145,6 +135,17 @@ function PlantedSpecies({
       )}
     </div>
   );
+}
+
+interface Props {
+  handleNext: () => void;
+  userLang: string;
+  plantLocation: any;
+  setPlantLocation: Function;
+  geoJson: any;
+  setGeoJson: Function;
+  activeMethod: string;
+  setActiveMethod: Function;
 }
 
 export default function PlantingLocation({
