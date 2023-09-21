@@ -51,6 +51,101 @@ interface Props {
   activeMethod: string;
   setActiveMethod: Function;
 }
+interface SpeciesProps {
+  index: number;
+  t: Function;
+  remove: Function;
+  errors: any;
+  item: any;
+  control: any;
+}
+
+function PlantedSpecies({
+  index,
+  t,
+  remove,
+  errors,
+  item,
+  control,
+}: SpeciesProps): ReactElement {
+  return (
+    <div key={item.id} className={styles.speciesFieldGroup}>
+      <div className={styles.speciesNameField}>
+        {/* <SpeciesSelect label={t('treemapper:species')} name={`plantedSpecies[${index}].species`} mySpecies={mySpecies} control={control} /> */}
+        <Controller
+          name={`plantedSpecies[${index}].otherSpecies`}
+          control={control}
+          rules={{
+            required:
+              index > 0 ? false : t('treemapper:atLeastOneSpeciesRequired'),
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextField
+              label={t('treeSpecies')}
+              variant="outlined"
+              onChange={onChange}
+              onBlur={onBlur}
+              value={value}
+              error={
+                errors.plantedSpecies &&
+                errors.plantedSpecies[index]?.otherSpecies
+              }
+              helperText={
+                errors.plantedSpecies &&
+                errors.plantedSpecies[index]?.otherSpecies &&
+                errors.plantedSpecies[index]?.otherSpecies.message
+              }
+            />
+          )}
+        />
+      </div>
+      <div className={styles.speciesCountField}>
+        <Controller
+          name={`plantedSpecies[${index}].treeCount`}
+          control={control}
+          rules={{
+            required: index > 0 ? false : t('treemapper:treesRequired'),
+            validate: (value: any) => {
+              return parseInt(value, 10) >= 1
+                ? true
+                : t('treemapper:treesRequired');
+            },
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextField
+              label={t('treemapper:count')}
+              variant="outlined"
+              onChange={(e: any) => {
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                onChange(e.target.value);
+              }}
+              value={value > 0 ? value : ''}
+              onBlur={onBlur}
+              error={
+                errors.plantedSpecies && errors.plantedSpecies[index]?.treeCount
+              }
+              helperText={
+                errors.plantedSpecies &&
+                errors.plantedSpecies[index]?.treeCount &&
+                errors.plantedSpecies[index]?.treeCount.message
+              }
+            />
+          )}
+        />
+      </div>
+      {index > 0 ? (
+        <div
+          onClick={() => remove(index)}
+          className={`${styles.speciesDeleteField} ${styles.deleteActive}`}
+        >
+          <DeleteIcon />
+        </div>
+      ) : (
+        <div className={styles.speciesDeleteField}></div>
+      )}
+    </div>
+  );
+}
 
 export default function PlantingLocation({
   handleNext,
@@ -374,7 +469,20 @@ export default function PlantingLocation({
         </div>
       </div>
       <div className={styles.formSubTitle}>{t('maps:speciesPlanted')}</div>
-
+      {mySpecies &&
+        fields.map((item, index) => {
+          return (
+            <PlantedSpecies
+              key={index}
+              index={index}
+              t={t}
+              remove={remove}
+              errors={errors}
+              item={item}
+              control={control}
+            />
+          );
+        })}
       <div
         onClick={() => {
           append({
@@ -402,100 +510,5 @@ export default function PlantingLocation({
         </Button>
       </div>
     </>
-  );
-}
-interface SpeciesProps {
-  index: number;
-  t: Function;
-  remove: Function;
-  errors: any;
-  item: any;
-  control: any;
-}
-
-function PlantedSpecies({
-  index,
-  t,
-  remove,
-  errors,
-  item,
-  control,
-}: SpeciesProps): ReactElement {
-  return (
-    <div key={item.id} className={styles.speciesFieldGroup}>
-      <div className={styles.speciesNameField}>
-        {/* <SpeciesSelect label={t('treemapper:species')} name={`plantedSpecies[${index}].species`} mySpecies={mySpecies} control={control} /> */}
-        <Controller
-          name={`plantedSpecies[${index}].otherSpecies`}
-          control={control}
-          rules={{
-            required:
-              index > 0 ? false : t('treemapper:atLeastOneSpeciesRequired'),
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextField
-              label={t('treeSpecies')}
-              variant="outlined"
-              onChange={onChange}
-              onBlur={onBlur}
-              value={value}
-              error={
-                errors.plantedSpecies &&
-                errors.plantedSpecies[index]?.otherSpecies
-              }
-              helperText={
-                errors.plantedSpecies &&
-                errors.plantedSpecies[index]?.otherSpecies &&
-                errors.plantedSpecies[index]?.otherSpecies.message
-              }
-            />
-          )}
-        />
-      </div>
-      <div className={styles.speciesCountField}>
-        <Controller
-          name={`plantedSpecies[${index}].treeCount`}
-          control={control}
-          rules={{
-            required: index > 0 ? false : t('treemapper:treesRequired'),
-            validate: (value: any) => {
-              return parseInt(value, 10) >= 1
-                ? true
-                : t('treemapper:treesRequired');
-            },
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextField
-              label={t('treemapper:count')}
-              variant="outlined"
-              onChange={(e: any) => {
-                e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                onChange(e.target.value);
-              }}
-              value={value > 0 ? value : ''}
-              onBlur={onBlur}
-              error={
-                errors.plantedSpecies && errors.plantedSpecies[index]?.treeCount
-              }
-              helperText={
-                errors.plantedSpecies &&
-                errors.plantedSpecies[index]?.treeCount &&
-                errors.plantedSpecies[index]?.treeCount.message
-              }
-            />
-          )}
-        />
-      </div>
-      {index > 0 ? (
-        <div
-          onClick={() => remove(index)}
-          className={`${styles.speciesDeleteField} ${styles.deleteActive}`}
-        >
-          <DeleteIcon />
-        </div>
-      ) : (
-        <div className={styles.speciesDeleteField}></div>
-      )}
-    </div>
   );
 }
