@@ -39,7 +39,6 @@ export default function SingleContribution({
 }: SingleContributionProps): ReactElement {
   const router = useRouter();
   const UploadProps = {
-    contribution,
     contributionGUID,
     token,
   };

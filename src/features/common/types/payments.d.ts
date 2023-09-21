@@ -128,3 +128,18 @@ export interface Subscription {
   donorName?: string;
   bankAccount: BankAccount | null;
 }
+
+export interface ModifyDonations
+  extends Omit<
+    Subscription,
+    | 'startDate'
+    | 'currentPeriodStart'
+    | 'currentPeriodEnd'
+    | 'trialPeriodStart'
+    | 'trialPeriodStart'
+    | 'endsAt'
+    | 'donorName'
+  > {
+  lastUpdate: string;
+  bankAccount: BankAccount;
+}

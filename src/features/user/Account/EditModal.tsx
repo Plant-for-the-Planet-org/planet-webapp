@@ -23,7 +23,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
-import { Subscription } from '../../common/types/payments';
+import { ModifyDonations, Subscription } from '../../common/types/payments';
 
 // interface EditDonationProps {
 //   editModalOpen
@@ -91,9 +91,15 @@ export const EditModal = ({
     setDisabled(false);
   }, [editModalOpen]);
 
+  interface BodyToSendType {
+    nextBilling?: string | null;
+    centAmount?: number;
+    frequency?: string;
+  }
+
   const onSubmit = async (data: FormData) => {
     setDisabled(true);
-    const bodyToSend = {
+    const bodyToSend: BodyToSendType = {
       nextBilling:
         record.method !== 'paypal'
           ? new Date(data.currentPeriodEnd).toISOString().split('T')[0]
@@ -117,7 +123,7 @@ export const EditModal = ({
 
     if (Object.keys(bodyToSend).length !== 0) {
       try {
-        const res = await putAuthenticatedRequest(
+        const res = await putAuthenticatedRequest<ModifyDonations>(
           `/app/subscriptions/${record?.id}?scope=modify`,
           bodyToSend,
           token,
@@ -236,7 +242,6 @@ export const EditModal = ({
                       value={value}
                       onBlur={onBlur}
                       getOptionLabel={(option) => {
-                        console.log(option);
                         return t(`${option.toLowerCase()}`);
                       }}
                       renderInput={(params) => (
@@ -262,7 +267,7 @@ export const EditModal = ({
                 <div className={styles.formRowInput}>
                   <LocalizationProvider
                     dateAdapter={AdapterDateFns}
-                    locale={
+                    adapterLocale={
                       localeMapForDate[userLang]
                         ? localeMapForDate[userLang]
                         : localeMapForDate['en']

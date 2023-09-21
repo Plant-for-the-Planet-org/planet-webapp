@@ -217,9 +217,12 @@ export function ManageDonation({
     (record?.status === 'active' || record?.status === 'trialing') &&
     !record?.endsAt;
   const showReactivate =
-    record?.status === 'paused' || new Date(record?.endsAt) > new Date();
+    record?.status === 'paused' || new Date(record?.endsAt || '') > new Date();
 
-  const openModal = (e, setModalOpen: Dispatch<SetStateAction<boolean>>) => {
+  const openModal = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    setModalOpen: Dispatch<SetStateAction<boolean>>
+  ) => {
     e.preventDefault();
     setModalOpen(true);
   };

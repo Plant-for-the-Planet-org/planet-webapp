@@ -23,7 +23,7 @@ import themeProperties from '../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { Subscription } from '../../common/types/payments';
 
-const MuiCalendarPicker = styled(CalendarPicker)({
+const MuiCalendarPicker = styled(CalendarPicker<Date>)({
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
     backgroundColor: themeProperties.primaryColor,
     color: '#fff',
@@ -52,9 +52,9 @@ export const PauseModal = ({
 }: PauseModalProps) => {
   const { theme } = React.useContext(ThemeContext);
   const { token, logoutUser } = useUserProps();
-  const [option, setoption] = React.useState();
+  const [option, setoption] = React.useState<string>();
   const [showCalender, setshowCalender] = React.useState(false);
-  const [date, setdate] = React.useState(
+  const [date, setdate] = React.useState<Date | null>(
     new Date(new Date(record?.currentPeriodEnd).valueOf() + 1000 * 3600 * 24)
   );
   const [disabled, setDisabled] = React.useState(false);
@@ -81,7 +81,7 @@ export const PauseModal = ({
           : 'infinite', //custom-date | infinite
       pauseUntil:
         option == 'pauseForMonth' || option == 'pauseUntilDate'
-          ? date.toISOString().split('T')[0]
+          ? date?.toISOString().split('T')[0]
           : null, // only if pauseType='custom-date'
     };
 

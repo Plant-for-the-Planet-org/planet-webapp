@@ -25,7 +25,10 @@ import {
   StyledAutoCompleteOption,
 } from '../../../common/InputTypes/MuiAutoComplete';
 import StyledForm from '../../../common/Layout/StyledForm';
-import { AddressSuggestionsType } from '../../../common/types/user';
+import {
+  AddressSuggestionsType,
+  AddressType,
+} from '../../../common/types/geocoder';
 import { AlertColor } from '@mui/lab';
 import { APIError, handleError } from '@planet-sdk/common';
 
@@ -142,7 +145,7 @@ export default function EditProfileForm() {
   const getAddress = (value: string) => {
     geocoder
       .findAddressCandidates(value, { outfields: '*' })
-      .then((result) => {
+      .then((result: AddressType) => {
         setValue('address', result.candidates[0].attributes.ShortLabel, {
           shouldValidate: true,
         });
@@ -236,9 +239,11 @@ export default function EditProfileForm() {
                 token,
                 logoutUser
               );
-              const newUserInfo = { ...user, image: res.image };
-              setUpdatingPic(false);
-              setUser(newUserInfo);
+              if (user) {
+                const newUserInfo = { ...user, image: res.image };
+                setUpdatingPic(false);
+                setUser(newUserInfo);
+              }
             } catch (err) {
               setUpdatingPic(false);
               setErrors(handleError(err as APIError));
@@ -266,7 +271,7 @@ export default function EditProfileForm() {
     };
     if (contextLoaded && token) {
       try {
-        const res = await putAuthenticatedRequest(
+        const res: User = await putAuthenticatedRequest(
           `/app/profile`,
           bodyToSend,
           token,

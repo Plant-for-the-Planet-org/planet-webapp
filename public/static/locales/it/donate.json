@@ -5,7 +5,6 @@
   "yourTreesPlantedByOnLocation_plural": "I vostri alberi {{treeCount}} saranno piantati da {{projectName}} in {{location}}.",
   "myTreesPlantedByOnLocation": "I miei {{treeCount}} alberi sono stati piantati in {{location}}.",
   "myTreesPlantedByOnLocation_plural": "I miei {{treeCount}} alberi sono stati piantati in {{location}}.",
-  "projects": "Progetti",
   "topProjects": "Progetti Top",
   "allCountProjects": "Tutti {{projectCount}} Progetti",
   "searchProjects": "Ricerca progetti",

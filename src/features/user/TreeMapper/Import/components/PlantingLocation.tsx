@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { Controller, useForm, useFieldArray } from 'react-hook-form';
+import { Controller, useForm, useFieldArray, Control } from 'react-hook-form';
 import styles from '../Import.module.scss';
 import { useTranslation } from 'next-i18next';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
@@ -23,6 +23,7 @@ import themeProperties from '../../../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { MapProject } from '../../../../common/types/ProjectPropsContextInterface';
+import { Species } from '../../../../common/types/plantLocation';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -46,8 +47,8 @@ interface SpeciesProps {
   t: Function;
   remove: Function;
   errors: any;
-  item: any;
-  control: any;
+  item: Record<'id', string>;
+  control: Control<any, any>;
 }
 
 function PlantedSpecies({
@@ -164,7 +165,7 @@ export default function PlantingLocation({
   const [projects, setProjects] = React.useState<MapProject[]>([]);
   const importMethods = ['import', 'editor'];
   const [geoJsonError, setGeoJsonError] = React.useState(false);
-  const [mySpecies, setMySpecies] = React.useState(null);
+  const [mySpecies, setMySpecies] = React.useState<Species[] | null>(null);
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
   const { t } = useTranslation(['treemapper', 'common', 'maps']);
@@ -208,7 +209,7 @@ export default function PlantingLocation({
 
   const loadMySpecies = async () => {
     try {
-      const species = await getAuthenticatedRequest(
+      const species = await getAuthenticatedRequest<Species[]>(
         '/treemapper/species',
         token,
         logoutUser
@@ -245,13 +246,13 @@ export default function PlantingLocation({
     }
   };
 
-  const onDrop = React.useCallback((acceptedFiles) => {
-    acceptedFiles.forEach((file: any) => {
+  const onDrop = React.useCallback((acceptedFiles: File[]) => {
+    acceptedFiles.forEach((file) => {
       const reader = new FileReader();
       reader.readAsText(file);
       reader.onabort = () => console.log('file reading was aborted');
       reader.onerror = () => console.log('file reading has failed');
-      reader.onload = (event: any) => {
+      reader.onload = () => {
         const fileType =
           file.name.substring(
             file.name.lastIndexOf('.') + 1,
@@ -261,11 +262,10 @@ export default function PlantingLocation({
           reader.readAsText(file);
           reader.onabort = () => console.log('file reading was aborted');
           reader.onerror = () => console.log('file reading has failed');
-          reader.onload = (event: any) => {
-            const dom = new DOMParser().parseFromString(
-              event.target.result,
-              'text/xml'
-            );
+          reader.onload = (event) => {
+            const result = event.target?.result;
+            if (typeof result !== 'string') return;
+            const dom = new DOMParser().parseFromString(result, 'text/xml');
             const geo = tj.kml(dom);
             if (gjv.isGeoJSONObject(geo) && geo.features.length !== 0) {
               const flattened = flatten(geo);
@@ -285,15 +285,18 @@ export default function PlantingLocation({
           reader.onabort = () => console.log('file reading was aborted');
           reader.onerror = () => console.log('file reading has failed');
           reader.onload = (event) => {
-            const geo = JSON.parse(event.target.result);
-            normalizeGeoJson(geo);
+            const result = event.target?.result;
+            if (typeof result === 'string') {
+              const geo = JSON.parse(result);
+              normalizeGeoJson(geo);
+            }
           };
         }
       };
     });
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     accept: ['.geojson', '.kml'],
     multiple: false,
     onDrop: onDrop,
