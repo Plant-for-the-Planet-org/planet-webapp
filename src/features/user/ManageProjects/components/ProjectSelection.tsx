@@ -2,8 +2,15 @@ import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'next-i18next';
 import Styles from '../../../../../src/features/user/ManageProjects/StepForm.module.scss';
+import { SetState } from '../../../common/types/common';
 
-export default function ProjectSelection({ setTabSelected }): ReactElement {
+interface ProjectSelectionProps {
+  setTabSelected: SetState<number>;
+}
+
+export default function ProjectSelection({
+  setTabSelected,
+}: ProjectSelectionProps): ReactElement {
   const router = useRouter();
   const { t, ready } = useTranslation('manageProjects');
 
