@@ -323,7 +323,6 @@ export default function ManageProjects({
               projectDetails={projectDetails}
               submitForReview={submitForReview}
               isUploadingData={isUploadingData}
-              projectGUID={projectGUID}
               handlePublishChange={handlePublishChange}
             />
           );
