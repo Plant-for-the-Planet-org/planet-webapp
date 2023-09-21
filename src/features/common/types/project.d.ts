@@ -11,6 +11,9 @@ import {
   TreeProjectExtended,
   ConservationProjectExtended,
   InterventionTypes,
+  Tpo,
+  DefaultPaymentConfig,
+  Certificate,
 } from '@planet-sdk/common';
 import { FeatureCollection as GeoJson } from 'geojson';
 import { SetState } from './common';
@@ -104,6 +107,39 @@ export interface Project {
   acquisitionYear: number;
   intensity: any;
   revisionPeriodicityLevel: any;
+}
+
+export interface CertificateScopeProjects
+  extends Omit<Project, 'sites' | 'images' | 'expenses'> {
+  certificates: Certificate[];
+  _scope: string;
+}
+
+export interface Properties {
+  purpose: string;
+  id: string;
+  slug: string;
+  name: string;
+  allowDonations: boolean;
+  country: string;
+  currency: string;
+  image: string;
+  unit: string;
+  unitType: string;
+  unitCost: number;
+  taxDeductionCountries: CountryCode[];
+  isApproved: boolean;
+  isTopProject: boolean;
+  isFeatured: boolean;
+  metadata: MetaData;
+  tpo: Tpo;
+  classification: string;
+  countPlanted: number;
+  minTreeCount: number;
+  countTarget: number;
+  location: string;
+  treeCost: number;
+  paymentDefaults: Nullable<DefaultPaymentConfig>;
 }
 
 export interface ManageProjectsProps {
@@ -220,7 +256,6 @@ interface EditSiteProps {
   projectGUID: string;
   setSiteList: SetState<Site[]>;
   token: string;
-  setFeatures: Function;
   seteditMode: Function;
   siteGUID: Nullable<string>;
   siteList: Site[];
@@ -241,7 +276,6 @@ export interface SubmitForReviewProps {
   submitForReview: () => Promise<void>;
   handleBack: (arg: number) => void;
   isUploadingData: Boolean;
-  projectGUID: string;
   projectDetails: ProfileProjectTrees | ProfileProjectConservation | null;
   handlePublishChange: (arg: boolean) => Promise<void>;
 }
