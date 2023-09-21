@@ -55,7 +55,6 @@ export default function ProjectSpending({
   handleNext,
   userLang,
   projectGUID,
-  handleReset,
 }: ProjectSpendingProps): ReactElement {
   const { t, ready } = useTranslation(['manageProjects', 'common']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
@@ -75,12 +74,6 @@ export default function ProjectSpending({
     []
   );
   const { logoutUser } = useUserProps();
-
-  React.useEffect(() => {
-    if (!projectGUID || projectGUID === '') {
-      handleReset(ready ? t('manageProjects:resetMessage') : '');
-    }
-  });
 
   const onSubmit = async (pdf: string | ArrayBuffer | null | undefined) => {
     setIsUploadingData(true);
