@@ -31,9 +31,13 @@ import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { MapProject } from '../../../../common/types/ProjectPropsContextInterface';
 import { Treemapper } from '../../Treemapper';
-import { FeatureCollection, GeometryObject } from 'geojson';
+import {
+  FeatureCollection,
+  GeoJsonProperties,
+  Geometry,
+  GeometryObject,
+} from 'geojson';
 import { Species } from '../../../../common/types/plantLocation';
-import { Geometry } from '@turf/turf';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -58,7 +62,7 @@ interface SpeciesProps {
   remove: Function;
   errors: FieldErrors<Treemapper.PlantLocation>;
   item: FieldArrayWithId<Treemapper.PlantLocation, 'plantedSpecies', 'id'>;
-  control: Control<Treemapper.PlantLocation, any>;
+  control: Control<Treemapper.PlantLocation>;
 }
 
 function PlantedSpecies({
@@ -74,7 +78,7 @@ function PlantedSpecies({
       <div className={styles.speciesNameField}>
         {/* <SpeciesSelect label={t('treemapper:species')} name={`plantedSpecies[${index}].species`} mySpecies={mySpecies} control={control} /> */}
         <Controller
-          name={`plantedSpecies[${index}].otherSpecies`}
+          name={`plantedSpecies.${index}.otherSpecies`}
           control={control}
           rules={{
             required:
@@ -102,14 +106,12 @@ function PlantedSpecies({
       </div>
       <div className={styles.speciesCountField}>
         <Controller
-          name={`plantedSpecies[${index}].treeCount`}
+          name={`plantedSpecies.${index}.treeCount`}
           control={control}
           rules={{
             required: index > 0 ? false : t('treemapper:treesRequired'),
             validate: (value) => {
-              return parseInt(value, 10) >= 1
-                ? true
-                : t('treemapper:treesRequired');
+              return Number(value) >= 1 ? true : t('treemapper:treesRequired');
             },
           }}
           render={({ field: { onChange, onBlur, value } }) => (
@@ -176,7 +178,7 @@ export default function PlantingLocation({
   const [projects, setProjects] = React.useState<MapProject[]>([]);
   const importMethods = ['import', 'editor'];
   const [geoJsonError, setGeoJsonError] = React.useState(false);
-  const [mySpecies, setMySpecies] = React.useState<Species | null>(null);
+  const [mySpecies, setMySpecies] = React.useState<Species[] | null>(null);
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
   const { t } = useTranslation(['treemapper', 'common', 'maps']);
@@ -381,7 +383,11 @@ export default function PlantingLocation({
             <JSONInput
               id="json-editor"
               placeholder={geoJson}
-              onChange={(json: any) => normalizeGeoJson(json.jsObject)}
+              onChange={(json: {
+                jsObject:
+                  | Geometry
+                  | FeatureCollection<Geometry, GeoJsonProperties>;
+              }) => normalizeGeoJson(json.jsObject)}
               locale={locale}
               height="220px"
               width="100%"
@@ -492,7 +498,8 @@ export default function PlantingLocation({
         fields.map((item, index) => {
           return (
             <PlantedSpecies
-              key={index}
+              // Use id instead of index to prevent rerenders as per rhf guidelines
+              key={item.id}
               index={index}
               t={t}
               remove={remove}
