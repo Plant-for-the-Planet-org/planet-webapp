@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { IconProps } from '../../../../src/features/common/types/common';
 
-function FileUploadIcon({ color = '#2f3336' }: IconProps): ReactElement {
+function FileAttachedIcon({ color = '#2f3336' }: IconProps): ReactElement {
   return (
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -13,4 +13,4 @@ function FileUploadIcon({ color = '#2f3336' }: IconProps): ReactElement {
   );
 }
 
-export default FileUploadIcon;
+export default FileAttachedIcon;

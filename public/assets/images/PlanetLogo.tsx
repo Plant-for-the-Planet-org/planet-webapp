@@ -7,7 +7,7 @@ export default function PlanetLogo({
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
       width="1310"
       height="92"
       viewBox="0 0 1310 92"
@@ -21,7 +21,7 @@ export default function PlanetLogo({
           height="92"
           filterUnits="userSpaceOnUse"
         >
-          <feOffset dy="6" input="SourceAlpha" />
+          <feOffset dy="6" />
           <feGaussianBlur stdDeviation="5" result="blur" />
           <feFlood floodOpacity="0.122" />
           <feComposite operator="in" in2="blur" />
