@@ -97,3 +97,36 @@ export interface AddressType {
   spatialReference: SpatialReference;
   candidates: Candidate[];
 }
+
+export interface ReverseAddress {
+  address: ConciseAddressProperties;
+  location: {
+    x: number;
+    y: number;
+    spatialReference: SpatialReference;
+  };
+}
+interface ConciseAddressProperties {
+  Match_addr: string;
+  LongLabel: string;
+  ShortLabel: string;
+  Addr_type: string;
+  Type: string;
+  PlaceName: string;
+  AddNum: string;
+  Address: string;
+  Block: string;
+  Sector: string;
+  Neighborhood: string;
+  District: string;
+  City: string;
+  MetroArea: string;
+  Subregion: string;
+  Region: string;
+  RegionAbbr: string;
+  Territory: string;
+  Postal: string;
+  PostalExt: string;
+  CntryName: string;
+  CountryCode: string;
+}
