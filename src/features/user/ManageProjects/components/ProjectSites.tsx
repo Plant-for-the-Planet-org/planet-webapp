@@ -36,8 +36,8 @@ import {
   ProjectSitesProps,
   GeoLocation,
   EditSiteProps,
-  Project,
   Site,
+  SitesScopeProjects,
 } from '../../../common/types/project';
 import { FeatureCollection as GeoJson } from 'geojson';
 
@@ -333,7 +333,7 @@ export default function ProjectSites({
     try {
       if (projectGUID) {
         // Fetch sites of the project
-        const result = await getAuthenticatedRequest<Project>(
+        const result = await getAuthenticatedRequest<SitesScopeProjects>(
           `/app/profile/projects/${projectGUID}?_scope=sites`,
           token,
           logoutUser

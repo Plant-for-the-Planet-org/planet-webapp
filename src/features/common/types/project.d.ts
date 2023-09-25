@@ -93,7 +93,7 @@ export interface Project {
   acceptDonations: boolean;
   geoLongitude: number;
   geoLatitude: number;
-  expenses: ProjectExpense[];
+  expenses: ProjectExpense[]; //
   reviewRequested: boolean;
   isApproved: boolean;
   isTopProject: boolean;
@@ -109,10 +109,25 @@ export interface Project {
   revisionPeriodicityLevel: any;
 }
 
-export interface CertificateScopeProjects
-  extends Omit<Project, 'sites' | 'images' | 'expenses'> {
-  certificates: Certificate[];
+interface ScopeProjects extends Project {
   _scope: string;
+  unitType: string;
+  unitsContributed: any;
+  unitsTargeted: UnitsTargeted;
+}
+
+export interface CertificateScopeProjects
+  extends Omit<ScopeProjects, 'sites' | 'images' | 'expenses'> {
+  certificates: Certificate[];
+}
+
+export type ImagesScopeProjects = Omit<ScopeProjects, 'sites' | 'expenses'>;
+
+export type ExpensesScopeProjects = Omit<Project, 'sites' | 'images'>;
+
+export type SitesScopeProjects = Omit<Project, 'expenses' | 'images'>;
+interface UnitsTargeted {
+  tree: number;
 }
 
 export interface Properties {

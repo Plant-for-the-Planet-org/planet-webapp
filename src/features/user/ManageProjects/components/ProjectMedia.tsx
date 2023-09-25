@@ -31,9 +31,9 @@ import { ProjectCreationTabs } from '..';
 import {
   ProjectMediaProps,
   UploadImage,
-  Project,
   ProfileProjectTrees,
   ProfileProjectConservation,
+  ImagesScopeProjects,
 } from '../../../common/types/project';
 
 export default function ProjectMedia({
@@ -66,7 +66,7 @@ export default function ProjectMedia({
     try {
       // Fetch images of the project
       if (projectGUID && token) {
-        const result = await getAuthenticatedRequest<Project>(
+        const result = await getAuthenticatedRequest<ImagesScopeProjects>(
           `/app/profile/projects/${projectGUID}?_scope=images`,
           token,
           logoutUser
