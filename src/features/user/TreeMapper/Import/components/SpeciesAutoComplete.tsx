@@ -7,6 +7,7 @@ import { Autocomplete, TextField } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
+import { SpeciesSuggestionType } from '../../../../common/types/plantLocation';
 
 interface Props<
   TFieldValues extends FieldValues,
@@ -34,7 +35,7 @@ export default function SpeciesSelect<
   helperText,
 }: Props<TFieldValues, TName>) {
   const [speciesSuggestion, setspeciesSuggestion] = React.useState<
-    SpeciesType[]
+    SpeciesSuggestionType[]
   >([]);
   const [query, setQuery] = React.useState('');
   const { t } = useTranslation(['treemapper']);
@@ -56,7 +57,7 @@ export default function SpeciesSelect<
     // Todo: debouncing
     if (value.length > 2) {
       try {
-        const res: SpeciesType[] = await postRequest(`/suggest.php`, {
+        const res = await postRequest<SpeciesSuggestionType[]>(`/suggest.php`, {
           q: value,
           t: 'species',
         });
@@ -130,10 +131,4 @@ export default function SpeciesSelect<
       )}
     />
   );
-}
-
-interface SpeciesType {
-  id: string;
-  name: string;
-  scientificName: string;
 }

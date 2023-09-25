@@ -163,3 +163,8 @@ export interface ExtendedScopePlantLocations {
   _links: Links;
   _filters: Filters;
 }
+export interface SpeciesSuggestionType {
+  id: string;
+  name: string;
+  scientificName: string;
+}

@@ -15,15 +15,14 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { handleError, APIError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { Button, TextField } from '@mui/material';
-import { Species } from '../../../common/types/plantLocation';
+import {
+  Species,
+  SpeciesSuggestionType,
+} from '../../../common/types/plantLocation';
 
-interface newSpecies {
+interface NewSpecies {
   aliases: string;
-  scientificSpecies: {
-    id: string;
-    name: string;
-    scientificName: string;
-  } | null;
+  scientificSpecies: SpeciesSuggestionType | null;
 }
 
 export default function MySpeciesForm() {
@@ -49,7 +48,7 @@ export default function MySpeciesForm() {
 
   const fetchMySpecies = async () => {
     try {
-      const result: Species[] = await getAuthenticatedRequest(
+      const result = await getAuthenticatedRequest<Species[]>(
         '/treemapper/species',
         token,
         logoutUser
@@ -73,7 +72,7 @@ export default function MySpeciesForm() {
     }
   };
 
-  const addSpecies = async (species: newSpecies) => {
+  const addSpecies = async (species: NewSpecies) => {
     setIsUploadingData(true);
     const data = {
       aliases:
