@@ -336,7 +336,7 @@ export default function ManageProjects({
     <DashboardView
       title={
         project && projectGUID
-          ? project?.name
+          ? project.name
           : t('manageProjects:addNewProject')
       }
       subtitle={
