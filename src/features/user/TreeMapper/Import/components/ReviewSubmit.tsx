@@ -100,25 +100,21 @@ export default function ReviewSubmit({
                   <p className={styles.gridItemTitle}>{t('sampleTrees')}</p>
                   <div className={styles.gridItemValue}>
                     {plantLocation.samplePlantLocations &&
-                      plantLocation.samplePlantLocations.map(
-                        (spl, index: number) => {
-                          return (
-                            <div key={index} className={styles.value}>
-                              {index + 1}.{' '}
-                              <span className={styles.link}>
-                                {'otherSpecies' in spl && spl.otherSpecies}
-                              </span>
-                              <br />
-                              {spl.tag
-                                ? `${t('maps:tag')} #${spl.tag} • `
-                                : null}
-                              {spl?.measurements?.height}
-                              {t('maps:meterHigh')} • {spl?.measurements?.width}
-                              {t('maps:cmWide')}
-                            </div>
-                          );
-                        }
-                      )}
+                      plantLocation.samplePlantLocations.map((spl, index) => {
+                        return (
+                          <div key={index} className={styles.value}>
+                            {index + 1}.{' '}
+                            <span className={styles.link}>
+                              {'otherSpecies' in spl && spl.otherSpecies}
+                            </span>
+                            <br />
+                            {spl.tag ? `${t('maps:tag')} #${spl.tag} • ` : null}
+                            {spl?.measurements?.height}
+                            {t('maps:meterHigh')} • {spl?.measurements?.width}
+                            {t('maps:cmWide')}
+                          </div>
+                        );
+                      })}
                   </div>
                 </>
               ) : (
