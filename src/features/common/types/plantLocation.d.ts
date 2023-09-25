@@ -163,12 +163,3 @@ export interface ExtendedPlantLocations {
   _links: Links;
   _filters: Filters;
 }
-
-export interface Species {
-  aliases: string;
-  description: string | null;
-  id: string;
-  image: string | null;
-  scientificName: string;
-  scientificSpecies: string;
-}
