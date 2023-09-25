@@ -168,3 +168,13 @@ export interface SpeciesSuggestionType {
   name: string;
   scientificName: string;
 }
+
+export type SampleTree = {
+  plantingDate: Date;
+  treeTag: string;
+  height: string;
+  diameter: string;
+  otherSpecies: string;
+  latitude: string;
+  longitude: string;
+};

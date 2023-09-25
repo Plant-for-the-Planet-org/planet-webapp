@@ -2,7 +2,12 @@ import React, { ReactElement } from 'react';
 import { useTranslation } from 'next-i18next';
 import styles from '../Import.module.scss';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
-import { Controller } from 'react-hook-form';
+import {
+  Control,
+  Controller,
+  FieldArrayWithId,
+  FieldErrors,
+} from 'react-hook-form';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
 import { InputAdornment, MenuItem, SxProps, TextField } from '@mui/material';
 
@@ -11,6 +16,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../../../theme/themeProperties';
 import { PlantLocation } from '../../Treemapper';
+import { SampleTree } from '../../../../common/types/plantLocation';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -29,15 +35,19 @@ const dialogSx: SxProps = {
   },
 };
 
+interface SampleTreeFormData {
+  sampleTrees: SampleTree[];
+}
+
 interface Props {
   index: number;
   remove: Function;
   getValues: Function;
-  control: any;
+  control: Control<SampleTreeFormData>;
   userLang: string;
-  item: any;
-  plantLocation: PlantLocation | null;
-  errors: any;
+  item: FieldArrayWithId<SampleTreeFormData, 'sampleTrees', 'id'>;
+  plantLocation: PlantLocation;
+  errors: FieldErrors<SampleTreeFormData>;
   key: string;
 }
 

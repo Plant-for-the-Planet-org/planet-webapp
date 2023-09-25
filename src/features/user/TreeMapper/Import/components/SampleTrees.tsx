@@ -10,7 +10,10 @@ import Papa from 'papaparse';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { Button } from '@mui/material';
-import { Measurements } from '../../../../common/types/plantLocation';
+import {
+  Measurements,
+  SampleTree,
+} from '../../../../common/types/plantLocation';
 import { Geometry } from '@turf/turf';
 import { PlantLocation } from '../../Treemapper';
 
@@ -20,16 +23,6 @@ interface Props {
   userLang: string;
   setPlantLocation: React.Dispatch<React.SetStateAction<PlantLocation | null>>;
 }
-
-type SampleTree = {
-  plantingDate: Date;
-  treeTag: string;
-  height: string;
-  diameter: string;
-  otherSpecies: string;
-  latitude: string;
-  longitude: string;
-};
 
 type FormData = {
   sampleTrees: SampleTree[];
