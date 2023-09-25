@@ -156,7 +156,7 @@ interface Filters {
   'revision-pending': string;
 }
 
-export interface ExtendedPlantLocations {
+export interface ExtendedScopePlantLocations {
   items: PlantLocation[] | SamplePlantLocation[];
   total: number;
   count: number;

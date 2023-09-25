@@ -11,7 +11,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
 import {
-  ExtendedPlantLocations,
+  ExtendedScopePlantLocations,
   PlantLocation,
   SamplePlantLocation,
 } from '../../common/types/plantLocation';
@@ -40,14 +40,15 @@ function TreeMapper(): ReactElement {
 
     if (next && links?.next) {
       try {
-        const response: ExtendedPlantLocations = await getAuthenticatedRequest(
-          links.next,
-          token,
-          logoutUser,
-          {},
-          undefined,
-          '1.0.4'
-        );
+        const response: ExtendedScopePlantLocations =
+          await getAuthenticatedRequest(
+            links.next,
+            token,
+            logoutUser,
+            {},
+            undefined,
+            '1.0.4'
+          );
         if (response) {
           const newPlantLocations = response?.items;
           for (const itr in newPlantLocations) {
@@ -79,15 +80,16 @@ function TreeMapper(): ReactElement {
       }
     } else {
       try {
-        const response: ExtendedPlantLocations = await getAuthenticatedRequest(
-          '/treemapper/plantLocations?_scope=extended&limit=15',
-          token,
-          logoutUser,
+        const response: ExtendedScopePlantLocations =
+          await getAuthenticatedRequest(
+            '/treemapper/plantLocations?_scope=extended&limit=15',
+            token,
+            logoutUser,
 
-          {},
-          undefined,
-          '1.0.4'
-        );
+            {},
+            undefined,
+            '1.0.4'
+          );
         if (response) {
           const plantLocations = response?.items;
           if (plantLocations?.length === 0) {
