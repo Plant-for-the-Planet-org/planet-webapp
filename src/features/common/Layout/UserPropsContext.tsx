@@ -8,6 +8,7 @@ import React, { FC, useContext } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
 import { User } from '@planet-sdk/common/build/types/user';
 import { SetState } from '../types/common';
+import { Contributions } from '../types/myForest';
 
 interface UserPropsContextInterface {
   contextLoaded: boolean;
@@ -26,6 +27,14 @@ interface UserPropsContextInterface {
   ) => Promise<void>;
   logoutUser: (returnUrl?: string | undefined) => void;
   loadUser: () => Promise<void>;
+  treePlantedProjects: Contributions[];
+  setTreePlantedProjects: SetState<Contributions[]>;
+  conservationProjects: Contributions[];
+  setConservationProjects: SetState<Contributions[]>;
+  isTreePlantedButtonActive: boolean;
+  setIsTreePlantedButtonActive: SetState<boolean>;
+  isConservedButtonActive: boolean;
+  setIsConservedButtonActive: SetState<boolean>;
 }
 
 export const UserPropsContext =
@@ -43,13 +52,22 @@ export const UserPropsProvider: FC = ({ children }) => {
     error,
   } = useAuth0();
 
-  const [contextLoaded, setContextLoaded] = React.useState<boolean>(false);
+  const [contextLoaded, setContextLoaded] = React.useState(false);
   const [token, setToken] = React.useState<string | null>(null);
   const [profile, setUser] = React.useState<User | null>(null);
   const [userLang, setUserLang] = React.useState<string>('en');
   const [isImpersonationModeOn, setIsImpersonationModeOn] =
-    React.useState<boolean>(false);
-
+    React.useState(false);
+  const [treePlantedProjects, setTreePlantedProjects] = React.useState<
+    Contributions[]
+  >([]);
+  const [conservationProjects, setConservationProjects] = React.useState<
+    Contributions[]
+  >([]);
+  const [isTreePlantedButtonActive, setIsTreePlantedButtonActive] =
+    React.useState(false);
+  const [isConservedButtonActive, setIsConservedButtonActive] =
+    React.useState(false);
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
       const userLang = localStorage.getItem('language');
@@ -136,6 +154,14 @@ export const UserPropsProvider: FC = ({ children }) => {
     auth0User: user,
     auth0Error: error,
     loadUser,
+    treePlantedProjects,
+    setTreePlantedProjects,
+    conservationProjects,
+    setConservationProjects,
+    isTreePlantedButtonActive,
+    setIsTreePlantedButtonActive,
+    isConservedButtonActive,
+    setIsConservedButtonActive,
   };
   return (
     <UserPropsContext.Provider value={value}>

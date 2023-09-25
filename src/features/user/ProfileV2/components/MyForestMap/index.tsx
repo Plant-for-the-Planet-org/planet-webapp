@@ -10,8 +10,8 @@ import getMapStyle from '../../../../../utils/maps/getMapStyle';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import TreesPlantedMarkers from './TreesPlantedMarkers';
 import ConservationMarkers from './ConservationMarkers';
-import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 import { ViewportProps } from 'react-map-gl';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 
 const MyForestMap = (): ReactElement => {
   const mapRef: MutableRefObject<null> = useRef(null);
@@ -20,8 +20,7 @@ const MyForestMap = (): ReactElement => {
     sources: {},
     layers: [],
   };
-  const { isConservedButtonActive, isTreePlantedButtonActive } =
-    useProjectProps();
+  const { isConservedButtonActive, isTreePlantedButtonActive } = useUserProps();
   const [mapState, setMapState] = useState({
     mapStyle: EMPTY_STYLE,
     dragPan: true,
@@ -70,19 +69,11 @@ const MyForestMap = (): ReactElement => {
       >
         {(_activeMarker() ||
           (isTreePlantedButtonActive && !isConservedButtonActive)) && (
-          <TreesPlantedMarkers
-            viewport={viewport}
-            setViewport={setViewport}
-            mapRef={mapRef}
-          />
+          <TreesPlantedMarkers viewport={viewport} mapRef={mapRef} />
         )}
         {(_activeMarker() ||
           (!isTreePlantedButtonActive && isConservedButtonActive)) && (
-          <ConservationMarkers
-            viewport={viewport}
-            setViewport={setViewport}
-            mapRef={mapRef}
-          />
+          <ConservationMarkers viewport={viewport} mapRef={mapRef} />
         )}
         <NavigationControl showCompass={false} />
       </MapGL>

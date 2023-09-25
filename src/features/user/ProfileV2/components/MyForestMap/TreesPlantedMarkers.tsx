@@ -7,15 +7,15 @@ import {
   TestClusterProps,
   TestPointProps,
 } from '../../../../common/types/map';
-import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import { ClusterFeature, PointFeature } from 'supercluster';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 
 const TreesPlantedMarkers = ({
   viewport,
   mapRef,
 }: ClusterMarkerProps): ReactElement => {
-  const { treePlantedProjects } = useProjectProps();
+  const { treePlantedProjects } = useUserProps();
   const [clusters, setClusters] = useState<
     | (ClusterFeature<TestClusterProps> | PointFeature<TestPointProps>)[]
     | undefined

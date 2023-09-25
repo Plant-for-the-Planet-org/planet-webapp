@@ -1,14 +1,13 @@
 import { Popup } from 'react-map-gl';
 import { useTranslation } from 'next-i18next';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
-import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { CustomPopupMarkerProps } from '../../../../common/types/map';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 
 const CustomPopupMarker = ({ geoJson, showPopUp }: CustomPopupMarkerProps) => {
   const { t } = useTranslation(['me']);
-  const { isConservedButtonActive, isTreePlantedButtonActive } =
-    useProjectProps();
+  const { isConservedButtonActive, isTreePlantedButtonActive } = useUserProps();
   return (
     <div className={MyForestMapStyle.singleMarkerContainer}>
       {showPopUp && (isConservedButtonActive || isTreePlantedButtonActive) ? (

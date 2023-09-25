@@ -7,9 +7,17 @@ import { EditTargetSvg } from '../../../../../../public/assets/images/ProfilePag
 import AddTargetModal from '../userFeatures/AddTargetModal';
 import ContributedProjectList from './ContributedProjectList';
 import { ReactElement } from 'react';
-import { TreeContributedProjectListProps } from '../../../../common/types/myForest';
+import { Contributions } from '../../../../common/types/myForest';
+import { User } from '@planet-sdk/common';
+import { PublicUser } from '../../../../common/types/user';
 
-const TreeContributedProjectList = ({
+export interface TreeContributedProjectListProps {
+  contribution: Contributions[];
+  userprofile: User | PublicUser;
+  handleFetchNextPage: () => void;
+}
+
+const TreeProjectContributions = ({
   contribution,
   userprofile,
   handleFetchNextPage,
@@ -81,4 +89,4 @@ const TreeContributedProjectList = ({
   );
 };
 
-export default TreeContributedProjectList;
+export default TreeProjectContributions;

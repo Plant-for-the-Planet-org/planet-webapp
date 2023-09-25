@@ -4,19 +4,15 @@ import dynamic from 'next/dynamic';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
-import PlantedTreesButton from '../ProjectDetails/PlantedTreesButton';
-import ConservationButton from '../ProjectDetails/ConservationButton';
-import DonationInfo from '../ProjectDetails/DonationInfo';
-import TreeContributedProjectList from '../ProjectDetails/TreeContributedProjectList';
+import TreeProjectContributions from '../ProjectDetails/TreeProjectContributions';
 import { trpc } from '../../../../../utils/trpc';
-import AreaConservedProjectList from '../ProjectDetails/AreaConservedProjectList';
-import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
+import ConservProjectContributions from '../ProjectDetails/ConservProjectContributions';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { Purpose } from '../../../../../utils/constants/myForest';
 import { Contributions } from '../../../../common/types/myForest';
 import { StatsQueryResult } from '../../../../common/types/myForest';
 import { MyContributionsProps } from '../../../../common/types/map';
-import SwipeLeftIcon from '@mui/icons-material/SwipeLeft';
-import RestoredButton from '../ProjectDetails/RestoredButton';
+import MyContributionCustomButton from '../MicroComponents/CustomButton';
 
 const MyTreesMap = dynamic(() => import('../MyForestMap'), {
   loading: () => <p>loading</p>,
@@ -26,6 +22,7 @@ export default function MyContributions({
   profile,
 }: MyContributionsProps): ReactElement | null {
   const { ready } = useTranslation(['country', 'me']);
+
   const [projectsForTreePlantaion, setProjectsForTreePlantation] = useState<
     Contributions[]
   >([]);
@@ -36,14 +33,13 @@ export default function MyContributions({
   >(undefined);
   const [page, setPage] = useState(0);
   const { setErrors } = useContext(ErrorHandlingContext);
+
   const {
     setConservationProjects,
     setTreePlantedProjects,
-    setIsTreePlantedButtonActive,
     isConservedButtonActive,
-    setIsConservedButtonActive,
     isTreePlantedButtonActive,
-  } = useProjectProps();
+  } = useUserProps();
 
   const _detailInfo = trpc.myForest.stats.useQuery({
     profileId: `${profile.id}`,
@@ -67,6 +63,7 @@ export default function MyContributions({
       },
       { getNextPageParam: (lastPage) => lastPage.nextCursor }
     );
+
   const _contributionData = trpc.myForest.contributions.useInfiniteQuery(
     {
       profileId: `${profile.id}`,
@@ -85,7 +82,7 @@ export default function MyContributions({
     setPage((prev) => prev + 1);
   };
 
-  const _handleErrors = (
+  const _updateStateWithTrpcData = (
     trpcProcedure: any,
     stateUpdaterFunction: any
   ): void => {
@@ -105,11 +102,11 @@ export default function MyContributions({
   };
 
   useEffect(() => {
-    _handleErrors(_contributionData, setProjectsForAreaConservation);
+    _updateStateWithTrpcData(_contributionData, setProjectsForAreaConservation);
   }, [_contributionData.isLoading, _contributionData.data]);
 
   useEffect(() => {
-    _handleErrors(
+    _updateStateWithTrpcData(
       _contributionDataForPlantedtrees,
       setProjectsForTreePlantation
     );
@@ -119,66 +116,37 @@ export default function MyContributions({
   ]);
 
   useEffect(() => {
-    _handleErrors(_conservationGeoJsonData, setConservationProjects);
+    _updateStateWithTrpcData(_conservationGeoJsonData, setConservationProjects);
   }, [_conservationGeoJsonData.isLoading]);
 
   useEffect(() => {
-    _handleErrors(_treePlantedGeoJsonData, setTreePlantedProjects);
+    _updateStateWithTrpcData(_treePlantedGeoJsonData, setTreePlantedProjects);
   }, [_treePlantedGeoJsonData.isLoading]);
 
   useEffect(() => {
-    _handleErrors(_detailInfo, setOthercontributionInfo);
+    _updateStateWithTrpcData(_detailInfo, setOthercontributionInfo);
   }, [_detailInfo.isLoading]);
-
-  const handleClick = () => {
-    if (isTreePlantedButtonActive) {
-      setIsTreePlantedButtonActive(false);
-    } else {
-      if (otherDonationInfo?.treeCount || otherDonationInfo?.squareMeters) {
-        if (
-          otherDonationInfo?.treeCount > 0 ||
-          otherDonationInfo?.squareMeters > 0
-        ) {
-          setIsTreePlantedButtonActive(true);
-          setIsConservedButtonActive(false);
-        }
-      }
-    }
-  };
 
   return ready && otherDonationInfo ? (
     <div className={myForestStyles.mapMainContainer}>
       <MyTreesMap />
-      <div className={myForestStyles.mapButtonMainContainer}>
-        <div className={myForestStyles.mapButtonContainer}>
-          <div
-            className={myForestStyles.treePlantationButtonConatiner}
-            onClick={handleClick}
-          >
-            <PlantedTreesButton plantedTrees={otherDonationInfo?.treeCount} />
-            <RestoredButton restoredArea={otherDonationInfo?.squareMeters} />
-          </div>
-          <ConservationButton conservedArea={otherDonationInfo?.conserved} />
-          <DonationInfo
-            projects={otherDonationInfo?.projects}
-            countries={otherDonationInfo?.countries}
-            donations={otherDonationInfo?.donations}
-          />
-        </div>
-      </div>
-      <div className={myForestStyles.swipeConatiner}>
-        <SwipeLeftIcon />
-      </div>
+      <MyContributionCustomButton
+        plantedTrees={otherDonationInfo?.treeCount}
+        restoredArea={otherDonationInfo?.squareMeters}
+        conservedArea={otherDonationInfo?.conserved}
+        projects={otherDonationInfo?.projects}
+        countries={otherDonationInfo?.countries}
+        donations={otherDonationInfo?.donations}
+      />
       {isTreePlantedButtonActive && !isConservedButtonActive && (
-        <TreeContributedProjectList
+        <TreeProjectContributions
           contribution={projectsForTreePlantaion}
           userprofile={profile}
           handleFetchNextPage={handleFetchNextPageforPlantedTrees}
         />
       )}
-
       {isConservedButtonActive && !isTreePlantedButtonActive && (
-        <AreaConservedProjectList
+        <ConservProjectContributions
           contribution={projectsForAreaConservation}
           handleFetchNextPage={handleFetchNextPage}
         />

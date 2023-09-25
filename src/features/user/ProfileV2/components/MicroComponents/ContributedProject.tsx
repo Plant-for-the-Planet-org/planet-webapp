@@ -29,7 +29,8 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
   return projectInfo ? (
     <div className={myForestStyles.donationDetail}>
       <div className={myForestStyles.image}>
-        {projectInfo?.plantProject !== null ? (
+        {projectInfo?.plantProject !== null &&
+        projectInfo?.plantProject?.image !== null ? (
           <img
             src={getImageUrl(
               'project',
@@ -51,12 +52,12 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
       </div>
       <div className={myForestStyles.projectDetailContainer}>
         <div className={myForestStyles.projectDetail}>
-          <div style={{ maxWidth: '345px' }}>
-            <p className={myForestStyles.projectName}>
+          <div>
+            <div className={myForestStyles.projectName}>
               {projectInfo?.plantProject !== null
                 ? projectInfo.plantProject.name
-                : t('me:registerTrees')}
-            </p>
+                : t('me:registeredTree')}
+            </div>
             {projectInfo?.plantProject !== null && (
               <div>
                 {t('country:' + projectInfo.plantProject.country.toLowerCase())}

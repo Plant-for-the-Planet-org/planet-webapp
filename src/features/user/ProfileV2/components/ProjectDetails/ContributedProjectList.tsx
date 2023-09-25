@@ -1,19 +1,21 @@
 import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import { ReactElement } from 'react';
-import {
-  ContributedProjectListProps,
-  Contributions,
-} from '../../../../common/types/myForest';
+import { Contributions } from '../../../../common/types/myForest';
 import { Button } from '@mui/material';
-import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 import ContributedProject from '../MicroComponents/ContributedProject';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+
+export interface ContributedProjectListProps {
+  handleFetchNextPage: () => void;
+  contributionProjectList: Contributions[];
+}
 
 const ContributedProjectList = ({
   contributionProjectList,
   handleFetchNextPage,
 }: ContributedProjectListProps): ReactElement => {
-  const { isConservedButtonActive } = useProjectProps();
+  const { isConservedButtonActive } = useUserProps();
   const { t } = useTranslation(['me']);
 
   const _isLoadButtonActive = contributionProjectList.some((singlePage) => {

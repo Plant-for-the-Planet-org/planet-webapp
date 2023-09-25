@@ -81,15 +81,6 @@ const ProjectPropsProvider: FC = ({ children }) => {
   const [filtersOpen, setFilterOpen] = useState(false);
   const [purpose, setPurpose] = useState<ProjectPurposeTypes>('trees');
   const [plantLocationsLoaded, setPlantLocationsLoaded] = useState(false);
-  const [treePlantedProjects, setTreePlantedProjects] = useState<
-    Contributions[]
-  >([]);
-  const [conservationProjects, setConservationProjects] = useState<
-    Contributions[]
-  >([]);
-  const [isTreePlantedButtonActive, setIsTreePlantedButtonActive] =
-    useState(false);
-  const [isConservedButtonActive, setIsConservedButtonActive] = useState(false);
   const { embed, showProjectList } = useContext(ParamsContext);
 
   const EMPTY_STYLE = {
@@ -276,14 +267,6 @@ const ProjectPropsProvider: FC = ({ children }) => {
         setPurpose,
         plantLocationsLoaded,
         setPlantLocationsLoaded,
-        treePlantedProjects,
-        setTreePlantedProjects,
-        conservationProjects,
-        setConservationProjects,
-        isTreePlantedButtonActive,
-        setIsTreePlantedButtonActive,
-        isConservedButtonActive,
-        setIsConservedButtonActive,
       }}
     >
       {children}

@@ -1,12 +1,15 @@
 import { PlantedTreesSvg } from '../../../../../../public/assets/images/ProfilePageIcons';
 import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
-import { PlantedTreesButtonProps } from '../../../../common/types/myForest';
 import { CircularProgress } from '@mui/material';
-import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+
+export interface PlantedTreesButtonProps {
+  plantedTrees: number | null;
+}
 
 const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
-  const { isTreePlantedButtonActive } = useProjectProps();
+  const { isTreePlantedButtonActive } = useUserProps();
   const { t } = useTranslation(['donate']);
 
   return (

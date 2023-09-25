@@ -6,15 +6,18 @@ import {
 import { ReactElement } from 'react';
 import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
-import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { CircularProgress } from '@mui/material';
-import { RestoredButtonProps } from '../../../../common/types/myForest';
+
+export interface RestoredButtonProps {
+  restoredArea: number | null;
+}
 
 const RestoredButton = ({
   restoredArea,
 }: RestoredButtonProps): ReactElement => {
   const { t } = useTranslation(['donate']);
-  const { isTreePlantedButtonActive } = useProjectProps();
+  const { isTreePlantedButtonActive } = useUserProps();
 
   return (
     <div

@@ -1,5 +1,4 @@
 import { Button } from '@mui/material';
-import TwitterIcon from '@mui/icons-material/Twitter';
 import IconButton from '@mui/material/IconButton';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -8,21 +7,28 @@ import tenantConfig from '../../../../../../tenant.config';
 import { useTranslation } from 'next-i18next';
 import myProfilestyle from '../../styles/MyProfile.module.scss';
 import { ReactElement } from 'react';
-import { SharePlatformsProps } from '../../../../common/types/profile';
+import { SetState } from '../../../../common/types/common';
+import { User } from '@planet-sdk/common';
+import { PublicUser } from '../../../../common/types/user';
 
 const config = tenantConfig();
 
+export interface SharePlatformsProps {
+  setShowSocialButton: SetState<boolean>;
+  userProfile: User | PublicUser;
+}
+
 const SharePlatforms = ({
   setShowSocialButton,
-  userprofile,
+  userProfile,
 }: SharePlatformsProps): ReactElement => {
   const { t, ready } = useTranslation(['donate']);
-  const linkToShare = `${config.tenantURL}/t/${userprofile?.slug}`;
+  const linkToShare = `${config.tenantURL}/t/${userProfile?.slug}`;
   const textToShare = ready
-    ? t('donate:textToShare', { name: userprofile?.displayName })
+    ? t('donate:textToShare', { name: userProfile?.displayName })
     : '';
   const textToShareLinkedin = ready
-    ? t('donate:textToShareLinkedin', { name: userprofile?.displayName })
+    ? t('donate:textToShareLinkedin', { name: userProfile?.displayName })
     : '';
   const handleShare = (shareUrl: string) => {
     window.open(shareUrl, '_blank');
@@ -58,7 +64,7 @@ const SharePlatforms = ({
           )
         }
       />
-      {userprofile?.isPrivate && (
+      {userProfile?.isPrivate && (
         <LinkedInIcon
           sx={{ color: '#68B030', cursor: 'pointer' }}
           onClick={() =>

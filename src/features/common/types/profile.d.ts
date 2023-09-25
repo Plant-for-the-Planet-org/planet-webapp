@@ -4,14 +4,9 @@ import { PublicUser } from "./user";
 
 export interface UserFeaturesProps {
     handleShare: () => void;
-    userprofile: User;
+    userProfile: User | PublicUser;
     showSocialButton: boolean;
     setShowSocialButton: SetState<boolean>;
-  }
-
-export interface SharePlatformsProps {
-    setShowSocialButton: SetState<boolean>;
-    userprofile: User;
   }
 
  export interface ProfileProps {

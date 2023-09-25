@@ -351,6 +351,7 @@
         gap: 30px;
         padding-left: 0px;
         padding-right: 0px;
+        min-height: 185px;
         @include xsPhoneView {
             height: max-content;
             flex-direction: column;
@@ -421,11 +422,14 @@
     }
     @include smTabletView {
         flex-direction: row;
-        gap: 67px
+        gap: 67px;
+        justify-content: flex-start;
+        padding-bottom: 25px;
     }
     @include  mdTabletView {
         flex-direction: column;
-        gap: 67px
+        gap: 67px;
+        padding-bottom: 0px
     }
 }
 
@@ -445,13 +449,13 @@
     display: flex;
     justify-content: center;
     gap: 25px;
-    padding-bottom: 25px;
     padding-top: 20px;
     flex-direction: row;
     @include xsPhoneView {
         gap : 10px;
         padding-top: 0px;
         flex-direction: column;
+        padding-bottom: 25px;
     }
     @include smTabletView {
         flex-direction: column;
@@ -489,7 +493,6 @@
     }
     @include mdTabletView {
         font-size: 16px;
-        margin-top: 6px;
     }
     @include lgLaptopView {
         font-size: 24px;
@@ -596,6 +599,12 @@
     padding-left: 30px;
     @include xsPhoneView {
         padding-left: 90px;
+    }
+    @include smTabletView {
+        padding-left: 90px;
+    }
+    @include mdTabletView {
+       padding-left: 30px;
     }
 }
 

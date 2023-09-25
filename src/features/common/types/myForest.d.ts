@@ -1,7 +1,5 @@
-
-import { User } from '@planet-sdk/common';
 import { Geometry } from '@turf/turf';
-import { PublicUser } from './user';
+
 
 export interface StatsParam {
   profileId: string;
@@ -52,11 +50,6 @@ export interface Contributions {
   plantProject: PlantProject;
 }
 
-enum Purpose {
-  TREES = 'trees',
-  CONSERVATION = 'conservation',
-}
-
 interface Properties {
   cluster: boolean;
   purpose: string;
@@ -84,10 +77,6 @@ interface Tpo {
   name: string | null;
 }
 
-export interface ContributedProjectListProps {
-  handleFetchNextPage: () => void;
-  contributionProjectList: Contributions[];
-}
 
 export interface DonationInfoProps {
   projects: number | null;
@@ -95,22 +84,7 @@ export interface DonationInfoProps {
   donations: number | null;
 }
 
-export interface PlantedTreesButtonProps {
-  plantedTrees: number | null;
-}
-export interface ConservationButtonProps {
-  conservedArea: number | null;
-}
-export interface TreeContributedProjectListProps {
-  contribution: Contributions[];
-  userprofile: User | PublicUser;
-  handleFetchNextPage: () => void;
-}
 
-export interface AreaConservedProjectListProps {
-  contribution: Contributions[];
-  handleFetchNextPage: () => void;
-}
 
 export interface StatsQueryResult {
   treeCount: number;
@@ -140,8 +114,4 @@ export interface ContributionsGeoJsonQueryResult {
   startDate: string;
   endDate: string;
   totalContribution: number;
-}
-
-export interface RestoredButtonProps {
-  restoredArea : number | null;
 }

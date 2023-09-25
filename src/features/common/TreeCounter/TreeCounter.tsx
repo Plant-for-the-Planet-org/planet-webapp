@@ -68,16 +68,18 @@ export default function TpoProfile(props: any) {
           <PlantedTressBlackSvg color={'#4F4F4F'} />
         </div>
         <div className={treeCounterStyles.dataContainer}>
-          <div>
-            {localizedAbbreviatedNumber(
-              i18n.language,
-              Number(props.planted),
-              1
-            )}
-          </div>
-          {props?.target && <div>{'of'}</div>}
+          {props?.planted && (
+            <div>
+              {localizedAbbreviatedNumber(
+                i18n.language,
+                Number(props.planted),
+                1
+              )}
+            </div>
+          )}
 
-          {props?.target ? (
+          {props?.target !== 0 && <div>{'of'}</div>}
+          {props?.target !== 0 && (
             <div>
               {localizedAbbreviatedNumber(
                 i18n.language,
@@ -85,7 +87,7 @@ export default function TpoProfile(props: any) {
                 1
               )}
             </div>
-          ) : null}
+          )}
         </div>
         <div style={{ fontSize: '24px' }}>{t('me:treesPlanted')}</div>
       </div>

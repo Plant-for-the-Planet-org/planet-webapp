@@ -2,9 +2,14 @@ import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import ContributedProjectList from './ContributedProjectList';
 import { ReactElement } from 'react';
-import { AreaConservedProjectListProps } from '../../../../common/types/myForest';
+import { Contributions } from '../../../../common/types/myForest';
 
-const AreaConservedProjectList = ({
+export interface AreaConservedProjectListProps {
+  contribution: Contributions[];
+  handleFetchNextPage: () => void;
+}
+
+const ConservProjectContributions = ({
   contribution,
   handleFetchNextPage,
 }: AreaConservedProjectListProps): ReactElement => {
@@ -30,4 +35,4 @@ const AreaConservedProjectList = ({
   );
 };
 
-export default AreaConservedProjectList;
+export default ConservProjectContributions;

@@ -171,14 +171,7 @@ interface ProjectPropsContextInterface {
   setPurpose: SetState<ProjectPurposeTypes>;
   plantLocationsLoaded: boolean;
   setPlantLocationsLoaded: SetState<boolean>;
-  treePlantedProjects: Contributions[];
-  setTreePlantedProjects: SetState<Contributions[]>
-  conservationProjects: Contributions[];
-  setConservationProjects: SetState<Contributions[]>
-  isTreePlantedButtonActive: boolean;
-  setIsTreePlantedButtonActive: SetState<boolean>
-  isConservedButtonActive: boolean;
-  setIsConservedButtonActive: SetState<boolean>
+ 
 }
 
 export default ProjectPropsContextInterface;
