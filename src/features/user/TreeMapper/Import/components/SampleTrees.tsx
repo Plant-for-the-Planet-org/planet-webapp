@@ -10,17 +10,15 @@ import Papa from 'papaparse';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { Button } from '@mui/material';
-import { Treemapper } from '../../Treemapper';
 import { Measurements } from '../../../../common/types/plantLocation';
 import { Geometry } from '@turf/turf';
+import { PlantLocation } from '../../Treemapper';
 
 interface Props {
   handleNext: Function;
-  plantLocation: Treemapper.PlantLocation | null;
+  plantLocation: PlantLocation | null;
   userLang: string;
-  setPlantLocation: React.Dispatch<
-    React.SetStateAction<Treemapper.PlantLocation | null>
-  >;
+  setPlantLocation: React.Dispatch<React.SetStateAction<PlantLocation | null>>;
 }
 
 type SampleTree = {

@@ -30,7 +30,6 @@ import themeProperties from '../../../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { MapProject } from '../../../../common/types/ProjectPropsContextInterface';
-import { Treemapper } from '../../Treemapper';
 import {
   FeatureCollection,
   GeoJsonProperties,
@@ -38,6 +37,7 @@ import {
   GeometryObject,
 } from 'geojson';
 import { Species } from '../../../../common/types/plantLocation';
+import { PlantLocation } from '../../Treemapper';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -60,9 +60,9 @@ interface SpeciesProps {
   index: number;
   t: Function;
   remove: Function;
-  errors: FieldErrors<Treemapper.PlantLocation>;
-  item: FieldArrayWithId<Treemapper.PlantLocation, 'plantedSpecies', 'id'>;
-  control: Control<Treemapper.PlantLocation>;
+  errors: FieldErrors<PlantLocation>;
+  item: FieldArrayWithId<PlantLocation, 'plantedSpecies', 'id'>;
+  control: Control<PlantLocation>;
 }
 
 function PlantedSpecies({

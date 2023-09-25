@@ -17,7 +17,7 @@ import dynamic from 'next/dynamic';
 import theme from '../../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { Treemapper } from '../Treemapper';
+import { PlantLocation } from '../Treemapper';
 
 const Stepper = styled(MuiStepper)({
   '&': {
@@ -57,13 +57,13 @@ export default function ImportData(): ReactElement {
   const [errorMessage, setErrorMessage] = React.useState('');
   const steps = getSteps();
   const [plantLocation, setPlantLocation] =
-    React.useState<Treemapper.PlantLocation | null>(null);
+    React.useState<PlantLocation | null>(null);
   const [userLang, setUserLang] = React.useState('en');
   const [geoJson, setGeoJson] = React.useState(null);
 
   const fetchPlantLocation = async (id: string) => {
     try {
-      const result: Treemapper.PlantLocation = await getAuthenticatedRequest(
+      const result: PlantLocation = await getAuthenticatedRequest(
         `/treemapper/plantLocations/${id}?_scope=extended`,
         token,
         logoutUser
