@@ -14,6 +14,16 @@ import { StatsQueryResult } from '../../../../common/types/myForest';
 import { MyContributionsProps } from '../../../../common/types/map';
 import MyContributionCustomButton from '../MicroComponents/CustomButton';
 
+const A_DAY_IN_MS = 1000 * 60 * 60 * 24;
+
+const queryFetchOptions = {
+  refetchOnWindowFocus: false,
+  staleTime: A_DAY_IN_MS,
+  retry: false,
+  refetchOnMount: false,
+  refetchOnReconnect: false,
+};
+
 const MyTreesMap = dynamic(() => import('../MyForestMap'), {
   loading: () => <p>loading</p>,
 });
@@ -41,18 +51,36 @@ export default function MyContributions({
     isTreePlantedButtonActive,
   } = useUserProps();
 
-  const _detailInfo = trpc.myForest.stats.useQuery({
-    profileId: `${profile.id}`,
-  });
-  const _conservationGeoJsonData = trpc.myForest.contributionsGeoJson.useQuery({
-    profileId: `${profile.id}`,
-    purpose: Purpose.CONSERVATION,
-  });
+  const _detailInfo = trpc.myForest.stats.useQuery(
+    {
+      profileId: `${profile.id}`,
+    },
+    {
+      enabled: !!profile.id,
+      ...queryFetchOptions,
+    }
+  );
+  const _conservationGeoJsonData = trpc.myForest.contributionsGeoJson.useQuery(
+    {
+      profileId: `${profile.id}`,
+      purpose: Purpose.CONSERVATION,
+    },
+    {
+      enabled: !!profile.id,
+      ...queryFetchOptions,
+    }
+  );
 
-  const _treePlantedGeoJsonData = trpc.myForest.contributionsGeoJson.useQuery({
-    profileId: `${profile.id}`,
-    purpose: Purpose.TREES,
-  });
+  const _treePlantedGeoJsonData = trpc.myForest.contributionsGeoJson.useQuery(
+    {
+      profileId: `${profile.id}`,
+      purpose: Purpose.TREES,
+    },
+    {
+      enabled: !!profile.id,
+      ...queryFetchOptions,
+    }
+  );
 
   const _contributionDataForPlantedtrees =
     trpc.myForest.contributions.useInfiniteQuery(
@@ -61,7 +89,11 @@ export default function MyContributions({
         limit: 15,
         purpose: Purpose.TREES,
       },
-      { getNextPageParam: (lastPage) => lastPage.nextCursor }
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+        enabled: !!profile.id,
+        ...queryFetchOptions,
+      }
     );
 
   const _contributionData = trpc.myForest.contributions.useInfiniteQuery(
@@ -70,7 +102,11 @@ export default function MyContributions({
       limit: 15,
       purpose: Purpose.CONSERVATION,
     },
-    { getNextPageParam: (lastPage) => lastPage.nextCursor }
+    {
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+      enabled: !!profile.id,
+      ...queryFetchOptions,
+    }
   );
 
   const handleFetchNextPage = (): void => {
