@@ -61,7 +61,7 @@ export default function SpeciesSelect<
           q: value,
           t: 'species',
         });
-        if (res) {
+        if (res && res.length > 0) {
           const species = res.map((item) => ({
             id: item.id,
             name: item.name,

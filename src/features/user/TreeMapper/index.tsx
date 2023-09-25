@@ -40,8 +40,8 @@ function TreeMapper(): ReactElement {
 
     if (next && links?.next) {
       try {
-        const response: ExtendedScopePlantLocations =
-          await getAuthenticatedRequest(
+        const response =
+          await getAuthenticatedRequest<ExtendedScopePlantLocations>(
             links.next,
             token,
             logoutUser,
@@ -49,7 +49,7 @@ function TreeMapper(): ReactElement {
             undefined,
             '1.0.4'
           );
-        if (response) {
+        if (response.items) {
           const newPlantLocations = response?.items;
           for (const itr in newPlantLocations) {
             if (Object.prototype.hasOwnProperty.call(newPlantLocations, itr)) {
@@ -80,8 +80,8 @@ function TreeMapper(): ReactElement {
       }
     } else {
       try {
-        const response: ExtendedScopePlantLocations =
-          await getAuthenticatedRequest(
+        const response =
+          await getAuthenticatedRequest<ExtendedScopePlantLocations>(
             '/treemapper/plantLocations?_scope=extended&limit=15',
             token,
             logoutUser,
@@ -90,7 +90,7 @@ function TreeMapper(): ReactElement {
             undefined,
             '1.0.4'
           );
-        if (response) {
+        if (response.items) {
           const plantLocations = response?.items;
           if (plantLocations?.length === 0) {
             setPlantLocations(null);
