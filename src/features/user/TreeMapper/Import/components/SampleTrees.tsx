@@ -11,6 +11,8 @@ import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { Button } from '@mui/material';
 import { Treemapper } from '../../Treemapper';
+import { Measurements } from '../../../../common/types/plantLocation';
+import { Geometry } from '@turf/turf';
 
 interface Props {
   handleNext: Function;
@@ -90,17 +92,7 @@ export default function SampleTrees({
   const { token, logoutUser } = useUserProps();
 
   const uploadSampleTree = async (
-    sampleTree: {
-      type: string;
-      captureMode: string;
-      geometry: { coordinates: number[]; type: string };
-      plantDate: string;
-      registrationDate: string;
-      measurements: { height: number; width: number };
-      tag: string;
-      otherSpecies: string;
-      parent: string | undefined;
-    },
+    sampleTree: SampleTreeRequestData,
     index: number
   ) => {
     const newStatus = [...uploadStatus];
@@ -296,4 +288,16 @@ export default function SampleTrees({
       </div>
     </>
   );
+}
+
+interface SampleTreeRequestData {
+  type: string;
+  captureMode: string;
+  geometry: Geometry;
+  plantDate: string;
+  registrationDate: string;
+  measurements: Measurements;
+  tag: string;
+  otherSpecies: string;
+  parent: string | undefined;
 }
