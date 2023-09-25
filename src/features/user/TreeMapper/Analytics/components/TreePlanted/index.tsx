@@ -157,8 +157,18 @@ export const TreePlanted = () => {
     xaxis: {
       labels: {
         rotate: -90,
-        formatter: function (value: string) {
-          return value ? value : '';
+        formatter: function (
+          value:
+            | DaysCategories
+            | WeeksCategories
+            | MonthsCategories
+            | YearsCategories
+            | string
+        ) {
+          if (typeof value === 'string') {
+            return value; // Return the string value directly
+          }
+          return value ? value.label : '';
         },
       },
       categories: [],
