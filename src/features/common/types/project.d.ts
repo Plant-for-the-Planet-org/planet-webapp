@@ -5,7 +5,6 @@ import {
   EcosystemTypes,
   LandOwnershipTypes,
   OwnershipTypes,
-  SurvivalRateStatus,
   ProjectExpense,
   CountryCode,
   TreeProjectExtended,
