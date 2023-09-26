@@ -1,13 +1,13 @@
 /* eslint-disable no-use-before-define */
 import React from 'react';
-import { postRequest } from '../../../../../utils/apiRequests/api';
+import { postRequest } from '../../../../utils/apiRequests/api';
 import { Controller, Control, FieldValues, FieldPath } from 'react-hook-form';
 import { Autocomplete, TextField } from '@mui/material';
 
 import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
-import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { SpeciesSuggestionType } from '../../../../common/types/plantLocation';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { SpeciesSuggestionType } from '../../../common/types/plantLocation';
 
 interface Props<
   TFieldValues extends FieldValues,

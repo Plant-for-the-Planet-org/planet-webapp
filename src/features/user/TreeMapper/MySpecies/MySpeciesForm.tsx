@@ -7,7 +7,7 @@ import {
   postAuthenticatedRequest,
 } from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import SpeciesSelect from '../Import/components/SpeciesAutoComplete';
+import SpeciesSelect from './SpeciesAutoComplete';
 import styles from './MySpecies.module.scss';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
