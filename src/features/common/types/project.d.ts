@@ -109,25 +109,25 @@ export interface Project {
   revisionPeriodicityLevel: any;
 }
 
-export interface CertificateScopeProjects extends ProfileProject {
+export type CertificateScopeProjects = ProfileProject & {
   _scope: string;
   certificates: Certificate[];
-}
+};
 
-export interface ImagesScopeProjects extends ProfileProject {
+export type ImagesScopeProjects = ProfileProject & {
   _scope: string;
   images: UploadImage[];
-}
+};
 
-export interface ExpensesScopeProjects extends ProfileProject {
+export type ExpensesScopeProjects = ProfileProject & {
   _scope: string;
   expenses: ProjectExpense[];
-}
+};
 
-export interface SitesScopeProjects extends ProfileProject {
+export type SitesScopeProjects = ProfileProject & {
   _scope: string;
   sites: Site[];
-}
+};
 interface Units {
   tree?: number;
   m2?: number;
