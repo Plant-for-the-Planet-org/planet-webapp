@@ -66,48 +66,6 @@ export interface MetaData {
   socialBenefits?: Nullable<string>;
   startingProtectionYear?: Nullable<number>;
 }
-export interface Project {
-  name: string;
-  countTarget: number;
-  survivalRate: any;
-  unitCost: number;
-  currency: string;
-  country: string;
-  description: string;
-  videoUrl: string;
-  metadata: MetaData;
-  id: string;
-  website: string;
-  publish: boolean;
-  allowDonations: boolean;
-  taxDeductibleCountries: string[];
-  slug: string;
-  purpose: string;
-  sites: Site[];
-  classification: string;
-  image: string;
-  images: UploadImage[];
-  isFeatured: boolean;
-  isVerified: boolean;
-  verificationStatus: string;
-  acceptDonations: boolean;
-  geoLongitude: number;
-  geoLatitude: number;
-  expenses: ProjectExpense[];
-  reviewRequested: boolean;
-  isApproved: boolean;
-  isTopProject: boolean;
-  plantingSeasons: string[];
-  siteOwnerType: string[];
-  enablePlantLocations: boolean;
-  survivalRateStatus: SurvivalRateStatus;
-  treeCost: number;
-  visitorAssistance: boolean;
-  firstTreePlanted: number;
-  acquisitionYear: number;
-  intensity: any;
-  revisionPeriodicityLevel: any;
-}
 
 export type CertificateScopeProjects = ProfileProject & {
   _scope: string;
