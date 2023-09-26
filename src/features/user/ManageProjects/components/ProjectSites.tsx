@@ -72,7 +72,7 @@ function EditSite({
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm();
+  } = useForm<ProjectSitesFormData>();
   const [geoJson, setGeoJson] = React.useState<GeoJson | null>(geoJsonProp);
   const [geoJsonError, setGeoJsonError] = React.useState<boolean>(false);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
@@ -91,7 +91,7 @@ function EditSite({
     },
   };
 
-  const editProjectSite = async (data: any) => {
+  const editProjectSite = async (data: ProjectSitesFormData) => {
     if (geoJson && geoJson.features && geoJson.features.length !== 0) {
       setIsUploadingData(true);
       const submitData = {
