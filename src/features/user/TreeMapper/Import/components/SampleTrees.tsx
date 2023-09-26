@@ -63,9 +63,11 @@ export default function SampleTrees({
       reader.onerror = () => console.log('file reading has failed');
       reader.onload = (event) => {
         const csv = event.target?.result;
+        if (typeof csv !== 'string') return;
         Papa.parse(csv, {
           header: true,
           complete: (results) => {
+            //validation for csv file needs to be added
             const resultsData: SampleTree[] = results.data;
             const sampleTrees: SampleTree[] = resultsData.map((sampleTree) => {
               return {
