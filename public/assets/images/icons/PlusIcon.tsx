@@ -1,14 +1,10 @@
 import React, { ReactElement } from 'react';
-
-interface Props {
-  color?: string;
-  width?: string;
-}
+import { IconProps } from '../../../../src/features/common/types/common';
 
 export default function PlusIcon({
   color = '#333',
   width = '29',
-}: Props): ReactElement {
+}: IconProps): ReactElement {
   return (
     <svg
       width={width}
