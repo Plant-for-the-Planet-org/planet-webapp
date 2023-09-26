@@ -154,7 +154,7 @@ function PlantedSpecies({
 interface Props {
   handleNext: () => void;
   userLang: string;
-  plantLocation: Treemapper.PlantLocation | null;
+  plantLocation: PlantLocation | null;
   setPlantLocation: Function;
   geoJson: Geometry | null;
   setGeoJson: Function;
@@ -321,7 +321,7 @@ export default function PlantingLocation({
     onFileDialogCancel: () => setIsUploadingData(false),
   });
 
-  const onSubmit = async (data: Treemapper.PlantLocation) => {
+  const onSubmit = async (data: PlantLocation) => {
     if (geoJson) {
       setIsUploadingData(true);
       const submitData = {

@@ -113,22 +113,26 @@ export default function ImportData(): ReactElement {
           />
         );
       case 1:
-        return (
+        return plantLocation ? (
           <SampleTrees
             handleNext={handleNext}
             plantLocation={plantLocation}
             setPlantLocation={setPlantLocation}
             userLang={userLang}
           />
+        ) : (
+          <p> {t('common:some_error')}</p>
         );
       case 2:
-        return (
+        return plantLocation ? (
           <ReviewSubmit
             plantLocation={plantLocation}
             handleBack={handleBack}
             errorMessage={errorMessage}
             setErrorMessage={setErrorMessage}
           />
+        ) : (
+          <p> {t('common:some_error')}</p>
         );
       default:
         return (

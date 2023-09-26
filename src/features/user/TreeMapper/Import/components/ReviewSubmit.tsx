@@ -7,7 +7,7 @@ import { Button } from '@mui/material';
 import { PlantLocation } from '../../Treemapper';
 
 interface Props {
-  plantLocation: PlantLocation | null;
+  plantLocation: PlantLocation;
   handleBack: () => void;
   errorMessage: string;
   setErrorMessage: (errorMessage: string) => void;

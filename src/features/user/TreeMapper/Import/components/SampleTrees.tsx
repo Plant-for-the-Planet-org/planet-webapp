@@ -19,7 +19,7 @@ import { PlantLocation } from '../../Treemapper';
 
 interface Props {
   handleNext: Function;
-  plantLocation: PlantLocation | null;
+  plantLocation: PlantLocation;
   userLang: string;
   setPlantLocation: React.Dispatch<React.SetStateAction<PlantLocation | null>>;
 }
