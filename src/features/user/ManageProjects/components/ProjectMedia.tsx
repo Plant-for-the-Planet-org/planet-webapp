@@ -31,7 +31,9 @@ import { ProjectCreationTabs } from '..';
 import {
   ProjectMediaProps,
   UploadImage,
-  Project,
+  ProfileProjectTrees,
+  ProfileProjectConservation,
+  ImagesScopeProjects,
 } from '../../../common/types/project';
 
 export default function ProjectMedia({
@@ -41,7 +43,6 @@ export default function ProjectMedia({
   projectDetails,
   setProjectDetails,
   projectGUID,
-  handleReset,
 }: ProjectMediaProps): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
@@ -65,7 +66,7 @@ export default function ProjectMedia({
     try {
       // Fetch images of the project
       if (projectGUID && token) {
-        const result = await getAuthenticatedRequest<Project>(
+        const result = await getAuthenticatedRequest<ImagesScopeProjects>(
           `/app/profile/projects/${projectGUID}?_scope=images`,
           token,
           logoutUser
@@ -112,13 +113,6 @@ export default function ProjectMedia({
       setErrors(handleError(err as APIError));
     }
   };
-
-  useEffect(() => {
-    if (!projectGUID || projectGUID === '') {
-      handleReset(ready ? t('manageProjects:resetMessage') : '');
-    }
-  });
-
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       acceptedFiles.forEach((file) => {
@@ -176,12 +170,9 @@ export default function ProjectMedia({
     };
 
     try {
-      const res = await putAuthenticatedRequest<Project>(
-        `/app/projects/${projectGUID}`,
-        submitData,
-        token,
-        logoutUser
-      );
+      const res = await putAuthenticatedRequest<
+        ProfileProjectTrees | ProfileProjectConservation
+      >(`/app/projects/${projectGUID}`, submitData, token, logoutUser);
       setProjectDetails(res);
       setIsUploadingData(false);
       handleNext(ProjectCreationTabs.DETAILED_ANALYSIS);
