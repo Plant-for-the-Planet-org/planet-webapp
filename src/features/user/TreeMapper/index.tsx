@@ -55,7 +55,7 @@ function TreeMapper(): ReactElement {
             if (Object.prototype.hasOwnProperty.call(newPlantLocations, itr)) {
               const ind = Number(itr);
               const location = newPlantLocations[ind];
-              if (location.type === 'multi' && 'sampleTrees' in location) {
+              if (location.type === 'multi') {
                 location.sampleTrees = [];
                 for (const key in newPlantLocations) {
                   if (
@@ -98,7 +98,7 @@ function TreeMapper(): ReactElement {
             for (const itr in plantLocations) {
               if (Object.prototype.hasOwnProperty.call(plantLocations, itr)) {
                 const location = plantLocations[itr];
-                if (location.type === 'multi' && 'sampleTrees' in location) {
+                if (location.type === 'multi') {
                   location.sampleTrees = [];
                   for (const key in plantLocations) {
                     if (
