@@ -1,5 +1,6 @@
+import {  ViewState } from "../features/common/types/map";
 import { TestPointProps, TestClusterProps,  Bound, } from "../features/common/types/map";
-import Supercluster from 'supercluster';
+import Supercluster,  { PointFeature } from 'supercluster';
 
 const _clusterConfig = {
     radius: 40,
@@ -15,7 +16,7 @@ const _clusterConfig = {
     },
   };
 
-  export const _getClusterGeojson = (viewState,mapRef,geoJson) => {
+  export const _getClusterGeojson = (viewState : ViewState,mapRef: any,geoJson: PointFeature<TestPointProps>[]) => {
     const supercluster = new Supercluster(_clusterConfig);
     supercluster.load(geoJson);
     const zoom = viewState?.zoom;
@@ -30,7 +31,7 @@ const _clusterConfig = {
       ];
       if (zoom) {
         const _clusters = supercluster?.getClusters(bound, zoom);
-        return _clusters;
+        return _clusters ;
       }
     }
   };

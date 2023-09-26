@@ -8,7 +8,8 @@ import React, { FC, useContext } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
 import { User } from '@planet-sdk/common/build/types/user';
 import { SetState } from '../types/common';
-import { Contributions } from '../types/myForest';
+import { PointFeature } from 'supercluster';
+import { TestPointProps } from '../types/map';
 
 interface UserPropsContextInterface {
   contextLoaded: boolean;
@@ -27,10 +28,10 @@ interface UserPropsContextInterface {
   ) => Promise<void>;
   logoutUser: (returnUrl?: string | undefined) => void;
   loadUser: () => Promise<void>;
-  treePlantedProjects: Contributions[];
-  setTreePlantedProjects: SetState<Contributions[]>;
-  conservationProjects: Contributions[];
-  setConservationProjects: SetState<Contributions[]>;
+  treePlantedProjects: PointFeature<TestPointProps>[];
+  setTreePlantedProjects: SetState<PointFeature<TestPointProps>[]>;
+  conservationProjects: PointFeature<TestPointProps>[];
+  setConservationProjects: SetState<PointFeature<TestPointProps>[]>;
   isTreePlantedButtonActive: boolean;
   setIsTreePlantedButtonActive: SetState<boolean>;
   isConservedButtonActive: boolean;
@@ -59,10 +60,10 @@ export const UserPropsProvider: FC = ({ children }) => {
   const [isImpersonationModeOn, setIsImpersonationModeOn] =
     React.useState(false);
   const [treePlantedProjects, setTreePlantedProjects] = React.useState<
-    Contributions[]
+    PointFeature<TestPointProps>[]
   >([]);
   const [conservationProjects, setConservationProjects] = React.useState<
-    Contributions[]
+    PointFeature<TestPointProps>[]
   >([]);
   const [isTreePlantedButtonActive, setIsTreePlantedButtonActive] =
     React.useState(false);

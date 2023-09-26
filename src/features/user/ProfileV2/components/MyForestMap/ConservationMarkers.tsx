@@ -1,15 +1,15 @@
 import { ConservAreaClusterMarker } from './ClusterMarker';
 import SingleMarker from './SingleMarker';
 import { useEffect, useState, ReactElement } from 'react';
-import { useProjectProps } from '../../../../common/Layout/ProjectPropsContext';
 import { ClusterMarkerProps, Cluster } from '../../../../common/types/map';
 import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 
 const ConservationMarker = ({
   viewport,
   mapRef,
 }: ClusterMarkerProps): ReactElement => {
-  const { conservationProjects } = useProjectProps();
+  const { conservationProjects } = useUserProps();
   const [clusters, setClusters] = useState<Cluster[] | undefined>(undefined);
   const { viewState } = viewport;
 
@@ -31,10 +31,12 @@ const ConservationMarker = ({
             return (
               <ConservAreaClusterMarker key={key} geoJson={singleCluster} />
             );
+          } else {
+            return <SingleMarker key={key} geoJson={singleCluster} />;
           }
         })}
 
-      {clusters &&
+      {/* {clusters &&
         clusters.map((singleCluster, key) => {
           if (
             !singleCluster.id &&
@@ -42,7 +44,7 @@ const ConservationMarker = ({
           ) {
             return <SingleMarker key={key} geoJson={singleCluster} />;
           }
-        })}
+        })} */}
     </>
   );
 };

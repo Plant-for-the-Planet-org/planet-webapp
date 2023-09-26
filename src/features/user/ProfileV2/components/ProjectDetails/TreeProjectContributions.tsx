@@ -7,19 +7,11 @@ import { EditTargetSvg } from '../../../../../../public/assets/images/ProfilePag
 import AddTargetModal from '../userFeatures/AddTargetModal';
 import ContributedProjectList from './ContributedProjectList';
 import { ReactElement } from 'react';
-import { Contributions } from '../../../../common/types/myForest';
-import { User } from '@planet-sdk/common';
-import { PublicUser } from '../../../../common/types/user';
-
-export interface TreeContributedProjectListProps {
-  contribution: Contributions[];
-  userprofile: User | PublicUser;
-  handleFetchNextPage: () => void;
-}
+import { TreeContributedProjectListProps } from '../../../../common/types/myForest';
 
 const TreeProjectContributions = ({
   contribution,
-  userprofile,
+  userProfile,
   handleFetchNextPage,
 }: TreeContributedProjectListProps): ReactElement => {
   const { t } = useTranslation(['me']);
@@ -32,21 +24,22 @@ const TreeProjectContributions = ({
   const handleAddTargetModalClose = (): void => {
     setIsAddTargetModalOpen(false);
   };
+
   return (
     <div className={myForestStyles.mainContainer}>
       <div className={myForestStyles.treeCounterContainer}>
         <div className={myForestStyles.treeCounter}>
           {' '}
-          {userprofile && (
+          {userProfile && (
             <TreeCounter
               handleAddTargetModalOpen={() => {
                 setIsAddTargetModalOpen(true);
               }}
-              target={userprofile?.score?.target}
+              target={userProfile?.score?.target}
               planted={
-                userprofile?.type === 'tpo'
-                  ? userprofile?.score.personal
-                  : userprofile?.score.personal + userprofile?.score.received
+                userProfile?.type === 'tpo'
+                  ? userProfile?.score.personal
+                  : userProfile?.score.personal + userProfile?.score.received
               }
             />
           )}

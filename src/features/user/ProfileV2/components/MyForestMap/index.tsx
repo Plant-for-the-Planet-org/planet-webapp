@@ -10,7 +10,7 @@ import getMapStyle from '../../../../../utils/maps/getMapStyle';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import TreesPlantedMarkers from './TreesPlantedMarkers';
 import ConservationMarkers from './ConservationMarkers';
-import { ViewportProps } from 'react-map-gl';
+import { ViewportProps } from '../../../../common/types/map';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 
 const MyForestMap = (): ReactElement => {

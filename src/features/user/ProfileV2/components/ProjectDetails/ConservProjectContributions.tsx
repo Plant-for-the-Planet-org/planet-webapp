@@ -2,12 +2,12 @@ import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import ContributedProjectList from './ContributedProjectList';
 import { ReactElement } from 'react';
-import { Contributions } from '../../../../common/types/myForest';
+import { TreeContributedProjectListProps } from '../../../../common/types/myForest';
 
-export interface AreaConservedProjectListProps {
-  contribution: Contributions[];
-  handleFetchNextPage: () => void;
-}
+type AreaConservedProjectListProps = Omit<
+  TreeContributedProjectListProps,
+  'userProfile'
+>;
 
 const ConservProjectContributions = ({
   contribution,

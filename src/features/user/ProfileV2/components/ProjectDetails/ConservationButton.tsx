@@ -10,7 +10,7 @@ import { CircularProgress } from '@mui/material';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 
 export interface ConservationButtonProps {
-  conservedArea: number | null;
+  conservedArea: number | undefined;
 }
 
 const ConservationButton = ({

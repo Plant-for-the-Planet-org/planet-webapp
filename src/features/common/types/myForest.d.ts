@@ -1,6 +1,13 @@
 import { Geometry } from '@turf/turf';
+import { User } from '@planet-sdk/common';
+import { PublicUser } from './user';
 
 
+
+export interface Page {
+  data: Contributions[];
+  nextCursor: string | undefined;
+}
 export interface StatsParam {
   profileId: string;
 }
@@ -17,6 +24,7 @@ export interface Stats {
 interface Tpo {
   guid: string;
   name: string;
+  id: string
 }
 interface PlantProject {
   guid: string;
@@ -24,21 +32,14 @@ interface PlantProject {
   image: string;
   country: string;
   unit: string;
-  location: any;
-  geoLatitude: any;
-  geoLongitude: any;
-  tpo: any;
+  location: string | null;
+  geoLatitude: number | null;
+  geoLongitude: number | null;
+  tpo:  Tpo;
 }
 
-interface BouquetContribution {
-  purpose: string | null;
-  treeCount: number | null;
-  quantity: number | null;
-  plantDate: number | Date;
-  contributionType: string;
-  plantProject: PlantProject | null;
-}
-
+export type  BouquetContribution = Omit<Contributions , "bouquetContributions">
+  
 export interface Contributions {
   // procedure returns Contributions
   purpose: string | null;
@@ -46,7 +47,7 @@ export interface Contributions {
   quantity: number | null;
   plantDate: number | Date;
   contributionType: string;
-  bouquetContributions?: BouquetContribution[];
+  bouquetContributions: BouquetContribution[] | undefined;
   plantProject: PlantProject;
 }
 
@@ -114,4 +115,15 @@ export interface ContributionsGeoJsonQueryResult {
   startDate: string;
   endDate: string;
   totalContribution: number;
+}
+
+
+export interface ContributionData {
+    pageParams: [null, string] | [null];
+    pages: Page[];
+}
+export interface TreeContributedProjectListProps {
+  contribution: ContributionData | null
+  userProfile: User | PublicUser;
+  handleFetchNextPage: () => void;
 }

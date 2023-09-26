@@ -1,6 +1,9 @@
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { ParamsContext } from '../../../../common/Layout/QueryParamsContext';
-import { Contributions } from '../../../../common/types/myForest';
+import {
+  Contributions,
+  BouquetContribution,
+} from '../../../../common/types/myForest';
 import { useContext, ReactElement } from 'react';
 import myForestStyles from '../../styles/MyForest.module.scss';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
@@ -11,7 +14,7 @@ import { getDonationUrl } from '../../../../../utils/getDonationUrl';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 
 export interface ProjectProps {
-  projectInfo: Contributions;
+  projectInfo: Contributions | BouquetContribution;
 }
 
 const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {

@@ -1,15 +1,15 @@
-import { ViewportProps } from 'react-map-gl';
+import { ViewportProps } from '../../user/ProfileV2/components/MyForestMap';
 import Supercluster from 'supercluster';
 import { User } from '@planet-sdk/common';
 import { MutableRefObject } from 'react';
 import { PublicUser } from './user';
 
-interface ClusterMarker {
+export interface ClusterMarker {
   geometry: {
     coordinates: [number, number]
-    type: string
+    type: "Point"
   };
-  id: number;
+  id?: number;
   properties: {
     cluster: boolean;
     contributionType?: string;
@@ -51,7 +51,7 @@ export interface MarkerProps {
 export type Cluster  = (
     | Supercluster.PointFeature<any>
     | Supercluster.ClusterFeature<{
-        totalTrees: any;
+        totalTrees: number;
       }>
   )
 
@@ -77,4 +77,37 @@ export type Bound = [number, number, number, number]
 export interface MyContributionsProps {
     profile: User | PublicUser;
     token?: string | null
+  }
+  export interface ViewState {
+    width: number;
+    height: number;
+    latitude: number;
+    longitude: number;
+    zoom: number;
+    bearing: number;
+    pitch: number;
+    altitude: number;
+    maxZoom: number;
+    minZoom: number;
+    maxPitch: number;
+    minPitch: number;
+    transitionDuration: number;
+    transitionInterpolator: {
+      propNames: ['longitude', 'latitude', 'zoom', 'bearing', 'pitch'];
+    };
+    transitionInterruption: number;
+  }
+  
+  export interface InteractionState {
+    isDragging: boolean;
+  }
+  
+  export interface ViewportProps {
+    width: string;
+    height: string;
+    latitude: number;
+    longitude: number;
+    zoom: number;
+    viewState?: ViewState | undefined;
+    interactionState?: InteractionState | undefined;
   }

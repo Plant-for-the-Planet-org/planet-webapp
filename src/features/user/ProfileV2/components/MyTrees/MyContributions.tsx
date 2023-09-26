@@ -9,10 +9,13 @@ import { trpc } from '../../../../../utils/trpc';
 import ConservProjectContributions from '../ProjectDetails/ConservProjectContributions';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { Purpose } from '../../../../../utils/constants/myForest';
-import { Contributions } from '../../../../common/types/myForest';
+import { ContributionData } from '../../../../common/types/myForest';
 import { StatsQueryResult } from '../../../../common/types/myForest';
 import { MyContributionsProps } from '../../../../common/types/map';
 import MyContributionCustomButton from '../MicroComponents/CustomButton';
+import { SetState } from '../../../../common/types/common';
+import { PointFeature } from 'supercluster';
+import { TestPointProps } from '../../../../common/types/map';
 
 const MyTreesMap = dynamic(() => import('../MyForestMap'), {
   loading: () => <p>loading</p>,
@@ -23,11 +26,10 @@ export default function MyContributions({
 }: MyContributionsProps): ReactElement | null {
   const { ready } = useTranslation(['country', 'me']);
 
-  const [projectsForTreePlantaion, setProjectsForTreePlantation] = useState<
-    Contributions[]
-  >([]);
+  const [projectsForTreePlantation, setProjectsForTreePlantation] =
+    useState<ContributionData | null>(null);
   const [projectsForAreaConservation, setProjectsForAreaConservation] =
-    useState<Contributions[]>([]);
+    useState<ContributionData | null>(null);
   const [otherDonationInfo, setOthercontributionInfo] = useState<
     StatsQueryResult | undefined
   >(undefined);
@@ -82,9 +84,9 @@ export default function MyContributions({
     setPage((prev) => prev + 1);
   };
 
-  const _updateStateWithTrpcData = (
+  const _updateStateWithTrpcData = <T,>(
     trpcProcedure: any,
-    stateUpdaterFunction: any
+    stateUpdaterFunction: SetState<T>
   ): void => {
     if (!trpcProcedure.isLoading) {
       if (trpcProcedure.error) {
@@ -102,11 +104,14 @@ export default function MyContributions({
   };
 
   useEffect(() => {
-    _updateStateWithTrpcData(_contributionData, setProjectsForAreaConservation);
+    _updateStateWithTrpcData<ContributionData | null>(
+      _contributionData,
+      setProjectsForAreaConservation
+    );
   }, [_contributionData.isLoading, _contributionData.data]);
 
   useEffect(() => {
-    _updateStateWithTrpcData(
+    _updateStateWithTrpcData<ContributionData | null>(
       _contributionDataForPlantedtrees,
       setProjectsForTreePlantation
     );
@@ -116,15 +121,24 @@ export default function MyContributions({
   ]);
 
   useEffect(() => {
-    _updateStateWithTrpcData(_conservationGeoJsonData, setConservationProjects);
+    _updateStateWithTrpcData<PointFeature<TestPointProps>[]>(
+      _conservationGeoJsonData,
+      setConservationProjects
+    );
   }, [_conservationGeoJsonData.isLoading]);
 
   useEffect(() => {
-    _updateStateWithTrpcData(_treePlantedGeoJsonData, setTreePlantedProjects);
+    _updateStateWithTrpcData<PointFeature<TestPointProps>[]>(
+      _treePlantedGeoJsonData,
+      setTreePlantedProjects
+    );
   }, [_treePlantedGeoJsonData.isLoading]);
 
   useEffect(() => {
-    _updateStateWithTrpcData(_detailInfo, setOthercontributionInfo);
+    _updateStateWithTrpcData<StatsQueryResult | undefined>(
+      _detailInfo,
+      setOthercontributionInfo
+    );
   }, [_detailInfo.isLoading]);
 
   return ready && otherDonationInfo ? (
@@ -140,8 +154,8 @@ export default function MyContributions({
       />
       {isTreePlantedButtonActive && !isConservedButtonActive && (
         <TreeProjectContributions
-          contribution={projectsForTreePlantaion}
-          userprofile={profile}
+          contribution={projectsForTreePlantation}
+          userProfile={profile}
           handleFetchNextPage={handleFetchNextPageforPlantedTrees}
         />
       )}
