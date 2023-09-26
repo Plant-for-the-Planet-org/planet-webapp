@@ -93,7 +93,7 @@ export interface Project {
   acceptDonations: boolean;
   geoLongitude: number;
   geoLatitude: number;
-  expenses: ProjectExpense[]; //
+  expenses: ProjectExpense[];
   reviewRequested: boolean;
   isApproved: boolean;
   isTopProject: boolean;
@@ -109,25 +109,28 @@ export interface Project {
   revisionPeriodicityLevel: any;
 }
 
-interface ScopeProjects extends Project {
+export interface CertificateScopeProjects extends ProfileProject {
   _scope: string;
-  unitType: string;
-  unitsContributed: any;
-  unitsTargeted: UnitsTargeted;
-}
-
-export interface CertificateScopeProjects
-  extends Omit<ScopeProjects, 'sites' | 'images' | 'expenses'> {
   certificates: Certificate[];
 }
 
-export type ImagesScopeProjects = Omit<ScopeProjects, 'sites' | 'expenses'>;
+export interface ImagesScopeProjects extends ProfileProject {
+  _scope: string;
+  images: UploadImage[];
+}
 
-export type ExpensesScopeProjects = Omit<Project, 'sites' | 'images'>;
+export interface ExpensesScopeProjects extends ProfileProject {
+  _scope: string;
+  expenses: ProjectExpense[];
+}
 
-export type SitesScopeProjects = Omit<Project, 'expenses' | 'images'>;
-interface UnitsTargeted {
-  tree: number;
+export interface SitesScopeProjects extends ProfileProject {
+  _scope: string;
+  sites: Site[];
+}
+interface Units {
+  tree?: number;
+  m2?: number;
 }
 
 export interface Properties {
@@ -315,6 +318,8 @@ export interface ProjectOption {
   allowDonations: boolean;
 }
 
+export type ProfileProject = ProfileProjectConservation | ProfileProjectTrees;
+
 export interface ProfileProjectConservation
   extends Omit<
     ConservationProjectExtended,
@@ -327,7 +332,6 @@ export interface ProfileProjectConservation
     | 'minQuantity'
     | 'options'
     | 'sites'
-    | 'taxDeductionCountries'
     | 'yearAcquired'
     | 'treeCost'
     | 'coordinates'
@@ -337,7 +341,6 @@ export interface ProfileProjectConservation
     | 'tpo'
   > {
   publish: boolean;
-  taxDeductibleCountries: CountryCode[];
   isFeatured: boolean;
   isVerified: boolean;
   verificationStatus: VerificationStatus;
@@ -347,6 +350,8 @@ export interface ProfileProjectConservation
   isApproved: boolean;
   isTopProject: boolean;
   classification: null;
+  unitsContributed: Units;
+  unitsTargeted: Units;
 }
 
 export interface ProfileProjectTrees
@@ -361,7 +366,6 @@ export interface ProfileProjectTrees
     | 'minQuantity'
     | 'options'
     | 'sites'
-    | 'taxDeductionCountries'
     | 'yearAcquired'
     | 'coordinates'
     | 'countDonated'
@@ -382,12 +386,10 @@ export interface ProfileProjectTrees
     | 'mainChallenge'
     | 'motivation'
     | 'plantingDensity'
-    | 'plantingSeasons'
     | 'siteOwnerName'
     | 'yearAbandoned'
   > {
   publish: boolean;
-  taxDeductibleCountries: CountryCode[];
   isFeatured: boolean;
   isVerified: boolean;
   verificationStatus: VerificationStatus;
@@ -395,6 +397,10 @@ export interface ProfileProjectTrees
   geoLongitude: number;
   geoLatitude: number;
   revisionPeriodicityLevel: null;
+  acquisitionYear: Nullable<number>;
+  siteOwnerType: Nullable<SiteOwnerTypes[]>;
+  unitsContributed: Units;
+  unitsTargeted: Units;
 }
 
 type VerificationStatus =
