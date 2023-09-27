@@ -11,9 +11,11 @@ import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
   const { t } = useTranslation(['editProfile']);
   const router = useRouter();
+
   const handleEditProfile = () => {
     router.push('profile/edit');
   };
+
   return (
     <>
       <div

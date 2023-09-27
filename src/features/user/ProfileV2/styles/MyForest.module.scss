@@ -429,7 +429,8 @@
     @include  mdTabletView {
         flex-direction: column;
         gap: 67px;
-        padding-bottom: 0px
+        padding-bottom: 0px;
+        justify-content: center;      
     }
 }
 
