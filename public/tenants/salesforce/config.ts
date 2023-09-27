@@ -13,7 +13,7 @@ const config = {
   },
   header: {
     isSecondaryTenant: true,
-    tenantLogoURL: `${process.env.CDN_URL}/logo/svg/${process.env.TENANT}.svg`,
+    tenantLogoURL: `${process.env.CDN_URL}/logo/svg/salesforce.svg`,
     tenantLogoLink: 'https://www.salesforce.com/sustainability/',
     items: {
       home: {
