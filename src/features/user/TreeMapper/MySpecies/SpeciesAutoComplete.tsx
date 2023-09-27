@@ -1,12 +1,13 @@
 /* eslint-disable no-use-before-define */
 import React from 'react';
-import { postRequest } from '../../../../../utils/apiRequests/api';
+import { postRequest } from '../../../../utils/apiRequests/api';
 import { Controller, Control, FieldValues, FieldPath } from 'react-hook-form';
 import { Autocomplete, TextField } from '@mui/material';
 
 import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
-import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { SpeciesSuggestionType } from '../../../common/types/plantLocation';
 
 interface Props<
   TFieldValues extends FieldValues,
@@ -34,7 +35,7 @@ export default function SpeciesSelect<
   helperText,
 }: Props<TFieldValues, TName>) {
   const [speciesSuggestion, setspeciesSuggestion] = React.useState<
-    SpeciesType[]
+    SpeciesSuggestionType[]
   >([]);
   const [query, setQuery] = React.useState('');
   const { t } = useTranslation(['treemapper']);
@@ -56,12 +57,12 @@ export default function SpeciesSelect<
     // Todo: debouncing
     if (value.length > 2) {
       try {
-        const res = await postRequest(`/suggest.php`, {
+        const res = await postRequest<SpeciesSuggestionType[]>(`/suggest.php`, {
           q: value,
           t: 'species',
         });
         if (res && res.length > 0) {
-          const species = res.map((item: any) => ({
+          const species = res.map((item) => ({
             id: item.id,
             name: item.name,
             scientificName: item.scientificName,
@@ -79,7 +80,7 @@ export default function SpeciesSelect<
   }, [query]);
 
   speciesSuggestion &&
-    speciesSuggestion.sort((a: any, b: any) => {
+    speciesSuggestion.sort((a, b) => {
       const nameA = `${a.name}`;
       const nameB = `${b.name}`;
       if (nameA > nameB) {
@@ -130,10 +131,4 @@ export default function SpeciesSelect<
       )}
     />
   );
-}
-
-interface SpeciesType {
-  id: string;
-  name: string;
-  scientificName: string;
 }
