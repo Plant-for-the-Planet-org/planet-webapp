@@ -1,5 +1,5 @@
 import { ReactElement, useCallback, useEffect, useState } from 'react';
-import { useDropzone, ErrorCode } from 'react-dropzone';
+import { useDropzone, ErrorCode, FileRejection } from 'react-dropzone';
 import { useTranslation } from 'next-i18next';
 import FileUploadIcon from '../../../../../public/assets/images/icons/FileUploadIcon';
 import FileProcessingIcon from '../../../../../public/assets/images/icons/FileProcessingIcon';
@@ -27,23 +27,6 @@ const UploadWidget = ({
 }: UploadWidgetInterface): ReactElement | null => {
   const { t, ready } = useTranslation(['bulkCodes']);
   const [error, setError] = useState<FileImportError | null>(null);
-
-  const onDropAccepted = useCallback((acceptedFiles: File[]) => {
-    onStatusChange('processing');
-    handleFileUpload(acceptedFiles[0], handleUploadError, onFileUploaded);
-    setError(null);
-  }, []);
-
-  const onDropRejected = useCallback((fileRejections) => {
-    const error = fileRejections[0].errors[0].code;
-    handleUploadError(error);
-  }, []);
-
-  useEffect(() => {
-    if (parseError) {
-      handleUploadError('parseError', parseError);
-    }
-  }, [parseError]);
 
   const handleUploadError = (errorType: string, error?: FileImportError) => {
     switch (errorType) {
@@ -88,6 +71,23 @@ const UploadWidget = ({
     }
     onStatusChange('error');
   };
+
+  const onDropAccepted = useCallback((acceptedFiles: File[]) => {
+    onStatusChange('processing');
+    handleFileUpload(acceptedFiles[0], handleUploadError, onFileUploaded);
+    setError(null);
+  }, []);
+
+  const onDropRejected = useCallback((fileRejections: FileRejection[]) => {
+    const error = fileRejections[0].errors[0].code;
+    handleUploadError(error);
+  }, []);
+
+  useEffect(() => {
+    if (parseError) {
+      handleUploadError('parseError', parseError);
+    }
+  }, [parseError]);
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: ['.csv', '.xlsx'],

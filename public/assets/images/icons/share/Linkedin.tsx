@@ -1,6 +1,7 @@
 import React from 'react';
+import { IconProps } from '../../../../../src/features/common/types/common';
 
-export default function Linkedin(props) {
+export default function Linkedin({ color = 'black' }: IconProps) {
   return (
     <svg
       version="1.1"
@@ -11,7 +12,7 @@ export default function Linkedin(props) {
       viewBox="0 0 382 382"
     >
       <path
-        fill={props.color ? props.color : 'black'}
+        fill={color}
         d="M347.445,0H34.555C15.471,0,0,15.471,0,34.555v312.889C0,366.529,15.471,382,34.555,382h312.889
 	C366.529,382,382,366.529,382,347.444V34.555C382,15.471,366.529,0,347.445,0z M118.207,329.844c0,5.554-4.502,10.056-10.056,10.056
 	H65.345c-5.554,0-10.056-4.502-10.056-10.056V150.403c0-5.554,4.502-10.056,10.056-10.056h42.806

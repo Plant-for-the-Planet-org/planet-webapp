@@ -1,10 +1,7 @@
 import React from 'react';
+import { IconProps } from '../../../../../src/features/common/types/common';
 
-interface IconProps {
-  color?: string;
-}
-
-function GiftIcon({ color = '#000' }: IconProps): JSX.Element {
+function GiftIcon({ color = '#000' }: IconProps) {
   return (
     <svg
       width="20"

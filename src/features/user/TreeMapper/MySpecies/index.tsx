@@ -4,9 +4,7 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import MySpeciesForm from './MySpeciesForm';
 import { useTranslation } from 'next-i18next';
 
-interface Props {}
-
-export default function MySpecies({}: Props): ReactElement {
+export default function MySpecies(): ReactElement {
   const { t } = useTranslation('me');
 
   return (
