@@ -4,7 +4,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import Me from '../../../../../public/assets/images/navigation/Me';
 import MeSelected from '../../../../../public/assets/images/navigation/MeSelected';
-import tenantConfig from '../../../../../tenant.config';
 import { ThemeContext } from '../../../../theme/themeContext';
 import themeProperties from '../../../../theme/themeProperties';
 import getImageUrl from '../../../../utils/getImageURL';
@@ -14,6 +13,7 @@ import GetSubMenu from './getSubMenu';
 import { lang_path } from '../../../../utils/constants/wpLanguages';
 import { ParamsContext } from '../QueryParamsContext';
 import ImpersonationActivated from '../../../user/Settings/ImpersonateUser/ImpersonationActivated';
+import { useTenant } from '../TenantContext';
 
 // used to detect window resize and return the current width of the window
 const useWidth = () => {
@@ -27,7 +27,6 @@ const useWidth = () => {
   return width;
 };
 
-const config = tenantConfig();
 export default function NavbarComponent() {
   const { t, ready, i18n } = useTranslation(['common']);
   const router = useRouter();
@@ -44,6 +43,9 @@ export default function NavbarComponent() {
   const [isMobile, setIsMobile] = useState(false);
   const [mobileWidth, setMobileWidth] = useState(false);
   const { embed } = useContext(ParamsContext);
+
+  const { tenantConfig } = useTenant();
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       if (window.innerWidth > 767) {
@@ -138,13 +140,14 @@ export default function NavbarComponent() {
   };
 
   const MenuItems = () => {
-    const links = Object.keys(config.header.items);
-    const tenantName = config?.tenantName;
-    return links ? (
+    const { tenantConfig } = useTenant();
+
+    const links = Object.keys(tenantConfig!.header.items);
+    const tenantName = tenantConfig?.tenantName || '';
+    return tenantConfig && links ? (
       <div className={'menuItems'}>
         {links.map((link) => {
-          const linkKey = link as keyof typeof config.header.items;
-          let SingleLink = config.header.items[linkKey];
+          let SingleLink = tenantConfig.header.items[link];
           const hasSubMenu =
             SingleLink.subMenu && SingleLink.subMenu.length > 0;
           if (SingleLink) {
@@ -173,6 +176,7 @@ export default function NavbarComponent() {
                 </button>
               );
             }
+
             if (link === 'about' && SingleLink.visible) {
               let aboutOnclick = `${SingleLink.onclick}${
                 (process.env.TENANT === 'planet' ||
@@ -284,9 +288,10 @@ export default function NavbarComponent() {
       <></>
     );
   };
+
   return embed === 'true' ? (
     <></>
-  ) : (
+  ) : tenantConfig ? (
     <>
       {isImpersonationModeOn && (
         <div className="impersonationAlertContainer" style={{ top: -142 }}>
@@ -299,28 +304,28 @@ export default function NavbarComponent() {
       >
         <div className={'top_nav'}>
           <div className={'brandLogos'}>
-            {config.header?.isSecondaryTenant && (
+            {tenantConfig.header?.isSecondaryTenant && (
               <div
                 className={
-                  config.tenantName === 'ttc'
+                  tenantConfig.tenantName === 'ttc'
                     ? 'hidePrimaryTenantLogo'
                     : 'primaryTenantLogo'
                 }
               >
-                <a href={config.header?.tenantLogoLink}>
+                <a href={tenantConfig.header?.tenantLogoLink}>
                   <img
                     className={'tenantLogo desktop'}
-                    src={config.header.tenantLogoURL}
+                    src={tenantConfig.header.tenantLogoURL}
                   />
-                  {config.header.mobileLogoURL ? (
+                  {tenantConfig.header.mobileLogoURL ? (
                     <img
                       className={'tenantLogo mobile'}
-                      src={config.header.mobileLogoURL}
+                      src={tenantConfig.header.mobileLogoURL}
                     />
                   ) : (
                     <img
                       className={'tenantLogo mobile'}
-                      src={config.header.tenantLogoURL}
+                      src={tenantConfig.header.tenantLogoURL}
                     />
                   )}
                 </a>
@@ -350,5 +355,7 @@ export default function NavbarComponent() {
         </div>
       </div>
     </>
+  ) : (
+    <></>
   );
 }
