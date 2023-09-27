@@ -163,7 +163,11 @@ export const TreePlanted = () => {
             | WeeksCategories
             | MonthsCategories
             | YearsCategories
+            | string
         ) {
+          if (typeof value === 'string') {
+            return value; // Return the string value directly
+          }
           return value ? value.label : '';
         },
       },

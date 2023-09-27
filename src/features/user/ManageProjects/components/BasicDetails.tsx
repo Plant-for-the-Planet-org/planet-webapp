@@ -44,6 +44,7 @@ import {
   ProfileProjectTrees,
   ViewPort,
 } from '../../../common/types/project';
+import { ReverseAddress } from '../../../common/types/geocoder';
 
 type FormData = {
   name: string;
@@ -723,7 +724,7 @@ export default function BasicDetails({
                     maxLocations: 10,
                     distance: 100,
                   })
-                  .then((result: any) => {
+                  .then((result: ReverseAddress) => {
                     if (result?.address?.Type === 'Ocean') {
                       setWrongCoordinatesMessage(true);
                       setError('latitude', {

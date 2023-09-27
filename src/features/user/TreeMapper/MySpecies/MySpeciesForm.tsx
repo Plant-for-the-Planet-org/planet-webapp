@@ -7,7 +7,7 @@ import {
   postAuthenticatedRequest,
 } from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import SpeciesSelect from '../Import/components/SpeciesAutoComplete';
+import SpeciesSelect from './SpeciesAutoComplete';
 import styles from './MySpecies.module.scss';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
@@ -15,12 +15,21 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import { handleError, APIError } from '@planet-sdk/common';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { Button, TextField } from '@mui/material';
+import {
+  Species,
+  SpeciesSuggestionType,
+} from '../../../common/types/plantLocation';
+
+interface NewSpecies {
+  aliases: string;
+  scientificSpecies: SpeciesSuggestionType | null;
+}
 
 export default function MySpeciesForm() {
   const { t } = useTranslation(['treemapper', 'me', 'common']);
   const { token, contextLoaded, logoutUser } = useUserProps();
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const [species, setSpecies] = React.useState<any[]>([]);
+  const [species, setSpecies] = React.useState<Species[]>([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
 
   const defaultMySpeciesValue = {
@@ -39,7 +48,7 @@ export default function MySpeciesForm() {
 
   const fetchMySpecies = async () => {
     try {
-      const result = await getAuthenticatedRequest(
+      const result = await getAuthenticatedRequest<Species[]>(
         '/treemapper/species',
         token,
         logoutUser
@@ -50,7 +59,7 @@ export default function MySpeciesForm() {
     }
   };
 
-  const deleteSpecies = async (id: number) => {
+  const deleteSpecies = async (id: string) => {
     try {
       await deleteAuthenticatedRequest(
         `/treemapper/species/${id}`,
@@ -63,14 +72,14 @@ export default function MySpeciesForm() {
     }
   };
 
-  const addSpecies = async (species: any) => {
+  const addSpecies = async (species: NewSpecies) => {
     setIsUploadingData(true);
     const data = {
       aliases:
         species.aliases || species.aliases !== ''
           ? species.aliases
-          : species.scientificSpecies.name,
-      scientificSpecies: species.scientificSpecies.id,
+          : species.scientificSpecies?.name,
+      scientificSpecies: species.scientificSpecies?.id,
     };
     try {
       await postAuthenticatedRequest(
@@ -143,7 +152,7 @@ export default function MySpeciesForm() {
           </InlineFormDisplayGroup>
         </form>
         <div className={styles.mySpeciesContainer}>
-          {species.map((species: any) => {
+          {species.map((species: Species) => {
             return (
               <div key={species.id} className={styles.speciesContainer}>
                 <div className={styles.speciesName}>{species.aliases}</div>

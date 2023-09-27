@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import GreenRadio from '../../common/InputTypes/GreenRadio';
-import Close from '../../../../public/assets/images/icons/headerIcons/close';
+import Close from '../../../../public/assets/images/icons/headerIcons/Close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import {
   CircularProgress,

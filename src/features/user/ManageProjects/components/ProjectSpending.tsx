@@ -25,7 +25,10 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import { handleError, APIError, ProjectExpense } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
-import { ProjectSpendingProps, Project } from '../../../common/types/project';
+import {
+  ProjectSpendingProps,
+  ExpensesScopeProjects,
+} from '../../../common/types/project';
 
 const yearDialogSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
@@ -55,7 +58,6 @@ export default function ProjectSpending({
   handleNext,
   userLang,
   projectGUID,
-  handleReset,
 }: ProjectSpendingProps): ReactElement {
   const { t, ready } = useTranslation(['manageProjects', 'common']);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
@@ -75,12 +77,6 @@ export default function ProjectSpending({
     []
   );
   const { logoutUser } = useUserProps();
-
-  React.useEffect(() => {
-    if (!projectGUID || projectGUID === '') {
-      handleReset(ready ? t('manageProjects:resetMessage') : '');
-    }
-  });
 
   const onSubmit = async (pdf: string | ArrayBuffer | null | undefined) => {
     setIsUploadingData(true);
@@ -168,7 +164,7 @@ export default function ProjectSpending({
     try {
       // Fetch spending of the project
       if (projectGUID && token) {
-        const result = await getAuthenticatedRequest<Project>(
+        const result = await getAuthenticatedRequest<ExpensesScopeProjects>(
           `/app/profile/projects/${projectGUID}?_scope=expenses`,
           token,
           logoutUser
