@@ -12,6 +12,7 @@ interface Props {
 export default function GetPublicUserProfileMeta({
   userprofile,
 }: Props): ReactElement {
+
   return (
     <Head>
       <title>{`${

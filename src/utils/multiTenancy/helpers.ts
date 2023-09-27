@@ -1,4 +1,5 @@
-import { Tenants } from '@planet-sdk/common/build/types/tenant';
+import { TenantAppConfig, Tenants } from '@planet-sdk/common/build/types/tenant';
+import tenantConfig from '../../../tenant.config';
 
 /**
  * This is the default subdomain that will be used if no subdomain is found.
@@ -87,3 +88,32 @@ export async function getTenantSubdomainOrDefault(
 
   return subdomain;
 }
+
+
+/**
+ * 
+ * Return the tenant config based on the subdomain
+ * 
+ * @param subdomain 
+ * @returns TenantAppConfig
+ */
+export const getTenantConfig = async (subdomain: string) => {
+  const response = await fetch(`${process.env.API_ENDPOINT}/app/tenants`);
+
+  const tenants = (await response.json()) as Tenants;
+
+  const tenant = tenants.find(
+    (tenant) => tenant.config.subDomain === subdomain
+  );
+
+  const _tenantConf = tenantConfig(subdomain);
+
+  const tenantConf: TenantAppConfig = {
+    ..._tenantConf,
+    tenantID: tenant!.id,
+    customDomain: tenant!.config.customDomain!,
+    auth0ClientId: tenant!.config.auth0ClientId,
+  };
+
+  return tenantConf;
+};
