@@ -63,7 +63,7 @@ export default function ImportData(): ReactElement {
 
   const fetchPlantLocation = async (id: string) => {
     try {
-      const result: PlantLocation = await getAuthenticatedRequest(
+      const result = await getAuthenticatedRequest<PlantLocation>(
         `/treemapper/plantLocations/${id}?_scope=extended`,
         token,
         logoutUser
