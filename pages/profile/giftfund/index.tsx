@@ -4,9 +4,9 @@ import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import GiftFunds from '../../../src/features/user/GiftFunds';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticPropsContext } from 'next';
 
-interface Props {}
-export default function Register({}: Props): ReactElement {
+export default function Register(): ReactElement {
   const { t } = useTranslation('me');
   return (
     <UserLayout>
@@ -18,11 +18,11 @@ export default function Register({}: Props): ReactElement {
   );
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

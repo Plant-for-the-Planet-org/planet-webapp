@@ -1,6 +1,4 @@
 import React, { ReactElement } from 'react';
-import Donate from '../../../../../public/assets/images/navigation/Donate';
-import DonateSelected from '../../../../../public/assets/images/navigation/DonateSelected';
 import Globe from '../../../../../public/assets/images/navigation/Globe';
 import GlobeSelected from '../../../../../public/assets/images/navigation/GlobeSelected';
 import Leaderboard from '../../../../../public/assets/images/navigation/Leaderboard';
@@ -9,14 +7,35 @@ import LeafSelected from '../../../../../public/assets/images/navigation/LeafSel
 import Leaf from '../../../../../public/assets/images/navigation/Leaf';
 import themeProperties from '../../../../theme/themeProperties';
 import ShopIcon from '../../../../../public/assets/images/navigation/ShopIcon';
+import HomeLogoSelected from '../../../../../public/assets/images/navigation/HomeLogoSelected';
+import HomeLogo from '../../../../../public/assets/images/navigation/HomoLogo';
+import DonateSelected from '../../../../../public/assets/images/navigation/DonateSelected';
+import Donate from '../../../../../public/assets/images/navigation/Donate';
+import { NextRouter } from 'next/router';
 
 interface Props {
-  mainKey: any;
-  router: any;
-  item: any;
+  mainKey: string;
+  router: NextRouter;
+  item: {
+    title: string;
+    loggedInTitle?: string;
+    onclick: string;
+    visible: boolean;
+    subMenu?: {
+      title: string;
+      onclick: string;
+      visible: boolean;
+    }[];
+  };
+  tenantName: string;
 }
 
-function GetNavBarIcon({ mainKey, router, item }: Props): ReactElement {
+function GetNavBarIcon({
+  mainKey,
+  router,
+  item,
+  tenantName,
+}: Props): ReactElement {
   const HomeLink = () => {
     return (
       <button
@@ -26,9 +45,16 @@ function GetNavBarIcon({ mainKey, router, item }: Props): ReactElement {
         }`}
       >
         {router.pathname === item.onclick ? (
-          <GlobeSelected color={themeProperties.primaryColor} />
-        ) : (
+          tenantName === 'salesforce' ? (
+            //the homelogo for all tenant remains the same except salesforce tenant
+            <GlobeSelected color={themeProperties.primaryColor} />
+          ) : (
+            <HomeLogoSelected color={themeProperties.primaryColor} />
+          )
+        ) : tenantName === 'salesforce' ? (
           <Globe color={themeProperties.light.primaryFontColor} />
+        ) : (
+          <HomeLogo color={themeProperties.light.primaryFontColor} />
         )}
       </button>
     );
@@ -111,7 +137,7 @@ function GetNavBarIcon({ mainKey, router, item }: Props): ReactElement {
     case 'shop':
       return <ShopLink />;
     default:
-      <></>;
+      return <></>;
   }
 }
 

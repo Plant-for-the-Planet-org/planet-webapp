@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from 'react';
+import React, { ReactElement } from 'react';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import ManagePayouts, {
@@ -6,11 +6,12 @@ import ManagePayouts, {
 } from '../../../src/features/user/ManagePayouts';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
+import { GetStaticPropsContext } from 'next';
 export default function PayoutSchedulePage(): ReactElement {
   const { t, ready } = useTranslation('me');
-  const { user } = useContext(UserPropsContext);
+  const { user } = useUserProps();
   return (
     <UserLayout>
       <Head>
@@ -25,11 +26,11 @@ export default function PayoutSchedulePage(): ReactElement {
   );
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

@@ -1,17 +1,19 @@
 import React, { ReactElement } from 'react';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
 import { useTranslation } from 'next-i18next';
+import { SetState } from '../../../common/types/common';
+import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 
 interface Props {
-  showFeaturedList: any;
-  setSelectedTab: Function;
-  selectedTab: any;
-  setSearchMode: Function;
-  projects: any;
+  showTopProjectsList: boolean;
+  setSelectedTab: SetState<'top' | 'all'>;
+  selectedTab: 'top' | 'all';
+  setSearchMode: SetState<boolean>;
+  projects: MapProject[];
 }
 
 function Header({
-  showFeaturedList,
+  showTopProjectsList,
   setSelectedTab,
   selectedTab,
   setSearchMode,
@@ -20,22 +22,17 @@ function Header({
   const { t, ready } = useTranslation(['donate']);
   return ready ? (
     <div className={'header'}>
-      {showFeaturedList ? (
+      {showTopProjectsList ? (
         <div className={'tabButtonContainer'}>
-          <div
-            className={'tabButton'}
-            onClick={() => setSelectedTab('featured')}
-          >
+          <div className={'tabButton'} onClick={() => setSelectedTab('top')}>
             <div
               className={
-                selectedTab === 'featured'
-                  ? 'tabButtonSelected'
-                  : 'tabButtonText'
+                selectedTab === 'top' ? 'tabButtonSelected' : 'tabButtonText'
               }
             >
               {t('donate:topProjects')}
             </div>
-            {selectedTab === 'featured' ? (
+            {selectedTab === 'top' ? (
               <div className={'tabButtonSelectedIndicator'} />
             ) : null}
           </div>

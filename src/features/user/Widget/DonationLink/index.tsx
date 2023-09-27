@@ -6,27 +6,25 @@ import DashboardView from '../../../common/Layout/DashboardView';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import DonationLinkForm from './DonationLinkForm';
 import SingleColumnView from '../../../common/Layout/SingleColumnView';
-import { Project, MapSingleProject } from '../../../common/types/project';
+import { ProjectOption } from '../../../common/types/project';
 import { TENANT_ID } from '../../../../utils/constants/environment';
 import { handleError, APIError } from '@planet-sdk/common';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
+import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 
 export default function DonationLink(): ReactElement | null {
   const { setErrors } = useContext(ErrorHandlingContext);
-  const [projects, setProjects] = useState<Project[] | null>(null);
+  const [projects, setProjects] = useState<ProjectOption[] | null>(null);
   const { t, ready, i18n } = useTranslation(['donationLink']);
 
   async function fetchProjectList() {
     try {
-      const projectsList = await getRequest<MapSingleProject[]>(
-        `/app/projects`,
-        {
-          _scope: 'map',
-          'filter[purpose]': 'trees,restoration',
-          tenant: TENANT_ID,
-          locale: i18n.language,
-        }
-      );
+      const projectsList = await getRequest<MapProject[]>(`/app/projects`, {
+        _scope: 'map',
+        'filter[purpose]': 'trees,restoration',
+        tenant: TENANT_ID,
+        locale: i18n.language,
+      });
       if (
         projectsList &&
         Array.isArray(projectsList) &&

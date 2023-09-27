@@ -4,10 +4,9 @@ import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayou
 import TreeMapper from '../../../src/features/user/TreeMapper';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import { GetStaticPropsContext } from 'next';
 
-interface Props {}
-
-function TreeMapperPage({}: Props): ReactElement {
+function TreeMapperPage(): ReactElement {
   // TODO - remove this
   // if (typeof window !== 'undefined') {
   //   router.push('/');
@@ -26,11 +25,11 @@ function TreeMapperPage({}: Props): ReactElement {
 
 export default TreeMapperPage;
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

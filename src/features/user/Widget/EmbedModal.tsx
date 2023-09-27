@@ -6,9 +6,10 @@ import { useTranslation } from 'next-i18next';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../../../theme/themeContext';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, User } from '@planet-sdk/common';
+import { AlertColor } from '@mui/lab';
 
 interface Props {
   embedModalOpen: boolean;
@@ -27,22 +28,14 @@ export default function EmbedModal({
 }: Props) {
   const { t, ready } = useTranslation(['editProfile']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
-  const [isPrivate, setIsPrivate] = React.useState(false);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [severity, setSeverity] = React.useState('success');
+  const [severity, setSeverity] = React.useState<AlertColor>('success');
   const [snackbarMessage, setSnackbarMessage] = React.useState('OK');
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const router = useRouter();
   // This effect is used to get and update UserInfo if the isAuthenticated changes
 
-  const { user, setUser, contextLoaded, token, logoutUser } =
-    React.useContext(UserPropsContext);
-
-  React.useEffect(() => {
-    if (user && user.isPrivate) {
-      setIsPrivate(true);
-    }
-  }, [user]);
+  const { setUser, contextLoaded, token, logoutUser } = useUserProps();
 
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
@@ -64,7 +57,7 @@ export default function EmbedModal({
     };
     if (contextLoaded && token) {
       try {
-        const res = await putAuthenticatedRequest(
+        const res = await putAuthenticatedRequest<User>(
           `/app/profile`,
           bodyToSend,
           token,
@@ -83,9 +76,6 @@ export default function EmbedModal({
     }
   };
 
-  // React.useEffect(() => {
-  //     console.log(isPrivate);
-  // }, [isPrivate]);
   const { theme } = React.useContext(ThemeContext);
 
   return (
@@ -147,7 +137,7 @@ export default function EmbedModal({
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={2000}
-        onClose={handleSnackbarClose}
+        onClose={() => handleSnackbarClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <div>

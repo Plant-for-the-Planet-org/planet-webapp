@@ -1,5 +1,5 @@
-import React, { ReactElement, useEffect } from 'react';
-import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
+import React, { ReactElement } from 'react';
+import { useUserProps } from '../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import EmbedModal from '../../src/features/user/Widget/EmbedModal';
 import styles from './../../src/features/common/Layout/UserLayout/UserLayout.module.scss';
@@ -7,24 +7,12 @@ import Head from 'next/head';
 import { TENANT_ID } from '../../src/utils/constants/environment';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import { GetStaticPropsContext } from 'next';
 
 function ProfilePage(): ReactElement {
   const { t } = useTranslation('me');
-  // External imports
-
-  const { user, contextLoaded } = React.useContext(UserPropsContext);
-
-  // Internal states
-  const [profile, setProfile] = React.useState<null | Object>();
-
-  useEffect(() => {
-    if (user && contextLoaded) {
-      setProfile(user);
-    }
-  }, [contextLoaded, user]);
-
+  const { user } = useUserProps();
   const [embedModalOpen, setEmbedModalOpen] = React.useState(false);
-
   const embedModalProps = { embedModalOpen, setEmbedModalOpen, user };
 
   React.useEffect(() => {
@@ -40,9 +28,9 @@ function ProfilePage(): ReactElement {
         <title>{t('widgets')}</title>
       </Head>
       {user?.isPrivate === false ? (
-        <div className="profilePage" style={{ padding: '0px' }}>
+        <div className={styles.widgetsContainer}>
           <iframe
-            src={`${process.env.WIDGET_URL}?user=${user.id}&tenantkey=${TENANT_ID}`}
+            src={`${process.env.WIDGET_URL}?user=${user?.id}&tenantkey=${TENANT_ID}`}
             className={styles.widgetIFrame}
           />
         </div>
@@ -55,11 +43,11 @@ function ProfilePage(): ReactElement {
 
 export default ProfilePage;
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

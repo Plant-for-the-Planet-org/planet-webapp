@@ -1,8 +1,8 @@
-import { ReactElement, useContext, useState, useEffect } from 'react';
+import { ReactElement, useState, useEffect } from 'react';
 import { useTranslation } from 'next-i18next';
 import { Button, Switch, TextField } from '@mui/material';
-import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountryNew';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import supportedLanguages from '../../../../utils/language/supportedLanguages.json';
 import React from 'react';
@@ -14,14 +14,14 @@ import {
   MuiAutoComplete,
   StyledAutoCompleteOption,
 } from '../../../common/InputTypes/MuiAutoComplete';
-import { Project } from '../../../common/types/project';
+import { ProjectOption } from '../../../common/types/project';
 import { allCountries } from '../../../../utils/constants/countries';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import StyledForm from '../../../common/Layout/StyledForm';
 import QRCode from 'qrcode';
 
 interface DonationLinkFormProps {
-  projectsList: Project[] | null;
+  projectsList: ProjectOption[] | null;
 }
 
 interface LanguageType {
@@ -32,7 +32,7 @@ interface LanguageType {
 const DonationLinkForm = ({
   projectsList,
 }: DonationLinkFormProps): ReactElement | null => {
-  const { user } = useContext(UserPropsContext);
+  const { user } = useUserProps();
   const [country, setCountry] = useState('auto');
   const [Languages, setLanguage] = useState<LanguageType>({
     langCode: 'auto',
@@ -40,8 +40,8 @@ const DonationLinkForm = ({
   });
   const [donationUrl, setDonationUrl] = useState<string>('');
   const { t, ready } = useTranslation(['donationLink', 'country', 'me']);
-  const [localProject, setLocalProject] = useState<Project | null>(null);
-  const [isSupport, setIsSupport] = useState<boolean>(!user.isPrivate);
+  const [localProject, setLocalProject] = useState<ProjectOption | null>(null);
+  const [isSupport, setIsSupport] = useState<boolean>(!user?.isPrivate);
   const [isTesting, setIsTesting] = useState<boolean>(false);
   const [isArrayUpdated, setIsArrayUpdated] = useState<boolean>(false);
   const [isLinkUpdated, setIsLinkUpdated] = useState<boolean>(false);
@@ -72,13 +72,13 @@ const DonationLinkForm = ({
 
     const url = `${link}?${selectedCountry}${selectedLanguage}${
       localProject == null ? '' : `to=${localProject.slug}&`
-    }tenant=${TENANT_ID}${isSupport ? `&s=${user.slug}` : ''}
+    }tenant=${TENANT_ID}${isSupport ? `&s=${user?.slug}` : ''}
     `;
     if (donationUrl.length > 0) setIsLinkUpdated(true);
     setDonationUrl(url);
   };
 
-  const handleProjectChange = async (project: Project | null) => {
+  const handleProjectChange = async (project: ProjectOption | null) => {
     setLocalProject(project);
   };
 
@@ -119,7 +119,7 @@ const DonationLinkForm = ({
     }
   };
 
-  if (isArrayUpdated && ready) {
+  if (isArrayUpdated && ready && user) {
     return (
       <StyledForm>
         <div className="inputContainer">

@@ -105,7 +105,8 @@
   left: 7px;
 }
 
-.projectType {
+.projectType,
+.projectEcosystem {
   font-family: $primaryFontFamily;
   font-size: $fontXXSmall;
   color: $light;
@@ -117,6 +118,46 @@
   font-family: $primaryFontFamily;
   font-size: $fontMedium;
   color: $light;
+  padding-right: 16px;
+}
+
+.verifiedIcon {
+  display: inline-block;
+  vertical-align: top;
+  width: 0.95em;
+  min-width: 0.95em;
+  line-height: 0.95em;
+}
+
+.topProjectBadge {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--primary-color);
+  border-radius: 14px;
+  padding: 2px 8px 2px 2px;
+  font-weight: 700;
+  font-size: 12px;
+
+  * {
+    color: #fff;
+  }
+
+  .badgeIcon {
+    background-color: white;
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    svg {
+      height: 14px;
+    }
+  }
 }
 
 /* Progress Bar */
@@ -196,7 +237,7 @@
   text-decoration: none;
 }
 
-.perTreeCost {
+.perUnitCost {
   font-family: $secondaryFontFamily;
   font-size: $fontXSmall;
   color: $primaryFontColor;
@@ -205,7 +246,16 @@
   text-align: right;
 }
 
-.perTreeCost > span {
+.perUnitCost > span {
   font-family: $primaryFontFamily;
   font-weight: 400;
+}
+
+.topProjectReportsContainer {
+  margin: 10px;
+}
+
+.topProjectPopupContainer {
+  margin: 10px;
+  width: 300px;
 }

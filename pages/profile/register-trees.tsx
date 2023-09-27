@@ -4,14 +4,13 @@ import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import { GetStaticPropsContext } from 'next';
 
-interface Props {}
-
-export default function Register({}: Props): ReactElement {
+export default function Register(): ReactElement {
   const { t } = useTranslation('me');
 
   const RegisterTrees = dynamic(
-    () => import('../../src/features/user/RegisterTrees/RegisterTrees')
+    () => import('../../src/features/user/RegisterTrees')
   );
   return (
     <UserLayout>
@@ -23,11 +22,11 @@ export default function Register({}: Props): ReactElement {
   );
 }
 
-export async function getStaticProps({ locale }: any) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

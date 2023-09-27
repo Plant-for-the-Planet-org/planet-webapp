@@ -36,15 +36,10 @@
   width: 16px;
 }
 
-// styles the scrollbar thumb to rounded corners
+// styles the scrollbar thumb to rounded corners, shows thumb when mouse is over the radio buttons container
 .radioButtonsContainer:hover::-webkit-scrollbar-thumb {
   border-radius: 10px;
   border: 3px solid $backgroundColor;
-  background-color: $backgroundColor;
-}
-
-// shows thumb when mouse is over the radio buttons container
-.radioButtonsContainer:hover::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
@@ -62,7 +57,7 @@
   border-top: 1px solid $dividerColor;
   padding: 6px 0px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 // styles the button text to bold and green

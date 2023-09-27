@@ -5,6 +5,19 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  width: 100%;
+}
+
+.historyTitle {
+  font-size: 2.25rem;
+  font-weight: 700;
+  width: 100%;
+  margin-bottom: 10px;
+  margin-top: 24px;
+}
+
+.historySubtitle {
+  font-size: 1rem;
 }
 
 .section {
@@ -69,7 +82,6 @@
 
 .recurrency {
   width: 100%;
-  max-width: 600px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -343,16 +355,13 @@
   }
 }
 .manageDonations {
-  width: 70%;
   display: flex;
-  // justify-content: space-between;
   flex-direction: column;
   align-items: flex-start;
   grid-gap: 20px;
-  padding: 12px;
-  margin-left: -10px;
   > .options {
     font-weight: bold;
+    font-size: inherit;
     cursor: pointer;
   }
 }

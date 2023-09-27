@@ -66,7 +66,7 @@ const materialTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 28,
-          textTransform: 'capitalize',
+          textTransform: 'none',
           padding: '12px 30px',
         },
         containedSizeSmall: {
@@ -96,6 +96,49 @@ const materialTheme = createTheme({
       styleOverrides: {
         root: {
           width: '100%',
+        },
+      },
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          margin: '3px 6px 0',
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        head: {
+          verticalAlign: 'top',
+        },
+        root: {
+          padding: '6px',
+        },
+      },
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        option: {
+          fontSize: '0.875rem',
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        inputSizeSmall: {
+          padding: '8.5px',
+        },
+        multiline: ({ ownerState }) => ({
+          ...(ownerState.size === 'small' && {
+            padding: 0,
+          }),
+        }),
+      },
+    },
+    MuiFormControlLabel: {
+      styleOverrides: {
+        label: {
+          fontSize: '1rem !important',
         },
       },
     },

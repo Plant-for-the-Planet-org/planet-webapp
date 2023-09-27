@@ -18,59 +18,59 @@
     font-weight: bold;
     color: $primaryFontColor;
   }
-  >div {
-    >button{
+  > div {
+    > button {
       margin-top: 6px;
     }
   }
- }
+}
 
- .successfullRedeemModal {
-    padding: 11px 18px 17px;
-    max-width: 80vw;
-    min-width: 427px;
- }
- 
- .errorAndSpinnerDiv {
-   justify-content: center;
-   margin-top: 10px;
- }
- 
- .cancelIcon {
-   width: 1rem;
-   cursor: pointer;
-   position: relative;
-   bottom: 15px;
-   left: 11rem;
-   top: -11px
-  }
+.successfullRedeemModal {
+  padding: 11px 18px 17px;
+  max-width: 80vw;
+  min-width: 427px;
+}
 
-  .fixModal {
-    max-width: 400px;
-    min-height: 260px;
-    min-width: 400px;
-    align-items: center;
-    justify-content: center;
-    padding-top: 30px;
-    position: relative;
-   }
+.errorAndSpinnerDiv {
+  justify-content: center;
+  margin-top: 10px;
+}
 
-  .crossButtonDiv {
-    position:absolute;
-    left: 362px;
-    top: 13px
-   }
-   
-  .crossButton {
-     width: 15px;
-     cursor: pointer;
-    }
-   
-  .redeemCode{
-     margin-top: 24px;
-   }
+.cancelIcon {
+  width: 1rem;
+  cursor: pointer;
+  position: relative;
+  bottom: 15px;
+  left: 11rem;
+  top: -11px;
+}
 
- .routeRedeemModal {
+.fixModal {
+  max-width: 400px;
+  min-height: 260px;
+  min-width: 400px;
+  align-items: center;
+  justify-content: center;
+  padding-top: 30px;
+  position: relative;
+}
+
+.crossButtonDiv {
+  position: absolute;
+  left: 362px;
+  top: 13px;
+}
+
+.crossButton {
+  width: 15px;
+  cursor: pointer;
+}
+
+.redeemCode {
+  margin-top: 24px;
+}
+
+.routeRedeemModal {
   background-color: $backgroundColor;
   display: flex;
   flex-direction: column;
@@ -84,7 +84,14 @@
   min-height: 275px;
   min-width: 438px;
   padding: 20px 56px;
- }
+  .redeemHeading {
+    font-weight: bold;
+  }
+}
+
+.redeemCodeButtonContainer {
+  padding-top: 15px;
+}
 
 .crossDiv {
   position: absolute;
@@ -97,18 +104,11 @@
   cursor: pointer;
 }
 
-
-.redeemAnotherCodeDiv {
-  margin-top: 12px;
-}
-
-.RedeemTitle {
+.redeemTitle {
   font-weight: bold;
 }
 
-
 .modalFinal {
-
   background-color: $backgroundColor;
   border: 0px;
   border-radius: 8px;
@@ -172,7 +172,7 @@
 }
 
 .codeTreeCount {
-  font-size: 1.5rem;
+  font-size: 35px;
   font-weight: bold;
   display: flex;
   flex-direction: row;
@@ -322,7 +322,7 @@
 }
 
 .shareIcon {
-  padding: 4px 4px;
+  padding: 4px;
   // background-color: blue;
   border-radius: 30px;
   margin: 0px 5px;

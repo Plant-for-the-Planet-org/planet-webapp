@@ -12,13 +12,13 @@ import CreationMethodForm from './forms/CreationMethodForm';
 import SelectProjectForm from './forms/SelectProjectForm';
 import IssueCodesForm from './forms/IssueCodesForm';
 import { useBulkCode } from '../../common/Layout/BulkCodeContext';
-import { MapSingleProject } from '../../common/types/project';
 import { TENANT_ID } from '../../../utils/constants/environment';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { TabItem } from '../../common/Layout/TabbedView/TabbedViewTypes';
 import { handleError, APIError } from '@planet-sdk/common';
+import { MapProject } from '../../common/types/ProjectPropsContextInterface';
 
 export enum BulkCodeSteps {
   SELECT_METHOD = 'select_method',
@@ -43,7 +43,7 @@ export default function BulkCodes({
     project,
   } = useBulkCode();
   const { setErrors } = useContext(ErrorHandlingContext);
-  const { contextLoaded, user } = useContext(UserPropsContext);
+  const { contextLoaded, user } = useUserProps();
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
 
   useEffect(() => {
@@ -73,7 +73,7 @@ export default function BulkCodes({
   const fetchProjectList = useCallback(async () => {
     if (planetCashAccount && !projectList) {
       try {
-        const fetchedProjects = await getRequest<MapSingleProject[]>(
+        const fetchedProjects = await getRequest<MapProject[]>(
           `/app/projects`,
           {
             _scope: 'map',

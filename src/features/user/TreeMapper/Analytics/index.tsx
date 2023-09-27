@@ -1,24 +1,25 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import DashboardView from '../../../common/Layout/DashboardView';
 import { useTranslation } from 'react-i18next';
 import ProjectFilter from './components/ProjectFilter';
 import { Project, useAnalytics } from '../../../common/Layout/AnalyticsContext';
 import { DataExplorerGridContainer } from './components/DataExplorerGridContainer';
 import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
-import { APIError, ProjectMapInfo, handleError } from '@planet-sdk/common';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
+import { APIError, handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 
 const Analytics = () => {
   const { t, ready } = useTranslation('treemapperAnalytics');
   const { setProjectList, setProject } = useAnalytics();
+  const { token, logoutUser } = useUserProps();
   const { setErrors } = React.useContext(ErrorHandlingContext);
-
-  const { token, logoutUser } = useContext(UserPropsContext);
 
   const fetchProjects = async () => {
     try {
-      const res = await getAuthenticatedRequest<ProjectMapInfo[]>(
+      // TODO - update project type, this does not match completely
+      const res = await getAuthenticatedRequest<MapProject[]>(
         '/app/profile/projects?scope=map',
         token,
         logoutUser

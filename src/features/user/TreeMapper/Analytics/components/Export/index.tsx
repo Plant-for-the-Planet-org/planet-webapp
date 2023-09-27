@@ -11,7 +11,7 @@ import { useContext, useEffect, useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { localeMapForDate } from '../../../../../../utils/language/getLanguageName';
-import { UserPropsContext } from '../../../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
 import { SxProps } from '@mui/material';
 import themeProperties from '../../../../../../theme/themeProperties';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
@@ -21,6 +21,10 @@ import { format } from 'date-fns';
 import ProjectTypeSelector, { ProjectType } from '../ProjectTypeSelector';
 import { Container } from '../Container';
 import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
+import useNextRequest, {
+  HTTP_METHOD,
+} from '../../../../../../hooks/use-next-request';
+import { IExportData } from '../../../../../common/types/dataExplorer';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -42,13 +46,23 @@ const dialogSx: SxProps = {
 export const Export = () => {
   const { t, ready } = useTranslation('treemapperAnalytics');
   const { projectList, project, fromDate, toDate } = useAnalytics();
-  const { userLang } = useContext(UserPropsContext);
-  const { handleError } = useContext(ErrorHandlingContext);
+  const { userLang } = useUserProps();
+  const { setErrors } = useContext(ErrorHandlingContext);
 
   const [localProject, setLocalProject] = useState<Project | null>(null);
   const [localFromDate, setLocalFromDate] = useState<Date>(fromDate);
   const [localToDate, setLocalToDate] = useState<Date>(toDate);
   const [projectType, setProjectType] = useState<ProjectType | null>(null);
+
+  const { makeRequest } = useNextRequest<{ data: IExportData[] }>({
+    url: '/api/data-explorer/export',
+    method: HTTP_METHOD.POST,
+    body: {
+      projectId: localProject?.id,
+      startDate: localFromDate,
+      endDate: localToDate,
+    },
+  });
 
   useEffect(() => {
     setLocalFromDate(fromDate);
@@ -113,7 +127,7 @@ export const Export = () => {
     },
     {
       title: 'created',
-      description: t('exportColumnHeaders.createds'),
+      description: t('exportColumnHeaders.created'),
     },
   ];
 
@@ -127,7 +141,7 @@ export const Export = () => {
     }
   };
 
-  const extractDataToXlsx = (data) => {
+  const extractDataToXlsx = (data: IExportData[]) => {
     const worksheet = utils.json_to_sheet(data);
     const workbook = utils.book_new();
 
@@ -158,32 +172,15 @@ export const Export = () => {
 
   const handleExport = async () => {
     if (localProject) {
-      // TODO - Once error handling PR is merged refactor this fetch call with a makeNextRequest function
-      try {
-        const res = await fetch('/api/data-explorer/export', {
-          method: 'POST',
-          body: JSON.stringify({
-            projectId: localProject.id,
-            startDate: localFromDate,
-            endDate: localToDate,
-          }),
-        });
+      const res = await makeRequest();
 
-        if (res.status === 429) {
-          handleError({ message: t('errors.tooManyRequest'), type: 'error' });
-          return;
-        }
-
-        const { data } = await res.json();
-
+      if (res) {
+        const { data } = res;
         if (data.length === 0) {
-          handleError({ message: t('errors.emptyExportData'), type: 'error' });
+          setErrors([{ message: t('errors.emptyExportData') }]);
           return;
         }
-
         extractDataToXlsx(data);
-      } catch (err) {
-        handleError({ message: t('wentWrong'), type: 'error' });
       }
     }
   };

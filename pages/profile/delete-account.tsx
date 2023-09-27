@@ -1,9 +1,10 @@
 import Head from 'next/head';
 import React, { ReactElement } from 'react';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
-import DeleteProfile from '../../src/features/user/Settings/DeleteProfile';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import DeleteProfile from '../../src/features/user/Settings/DeleteProfile';
+import { GetStaticPropsContext } from 'next';
 
 function DeleteProfilePage(): ReactElement {
   const { t } = useTranslation('me');
@@ -19,11 +20,11 @@ function DeleteProfilePage(): ReactElement {
 
 export default DeleteProfilePage;
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

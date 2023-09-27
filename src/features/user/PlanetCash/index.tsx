@@ -13,11 +13,12 @@ import CreateAccount from './screens/CreateAccount';
 import Accounts from './screens/Accounts';
 import Transactions from './screens/Transactions';
 import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
 import { useRouter } from 'next/router';
 import { handleError, APIError } from '@planet-sdk/common';
+import { PlanetCashAccount } from '../../common/types/planetcash';
 
 export enum PlanetCashTabs {
   ACCOUNTS = 'accounts',
@@ -36,15 +37,15 @@ export default function PlanetCash({
 }: PlanetCashProps): ReactElement | null {
   const { t, ready, i18n } = useTranslation('planetcash');
   const [tabConfig, setTabConfig] = useState<TabItem[]>([]);
-  const { token, contextLoaded, logoutUser } = useContext(UserPropsContext);
+  const { token, contextLoaded, logoutUser } = useUserProps();
   const { accounts, setAccounts, setIsPlanetCashActive } = usePlanetCash();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const router = useRouter();
 
   const sortAccountsByActive = (
-    accounts: PlanetCash.Account[]
-  ): PlanetCash.Account[] => {
+    accounts: PlanetCashAccount[]
+  ): PlanetCashAccount[] => {
     return accounts.sort((accountA, accountB) => {
       if (accountA.isActive === accountB.isActive) {
         return 0;
@@ -82,7 +83,7 @@ export default function PlanetCash({
       try {
         setIsDataLoading(true);
         setProgress && setProgress(70);
-        const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
+        const accounts = await getAuthenticatedRequest<PlanetCashAccount[]>(
           `/app/planetCash`,
           token,
           logoutUser

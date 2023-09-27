@@ -1,18 +1,16 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useContext } from 'react';
 import styles from './VerifyEmail.module.scss';
 import { useTranslation } from 'next-i18next';
 import VerifyEmailIcon from '../../../../public/assets/images/icons/VerifyEmail';
-import { UserPropsContext } from '../Layout/UserPropsContext';
+import { useUserProps } from '../Layout/UserPropsContext';
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
 
-interface Props {}
-
-function VerifyEmailComponent({}: Props): ReactElement {
+function VerifyEmailComponent(): ReactElement {
   const { t, ready } = useTranslation(['common']);
 
-  const { loginWithRedirect } = React.useContext(UserPropsContext);
-  const { theme } = React.useContext(ThemeContext);
+  const { loginWithRedirect } = useUserProps();
+  const { theme } = useContext(ThemeContext);
   return ready ? (
     <div
       className={styles.verifyEmailSection}

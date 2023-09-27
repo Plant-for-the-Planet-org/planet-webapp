@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, useContext } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
 import SelectorOption, {
@@ -6,7 +6,7 @@ import SelectorOption, {
 } from '../components/SelectorOption';
 import BulkCodesError from '../components/BulkCodesError';
 import { useBulkCode } from '../../../common/Layout/BulkCodeContext';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { BulkCodeMethods } from '../../../../utils/constants/bulkCodeConstants';
 import { useTranslation } from 'next-i18next';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
@@ -23,7 +23,7 @@ const CreationMethodForm = (): ReactElement | null => {
   } = useBulkCode();
   const [method, setMethod] = useState<BulkCodeMethods | null>(bulkMethod);
   const { t, ready } = useTranslation(['common', 'bulkCodes']);
-  const { user } = useContext(UserPropsContext);
+  const { user } = useUserProps();
 
   if (ready) {
     const selectorOptions: SelectorOptionProps[] = [
@@ -85,7 +85,7 @@ const CreationMethodForm = (): ReactElement | null => {
             className="formButton"
             disabled={
               !(
-                user.planetCash &&
+                user?.planetCash &&
                 !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
               ) || method === null
             }

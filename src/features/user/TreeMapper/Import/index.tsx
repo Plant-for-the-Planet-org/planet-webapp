@@ -3,7 +3,7 @@ import { getAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import PlantingLocation from './components/PlantingLocation';
 import styles from './Import.module.scss';
 import { useTranslation } from 'next-i18next';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
 import {
   Step as MuiStep,
@@ -17,6 +17,7 @@ import dynamic from 'next/dynamic';
 import theme from '../../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { PlantLocation } from '../Treemapper';
 
 const Stepper = styled(MuiStepper)({
   '&': {
@@ -34,17 +35,15 @@ const Step = styled(MuiStep)({
   },
 });
 
-interface Props {}
-
 const MapComponent = dynamic(() => import('./components/MapComponent'), {
   ssr: false,
   loading: () => <p></p>,
 });
 
-export default function ImportData({}: Props): ReactElement {
+export default function ImportData(): ReactElement {
   const router = useRouter();
   const { t, ready } = useTranslation(['treemapper']);
-  const { token, logoutUser } = React.useContext(UserPropsContext);
+  const { token, logoutUser } = useUserProps();
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
   function getSteps() {
@@ -58,7 +57,7 @@ export default function ImportData({}: Props): ReactElement {
   const [errorMessage, setErrorMessage] = React.useState('');
   const steps = getSteps();
   const [plantLocation, setPlantLocation] =
-    React.useState<Treemapper.PlantLocation | null>(null);
+    React.useState<PlantLocation | null>(null);
   const [userLang, setUserLang] = React.useState('en');
   const [geoJson, setGeoJson] = React.useState(null);
 
@@ -151,7 +150,9 @@ export default function ImportData({}: Props): ReactElement {
       <div className={styles.pageContainer}>
         <div className={styles.listContainer}>
           <div className={styles.pageTitle}>{t('treemapper:importData')}</div>
-          <p>{t('treemapper:importExplanation')}</p>
+          <p className={styles.pageSubtitle}>
+            {t('treemapper:importExplanation')}
+          </p>
           <div className={styles.stepperContainer}>
             <Stepper
               activeStep={activeStep}

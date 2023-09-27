@@ -1,9 +1,7 @@
 import React, { ReactElement } from 'react';
 import ContentLoader from 'react-content-loader';
 
-interface Props {}
-
-function ProjectLoader({}: Props): ReactElement {
+function ProjectLoader(): ReactElement {
   return (
     <>
       <ContentLoader

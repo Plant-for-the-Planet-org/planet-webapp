@@ -6,7 +6,7 @@ import { getAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import getImageUrl from '../../../utils/getImageURL';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './ProjectsContainer.module.scss';
 import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import { useTranslation } from 'next-i18next';
@@ -32,7 +32,7 @@ function SingleProject({ project }: any) {
         <p className={styles.projectName}>{project.name}</p>
         <p className={styles.projectClassification}>
           {project?.purpose === 'conservation'
-            ? project?.metadata?.ecosystems
+            ? project?.metadata?.ecosystem
             : project?.classification}{' '}
           •{' '}
           {project.country === null ? (
@@ -84,13 +84,12 @@ function SingleProject({ project }: any) {
   );
 }
 
-export default function ProjectsContainer({}: any) {
+export default function ProjectsContainer() {
   const { t, ready } = useTranslation(['donate', 'manageProjects']);
   const [projects, setProjects] = React.useState([]);
   const [loader, setLoader] = React.useState(true);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const { user, contextLoaded, token, logoutUser } =
-    React.useContext(UserPropsContext);
+  const { user, contextLoaded, token, logoutUser } = useUserProps();
 
   async function loadProjects() {
     if (user) {

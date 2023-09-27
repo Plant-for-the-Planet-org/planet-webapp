@@ -1,8 +1,14 @@
-import React, { ReactElement, useState } from 'react';
-import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
+import React, {
+  ChangeEvent,
+  ReactElement,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { Button, FormControlLabel, Switch, Tooltip } from '@mui/material';
 import { useTranslation } from 'next-i18next';
-import ToggleSwitch from '../../../common/InputTypes/ToggleSwitch';
 import styles from './../StepForm.module.scss';
 import MapGL, {
   Marker,
@@ -10,8 +16,7 @@ import MapGL, {
   FlyToInterpolator,
 } from 'react-map-gl';
 import * as d3 from 'd3-ease';
-import { makeStyles } from '@mui/styles';
-import { MenuItem } from '@mui/material';
+import { MenuItem, TextField } from '@mui/material';
 import InfoIcon from './../../../../../public/assets/images/icons/manageProjects/Info';
 import {
   postAuthenticatedRequest,
@@ -27,18 +32,41 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
+import CenteredContainer from '../../../common/Layout/CenteredContainer';
+import StyledForm from '../../../common/Layout/StyledForm';
+import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError, APIError } from '@planet-sdk/common';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
+import { ProjectCreationTabs } from '..';
+import {
+  BasicDetailsProps,
+  ProfileProjectConservation,
+  ProfileProjectTrees,
+  ViewPort,
+} from '../../../common/types/project';
 
-interface Props {
-  handleNext: Function;
-  projectDetails: Object;
-  setProjectDetails: Function;
-  setProjectGUID: Function;
-  projectGUID: any;
-  token: any;
-  purpose: String;
-}
+type FormData = {
+  name: string;
+  slug: string;
+  website: string;
+  description: string;
+  acceptDonations: boolean;
+  unitCost: string;
+  latitude: string;
+  longitude: string;
+  metadata: {
+    visitorAssistance: boolean;
+    ecosystem: string;
+  };
+};
+
+type TreeFormData = FormData & {
+  classification: string;
+  countTarget: string;
+  unitType: 'tree' | 'm2';
+};
+
+type ConservationFormData = FormData;
 
 export default function BasicDetails({
   handleNext,
@@ -48,7 +76,7 @@ export default function BasicDetails({
   setProjectGUID,
   projectGUID,
   purpose,
-}: Props): ReactElement {
+}: BasicDetailsProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['manageProjects']);
   const EMPTY_STYLE = {
     version: 8,
@@ -56,19 +84,20 @@ export default function BasicDetails({
     layers: [],
   };
 
-  const [skipButtonVisible, setSkipButtonVisible] = React.useState(false);
+  const [IsSkipButtonVisible, setIsSkipButtonVisible] =
+    useState<boolean>(false);
 
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
+  const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
   // Map setup
-  const { theme } = React.useContext(ThemeContext);
-  const { logoutUser } = React.useContext(UserPropsContext);
+  const { theme } = useContext(ThemeContext);
+  const { logoutUser } = useUserProps();
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
-  const mapRef = React.useRef(null);
-  const [style, setStyle] = React.useState(EMPTY_STYLE);
+  const mapRef = useRef(null);
+  const [style, setStyle] = useState(EMPTY_STYLE);
   const [wrongCoordinatesMessage, setWrongCoordinatesMessage] =
-    React.useState(false);
-  const [viewport, setViewPort] = React.useState({
+    useState<boolean>(false);
+  const [viewport, setViewPort] = useState<ViewPort>({
     width: 760,
     height: 400,
     latitude: defaultMapCenter[0],
@@ -77,31 +106,9 @@ export default function BasicDetails({
   });
   const router = useRouter();
 
-  const useStylesAutoComplete = makeStyles({
-    root: {
-      color:
-        theme === 'theme-light'
-          ? `${themeProperties.light.primaryFontColor} !important`
-          : `${themeProperties.dark.primaryFontColor} !important`,
-      backgroundColor:
-        theme === 'theme-light'
-          ? `${themeProperties.light.backgroundColor} !important`
-          : `${themeProperties.dark.backgroundColor} !important`,
-    },
-    option: {
-      // color: '#2F3336',
-      '&:hover': {
-        backgroundColor:
-          theme === 'theme-light'
-            ? `${themeProperties.light.backgroundColorDark} !important`
-            : `${themeProperties.dark.backgroundColorDark} !important`,
-      },
-    },
-  });
-  const classes = useStylesAutoComplete();
-  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { setErrors } = useContext(ErrorHandlingContext);
 
-  React.useEffect(() => {
+  useEffect(() => {
     //loads the default mapstyle
     async function loadMapStyle() {
       const result = await getMapStyle('openStreetMap');
@@ -112,25 +119,27 @@ export default function BasicDetails({
     loadMapStyle();
   }, []);
 
-  const [projectCoords, setProjectCoords] = React.useState([0, 0]);
+  const [projectCoords, setProjectCoords] = useState<number[]>([0, 0]);
 
-  const changeLat = (e: any) => {
-    if (e.target.value && e.target.value > -90 && e.target.value < 90) {
+  const changeLat = (e: ChangeEvent<HTMLInputElement>) => {
+    const latNumericValue = Number(e.target.value);
+    if (latNumericValue && latNumericValue > -90 && latNumericValue < 90) {
       setProjectCoords([
         projectCoords ? projectCoords[0] : 0,
         parseFloat(e.target.value),
       ]);
     }
   };
-  const changeLon = (e: any) => {
-    if (e.target.value && e.target.value > -180 && e.target.value < 180) {
+  const changeLon = (e: ChangeEvent<HTMLInputElement>) => {
+    const lonNumericValue = Number(e.target.value);
+    if (lonNumericValue && lonNumericValue > -180 && lonNumericValue < 180) {
       setProjectCoords([
         parseFloat(e.target.value),
         projectCoords ? projectCoords[1] : 0,
       ]);
     }
   };
-  const _onViewportChange = (view: any) => setViewPort({ ...view });
+  const _onViewportChange = (view: ViewPort) => setViewPort({ ...view });
 
   const classifications = [
     {
@@ -159,64 +168,24 @@ export default function BasicDetails({
     },
   ];
 
-  const ecosystemsType = [
-    {
-      label: ready ? t('manageProjects:tropicalMoistForest') : '',
-      value: 'tropical-moist-forests',
-    },
-    {
-      label: ready ? t('manageProjects:tropicalDryForests') : '',
-      value: 'tropical-dry-forests',
-    },
-    {
-      label: ready ? t('manageProjects:tropicalConiferousForests') : '',
-      value: 'tropical-coniferous-forests',
-    },
-    {
-      label: ready ? t('manageProjects:tropicalGrasslandsForests') : '',
-      value: 'tropical-grasslands-forests',
-    },
-    {
-      label: ready ? t('manageProjects:temperateBroadleafForests') : '',
-      value: 'temperate-broadleaf-forests',
-    },
-    {
-      label: ready ? t('manageProjects:temperateGrasslandsForests') : '',
-      value: 'temperate-grasslands-forests',
-    },
-    {
-      label: ready ? t('manageProjects:mediterraneanForests') : '',
-      value: 'mediterranean-forests',
-    },
-    {
-      label: ready ? t('manageProjects:mangroves') : '',
-      value: 'mangroves',
-    },
-    {
-      label: ready ? t('manageProjects:deserts') : '',
-      value: 'deserts',
-    },
-    {
-      label: ready ? t('manageProjects:floodedGrasslands') : '',
-      value: 'flooded-grasslands',
-    },
-    {
-      label: ready ? t('manageProjects:montaneGrasslands') : '',
-      value: 'montane-grasslands',
-    },
-    {
-      label: ready ? t('manageProjects:borealForests') : '',
-      value: 'boreal-forests',
-    },
-    {
-      label: ready ? t('manageProjects:tundra') : '',
-      value: 'tundra',
-    },
-    {
-      label: ready ? t('manageProjects:temperateConiferousForests') : '',
-      value: 'temperate-coniferous-forests',
-    },
+  const ecosystemTypes = [
+    'tropical-moist-forests',
+    'tropical-dry-forests',
+    'tropical-coniferous-forests',
+    'tropical-grasslands-forests',
+    'temperate-broadleaf-forests',
+    'temperate-coniferous-forests',
+    'temperate-grasslands-forests',
+    'mediterranean-forests',
+    'mangroves',
+    'deserts',
+    'flooded-grasslands',
+    'montane-grasslands',
+    'boreal-forests',
+    'tundra',
   ];
+
+  const unitTypeOptions = ['tree', 'm2'];
 
   // Default Form Fields
   const defaultBasicDetails =
@@ -224,114 +193,98 @@ export default function BasicDetails({
       ? {
           name: '',
           slug: '',
-          classification: {
-            label: ready ? t('manageProjects:projectType') : '',
-            value: null,
-          },
-          countTarget: 0,
           website: '',
           description: '',
           acceptDonations: false,
-          unitCost: 0,
-          publish: false,
+          unitCost: '',
+          unitType: '',
+          latitude: '',
+          longitude: '',
           metadata: {
+            ecosystem: '',
             visitorAssistance: false,
-            enablePlantLocations: false,
           },
-          currency: 'EUR',
-          latitude: 0,
-          longitude: 0,
+          classification: '',
+          countTarget: '',
         }
       : {
-          purpose: 'conservation',
           name: '',
           slug: '',
+          website: '',
           description: '',
           acceptDonations: false,
-          unitCost: 0,
-          currency: 'EUR',
-          latitude: 0,
-          longitude: 0,
-          ecosystems: '',
+          unitCost: '',
+          latitude: '',
+          longitude: '',
           metadata: {
-            ecosystems: {
-              label: ready ? t('manageProjects:ecosystems') : '',
-              value: null,
-            },
-            impacts: {
-              benefits: '',
-              ecologicalBenefits: '',
-              socialBenefits: '',
-              coBenefits: '',
-            },
+            ecosystem: '',
+            visitorAssistance: false,
           },
         };
 
   const {
-    register,
     handleSubmit,
-    errors,
     control,
     reset,
     setValue,
     setError,
     clearErrors,
-  } = useForm({ mode: 'onBlur', defaultValues: defaultBasicDetails });
-
-  const nextStep = () => {
-    handleNext();
-  };
+    formState: { errors },
+  } = useForm<TreeFormData | ConservationFormData>({
+    mode: 'onBlur',
+    defaultValues: defaultBasicDetails,
+  });
 
   const [acceptDonations, setAcceptDonations] = useState(false);
   //if project is already had created then user can visit to  other forms using skip button
-  React.useEffect(() => {
-    if (projectDetails.id) {
-      setSkipButtonVisible(true);
+  useEffect(() => {
+    if (projectDetails?.id) {
+      setIsSkipButtonVisible(true);
     }
   }, [router]);
 
-  // const treeCost = watch('treeCost');
-
-  React.useEffect(() => {
+  useEffect(() => {
     if (projectDetails) {
       const basicDetails =
         purpose === 'trees'
           ? {
               name: projectDetails.name,
               slug: projectDetails.slug,
-              classification: projectDetails.classification,
-              countTarget: projectDetails.countTarget,
-              website: projectDetails.website,
+              website: projectDetails.website || '',
               description: projectDetails.description,
               acceptDonations: projectDetails.acceptDonations,
+              unitType: projectDetails.unitType,
               unitCost: getFormattedNumber(
                 i18n.language,
                 projectDetails.unitCost || 0
               ),
-
-              visitorAssistance: projectDetails.visitorAssistance,
-              enablePlantLocations: projectDetails.enablePlantLocations,
-              currency: projectDetails.currency,
-              latitude: projectDetails.geoLatitude,
-              longitude: projectDetails.geoLongitude,
+              latitude: projectDetails.geoLatitude.toString(),
+              longitude: projectDetails.geoLongitude.toString(),
+              metadata: {
+                visitorAssistance:
+                  projectDetails.metadata.visitorAssistance || false,
+                ecosystem: projectDetails.metadata.ecosystem || '',
+              },
+              classification: projectDetails.classification || '',
+              countTarget: projectDetails.countTarget || '',
             }
           : {
-              purpose: projectDetails.purpose,
               name: projectDetails.name,
               slug: projectDetails.slug,
-
-              website: projectDetails.website,
+              website: projectDetails.website || '',
               description: projectDetails.description,
               acceptDonations: projectDetails.acceptDonations,
               unitCost: getFormattedNumber(
                 i18n.language,
                 projectDetails.unitCost || 0
               ),
-              currency: projectDetails.currency,
-              latitude: projectDetails.geoLatitude,
-              longitude: projectDetails.geoLongitude,
-              ecosystems: projectDetails?.metadata?.ecosystems,
-              visitorAssistance: projectDetails?.metadata?.visitorAssistance,
+              latitude: projectDetails.geoLatitude.toString(),
+              longitude: projectDetails.geoLongitude.toString(),
+              metadata: {
+                visitorAssistance:
+                  projectDetails.metadata.visitorAssistance || false,
+                ecosystem: projectDetails.metadata.ecosystem || '',
+              },
             };
       if (projectDetails.geoLongitude && projectDetails.geoLatitude) {
         setProjectCoords([
@@ -352,17 +305,26 @@ export default function BasicDetails({
     }
   }, [projectDetails]);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: TreeFormData | ConservationFormData) => {
     setIsUploadingData(true);
     const submitData =
       purpose === 'trees'
         ? {
             name: data.name,
             slug: data.slug,
-            classification: data.classification,
+            website: data.website,
+            description: data.description,
+            acceptDonations: data.acceptDonations,
+            unitCost: data.unitCost
+              ? parseNumber(i18n.language, Number(data.unitCost))
+              : undefined,
+            unitType: (data as TreeFormData).unitType,
+            currency: 'EUR',
+            classification: (data as TreeFormData).classification,
+            countTarget: Number((data as TreeFormData).countTarget),
             metadata: {
-              visitorAssistance: data.visitorAssistance,
-              enablePlantLocations: data.enablePlantLocations,
+              ecosystem: data.metadata.ecosystem,
+              visitorAssistance: data.metadata.visitorAssistance,
             },
             geometry: {
               type: 'Point',
@@ -371,20 +333,22 @@ export default function BasicDetails({
                 parseFloat(data.latitude),
               ],
             },
-            countTarget: Number(data.countTarget),
-            website: data.website,
-            description: data.description,
-            acceptDonations: data.acceptDonations,
-            unitCost: data.unitCost
-              ? parseNumber(i18n.language, data.unitCost)
-              : undefined,
-            currency: 'EUR',
           }
         : {
             purpose: 'conservation',
             name: data.name,
             slug: data.slug,
             website: data.website,
+            description: data.description,
+            acceptDonations: data.acceptDonations,
+            unitCost: data.unitCost
+              ? parseNumber(i18n.language, Number(data.unitCost))
+              : undefined,
+            currency: 'EUR',
+            metadata: {
+              ecosystem: data.metadata.ecosystem,
+              visitorAssistance: data.metadata.visitorAssistance,
+            },
             geometry: {
               type: 'Point',
               coordinates: [
@@ -392,42 +356,26 @@ export default function BasicDetails({
                 parseFloat(data.latitude),
               ],
             },
-            description: data.description,
-            acceptDonations: data.acceptDonations,
-            unitCost: data.unitCost
-              ? parseNumber(i18n.language, data.unitCost)
-              : null,
-            currency: 'EUR',
-            metadata: {
-              ecosystems: data.ecosystems,
-              visitorAssistance: data.visitorAssistance,
-            },
           };
 
     // Check if GUID is set use update instead of create project
     if (projectGUID) {
       try {
-        const res = await putAuthenticatedRequest(
-          `/app/projects/${projectGUID}`,
-          submitData,
-          token,
-          logoutUser
-        );
+        const res = await putAuthenticatedRequest<
+          ProfileProjectTrees | ProfileProjectConservation
+        >(`/app/projects/${projectGUID}`, submitData, token, logoutUser);
         setProjectDetails(res);
         setIsUploadingData(false);
-        handleNext();
+        handleNext(ProjectCreationTabs.PROJECT_MEDIA);
       } catch (err) {
         setIsUploadingData(false);
         setErrors(handleError(err as APIError));
       }
     } else {
       try {
-        const res = await postAuthenticatedRequest(
-          `/app/projects`,
-          submitData,
-          token,
-          logoutUser
-        );
+        const res = await postAuthenticatedRequest<
+          ProfileProjectTrees | ProfileProjectConservation
+        >(`/app/projects`, submitData, token, logoutUser);
         setProjectGUID(res.id);
         setProjectDetails(res);
         router.push(`/profile/projects/${res.id}?type=media`);
@@ -438,6 +386,7 @@ export default function BasicDetails({
       }
     }
   };
+
   const geocoder = new GeocoderArcGIS(
     process.env.ESRI_CLIENT_SECRET
       ? {
@@ -448,305 +397,304 @@ export default function BasicDetails({
   );
 
   return ready ? (
-    <div className={`${styles.stepContainer} `}>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-      >
-        <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
-          <div className={styles.formFieldLarge} data-test-id="projectName">
-            <MaterialTextField
-              inputRef={register({
-                required: {
-                  value: true,
-                  message: t('manageProjects:nameValidation'),
-                },
-              })}
-              label={t('manageProjects:name')}
-              variant="outlined"
-              name="name"
-            />
-            {errors.name && (
-              <span className={styles.formErrors}>{errors.name.message}</span>
-            )}
-          </div>
-
-          <div className={styles.formField}>
-            <div className={styles.formFieldHalf} data-test-id="slug" id="slug">
-              <MaterialTextField
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: t('manageProjects:slugValidation'),
-                  },
-                })}
-                label={t('manageProjects:slug')}
+    <CenteredContainer>
+      <StyledForm>
+        <div className="inputContainer">
+          <Controller
+            name="name"
+            control={control}
+            rules={{ required: t('manageProjects:nameValidation') }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextField
+                label={t('manageProjects:name')}
                 variant="outlined"
-                name="slug"
-                InputProps={{
-                  startAdornment: (
-                    <p className={styles.inputStartAdornment}>pp.eco/</p>
-                  ),
-                }}
+                onChange={onChange}
+                value={value}
+                onBlur={onBlur}
+                error={errors.name !== undefined}
+                helperText={errors.name !== undefined && errors.name.message}
               />
-              {errors.slug && (
-                <span className={styles.formErrors}>{errors.slug.message}</span>
-              )}
-            </div>
-            <div style={{ width: '20px' }}></div>
-            {purpose === 'trees' ? (
-              <div
-                className={styles.formFieldHalf}
-                data-test-id="classification"
-              >
-                <Controller
-                  as={
-                    <MaterialTextField
-                      label={t('manageProjects:classification')}
-                      variant="outlined"
-                      select
-                    >
-                      {classifications.map((option) => (
-                        <MenuItem
-                          key={option.value}
-                          value={option.value}
-                          classes={{
-                            // option: classes.option,
-                            root: classes.root,
-                          }}
-                        >
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </MaterialTextField>
-                  }
-                  name="classification"
-                  rules={{
-                    required: t('manageProjects:classificationValidation'),
-                  }}
-                  control={control}
-                />
-                {errors.classification && (
-                  <span className={styles.formErrors}>
-                    {errors.classification.message}
-                  </span>
-                )}
-              </div>
-            ) : (
-              <div className={styles.formFieldHalf}>
-                <Controller
-                  as={
-                    <MaterialTextField
-                      label={t('manageProjects:ecosystems')}
-                      variant="outlined"
-                      select
-                    >
-                      {ecosystemsType.map((option) => (
-                        <MenuItem
-                          key={option.value}
-                          value={option.value}
-                          classes={{
-                            // option: classes.option,
-                            root: classes.root,
-                          }}
-                        >
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </MaterialTextField>
-                  }
-                  name="ecosystems"
-                  rules={{
-                    required: t('manageProjects:ecosystemType'),
-                  }}
-                  control={control}
-                />
-                {errors.ecosystems && (
-                  <span className={styles.formErrors}>
-                    {errors.ecosystems.message}
-                  </span>
-                )}
-              </div>
             )}
-          </div>
-
-          {purpose === 'trees' ? (
-            <div className={styles.formField}>
-              <div className={styles.formFieldHalf} data-test-id="target">
-                <MaterialTextField
-                  inputRef={register({
-                    required: {
-                      value: true,
-                      message: t('manageProjects:countTargetValidation'),
-                    },
-                    validate: (value) => parseInt(value, 10) > 1,
-                  })}
-                  onInput={(e) => {
-                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                  }}
-                  label={t('manageProjects:countTarget')}
+          />
+          <InlineFormDisplayGroup>
+            <Controller
+              name="metadata.ecosystem"
+              rules={{
+                required: t('manageProjects:ecosystemType'),
+              }}
+              control={control}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <TextField
+                  label={t('manageProjects:ecosystem')}
                   variant="outlined"
-                  name="countTarget"
-                  placeholder={'0'}
-                />
-                {errors.countTarget && (
-                  <span className={styles.formErrors}>
-                    {errors.countTarget.message
-                      ? errors.countTarget.message
-                      : t('manageProjects:countTargetValidation2')}
-                  </span>
+                  select
+                  onChange={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                  error={errors.metadata?.ecosystem !== undefined}
+                  helperText={
+                    errors.metadata?.ecosystem !== undefined &&
+                    errors.metadata.ecosystem.message
+                  }
+                >
+                  {ecosystemTypes.map((ecosystem) => (
+                    <MenuItem key={ecosystem} value={ecosystem}>
+                      {t(`manageProjects:ecosystemTypes.${ecosystem}`)}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
+            />
+            {purpose === 'trees' && (
+              <Controller
+                name="classification"
+                rules={{
+                  required: t('manageProjects:classificationValidation'),
+                }}
+                control={control}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <TextField
+                    label={t('manageProjects:classification')}
+                    variant="outlined"
+                    select
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                    error={
+                      'classification' in errors &&
+                      errors.classification !== undefined
+                    }
+                    helperText={
+                      'classification' in errors &&
+                      errors.classification !== undefined &&
+                      errors.classification?.message
+                    }
+                  >
+                    {classifications.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 )}
-              </div>
-            </div>
-          ) : (
-            <></>
+              />
+            )}
+          </InlineFormDisplayGroup>
+          {purpose === 'trees' && (
+            <InlineFormDisplayGroup>
+              <Controller
+                name="unitType"
+                rules={{
+                  required: t('manageProjects:unitTypeRequired'),
+                }}
+                control={control}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <TextField
+                    label={t('manageProjects:unitType')}
+                    variant="outlined"
+                    select
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                    error={
+                      'unitType' in errors && errors.unitType !== undefined
+                    }
+                    helperText={
+                      'unitType' in errors &&
+                      errors.unitType !== undefined &&
+                      errors.unitType.message
+                    }
+                  >
+                    {unitTypeOptions.map((unitType) => (
+                      <MenuItem key={unitType} value={unitType}>
+                        {t(`manageProjects:unitTypes.${unitType}`)}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                )}
+              />
+              <Controller
+                name="countTarget"
+                control={control}
+                rules={{
+                  required: t('manageProjects:countTargetValidation'),
+                  validate: (value) => parseInt(value, 10) > 1,
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextField
+                    label={t('manageProjects:countTarget')}
+                    variant="outlined"
+                    placeholder={'0'}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                      onChange(e);
+                    }}
+                    value={value}
+                    onBlur={onBlur}
+                    error={
+                      'countTarget' in errors &&
+                      errors.countTarget !== undefined
+                    }
+                    helperText={
+                      'countTarget' in errors &&
+                      errors.countTarget !== undefined &&
+                      (errors.countTarget.message ||
+                        t('manageProjects:countTargetValidation2'))
+                    }
+                  />
+                )}
+              />
+            </InlineFormDisplayGroup>
           )}
-          <div className={styles.formFieldHalf} data-test-id="website">
-            <MaterialTextField
-              label={t('manageProjects:website')}
-              variant="outlined"
+          <InlineFormDisplayGroup>
+            <Controller
+              name="slug"
+              control={control}
+              rules={{ required: t('manageProjects:slugValidation') }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextField
+                  label={t('manageProjects:slug')}
+                  variant="outlined"
+                  InputProps={{
+                    startAdornment: (
+                      <p className={styles.inputStartAdornment}>pp.eco/</p>
+                    ),
+                  }}
+                  onChange={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                  error={errors.slug !== undefined}
+                  helperText={errors.slug !== undefined && errors.slug.message}
+                />
+              )}
+            />
+            <Controller
               name="website"
-              inputRef={register({
-                required: {
-                  value: true,
-                  message: t('manageProjects:websiteValidationRequired'),
-                },
+              control={control}
+              rules={{
+                required: t('manageProjects:websiteValidationRequired'),
                 pattern: {
                   //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
                   value:
                     /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
                   message: t('manageProjects:websiteValidationInvalid'),
                 },
-              })}
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextField
+                  label={t('manageProjects:website')}
+                  variant="outlined"
+                  onChange={onChange}
+                  value={value}
+                  onBlur={onBlur}
+                  error={errors.website !== undefined}
+                  helperText={
+                    errors.website !== undefined && errors.website.message
+                  }
+                />
+              )}
             />
-            {errors.website && (
-              <span className={styles.formErrors}>
-                {errors.website.message}
-              </span>
+          </InlineFormDisplayGroup>
+          <Controller
+            name="description"
+            control={control}
+            rules={{
+              required: t('manageProjects:aboutProjectValidation'),
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextField
+                label={t('manageProjects:aboutProject')}
+                variant="outlined"
+                multiline
+                minRows={2}
+                maxRows={4}
+                onChange={onChange}
+                value={value}
+                onBlur={onBlur}
+                error={errors.description !== undefined}
+                helperText={
+                  errors.description !== undefined && errors.description.message
+                }
+              />
             )}
-          </div>
-
-          <div className={styles.formFieldLarge} data-test-id="aboutProject">
-            <MaterialTextField
-              label={t('manageProjects:aboutProject')}
-              variant="outlined"
-              name="description"
-              multiline
-              inputRef={register({
-                required: {
-                  value: true,
-                  message: t('manageProjects:aboutProjectValidation'),
-                },
-              })}
-            />
-            {errors.description && (
-              <span className={styles.formErrors}>
-                {errors.description.message}
-              </span>
-            )}
-          </div>
-
-          <div className={styles.formField} style={{ minHeight: '80px' }}>
-            <div className={`${styles.formFieldHalf}`}>
-              <div className={`${styles.formFieldRadio}`}>
-                <label
-                  htmlFor="acceptDonations"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    cursor: 'pointer',
-                  }}
-                  data-test-id="receiveDonations"
-                >
-                  {t('manageProjects:receiveDonations')}
-                  <div
-                    style={{
-                      height: '13px',
-                      width: '13px',
-                      marginLeft: '6px',
-                      marginBottom: '3px',
-                    }}
-                  >
-                    <InfoIcon />
-                    <div className={styles.popover}>
-                      <div
-                        className={styles.popoverContent}
-                        style={{ left: '-150px' }}
+          />
+          <InlineFormDisplayGroup>
+            <Controller
+              name="acceptDonations"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <FormControlLabel
+                  label={
+                    <div>
+                      {t('manageProjects:receiveDonations')}
+                      <Tooltip
+                        title={t('manageProjects:receiveDonationsInfo')}
+                        arrow
                       >
-                        <p>{t('manageProjects:receiveDonationsInfo')}</p>
-                      </div>
+                        <span className={styles.tooltipIcon}>
+                          <InfoIcon />
+                        </span>
+                      </Tooltip>
                     </div>
-                  </div>
-                </label>
-
-                <Controller
-                  name="acceptDonations"
-                  control={control}
-                  render={(properties) => (
-                    <ToggleSwitch
-                      id="acceptDonations"
-                      checked={properties.value}
-                      onChange={(e: any) => {
-                        properties.onChange(e.target.checked);
+                  }
+                  labelPlacement="end"
+                  control={
+                    <Switch
+                      checked={value}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        onChange(e.target.checked);
                         setAcceptDonations(e.target.checked);
                       }}
                       inputProps={{ 'aria-label': 'secondary checkbox' }}
                     />
-                  )}
-                />
-              </div>
-            </div>
-            {acceptDonations ? (
-              <div className={styles.formFieldHalf} data-test-id="treeCost">
-                <MaterialTextField
-                  inputRef={register({
-                    required: {
-                      value: acceptDonations,
-                      message: t('manageProjects:treeCostValidaitonRequired'),
-                    },
-                    validate: (value) =>
-                      parseNumber(i18n.language, value) > 0 &&
-                      parseNumber(i18n.language, value) <= 100,
-                  })}
-                  label={
-                    router.query.purpose === 'trees' ||
-                    projectDetails.purpose === 'trees'
-                      ? t('manageProjects:unitCost')
-                      : t('manageProjects:unitCostConservation')
                   }
-                  variant="outlined"
-                  type="number"
-                  name="unitCost"
-                  placeholder={'0'}
-                  InputProps={{
-                    startAdornment: (
-                      <p
-                        className={styles.inputStartAdornment}
-                        style={{ paddingRight: '4px' }}
-                      >{`€`}</p>
-                    ),
-                  }}
                 />
-                {errors.unitCost && (
-                  <span className={styles.formErrors}>
-                    {errors.unitCost.message
-                      ? errors.unitCost.message
-                      : t(
-                          router.query.purpose === 'trees' ||
-                            projectDetails.purpose === 'trees'
-                            ? 'manageProjects:treeCostValidation'
-                            : 'manageProjects:conservationCostValidation'
-                        )}
-                  </span>
+              )}
+            />
+            {acceptDonations && (
+              <Controller
+                name="unitCost"
+                control={control}
+                rules={{
+                  required: {
+                    value: acceptDonations,
+                    message: t('manageProjects:unitCostRequired'),
+                  },
+                  validate: (value) =>
+                    parseNumber(i18n.language, Number(value)) > 0 &&
+                    parseNumber(i18n.language, Number(value)) <= 100,
+                }}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <TextField
+                    label={t('manageProjects:unitCost')}
+                    variant="outlined"
+                    type="number"
+                    placeholder={'0'}
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                    InputProps={{
+                      startAdornment: (
+                        <p
+                          className={styles.inputStartAdornment}
+                          style={{ paddingRight: '4px' }}
+                        >{`€`}</p>
+                      ),
+                    }}
+                    error={errors.unitCost !== undefined}
+                    helperText={
+                      errors.unitCost !== undefined &&
+                      (errors.unitCost.message ||
+                        t('manageProjects:invalidUnitCost'))
+                    }
+                  />
                 )}
-              </div>
-            ) : null}
-          </div>
-
+              />
+            )}
+          </InlineFormDisplayGroup>
           <div
             className={`${styles.formFieldLarge} ${styles.mapboxContainer}`}
-            data-test-id="marker"
+            style={{ width: '100%' }}
           >
             <p
               style={{
@@ -775,18 +723,21 @@ export default function BasicDetails({
                     maxLocations: 10,
                     distance: 100,
                   })
-                  .then((result) => {
+                  .then((result: any) => {
                     if (result?.address?.Type === 'Ocean') {
                       setWrongCoordinatesMessage(true);
                       setError('latitude', {
                         message: '',
                       });
+                      setError('longitude', {
+                        message: '',
+                      });
                     } else {
                       setWrongCoordinatesMessage(false);
-                      clearErrors('latitude');
+                      clearErrors(['latitude', 'longitude']);
                     }
                   })
-                  .catch((error) => {
+                  .catch((error: string) => {
                     console.log(`error`, error);
                   });
                 setViewPort({
@@ -797,8 +748,8 @@ export default function BasicDetails({
                   transitionInterpolator: new FlyToInterpolator(),
                   transitionEasing: d3.easeCubic,
                 });
-                setValue('latitude', latLong.latitude);
-                setValue('longitude', latLong.longitude);
+                setValue('latitude', latLong.latitude.toString());
+                setValue('longitude', latLong.longitude.toString());
               }}
             >
               {projectCoords ? (
@@ -816,203 +767,133 @@ export default function BasicDetails({
                 <NavigationControl showCompass={false} />
               </div>
             </MapGL>
-            <div
-              className={styles.formField}
-              style={{ margin: 'auto', marginTop: '-120px' }}
-            >
+            <div className={styles.basicDetailsCoordinatesContainer}>
               <div
                 className={`${styles.formFieldHalf} ${styles.latlongField}`}
                 data-test-id="latitude"
               >
-                <MaterialTextField
-                  inputRef={register({
+                <Controller
+                  name="latitude"
+                  control={control}
+                  rules={{
                     required: true,
                     validate: (value) =>
                       parseFloat(value) > -90 && parseFloat(value) < 90,
-                  })}
-                  label={t('manageProjects:latitude')}
-                  variant="outlined"
-                  name={'latitude'}
-                  onChange={changeLat}
-                  className={styles.latitudeInput}
-                  onInput={(e) => {
-                    e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                   }}
-                  InputLabelProps={{
-                    shrink: true,
-                    style: {
-                      position: 'absolute',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      top: '-6px',
-                    },
-                  }}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <TextField
+                      label={t('manageProjects:latitude')}
+                      variant="filled"
+                      className={styles.latLongInput}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        e.target.value = e.target.value.replace(
+                          /[^0-9.-]/g,
+                          ''
+                        );
+                        changeLat(e);
+                        onChange(e);
+                      }}
+                      value={value}
+                      onBlur={onBlur}
+                      error={errors.latitude !== undefined}
+                      helperText={
+                        errors.latitude !== undefined &&
+                        (wrongCoordinatesMessage
+                          ? t('manageProjects:wrongCoordinates')
+                          : t('manageProjects:latitudeRequired'))
+                      }
+                    />
+                  )}
                 />
-                {errors.latitude && (
-                  <span
-                    className={styles.formErrorsAbsolute}
-                    style={{ zIndex: 2, textAlign: 'center' }}
-                  >
-                    {wrongCoordinatesMessage
-                      ? t('manageProjects:wrongCoordinates')
-                      : t('manageProjects:latitudeRequired')}
-                  </span>
-                )}
               </div>
               <div
                 className={`${styles.formFieldHalf} ${styles.latlongField}`}
                 data-test-id="longitude"
               >
-                <MaterialTextField
-                  inputRef={register({
+                <Controller
+                  name="longitude"
+                  control={control}
+                  rules={{
                     required: true,
                     validate: (value) =>
                       parseFloat(value) > -180 && parseFloat(value) < 180,
-                  })}
-                  label={t('manageProjects:longitude')}
-                  variant="outlined"
-                  onChange={changeLon}
-                  name={'longitude'}
-                  className={styles.longitudeInput}
-                  onInput={(e) => {
-                    e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
                   }}
-                  InputLabelProps={{
-                    shrink: true,
-                    style: {
-                      position: 'absolute',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      top: '-6px',
-                    },
-                  }}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <TextField
+                      label={t('manageProjects:longitude')}
+                      variant="filled"
+                      className={styles.latLongInput}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        e.target.value = e.target.value.replace(
+                          /[^0-9.-]/g,
+                          ''
+                        );
+                        changeLon(e);
+                        onChange(e);
+                      }}
+                      value={value}
+                      onBlur={onBlur}
+                      error={errors.longitude !== undefined}
+                      helperText={
+                        errors.longitude !== undefined &&
+                        (wrongCoordinatesMessage
+                          ? t('manageProjects:wrongCoordinates')
+                          : t('manageProjects:longitudeRequired'))
+                      }
+                    />
+                  )}
                 />
-                {errors.longitude && (
-                  <span
-                    className={styles.formErrorsAbsolute}
-                    style={{ zIndex: 2, textAlign: 'center' }}
-                  >
-                    {t('manageProjects:longitudeRequired')}
-                  </span>
-                )}
               </div>
             </div>
           </div>
 
-          <div className={styles.formFieldLarge} style={{ width: '320px' }}>
-            <div className={styles.formFieldRadio}>
-              <label
-                htmlFor="visitorAssistance"
-                style={{ cursor: 'pointer' }}
-                data-test-id="visitorAssistance"
-              >
-                {t('manageProjects:visitorAssistanceLabel')}
-              </label>
-              <Controller
-                name="visitorAssistance"
-                control={control}
-                render={(properties) => (
-                  <ToggleSwitch
-                    id="visitorAssistance"
-                    checked={properties.value}
-                    onChange={(e) => properties.onChange(e.target.checked)}
+          <Controller
+            name="metadata.visitorAssistance"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <FormControlLabel
+                label={t('manageProjects:visitorAssistanceLabel')}
+                labelPlacement="end"
+                control={
+                  <Switch
+                    checked={value}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      onChange(e.target.checked);
+                    }}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                   />
-                )}
+                }
               />
-            </div>
-          </div>
-
-          {/* <div className={styles.formFieldLarge} style={{ width: '320px' }}>
-            <div className={`${styles.formFieldRadio}`}>
-              <label
-                htmlFor={'publish'}
-                style={{ cursor: 'pointer' }}
-                data-test-id="publishProject"
-              >
-                {t('manageProjects:publishProject')}
-              </label>
-
-              <Controller
-                name="publish"
-                control={control}
-                render={(properties) => (
-                  <ToggleSwitch
-                    checked={properties.value}
-                    onChange={(e) => properties.onChange(e.target.checked)}
-                    id="publish"
-                    inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  />
-                )}
-              />
-            </div>
-          </div> */}
-
-          {/* <div className={styles.formFieldLarge} style={{ width: '320px' }}>
-            <div className={`${styles.formFieldRadio}`}>
-              <label htmlFor={'enablePlantLocations'}>
-                Detailed Project Analysis if projectstatus=Approved
-                Activate once all relevant data is submitted via Tree Mapper.
-                    </label>
-              <Controller
-                name="enablePlantLocations"
-                control={control}
-                render={properties => (
-
-                  <ToggleSwitch
-                    checked={properties.value}
-                    onChange={e => properties.onChange(e.target.checked)}
-                    id="enablePlantLocations"
-                    inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  />
-                )}
-              />
-            </div>
-          </div> */}
-        </div>
-        <div className={styles.formField} style={{ marginTop: '48px' }}>
-          {/* <div className={`${styles.formFieldHalf}`}>
-            <input
-              type="submit"
-              className={styles.secondaryButton}
-              value="Continue to Media"
-            ></input>
-          </div> */}
-
-          <div className={(styles.formField, styles.basicDetailButton)}>
-            <button
-              id={'basicDetailsCont'}
-              onClick={handleSubmit(onSubmit)}
-              className="primaryButton custom"
-              style={{ width: '169px', height: '46px' }}
-              data-test-id="basicDetailsCont"
-            >
-              {isUploadingData ? (
-                <div className={styles.spinner}></div>
-              ) : (
-                t('manageProjects:saveAndContinue')
-              )}
-            </button>
-            {skipButtonVisible ? (
-              <div className={(styles.formField, styles.skipBasicButton)}>
-                <button
-                  id={'skip'}
-                  className="primaryButton"
-                  onClick={nextStep}
-                  style={{
-                    width: '89px',
-                  }}
-                >
-                  {t('manageProjects:skip')}
-                </button>
-              </div>
-            ) : (
-              <></>
             )}
-          </div>
+          />
         </div>
-      </form>
-    </div>
+        <div className={styles.buttonsForProjectCreationForm}>
+          <Button
+            variant="contained"
+            onClick={handleSubmit(onSubmit)}
+            className="formButton"
+          >
+            {isUploadingData ? (
+              <div className={styles.spinner}></div>
+            ) : (
+              t('manageProjects:saveAndContinue')
+            )}
+          </Button>
+
+          {IsSkipButtonVisible ? (
+            <Button
+              className="formButton"
+              variant="contained"
+              onClick={() => handleNext(ProjectCreationTabs.PROJECT_MEDIA)}
+            >
+              {t('manageProjects:skip')}
+            </Button>
+          ) : (
+            ''
+          )}
+        </div>
+      </StyledForm>
+    </CenteredContainer>
   ) : (
     <></>
   );

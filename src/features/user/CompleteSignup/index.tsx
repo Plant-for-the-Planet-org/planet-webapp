@@ -8,15 +8,15 @@ import {
   MenuItem,
   styled,
   TextField,
+  AlertColor,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountryNew';
+import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
 import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
 import { useForm, Controller } from 'react-hook-form';
 import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
 import { selectUserType } from '../../../utils/selectUserType';
 import { getStoredConfig } from '../../../utils/storeConfig';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import themeProperties from '../../../theme/themeProperties';
 import { ThemeContext } from '../../../theme/themeContext';
 import GeocoderArcGIS from 'geocoder-arcgis';
@@ -24,7 +24,18 @@ import { postRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslation, Trans } from 'next-i18next';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
-import { handleError, APIError } from '@planet-sdk/common';
+import {
+  handleError,
+  APIError,
+  User,
+  UserType,
+  CreateUserRequest,
+  CountryCode,
+} from '@planet-sdk/common';
+import {
+  AddressSuggestionsType,
+  AddressType,
+} from '../../common/types/geocoder';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -38,11 +49,21 @@ const MuiTextField = styled(TextField)(() => {
   };
 });
 
+type FormData = Omit<
+  CreateUserRequest,
+  'type' | 'country' | 'oAuthAccessToken'
+>;
+
 export default function CompleteSignup(): ReactElement | null {
   const router = useRouter();
   const { i18n, t, ready } = useTranslation(['editProfile', 'donate']);
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
-  const [addressSugggestions, setaddressSugggestions] = React.useState([]);
+  const [addressSugggestions, setaddressSugggestions] = React.useState<
+    AddressSuggestionsType[]
+  >([]);
+  const [isProcessing, setIsProcessing] = React.useState<boolean>(false);
+  const [country, setCountry] = useState<CountryCode | null>(null);
+
   const geocoder = new GeocoderArcGIS(
     process.env.ESRI_CLIENT_SECRET
       ? {
@@ -51,11 +72,21 @@ export default function CompleteSignup(): ReactElement | null {
         }
       : {}
   );
-  const suggestAddress = (value) => {
+
+  const {
+    handleSubmit,
+    control,
+    reset,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<FormData>({ mode: 'onBlur' });
+
+  const suggestAddress = (value: string) => {
     if (value.length > 3) {
       geocoder
         .suggest(value, { category: 'Address', countryCode: country })
-        .then((result) => {
+        .then((result: { suggestions: AddressSuggestionsType[] }) => {
           const filterdSuggestions = result.suggestions.filter((suggestion) => {
             return !suggestion.isCollection;
           });
@@ -64,10 +95,10 @@ export default function CompleteSignup(): ReactElement | null {
         .catch(console.log);
     }
   };
-  const getAddress = (value) => {
+  const getAddress = (value: string) => {
     geocoder
       .findAddressCandidates(value, { outfields: '*' })
-      .then((result) => {
+      .then((result: AddressType) => {
         setValue('address', result.candidates[0].attributes.ShortLabel, {
           shouldValidate: true,
         });
@@ -83,34 +114,9 @@ export default function CompleteSignup(): ReactElement | null {
   };
   let suggestion_counter = 0;
   const { theme } = React.useContext(ThemeContext);
-  const useStylesAutoComplete = makeStyles({
-    root: {
-      color:
-        theme === 'theme-light'
-          ? `${themeProperties.light.primaryFontColor} !important`
-          : `${themeProperties.dark.primaryFontColor} !important`,
-      backgroundColor:
-        theme === 'theme-light'
-          ? `${themeProperties.light.backgroundColor} !important`
-          : `${themeProperties.dark.backgroundColor} !important`,
-    },
-    option: {
-      // color: '#2F3336',
-      '&:hover': {
-        backgroundColor:
-          theme === 'theme-light'
-            ? `${themeProperties.light.backgroundColorDark} !important`
-            : `${themeProperties.dark.backgroundColorDark} !important`,
-      },
-    },
-  });
-  const classes = useStylesAutoComplete();
-
-  const { register, handleSubmit, errors, control, reset, setValue, watch } =
-    useForm({ mode: 'onBlur' });
 
   const { user, setUser, auth0User, contextLoaded, logoutUser, token } =
-    React.useContext(UserPropsContext);
+    useUserProps();
 
   const isPrivate = watch('isPrivate');
   const [submit, setSubmit] = React.useState(false);
@@ -146,12 +152,11 @@ export default function CompleteSignup(): ReactElement | null {
     setSnackbarOpen(false);
   };
 
-  const [type, setAccountType] = useState('individual');
+  const [type, setAccountType] = useState<UserType>('individual');
   const [snackbarMessage, setSnackbarMessage] = useState('OK');
-  const [severity, setSeverity] = useState('info');
+  const [severity, setSeverity] = useState<AlertColor>('info');
   const [requestSent, setRequestSent] = useState(false);
-  const [acceptTerms, setAcceptTerms] = useState(null);
-  const [country, setCountry] = useState('');
+  const [acceptTerms, setAcceptTerms] = useState<boolean | null>(null);
 
   const [postalRegex, setPostalRegex] = React.useState(
     COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal
@@ -163,10 +168,11 @@ export default function CompleteSignup(): ReactElement | null {
     setPostalRegex(fiteredCountry[0]?.postal);
   }, [country]);
 
-  const sendRequest = async (bodyToSend: any) => {
+  const sendRequest = async (bodyToSend: CreateUserRequest) => {
     setRequestSent(true);
+    setIsProcessing(true);
     try {
-      const res = await postRequest(`/app/profile`, bodyToSend);
+      const res = await postRequest<User>(`/app/profile`, bodyToSend);
       setRequestSent(false);
       // successful signup -> goto me page
       setUser(res);
@@ -178,12 +184,13 @@ export default function CompleteSignup(): ReactElement | null {
         router.push('/t/[id]', `/t/${res.slug}`);
       }
     } catch (err) {
+      setIsProcessing(false);
       setErrors(handleError(err as APIError));
       redirect('/login');
     }
   };
 
-  const handleTermsAndCondition = (value) => {
+  const handleTermsAndCondition = (value: boolean) => {
     setAcceptTerms(value);
     if (!value) {
       setSubmit(false);
@@ -206,27 +213,29 @@ export default function CompleteSignup(): ReactElement | null {
       title: ready ? t('editProfile:education') : '',
       value: 'education',
     },
-  ];
+  ] as const;
 
   React.useEffect(() => {
     // This will remove field values which do not exist for the new type
     reset();
   }, [type]);
 
-  const createButtonClicked = async (data: any) => {
+  const createButtonClicked = async (data: FormData) => {
     if (!acceptTerms) {
       handleTermsAndCondition(false);
       return;
     }
     setSubmit(true);
-    if (contextLoaded && token) {
-      const submitData = {
-        ...data,
-        country,
-        type,
-        oAuthAccessToken: token,
-      };
-      sendRequest(submitData);
+    if (country != null) {
+      if (contextLoaded && token) {
+        const submitData = {
+          ...data,
+          country,
+          type,
+          oAuthAccessToken: token,
+        };
+        sendRequest(submitData);
+      }
     }
   };
 
@@ -283,10 +292,6 @@ export default function CompleteSignup(): ReactElement | null {
                   key={option.value}
                   value={option.value}
                   onClick={() => setAccountType(option.value)}
-                  classes={{
-                    // option: classes.option,
-                    root: classes.root,
-                  }}
                 >
                   {option.title}
                 </MenuItem>
@@ -294,57 +299,102 @@ export default function CompleteSignup(): ReactElement | null {
             </MuiTextField>
 
             <InlineFormDisplayGroup>
-              <MuiTextField
-                label={t('donate:firstName')}
-                inputRef={register({ required: true })}
-                name={'firstname'}
-                defaultValue={auth0User.given_name ? auth0User.given_name : ''}
-                error={errors.firstname}
-                helperText={errors.firstname && t('donate:firstNameRequired')}
+              <Controller
+                name="firstname"
+                control={control}
+                rules={{ required: true }}
+                defaultValue={auth0User?.given_name || ''}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <MuiTextField
+                    label={t('donate:firstName')}
+                    error={errors.firstname !== undefined}
+                    helperText={
+                      errors.firstname !== undefined &&
+                      t('donate:firstNameRequired')
+                    }
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                  />
+                )}
               />
-              <MuiTextField
-                label={t('donate:lastName')}
-                inputRef={register({ required: true })}
-                name={'lastname'}
-                defaultValue={
-                  auth0User.family_name ? auth0User.family_name : ''
-                }
-                error={errors.lastname}
-                helperText={errors.lastname && t('donate:firstNameRequired')}
+              <Controller
+                name="lastname"
+                control={control}
+                rules={{ required: true }}
+                defaultValue={auth0User?.family_name || ''}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <MuiTextField
+                    label={t('donate:lastName')}
+                    error={errors.lastname !== undefined}
+                    helperText={
+                      errors.lastname !== undefined &&
+                      t('donate:lastNameRequired')
+                    }
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                  />
+                )}
               />
             </InlineFormDisplayGroup>
 
             {type !== 'individual' ? (
-              <MuiTextField
-                label={t('editProfile:profileName', {
-                  type: selectUserType(type, t),
-                })}
-                inputRef={register({ required: true })}
-                name={'name'}
-                error={errors.name}
-                helperText={errors.name && t('editProfile:nameValidation')}
+              <Controller
+                name="name"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <MuiTextField
+                    label={t('editProfile:profileName', {
+                      type: selectUserType(type, t),
+                    })}
+                    error={errors.name !== undefined}
+                    helperText={
+                      errors.name !== undefined &&
+                      t('editProfile:nameValidation')
+                    }
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                  />
+                )}
               />
             ) : null}
 
             <MuiTextField
-              defaultValue={auth0User.email}
+              defaultValue={auth0User?.email}
               label={t('donate:email')}
               disabled
             />
 
             {type === 'tpo' ? (
               <>
-                <MuiTextField
-                  label={t('donate:address')}
-                  inputRef={register({ required: true })}
-                  name={'address'}
-                  onChange={(event) => {
-                    suggestAddress(event.target.value);
-                  }}
-                  onBlur={() => setaddressSugggestions([])}
-                  error={errors.address}
-                  helperText={errors.address && t('donate:addressRequired')}
+                <Controller
+                  name="address"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <MuiTextField
+                      label={t('donate:address')}
+                      error={errors.address !== undefined}
+                      helperText={
+                        errors.address !== undefined &&
+                        t('donate:addressRequired')
+                      }
+                      onChange={(event) => {
+                        suggestAddress(event.target.value);
+                        onChange(event.target.value);
+                      }}
+                      onBlur={() => {
+                        setaddressSugggestions([]);
+                        onBlur();
+                      }}
+                      value={value}
+                    />
+                  )}
                 />
+
                 {addressSugggestions
                   ? addressSugggestions.length > 0 && (
                       <div className="suggestions-container">
@@ -365,9 +415,10 @@ export default function CompleteSignup(): ReactElement | null {
                     )
                   : null}
                 <InlineFormDisplayGroup>
-                  <MuiTextField
-                    label={t('donate:city')}
-                    inputRef={register({ required: true })}
+                  <Controller
+                    name="city"
+                    control={control}
+                    rules={{ required: true }}
                     defaultValue={
                       getStoredConfig('loc').city === 'T1' ||
                       getStoredConfig('loc').city === 'XX' ||
@@ -375,17 +426,23 @@ export default function CompleteSignup(): ReactElement | null {
                         ? ''
                         : getStoredConfig('loc').city
                     }
-                    name={'city'}
-                    error={errors.city}
-                    helperText={errors.city && t('donate:cityRequired')}
+                    render={({ field: { onChange, value, onBlur } }) => (
+                      <MuiTextField
+                        label={t('donate:city')}
+                        error={errors.city !== undefined}
+                        helperText={
+                          errors.city !== undefined && t('donate:cityRequired')
+                        }
+                        onChange={onChange}
+                        value={value}
+                        onBlur={onBlur}
+                      />
+                    )}
                   />
-                  <MuiTextField
-                    label={t('donate:zipCode')}
+                  <Controller
                     name="zipCode"
-                    inputRef={register({
-                      pattern: postalRegex,
-                      required: true,
-                    })}
+                    control={control}
+                    rules={{ required: true, pattern: postalRegex }}
                     defaultValue={
                       getStoredConfig('loc').postalCode === 'T1' ||
                       getStoredConfig('loc').postalCode === 'XX' ||
@@ -393,10 +450,19 @@ export default function CompleteSignup(): ReactElement | null {
                         ? ''
                         : getStoredConfig('loc').postalCode
                     }
-                    error={errors.zipCode}
-                    helperText={
-                      errors.zipCode && t('donate:zipCodeAlphaNumValidation')
-                    }
+                    render={({ field: { onChange, value, onBlur } }) => (
+                      <MuiTextField
+                        label={t('donate:zipCode')}
+                        error={errors.zipCode !== undefined}
+                        helperText={
+                          errors.zipCode !== undefined &&
+                          t('donate:zipCodeAlphaNumValidation')
+                        }
+                        onChange={onChange}
+                        value={value}
+                        onBlur={onBlur}
+                      />
+                    )}
                   />
                 </InlineFormDisplayGroup>
               </>
@@ -404,7 +470,7 @@ export default function CompleteSignup(): ReactElement | null {
             <AutoCompleteCountry
               label={t('donate:country')}
               name="country"
-              onChange={setCountry}
+              onChange={() => setCountry}
               defaultValue={
                 getStoredConfig('loc').countryCode === 'T1' ||
                 getStoredConfig('loc').countryCode === 'XX' ||
@@ -431,14 +497,12 @@ export default function CompleteSignup(): ReactElement | null {
               </div>
               <Controller
                 name="isPrivate"
-                id="isPrivate"
                 control={control}
-                inputRef={register()}
                 defaultValue={false}
-                render={(props: any) => (
+                render={({ field: { onChange, value } }) => (
                   <ToggleSwitch
-                    checked={props.value}
-                    onChange={(e: any) => props.onChange(e.target.checked)}
+                    checked={value}
+                    onChange={onChange}
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                     id="isPrivate"
                   />
@@ -454,15 +518,13 @@ export default function CompleteSignup(): ReactElement | null {
               </div>
               <Controller
                 name="getNews"
-                id="getNews"
                 control={control}
-                inputRef={register()}
                 defaultValue={true}
-                render={(props: any) => {
+                render={({ field: { onChange, value } }) => {
                   return (
                     <ToggleSwitch
-                      checked={props.value}
-                      onChange={(e: any) => props.onChange(e.target.checked)}
+                      checked={value}
+                      onChange={(e) => onChange(e.target.checked)}
                       inputProps={{ 'aria-label': 'secondary checkbox' }}
                       id="getNews"
                     />
@@ -489,8 +551,8 @@ export default function CompleteSignup(): ReactElement | null {
                   </label>
                 </div>
                 <ToggleSwitch
-                  checked={acceptTerms}
-                  onChange={(e: any) => {
+                  checked={acceptTerms || false}
+                  onChange={(e) => {
                     handleTermsAndCondition(e.target.checked);
                   }}
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -509,6 +571,7 @@ export default function CompleteSignup(): ReactElement | null {
               id={'signupCreate'}
               className={styles.saveButton}
               onClick={handleSubmit(createButtonClicked)}
+              disabled={isProcessing}
             >
               {submit ? (
                 <div className={styles.spinner}></div>
@@ -522,7 +585,7 @@ export default function CompleteSignup(): ReactElement | null {
         <Snackbar
           open={snackbarOpen}
           autoHideDuration={2000}
-          onClose={handleSnackbarClose}
+          onClose={() => handleSnackbarClose}
         >
           <div>
             <Alert

@@ -3,9 +3,9 @@ import { ThemeContext } from '../../../theme/themeContext';
 import styles from './AccountHistory.module.scss';
 import { useTranslation } from 'react-i18next';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import GreenRadio from '../../common/InputTypes/GreenRadio';
-import Close from '../../../../public/assets/images/icons/headerIcons/close';
+import Close from '../../../../public/assets/images/icons/headerIcons/Close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import {
   CircularProgress,
@@ -21,8 +21,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
+import { Subscription } from '../../common/types/payments';
 
-const MuiCalendarPicker = styled(CalendarPicker)({
+const MuiCalendarPicker = styled(CalendarPicker<Date>)({
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
     backgroundColor: themeProperties.primaryColor,
     color: '#fff',
@@ -36,22 +37,29 @@ const MuiCalendarPicker = styled(CalendarPicker)({
   },
 });
 
+interface PauseModalProps {
+  pauseModalOpen: boolean;
+  handlePauseModalClose: () => void;
+  record: Subscription;
+  fetchRecurrentDonations: (next?: boolean | undefined) => void;
+}
+
 export const PauseModal = ({
   pauseModalOpen,
   handlePauseModalClose,
   record,
   fetchRecurrentDonations,
-}: any) => {
+}: PauseModalProps) => {
   const { theme } = React.useContext(ThemeContext);
-  const { token, logoutUser } = React.useContext(UserPropsContext);
-  const [option, setoption] = React.useState();
+  const { token, logoutUser } = useUserProps();
+  const [option, setoption] = React.useState<string>();
   const [showCalender, setshowCalender] = React.useState(false);
-  const [date, setdate] = React.useState(
+  const [date, setdate] = React.useState<Date | null>(
     new Date(new Date(record?.currentPeriodEnd).valueOf() + 1000 * 3600 * 24)
   );
   const [disabled, setDisabled] = React.useState(false);
 
-  const { t, i18n, ready } = useTranslation(['me']);
+  const { t } = useTranslation(['me']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
   React.useEffect(() => {
@@ -73,7 +81,7 @@ export const PauseModal = ({
           : 'infinite', //custom-date | infinite
       pauseUntil:
         option == 'pauseForMonth' || option == 'pauseUntilDate'
-          ? date.toISOString().split('T')[0]
+          ? date?.toISOString().split('T')[0]
           : null, // only if pauseType='custom-date'
     };
 

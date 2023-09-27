@@ -10,18 +10,18 @@ import BackArrow from '../../../../../public/assets/images/icons/headerIcons/Bac
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import FormHeader from '../../../common/Layout/Forms/FormHeader';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
+import { BankAccount } from '../../../common/types/payouts';
 
 const EditBankAccount = (): ReactElement | null => {
   const { accounts, payoutMinAmounts, setAccounts } = usePayouts();
   const router = useRouter();
-  const [accountToEdit, setAccountToEdit] =
-    useState<Payouts.BankAccount | null>(null);
+  const [accountToEdit, setAccountToEdit] = useState<BankAccount | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountUpdated, setIsAccountUpdated] = useState(false);
-  const { token, logoutUser } = useContext(UserPropsContext);
+  const { token, logoutUser } = useUserProps();
   const { setErrors, errors } = useContext(ErrorHandlingContext);
   const { t, ready } = useTranslation('managePayouts');
 
@@ -39,7 +39,7 @@ const EditBankAccount = (): ReactElement | null => {
     };
 
     try {
-      const res = await putAuthenticatedRequest<Payouts.BankAccount>(
+      const res = await putAuthenticatedRequest<BankAccount>(
         `/app/accounts/${accountToEdit?.id}`,
         accountData,
         token,
@@ -129,10 +129,8 @@ const EditBankAccount = (): ReactElement | null => {
   return accountToEdit !== null && payoutMinAmounts && ready ? (
     <CenteredContainer>
       <FormHeader>
-        <Link href="/profile/payouts" passHref>
-          <a>
-            <BackArrow />
-          </a>
+        <Link href="/profile/payouts">
+          <BackArrow />
         </Link>
         <h2 className="formTitle">{t('editBankAccountTitle')}</h2>
       </FormHeader>

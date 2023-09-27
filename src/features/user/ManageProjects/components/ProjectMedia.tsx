@@ -1,8 +1,15 @@
-import React, { ReactElement } from 'react';
-import { useForm } from 'react-hook-form';
+import React, {
+  ReactElement,
+  useCallback,
+  useEffect,
+  FocusEvent,
+  useContext,
+  useState,
+} from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import styles from '../StepForm.module.scss';
-import MaterialTextField from '../../../common/InputTypes/MaterialTextField';
+import { TextField, Button, IconButton } from '@mui/material';
 import BackArrow from '../../../../../public/assets/images/icons/headerIcons/BackArrow';
 import {
   deleteAuthenticatedRequest,
@@ -15,18 +22,17 @@ import DeleteIcon from '../../../../../public/assets/images/icons/manageProjects
 import Star from '../../../../../public/assets/images/icons/manageProjects/Star';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
+import CenteredContainer from '../../../common/Layout/CenteredContainer';
+import StyledForm from '../../../common/Layout/StyledForm';
+import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError, APIError } from '@planet-sdk/common';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
-
-interface Props {
-  handleNext: Function;
-  handleBack: Function;
-  projectDetails: Object;
-  setProjectDetails: Function;
-  projectGUID: String;
-  handleReset: Function;
-  token: any;
-}
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
+import { ProjectCreationTabs } from '..';
+import {
+  ProjectMediaProps,
+  UploadImage,
+  Project,
+} from '../../../common/types/project';
 
 export default function ProjectMedia({
   handleBack,
@@ -36,23 +42,30 @@ export default function ProjectMedia({
   setProjectDetails,
   projectGUID,
   handleReset,
-}: Props): ReactElement {
+}: ProjectMediaProps): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
-  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const { logoutUser } = React.useContext(UserPropsContext);
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
+  const { logoutUser } = useUserProps();
 
-  const { register, handleSubmit, errors } = useForm({ mode: 'all' });
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    mode: 'all',
+    defaultValues: { youtubeURL: projectDetails?.videoUrl || '' },
+  });
 
-  const [uploadedImages, setUploadedImages] = React.useState<Array<any>>([]);
+  const [uploadedImages, setUploadedImages] = useState<UploadImage[]>([]);
 
-  const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState('');
+  const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>('');
 
   const fetchImages = async () => {
     try {
       // Fetch images of the project
       if (projectGUID && token) {
-        const result = await getAuthenticatedRequest(
+        const result = await getAuthenticatedRequest<Project>(
           `/app/profile/projects/${projectGUID}?_scope=images`,
           token,
           logoutUser
@@ -65,11 +78,11 @@ export default function ProjectMedia({
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchImages();
   }, [projectGUID]);
 
-  const uploadPhotos = async (image: any) => {
+  const uploadPhotos = async (image: string) => {
     setIsUploadingData(true);
 
     const submitData = {
@@ -79,7 +92,7 @@ export default function ProjectMedia({
     };
 
     try {
-      const res = await postAuthenticatedRequest(
+      const res = await postAuthenticatedRequest<UploadImage>(
         `/app/projects/${projectGUID}/images`,
         submitData,
         token,
@@ -100,23 +113,23 @@ export default function ProjectMedia({
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!projectGUID || projectGUID === '') {
       handleReset(ready ? t('manageProjects:resetMessage') : '');
     }
   });
 
-  const [files, setFiles] = React.useState([]);
-
-  const onDrop = React.useCallback(
-    (acceptedFiles) => {
-      acceptedFiles.forEach((file: any) => {
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      acceptedFiles.forEach((file) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onabort = () => console.log('file reading was aborted');
         reader.onerror = () => console.log('file reading has failed');
-        reader.onload = (event) => {
-          uploadPhotos(event.target.result);
+        reader.onload = (event: ProgressEvent<FileReader>): void => {
+          const result = event?.target?.result;
+          if (typeof result !== 'string') return;
+          uploadPhotos(result);
         };
       });
     },
@@ -140,17 +153,7 @@ export default function ProjectMedia({
     },
   });
 
-  const [youtubeURL, setYoutubeURL] = React.useState('');
-
-  React.useEffect(
-    () => () => {
-      // Make sure to revoke the data uris to avoid memory leaks
-      files.forEach((file) => URL.revokeObjectURL(file.preview));
-    },
-    [files]
-  );
-
-  const deleteProjectCertificate = async (id: any) => {
+  const deleteProjectCertificate = async (id: string) => {
     try {
       await deleteAuthenticatedRequest(
         `/app/projects/${projectGUID}/images/${id}`,
@@ -165,7 +168,7 @@ export default function ProjectMedia({
   };
 
   // For uploading the Youtube field
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: { youtubeURL: string }) => {
     // Add isDirty test here
     setIsUploadingData(true);
     const submitData = {
@@ -173,7 +176,7 @@ export default function ProjectMedia({
     };
 
     try {
-      const res = await putAuthenticatedRequest(
+      const res = await putAuthenticatedRequest<Project>(
         `/app/projects/${projectGUID}`,
         submitData,
         token,
@@ -181,7 +184,7 @@ export default function ProjectMedia({
       );
       setProjectDetails(res);
       setIsUploadingData(false);
-      handleNext();
+      handleNext(ProjectCreationTabs.DETAILED_ANALYSIS);
       setErrorMessage('');
     } catch (err) {
       setIsUploadingData(false);
@@ -189,13 +192,7 @@ export default function ProjectMedia({
     }
   };
 
-  React.useEffect(() => {
-    if (projectDetails) {
-      setYoutubeURL(projectDetails.videoUrl);
-    }
-  }, [projectDetails]);
-
-  const setDefaultImage = async (id: any, index: any) => {
+  const setDefaultImage = async (id: string, index: number) => {
     setIsUploadingData(true);
     const submitData = {
       isDefault: true,
@@ -222,14 +219,18 @@ export default function ProjectMedia({
     }
   };
 
-  const uploadCaption = async (id: any, index: any, e: any) => {
+  const uploadCaption = async (
+    id: string,
+    index: number,
+    e: FocusEvent<HTMLInputElement, Element>
+  ) => {
     setIsUploadingData(true);
     const submitData = {
       description: e.target.value,
     };
 
     try {
-      const res = await putAuthenticatedRequest(
+      const res = await putAuthenticatedRequest<UploadImage>(
         `/app/projects/${projectGUID}/images/${id}`,
         submitData,
         token,
@@ -246,96 +247,88 @@ export default function ProjectMedia({
     }
   };
   return ready ? (
-    <div className={styles.stepContainer}>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-      >
-        <div className={`${isUploadingData ? styles.shallowOpacity : ''}`}>
-          {/* <div className={styles.formFieldLarge}>
-            {youtubeURL && !errors.youtubeURL ? (
-              <iframe src={youtubeURL}></iframe>
-            ) : null}
-          </div> */}
-          <div className={styles.formFieldLarge}>
-            <MaterialTextField
-              inputRef={register({
-                pattern: {
-                  value:
-                    /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|\?v=)([^#&?]*).*/,
-                  message: t('manageProjects:youtubeURLValidation'),
-                },
-              })}
-              label={t('manageProjects:youtubeURL')}
-              variant="outlined"
-              name="youtubeURL"
-              onChange={(e) => setYoutubeURL(e.target.value)}
-              defaultValue={youtubeURL}
-              value={youtubeURL}
-            />
-          </div>
-          {errors.youtubeURL && (
-            <span className={styles.formErrors}>
-              {errors.youtubeURL.message}
-            </span>
-          )}
+    <CenteredContainer>
+      <StyledForm>
+        <div
+          className={`inputContainer ${
+            isUploadingData ? styles.shallowOpacity : ''
+          }`}
+          style={{
+            width: 'inherit',
+          }}
+        >
+          <Controller
+            name="youtubeURL"
+            control={control}
+            rules={{
+              pattern: {
+                value:
+                  /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|\?v=)([^#&?]*).*/,
+                message: t('manageProjects:youtubeURLValidation'),
+              },
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                label={t('manageProjects:youtubeURL')}
+                variant="outlined"
+                onChange={onChange}
+                value={value}
+                onBlur={onBlur}
+                error={errors.youtubeURL !== undefined}
+                helperText={
+                  errors.youtubeURL !== undefined && errors.youtubeURL.message
+                }
+              />
+            )}
+          />
 
           {/* Change to field array of react hook form  */}
           {uploadedImages && uploadedImages.length > 0 ? (
-            <div className={styles.formField}>
-              {uploadedImages.map((image, index: any) => {
+            <InlineFormDisplayGroup>
+              {uploadedImages.map((image, index) => {
                 return (
-                  <div
-                    key={index}
-                    className={styles.formFieldHalf}
-                    style={{ marginLeft: '10px' }}
-                  >
-                    <div>
-                      <div className={styles.uploadedImageContainer}>
-                        <img
-                          src={getImageUrl('project', 'medium', image.image)}
-                        />
-                        <div className={styles.uploadedImageOverlay}></div>
+                  <div className={styles.uploadedImageContainer} key={index}>
+                    <img src={getImageUrl('project', 'medium', image.image)} />
+                    <div className={styles.uploadedImageOverlay}></div>
 
-                        <input
-                          onBlur={(e) => uploadCaption(image.id, index, e)}
-                          type="text"
-                          placeholder={t('manageProjects:addCaption')}
-                          defaultValue={image.description}
-                        />
+                    <input
+                      onBlur={(e) => uploadCaption(image.id, index, e)}
+                      type="text"
+                      placeholder={t('manageProjects:addCaption')}
+                      defaultValue=""
+                    />
 
-                        <div className={styles.uploadedImageButtonContainer}>
-                          <button
-                            id={'DelProjCert'}
-                            onClick={() => deleteProjectCertificate(image.id)}
-                          >
-                            <DeleteIcon />
-                          </button>
-                          <button
-                            id={'setDefaultImg'}
-                            onClick={() => setDefaultImage(image.id, index)}
-                          >
-                            <Star
-                              color={image.isDefault ? '#ECB641' : '#aaa'}
-                              className={image.isDefault ? 'selected' : ''}
-                            />
-                          </button>
-                        </div>
-                      </div>
+                    <div className={styles.uploadedImageButtonContainer}>
+                      <IconButton
+                        id={'DelProjCert'}
+                        onClick={() => deleteProjectCertificate(image.id)}
+                        size="small"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                      <IconButton
+                        id={'setDefaultImg'}
+                        onClick={() => setDefaultImage(image.id, index)}
+                        size="small"
+                      >
+                        <Star
+                          color={image.isDefault ? '#ECB641' : '#2f3336'}
+                          className={image.isDefault ? 'selected' : ''}
+                        />
+                      </IconButton>
                     </div>
                   </div>
                 );
               })}
-            </div>
+            </InlineFormDisplayGroup>
           ) : null}
 
-          <div className={styles.formFieldLarge} {...getRootProps()}>
+          <div {...getRootProps()}>
             <label htmlFor="upload" className={styles.fileUploadContainer}>
-              <div className="primaryButton" style={{ maxWidth: '240px' }}>
+              <Button variant="contained">
                 <input {...getInputProps()} />
                 {t('manageProjects:uploadPhotos')}
-              </div>
+              </Button>
               <p style={{ marginTop: '18px' }}>{t('manageProjects:dragIn')}</p>
             </label>
 
@@ -348,47 +341,39 @@ export default function ProjectMedia({
             <h4 className={styles.errorMessage}>{errorMessage}</h4>
           </div>
         ) : null}
+        <div className={styles.buttonsForProjectCreationForm}>
+          <Button
+            variant="outlined"
+            onClick={() => handleBack(ProjectCreationTabs.BASIC_DETAILS)}
+            className="formButton"
+            startIcon={<BackArrow />}
+          >
+            <p>{t('manageProjects:backToBasic')}</p>
+          </Button>
 
-        <div className={(styles.formField, styles.mediaButtons)}>
-          <div className={`${styles.formFieldHalf}`}>
-            <button
-              onClick={handleBack}
-              className="secondaryButton"
-              style={{ width: '234px', height: '46px' }}
-            >
-              <BackArrow />
-              <p>{t('manageProjects:backToBasic')}</p>
-            </button>
-          </div>
-          <div style={{ width: '20px' }} />
-          <div className={`${styles.formFieldHalf}`}>
-            <button
-              id={'SaveAndCont'}
-              onClick={handleSubmit(onSubmit)}
-              className="primaryButton"
-              style={{ width: '169px', height: '46px', marginRight: '20px' }}
-              data-test-id="projMediaCont"
-            >
-              {isUploadingData ? (
-                <div className={styles.spinner}></div>
-              ) : (
-                t('manageProjects:saveAndContinue')
-              )}
-            </button>
-          </div>
-
-          <div className={`${styles.formFieldHalf}`}>
-            <button
-              className="primaryButton"
-              style={{ width: '89px' }}
-              onClick={handleNext}
-            >
-              {t('manageProjects:skip')}
-            </button>
-          </div>
+          <Button
+            id={'SaveAndCont'}
+            onClick={handleSubmit(onSubmit)}
+            data-test-id="projMediaCont"
+            variant="contained"
+            className="formButton"
+          >
+            {isUploadingData ? (
+              <div className={styles.spinner}></div>
+            ) : (
+              t('manageProjects:saveAndContinue')
+            )}
+          </Button>
+          <Button
+            onClick={() => handleNext(ProjectCreationTabs.DETAILED_ANALYSIS)}
+            variant="contained"
+            className="formButton"
+          >
+            {t('manageProjects:skip')}
+          </Button>
         </div>
-      </form>
-    </div>
+      </StyledForm>
+    </CenteredContainer>
   ) : (
     <></>
   );

@@ -1,19 +1,23 @@
 import React, { ReactElement } from 'react';
 import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { useRouter } from 'next/router';
-import { UserPropsContext } from '../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../src/features/common/Layout/UserPropsContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticPropsContext } from 'next';
 
-interface Props {}
-
-function Login({}: Props): ReactElement {
+function Login(): ReactElement {
   const router = useRouter();
 
   // if the user is authenticated check if we have slug, and if we do, send user to slug
   // else send user to login flow
 
-  const { user, contextLoaded, loginWithRedirect } =
-    React.useContext(UserPropsContext);
+  const {
+    user,
+    contextLoaded,
+    loginWithRedirect,
+    isAuthenticated,
+    auth0Error,
+  } = useUserProps();
 
   React.useEffect(() => {
     async function loadFunction() {
@@ -33,7 +37,10 @@ function Login({}: Props): ReactElement {
     if (contextLoaded) {
       if (user) {
         loadFunction();
-      } else if (user === null) {
+      } else if (
+        user === null &&
+        (isAuthenticated || auth0Error?.message === '401')
+      ) {
         // wait for context to redirect to complete signup
       } else {
         loginWithRedirect({
@@ -53,11 +60,11 @@ function Login({}: Props): ReactElement {
 
 export default Login;
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

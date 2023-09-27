@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement, useEffect } from 'react';
 import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
-import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../src/features/common/Layout/UserPropsContext';
 import { getRequest } from '../../src/utils/apiRequests/api';
 import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import Footer from '../../src/features/common/Layout/Footer';
@@ -10,23 +10,24 @@ import MyTrees from '../../src/features/user/Profile/components/MyTrees/MyTrees'
 import ProjectsContainer from '../../src/features/user/Profile/ProjectsContainer';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { GetStaticPaths } from 'next';
+import { GetStaticPaths, GetStaticPropsContext } from 'next';
 import { handleError, APIError } from '@planet-sdk/common';
+import { PublicUser } from '../../src/features/common/types/user';
 
 function User(): ReactElement {
   // External imports
   const router = useRouter();
-  const { user, contextLoaded, token } = React.useContext(UserPropsContext);
+  const { user, contextLoaded, token } = useUserProps();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
   // Internal states
-  const [profile, setProfile] = React.useState<null | Object>();
+  const [profile, setProfile] = React.useState<null | PublicUser>();
   const [authenticatedType, setAuthenticatedType] = React.useState('');
 
   // Loads the public user profile
-  async function loadPublicProfile(id: any) {
+  async function loadPublicProfile(id: string) {
     try {
-      const profileData = await getRequest(`/app/profiles/${id}`);
+      const profileData = await getRequest<PublicUser>(`/app/profiles/${id}`);
       setProfile(profileData);
       setAuthenticatedType('public');
     } catch (err) {
@@ -45,7 +46,7 @@ function User(): ReactElement {
       }
       // If user is not access their own profile, load the public profile
       else {
-        loadPublicProfile(router.query.id);
+        loadPublicProfile(router.query.id as string);
       }
     }
   }, [contextLoaded, user, router]);
@@ -78,11 +79,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

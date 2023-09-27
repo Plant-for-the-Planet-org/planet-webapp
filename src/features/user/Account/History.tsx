@@ -5,21 +5,23 @@ import TransactionsNotFound from '../../../../public/assets/images/icons/Transac
 import AccountRecord from './components/AccountRecord';
 import styles from './AccountHistory.module.scss';
 import { useRouter } from 'next/router';
-import { ProjectPropsContext } from '../../common/Layout/ProjectPropsContext';
 import { postAuthenticatedRequest } from '../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../common/Layout/UserPropsContext';
+import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { CircularProgress } from '@mui/material';
 import CustomSnackbar from '../../common/CustomSnackbar';
 import MuiButton from '../../common/InputTypes/MuiButton';
 import { APIError, handleError } from '@planet-sdk/common';
+import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
+import { Filters, PaymentHistory } from '../../common/types/payments';
+import Grid from '@mui/material/Grid';
 
 interface Props {
   filter: string | null;
   setFilter: (filter: string) => void;
   isDataLoading: boolean;
-  accountingFilters: Payments.Filters | null;
-  paymentHistory: Payments.PaymentHistory | null;
+  accountingFilters: Filters | null;
+  paymentHistory: PaymentHistory | null;
   fetchPaymentHistory: (next?: boolean) => Promise<void>;
 }
 
@@ -36,9 +38,9 @@ export default function History({
     null
   );
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const { isMobile } = useContext(ProjectPropsContext);
-  const { token, logoutUser } = useContext(UserPropsContext);
+  const { token, logoutUser } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
+  const { isMobile } = useProjectProps();
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [isLoading, setLoading] = React.useState(false);
@@ -116,10 +118,8 @@ export default function History({
   const adSpaceLanguage = i18n.language === 'de' ? 'de' : 'en';
 
   return (
-    <div className="profilePage">
-      <div className={'profilePageTitle'}>{t('me:payments')}</div>
-      <div className={'profilePageSubTitle'}>{t('me:donationsSubTitle')}</div>
-      <div className={styles.pageContainer}>
+    <div className={styles.pageContainer}>
+      <Grid item style={{ width: '100%' }}>
         <div className={styles.filterRow}>
           {accountingFilters &&
             Object.entries(accountingFilters).map((item) => {
@@ -161,6 +161,8 @@ export default function History({
           </MuiButton>
         </div>
 
+      </Grid>
+      <Grid item>
         <iframe
           src={`https://www5.plant-for-the-planet.org/membership-cta/${adSpaceLanguage}/`}
           className={styles.topAdSpace}
@@ -191,7 +193,6 @@ export default function History({
                       index={index}
                       selectedRecord={selectedRecord}
                       record={record}
-                      paymentHistory={paymentHistory}
                     />
                   );
                 })
@@ -271,7 +272,6 @@ export default function History({
               isModal={true}
               handleRecordToggle={handleRecordToggle}
               selectedRecord={selectedRecord}
-              paymentHistory={paymentHistory}
               record={paymentHistory.items[selectedRecord]}
             />
           )}
@@ -281,7 +281,7 @@ export default function History({
           isVisible={open}
           handleClose={handleClose}
         />
-      </div>
+      </Grid>
     </div>
   );
 }

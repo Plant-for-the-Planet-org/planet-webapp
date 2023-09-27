@@ -1,31 +1,32 @@
-import React, { ReactElement, useContext } from 'react';
+import React, { ReactElement } from 'react';
 import ProjectsContainer from '../../../src/features/user/ManageProjects/ProjectsContainer';
 import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { UserPropsContext } from '../../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
 import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
-interface Props {}
-export default function Register({}: Props): ReactElement {
+import { GetStaticPropsContext } from 'next';
+
+export default function Register(): ReactElement {
   const { t } = useTranslation('me');
-  const { user } = useContext(UserPropsContext);
+  const { user } = useUserProps();
 
   return (
     <UserLayout>
       <Head>
         <title>{t('projects')}</title>
       </Head>
-      {user.type === 'tpo' ? <ProjectsContainer /> : <AccessDeniedLoader />}
+      {user?.type === 'tpo' ? <ProjectsContainer /> : <AccessDeniedLoader />}
     </UserLayout>
   );
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

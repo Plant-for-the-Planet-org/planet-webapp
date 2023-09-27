@@ -1,104 +1,20 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useMemo } from 'react';
 import styles from '../AccountHistory.module.scss';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import { useTranslation } from 'next-i18next';
 import { TFunction } from 'next-i18next';
-import DownloadCodes from './DownloadCodes';
 import BackButton from '../../../../../public/assets/images/icons/BackButton';
-
-interface CommonProps {
-  handleRecordToggle: (index: number | undefined) => void;
-  selectedRecord: number | null;
-  record: Payments.PaymentHistoryRecord;
-  isPlanetCash?: boolean;
-}
-
-interface ModalProps extends CommonProps {
-  index?: undefined;
-  isModal: true;
-}
-
-interface ListItemProps extends CommonProps {
-  index: number;
-  isModal?: false;
-}
-
-type Props = ModalProps | ListItemProps;
-
-export default function AccountRecord({
-  handleRecordToggle,
-  index = undefined,
-  selectedRecord,
-  isPlanetCash = false,
-  record,
-  isModal = false,
-}: Props): ReactElement {
-  const { t } = useTranslation(['me']);
-
-  const outerDivClasses = isModal
-    ? styles.recordModal
-    : `${styles.record} ${selectedRecord === index ? styles.selected : ''}`;
-
-  return (
-    <div className={outerDivClasses}>
-      {isModal && (
-        <div
-          onClick={() => {
-            handleRecordToggle(index);
-          }}
-          className={styles.closeRecord}
-        >
-          <BackButton />
-        </div>
-      )}
-      {(!isModal || (isModal && selectedRecord !== null)) && (
-        <>
-          <RecordHeader
-            record={record}
-            handleRecordToggle={!isModal ? handleRecordToggle : undefined}
-            index={index}
-            isPlanetCash={isPlanetCash}
-          />
-          {(isModal || index === selectedRecord) && (
-            <div className={styles.divider} />
-          )}
-          <div className={styles.detailContainer}>
-            <div className={styles.detailGrid}>
-              <DetailsComponent record={record} />
-            </div>
-            {record.details?.recipientBank && (
-              <>
-                <div className={styles.title}>{t('bankDetails')}</div>
-                <div className={styles.detailGrid}>
-                  <BankDetails recipientBank={record.details.recipientBank} />
-                </div>
-              </>
-            )}
-            {record.details?.account && (
-              <TransferDetails account={record.details.account} />
-            )}
-            {showStatusNote(record, t)}
-            {(record?.details?.donorCertificate ||
-              record?.details?.taxDeductibleReceipt ||
-              record?.details?.giftCertificate) && (
-              <>
-                <div className={styles.title}>{t('downloads')}</div>
-                <div className={styles.detailGrid}>
-                  <Certificates recordDetails={record.details} />
-                </div>
-              </>
-            )}
-          </div>
-        </>
-      )}
-    </div>
-  );
-}
+import TransferDetails from './TransferDetails';
+import {
+  PaymentHistoryRecord,
+  RecipientBank,
+} from '../../../common/types/payments';
+import Certificates, { shouldDisableCertificate } from './Certificates';
 
 interface HeaderProps {
-  record: Payments.PaymentHistoryRecord;
+  record: PaymentHistoryRecord;
   handleRecordToggle?: (index: number | undefined) => void;
   index?: number;
   isPlanetCash?: boolean;
@@ -176,7 +92,7 @@ export function RecordHeader({
 }
 
 interface DetailProps {
-  record: Payments.PaymentHistoryRecord;
+  record: PaymentHistoryRecord;
 }
 
 export function DetailsComponent({ record }: DetailProps): ReactElement {
@@ -365,7 +281,7 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
 }
 
 export const showStatusNote = (
-  record: Payments.PaymentHistoryRecord,
+  record: PaymentHistoryRecord,
   t: TFunction
 ): ReactElement => {
   const showDonationNote = (): string => {
@@ -391,7 +307,7 @@ export const showStatusNote = (
 };
 
 interface BankDetailsProps {
-  recipientBank: Payments.RecipientBank;
+  recipientBank: RecipientBank;
 }
 
 export function BankDetails({ recipientBank }: BankDetailsProps): ReactElement {
@@ -456,99 +372,104 @@ export function BankDetails({ recipientBank }: BankDetailsProps): ReactElement {
   );
 }
 
-interface TransferDetailsProps {
-  account: Payments.BankAccount;
+interface CommonProps {
+  handleRecordToggle: (index: number | undefined) => void;
+  selectedRecord: number | null;
+  record: PaymentHistoryRecord;
+  isPlanetCash?: boolean;
 }
 
-export function TransferDetails({
-  account,
-}: TransferDetailsProps): ReactElement {
+interface ModalProps extends CommonProps {
+  index?: undefined;
+  isModal: true;
+}
+
+interface ListItemProps extends CommonProps {
+  index: number;
+  isModal?: false;
+}
+
+type Props = ModalProps | ListItemProps;
+
+export default function AccountRecord({
+  handleRecordToggle,
+  index = undefined,
+  selectedRecord,
+  isPlanetCash = false,
+  record,
+  isModal = false,
+}: Props): ReactElement {
   const { t } = useTranslation(['me']);
-  return (
-    <>
-      <div className={styles.title}>{t('transferDetails')}</div>
-      <div className={styles.detailGrid}>
-        {account.beneficiary && (
-          <div className={styles.singleDetail}>
-            <p className={styles.title}>{t('beneficiary')}</p>
-            <p>{account.beneficiary}</p>
-          </div>
-        )}
-        {account.iban && (
-          <div className={styles.singleDetail}>
-            <p className={styles.title}>{t('iban')}</p>
-            <p>{account.iban}</p>
-          </div>
-        )}
-        {account.bic && (
-          <div className={styles.singleDetail}>
-            <p className={styles.title}>{t('bic')}</p>
-            <p>{account.bic}</p>
-          </div>
-        )}
-        {account.bankName && (
-          <div className={styles.singleDetail}>
-            <p className={styles.title}>{t('bankName')}</p>
-            <p>{account.bankName}</p>
-          </div>
-        )}
-        {account.swift && account?.swift !== 'swift' && (
-          <div className={styles.singleDetail}>
-            <p className={styles.title}>{t('swift')}</p>
-            <p>{account.swift}</p>
-          </div>
-        )}
-      </div>
-    </>
-  );
-}
 
-interface CertificatesProps {
-  recordDetails: Payments.PaymentDetails;
-}
+  const outerDivClasses = isModal
+    ? styles.recordModal
+    : `${styles.record} ${selectedRecord === index ? styles.selected : ''}`;
 
-export function Certificates({
-  recordDetails,
-}: CertificatesProps): ReactElement {
-  const { t } = useTranslation(['me']);
+  const showCertificate = useMemo(() => {
+    if (
+      (shouldDisableCertificate(record.purpose) &&
+        (record?.details?.donorCertificate ||
+          record?.details?.giftCertificate)) ||
+      record?.details?.taxDeductibleReceipt
+    ) {
+      return true;
+    }
+    return false;
+  }, [record]);
+
   return (
-    <>
-      {recordDetails?.donorCertificate && (
-        <div className={styles.singleDetail}>
-          <a
-            href={recordDetails?.donorCertificate}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {t('donorCertificate')}
-          </a>
+    <div className={outerDivClasses}>
+      {isModal && (
+        <div
+          onClick={() => {
+            handleRecordToggle(index);
+          }}
+          className={styles.closeRecord}
+        >
+          <BackButton />
         </div>
       )}
-      {recordDetails?.taxDeductibleReceipt && (
-        <div className={styles.singleDetail}>
-          <a
-            href={recordDetails.taxDeductibleReceipt}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {t('taxDeductibleReceipt')}
-          </a>
-        </div>
+      {(!isModal || (isModal && selectedRecord !== null)) && (
+        <>
+          <RecordHeader
+            record={record}
+            handleRecordToggle={!isModal ? handleRecordToggle : undefined}
+            index={index}
+            isPlanetCash={isPlanetCash}
+          />
+          {(isModal || index === selectedRecord) && (
+            <div className={styles.divider} />
+          )}
+          <div className={styles.detailContainer}>
+            <div className={styles.detailGrid}>
+              <DetailsComponent record={record} />
+            </div>
+            {record.details?.recipientBank && (
+              <>
+                <div className={styles.title}>{t('bankDetails')}</div>
+                <div className={styles.detailGrid}>
+                  <BankDetails recipientBank={record.details.recipientBank} />
+                </div>
+              </>
+            )}
+            {record.details?.account && (
+              <TransferDetails account={record.details.account} />
+            )}
+            {showStatusNote(record, t)}
+            {showCertificate && (
+              <>
+                <div className={styles.title}>{t('downloads')}</div>
+                <div className={styles.detailGrid}>
+                  <Certificates
+                    recordDetails={record.details}
+                    purpose={record.purpose}
+                  />
+                </div>
+              </>
+            )}
+          </div>
+        </>
       )}
-      {recordDetails?.giftCertificate && (
-        <div className={styles.singleDetail}>
-          <a
-            href={recordDetails.giftCertificate}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {t('giftCertificate')}
-          </a>
-        </div>
-      )}
-      {recordDetails?.codesUrl && (
-        <DownloadCodes codesUrl={recordDetails.codesUrl} />
-      )}
-    </>
+    </div>
   );
 }

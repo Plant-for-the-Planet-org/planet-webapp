@@ -3,6 +3,8 @@ import { styled } from '@mui/material';
 /**
  * Returns an empty flex column display `<form>` with
  * styles defined for formButton, formTitle and inputContainer
+ *
+ * Note: if you need just the container without a <form> tag, use `StyledFormContainer`
  */
 const StyledForm = styled('form')(() => ({
   width: '100%',

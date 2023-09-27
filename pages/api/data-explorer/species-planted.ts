@@ -7,6 +7,7 @@ import {
 } from '../../../src/middlewares/rate-limiter';
 import NodeCache from 'node-cache';
 import { getCachedKey } from '../../../src/utils/getCachedKey';
+import { ISpeciesPlanted } from '../../../src/features/common/types/dataExplorer';
 
 const ONE_HOUR_IN_SEC = 60 * 60;
 const ONE_DAY = ONE_HOUR_IN_SEC * 24;
@@ -19,7 +20,7 @@ handler.use(rateLimiter);
 handler.use(speedLimiter);
 
 handler.post(async (req, response) => {
-  const { projectId, startDate, endDate } = JSON.parse(req.body);
+  const { projectId, startDate, endDate } = req.body;
 
   const CACHE_KEY = `SPECIES_PLANTED__${getCachedKey(
     projectId,
@@ -44,12 +45,12 @@ handler.post(async (req, response) => {
         FROM planted_species ps \
         INNER JOIN plant_location pl ON ps.plant_location_id = pl.id \
         LEFT JOIN scientific_species ss ON ps.scientific_species_id = ss.id \
-        JOIN plant_project pp ON pl.plant_project_id = pp.id \
+        JOIN project pp ON pl.plant_project_id = pp.id \
         WHERE pp.guid = ? AND pl.plant_date BETWEEN ? AND ? \
         GROUP BY ps.scientific_species_id, ss.name, ps.other_species \
         ORDER BY total_tree_count DESC';
 
-    const res = await db.query(query, [
+    const res = await db.query<ISpeciesPlanted[]>(query, [
       projectId,
       startDate,
       `${endDate} 23:59:59.999`,

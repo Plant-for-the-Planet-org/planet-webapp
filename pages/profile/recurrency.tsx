@@ -1,26 +1,24 @@
 import React, { ReactElement } from 'react';
 import { getAuthenticatedRequest } from '../../src/utils/apiRequests/api';
 import TopProgressBar from '../../src/features/common/ContentLoaders/TopProgressBar';
-import { UserPropsContext } from '../../src/features/common/Layout/UserPropsContext';
+import { useUserProps } from '../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
-import Recurrency from '../../src/features/user/Account/Recurrency';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
+import { Subscription } from '../../src/features/common/types/payments';
+import RecurrentPayments from '../../src/features/user/Account/RecurrentPayments';
+import { GetStaticPropsContext } from 'next';
 
-interface Props {}
-
-function RecurrentDonations({}: Props): ReactElement {
+function RecurrentDonations(): ReactElement {
   const { t } = useTranslation(['me']);
-  const { token, contextLoaded, logoutUser } =
-    React.useContext(UserPropsContext);
+  const { token, contextLoaded, logoutUser } = useUserProps();
 
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
-  const [recurrencies, setrecurrencies] =
-    React.useState<Payments.Subscription[]>();
+  const [recurrencies, setrecurrencies] = React.useState<Subscription[]>();
 
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
 
@@ -28,8 +26,11 @@ function RecurrentDonations({}: Props): ReactElement {
     setIsDataLoading(true);
     setProgress(70);
     try {
-      const recurrencies: Payments.Subscription[] =
-        await getAuthenticatedRequest('/app/subscriptions', token, logoutUser);
+      const recurrencies = await getAuthenticatedRequest<Subscription[]>(
+        '/app/subscriptions',
+        token,
+        logoutUser
+      );
       if (recurrencies && Array.isArray(recurrencies)) {
         const activeRecurrencies = recurrencies?.filter(
           (obj) => obj.status == 'active' || obj.status == 'trialing'
@@ -79,7 +80,7 @@ function RecurrentDonations({}: Props): ReactElement {
         <Head>
           <title>{t('recurrency')}</title>
         </Head>
-        <Recurrency {...RecurrencyProps} />
+        <RecurrentPayments {...RecurrencyProps} />
       </UserLayout>
     </>
   );
@@ -87,11 +88,11 @@ function RecurrentDonations({}: Props): ReactElement {
 
 export default RecurrentDonations;
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

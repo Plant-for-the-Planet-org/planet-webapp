@@ -7,12 +7,16 @@ import Email from '../../../../../public/assets/images/icons/project/Email';
 import Location from '../../../../../public/assets/images/icons/project/Location';
 import WorldWeb from '../../../../../public/assets/images/icons/project/WorldWeb';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import {
+  ConservationProjectExtended,
+  TreeProjectExtended,
+} from '@planet-sdk/common';
 
 interface Props {
-  project: Object;
+  project: TreeProjectExtended | ConservationProjectExtended;
 }
 
-function ProjectContactDetails({ project }: Props): ReactElement {
+function ProjectContactDetails({ project }: Props): ReactElement | null {
   const { t, ready } = useTranslation(['donate']);
   const { embed } = React.useContext(ParamsContext);
   const contactAddress =
@@ -88,15 +92,14 @@ function ProjectContactDetails({ project }: Props): ReactElement {
           prefetch={false}
           href="/t/[id]"
           as={`/t/${contactDetails[0].link}`}
+          target={embed === 'true' ? '_top' : '_self'}
         >
-          <a target={embed === 'true' ? '_top' : null}>
-            <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
-              {contactDetails[0].icon}
-              <span style={{ flexGrow: 1, cursor: 'pointer' }}>
-                {contactDetails[0].text}
-              </span>
-            </div>
-          </a>
+          <div className={styles.infoText + ' ' + styles.contactDetailsRow}>
+            {contactDetails[0].icon}
+            <span style={{ flexGrow: 1, cursor: 'pointer' }}>
+              {contactDetails[0].text}
+            </span>
+          </div>
         </Link>
 
         {contactDetails.slice(1).map((contact) => {

@@ -3,18 +3,18 @@ import { useRouter } from 'next/router';
 import { getRequest } from '../../src/utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { GetStaticPaths } from 'next';
-import { handleError, APIError } from '@planet-sdk/common';
+import { GetStaticPaths, GetStaticPropsContext } from 'next';
+import { handleError, APIError, UserPublicProfile } from '@planet-sdk/common';
 
-interface Props {}
-
-export default function DirectGift({}: Props): ReactElement {
+export default function DirectGift(): ReactElement {
   const router = useRouter();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
   async function loadPublicUserData() {
     try {
-      const newProfile = await getRequest(`/app/profiles/${router.query.id}`);
+      const newProfile = await getRequest<UserPublicProfile>(
+        `/app/profiles/${router.query.id}`
+      );
       if (newProfile.type !== 'tpo') {
         localStorage.setItem(
           'directGift',
@@ -49,11 +49,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

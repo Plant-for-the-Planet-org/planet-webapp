@@ -1,55 +1,5 @@
 @import './../../../theme/theme';
 
-.registerTreesPage {
-  max-width: 460px;
-  background-color: $backgroundColor;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: rgba(170, 170, 170, $alpha: 0.2) 0px 1px 4px;
-}
-// white modal
-.modal {
-  top: 80px;
-  margin-bottom: 60px;
-  background-color: $backgroundColor;
-  border: 0px;
-  border-radius: 8px;
-  position: absolute;
-  padding: 20px 20px;
-  width: 412px;
-  outline: none;
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  overflow-y: auto;
-}
-// white modal
-// .modal {
-//   background-color: #ffffff;
-//   border: 0px;
-//   border-radius: 8px;
-//   padding: 50px 20px 80px;
-//   overflow-y: scroll;
-//   outline: none;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   margin: auto;
-//   max-width: 100%;
-//   width: 800px;
-//   justify-content: flex-start;
-//   position: relative;
-// }
-
-.title {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  font-size: $fontLarge;
-  color: $primaryFontColor;
-}
-
 .contribTitle {
   display: flex;
   flex-direction: row;
@@ -59,73 +9,6 @@
   text-align: center;
   color: $primaryFontColor;
 }
-
-.inputField {
-  margin-top: 20px;
-}
-
-.tabButtonContainer {
-  width: 100%;
-  flex-grow: 1;
-  display: flex;
-}
-
-.tabButton {
-  background-color: transparent;
-  border: none;
-  margin-left: 16px;
-  margin-top: 18px;
-}
-
-.tabButton:hover {
-  cursor: pointer;
-}
-
-.tabButtonText {
-  font-family: $primaryFontFamily;
-  font-size: $fontSmall;
-  font-weight: bold;
-  color: $primaryFontColor;
-  margin-bottom: 10px;
-}
-
-.tabButtonSelected {
-  color: $primaryColor;
-  font-family: $primaryFontFamily;
-  font-size: $fontSmall;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.tabButtonSelectedIndicator {
-  height: 3px;
-  background-color: $primaryColor;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  align-self: flex-end;
-}
-
-.formField {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.formFieldHalf {
-  display: flex;
-  width: 100%;
-  max-width: 100%;
-  padding: 5px;
-  flex-direction: column;
-  div,
-  input {
-    width: 100%;
-  }
-}
-
 .formFieldLarge {
   padding: 5px;
   display: flex;
@@ -134,14 +17,6 @@
   flex-wrap: wrap;
   max-width: 100%;
   min-width: 100%;
-}
-
-.formFieldRadio {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .fileUploadContainer {
@@ -259,29 +134,6 @@
   padding: 4px 0;
 }
 
-.uploadImages {
-  width: 100%;
-}
-
-.nextButton {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.closeButton {
-  cursor: pointer;
-  position: absolute;
-  left: 20px;
-  top: 20px;
-}
-
-.closeButton svg {
-  width: 20px;
-}
-
 .checkMark {
   display: flex;
   flex-direction: column;
@@ -354,7 +206,8 @@
 }
 
 .center {
-  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .mapContainer {
@@ -373,41 +226,6 @@
   justify-content: center;
   align-items: center;
   z-index: 999;
-}
-
-// Loader for Buttons
-.spinner {
-  border: 2px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 2px solid transparent;
-  width: 16px !important;
-  height: 16px !important;
-  -webkit-animation: spin 1s linear infinite; /* Safari */
-  animation: spin 1s linear infinite;
-}
-
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@include mdTabletView {
-  .formFieldHalf {
-    width: 50%;
-  }
 }
 
 :export {

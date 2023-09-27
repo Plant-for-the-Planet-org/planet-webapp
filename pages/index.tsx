@@ -4,21 +4,25 @@ import ProjectsList from '../src/features/projects/screens/Projects';
 import GetAllProjectsMeta from '../src/utils/getMetaTags/GetAllProjectsMeta';
 import getStoredCurrency from '../src/utils/countryCurrency/getStoredCurrency';
 import { getRequest } from '../src/utils/apiRequests/api';
-import { ProjectPropsContext } from '../src/features/common/Layout/ProjectPropsContext';
+import { useProjectProps } from '../src/features/common/Layout/ProjectPropsContext';
 import Credits from '../src/features/projects/components/maps/Credits';
 import Filters from '../src/features/projects/components/projects/Filters';
 import { TENANT_ID } from '../src/utils/constants/environment';
 import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
-import DirectGift from '../src/features/donations/components/DirectGift';
+import DirectGift, {
+  DirectGiftI,
+} from '../src/features/donations/components/DirectGift';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-import nextI18NextConfig from '../next-i18next.config';
 import { handleError, APIError } from '@planet-sdk/common';
+import { SetState } from '../src/features/common/types/common';
+import { MapProject } from '../src/features/common/types/ProjectPropsContextInterface';
+import { GetStaticPropsContext } from 'next';
 
 interface Props {
   initialized: Boolean;
-  currencyCode: any;
-  setCurrencyCode: Function;
+  currencyCode: string;
+  setCurrencyCode: SetState<string>;
 }
 
 export default function Donate({
@@ -35,13 +39,13 @@ export default function Donate({
     setsearchedProjects,
     setZoomLevel,
     filteredProjects,
-  } = React.useContext(ProjectPropsContext);
+  } = useProjectProps();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { i18n } = useTranslation();
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
-  const [directGift, setDirectGift] = React.useState(null);
-  const [showdirectGift, setShowDirectGift] = React.useState(true);
+  const [directGift, setDirectGift] = React.useState<DirectGiftI | null>(null);
+  const [showDirectGift, setShowDirectGift] = React.useState(true);
   const [internalLanguage, setInternalLanguage] = React.useState('');
   React.useEffect(() => {
     const getdirectGift = localStorage.getItem('directGift');
@@ -86,7 +90,7 @@ export default function Donate({
         setCurrencyCode(currency);
         setInternalLanguage(i18n.language);
         try {
-          const projects = await getRequest(`/app/projects`, {
+          const projects = await getRequest<MapProject[]>(`/app/projects`, {
             _scope: 'map',
             currency: currency,
             tenant: TENANT_ID,
@@ -106,18 +110,12 @@ export default function Donate({
     loadProjects();
   }, [currencyCode, i18n.language]);
 
-  const ProjectsProps = {
-    projects: filteredProjects,
+  const OtherProjectListProps = {
     showProjects,
     setShowProjects,
     setsearchedProjects,
     currencyCode,
     setCurrencyCode,
-  };
-
-  const GiftProps = {
-    setShowDirectGift,
-    directGift,
   };
 
   return (
@@ -126,10 +124,16 @@ export default function Donate({
         filteredProjects && initialized ? (
           <>
             <GetAllProjectsMeta />
-            <ProjectsList {...ProjectsProps} />
+            <ProjectsList
+              projects={filteredProjects}
+              {...OtherProjectListProps}
+            />
             {directGift ? (
-              showdirectGift ? (
-                <DirectGift {...GiftProps} />
+              showDirectGift ? (
+                <DirectGift
+                  directGift={directGift}
+                  setShowDirectGift={setShowDirectGift}
+                />
               ) : null
             ) : null}
             <Credits setCurrencyCode={setCurrencyCode} />
@@ -143,11 +147,11 @@ export default function Donate({
   );
 }
 
-export async function getStaticProps({ locale }: any) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',
@@ -168,7 +172,7 @@ export async function getStaticProps({ locale }: any) {
           'tenants',
           'treemapper',
         ],
-        nextI18NextConfig,
+        null,
         ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
       )),
     },

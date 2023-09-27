@@ -165,7 +165,6 @@ video {
   margin: 0;
   padding: 0;
   border: 0;
-  font-size: 100%;
   font: inherit;
   vertical-align: baseline;
 }
@@ -520,18 +519,10 @@ input:-webkit-autofill {
   }
 }
 
-.add-project-container {
-  display: flex;
-  align-items: flex-start;
-}
 .project-form-flow {
   display: flex;
   justify-content: center;
   width: max-content;
-}
-
-.tab-flow {
-  display: flex;
 }
 
 @include xsPhoneView {
@@ -595,7 +586,6 @@ input:-webkit-autofill {
 .add-projects-button {
   background-color: $backgroundColor;
   border: 1px solid #f3f3f3;
-  border-radius: 7px;
   cursor: pointer;
   width: 300px;
   height: 140px;
@@ -672,14 +662,6 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
-.add-project-title {
-  font-size: $fontSixteen;
-  margin-bottom: 80px;
-  span {
-    color: $primaryColor;
-  }
-}
-
 .MuiStepper-horizontal {
   @include xsPhoneView {
     display: flex;
@@ -689,6 +671,7 @@ input[type='number'] {
 }
 
 .tab-flow {
+  display: flex;
   text-transform: capitalize !important;
   text-align: left;
   align-items: flex-start;
@@ -762,5 +745,5 @@ input[type='number'] {
     margin-left: 24px;
     font-weight: bold;
     font-size: 30px;
-   }
+  }
 }
