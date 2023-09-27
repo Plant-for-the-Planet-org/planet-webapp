@@ -1,106 +1,59 @@
-import planetConfig from './public/tenants/planet/config';
-import planetConfigBeta from './public/tenants/planet/configBeta';
-import ttcConfig from './public/tenants/ttc/config';
-import salesforceConfig from './public/tenants/salesforce/config';
-import sternConfig from './public/tenants/stern/config';
-import nitrosbConfig from './public/tenants/nitrosb/config';
-import lacoquetaConfig from './public/tenants/lacoqueta/config';
-import energizerConfig from './public/tenants/energizer/config';
-import senatDerWirtschaft from './public/tenants/senatDerWirtschaft/config';
-import pampersConfig from './public/tenants/pampers/config';
-import interactClub from './public/tenants/interactClub/config';
-import culchacandela from './public/tenants/culchacandela/config';
-import xiting from './public/tenants/xiting/config';
-import ulmpflanzt from './public/tenants/ulmpflanzt/config';
-import sitex from './public/tenants/sitex/config';
-import T3pleset from './public/tenants/3pleset/config';
-import weareams from './public/tenants/weareams/config';
+import { TenantSpecificConfig } from '@planet-sdk/common/build/types/tenant'
 
-interface ConfigType {
-  tenantName: string;
-  tenantURL: string;
-  languages: string[];
-  fallbackCurrency?: string;
-  tenantGoal?: number | null;
-  showUNDecadeLogo?: boolean;
-  darkModeEnabled?: boolean;
-  showUNEPLogo?: boolean;
-  showRedeemHint?: boolean;
-  font: {
-    primaryFontFamily: string;
-    secondaryFontFamily: string;
-    primaryFontURL?: string;
-    secondaryFontURL?: string;
-  };
-  header: {
-    isSecondaryTenant: boolean;
-    tenantLogoURL: string;
-    mobileLogoURL?: string;
-    tenantLogoLink: string;
-    items: {
-      [key: string]: {
-        title: string;
-        loggedInTitle?: string;
-        onclick: string;
-        visible: boolean;
-        subMenu?: {
-          title: string;
-          onclick: string;
-          visible: boolean;
-        }[];
-      };
-    };
-  };
-  meta: {
-    title: string;
-    appTitle?: string;
-    description: string;
-    image: string;
-    twitterHandle: string;
-    locale: string;
-  };
-  footerLinks: string[];
-  manifest?: string;
-  home?: {
-    image: string;
-  };
-}
+import planetConfig from "./public/tenants/planet/config";
+import planetConfigBeta from "./public/tenants/planet/configBeta";
+import ttcConfig from "./public/tenants/ttc/config";
+import salesforceConfig from "./public/tenants/salesforce/config";
+import sternConfig from "./public/tenants/stern/config";
+import nitrosbConfig from "./public/tenants/nitrosb/config";
+import lacoquetaConfig from "./public/tenants/lacoqueta/config";
+import energizerConfig from "./public/tenants/energizer/config";
+import senatDerWirtschaft from "./public/tenants/senatDerWirtschaft/config";
+import pampersConfig from "./public/tenants/pampers/config";
+import interactClub from "./public/tenants/interactClub/config";
+import culchacandela from "./public/tenants/culchacandela/config";
+import xiting from "./public/tenants/xiting/config";
+import ulmpflanzt from "./public/tenants/ulmpflanzt/config";
+import sitex from "./public/tenants/sitex/config";
+import T3pleset from "./public/tenants/3pleset/config";
+import weareams from "./public/tenants/weareams/config";
 
-export default function tenantConfig(): ConfigType {
-  switch (process.env.TENANT) {
-    case 'planet':
+// pass a param
+export default function tenantConfig(tenant: string): TenantSpecificConfig {
+  switch (tenant) {
+    case "planet":
       return planetConfig;
-    case 'planetbeta':
+    case "planetbeta": // Not sure if we'll use this in future, there is no current deployment for this tenant.
       return planetConfigBeta;
-    case 'ttc':
+    case "ttc":
       return ttcConfig;
-    case 'salesforce':
+    case "salesforce":
       return salesforceConfig;
-    case 'stern':
+    case "stern": // The current status in White Label Tenant Apps table in notion for this tenant is stoped.
       return sternConfig;
-    case 'nitrosb':
+    case "nitrosb":
       return nitrosbConfig;
-    case 'lacoqueta':
+    case "lacoqueta":
       return lacoquetaConfig;
-    case 'energizer':
+    case "energizer":
       return energizerConfig;
-    case 'senatDerWirtschaft':
+    case "senatDerWirtschaft":
       return senatDerWirtschaft;
-    case 'pampers':
+    case "pampers":
       return pampersConfig;
-    case 'interactClub':
+    case "interactClub":
       return interactClub;
-    case 'culchacandela':
+    case "culchacandela":
       return culchacandela;
-    case 'xiting':
+    case "xiting":
       return xiting;
-    case 'ulmpflanzt':
+    case "ulmpflanzt":
       return ulmpflanzt;
-    case 'sitex':
+    case "sitex":
       return sitex;
-    case '3pleset':
+    case "3pleset":
       return T3pleset;
-    case 'weareams':
+    case "weareams":
       return weareams;
     default:
       return planetConfig;
