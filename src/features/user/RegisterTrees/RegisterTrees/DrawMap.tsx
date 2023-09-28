@@ -109,6 +109,8 @@ export default function MapComponent({
               width: '100%',
             }}
           >
+            {/* NOTE: this functionality does not seem to work locally using React 18. 
+						To test, a temporary fix is to set `reactStrictMode=false` in next.config.js */}
             <DrawControl
               ref={drawControlRef}
               onDrawCreate={onDrawCreate}
