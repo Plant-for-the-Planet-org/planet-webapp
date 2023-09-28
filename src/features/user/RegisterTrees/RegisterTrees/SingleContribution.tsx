@@ -9,7 +9,7 @@ import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { Button } from '@mui/material';
 import { Image } from '@planet-sdk/common';
 
-export interface ContributionProps {
+export interface ContributionProperties {
   contributionImages: Image[];
   id: string;
   plantDate: string;
@@ -21,7 +21,7 @@ export interface ContributionProps {
 }
 interface SingleContributionProps {
   token: string | null;
-  contribution: ContributionProps;
+  contribution: ContributionProperties;
   contributionGUID: string;
   slug?: string | null;
 }

@@ -19,7 +19,7 @@ import { getStoredConfig } from '../../../utils/storeConfig';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import styles from './RegisterModal.module.scss';
 import SingleContribution, {
-  ContributionProps,
+  ContributionProperties,
 } from './RegisterTrees/SingleContribution';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
@@ -182,7 +182,7 @@ function RegisterTreesForm({
           geometry: geometry,
         };
         try {
-          const res = await postAuthenticatedRequest<ContributionProps>(
+          const res = await postAuthenticatedRequest<ContributionProperties>(
             `/app/contributions`,
             submitData,
             token,
