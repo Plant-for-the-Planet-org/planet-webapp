@@ -50,6 +50,7 @@
   height: 85%;
   height: 100%;
   background-color: $backgroundColor;
+  margin-top: 20px;
   .singleLocation {
     :hover {
       background-color: $backgroundColorDark;
@@ -112,7 +113,7 @@
   background-color: $backgroundColor;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  padding: 30px 20px;
+  padding: 40px 20px 30px 20px;
   > .locationNav {
     display: flex;
     flex-direction: row;
@@ -433,6 +434,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  div {
+    font-size: 2.25rem;
+    font-weight: 700;
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }
 
 .threeDotMenuButton {
@@ -501,6 +508,7 @@
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
     box-shadow: none;
+    padding-top: 65px;
     > :first-child {
       padding: 0 50px;
       text-align: left;
