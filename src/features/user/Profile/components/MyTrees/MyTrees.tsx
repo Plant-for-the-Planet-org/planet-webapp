@@ -85,7 +85,7 @@ function TreeList({ contribution }: any) {
                 color={
                   contribution.properties.type === 'registration'
                     ? '#3D67B1'
-                    : null
+                    : undefined
                 }
               />
             ) : (
@@ -93,7 +93,7 @@ function TreeList({ contribution }: any) {
                 color={
                   contribution.properties.type === 'registration'
                     ? '#3D67B1'
-                    : null
+                    : undefined
                 }
               />
             )}
