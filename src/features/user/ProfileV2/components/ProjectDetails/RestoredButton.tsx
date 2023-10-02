@@ -11,15 +11,17 @@ import { CircularProgress } from '@mui/material';
 
 export interface RestoredButtonProps {
   restoredArea: number | null;
+  plantedTrees: number | null;
 }
 
 const RestoredButton = ({
   restoredArea,
+  plantedTrees,
 }: RestoredButtonProps): ReactElement => {
-  const { t } = useTranslation(['donate']);
+  const { t, ready } = useTranslation(['donate']);
   const { isTreePlantedButtonActive } = useUserProps();
 
-  return (
+  return ready ? (
     <div
       className={
         isTreePlantedButtonActive
@@ -48,17 +50,24 @@ const RestoredButton = ({
               <div>{restoredArea ? restoredArea : 0}</div>
             </div>
             <div className={myForestStyles.restoredUnit}>{'m²'}</div>
-            <div className={myForestStyles.svgContainer}>
-              {isTreePlantedButtonActive ? (
-                <DownWardArrowSvg color={'#FFFFFF'} />
-              ) : (
-                <ArrowSvg color={'#219653'} />
+            {restoredArea !== null &&
+              plantedTrees !== null &&
+              restoredArea > 0 &&
+              plantedTrees > 0 && (
+                <div className={myForestStyles.svgContainer}>
+                  {isTreePlantedButtonActive ? (
+                    <DownWardArrowSvg color={'#FFFFFF'} />
+                  ) : (
+                    <ArrowSvg color={'#219653'} />
+                  )}
+                </div>
               )}
-            </div>
           </div>
         </>
       )}
     </div>
+  ) : (
+    <></>
   );
 };
 

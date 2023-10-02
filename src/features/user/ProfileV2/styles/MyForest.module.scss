@@ -243,11 +243,29 @@
     div>.text {
         font-weight: bold;
         font-size: 24px;
+        @include xsPhoneView {
+            font-size: 17px
+        }
+        @include smTabletView  {
+            font-size: 17px
+        }
+        @include mdTabletView {
+            font-size: 24px
+        }
         > .hrLine {
             width: 176px;
             border: 1px  solid #6FCF97;
             margin-left: 93px;
             margin-top: 16px;
+            @include xsPhoneView {
+                margin-left: 45px;
+            }
+            @include smTabletView  {
+                margin-left: 45px;
+            }
+            @include mdTabletView {
+                margin-left: 93px;
+            }
         }
     }
   }
@@ -268,35 +286,35 @@
     width: 100vw;
     padding-left: 42px;
     padding-right: 12px;
-    overflow: hidden;
+    overflow: auto; /* This enables scrolling if content overflows */
+    scrollbar-width: none; /* Hide Firefox scrollbar */
+   -ms-overflow-style: none; /* Hide IE/Edge scrollbar */
   }
+
+  .mapButtonMainContainer ::-webkit-scrollbar {
+    width: 0px;
+  }
+
 
   .mapButtonContainer {
     width: 100%;
-    max-width: 82%;
+    max-width: 100%;
     position: absolute;
     top: 510px;
     display : flex;
     gap: 12px;
     overflow: auto;
     left:auto;
-  
+    overflow-y: hidden;
     @include xsPhoneView {
         overflow: scroll;
-        left: 45px
+        left: 2px
     };
     @include smTabletView  {
-        overflow-y: hidden;
+        max-width: 89%;
     }
     @include mdTabletView {
         left: 70px;
-        overflow-y: hidden;
-    }
-    @include lgLaptopView{
-        overflow-y: hidden;
-    }
-    @include  xlDesktopView{
-        overflow-y: hidden;
     }
     @media screen and (min-width: 1400px) {
         overflow: hidden;
@@ -348,38 +366,40 @@
         border-radius: 12px;
         background: #FFFFFF;
         align-items: center;
-        gap: 30px;
         padding-left: 0px;
         padding-right: 0px;
         min-height: 185px;
+        gap: 30px;
         @include xsPhoneView {
             height: max-content;
             flex-direction: column;
-            gap: 15px;
             padding-left: 10px;
             padding-right: 10px;
+            gap: 20px;
         }
         @include smTabletView {
             flex-direction: column;
-            gap: 20px;
             padding-left: 25px;
             padding-right: 25px;
+            gap:0px
         }
 
         @include  mdTabletView {
             flex-direction: row;
-            gap: 20px;
             padding-left: 0px;
             padding-right: 0px;
+            gap: 20px;
         }
 
         @include lgLaptopView  {
             padding-left: 0px;
             padding-right: 0px;
+            gap: 20px;
         }
       
         > .image {
             width: 285px;
+            height: 200px;
             margin-left: 20px;
             border-radius: 12px;
             padding-top: 25px;
@@ -390,9 +410,11 @@
             };
             @include smTabletView {
                 margin-left: 0px;
+                padding-bottom: 20px;
             }
             @include mdTabletView {
                 margin-left:  20px;
+                padding-bottom: 20px;
             }
             @include xsPhoneView {
                 width: 274px;
@@ -405,7 +427,8 @@
   }
 
   .donateContainer {
-    width: 100%;
+    width: auto;
+    min-width: fit-content;
     border-radius: 12px;
     display: flex;
     align-items: flex-end;
@@ -416,7 +439,7 @@
     margin-left: 0px;
     @include xsPhoneView {
         flex-direction: row;
-        gap: 70px;
+        gap: 45px;
         margin-left: 17px;
         justify-content: flex-start;
     }
@@ -466,10 +489,6 @@
         flex-direction: row;
         padding-top: 0px
     }
-    @include lgLaptopView  {
-        padding-bottom: 15px;
-
-    }
 }
   .projectDetail {
     width: 100%;
@@ -492,11 +511,14 @@
     @include xsPhoneView {
         font-size: 16px;
     }
+    @include smTabletView {
+        font-size: 16px;
+    }
     @include mdTabletView {
         font-size: 16px;
     }
     @include lgLaptopView {
-        font-size: 24px;
+        font-size: 14px;
     }
   }
 
@@ -605,10 +627,24 @@
         padding-left: 90px;
     }
     @include mdTabletView {
-       padding-left: 30px;
+        padding-left: 30px;
     }
 }
 
 .treePlantationButtonConatiner {
     display: flex;
+}
+
+
+.sepratorContainer {
+    display: flex;
+    align-items: center;
+    .dotSeprator,
+    .lineSeprator {
+        margin-left: 4px;
+        margin-right: 4px;
+    }
+    .dotSeprator{
+        margin-bottom: 4px;
+    }
 }

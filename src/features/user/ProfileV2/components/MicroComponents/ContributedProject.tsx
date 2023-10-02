@@ -11,7 +11,8 @@ import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 import getImageUrl from '../../../../../utils/getImageURL';
 import { useTranslation } from 'next-i18next';
 import { getDonationUrl } from '../../../../../utils/getDonationUrl';
-import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
+import format from 'date-fns/format';
+import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
 
 export interface ProjectProps {
   projectInfo: Contributions | BouquetContribution;
@@ -28,7 +29,6 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
       ? window.open(url, '_blank')
       : (window.location.href = url);
   };
-
   return projectInfo ? (
     <div className={myForestStyles.donationDetail}>
       <div className={myForestStyles.image}>
@@ -62,15 +62,30 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
                 : t('me:registeredTree')}
             </div>
             {projectInfo?.plantProject !== null && (
-              <div>
-                {t('country:' + projectInfo.plantProject.country.toLowerCase())}
-                -{projectInfo.plantProject.tpo.name}
+              <div className={myForestStyles.sepratorContainer}>
+                <div>
+                  {t(
+                    'country:' + projectInfo.plantProject.country.toLowerCase()
+                  )}
+                </div>
+                {projectInfo.purpose === 'trees' ? (
+                  <div className={myForestStyles.dotSeprator}>.</div>
+                ) : (
+                  <div className={myForestStyles.lineSeprator}>|</div>
+                )}
+
+                <div>{projectInfo.plantProject.tpo.name}</div>
               </div>
             )}
           </div>
           <div className={myForestStyles.treeCount}>
             {projectInfo?.plantProject?.unit === 'm2'
-              ? t('me:area', { areaConserved: `${projectInfo.quantity}` })
+              ? t('me:areaType', {
+                  areaConserved: `${projectInfo.quantity}`,
+                  type: `${
+                    projectInfo.purpose === 'trees' ? 'restored' : 'conserved'
+                  } `,
+                })
               : t('me:plantedTrees', {
                   count:
                     projectInfo.quantity ||
@@ -81,7 +96,10 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
         </div>
         <div className={myForestStyles.donateContainer}>
           <div className={myForestStyles.plantingDate}>
-            {formatDate(projectInfo.plantDate)}
+            {format(projectInfo.plantDate, 'MMM dd, yyyy', {
+              locale:
+                localeMapForDate[localStorage.getItem('language') || 'en'],
+            })}
           </div>
           {projectInfo?.plantProject !== null && (
             <div

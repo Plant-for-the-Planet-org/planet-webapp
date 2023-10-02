@@ -28,7 +28,7 @@ const MyForestMap = (): ReactElement => {
     minZoom: 1,
     maxZoom: 25,
   });
-  const defaultMapCenter = [36.96, -28.5];
+  const defaultMapCenter = [0, 0];
   const defaultZoom = 1;
   const [viewport, setViewport] = useState<ViewportProps>({
     width: '100%',

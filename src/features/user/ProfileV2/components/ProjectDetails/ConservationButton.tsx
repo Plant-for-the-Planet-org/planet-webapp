@@ -10,7 +10,7 @@ import { CircularProgress } from '@mui/material';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 
 export interface ConservationButtonProps {
-  conservedArea: number | undefined;
+  conservedArea: number | null | undefined;
 }
 
 const ConservationButton = ({
@@ -63,13 +63,15 @@ const ConservationButton = ({
               {conservedArea ? conservedArea : 0}
             </div>
             <div className={myForestStyles.unit}>{'m²'}</div>
-            <div className={myForestStyles.svgContainer}>
-              {isConservedButtonActive ? (
-                <DownWardArrowSvg color={'#FFFFFF'} />
-              ) : (
-                <ArrowSvg color={'#48AADD'} />
-              )}
-            </div>
+            {conservedArea !== null && conservedArea > 0 && (
+              <div className={myForestStyles.svgContainer}>
+                {isConservedButtonActive ? (
+                  <DownWardArrowSvg color={'#FFFFFF'} />
+                ) : (
+                  <ArrowSvg color={'#48AADD'} />
+                )}
+              </div>
+            )}
           </div>
         </>
       )}

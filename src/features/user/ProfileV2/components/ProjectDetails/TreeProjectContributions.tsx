@@ -70,12 +70,10 @@ const TreeProjectContributions = ({
             {t('me:treesPlantedAndAreaRestored')}
             <p className={myForestStyles.hrLine} />
           </div>
-          <div>
-            <ContributedProjectList
-              contributionProjectList={contribution?.pages}
-              handleFetchNextPage={handleFetchNextPage}
-            />
-          </div>
+          <ContributedProjectList
+            contributionProjectList={contribution?.pages}
+            handleFetchNextPage={handleFetchNextPage}
+          />
         </div>
       </div>
     </div>

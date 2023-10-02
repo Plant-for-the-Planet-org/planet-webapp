@@ -170,12 +170,12 @@
     >div >div >div {
          border-radius: 12px ;
     };
+
+    @include xsPhoneView {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
 }
 
-@include xsPhoneView {
-    .mapContainer{
-        padding-left: 25px;
-        padding-right: 25px;
-    }   
-}
+
 
