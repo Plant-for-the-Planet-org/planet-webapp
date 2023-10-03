@@ -1,10 +1,10 @@
 import { useState, ReactElement } from 'react';
-import ProfileContainer from './styles/ProfileContainer';
+import ProfileContainer from '../../styles/ProfileContainer';
 import { useTranslation } from 'next-i18next';
-import tenantConfig from '../../../../tenant.config';
-import UserInfo from './components/MicroComponents/UserInfo';
-import { ProfileProps } from '../../common/types/profile';
-import UserFeatures from './components/userFeatures/UserFeatures';
+import tenantConfig from '../../../../../../tenant.config';
+import UserInfo from '../MicroComponents/UserInfo';
+import { ProfileProps } from '../../../../common/types/profile';
+import UserFeatures from '../userFeatures/UserFeatures';
 
 const config = tenantConfig();
 
