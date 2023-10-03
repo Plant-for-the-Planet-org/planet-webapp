@@ -434,11 +434,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  div {
+  .treeMapperTitle {
     font-size: 2.25rem;
     font-weight: 700;
     width: 100%;
     margin-bottom: 10px;
+    color: $primaryFontColor;
   }
 }
 
