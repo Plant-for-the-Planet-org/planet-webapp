@@ -62,7 +62,7 @@ export default function CompleteSignup(): ReactElement | null {
     AddressSuggestionsType[]
   >([]);
   const [isProcessing, setIsProcessing] = React.useState<boolean>(false);
-  const [country, setCountry] = useState<CountryCode | null>(null);
+  const [country, setCountry] = useState<CountryCode | ''>('');
 
   const geocoder = new GeocoderArcGIS(
     process.env.ESRI_CLIENT_SECRET
@@ -226,7 +226,7 @@ export default function CompleteSignup(): ReactElement | null {
       return;
     }
     setSubmit(true);
-    if (country != null) {
+    if (country !== '') {
       if (contextLoaded && token) {
         const submitData = {
           ...data,
@@ -247,6 +247,7 @@ export default function CompleteSignup(): ReactElement | null {
     return null;
   }
   if (contextLoaded && token && user === null) {
+    console.log(country);
     return ready ? (
       <div
         className={styles.signupPage}
@@ -470,7 +471,7 @@ export default function CompleteSignup(): ReactElement | null {
             <AutoCompleteCountry
               label={t('donate:country')}
               name="country"
-              onChange={() => setCountry}
+              onChange={setCountry}
               defaultValue={
                 getStoredConfig('loc').countryCode === 'T1' ||
                 getStoredConfig('loc').countryCode === 'XX' ||
