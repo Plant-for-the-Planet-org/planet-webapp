@@ -6,7 +6,7 @@ import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
 import React from 'react';
 import TagManager from 'react-gtm-module';
 import Router from 'next/router';
-import { AppProps } from 'next/app';
+import App, { AppProps, AppContext, AppInitialProps } from 'next/app';
 import { Auth0Provider } from '@auth0/auth0-react';
 import '../src/features/projects/styles/MapPopup.scss';
 import '../src/theme/global.scss';
@@ -38,6 +38,8 @@ import nextI18NextConfig from '../next-i18next.config.js';
 import { trpc } from '../src/utils/trpc';
 import MapHolder from '../src/features/projects/components/maps/MapHolder';
 import { TenantProvider } from '../src/features/common/Layout/TenantContext';
+
+type AppOwnProps = { hostURL: string; _config: { auth0ClientId: string } };
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -109,7 +111,9 @@ const PlanetWeb = ({
   Component,
   pageProps,
   emotionCache = clientSideEmotionCache,
-}: MyAppProps) => {
+  hostURL,
+  _config,
+}: MyAppProps & AppOwnProps) => {
   const { i18n } = useTranslation();
   const router = useRouter();
   const [isMap, setIsMap] = React.useState(false);
@@ -134,6 +138,8 @@ const PlanetWeb = ({
   const [initialized, setInitialized] = React.useState(false);
 
   React.useEffect(() => {
+    console.log('==>', hostURL, _config);
+    console.log('==> _app', router.pathname);
     storeConfig();
   }, []);
   React.useEffect(() => {
@@ -251,8 +257,12 @@ const PlanetWeb = ({
                 >
                   <Auth0Provider
                     domain={process.env.AUTH0_CUSTOM_DOMAIN}
-                    clientId={process.env.AUTH0_CLIENT_ID}
-                    redirectUri={process.env.NEXTAUTH_URL}
+                    clientId={
+                      _config?.auth0ClientId
+                        ? _config.auth0ClientId
+                        : process.env.AUTH0_CLIENT_ID
+                    }
+                    redirectUri={hostURL}
                     audience={'urn:plant-for-the-planet'}
                     cacheLocation={'localstorage'}
                     onRedirectCallback={onRedirectCallback}
@@ -293,4 +303,22 @@ const PlanetWeb = ({
     );
   }
 };
+
+PlanetWeb.getInitialProps = async (
+  context: AppContext
+): Promise<AppOwnProps & AppInitialProps> => {
+  const ctx = await App.getInitialProps(context);
+
+  const _config = {
+    auth0ClientId: 'abc',
+  };
+
+  return {
+    ...ctx,
+    
+    hostURL: `https://${context.ctx.req?.headers.host}`,
+    _config,
+  };
+};
+
 export default trpc.withTRPC(appWithTranslation(PlanetWeb, nextI18NextConfig));
