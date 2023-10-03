@@ -1,8 +1,6 @@
 import React from 'react';
-import { ThemeContext } from '../../../../../src/theme/themeContext';
-function BackArrow(props: any) {
-  const { theme } = React.useContext(ThemeContext);
 
+function BackArrow() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

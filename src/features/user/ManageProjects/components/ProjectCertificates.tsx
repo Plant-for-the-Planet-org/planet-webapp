@@ -27,7 +27,10 @@ import themeProperties from '../../../../theme/themeProperties';
 import { handleError, APIError, Certificate } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
-import { ProjectCertificatesProps } from '../../../common/types/project';
+import {
+  CertificateScopeProjects,
+  ProjectCertificatesProps,
+} from '../../../common/types/project';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 
 const dialogSx: SxProps = {
@@ -73,15 +76,51 @@ function ProjectCertificates({
   );
   const [isCertified, setisCertified] = React.useState<boolean>(true);
   const [showToggle, setShowToggle] = React.useState<boolean>(true);
+
+  const onSubmit = async (pdf: string) => {
+    const { issueDate, certifierName } = getValues();
+    setIsUploadingData(true);
+    const submitData = {
+      issueDate: issueDate.getFullYear(),
+      certifierName: certifierName,
+      pdfFile: pdf,
+    };
+
+    try {
+      const res = await postAuthenticatedRequest<Certificate>(
+        `/app/projects/${projectGUID}/certificates`,
+        submitData,
+        token,
+        logoutUser
+      );
+      let newUploadedFiles = uploadedFiles;
+
+      if (newUploadedFiles === undefined) {
+        newUploadedFiles = [];
+      }
+
+      newUploadedFiles.push(res);
+      setUploadedFiles(newUploadedFiles);
+      setValue('certifierName', '', { shouldDirty: false });
+      setIsUploadingData(false);
+      setShowForm(false);
+      setErrorMessage('');
+    } catch (err) {
+      setIsUploadingData(false);
+      setErrors(handleError(err as APIError));
+    }
+  };
+
   const onDrop = React.useCallback(
     (acceptedFiles) => {
-      acceptedFiles.forEach((file: any) => {
+      acceptedFiles.forEach((file: File) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onabort = () => console.log('file reading was aborted');
         reader.onerror = () => console.log('file reading has failed');
         reader.onload = (event) => {
-          onSubmit(event.target.result);
+          if (typeof event.target?.result === 'string')
+            onSubmit(event.target?.result);
         };
       });
     },
@@ -93,7 +132,7 @@ function ProjectCertificates({
 
     const fetchCertificates = async () => {
       try {
-        const result = await getAuthenticatedRequest(
+        const result = await getAuthenticatedRequest<CertificateScopeProjects>(
           `/app/profile/projects/${projectGUID}?_scope=certificates`,
           token,
           logoutUser
@@ -131,48 +170,14 @@ function ProjectCertificates({
     },
   });
 
-  const onSubmit = async (pdf: any) => {
-    const { issueDate, certifierName } = getValues();
-    setIsUploadingData(true);
-    const submitData = {
-      issueDate: issueDate.getFullYear(),
-      certifierName: certifierName,
-      pdfFile: pdf,
-    };
-
-    try {
-      const res = await postAuthenticatedRequest(
-        `/app/projects/${projectGUID}/certificates`,
-        submitData,
-        token,
-        logoutUser
-      );
-      let newUploadedFiles = uploadedFiles;
-
-      if (newUploadedFiles === undefined) {
-        newUploadedFiles = [];
-      }
-
-      newUploadedFiles.push(res);
-      setUploadedFiles(newUploadedFiles);
-      setValue('certifierName', '', { shouldDirty: false });
-      setIsUploadingData(false);
-      setShowForm(false);
-      setErrorMessage('');
-    } catch (err) {
-      setIsUploadingData(false);
-      setErrors(handleError(err as APIError));
-    }
-  };
-
-  const deleteProjectCertificate = async (id: any) => {
+  const deleteProjectCertificate = async (id: string) => {
     try {
       await deleteAuthenticatedRequest(
         `/app/projects/${projectGUID}/certificates/${id}`,
         token,
         logoutUser
       );
-      const uploadedFilesTemp = uploadedFiles!.filter((item) => item.id !== id);
+      const uploadedFilesTemp = uploadedFiles.filter((item) => item.id !== id);
       setUploadedFiles(uploadedFilesTemp);
     } catch (err) {
       setErrors(handleError(err as APIError));
@@ -180,7 +185,7 @@ function ProjectCertificates({
   };
 
   React.useEffect(() => {
-    if (uploadedFiles && !uploadedFiles.length > 0) {
+    if (uploadedFiles && uploadedFiles.length > 0) {
       setShowToggle(true);
       setShowForm(true);
       setisCertified(false);

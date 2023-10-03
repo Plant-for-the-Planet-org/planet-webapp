@@ -41,15 +41,15 @@
   width: 100%;
   min-height: 100vh;
   .widgetsContainer {
-    padding: 0px; 
+    padding: 0px;
     margin-top: 130px;
   }
-    @include xsPhoneView {    
-      & .widgetsContainer {
-          padding-top: 80px !important;
-          margin-top: 80px;
-        }
+  @include xsPhoneView {
+    & .widgetsContainer {
+      padding-top: 80px !important;
+      margin-top: 80px;
     }
+  }
 }
 
 .profileImpersonation {
@@ -64,7 +64,7 @@
   font-family: inherit;
 }
 
- .sidebar {
+.sidebar {
   width: 109px;
   position: fixed;
   top: 80px;
@@ -76,58 +76,53 @@
   scrollbar-width: none;
   justify-content: space-between;
   box-shadow: rgba(150, 150, 150, $alpha: 0.2) 0px 0px 4px;
-  background-color: $light;
   transition: width 0.3s ease-in-out;
   z-index: 100;
   background-color: $backgroundColor;
   color: $primaryFontColor;
   font-family: $primaryFontFamily;
-    //edit scroll bar for webkit browsers
-    &::-webkit-scrollbar {
-      width: 0px;
-    }
-    & {
-      .supportPinContainer {
-          display: none;
+  //edit scroll bar for webkit browsers
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
+  & .supportPinContainer {
+    display: none;
+  }
+
+  &:hover {
+    .supportPinContainer {
+      .pinValue {
+        width: 33px;
+        font-weight: bold;
+      }
+      .resetPin {
+        display: none;
+      }
+      &:hover {
+        .resetPin {
+          display: block;
+          position: absolute;
+          bottom: 30px;
+          right: -21px;
+          height: 23px;
+          width: 67px;
+          background-color: $primaryColor;
+          color: $light;
+          font-family: inherit;
+          text-align: center;
+          border-radius: 4px;
         }
       }
-  
-    &:hover{
-      .supportPinContainer {
-          .pinValue {
-            width: 33px;
-            font-weight: bold;
-          }
-          .resetPin{
-            display: none;
-          }
-          &:hover {
-            .resetPin {
-              display: block;
-              position: absolute;
-              bottom: 30px;
-              right: -21px;
-              height: 23px;
-              width: 67px;
-              background-color: $primaryColor;
-              color: $light;
-              font-family: inherit;
-              text-align: center;
-              border-radius: 4px;
-            }
-          }
-          position: relative;
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-          align-items: center;
-          gap:12px;
-          margin-right: 60px;
-          cursor: auto;
-         }
-       
-      
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-right: 60px;
+      cursor: auto;
     }
+  }
   @include xsPhoneView {
     width: 300px;
     & .navlink {
@@ -145,11 +140,11 @@
     }
     & {
       .navlink .supportPinContainer {
-      display: flex;
-      margin-right: 102px;
-      gap:10px
+        display: flex;
+        margin-right: 102px;
+        gap: 10px;
+      }
     }
-  }
   }
   @include smTabletView {
     top: 80px;
@@ -172,7 +167,6 @@
   }
 }
 
-
 .sidebarModified {
   width: 109px;
   position: fixed;
@@ -184,18 +178,14 @@
   overflow-y: scroll;
   justify-content: space-between;
   box-shadow: rgba(150, 150, 150, $alpha: 0.2) 0px 0px 4px;
-  background-color: $light;
   transition: width 0.3s ease-in-out;
   z-index: 100;
   background-color: $backgroundColor;
   color: $primaryFontColor;
   font-family: $primaryFontFamily;
-  & {
-    .navlink {
-      .supportPinContainer {
-        display: none;
-       
-      }
+  & .navlink {
+    .supportPinContainer {
+      display: none;
     }
   }
   @include xsPhoneView {
@@ -214,7 +204,7 @@
       width: 0px;
     }
   }
-  
+
   @include smTabletView {
     top: 120px;
     & .closeMenu {
@@ -252,10 +242,11 @@
   }
   &:hover {
     cursor: pointer;
-    > svg > path , > svg > g > path{
+    color: $primaryColor;
+    > svg > path,
+    > svg > g > path {
       fill: $primaryColor;
     }
-    
   }
   button {
     font-size: 14px;
@@ -263,9 +254,6 @@
     &:hover {
       cursor: pointer;
     }
-  }
-  &:hover{
-    color: $primaryColor;
   }
 }
 
@@ -292,7 +280,8 @@
   color: $primaryFontColor;
   &:hover {
     cursor: pointer;
-    > svg > path , > svg > g > path{
+    > svg > path,
+    > svg > g > path {
       fill: $primaryColor;
     }
     color: $primaryColor;

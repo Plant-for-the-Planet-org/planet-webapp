@@ -85,7 +85,7 @@ const CreationMethodForm = (): ReactElement | null => {
             className="formButton"
             disabled={
               !(
-                user.planetCash &&
+                user?.planetCash &&
                 !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
               ) || method === null
             }

@@ -41,7 +41,7 @@ const DonationLinkForm = ({
   const [donationUrl, setDonationUrl] = useState<string>('');
   const { t, ready } = useTranslation(['donationLink', 'country', 'me']);
   const [localProject, setLocalProject] = useState<ProjectOption | null>(null);
-  const [isSupport, setIsSupport] = useState<boolean>(!user.isPrivate);
+  const [isSupport, setIsSupport] = useState<boolean>(!user?.isPrivate);
   const [isTesting, setIsTesting] = useState<boolean>(false);
   const [isArrayUpdated, setIsArrayUpdated] = useState<boolean>(false);
   const [isLinkUpdated, setIsLinkUpdated] = useState<boolean>(false);
@@ -72,7 +72,7 @@ const DonationLinkForm = ({
 
     const url = `${link}?${selectedCountry}${selectedLanguage}${
       localProject == null ? '' : `to=${localProject.slug}&`
-    }tenant=${TENANT_ID}${isSupport ? `&s=${user.slug}` : ''}
+    }tenant=${TENANT_ID}${isSupport ? `&s=${user?.slug}` : ''}
     `;
     if (donationUrl.length > 0) setIsLinkUpdated(true);
     setDonationUrl(url);
@@ -119,7 +119,7 @@ const DonationLinkForm = ({
     }
   };
 
-  if (isArrayUpdated && ready) {
+  if (isArrayUpdated && ready && user) {
     return (
       <StyledForm>
         <div className="inputContainer">
