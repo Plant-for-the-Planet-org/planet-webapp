@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getTenantSubdomainOrDefault } from './src/utils/multiTenancy/helpers';
+import { getTenantSubdomainOrRedirectObject } from './src/utils/multiTenancy/helpers';
 
 export const config = {
   matcher: ['/', '/_sites/:path', '/profile', '/profile/history'],
@@ -9,9 +9,14 @@ export default async function middleware(req: NextRequest) {
   const url = req.nextUrl;
 
   // Get hostname (e.g. vercel.com, test.vercel.app, etc.)
-  const hostname = req.headers.get('host');
+  const host = req.headers.get('host');
 
-  const subdomain = await getTenantSubdomainOrDefault(hostname!);
+  const subdomainOrRedirectObject = await getTenantSubdomainOrRedirectObject(host!);
+
+  // If it is a redirect object, return it immediately
+  if(subdomainOrRedirectObject instanceof NextResponse) {
+    return subdomainOrRedirectObject;
+  }
 
   // Prevent security issues – users should not be able to canonically access
   // the pages/sites folder and its respective contents.
@@ -19,7 +24,7 @@ export default async function middleware(req: NextRequest) {
     url.pathname = `/404`;
   } else {
     // rewrite to the current subdomain under the pages/sites folder
-    url.pathname = `/_sites/${subdomain}${url.pathname}`;
+    url.pathname = `/_sites/${subdomainOrRedirectObject}${url.pathname}`;
   }
 
   return NextResponse.rewrite(url);

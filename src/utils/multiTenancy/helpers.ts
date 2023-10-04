@@ -2,6 +2,7 @@ import {
   TenantAppConfig,
   Tenants,
 } from '@planet-sdk/common/build/types/tenant';
+import { NextResponse } from 'next/server';
 import NodeCache from 'node-cache';
 
 const ONE_HOUR_IN_SEC = 60 * 60;
@@ -14,6 +15,7 @@ const caching_key = 'TENANT_CONFIG_LIST';
  * This is the default subdomain that will be used if no subdomain is found.
  */
 const DEFAULT_TENANT_SUBDOMAIN = 'planet';
+const DEFAULT_TENANT_DOMAIN = 'https://www1.plant-for-the-planet.org'
 
 /**
  *
@@ -80,36 +82,34 @@ function isSubdomain(domain: string) {
 /**
  * Returns the subdomain of the current hostname.
  */
-export async function getTenantSubdomainOrDefault(
-  localSubdomainOrTenantDomain: string
-) {
-
+export async function getTenantSubdomainOrRedirectObject(host: string) {
   // TODO - use cached api response
 
   const response = await fetch(`${process.env.API_ENDPOINT}/app/tenants`);
 
   const tenants = (await response.json()) as Tenants;
 
-  const rootDomain = localSubdomainOrTenantDomain.includes(
-    process.env.ROOT_DOMAIN!
-  );
+  const rootDomain = host.includes(process.env.ROOT_DOMAIN!);
 
   let subdomain;
 
   if (!rootDomain) {
     const tenant = tenants.find((tenant) =>
       tenant.config.customDomain
-        ? tenant.config.customDomain.includes(localSubdomainOrTenantDomain)
-        : tenant.config.appDomain.includes(localSubdomainOrTenantDomain)
+        ? tenant.config.customDomain.includes(host)
+        : tenant.config.appDomain.includes(host)
     );
 
     subdomain = tenant?.config.subDomain ?? DEFAULT_TENANT_SUBDOMAIN;
   } else {
-    if (isSubdomain(localSubdomainOrTenantDomain)) {
-      subdomain = localSubdomainOrTenantDomain.replace(
-        `.${process.env.ROOT_DOMAIN}`,
-        ''
-      );
+    if (isSubdomain(host)) {
+      subdomain = host.replace(`.${process.env.ROOT_DOMAIN}`, '');
+
+      // Match it with the tenant Information
+      const tenant = await getTenantConfig(subdomain);
+      // TODO: Must be app domain not custom domain
+      return NextResponse.redirect(tenant ? tenant.customDomain : DEFAULT_TENANT_DOMAIN, 301);
+      
     } else {
       subdomain = DEFAULT_TENANT_SUBDOMAIN;
     }
