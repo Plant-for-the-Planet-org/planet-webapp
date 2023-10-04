@@ -4,10 +4,38 @@ import {
 } from '@planet-sdk/common/build/types/tenant';
 import NodeCache from 'node-cache';
 
+const ONE_HOUR_IN_SEC = 60 * 60;
+const TWO_HOURS = ONE_HOUR_IN_SEC * 2;
+
+const cache = new NodeCache({ stdTTL: TWO_HOURS });
+const caching_key = 'TENANT_CONFIG_LIST';
+
 /**
  * This is the default subdomain that will be used if no subdomain is found.
  */
 const DEFAULT_TENANT_SUBDOMAIN = 'planet';
+
+/**
+ *
+ * Returns the tenant config list
+ * @returns TenantAppConfig[]
+ *
+ */
+export const getTenantConfigList = async () => {
+  const cacheHit = cache.get<TenantAppConfig[]>(caching_key);
+
+  if (cacheHit) {
+    return cacheHit;
+  }
+
+  const response = await fetch(`${process.env.API_ENDPOINT}/app/tenants`);
+
+  const tenants = (await response.json()) as TenantAppConfig[];
+
+  cache.set(caching_key, tenants);
+
+  return tenants;
+};
 
 /**
  * Returns the data of the hostname based on its subdomain.
@@ -15,11 +43,9 @@ const DEFAULT_TENANT_SUBDOMAIN = 'planet';
  * This method is used by pages under middleware.ts
  */
 export async function getHostnameDataBySubdomain(subdomain: string) {
-  const response = await fetch(`${process.env.API_ENDPOINT}/app/tenants`);
+  const tenants = await getTenantConfigList();
 
-  const tenants = (await response.json()) as Tenants;
-
-  return tenants.find((item) => item.config.subDomain === subdomain);
+  return tenants.find((item) => item.tenantName === subdomain);
 }
 
 /**
@@ -27,16 +53,14 @@ export async function getHostnameDataBySubdomain(subdomain: string) {
  * available hostname.
  */
 export async function getSubdomainPaths() {
-  const response = await fetch(`${process.env.API_ENDPOINT}/app/tenants`);
-
-  const tenants = (await response.json()) as Tenants;
+  const tenants = await getTenantConfigList();
 
   // get all sites that have subdomains set up
-  const subdomains = tenants.filter((item) => item.config.subDomain);
+  const subdomains = tenants.filter((item) => item.tenantName);
 
   // build paths for each of the sites in the previous two lists
   return subdomains.map((item) => {
-    return { params: { site: item.config.subDomain } };
+    return { params: { site: item.tenantName } };
   });
 }
 
@@ -59,6 +83,9 @@ function isSubdomain(domain: string) {
 export async function getTenantSubdomainOrDefault(
   localSubdomainOrTenantDomain: string
 ) {
+
+  // TODO - use cached api response
+
   const response = await fetch(`${process.env.API_ENDPOINT}/app/tenants`);
 
   const tenants = (await response.json()) as Tenants;
@@ -93,37 +120,16 @@ export async function getTenantSubdomainOrDefault(
 
 /**
  *
- * Return the tenant config based for a tenant 
+ * Return the tenant config based for a tenant
  *
  * @param tenant
  * @returns TenantAppConfig
  */
 
-const ONE_HOUR_IN_SEC = 60 * 60;
-const TWO_HOURS = ONE_HOUR_IN_SEC * 2;
-
-const cache = new NodeCache({ stdTTL: TWO_HOURS });
-const key = 'TENANT_CONFIG';
-
 export const getTenantConfig = async (tenant: string) => {
-  const cacheHit = cache.get<TenantAppConfig[]>(key);
+  const tenantConfList = await getTenantConfigList();
 
-  if (cacheHit) {
-    const tenantConf = cacheHit.find(
-      (_tenant) => _tenant.tenantName === tenant
-    )
-    return tenantConf;
-  }
-
-  const response = await fetch(`${process.env.API_ENDPOINT}/app/tenants`);
-
-  const tenants = (await response.json()) as TenantAppConfig[];
-
-  cache.set(key, tenants)
-
-  const tenantConf = tenants.find(
-    (_tenant) => _tenant.tenantName === tenant
-  );
+  const tenantConf = tenantConfList.find((item) => item.tenantName === tenant);
 
   return tenantConf;
 };
