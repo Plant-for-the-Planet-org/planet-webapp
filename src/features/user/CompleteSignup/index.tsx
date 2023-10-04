@@ -247,7 +247,6 @@ export default function CompleteSignup(): ReactElement | null {
     return null;
   }
   if (contextLoaded && token && user === null) {
-    console.log(country);
     return ready ? (
       <div
         className={styles.signupPage}
