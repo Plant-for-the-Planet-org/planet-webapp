@@ -111,8 +111,6 @@ const PlanetWeb = ({
   Component,
   pageProps,
   emotionCache = clientSideEmotionCache,
-  hostURL,
-  _config,
 }: MyAppProps & AppOwnProps) => {
   const { i18n } = useTranslation();
   const router = useRouter();
@@ -138,7 +136,7 @@ const PlanetWeb = ({
   const [initialized, setInitialized] = React.useState(false);
 
   React.useEffect(() => {
-    console.log('==>', hostURL, _config);
+    console.log('==>', pageProps.hostURL, pageProps._config, pageProps);
     console.log('==> _app', router.pathname);
     storeConfig();
   }, []);
@@ -223,7 +221,7 @@ const PlanetWeb = ({
   if (browserCompatible) {
     return <BrowserNotSupported />;
   } else {
-    return (
+    return pageProps._config ? (
       <CacheProvider value={emotionCache}>
         <ErrorHandlingProvider>
           <TenantProvider>
@@ -258,11 +256,11 @@ const PlanetWeb = ({
                   <Auth0Provider
                     domain={process.env.AUTH0_CUSTOM_DOMAIN}
                     clientId={
-                      _config?.auth0ClientId
-                        ? _config.auth0ClientId
+                      pageProps._config.auth0ClientId
+                        ? pageProps._config.auth0ClientId
                         : process.env.AUTH0_CLIENT_ID
                     }
-                    redirectUri={hostURL}
+                    redirectUri={pageProps.hostURL}
                     audience={'urn:plant-for-the-planet'}
                     cacheLocation={'localstorage'}
                     onRedirectCallback={onRedirectCallback}
@@ -300,6 +298,8 @@ const PlanetWeb = ({
           </TenantProvider>
         </ErrorHandlingProvider>
       </CacheProvider>
+    ) : (
+      <></>
     );
   }
 };
@@ -309,16 +309,15 @@ PlanetWeb.getInitialProps = async (
 ): Promise<AppOwnProps & AppInitialProps> => {
   const ctx = await App.getInitialProps(context);
 
-  const _config = {
-    auth0ClientId: 'abc',
+  const pageProps = {
+    ...ctx.pageProps,
+    hostURL: `https://${context.ctx.req?.headers.host}`,
+    _config: {
+      auth0ClientId: 'abc', // Replace with the actual value
+    },
   };
 
-  return {
-    ...ctx,
-    
-    hostURL: `https://${context.ctx.req?.headers.host}`,
-    _config,
-  };
+  return { ...ctx, pageProps } as AppOwnProps & AppInitialProps;
 };
 
 export default trpc.withTRPC(appWithTranslation(PlanetWeb, nextI18NextConfig));
