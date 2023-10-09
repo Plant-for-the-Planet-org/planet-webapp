@@ -10,7 +10,7 @@ import { Button } from '@mui/material';
 import { Image } from '@planet-sdk/common';
 import { Point, Polygon } from 'geojson';
 
-export interface ContributionProps {
+export interface ContributionProperties {
   contributionImages: Image[];
   id: string;
   plantDate: string;
@@ -24,7 +24,7 @@ export interface ContributionProps {
 
 interface SingleContributionProps {
   token: string | null;
-  contribution: ContributionProps | null;
+  contribution: ContributionProperties;
   contributionGUID: string;
   slug?: string | null;
 }

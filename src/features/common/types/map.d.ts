@@ -1,12 +1,12 @@
 import {
-    TreeProjectClassification,
-    CountryCode,
-    CurrencyCode,
-    TreeProjectMetadata,
-    DefaultPaymentConfig,
-    Tpo,
-    UnitTypes
-} from "@planet-sdk/common"
+  TreeProjectClassification,
+  CountryCode,
+  CurrencyCode,
+  TreeProjectMetadata,
+  DefaultPaymentConfig,
+  Tpo,
+  UnitTypes,
+} from '@planet-sdk/common';
 import { Nullable } from '@planet-sdk/common/build/types/util';
 import { ContributionProps } from "../../user/RegisterTrees/RegisterTrees/SingleContribution";
 import { FlyToInterpolator } from "react-map-gl";
@@ -200,4 +200,3 @@ export interface ProjectGeoJsonProps {
     wkid: number
     latestWkid?: number
   }
-  

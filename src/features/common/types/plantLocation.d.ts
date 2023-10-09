@@ -1,4 +1,5 @@
 import { DateString } from './common';
+import { Links } from './payments';
 import { Polygon, Point} from 'geojson';
 
 
@@ -161,3 +162,36 @@ export interface Species {
   scientificName: string;
   scientificSpecies: string;
 }
+
+interface Filters {
+  all: string;
+  'location-partial': string;
+  'location-complete': string;
+  'location-single': string;
+  'location-multi': string;
+  'location-sample': string;
+  'revision-pending': string;
+}
+
+export interface ExtendedScopePlantLocations {
+  items: PlantLocation[] | SamplePlantLocation[];
+  total: number;
+  count: number;
+  _links: Links;
+  _filters: Filters;
+}
+export interface SpeciesSuggestionType {
+  id: string;
+  name: string;
+  scientificName: string;
+}
+
+export type SampleTree = {
+  plantingDate: Date;
+  treeTag: string;
+  height: string;
+  diameter: string;
+  otherSpecies: string;
+  latitude: string;
+  longitude: string;
+};

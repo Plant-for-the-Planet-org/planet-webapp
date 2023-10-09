@@ -1,9 +1,7 @@
-import React from 'react';
-interface IconProps {
-  color?: string;
-}
+import React, { ReactElement } from 'react';
+import { IconProps } from '../../../../../src/features/common/types/common';
 
-function PlanetCashIcon({ color = '#000' }: IconProps): JSX.Element {
+function PlanetCashIcon({ color = '#000' }: IconProps): ReactElement {
   return (
     <svg
       width="20"
