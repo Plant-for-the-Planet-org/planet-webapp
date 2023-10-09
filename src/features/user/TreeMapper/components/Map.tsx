@@ -11,19 +11,35 @@ import MapGL, {
   Source,
   WebMercatorViewport,
 } from 'react-map-gl';
-import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import LayerIcon from '../../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../../public/assets/images/icons/LayerDisabled';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
 import SatelliteLayer from '../../../projects/components/maps/SatelliteLayer';
-import { useTranslation } from 'next-i18next';
+import {
+  PlantLocation,
+  PlantLocationMulti,
+} from '../../../common/types/plantLocation';
+import { RequiredMapStyle } from '../../../common/types/map';
+import { ViewPort } from '../../../common/types/ProjectPropsContextInterface';
 
 interface Props {
-  locations: any;
-  selectedLocation: string;
+  locations: PlantLocation[];
+  selectedLocation: PlantLocationMulti;
   setselectedLocation: Function;
+}
+
+interface GeoJson {
+  type: 'FeatureCollection';
+  properties: {};
+  features: {
+    type: string;
+    geometry: any;
+    properties: {
+      id: string;
+    };
+  }[];
 }
 
 export default function MyTreesMap({
@@ -33,10 +49,7 @@ export default function MyTreesMap({
 }: Props): ReactElement {
   const router = useRouter();
 
-  const { i18n, t } = useTranslation('me');
-
   const { isMobile } = useProjectProps();
-
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;
   const [viewport, setViewPort] = React.useState({
@@ -47,14 +60,14 @@ export default function MyTreesMap({
     zoom: defaultZoom,
   });
   const [satellite, setSatellite] = React.useState(false);
-  const [geoJson, setGeoJson] = React.useState(null);
+  const [geoJson, setGeoJson] = React.useState<GeoJson | null>(null);
   const [plIds, setPlIds] = React.useState<string[] | null>(null);
   const [style, setStyle] = React.useState({
     version: 8,
     sources: {},
     layers: [],
   });
-  const getPlTreeCount = (pl: any) => {
+  const getPlTreeCount = (pl: PlantLocationMulti) => {
     let count = 0;
     if (pl && pl.plantedSpecies) {
       for (const key in pl.plantedSpecies) {
@@ -69,7 +82,7 @@ export default function MyTreesMap({
     }
   };
 
-  const getPlArea = (pl: any) => {
+  const getPlArea = (pl: PlantLocationMulti) => {
     if (pl && pl.type === 'multi') {
       const area = turf.area(pl.geometry);
       return area / 10000;
@@ -78,7 +91,7 @@ export default function MyTreesMap({
     }
   };
 
-  const getPolygonColor = (pl: any) => {
+  const getPolygonColor = (pl: PlantLocationMulti) => {
     const treeCount = getPlTreeCount(pl);
     const plantationArea = getPlArea(pl);
     const density = treeCount / plantationArea;
@@ -95,25 +108,25 @@ export default function MyTreesMap({
     }
   };
 
-  const getDateDiff = (pl: any) => {
-    const today = new Date();
-    const plantationDate = new Date(pl.plantDate?.substr(0, 10));
-    const differenceInTime = today.getTime() - plantationDate.getTime();
-    const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-    if (differenceInDays < 1) {
-      return t('today');
-    } else if (differenceInDays < 2) {
-      return t('yesterday');
-    } else if (differenceInDays < 30) {
-      return t('daysAgo', {
-        days: localizedAbbreviatedNumber(i18n.language, differenceInDays, 0),
-      });
-    } else {
-      return null;
-    }
-  };
+  // const getDateDiff = (pl: PlantLocation) => {
+  //   const today = new Date();
+  //   const plantationDate = new Date(pl.plantDate?.substr(0, 10));
+  //   const differenceInTime = today.getTime() - plantationDate.getTime();
+  //   const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+  //   if (differenceInDays < 1) {
+  //     return t('today');
+  //   } else if (differenceInDays < 2) {
+  //     return t('yesterday');
+  //   } else if (differenceInDays < 30) {
+  //     return t('daysAgo', {
+  //       days: localizedAbbreviatedNumber(i18n.language, differenceInDays, 0),
+  //     });
+  //   } else {
+  //     return null;
+  //   }
+  // };
 
-  const zoomToLocation = (geometry: string) => {
+  const zoomToLocation = (geometry: turf.AllGeoJSON) => {
     if (viewport.width && viewport.height) {
       const bbox = turf.bbox(geometry);
       const { longitude, latitude, zoom } = new WebMercatorViewport(
@@ -154,7 +167,7 @@ export default function MyTreesMap({
 
   React.useEffect(() => {
     const promise = getMapStyle('default');
-    promise.then((style: any) => {
+    promise.then((style: RequiredMapStyle) => {
       if (style) {
         setStyle(style);
       }
@@ -199,11 +212,11 @@ export default function MyTreesMap({
     }
   }, [geoJson, selectedLocation]);
 
-  const _onViewportChange = (view: any) => setViewPort({ ...view });
+  const _onViewportChange = (view: ViewPort) => setViewPort({ ...view });
 
   const onMapClick = (e: MapEvent) => {
     setselectedLocation(null);
-    if (e.features?.length !== 0) {
+    if (e.features !== undefined && e.features?.length !== 0) {
       if (e.features[0].layer?.source) {
         const source = e.features[0].layer.source;
         for (const key in locations) {
@@ -235,12 +248,11 @@ export default function MyTreesMap({
     >
       {satellite && plIds && <SatelliteLayer beforeId={plIds[0]} />}
       {locations &&
-        locations.map((pl: any) => {
+        locations.map((pl: PlantLocation) => {
           const newPl = pl.geometry;
-          newPl.properties = {};
+          newPl.properties = { id: '' };
           newPl.properties.id = pl.id;
           if (pl.type === 'multi') {
-            const dateDiff = getDateDiff(pl);
             return (
               <>
                 <Source
@@ -275,14 +287,14 @@ export default function MyTreesMap({
                 {pl &&
                   pl.samplePlantLocations &&
                   pl.samplePlantLocations
-                    .filter((item: any) => {
+                    .filter((item) => {
                       if (item.captureStatus === 'complete') {
                         return true;
                       } else {
                         return false;
                       }
                     })
-                    .map((spl: any) => {
+                    .map((spl) => {
                       return (
                         <Marker
                           key={`${spl.id}-sample`}
@@ -313,8 +325,8 @@ export default function MyTreesMap({
             return (
               <Marker
                 key={`${pl.id}-single`}
-                latitude={newPl.coordinates[1]}
-                longitude={newPl.coordinates[0]}
+                latitude={Number(newPl.coordinates[1])}
+                longitude={Number(newPl.coordinates[0])}
                 // offsetLeft={5}
                 // offsetTop={-16}
                 // style={{ left: '28px' }}

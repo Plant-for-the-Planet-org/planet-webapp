@@ -29,10 +29,7 @@ interface Props {
   contributions: any;
 }
 
-export default function MyTreesMap({
-  contributions,
-  authenticatedType,
-}: Props): ReactElement {
+export default function MyTreesMap({ contributions }: Props): ReactElement {
   const { i18n, t } = useTranslation('me');
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;

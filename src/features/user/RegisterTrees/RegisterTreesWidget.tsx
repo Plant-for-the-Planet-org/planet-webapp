@@ -158,7 +158,9 @@ function RegisterTreesForm({
     defaultValues: defaultBasicDetails,
   });
 
-  const onTreeCountChange = (e: any) => {
+  const onTreeCountChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     if (Number(e.target.value) < 25) {
       setIsMultiple(false);
     } else {
@@ -171,7 +173,9 @@ function RegisterTreesForm({
     if (treeCount < 10000000) {
       if (
         geometry &&
-        (geometry.type === 'Point' || geometry.features?.length >= 1)
+        (geometry.type === 'Point' ||
+          (geometry.features?.length !== undefined &&
+            geometry.features?.length >= 1))
       ) {
         setIsUploadingData(true);
         const submitData = {
@@ -433,16 +437,16 @@ export default function RegisterTreesWidget() {
   const { user, token } = useUserProps();
   const { ready } = useTranslation(['me', 'common']);
   const [contributionGUID, setContributionGUID] = React.useState('');
-  const [contributionDetails, setContributionDetails] = React.useState({});
+  const [contributionDetails, setContributionDetails] =
+    React.useState<ContributionProps | null>(null);
   const [registered, setRegistered] = React.useState(false);
 
   const ContributionProps = {
     token,
-    contribution: contributionDetails,
+    contribution: contributionDetails !== null ? contributionDetails : null,
     contributionGUID,
     slug: user !== null ? user.slug : null,
   };
-
   return ready ? (
     <>
       {!registered ? (

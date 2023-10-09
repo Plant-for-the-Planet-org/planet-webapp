@@ -5,6 +5,8 @@ import MapGL, { NavigationControl } from 'react-map-gl';
 import LayerIcon from '../../../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../../../public/assets/images/icons/LayerDisabled';
 import SatelliteLayer from '../../../../projects/components/maps/SatelliteLayer';
+import { RequiredMapStyle } from '../../../../common/types/map';
+import { ViewPort } from '../../../../common/types/project';
 
 export default function MyTreesMap(): ReactElement {
   const [satellite, setSatellite] = React.useState(false);
@@ -27,14 +29,14 @@ export default function MyTreesMap(): ReactElement {
 
   React.useEffect(() => {
     const promise = getMapStyle('default');
-    promise.then((style: any) => {
+    promise.then((style: RequiredMapStyle) => {
       if (style) {
         setStyle(style);
       }
     });
   }, []);
 
-  const _onViewportChange = (view: any) => setViewPort({ ...view });
+  const _onViewportChange = (view: ViewPort) => setViewPort({ ...view });
 
   return (
     <MapGL

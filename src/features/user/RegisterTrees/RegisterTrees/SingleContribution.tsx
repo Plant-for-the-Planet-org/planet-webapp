@@ -8,6 +8,7 @@ import { useTranslation } from 'next-i18next';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { Button } from '@mui/material';
 import { Image } from '@planet-sdk/common';
+import { Point, Polygon } from 'geojson';
 
 export interface ContributionProps {
   contributionImages: Image[];
@@ -18,10 +19,12 @@ export interface ContributionProps {
   treeCount: number;
   treeScientificName: string | null;
   treeSpecies: string;
+  geometry?: Polygon | Point;
 }
+
 interface SingleContributionProps {
   token: string | null;
-  contribution: ContributionProps;
+  contribution: ContributionProps | null;
   contributionGUID: string;
   slug?: string | null;
 }
@@ -44,7 +47,7 @@ export default function SingleContribution({
   };
 
   const { t, ready } = useTranslation(['me', 'common']);
-  return ready ? (
+  return ready && contribution !== null ? (
     <div className="inputContainer">
       <div className={styles.checkMark}>
         <CheckCircle width="36px" color={`${styles.primaryColor}`} />

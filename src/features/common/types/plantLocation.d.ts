@@ -1,5 +1,21 @@
 import { DateString } from './common';
-import { Polygon, Point } from 'geojson';
+import { Polygon, Point} from 'geojson';
+
+
+export interface Geometry {
+  coordinates: number[][][]
+  type: string
+  properties: Properties
+}
+export interface GeometryOfSinglePlant {
+  coordinates: number[] 
+  type: string
+  properties: Properties
+}
+
+export interface Properties {
+  id: string
+}
 
 export interface PlantLocationBase {
   hid: string;
@@ -30,7 +46,8 @@ export interface PlantLocationSingle extends PlantLocationBase {
   tag: string | null;
   measurements: Measurements;
   originalGeometry: Point;
-  geometry: Point;
+  geometry:  GeometryOfSinglePlant
+
 }
 
 export interface PlantLocationMulti extends PlantLocationBase {
@@ -42,7 +59,7 @@ export interface PlantLocationMulti extends PlantLocationBase {
   samplePlantLocations: SamplePlantLocation[];
   plantedSpecies: PlantedSpecies[];
   originalGeometry: Polygon;
-  geometry: Polygon;
+  geometry:  Geometry
 }
 
 export type PlantLocation = PlantLocationSingle | PlantLocationMulti;

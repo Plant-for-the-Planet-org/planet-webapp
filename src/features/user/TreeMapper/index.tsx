@@ -132,6 +132,7 @@ function TreeMapper(): ReactElement {
             const plantLocation = plantLocations[key];
             if (plantLocation.id === router.query.l) {
               setselectedLocation(plantLocation);
+              console.log(selectedLocation, '==');
               break;
             }
           }
