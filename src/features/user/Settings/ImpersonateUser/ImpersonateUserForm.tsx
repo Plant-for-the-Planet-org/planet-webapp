@@ -6,7 +6,7 @@ import { TextField, Button } from '@mui/material';
 import { getAccountInfo } from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import StyledForm from '../../../common/Layout/StyledForm';
-import { z } from 'zod';
+import { isEmailValid } from '../../../../utils/isEmailValid';
 
 export type ImpersonationData = {
   targetEmail: string;
@@ -30,18 +30,6 @@ const ImpersonateUserForm = (): ReactElement => {
     },
   });
 
-  const isValid = (value: string) => {
-    try {
-      setIsInvalidEmail(false);
-      const emailSchema = z.string().email();
-      emailSchema.parse(value);
-    } catch (err) {
-      console.log(err);
-      setIsInvalidEmail(true);
-      return false;
-    }
-    return true;
-  };
   const handleImpersonation = async (
     data: ImpersonationData
   ): Promise<void> => {
@@ -83,8 +71,11 @@ const ImpersonateUserForm = (): ReactElement => {
               value: true,
               message: t('me:enterTheEmail'),
             },
-            validate: (value) => {
-              return isValid(value) && value.length !== 0;
+            validate: {
+              emailInvalid: (value) =>
+                value.length === 0 ||
+                isEmailValid(value) ||
+                t('me:wrongEntered'),
             },
           }}
           render={({ field: { onChange, value, onBlur } }) => (
