@@ -64,7 +64,7 @@
           },
           {
             title: 'changeChocolate',
-            onclick: 'https://a.plant-for-the-planet.org/change-chocolate/',
+            onclick: 'https://a.plant-for-the-planet.org/chocolate/',
             visible: true,
           },
           {
