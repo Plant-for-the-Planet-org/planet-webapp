@@ -11,10 +11,10 @@ export default function Filters(): ReactElement {
   const { projects, setFilteredProjects, filtersOpen, setFilterOpen } =
     useProjectProps();
 
-  const [purpose, setPurpose] = React.useState({
+  const purpose = {
     restoration: true,
     conservation: true,
-  });
+  };
 
   const [type, setType] = React.useState<Record<string, boolean>>({
     'natural-regeneration': true,
@@ -79,10 +79,6 @@ export default function Filters(): ReactElement {
       setFilters(filters);
     }
   }, [projects]);
-
-  const handlePurposeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPurpose({ ...purpose, [event.target.name]: event.target.checked });
-  };
 
   const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setType({ ...type, [event.target.name]: event.target.checked });

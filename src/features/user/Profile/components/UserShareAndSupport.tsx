@@ -44,12 +44,6 @@ export default function UserShareAndSupport({ userprofile }: any) {
   React.useEffect(() => {
     setScreenWidth(window.screen.width);
   });
-  const shareClicked = async (shareUrl) => {
-    openWindowLinks(shareUrl);
-  };
-  const openWindowLinks = (shareUrl) => {
-    window.open(shareUrl, '_blank');
-  };
 
   const profileURL = userprofile.url
     ? userprofile.url.includes('http') || userprofile.url.includes('https')
