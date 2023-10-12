@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { MutableRefObject, ReactElement } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
 import { useTranslation } from 'next-i18next';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
@@ -19,8 +19,8 @@ interface Props {
   open: boolean;
   handleOpen: Function;
   handleClose: Function;
-  buttonRef: any;
-  popupRef: any;
+  buttonRef: MutableRefObject<null>;
+  popupRef: MutableRefObject<null>;
 }
 
 export default function PopupProject({
