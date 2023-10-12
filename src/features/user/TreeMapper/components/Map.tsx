@@ -50,8 +50,6 @@ export default function MyTreesMap({
 
   const [geoJson, setGeoJson] = React.useState();
   const [plIds, setPlIds] = React.useState(null);
-  const [imagePopup, setImagePopup] = React.useState(null);
-  let timer: NodeJS.Timeout;
 
   const [style, setStyle] = React.useState({
     version: 8,
@@ -245,7 +243,6 @@ export default function MyTreesMap({
           newPl.properties = {};
           newPl.properties.id = pl.id;
           if (pl.type === 'multi') {
-            const dateDiff = getDateDiff(pl);
             return (
               <>
                 <Source
