@@ -45,8 +45,6 @@ export default function AccountFooter(): ReactElement {
         <SelectLanguageAndCountry
           openModal={openModal}
           handleModalClose={handleModalClose}
-          language={language}
-          setLanguage={setLanguage}
           setSelectedCurrency={setSelectedCurrency}
           selectedCountry={selectedCountry}
           setSelectedCountry={setSelectedCountry}
