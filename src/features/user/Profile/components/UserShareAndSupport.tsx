@@ -80,7 +80,7 @@ export default function UserShareAndSupport({ userprofile }: Props) {
       {showSocialBtn && screenWidth && screenWidth < 600 && (
         <motion.div
           animate={{
-            paddingLeft: userprofile.type !== 'tpo' ? '191px' : null,
+            paddingLeft: userprofile.type === 'tpo' ? '191px' : 0,
             y: 0,
             opacity: 1,
           }}
