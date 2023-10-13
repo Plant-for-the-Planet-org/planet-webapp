@@ -54,3 +54,22 @@ export interface TotalTreesPlanted {
 export interface TotalSpeciesPlanted {
   totalSpeciesPlanted: number;
 }
+
+export interface Geometry {
+  coordinates: number[][][];
+  type: 'Polygon';
+}
+
+export interface Sites {
+  geometry: Geometry;
+  properties: {
+    name: string;
+  };
+  type: 'Feature';
+}
+[];
+
+export interface SitesQueryResponse {
+  name: string;
+  geometry: string; 
+}
