@@ -9,6 +9,7 @@ import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
 import { MapProject } from '../../common/types/ProjectPropsContextInterface';
+import { PublicUser } from '../../common/types/user';
 
 const ProjectSnippet = dynamic(
   () => import('../../projects/components/ProjectSnippet'),
@@ -17,7 +18,11 @@ const ProjectSnippet = dynamic(
   }
 );
 
-export default function ProjectsContainer({ profile }: any) {
+interface Props {
+  profile: PublicUser;
+}
+
+export default function ProjectsContainer({ profile }: Props) {
   const { t, ready, i18n } = useTranslation(['donate', 'manageProjects']);
   const [projects, setProjects] = React.useState<MapProject[]>([]);
   const { setErrors } = React.useContext(ErrorHandlingContext);
