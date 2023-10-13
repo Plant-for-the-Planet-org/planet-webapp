@@ -9,16 +9,24 @@ import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { ThemeContext } from '../../../../theme/themeContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, User } from '@planet-sdk/common';
+import { PublicUser } from '../../../common/types/user';
+import { SetState } from '../../../common/types/common';
 
 type FormData = {
   target: number | undefined;
 };
 
+interface Props {
+  userprofile: User | PublicUser;
+  addTargetModalOpen: boolean;
+  handleAddTargetModalClose: SetState<boolean>;
+}
+
 export default function AddTargetModal({
   addTargetModalOpen,
   handleAddTargetModalClose,
-}: any) {
+}: Props) {
   // External imports
   const { t, ready } = useTranslation(['me']);
   const { user, token, contextLoaded, setUser, logoutUser } = useUserProps();
@@ -45,21 +53,21 @@ export default function AddTargetModal({
       };
 
       try {
-        const res = await putAuthenticatedRequest(
+        const res = await putAuthenticatedRequest<User>(
           `/app/profile`,
           bodyToSend,
           token,
           logoutUser
         );
-        handleAddTargetModalClose();
+        handleAddTargetModalClose(false);
         const newUserInfo = {
           ...user,
           score: res.score,
         };
-        setUser(newUserInfo);
+        setUser(newUserInfo as User);
         setIsLoading(false);
       } catch (err) {
-        handleAddTargetModalClose();
+        handleAddTargetModalClose(false);
         setIsLoading(false);
         setErrors(handleError(err as APIError));
       }

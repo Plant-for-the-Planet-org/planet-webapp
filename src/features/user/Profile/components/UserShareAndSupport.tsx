@@ -10,10 +10,16 @@ import SocialShareContainer from './SocialShareContainer';
 import { motion } from 'framer-motion';
 import GlobeSelected from '../../../../../public/assets/images/navigation/GlobeSelected';
 import { truncateString } from '../../../../utils/getTruncatedString';
+import { User } from '@planet-sdk/common';
+import { PublicUser } from '../../../common/types/user';
 
 const config = tenantConfig();
 
-export default function UserShareAndSupport({ userprofile }: any) {
+interface Props {
+  userprofile: User | PublicUser;
+}
+
+export default function UserShareAndSupport({ userprofile }: Props) {
   const { t, ready } = useTranslation(['donate', 'me']);
   const router = useRouter();
   const [showSocialBtn, setShowSocialBtn] = React.useState(false);
@@ -21,7 +27,7 @@ export default function UserShareAndSupport({ userprofile }: any) {
   const textToShare = ready
     ? t('donate:textToShare', { name: userprofile.displayName })
     : '';
-  const [screenWidth, setScreenWidth] = React.useState(null);
+  const [screenWidth, setScreenWidth] = React.useState<number | null>(null);
 
   const handleShare = () => {
     if (navigator.share) {
@@ -44,12 +50,6 @@ export default function UserShareAndSupport({ userprofile }: any) {
   React.useEffect(() => {
     setScreenWidth(window.screen.width);
   });
-  const shareClicked = async (shareUrl) => {
-    openWindowLinks(shareUrl);
-  };
-  const openWindowLinks = (shareUrl) => {
-    window.open(shareUrl, '_blank');
-  };
 
   const profileURL = userprofile.url
     ? userprofile.url.includes('http') || userprofile.url.includes('https')
@@ -59,7 +59,7 @@ export default function UserShareAndSupport({ userprofile }: any) {
 
   return ready ? (
     <div style={{ position: 'relative' }}>
-      {showSocialBtn && screenWidth > 600 && (
+      {showSocialBtn && screenWidth && screenWidth > 600 && (
         <motion.div
           animate={{
             x: 0,
@@ -77,7 +77,7 @@ export default function UserShareAndSupport({ userprofile }: any) {
           <SocialShareContainer userprofile={userprofile} type="private" />
         </motion.div>
       )}
-      {showSocialBtn && screenWidth < 600 && (
+      {showSocialBtn && screenWidth && screenWidth < 600 && (
         <motion.div
           animate={{
             paddingLeft: userprofile.type !== 'tpo' ? '191px' : null,
