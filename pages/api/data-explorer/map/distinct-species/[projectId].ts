@@ -19,10 +19,10 @@ handler.get(async (req, response) => {
     const query =
       'SELECT \
         DISTINCT COALESCE(ss.name, ps.other_species, pl.other_species) AS name \
-        FROM plant_location pl \
-        JOIN planted_species ps ON pl.id = ps.plant_location_id \
+        FROM planted_species ps \
+        INNER JOIN plant_location pl ON ps.plant_location_id = pl.id \
+        LEFT JOIN scientific_species ss ON ps.scientific_species_id = ss.id \
         JOIN project pp ON pl.plant_project_id = pp.id \
-        JOIN scientific_species ss ON ps.scientific_species_id = ss.id \
         WHERE pp.guid = ?';
 
     const res = await db.query<UncleanDistinctSpecies[]>(query, [projectId]);
