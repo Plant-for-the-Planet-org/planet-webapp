@@ -1,20 +1,19 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import db from '../../../../src/utils/connectDB';
+import db from '../../../../../src/utils/connectDB';
 import nc from 'next-connect';
 import {
   rateLimiter,
   speedLimiter,
-} from '../../../../src/middlewares/rate-limiter';
-import { SitesQueryResponse } from '../../../../src/features/common/types/dataExplorer';
+} from '../../../../../src/middlewares/rate-limiter';
+import {Site, UncleanSite } from '../../../../../src/features/common/types/dataExplorer';
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
 handler.use(rateLimiter);
 handler.use(speedLimiter);
 
-handler.post(async (req, response) => {
-    
-  const { projectId } = req.body;
+handler.get(async (req, response) => {
+  const { projectId } = req.query;
 
   try {
     const query =
@@ -22,9 +21,9 @@ handler.post(async (req, response) => {
         INNER JOIN project p ON s.plant_project_id = p.id \
         WHERE p.guid = ?';
 
-    const res = await db.query<SitesQueryResponse[]>(query, [projectId]);
+    const res = await db.query<UncleanSite[]>(query, [projectId]);
 
-    const sites = [];
+    const sites: Site[] = [];
 
     for (const site of res) {
       sites.push({

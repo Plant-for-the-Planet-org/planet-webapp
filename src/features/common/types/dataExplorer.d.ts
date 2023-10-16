@@ -60,16 +60,38 @@ export interface Geometry {
   type: 'Polygon';
 }
 
-export interface Sites {
+export interface Site {
   geometry: Geometry;
   properties: {
     name: string;
   };
   type: 'Feature';
 }
-[];
 
-export interface SitesQueryResponse {
+export interface UncleanSite {
   name: string;
-  geometry: string; 
+  geometry: string;
 }
+
+export interface UncleanDistinctSpecies {
+  name: string;
+}
+
+export type DistinctSpecies = string[];
+
+export enum QueryType {
+  DATE = 'date',
+  HID = 'hid',
+}
+
+export interface UncleanPlantLocations {
+  geometry: string;
+  guid: string;
+}
+
+export interface PlantLocation {
+  geometry: Geometry;
+  guid: string;
+}
+
+export type PlantLocations = PlantLocation[];
