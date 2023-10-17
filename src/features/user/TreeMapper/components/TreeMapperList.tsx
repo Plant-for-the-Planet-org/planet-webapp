@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
-import PlantLocation from './PlantLocation';
 import styles from '../TreeMapper.module.scss';
 import { useTranslation } from 'next-i18next';
 import {
@@ -9,13 +8,15 @@ import {
   PlantLocation as PlantLocationType,
 } from '../../../common/types/plantLocation';
 import { Links } from '../../../common/types/payments';
+import PlantLocation from './PlantLocation';
+import { SetState } from '../../../common/types/common';
 
 interface Props {
-  selectedLocation: string;
-  setselectedLocation: Function;
+  selectedLocation: PlantLocationType | SamplePlantLocation | null;
+  setselectedLocation: SetState<PlantLocationType | SamplePlantLocation | null>;
   plantLocations: PlantLocationType[] | SamplePlantLocation[] | null;
   isDataLoading: boolean;
-  location: string;
+  location: PlantLocationType | SamplePlantLocation;
   fetchTreemapperData: Function;
   links: Links | undefined;
 }

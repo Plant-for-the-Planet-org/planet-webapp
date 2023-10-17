@@ -81,7 +81,7 @@ export default function Markers({
                 }
               );
             }}
-            onKeyPress={() => {
+            onKeyDown={() => {
               router.push(
                 `/${projectMarker.properties.slug}/${
                   embed === 'true'
@@ -168,7 +168,7 @@ export default function Markers({
                 }
               }
             }}
-            onKeyPress={() => {
+            onKeyDown={() => {
               router.push(
                 `/${popupData.project.properties.slug}/${
                   embed === 'true'

@@ -30,10 +30,11 @@ function TreeMapper(): ReactElement {
   const [plantLocations, setPlantLocations] = React.useState<
     PlantLocation[] | SamplePlantLocation[] | null
   >(null);
-  const [selectedLocation, setselectedLocation] = React.useState<string>('');
+  const [selectedLocation, setselectedLocation] = React.useState<
+    PlantLocation | SamplePlantLocation | null
+  >(null);
   const [links, setLinks] = React.useState<Links>();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-
   async function fetchTreemapperData(next = false) {
     setIsDataLoading(true);
     setProgress(70);
@@ -49,8 +50,8 @@ function TreeMapper(): ReactElement {
             undefined,
             '1.0.4'
           );
-        if (response.items) {
-          const newPlantLocations = response?.items;
+        if (response?.items) {
+          const newPlantLocations = response.items;
           for (const itr in newPlantLocations) {
             if (Object.prototype.hasOwnProperty.call(newPlantLocations, itr)) {
               const ind = Number(itr);
@@ -90,15 +91,15 @@ function TreeMapper(): ReactElement {
             undefined,
             '1.0.4'
           );
-        if (response.items) {
-          const plantLocations = response?.items;
+        if (response?.items) {
+          const plantLocations = response.items;
           if (plantLocations?.length === 0) {
             setPlantLocations(null);
           } else {
             for (const itr in plantLocations) {
               if (Object.prototype.hasOwnProperty.call(plantLocations, itr)) {
                 const location = plantLocations[itr];
-                if (location.type === 'multi') {
+                if (location && location.type === 'multi') {
                   location.sampleTrees = [];
                   for (const key in plantLocations) {
                     if (
@@ -107,7 +108,7 @@ function TreeMapper(): ReactElement {
                       const item = plantLocations[key];
                       if (item.type === 'sample') {
                         if (item.parent === location.id) {
-                          plantLocations[itr].sampleTrees.push(item);
+                          location.sampleTrees.push(item);
                         }
                       }
                     }
@@ -141,14 +142,13 @@ function TreeMapper(): ReactElement {
             const plantLocation = plantLocations[key];
             if (plantLocation.id === router.query.l) {
               setselectedLocation(plantLocation);
-              console.log(selectedLocation, '==');
               break;
             }
           }
         }
       }
     } else {
-      setselectedLocation('');
+      setselectedLocation(null);
     }
   }, [router.query.l, plantLocations]);
 

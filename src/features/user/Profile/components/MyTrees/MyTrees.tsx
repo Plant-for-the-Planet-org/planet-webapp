@@ -25,6 +25,7 @@ interface Props {
 }
 
 function TreeList({ contribution }: any) {
+  console.log(contribution, '==');
   const date = formatDate(contribution.properties.plantDate);
   const { t, i18n } = useTranslation(['country', 'me']);
 

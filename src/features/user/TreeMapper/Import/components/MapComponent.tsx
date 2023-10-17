@@ -5,12 +5,13 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import WebMercatorViewport from '@math.gl/web-mercator';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
 import { GeoJSON } from 'geojson';
+import { RequiredMapStyle } from '../../../../common/types/map';
 
 interface Props {
   geoJson: GeoJSON | null;
 }
 
-const Map = ReactMapboxGl({ maxZoom: 15, accessToken: undefined });
+const Map = ReactMapboxGl({ maxZoom: 15, accessToken: '' });
 
 export default function MapComponent({ geoJson }: Props): ReactElement {
   const defaultMapCenter = [0, 0];
@@ -22,12 +23,14 @@ export default function MapComponent({ geoJson }: Props): ReactElement {
     center: defaultMapCenter,
     zoom: [defaultZoom],
   });
-  const [viewport2, setViewPort2] = React.useState({
+
+  const _viewport2 = {
     height: 1000,
     width: 500,
     center: defaultMapCenter,
     zoom: defaultZoom,
-  });
+  };
+
   const [style, setStyle] = React.useState({
     version: 8,
     sources: {},
@@ -35,7 +38,7 @@ export default function MapComponent({ geoJson }: Props): ReactElement {
   });
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
-    promise.then((style: any) => {
+    promise.then((style: RequiredMapStyle) => {
       if (style) {
         setStyle(style);
       }
@@ -49,7 +52,7 @@ export default function MapComponent({ geoJson }: Props): ReactElement {
       ]);
       const bbox = turf.bbox(geo);
       const { longitude, latitude, zoom } = new WebMercatorViewport(
-        viewport2
+        _viewport2
       ).fitBounds([
         [bbox[0], bbox[1]],
         [bbox[2], bbox[3]],

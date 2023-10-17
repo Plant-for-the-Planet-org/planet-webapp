@@ -438,7 +438,7 @@ export default function RegisterTreesWidget() {
   const { ready } = useTranslation(['me', 'common']);
   const [contributionGUID, setContributionGUID] = React.useState('');
   const [contributionDetails, setContributionDetails] =
-    React.useState<ContributionProps | null>(null);
+    React.useState<ContributionProperties | null>(null);
   const [registered, setRegistered] = React.useState(false);
 
   const ContributionProps = {

@@ -48,7 +48,7 @@ export interface PlantLocationSingle extends PlantLocationBase {
   measurements: Measurements;
   originalGeometry: Point;
   geometry:  GeometryOfSinglePlant
-
+  sampleTrees: SamplePlantLocation[]
 }
 
 export interface PlantLocationMulti extends PlantLocationBase {
@@ -60,7 +60,8 @@ export interface PlantLocationMulti extends PlantLocationBase {
   samplePlantLocations: SamplePlantLocation[];
   plantedSpecies: PlantedSpecies[];
   originalGeometry: Polygon;
-  geometry:  Geometry
+  geometry:  Geometry;
+  sampleTrees: SamplePlantLocation[] 
 }
 
 export type PlantLocation = PlantLocationSingle | PlantLocationMulti;
@@ -80,6 +81,7 @@ export interface SamplePlantLocation
   measurements: Measurements;
   originalGeometry: Point;
   geometry: Point;
+  sampleTrees?: PlantLocation[]
 }
 
 export interface Metadata {

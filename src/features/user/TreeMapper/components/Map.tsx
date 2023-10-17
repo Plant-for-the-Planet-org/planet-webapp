@@ -20,13 +20,14 @@ import SatelliteLayer from '../../../projects/components/maps/SatelliteLayer';
 import {
   PlantLocation,
   PlantLocationMulti,
+  SamplePlantLocation,
 } from '../../../common/types/plantLocation';
 import { RequiredMapStyle } from '../../../common/types/map';
 import { ViewPort } from '../../../common/types/ProjectPropsContextInterface';
 
 interface Props {
-  locations: PlantLocation[];
-  selectedLocation: PlantLocationMulti;
+  locations: PlantLocation[] | SamplePlantLocation[] | null;
+  selectedLocation: PlantLocation | SamplePlantLocation | null;
   setselectedLocation: Function;
 }
 

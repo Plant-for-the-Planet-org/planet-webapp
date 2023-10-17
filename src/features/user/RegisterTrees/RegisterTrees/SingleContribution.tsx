@@ -24,7 +24,7 @@ export interface ContributionProperties {
 
 interface SingleContributionProps {
   token: string | null;
-  contribution: ContributionProperties;
+  contribution: ContributionProperties | null;
   contributionGUID: string;
   slug?: string | null;
 }

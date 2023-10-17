@@ -7,10 +7,15 @@ import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import CopyToClipboard from '../../../common/CopyToClipboard';
+import {
+  PlantLocation,
+  SamplePlantLocation,
+} from '../../../common/types/plantLocation';
+import { SetState } from '../../../common/types/common';
 
 interface Props {
-  setselectedLocation: Function;
-  location: Object;
+  setselectedLocation: SetState<PlantLocation | SamplePlantLocation | null>;
+  location: PlantLocation | SamplePlantLocation | null;
   plantLocations: any;
 }
 
