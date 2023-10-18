@@ -176,7 +176,7 @@
 .projectInfo {
   display: flex;
   flex-direction: row;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   margin-top: 10px;
 }
@@ -189,7 +189,7 @@
 
 .target {
   font-family: $primaryFontFamily;
-  font-size: $fontXSmall;
+  font-size: 13px;
   color: $primaryFontColor;
   font-weight: bold;
   margin-right: 4px;
@@ -206,7 +206,7 @@
   font-weight: 400;
   line-height: normal;
   text-transform: lowercase;
-  margin: -10px 2px 2px 2px;
+  margin-top: -10px;
   padding: 9px 0;
 }
 
@@ -268,7 +268,7 @@
 }
 
 .topUnapproved {
-  background-color: $primaryColor;
+  background-color: #219653;
 }
 
 .notDonatable {

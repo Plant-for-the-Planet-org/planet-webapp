@@ -21,7 +21,7 @@ const themeProperties = {
   primaryDarkColor: '#007a49',
   primaryLightColor: '#79AE4633',
   topProjectBackgroundColor:
-    'linear-gradient(216.51deg, #EAC35D 8.62%, #F4C15D 34.88%, #DBAA4C 74.58%)',
+    'linear-gradient(195deg, #EAB15D 1.85%, #D09E3B 47.12%, #CBA458 99.52%)',
   nonDonatableProjectBackgroundColor: '#828282',
   light: {
     primaryFontColor: '#2f3336',
