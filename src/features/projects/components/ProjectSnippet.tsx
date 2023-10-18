@@ -170,13 +170,26 @@ export default function ProjectSnippet({
               </span>
             </div>
           </div>
-          {!project.allowDonations && (
+          {!project.allowDonations ? (
             <div className={'projectHoverIcon'}>
               <ProjectInfo
                 color={'#828282'}
                 title={`${t('common:disabledDonateButtonText')}`}
               />
               {t('common:notDonatable')}
+            </div>
+          ) : (
+            <div className={'perTreeCost'}>
+              {getFormatedCurrency(
+                i18n.language,
+                project.currency,
+                project.unitCost
+              )}{' '}
+              <span>
+                {project.purpose === 'conservation'
+                  ? t('donate:perM2')
+                  : t('donate:perTree')}
+              </span>
             </div>
           )}
         </div>
@@ -191,20 +204,6 @@ export default function ProjectSnippet({
             >
               {t('common:donate')}
             </button>
-          )}
-          {project.allowDonations && (
-            <div className={'perTreeCost'}>
-              {getFormatedCurrency(
-                i18n.language,
-                project.currency,
-                project.unitCost
-              )}{' '}
-              <span>
-                {project.purpose === 'conservation'
-                  ? t('donate:perM2')
-                  : t('donate:perTree')}
-              </span>
-            </div>
           )}
         </div>
       </div>
