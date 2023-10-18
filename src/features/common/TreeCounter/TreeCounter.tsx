@@ -7,10 +7,11 @@ import { useTranslation } from 'next-i18next';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { styled } from '@mui/material/styles';
 import { PlantedTressBlackSvg } from '../../../../public/assets/images/ProfilePageIcons';
+import TreeCounterDataOfTenant from './temporaryFile/TreeCounterData';
 
 const CircularProgress = styled(MuiCircularProgress)({
   '&.MuiCircularProgress-root': {
-    color: '#219653',
+    color: '#fff', //#219653
     animationDuration: '550ms',
   },
   '& > svg > circle': {
@@ -23,7 +24,7 @@ export function FacebookCircularProgress(props: CircularProgressProps) {
     <div className={treeCounterStyles.circularProgreesContainer}>
       <CircularProgress
         variant="determinate"
-        size={320}
+        size={330}
         thickness={3}
         {...props}
       />
@@ -63,7 +64,7 @@ export default function TpoProfile(props: any) {
     <div className={treeCounterStyles.treeCounter}>
       <FacebookCircularProgress value={progress} />
       <div className={treeCounterStyles.backgroundCircle} />
-      <div className={treeCounterStyles.treeCounterData}>
+      {/* <div className={treeCounterStyles.treeCounterData}>
         <div>
           <PlantedTressBlackSvg color={'#4F4F4F'} />
         </div>
@@ -90,7 +91,8 @@ export default function TpoProfile(props: any) {
           )}
         </div>
         <div style={{ fontSize: '24px' }}>{t('me:treesPlanted')}</div>
-      </div>
+      </div> */}
+      <TreeCounterDataOfTenant planted={props?.planted} target={props.target} />
     </div>
   ) : null;
 }
