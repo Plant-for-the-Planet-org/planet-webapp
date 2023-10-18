@@ -196,12 +196,18 @@
 }
 
 .projectTPOName {
-  font-family: $primaryFontFamily;
-  font-size: $fontXSmall;
-  color: $primaryFontColor;
-  margin-top: 10px;
-  line-height: 14px;
   cursor: pointer;
+  position: relative;
+  top: 20px;
+  text-align: center;
+  color: #4F4F4F;
+  height: 34px;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: lowercase;
+  margin: -10px 2px 2px 2px;
+  padding: 9px 0;
 }
 
 .projectData {
@@ -272,7 +278,7 @@
   display: inline-flex;
   font-size: 10px;
   font-weight: 700;
-  color: #828282;
+  color: var(--non-donatable-project-background-color);
   align-items: center;
  gap: 4px;
  line-height: normal;

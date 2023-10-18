@@ -208,6 +208,27 @@ export default function ProjectSnippet({
           )}
         </div>
       </div>
+      <div
+        className={'projectTPOName'}
+        onClick={() => {
+          embed === 'true'
+            ? window.open(`/t/${project.tpo.slug}`, '_top')
+            : router.push(`/t/${project.tpo.slug}`);
+        }}
+        style={{
+          background: `${
+            !project.allowDonations
+              ? '#82828233'
+              : project.isTopProject && project.isApproved
+              ? '#e7b24c33'
+              : '#21965333'
+          }`,
+        }}
+      >
+        {t('common:by', {
+          tpoName: project.tpo.name,
+        })}
+      </div>
     </div>
   ) : (
     <></>
