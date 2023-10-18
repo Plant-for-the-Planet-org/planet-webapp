@@ -75,7 +75,7 @@ const ImpersonateUserForm = (): ReactElement => {
               emailInvalid: (value) =>
                 value.length === 0 ||
                 isEmailValid(value) ||
-                t('me:wrongEntered'),
+                t('me:invalidEmail'),
             },
           }}
           render={({ field: { onChange, value, onBlur } }) => (
