@@ -268,3 +268,12 @@
 .notDonatable {
   background-color: var(--non-donatable-project-background-color);
 }
+.projectHoverIcon {
+  display: inline-flex;
+  font-size: 10px;
+  font-weight: 700;
+  color: #828282;
+  align-items: center;
+ gap: 4px;
+ line-height: normal;
+}

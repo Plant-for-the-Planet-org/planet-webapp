@@ -19,6 +19,7 @@ import {
   TreeProjectConcise,
   TreeProjectExtended,
 } from '@planet-sdk/common';
+import ProjectInfo from '../../../../public/assets/images/icons/project/ProjectInfo';
 
 interface Props {
   project:
@@ -67,11 +68,10 @@ export default function ProjectSnippet({
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
 
-  const donateButtonBackgroundColor = !project.allowDonations
-    ? 'notDonatable'
-    : project.isTopProject && project.isApproved
-    ? 'topApproved'
-    : 'topUnapproved';
+  const donateButtonBackgroundColor =
+    project.isTopProject && project.isApproved
+      ? 'topApproved'
+      : 'topUnapproved';
 
   const progressBarBackgroundColor =
     project.isTopProject && project.isApproved
@@ -170,35 +170,28 @@ export default function ProjectSnippet({
               </span>
             </div>
           </div>
-          <div
-            className={'projectTPOName'}
-            onClick={() => {
-              embed === 'true'
-                ? window.open(`/t/${project.tpo.slug}`, '_top')
-                : router.push(`/t/${project.tpo.slug}`);
-            }}
-          >
-            {t('common:by', {
-              tpoName: project.tpo.name,
-            })}
-          </div>
+          {!project.allowDonations && (
+            <div className={'projectHoverIcon'}>
+              <ProjectInfo
+                color={'#828282'}
+                title={`${t('common:disabledDonateButtonText')}`}
+              />
+              {t('common:notDonatable')}
+            </div>
+          )}
         </div>
 
         <div className={'projectCost'}>
-          <button
-            id={`ProjSnippetDonate_${project.id}`}
-            onClick={handleOpen}
-            className={`donateButton ${donateButtonBackgroundColor}`}
-            data-test-id="donateButton"
-            disabled={!project.allowDonations}
-            title={
-              !project.allowDonations
-                ? `${t('common:disabledDonateButtonText')}`
-                : ''
-            }
-          >
-            {t('common:donate')}
-          </button>
+          {project.allowDonations && (
+            <button
+              id={`ProjSnippetDonate_${project.id}`}
+              onClick={handleOpen}
+              className={`donateButton ${donateButtonBackgroundColor}`}
+              data-test-id="donateButton"
+            >
+              {t('common:donate')}
+            </button>
+          )}
           {project.allowDonations && (
             <div className={'perTreeCost'}>
               {getFormatedCurrency(
