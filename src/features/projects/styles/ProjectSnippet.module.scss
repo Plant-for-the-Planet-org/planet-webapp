@@ -31,12 +31,18 @@
   }
 }
 
+.singleProject {
+  border: solid #FFF;
+  border-width: 3px;
+}
+
 .projectImage {
   height: 160px;
   width: 100%;
   background-color: $primaryColor;
   position: relative;
   transition: all 1s ease;
+  border-radius: 10px 10px 0 0;
   > .projectImageBlock {
     transition: all 1s ease;
     left: 16px;
@@ -208,6 +214,8 @@
   text-transform: lowercase;
   margin-top: -10px;
   padding: 9px 0;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .projectData {
