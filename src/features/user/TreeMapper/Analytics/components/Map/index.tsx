@@ -1,6 +1,10 @@
+import { Container } from '../Container';
+import styles from './index.module.scss';
+
 export const Map = () => {
-
-    
-
-  return <h1>Hello</h1>;
+  return (
+    <Container leftElement={<p className={styles.title}>Hello</p>}>
+      <p>Map</p>
+    </Container>
+  );
 };

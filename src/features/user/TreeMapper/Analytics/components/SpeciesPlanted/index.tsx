@@ -249,7 +249,9 @@ export const SpeciesPlanted = () => {
   }, [project, fromDate, toDate]);
 
   return (
-    <Container title={t('speciesPlanted')}>
+    <Container
+      leftElement={<p className={styles.title}>{t('speciesPlanted')}</p>}
+    >
       <ReactApexChart options={options} series={series} type="bar" />
     </Container>
   );

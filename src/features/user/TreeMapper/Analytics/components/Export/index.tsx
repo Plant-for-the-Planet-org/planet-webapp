@@ -194,7 +194,7 @@ export const Export = () => {
   };
 
   return ready ? (
-    <Container title={t('exportData')}>
+    <Container leftElement={<p className={styles.title}>{t('exportData')}</p>}>
       <div className={styles.container}>
         <ProjectTypeSelector
           handleProjectTypeChange={handleProjectTypeChange}

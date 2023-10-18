@@ -20,6 +20,7 @@ import {
 import useNextRequest, {
   HTTP_METHOD,
 } from '../../../../../../hooks/use-next-request';
+import styles from './index.module.scss';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -541,8 +542,8 @@ export const TreePlanted = () => {
 
   return (
     <Container
-      title={t('treesPlanted')}
-      options={
+      leftElement={<p className={styles.title}>{t('treesPlanted')}</p>}
+      rightElement={
         <TimeFrameSelector
           handleTimeFrameChange={handleTimeFrameChange}
           timeFrames={timeFrames}

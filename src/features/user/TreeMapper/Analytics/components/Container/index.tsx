@@ -1,15 +1,15 @@
 import styles from './index.module.scss';
 
 interface Props {
-  title: string;
-  options?: React.ReactElement;
+  leftElement: React.ReactElement;
+  rightElement?: React.ReactElement;
   children: React.ReactElement;
   flexDirection?: 'row' | 'column';
 }
 
 export const Container = ({
-  title,
-  options,
+  leftElement,
+  rightElement,
   children,
   flexDirection = 'row',
 }: Props) => {
@@ -22,8 +22,8 @@ export const Container = ({
             : styles.headerFlexColumn
         }
       >
-        <p className={styles.title}>{title}</p>
-        <div>{options}</div>
+        <div>{leftElement}</div>
+        <div>{rightElement}</div>
       </div>
       <div className={styles.body}>{children}</div>
     </div>
