@@ -13,6 +13,7 @@ import {
   ConservationProjectConcise,
   TreeProjectConcise,
 } from '@planet-sdk/common/build/types/project/map';
+import ProjectInfo from '../../../../public/assets/images/icons/project/ProjectInfo';
 
 interface Props {
   project: TreeProjectConcise | ConservationProjectConcise;
@@ -62,7 +63,7 @@ export default function PopupProject({
       : 'notDonatable';
 
   return ready ? (
-    <>
+    <div className={'singleProject'}>
       <div className={'projectImage'}>
         {project.image && typeof project.image !== 'undefined' ? (
           <div
@@ -106,7 +107,9 @@ export default function PopupProject({
       </div>
       <div
         className={'projectInfo'}
-        style={{ padding: '16px', backgroundColor: 'var(--background-color)' }}
+        style={{
+          padding: '0 16px',
+        }}
       >
         <div className={'projectData'}>
           <div className={'targetLocation'}>
@@ -131,41 +134,60 @@ export default function PopupProject({
               </span>
             </div>
           </div>
-          <div className={'projectTPOName'}>
-            {t('common:by', {
-              tpoName: project.tpo.name,
-            })}
-          </div>
+          {!project.allowDonations ? (
+            <div className={'projectHoverIcon'}>
+              <ProjectInfo
+                color={'#828282'}
+                title={`${t('common:disabledDonateButtonText')}`}
+              />
+              {t('common:notDonatable')}
+            </div>
+          ) : (
+            <div className={'perUnitCost'}>
+              {getFormatedCurrency(
+                i18n.language,
+                project.currency,
+                project.unitCost
+              )}{' '}
+              <span>
+                {project.unitType === 'tree' && t('donate:perTree')}
+                {project.unitType === 'm2' && t('donate:perM2')}
+              </span>
+            </div>
+          )}
         </div>
         {project.allowDonations && (
           <div className={'projectCost'}>
             {project.unitCost ? (
-              <>
-                <button
-                  id={`ProjPopDonate${project.id}`}
-                  ref={buttonRef}
-                  onClick={handleDonationOpen}
-                  className={`donateButton ${donateButtonBackgroundColor}`}
-                >
-                  {t('common:donate')}
-                </button>
-                <div className={'perUnitCost'}>
-                  {getFormatedCurrency(
-                    i18n.language,
-                    project.currency,
-                    project.unitCost
-                  )}{' '}
-                  <span>
-                    {project.unitType === 'tree' && t('donate:perTree')}
-                    {project.unitType === 'm2' && t('donate:perM2')}
-                  </span>
-                </div>
-              </>
+              <button
+                id={`ProjPopDonate${project.id}`}
+                ref={buttonRef}
+                onClick={handleDonationOpen}
+                className={`donateButton ${donateButtonBackgroundColor}`}
+              >
+                {t('common:donate')}
+              </button>
             ) : null}
           </div>
         )}
       </div>
-    </>
+      <div
+        className={'projectTPOName'}
+        style={{
+          background: `${
+            !project.allowDonations
+              ? '#82828233'
+              : project.isTopProject && project.isApproved
+              ? '#e7b24c33'
+              : '#21965333'
+          }`,
+        }}
+      >
+        {t('common:by', {
+          tpoName: project.tpo.name,
+        })}
+      </div>
+    </div>
   ) : (
     <></>
   );
