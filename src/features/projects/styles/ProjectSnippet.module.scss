@@ -204,7 +204,6 @@
 .projectTPOName {
   cursor: pointer;
   position: relative;
-  top: 20px;
   text-align: center;
   color: #4F4F4F;
   height: 34px;
@@ -212,7 +211,7 @@
   font-weight: 400;
   line-height: normal;
   text-transform: lowercase;
-  margin-top: -10px;
+  margin-top: 10px;
   padding: 9px 0;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
@@ -294,4 +293,5 @@
 .perTreeCost {
   font-size: 12px;
   font-weight: 600;
+  margin-top: 6px;
 }
