@@ -8,10 +8,20 @@ import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { styled } from '@mui/material/styles';
 import { PlantedTressBlackSvg } from '../../../../public/assets/images/ProfilePageIcons';
 import TreeCounterDataOfTenant from './temporaryFile/TreeCounterData';
+import tenantConfig from '../../../../tenant.config';
 
 const CircularProgress = styled(MuiCircularProgress)({
   '&.MuiCircularProgress-root': {
-    color: '#fff', //#219653
+    color: '#fff',
+    animationDuration: '550ms',
+  },
+  '& > svg > circle': {
+    strokeLinecap: 'round',
+  },
+});
+const XCircularProgress = styled(MuiCircularProgress)({
+  '&.MuiCircularProgress-root': {
+    color: '#219653',
     animationDuration: '550ms',
   },
   '& > svg > circle': {
@@ -31,9 +41,23 @@ export function FacebookCircularProgress(props: CircularProgressProps) {
     </div>
   );
 }
+export function TenantCircularProgress(props: CircularProgressProps) {
+  return (
+    <div className={treeCounterStyles.circularProgreesContainer}>
+      <XCircularProgress
+        variant="determinate"
+        size={330}
+        thickness={3}
+        {...props}
+      />
+    </div>
+  );
+}
 
 export default function TpoProfile(props: any) {
+  const config = tenantConfig();
   const [progress, setProgress] = useState(0);
+  const [isTenantActive, setIsTenantActive] = useState(false);
   const { t, i18n, ready } = useTranslation(['me']);
   useEffect(() => {
     let percentage = 0;
@@ -60,39 +84,76 @@ export default function TpoProfile(props: any) {
       clearInterval(timer);
     };
   }, [props]);
+
+  const _tenants = [
+    'nitrosb',
+    'energizer',
+    'senatDerWirtschaft',
+    'pampers',
+    'interactClub',
+    'culchacandela',
+    'xiting',
+    'lacoqueta',
+    'ulmpflanzt',
+    'sitex',
+    '3pleset',
+    'weareams',
+  ];
+
+  useEffect(() => {
+    const _activeTenant = _tenants.some((tenant) => {
+      return process.env.TENANT === tenant;
+    });
+    if (_activeTenant) setIsTenantActive(true);
+  }, [isTenantActive]);
+
   return ready ? (
     <div className={treeCounterStyles.treeCounter}>
-      <FacebookCircularProgress value={progress} />
-      <div className={treeCounterStyles.backgroundCircle} />
-      {/* <div className={treeCounterStyles.treeCounterData}>
-        <div>
-          <PlantedTressBlackSvg color={'#4F4F4F'} />
-        </div>
-        <div className={treeCounterStyles.dataContainer}>
-          {props?.planted && (
-            <div>
-              {localizedAbbreviatedNumber(
-                i18n.language,
-                Number(props.planted),
-                1
-              )}
-            </div>
-          )}
+      {isTenantActive ? (
+        <FacebookCircularProgress value={progress} />
+      ) : (
+        <TenantCircularProgress value={progress} />
+      )}
 
-          {props?.target !== 0 && <div>{'of'}</div>}
-          {props?.target !== 0 && (
-            <div>
-              {localizedAbbreviatedNumber(
-                i18n.language,
-                Number(props.target),
-                1
-              )}
-            </div>
-          )}
+      <div
+        className={treeCounterStyles.backgroundCircle}
+        style={{ borderColor: isTenantActive ? '#fff' : '#6FCF97' }}
+      />
+
+      {isTenantActive ? (
+        <TreeCounterDataOfTenant
+          planted={props?.planted}
+          target={props.target}
+        />
+      ) : (
+        <div className={treeCounterStyles.treeCounterData}>
+          <div>
+            <PlantedTressBlackSvg color={'#4F4F4F'} />
+          </div>
+          <div className={treeCounterStyles.dataContainer}>
+            {props?.planted && (
+              <div>
+                {localizedAbbreviatedNumber(
+                  i18n.language,
+                  Number(props.planted),
+                  1
+                )}
+              </div>
+            )}
+            {props?.target !== 0 && <div>{'of'}</div>}
+            {props?.target !== 0 && (
+              <div>
+                {localizedAbbreviatedNumber(
+                  i18n.language,
+                  Number(props.target),
+                  1
+                )}
+              </div>
+            )}
+          </div>
+          <div style={{ fontSize: '24px' }}>{t('me:treesPlanted')}</div>
         </div>
-        <div style={{ fontSize: '24px' }}>{t('me:treesPlanted')}</div>
-      </div> */}
-      <TreeCounterDataOfTenant planted={props?.planted} target={props.target} />
+      )}
     </div>
   ) : null;
 }
