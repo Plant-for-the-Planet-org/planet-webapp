@@ -5,7 +5,10 @@ import {
   rateLimiter,
   speedLimiter,
 } from '../../../../../src/middlewares/rate-limiter';
-import { DistinctSpecies, UncleanDistinctSpecies } from '../../../../../src/features/common/types/dataExplorer';
+import {
+  DistinctSpecies,
+  UncleanDistinctSpecies,
+} from '../../../../../src/features/common/types/dataExplorer';
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
@@ -14,6 +17,8 @@ handler.use(speedLimiter);
 
 handler.get(async (req, response) => {
   const { projectId } = req.query;
+
+  let disctinctSpecies: DistinctSpecies;
 
   try {
     const query =
@@ -27,7 +32,7 @@ handler.get(async (req, response) => {
 
     const res = await db.query<UncleanDistinctSpecies[]>(query, [projectId]);
 
-    const disctinctSpecies: DistinctSpecies = res.map((species) => species.name);
+    disctinctSpecies = res.map((species) => species.name);
 
     response.status(200).json({ data: disctinctSpecies });
   } catch (err) {

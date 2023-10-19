@@ -1,3 +1,5 @@
+import { Geometry } from '@turf/turf';
+
 export interface IDailyFrame {
   plantedDate: string;
   treesPlanted: number;
@@ -55,11 +57,6 @@ export interface TotalSpeciesPlanted {
   totalSpeciesPlanted: number;
 }
 
-export interface Geometry {
-  coordinates: number[][][];
-  type: 'Polygon';
-}
-
 export interface Site {
   geometry: Geometry;
   properties: {
@@ -95,3 +92,34 @@ export interface PlantLocation {
 }
 
 export type PlantLocations = PlantLocation[];
+
+// --- /api/data-explorer/map/plant-location/[plantLocationId]
+export interface Measurements {
+  width: string;
+  height: string;
+}
+
+export interface SamplePlantLocation {
+  tag: string | null;
+  guid: string;
+  geometry: Geometry;
+  measurements: Measurements;
+}
+
+export interface PlantedSpecies {
+  treeCount: number;
+  scientificName: string;
+}
+
+export interface PlantLocationDetailsQueryRes {
+  result: string;
+}
+
+export interface PlantLocationDetails {
+  plantedSpecies: PlantedSpecies[];
+  totalPlantedTrees: number;
+  samplePlantLocations: SamplePlantLocation[];
+  totalSamplePlantLocations: number;
+}
+
+// ---
