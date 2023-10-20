@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
 import { Filters, PaymentHistory } from '../../common/types/payments';
 import Grid from '@mui/material/Grid';
+import Advertisement from './components/Advertisement';
 
 interface Props {
   filter: string | null;
@@ -26,7 +27,7 @@ export default function History({
   paymentHistory,
   fetchPaymentHistory,
 }: Props): ReactElement {
-  const { t, i18n } = useTranslation(['me']);
+  const { t } = useTranslation(['me']);
   const [selectedRecord, setSelectedRecord] = React.useState<number | null>(
     null
   );
@@ -62,8 +63,6 @@ export default function History({
     }
   }, [paymentHistory]);
 
-  const adSpaceLanguage = i18n.language === 'de' ? 'de' : 'en';
-
   return (
     <div className={styles.pageContainer}>
       <Grid item style={{ width: '100%' }}>
@@ -84,11 +83,8 @@ export default function History({
             })}
         </div>
       </Grid>
-      <Grid item>
-        <iframe
-          src={`https://www5.plant-for-the-planet.org/membership-cta/${adSpaceLanguage}/`}
-          className={styles.topAdSpace}
-        />
+      <Grid item style={{ width: '100%' }}>
+        <Advertisement placement="top" />
         <div className={styles.section}>
           <div className={styles.accountHistory}>
             <div className={styles.historyList}>
@@ -156,10 +152,7 @@ export default function History({
                   })}
               </div>
             </div>
-            <iframe
-              src={`https://www5.plant-for-the-planet.org/membership-cta/${adSpaceLanguage}/`}
-              className={styles.rightAdSpace}
-            />
+            <Advertisement placement="right" />
           </div>
         </div>
         {isModalOpen &&

@@ -263,5 +263,7 @@
   "invalidEmail": "Please enter a valid email Id",
   "wrongEntered": "Email id or Support pin is incorrect !!",
   "donatedTrees": "Donated Trees",
-  "resetPin": "Reset Pin"
+  "resetPin": "Reset Pin",
+  "adButtonText": "JOIN NOW",
+  "adCopy": "Support us <2>by becoming a member</2>"
 }
