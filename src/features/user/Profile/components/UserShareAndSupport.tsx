@@ -76,7 +76,7 @@ export default function UserShareAndSupport({ userprofile }: Props) {
           <SocialShareContainer userprofile={userprofile} type="private" />
         </motion.div>
       )}
-      {showSocialBtn && screenWidth && screenWidth < 600 && (
+      {showSocialBtn && screenWidth !== null && screenWidth < 600 && (
         <motion.div
           animate={{
             paddingLeft: userprofile.type === 'tpo' ? '191px' : 0,
