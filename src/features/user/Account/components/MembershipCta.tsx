@@ -2,6 +2,8 @@ import MuiButton from '../../../common/InputTypes/MuiButton';
 import PlanetLogo from '../../../../../public/assets/images/PlanetLogo';
 import styles from '../AccountHistory.module.scss';
 import { useTranslation, Trans } from 'next-i18next';
+import { getDonationUrl } from '../../../../utils/getDonationUrl';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 interface Props {
   placement: 'top' | 'right';
@@ -9,6 +11,8 @@ interface Props {
 
 const MembershipCta = ({ placement }: Props) => {
   const { t } = useTranslation('me');
+  const { token } = useUserProps();
+
   return (
     <a
       className={`${styles.membershipCta} ${
@@ -16,7 +20,7 @@ const MembershipCta = ({ placement }: Props) => {
           ? styles.membershipCtaTop
           : styles.membershipCtaRight
       }`}
-      href="https://donate.plant-for-the-planet.org/?to=proj_LOxkf5GYI054Fi0HcEUF3dKu&callback_url=https%3A%2F%2Fwww1.plant-for-the-planet.org%2Fprofile"
+      href={getDonationUrl('proj_LOxkf5GYI054Fi0HcEUF3dKu', token)}
     >
       <PlanetLogo className={styles.logo} />
       <div className={styles.membershipCtaContent}>
