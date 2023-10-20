@@ -56,5 +56,8 @@
   "trillion": "t",
   "billion": "b",
   "million": "m",
-  "thousand": "k"
+  "thousand": "k",
+  "plantLocationsWithPlantedSpecies": "Locations with planted species",
+  "search": "Search by hid/date",
+  "groups": "Groups"
 }

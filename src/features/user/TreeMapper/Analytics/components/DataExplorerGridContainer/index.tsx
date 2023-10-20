@@ -4,7 +4,7 @@ import { Export } from '../Export';
 import { SpeciesPlanted } from '../SpeciesPlanted';
 import { TreePlanted } from '../TreePlanted';
 import styles from './index.module.scss';
-import { Map } from '../Map';
+import { MapContainer } from '../Map';
 
 export const DataExplorerGridContainer = () => {
   return (
@@ -14,7 +14,7 @@ export const DataExplorerGridContainer = () => {
           <Counter />
         </Grid>
         <Grid item xs={12} md={12}>
-          <Map />
+          <MapContainer />
         </Grid>
         <Grid item xs={12} md={12}>
           <TreePlanted />
