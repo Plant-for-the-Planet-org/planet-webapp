@@ -10,13 +10,12 @@ import SocialShareContainer from './SocialShareContainer';
 import { motion } from 'framer-motion';
 import GlobeSelected from '../../../../../public/assets/images/navigation/GlobeSelected';
 import { truncateString } from '../../../../utils/getTruncatedString';
-import { User } from '@planet-sdk/common';
-import { PublicUser } from '../../../common/types/user';
+import { User, UserPublicProfile } from '@planet-sdk/common';
 
 const config = tenantConfig();
 
 interface Props {
-  userprofile: User | PublicUser;
+  userprofile: User | UserPublicProfile;
 }
 
 export default function UserShareAndSupport({ userprofile }: Props) {

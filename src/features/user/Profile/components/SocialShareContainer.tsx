@@ -5,13 +5,12 @@ import FacebookIcon from '../../../../../public/assets/images/icons/share/Facebo
 import LinkedIn from '../../../../../public/assets/images/icons/share/Linkedin';
 import tenantConfig from '../../../../../tenant.config';
 import { useTranslation } from 'next-i18next';
-import { User } from '@planet-sdk/common';
-import { PublicUser } from '../../../common/types/user';
+import { User, UserPublicProfile } from '@planet-sdk/common';
 
 const config = tenantConfig();
 
 interface Props {
-  userprofile: User | PublicUser;
+  userprofile: User | UserPublicProfile;
   type?: string;
 }
 

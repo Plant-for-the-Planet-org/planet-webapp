@@ -7,9 +7,8 @@ import { useTranslation } from 'next-i18next';
 import styles from './styles/ProjectsContainer.module.scss';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, UserPublicProfile } from '@planet-sdk/common';
 import { MapProject } from '../../common/types/ProjectPropsContextInterface';
-import { PublicUser } from '../../common/types/user';
 
 const ProjectSnippet = dynamic(
   () => import('../../projects/components/ProjectSnippet'),
@@ -19,7 +18,7 @@ const ProjectSnippet = dynamic(
 );
 
 interface Props {
-  profile: PublicUser;
+  profile: UserPublicProfile;
 }
 
 export default function ProjectsContainer({ profile }: Props) {
