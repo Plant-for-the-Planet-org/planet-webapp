@@ -64,7 +64,12 @@
 }
 
 .backgroundCircle {
-  border: 5px solid $light;
+  border: 5px solid $light;  
+}
+
+.backgroundCircle,
+.backgroundCircleForTenant {
+  border: 20px solid #6FCF97;  
   border-radius: 50%;
   height: 320px;
   width: 320px;

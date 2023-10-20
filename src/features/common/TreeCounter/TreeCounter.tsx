@@ -46,7 +46,7 @@ export function TenantCircularProgress(props: CircularProgressProps) {
     <div className={treeCounterStyles.circularProgreesContainer}>
       <XCircularProgress
         variant="determinate"
-        size={330}
+        size={322}
         thickness={3}
         {...props}
       />
@@ -116,8 +116,11 @@ export default function TpoProfile(props: any) {
       )}
 
       <div
-        className={treeCounterStyles.backgroundCircle}
-        style={{ borderColor: isTenantActive ? '#fff' : '#6FCF97' }}
+        className={
+          isTenantActive
+            ? treeCounterStyles.backgroundCircle
+            : treeCounterStyles.backgroundCircleForTenant
+        }
       />
 
       {isTenantActive ? (

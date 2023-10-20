@@ -51,7 +51,7 @@ const UserFeatures = ({
 
   return (
     <div className={myProfileStyle.buttonContainer}>
-      {userProfile?.type !== 'tpo' && router.pathname !== '/profile' && (
+      {userProfile?.type !== 'tpo' && router.pathname !== '/profile' ? (
         <Button
           variant="contained"
           startIcon={<SupportSvg color={'#FFFFFF'} />}
@@ -59,9 +59,17 @@ const UserFeatures = ({
         >
           {t('me:support')}
         </Button>
+      ) : (
+        <Button
+          variant="contained"
+          startIcon={<RedeemCodeSvg color={'#FFFFFF'} />}
+          onClick={handleRedeemModalOPen}
+        >
+          {t('redeem:redeem')}
+        </Button>
       )}
 
-      {!userProfile.isPrivate && router.pathname !== '/profile' && (
+      {!userProfile.isPrivate && router.pathname !== '/profile' ? (
         <Button
           variant="contained"
           startIcon={<LinkedInIcon />}
@@ -69,25 +77,20 @@ const UserFeatures = ({
         >
           {t('me:linkedIn')}
         </Button>
+      ) : (
+        <Button
+          variant="contained"
+          startIcon={<RegisteredTreeSvg color={'#FFFFFF'} />}
+          onClick={handleRegisterTree}
+        >
+          {t('me:registerTrees')}
+        </Button>
       )}
-      <Button
-        variant="contained"
-        startIcon={<RedeemCodeSvg color={'#FFFFFF'} />}
-        onClick={handleRedeemModalOPen}
-      >
-        {t('redeem:redeem')}
-      </Button>
+
       <RedeemModal
         redeemModalOpen={isRedeemModalOpen}
         handleRedeemModalClose={handleRedeemModalClose}
       />
-      <Button
-        variant="contained"
-        startIcon={<RegisteredTreeSvg color={'#FFFFFF'} />}
-        onClick={handleRegisterTree}
-      >
-        {t('me:registerTrees')}
-      </Button>
 
       <Share
         handleShare={handleShare}
