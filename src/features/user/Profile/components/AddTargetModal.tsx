@@ -58,11 +58,13 @@ export default function AddTargetModal({
           logoutUser
         );
         handleAddTargetModalClose(false);
-        const newUserInfo = {
-          ...user,
-          score: res.score,
-        };
-        setUser(newUserInfo as User);
+        if (user) {
+          const newUserInfo = {
+            ...user,
+            score: res.score,
+          };
+          setUser(newUserInfo);
+        }
         setIsLoading(false);
       } catch (err) {
         handleAddTargetModalClose(false);
