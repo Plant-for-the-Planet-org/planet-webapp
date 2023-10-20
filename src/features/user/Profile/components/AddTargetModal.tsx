@@ -10,7 +10,6 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError, User } from '@planet-sdk/common';
-import { PublicUser } from '../../../common/types/user';
 import { SetState } from '../../../common/types/common';
 
 type FormData = {
@@ -18,7 +17,6 @@ type FormData = {
 };
 
 interface Props {
-  userprofile: User | PublicUser;
   addTargetModalOpen: boolean;
   handleAddTargetModalClose: SetState<boolean>;
 }

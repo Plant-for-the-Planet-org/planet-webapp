@@ -7,11 +7,10 @@ import ReadMoreReact from 'read-more-react';
 import UserShareAndSupport from './components/UserShareAndSupport';
 import UserProfileOptions from './components/UserProfileOptions';
 import TreeCounter from './../../common/TreeCounter/TreeCounter';
-import { User } from '@planet-sdk/common';
-import { PublicUser } from '../../common/types/user';
+import { User, UserPublicProfile } from '@planet-sdk/common';
 
 interface Props {
-  userprofile: User | PublicUser;
+  userprofile: User | UserPublicProfile;
   authenticatedType: string;
 }
 
@@ -102,7 +101,6 @@ function Profile({ userprofile, authenticatedType }: Props): ReactElement {
 
       {/* add target modal */}
       <AddTargetModal
-        userprofile={userprofile}
         addTargetModalOpen={addTargetModalOpen}
         handleAddTargetModalClose={() => setAddTargetModalOpen(false)}
       />
