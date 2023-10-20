@@ -22,9 +22,9 @@ export interface PublicUser {
 export interface ContributionType {
   type: string;
   geometry: Geometry;
-  properties: Properties;
+  properties: ContributionProperties;
 }
-interface Properties {
+interface ContributionProperties {
   id: string;
   type: string;
   plantDate?: string;
@@ -32,18 +32,18 @@ interface Properties {
   images: Image[];
   treeCount: number;
   unitType: string;
-  project: Project;
-  recipient?: Owner | null;
-  giver?: Owner | null;
+  project: ContributionProject;
+  recipient?: PersonOrOrganization | null;
+  giver?: PersonOrOrganization | null;
 }
-interface Project {
+interface ContributionProject {
   name: string;
   slug: string;
   location?: string;
   category: string;
-  owner: Owner;
+  owner: PersonOrOrganization;
 }
-interface Owner {
+interface PersonOrOrganization {
   name: string;
   slug: string;
   avatar?: string;
