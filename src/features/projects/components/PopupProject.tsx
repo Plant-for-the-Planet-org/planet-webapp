@@ -1,4 +1,4 @@
-import React, { MutableRefObject, ReactElement } from 'react';
+import React, { ReactElement, RefObject } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
 import { useTranslation } from 'next-i18next';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
@@ -16,11 +16,7 @@ import {
 
 interface Props {
   project: TreeProjectConcise | ConservationProjectConcise;
-  open: boolean;
-  handleOpen: Function;
-  handleClose: Function;
-  buttonRef: MutableRefObject<null>;
-  popupRef: MutableRefObject<null>;
+  buttonRef: RefObject<HTMLButtonElement>;
 }
 
 export default function PopupProject({

@@ -37,13 +37,10 @@ export default function Markers({
   const router = useRouter();
 
   const [open, setOpen] = React.useState(false);
-  const buttonRef = React.useRef(null);
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
   const popupRef = React.useRef(null);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
   const handleClose = () => {
     setOpen(false);
   };
@@ -197,13 +194,8 @@ export default function Markers({
             }}
           >
             <PopupProject
-              key={popupData.project.properties.id}
               project={popupData.project.properties}
               buttonRef={buttonRef}
-              popupRef={popupRef}
-              open={open}
-              handleOpen={handleOpen}
-              handleClose={handleClose}
             />
           </div>
         </Popup>
