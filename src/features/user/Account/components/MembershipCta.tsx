@@ -7,29 +7,31 @@ interface Props {
   placement: 'top' | 'right';
 }
 
-const Advertisement = ({ placement }: Props) => {
+const MembershipCta = ({ placement }: Props) => {
   const { t } = useTranslation('me');
   return (
     <a
-      className={`${styles.ad} ${
-        placement === 'top' ? styles.adTop : styles.adRight
+      className={`${styles.membershipCta} ${
+        placement === 'top'
+          ? styles.membershipCtaTop
+          : styles.membershipCtaRight
       }`}
       href="https://donate.plant-for-the-planet.org/?to=proj_LOxkf5GYI054Fi0HcEUF3dKu&callback_url=https%3A%2F%2Fwww1.plant-for-the-planet.org%2Fprofile"
     >
       <PlanetLogo className={styles.logo} />
-      <div className={styles.adContent}>
-        <p className={styles.adCopy}>
-          <Trans i18nKey="me:adCopy">
+      <div className={styles.membershipCtaContent}>
+        <p className={styles.membershipCtaCopy}>
+          <Trans i18nKey="me:membershipCtaCopy">
             Support us{' '}
             <span className={styles.highlighted}>by becoming a member</span>
           </Trans>
         </p>
         <MuiButton variant="contained" component="div">
-          {t('me:adButtonText')}
+          {t('me:membershipCtaButtonText')}
         </MuiButton>
       </div>
     </a>
   );
 };
 
-export default Advertisement;
+export default MembershipCta;

@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
 import { Filters, PaymentHistory } from '../../common/types/payments';
 import Grid from '@mui/material/Grid';
-import Advertisement from './components/Advertisement';
+import MembershipCta from './components/MembershipCta';
 
 interface Props {
   filter: string | null;
@@ -84,7 +84,7 @@ export default function History({
         </div>
       </Grid>
       <Grid item style={{ width: '100%' }}>
-        <Advertisement placement="top" />
+        <MembershipCta placement="top" />
         <div className={styles.section}>
           <div className={styles.accountHistory}>
             <div className={styles.historyList}>
@@ -152,7 +152,7 @@ export default function History({
                   })}
               </div>
             </div>
-            <Advertisement placement="right" />
+            <MembershipCta placement="right" />
           </div>
         </div>
         {isModalOpen &&

@@ -524,11 +524,11 @@
   margin-left: 20px;
 }
 
-.ad {
+.membershipCta {
   width: 100%;
   height: 200px;
   border-radius: 10px;
-  background-image: url('/assets/images/ad-background-landscape.png');
+  background-image: url('/assets/images/membership-background-landscape.png');
   background-position: center;
   background-size: cover;
   display: flex;
@@ -537,18 +537,18 @@
   align-items: flex-start;
   gap: 8px;
   padding: 20px;
-  .adContent {
+  .membershipCtaContent {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
   }
-  &.adRight {
+  &.membershipCtaRight {
     display: none;
   }
 }
 
-.adCopy {
+.membershipCtaCopy {
   color: $light;
   font-weight: 400;
   font-size: $fontMedium;
@@ -739,16 +739,16 @@
     }
   }
 
-  .ad {
+  .membershipCta {
     height: 250px;
-    background-image: url('/assets/images/ad-background-portrait.png');
+    background-image: url('/assets/images/membership-background-portrait.png');
     .logo {
       align-self: flex-end;
     }
-    &.adTop {
+    &.membershipCtaTop {
       display: none;
     }
-    &.adRight {
+    &.membershipCtaRight {
       display: flex;
     }
   }
