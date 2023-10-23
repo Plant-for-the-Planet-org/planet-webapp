@@ -6,6 +6,7 @@ import { TextField, Button } from '@mui/material';
 import { getAccountInfo } from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import StyledForm from '../../../common/Layout/StyledForm';
+import { isEmailValid } from '../../../../utils/isEmailValid';
 
 export type ImpersonationData = {
   targetEmail: string;
@@ -70,9 +71,11 @@ const ImpersonateUserForm = (): ReactElement => {
               value: true,
               message: t('me:enterTheEmail'),
             },
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: t('me:invalidEmail'),
+            validate: {
+              emailInvalid: (value) =>
+                value.length === 0 ||
+                isEmailValid(value) ||
+                t('me:invalidEmail'),
             },
           }}
           render={({ field: { onChange, value, onBlur } }) => (
