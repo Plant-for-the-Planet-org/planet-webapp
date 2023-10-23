@@ -174,12 +174,13 @@ export default function ProjectSnippet({
             <div className={'projectHoverIcon'}>
               <ProjectInfo
                 color={'#828282'}
+                tabindex="0"
                 title={`${t('common:disabledDonateButtonText')}`}
               />
               {t('common:notDonatable')}
             </div>
           ) : (
-            <div className={'perUnitCost'}>
+            <div className={'perTreeCost'}>
               {getFormatedCurrency(
                 i18n.language,
                 project.currency,
