@@ -263,5 +263,7 @@
   "invalidEmail": "Gib eine gültige Email-Adresse ein",
   "wrongEntered": "E-Mail-ID oder Support-PIN ist falsch!",
   "donatedTrees": "Gespendete Bäume",
-  "resetPin": "PIN zurücksetzen"
+  "resetPin": "PIN zurücksetzen",
+  "membershipCtaButtonText": "Jetzt mitmachen",
+  "membershipCtaCopy": "Unterstütze uns und <2>WERDE MITGLIED</2>"
 }
