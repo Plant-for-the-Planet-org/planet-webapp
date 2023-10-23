@@ -545,7 +545,7 @@ export default function ProjectSites({
                       size="small"
                       className={styles.uploadedMapDeleteButton}
                     >
-                      <TrashIcon color={'#000'} />
+                      <TrashIcon />
                     </IconButton>
                     <IconButton
                       id={'edit'}
