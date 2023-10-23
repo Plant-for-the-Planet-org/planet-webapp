@@ -1,6 +1,6 @@
 import { styled } from '@mui/material';
 
-const ProfileContainer = styled('div')(({ theme }) => ({
+const ProfileMainContainer = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: 10,
@@ -32,4 +32,4 @@ const ProfileContainer = styled('div')(({ theme }) => ({
   },
 }));
 
-export default ProfileContainer;
+export default ProfileMainContainer;

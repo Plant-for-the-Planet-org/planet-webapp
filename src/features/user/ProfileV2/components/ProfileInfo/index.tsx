@@ -1,5 +1,5 @@
 import { useState, ReactElement } from 'react';
-import ProfileContainer from '../../styles/ProfileContainer';
+import ProfileMainContainer from '../ProfileMainContainer';
 import { useTranslation } from 'next-i18next';
 import tenantConfig from '../../../../../../tenant.config';
 import UserInfo from '../MicroComponents/UserInfo';
@@ -40,10 +40,10 @@ const Profile = ({ userProfile }: ProfileProps): ReactElement => {
   };
 
   return (
-    <ProfileContainer>
+    <ProfileMainContainer>
       <UserInfo userProfile={userProfile} />
       <UserFeatures {...userFeatureProps} />
-    </ProfileContainer>
+    </ProfileMainContainer>
   );
 };
 

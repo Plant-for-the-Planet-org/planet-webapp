@@ -6,7 +6,7 @@ import { getRequest } from '../../src/utils/apiRequests/api';
 import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import Footer from '../../src/features/common/Layout/Footer';
 import Profile from '../../src/features/user/ProfileV2/components/ProfileInfo';
-import ProjectsContainer from '../../src/features/user/Profile/ProjectsContainer';
+import ProjectsContainer from '../../src/features/user/ProfileV2/components/ProjectDetails/ProjectsContainer';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths, GetStaticPropsContext } from 'next';

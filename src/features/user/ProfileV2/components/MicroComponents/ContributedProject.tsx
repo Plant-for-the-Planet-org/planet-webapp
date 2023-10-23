@@ -101,7 +101,7 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
                 localeMapForDate[localStorage.getItem('language') || 'en'],
             })}
           </div>
-          {projectInfo?.plantProject !== null && (
+          {projectInfo.contributionType === 'donation' && (
             <div
               className={myForestStyles.donate}
               onClick={() => handleDonate(projectInfo.plantProject.guid)}
