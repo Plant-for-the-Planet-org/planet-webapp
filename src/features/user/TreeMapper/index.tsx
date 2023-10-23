@@ -175,7 +175,7 @@ function TreeMapper(): ReactElement {
         ) : (
           <div className={styles.listContainer}>
             <div className={styles.titleContainer}>
-              <div className={'profilePageTitle'}>
+              <div className={styles.treeMapperTitle}>
                 {t('treemapper:treeMapper')}
               </div>
             </div>
