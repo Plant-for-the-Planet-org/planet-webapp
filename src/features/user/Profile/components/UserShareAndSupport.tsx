@@ -58,7 +58,7 @@ export default function UserShareAndSupport({ userprofile }: Props) {
 
   return ready ? (
     <div style={{ position: 'relative' }}>
-      {showSocialBtn && screenWidth && screenWidth > 600 && (
+      {showSocialBtn && screenWidth !== null && screenWidth > 600 && (
         <motion.div
           animate={{
             x: 0,
