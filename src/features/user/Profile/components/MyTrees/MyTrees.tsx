@@ -11,7 +11,12 @@ import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError, User } from '@planet-sdk/common';
+import {
+  handleError,
+  APIError,
+  User,
+  UserPublicProfile,
+} from '@planet-sdk/common';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { ContributionType } from '../../../../common/types/user';
 
@@ -100,9 +105,9 @@ function TreeList({ contribution }: { contribution: ContributionType }) {
 }
 
 interface Props {
-  profile: User;
+  profile: User | UserPublicProfile;
   authenticatedType: string;
-  token: string;
+  token: string | null;
 }
 
 export default function MyTrees({ profile, authenticatedType, token }: Props) {
