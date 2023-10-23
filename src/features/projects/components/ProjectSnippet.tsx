@@ -179,7 +179,7 @@ export default function ProjectSnippet({
               {t('common:notDonatable')}
             </div>
           ) : (
-            <div className={'perTreeCost'}>
+            <div className={'perUnitCost'}>
               {getFormatedCurrency(
                 i18n.language,
                 project.currency,
