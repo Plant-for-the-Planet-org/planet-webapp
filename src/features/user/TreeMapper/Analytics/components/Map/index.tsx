@@ -43,7 +43,7 @@ export const MapContainer = () => {
   const { project } = useAnalytics();
   const { t, ready } = useTranslation(['treemapperAnalytics']);
 
-  const [_, setProjectType] = useState<ProjectType | null>(null);
+  const [_projectType, setProjectType] = useState<ProjectType | null>(null);
   const [distinctSpeciesList, setDistinctSpeciesList] =
     useState<DistinctSpecies>([]);
   const [species, setSpecies] = useState<string | null>(null);
@@ -52,7 +52,7 @@ export const MapContainer = () => {
   const [projectLoactions, setProjectLocations] = useState<
     PlantLocation[] | null
   >(null);
-  const [projectLocation, setProjectLocation] = useState<PlantLocation | null>(
+  const [_plantLocation, setProjectLocation] = useState<PlantLocation | null>(
     null
   );
   const [search, setSearch] = useState<string>('');
