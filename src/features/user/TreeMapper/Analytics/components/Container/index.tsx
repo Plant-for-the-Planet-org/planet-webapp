@@ -5,6 +5,7 @@ interface Props {
   rightElement?: React.ReactElement;
   children: React.ReactElement;
   flexDirection?: 'row' | 'column';
+  overrideBodyStyles?: string | null;
 }
 
 export const Container = ({
@@ -12,6 +13,7 @@ export const Container = ({
   rightElement,
   children,
   flexDirection = 'row',
+  overrideBodyStyles = null,
 }: Props) => {
   return (
     <div className={styles.container}>
@@ -25,7 +27,9 @@ export const Container = ({
         <div>{leftElement}</div>
         <div>{rightElement}</div>
       </div>
-      <div className={styles.body}>{children}</div>
+      <div className={overrideBodyStyles ? overrideBodyStyles : styles.body}>
+        {children}
+      </div>
     </div>
   );
 };

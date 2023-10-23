@@ -15,12 +15,13 @@ interface UncleanPlantLocations {
   guid: string;
 }
 
-interface PlantLocation {
+type PlantLocations = Array<{
+  type: string;
+  properties: {
+    guid: string;
+  };
   geometry: Geometry;
-  guid: string;
-}
-
-type PlantLocations = PlantLocation[];
+}>;
 
 handler.post(async (req, response) => {
   const { projectId, queryType, searchQuery, species } = req.body;
@@ -36,17 +37,19 @@ handler.post(async (req, response) => {
 
     const values = [projectId];
 
-    if (queryType === QueryType.DATE) {
-      // Filter by date
-      query += ' AND DATE(pl.plant_date) = ?';
-      values.push(searchQuery);
-    } else if (queryType === QueryType.HID) {
-      // Filter by HID
-      query += ' AND pl.hid = ?';
-      values.push(searchQuery);
+    if (queryType) {
+      if (queryType === QueryType.DATE) {
+        // Filter by date
+        query += ' AND DATE(pl.plant_date) = ?';
+        values.push(searchQuery);
+      } else if (queryType === QueryType.HID) {
+        // Filter by HID
+        query += ' AND pl.hid = ?';
+        values.push(searchQuery);
+      }
     }
 
-    if (species !== 'all') {
+    if (species !== 'All') {
       // Filter by species name
       query +=
         ' AND (ss.name = ? OR ps.other_species = ? OR pl.other_species = ?)';
@@ -55,19 +58,20 @@ handler.post(async (req, response) => {
 
     const qRes = await db.query<UncleanPlantLocations[]>(query, values);
 
-    const plantLocations: PlantLocations = [];
-
-    for (const plantLocation of qRes) {
-      plantLocations.push({
-        geometry: JSON.parse(plantLocation.geometry),
+    const plantLocations: PlantLocations = qRes.map((plantLocation) => ({
+      type: 'Feature',
+      properties: {
         guid: plantLocation.guid,
-      });
-    }
+      },
+      geometry: JSON.parse(plantLocation.geometry) as Geometry,
+    }));
+
     await db.end();
 
     response.status(200).json({ data: plantLocations });
   } catch (err) {
     console.log(err);
+    response.status(500).json({ error: 'Internal Server Error' });
   } finally {
     db.quit();
   }

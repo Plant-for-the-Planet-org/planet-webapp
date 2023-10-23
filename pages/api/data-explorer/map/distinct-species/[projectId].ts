@@ -34,6 +34,8 @@ handler.get(async (req, response) => {
 
     disctinctSpecies = res.map((species) => species.name);
 
+    disctinctSpecies.unshift('All');
+
     response.status(200).json({ data: disctinctSpecies });
   } catch (err) {
     console.log(err);

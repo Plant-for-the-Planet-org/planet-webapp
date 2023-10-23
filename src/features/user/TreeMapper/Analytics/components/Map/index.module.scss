@@ -4,3 +4,15 @@
     height: auto;
     width: auto;
 }
+
+.body {
+    background-color: $backgroundColor;
+    border-radius: 0 0 10px 10px;
+}
+
+.navigationControlContainer {
+    position: absolute;
+    bottom: 70px;
+    right: 45px;
+    z-index: 1;
+  }
