@@ -11,14 +11,12 @@ import MapGL, {
   Source,
   WebMercatorViewport,
 } from 'react-map-gl';
-import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import LayerIcon from '../../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../../public/assets/images/icons/LayerDisabled';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
 import SatelliteLayer from '../../../projects/components/maps/SatelliteLayer';
-import { useTranslation } from 'next-i18next';
 
 interface Props {
   locations: any;
@@ -32,9 +30,6 @@ export default function MyTreesMap({
   setselectedLocation,
 }: Props): ReactElement {
   const router = useRouter();
-
-  const { i18n, t } = useTranslation('me');
-
   const { isMobile } = useProjectProps();
 
   const defaultMapCenter = [-28.5, 36.96];

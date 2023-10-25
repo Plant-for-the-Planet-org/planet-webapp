@@ -87,9 +87,6 @@ export default function Footer(): ReactElement | null {
         const countryCode = localStorage.getItem('countryCode');
         if (countryCode) setSelectedCountry(countryCode);
       }
-      if (localStorage.getItem('language')) {
-        const langCode = localStorage.getItem('language');
-      }
     }
   }, []);
 
