@@ -55,7 +55,7 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
       </div>
       <div className={myForestStyles.projectDetailContainer}>
         <div className={myForestStyles.projectDetail}>
-          <div>
+          <div className={myForestStyles.projectDetailMain}>
             <div className={myForestStyles.projectName}>
               {projectInfo?.plantProject !== null
                 ? projectInfo.plantProject.name
@@ -74,11 +74,22 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
                   <div className={myForestStyles.lineSeprator}>|</div>
                 )}
 
-                <div>{projectInfo.plantProject.tpo.name}</div>
+                <div className={myForestStyles.tpoName}>
+                  {projectInfo.plantProject.tpo.name}
+                </div>
               </div>
             )}
           </div>
-          <div className={myForestStyles.treeCount}>
+
+          <div className={myForestStyles.plantingDate}>
+            {format(projectInfo.plantDate, 'MMM dd, yyyy', {
+              locale:
+                localeMapForDate[localStorage.getItem('language') || 'en'],
+            })}
+          </div>
+        </div>
+        <div className={myForestStyles.donateContainer}>
+          <time className={myForestStyles.treeCount}>
             {projectInfo?.plantProject?.unit === 'm2'
               ? t('me:areaType', {
                   areaConserved: `${projectInfo.quantity}`,
@@ -92,15 +103,7 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
                     parseInt(`${projectInfo?.treeCount}`) ||
                     0,
                 })}
-          </div>
-        </div>
-        <div className={myForestStyles.donateContainer}>
-          <div className={myForestStyles.plantingDate}>
-            {format(projectInfo.plantDate, 'MMM dd, yyyy', {
-              locale:
-                localeMapForDate[localStorage.getItem('language') || 'en'],
-            })}
-          </div>
+          </time>
           {projectInfo.contributionType === 'donation' && (
             <div
               className={myForestStyles.donate}

@@ -205,6 +205,14 @@
         padding-left: 14px;
         padding-right: 14px;
     }
+    @include smTabletView {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    @include mdTabletView {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
     
     > .treeCounterContainer {
         display: flex;
@@ -368,16 +376,14 @@
         padding-left: 0px;
         padding-right: 0px;
         min-height: 185px;
-        gap: 30px;
         @include xsPhoneView {
             height: max-content;
-            flex-direction: column;
+            flex-direction: column-reverse;
             padding-left: 10px;
             padding-right: 10px;
-            gap: 20px;
         }
         @include smTabletView {
-            flex-direction: column;
+            flex-direction: column-reverse;
             padding-left: 25px;
             padding-right: 25px;
             gap:0px
@@ -418,7 +424,6 @@
             @include xsPhoneView {
                 width: 274px;
                 margin-left: 0px;
-                padding-bottom: 0px;
             }
         }
         
@@ -434,7 +439,6 @@
     justify-content: center;
     flex-direction: column;
     gap:100px;
-    padding-right: 25px;
     margin-left: 0px;
     @include xsPhoneView {
         flex-direction: row;
@@ -446,13 +450,12 @@
         flex-direction: row;
         gap: 67px;
         justify-content: flex-start;
-        padding-bottom: 25px;
     }
     @include  mdTabletView {
-        flex-direction: column;
+        flex-direction: row;
         gap: 67px;
         padding-bottom: 0px;
-        justify-content: center;      
+       justify-content: space-between; 
     }
 }
 
@@ -476,17 +479,16 @@
     flex-direction: row;
     @include xsPhoneView {
         gap : 10px;
-        padding-top: 0px;
+        padding-top: 20px;
         flex-direction: column;
-        padding-bottom: 25px;
     }
     @include smTabletView {
         flex-direction: column;
-        padding-top: 0px
+        padding-top: 15px
     }
     @include  mdTabletView {
-        flex-direction: row;
-        padding-top: 0px
+        flex-direction: column;
+        padding-right: 25px;      
     }
 }
   .projectDetail {
@@ -502,6 +504,13 @@
         margin-left: 18px;
         margin-top: 0px;
     }
+    @include mdTabletView {
+      flex-direction: row
+    }
+  }
+
+  .projectDetailMain {
+    max-width: 288px;
   }
 
   .projectName {
@@ -514,11 +523,15 @@
         font-size: 16px;
     }
     @include mdTabletView {
-        font-size: 16px;
+        font-size: 11px;
     }
     @include lgLaptopView {
         font-size: 14px;
     }
+  }
+
+  .tpoName {
+    font-size: 11px;
   }
 
   .areaConservedMainContainer {

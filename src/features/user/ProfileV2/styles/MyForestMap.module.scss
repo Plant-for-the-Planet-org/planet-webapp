@@ -175,6 +175,14 @@
         padding-left: 0px;
         padding-right: 0px;
     }
+    @include smTabletView {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    @include mdTabletView {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
 }
 
 

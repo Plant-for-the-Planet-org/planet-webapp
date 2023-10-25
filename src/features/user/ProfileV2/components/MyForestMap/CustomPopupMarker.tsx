@@ -41,10 +41,10 @@ const CustomPopupMarker = ({ geoJson, showPopUp }: CustomPopupMarkerProps) => {
               </div>
               {(geoJson.properties.totalContribution < 2 ||
                 geoJson?.properties?.startDate) && (
-                <div className={MyForestMapStyle.popUpDate}>
+                <time className={MyForestMapStyle.popUpDate}>
                   {geoJson?.properties?.startDate &&
                     formatDate(geoJson?.properties?.startDate)}
-                </div>
+                </time>
               )}
             </div>
           </div>
