@@ -20,6 +20,12 @@ import {
   TreeProjectExtended,
 } from '@planet-sdk/common';
 import ProjectInfo from '../../../../public/assets/images/icons/project/ProjectInfo';
+import {
+  bindHover,
+  bindPopover,
+  usePopupState,
+} from 'material-ui-popup-state/hooks';
+import HoverPopover from 'material-ui-popup-state/HoverPopover';
 
 interface Props {
   project:
@@ -67,6 +73,11 @@ export default function ProjectSnippet({
     const url = getDonationUrl(project.slug, token, embed, callbackUrl);
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
+
+  const projectInfoPopupState = usePopupState({
+    variant: 'popover',
+    popupId: 'projectInfoPopover',
+  });
 
   const donateButtonBackgroundColor =
     project.isTopProject && project.isApproved
@@ -171,16 +182,33 @@ export default function ProjectSnippet({
             </div>
           </div>
           {!project.allowDonations ? (
-            <div className={'projectHoverIcon'}>
-              <ProjectInfo
-                color={'#828282'}
-                tabindex="0"
-                title={`${t('common:disabledDonateButtonText')}`}
-              />
+            <div
+              className={'projectHoverIcon'}
+              {...bindHover(projectInfoPopupState)}
+            >
+              <ProjectInfo color={'#828282'} />
+              <HoverPopover
+                {...bindPopover(projectInfoPopupState)}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                <div className="projectInfoPopupContainer">
+                  {`${t('common:disabledDonateButtonText')}`}
+                </div>
+              </HoverPopover>
               {t('common:notDonatable')}
             </div>
           ) : (
-            <div className={'perTreeCost'}>
+            <div className={'perUnitCost'}>
               {getFormatedCurrency(
                 i18n.language,
                 project.currency,
