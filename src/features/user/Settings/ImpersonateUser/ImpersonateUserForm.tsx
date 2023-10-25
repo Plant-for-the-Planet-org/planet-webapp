@@ -17,7 +17,7 @@ const ImpersonateUserForm = (): ReactElement => {
   const router = useRouter();
   const { t } = useTranslation('me');
   const [isInvalidEmail, setIsInvalidEmail] = useState(false);
-  const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const { token, setUser, setIsImpersonationModeOn } = useUserProps();
   const {
     control,
