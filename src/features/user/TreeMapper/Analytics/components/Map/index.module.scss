@@ -1,8 +1,10 @@
 @import "../../../../../../theme/theme";
 
 .mapContainer {
-    height: auto;
-    width: auto;
+    min-height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .body {

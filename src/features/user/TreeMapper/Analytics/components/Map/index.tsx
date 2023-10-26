@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { Container } from '../Container';
 import ProjectTypeSelector, { ProjectType } from '../ProjectTypeSelector';
 import useNextRequest, {
@@ -8,6 +8,7 @@ import {
   DistinctSpecies,
   PlantLocation,
   Site,
+  Sites,
 } from '../../../../../common/types/dataExplorer';
 import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
 import LeftElements from './components/LeftElements';
@@ -17,9 +18,7 @@ import { Search } from '@mui/icons-material';
 import moment from 'moment';
 import SitesSelectorAutocomplete from './components/SiteSelectorAutocomplete';
 import { MuiAutoComplete } from '../../../../../common/InputTypes/MuiAutoComplete';
-import 'mapbox-gl/dist/mapbox-gl.css'; // Import Mapbox CSS
-// import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css'; // Import the geocoder CSS
-// import 'react-map-gl/dist/react-map-gl.css'; // Import react-map-gl CSS
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 import styles from './index.module.scss';
 import getMapStyle from '../../../../../../utils/maps/getMapStyle';
@@ -47,12 +46,12 @@ export const MapContainer = () => {
   const [distinctSpeciesList, setDistinctSpeciesList] =
     useState<DistinctSpecies>([]);
   const [species, setSpecies] = useState<string | null>(null);
-  const [projectSites, setProjectSites] = useState<Site[]>([]);
+  const [projectSites, setProjectSites] = useState<Sites | null>(null);
   const [projectSite, setProjectSite] = useState<Site | null>(null);
-  const [projectLoactions, setProjectLocations] = useState<
-    PlantLocation[] | null
-  >(null);
-  const [_plantLocation, setProjectLocation] = useState<PlantLocation | null>(
+  const [plantLocations, setPlantLocations] = useState<PlantLocation[] | null>(
+    null
+  );
+  const [_plantLocation, setPlantLocation] = useState<PlantLocation | null>(
     null
   );
   const [search, setSearch] = useState<string>('');
@@ -66,24 +65,9 @@ export const MapContainer = () => {
     maxZoom: 25,
   });
 
-  const polygonCoordinates = [
-    [
-      [-2.01902187, 8.21742549, 0],
-      [-2.02027415, 8.22640159, 0],
-      [-2.02153332, 8.23538887, 0],
-      [-2.02313474, 8.24680966, 0],
-      [-2.01411534, 8.24786525, 0],
-      [-2.0050915, 8.24889428, 0],
-      [-1.99593169, 8.24990976, 0],
-      [-1.99439009, 8.24097948, 0],
-      [-1.99287861, 8.23206785, 0],
-      [-1.99135934, 8.22314705, 0],
-      [-1.99087965, 8.22041328, 0],
-      [-1.99989082, 8.21948676, 0],
-      [-2.00897626, 8.21851121, 0],
-      [-2.01902187, 8.21742549, 0],
-    ],
-  ];
+  const [selectedLayer, setSelectedLayer] = useState<PlantLocation | null>(
+    null
+  );
 
   const [viewport, setViewport] = useState<ViewportProps>({
     width: '100%',
@@ -99,7 +83,7 @@ export const MapContainer = () => {
   });
 
   const { makeRequest: makeReqToFetchProjectSites } = useNextRequest<{
-    data: Site[];
+    data: Sites;
   }>({
     url: `/api/data-explorer/map/sites/${project?.id}`,
     method: HTTP_METHOD.GET,
@@ -143,17 +127,15 @@ export const MapContainer = () => {
     const res = await makeReqToFetchProjectSites();
     if (res) {
       setProjectSites(res.data);
-      setProjectSite(res.data[0] ? res.data[0] : null);
+      setProjectSite(res.data.features[0] ? res.data.features[0] : null);
     }
   };
 
   const fetchProjectLocations = async () => {
     const res = await makeReqToFetchPlantLocation();
     if (res) {
-      setProjectLocations(res.data);
-      setProjectLocation(res.data[0] ? res.data[0] : null);
-
-      console.log('res.data ==>', res.data);
+      setPlantLocations(res.data);
+      setPlantLocation(res.data[0] ? res.data[0] : null);
     }
   };
 
@@ -178,7 +160,50 @@ export const MapContainer = () => {
     setProjectSite(site);
   };
 
-  console.log('projectLoactions ==>', projectLoactions);
+  const handleMapClick = (event) => {
+    const clickedFeatures = event.features;
+    if (clickedFeatures.length > 0) {
+      const clickedLayer = clickedFeatures[0];
+      setSelectedLayer(clickedLayer);
+    }
+  };
+
+  const layers = useMemo(() => {
+    return plantLocations ? (
+      plantLocations.map((pl) => (
+        <Source
+          key={`${pl.properties.guid}-source`}
+          type="geojson"
+          data={pl}
+          id={pl.properties.guid}
+        >
+          <Layer
+            id={`${pl.properties.guid}-layer`}
+            type="fill"
+            paint={{
+              'fill-color': 'green',
+              'fill-opacity': 0.6,
+            }}
+          />
+          {selectedLayer &&
+            selectedLayer.properties.guid === pl.properties.guid && (
+              <Layer
+                key={`${pl.properties.guid}-selected`}
+                id={`${pl.properties.guid}-selected-layer`}
+                type="line"
+                source={pl.properties.guid}
+                paint={{
+                  'line-color': '#007A49',
+                  'line-width': 4,
+                }}
+              />
+            )}
+        </Source>
+      ))
+    ) : (
+      <></>
+    );
+  }, [plantLocations, selectedLayer]);
 
   return ready ? (
     <Container
@@ -232,38 +257,32 @@ export const MapContainer = () => {
       }
       overrideBodyStyles={styles.body}
     >
-      <div style={{ minHeight: '500px' }}>
-        <MapGL
-          ref={mapRef}
-          {...mapState}
-          {...viewport}
-          onViewStateChange={_handleViewport}
-        >
-          <Source
-            type="geojson"
-            data={{
-              type: 'Feature',
-              properties: {
-                guid: 'id_wefqewf',
-              },
-              geometry: {
-                type: 'Polygon',
-                coordinates: polygonCoordinates,
-              },
-            }}
+      <div className={styles.mapContainer}>
+        {plantLocations && projectSites ? (
+          <MapGL
+            ref={mapRef}
+            {...mapState}
+            {...viewport}
+            onViewStateChange={_handleViewport}
+            onClick={handleMapClick}
           >
-            <Layer
-              type="fill"
-              paint={{
-                'fill-color': 'blue', // Set the polygon fill color
-                'fill-opacity': 0.5, // Set the polygon fill opacity
-              }}
-            />
-          </Source>
-          <div className={styles.navigationControlContainer}>
-            <NavigationControl showCompass={false} />
-          </div>
-        </MapGL>
+            {layers}
+            <Source type="geojson" data={projectSites}>
+              <Layer
+                type="line" // Use "line" to display polygon borders
+                paint={{
+                  'line-color': '#007A49',
+                  'line-width': 4,
+                }}
+              />
+            </Source>
+            <div className={styles.navigationControlContainer}>
+              <NavigationControl showCompass={false} />
+            </div>
+          </MapGL>
+        ) : (
+          <>Loading...</>
+        )}
       </div>
     </Container>
   ) : (

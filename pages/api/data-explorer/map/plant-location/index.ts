@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 import db from '../../../../../src/utils/connectDB';
 import { Geometry } from '@turf/turf';
+import { PlantLocation } from '../../../../../src/features/common/types/dataExplorer';
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
@@ -14,14 +15,6 @@ interface UncleanPlantLocations {
   geometry: string;
   guid: string;
 }
-
-type PlantLocations = Array<{
-  type: string;
-  properties: {
-    guid: string;
-  };
-  geometry: Geometry;
-}>;
 
 handler.post(async (req, response) => {
   const { projectId, queryType, searchQuery, species } = req.body;
@@ -58,7 +51,7 @@ handler.post(async (req, response) => {
 
     const qRes = await db.query<UncleanPlantLocations[]>(query, values);
 
-    const plantLocations: PlantLocations = qRes.map((plantLocation) => ({
+    const plantLocations: PlantLocation[] = qRes.map((plantLocation) => ({
       type: 'Feature',
       properties: {
         guid: plantLocation.guid,

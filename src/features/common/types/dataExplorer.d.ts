@@ -65,6 +65,11 @@ export interface Site {
   type: 'Feature';
 }
 
+export type Sites = {
+  type: 'FeatureCollection';
+  features: Site[];
+};
+
 export interface UncleanSite {
   name: string;
   geometry: string;
@@ -88,10 +93,11 @@ export interface UncleanPlantLocations {
 
 export interface PlantLocation {
   geometry: Geometry;
-  guid: string;
+  properties: {
+    guid: string;
+  };
+  type: 'Feature';
 }
-
-export type PlantLocations = PlantLocation[];
 
 // --- /api/data-explorer/map/plant-location/[plantLocationId]
 export interface Measurements {

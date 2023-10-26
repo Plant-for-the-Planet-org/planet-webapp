@@ -37,7 +37,12 @@ handler.get(async (req, response) => {
 
     await db.end();
 
-    response.status(200).json({ data: sites });
+    const featureCollection = {
+      type: 'FeatureCollection',
+      features: sites,
+    };
+
+    response.status(200).json({ data: featureCollection });
   } catch (err) {
     console.log(err);
   } finally {
