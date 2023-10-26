@@ -63,7 +63,12 @@ export default function ProjectSnippet({
 
   const { token } = useUserProps();
   const handleOpen = () => {
-    const url = getDonationUrl(project.slug, token, embed, callbackUrl);
+    const url = getDonationUrl(
+      project.slug,
+      token,
+      embed || 'false',
+      callbackUrl || undefined
+    );
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
 
