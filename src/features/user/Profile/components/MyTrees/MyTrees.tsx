@@ -11,109 +11,21 @@ import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
+import {
+  handleError,
+  APIError,
+  User,
+  UserPublicProfile,
+} from '@planet-sdk/common';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import { ContributionType } from '../../../../common/types/user';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
 });
 
-interface Props {
-  profile: any;
-  authenticatedType: any;
-  token: any;
-}
-
-export default function MyTrees({ profile, authenticatedType, token }: Props) {
-  const { t, ready } = useTranslation(['country', 'me']);
-  const [contributions, setContributions] = React.useState();
-  const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
-  const { logoutUser } = useUserProps();
-
-  React.useEffect(() => {
-    async function loadFunction() {
-      if (authenticatedType === 'private' && token) {
-        try {
-          const result = await getAuthenticatedRequest(
-            `/app/profile/contributions`,
-            token,
-            logoutUser
-          );
-          setContributions(result);
-        } catch (err) {
-          setErrors(handleError(err as APIError));
-          redirect('/profile');
-        }
-      } else {
-        try {
-          const result = await getRequest(
-            `/app/profiles/${profile.id}/contributions`
-          );
-          setContributions(result);
-        } catch (err) {
-          setErrors(handleError(err as APIError));
-        }
-      }
-    }
-    loadFunction();
-  }, [profile]);
-
-  const MapProps = {
-    contributions,
-    authenticatedType,
-  };
-
-  return contributions?.length > 0 && ready ? (
-    <div
-      className={authenticatedType === 'private' ? 'profilePage' : ''}
-      style={{ marginTop: '0px' }}
-    >
-      {contributions &&
-      Array.isArray(contributions) &&
-      contributions.length !== 0 ? (
-        <>
-          <div
-            className={styles.myTreesSection}
-            style={{ paddingBottom: '80px' }}
-          >
-            <div
-              className={
-                authenticatedType === 'private'
-                  ? 'profilePageTitle'
-                  : styles.myTreesTitle
-              }
-            >
-              {authenticatedType === 'private'
-                ? t('me:myForest')
-                : t('me:nameForest', { name: profile.displayName })}
-            </div>
-            <div className={styles.MyTreesLegend}>
-              <div className={styles.donatedTrees}>
-                <TreesIcon color="currentColor" />
-                <p>{t('me:donatedTrees')}</p>
-              </div>
-              <div className={styles.registeredTrees}>
-                <TreesIcon color="currentColor" />
-                <p>{t('me:registeredTrees')}</p>
-              </div>
-            </div>
-            <div className={styles.myTreesContainer}>
-              <div className={styles.treesList}>
-                {contributions.map((contribution: any, index: any) => {
-                  return <TreeList key={index} contribution={contribution} />;
-                })}
-              </div>
-              <MyTreesMap {...MapProps} />
-            </div>
-          </div>
-        </>
-      ) : null}
-    </div>
-  ) : null;
-}
-
-function TreeList({ contribution }: any) {
-  const date = formatDate(contribution.properties.plantDate);
+function TreeList({ contribution }: { contribution: ContributionType }) {
+  const date = formatDate(contribution.properties.plantDate || '');
   const { t, i18n } = useTranslation(['country', 'me']);
 
   return (
@@ -133,7 +45,7 @@ function TreeList({ contribution }: any) {
           </div>
           {contribution.properties.type === 'gift' ? (
             <div className={styles.source}>
-              {contribution.properties.giver.name
+              {contribution.properties.giver?.name
                 ? t('me:receivedFrom', {
                     name: contribution.properties.giver.name,
                   })
@@ -173,7 +85,7 @@ function TreeList({ contribution }: any) {
                 color={
                   contribution.properties.type === 'registration'
                     ? '#3D67B1'
-                    : null
+                    : undefined
                 }
               />
             ) : (
@@ -181,7 +93,7 @@ function TreeList({ contribution }: any) {
                 color={
                   contribution.properties.type === 'registration'
                     ? '#3D67B1'
-                    : null
+                    : undefined
                 }
               />
             )}
@@ -190,4 +102,99 @@ function TreeList({ contribution }: any) {
       </div>
     </div>
   );
+}
+
+interface Props {
+  profile: User | UserPublicProfile;
+  authenticatedType: string;
+  token: string | null;
+}
+
+export default function MyTrees({ profile, authenticatedType, token }: Props) {
+  const { t, ready } = useTranslation(['country', 'me']);
+  const [contributions, setContributions] = React.useState<ContributionType[]>(
+    []
+  );
+  const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
+  const { logoutUser } = useUserProps();
+
+  React.useEffect(() => {
+    async function loadFunction() {
+      if (authenticatedType === 'private' && token) {
+        try {
+          const result = await getAuthenticatedRequest<ContributionType[]>(
+            `/app/profile/contributions`,
+            token,
+            logoutUser
+          );
+          setContributions(result);
+        } catch (err) {
+          setErrors(handleError(err as APIError));
+          redirect('/profile');
+        }
+      } else {
+        try {
+          const result = await getRequest<ContributionType[]>(
+            `/app/profiles/${profile.id}/contributions`
+          );
+          setContributions(result);
+        } catch (err) {
+          setErrors(handleError(err as APIError));
+        }
+      }
+    }
+    loadFunction();
+  }, [profile]);
+
+  const MapProps = {
+    contributions,
+  };
+
+  return contributions?.length > 0 && ready ? (
+    <div
+      className={authenticatedType === 'private' ? 'profilePage' : ''}
+      style={{ marginTop: '0px' }}
+    >
+      {contributions &&
+      Array.isArray(contributions) &&
+      contributions.length !== 0 ? (
+        <>
+          <div
+            className={styles.myTreesSection}
+            style={{ paddingBottom: '80px' }}
+          >
+            <div
+              className={
+                authenticatedType === 'private'
+                  ? 'profilePageTitle'
+                  : styles.myTreesTitle
+              }
+            >
+              {authenticatedType === 'private'
+                ? t('me:myForest')
+                : t('me:nameForest', { name: profile.displayName })}
+            </div>
+            <div className={styles.MyTreesLegend}>
+              <div className={styles.donatedTrees}>
+                <TreesIcon color="currentColor" />
+                <p>{t('me:donatedTrees')}</p>
+              </div>
+              <div className={styles.registeredTrees}>
+                <TreesIcon color="currentColor" />
+                <p>{t('me:registeredTrees')}</p>
+              </div>
+            </div>
+            <div className={styles.myTreesContainer}>
+              <div className={styles.treesList}>
+                {contributions.map((contribution, index) => {
+                  return <TreeList key={index} contribution={contribution} />;
+                })}
+              </div>
+              <MyTreesMap {...MapProps} />
+            </div>
+          </div>
+        </>
+      ) : null}
+    </div>
+  ) : null;
 }

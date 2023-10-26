@@ -1,4 +1,4 @@
-import { ReactElement, useContext } from 'react';
+import { ReactElement } from 'react';
 import { styled, Grid, Button, Divider } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';

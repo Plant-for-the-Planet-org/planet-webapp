@@ -37,13 +37,9 @@ export default function Markers({
   const router = useRouter();
 
   const [open, setOpen] = React.useState(false);
-  const buttonRef = React.useRef(null);
-  const popupRef = React.useRef(null);
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
   const handleClose = () => {
     setOpen(false);
   };
@@ -133,39 +129,21 @@ export default function Markers({
             className={styles.popupProject}
             onClick={(event) => {
               if (event.target !== buttonRef.current) {
-                if (!popupRef.current) {
-                  router.push(
-                    `/${popupData.project.properties.slug}/${
-                      embed === 'true'
-                        ? `${
-                            callbackUrl != undefined
-                              ? `?embed=true&callback=${callbackUrl}`
-                              : '?embed=true'
-                          }`
-                        : ''
-                    }`,
-                    undefined,
-                    {
-                      shallow: true,
-                    }
-                  );
-                } else if (!popupRef.current.contains(event.target)) {
-                  router.push(
-                    `/${popupData.project.properties.slug}/${
-                      embed === 'true'
-                        ? `${
-                            callbackUrl != undefined
-                              ? `?embed=true&callback=${callbackUrl}`
-                              : '?embed=true'
-                          }`
-                        : ''
-                    }`,
-                    undefined,
-                    {
-                      shallow: true,
-                    }
-                  );
-                }
+                router.push(
+                  `/${popupData.project.properties.slug}/${
+                    embed === 'true'
+                      ? `${
+                          callbackUrl != undefined
+                            ? `?embed=true&callback=${callbackUrl}`
+                            : '?embed=true'
+                        }`
+                      : ''
+                  }`,
+                  undefined,
+                  {
+                    shallow: true,
+                  }
+                );
               }
             }}
             onKeyPress={() => {
@@ -197,13 +175,8 @@ export default function Markers({
             }}
           >
             <PopupProject
-              key={popupData.project.properties.id}
               project={popupData.project.properties}
               buttonRef={buttonRef}
-              popupRef={popupRef}
-              open={open}
-              handleOpen={handleOpen}
-              handleClose={handleClose}
             />
           </div>
         </Popup>

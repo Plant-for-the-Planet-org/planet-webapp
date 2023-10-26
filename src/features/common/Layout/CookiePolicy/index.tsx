@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './CookiePolicy.module.scss';
 import { useUserProps } from '../UserPropsContext';
@@ -15,18 +15,30 @@ export default function CookiePolicy() {
     }
   }, [contextLoaded, user]);
 
+  const isMountedRef = useRef(false);
+
   useEffect(() => {
-    const prev = localStorage.getItem('cookieNotice');
-    if (!prev) {
-      setShowCookieNotice(true);
+    // Check if the component has already mounted before updating state
+    if (isMountedRef.current) {
+      return;
     } else {
-      setShowCookieNotice(prev === 'true');
+      const prev = localStorage.getItem('cookieNotice');
+      if (!prev) {
+        setShowCookieNotice(true);
+      } else {
+        setShowCookieNotice(prev === 'true');
+      }
     }
   }, []);
 
   useEffect(() => {
     localStorage.setItem('cookieNotice', showCookieNotice);
   }, [showCookieNotice]);
+
+  // useEffect to update the isMountedRef after the initial mount
+  useEffect(() => {
+    isMountedRef.current = true;
+  }, []);
 
   return ready && showCookieNotice ? (
     <div className={styles.cookieContainer}>
