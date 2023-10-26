@@ -14,6 +14,13 @@ import {
   TreeProjectConcise,
 } from '@planet-sdk/common/build/types/project/map';
 import ProjectInfo from '../../../../public/assets/images/icons/project/ProjectInfo';
+import {
+  bindHover,
+  bindPopover,
+  usePopupState,
+} from 'material-ui-popup-state/hooks';
+import HoverPopover from 'material-ui-popup-state/HoverPopover';
+import tenantConfig from '../../../../tenant.config';
 
 interface Props {
   project: TreeProjectConcise | ConservationProjectConcise;
@@ -61,6 +68,13 @@ export default function PopupProject({
       : project.allowDonations
       ? 'topUnapproved'
       : 'notDonatable';
+
+  const popupProjectInfoPopover = usePopupState({
+    variant: 'popover',
+    popupId: 'popupProjectInfoPopover',
+  });
+
+  const config = tenantConfig();
 
   return ready ? (
     <div className={'singleProject'}>
@@ -135,11 +149,31 @@ export default function PopupProject({
             </div>
           </div>
           {!project.allowDonations ? (
-            <div className={'projectHoverIcon'}>
-              <ProjectInfo
-                color={'#828282'}
-                title={`${t('common:disabledDonateButtonText')}`}
-              />
+            <div
+              className={'projectHoverIcon'}
+              {...bindHover(popupProjectInfoPopover)}
+            >
+              <ProjectInfo color={'#828282'} />
+              <HoverPopover
+                {...bindPopover(popupProjectInfoPopover)}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                <div className="projectInfoPopupContainer">
+                  {config.tenantName === 'salesforce'
+                    ? `${t('common:salesforceDisabledDonateButtonText')}`
+                    : `${t('common:disabledDonateButtonText')}`}
+                </div>
+              </HoverPopover>
               {t('common:notDonatable')}
             </div>
           ) : (
