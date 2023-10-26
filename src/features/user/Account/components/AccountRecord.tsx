@@ -11,7 +11,7 @@ import {
   PaymentHistoryRecord,
   RecipientBank,
 } from '../../../common/types/payments';
-import Certificates, { shouldDisableCertificate } from './Certificates';
+import Certificates, { shouldEnableCertificate } from './Certificates';
 
 interface HeaderProps {
   record: PaymentHistoryRecord;
@@ -407,7 +407,7 @@ export default function AccountRecord({
 
   const showCertificate = useMemo(() => {
     if (
-      (shouldDisableCertificate(record.purpose) &&
+      (shouldEnableCertificate(record.purpose, record.unitType) &&
         (record?.details?.donorCertificate ||
           record?.details?.giftCertificate)) ||
       record?.details?.taxDeductibleReceipt
@@ -463,6 +463,7 @@ export default function AccountRecord({
                   <Certificates
                     recordDetails={record.details}
                     purpose={record.purpose}
+                    unitType={record.unitType}
                   />
                 </div>
               </>
