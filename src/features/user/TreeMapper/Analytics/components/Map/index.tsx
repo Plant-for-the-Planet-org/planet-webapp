@@ -249,7 +249,7 @@ export const MapContainer = () => {
       }
       rightElement={
         <SitesSelectorAutocomplete
-          sitesList={projectSites}
+          sitesList={projectSites?.features}
           site={projectSite}
           handleSiteChange={handleSiteChange}
           styles={{ minWidth: '200px' }}
