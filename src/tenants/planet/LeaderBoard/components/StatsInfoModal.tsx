@@ -81,6 +81,6 @@ function ExploreInfoModal({
   );
 }
 
-export default React.forwardRef((props: Props, ref) => (
+export default React.forwardRef((props: Props) => (
   <ExploreInfoModal {...props} />
 ));

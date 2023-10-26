@@ -52,7 +52,7 @@ export default function Filters(): ReactElement {
         setFilteredProjects(projects);
       }
     }
-  }, [projects, purpose, type]);
+  }, [projects, type]);
 
   React.useEffect(() => {
     function getFilters() {
