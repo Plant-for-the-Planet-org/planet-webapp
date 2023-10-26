@@ -49,10 +49,14 @@ export default function Markers({
     setOpen(false);
   };
   const markerBackgroundColor = (project) => {
+    const topUnapprovedType =
+      project.purpose === 'conservation'
+        ? 'conservationMarker'
+        : 'topUnapproved';
     return project.isTopProject && project.isApproved
       ? 'topApproved'
       : project.allowDonations
-      ? 'topUnapproved'
+      ? topUnapprovedType
       : 'notDonatable';
   };
   return (
