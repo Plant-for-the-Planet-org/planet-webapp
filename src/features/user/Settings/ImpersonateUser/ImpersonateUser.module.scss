@@ -37,8 +37,8 @@
   border: 2px solid #f3f3f3;
   border-radius: 50%;
   border-top: 2px solid transparent;
-  width: 16px !important;
-  height: 16px !important;
+  width: 16px;
+  height: 16px; 
   -webkit-animation: spin 1s linear infinite; /* Safari */
   animation: spin 1s linear infinite;
 }
