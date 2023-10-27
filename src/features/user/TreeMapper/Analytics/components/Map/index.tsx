@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react';
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Search } from '@mui/icons-material';
@@ -166,7 +166,20 @@ export const MapContainer = () => {
         features: _plantLocations,
       };
       setPlantLocations(_featureCollection as PlantLocations);
-      setPlantLocation(res.data[0] ? res.data[0] : null);
+      if (_plantLocations.length > 0) {
+        const defaultFeature = _plantLocations[0];
+        const [longitude, latitude] = turf.centroid(defaultFeature?.geometry)
+          .geometry?.coordinates;
+        const zoom = 12;
+        setViewport({
+          latitude,
+          longitude,
+          zoom,
+          width: '100%',
+          height: '500px',
+        });
+        setPlantLocation(res.data[0] ? res.data[0] : null);
+      }
     }
   };
 
