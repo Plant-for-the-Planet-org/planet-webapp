@@ -11,8 +11,16 @@ import styles from './ProjectsContainer.module.scss';
 import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
+import { Properties } from '../../common/types/project';
+import { Geometry } from '@turf/turf';
 
-function SingleProject({ project }: any) {
+interface UserProjectsType {
+  type: string;
+  geometry: Geometry;
+  properties: Properties;
+}
+
+function SingleProject({ project }: { project: Properties }) {
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
     : '';
@@ -32,13 +40,13 @@ function SingleProject({ project }: any) {
         <p className={styles.projectName}>{project.name}</p>
         <p className={styles.projectClassification}>
           {project?.purpose === 'conservation'
-            ? project?.metadata?.ecosystem
+            ? project?.metadata?.ecosystems
             : project?.classification}{' '}
           •{' '}
           {project.country === null ? (
             <></>
           ) : (
-            t('country:' + project.country.toLowerCase())
+            t('country:' + (project.country || '').toLowerCase())
           )}
         </p>
         {project.purpose === 'trees' ? (
@@ -86,7 +94,7 @@ function SingleProject({ project }: any) {
 
 export default function ProjectsContainer() {
   const { t, ready } = useTranslation(['donate', 'manageProjects']);
-  const [projects, setProjects] = React.useState([]);
+  const [projects, setProjects] = React.useState<UserProjectsType[]>([]);
   const [loader, setLoader] = React.useState(true);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { user, contextLoaded, token, logoutUser } = useUserProps();
@@ -94,7 +102,7 @@ export default function ProjectsContainer() {
   async function loadProjects() {
     if (user) {
       try {
-        const projects = await getAuthenticatedRequest(
+        const projects = await getAuthenticatedRequest<UserProjectsType[]>(
           '/app/profile/projects?version=1.2',
           token,
           logoutUser
@@ -153,7 +161,7 @@ export default function ProjectsContainer() {
           </div>
         ) : (
           <div className={styles.listProjects}>
-            {projects.map((project: any, index: any) => {
+            {projects.map((project, index) => {
               return <SingleProject key={index} project={project.properties} />;
             })}
           </div>

@@ -1,5 +1,12 @@
 import React, { ReactElement } from 'react';
-import { Controller, useForm, useFieldArray, Control } from 'react-hook-form';
+import {
+  Controller,
+  useForm,
+  useFieldArray,
+  FieldErrors,
+  FieldArrayWithId,
+  Control,
+} from 'react-hook-form';
 import styles from '../Import.module.scss';
 import { useTranslation } from 'next-i18next';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
@@ -23,7 +30,14 @@ import themeProperties from '../../../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { MapProject } from '../../../../common/types/ProjectPropsContextInterface';
+import {
+  FeatureCollection,
+  GeoJsonProperties,
+  Geometry,
+  GeometryObject,
+} from 'geojson';
 import { Species } from '../../../../common/types/plantLocation';
+import { PlantLocation } from '../../Treemapper';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -46,9 +60,9 @@ interface SpeciesProps {
   index: number;
   t: Function;
   remove: Function;
-  errors: any;
-  item: Record<'id', string>;
-  control: Control<any, any>;
+  errors: FieldErrors<PlantLocation>;
+  item: FieldArrayWithId<PlantLocation, 'plantedSpecies', 'id'>;
+  control: Control<PlantLocation>;
 }
 
 function PlantedSpecies({
@@ -64,7 +78,7 @@ function PlantedSpecies({
       <div className={styles.speciesNameField}>
         {/* <SpeciesSelect label={t('treemapper:species')} name={`plantedSpecies[${index}].species`} mySpecies={mySpecies} control={control} /> */}
         <Controller
-          name={`plantedSpecies[${index}].otherSpecies`}
+          name={`plantedSpecies.${index}.otherSpecies`}
           control={control}
           rules={{
             required:
@@ -79,12 +93,12 @@ function PlantedSpecies({
               value={value}
               error={
                 errors.plantedSpecies &&
-                errors.plantedSpecies[index]?.otherSpecies
+                errors.plantedSpecies[index]?.otherSpecies !== undefined
               }
               helperText={
                 errors.plantedSpecies &&
                 errors.plantedSpecies[index]?.otherSpecies &&
-                errors.plantedSpecies[index]?.otherSpecies.message
+                (errors.plantedSpecies[index]?.otherSpecies?.message ?? '')
               }
             />
           )}
@@ -92,33 +106,32 @@ function PlantedSpecies({
       </div>
       <div className={styles.speciesCountField}>
         <Controller
-          name={`plantedSpecies[${index}].treeCount`}
+          name={`plantedSpecies.${index}.treeCount`}
           control={control}
           rules={{
             required: index > 0 ? false : t('treemapper:treesRequired'),
-            validate: (value: any) => {
-              return parseInt(value, 10) >= 1
-                ? true
-                : t('treemapper:treesRequired');
+            validate: (value) => {
+              return Number(value) >= 1 ? true : t('treemapper:treesRequired');
             },
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextField
               label={t('treemapper:count')}
               variant="outlined"
-              onChange={(e: any) => {
+              onChange={(e) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
                 onChange(e.target.value);
               }}
               value={value > 0 ? value : ''}
               onBlur={onBlur}
               error={
-                errors.plantedSpecies && errors.plantedSpecies[index]?.treeCount
+                errors.plantedSpecies &&
+                errors.plantedSpecies[index]?.treeCount !== undefined
               }
               helperText={
                 errors.plantedSpecies &&
                 errors.plantedSpecies[index]?.treeCount &&
-                errors.plantedSpecies[index]?.treeCount.message
+                (errors.plantedSpecies[index]?.treeCount?.message ?? '')
               }
             />
           )}
@@ -141,9 +154,9 @@ function PlantedSpecies({
 interface Props {
   handleNext: () => void;
   userLang: string;
-  plantLocation: any;
+  plantLocation: PlantLocation | null;
   setPlantLocation: Function;
-  geoJson: any;
+  geoJson: Geometry | null;
   setGeoJson: Function;
   activeMethod: string;
   setActiveMethod: Function;
@@ -170,7 +183,7 @@ export default function PlantingLocation({
 
   const { t } = useTranslation(['treemapper', 'common', 'maps']);
   const defaultValues = {
-    plantDate: new Date(),
+    plantDate: '',
     plantProject: '',
     geometry: {},
     plantedSpecies: [
@@ -227,8 +240,12 @@ export default function PlantingLocation({
     }
   }, [contextLoaded]);
 
-  const normalizeGeoJson = (geoJson: any) => {
-    if (gjv.isGeoJSONObject(geoJson) && geoJson.features?.length > 0) {
+  const normalizeGeoJson = (geoJson: GeometryObject | FeatureCollection) => {
+    if (
+      gjv.isGeoJSONObject(geoJson) &&
+      'features' in geoJson &&
+      geoJson.features?.length > 0
+    ) {
       const flattened = flatten(geoJson);
       if (flattened.features[0]?.geometry?.type === 'Polygon') {
         setGeoJsonError(false);
@@ -246,8 +263,8 @@ export default function PlantingLocation({
     }
   };
 
-  const onDrop = React.useCallback((acceptedFiles: File[]) => {
-    acceptedFiles.forEach((file) => {
+  const onDrop = React.useCallback((acceptedFiles) => {
+    acceptedFiles.forEach((file: File) => {
       const reader = new FileReader();
       reader.readAsText(file);
       reader.onabort = () => console.log('file reading was aborted');
@@ -304,7 +321,7 @@ export default function PlantingLocation({
     onFileDialogCancel: () => setIsUploadingData(false),
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: PlantLocation) => {
     if (geoJson) {
       setIsUploadingData(true);
       const submitData = {
@@ -312,7 +329,7 @@ export default function PlantingLocation({
         captureMode: 'external',
         geometry: geoJson,
         plantedSpecies: data.plantedSpecies,
-        plantDate: data.plantDate.toISOString(),
+        plantDate: new Date(data.plantDate).toISOString(),
         registrationDate: new Date().toISOString(),
         plantProject: data.plantProject,
       };
@@ -366,7 +383,11 @@ export default function PlantingLocation({
             <JSONInput
               id="json-editor"
               placeholder={geoJson}
-              onChange={(json: any) => normalizeGeoJson(json.jsObject)}
+              onChange={(json: {
+                jsObject:
+                  | Geometry
+                  | FeatureCollection<Geometry, GeoJsonProperties>;
+              }) => normalizeGeoJson(json.jsObject)}
               locale={locale}
               height="220px"
               width="100%"
@@ -437,7 +458,7 @@ export default function PlantingLocation({
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}
-                error={errors.plantProject}
+                error={errors.plantProject !== undefined}
                 helperText={errors.plantProject && errors.plantProject.message}
               >
                 {projects.map((option) => (
@@ -477,7 +498,8 @@ export default function PlantingLocation({
         fields.map((item, index) => {
           return (
             <PlantedSpecies
-              key={index}
+              // Use id instead of index to prevent rerenders as per rhf guidelines
+              key={item.id}
               index={index}
               t={t}
               remove={remove}
@@ -492,6 +514,12 @@ export default function PlantingLocation({
           append({
             otherSpecies: '',
             treeCount: 0,
+            // Set to default or empty value for type match
+            scientificName: '',
+            created: '',
+            scientificSpecies: '',
+            id: '',
+            updated: '',
           });
         }}
         className={styles.addSpeciesButton}

@@ -1,6 +1,6 @@
-import { Button, styled } from '@mui/material';
+import { Button, styled, ButtonProps } from '@mui/material';
 
-const MuiButton = styled(Button)(({ theme }) => {
+const StyledButton = styled(Button)(({ theme }) => {
   return {
     '&.MuiButton-root': {
       textTransform: 'none',
@@ -14,5 +14,9 @@ const MuiButton = styled(Button)(({ theme }) => {
     },
   };
 });
+
+const MuiButton = (props: ButtonProps) => {
+  return <StyledButton {...props} />;
+};
 
 export default MuiButton;

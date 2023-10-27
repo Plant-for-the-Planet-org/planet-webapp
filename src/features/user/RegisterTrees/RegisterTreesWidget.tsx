@@ -422,7 +422,6 @@ type FormData = {
 
 export default function RegisterTreesWidget() {
   const { user, token } = useUserProps();
-  const { t, ready } = useTranslation(['me', 'common']);
   const [contributionGUID, setContributionGUID] = React.useState('');
   const [contributionDetails, setContributionDetails] = React.useState({});
   const [registered, setRegistered] = React.useState(false);
@@ -434,7 +433,7 @@ export default function RegisterTreesWidget() {
     slug: user.slug,
   };
 
-  return ready ? (
+  return (
     <>
       {!registered ? (
         <RegisterTreesForm
@@ -446,5 +445,5 @@ export default function RegisterTreesWidget() {
         <SingleContribution {...ContributionProps} />
       )}
     </>
-  ) : null;
+  );
 }

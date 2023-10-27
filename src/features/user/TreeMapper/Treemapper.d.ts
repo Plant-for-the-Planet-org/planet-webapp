@@ -1,3 +1,4 @@
+import { DateString } from '../../common/types/common';
 export interface DeviceLocation {
   coordinates: number[];
   type: string;
@@ -51,7 +52,7 @@ export interface SamplePlantLocation {
   scientificSpecies: string;
   geometryUpdatesCount: number;
   type: string;
-  plantProjectSite?: any;
+  plantProjectSite?: string | null;
   registrationDate: string;
   originalGeometry: OriginalGeometry;
   captureMode: string;
@@ -67,7 +68,7 @@ export interface SamplePlantLocation {
 export interface PlantedSpecies {
   scientificName: string;
   created: string;
-  otherSpecies?: any;
+  otherSpecies?: string | null;
   scientificSpecies: string;
   treeCount: number;
   id: string;
@@ -81,12 +82,12 @@ export interface PlantLocation {
   coordinates: Coordinate[];
   geometryUpdatesCount: number;
   type: string;
-  plantProjectSite?: any;
+  plantProjectSite?: string | null;
   samplePlantLocations: SamplePlantLocation[];
   plantProject: string;
   plantedSpecies: PlantedSpecies[];
-  plantDateEnd?: any;
-  plantDateStart?: any;
+  plantDateEnd?: DateString | null;
+  plantDateStart?: DateString | null;
   registrationDate: string;
   originalGeometry: OriginalGeometry;
   sampleTreeCount: number;

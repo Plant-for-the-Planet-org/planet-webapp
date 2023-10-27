@@ -5,12 +5,14 @@ import {
   EcosystemTypes,
   LandOwnershipTypes,
   OwnershipTypes,
-  SurvivalRateStatus,
   ProjectExpense,
   CountryCode,
   TreeProjectExtended,
   ConservationProjectExtended,
   InterventionTypes,
+  Tpo,
+  DefaultPaymentConfig,
+  Certificate,
 } from '@planet-sdk/common';
 import { FeatureCollection as GeoJson } from 'geojson';
 import { SetState } from './common';
@@ -63,47 +65,56 @@ export interface MetaData {
   socialBenefits?: Nullable<string>;
   startingProtectionYear?: Nullable<number>;
 }
-export interface Project {
-  name: string;
-  countTarget: number;
-  survivalRate: any;
-  unitCost: number;
-  currency: string;
-  country: string;
-  description: string;
-  videoUrl: string;
-  metadata: MetaData;
-  id: string;
-  website: string;
-  publish: boolean;
-  allowDonations: boolean;
-  taxDeductibleCountries: string[];
-  slug: string;
-  purpose: string;
-  sites: Site[];
-  classification: string;
-  image: string;
+
+export type CertificateScopeProjects = ProfileProject & {
+  _scope: string;
+  certificates: Certificate[];
+};
+
+export type ImagesScopeProjects = ProfileProject & {
+  _scope: string;
   images: UploadImage[];
-  isFeatured: boolean;
-  isVerified: boolean;
-  verificationStatus: string;
-  acceptDonations: boolean;
-  geoLongitude: number;
-  geoLatitude: number;
+};
+
+export type ExpensesScopeProjects = ProfileProject & {
+  _scope: string;
   expenses: ProjectExpense[];
-  reviewRequested: boolean;
+};
+
+export type SitesScopeProjects = ProfileProject & {
+  _scope: string;
+  sites: Site[];
+};
+interface Units {
+  tree?: number;
+  m2?: number;
+}
+
+export interface Properties {
+  purpose: string;
+  id: string;
+  slug: string;
+  name: string;
+  allowDonations: boolean;
+  country: string;
+  currency: string;
+  image: string;
+  unit: string;
+  unitType: string;
+  unitCost: number;
+  taxDeductionCountries: CountryCode[];
   isApproved: boolean;
   isTopProject: boolean;
-  plantingSeasons: string[];
-  siteOwnerType: string[];
-  enablePlantLocations: boolean;
-  survivalRateStatus: SurvivalRateStatus;
+  isFeatured: boolean;
+  metadata: MetaData;
+  tpo: Tpo;
+  classification: string;
+  countPlanted: number;
+  minTreeCount: number;
+  countTarget: number;
+  location: string;
   treeCost: number;
-  visitorAssistance: boolean;
-  firstTreePlanted: number;
-  acquisitionYear: number;
-  intensity: any;
-  revisionPeriodicityLevel: any;
+  paymentDefaults: Nullable<DefaultPaymentConfig>;
 }
 
 export interface ManageProjectsProps {
@@ -142,10 +153,11 @@ export interface ProjectMediaProps {
   handleBack: (arg: number) => void;
   token: string;
   handleNext: (arg: number) => void;
-  projectDetails: Project | undefined;
-  setProjectDetails: SetState<Project | undefined>;
+  projectDetails: ProfileProjectTrees | ProfileProjectConservation | null;
+  setProjectDetails: SetState<
+    ProfileProjectTrees | ProfileProjectConservation | null
+  >;
   projectGUID: string | unknown;
-  handleReset: (arg: string) => void;
 }
 
 // Detail Analysis
@@ -155,12 +167,11 @@ export interface DetailedAnalysisProps {
   userLang: string;
   token: string;
   handleNext: (arg: number) => void;
-  projectDetails: ProfileProjectTrees | ProfileProjectConservation | undefined;
+  projectDetails: ProfileProjectTrees | ProfileProjectConservation | null;
   setProjectDetails: SetState<
-    ProfileProjectTrees | ProfileProjectConservation | undefined
+    ProfileProjectTrees | ProfileProjectConservation | null
   >;
   projectGUID: string;
-  handleReset: (arg: string) => void;
   purpose: string | string[] | undefined;
 }
 
@@ -186,8 +197,7 @@ export interface ProjectSitesProps {
   token: string;
   handleNext: (arg: number) => void;
   projectGUID: string;
-  handleReset: (arg: string) => void;
-  projectDetails: Project;
+  projectDetails: ProfileProjectTrees | ProfileProjectConservation | null;
 }
 export interface SiteDetails {
   geometry: {};
@@ -221,7 +231,6 @@ interface EditSiteProps {
   projectGUID: string;
   setSiteList: SetState<Site[]>;
   token: string;
-  setFeatures: Function;
   seteditMode: Function;
   siteGUID: Nullable<string>;
   siteList: Site[];
@@ -234,7 +243,6 @@ export interface ProjectSpendingProps {
   handleNext: (arg: number) => void;
   userLang: string;
   projectGUID: string | unknown;
-  handleReset: (arg: string) => void;
 }
 
 // project review
@@ -243,9 +251,7 @@ export interface SubmitForReviewProps {
   submitForReview: () => Promise<void>;
   handleBack: (arg: number) => void;
   isUploadingData: Boolean;
-  projectGUID: string;
-  handleReset: (arg: string) => void;
-  projectDetails: Project;
+  projectDetails: ProfileProjectTrees | ProfileProjectConservation | null;
   handlePublishChange: (arg: boolean) => Promise<void>;
 }
 
@@ -269,6 +275,8 @@ export interface ProjectOption {
   allowDonations: boolean;
 }
 
+export type ProfileProject = ProfileProjectConservation | ProfileProjectTrees;
+
 export interface ProfileProjectConservation
   extends Omit<
     ConservationProjectExtended,
@@ -281,7 +289,6 @@ export interface ProfileProjectConservation
     | 'minQuantity'
     | 'options'
     | 'sites'
-    | 'taxDeductionCountries'
     | 'yearAcquired'
     | 'treeCost'
     | 'coordinates'
@@ -291,7 +298,6 @@ export interface ProfileProjectConservation
     | 'tpo'
   > {
   publish: boolean;
-  taxDeductibleCountries: CountryCode[];
   isFeatured: boolean;
   isVerified: boolean;
   verificationStatus: VerificationStatus;
@@ -301,6 +307,8 @@ export interface ProfileProjectConservation
   isApproved: boolean;
   isTopProject: boolean;
   classification: null;
+  unitsContributed: Units;
+  unitsTargeted: Units;
 }
 
 export interface ProfileProjectTrees
@@ -315,7 +323,6 @@ export interface ProfileProjectTrees
     | 'minQuantity'
     | 'options'
     | 'sites'
-    | 'taxDeductionCountries'
     | 'yearAcquired'
     | 'coordinates'
     | 'countDonated'
@@ -336,12 +343,10 @@ export interface ProfileProjectTrees
     | 'mainChallenge'
     | 'motivation'
     | 'plantingDensity'
-    | 'plantingSeasons'
     | 'siteOwnerName'
     | 'yearAbandoned'
   > {
   publish: boolean;
-  taxDeductibleCountries: CountryCode[];
   isFeatured: boolean;
   isVerified: boolean;
   verificationStatus: VerificationStatus;
@@ -349,6 +354,10 @@ export interface ProfileProjectTrees
   geoLongitude: number;
   geoLatitude: number;
   revisionPeriodicityLevel: null;
+  acquisitionYear: Nullable<number>;
+  siteOwnerType: Nullable<SiteOwnerTypes[]>;
+  unitsContributed: Units;
+  unitsTargeted: Units;
 }
 
 type VerificationStatus =
