@@ -95,8 +95,16 @@ export interface PlantLocation {
   geometry: Geometry;
   properties: {
     guid: string;
+    treeCount: number;
+    density?: number;
+    opacity?: number;
   };
   type: 'Feature';
+}
+
+export interface PlantLocations {
+  type: 'FeatureCollection';
+  features: PlantLocation[];
 }
 
 // --- /api/data-explorer/map/plant-location/[plantLocationId]

@@ -14,6 +14,7 @@ enum QueryType {
 interface UncleanPlantLocations {
   geometry: string;
   guid: string;
+  treeCount: number;
 }
 
 handler.post(async (req, response) => {
@@ -21,7 +22,7 @@ handler.post(async (req, response) => {
 
   try {
     let query =
-      'SELECT pl.guid, pl.geometry, COALESCE(ss.name, ps.other_species, pl.other_species) AS name \
+      'SELECT pl.guid, pl.trees_planted as treeCount, pl.geometry, COALESCE(ss.name, ps.other_species, pl.other_species) AS name \
         FROM planted_species ps \
         INNER JOIN plant_location pl ON ps.plant_location_id = pl.id \
         LEFT JOIN scientific_species ss ON ps.scientific_species_id = ss.id \
@@ -55,6 +56,7 @@ handler.post(async (req, response) => {
       type: 'Feature',
       properties: {
         guid: plantLocation.guid,
+        treeCount: plantLocation.treeCount,
       },
       geometry: JSON.parse(plantLocation.geometry) as Geometry,
     }));

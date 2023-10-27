@@ -1,33 +1,35 @@
 import { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react';
-import { Container } from '../Container';
-import ProjectTypeSelector, { ProjectType } from '../ProjectTypeSelector';
-import useNextRequest, {
-  HTTP_METHOD,
-} from '../../../../../../hooks/use-next-request';
-import {
-  DistinctSpecies,
-  PlantLocation,
-  Site,
-  Sites,
-} from '../../../../../common/types/dataExplorer';
-import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
-import LeftElements from './components/LeftElements';
 import { TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Search } from '@mui/icons-material';
 import moment from 'moment';
-import SitesSelectorAutocomplete from './components/SiteSelectorAutocomplete';
-import { MuiAutoComplete } from '../../../../../common/InputTypes/MuiAutoComplete';
 import 'mapbox-gl/dist/mapbox-gl.css';
-
-import styles from './index.module.scss';
-import getMapStyle from '../../../../../../utils/maps/getMapStyle';
+import * as turf from '@turf/turf';
 import MapGL, {
   Layer,
   NavigationControl,
   Source,
   ViewportProps,
 } from 'react-map-gl';
+
+import {
+  DistinctSpecies,
+  PlantLocation,
+  PlantLocations,
+  Site,
+  Sites,
+} from '../../../../../common/types/dataExplorer';
+import { Container } from '../Container';
+import ProjectTypeSelector, { ProjectType } from '../ProjectTypeSelector';
+import useNextRequest, {
+  HTTP_METHOD,
+} from '../../../../../../hooks/use-next-request';
+import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
+import LeftElements from './components/LeftElements';
+import SitesSelectorAutocomplete from './components/SiteSelectorAutocomplete';
+import { MuiAutoComplete } from '../../../../../common/InputTypes/MuiAutoComplete';
+import styles from './index.module.scss';
+import getMapStyle from '../../../../../../utils/maps/getMapStyle';
 
 const EMPTY_STYLE = {
   version: 8,
@@ -37,6 +39,20 @@ const EMPTY_STYLE = {
 
 const defaultMapCenter = [0, 0];
 const defaultZoom = 1.4;
+
+const getPolygonOpacity = (density: number) => {
+  if (density > 2500) {
+    return 0.5;
+  } else if (density > 2000) {
+    return 0.4;
+  } else if (density > 1600) {
+    return 0.3;
+  } else if (density > 1000) {
+    return 0.2;
+  } else {
+    return 0.1;
+  }
+};
 
 export const MapContainer = () => {
   const { project } = useAnalytics();
@@ -48,7 +64,7 @@ export const MapContainer = () => {
   const [species, setSpecies] = useState<string | null>(null);
   const [projectSites, setProjectSites] = useState<Sites | null>(null);
   const [projectSite, setProjectSite] = useState<Site | null>(null);
-  const [plantLocations, setPlantLocations] = useState<PlantLocation[] | null>(
+  const [plantLocations, setPlantLocations] = useState<PlantLocations | null>(
     null
   );
   const [_plantLocation, setPlantLocation] = useState<PlantLocation | null>(
@@ -106,7 +122,6 @@ export const MapContainer = () => {
       const result = await getMapStyle('default');
       if (result) {
         setMapState({ ...mapState, mapStyle: result });
-        console.log('result ==> ', result);
       }
     }
     loadMapStyle();
@@ -134,7 +149,23 @@ export const MapContainer = () => {
   const fetchProjectLocations = async () => {
     const res = await makeReqToFetchPlantLocation();
     if (res) {
-      setPlantLocations(res.data);
+      const _plantLocations = res.data.map((pl) => {
+        // Calculate the area based on the feature's coordinates using Turf.js
+        const area = turf.area(pl.geometry);
+        const treeCount = pl.properties.treeCount;
+        const density = treeCount / area;
+
+        // Add the calculated density to the feature properties
+        pl.properties.density = density;
+        pl.properties.opacity = getPolygonOpacity(density);
+
+        return pl;
+      });
+      const _featureCollection = {
+        type: 'FeatureCollection',
+        features: _plantLocations,
+      };
+      setPlantLocations(_featureCollection as PlantLocations);
       setPlantLocation(res.data[0] ? res.data[0] : null);
     }
   };
@@ -166,44 +197,8 @@ export const MapContainer = () => {
       const clickedLayer = clickedFeatures[0];
       setSelectedLayer(clickedLayer);
     }
+    // console.log('clickedFeatures', clickedFeatures[0]);
   };
-
-  const layers = useMemo(() => {
-    return plantLocations ? (
-      plantLocations.map((pl) => (
-        <Source
-          key={`${pl.properties.guid}-source`}
-          type="geojson"
-          data={pl}
-          id={pl.properties.guid}
-        >
-          <Layer
-            id={`${pl.properties.guid}-layer`}
-            type="fill"
-            paint={{
-              'fill-color': 'green',
-              'fill-opacity': 0.6,
-            }}
-          />
-          {selectedLayer &&
-            selectedLayer.properties.guid === pl.properties.guid && (
-              <Layer
-                key={`${pl.properties.guid}-selected`}
-                id={`${pl.properties.guid}-selected-layer`}
-                type="line"
-                source={pl.properties.guid}
-                paint={{
-                  'line-color': '#007A49',
-                  'line-width': 4,
-                }}
-              />
-            )}
-        </Source>
-      ))
-    ) : (
-      <></>
-    );
-  }, [plantLocations, selectedLayer]);
 
   return ready ? (
     <Container
@@ -266,10 +261,33 @@ export const MapContainer = () => {
             onViewStateChange={_handleViewport}
             onClick={handleMapClick}
           >
-            {layers}
+            <Source type="geojson" data={plantLocations}>
+              <Layer
+                id="plant-locations-fill"
+                type="fill"
+                paint={{
+                  'fill-color': '#007A49',
+                  'fill-opacity': ['get', 'opacity'],
+                }}
+              />
+              <Layer
+                id="plant-locations-line"
+                type="line"
+                paint={{
+                  'line-color': [
+                    'case',
+                    ['==', ['get', 'guid'], selectedLayer?.properties.guid],
+                    '#007A49',
+                    'transparent',
+                  ],
+                  'line-width': 4,
+                }}
+              />
+            </Source>
+
             <Source type="geojson" data={projectSites}>
               <Layer
-                type="line" // Use "line" to display polygon borders
+                type="line"
                 paint={{
                   'line-color': '#007A49',
                   'line-width': 4,
