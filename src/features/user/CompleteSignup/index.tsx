@@ -36,6 +36,7 @@ import {
   AddressSuggestionsType,
   AddressType,
 } from '../../common/types/geocoder';
+import { ExtendedCountryCode } from '../../common/types/country';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -62,7 +63,7 @@ export default function CompleteSignup(): ReactElement | null {
     AddressSuggestionsType[]
   >([]);
   const [isProcessing, setIsProcessing] = React.useState<boolean>(false);
-  const [country, setCountry] = useState<CountryCode | ''>('');
+  const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
 
   const geocoder = new GeocoderArcGIS(
     process.env.ESRI_CLIENT_SECRET
@@ -230,7 +231,7 @@ export default function CompleteSignup(): ReactElement | null {
       if (contextLoaded && token) {
         const submitData = {
           ...data,
-          country,
+          country: country as CountryCode,
           type,
           oAuthAccessToken: token,
         };
