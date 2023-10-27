@@ -168,16 +168,18 @@ export const MapContainer = () => {
       setPlantLocations(_featureCollection as PlantLocations);
       if (_plantLocations.length > 0) {
         const defaultFeature = _plantLocations[0];
-        const [longitude, latitude] = turf.centroid(defaultFeature?.geometry)
-          .geometry?.coordinates;
-        const zoom = 12;
-        setViewport({
-          latitude,
-          longitude,
-          zoom,
-          width: '100%',
-          height: '500px',
-        });
+        const centeroid = turf.center(defaultFeature);
+        if (centeroid?.geometry) {
+          const [longitude, latitude] = centeroid.geometry.coordinates;
+          const zoom = 12;
+          setViewport({
+            latitude,
+            longitude,
+            zoom,
+            width: '100%',
+            height: '500px',
+          });
+        }
         setPlantLocation(res.data[0] ? res.data[0] : null);
       }
     }
