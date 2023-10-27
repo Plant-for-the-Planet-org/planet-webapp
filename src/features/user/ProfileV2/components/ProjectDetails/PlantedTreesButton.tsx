@@ -3,12 +3,14 @@ import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import { CircularProgress } from '@mui/material';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import theme from '../../../../../theme/themeProperties';
 
 export interface PlantedTreesButtonProps {
   plantedTrees: number | null;
 }
 
 const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
+  const { light, primaryDarkColorX } = theme;
   const { isTreePlantedButtonActive } = useUserProps();
   const { t } = useTranslation(['donate']);
 
@@ -29,7 +31,11 @@ const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
           <div className={myForestStyles.plantedTreesLabelContainer}>
             <div>
               <PlantedTreesSvg
-                color={isTreePlantedButtonActive ? 'white' : '#219653'}
+                color={
+                  isTreePlantedButtonActive
+                    ? `${light.light}`
+                    : `${primaryDarkColorX}`
+                }
               />
             </div>
             <div className={myForestStyles.plantedTreesLabel}>

@@ -8,6 +8,7 @@ import { useTranslation } from 'next-i18next';
 import { ReactElement } from 'react';
 import { CircularProgress } from '@mui/material';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import theme from '../../../../../theme/themeProperties';
 
 export interface ConservationButtonProps {
   conservedArea: number | null | undefined;
@@ -16,6 +17,7 @@ export interface ConservationButtonProps {
 const ConservationButton = ({
   conservedArea,
 }: ConservationButtonProps): ReactElement => {
+  const { lightBlueColor, light } = theme;
   const {
     isConservedButtonActive,
     setIsConservedButtonActive,
@@ -44,14 +46,18 @@ const ConservationButton = ({
     >
       {conservedArea === undefined ? (
         <div className={myForestStyles.circularProgressContainer}>
-          <CircularProgress style={{ color: '#48AADD' }} />
+          <CircularProgress style={{ color: `${lightBlueColor}` }} />
         </div>
       ) : (
         <>
           <div className={myForestStyles.labelContainer}>
             <div className={myForestStyles.conservedSvg}>
               <ConservationTreeSvg
-                color={isConservedButtonActive ? 'white' : '#48AADD'}
+                color={
+                  isConservedButtonActive
+                    ? `${light.light}`
+                    : `${lightBlueColor}`
+                }
               />
             </div>
             <div className={myForestStyles.conservedLabel}>
@@ -66,9 +72,9 @@ const ConservationButton = ({
             {conservedArea !== null && conservedArea > 0 && (
               <div className={myForestStyles.svgContainer}>
                 {isConservedButtonActive ? (
-                  <DownWardArrowSvg color={'#FFFFFF'} />
+                  <DownWardArrowSvg color={`${light.light}`} />
                 ) : (
-                  <ArrowSvg color={'#48AADD'} />
+                  <ArrowSvg color={`${lightBlueColor}`} />
                 )}
               </div>
             )}

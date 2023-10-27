@@ -22,7 +22,7 @@
 .areaRestored,
 .countTrees {
     font-weight: 700;
-    font-size: 36px;
+    font-size: $fontXXLarge;
     padding-left: 20px;   
 }
 .countTrees {
@@ -39,7 +39,7 @@
     font-weight: bold;
     width: max-content;
     > .plantedTreesLabel {
-        font-size: 16px;
+        font-size: $fontSixteen;
     }
 }
 
@@ -81,7 +81,7 @@
 }
 
 .restoredUnit {
-    font-size: 1.5rem;
+    font-size: $fontXLarge;
     font-weight: 400;
     margin-right: 30px;
     margin-left: 8px;
@@ -107,7 +107,7 @@
          .conservedLabel {
             margin-left: 9px;
             font-weight: bold;
-            font-size: 16px;
+            font-size: $fontSixteen;
         }
     }
    .conservedAreaValue {
@@ -116,11 +116,11 @@
     padding-right: 24px;
     align-items: center;
     .value {
-        font-size: 36px;
+        font-size: $fontXXLarge;
         font-weight: 700;
     }
     .unit {
-        font-size: 1.5rem;
+        font-size: $fontXLarge;
         font-weight: 400;
         margin-right: 60px;
         margin-top: 5px;
@@ -154,11 +154,11 @@
      display: flex;
      padding-right: 24px;
      font-weight: 700;
-     font-size: 16px;
+     font-size: $fontSixteen;
      gap: 7px;
      }
      > .value {
-         font-size: 36px;
+         font-size: $fontXXLarge;
          font-weight: 700;
          padding-right: 20px;
      }
@@ -171,7 +171,7 @@
     background-color: #219653;
     border-bottom-right-radius: 12px;
     border-top-right-radius: 12px;
-    font-size: 16px;
+    font-size: $fontSixteen;
     font-weight: bold;
     color: #FFFFFF ;
     > .restoredAreaLabel {
@@ -249,15 +249,15 @@
     }
     div>.text {
         font-weight: bold;
-        font-size: 24px;
+        font-size: $fontLarge;
         @include xsPhoneView {
-            font-size: 17px
+            font-size: $fontSixteen
         }
         @include smTabletView  {
-            font-size: 17px
+            font-size: $fontSixteen
         }
         @include mdTabletView {
-            font-size: 24px
+            font-size: $fontLarge
         }
         > .hrLine {
             width: 176px;
@@ -330,7 +330,7 @@
   }
 
   .editButtonContainer {
-    font-size: 14px;
+    font-size: $fontSmall;
     font-weight: bold;
     @include xsPhoneView {
         left: 115px;
@@ -409,7 +409,8 @@
             border-radius: 12px;
             padding-top: 25px;
             padding-bottom: 25px;
-           
+            display: flex;
+            align-items: center;
             img {
                 border-radius: 12px;
             };
@@ -442,14 +443,12 @@
     margin-left: 0px;
     @include xsPhoneView {
         flex-direction: row;
-        gap: 45px;
-        margin-left: 17px;
-        justify-content: flex-start;
+        gap: 85px;
+        justify-content: center;
     }
     @include smTabletView {
         flex-direction: row;
-        gap: 67px;
-        justify-content: flex-start;
+        justify-content: center;;
     }
     @include  mdTabletView {
         flex-direction: row;
@@ -460,13 +459,13 @@
 }
 
   .donate {
-    font-size: 16px;
+    font-size: $fontSixteen;
     font-weight: bold;
     text-decoration-line: underline;
     color: #68B030;
     cursor: pointer;
     @include mdTabletView {
-        font-size: 14px;
+        font-size: $fontSmall;
     }
 }
 
@@ -514,24 +513,12 @@
   }
 
   .projectName {
-    font-size: 24px;
+    font-size: $fontSixteen;
     font-weight: bold;
-    @include xsPhoneView {
-        font-size: 16px;
-    }
-    @include smTabletView {
-        font-size: 16px;
-    }
-    @include mdTabletView {
-        font-size: 11px;
-    }
-    @include lgLaptopView {
-        font-size: 14px;
-    }
   }
 
   .tpoName {
-    font-size: 11px;
+    font-size: $fontXSmall;
   }
 
   .areaConservedMainContainer {
@@ -564,7 +551,7 @@
   
   .conservedAreaText {
     font-weight: 700;
-    font-size: 24px;
+    font-size: $fontXLarge;
     padding-top: 45px;
     > .hrLine {
         width: 176px;
@@ -574,12 +561,12 @@
   }
 
 .plantingDate {
-    font-size: 14px ;
+    font-size: $fontSmall ;
     font-weight: 700;
 }
 
 .treeCount {
-    font-size: 20px;
+    font-size: $fontMedium;
     font-weight: 700;
     margin-top: 10px;
 }

@@ -10,6 +10,7 @@ import { ReactElement } from 'react';
 import { SetState } from '../../../../common/types/common';
 import { User } from '@planet-sdk/common';
 import { PublicUser } from '../../../../common/types/user';
+import theme from '../../../../../theme/themeProperties';
 
 const config = tenantConfig();
 
@@ -22,6 +23,7 @@ const SharePlatforms = ({
   setShowSocialButton,
   userProfile,
 }: SharePlatformsProps): ReactElement => {
+  const { primaryColor } = theme;
   const { t, ready } = useTranslation(['donate']);
   const linkToShare = `${config.tenantURL}/t/${userProfile?.slug}`;
   const textToShare = ready
@@ -57,7 +59,7 @@ const SharePlatforms = ({
       </IconButton>
 
       <FacebookIcon
-        sx={{ color: '#68B030', cursor: 'pointer' }}
+        sx={{ color: `${primaryColor}`, cursor: 'pointer' }}
         onClick={() =>
           handleShare(
             `https://www.facebook.com/sharer.php?u=${linkToShare}&quote=${textToShareLinkedin}&hashtag=%23StopTalkingStartPlanting`
@@ -66,7 +68,7 @@ const SharePlatforms = ({
       />
       {userProfile?.isPrivate && (
         <LinkedInIcon
-          sx={{ color: '#68B030', cursor: 'pointer' }}
+          sx={{ color: `${primaryColor}`, cursor: 'pointer' }}
           onClick={() =>
             handleShare(
               `https://www.linkedin.com/sharing/share-offsite/?&url=${linkToShare}`

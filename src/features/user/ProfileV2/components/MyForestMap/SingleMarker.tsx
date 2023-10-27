@@ -9,8 +9,10 @@ import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import { useTranslation } from 'next-i18next';
 import { SingleMarkerProps } from '../../../../common/types/map';
 import CustomPopupMarker from './CustomPopupMarker';
+import theme from '../../../../../theme/themeProperties';
 
 const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
+  const { primaryDarkColorX, lightBlueColor } = theme;
   const { t, ready } = useTranslation(['me']);
   const [showPopUp, setShowPopUp] = useState(false);
   return ready ? (
@@ -29,14 +31,14 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
             <div className={MyForestMapStyle.svgContainer}>
               {(geoJson.properties?.plantProject?.unitType === 'tree' ||
                 geoJson?.properties?.contributionType === 'planting') && (
-                <PlantedTreesSvg color={'#219653'} />
+                <PlantedTreesSvg color={`${primaryDarkColorX}`} />
               )}
               {geoJson.properties?.plantProject?.unitType === 'm2' &&
                 geoJson.properties?.purpose === 'trees' && (
-                  <RestoredSvg color={'#219653'} />
+                  <RestoredSvg color={`${primaryDarkColorX}`} />
                 )}
               {geoJson.properties?.purpose === 'conservation' && (
-                <ConservationTreeSvg color={'#48AADD'} />
+                <ConservationTreeSvg color={`${lightBlueColor}`} />
               )}
             </div>
             <div className={MyForestMapStyle.trees}>

@@ -13,6 +13,7 @@ import {
   RedeemCodeSvg,
   RegisteredTreeSvg,
 } from '../../../../../../public/assets/images/ProfilePageIcons';
+import theme from '../../../../../theme/themeProperties';
 
 const config = tenantConfig();
 
@@ -22,6 +23,7 @@ const UserFeatures = ({
   showSocialButton,
   setShowSocialButton,
 }: UserFeaturesProps) => {
+  const { light } = theme;
   const router = useRouter();
   const { t } = useTranslation(['me']);
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
@@ -54,7 +56,7 @@ const UserFeatures = ({
       {userProfile?.type !== 'tpo' && router.pathname !== '/profile' ? (
         <Button
           variant="contained"
-          startIcon={<SupportSvg color={'#FFFFFF'} />}
+          startIcon={<SupportSvg color={`${light.light}`} />}
           onClick={handleSupport}
         >
           {t('me:support')}
@@ -62,7 +64,7 @@ const UserFeatures = ({
       ) : (
         <Button
           variant="contained"
-          startIcon={<RedeemCodeSvg color={'#FFFFFF'} />}
+          startIcon={<RedeemCodeSvg color={`${light.light}`} />}
           onClick={handleRedeemModalOPen}
         >
           {t('redeem:redeem')}
@@ -80,7 +82,7 @@ const UserFeatures = ({
       ) : (
         <Button
           variant="contained"
-          startIcon={<RegisteredTreeSvg color={'#FFFFFF'} />}
+          startIcon={<RegisteredTreeSvg color={`${light.light}`} />}
           onClick={handleRegisterTree}
         >
           {t('me:registerTrees')}

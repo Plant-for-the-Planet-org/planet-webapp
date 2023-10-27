@@ -20,11 +20,11 @@
 
 .popUpLabel {
     font-weight: 700;
-    font-size: 14px;
+    font-size: $fontSmall;
 }
 
 .popUpDate {
-    font-size: 8px
+    font-size: $fontXXSmall;
 }
 
 .markerContainer {
@@ -50,7 +50,7 @@
     }
     >.trees{
          font-weight: 700;
-         font-size: 16px; 
+         font-size: $fontSixteen; 
     }
 }
 
@@ -73,7 +73,7 @@
             position: absolute;
             top:75px;
             left:10px;
-            font-size: 10px;
+            font-size: $fontXXSmall;
             font-weight: 600;
             color: #FFFFFF;
         }
@@ -87,7 +87,7 @@
     >.projectInfoContainer {
         display: flex;
         gap: 2px;
-        font-size: 8px;
+        font-size: $fontXXSmall;
         position: relative;
         >.area {
             font-weight: 700;
@@ -97,10 +97,10 @@
 .tpo {
     margin-top: 7px;
     >.tpoName {
-        font-size: 8px;
+        font-size: $fontXXSmall;
     }
     >.date {
-        font-size: 7px;
+        font-size: $fontXXSmall;
     }
 }
 .clusterMarkerContainer {
@@ -127,7 +127,7 @@
     >.totalTreeCount {
         padding-bottom: 2px;
         font-weight: 700;
-        font-size: 16px;
+        font-size: $fontSixteen;
         color: #FFFFFF;
     }
 }
@@ -156,7 +156,7 @@
     >.totalTreeCount {
         padding-bottom: 2px;
         font-weight: 700;
-        font-size: 16px;
+        font-size: $fontSixteen;
         color: #FFFFFF;
     }
 }

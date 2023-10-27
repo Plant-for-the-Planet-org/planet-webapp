@@ -8,11 +8,13 @@ import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { styled } from '@mui/material/styles';
 import { PlantedTressBlackSvg } from '../../../../public/assets/images/ProfilePageIcons';
 import TreeCounterDataOfTenant from './temporaryFile/TreeCounterData';
-import tenantConfig from '../../../../tenant.config';
+import theme from '../../../theme/themeProperties';
+
+const { primaryDarkColorX, light } = theme;
 
 const CircularProgress = styled(MuiCircularProgress)({
   '&.MuiCircularProgress-root': {
-    color: '#fff',
+    color: `${light.light}`,
     animationDuration: '550ms',
   },
   '& > svg > circle': {
@@ -21,7 +23,7 @@ const CircularProgress = styled(MuiCircularProgress)({
 });
 const XCircularProgress = styled(MuiCircularProgress)({
   '&.MuiCircularProgress-root': {
-    color: '#219653',
+    color: `${primaryDarkColorX}`,
     animationDuration: '550ms',
   },
   '& > svg > circle': {
@@ -55,7 +57,6 @@ export function TenantCircularProgress(props: CircularProgressProps) {
 }
 
 export default function TpoProfile(props: any) {
-  const config = tenantConfig();
   const [progress, setProgress] = useState(0);
   const [isTenantActive, setIsTenantActive] = useState(false);
   const { t, i18n, ready } = useTranslation(['me']);

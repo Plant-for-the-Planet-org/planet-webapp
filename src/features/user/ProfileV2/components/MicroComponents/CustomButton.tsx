@@ -35,7 +35,10 @@ const MyContributionCustomButton = ({
       setIsTreePlantedButtonActive(false);
     } else {
       if (plantedTrees || restoredArea) {
-        if (plantedTrees > 0 || restoredArea > 0) {
+        if (
+          (plantedTrees !== null && plantedTrees > 0) ||
+          (restoredArea !== null && restoredArea > 0)
+        ) {
           setIsTreePlantedButtonActive(true);
           setIsConservedButtonActive(false);
         }

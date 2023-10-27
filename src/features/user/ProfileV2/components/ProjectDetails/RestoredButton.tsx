@@ -8,6 +8,7 @@ import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { CircularProgress } from '@mui/material';
+import theme from '../../../../../theme/themeProperties';
 
 export interface RestoredButtonProps {
   restoredArea: number | null;
@@ -18,6 +19,7 @@ const RestoredButton = ({
   restoredArea,
   plantedTrees,
 }: RestoredButtonProps): ReactElement => {
+  const { primaryDarkColorX, light } = theme;
   const { t, ready } = useTranslation(['donate']);
   const { isTreePlantedButtonActive } = useUserProps();
 
@@ -38,7 +40,11 @@ const RestoredButton = ({
           <div className={myForestStyles.areaRestoredLabelContainer}>
             <div>
               <RestoredSvg
-                color={isTreePlantedButtonActive ? 'white' : '#219653'}
+                color={
+                  isTreePlantedButtonActive
+                    ? `${light.light}`
+                    : `${primaryDarkColorX}`
+                }
               />
             </div>
             <div className={myForestStyles.plantedTreesLabel}>
@@ -56,9 +62,9 @@ const RestoredButton = ({
               plantedTrees > 0 && (
                 <div className={myForestStyles.svgContainer}>
                   {isTreePlantedButtonActive ? (
-                    <DownWardArrowSvg color={'#FFFFFF'} />
+                    <DownWardArrowSvg color={`${light.light}`} />
                   ) : (
-                    <ArrowSvg color={'#219653'} />
+                    <ArrowSvg color={`${primaryDarkColorX}`} />
                   )}
                 </div>
               )}
