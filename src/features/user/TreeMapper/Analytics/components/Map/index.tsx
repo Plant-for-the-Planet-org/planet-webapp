@@ -171,7 +171,7 @@ export const MapContainer = () => {
         const centeroid = turf.center(defaultFeature);
         if (centeroid?.geometry) {
           const [longitude, latitude] = centeroid.geometry.coordinates;
-          const zoom = 14;
+          const zoom = 16;
           setViewport({
             latitude,
             longitude,
