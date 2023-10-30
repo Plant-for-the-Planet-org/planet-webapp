@@ -13,17 +13,6 @@ import {
 } from '../../../common/types/payments';
 import Certificates, { shouldEnableCertificate } from './Certificates';
 
-const ProjectTitle = ({ record }: { record: PaymentHistoryRecord }) => {
-  if (record.details.project.length > 42)
-    return (
-      <p
-        title={record.details.project}
-        className={styles.top}
-      >{`${record.details.project.substring(0, 42)}...`}</p>
-    );
-  else return <p className={styles.top}>{record.details.project}</p>;
-};
-
 interface HeaderProps {
   record: PaymentHistoryRecord;
   handleRecordToggle?: (index: number | undefined) => void;
@@ -39,27 +28,37 @@ export function RecordHeader({
 }: HeaderProps): ReactElement {
   const { t, i18n } = useTranslation(['me', 'common']);
   const getRecordTitle = (): ReactElement => {
-    switch (record.type) {
-      case 'tree-donation':
-      case 'tree-gift':
-        if (record.unitType === 'tree')
-          return (
-            <p className={styles.top}>{`${getFormattedNumber(
-              i18n.language,
-              record.quantity
-            )} ${t(`me:${record.type}`, {
-              unitType: t(`common:${record.unitType}`, { count: 1 }),
-            })}`}</p>
-          );
-        else return <ProjectTitle record={record} />;
-      case 'funds-donation':
-      case 'bouquet-donation':
-      case 'conservation-donation':
-        return <ProjectTitle record={record} />;
+    let title: string;
+    switch (record.purpose) {
+      case 'trees':
+      case 'conservation':
+        // Sample title 1 => 5 Tree Gift . Yucatan,
+        // Sample title 2 => 2 m² Donation . Sumatra
+        title = `${getFormattedNumber(i18n.language, record.quantity)} ${t(
+          `common:${record.unitType}`,
+          { count: 1 }
+        )} ${
+          record.details.giftRecipient ? t('me:gift') : t('me:donation')
+        } . ${record.details.project}`;
+        break;
+      case 'bouquet':
+      case 'funds':
+        title = record.details.project;
+        break;
+      case 'planet-cash':
       default:
-        return <p className={styles.top}>{t(`me:${record.type}`)}</p>;
+        title = t(`me:${record.type}`);
+        break;
     }
+    const displayedTitle =
+      title.length > 42 ? `${title.substring(0, 42)}...` : title;
+    return (
+      <p title={title} className={styles.top}>
+        {displayedTitle}
+      </p>
+    );
   };
+
   const netAmountStatus =
     record.status === 'refunded' || !isPlanetCash
       ? ''

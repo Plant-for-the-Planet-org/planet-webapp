@@ -39,7 +39,6 @@ export interface PaymentDetails {
   refundAmount?: number;
   donorCertificate?: string;
   taxDeductibleReceipt?: string;
-  giftCertificate?: string;
   account?: BankAccount;
   paymentDate?: Date;
   totalAmount?: number;
@@ -47,7 +46,11 @@ export interface PaymentDetails {
   recipientBank?: RecipientBank;
   codesUrl?: string;
   giftOccasion?: string;
+  giftCertificate?: string;
   giftComment?: string;
+  giftMessage?: string;
+  giftRecipient?: string;
+  bouquetDonation?: string;
 }
 
 export interface Links {
