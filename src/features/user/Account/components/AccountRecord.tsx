@@ -29,6 +29,7 @@ export function RecordHeader({
   const { t, i18n } = useTranslation(['me', 'common']);
   const getRecordTitle = (): ReactElement => {
     let title: string;
+    const BULLET_SEPARATOR = '\u2022';
     switch (record.purpose) {
       case 'trees':
       case 'conservation':
@@ -39,7 +40,7 @@ export function RecordHeader({
           { count: 1 }
         )} ${
           record.details.giftRecipient ? t('me:gift') : t('me:donation')
-        } . ${record.details.project}`;
+        } ${BULLET_SEPARATOR} ${record.details.project}`;
         break;
       case 'bouquet':
       case 'funds':
