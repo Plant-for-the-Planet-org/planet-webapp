@@ -121,7 +121,7 @@ const nextConfig = {
     SITE_IMAGERY_API_URL: SITE_IMAGERY_API_URL,
     WIDGET_URL: process.env.WIDGET_URL,
     CONFIG_URL: process.env.CONFIG_URL,
-    ENABLE_ANALYTICS: DB_CONN_URL ? true : false,
+    ENABLE_ANALYTICS: DB_CONN_URL ? 'true' : 'false',
   },
   trailingSlash: false,
   reactStrictMode: true,
