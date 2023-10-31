@@ -46,4 +46,11 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    .Xicon {
+        position: absolute;
+        top: -72px;
+        left: 192px;
+        margin-top: 90px;
+        cursor: pointer;
+    }
 }

@@ -23,6 +23,7 @@ const themeProperties = {
   primaryDarkColorX: "#219653",
   lightBlueColor: "#48AADD",
   darkBlackColor: "#4F4F4F",
+  darkOliveGreen: "#688816",
   light: {
     primaryFontColor: '#2f3336',
     dividerColor: '#d5d5d5',
