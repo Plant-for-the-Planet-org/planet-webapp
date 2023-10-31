@@ -11,8 +11,7 @@ import ProjectsContainer from '../../src/features/user/Profile/ProjectsContainer
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths, GetStaticPropsContext } from 'next';
-import { handleError, APIError } from '@planet-sdk/common';
-import { PublicUser } from '../../src/features/common/types/user';
+import { handleError, APIError, UserPublicProfile } from '@planet-sdk/common';
 
 function User(): ReactElement {
   // External imports
@@ -21,13 +20,15 @@ function User(): ReactElement {
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
   // Internal states
-  const [profile, setProfile] = React.useState<null | PublicUser>();
+  const [profile, setProfile] = React.useState<null | UserPublicProfile>(null);
   const [authenticatedType, setAuthenticatedType] = React.useState('');
 
   // Loads the public user profile
   async function loadPublicProfile(id: string) {
     try {
-      const profileData = await getRequest<PublicUser>(`/app/profiles/${id}`);
+      const profileData = await getRequest<UserPublicProfile>(
+        `/app/profiles/${id}`
+      );
       setProfile(profileData);
       setAuthenticatedType('public');
     } catch (err) {

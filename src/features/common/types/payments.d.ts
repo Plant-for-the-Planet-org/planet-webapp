@@ -1,3 +1,5 @@
+import { ProjectPurpose, UnitTypes } from '@planet-sdk/common';
+
 export interface Fees {
   disputeFee: number;
   planetFee: number;
@@ -37,7 +39,6 @@ export interface PaymentDetails {
   refundAmount?: number;
   donorCertificate?: string;
   taxDeductibleReceipt?: string;
-  giftCertificate?: string;
   account?: BankAccount;
   paymentDate?: Date;
   totalAmount?: number;
@@ -45,7 +46,11 @@ export interface PaymentDetails {
   recipientBank?: RecipientBank;
   codesUrl?: string;
   giftOccasion?: string;
+  giftCertificate?: string;
   giftComment?: string;
+  giftMessage?: string;
+  giftRecipient?: string;
+  bouquetDonation?: string;
 }
 
 export interface Links {
@@ -84,7 +89,7 @@ export interface PaymentHistoryRecord {
   quantity: number;
   bouquetPurpose?: string;
   netAmount: number;
-  purpose: string;
+  purpose: ProjectPurpose;
   created: Date;
   treeCount: number;
   type: string;
@@ -94,6 +99,7 @@ export interface PaymentHistoryRecord {
   currency: string;
   details: PaymentDetails;
   status: string;
+  unitType: UnitTypes;
 }
 
 export interface PaymentHistory {

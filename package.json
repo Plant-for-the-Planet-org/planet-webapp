@@ -119,7 +119,8 @@
     "styled-jsx": "^5.0.0",
     "uuid": "^8.3.2",
     "vizzuality-components": "^3.0.3",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.9.2",

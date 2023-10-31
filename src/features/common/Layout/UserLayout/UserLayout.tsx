@@ -101,8 +101,6 @@ function LanguageSwitcher() {
       <SelectLanguageAndCountry
         openModal={openModal}
         handleModalClose={() => setOpenModal(false)}
-        language={i18n.language}
-        setLanguage={setLanguage}
         setSelectedCurrency={setSelectedCurrency}
         selectedCountry={selectedCountry}
         setSelectedCountry={setSelectedCountry}

@@ -6,6 +6,8 @@ import { TextField, Button } from '@mui/material';
 import { getAccountInfo } from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import StyledForm from '../../../common/Layout/StyledForm';
+import styles from './ImpersonateUser.module.scss';
+import { isEmailValid } from '../../../../utils/isEmailValid';
 
 export type ImpersonationData = {
   targetEmail: string;
@@ -16,6 +18,7 @@ const ImpersonateUserForm = (): ReactElement => {
   const router = useRouter();
   const { t } = useTranslation('me');
   const [isInvalidEmail, setIsInvalidEmail] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const { token, setUser, setIsImpersonationModeOn } = useUserProps();
   const {
     control,
@@ -33,6 +36,7 @@ const ImpersonateUserForm = (): ReactElement => {
     data: ImpersonationData
   ): Promise<void> => {
     if (data.targetEmail && data.supportPin) {
+      setIsProcessing(true);
       try {
         const res = await getAccountInfo(token, data);
         const resJson = await res.json();
@@ -52,9 +56,11 @@ const ImpersonateUserForm = (): ReactElement => {
           router.push('/profile');
         } else {
           setIsInvalidEmail(true);
+          setIsProcessing(false);
         }
       } catch (err) {
         console.log(err);
+        setIsProcessing(false);
       }
     }
   };
@@ -70,9 +76,11 @@ const ImpersonateUserForm = (): ReactElement => {
               value: true,
               message: t('me:enterTheEmail'),
             },
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: t('me:invalidEmail'),
+            validate: {
+              emailInvalid: (value) =>
+                value.length === 0 ||
+                isEmailValid(value) ||
+                t('me:invalidEmail'),
             },
           }}
           render={({ field: { onChange, value, onBlur } }) => (
@@ -119,8 +127,9 @@ const ImpersonateUserForm = (): ReactElement => {
         color="primary"
         type="submit"
         className="formButton"
+        disabled={isProcessing}
       >
-        {t('me:switch')}
+        {isProcessing ? <div className={styles.spinner}></div> : t('me:switch')}
       </Button>
     </StyledForm>
   );
