@@ -328,7 +328,9 @@ const UserLayout: FC = ({ children }) => {
         {
           title: t('me:dataExplorer'),
           path: '/profile/treemapper/data-explorer',
-          hideItem: !(process.env.ENABLE_ANALYTICS && user?.type === 'tpo'),
+          hideItem: !(
+            process.env.ENABLE_ANALYTICS === 'true' && user?.type === 'tpo'
+          ),
         },
       ],
     },
