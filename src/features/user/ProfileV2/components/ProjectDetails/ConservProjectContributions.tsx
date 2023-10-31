@@ -19,8 +19,8 @@ const ConservProjectContributions = ({
     <div className={myForestStyles.areaConservedMainContainer}>
       <div className={myForestStyles.textContainer}>
         <div className={myForestStyles.conservedAreaText}>
-          <p>{t('me:areaConserved')}</p>
-          <p className={myForestStyles.hrLine} />
+          <div>{t('me:areaConserved')}</div>
+          <div className={myForestStyles.hrLine} />
         </div>
       </div>
       <div className={myForestStyles.areaConservedContainer}>

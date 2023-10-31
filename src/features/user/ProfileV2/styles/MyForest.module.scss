@@ -373,8 +373,6 @@
         border-radius: 12px;
         background: #FFFFFF;
         align-items: center;
-        padding-left: 0px;
-        padding-right: 0px;
         min-height: 185px;
         @include xsPhoneView {
             height: max-content;
@@ -404,7 +402,7 @@
       
         > .image {
             width: 285px;
-            height: 200px;
+            height: 220px;
             margin-left: 20px;
             border-radius: 12px;
             padding-top: 25px;
@@ -419,6 +417,7 @@
                 padding-bottom: 20px;
             }
             @include mdTabletView {
+                height: 200px;
                 margin-left:  20px;
                 padding-bottom: 20px;
             }
@@ -480,6 +479,7 @@
         gap : 10px;
         padding-top: 20px;
         flex-direction: column;
+        align-items: baseline;
     }
     @include smTabletView {
         flex-direction: column;
@@ -550,9 +550,13 @@
 }
   
   .conservedAreaText {
+    display: flex;
     font-weight: 700;
     font-size: $fontXLarge;
     padding-top: 45px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     > .hrLine {
         width: 176px;
         border: 1px solid #48AADD;
@@ -569,6 +573,9 @@
     font-size: $fontMedium;
     font-weight: 700;
     margin-top: 10px;
+    @include xsPhoneView {
+        font-size: $fontSixteen;
+    }
 }
 
 .loadProjectButtonContainer {

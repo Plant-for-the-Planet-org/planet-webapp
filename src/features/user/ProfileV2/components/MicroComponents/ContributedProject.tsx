@@ -68,12 +68,7 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
                     'country:' + projectInfo.plantProject.country.toLowerCase()
                   )}
                 </div>
-                {projectInfo.purpose === 'trees' ? (
-                  <div className={myForestStyles.dotSeprator}>.</div>
-                ) : (
-                  <div className={myForestStyles.lineSeprator}>|</div>
-                )}
-
+                <div className={myForestStyles.dotSeprator}>.</div>
                 <div className={myForestStyles.tpoName}>
                   {projectInfo.plantProject.tpo.name}
                 </div>
