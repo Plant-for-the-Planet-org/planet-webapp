@@ -21,7 +21,7 @@ interface Props {
 export default function About({ leaderboard, tenantScore }: Props) {
   const { t, ready } = useTranslation(['tenants']);
 
-  const descriptionRef = React.useRef<HTMLElement>(null);
+  const descriptionRef = React.useRef<HTMLParagraphElement>(null);
   React.useEffect(() => {
     if (descriptionRef.current !== null) {
       descriptionRef.current.innerHTML = t(

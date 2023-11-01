@@ -11,11 +11,6 @@ export default function Filters(): ReactElement {
   const { projects, setFilteredProjects, filtersOpen, setFilterOpen } =
     useProjectProps();
 
-  const purpose = {
-    restoration: true,
-    conservation: true,
-  };
-
   const [type, setType] = React.useState<Record<string, boolean>>({
     'natural-regeneration': true,
     'managed-regeneration': true,

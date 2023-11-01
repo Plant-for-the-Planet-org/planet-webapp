@@ -66,7 +66,7 @@ export default function ProjectSnippet({
     const url = getDonationUrl(
       project.slug,
       token,
-      embed || 'false',
+      embed || undefined,
       callbackUrl || undefined
     );
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
