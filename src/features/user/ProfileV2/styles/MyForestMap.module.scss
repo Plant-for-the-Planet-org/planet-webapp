@@ -167,6 +167,7 @@
     height: 560px;
     padding-left: 50px;
     padding-right: 50px;
+    position: relative;
     >div >div >div {
          border-radius: 12px ;
     };
@@ -185,5 +186,22 @@
     }
 }
 
+.mapCreditsContainer {
+    position: absolute;
+    background-color: #FFFFFF ;
+    width: 100px;
+    top:10px;
+    left: 95px;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    cursor: pointer;
+    border:  3px solid #C9E1F4;
+}
 
-
+.mapCredit {
+    width: 400px;
+    padding: 10px;
+}

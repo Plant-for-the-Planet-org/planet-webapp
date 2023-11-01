@@ -12,9 +12,11 @@ import TreesPlantedMarkers from './TreesPlantedMarkers';
 import ConservationMarkers from './ConservationMarkers';
 import { ViewportProps } from '../../../../common/types/map';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import MyForestMapCredit from '../MicroComponents/MyForestMapCredit';
 
 const MyForestMap = (): ReactElement => {
   const mapRef: MutableRefObject<null> = useRef(null);
+
   const EMPTY_STYLE = {
     version: 8,
     sources: {},
@@ -61,6 +63,7 @@ const MyForestMap = (): ReactElement => {
 
   return (
     <div className={MyForestMapStyle.mapContainer}>
+      <MyForestMapCredit />
       <MapGL
         ref={mapRef}
         {...mapState}
