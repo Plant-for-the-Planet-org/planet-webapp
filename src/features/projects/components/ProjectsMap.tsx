@@ -153,7 +153,7 @@ export default function ProjectsMap(): ReactElement {
         {...mapState}
         {...viewport}
         onViewportChange={_onViewportChange}
-        onViewStateChange={_onStateChange}
+        onStateChange={_onStateChange}
         onClick={onMapClick}
         onHover={onMapHover}
         onLoad={() => setLoaded(true)}
