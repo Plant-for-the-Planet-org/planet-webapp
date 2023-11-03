@@ -113,6 +113,9 @@ export const contributions = procedure
           },
         ],
       },
+      orderBy: {
+        plantDate: 'desc',
+      },
       skip: skip,
       take: limit + 1,
       cursor: cursor ? { guid: cursor } : undefined,
