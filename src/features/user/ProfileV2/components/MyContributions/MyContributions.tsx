@@ -51,6 +51,7 @@ export default function MyContributions({
     setTreePlantedProjects,
     isConservedButtonActive,
     isTreePlantedButtonActive,
+    refetchData,
   } = useUserProps();
 
   const _detailInfo = trpc.myForest.stats.useQuery(
@@ -135,7 +136,12 @@ export default function MyContributions({
           )
         );
       }
-      stateUpdaterFunction(trpcProcedure?.data);
+      if (trpcProcedure?.data && refetchData) {
+        trpcProcedure?.refetch();
+        stateUpdaterFunction(trpcProcedure?.data);
+      } else {
+        stateUpdaterFunction(trpcProcedure?.data);
+      }
     }
   };
 
@@ -144,38 +150,35 @@ export default function MyContributions({
       _contributionData,
       setProjectsForAreaConservation
     );
-  }, [_contributionData.isLoading, _contributionData.data]);
+  }, [_contributionData.isLoading, refetchData]);
 
   useEffect(() => {
     _updateStateWithTrpcData<ContributionData | null>(
       _contributionDataForPlantedtrees,
       setProjectsForTreePlantation
     );
-  }, [
-    _contributionDataForPlantedtrees.isLoading,
-    _contributionDataForPlantedtrees.data,
-  ]);
+  }, [_contributionDataForPlantedtrees.isLoading, refetchData]);
 
   useEffect(() => {
     _updateStateWithTrpcData<PointFeature<TestPointProps>[]>(
       _conservationGeoJsonData,
       setConservationProjects
     );
-  }, [_conservationGeoJsonData.isLoading]);
+  }, [_conservationGeoJsonData.isLoading, refetchData]);
 
   useEffect(() => {
     _updateStateWithTrpcData<PointFeature<TestPointProps>[]>(
       _treePlantedGeoJsonData,
       setTreePlantedProjects
     );
-  }, [_treePlantedGeoJsonData.isLoading]);
+  }, [_treePlantedGeoJsonData.isLoading, refetchData]);
 
   useEffect(() => {
     _updateStateWithTrpcData<StatsQueryResult | undefined>(
       _detailInfo,
       setOthercontributionInfo
     );
-  }, [_detailInfo.isLoading]);
+  }, [_detailInfo.data, refetchData]);
 
   return ready && otherDonationInfo ? (
     <div className={myForestStyles.mapMainContainer}>

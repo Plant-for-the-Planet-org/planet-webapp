@@ -14,6 +14,7 @@ import {
   RegisteredTreeSvg,
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import theme from '../../../../../theme/themeProperties';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 
 const config = tenantConfig();
 
@@ -26,6 +27,7 @@ const UserFeatures = ({
   const { light } = theme;
   const router = useRouter();
   const { t } = useTranslation(['me']);
+  const { setRefetchData } = useUserProps();
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
   const handleSupport = () => {
     router.push(`/s/${userProfile.slug}`);
@@ -40,6 +42,7 @@ const UserFeatures = ({
   };
 
   const handleRegisterTree = () => {
+    setRefetchData(false);
     router.push('profile/register-trees');
   };
 

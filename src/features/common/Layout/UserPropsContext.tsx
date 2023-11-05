@@ -36,6 +36,8 @@ interface UserPropsContextInterface {
   setIsTreePlantedButtonActive: SetState<boolean>;
   isConservedButtonActive: boolean;
   setIsConservedButtonActive: SetState<boolean>;
+  refetchData: boolean;
+  setRefetchData: SetState<boolean>;
 }
 
 export const UserPropsContext =
@@ -69,6 +71,7 @@ export const UserPropsProvider: FC = ({ children }) => {
     React.useState(false);
   const [isConservedButtonActive, setIsConservedButtonActive] =
     React.useState(false);
+  const [refetchData, setRefetchData] = React.useState(false);
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
       const userLang = localStorage.getItem('language');
@@ -163,6 +166,8 @@ export const UserPropsProvider: FC = ({ children }) => {
     setIsTreePlantedButtonActive,
     isConservedButtonActive,
     setIsConservedButtonActive,
+    refetchData,
+    setRefetchData,
   };
   return (
     <UserPropsContext.Provider value={value}>
