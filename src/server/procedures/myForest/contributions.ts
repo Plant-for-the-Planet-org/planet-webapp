@@ -72,6 +72,13 @@ export const contributions = procedure
             tpo: true,
           },
         },
+        gift: {
+          select: {
+            guid: true,
+            metadata: true,
+          },
+        },
+        giftData: true,
       },
       where: {
         profile: {
@@ -112,6 +119,9 @@ export const contributions = procedure
               : {}),
           },
         ],
+      },
+      orderBy: {
+        plantDate: 'desc',
       },
       skip: skip,
       take: limit + 1,

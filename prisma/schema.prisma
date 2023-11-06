@@ -25,6 +25,9 @@ model contribution {
     bouquetContributions contribution[] @relation("bouquet")
     plantDate            DateTime?      @map("plant_date") @db.DateTime(0)
     profile_id           Int?
+    gift                 gift[]
+    giftData             Json?          @map("gift_data")
+    giftMethod           String?        @map("gift_method") @db.VarChar(20)
 }
 
 model project {
@@ -51,4 +54,16 @@ model profile {
     name         String?        @db.VarChar(255)
     contribution contribution[]
     plantProject project[]
+    gift         gift[]
+}
+
+model gift {
+    id           Int           @id @default(autoincrement())
+    donationId   Int?          @map("donation_id")
+    recipientId  Int?          @map("recipient_id")
+    createdBy    Int?          @map("created_by")
+    guid         String        @unique(map: "UNIQ_A47C990D2B6FCFB2") @db.VarChar(32)
+    metadata     Json?
+    contribution contribution? @relation(fields: [donationId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FK_A47C990D4DC1279C")
+    recipient    profile?      @relation(fields: [recipientId], references: [id]) // Relation field to profile
 }
