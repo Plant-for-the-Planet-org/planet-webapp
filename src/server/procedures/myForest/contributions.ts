@@ -72,6 +72,13 @@ export const contributions = procedure
             tpo: true,
           },
         },
+        gift: {
+          select: {
+            guid: true,
+            metadata: true,
+          },
+        },
+        giftData: true,
       },
       where: {
         profile: {
