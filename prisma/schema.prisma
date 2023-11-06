@@ -28,6 +28,15 @@ model contribution {
     gift                 gift[]
     giftData             Json?          @map("gift_data")
     giftMethod           String?        @map("gift_method") @db.VarChar(20)
+    tenant               tenant?        @relation(fields: [tenantId], references: [id]) // Add a one-to-one relation to the tenant model
+    tenantId             Int?           @map("tenant_id")
+}
+
+model tenant {
+    id           Int            @id @default(autoincrement())
+    guid         String         @unique(map: "UNIQ_4E59C4622B6FCFB2") @db.VarChar(32)
+    name         String         @db.VarChar(255)
+    contribution contribution[]
 }
 
 model project {
