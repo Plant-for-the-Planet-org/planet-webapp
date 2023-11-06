@@ -54,3 +54,17 @@
         cursor: pointer;
     }
 }
+
+.skeletonContainer {
+    padding-left:200px;
+    padding-right: 50px;
+    padding-bottom: 20px;
+    max-width: 1172px;
+}
+
+.profileSkeleton {
+    margin-top: 132px;
+    height: 400px;
+    padding-right: 100px;
+    border-radius: 20px !important;
+}

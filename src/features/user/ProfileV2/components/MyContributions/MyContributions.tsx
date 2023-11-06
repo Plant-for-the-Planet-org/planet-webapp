@@ -16,6 +16,10 @@ import MyContributionCustomButton from '../MicroComponents/CustomButton';
 import { SetState } from '../../../../common/types/common';
 import { PointFeature } from 'supercluster';
 import { TestPointProps } from '../../../../common/types/map';
+import {
+  MyContributionLoader,
+  MyForestMapLoader,
+} from '../../../../common/ContentLoaders/UserProfile/UserProfile';
 
 const A_DAY_IN_MS = 1000 * 60 * 60 * 24;
 
@@ -43,6 +47,7 @@ export default function MyContributions({
   const [otherDonationInfo, setOthercontributionInfo] = useState<
     StatsQueryResult | undefined
   >(undefined);
+
   const [page, setPage] = useState(0);
   const { setErrors } = useContext(ErrorHandlingContext);
 
@@ -53,6 +58,22 @@ export default function MyContributions({
     isTreePlantedButtonActive,
     refetchData,
   } = useUserProps();
+
+  const _checkConditions = () => {
+    if (projectsForTreePlantation) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const _checkConditionsForConservation = () => {
+    if (projectsForAreaConservation) {
+      return false;
+    } else {
+      return true;
+    }
+  };
 
   const _detailInfo = trpc.myForest.stats.useQuery(
     {
@@ -191,19 +212,34 @@ export default function MyContributions({
         countries={otherDonationInfo?.countries}
         donations={otherDonationInfo?.donations}
       />
-      {isTreePlantedButtonActive && !isConservedButtonActive && (
-        <TreeProjectContributions
-          contribution={projectsForTreePlantation}
-          userProfile={profile}
-          handleFetchNextPage={handleFetchNextPageforPlantedTrees}
-        />
+
+      {isTreePlantedButtonActive ? (
+        _checkConditions() ? (
+          <MyContributionLoader />
+        ) : (
+          <TreeProjectContributions
+            contribution={projectsForTreePlantation}
+            userProfile={profile}
+            handleFetchNextPage={handleFetchNextPageforPlantedTrees}
+          />
+        )
+      ) : (
+        <></>
       )}
-      {isConservedButtonActive && !isTreePlantedButtonActive && (
-        <ConservProjectContributions
-          contribution={projectsForAreaConservation}
-          handleFetchNextPage={handleFetchNextPage}
-        />
+      {isConservedButtonActive ? (
+        _checkConditionsForConservation() ? (
+          <MyContributionLoader />
+        ) : (
+          <ConservProjectContributions
+            contribution={projectsForAreaConservation}
+            handleFetchNextPage={handleFetchNextPage}
+          />
+        )
+      ) : (
+        <></>
       )}
     </div>
-  ) : null;
+  ) : (
+    <MyForestMapLoader />
+  );
 }

@@ -19,7 +19,7 @@ import PlanetCashIcon from '../../../../../public/assets/images/icons/Sidebar/Pl
 import SettingsIcon from '../../../../../public/assets/images/icons/Sidebar/SettingsIcon';
 import UserIcon from '../../../../../public/assets/images/icons/Sidebar/UserIcon';
 import WidgetIcon from '../../../../../public/assets/images/icons/Sidebar/Widget';
-import UserProfileLoader from '../../ContentLoaders/UserProfile/UserProfile';
+import { UserProfileLoader } from '../../ContentLoaders/UserProfile/UserProfile';
 import SelectLanguageAndCountry from '../Footer/SelectLanguageAndCountry';
 import { useUserProps } from '../UserPropsContext';
 import styles from './UserLayout.module.scss';

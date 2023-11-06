@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile/UserProfile';
+import { UserProfileLoader } from '../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { useRouter } from 'next/router';
 import { useUserProps } from '../src/features/common/Layout/UserPropsContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
