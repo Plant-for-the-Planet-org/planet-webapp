@@ -28,7 +28,7 @@ const BulkCodesError = (): ReactElement | null => {
         return <ErrorMessage>{t('planetCashDisabled')}</ErrorMessage>;
       } else if (Object.keys(user.planetCash).length > 0) {
         if (user.planetCash.balance + user.planetCash.creditLimit <= 0) {
-          const donationUrl = getDonationUrl('planetcash', token);
+          const donationUrl = getDonationUrl(null, 'planetcash', token);
           return (
             <div>
               <ErrorMessage>{t('insufficientPCashBalance')}</ErrorMessage>

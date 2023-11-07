@@ -23,8 +23,8 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
   const { embed } = useContext(ParamsContext);
   const { t } = useTranslation(['me', 'country']);
 
-  const handleDonate = (id: string) => {
-    const url = getDonationUrl(id, token);
+  const handleDonate = (id: string, tenant: string) => {
+    const url = getDonationUrl(tenant, id, token);
     embed === 'true'
       ? window.open(url, '_blank')
       : (window.location.href = url);
@@ -102,7 +102,12 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
           {projectInfo.contributionType === 'donation' && (
             <div
               className={myForestStyles.donate}
-              onClick={() => handleDonate(projectInfo.plantProject.guid)}
+              onClick={() =>
+                handleDonate(
+                  projectInfo.plantProject.guid,
+                  projectInfo.tenant.guid
+                )
+              }
             >
               {t('me:donateAgain')}
             </div>
