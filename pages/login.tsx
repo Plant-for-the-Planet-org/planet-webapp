@@ -30,7 +30,8 @@ function Login(): ReactElement {
             router.push(redirectLink);
           }
         } else {
-          router.push('/t/[id]', `/t/${user.slug}`, { shallow: true });
+          // router.push('/t/[id]', `/t/${user.slug}`, { shallow: true });
+          router.push('/profile');
         }
       }
     }
