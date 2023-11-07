@@ -7,7 +7,6 @@ import { ReactElement } from 'react';
 import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import { CircularProgress } from '@mui/material';
 import theme from '../../../../../theme/themeProperties';
 
 export interface RestoredButtonProps {
@@ -31,46 +30,38 @@ const RestoredButton = ({
           : myForestStyles.areaRestoredContainer
       }
     >
-      {restoredArea === undefined ? (
-        <div className={myForestStyles.circularProgressContainer}>
-          <CircularProgress color="success" />
+      <div className={myForestStyles.areaRestoredLabelContainer}>
+        <div>
+          <RestoredSvg
+            color={
+              isTreePlantedButtonActive
+                ? `${light.light}`
+                : `${primaryDarkColorX}`
+            }
+          />
         </div>
-      ) : (
-        <>
-          <div className={myForestStyles.areaRestoredLabelContainer}>
-            <div>
-              <RestoredSvg
-                color={
-                  isTreePlantedButtonActive
-                    ? `${light.light}`
-                    : `${primaryDarkColorX}`
-                }
-              />
-            </div>
-            <div className={myForestStyles.plantedTreesLabel}>
-              {t('donate:restored')}
-            </div>
-          </div>
-          <div className={myForestStyles.valueContainer}>
-            <div className={myForestStyles.areaRestored}>
-              <div>{restoredArea ? restoredArea : 0}</div>
-            </div>
-            <div className={myForestStyles.restoredUnit}>{'m²'}</div>
-            {restoredArea !== null &&
-              plantedTrees !== null &&
-              restoredArea > 0 &&
-              plantedTrees > 0 && (
-                <div className={myForestStyles.svgContainer}>
-                  {isTreePlantedButtonActive ? (
-                    <DownWardArrowSvg color={`${light.light}`} />
-                  ) : (
-                    <ArrowSvg color={`${primaryDarkColorX}`} />
-                  )}
-                </div>
+        <div className={myForestStyles.plantedTreesLabel}>
+          {t('donate:restored')}
+        </div>
+      </div>
+      <div className={myForestStyles.valueContainer}>
+        <div className={myForestStyles.areaRestored}>
+          <div>{restoredArea ? restoredArea : 0}</div>
+        </div>
+        <div className={myForestStyles.restoredUnit}>{'m²'}</div>
+        {restoredArea !== null &&
+          plantedTrees !== null &&
+          restoredArea > 0 &&
+          plantedTrees > 0 && (
+            <div className={myForestStyles.svgContainer}>
+              {isTreePlantedButtonActive ? (
+                <DownWardArrowSvg color={`${light.light}`} />
+              ) : (
+                <ArrowSvg color={`${primaryDarkColorX}`} />
               )}
-          </div>
-        </>
-      )}
+            </div>
+          )}
+      </div>
     </div>
   ) : (
     <></>
