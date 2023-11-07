@@ -37,6 +37,12 @@ export const contributions = procedure
         quantity: true,
         plantDate: true,
         contributionType: true,
+        tenant: {
+          select: {
+            guid: true,
+            name: true,
+          },
+        },
         bouquetContributions: {
           select: {
             purpose: true,
@@ -44,6 +50,12 @@ export const contributions = procedure
             quantity: true,
             plantDate: true,
             contributionType: true,
+            tenant: {
+              select: {
+                guid: true,
+                name: true,
+              },
+            },
             plantProject: {
               select: {
                 guid: true,
