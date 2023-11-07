@@ -23,8 +23,8 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
   const { embed } = useContext(ParamsContext);
   const { t } = useTranslation(['me', 'country']);
 
-  const handleDonate = (slug: string) => {
-    const url = getDonationUrl(slug, token);
+  const handleDonate = (id: string) => {
+    const url = getDonationUrl(id, token);
     embed === 'true'
       ? window.open(url, '_blank')
       : (window.location.href = url);

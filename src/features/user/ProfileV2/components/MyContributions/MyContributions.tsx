@@ -171,28 +171,28 @@ export default function MyContributions({
       _contributionData,
       setProjectsForAreaConservation
     );
-  }, [_contributionData.isLoading, refetchData]);
+  }, [_contributionData.data, refetchData]);
 
   useEffect(() => {
     _updateStateWithTrpcData<ContributionData | null>(
       _contributionDataForPlantedtrees,
       setProjectsForTreePlantation
     );
-  }, [_contributionDataForPlantedtrees.isLoading, refetchData]);
+  }, [_contributionDataForPlantedtrees.data, refetchData]);
 
   useEffect(() => {
     _updateStateWithTrpcData<PointFeature<TestPointProps>[]>(
       _conservationGeoJsonData,
       setConservationProjects
     );
-  }, [_conservationGeoJsonData.isLoading, refetchData]);
+  }, [_conservationGeoJsonData.data, refetchData]);
 
   useEffect(() => {
     _updateStateWithTrpcData<PointFeature<TestPointProps>[]>(
       _treePlantedGeoJsonData,
       setTreePlantedProjects
     );
-  }, [_treePlantedGeoJsonData.isLoading, refetchData]);
+  }, [_treePlantedGeoJsonData.data, refetchData]);
 
   useEffect(() => {
     _updateStateWithTrpcData<StatsQueryResult | undefined>(
@@ -226,6 +226,7 @@ export default function MyContributions({
       ) : (
         <></>
       )}
+
       {isConservedButtonActive ? (
         _checkConditionsForConservation() ? (
           <MyContributionLoader />
