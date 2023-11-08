@@ -3,15 +3,13 @@ import IconButton from '@mui/material/IconButton';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import CloseIcon from '@mui/icons-material/Close';
-import tenantConfig from '../../../../../../tenant.config';
+import { useTenant } from '../../../../common/Layout/TenantContext';
 import { useTranslation } from 'next-i18next';
 import myProfilestyle from '../../styles/MyProfile.module.scss';
 import { ReactElement } from 'react';
 import { SetState } from '../../../../common/types/common';
 import { User } from '@planet-sdk/common';
 import { PublicUser } from '../../../../common/types/user';
-
-const config = tenantConfig();
 
 export interface SharePlatformsProps {
   setShowSocialButton: SetState<boolean>;
@@ -22,8 +20,9 @@ const SharePlatforms = ({
   setShowSocialButton,
   userProfile,
 }: SharePlatformsProps): ReactElement => {
+  const { tenantConfig } = useTenant();
   const { t, ready } = useTranslation(['donate']);
-  const linkToShare = `${config.tenantURL}/t/${userProfile?.slug}`;
+  const linkToShare = `${tenantConfig.tenantURL}/t/${userProfile?.slug}`;
   const textToShare = ready
     ? t('donate:textToShare', { name: userProfile?.displayName })
     : '';

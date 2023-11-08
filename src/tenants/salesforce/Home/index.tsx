@@ -8,9 +8,7 @@ import ContentSection from './components/ContentSection';
 import ClimateAction from './components/ClimateAction';
 import Social from './components/Social';
 import React from 'react';
-import tenantConfig from '../../../../tenant.config';
-
-const config = tenantConfig();
+import { useTenant } from '../../../features/common/Layout/TenantContext';
 
 interface Props {
   leaderboard: any;
@@ -18,10 +16,12 @@ interface Props {
 }
 
 export default function About({ tenantScore, leaderboard }: Props) {
+  const { tenantConfig } = useTenant();
+
   return (
     <>
       <Head>
-        <title>{`Home | ${config.meta.title}`}</title>
+        <title>{`Home | ${tenantConfig.meta.title}`}</title>
       </Head>
       <main style={{ backgroundColor: 'white', paddingBottom: '60px' }}>
         <Landing tenantScore={tenantScore} />

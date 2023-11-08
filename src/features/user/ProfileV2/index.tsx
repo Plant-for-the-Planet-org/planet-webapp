@@ -1,14 +1,13 @@
 import { useState, ReactElement } from 'react';
 import ProfileContainer from './styles/ProfileContainer';
 import { useTranslation } from 'next-i18next';
-import tenantConfig from '../../../../tenant.config';
+import { useTenant } from '../../common/Layout/TenantContext';
 import UserInfo from './components/MicroComponents/UserInfo';
 import { ProfileProps } from '../../common/types/profile';
 import UserFeatures from './components/userFeatures/UserFeatures';
 
-const config = tenantConfig();
-
 const Profile = ({ userProfile }: ProfileProps): ReactElement => {
+  const { tenantConfig } = useTenant();
   const { t, ready } = useTranslation(['donate']);
   const [showSocialButton, setShowSocialButton] = useState(false);
 
@@ -17,7 +16,7 @@ const Profile = ({ userProfile }: ProfileProps): ReactElement => {
       navigator
         ?.share({
           title: ready ? t('donate:shareTextTitle') : '',
-          url: `${process.env.SCHEME}://${config.tenantURL}/t/${userProfile.slug}`,
+          url: `${process.env.SCHEME}://${tenantConfig.tenantURL}/t/${userProfile.slug}`,
           text: ready
             ? t('donate:textToShare', { name: userProfile.displayName })
             : '',

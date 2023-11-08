@@ -5,7 +5,13 @@ import {
   FormControlLabel,
   RadioGroup,
 } from '@mui/material';
-import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
+import React, {
+  ChangeEvent,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {
   getCountryDataBy,
   sortCountriesByTranslation,
@@ -16,7 +22,7 @@ import { ThemeContext } from '../../../../theme/themeContext';
 import GreenRadio from '../../InputTypes/GreenRadio';
 import styles from './SelectLanguageAndCountry.module.scss';
 import { useTranslation } from 'next-i18next';
-import tenantConfig from '../../../../../tenant.config';
+import { useTenant } from '../TenantContext';
 
 interface MapCountryProps {
   value: string;
@@ -46,16 +52,20 @@ interface countryInterface {
   languageCode: string;
 }
 
-const config = tenantConfig();
-
-// reduce the allowed languages to the languages listed in the tenants config file
-const selectableLanguages = supportedLanguages.filter((lang) =>
-  config.languages.includes(lang.langCode)
-);
-
 // Maps the radio buttons for language
 
 function MapLanguage({ value, handleChange }: MapLanguageProps) {
+  const { tenantConfig } = useTenant();
+
+  // reduce the allowed languages to the languages listed in the tenants config file
+  const selectableLanguages = useMemo(
+    () =>
+      supportedLanguages.filter((lang) =>
+        tenantConfig.languages.includes(lang.langCode)
+      ),
+    [supportedLanguages, tenantConfig.languages]
+  );
+
   return (
     <FormControl component="fieldset">
       <RadioGroup
