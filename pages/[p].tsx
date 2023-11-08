@@ -21,6 +21,9 @@ import {
 } from '@planet-sdk/common';
 import { SetState } from '../src/features/common/types/common';
 import { PlantLocation } from '../src/features/common/types/plantLocation';
+import tenantConfig from '../tenant.config';
+
+const config = tenantConfig();
 
 interface Props {
   initialized: boolean;
@@ -65,7 +68,7 @@ export default function Donate({
         currencyCode !== internalCurrencyCode ||
         internalLanguage !== i18n.language
       ) {
-        const currency = getStoredCurrency();
+        const currency = getStoredCurrency(config.fallbackCurrency);
         setInternalCurrencyCode(currency);
         setInternalLanguage(i18n.language);
         setCurrencyCode(currency);
