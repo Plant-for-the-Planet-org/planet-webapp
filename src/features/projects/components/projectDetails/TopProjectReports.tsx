@@ -4,6 +4,7 @@ import VerifiedIcon from '@mui/icons-material/Verified';
 import { getPDFFile } from '../../../../utils/getImageURL';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
+import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import { Trans } from 'react-i18next';
 import { useTranslation } from 'next-i18next';
 import { Review } from '@planet-sdk/common/build/types/project/common';
@@ -15,7 +16,9 @@ interface Props {
 export default function TopProjectReports({ projectReviews }: Props) {
   const { t, ready } = useTranslation(['common']);
   const displayDate = (date: string) => {
-    return format(parse(date, 'MM-yyyy', new Date()), 'LLLL yyyy');
+    return format(parse(date, 'MM-yyyy', new Date()), 'LLLL yyyy', {
+      locale: localeMapForDate[localStorage.getItem('language') || 'en'],
+    });
   };
   return ready ? (
     <>
