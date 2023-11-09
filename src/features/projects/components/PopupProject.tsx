@@ -9,6 +9,7 @@ import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import VerifiedBadge from './VerifiedBadge';
 import TopProjectBadge from './TopProjectBadge';
+import ProjectTypeIcon from './ProjectTypeIcon';
 import {
   ConservationProjectConcise,
   TreeProjectConcise,
@@ -69,6 +70,9 @@ export default function PopupProject({
           )}
           {project.purpose === 'trees' && (
             <div className={'projectType'}>
+              <div className={'projectTypeIcon'}>
+                <ProjectTypeIcon projectType={project.classification} />
+              </div>
               {project.classification && t(`donate:${project.classification}`)}
             </div>
           )}
