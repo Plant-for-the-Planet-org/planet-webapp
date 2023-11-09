@@ -2,7 +2,7 @@
 
 .footerMainContainer {
   max-width: 950px;
-  margin: auto 20px 0px 20px;
+  margin: auto 20px 0px;
   background-color: $backgroundColor;
 }
 
@@ -19,7 +19,7 @@
 
 @media screen and (min-width: 480px) {
   .footerMainContainer {
-    margin: auto 20px 0px 20px;
+    margin: auto 20px 0px;
     padding: 60px;
   }
   .logo_container {

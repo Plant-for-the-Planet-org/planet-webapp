@@ -3,7 +3,6 @@
 // entire page
 .signupPage {
   height: 100vh;
-  display: flex;
   position: relative;
   background-size: cover;
   display: flex;
@@ -47,7 +46,7 @@
   justify-content: center;
   border-radius: 8px;
   align-self: center;
-  padding: 20px 20px;
+  padding: 20px;
   margin-top: 100px;
 }
 
@@ -91,7 +90,6 @@
 
 .mainText {
   font-family: $primaryFontFamily;
-  font-size: $fontSmall;
   color: $highlightBackground;
   font-size: $fontSixteen;
   text-align: left;
@@ -291,10 +289,6 @@
   font-family: $primaryFontFamily;
   font-size: $fontXSmall;
   color: $dangerColor;
-}
-
-:export {
-  primaryFontColor: $primaryFontColor;
 }
 
 // FOR WIDER SCREENS

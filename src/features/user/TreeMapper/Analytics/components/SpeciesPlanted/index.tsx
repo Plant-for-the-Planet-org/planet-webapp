@@ -239,7 +239,7 @@ export const SpeciesPlanted = () => {
       });
     }, 2000);
 
-    if (process.env.ENABLE_ANALYTICS && project) {
+    if (process.env.ENABLE_ANALYTICS === 'true' && project) {
       fetchPlantedSpecies();
     }
 

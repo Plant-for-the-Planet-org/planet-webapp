@@ -1,9 +1,10 @@
 import React from 'react';
+import { IconProps } from '../../../src/features/common/types/common';
 
-function NotFound(props: any) {
+function NotFound({ className }: IconProps) {
   return (
     <svg
-      className={props.className}
+      className={className}
       xmlns="http://www.w3.org/2000/svg"
       width="510.582"
       height="357.286"

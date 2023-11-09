@@ -7,7 +7,7 @@ import { useTranslation } from 'next-i18next';
 import styles from './styles/ProjectsContainer.module.scss';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, UserPublicProfile } from '@planet-sdk/common';
 import { MapProject } from '../../common/types/ProjectPropsContextInterface';
 
 const ProjectSnippet = dynamic(
@@ -17,7 +17,11 @@ const ProjectSnippet = dynamic(
   }
 );
 
-export default function ProjectsContainer({ profile }: any) {
+interface Props {
+  profile: UserPublicProfile;
+}
+
+export default function ProjectsContainer({ profile }: Props) {
   const { t, ready, i18n } = useTranslation(['donate', 'manageProjects']);
   const [projects, setProjects] = React.useState<MapProject[]>([]);
   const { setErrors } = React.useContext(ErrorHandlingContext);
@@ -56,20 +60,26 @@ export default function ProjectsContainer({ profile }: any) {
           <div className={styles.listProjects}>
             <h6 className={styles.projectsTitleText}>{t('donate:projects')}</h6>
 
-            {projects.map((project) => {
-              return (
-                <div
-                  className={styles.singleProject}
-                  key={project.properties.id}
-                >
-                  <ProjectSnippet
-                    project={project.properties}
-                    editMode={false}
-                    displayPopup={true}
-                  />
-                </div>
-              );
-            })}
+            {projects
+              .filter(
+                (project) =>
+                  project.properties.purpose === 'trees' ||
+                  project.properties.purpose === 'conservation'
+              )
+              .map((project) => {
+                return (
+                  <div
+                    className={styles.singleProject}
+                    key={project.properties.id}
+                  >
+                    <ProjectSnippet
+                      project={project.properties}
+                      editMode={false}
+                      displayPopup={true}
+                    />
+                  </div>
+                );
+              })}
             {/* {user ? (
               <Link href="/profile/projects/add-project">
                 <div className={styles.singleProject}>

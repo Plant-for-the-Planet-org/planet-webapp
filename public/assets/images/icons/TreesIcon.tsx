@@ -1,6 +1,7 @@
 import React from 'react';
+import { IconProps } from '../../../../src/features/common/types/common';
 
-function TreesIcon(props: any) {
+function TreesIcon({ color = '#68B030' }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -19,21 +20,21 @@ function TreesIcon(props: any) {
             data-name="tree (1)"
             d="M9,15V12.16a2.919,2.919,0,0,1-1,.173,2.988,2.988,0,0,1-3-3A2.942,2.942,0,0,1,5.907,7.18a3,3,0,0,1,5.26-2.847h.167a3.667,3.667,0,1,1-1,7.193V15Z"
             transform="translate(11 3)"
-            fill={props.color ? props.color : '#68B030'}
+            fill={color}
           />
           <path
             id="tree_1_2"
             data-name="tree (1)"
             d="M9,15V12.16a2.919,2.919,0,0,1-1,.173,2.988,2.988,0,0,1-3-3A2.942,2.942,0,0,1,5.907,7.18a3,3,0,0,1,5.26-2.847h.167a3.667,3.667,0,1,1-1,7.193V15Z"
             transform="translate(-5 3)"
-            fill={props.color ? props.color : '#68B030'}
+            fill={color}
           />
           <path
             id="tree_1_3"
             data-name="tree (1)"
             d="M11,21V16.74A4.379,4.379,0,0,1,9.5,17,4.481,4.481,0,0,1,5,12.5,4.413,4.413,0,0,1,6.36,9.27,4.505,4.505,0,0,1,14.25,5h.25A5.5,5.5,0,1,1,13,15.79V21Z"
             transform="translate(0 -3)"
-            fill={props.color ? props.color : '#68B030'}
+            fill={color}
             stroke="#fff"
             strokeWidth="0.5"
           />
@@ -46,7 +47,7 @@ function TreesIcon(props: any) {
           rx="9.5"
           ry="1"
           transform="translate(27 20)"
-          fill={props.color ? props.color : '#68B030'}
+          fill={color}
         />
       </g>
     </svg>

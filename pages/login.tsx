@@ -3,6 +3,7 @@ import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile
 import { useRouter } from 'next/router';
 import { useUserProps } from '../src/features/common/Layout/UserPropsContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticPropsContext } from 'next';
 
 function Login(): ReactElement {
   const router = useRouter();
@@ -29,7 +30,8 @@ function Login(): ReactElement {
             router.push(redirectLink);
           }
         } else {
-          router.push('/t/[id]', `/t/${user.slug}`, { shallow: true });
+          // router.push('/t/[id]', `/t/${user.slug}`, { shallow: true });
+          router.push('/profile');
         }
       }
     }
@@ -59,11 +61,11 @@ function Login(): ReactElement {
 
 export default Login;
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        locale || 'en',
         [
           'bulkCodes',
           'common',

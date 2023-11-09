@@ -77,5 +77,6 @@
   "logout": "Se déconnecter",
   "featured": "Recommandé",
   "treeMapper": "TreeMapper",
-  "underMaintenance": "En cours de maintenance"
+  "underMaintenance": "En cours de maintenance",
+  "reviewInfo": "Le projet a fait l'objet d'une inspection sur le terrain de plusieurs jours au cours du <2>mois</2> et répond à nos <5>normes</5>."
 }

@@ -16,11 +16,14 @@
   width: 100% !important;
 }
 
+.markerContainer {
+  position: relative;
+}
+
 .marker {
   width: 30px;
   height: 30px;
   border-radius: 50% 50% 50% 10%;
-  background: $primaryColor;
   position: absolute;
   -webkit-transform: rotate(-45deg);
   -moz-transform: rotate(-45deg);
@@ -32,9 +35,13 @@
   margin: -20px 0 0 -20px;
   box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.16);
   cursor: pointer;
-  &.conservationMarker {
-    background: #1ea9e4;
-  }
+}
+
+.projectTypeIcon {
+  position: absolute;
+  top: -12px;
+  left: -14px;
+  width: 18px;
 }
 
 .markerType {
@@ -267,7 +274,7 @@
 }
 
 .deforestionSlider > div > div > ul > li > div {
-  padding: 0px 4px 10px 4px !important;
+  padding: 0px 4px 10px !important;
 }
 
 .deforestionSlider > div > div > ul > li > div > div > div > div > button {
@@ -532,7 +539,6 @@
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
   font-family: $primaryFontFamily;
-  font-weight: 400;
   z-index: 11;
   display: flex;
   flex-direction: row;
@@ -718,6 +724,22 @@
 
 .popupProject {
   min-width: 300px;
+}
+//will be replace by theme styles
+.topApproved {
+  background: linear-gradient(216.51deg, #EAC35D 8.62%, #F4C15D 34.88%, #DBAA4C 74.58%);
+}
+
+.topUnapproved {
+  background-color: $primaryColor;
+}
+
+.notDonatable {
+  background-color: #828282;
+}
+
+.conservationMarker {
+  background: #1ea9e4;
 }
 
 @include lgLaptopView {

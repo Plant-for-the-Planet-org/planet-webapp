@@ -1,22 +1,20 @@
+import { z } from 'zod';
+
 const INVALID_DOMAIN_LIST = ['dummy.de', 'example.com', 'company.de'];
 
-const generateInvalidEmailRegex = (): string => {
-  const startingPattern =
-    '^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+.)?[a-zA-Z]+.)?(';
-  const domainList = INVALID_DOMAIN_LIST.join('|');
-  const endingPattern = ')$';
-  return `${startingPattern}${domainList}${endingPattern}`;
-};
+export const isEmailValid = (value: string): boolean => {
+  try {
+    const emailSchema = z.string().email();
+    const parsedEmail = emailSchema.parse(value);
 
-const INVALID_DOMAIN_REGEX = new RegExp(generateInvalidEmailRegex(), 'i');
-const EMAIL_FORMAT_REGEX =
-  /^([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/i;
+    const domain = parsedEmail.split('@')[1];
 
-/**
- * Validates provided email address for standard email format, and against excluded/invalid domains
- * @param {string} email - Email address to be validated
- * @returns boolean
- */
-export const isEmailValid = (email: string): boolean => {
-  return EMAIL_FORMAT_REGEX.test(email) && !INVALID_DOMAIN_REGEX.test(email);
+    // Check if the domain is in the INVALID_DOMAIN_LIST
+    if (INVALID_DOMAIN_LIST.includes(domain)) {
+      return false;
+    }
+  } catch (err) {
+    return false;
+  }
+  return true;
 };

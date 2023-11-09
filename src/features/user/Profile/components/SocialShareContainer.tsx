@@ -5,10 +5,16 @@ import FacebookIcon from '../../../../../public/assets/images/icons/share/Facebo
 import LinkedIn from '../../../../../public/assets/images/icons/share/Linkedin';
 import tenantConfig from '../../../../../tenant.config';
 import { useTranslation } from 'next-i18next';
+import { User, UserPublicProfile } from '@planet-sdk/common';
 
 const config = tenantConfig();
 
-export default function SocialShareContainer({ userprofile, type }: any) {
+interface Props {
+  userprofile: User | UserPublicProfile;
+  type?: string;
+}
+
+export default function SocialShareContainer({ userprofile, type }: Props) {
   const { t, ready } = useTranslation(['donate', 'me']);
   const [currentHover, setCurrentHover] = React.useState(-1);
   const linkToShare = `${config.tenantURL}/t/${userprofile.slug}`;
@@ -19,12 +25,14 @@ export default function SocialShareContainer({ userprofile, type }: any) {
     ? t('donate:textToShareLinkedin', { name: userprofile.displayName })
     : '';
 
-  const shareClicked = async (shareUrl) => {
-    openWindowLinks(shareUrl);
-  };
-  const openWindowLinks = (shareUrl) => {
+  const openWindowLinks = (shareUrl: string) => {
     window.open(shareUrl, '_blank');
   };
+
+  const shareClicked = async (shareUrl: string) => {
+    openWindowLinks(shareUrl);
+  };
+
   return ready ? (
     // <motion.div
     // initial={false}
@@ -32,21 +40,20 @@ export default function SocialShareContainer({ userprofile, type }: any) {
     <div
       className={styles.shareBtnContainer}
       style={{
-        display: type === 'private' ? 'flex' : null,
-        justifyContent: type === 'private' ? 'space-evenly' : null,
+        display: type === 'private' ? 'flex' : undefined,
+        justifyContent: type === 'private' ? 'space-evenly' : undefined,
       }}
     >
       <div
         className={styles.shareIcon}
         onClick={() =>
           shareClicked(
-            `https://www.facebook.com/sharer.php?u=${linkToShare}&quote=${textToShareLinkedin}&hashtag=%23StopTalkingStartPlanting`,
-            '_blank'
+            `https://www.facebook.com/sharer.php?u=${linkToShare}&quote=${textToShareLinkedin}&hashtag=%23StopTalkingStartPlanting`
           )
         }
         onMouseOver={() => setCurrentHover(1)}
         onTouchMove={() => setCurrentHover(1)}
-        style={{ padding: type === 'private' ? '10px' : null }}
+        style={{ padding: type === 'private' ? '10px' : undefined }}
       >
         <div
           className={
@@ -67,7 +74,7 @@ export default function SocialShareContainer({ userprofile, type }: any) {
           )
         }
         onTouchMove={() => setCurrentHover(2)}
-        style={{ padding: type === 'private' ? '10px' : null }}
+        style={{ padding: type === 'private' ? '10px' : 0 }}
       >
         <div
           className={
@@ -88,7 +95,7 @@ export default function SocialShareContainer({ userprofile, type }: any) {
             `https://twitter.com/intent/tweet?hashtags=StopTalkingStartPlanting,TrillionTrees&via=trilliontrees&url=${linkToShare}&text=${textToShare}`
           )
         }
-        style={{ padding: type === 'private' ? '10px' : null }}
+        style={{ padding: type === 'private' ? '10px' : 0 }}
       >
         <div
           className={

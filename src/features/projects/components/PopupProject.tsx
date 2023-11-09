@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, RefObject } from 'react';
 import getImageUrl from '../../../utils/getImageURL';
 import { useTranslation } from 'next-i18next';
 import getFormatedCurrency from '../../../utils/countryCurrency/getFormattedCurrency';
@@ -9,6 +9,7 @@ import { getDonationUrl } from '../../../utils/getDonationUrl';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import VerifiedBadge from './VerifiedBadge';
 import TopProjectBadge from './TopProjectBadge';
+import ProjectTypeIcon from './ProjectTypeIcon';
 import {
   ConservationProjectConcise,
   TreeProjectConcise,
@@ -24,11 +25,7 @@ import tenantConfig from '../../../../tenant.config';
 
 interface Props {
   project: TreeProjectConcise | ConservationProjectConcise;
-  open: boolean;
-  handleOpen: Function;
-  handleClose: Function;
-  buttonRef: any;
-  popupRef: any;
+  buttonRef: RefObject<HTMLButtonElement>;
 }
 
 export default function PopupProject({
@@ -100,6 +97,9 @@ export default function PopupProject({
           )}
           {project.purpose === 'trees' && (
             <div className={'projectType'}>
+              <div className={'projectTypeIcon'}>
+                <ProjectTypeIcon projectType={project.classification} />
+              </div>
               {project.classification && t(`donate:${project.classification}`)}
             </div>
           )}

@@ -1,13 +1,13 @@
 /* eslint-disable no-use-before-define */
 import React from 'react';
-import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
-import { postRequest } from '../../../../../utils/apiRequests/api';
+import { postRequest } from '../../../../utils/apiRequests/api';
 import { Controller, Control, FieldValues, FieldPath } from 'react-hook-form';
-import { Autocomplete } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 
 import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
-import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { SpeciesSuggestionType } from '../../../common/types/plantLocation';
 
 interface Props<
   TFieldValues extends FieldValues,
@@ -17,6 +17,8 @@ interface Props<
   name: TName;
   width?: string | undefined;
   control: Control<TFieldValues>;
+  error?: boolean | undefined;
+  helperText?: React.ReactNode;
   // mySpecies?: any;
 }
 
@@ -29,9 +31,11 @@ export default function SpeciesSelect<
   width,
   // mySpecies,
   control,
+  error,
+  helperText,
 }: Props<TFieldValues, TName>) {
   const [speciesSuggestion, setspeciesSuggestion] = React.useState<
-    SpeciesType[]
+    SpeciesSuggestionType[]
   >([]);
   const [query, setQuery] = React.useState('');
   const { t } = useTranslation(['treemapper']);
@@ -53,12 +57,12 @@ export default function SpeciesSelect<
     // Todo: debouncing
     if (value.length > 2) {
       try {
-        const res = await postRequest(`/suggest.php`, {
+        const res = await postRequest<SpeciesSuggestionType[]>(`/suggest.php`, {
           q: value,
           t: 'species',
         });
         if (res && res.length > 0) {
-          const species = res.map((item: any) => ({
+          const species = res.map((item) => ({
             id: item.id,
             name: item.name,
             scientificName: item.scientificName,
@@ -76,7 +80,7 @@ export default function SpeciesSelect<
   }, [query]);
 
   speciesSuggestion &&
-    speciesSuggestion.sort((a: any, b: any) => {
+    speciesSuggestion.sort((a, b) => {
       const nameA = `${a.name}`;
       const nameB = `${b.name}`;
       if (nameA > nameB) {
@@ -111,7 +115,7 @@ export default function SpeciesSelect<
           }}
           {...fieldProps}
           renderInput={(params) => (
-            <MaterialTextField
+            <TextField
               {...params}
               label={label}
               variant="outlined"
@@ -119,16 +123,12 @@ export default function SpeciesSelect<
                 ...params.inputProps,
                 autoComplete: 'off', // disable autocomplete and autofill
               }}
+              error={error}
+              helperText={helperText}
             />
           )}
         />
       )}
     />
   );
-}
-
-interface SpeciesType {
-  id: string;
-  name: string;
-  scientificName: string;
 }

@@ -163,7 +163,11 @@ export const TreePlanted = () => {
             | WeeksCategories
             | MonthsCategories
             | YearsCategories
+            | string
         ) {
+          if (typeof value === 'string') {
+            return value; // Return the string value directly
+          }
           return value ? value.label : '';
         },
       },
@@ -526,7 +530,11 @@ export const TreePlanted = () => {
 
     const isValidTimeFrame =
       timeFrame && getTimeFrames(toDate, fromDate).includes(timeFrame);
-    if (process.env.ENABLE_ANALYTICS && isValidTimeFrame && project) {
+    if (
+      process.env.ENABLE_ANALYTICS === 'true' &&
+      isValidTimeFrame &&
+      project
+    ) {
       fetchPlantedTrees();
     }
   }, [project, fromDate, toDate, timeFrame]);

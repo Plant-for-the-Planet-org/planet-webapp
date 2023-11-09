@@ -17,6 +17,7 @@ import dynamic from 'next/dynamic';
 import theme from '../../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { PlantLocation } from '../Treemapper';
 
 const Stepper = styled(MuiStepper)({
   '&': {
@@ -56,13 +57,13 @@ export default function ImportData(): ReactElement {
   const [errorMessage, setErrorMessage] = React.useState('');
   const steps = getSteps();
   const [plantLocation, setPlantLocation] =
-    React.useState<Treemapper.PlantLocation | null>(null);
+    React.useState<PlantLocation | null>(null);
   const [userLang, setUserLang] = React.useState('en');
   const [geoJson, setGeoJson] = React.useState(null);
 
-  const fetchPlantLocation = async (id: any) => {
+  const fetchPlantLocation = async (id: string) => {
     try {
-      const result = await getAuthenticatedRequest(
+      const result = await getAuthenticatedRequest<PlantLocation>(
         `/treemapper/plantLocations/${id}?_scope=extended`,
         token,
         logoutUser
@@ -74,7 +75,7 @@ export default function ImportData(): ReactElement {
   };
 
   React.useEffect(() => {
-    if (router && router.query.loc) {
+    if (router && router.query.loc && !Array.isArray(router.query.loc)) {
       fetchPlantLocation(router.query.loc);
     }
   }, [router]);
@@ -112,22 +113,26 @@ export default function ImportData(): ReactElement {
           />
         );
       case 1:
-        return (
+        return plantLocation ? (
           <SampleTrees
             handleNext={handleNext}
             plantLocation={plantLocation}
             setPlantLocation={setPlantLocation}
             userLang={userLang}
           />
+        ) : (
+          <p> {t('common:some_error')}</p>
         );
       case 2:
-        return (
+        return plantLocation ? (
           <ReviewSubmit
             plantLocation={plantLocation}
             handleBack={handleBack}
             errorMessage={errorMessage}
             setErrorMessage={setErrorMessage}
           />
+        ) : (
+          <p> {t('common:some_error')}</p>
         );
       default:
         return (

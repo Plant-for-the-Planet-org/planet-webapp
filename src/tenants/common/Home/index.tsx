@@ -15,7 +15,7 @@ interface Props {
 }
 
 export default function About({ leaderboard, tenantScore }: Props) {
-  const { t, i18n, ready } = useTranslation(['tenants']);
+  const { t, ready } = useTranslation(['tenants']);
 
   const descriptionRef = React.useRef(null);
   React.useEffect(() => {
