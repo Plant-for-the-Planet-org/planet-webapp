@@ -20,6 +20,14 @@ import {
   TreeProjectConcise,
   TreeProjectExtended,
 } from '@planet-sdk/common';
+import ProjectInfo from '../../../../public/assets/images/icons/project/ProjectInfo';
+import {
+  bindHover,
+  bindPopover,
+  usePopupState,
+} from 'material-ui-popup-state/hooks';
+import HoverPopover from 'material-ui-popup-state/HoverPopover';
+import tenantConfig from '../../../../tenant.config';
 
 interface Props {
   project:
@@ -67,6 +75,25 @@ export default function ProjectSnippet({
     const url = getDonationUrl(project.slug, token, embed, callbackUrl);
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
+
+  const projectInfoPopupState = usePopupState({
+    variant: 'popover',
+    popupId: 'projectInfoPopover',
+  });
+
+  const config = tenantConfig();
+
+  const donateButtonBackgroundColor =
+    project.isTopProject && project.isApproved
+      ? 'topApproved'
+      : 'topUnapproved';
+
+  const progressBarBackgroundColor =
+    project.isTopProject && project.isApproved
+      ? 'topApproved'
+      : project.allowDonations
+      ? 'topUnapproved'
+      : 'notDonatable';
 
   return ready ? (
     <div className={'singleProject'}>
@@ -133,7 +160,7 @@ export default function ProjectSnippet({
 
       <div className={'progressBar'}>
         <div
-          className={'progressBarHighlight'}
+          className={`progressBarHighlight ${progressBarBackgroundColor}`}
           style={{ width: progressPercentage + '%' }}
         />
       </div>
@@ -161,47 +188,83 @@ export default function ProjectSnippet({
               </span>
             </div>
           </div>
-          <div
-            className={'projectTPOName'}
-            onClick={() => {
-              embed === 'true'
-                ? window.open(`/t/${project.tpo.slug}`, '_top')
-                : router.push(`/t/${project.tpo.slug}`);
-            }}
-          >
-            {t('common:by', {
-              tpoName: project.tpo.name,
-            })}
-          </div>
+          {!project.allowDonations ? (
+            <div
+              className={'projectHoverIcon'}
+              {...bindHover(projectInfoPopupState)}
+            >
+              <ProjectInfo color={'#828282'} />
+              <HoverPopover
+                {...bindPopover(projectInfoPopupState)}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                <div className="projectInfoPopupContainer">
+                  {config.tenantName === 'salesforce'
+                    ? `${t('common:salesforceDisabledDonateButtonText')}`
+                    : `${t('common:disabledDonateButtonText')}`}
+                </div>
+              </HoverPopover>
+              {t('common:notDonatable')}
+            </div>
+          ) : (
+            <div className={'perUnitCost'}>
+              {getFormatedCurrency(
+                i18n.language,
+                project.currency,
+                project.unitCost
+              )}{' '}
+              <span>
+                {project.purpose === 'conservation'
+                  ? t('donate:perM2')
+                  : t('donate:perTree')}
+              </span>
+            </div>
+          )}
         </div>
 
-        {project.allowDonations && (
-          <div className={'projectCost'}>
-            {project.unitCost ? (
-              <>
-                <button
-                  id={`ProjSnippetDonate_${project.id}`}
-                  onClick={handleOpen}
-                  className={'donateButton'}
-                  data-test-id="donateButton"
-                >
-                  {t('common:donate')}
-                </button>
-                <div className={'perUnitCost'}>
-                  {getFormatedCurrency(
-                    i18n.language,
-                    project.currency,
-                    project.unitCost
-                  )}{' '}
-                  <span>
-                    {project.unitType === 'tree' && t('donate:perTree')}
-                    {project.unitType === 'm2' && t('donate:perM2')}
-                  </span>
-                </div>
-              </>
-            ) : null}
-          </div>
-        )}
+        <div className={'projectCost'}>
+          {project.allowDonations && (
+            <button
+              id={`ProjSnippetDonate_${project.id}`}
+              onClick={handleOpen}
+              className={`donateButton ${donateButtonBackgroundColor}`}
+              data-test-id="donateButton"
+            >
+              {t('common:donate')}
+            </button>
+          )}
+        </div>
+      </div>
+      <div
+        className={'projectTPOName'}
+        onClick={() => {
+          embed === 'true'
+            ? window.open(`/t/${project.tpo.slug}`, '_top')
+            : router.push(`/t/${project.tpo.slug}`);
+        }}
+        style={{
+          background: `${
+            !project.allowDonations
+              ? '#82828233'
+              : project.isTopProject && project.isApproved
+              ? '#e7b24c33'
+              : '#21965333'
+          }`,
+        }}
+      >
+        {t('common:by', {
+          tpoName: project.tpo.name,
+        })}
       </div>
     </div>
   ) : (
