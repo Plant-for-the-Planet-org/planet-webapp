@@ -10,6 +10,7 @@ import { ThemeContext } from '../../../../../theme/themeContext';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
+import { useTenant } from '../../../../common/Layout/TenantContext';
 
 type FormData = {
   target: number | undefined;
@@ -30,6 +31,7 @@ export default function AddTargetModal({
     mode: 'onBlur',
     defaultValues: { target: user?.score.target },
   });
+  const { tenantConfig } = useTenant();
   const { theme } = React.useContext(ThemeContext);
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
@@ -46,6 +48,7 @@ export default function AddTargetModal({
 
       try {
         const res = await putAuthenticatedRequest(
+          tenantConfig?.tenantID,
           `/app/profile`,
           bodyToSend,
           token,

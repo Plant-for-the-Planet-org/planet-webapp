@@ -14,12 +14,13 @@ import {
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths, GetStaticPropsContext } from 'next';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
+import { useTenant } from '../../../src/features/common/Layout/TenantContext';
 
 const ReedemCode: FC = () => {
   const { t, ready } = useTranslation(['redeem']);
   const { user, contextLoaded, token, logoutUser } = useUserProps();
   const { setErrors, errors } = useContext(ErrorHandlingContext);
-
+  const { tenantConfig } = useTenant();
   const [code, setCode] = useState<string | undefined>(undefined);
   const [inputCode, setInputCode] = useState<string | null>(null);
   const [redeemedCodeData, setRedeemedCodeData] = useState<
@@ -56,6 +57,7 @@ const ReedemCode: FC = () => {
     if (contextLoaded && user) {
       try {
         const res = await postAuthenticatedRequest<RedeemedCodeData>(
+          tenantConfig?.tenantID,
           `/app/redeem`,
           submitData,
           token,

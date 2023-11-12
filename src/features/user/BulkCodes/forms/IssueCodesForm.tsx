@@ -21,6 +21,7 @@ import { Recipient as LocalRecipient } from '../BulkCodesTypes';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledFormContainer from '../../../common/Layout/StyledFormContainer';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 const IssueCodesForm = (): ReactElement | null => {
   const { t, ready, i18n } = useTranslation(['common', 'bulkCodes']);
@@ -33,6 +34,7 @@ const IssueCodesForm = (): ReactElement | null => {
     bulkMethod,
     setBulkMethod,
   } = useBulkCode();
+  const { tenantConfig } = useTenant();
   const { user, logoutUser } = useUserProps();
   const { getAccessTokenSilently } = useAuth0();
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -41,7 +43,6 @@ const IssueCodesForm = (): ReactElement | null => {
   const [occasion, setOccasion] = useState('');
   const [codeQuantity, setCodeQuantity] = useState('');
   const [unitsPerCode, setUnitsPerCode] = useState('');
-
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isEditingRecipient, setIsEditingRecipient] = useState(false);
@@ -120,6 +121,7 @@ const IssueCodesForm = (): ReactElement | null => {
 
       try {
         const res = await postAuthenticatedRequest(
+          tenantConfig?.tenantID,
           `/app/donations`,
           cleanedData,
           token,

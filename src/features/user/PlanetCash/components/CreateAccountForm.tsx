@@ -12,6 +12,7 @@ import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
 import { CountryType } from '../../../common/types/country';
 import { useRouter } from 'next/router';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface Props {
   isPlanetCashActive: boolean;
@@ -30,6 +31,7 @@ const CreateAccountForm = ({
   const { token, logoutUser } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const router = useRouter();
+  const { tenantConfig } = useTenant();
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -38,6 +40,7 @@ const CreateAccountForm = ({
 
     try {
       const res = await postAuthenticatedRequest(
+        tenantConfig?.tenantID,
         '/app/planetCash',
         data,
         token,

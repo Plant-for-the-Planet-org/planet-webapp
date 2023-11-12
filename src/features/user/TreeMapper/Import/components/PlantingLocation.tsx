@@ -23,6 +23,7 @@ import themeProperties from '../../../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { MapProject } from '../../../../common/types/ProjectPropsContextInterface';
+import { useTenant } from '../../../../common/Layout/TenantContext';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -63,7 +64,7 @@ export default function PlantingLocation({
   setActiveMethod,
 }: Props): ReactElement {
   const { user, token, contextLoaded, logoutUser } = useUserProps();
-
+  const { tenantConfig } = useTenant();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [projects, setProjects] = React.useState<MapProject[]>([]);
   const importMethods = ['import', 'editor'];
@@ -100,6 +101,7 @@ export default function PlantingLocation({
   const loadProjects = async () => {
     try {
       const projects = await getAuthenticatedRequest<MapProject[]>(
+        tenantConfig?.tenantID,
         '/app/profile/projects',
         token,
         logoutUser
@@ -113,6 +115,7 @@ export default function PlantingLocation({
   const loadMySpecies = async () => {
     try {
       const species = await getAuthenticatedRequest(
+        tenantConfig?.tenantID,
         '/treemapper/species',
         token,
         logoutUser
@@ -220,6 +223,7 @@ export default function PlantingLocation({
 
       try {
         const res = await postAuthenticatedRequest(
+          tenantConfig?.tenantID,
           `/treemapper/plantLocations`,
           submitData,
           token,

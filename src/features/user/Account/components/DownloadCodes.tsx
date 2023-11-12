@@ -5,6 +5,7 @@ import { unparse } from 'papaparse';
 import styles from '../AccountHistory.module.scss';
 import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface DownloadCodesProps {
   codesUrl: string;
@@ -13,7 +14,7 @@ interface DownloadCodesProps {
 const DownloadCodes = ({ codesUrl }: DownloadCodesProps): ReactElement => {
   const [t] = useTranslation('me');
   const [isDownloading, setIsDownloading] = useState(false);
-
+  const { tenantConfig } = useTenant();
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
   function downloadCSV(data: [], filename: string) {
@@ -37,7 +38,7 @@ const DownloadCodes = ({ codesUrl }: DownloadCodesProps): ReactElement => {
         type: string;
         numberOfItems: number;
         items: [];
-      }>(codesUrl);
+      }>(tenantConfig?.tenantID, codesUrl);
       if (response) {
         if (response.items.length) {
           downloadCSV(response.items, 'codes.csv');

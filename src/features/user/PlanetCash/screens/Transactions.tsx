@@ -16,6 +16,7 @@ import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContex
 import NoTransactionsFound from '../components/NoTransactionsFound';
 import { handleError, APIError } from '@planet-sdk/common';
 import { PaymentHistory } from '../../../common/types/payments';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface TransactionsProps {
   setProgress?: (progress: number) => void;
@@ -26,6 +27,7 @@ const Transactions = ({
 }: TransactionsProps): ReactElement | null => {
   const { t } = useTranslation('me');
   const { token, contextLoaded, logoutUser } = useUserProps();
+  const { tenantConfig } = useTenant();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { accounts } = usePlanetCash();
   const [transactionHistory, setTransactionHistory] =
@@ -62,6 +64,7 @@ const Transactions = ({
 
         const newTransactionHistory =
           await getAuthenticatedRequest<PaymentHistory>(
+            tenantConfig?.tenantID,
             apiUrl,
             token,
             logoutUser

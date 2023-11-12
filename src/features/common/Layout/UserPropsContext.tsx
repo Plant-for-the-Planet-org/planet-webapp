@@ -10,6 +10,7 @@ import { User } from '@planet-sdk/common/build/types/user';
 import { SetState } from '../types/common';
 import { PointFeature } from 'supercluster';
 import { TestPointProps } from '../types/map';
+import { useTenant } from './TenantContext';
 
 interface UserPropsContextInterface {
   contextLoaded: boolean;
@@ -52,7 +53,7 @@ export const UserPropsProvider: FC = ({ children }) => {
     user,
     error,
   } = useAuth0();
-
+  const { tenantConfig } = useTenant();
   const [contextLoaded, setContextLoaded] = React.useState(false);
   const [token, setToken] = React.useState<string | null>(null);
   const [profile, setUser] = React.useState<User | null>(null);
@@ -99,7 +100,7 @@ export const UserPropsProvider: FC = ({ children }) => {
     try {
       // TODO: Add error handling after figuring out the nature of getAccountInfo function call with impersonatedEmail
 
-      const res = await getAccountInfo(token);
+      const res = await getAccountInfo(tenantConfig?.tenantID, token);
       if (res.status === 200) {
         const resJson = await res.json();
         setUser(resJson as User);

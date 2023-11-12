@@ -41,6 +41,7 @@ import {
   Site,
 } from '../../../common/types/project';
 import { FeatureCollection as GeoJson } from 'geojson';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 const MapStatic = ReactMapboxGl({
   interactive: false,
@@ -294,7 +295,7 @@ export default function ProjectSites({
     status: '',
     geometry: {},
   };
-
+  const { tenantConfig } = useTenant();
   const [siteDetails, setSiteDetails] =
     React.useState<SiteDetails>(defaultSiteDetails);
   const [siteList, setSiteList] = React.useState<Site[]>([]);
@@ -340,6 +341,7 @@ export default function ProjectSites({
       if (projectGUID) {
         // Fetch sites of the project
         const result = await getAuthenticatedRequest<Project>(
+          tenantConfig?.tenantID,
           `/app/profile/projects/${projectGUID}?_scope=sites`,
           token,
           logoutUser
@@ -377,6 +379,7 @@ export default function ProjectSites({
 
       try {
         const res = await postAuthenticatedRequest<Site>(
+          tenantConfig?.tenantID,
           `/app/projects/${projectGUID}/sites`,
           submitData,
           token,
@@ -414,6 +417,7 @@ export default function ProjectSites({
     try {
       setIsUploadingData(true);
       await deleteAuthenticatedRequest(
+        tenantConfig?.tenantID,
         `/app/projects/${projectGUID}/sites/${id}`,
         token,
         logoutUser

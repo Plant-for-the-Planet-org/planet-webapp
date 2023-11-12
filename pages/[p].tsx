@@ -21,7 +21,8 @@ import {
 } from '@planet-sdk/common';
 import { SetState } from '../src/features/common/types/common';
 import { PlantLocation } from '../src/features/common/types/plantLocation';
-
+import { useTenant } from '../src/features/common/Layout/TenantContext';
+import tenantConfig from '../tenant.config';
 interface Props {
   initialized: boolean;
   currencyCode: string | null | undefined;
@@ -52,6 +53,8 @@ export default function Donate({
     setPlantLocationsLoaded,
   } = useProjectProps();
 
+  const { tenantConfig } = useTenant();
+
   React.useEffect(() => {
     setZoomLevel(2);
   }, []);
@@ -72,6 +75,7 @@ export default function Donate({
         try {
           const { p } = router.query;
           const project = await getRequest<ProjectExtended>(
+            `${tenantConfig?.tenantID}`,
             encodeURI(`/app/projects/${p}`),
             {
               _scope: 'extended',
@@ -109,6 +113,7 @@ export default function Donate({
     ) {
       setPlantLocationsLoaded(false);
       const newPlantLocations = await getAllPlantLocations(
+        tenantConfig?.tenantID,
         project.id,
         setErrors,
         redirect

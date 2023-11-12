@@ -1,11 +1,12 @@
 import getsessionId from './apiRequests/getSessionId';
 import countriesData from '../utils/countryCurrency/countriesData.json';
-import { TENANT_ID } from './constants/environment';
+import { useTenant } from '../features/common/Layout/TenantContext';
 
 export async function storeConfig() {
+  const {tenantConfig} = useTenant()
   await fetch(`${process.env.CONFIG_URL}`, {
     headers: {
-      'tenant-key': `${TENANT_ID}`,
+      'tenant-key': `${tenantConfig?.tenantID}`,
       'X-SESSION-ID': await getsessionId(),
     },
   })

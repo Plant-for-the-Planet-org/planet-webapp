@@ -28,6 +28,7 @@ import StyledForm from '../../../common/Layout/StyledForm';
 import { AddressSuggestionsType } from '../../../common/types/user';
 import { AlertColor } from '@mui/lab';
 import { APIError, handleError } from '@planet-sdk/common';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -58,7 +59,7 @@ export default function EditProfileForm() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const { user, setUser, token, contextLoaded, logoutUser } = useUserProps();
-
+  const { tenantConfig } = useTenant();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { t, ready } = useTranslation(['editProfile', 'donate']);
 
@@ -231,6 +232,7 @@ export default function EditProfileForm() {
 
             try {
               const res = await putAuthenticatedRequest<User>(
+                tenantConfig?.tenantID,
                 `/app/profile`,
                 bodyToSend,
                 token,

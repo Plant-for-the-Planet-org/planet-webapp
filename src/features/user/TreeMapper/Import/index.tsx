@@ -17,6 +17,7 @@ import dynamic from 'next/dynamic';
 import theme from '../../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 const Stepper = styled(MuiStepper)({
   '&': {
@@ -41,6 +42,7 @@ const MapComponent = dynamic(() => import('./components/MapComponent'), {
 
 export default function ImportData(): ReactElement {
   const router = useRouter();
+  const { tenantConfig } = useTenant();
   const { t, ready } = useTranslation(['treemapper']);
   const { token, logoutUser } = useUserProps();
   const { setErrors } = React.useContext(ErrorHandlingContext);
@@ -63,6 +65,7 @@ export default function ImportData(): ReactElement {
   const fetchPlantLocation = async (id: any) => {
     try {
       const result = await getAuthenticatedRequest(
+        tenantConfig?.tenantID,
         `/treemapper/plantLocations/${id}?_scope=extended`,
         token,
         logoutUser

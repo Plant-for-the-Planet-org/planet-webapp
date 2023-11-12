@@ -24,6 +24,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslation, Trans } from 'next-i18next';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
 import { handleError, APIError } from '@planet-sdk/common';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -136,7 +137,7 @@ export default function CompleteSignup(): ReactElement | null {
   const [requestSent, setRequestSent] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState<boolean | null>(null);
   const [country, setCountry] = useState('');
-
+  const { tenantConfig } = useTenant();
   const [postalRegex, setPostalRegex] = React.useState(
     COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal
   );
@@ -151,7 +152,11 @@ export default function CompleteSignup(): ReactElement | null {
     setRequestSent(true);
     setIsProcessing(true);
     try {
-      const res = await postRequest(`/app/profile`, bodyToSend);
+      const res = await postRequest(
+        tenantConfig?.tenantID,
+        `/app/profile`,
+        bodyToSend
+      );
       setRequestSent(false);
       // successful signup -> goto me page
       setUser(res);

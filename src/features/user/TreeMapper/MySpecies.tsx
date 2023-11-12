@@ -14,6 +14,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 export default function MySpecies(): ReactElement {
   const { t } = useTranslation(['treemapper', 'me', 'common']);
@@ -21,7 +22,7 @@ export default function MySpecies(): ReactElement {
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const [species, setSpecies] = React.useState<any[]>([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-
+  const { tenantConfig } = useTenant();
   const defaultMySpeciesValue = {
     aliases: '',
     scientificSpecies: null,
@@ -39,6 +40,7 @@ export default function MySpecies(): ReactElement {
   const fetchMySpecies = async () => {
     try {
       const result = await getAuthenticatedRequest(
+        tenantConfig?.tenantID,
         '/treemapper/species',
         token,
         logoutUser
@@ -52,6 +54,7 @@ export default function MySpecies(): ReactElement {
   const deleteSpecies = async (id: number) => {
     try {
       await deleteAuthenticatedRequest(
+        tenantConfig?.tenantID,
         `/treemapper/species/${id}`,
         token,
         logoutUser
@@ -73,6 +76,7 @@ export default function MySpecies(): ReactElement {
     };
     try {
       await postAuthenticatedRequest(
+        tenantConfig?.tenantID,
         `/treemapper/species`,
         data,
         token,

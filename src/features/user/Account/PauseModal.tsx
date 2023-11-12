@@ -22,6 +22,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { Subscription } from '../../common/types/payments';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 const MuiCalendarPicker = styled(CalendarPicker)({
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -51,6 +52,7 @@ export const PauseModal = ({
   fetchRecurrentDonations,
 }: PauseModalProps) => {
   const { theme } = React.useContext(ThemeContext);
+  const { tenantConfig } = useTenant();
   const { token, logoutUser } = useUserProps();
   const [option, setoption] = React.useState();
   const [showCalender, setshowCalender] = React.useState(false);
@@ -87,6 +89,7 @@ export const PauseModal = ({
 
     try {
       await putAuthenticatedRequest(
+        tenantConfig?.tenantID,
         `/app/subscriptions/${record.id}?scope=pause`,
         bodyToSend,
         token,

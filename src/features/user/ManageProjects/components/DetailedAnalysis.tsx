@@ -28,6 +28,7 @@ import {
   ProfileProjectConservation,
   InterventionOption,
 } from '../../../common/types/project';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -104,6 +105,7 @@ export default function DetailedAnalysis({
   const { t, ready } = useTranslation(['manageProjects', 'common']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
+  const { tenantConfig } = useTenant();
   const [siteOwners, setSiteOwners] = React.useState<SiteOwners[]>([
     {
       id: 1,
@@ -371,7 +373,13 @@ export default function DetailedAnalysis({
     try {
       const res = await putAuthenticatedRequest<
         ProfileProjectTrees | ProfileProjectConservation
-      >(`/app/projects/${projectGUID}`, submitData, token, logoutUser);
+      >(
+        tenantConfig?.tenantID,
+        `/app/projects/${projectGUID}`,
+        submitData,
+        token,
+        logoutUser
+      );
       setProjectDetails(res);
       setIsUploadingData(false);
       setIsInterventionsMissing(null);

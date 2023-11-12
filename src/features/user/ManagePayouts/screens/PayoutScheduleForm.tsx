@@ -11,6 +11,7 @@ import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import { PaymentFrequencies } from '../../../../utils/constants/payoutConstants';
 import { handleError, APIError, User } from '@planet-sdk/common';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 const paymentFrequencies = [
   PaymentFrequencies.MANUAL,
@@ -29,6 +30,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const { token, user, setUser, logoutUser } = useUserProps();
+  const { tenantConfig } = useTenant();
   const { setErrors } = useContext(ErrorHandlingContext);
   const {
     handleSubmit,
@@ -43,6 +45,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
 
     try {
       const res = await putAuthenticatedRequest<User>(
+        tenantConfig?.tenantID,
         '/app/profile',
         { scheduleFrequency: data.scheduleFrequency },
         token,

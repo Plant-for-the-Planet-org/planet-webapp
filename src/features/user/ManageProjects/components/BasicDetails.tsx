@@ -37,6 +37,7 @@ import {
   ProfileProjectTrees,
   ViewPort,
 } from '../../../common/types/project';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 type FormData = {
   name: string;
@@ -79,7 +80,7 @@ export default function BasicDetails({
 
   const [IsSkipButtonVisible, setIsSkipButtonVisible] =
     React.useState<boolean>(false);
-
+  const { tenantConfig } = useTenant();
   const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
   // Map setup
   const { theme } = React.useContext(ThemeContext);
@@ -354,7 +355,13 @@ export default function BasicDetails({
       try {
         const res = await putAuthenticatedRequest<
           ProfileProjectTrees | ProfileProjectConservation
-        >(`/app/projects/${projectGUID}`, submitData, token, logoutUser);
+        >(
+          tenantConfig?.tenantID,
+          `/app/projects/${projectGUID}`,
+          submitData,
+          token,
+          logoutUser
+        );
         setProjectDetails(res);
         setIsUploadingData(false);
         handleNext(ProjectCreationTabs.PROJECT_MEDIA);
@@ -366,7 +373,13 @@ export default function BasicDetails({
       try {
         const res = await postAuthenticatedRequest<
           ProfileProjectTrees | ProfileProjectConservation
-        >(`/app/projects`, submitData, token, logoutUser);
+        >(
+          tenantConfig?.tenantID,
+          `/app/projects`,
+          submitData,
+          token,
+          logoutUser
+        );
         setProjectGUID(res.id);
         setProjectDetails(res);
         router.push(`/profile/projects/${res.id}?type=media`);

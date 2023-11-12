@@ -4,11 +4,10 @@ import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
 import { postRequest } from '../../../../../utils/apiRequests/api';
 import { Controller, Control, FieldValues, FieldPath } from 'react-hook-form';
 import { Autocomplete } from '@mui/material';
-
 import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-
+import { useTenant } from '../../../../common/Layout/TenantContext';
 interface Props<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>
@@ -34,6 +33,7 @@ export default function SpeciesSelect<
     SpeciesType[]
   >([]);
   const [query, setQuery] = React.useState('');
+  const { tenantConfig } = useTenant();
   const { t } = useTranslation(['treemapper']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
@@ -53,7 +53,7 @@ export default function SpeciesSelect<
     // Todo: debouncing
     if (value.length > 2) {
       try {
-        const res = await postRequest(`/suggest.php`, {
+        const res = await postRequest(tenantConfig?.tenantID, `/suggest.php`, {
           q: value,
           t: 'species',
         });

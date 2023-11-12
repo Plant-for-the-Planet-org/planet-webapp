@@ -11,6 +11,7 @@ import styles from './ProjectsContainer.module.scss';
 import GlobeContentLoader from '../../../../src/features/common/ContentLoaders/Projects/GlobeLoader';
 import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 function SingleProject({ project }: any) {
   const ImageSource = project.image
@@ -86,6 +87,7 @@ function SingleProject({ project }: any) {
 
 export default function ProjectsContainer() {
   const { t, ready } = useTranslation(['donate', 'manageProjects']);
+  const { tenantConfig } = useTenant();
   const [projects, setProjects] = React.useState([]);
   const [loader, setLoader] = React.useState(true);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
@@ -95,6 +97,7 @@ export default function ProjectsContainer() {
     if (user) {
       try {
         const projects = await getAuthenticatedRequest(
+          tenantConfig?.tenantID,
           '/app/profile/projects?version=1.2',
           token,
           logoutUser

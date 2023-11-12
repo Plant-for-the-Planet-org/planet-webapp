@@ -9,6 +9,7 @@ import { ThemeContext } from '../../../theme/themeContext';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 interface Props {
   embedModalOpen: boolean;
@@ -33,6 +34,7 @@ export default function EmbedModal({
   const [snackbarMessage, setSnackbarMessage] = React.useState('OK');
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const router = useRouter();
+  const { tenantConfig } = useTenant();
   // This effect is used to get and update UserInfo if the isAuthenticated changes
 
   const { user, setUser, contextLoaded, token, logoutUser } = useUserProps();
@@ -64,6 +66,7 @@ export default function EmbedModal({
     if (contextLoaded && token) {
       try {
         const res = await putAuthenticatedRequest(
+          tenantConfig?.tenantID,
           `/app/profile`,
           bodyToSend,
           token,

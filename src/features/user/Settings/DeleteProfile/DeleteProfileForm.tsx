@@ -9,9 +9,11 @@ import { useTranslation } from 'next-i18next';
 import { Button, TextField } from '@mui/material';
 import StyledForm from '../../../common/Layout/StyledForm';
 import { APIError, handleError, SerializedError } from '@planet-sdk/common';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 export default function DeleteProfileForm() {
   const { user, token, logoutUser } = useUserProps();
+  const { tenantConfig } = useTenant();
   const { t } = useTranslation(['me', 'common', 'editProfile']);
   const handleChange = (e: React.ChangeEvent<{}>) => {
     e.preventDefault();
@@ -24,7 +26,12 @@ export default function DeleteProfileForm() {
   const handleDeleteAccount = async () => {
     setIsUploadingData(true);
     try {
-      await deleteAuthenticatedRequest('/app/profile', token, logoutUser);
+      await deleteAuthenticatedRequest(
+        tenantConfig?.tenantID,
+        '/app/profile',
+        token,
+        logoutUser
+      );
       setIsUploadingData(false);
       logoutUser(`${process.env.NEXTAUTH_URL}/`);
     } catch (err) {

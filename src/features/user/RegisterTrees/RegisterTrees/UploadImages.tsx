@@ -13,6 +13,7 @@ import { handleError, APIError } from '@planet-sdk/common';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { Button } from '@mui/material';
+import { useTenant } from '../../../common/Layout/TenantContext';
 interface Props {
   contribution: any;
   contributionGUID: any;
@@ -27,6 +28,7 @@ export default function UploadImages({
   const [uploadedImages, setUploadedImages] = React.useState([]);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { t, ready } = useTranslation(['me', 'common']);
+  const { tenantConfig } = useTenant();
   const onDrop = React.useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: any) => {
       const reader = new FileReader();
@@ -50,6 +52,7 @@ export default function UploadImages({
 
     try {
       const res = await postAuthenticatedRequest(
+        tenantConfig?.tenantID,
         `/app/contributions/${contributionGUID}/images`,
         submitData,
         token,
@@ -65,7 +68,7 @@ export default function UploadImages({
     }
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
     multiple: true,
     onDrop: onDrop,
@@ -78,6 +81,7 @@ export default function UploadImages({
   const deleteContributionImage = async (id: any) => {
     try {
       await deleteAuthenticatedRequest(
+        tenantConfig?.tenantID,
         `/app/contributions/${contributionGUID}/images/${id}`,
         token,
         logoutUser

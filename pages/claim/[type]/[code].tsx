@@ -13,12 +13,13 @@ import {
 import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
+import { useTenant } from '../../../src/features/common/Layout/TenantContext';
 
 function ClaimDonation(): ReactElement {
   const { t, ready } = useTranslation(['redeem']);
 
   const router = useRouter();
-
+  const { tenantConfig } = useTenant();
   const { user, contextLoaded, loginWithRedirect, token, logoutUser } =
     useUserProps();
 
@@ -59,6 +60,7 @@ function ClaimDonation(): ReactElement {
     if (contextLoaded && user) {
       try {
         const res = await postAuthenticatedRequest<RedeemedCodeData>(
+          tenantConfig?.tenantID,
           `/app/redeem`,
           submitData,
           token,

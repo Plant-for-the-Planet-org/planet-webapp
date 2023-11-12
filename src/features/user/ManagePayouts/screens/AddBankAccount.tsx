@@ -11,6 +11,7 @@ import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 import { BankAccount } from '../../../common/types/payouts';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 const AddBankAccount = (): ReactElement | null => {
   const { t } = useTranslation('managePayouts');
@@ -20,7 +21,7 @@ const AddBankAccount = (): ReactElement | null => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
   const router = useRouter();
-
+  const { tenantConfig } = useTenant();
   const closeSnackbar = (): void => {
     setIsAccountCreated(false);
   };
@@ -35,6 +36,7 @@ const AddBankAccount = (): ReactElement | null => {
     };
     try {
       const res = await postAuthenticatedRequest<BankAccount>(
+        tenantConfig?.tenantID,
         '/app/accounts',
         accountData,
         token,

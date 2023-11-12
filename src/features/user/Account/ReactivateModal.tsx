@@ -9,6 +9,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { CircularProgress, Modal, Fade } from '@mui/material';
 import { handleError, APIError } from '@planet-sdk/common';
 import { Subscription } from '../../common/types/payments';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 interface ReactivateModalProps {
   reactivateModalOpen: boolean;
@@ -24,6 +25,7 @@ export const ReactivateModal = ({
   fetchRecurrentDonations,
 }: ReactivateModalProps) => {
   const [disabled, setDisabled] = React.useState(false);
+  const { tenantConfig } = useTenant();
   const { theme } = React.useContext(ThemeContext);
   const { token, logoutUser } = useUserProps();
   const { setErrors } = React.useContext(ErrorHandlingContext);
@@ -39,6 +41,7 @@ export const ReactivateModal = ({
 
     try {
       await putAuthenticatedRequest(
+        tenantConfig?.tenantID,
         `/app/subscriptions/${record.id}?scope=reactivate`,
         bodyToSend,
         token,

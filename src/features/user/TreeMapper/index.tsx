@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 const PlantLocationMap = dynamic(() => import('./components/Map'), {
   loading: () => <p>loading</p>,
@@ -24,6 +25,7 @@ function TreeMapper(): ReactElement {
   const [plantLocations, setPlantLocations] = React.useState(null);
   const [selectedLocation, setselectedLocation] = React.useState('');
   const [location, setLocation] = React.useState(null);
+  const { tenantConfig } = useTenant();
   const [links, setLinks] = React.useState();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
@@ -34,6 +36,7 @@ function TreeMapper(): ReactElement {
     if (next && links?.next) {
       try {
         const response = await getAuthenticatedRequest(
+          tenantConfig?.tenantID,
           links.next,
           token,
           logoutUser,
@@ -73,6 +76,7 @@ function TreeMapper(): ReactElement {
     } else {
       try {
         const response = await getAuthenticatedRequest(
+          tenantConfig?.tenantID,
           '/treemapper/plantLocations?_scope=extended&limit=15',
           token,
           logoutUser,

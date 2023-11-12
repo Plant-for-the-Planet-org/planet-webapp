@@ -27,6 +27,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import StyledForm from '../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 const DrawMap = dynamic(() => import('./RegisterTrees/DrawMap'), {
   ssr: false,
@@ -90,7 +91,7 @@ function RegisterTreesForm({
   const [userLocation, setUserLocation] = React.useState();
   const [projects, setProjects] = React.useState([]);
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
-
+  const { tenantConfig } = useTenant();
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
     promise.then((style) => {
@@ -174,6 +175,7 @@ function RegisterTreesForm({
         };
         try {
           const res = await postAuthenticatedRequest(
+            tenantConfig?.tenantID,
             `/app/contributions`,
             submitData,
             token,
@@ -200,6 +202,7 @@ function RegisterTreesForm({
   async function loadProjects() {
     try {
       const projects = await getAuthenticatedRequest(
+        tenantConfig?.tenantID,
         '/app/profile/projects',
         token,
         logoutUser

@@ -7,6 +7,7 @@ import { SetState } from '../../features/common/types/common';
 import { PlantLocation } from '../../features/common/types/plantLocation';
 import { Position } from 'geojson';
 import { ViewPort } from '../../features/common/types/ProjectPropsContextInterface';
+import { useTenant } from '../../features/common/Layout/TenantContext';
 
 /**
  * Zooms the map to a multiple tree plant location
@@ -63,12 +64,14 @@ export function zoomToPlantLocation(
 }
 
 export async function getAllPlantLocations(
+  tenant: string | undefined,
   project: string,
   setErrors: SetState<SerializedError[] | null>,
   redirect: (url: string) => void
 ): Promise<PlantLocation[] | null | void> {
   try {
     const result = await getRequest<PlantLocation[]>(
+      tenant,
       `/app/plantLocations/${project}`,
       {
         _scope: 'extended',

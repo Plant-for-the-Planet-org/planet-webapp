@@ -26,6 +26,7 @@ import { handleError, APIError, ProjectExpense } from '@planet-sdk/common';
 import { ProjectCreationTabs } from '..';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ProjectSpendingProps, Project } from '../../../common/types/project';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 const yearDialogSx: SxProps = {
   '& .PrivatePickersYear-yearButton': {
@@ -65,11 +66,10 @@ export default function ProjectSpending({
     setValue,
     control,
   } = useForm<FormData>({ mode: 'all' });
-
+  const { tenantConfig } = useTenant();
   const [amount, setAmount] = React.useState<number | string>(0);
   const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
-
   const [showForm, setShowForm] = React.useState<boolean>(true);
   const [uploadedFiles, setUploadedFiles] = React.useState<ProjectExpense[]>(
     []
@@ -95,6 +95,7 @@ export default function ProjectSpending({
 
     try {
       const res = await postAuthenticatedRequest<ProjectExpense>(
+        tenantConfig?.tenantID,
         `/app/projects/${projectGUID}/expenses`,
         submitData,
         token,
@@ -151,6 +152,7 @@ export default function ProjectSpending({
     try {
       setIsUploadingData(true);
       await deleteAuthenticatedRequest(
+        tenantConfig?.tenantID,
         `/app/projects/${projectGUID}/expenses/${id}`,
         token,
         logoutUser
@@ -169,6 +171,7 @@ export default function ProjectSpending({
       // Fetch spending of the project
       if (projectGUID && token) {
         const result = await getAuthenticatedRequest<Project>(
+          tenantConfig?.tenantID,
           `/app/profile/projects/${projectGUID}?_scope=expenses`,
           token,
           logoutUser

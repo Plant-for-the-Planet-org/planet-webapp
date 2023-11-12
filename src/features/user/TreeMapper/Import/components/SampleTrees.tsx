@@ -10,6 +10,7 @@ import Papa from 'papaparse';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { Button } from '@mui/material';
+import { useTenant } from '../../../../common/Layout/TenantContext';
 
 interface Props {
   handleNext: Function;
@@ -42,7 +43,7 @@ export default function SampleTrees({
   const [uploadIndex, setUploadIndex] = React.useState(0);
   const [uploadStatus, setUploadStatus] = React.useState<string[]>([]);
   const [sampleTrees, setSampleTrees] = React.useState<SampleTree[]>([]);
-
+  const { tenantConfig } = useTenant();
   const {
     handleSubmit,
     control,
@@ -93,6 +94,7 @@ export default function SampleTrees({
 
     try {
       const res = await postAuthenticatedRequest(
+        tenantConfig?.tenantID,
         `/treemapper/plantLocations`,
         sampleTree,
         token,

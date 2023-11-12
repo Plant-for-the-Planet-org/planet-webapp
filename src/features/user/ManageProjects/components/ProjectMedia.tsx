@@ -26,7 +26,7 @@ import {
   UploadImage,
   Project,
 } from '../../../common/types/project';
-
+import { useTenant } from '../../../common/Layout/TenantContext';
 export default function ProjectMedia({
   handleBack,
   token,
@@ -48,7 +48,7 @@ export default function ProjectMedia({
     mode: 'all',
     defaultValues: { youtubeURL: projectDetails?.videoUrl || '' },
   });
-
+  const { tenantConfig } = useTenant();
   const [uploadedImages, setUploadedImages] = React.useState<UploadImage[]>([]);
 
   const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
@@ -59,6 +59,7 @@ export default function ProjectMedia({
       // Fetch images of the project
       if (projectGUID && token) {
         const result = await getAuthenticatedRequest<Project>(
+          tenantConfig?.tenantID,
           `/app/profile/projects/${projectGUID}?_scope=images`,
           token,
           logoutUser
@@ -86,6 +87,7 @@ export default function ProjectMedia({
 
     try {
       const res = await postAuthenticatedRequest<UploadImage>(
+        tenantConfig?.tenantID,
         `/app/projects/${projectGUID}/images`,
         submitData,
         token,
@@ -157,6 +159,7 @@ export default function ProjectMedia({
   const deleteProjectCertificate = async (id: any) => {
     try {
       await deleteAuthenticatedRequest(
+        tenantConfig?.tenantID,
         `/app/projects/${projectGUID}/images/${id}`,
         token,
         logoutUser
@@ -178,6 +181,7 @@ export default function ProjectMedia({
 
     try {
       const res = await putAuthenticatedRequest<Project>(
+        tenantConfig?.tenantID,
         `/app/projects/${projectGUID}`,
         submitData,
         token,
