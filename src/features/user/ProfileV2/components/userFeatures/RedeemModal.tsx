@@ -110,9 +110,6 @@ export default function RedeemModal({
       closeAfterTransition
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
-      BackdropProps={{
-        timeout: 500,
-      }}
     >
       <Fade in={redeemModalOpen}>
         <div>

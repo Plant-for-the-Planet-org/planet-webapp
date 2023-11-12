@@ -31,11 +31,7 @@ const MyForestMapCredit = () => {
         anchorEl={anchorEl}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
+          horizontal: 'right',
         }}
         onClose={handlePopoverClose}
         disableRestoreFocus

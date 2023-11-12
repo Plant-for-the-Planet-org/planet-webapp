@@ -188,10 +188,9 @@
 
 .mapCreditsContainer {
     position: absolute;
-    background-color: #FFFFFF ;
+    background-color: #F2F2F2;
     width: 100px;
-    top:10px;
-    left: 95px;
+    left: 80px;
     z-index: 1;
     display: flex;
     justify-content: center;
@@ -199,11 +198,14 @@
     border-radius: 10px;
     cursor: pointer;
     border:  3px solid #C9E1F4;
+    @include xsPhoneView {
+        left: 30px
+    }
 }
 
 .mapCredit {
-    width: 400px;
     padding: 10px;
+    width: 330px;
 }
 
 .myForestMapSkeleton {

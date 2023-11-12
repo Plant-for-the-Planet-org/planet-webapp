@@ -16,17 +16,30 @@ const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
     router.push('profile/edit');
   };
 
+  const stringAvatar = (name: string) => {
+    return {
+      children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+    };
+  };
+
   return (
     <>
       <div
         className={myProfilestyle.userInfoContainer}
         style={{ position: 'relative' }}
       >
-        <Avatar
-          alt="user Image"
-          src={getImageUrl('profile', 'avatar', userProfile?.image)}
-          sx={{ width: 65, height: 65 }}
-        />
+        {userProfile?.image ? (
+          <Avatar
+            alt="user Image"
+            src={getImageUrl('profile', 'avatar', userProfile?.image)}
+            sx={{ width: 65, height: 65 }}
+          />
+        ) : (
+          <Avatar
+            {...stringAvatar(`${userProfile?.displayName}`)}
+            sx={{ paddingBottom: 1 }}
+          />
+        )}
 
         <div>
           <div className={myProfilestyle.userInfo}>

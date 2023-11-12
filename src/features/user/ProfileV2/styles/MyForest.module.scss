@@ -305,6 +305,7 @@
 
   .mapButtonContainer {
     width: 100%;
+    scrollbar-width: none;
     max-width: 100%;
     position: absolute;
     top: 510px;
@@ -423,6 +424,7 @@
             }
             @include xsPhoneView {
                 width: 274px;
+                height: 240px;
                 margin-left: 0px;
             }
         }
@@ -519,6 +521,7 @@
 
   .tpoName {
     font-size: $fontXSmall;
+    margin-top: 6px;
   }
 
   .areaConservedMainContainer {
@@ -645,13 +648,11 @@
 .sepratorContainer {
     display: flex;
     align-items: center;
-    .dotSeprator,
-    .lineSeprator {
-        margin-left: 4px;
-        margin-right: 4px;
-    }
+    justify-content: center;
     .dotSeprator{
         margin-bottom: 4px;
+        margin-left: 4px;
+        margin-right: 4px;
     }
 }
 

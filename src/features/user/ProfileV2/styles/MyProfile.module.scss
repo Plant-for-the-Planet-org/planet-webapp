@@ -52,6 +52,9 @@
         left: 192px;
         margin-top: 90px;
         cursor: pointer;
+        @include xsPhoneView {
+            top: -79px;
+        }
     }
 }
 
