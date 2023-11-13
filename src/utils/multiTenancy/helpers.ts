@@ -3,12 +3,11 @@ import {
   Tenants,
 } from '@planet-sdk/common/build/types/tenant';
 import { NextResponse } from 'next/server';
-import NodeCache from 'node-cache';
+import redisClient from '../../redis-client';
 
 const ONE_HOUR_IN_SEC = 60 * 60;
 const TWO_HOURS = ONE_HOUR_IN_SEC * 2;
 
-const cache = new NodeCache({ stdTTL: TWO_HOURS });
 const caching_key = 'TENANT_CONFIG_LIST';
 
 /**
@@ -23,18 +22,20 @@ const DEFAULT_TENANT_DOMAIN = 'https://www1.plant-for-the-planet.org';
  * @returns TenantAppConfig[]
  *
  */
-export const getTenantConfigList = async () => {
-  const cacheHit = cache.get<TenantAppConfig[]>(caching_key);
+export const getTenantConfigList = async (): Promise<TenantAppConfig[]> => {
+  const cacheHit = await redisClient.get(caching_key);
 
   if (cacheHit) {
-    return cacheHit;
+    return JSON.parse(cacheHit);
   }
 
   const response = await fetch(`${process.env.API_ENDPOINT}/app/tenants`);
 
   const tenants = (await response.json()) as TenantAppConfig[];
 
-  cache.set(caching_key, tenants);
+  await redisClient.set(caching_key, JSON.stringify(tenants), {
+    EX: TWO_HOURS,
+  });
 
   return tenants;
 };
