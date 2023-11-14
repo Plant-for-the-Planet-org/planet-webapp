@@ -12,7 +12,6 @@ interface Props {
 
 export default function Credits({ setCurrencyCode }: Props): ReactElement {
   const { tenantConfig } = useTenant();
-
   const { i18n, t } = useTranslation(['common', 'maps']);
   const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
   const [language, setLanguage] = React.useState(i18n.language);
@@ -45,7 +44,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
   return (
     <>
       <div className={styles.lngSwitcher + ' mapboxgl-map'}>
-        {tenantConfig?.darkModeEnabled && <DarkModeSwitch />}
+        {tenantConfig.darkModeEnabled && <DarkModeSwitch />}
         {isEmbed ? null : (
           <div
             onClick={() => {

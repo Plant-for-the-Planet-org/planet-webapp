@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './RedeemPopup.module.scss';
 import { useTranslation } from 'next-i18next';
-import tenantConfig from '../../../../../tenant.config';
+import { useTenant } from '../TenantContext';
 import { useUserProps } from '../UserPropsContext';
 
 export default function RedeemPopup() {
   const { t, ready } = useTranslation(['leaderboard']);
-  const config = tenantConfig();
+  const { tenantConfig } = useTenant();
 
   const [showRedeemPopup, setShowRedeemPopup] = useState(false);
 
@@ -27,7 +27,7 @@ export default function RedeemPopup() {
   }, [contextLoaded && user]);
 
   useEffect(() => {
-    if (config.showRedeemHint) {
+    if (tenantConfig.showRedeemHint) {
       const prev = localStorage.getItem('redeemPopup');
       if (!prev) {
         setShowRedeemPopup(true);

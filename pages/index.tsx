@@ -18,6 +18,9 @@ import { handleError, APIError } from '@planet-sdk/common';
 import { SetState } from '../src/features/common/types/common';
 import { MapProject } from '../src/features/common/types/ProjectPropsContextInterface';
 import { GetStaticPropsContext } from 'next';
+import tenantConfig from '../tenant.config';
+
+const config = tenantConfig();
 
 interface Props {
   initialized: Boolean;
@@ -85,7 +88,7 @@ export default function Donate({
         currencyCode !== internalCurrencyCode ||
         internalLanguage !== i18n.language
       ) {
-        const currency = getStoredCurrency();
+        const currency = getStoredCurrency(config.fallbackCurrency);
         setInternalCurrencyCode(currency);
         setCurrencyCode(currency);
         setInternalLanguage(i18n.language);

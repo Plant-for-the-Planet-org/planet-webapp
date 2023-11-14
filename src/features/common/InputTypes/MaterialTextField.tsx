@@ -1,8 +1,16 @@
-import { TextField, styled } from '@mui/material';
-import tenantConfig from '../../../../tenant.config';
-const config = tenantConfig();
+import { TextField, TextFieldProps, styled } from '@mui/material';
+import { TenantAppConfig } from '@planet-sdk/common/build/types/tenant';
+import { useTenant } from '../Layout/TenantContext';
 
-const MaterialTextField = styled(TextField)({
+interface StyledTextFieldType {
+  config: TenantAppConfig;
+}
+
+const StyledTextField = styled(TextField, {
+  shouldForwardProp: (prop) => {
+    return prop !== 'config';
+  },
+})(({ config }: StyledTextFieldType) => ({
   width: '100%',
   color: 'var(--primary-font-color)',
   '& .MuiInputBase-input.MuiOutlinedInput-input': {
@@ -51,6 +59,12 @@ const MaterialTextField = styled(TextField)({
   '& .Mui-disabled.MuiOutlinedInput-input ': {
     color: 'var(--disabled-font-color)',
   },
-});
+}));
+
+const MaterialTextField = (props: TextFieldProps) => {
+  const { tenantConfig } = useTenant();
+
+  return <StyledTextField config={tenantConfig} {...props} />;
+};
 
 export default MaterialTextField;

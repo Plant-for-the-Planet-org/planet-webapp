@@ -4,16 +4,15 @@ import { SetState } from '../types/common';
 import { TenantAppConfig } from '@planet-sdk/common/build/types/tenant';
 
 interface TenantContextInterface {
-  tenantConfig: TenantAppConfig | null;
-  setTenantConfig: SetState<TenantAppConfig | null>;
+  tenantConfig: TenantAppConfig;
+  setTenantConfig: SetState<TenantAppConfig>;
 }
 
 const TenantContext = createContext<TenantContextInterface | null>(null);
 
 export const TenantProvider: FC = ({ children }) => {
-  const [tenantConfig, setTenantConfig] = useState<TenantAppConfig | null>(
-    null
-  );
+  // TODO - initialize tenantConfig with a default (in case of API failure)
+  const [tenantConfig, setTenantConfig] = useState<TenantAppConfig>(null);
 
   const value: TenantContextInterface | null = useMemo(
     () => ({

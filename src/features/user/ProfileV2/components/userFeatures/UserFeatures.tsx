@@ -2,7 +2,7 @@ import myProfileStyle from '../../styles/MyProfile.module.scss';
 import { Button } from '@mui/material';
 import { SupportSvg } from '../../../../../../public/assets/images/ProfilePageIcons';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import tenantConfig from '../../../../../../tenant.config';
+import { useTenant } from '../../../../common/Layout/TenantContext';
 import { useRouter } from 'next/router';
 import Share from '../MicroComponents/Share';
 import { UserFeaturesProps } from '../../../../common/types/profile';
@@ -14,14 +14,13 @@ import {
   RegisteredTreeSvg,
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 
-const config = tenantConfig();
-
 const UserFeatures = ({
   handleShare,
   userProfile,
   showSocialButton,
   setShowSocialButton,
 }: UserFeaturesProps) => {
+  const { tenantConfig } = useTenant();
   const router = useRouter();
   const { t } = useTranslation(['me']);
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
@@ -30,8 +29,8 @@ const UserFeatures = ({
   };
 
   const handleShareOnLinkedIn = () => {
-    if (config && userProfile) {
-      const linkToShare = `${config.tenantURL}/t/${userProfile.slug}`;
+    if (tenantConfig && userProfile) {
+      const linkToShare = `${tenantConfig.tenantURL}/t/${userProfile.slug}`;
       const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?&url=${linkToShare}`;
       window.open(shareUrl, '_blank');
     }

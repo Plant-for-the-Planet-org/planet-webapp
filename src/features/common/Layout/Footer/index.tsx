@@ -5,7 +5,7 @@ import getLanguageName from '../../../../utils/language/getLanguageName';
 import styles from './Footer.module.scss';
 import SelectLanguageAndCountry from './SelectLanguageAndCountry';
 import { useTranslation } from 'next-i18next';
-import tenantConfig from '../../../../../tenant.config';
+import { useTenant } from '../TenantContext';
 import UNDecadeLogo from '../../../../../public/assets/images/footer/UNDecadeLogo';
 import PlanetCJLogo from '../../../../../public/assets/images/footer/PlanetCJLogo';
 import DarkModeSwitch from '../DarkModeSwitch.tsx';
@@ -13,7 +13,7 @@ import DarkModeSwitch from '../DarkModeSwitch.tsx';
 // let styles = require('./Footer.module.css');
 export default function Footer(): ReactElement | null {
   const { t, i18n, ready } = useTranslation(['common']);
-  const config = tenantConfig();
+  const { tenantConfig } = useTenant();
   const [openModal, setOpenModal] = useState(false);
   const [language, setLanguage] = useState(i18n.language);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
@@ -388,15 +388,15 @@ export default function Footer(): ReactElement | null {
               </div>
             </div>
             <div className={styles.footer_links_container}>
-              {config.darkModeEnabled && (
+              {tenantConfig.darkModeEnabled && (
                 <div className={styles.switch}>
                   <DarkModeSwitch />
                 </div>
               )}
 
               {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
-              {config.footerLinks &&
-                config.footerLinks.map((key) => {
+              {tenantConfig.footerLinks &&
+                tenantConfig.footerLinks.map((key) => {
                   const footerLinkKey = key as keyof typeof FooterLinks;
                   return (
                     <a
@@ -425,7 +425,7 @@ export default function Footer(): ReactElement | null {
             </a>
           </button>
 
-          {config.showUNEPLogo && (
+          {tenantConfig.showUNEPLogo && (
             <button id={'unepLogoIcon'} className={styles.unep_logo_container}>
               <a
                 href="https://www.unep.org/"
@@ -440,7 +440,7 @@ export default function Footer(): ReactElement | null {
             </button>
           )}
 
-          {config.showUNDecadeLogo && (
+          {tenantConfig.showUNDecadeLogo && (
             <button
               id={'undecadeLogoIcon'}
               className={styles.undecade_logo_container}
