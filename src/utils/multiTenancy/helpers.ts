@@ -27,7 +27,7 @@ export const getTenantConfigList = async (): Promise<Tenant[]> => {
     return JSON.parse(cacheHit);
   }
 
-  const response = await fetch(`https://${API_ENDPOINT}/app/tenants`);
+  const response = await fetch(`https://${API_ENDPOINT}/app/tenants?_scope=deployment`);
 
   const tenants = (await response.json()) as Tenant[];
 
@@ -74,6 +74,26 @@ function isSubdomain(domain: string) {
         domainParts.length > 2
     : domainParts.length > 1;
 }
+
+/**
+ *
+ * Return the tenant config based for a tenant
+ *
+ * @param slug
+ * @returns Tenant
+ */
+
+export const getTenantConfig = async (slug: string) => {
+  const tenantConfList = await getTenantConfigList();
+
+  const tenantConf = tenantConfList.find((item) => item.config.slug === slug);
+
+  const defaultTenantConfig = tenantConfList.find(
+    (item) => item.config.slug === DEFAULT_TENANT
+  );
+
+  return tenantConf ?? defaultTenantConfig;
+};
 
 /**
  * Returns the subdomain of the current hostname.
@@ -130,22 +150,4 @@ export async function getTenantSlug(host: string) {
   return tenant?.config.slug ?? DEFAULT_TENANT;
 }
 
-/**
- *
- * Return the tenant config based for a tenant
- *
- * @param slug
- * @returns Tenant
- */
 
-export const getTenantConfig = async (slug: string) => {
-  const tenantConfList = await getTenantConfigList();
-
-  const tenantConf = tenantConfList.find((item) => item.config.slug === slug);
-
-  const defaultTenantConfig = tenantConfList.find(
-    (item) => item.config.slug === DEFAULT_TENANT
-  );
-
-  return tenantConf ?? defaultTenantConfig;
-};
