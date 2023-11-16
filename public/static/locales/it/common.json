@@ -70,5 +70,6 @@
   "goBack": "Torna indietro",
   "deleteAccountMessage": "Per continuare la cancellazione, digita `{{delete}}`",
   "deleteAccountLabel": "Tipo: {{delete}}",
-  "howDoesThisWork": "Come funziona?"
+  "howDoesThisWork": "Come funziona?",
+  "reviewInfo": "Il progetto è stato ispezionato nel corso di una revisione sul campo di più giorni nel <2>mese</2> e soddisfa i nostri <5>standard</5>."
 }
