@@ -20,12 +20,12 @@ export default function DonationLink(): ReactElement | null {
   async function fetchProjectList() {
     try {
       const projectsList = await getRequest<MapProject[]>(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/app/projects`,
         {
           _scope: 'map',
           'filter[purpose]': 'trees,restoration',
-          tenant: tenantConfig?.tenantID,
+          tenant: tenantConfig?.id,
           locale: i18n.language,
         }
       );

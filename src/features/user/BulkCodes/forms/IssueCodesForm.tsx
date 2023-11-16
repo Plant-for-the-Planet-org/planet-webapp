@@ -121,7 +121,7 @@ const IssueCodesForm = (): ReactElement | null => {
 
       try {
         const res = await postAuthenticatedRequest(
-          tenantConfig?.tenantID,
+          tenantConfig?.id,
           `/app/donations`,
           cleanedData,
           token,

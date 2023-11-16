@@ -52,7 +52,7 @@ export default function UploadImages({
 
     try {
       const res = await postAuthenticatedRequest(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/app/contributions/${contributionGUID}/images`,
         submitData,
         token,
@@ -81,7 +81,7 @@ export default function UploadImages({
   const deleteContributionImage = async (id: any) => {
     try {
       await deleteAuthenticatedRequest(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/app/contributions/${contributionGUID}/images/${id}`,
         token,
         logoutUser

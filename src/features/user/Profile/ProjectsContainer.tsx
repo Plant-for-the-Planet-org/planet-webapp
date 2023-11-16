@@ -27,7 +27,7 @@ export default function ProjectsContainer({ profile }: any) {
   async function loadProjects() {
     try {
       const projects = await getRequest<MapProject[]>(
-        `${tenantConfig?.tenantID}`,
+        `${tenantConfig?.id}`,
         `/app/profiles/${profile.id}/projects`,
         {
           locale: i18n.language,

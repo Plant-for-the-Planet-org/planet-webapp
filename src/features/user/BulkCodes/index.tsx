@@ -75,12 +75,12 @@ export default function BulkCodes({
     if (planetCashAccount && !projectList) {
       try {
         const fetchedProjects = await getRequest<MapProject[]>(
-          `${tenantConfig?.tenantID}`,
+          `${tenantConfig?.id}`,
           `/app/projects`,
           {
             _scope: 'map',
             currency: planetCashAccount.currency,
-            tenant: tenantConfig?.tenantID,
+            tenant: tenantConfig?.id,
             'filter[purpose]': 'trees',
             locale: i18n.language,
           }

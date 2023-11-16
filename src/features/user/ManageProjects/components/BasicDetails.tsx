@@ -356,7 +356,7 @@ export default function BasicDetails({
         const res = await putAuthenticatedRequest<
           ProfileProjectTrees | ProfileProjectConservation
         >(
-          tenantConfig?.tenantID,
+          tenantConfig?.id,
           `/app/projects/${projectGUID}`,
           submitData,
           token,
@@ -374,7 +374,7 @@ export default function BasicDetails({
         const res = await postAuthenticatedRequest<
           ProfileProjectTrees | ProfileProjectConservation
         >(
-          tenantConfig?.tenantID,
+          tenantConfig?.id,
           `/app/projects`,
           submitData,
           token,

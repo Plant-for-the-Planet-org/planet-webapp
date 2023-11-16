@@ -40,7 +40,7 @@ const CreateAccountForm = ({
 
     try {
       const res = await postAuthenticatedRequest(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         '/app/planetCash',
         data,
         token,

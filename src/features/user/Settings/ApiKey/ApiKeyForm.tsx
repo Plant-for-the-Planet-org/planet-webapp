@@ -49,7 +49,7 @@ export default function ApiKey() {
     setIsUploadingData(true);
     try {
       const res = await getAuthenticatedRequest<ApiKeyResponse>(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         '/app/profile/apiKey',
         token,
         logoutUser
@@ -70,7 +70,7 @@ export default function ApiKey() {
     setIsUploadingData(true);
     try {
       const res = await putAuthenticatedRequest<ApiKeyResponse>(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         '/app/profile/apiKey',
         undefined,
         token,

@@ -70,6 +70,7 @@ function EditSite({
   siteList,
 }: EditSiteProps) {
   const { theme } = React.useContext(ThemeContext);
+  const {tenantConfig} = useTenant()
   const { t } = useTranslation(['manageProjects']);
   const {
     handleSubmit,
@@ -105,6 +106,7 @@ function EditSite({
 
       try {
         const res = await putAuthenticatedRequest<Site>(
+          tenantConfig?.id,
           `/app/projects/${projectGUID}/sites/${siteGUID}`,
           submitData,
           token,
@@ -341,7 +343,7 @@ export default function ProjectSites({
       if (projectGUID) {
         // Fetch sites of the project
         const result = await getAuthenticatedRequest<Project>(
-          tenantConfig?.tenantID,
+          tenantConfig?.id,
           `/app/profile/projects/${projectGUID}?_scope=sites`,
           token,
           logoutUser
@@ -379,7 +381,7 @@ export default function ProjectSites({
 
       try {
         const res = await postAuthenticatedRequest<Site>(
-          tenantConfig?.tenantID,
+          tenantConfig?.id,
           `/app/projects/${projectGUID}/sites`,
           submitData,
           token,
@@ -417,7 +419,7 @@ export default function ProjectSites({
     try {
       setIsUploadingData(true);
       await deleteAuthenticatedRequest(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/app/projects/${projectGUID}/sites/${id}`,
         token,
         logoutUser

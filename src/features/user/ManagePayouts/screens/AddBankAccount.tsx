@@ -36,7 +36,7 @@ const AddBankAccount = (): ReactElement | null => {
     };
     try {
       const res = await postAuthenticatedRequest<BankAccount>(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         '/app/accounts',
         accountData,
         token,

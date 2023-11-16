@@ -94,7 +94,7 @@ export default function SampleTrees({
 
     try {
       const res = await postAuthenticatedRequest(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/treemapper/plantLocations`,
         sampleTree,
         token,

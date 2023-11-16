@@ -95,7 +95,7 @@ export default function ProjectSpending({
 
     try {
       const res = await postAuthenticatedRequest<ProjectExpense>(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/app/projects/${projectGUID}/expenses`,
         submitData,
         token,
@@ -152,7 +152,7 @@ export default function ProjectSpending({
     try {
       setIsUploadingData(true);
       await deleteAuthenticatedRequest(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/app/projects/${projectGUID}/expenses/${id}`,
         token,
         logoutUser
@@ -171,7 +171,7 @@ export default function ProjectSpending({
       // Fetch spending of the project
       if (projectGUID && token) {
         const result = await getAuthenticatedRequest<Project>(
-          tenantConfig?.tenantID,
+          tenantConfig?.id,
           `/app/profile/projects/${projectGUID}?_scope=expenses`,
           token,
           logoutUser

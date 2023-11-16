@@ -36,7 +36,7 @@ function TreeMapper(): ReactElement {
     if (next && links?.next) {
       try {
         const response = await getAuthenticatedRequest(
-          tenantConfig?.tenantID,
+          tenantConfig?.id,
           links.next,
           token,
           logoutUser,
@@ -76,7 +76,7 @@ function TreeMapper(): ReactElement {
     } else {
       try {
         const response = await getAuthenticatedRequest(
-          tenantConfig?.tenantID,
+          tenantConfig?.id,
           '/treemapper/plantLocations?_scope=extended&limit=15',
           token,
           logoutUser,

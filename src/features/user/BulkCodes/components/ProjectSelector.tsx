@@ -39,7 +39,7 @@ const ProjectSelector = ({
 
   const fetchPaymentOptions = async (guid: string) => {
     const paymentOptions = await getRequest<PaymentOptions>(
-      `${tenantConfig?.tenantID}`,
+      `${tenantConfig?.id}`,
       `/app/paymentOptions/${guid}`,
       {
         country: planetCashAccount?.country || '',

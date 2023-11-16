@@ -36,7 +36,7 @@ const ImpersonateUserForm = (): ReactElement => {
   ): Promise<void> => {
     if (data.targetEmail && data.supportPin) {
       try {
-        const res = await getAccountInfo(tenantConfig?.tenantID, token, data);
+        const res = await getAccountInfo(tenantConfig?.id, token, data);
         const resJson = await res.json();
         if (res.status === 200) {
           setIsInvalidEmail(false);

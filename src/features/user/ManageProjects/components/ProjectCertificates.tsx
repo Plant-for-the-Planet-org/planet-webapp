@@ -94,7 +94,7 @@ function ProjectCertificates({
     const fetchCertificates = async () => {
       try {
         const result = await getAuthenticatedRequest(
-          tenantConfig?.tenantID,
+          tenantConfig?.id,
           `/app/profile/projects/${projectGUID}?_scope=certificates`,
           token,
           logoutUser
@@ -143,7 +143,7 @@ function ProjectCertificates({
 
     try {
       const res = await postAuthenticatedRequest(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/app/projects/${projectGUID}/certificates`,
         submitData,
         token,
@@ -170,7 +170,7 @@ function ProjectCertificates({
   const deleteProjectCertificate = async (id: any) => {
     try {
       await deleteAuthenticatedRequest(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/app/projects/${projectGUID}/certificates/${id}`,
         token,
         logoutUser

@@ -153,7 +153,7 @@ export default function CompleteSignup(): ReactElement | null {
     setIsProcessing(true);
     try {
       const res = await postRequest(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/app/profile`,
         bodyToSend
       );

@@ -27,7 +27,7 @@ export default function DeleteProfileForm() {
     setIsUploadingData(true);
     try {
       await deleteAuthenticatedRequest(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         '/app/profile',
         token,
         logoutUser

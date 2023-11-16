@@ -11,12 +11,14 @@ import {
   LeaderBoardList,
   TenantScore,
 } from '../src/features/common/types/leaderboard';
+import { useTenant } from '../src/features/common/Layout/TenantContext';
 
 interface Props {
   initialized: Boolean;
 }
 
 export default function Home({ initialized }: Props) {
+  const {tenantConfig} = useTenant()
   const [leaderboard, setLeaderboard] = React.useState<LeaderBoardList | null>(
     null
   );
@@ -26,7 +28,8 @@ export default function Home({ initialized }: Props) {
     async function loadLeaderboard() {
       try {
         const newLeaderboard = await getRequest<LeaderBoardList>(
-          `/app/leaderboard/${TENANT_ID}`
+          tenantConfig?.id,
+          `/app/leaderboard/${tenantConfig?.id}`
         );
         setLeaderboard(newLeaderboard);
       } catch (err) {

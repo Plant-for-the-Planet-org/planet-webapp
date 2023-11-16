@@ -66,7 +66,7 @@ export default function EmbedModal({
     if (contextLoaded && token) {
       try {
         const res = await putAuthenticatedRequest(
-          tenantConfig?.tenantID,
+          tenantConfig?.id,
           `/app/profile`,
           bodyToSend,
           token,

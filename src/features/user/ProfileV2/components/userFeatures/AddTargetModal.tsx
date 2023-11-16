@@ -48,7 +48,7 @@ export default function AddTargetModal({
 
       try {
         const res = await putAuthenticatedRequest(
-          tenantConfig?.tenantID,
+          tenantConfig?.id,
           `/app/profile`,
           bodyToSend,
           token,

@@ -89,7 +89,7 @@ export const PauseModal = ({
 
     try {
       await putAuthenticatedRequest(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/app/subscriptions/${record.id}?scope=pause`,
         bodyToSend,
         token,

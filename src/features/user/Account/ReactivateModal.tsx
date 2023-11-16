@@ -41,7 +41,7 @@ export const ReactivateModal = ({
 
     try {
       await putAuthenticatedRequest(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/app/subscriptions/${record.id}?scope=reactivate`,
         bodyToSend,
         token,

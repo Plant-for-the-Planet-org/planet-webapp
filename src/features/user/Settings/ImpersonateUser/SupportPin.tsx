@@ -17,7 +17,7 @@ const SupportPin = () => {
   const handleNewPin = async () => {
     try {
       const response = await putAuthenticatedRequest<SupportPin>(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         '/app/profile/supportPin',
         undefined,
         token,

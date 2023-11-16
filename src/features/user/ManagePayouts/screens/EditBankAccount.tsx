@@ -42,7 +42,7 @@ const EditBankAccount = (): ReactElement | null => {
 
     try {
       const res = await putAuthenticatedRequest<BankAccount>(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/app/accounts/${accountToEdit?.id}`,
         accountData,
         token,

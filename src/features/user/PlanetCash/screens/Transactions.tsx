@@ -64,7 +64,7 @@ const Transactions = ({
 
         const newTransactionHistory =
           await getAuthenticatedRequest<PaymentHistory>(
-            tenantConfig?.tenantID,
+            tenantConfig?.id,
             apiUrl,
             token,
             logoutUser

@@ -175,7 +175,7 @@ function RegisterTreesForm({
         };
         try {
           const res = await postAuthenticatedRequest(
-            tenantConfig?.tenantID,
+            tenantConfig?.id,
             `/app/contributions`,
             submitData,
             token,
@@ -202,7 +202,7 @@ function RegisterTreesForm({
   async function loadProjects() {
     try {
       const projects = await getAuthenticatedRequest(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         '/app/profile/projects',
         token,
         logoutUser

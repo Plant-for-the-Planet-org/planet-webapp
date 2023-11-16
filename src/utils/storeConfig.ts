@@ -6,7 +6,7 @@ export async function storeConfig() {
   const {tenantConfig} = useTenant()
   await fetch(`${process.env.CONFIG_URL}`, {
     headers: {
-      'tenant-key': `${tenantConfig?.tenantID}`,
+      'tenant-key': `${tenantConfig?.id}`,
       'X-SESSION-ID': await getsessionId(),
     },
   })

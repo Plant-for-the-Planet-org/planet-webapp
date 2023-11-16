@@ -73,7 +73,7 @@ const DonationLinkForm = ({
 
     const url = `${link}?${selectedCountry}${selectedLanguage}${
       localProject == null ? '' : `to=${localProject.slug}&`
-    }tenant=${tenantConfig?.tenantID}${isSupport ? `&s=${user.slug}` : ''}
+    }tenant=${tenantConfig?.id}${isSupport ? `&s=${user.slug}` : ''}
     `;
     if (donationUrl.length > 0) setIsLinkUpdated(true);
     setDonationUrl(url);

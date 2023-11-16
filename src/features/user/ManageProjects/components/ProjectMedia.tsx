@@ -59,7 +59,7 @@ export default function ProjectMedia({
       // Fetch images of the project
       if (projectGUID && token) {
         const result = await getAuthenticatedRequest<Project>(
-          tenantConfig?.tenantID,
+          tenantConfig?.id,
           `/app/profile/projects/${projectGUID}?_scope=images`,
           token,
           logoutUser
@@ -87,7 +87,7 @@ export default function ProjectMedia({
 
     try {
       const res = await postAuthenticatedRequest<UploadImage>(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/app/projects/${projectGUID}/images`,
         submitData,
         token,
@@ -159,7 +159,7 @@ export default function ProjectMedia({
   const deleteProjectCertificate = async (id: any) => {
     try {
       await deleteAuthenticatedRequest(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/app/projects/${projectGUID}/images/${id}`,
         token,
         logoutUser
@@ -181,7 +181,7 @@ export default function ProjectMedia({
 
     try {
       const res = await putAuthenticatedRequest<Project>(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/app/projects/${projectGUID}`,
         submitData,
         token,
@@ -205,6 +205,7 @@ export default function ProjectMedia({
 
     try {
       await putAuthenticatedRequest(
+        tenantConfig?.id,
         `/app/projects/${projectGUID}/images/${id}`,
         submitData,
         token,
@@ -232,6 +233,7 @@ export default function ProjectMedia({
 
     try {
       const res = await putAuthenticatedRequest<UploadImage>(
+        tenantConfig?.id,
         `/app/projects/${projectGUID}/images/${id}`,
         submitData,
         token,

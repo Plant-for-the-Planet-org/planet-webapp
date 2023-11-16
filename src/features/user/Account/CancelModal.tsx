@@ -83,7 +83,7 @@ export const CancelModal = ({
 
     try {
       await putAuthenticatedRequest(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/app/subscriptions/${record.id}?scope=cancel`,
         bodyToSend,
         token,

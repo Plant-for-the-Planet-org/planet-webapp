@@ -56,7 +56,7 @@ export default function ManagePayouts({
     if (!payoutMinAmounts) {
       try {
         const res = await getRequest<PayoutMinAmounts>(
-          tenantConfig?.tenantID,
+          tenantConfig?.id,
           '/app/payoutMinAmounts'
         );
         setPayoutMinAmounts(res);
@@ -76,7 +76,7 @@ export default function ManagePayouts({
       setProgress && setProgress(70);
       try {
         const res = await getAuthenticatedRequest<BankAccount[]>(
-          tenantConfig?.tenantID,
+          tenantConfig?.id,
           `/app/accounts`,
           token,
           logoutUser

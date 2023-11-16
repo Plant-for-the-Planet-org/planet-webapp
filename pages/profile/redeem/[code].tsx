@@ -57,7 +57,7 @@ const ReedemCode: FC = () => {
     if (contextLoaded && user) {
       try {
         const res = await postAuthenticatedRequest<RedeemedCodeData>(
-          tenantConfig?.tenantID,
+          tenantConfig?.id,
           `/app/redeem`,
           submitData,
           token,

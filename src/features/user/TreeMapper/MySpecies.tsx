@@ -40,7 +40,7 @@ export default function MySpecies(): ReactElement {
   const fetchMySpecies = async () => {
     try {
       const result = await getAuthenticatedRequest(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         '/treemapper/species',
         token,
         logoutUser
@@ -54,7 +54,7 @@ export default function MySpecies(): ReactElement {
   const deleteSpecies = async (id: number) => {
     try {
       await deleteAuthenticatedRequest(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/treemapper/species/${id}`,
         token,
         logoutUser
@@ -76,7 +76,7 @@ export default function MySpecies(): ReactElement {
     };
     try {
       await postAuthenticatedRequest(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/treemapper/species`,
         data,
         token,

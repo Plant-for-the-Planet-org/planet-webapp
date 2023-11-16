@@ -53,7 +53,7 @@ export default function SpeciesSelect<
     // Todo: debouncing
     if (value.length > 2) {
       try {
-        const res = await postRequest(tenantConfig?.tenantID, `/suggest.php`, {
+        const res = await postRequest(tenantConfig?.id, `/suggest.php`, {
           q: value,
           t: 'species',
         });

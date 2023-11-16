@@ -45,7 +45,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
 
     try {
       const res = await putAuthenticatedRequest<User>(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         '/app/profile',
         { scheduleFrequency: data.scheduleFrequency },
         token,

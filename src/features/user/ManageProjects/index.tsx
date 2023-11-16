@@ -25,7 +25,6 @@ import {
   ProfileProjectConservation,
 } from '../../common/types/project';
 import { useTenant } from '../../common/Layout/TenantContext';
-import tenantConfig from '../../../../tenant.config';
 
 export enum ProjectCreationTabs {
   PROJECT_TYPE = 0,
@@ -42,10 +41,10 @@ export default function ManageProjects({
   project,
 }: ManageProjectsProps) {
   const { t, i18n } = useTranslation(['manageProjects']);
+  const { tenantConfig } = useTenant();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
   const router = useRouter();
-  const { tenantConfig } = useTenant();
   const [activeStep, setActiveStep] = React.useState<number>(0);
   const [errorMessage, setErrorMessage] = React.useState<string | undefined>(
     undefined
@@ -114,7 +113,7 @@ export default function ManageProjects({
 
     try {
       const res = await putAuthenticatedRequest(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/app/projects/${projectGUID}`,
         submitData,
         token,
@@ -137,7 +136,7 @@ export default function ManageProjects({
 
     try {
       const res = await putAuthenticatedRequest(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/app/projects/${projectGUID}`,
         submitData,
         token,
@@ -159,7 +158,7 @@ export default function ManageProjects({
         const res = await getAuthenticatedRequest<
           ProfileProjectTrees | ProfileProjectConservation
         >(
-          tenantConfig?.tenantID,
+          tenantConfig?.id,
           `/app/profile/projects/${projectGUID}`,
           token,
           logoutUser

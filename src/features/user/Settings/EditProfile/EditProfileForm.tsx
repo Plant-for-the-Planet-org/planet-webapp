@@ -232,7 +232,7 @@ export default function EditProfileForm() {
 
             try {
               const res = await putAuthenticatedRequest<User>(
-                tenantConfig?.tenantID,
+                tenantConfig?.id,
                 `/app/profile`,
                 bodyToSend,
                 token,
