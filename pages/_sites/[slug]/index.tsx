@@ -174,7 +174,7 @@ export default function Donate({
 export async function getStaticPaths() {
   return {
     paths: await getSubdomainPaths(),
-    fallback: true, // fallback true allows sites to be generated using ISR
+    fallback: 'blocking',
   };
 }
 
