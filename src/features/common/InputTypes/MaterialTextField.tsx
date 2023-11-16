@@ -1,9 +1,9 @@
 import { TextField, TextFieldProps, styled } from '@mui/material';
-import { TenantAppConfig } from '@planet-sdk/common/build/types/tenant';
+import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { useTenant } from '../Layout/TenantContext';
 
 interface StyledTextFieldType {
-  config: TenantAppConfig;
+  config: Tenant;
 }
 
 const StyledTextField = styled(TextField, {
@@ -18,11 +18,11 @@ const StyledTextField = styled(TextField, {
   },
   '& label.Mui-focused': {
     color: 'var(--primary-font-color)',
-    fontFamily: config.font.primaryFontFamily,
+    fontFamily: config.config.font.primaryFontFamily,
   },
   '& label': {
     color: 'var(--primary-font-color)',
-    fontFamily: config.font.primaryFontFamily,
+    fontFamily: config.config.font.primaryFontFamily,
     fontSize: '14px',
     top: '-3px',
   },
@@ -37,7 +37,7 @@ const StyledTextField = styled(TextField, {
     color: 'var(--primary-font-color)',
     border: '0px!important',
     borderRadius: '10px',
-    fontFamily: config.font.primaryFontFamily,
+    fontFamily: config.config.font.primaryFontFamily,
   },
   '& .MuiOutlinedInput-input': {
     padding: '14px',

@@ -1,5 +1,5 @@
 import {
-  TenantAppConfig,
+  Tenant,
   Tenants,
 } from '@planet-sdk/common/build/types/tenant';
 import { NextResponse } from 'next/server';
@@ -20,10 +20,10 @@ const DEFAULT_TENANT_DOMAIN = 'https://www1.plant-for-the-planet.org';
 /**
  *
  * Returns the tenant config list
- * @returns TenantAppConfig[]
+ * @returns Tenant[]
  *
  */
-export const getTenantConfigList = async (): Promise<TenantAppConfig[]> => {
+export const getTenantConfigList = async (): Promise<Tenant[]> => {
   const cacheHit = await redisClient.get(caching_key);
 
   if (cacheHit) {
@@ -32,7 +32,7 @@ export const getTenantConfigList = async (): Promise<TenantAppConfig[]> => {
 
   const response = await fetch(`https://${API_ENDPOINT}/app/tenants`);
 
-  const tenants = (await response.json()) as TenantAppConfig[];
+  const tenants = (await response.json()) as Tenant[];
 
   await redisClient.set(caching_key, JSON.stringify(tenants), {
     EX: TWO_HOURS,
@@ -122,10 +122,7 @@ export async function getTenantSubdomainOrRedirectObject(host: string) {
 }
 
 export async function getTenantSlug(host: string) {
-  // TODO - use cached api response
-  const response = await fetch(`${process.env.API_ENDPOINT}/app/tenants`);
-
-  const tenants = (await response.json()) as Tenants;
+  const tenants = await getTenantConfigList();
 
   const tenant = tenants.find((tenant) =>
     tenant.config.customDomain
@@ -133,7 +130,7 @@ export async function getTenantSlug(host: string) {
       : tenant.config.appDomain.includes(host)
   );
 
-  return tenant?.config.subDomain ?? DEFAULT_TENANT_SUBDOMAIN;
+  return tenant?.config.slug ?? DEFAULT_TENANT_SUBDOMAIN;
 }
 
 /**
@@ -141,7 +138,7 @@ export async function getTenantSlug(host: string) {
  * Return the tenant config based for a tenant
  *
  * @param tenant
- * @returns TenantAppConfig
+ * @returns Tenant
  */
 
 export const getTenantConfig = async (tenant: string) => {

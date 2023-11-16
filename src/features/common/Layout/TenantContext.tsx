@@ -1,18 +1,18 @@
 import { useContext, createContext, useMemo, useState, FC } from 'react';
 
 import { SetState } from '../types/common';
-import { TenantAppConfig } from '@planet-sdk/common/build/types/tenant';
+import { Tenant } from '@planet-sdk/common/build/types/tenant';
+import { defaultTenant } from '../../../../tenant.config';
 
 interface TenantContextInterface {
-  tenantConfig: TenantAppConfig;
-  setTenantConfig: SetState<TenantAppConfig>;
+  tenantConfig: Tenant;
+  setTenantConfig: SetState<Tenant>;
 }
 
 const TenantContext = createContext<TenantContextInterface | null>(null);
 
 export const TenantProvider: FC = ({ children }) => {
-  // TODO - initialize tenantConfig with a default (in case of API failure)
-  const [tenantConfig, setTenantConfig] = useState<TenantAppConfig>(null);
+  const [tenantConfig, setTenantConfig] = useState<Tenant>(defaultTenant);
 
   const value: TenantContextInterface | null = useMemo(
     () => ({

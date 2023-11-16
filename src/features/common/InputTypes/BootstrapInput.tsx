@@ -1,9 +1,9 @@
 import { InputBase, InputBaseProps, styled } from '@mui/material';
 import { useTenant } from '../Layout/TenantContext';
-import { TenantAppConfig } from '@planet-sdk/common/build/types/tenant';
+import { Tenant } from '@planet-sdk/common/build/types/tenant';
 
 interface StyledInputBaseType {
-  config: TenantAppConfig;
+  config: Tenant;
 }
 
 const StyledInputBase = styled(InputBase, {
@@ -20,7 +20,7 @@ const StyledInputBase = styled(InputBase, {
     fontSize: 14,
     padding: '10px 26px 10px 12px',
     // Use the system font instead of the default Roboto font.
-    fontFamily: [config.font.primaryFontFamily].join(','),
+    fontFamily: [config.config.font.primaryFontFamily].join(','),
     '&:focus': {
       backgroundColor: 'var(--background-color)',
       borderRadius: 9,
