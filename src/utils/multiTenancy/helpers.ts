@@ -143,5 +143,9 @@ export const getTenantConfig = async (slug: string) => {
 
   const tenantConf = tenantConfList.find((item) => item.config.slug === slug);
 
-  return tenantConf;
+  const defaultTenantConfig = tenantConfList.find(
+    (item) => item.config.slug === DEFAULT_TENANT
+  );
+
+  return tenantConf ?? defaultTenantConfig;
 };

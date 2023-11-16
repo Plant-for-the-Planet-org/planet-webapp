@@ -17,19 +17,27 @@ import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
 import { SetState } from '../../../src/features/common/types/common';
 import { MapProject } from '../../../src/features/common/types/ProjectPropsContextInterface';
-import { GetStaticPropsContext } from 'next';
-import { getSubdomainPaths, getTenantConfigList } from '../../../src/utils/multiTenancy/helpers';
+import {
+  getSubdomainPaths,
+  getTenantConfig,
+} from '../../../src/utils/multiTenancy/helpers';
+import { Tenant } from '@planet-sdk/common/build/types/tenant';
+import { useTenant } from '../../../src/features/common/Layout/TenantContext';
 
 interface Props {
   initialized: Boolean;
   currencyCode: string;
   setCurrencyCode: SetState<string>;
+  pageProps: {
+    config: Tenant;
+  };
 }
 
 export default function Donate({
   initialized,
   currencyCode,
   setCurrencyCode,
+  pageProps,
 }: Props) {
   const {
     setProject,
@@ -52,6 +60,15 @@ export default function Donate({
   const [directGift, setDirectGift] = React.useState<DirectGiftI | null>(null);
   const [showDirectGift, setShowDirectGift] = React.useState(true);
   const [internalLanguage, setInternalLanguage] = React.useState('');
+
+  const { setTenantConfig } = useTenant();
+
+  React.useEffect(() => {
+    if (router.isReady) {
+      setTenantConfig(pageProps.config);
+    }
+  }, [router.isReady]);
+
   React.useEffect(() => {
     const getdirectGift = localStorage.getItem('directGift');
     if (getdirectGift) {
@@ -123,7 +140,7 @@ export default function Donate({
     setCurrencyCode,
   };
 
-  return (
+  return pageProps.config ? (
     <>
       {initialized ? (
         filteredProjects && initialized ? (
@@ -149,23 +166,20 @@ export default function Donate({
       ) : null}
       {showProjects && <Filters />}
     </>
+  ) : (
+    <></>
   );
 }
 
 export async function getStaticPaths() {
-    return {
-      paths: await getSubdomainPaths(),
-      fallback: true, // fallback true allows sites to be generated using ISR
-    };
-  }
+  return {
+    paths: await getSubdomainPaths(),
+    fallback: true, // fallback true allows sites to be generated using ISR
+  };
+}
 
 export async function getStaticProps(props: any) {
-
-  const tenants = await getTenantConfigList();
-
-  const tenantConfig = tenants.find(
-    (tenant) => tenant.tenantName === props.params.slug
-  );
+  const tenantConfig = await getTenantConfig(props.params.slug);
 
   return {
     props: {
