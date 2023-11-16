@@ -1,7 +1,6 @@
 import { Tenant, Tenants } from '@planet-sdk/common/build/types/tenant';
 import { NextResponse } from 'next/server';
 import redisClient from '../../redis-client';
-import { API_ENDPOINT } from '../../config';
 
 const ONE_HOUR_IN_SEC = 60 * 60;
 const TWO_HOURS = ONE_HOUR_IN_SEC * 2;
@@ -27,7 +26,7 @@ export const getTenantConfigList = async (): Promise<Tenant[]> => {
     return JSON.parse(cacheHit);
   }
 
-  const response = await fetch(`https://${API_ENDPOINT}/app/tenants?_scope=deployment`);
+  const response = await fetch(`https://${process.env.API_ENDPOINT}/app/tenants?_scope=deployment`);
 
   const tenants = (await response.json()) as Tenant[];
 
