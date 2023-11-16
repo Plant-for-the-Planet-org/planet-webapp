@@ -1,7 +1,4 @@
-import {
-  Tenant,
-  Tenants,
-} from '@planet-sdk/common/build/types/tenant';
+import { Tenant, Tenants } from '@planet-sdk/common/build/types/tenant';
 import { NextResponse } from 'next/server';
 import redisClient from '../../redis-client';
 import { API_ENDPOINT } from '../../config';
@@ -12,9 +9,9 @@ const TWO_HOURS = ONE_HOUR_IN_SEC * 2;
 const caching_key = 'TENANT_CONFIG_LIST';
 
 /**
- * This is the default subdomain that will be used if no subdomain is found.
+ * This is the default slug that will be used if no tenant is found.
  */
-const DEFAULT_TENANT_SUBDOMAIN = 'planet';
+const DEFAULT_TENANT = 'planet';
 const DEFAULT_TENANT_DOMAIN = 'https://www1.plant-for-the-planet.org';
 
 /**
@@ -59,12 +56,9 @@ export async function getHostnameDataBySubdomain(subdomain: string) {
 export async function getSubdomainPaths() {
   const tenants = await getTenantConfigList();
 
-  // get all sites that have subdomains set up
-  const subdomains = tenants.filter((item) => item.tenantName);
-
-  // build paths for each of the sites in the previous two lists
-  return subdomains.map((item) => {
-    return { params: { site: item.tenantName } };
+  // build paths for each of the sites
+  return tenants.map((item) => {
+    return { params: { site: item.config.slug } };
   });
 }
 
@@ -101,7 +95,7 @@ export async function getTenantSubdomainOrRedirectObject(host: string) {
         : tenant.config.appDomain.includes(host)
     );
 
-    subdomain = tenant?.config.subDomain ?? DEFAULT_TENANT_SUBDOMAIN;
+    subdomain = tenant?.config.subDomain ?? DEFAULT_TENANT;
   } else {
     if (isSubdomain(host)) {
       subdomain = host.replace(`.${process.env.ROOT_DOMAIN}`, '');
@@ -114,13 +108,16 @@ export async function getTenantSubdomainOrRedirectObject(host: string) {
         301
       );
     } else {
-      subdomain = DEFAULT_TENANT_SUBDOMAIN;
+      subdomain = DEFAULT_TENANT;
     }
   }
 
   return subdomain;
 }
 
+/**
+ * Returns the subdomain of the current hostname.
+ */
 export async function getTenantSlug(host: string) {
   const tenants = await getTenantConfigList();
 
@@ -130,21 +127,21 @@ export async function getTenantSlug(host: string) {
       : tenant.config.appDomain.includes(host)
   );
 
-  return tenant?.config.slug ?? DEFAULT_TENANT_SUBDOMAIN;
+  return tenant?.config.slug ?? DEFAULT_TENANT;
 }
 
 /**
  *
  * Return the tenant config based for a tenant
  *
- * @param tenant
+ * @param slug
  * @returns Tenant
  */
 
-export const getTenantConfig = async (tenant: string) => {
+export const getTenantConfig = async (slug: string) => {
   const tenantConfList = await getTenantConfigList();
 
-  const tenantConf = tenantConfList.find((item) => item.tenantName === tenant);
+  const tenantConf = tenantConfList.find((item) => item.config.slug === slug);
 
   return tenantConf;
 };
