@@ -6,13 +6,13 @@ export default function Social() {
   const { tenantConfig } = useTenant();
 
   const url = encodeURI(
-    tenantConfig.tenantURL.indexOf('http://') == 0 ||
-      tenantConfig.tenantURL.indexOf('https://') == 0
-      ? tenantConfig.tenantURL + '/home'
-      : 'https://' + tenantConfig.tenantURL + '/home'
+    tenantConfig.config.slug.indexOf('http://') == 0 ||
+      tenantConfig.config.slug.indexOf('https://') == 0
+      ? tenantConfig.config.slug + '/home'
+      : 'https://' + tenantConfig.config.slug + '/home'
   );
-  const title = encodeURI(tenantConfig.meta.title);
-  const handle = tenantConfig.meta.twitterHandle;
+  const title = encodeURI(tenantConfig.config.meta.title);
+  const handle = tenantConfig.config.meta.twitterHandle;
   const fbLink = 'https://www.facebook.com/sharer/sharer.php?u=' + url;
   const liLink =
     'https://www.linkedin.com/shareArticle?url=' + url + '&title=' + title;

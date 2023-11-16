@@ -22,7 +22,7 @@ export default function GetProjectMeta({ project }: Props): ReactElement {
       <meta property="og:site_name" content={project.name} />
       <meta
         property="og:url"
-        content={`${process.env.SCHEME}://${tenantConfig.tenantURL}`}
+        content={`${process.env.SCHEME}://${tenantConfig.config.tenantURL}`}
       />
       <meta property="og:title" content={project.name} />
       <meta property="og:description" content={description} />
@@ -33,13 +33,13 @@ export default function GetProjectMeta({ project }: Props): ReactElement {
         content={getImageUrl('project', 'medium', project.image)}
       />
       <meta property="og:video" content={project.videoUrl || undefined} />
-      {tenantConfig.tenantName === 'planet' ? (
+      {tenantConfig.config.slug === 'planet' ? (
         <link rel="alternate" href="android-app://org.pftp/projects" />
       ) : null}
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:title" content={project.name} />
-      <meta name="twitter:site" content={tenantConfig.meta.twitterHandle} />
-      <meta name="twitter:url" content={tenantConfig.tenantURL} />
+      <meta name="twitter:site" content={tenantConfig.config.meta.twitterHandle} />
+      <meta name="twitter:url" content={tenantConfig.config.tenantURL ?? ''} />
       <meta name="twitter:description" content={description} />
     </Head>
   );

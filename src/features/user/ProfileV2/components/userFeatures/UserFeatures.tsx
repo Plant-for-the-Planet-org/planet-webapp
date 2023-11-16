@@ -30,7 +30,7 @@ const UserFeatures = ({
 
   const handleShareOnLinkedIn = () => {
     if (tenantConfig && userProfile) {
-      const linkToShare = `${tenantConfig.tenantURL}/t/${userProfile.slug}`;
+      const linkToShare = `${tenantConfig.config.tenantURL}/t/${userProfile.slug}`;
       const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?&url=${linkToShare}`;
       window.open(shareUrl, '_blank');
     }

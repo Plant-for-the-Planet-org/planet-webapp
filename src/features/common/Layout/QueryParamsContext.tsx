@@ -28,7 +28,7 @@ export const ParamsContext = createContext<ParamsContextType>({
 const QueryParamsProvider: FC = ({ children }) => {
   const { i18n } = useTranslation();
   const { tenantConfig } = useTenant();
-  const tenantSupportedLocale = tenantConfig.languages;
+  const tenantSupportedLocale = tenantConfig.config.languages ?? ['en'];
   const [isContextLoaded, setIsContextLoaded] = useState(false);
   const [embed, setEmbed] = useState<QueryParamType>(undefined);
   const [showBackIcon, setShowBackIcon] = useState<QueryParamType>(undefined);

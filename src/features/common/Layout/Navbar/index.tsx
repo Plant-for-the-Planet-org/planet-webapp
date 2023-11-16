@@ -142,12 +142,12 @@ export default function NavbarComponent() {
   const MenuItems = () => {
     const { tenantConfig } = useTenant();
 
-    const links = Object.keys(tenantConfig!.header.items);
-    const tenantName = tenantConfig?.tenantName || '';
+    const links = Object.keys(tenantConfig.config.header.items);
+    const tenantName = tenantConfig.config.slug || '';
     return tenantConfig && links ? (
       <div className={'menuItems'}>
         {links.map((link) => {
-          let SingleLink = tenantConfig.header.items[link];
+          let SingleLink = tenantConfig.config.header.items[link];
           const hasSubMenu =
             SingleLink.subMenu && SingleLink.subMenu.length > 0;
           if (SingleLink) {
@@ -304,28 +304,28 @@ export default function NavbarComponent() {
       >
         <div className={'top_nav'}>
           <div className={'brandLogos'}>
-            {tenantConfig.header?.isSecondaryTenant && (
+            {tenantConfig.config.header?.isSecondaryTenant && (
               <div
                 className={
-                  tenantConfig.tenantName === 'ttc'
+                  tenantConfig.config.slug === 'ttc'
                     ? 'hidePrimaryTenantLogo'
                     : 'primaryTenantLogo'
                 }
               >
-                <a href={tenantConfig.header?.tenantLogoLink}>
+                <a href={tenantConfig.config.header?.tenantLogoLink}>
                   <img
                     className={'tenantLogo desktop'}
-                    src={tenantConfig.header.tenantLogoURL}
+                    src={tenantConfig.config.header.tenantLogoURL}
                   />
-                  {tenantConfig.header.mobileLogoURL ? (
+                  {tenantConfig.config.header.mobileLogoURL ? (
                     <img
                       className={'tenantLogo mobile'}
-                      src={tenantConfig.header.mobileLogoURL}
+                      src={tenantConfig.config.header.mobileLogoURL}
                     />
                   ) : (
                     <img
                       className={'tenantLogo mobile'}
-                      src={tenantConfig.header.tenantLogoURL}
+                      src={tenantConfig.config.header.tenantLogoURL}
                     />
                   )}
                 </a>

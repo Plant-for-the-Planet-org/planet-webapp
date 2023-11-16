@@ -11,7 +11,7 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
   const { tenantConfig } = useTenant();
 
   React.useEffect(() => {
-    if (typeof window !== 'undefined' && tenantConfig.darkModeEnabled) {
+    if (typeof window !== 'undefined' && tenantConfig.config.darkModeEnabled) {
       if (localStorage.getItem('theme')) {
         if (localStorage.getItem('theme') === 'theme-light') {
           setTheme('theme-light');

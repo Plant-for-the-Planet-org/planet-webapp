@@ -22,7 +22,7 @@ const SharePlatforms = ({
 }: SharePlatformsProps): ReactElement => {
   const { tenantConfig } = useTenant();
   const { t, ready } = useTranslation(['donate']);
-  const linkToShare = `${tenantConfig.tenantURL}/t/${userProfile?.slug}`;
+  const linkToShare = `${tenantConfig.config.tenantURL}/t/${userProfile?.slug}`;
   const textToShare = ready
     ? t('donate:textToShare', { name: userProfile?.displayName })
     : '';

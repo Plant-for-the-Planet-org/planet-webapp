@@ -20,14 +20,14 @@ export default function About({ leaderboard, tenantScore }: Props) {
   React.useEffect(() => {
     if (descriptionRef.current !== null) {
       descriptionRef.current.innerHTML = t(
-        `tenants:${tenantConfig.tenantName}.description`
+        `tenants:${tenantConfig.config.slug}.description`
       );
     }
   }, [ready]);
 
   return ready ? (
     <main>
-      <LandingSection imageSrc={tenantConfig.meta.image}>
+      <LandingSection imageSrc={tenantConfig.config.meta.image}>
         <div style={{ marginTop: '120px' }} />
         {tenantScore && (
           <TreeCounter
@@ -40,18 +40,8 @@ export default function About({ leaderboard, tenantScore }: Props) {
           className={styles.publicUserDescription}
           style={{ fontWeight: 'bold', marginBottom: '0px' }}
         >
-          {t(`tenants:${tenantConfig.tenantName}.title`)}
+          {t(`tenants:${tenantConfig.config.slug}.title`)}
         </p>
-
-        {/* TODO - remove code block below if not needed. No tenant config contains descriptionTitle */}
-        {tenantConfig.home?.descriptionTitle && (
-          <p
-            className={styles.publicUserDescription}
-            style={{ fontWeight: 'bold', marginBottom: '0px' }}
-          >
-            {t(`tenants:${tenantConfig.tenantName}.descriptionTitle`)}
-          </p>
-        )}
         <p
           ref={descriptionRef}
           className={styles.publicUserDescription}

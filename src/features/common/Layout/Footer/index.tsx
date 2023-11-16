@@ -388,15 +388,15 @@ export default function Footer(): ReactElement | null {
               </div>
             </div>
             <div className={styles.footer_links_container}>
-              {tenantConfig.darkModeEnabled && (
+              {tenantConfig.config.darkModeEnabled && (
                 <div className={styles.switch}>
                   <DarkModeSwitch />
                 </div>
               )}
 
               {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
-              {tenantConfig.footerLinks &&
-                tenantConfig.footerLinks.map((key) => {
+              {tenantConfig.config.footerLinks &&
+                tenantConfig.config.footerLinks.map((key) => {
                   const footerLinkKey = key as keyof typeof FooterLinks;
                   return (
                     <a
@@ -425,7 +425,7 @@ export default function Footer(): ReactElement | null {
             </a>
           </button>
 
-          {tenantConfig.showUNEPLogo && (
+          {tenantConfig.config.showUNEPLogo && (
             <button id={'unepLogoIcon'} className={styles.unep_logo_container}>
               <a
                 href="https://www.unep.org/"
@@ -440,7 +440,7 @@ export default function Footer(): ReactElement | null {
             </button>
           )}
 
-          {tenantConfig.showUNDecadeLogo && (
+          {tenantConfig.config.showUNDecadeLogo && (
             <button
               id={'undecadeLogoIcon'}
               className={styles.undecade_logo_container}

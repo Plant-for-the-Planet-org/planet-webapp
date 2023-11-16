@@ -61,9 +61,9 @@ function MapLanguage({ value, handleChange }: MapLanguageProps) {
   const selectableLanguages = useMemo(
     () =>
       supportedLanguages.filter((lang) =>
-        tenantConfig.languages.includes(lang.langCode)
+        (tenantConfig.config.languages ?? ['en']).includes(lang.langCode)
       ),
-    [supportedLanguages, tenantConfig.languages]
+    [supportedLanguages, tenantConfig.config.languages]
   );
 
   return (

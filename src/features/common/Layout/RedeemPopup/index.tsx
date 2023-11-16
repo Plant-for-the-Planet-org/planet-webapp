@@ -27,7 +27,7 @@ export default function RedeemPopup() {
   }, [contextLoaded && user]);
 
   useEffect(() => {
-    if (tenantConfig.showRedeemHint) {
+    if (tenantConfig.config.showRedeemHint) {
       const prev = localStorage.getItem('redeemPopup');
       if (!prev) {
         setShowRedeemPopup(true);
@@ -38,7 +38,7 @@ export default function RedeemPopup() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('redeemPopup', showRedeemPopup);
+    localStorage.setItem('redeemPopup', `${showRedeemPopup}`);
   }, [showRedeemPopup]);
 
   return ready && showRedeemPopup ? (

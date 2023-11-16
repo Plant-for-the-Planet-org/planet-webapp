@@ -21,7 +21,7 @@ export default function About({ tenantScore, leaderboard }: Props) {
   return (
     <>
       <Head>
-        <title>{`Home | ${tenantConfig.meta.title}`}</title>
+        <title>{`Home | ${tenantConfig.config.meta.title}`}</title>
       </Head>
       <main style={{ backgroundColor: 'white', paddingBottom: '60px' }}>
         <Landing tenantScore={tenantScore} />

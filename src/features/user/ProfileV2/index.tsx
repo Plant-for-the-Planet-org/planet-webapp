@@ -16,7 +16,7 @@ const Profile = ({ userProfile }: ProfileProps): ReactElement => {
       navigator
         ?.share({
           title: ready ? t('donate:shareTextTitle') : '',
-          url: `${process.env.SCHEME}://${tenantConfig.tenantURL}/t/${userProfile.slug}`,
+          url: `${process.env.SCHEME}://${tenantConfig.config.tenantURL}/t/${userProfile.slug}`,
           text: ready
             ? t('donate:textToShare', { name: userProfile.displayName })
             : '',

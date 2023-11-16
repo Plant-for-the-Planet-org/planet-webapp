@@ -17,8 +17,8 @@ const MapHolder = ({ setshowVideo }: Props) => {
       {project !== null || projects !== null ? <MapLayout /> : null}
       <div
         style={
-          tenantConfig.tenantName === 'planet' ||
-          tenantConfig.tenantName === 'ttc'
+          tenantConfig.config.slug === 'planet' ||
+          tenantConfig.config.slug=== 'ttc'
             ? {}
             : { display: 'none' }
         }

@@ -25,7 +25,7 @@ export default function About({ leaderboard, tenantScore }: Props) {
         <div style={{ marginTop: '64px' }} />
         {tenantScore && tenantScore.total && (
           <TreeCounter
-            target={tenantConfig.tenantGoal}
+            target={tenantConfig.config.tenantGoal}
             planted={tenantScore.total}
             hideTarget
           />
