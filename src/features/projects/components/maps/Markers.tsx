@@ -51,7 +51,6 @@ export default function Markers({
       ? 'topUnapproved'
       : 'notDonatable';
   };
-  console.log(searchedProject.properties);
   return (
     <>
       {searchedProject.map((projectMarker, index) => (
