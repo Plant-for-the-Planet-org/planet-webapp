@@ -42,15 +42,43 @@ export default function Home({
     setViewPort(newViewport);
   }, []);
 
-  const markerProps = {
-    searchedProject,
-    setPopupData,
-    popupData,
-    isMobile,
-  };
+  const topProjects = searchedProject.filter(
+    (project) =>
+      project.properties.isTopProject && project.properties.isApproved
+  );
+
+  const midProjects = searchedProject.filter(
+    (project) =>
+      project.properties.allowDonations &&
+      !(project.properties.isTopProject && project.properties.isApproved)
+  );
+
+  const bottomProjects = searchedProject.filter(
+    (project) =>
+      !project.allowDonations &&
+      !(project.properties.isTopProject && project.properties.isApproved)
+  );
+
   return (
     <>
-      <Markers {...markerProps} />
+      <Markers
+        searchedProject={bottomProjects}
+        setPopupData={setPopupData}
+        popupData={popupData}
+        isMobile={isMobile}
+      />
+      <Markers
+        searchedProject={midProjects}
+        setPopupData={setPopupData}
+        popupData={popupData}
+        isMobile={isMobile}
+      />
+      <Markers
+        searchedProject={topProjects}
+        setPopupData={setPopupData}
+        popupData={popupData}
+        isMobile={isMobile}
+      />
     </>
   );
 }
