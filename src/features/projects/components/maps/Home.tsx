@@ -55,7 +55,7 @@ export default function Home({
 
   const notDonatableProjects = searchedProject.filter(
     (project) =>
-      !project.allowDonations &&
+      !project.properties.allowDonations &&
       !(project.properties.isTopProject && project.properties.isApproved)
   );
 
