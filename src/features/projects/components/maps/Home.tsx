@@ -42,15 +42,37 @@ export default function Home({
     setViewPort(newViewport);
   }, []);
 
-  const markerProps = {
-    searchedProject,
-    setPopupData,
-    popupData,
-    isMobile,
-  };
+  const topApprovedProjects = searchedProject.filter(
+    (project) =>
+      project.properties.isTopProject && project.properties.isApproved
+  );
+
+  const topUnapprovedProjects = searchedProject.filter(
+    (project) =>
+      project.properties.allowDonations &&
+      !(project.properties.isTopProject && project.properties.isApproved)
+  );
+
+  const notDonatableProjects = searchedProject.filter(
+    (project) =>
+      !project.properties.allowDonations &&
+      !(project.properties.isTopProject && project.properties.isApproved)
+  );
+
+  const renderMarkers = (projects: MapProject[]) => (
+    <Markers
+      searchedProject={projects}
+      setPopupData={setPopupData}
+      popupData={popupData}
+      isMobile={isMobile}
+    />
+  );
+
   return (
     <>
-      <Markers {...markerProps} />
+      {renderMarkers(notDonatableProjects)}
+      {renderMarkers(topUnapprovedProjects)}
+      {renderMarkers(topApprovedProjects)}
     </>
   );
 }
