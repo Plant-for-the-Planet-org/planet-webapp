@@ -2,7 +2,7 @@ import React from 'react';
 
 const ManagedRegeneration = () => {
   return (
-    <div style={{ display: 'flex', gap: 0 }}>
+    <div style={{ display: 'flex', gap: 0, marginBottom: '0.1em' }}>
       {[...Array(4)].map((_, index) => (
         <svg
           key={index}
