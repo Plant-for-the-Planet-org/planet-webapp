@@ -357,7 +357,7 @@ export default function EditProfileForm() {
                 message: t('validationErrors.maxChars', { max: 50 }),
               },
               pattern: {
-                value: /^[\p{L}\p{N}\sß.'-]+$/u,
+                value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß.'-]*$/u,
                 message: t('validationErrors.firstNameInvalid'),
               },
             }}
@@ -384,7 +384,7 @@ export default function EditProfileForm() {
                 message: t('validationErrors.maxChars', { max: 50 }),
               },
               pattern: {
-                value: /^[\p{L}\p{N}\sß'-]+$/u,
+                value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß'-]*$/u,
                 message: t('validationErrors.lastNameInvalid'),
               },
             }}

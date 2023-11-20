@@ -41,9 +41,9 @@
   "validationErrors": {
     "maxChars": "Should be {{max}} characters or less",
     "firstNameRequired": "First Name field is required",
-    "firstNameInvalid": "First name is invalid. Only these special characters are allowed: space ' . -",
+    "firstNameInvalid": "First name is invalid. It cannot start with a special character, and only these special characters are allowed: space ' . -",
     "lastNameRequired": "Last Name field is required",
-    "lastNameInvalid": "Last name is invalid. Only these special characters are allowed: space ' -",
+    "lastNameInvalid": "Last name is invalid. It cannot start with a special character, and only these special characters are allowed: space ' -",
     "emailRequired": "Email is required",
     "nameRequired": "Please enter a name",
     "nameInvalid": "Name is invalid. Only these special characters are allowed: space . , ' & ( ) ! -",
