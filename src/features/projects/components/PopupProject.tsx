@@ -89,20 +89,31 @@ export default function PopupProject({
           project.isTopProject &&
           project.isApproved && <TopProjectBadge displayPopup={false} />}
         <div className={'projectImageBlock'}>
-          {project.ecosystem !== null && (
-            <div className={'projectEcosystem'}>
-              {t(`manageProjects:ecosystemTypes.${project.ecosystem}`)}
-              {project.purpose === 'trees' && ' /'}
+          <div className={'projectEcosystemOrTypeContainer'}>
+            <div className={'projectTypeIcon'}>
+              <ProjectTypeIcon
+                projectType={
+                  project.purpose === 'conservation'
+                    ? 'conservation'
+                    : project.classification
+                }
+              />
             </div>
-          )}
-          {project.purpose === 'trees' && (
-            <div className={'projectType'}>
-              <div className={'projectTypeIcon'}>
-                <ProjectTypeIcon projectType={project.classification} />
-              </div>
-              {project.classification && t(`donate:${project.classification}`)}
+            <div>
+              {project.ecosystem !== null && (
+                <div className={'projectEcosystem'}>
+                  {t(`manageProjects:ecosystemTypes.${project.ecosystem}`)}
+                  {project.purpose === 'trees' && ' /'}
+                </div>
+              )}
+              {project.purpose === 'trees' && (
+                <div className={'projectType'}>
+                  {project.classification &&
+                    t(`donate:${project.classification}`)}
+                </div>
+              )}
             </div>
-          )}
+          </div>
 
           <p className={'projectName'}>
             {truncateString(project.name, 54)}
