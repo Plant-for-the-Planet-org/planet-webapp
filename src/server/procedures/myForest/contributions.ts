@@ -29,7 +29,7 @@ export const contributions = procedure
       });
     }
 
-    const data = await prisma.contribution.findMany({
+    const contributions = await prisma.contribution.findMany({
       select: {
         guid: true,
         purpose: true,
@@ -139,6 +139,78 @@ export const contributions = procedure
       take: limit + 1,
       cursor: cursor ? { guid: cursor } : undefined,
     });
+
+    const giftData = await prisma.contribution.findMany({
+      select: {
+        guid: true,
+        purpose: true,
+        treeCount: true,
+        quantity: true,
+        plantDate: true,
+        contributionType: true,
+        bouquetContributions: {
+          select: {
+            purpose: true,
+            treeCount: true,
+            quantity: true,
+            plantDate: true,
+            contributionType: true,
+            plantProject: {
+              select: {
+                guid: true,
+                name: true,
+                image: true,
+                country: true,
+                unit: true,
+                location: true,
+                geoLatitude: true,
+                geoLongitude: true,
+                tpo: true,
+              },
+            },
+          },
+        },
+        plantProject: {
+          select: {
+            guid: true,
+            name: true,
+            image: true,
+            country: true,
+            unit: true,
+            location: true,
+            geoLatitude: true,
+            geoLongitude: true,
+            tpo: true,
+          },
+        },
+        gift: true,
+        giftData: true,
+      },
+      where: {
+        gift: {
+          some: {
+            recipient: {
+              guid: profileId,
+            },
+          },
+        },
+        deletedAt: null,
+      },
+      orderBy: {
+        plantDate: 'desc',
+      },
+      skip: skip,
+      take: limit + 1,
+      cursor: cursor ? { guid: cursor } : undefined,
+    });
+
+    const combinedData = [...contributions, ...giftData];
+
+    const sortedData = combinedData.sort(
+      (a, b) => new Date(b.plantDate) - new Date(a.plantDate)
+    );
+
+    const data = sortedData.slice(0, limit);
 
     let nextCursor: typeof cursor | undefined = undefined;
     if (data.length > limit) {
