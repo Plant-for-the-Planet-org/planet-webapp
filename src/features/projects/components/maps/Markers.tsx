@@ -45,14 +45,10 @@ export default function Markers({
     setOpen(false);
   };
   const markerBackgroundColor = (project) => {
-    const topUnapprovedType =
-      project.purpose === 'conservation'
-        ? 'conservationMarker'
-        : 'topUnapproved';
     return project.isTopProject && project.isApproved
       ? 'topApproved'
       : project.allowDonations
-      ? topUnapprovedType
+      ? 'topUnapproved'
       : 'notDonatable';
   };
   return (
@@ -123,7 +119,11 @@ export default function Markers({
             />
             <div className={styles.projectTypeIcon}>
               <ProjectTypeIcon
-                projectType={projectMarker.properties.classification}
+                projectType={
+                  projectMarker.properties.purpose === 'conservation'
+                    ? 'conservation'
+                    : projectMarker.properties.classification
+                }
               />
             </div>
           </div>

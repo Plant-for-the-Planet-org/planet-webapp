@@ -727,7 +727,11 @@
 }
 //will be replace by theme styles
 .topApproved {
-  background: linear-gradient(216.51deg, #EAC35D 8.62%, #F4C15D 34.88%, #DBAA4C 74.58%);
+  background: $topProjectBackgroundColor;
+}
+
+.conservationMarker {
+  background: #1ea9e4;
 }
 
 .topUnapproved {
@@ -736,10 +740,6 @@
 
 .notDonatable {
   background-color: #828282;
-}
-
-.conservationMarker {
-  background: #1ea9e4;
 }
 
 @include lgLaptopView {
