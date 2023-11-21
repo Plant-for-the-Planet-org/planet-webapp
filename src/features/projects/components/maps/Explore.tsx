@@ -23,6 +23,11 @@ import InfoIcon from '../../../../../public/assets/images/icons/InfoIcon';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
+interface LayerType {
+  id: string;
+  decodeConfig: boolean;
+}
+
 export default function Explore(): ReactElement {
   const {
     setShowProjects,
@@ -70,7 +75,9 @@ export default function Explore(): ReactElement {
   const handleExplorePotentialChange = (event: any) => {
     setExplorePotential(event.target.checked);
   }; */
-  const handleExploreDeforestationChange = (event: any) => {
+  const handleExploreDeforestationChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setExploreDeforestation(event.target.checked);
   };
 
@@ -104,7 +111,7 @@ export default function Explore(): ReactElement {
     };
   });
 
-  const onChangeLayerDate = (dates: any, layer: any) => {
+  const onChangeLayerDate = (dates: string[], layer: LayerType) => {
     const { id, decodeConfig } = layer;
 
     setLayersSettings({
@@ -128,7 +135,9 @@ export default function Explore(): ReactElement {
     });
   };
 
-  const handleExploreProjectsChange = (event: any) => {
+  const handleExploreProjectsChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setExploreProjects(event.target.checked);
     setShowProjects(event.target.checked);
     if (!event.target.checked) {
@@ -182,6 +191,8 @@ export default function Explore(): ReactElement {
         if (
           exploreContainerRef &&
           exploreContainerRef.current &&
+          event.target !== null &&
+          event.target instanceof Node &&
           !exploreContainerRef.current.contains(event.target)
         ) {
           setExploreExpanded(false);

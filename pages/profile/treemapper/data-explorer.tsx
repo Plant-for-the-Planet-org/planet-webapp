@@ -15,7 +15,7 @@ function TreeMapperAnalytics(): ReactElement {
   const { push } = useRouter();
 
   useEffect(() => {
-    if (!(process.env.ENABLE_ANALYTICS && user?.type === 'tpo')) {
+    if (!(process.env.ENABLE_ANALYTICS === 'true' && user?.type === 'tpo')) {
       push('/profile');
     }
   });

@@ -121,7 +121,11 @@ const PlanetWeb = ({
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
   };
 
-  if (process.env.VERCEL_URL && typeof window !== 'undefined') {
+  if (
+    process.env.VERCEL_URL &&
+    process.env.VERCEL_URL !== 'localhost' &&
+    typeof window !== 'undefined'
+  ) {
     if (process.env.VERCEL_URL !== window.location.hostname) {
       router.replace(`https://${process.env.VERCEL_URL}`);
     }

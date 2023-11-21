@@ -435,7 +435,7 @@ export default function RegisterTreesWidget() {
     slug: user.slug,
   };
 
-  return ready ? (
+  return (
     <>
       {!registered ? (
         <RegisterTreesForm
@@ -447,5 +447,5 @@ export default function RegisterTreesWidget() {
         <SingleContribution {...ContributionProps} />
       )}
     </>
-  ) : null;
+  );
 }

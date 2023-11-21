@@ -24,6 +24,8 @@ const themeProperties = {
   lightBlueColor: "#48AADD",
   darkBlackColor: "#4F4F4F",
   darkOliveGreen: "#688816",
+  topProjectBackgroundColor: '#F3BB44',
+  nonDonatableProjectBackgroundColor: '#828282',
   light: {
     primaryFontColor: '#2f3336',
     dividerColor: '#d5d5d5',

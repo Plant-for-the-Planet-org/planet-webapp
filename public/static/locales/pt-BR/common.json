@@ -90,5 +90,6 @@
   "add": "Adicionar",
   "notFound": "A página solicitada não foi encontrada.",
   "unauthorized": "Alguma coisa correu mal. Por favor, tente sair e volte a entrar novamente.",
-  "internalServerError": "Erro do Servidor Interno - Por favor tente novamente mais tarde!"
+  "internalServerError": "Erro do Servidor Interno - Por favor tente novamente mais tarde!",
+  "reviewInfo": " O projeto foi inspecionado em uma revisão de campo de vários dias em <2>mês</2> e atende aos nossos <5>padrões.</5>"
 }
