@@ -1,11 +1,8 @@
-import { createClient } from 'redis';
+import { createClient } from '@vercel/kv';
 
-const redisClient = createClient({ url: process.env.REDIS_URL });
-
-redisClient.on('error', (error) => {
-  console.error('Redis Error:', error);
+const redisClient = createClient({
+  url: process.env.REDIS_URL!,
+  token: process.env.REDIS_TOKEN!,
 });
-
-redisClient.connect();
 
 export default redisClient;

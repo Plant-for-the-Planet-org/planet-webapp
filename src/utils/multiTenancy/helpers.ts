@@ -20,18 +20,20 @@ const DEFAULT_TENANT_DOMAIN = 'https://www1.plant-for-the-planet.org';
  *
  */
 export const getTenantConfigList = async (): Promise<Tenant[]> => {
-  const cacheHit = await redisClient.get(caching_key);
+  const cacheHit = await redisClient.get<Tenant[]>(caching_key);
 
   if (cacheHit) {
-    return JSON.parse(cacheHit);
+    return cacheHit;
   }
 
-  const response = await fetch(`https://${process.env.API_ENDPOINT}/app/tenants?_scope=deployment`);
+  const response = await fetch(
+    `https://${process.env.API_ENDPOINT}/app/tenants?_scope=deployment`
+  );
 
   const tenants = (await response.json()) as Tenant[];
 
   await redisClient.set(caching_key, JSON.stringify(tenants), {
-    EX: TWO_HOURS,
+    ex: TWO_HOURS,
   });
 
   return tenants;
@@ -148,5 +150,3 @@ export async function getTenantSlug(host: string) {
 
   return tenant?.config.slug ?? DEFAULT_TENANT;
 }
-
-
