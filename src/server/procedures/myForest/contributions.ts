@@ -29,6 +29,12 @@ export const contributions = procedure
       });
     }
 
+    const _cursor = cursor ? cursor.split(',') : undefined;
+    const contributionsCursor =
+      _cursor?.[0] !== 'undefined' ? _cursor?.[0] : undefined;
+    const giftDataCursor =
+      _cursor?.[1] !== 'undefined' ? _cursor?.[1] : undefined;
+
     const contributions = await prisma.contribution.findMany({
       select: {
         guid: true,
@@ -37,6 +43,7 @@ export const contributions = procedure
         quantity: true,
         plantDate: true,
         contributionType: true,
+        created: true,
         tenant: {
           select: {
             guid: true,
@@ -137,7 +144,7 @@ export const contributions = procedure
       },
       skip: skip,
       take: limit + 1,
-      cursor: cursor ? { guid: cursor } : undefined,
+      cursor: contributionsCursor ? { guid: contributionsCursor } : undefined,
     });
 
     const giftData = await prisma.contribution.findMany({
@@ -147,6 +154,7 @@ export const contributions = procedure
         treeCount: true,
         quantity: true,
         plantDate: true,
+        created: true,
         contributionType: true,
         bouquetContributions: {
           select: {
@@ -201,8 +209,18 @@ export const contributions = procedure
       },
       skip: skip,
       take: limit + 1,
-      cursor: cursor ? { guid: cursor } : undefined,
+      cursor: giftDataCursor ? { guid: giftDataCursor } : undefined,
     });
+
+    console.log('giftData', giftData);
+
+    // console.log(
+    //   limit,
+    //   'giftData.length',
+    //   giftData,
+    //   'contributions.length',
+    //   contributions.length
+    // );
 
     const combinedData = [...contributions, ...giftData];
 
@@ -210,12 +228,26 @@ export const contributions = procedure
       (a, b) => new Date(b.plantDate) - new Date(a.plantDate)
     );
 
-    const data = sortedData.slice(0, limit);
+    // console.log('data', sortedData.length);
+
+    const data = sortedData.slice(0, limit + 2);
+
+    console.log(
+      'lost data ',
+      limit,
+      sortedData.length,
+      sortedData.slice(limit + 1, 1000)
+    );
+
+    // console.log('data2', data.length);
 
     let nextCursor: typeof cursor | undefined = undefined;
-    if (data.length > limit) {
+    if (sortedData.length > limit) {
       const nextItem = data.pop();
-      nextCursor = nextItem?.guid;
+      console.log('nextItem', nextItem);
+      nextCursor = `${contributions[contributions.length - 1]?.guid},${
+        giftData[giftData.length - 1]?.guid
+      }`;
     }
 
     return {
