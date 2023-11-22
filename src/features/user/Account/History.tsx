@@ -136,17 +136,20 @@ export default function History({
             })}
         </div>
         <div className={`${styles.issueButtonMobileContainer}`}>
-          <p>
-            <Trans i18nKey="me:taxReceiptsDescription">
-              Press the button below to issue your tax receipts. The receipts
-              will show in each donation afterwards. Please make sure in advance
-              that your address data is correct at{' '}
-              <a className={styles.link} href="/profile/edit">
-                profile settings
-              </a>
-            </Trans>
-          </p>
+          <div>
+            <p>
+              <Trans i18nKey="me:taxReceiptsDescription">
+                Press the button below to issue your tax receipts. The receipts
+                will show in each donation afterwards. Please make sure in
+                advance that your address data is correct at{' '}
+                <a className={styles.link} href="/profile/edit">
+                  profile settings
+                </a>
+              </Trans>
+            </p>
 
+            <p>{t('me:isReceiptStillMissing')}</p>
+          </div>
           <MuiButton
             fullWidth
             variant="contained"
@@ -159,7 +162,6 @@ export default function History({
             )}
           </MuiButton>
         </div>
-
       </Grid>
       <Grid item style={{ width: '100%' }}>
         <MembershipCta placement="top" />
@@ -231,16 +233,19 @@ export default function History({
               </div>
             </div>
             <div className={styles.issueButtonContainer}>
-              <p>
-                <Trans i18nKey="me:taxReceiptsDescription">
-                  Press the button below to issue your tax receipts. The
-                  receipts will show in each donation afterwards. Please make
-                  sure in advance that your address data is correct at{' '}
-                  <a className={styles.link} href="/profile/edit">
-                    profile settings
-                  </a>
-                </Trans>
-              </p>
+              <div>
+                <p>
+                  <Trans i18nKey="me:taxReceiptsDescription">
+                    Press the button below to issue your tax receipts. The
+                    receipts will show in each donation afterwards. Please make
+                    sure in advance that your address data is correct at{' '}
+                    <a className={styles.link} href="/profile/edit">
+                      profile settings
+                    </a>
+                  </Trans>
+                </p>
+                <p>{t('me:isReceiptStillMissing')}</p>
+              </div>
 
               <MuiButton
                 style={{ width: '100%' }}
