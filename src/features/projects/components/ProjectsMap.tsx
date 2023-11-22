@@ -13,6 +13,11 @@ import { useTranslation } from 'next-i18next';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { PopupData } from './maps/Markers';
 
+interface ShowDetailsProps {
+  coordinates: [number, number] | null;
+  show: boolean
+}
+
 export default function ProjectsMap(): ReactElement {
   const {
     project,
@@ -63,8 +68,8 @@ export default function ProjectsMap(): ReactElement {
     loadMapStyle();
   }, []);
 
-  const [showDetails, setShowDetails] = React.useState({
-    coordinates: [],
+  const [showDetails, setShowDetails] = React.useState<ShowDetailsProps >({
+    coordinates: null,
     show: false,
   });
 
@@ -106,7 +111,7 @@ export default function ProjectsMap(): ReactElement {
     if (e.features && e.features?.length !== 0) {
       if (!hoveredPl || hoveredPl.type !== 'sample') {
         if (e.features[0].layer?.source && plantLocations) {
-          for (const key of plantLocations) {
+          for (const key in plantLocations) {
             if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
               const element = plantLocations[key];
               if (element.id === e.features[0].layer?.source) {
@@ -186,8 +191,8 @@ export default function ProjectsMap(): ReactElement {
         </div>
         {showDetails.show && (
           <Popup
-            latitude={showDetails.coordinates[1]}
-            longitude={showDetails.coordinates[0]}
+            latitude={showDetails?.coordinates ? showDetails?.coordinates[1] : 0}
+            longitude={showDetails?.coordinates ? showDetails?.coordinates[1] : 0}
             closeButton={false}
             closeOnClick={false}
             onClose={() => setPopupData({ show: false })}

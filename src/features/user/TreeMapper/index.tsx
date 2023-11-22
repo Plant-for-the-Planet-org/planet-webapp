@@ -31,7 +31,7 @@ function TreeMapper(): ReactElement {
     PlantLocation[] | SamplePlantLocation[] | null
   >(null);
   const [selectedLocation, setselectedLocation] = React.useState<
-    PlantLocation | SamplePlantLocation | null
+    PlantLocation | null
   >(null);
   const [links, setLinks] = React.useState<Links>();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);

@@ -10,6 +10,7 @@ const Map = ReactMapboxGl({
   interactive: false,
   customAttribution:
     '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
+  accessToken: ''
 });
 
 interface Props {
@@ -107,7 +108,7 @@ export default function StaticMap({ geoJson }: Props): ReactElement {
             'line-width': 2,
           }}
         />
-      ) : null}
+      ) : ""}
     </Map>
   );
 }

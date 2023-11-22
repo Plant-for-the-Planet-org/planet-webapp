@@ -16,7 +16,7 @@ import { FlyToInterpolator } from "react-map-gl";
 export interface ViewportProps {
     height: number | string ;
     width:  number | string ;
-    zoom: number[] | number;
+    zoom:  number | undefined;
     latitude?: number;
     longitude?: number;
     center?: number[];

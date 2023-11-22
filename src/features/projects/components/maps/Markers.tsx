@@ -149,7 +149,7 @@ export default function Markers({
                       shallow: true,
                     }
                   );
-                } else if (!popupRef.current.contains(event.target as Node)) {
+                } else if (event.target instanceof Node && !popupRef.current.contains(event.target)) {
                   router.push(
                     `/${popupData.project.properties.slug}/${
                       embed === 'true'

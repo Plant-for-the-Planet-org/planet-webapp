@@ -9,15 +9,11 @@ import { useRouter } from 'next/router';
 import CopyToClipboard from '../../../common/CopyToClipboard';
 import {
   PlantLocation,
+  PlantLocationMulti,
+  PlantLocationSingle,
   SamplePlantLocation,
 } from '../../../common/types/plantLocation';
 import { SetState } from '../../../common/types/common';
-
-interface Props {
-  setselectedLocation: SetState<PlantLocation | SamplePlantLocation | null>;
-  location: PlantLocation | SamplePlantLocation | null;
-  plantLocations: any;
-}
 
 const ImageSlider = dynamic(
   () => import('../../../projects/components/PlantLocation/ImageSlider'),
@@ -35,12 +31,23 @@ const ImageSliderSingle = dynamic(
   }
 );
 
+interface LocationDetailsProps {
+  location: PlantLocationMulti |  null
+  setselectedLocation: SetState<PlantLocationMulti  | null>
+}
+
+interface SampleTreeImageProps {
+  image: string | undefined
+  description: string | undefined
+}
+
+
 export function LocationDetails({
   location,
   setselectedLocation,
-}: DetailsProps): ReactElement {
+}:  LocationDetailsProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['treemapper', 'maps']);
-  const [sampleTreeImages, setSampleTreeImages] = React.useState([]);
+  const [sampleTreeImages, setSampleTreeImages] = React.useState<SampleTreeImageProps[]>([]);
 
   const text = `${location?.deviceLocation?.coordinates.map((coord: any) => {
     return getFormattedNumber(i18n.language, Number(coord));
@@ -78,7 +85,7 @@ export function LocationDetails({
       setSampleTreeImages([]);
     }
   }, [location, ready]);
-  return (
+  return  location ? (
     <>
       {location.type === 'multi' && sampleTreeImages.length > 0 && (
         <div className={styles.projectImageSliderContainer}>
@@ -242,8 +249,15 @@ export function LocationDetails({
         )}
       </div>
     </>
-  );
+  ):(<></>);
 }
+
+interface Props {
+  setselectedLocation: SetState<PlantLocationMulti | null>;
+  location:PlantLocationMulti ;
+  plantLocations: PlantLocation[]
+}
+
 export default function PlantLocationPage({
   location,
   setselectedLocation,
@@ -252,6 +266,7 @@ export default function PlantLocationPage({
   const router = useRouter();
 
   const handleBackButton = () => {
+    console.log(plantLocations,"==")
     if (location.type === 'sample') {
       for (const i in plantLocations) {
         if (Object.prototype.hasOwnProperty.call(plantLocations, i)) {
@@ -271,6 +286,7 @@ export default function PlantLocationPage({
     location,
     setselectedLocation,
   };
+  console.log(location,"==")
   return (
     <div className={styles.locationDetails}>
       <div className={styles.pullUpContainer}>
@@ -295,7 +311,3 @@ export default function PlantLocationPage({
   );
 }
 
-interface DetailsProps {
-  setselectedLocation: Function;
-  location: Object;
-}

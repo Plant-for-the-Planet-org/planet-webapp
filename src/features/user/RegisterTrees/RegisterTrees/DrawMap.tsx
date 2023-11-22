@@ -15,6 +15,7 @@ interface Props {
 const Map = ReactMapboxGl({
   customAttribution:
     '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
+  accessToken: ''
 });
 
 export default function MapComponent({
