@@ -8,7 +8,7 @@ import { localeMapForDate } from '../../../../utils/language/getLanguageName';
 import { Trans } from 'react-i18next';
 import { useTranslation } from 'next-i18next';
 import { Review } from '@planet-sdk/common/build/types/project/common';
-import { localeMapForDate } from '../../../../utils/language/getLanguageName';
+
 
 interface Props {
   projectReviews: Review[];
