@@ -103,7 +103,7 @@ export default function Footer(): ReactElement | null {
                 onClick={handleModalOpen}
                 className={styles.footer_button}
               >
-                <World color={styles.primaryFontColor} />
+                <World />
                 <p className={styles.selected_language}>
                   {`${getLanguageName(i18n.language)} · ${selectedCurrency}`}
                 </p>

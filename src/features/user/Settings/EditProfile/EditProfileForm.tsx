@@ -31,6 +31,7 @@ import {
 } from '../../../common/types/geocoder';
 import { AlertColor } from '@mui/lab';
 import { APIError, handleError } from '@planet-sdk/common';
+import { ExtendedCountryCode } from '../../../common/types/country';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -107,7 +108,9 @@ export default function EditProfileForm() {
     setSnackbarOpen(false);
   };
 
-  const [country, setCountry] = React.useState<string>(user?.country || 'DE');
+  const [country, setCountry] = React.useState<ExtendedCountryCode | ''>(
+    user?.country || 'DE'
+  );
 
   React.useEffect(() => {
     reset(defaultProfileDetails);
