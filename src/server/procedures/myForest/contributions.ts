@@ -16,6 +16,7 @@ export const contributions = procedure
     })
   )
   .query(async ({ input: { profileId, limit, cursor, skip, purpose } }) => {
+    // limit = 200;
     const profile = await prisma.profile.findFirst({
       where: {
         guid: profileId,
@@ -146,7 +147,7 @@ export const contributions = procedure
         created: 'desc',
       },
       skip: skip,
-      take: limit,
+      take: limit + 1,
     });
 
     const giftData = await prisma.gift.findMany({
@@ -228,7 +229,7 @@ export const contributions = procedure
         created: 'desc',
       },
       skip: skip,
-      take: limit,
+      take: limit + 1,
     });
 
     function convertGiftsToContributions(giftObjects: typeof giftData) {
@@ -260,8 +261,16 @@ export const contributions = procedure
       });
     }
 
+    const addTypeToContribution = (contributionResults: typeof contributions) =>
+      contributionResults.map((contribution) => {
+        return {
+          ...contribution,
+          type: 'contribution',
+        };
+      });
+
     const combinedData = [
-      ...contributions,
+      ...addTypeToContribution(contributions),
       ...convertGiftsToContributions(giftData),
     ];
 
@@ -274,28 +283,35 @@ export const contributions = procedure
     let nextCursor: string | undefined;
 
     if (sortedData.length > limit) {
-      const omittedData = sortedData.slice(limit);
-
+      const nextItem = sortedData[limit]; // Get the (limit + 1)-th item
       let nextContributionCursor: Date | undefined;
       let nextGiftDataCursor: Date | undefined;
 
-      for (const item of omittedData) {
-        if (!nextContributionCursor && item.giftData === null) {
+      // Iterate over the remaining items to find the next cursors
+      for (const item of sortedData.slice(limit)) {
+        if (item.type === 'contribution' && !nextContributionCursor) {
           nextContributionCursor = item.created;
-        } else if (!nextGiftDataCursor && item.type === 'gift') {
+        } else if (item.type === 'gift' && !nextGiftDataCursor) {
           nextGiftDataCursor = item.created;
         }
 
-        // Break the loop if both cursors are found
+        // Break if both cursors are found
         if (nextContributionCursor && nextGiftDataCursor) {
           break;
         }
       }
 
-      // Determine the nextCursor based on the extracted cursors
-      if (nextContributionCursor || nextGiftDataCursor) {
-        nextCursor = `${nextContributionCursor},${nextGiftDataCursor}`;
+      // If only one type of data reached the limit, set the cursor for the other type
+      if (!nextContributionCursor) {
+        nextContributionCursor =
+          nextItem.type === 'contribution' ? nextItem.created : undefined;
       }
+      if (!nextGiftDataCursor) {
+        nextGiftDataCursor =
+          nextItem.type === 'gift' ? nextItem.created : undefined;
+      }
+
+      nextCursor = `${nextContributionCursor?.toISOString()},${nextGiftDataCursor?.toISOString()}`;
     }
 
     return {
