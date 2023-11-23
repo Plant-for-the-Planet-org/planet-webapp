@@ -29,7 +29,7 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
       ? window.open(url, '_blank')
       : (window.location.href = url);
   };
-  return projectInfo ? (
+  return projectInfo.plantProject ? (
     <div className={myForestStyles.donationDetail}>
       <div className={myForestStyles.image}>
         {projectInfo?.plantProject !== null &&
@@ -72,6 +72,13 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
                 <div className={myForestStyles.tpoName}>
                   {projectInfo.plantProject.tpo.name}
                 </div>
+              </div>
+            )}
+            {projectInfo?.type && (
+              <div>
+                {t("receivedFrom",{
+                  name:`${projectInfo?.gift[0]?.metadata?.giver?.name}`
+                })}
               </div>
             )}
           </div>

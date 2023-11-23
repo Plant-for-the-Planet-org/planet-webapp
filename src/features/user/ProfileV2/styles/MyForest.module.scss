@@ -454,7 +454,7 @@
     @include  mdTabletView {
         flex-direction: row;
         gap: 67px;
-        padding-bottom: 0px;
+        padding-bottom: 20px;
        justify-content: space-between; 
     }
 }
@@ -520,8 +520,8 @@
   }
 
   .tpoName {
-    font-size: $fontXSmall;
-    margin-top: 6px;
+    // font-size: $fontXSmall;
+    // margin-top: 6px;
   }
 
   .areaConservedMainContainer {
@@ -648,9 +648,9 @@
 .sepratorContainer {
     display: flex;
     align-items: center;
-    justify-content: center;
+    // justify-content: center;
     .dotSeprator{
-        margin-bottom: 4px;
+        margin-bottom: 5px;
         margin-left: 4px;
         margin-right: 4px;
     }

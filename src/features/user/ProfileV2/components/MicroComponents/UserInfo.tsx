@@ -37,7 +37,7 @@ const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
         ) : (
           <Avatar
             {...stringAvatar(`${userProfile?.displayName}`)}
-            sx={{ paddingBottom: 1 }}
+            // sx={{ paddingBottom: 1 }}
           />
         )}
 
