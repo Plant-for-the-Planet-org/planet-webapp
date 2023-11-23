@@ -23,13 +23,14 @@ model contribution {
     profile              profile?       @relation(fields: [profile_id], references: [id])
     bouquet              contribution?  @relation("bouquet", fields: [bouquetDonationId], references: [id])
     bouquetContributions contribution[] @relation("bouquet")
-    plantDate            DateTime?      @map("plant_date") @db.DateTime(0)
+    plantDate            DateTime       @map("plant_date") @db.DateTime(0)
     profile_id           Int?
     gift                 gift[]
     giftData             Json?          @map("gift_data")
     giftMethod           String?        @map("gift_method") @db.VarChar(20)
     tenant               tenant?        @relation(fields: [tenantId], references: [id]) // Add a one-to-one relation to the tenant model
     tenantId             Int?           @map("tenant_id")
+    created              DateTime       @unique @db.DateTime(0)
 }
 
 model tenant {
@@ -75,4 +76,6 @@ model gift {
     metadata     Json?
     contribution contribution? @relation(fields: [donationId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FK_A47C990D4DC1279C")
     recipient    profile?      @relation(fields: [recipientId], references: [id]) // Relation field to profile
+    created      DateTime      @db.DateTime(0)
+    value        Int?
 }
