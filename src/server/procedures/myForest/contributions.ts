@@ -138,31 +138,68 @@ export const contributions = procedure
               : {}),
           },
         ],
+        created: {
+          lte: contributionsCursor ? new Date(contributionsCursor) : new Date(),
+        },
       },
       orderBy: {
-        plantDate: 'desc',
+        created: 'desc',
       },
       skip: skip,
-      take: limit + 1,
-      cursor: contributionsCursor ? { guid: contributionsCursor } : undefined,
+      take: limit,
     });
 
-    const giftData = await prisma.contribution.findMany({
+    const giftData = await prisma.gift.findMany({
       select: {
-        guid: true,
-        purpose: true,
-        treeCount: true,
-        quantity: true,
-        plantDate: true,
         created: true,
-        contributionType: true,
-        bouquetContributions: {
+        value: true,
+        guid: true,
+        donationId: true,
+        recipient: true,
+        metadata: true,
+        contribution: {
           select: {
+            guid: true,
             purpose: true,
             treeCount: true,
             quantity: true,
             plantDate: true,
             contributionType: true,
+            created: true,
+            tenant: {
+              select: {
+                guid: true,
+                name: true,
+              },
+            },
+            bouquetContributions: {
+              select: {
+                purpose: true,
+                treeCount: true,
+                quantity: true,
+                plantDate: true,
+                contributionType: true,
+                tenant: {
+                  select: {
+                    guid: true,
+                    name: true,
+                  },
+                },
+                plantProject: {
+                  select: {
+                    guid: true,
+                    name: true,
+                    image: true,
+                    country: true,
+                    unit: true,
+                    location: true,
+                    geoLatitude: true,
+                    geoLongitude: true,
+                    tpo: true,
+                  },
+                },
+              },
+            },
             plantProject: {
               select: {
                 guid: true,
@@ -178,76 +215,87 @@ export const contributions = procedure
             },
           },
         },
-        plantProject: {
-          select: {
-            guid: true,
-            name: true,
-            image: true,
-            country: true,
-            unit: true,
-            location: true,
-            geoLatitude: true,
-            geoLongitude: true,
-            tpo: true,
-          },
-        },
-        gift: true,
-        giftData: true,
       },
       where: {
-        gift: {
-          some: {
-            recipient: {
-              guid: profileId,
-            },
-          },
+        recipient: {
+          guid: profileId,
         },
-        deletedAt: null,
+        created: {
+          lte: giftDataCursor ? new Date(giftDataCursor) : new Date(),
+        },
       },
       orderBy: {
-        plantDate: 'desc',
+        created: 'desc',
       },
       skip: skip,
-      take: limit + 1,
-      cursor: giftDataCursor ? { guid: giftDataCursor } : undefined,
+      take: limit,
     });
 
-    console.log('giftData', giftData);
+    function convertGiftsToContributions(giftObjects: typeof giftData) {
+      return giftObjects.map((giftObject) => {
+        return {
+          type: 'gift',
+          guid: giftObject.guid,
+          purpose: giftObject.contribution?.purpose,
+          treeCount: giftObject.contribution?.treeCount,
+          quantity: giftObject.contribution?.quantity
+            ? giftObject.contribution?.quantity
+            : giftObject.value
+            ? giftObject.value / 100
+            : 0,
+          plantDate: giftObject.contribution?.plantDate,
+          contributionType: giftObject.contribution?.contributionType,
+          created: giftObject.contribution?.created ?? giftObject.created,
+          tenant: giftObject.contribution?.tenant,
+          bouquetContributions: giftObject.contribution?.bouquetContributions,
+          plantProject: giftObject.contribution?.plantProject,
+          gift: [
+            {
+              guid: giftObject.guid,
+              metadata: giftObject.metadata,
+            },
+          ],
+          giftData: null,
+        };
+      });
+    }
 
-    // console.log(
-    //   limit,
-    //   'giftData.length',
-    //   giftData,
-    //   'contributions.length',
-    //   contributions.length
-    // );
-
-    const combinedData = [...contributions, ...giftData];
+    const combinedData = [
+      ...contributions,
+      ...convertGiftsToContributions(giftData),
+    ];
 
     const sortedData = combinedData.sort(
-      (a, b) => new Date(b.plantDate) - new Date(a.plantDate)
+      (a, b) => b.created.getTime() - a.created.getTime()
     );
 
-    // console.log('data', sortedData.length);
+    const data = sortedData.slice(0, limit);
 
-    const data = sortedData.slice(0, limit + 2);
+    let nextCursor: string | undefined;
 
-    console.log(
-      'lost data ',
-      limit,
-      sortedData.length,
-      sortedData.slice(limit + 1, 1000)
-    );
-
-    // console.log('data2', data.length);
-
-    let nextCursor: typeof cursor | undefined = undefined;
     if (sortedData.length > limit) {
-      const nextItem = data.pop();
-      console.log('nextItem', nextItem);
-      nextCursor = `${contributions[contributions.length - 1]?.guid},${
-        giftData[giftData.length - 1]?.guid
-      }`;
+      const omittedData = sortedData.slice(limit);
+
+      let nextContributionCursor: Date | undefined;
+      let nextGiftDataCursor: Date | undefined;
+
+      for (const item of omittedData) {
+        if (!nextContributionCursor && item.giftData === null) {
+          nextContributionCursor = item.created;
+        } else if (!nextGiftDataCursor && item.type === 'gift') {
+          nextGiftDataCursor = item.created;
+        }
+
+        // Break the loop if both cursors are found
+        if (nextContributionCursor && nextGiftDataCursor) {
+          break;
+        }
+      }
+
+      // Determine the nextCursor based on the extracted cursors
+      if (nextContributionCursor || nextGiftDataCursor) {
+        nextCursor = `${nextContributionCursor},${nextGiftDataCursor}`;
+      }
     }
 
     return {
