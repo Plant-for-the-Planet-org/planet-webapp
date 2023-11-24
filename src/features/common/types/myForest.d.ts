@@ -2,8 +2,6 @@ import { Geometry } from '@turf/turf';
 import { User } from '@planet-sdk/common';
 import { PublicUser } from './user';
 
-
-
 export interface Page {
   data: Contributions[];
   nextCursor: string | undefined;
@@ -24,7 +22,7 @@ export interface Stats {
 interface Tpo {
   guid: string;
   name: string;
-  id: string
+  id: string;
 }
 interface PlantProject {
   guid: string;
@@ -35,11 +33,11 @@ interface PlantProject {
   location: string | null;
   geoLatitude: number | null;
   geoLongitude: number | null;
-  tpo:  Tpo;
+  tpo: Tpo;
 }
 
-export type  BouquetContribution = Omit<Contributions , "bouquetContributions">
-  
+export type BouquetContribution = Omit<Contributions, 'bouquetContributions'>;
+
 export interface Contributions {
   // procedure returns Contributions
   purpose: string | null;
@@ -78,16 +76,27 @@ interface Tpo {
   name: string | null;
 }
 
-
 export interface DonationInfoProps {
   projects: number | null;
   countries: number | null;
   donations: number | null;
 }
 
+export interface ContributionStatsQueryResult {
+  treeCount: string;
+  squareMeters: string;
+  conserved: string;
+  projects: string;
+  countries: string;
+  donations: string;
+}
 
+export interface GiftStatsQueryResult {
+  treeCount: string;
+  conserved: string;
+}
 
-export interface StatsQueryResult {
+export interface StatsResult {
   treeCount: number;
   squareMeters: number;
   conserved: number;
@@ -117,13 +126,12 @@ export interface ContributionsGeoJsonQueryResult {
   totalContribution: number;
 }
 
-
 export interface ContributionData {
-    pageParams: [null, string] | [null];
-    pages: Page[];
+  pageParams: [null, string] | [null];
+  pages: Page[];
 }
 export interface TreeContributedProjectListProps {
-  contribution: ContributionData | null
+  contribution: ContributionData | null;
   userProfile: User | PublicUser;
   handleFetchNextPage: () => void;
 }
