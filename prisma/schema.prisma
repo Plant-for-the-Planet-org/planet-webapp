@@ -78,4 +78,5 @@ model gift {
     recipient    profile?      @relation(fields: [recipientId], references: [id]) // Relation field to profile
     created      DateTime      @db.DateTime(0)
     value        Int?
+    purpose      String        @db.VarChar(32)
 }

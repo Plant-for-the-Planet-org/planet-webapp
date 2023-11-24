@@ -16,7 +16,6 @@ export const contributions = procedure
     })
   )
   .query(async ({ input: { profileId, limit, cursor, skip, purpose } }) => {
-    // limit = 200;
     const profile = await prisma.profile.findFirst({
       where: {
         guid: profileId,
@@ -220,6 +219,10 @@ export const contributions = procedure
       where: {
         recipient: {
           guid: profileId,
+        },
+        purpose: {
+          equals:
+            purpose === Purpose.TREES ? Purpose.TREES : Purpose.CONSERVATION,
         },
         created: {
           lte: giftDataCursor ? new Date(giftDataCursor) : new Date(),
