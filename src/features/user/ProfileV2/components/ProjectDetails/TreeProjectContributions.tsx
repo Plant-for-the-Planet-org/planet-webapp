@@ -20,7 +20,6 @@ const TreeProjectContributions = ({
   const handleAddTargetModalOpen = (): void => {
     setIsAddTargetModalOpen(true);
   };
-
   const handleAddTargetModalClose = (): void => {
     setIsAddTargetModalOpen(false);
   };
