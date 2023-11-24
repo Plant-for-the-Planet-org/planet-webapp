@@ -71,7 +71,6 @@ model gift {
     id           Int           @id @default(autoincrement())
     donationId   Int?          @map("donation_id")
     recipientId  Int?          @map("recipient_id")
-    createdBy    Int?          @map("created_by")
     guid         String        @unique(map: "UNIQ_A47C990D2B6FCFB2") @db.VarChar(32)
     metadata     Json?
     contribution contribution? @relation(fields: [donationId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FK_A47C990D4DC1279C")
