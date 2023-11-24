@@ -32,7 +32,7 @@ export const stats = procedure
     SUM(CASE WHEN pp.purpose = 'conservation' THEN c.quantity ELSE 0 END) AS conserved,
     COUNT(DISTINCT pp.id) AS projects,
     COUNT(DISTINCT pp.country) AS countries,
-    COUNT(*) AS donations
+    SUM(CASE WHEN c.contribution_type = 'donation' THEN 1 ELSE 0 END) AS donations
   FROM
     contribution c
     LEFT JOIN project pp ON c.plant_project_id = pp.id
