@@ -19,7 +19,7 @@ const Layout: FC = ({ children }) => {
       <Header />
       <style>{theme}</style>
       <div className={`${themeType}`}>
-        {!isEmbed && <Navbar theme={themeType} />}
+        {!isEmbed && <Navbar />}
         <div>{children}</div>
 
         <div>

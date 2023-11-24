@@ -4,7 +4,7 @@
   "profileTypes": "{{item.title}}",
   "createAccount": "Create Account",
   "individual": "Person",
-  "tpo": "Reforestation Organisation",
+  "tpo": "Restoration Organization",
   "education": "School",
   "organization": "Company",
   "profileCreated": "Profile Successfully created!",
