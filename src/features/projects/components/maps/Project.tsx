@@ -61,7 +61,8 @@ export default function Project({
         | { imagery: never; message: string }
       >('');
     } catch (err) {
-      setErrors(handleError(err as APIError));
+      // disable-error-handling-for-fetching-layers
+      // setErrors(handleError(err as APIError));
     }
 
     try {
@@ -69,7 +70,8 @@ export default function Project({
         RasterData | { message: string; evi: never }
       >(project.id);
     } catch (err) {
-      setErrors(handleError(err as APIError));
+      // disable-error-handling-for-fetching-layers
+      // setErrors(handleError(err as APIError));
     }
 
     // If result does not exist or does not contain imagery, the raster data will not be set.
