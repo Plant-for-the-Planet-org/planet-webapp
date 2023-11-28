@@ -2,15 +2,12 @@ import React, { ReactElement } from 'react';
 import { getRasterData } from '../../../../utils/apiRequests/api';
 import zoomToLocation from '../../../../utils/maps/zoomToLocation';
 import zoomToProjectSite from '../../../../utils/maps/zoomToProjectSite';
-import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import Location from './Location';
 import Sites from './Sites';
 import { useRouter } from 'next/router';
 import { zoomToPlantLocation } from '../../../../../src/utils/maps/plantLocations';
 import {
-  handleError,
-  APIError,
   TreeProjectExtended,
   ConservationProjectExtended,
 } from '@planet-sdk/common';
@@ -45,7 +42,6 @@ export default function Project({
     setSiteViewPort,
   } = useProjectProps();
 
-  const { setErrors } = React.useContext(ErrorHandlingContext);
   const router = useRouter();
   const [plantPolygonCoordinates, setPlantPolygonCoordinates] = React.useState<
     Position[] | null
@@ -63,6 +59,8 @@ export default function Project({
     } catch (err) {
       // disable-error-handling-for-fetching-layers
       // setErrors(handleError(err as APIError));
+
+      console.error('error fetching layers', err);
     }
 
     try {
@@ -72,6 +70,7 @@ export default function Project({
     } catch (err) {
       // disable-error-handling-for-fetching-layers
       // setErrors(handleError(err as APIError));
+      console.error('error fetching layers', err);
     }
 
     // If result does not exist or does not contain imagery, the raster data will not be set.
