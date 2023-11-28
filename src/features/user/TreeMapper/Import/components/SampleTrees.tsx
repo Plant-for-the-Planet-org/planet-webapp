@@ -6,7 +6,7 @@ import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { useTranslation } from 'next-i18next';
 import { useForm, useFieldArray } from 'react-hook-form';
 import SampleTreeCard from './SampleTreeCard';
-import Papa, { ParseResult } from 'papaparse';
+import Papa from 'papaparse';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { Button } from '@mui/material';
@@ -96,19 +96,18 @@ export default function SampleTrees({
         if (typeof csv !== 'string') return;
         Papa.parse(csv, {
           header: true,
-          complete: (results: ParseResult<unknown>) => {
+          complete: (results) => {
+            console.log(results);
             const parsedHeaders = results.meta.fields || [];
-            const resultsData = results.data;
+            const resultsData = results.data as SampleTree[];
             const headerValidity = checkHeaderValidity(parsedHeaders);
             if (headerValidity.isValid) {
-              const sampleTrees: SampleTree[] = resultsData.map(
-                (sampleTree) => {
-                  return {
-                    ...sampleTree,
-                    otherSpecies: sampleTree.otherSpecies,
-                  };
-                }
-              );
+              const sampleTrees = resultsData.map((sampleTree) => {
+                return {
+                  ...sampleTree,
+                  otherSpecies: sampleTree.otherSpecies,
+                };
+              });
               addSampleTrees(sampleTrees);
             } else {
               setParseError({
