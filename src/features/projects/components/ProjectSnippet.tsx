@@ -140,19 +140,29 @@ export default function ProjectSnippet({
           project.isTopProject &&
           project.isApproved && <TopProjectBadge displayPopup={true} />}
         <div className={'projectImageBlock'}>
-          {ecosystem !== null && (
-            <div className={'projectEcosystem'}>
-              {t(`manageProjects:ecosystemTypes.${ecosystem}`)}
-              {project.purpose === 'trees' && ' /'}
-            </div>
-          )}
-          <div className={'projectType'}>
+          <div className={'projectEcosystemOrTypeContainer'}>
             <div className={'projectTypeIcon'}>
-              <ProjectTypeIcon projectType={project.classification} />
+              <ProjectTypeIcon
+                projectType={
+                  project.purpose === 'conservation'
+                    ? 'conservation'
+                    : project.classification
+                }
+              />
             </div>
-            {project.purpose === 'trees' &&
-              project.classification &&
-              t(`donate:${project.classification}`)}
+            <div>
+              {ecosystem !== null && (
+                <div className={'projectEcosystem'}>
+                  {t(`manageProjects:ecosystemTypes.${ecosystem}`)}
+                  {project.purpose === 'trees' && ' /'}
+                </div>
+              )}
+              <div className={'projectType'}>
+                {project.purpose === 'trees' &&
+                  project.classification &&
+                  t(`donate:${project.classification}`)}
+              </div>
+            </div>
           </div>
           <p className={'projectName'}>
             {truncateString(project.name, 54)}
