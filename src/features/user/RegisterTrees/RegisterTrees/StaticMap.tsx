@@ -26,12 +26,12 @@ export default function StaticMap({ geoJson }: Props): ReactElement {
     center: defaultMapCenter,
     zoom: [defaultZoom],
   });
-  const [viewport2, setViewPort2] = React.useState({
+  const viewport2 = {
     height: 200,
     width: 350,
     center: defaultMapCenter,
     zoom: defaultZoom,
-  });
+  };
   const [isPoint, setIsPoint] = React.useState(false);
   const [style, setStyle] = React.useState({
     version: 8,

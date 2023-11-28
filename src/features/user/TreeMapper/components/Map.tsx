@@ -49,7 +49,6 @@ export default function MyTreesMap({
   setselectedLocation,
 }: Props): ReactElement {
   const router = useRouter();
-
   const { isMobile } = useProjectProps();
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;

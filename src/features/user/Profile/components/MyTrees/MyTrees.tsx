@@ -11,21 +11,21 @@ import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
 import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
+import {
+  handleError,
+  APIError,
+  User,
+  UserPublicProfile,
+} from '@planet-sdk/common';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import { ContributionType } from '../../../../common/types/user';
 
 const MyTreesMap = dynamic(() => import('./MyTreesMap'), {
   loading: () => <p>loading</p>,
 });
 
-interface Props {
-  profile: any;
-  authenticatedType: any;
-  token: any;
-}
-
-function TreeList({ contribution }: any) {
-  const date = formatDate(contribution.properties.plantDate);
+function TreeList({ contribution }: { contribution: ContributionType }) {
+  const date = formatDate(contribution.properties.plantDate || '');
   const { t, i18n } = useTranslation(['country', 'me']);
 
   return (
@@ -45,7 +45,7 @@ function TreeList({ contribution }: any) {
           </div>
           {contribution.properties.type === 'gift' ? (
             <div className={styles.source}>
-              {contribution.properties.giver.name
+              {contribution.properties.giver?.name
                 ? t('me:receivedFrom', {
                     name: contribution.properties.giver.name,
                   })
@@ -104,9 +104,17 @@ function TreeList({ contribution }: any) {
   );
 }
 
+interface Props {
+  profile: User | UserPublicProfile;
+  authenticatedType: string;
+  token: string | null;
+}
+
 export default function MyTrees({ profile, authenticatedType, token }: Props) {
   const { t, ready } = useTranslation(['country', 'me']);
-  const [contributions, setContributions] = React.useState();
+  const [contributions, setContributions] = React.useState<ContributionType[]>(
+    []
+  );
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
 
@@ -114,7 +122,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
     async function loadFunction() {
       if (authenticatedType === 'private' && token) {
         try {
-          const result = await getAuthenticatedRequest(
+          const result = await getAuthenticatedRequest<ContributionType[]>(
             `/app/profile/contributions`,
             token,
             logoutUser
@@ -126,7 +134,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
         }
       } else {
         try {
-          const result = await getRequest(
+          const result = await getRequest<ContributionType[]>(
             `/app/profiles/${profile.id}/contributions`
           );
           setContributions(result);

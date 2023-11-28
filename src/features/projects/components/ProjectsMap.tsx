@@ -15,7 +15,7 @@ import { PopupData } from './maps/Markers';
 
 interface ShowDetailsProps {
   coordinates: [number, number] | null;
-  show: boolean
+  show: boolean;
 }
 
 export default function ProjectsMap(): ReactElement {
@@ -68,7 +68,7 @@ export default function ProjectsMap(): ReactElement {
     loadMapStyle();
   }, []);
 
-  const [showDetails, setShowDetails] = React.useState<ShowDetailsProps >({
+  const [showDetails, setShowDetails] = React.useState<ShowDetailsProps>({
     coordinates: null,
     show: false,
   });
@@ -94,7 +94,7 @@ export default function ProjectsMap(): ReactElement {
       if (e.features[0].layer?.source) {
         for (const key in plantLocations) {
           if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
-            const element = plantLocations[key];
+            const element = plantLocations[Number(key)];
             if (element.id === e.features[0].layer?.source) {
               setSelectedPl(element);
 
@@ -191,8 +191,12 @@ export default function ProjectsMap(): ReactElement {
         </div>
         {showDetails.show && (
           <Popup
-            latitude={showDetails?.coordinates ? showDetails?.coordinates[1] : 0}
-            longitude={showDetails?.coordinates ? showDetails?.coordinates[1] : 0}
+            latitude={
+              showDetails?.coordinates ? showDetails?.coordinates[1] : 0
+            }
+            longitude={
+              showDetails?.coordinates ? showDetails?.coordinates[1] : 0
+            }
             closeButton={false}
             closeOnClick={false}
             onClose={() => setPopupData({ show: false })}
@@ -211,4 +215,8 @@ export default function ProjectsMap(): ReactElement {
       </MapGL>
     </div>
   );
+}
+interface DetailsType {
+  coordinates: number[];
+  show: boolean;
 }
