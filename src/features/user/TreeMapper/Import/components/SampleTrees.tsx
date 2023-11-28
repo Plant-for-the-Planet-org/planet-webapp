@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import styles from '../Import.module.scss';
 import { useDropzone } from 'react-dropzone';
 import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
@@ -6,7 +6,7 @@ import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { useTranslation } from 'next-i18next';
 import { useForm, useFieldArray } from 'react-hook-form';
 import SampleTreeCard from './SampleTreeCard';
-import Papa from 'papaparse';
+import Papa, { ParseResult } from 'papaparse';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { Button } from '@mui/material';
@@ -16,6 +16,7 @@ import {
 } from '../../../../common/types/plantLocation';
 import { Geometry } from '@turf/turf';
 import { PlantLocation } from '../../Treemapper';
+import { FileImportError } from '../../../BulkCodes/BulkCodesTypes';
 
 interface Props {
   handleNext: Function;
@@ -33,11 +34,12 @@ export default function SampleTrees({
   plantLocation,
   userLang,
 }: Props): ReactElement {
-  const { t } = useTranslation(['treemapper', 'common']);
+  const { t, ready } = useTranslation(['treemapper', 'common', 'bulkCodes']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [uploadStatus, setUploadStatus] = React.useState<string[]>([]);
   const [sampleTrees, setSampleTrees] = React.useState<SampleTree[]>([]);
+  const [parseError, setParseError] = useState<FileImportError | null>(null);
 
   const {
     handleSubmit,
@@ -55,8 +57,36 @@ export default function SampleTrees({
     append(sampleTrees);
   };
 
+  const acceptedHeaders = [
+    'plantingDate',
+    'treeTag',
+    'height',
+    'diameter',
+    'otherSpecies',
+    'latitude',
+    'longitude',
+  ];
+
+  const checkHeaderValidity = (
+    headers: string[]
+  ): { isValid: boolean; missingColumns: string[] } => {
+    let isValid = true;
+    const missingColumns = [];
+    for (const acceptedHeader of acceptedHeaders) {
+      if (!headers.includes(acceptedHeader)) {
+        isValid = false;
+        missingColumns.push(acceptedHeader);
+      }
+    }
+    return {
+      isValid,
+      missingColumns,
+    };
+  };
+
   const onDrop = React.useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: File) => {
+      setParseError(null);
       const reader = new FileReader();
       reader.readAsText(file);
       reader.onabort = () => console.log('file reading was aborted');
@@ -66,16 +96,30 @@ export default function SampleTrees({
         if (typeof csv !== 'string') return;
         Papa.parse(csv, {
           header: true,
-          complete: (results) => {
-            //validation for csv file needs to be added
-            const resultsData: SampleTree[] = results.data;
-            const sampleTrees: SampleTree[] = resultsData.map((sampleTree) => {
-              return {
-                ...sampleTree,
-                otherSpecies: sampleTree.otherSpecies,
-              };
-            });
-            addSampleTrees(sampleTrees);
+          complete: (results: ParseResult<unknown>) => {
+            const parsedHeaders = results.meta.fields || [];
+            const resultsData = results.data;
+            const headerValidity = checkHeaderValidity(parsedHeaders);
+            if (headerValidity.isValid) {
+              const sampleTrees: SampleTree[] = resultsData.map(
+                (sampleTree) => {
+                  return {
+                    ...sampleTree,
+                    otherSpecies: sampleTree.otherSpecies,
+                  };
+                }
+              );
+              addSampleTrees(sampleTrees);
+            } else {
+              setParseError({
+                type: 'missingColumns',
+                message: ready
+                  ? `${t(
+                      'bulkCodes:errorUploadCSV.missingColumns'
+                    )} ${headerValidity.missingColumns.join(', ')}`
+                  : '',
+              });
+            }
           },
         });
       };
@@ -214,6 +258,7 @@ export default function SampleTrees({
           <p style={{ marginTop: '18px' }}>{t('treemapper:fileFormatCSV')}</p>
         </label>
       </div>
+      {parseError && <p style={{ color: '#e53935' }}>{parseError.message}</p>}
       <div className={styles.sampleTreeContainer}>
         {fields &&
           fields.map((item, index) => {
