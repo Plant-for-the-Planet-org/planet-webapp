@@ -13,6 +13,8 @@ import { handleError, APIError } from '@planet-sdk/common';
 import {
   ExtendedScopePlantLocations,
   PlantLocation,
+  PlantLocationMulti,
+  PlantLocationSingle,
   SamplePlantLocation,
 } from '../../common/types/plantLocation';
 import { Links } from '../../common/types/payments';
@@ -27,11 +29,11 @@ function TreeMapper(): ReactElement {
   const { t } = useTranslation(['treemapper']);
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
-  const [plantLocations, setPlantLocations] = React.useState<
-    PlantLocation[] | SamplePlantLocation[] | null
-  >(null);
+  const [plantLocations, setPlantLocations] = React.useState<PlantLocation[]>(
+    []
+  );
   const [selectedLocation, setselectedLocation] = React.useState<
-    PlantLocation | null
+    PlantLocationSingle | PlantLocationMulti | null
   >(null);
   const [links, setLinks] = React.useState<Links>();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
@@ -161,7 +163,6 @@ function TreeMapper(): ReactElement {
     fetchTreemapperData,
     links,
   };
-
   return (
     <div className={styles.profilePage}>
       {progress > 0 && (

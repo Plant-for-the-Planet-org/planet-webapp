@@ -11,13 +11,20 @@ interface Props {
   geoJson: GeoJSON | null;
 }
 
+interface viewportProps {
+  height: string;
+  width: string;
+  center: number[];
+  zoom: number[];
+}
+
 const Map = ReactMapboxGl({ maxZoom: 15, accessToken: '' });
 
 export default function MapComponent({ geoJson }: Props): ReactElement {
   const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
 
-  const [viewport, setViewPort] = React.useState({
+  const [viewport, setViewPort] = React.useState<viewportProps>({
     height: '100%',
     width: '100%',
     center: defaultMapCenter,
@@ -83,20 +90,22 @@ export default function MapComponent({ geoJson }: Props): ReactElement {
         }}
         // onClick={() => setActiveMethod('draw')}
       >
-        {geoJson ? (
-          <GeoJSONLayer
-            data={geoJson}
-            fillPaint={{
-              'fill-color': '#fff',
-              'fill-opacity': 0.2,
-            }}
-            linePaint={{
-              'line-color': '#68B030',
-              'line-width': 2,
-            }}
-          />
-        ) : null}
-        <ZoomControl position="bottom-right" />
+        <>
+          {geoJson ? (
+            <GeoJSONLayer
+              data={geoJson}
+              fillPaint={{
+                'fill-color': '#fff',
+                'fill-opacity': 0.2,
+              }}
+              linePaint={{
+                'line-color': '#68B030',
+                'line-width': 2,
+              }}
+            />
+          ) : null}
+          <ZoomControl position="bottom-right" />
+        </>
       </Map>
     </>
   );

@@ -200,7 +200,7 @@ export default function MyTreesMap({
         features,
       });
       setPlIds(ids);
-      zoomToLocation(locations[0].geometry);
+      zoomToLocation(locations[0]?.geometry);
     } else {
       setPlIds(null);
       setGeoJson(null);
