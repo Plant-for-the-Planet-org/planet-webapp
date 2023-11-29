@@ -11,14 +11,12 @@ import MapGL, {
   Source,
   WebMercatorViewport,
 } from 'react-map-gl';
-import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
 import LayerIcon from '../../../../../public/assets/images/icons/LayerIcon';
 import LayerDisabled from '../../../../../public/assets/images/icons/LayerDisabled';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import * as d3 from 'd3-ease';
 import { useRouter } from 'next/router';
 import SatelliteLayer from '../../../projects/components/maps/SatelliteLayer';
-import { useTranslation } from 'next-i18next';
 
 interface Props {
   locations: any;
@@ -32,9 +30,6 @@ export default function MyTreesMap({
   setselectedLocation,
 }: Props): ReactElement {
   const router = useRouter();
-
-  const { i18n, t } = useTranslation('me');
-
   const { isMobile } = useProjectProps();
 
   const defaultMapCenter = [-28.5, 36.96];
@@ -50,8 +45,6 @@ export default function MyTreesMap({
 
   const [geoJson, setGeoJson] = React.useState();
   const [plIds, setPlIds] = React.useState(null);
-  const [imagePopup, setImagePopup] = React.useState(null);
-  let timer: NodeJS.Timeout;
 
   const [style, setStyle] = React.useState({
     version: 8,
@@ -97,24 +90,6 @@ export default function MyTreesMap({
       return 0.2;
     } else {
       return 0.1;
-    }
-  };
-
-  const getDateDiff = (pl: any) => {
-    const today = new Date();
-    const plantationDate = new Date(pl.plantDate?.substr(0, 10));
-    const differenceInTime = today.getTime() - plantationDate.getTime();
-    const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-    if (differenceInDays < 1) {
-      return t('today');
-    } else if (differenceInDays < 2) {
-      return t('yesterday');
-    } else if (differenceInDays < 30) {
-      return t('daysAgo', {
-        days: localizedAbbreviatedNumber(i18n.language, differenceInDays, 0),
-      });
-    } else {
-      return null;
     }
   };
 
@@ -245,7 +220,6 @@ export default function MyTreesMap({
           newPl.properties = {};
           newPl.properties.id = pl.id;
           if (pl.type === 'multi') {
-            const dateDiff = getDateDiff(pl);
             return (
               <>
                 <Source

@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { RefObject } from 'react';
 import { useTranslation } from 'next-i18next';
 import CancelIcon from '../../../../../public/assets/images/icons/CancelIcon';
 import SearchIcon from '../../../../../public/assets/images/icons/SearchIcon';
@@ -7,8 +7,8 @@ import { TextField } from '@mui/material';
 interface Props {
   setSearchValue: Function;
   setSearchMode: Function;
-  searchValue: any;
-  searchRef: any;
+  searchValue: string;
+  searchRef: RefObject<HTMLDivElement>;
 }
 
 function SearchBar({
@@ -16,12 +16,12 @@ function SearchBar({
   setSearchMode,
   searchValue,
   searchRef,
-}: Props): ReactElement {
+}: Props) {
   const { t, ready } = useTranslation(['donate']);
   return ready ? (
     <>
       <button id={'searchIconSearchB'} className={'searchIcon'}>
-        <SearchIcon color={'primaryFontColor'} />
+        <SearchIcon />
       </button>
 
       <div className={'searchInput'} data-test-id="searchIcon">

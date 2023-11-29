@@ -1,6 +1,7 @@
 import supportedLanguages from './supportedLanguages.json';
 import enLocale from 'date-fns/locale/en-US';
 import deLocale from 'date-fns/locale/de';
+import csLocale from 'date-fns/locale/cs';
 import esLocale from 'date-fns/locale/es';
 import frLocale from 'date-fns/locale/fr';
 import itLocale from 'date-fns/locale/it';
@@ -30,6 +31,7 @@ type LocaleMap = {
   [key: string]: Locale['locale'];
   en: Locale['locale'];
   de: Locale['locale'];
+  cs: Locale['locale'];
   es: Locale['locale'];
   fr: Locale['locale'];
   it: Locale['locale'];
@@ -39,6 +41,7 @@ type LocaleMap = {
 export const localeMapForDate: LocaleMap = {
   en: enLocale,
   de: deLocale,
+  cs: csLocale,
   es: esLocale,
   fr: frLocale,
   it: itLocale,

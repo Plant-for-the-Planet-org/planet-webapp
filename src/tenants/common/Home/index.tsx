@@ -6,18 +6,22 @@ import Footer from '../../../features/common/Layout/Footer';
 import React from 'react';
 import tenantConfig from '../../../../tenant.config';
 import { useTranslation } from 'next-i18next';
+import {
+  LeaderBoardList,
+  TenantScore,
+} from '../../../features/common/types/leaderboard';
 
 const config = tenantConfig();
 
 interface Props {
-  leaderboard: any;
-  tenantScore: any;
+  leaderboard: LeaderBoardList | null;
+  tenantScore: TenantScore | null;
 }
 
 export default function About({ leaderboard, tenantScore }: Props) {
-  const { t, i18n, ready } = useTranslation(['tenants']);
+  const { t, ready } = useTranslation(['tenants']);
 
-  const descriptionRef = React.useRef(null);
+  const descriptionRef = React.useRef<HTMLParagraphElement>(null);
   React.useEffect(() => {
     if (descriptionRef.current !== null) {
       descriptionRef.current.innerHTML = t(
@@ -41,7 +45,7 @@ export default function About({ leaderboard, tenantScore }: Props) {
           {t(`tenants:${config.tenantName}.title`)}
         </p>
 
-        {config.home.descriptionTitle && (
+        {config.home !== undefined && config.home.descriptionTitle && (
           <p
             className={styles.publicUserDescription}
             style={{ fontWeight: 'bold', marginBottom: '0px' }}

@@ -29,8 +29,6 @@ interface MapLanguageProps {
 interface TransitionsModalProps {
   openModal: boolean;
   handleModalClose: () => void;
-  setLanguage: Function;
-  language: string;
   setSelectedCurrency: Function;
   selectedCountry: string;
   setSelectedCountry: Function;

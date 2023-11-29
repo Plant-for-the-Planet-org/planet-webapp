@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 
-function TransactionListLoader(props: any): ReactElement {
+function TransactionListLoader(): ReactElement {
   return (
     <svg
       role="img"

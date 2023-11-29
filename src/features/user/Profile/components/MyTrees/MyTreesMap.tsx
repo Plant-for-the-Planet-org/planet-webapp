@@ -25,23 +25,19 @@ const Map = ReactMapboxGl({
 });
 
 interface Props {
-  authenticatedType: string;
   contributions: any;
 }
 
-export default function MyTreesMap({
-  contributions,
-  authenticatedType,
-}: Props): ReactElement {
+export default function MyTreesMap({ contributions }: Props): ReactElement {
   const { i18n, t } = useTranslation('me');
   const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;
-  const [viewport, setViewPort] = React.useState({
+  const viewport = {
     height: '100%',
     width: '100%',
     center: defaultMapCenter,
     zoom: [defaultZoom],
-  });
+  };
   const [geoJson, setGeoJson] = React.useState();
   const { theme } = React.useContext(ThemeContext);
 

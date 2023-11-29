@@ -15,19 +15,10 @@ function SubmitForReview({
   submitForReview,
   handleBack,
   isUploadingData,
-  projectGUID,
-  handleReset,
   projectDetails,
   handlePublishChange,
 }: SubmitForReviewProps): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
-
-  React.useEffect(() => {
-    if (!projectGUID || projectGUID === '') {
-      handleReset(ready ? t('manageProjects:resetMessage') : '');
-    }
-  });
-
   function UnderReviewComponent() {
     return (
       <CenteredContainer>
@@ -38,7 +29,7 @@ function SubmitForReview({
             <Switch
               name="canPublish"
               id="publish"
-              checked={projectDetails.publish}
+              checked={projectDetails?.publish}
               onChange={(e) => handlePublishChange(e.target.checked)}
               inputProps={{ 'aria-label': 'secondary checkbox' }}
             />
@@ -96,7 +87,7 @@ function SubmitForReview({
             <Switch
               name="canPublish"
               id="publish"
-              checked={projectDetails.publish}
+              checked={projectDetails?.publish}
               onChange={(e) => handlePublishChange(e.target.checked)}
               inputProps={{ 'aria-label': 'secondary checkbox' }}
             />
@@ -200,7 +191,7 @@ function SubmitForReview({
     );
   }
 
-  switch (projectDetails.verificationStatus) {
+  switch (projectDetails?.verificationStatus) {
     case 'incomplete':
       return ready ? <NotSubmittedReview /> : <></>;
     case 'pending':

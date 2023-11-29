@@ -1,13 +1,10 @@
 import { ReactElement } from 'react';
 import themeProperties from '../../../../../src/theme/themeProperties';
-
-interface Props {
-  color?: string;
-}
+import { IconProps } from '../../../../../src/features/common/types/common';
 
 const TopProjectIcon = ({
   color = themeProperties.primaryColor,
-}: Props): ReactElement => {
+}: IconProps): ReactElement => {
   return (
     <svg viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path

@@ -123,10 +123,14 @@
   "active_account_exists": "Aktives PlanetCash-Konto existiert bereits",
   "duplicate_account": "Konto existiert bereits",
   "token_expired": "Der Token ist abgelaufen. Bitte erneut anmelden",
+  "project_not_available": "Projektdetails sind derzeit nicht verfügbar",
   "topProject": "Top Projekt",
   "viewReport": "Report anzeigen",
   "reviewInfo": "Das Projekt wurde im Rahmen einer mehrtägigen Überprüfung vor Ort im <2>month</2> geprüft und erfüllt unsere <5>Standards.</5>",
   "standardsLink": "https://www.plant-for-the-planet.org/de/standards/",
   "project": "Projekt",
-  "top_project_standards_fulfilled": "Die Projektprüfung hat gezeigt, dass dieses Projekt mindestens 12 der 19 Top Projekt <2>Standards</2> erfüllte."
+  "top_project_standards_fulfilled": "Die Projektprüfung hat gezeigt, dass dieses Projekt mindestens 12 der 19 Top Projekt <2>Standards</2> erfüllte.",
+  "disabledDonateButtonText": "Das Projekt nimmt derzeit keine Spenden an, da es entweder bereits vollständig finanziert ist, noch nicht geprüft wurde, noch nicht alle Projektstandards erfüllt oder die Plattform ausschließlich für seine Transparenzinstrumente nutzen möchte.",
+  "notDonatable": "Spenden nicht möglich",
+  "salesforceDisabledDonateButtonText": "Für das Projekt werden derzeit keine Spenden angenommen."
 }

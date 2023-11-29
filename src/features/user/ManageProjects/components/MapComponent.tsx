@@ -37,12 +37,12 @@ export default function MapComponent({
     center: defaultMapCenter,
     zoom: [defaultZoom],
   });
-  const [viewport2, setViewPort2] = React.useState({
+  const viewport2 = {
     height: 400,
     width: 500,
     center: defaultMapCenter,
     zoom: defaultZoom,
-  });
+  };
   const [style, setStyle] = React.useState({
     version: 8,
     sources: {},

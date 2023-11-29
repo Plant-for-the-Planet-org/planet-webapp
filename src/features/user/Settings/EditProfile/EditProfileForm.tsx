@@ -25,9 +25,13 @@ import {
   StyledAutoCompleteOption,
 } from '../../../common/InputTypes/MuiAutoComplete';
 import StyledForm from '../../../common/Layout/StyledForm';
-import { AddressSuggestionsType } from '../../../common/types/user';
+import {
+  AddressSuggestionsType,
+  AddressType,
+} from '../../../common/types/geocoder';
 import { AlertColor } from '@mui/lab';
 import { APIError, handleError } from '@planet-sdk/common';
+import { ExtendedCountryCode } from '../../../common/types/country';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -60,7 +64,7 @@ export default function EditProfileForm() {
   const { user, setUser, token, contextLoaded, logoutUser } = useUserProps();
 
   const [isUploadingData, setIsUploadingData] = React.useState(false);
-  const { t, ready } = useTranslation(['editProfile', 'donate']);
+  const { t, ready } = useTranslation('editProfile');
 
   const defaultProfileDetails = useMemo(() => {
     return {
@@ -104,7 +108,9 @@ export default function EditProfileForm() {
     setSnackbarOpen(false);
   };
 
-  const [country, setCountry] = React.useState<string>(user?.country || 'DE');
+  const [country, setCountry] = React.useState<ExtendedCountryCode | ''>(
+    user?.country || 'DE'
+  );
 
   React.useEffect(() => {
     reset(defaultProfileDetails);
@@ -142,7 +148,7 @@ export default function EditProfileForm() {
   const getAddress = (value: string) => {
     geocoder
       .findAddressCandidates(value, { outfields: '*' })
-      .then((result) => {
+      .then((result: AddressType) => {
         setValue('address', result.candidates[0].attributes.ShortLabel, {
           shouldValidate: true,
         });
@@ -176,24 +182,24 @@ export default function EditProfileForm() {
   );
   const [localProfileType, setLocalProfileType] = useState<ProfileTypeOption>({
     id: 1,
-    title: ready ? t('editProfile:individual') : '',
+    title: ready ? t('individual') : '',
     value: 'individual',
   });
 
   const profileTypes: ProfileTypeOption[] = [
     {
       id: 1,
-      title: ready ? t('editProfile:individual') : '',
+      title: ready ? t('individual') : '',
       value: 'individual',
     },
     {
       id: 2,
-      title: ready ? t('editProfile:organization') : '',
+      title: ready ? t('organization') : '',
       value: 'organization',
     },
     {
       id: 3,
-      title: ready ? t('editProfile:education') : '',
+      title: ready ? t('education') : '',
       value: 'education',
     },
   ];
@@ -226,7 +232,7 @@ export default function EditProfileForm() {
               imageFile: event.target?.result,
             };
             setSeverity('info');
-            setSnackbarMessage(ready ? t('editProfile:profilePicUpdated') : '');
+            setSnackbarMessage(ready ? t('profilePicUpdated') : '');
             handleSnackbarOpen();
 
             try {
@@ -236,9 +242,11 @@ export default function EditProfileForm() {
                 token,
                 logoutUser
               );
-              const newUserInfo = { ...user, image: res.image };
-              setUpdatingPic(false);
-              setUser(newUserInfo);
+              if (user) {
+                const newUserInfo = { ...user, image: res.image };
+                setUpdatingPic(false);
+                setUser(newUserInfo);
+              }
             } catch (err) {
               setUpdatingPic(false);
               setErrors(handleError(err as APIError));
@@ -266,14 +274,14 @@ export default function EditProfileForm() {
     };
     if (contextLoaded && token) {
       try {
-        const res = await putAuthenticatedRequest(
+        const res: User = await putAuthenticatedRequest(
           `/app/profile`,
           bodyToSend,
           token,
           logoutUser
         );
         setSeverity('success');
-        setSnackbarMessage(ready ? t('editProfile:profileSaved') : '');
+        setSnackbarMessage(ready ? t('profileSaved') : '');
         handleSnackbarOpen();
         setIsUploadingData(false);
         setUser(res);
@@ -337,7 +345,7 @@ export default function EditProfileForm() {
               }
             }}
             renderInput={(params) => (
-              <TextField {...params} label={t('editProfile:iamA')} />
+              <TextField {...params} label={t('fieldLabels.profileType')} />
             )}
           />
         ) : null}
@@ -345,10 +353,20 @@ export default function EditProfileForm() {
           <Controller
             name="firstname"
             control={control}
-            rules={{ required: t('donate:firstNameRequired') }}
+            rules={{
+              required: t('validationErrors.firstNameRequired'),
+              maxLength: {
+                value: 50,
+                message: t('validationErrors.maxChars', { max: 50 }),
+              },
+              pattern: {
+                value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß.'-]*$/u,
+                message: t('validationErrors.firstNameInvalid'),
+              },
+            }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
-                label={t('donate:firstName')}
+                label={t('fieldLabels.firstName')}
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}
@@ -362,10 +380,20 @@ export default function EditProfileForm() {
           <Controller
             name="lastname"
             control={control}
-            rules={{ required: t('donate:lastNameRequired') }}
+            rules={{
+              required: t('validationErrors.lastNameRequired'),
+              maxLength: {
+                value: 50,
+                message: t('validationErrors.maxChars', { max: 50 }),
+              },
+              pattern: {
+                value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß'-]*$/u,
+                message: t('validationErrors.lastNameInvalid'),
+              },
+            }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
-                label={t('donate:lastName')}
+                label={t('fieldLabels.lastName')}
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}
@@ -378,7 +406,7 @@ export default function EditProfileForm() {
           />
         </InlineFormDisplayGroup>
         <TextField
-          label={t('donate:email')}
+          label={t('fieldLabels.email')}
           name="email"
           defaultValue={user?.email}
           disabled
@@ -387,10 +415,16 @@ export default function EditProfileForm() {
           <Controller
             name="name"
             control={control}
-            rules={{ required: t('editProfile:nameValidation') }}
+            rules={{
+              required: t('validationErrors.nameRequired'),
+              pattern: {
+                value: /^[\p{L}\p{N}\sß.,'&()!-]+$/u,
+                message: t('validationErrors.nameInvalid'),
+              },
+            }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
-                label={t('editProfile:profileName', {
+                label={t('fieldLabels.name', {
                   type: selectUserType(type, t),
                 })}
                 onChange={onChange}
@@ -406,12 +440,18 @@ export default function EditProfileForm() {
           <Controller
             name="address"
             control={control}
-            rules={{ required: t('donate:addressRequired') }}
+            rules={{
+              required: t('validationErrors.addressRequired'),
+              pattern: {
+                value: /^[\p{L}\p{N}\sß.,#/-]+$/u,
+                message: t('validationErrors.addressInvalid'),
+              },
+            }}
             render={({
               field: { onChange: handleChange, value, onBlur: handleBlur },
             }) => (
               <TextField
-                label={t('donate:address')}
+                label={t('fieldLabels.address')}
                 onChange={(event) => {
                   suggestAddress(event.target.value);
                   handleChange(event);
@@ -452,10 +492,16 @@ export default function EditProfileForm() {
           <Controller
             name="city"
             control={control}
-            rules={{ required: t('donate:cityRequired') }}
+            rules={{
+              required: t('validationErrors.cityRequired'),
+              pattern: {
+                value: /^[\p{L}\sß.,()-]+$/u,
+                message: t('validationErrors.cityInvalid'),
+              },
+            }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
-                label={t('donate:city')}
+                label={t('fieldLabels.city')}
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}
@@ -468,12 +514,15 @@ export default function EditProfileForm() {
             name="zipCode"
             control={control}
             rules={{
-              required: t('donate:zipCodeAlphaNumValidation'),
-              pattern: postalRegex,
+              required: t('validationErrors.zipCodeRequired'),
+              pattern: {
+                value: postalRegex as RegExp,
+                message: t('validationErrors.zipCodeInvalid'),
+              },
             }}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
-                label={t('donate:zipCode')}
+                label={t('fieldLabels.zipCode')}
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}
@@ -488,7 +537,7 @@ export default function EditProfileForm() {
         <AutoCompleteCountry
           defaultValue={country}
           onChange={setCountry}
-          label={t('donate:country')}
+          label={t('fieldLabels.country')}
           name="editProfile"
           countries={allCountries}
         />
@@ -499,12 +548,12 @@ export default function EditProfileForm() {
               className={styles.mainText}
               style={{ cursor: 'pointer' }}
             >
-              {t('editProfile:privateAccount')}
+              {t('fieldLabels.privateAccount')}
             </label>{' '}
             <br />
             {watchIsPrivate && (
               <label className={styles.isPrivateAccountText}>
-                {t('editProfile:privateAccountTxt')}
+                {t('privateAccountTxt')}
               </label>
             )}
           </div>
@@ -528,7 +577,7 @@ export default function EditProfileForm() {
             className={styles.mainText}
             style={{ cursor: 'pointer' }}
           >
-            {t('editProfile:subscribe')}
+            {t('fieldLabels.subscribe')}
           </label>
 
           <Controller
@@ -553,12 +602,12 @@ export default function EditProfileForm() {
           rules={{
             maxLength: {
               value: 300,
-              message: t('editProfile:descriptionRequired'),
+              message: t('validationErrors.maxChars', { max: 300 }),
             },
           }}
           render={({ field: { onChange, value, onBlur } }) => (
             <TextField
-              label={t('editProfile:profileDescription')}
+              label={t('fieldLabels.bio')}
               onChange={onChange}
               onBlur={onBlur}
               value={value}
@@ -578,12 +627,12 @@ export default function EditProfileForm() {
               //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
               value:
                 /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
-              message: t('editProfile:websiteRequired'),
+              message: t('validationErrors.websiteInvalid'),
             },
           }}
           render={({ field: { onChange, value, onBlur } }) => (
             <TextField
-              label={t('editProfile:website')}
+              label={t('fieldLabels.website')}
               onChange={onChange}
               onBlur={onBlur}
               value={value}
@@ -600,11 +649,7 @@ export default function EditProfileForm() {
         onClick={handleSubmit(saveProfile)}
         disabled={isUploadingData}
       >
-        {isUploadingData ? (
-          <div className={styles.spinner}></div>
-        ) : (
-          t('editProfile:save')
-        )}
+        {isUploadingData ? <div className={styles.spinner}></div> : t('save')}
       </Button>
 
       {/* snackbar for showing various messages */}

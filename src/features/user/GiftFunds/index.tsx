@@ -33,25 +33,25 @@ const GiftFunds = () => {
     );
   }, [user]);
 
-  return (
-    ready && (
-      <DashboardView
-        title={t('title')}
-        subtitle={
-          <p>
-            {t('description1')}
-            <br />
-            {t('description2')}
-          </p>
-        }
-      >
-        <SingleColumnView>
-          {validGiftFunds?.map((giftFund, index) => (
-            <GiftFundDetails giftFund={giftFund} key={index} />
-          ))}
-        </SingleColumnView>
-      </DashboardView>
-    )
+  return ready ? (
+    <DashboardView
+      title={t('title')}
+      subtitle={
+        <p>
+          {t('description1')}
+          <br />
+          {t('description2')}
+        </p>
+      }
+    >
+      <SingleColumnView>
+        {validGiftFunds?.map((giftFund, index) => (
+          <GiftFundDetails giftFund={giftFund} key={index} />
+        ))}
+      </SingleColumnView>
+    </DashboardView>
+  ) : (
+    <></>
   );
 };
 

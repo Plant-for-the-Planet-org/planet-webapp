@@ -63,7 +63,7 @@ export default function ProjectsMap(): ReactElement {
     loadMapStyle();
   }, []);
 
-  const [showDetails, setShowDetails] = React.useState({
+  const [showDetails, setShowDetails] = React.useState<DetailsType>({
     coordinates: [],
     show: false,
   });
@@ -89,7 +89,7 @@ export default function ProjectsMap(): ReactElement {
       if (e.features[0].layer?.source) {
         for (const key in plantLocations) {
           if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
-            const element = plantLocations[key];
+            const element = plantLocations[Number(key)];
             if (element.id === e.features[0].layer?.source) {
               setSelectedPl(element);
 
@@ -106,7 +106,7 @@ export default function ProjectsMap(): ReactElement {
     if (e.features && e.features?.length !== 0) {
       if (!hoveredPl || hoveredPl.type !== 'sample') {
         if (e.features[0].layer?.source && plantLocations) {
-          for (const key of plantLocations) {
+          for (const key in plantLocations) {
             if (Object.prototype.hasOwnProperty.call(plantLocations, key)) {
               const element = plantLocations[key];
               if (element.id === e.features[0].layer?.source) {
@@ -206,4 +206,8 @@ export default function ProjectsMap(): ReactElement {
       </MapGL>
     </div>
   );
+}
+interface DetailsType {
+  coordinates: number[];
+  show: boolean;
 }

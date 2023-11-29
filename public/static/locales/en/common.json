@@ -125,10 +125,14 @@
   "active_account_exists": "Active PlanetCash account already exists",
   "duplicate_account": "Account already exists",
   "token_expired": "Token Expired. Please login again",
+  "project_not_available": "Project details are currently unavailable",
   "topProject": "Top Project",
   "viewReport": "View Report",
   "reviewInfo": " The project was inspected in a multiday field review in <2>month</2> and fullfills our <5>standards.</5>",
   "standardsLink": "https://www.plant-for-the-planet.org/standards/",
   "project": "Project",
-  "top_project_standards_fulfilled": "The project inspection revealed that this project fulfilled at least 12 of the 19 Top Project <2>standards.</2>"
+  "top_project_standards_fulfilled": "The project inspection revealed that this project fulfilled at least 12 of the 19 Top Project <2>standards.</2>",
+  "disabledDonateButtonText": "The project does not currently accept donations. This may be because it is fully funded, has not yet been reviewed or does not currently meet all our project standards, or chooses to use the platform exclusively for its transparency tools.",
+  "notDonatable": "Not Donatable",
+  "salesforceDisabledDonateButtonText": "The project does not currently accept donations."
 }
