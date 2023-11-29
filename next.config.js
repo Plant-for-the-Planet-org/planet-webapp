@@ -43,6 +43,9 @@ const nextauthUrl = process.env.NEXTAUTH_URL
   ? `${process.env.NEXTAUTH_URL}`
   : `${scheme}://${process.env.VERCEL_URL}`;
 
+console.log(process.env.NEXTAUTH_URL);
+console.log(nextauthUrl);
+
 const hasAssetPrefix =
   process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
 
