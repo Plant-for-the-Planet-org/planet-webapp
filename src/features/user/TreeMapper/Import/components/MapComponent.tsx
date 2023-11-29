@@ -14,14 +14,14 @@ interface Props {
 interface viewportProps {
   height: string;
   width: string;
-  center: number[];
-  zoom: number[];
+  center: [number, number];
+  zoom: [number];
 }
 
 const Map = ReactMapboxGl({ maxZoom: 15, accessToken: '' });
 
 export default function MapComponent({ geoJson }: Props): ReactElement {
-  const defaultMapCenter = [0, 0];
+  const defaultMapCenter: [number, number] = [0, 0];
   const defaultZoom = 1.4;
 
   const [viewport, setViewPort] = React.useState<viewportProps>({
@@ -64,7 +64,7 @@ export default function MapComponent({ geoJson }: Props): ReactElement {
         [bbox[0], bbox[1]],
         [bbox[2], bbox[3]],
       ]);
-      const newViewport = {
+      const newViewport: viewportProps = {
         ...viewport,
         center: [longitude, latitude],
         zoom: [zoom],

@@ -15,7 +15,7 @@ interface Props {
 const Map = ReactMapboxGl({
   customAttribution:
     '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
-  accessToken: ''
+  accessToken: '',
 });
 
 export default function MapComponent({
@@ -28,7 +28,7 @@ export default function MapComponent({
     height: '100%',
     width: '100%',
     center: defaultMapCenter,
-    zoom: [defaultZoom],
+    zoom: defaultZoom,
   });
 
   const [style, setStyle] = React.useState({
