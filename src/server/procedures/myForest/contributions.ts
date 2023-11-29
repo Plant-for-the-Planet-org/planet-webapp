@@ -177,7 +177,7 @@ export const contributions = procedure
         return {
           ...giftObject,
           _type: 'gift',
-          value: giftObject.value ? giftObject.value / 100 : 0,
+          quantity: giftObject.value ? giftObject.value / 100 : 0,
         };
       });
     }
