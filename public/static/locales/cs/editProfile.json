@@ -25,29 +25,13 @@
   "termAndConditionError": "Přijměte prosím Smluvní podmínky",
   "fieldLabels": {
     "profileType": "Já jsem",
-    "firstName": "Jméno",
-    "lastName": "Příjmení",
-    "email": "Email",
-    "address": "Adresa",
-    "city": "Město",
-    "zipCode": "PSČ",
     "name": "Název {{type}}",
-    "country": "Země",
-    "bio": "Popis profilu",
     "website": "Webstránka",
     "privateAccount": "Soukromý účet",
     "subscribe": "Přihlášení k odběru novinek e-mailem"
   },
   "validationErrors": {
-    "firstNameRequired": "Jméno je povinné",
-    "lastNameRequired": "Příjmení je povinné",
-    "emailRequired": "Email je povinný",
     "nameRequired": "Zadejte prosím jméno",
-    "addressRequired": "Adresa je povinná",
-    "cityRequired": "Město je povinno",
-    "zipCodeInvalid": "PSČ je neplatné",
-    "websiteInvalid": "Zadejte prosím platnou adresu URL",
-    "countryRequired": "Země je povinná",
-    "companyRequired": "Název společnosti je povinný"
+    "websiteInvalid": "Zadejte prosím platnou adresu URL"
   }
 }
