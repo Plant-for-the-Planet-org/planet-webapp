@@ -91,13 +91,7 @@ export const contributions = procedure
             tpo: true,
           },
         },
-        gift: {
-          select: {
-            guid: true,
-            metadata: true,
-          },
-        },
-        giftData: true,
+        giftTo: true,
       },
       where: {
         profile: {
@@ -154,67 +148,10 @@ export const contributions = procedure
         created: true,
         value: true,
         guid: true,
-        donationId: true,
         recipient: true,
         metadata: true,
-        contribution: {
-          select: {
-            guid: true,
-            purpose: true,
-            treeCount: true,
-            quantity: true,
-            plantDate: true,
-            contributionType: true,
-            created: true,
-            tenant: {
-              select: {
-                guid: true,
-                name: true,
-              },
-            },
-            bouquetContributions: {
-              select: {
-                purpose: true,
-                treeCount: true,
-                quantity: true,
-                plantDate: true,
-                contributionType: true,
-                tenant: {
-                  select: {
-                    guid: true,
-                    name: true,
-                  },
-                },
-                plantProject: {
-                  select: {
-                    guid: true,
-                    name: true,
-                    image: true,
-                    country: true,
-                    unit: true,
-                    location: true,
-                    geoLatitude: true,
-                    geoLongitude: true,
-                    tpo: true,
-                  },
-                },
-              },
-            },
-            plantProject: {
-              select: {
-                guid: true,
-                name: true,
-                image: true,
-                country: true,
-                unit: true,
-                location: true,
-                geoLatitude: true,
-                geoLongitude: true,
-                tpo: true,
-              },
-            },
-          },
-        },
+        purpose: true,
+        type : true
       },
       where: {
         recipient: {
@@ -235,31 +172,11 @@ export const contributions = procedure
       take: limit + 1,
     });
 
-    function convertGiftsToContributions(giftObjects: typeof giftData) {
+    function addTypeToGift(giftObjects: typeof giftData) {
       return giftObjects.map((giftObject) => {
         return {
-          type: 'gift',
-          guid: giftObject.guid,
-          purpose: giftObject.contribution?.purpose,
-          treeCount: giftObject.contribution?.treeCount,
-          quantity: giftObject.contribution?.quantity
-            ? giftObject.contribution?.quantity
-            : giftObject.value
-            ? giftObject.value / 100
-            : 0,
-          plantDate: giftObject.contribution?.plantDate,
-          contributionType: giftObject.contribution?.contributionType,
-          created: giftObject.contribution?.created ?? giftObject.created,
-          tenant: giftObject.contribution?.tenant,
-          bouquetContributions: giftObject.contribution?.bouquetContributions,
-          plantProject: giftObject.contribution?.plantProject,
-          gift: [
-            {
-              guid: giftObject.guid,
-              metadata: giftObject.metadata,
-            },
-          ],
-          giftData: null,
+          _type: 'gift',
+          ...giftObject
         };
       });
     }
@@ -268,13 +185,13 @@ export const contributions = procedure
       contributionResults.map((contribution) => {
         return {
           ...contribution,
-          type: 'contribution',
+          _type: 'contribution',
         };
       });
 
     const combinedData = [
       ...addTypeToContribution(contributions),
-      ...convertGiftsToContributions(giftData),
+      ...addTypeToGift(giftData),
     ];
 
     const sortedData = combinedData.sort(
@@ -292,9 +209,9 @@ export const contributions = procedure
 
       // Iterate over the remaining items to find the next cursors
       for (const item of sortedData.slice(limit)) {
-        if (item.type === 'contribution' && !nextContributionCursor) {
+        if (item._type === 'contribution' && !nextContributionCursor) {
           nextContributionCursor = item.created;
-        } else if (item.type === 'gift' && !nextGiftDataCursor) {
+        } else if (item._type === 'gift' && !nextGiftDataCursor) {
           nextGiftDataCursor = item.created;
         }
 
@@ -307,11 +224,11 @@ export const contributions = procedure
       // If only one type of data reached the limit, set the cursor for the other type
       if (!nextContributionCursor) {
         nextContributionCursor =
-          nextItem.type === 'contribution' ? nextItem.created : undefined;
+          nextItem._type === 'contribution' ? nextItem.created : undefined;
       }
       if (!nextGiftDataCursor) {
         nextGiftDataCursor =
-          nextItem.type === 'gift' ? nextItem.created : undefined;
+          nextItem._type === 'gift' ? nextItem.created : undefined;
       }
 
       nextCursor = `${nextContributionCursor?.toISOString()},${nextGiftDataCursor?.toISOString()}`;

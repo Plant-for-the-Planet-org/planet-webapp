@@ -26,7 +26,7 @@ model contribution {
     plantDate            DateTime       @map("plant_date") @db.DateTime(0)
     profile_id           Int?
     gift                 gift[]
-    giftData             Json?          @map("gift_data")
+    giftTo               Json?          @map("gift_data")
     giftMethod           String?        @map("gift_method") @db.VarChar(20)
     tenant               tenant?        @relation(fields: [tenantId], references: [id]) // Add a one-to-one relation to the tenant model
     tenantId             Int?           @map("tenant_id")
@@ -78,4 +78,5 @@ model gift {
     created      DateTime      @db.DateTime(0)
     value        Int?
     purpose      String        @db.VarChar(32)
+    type         String        @db.VarChar(50)
 }
