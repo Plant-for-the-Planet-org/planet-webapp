@@ -72,14 +72,14 @@ export const stats = procedure
     const giftStats = giftData[0];
 
     const finalStats: StatsResult = {
-      projects: parseInt(constributionsStats.projects),
-      countries: parseInt(constributionsStats.countries),
-      donations: parseInt(constributionsStats.donations),
-      squareMeters: parseInt(constributionsStats.squareMeters),
+      projects: constributionsStats.projects ?? 0,
+      countries: constributionsStats.countries ?? 0,
+      donations: constributionsStats.donations ?? 0,
+      squareMeters: constributionsStats.squareMeters ?? 0,
       treeCount:
-        parseInt(constributionsStats.treeCount) + parseInt(giftStats.treeCount),
+        Number(constributionsStats.treeCount) + Number(giftStats.treeCount),
       conserved:
-        parseInt(constributionsStats.conserved) + parseInt(giftStats.conserved),
+        Number(constributionsStats.conserved) + Number(giftStats.conserved),
     };
 
     return finalStats;

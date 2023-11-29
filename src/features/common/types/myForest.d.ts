@@ -83,17 +83,17 @@ export interface DonationInfoProps {
 }
 
 export interface ContributionStatsQueryResult {
-  treeCount: string;
-  squareMeters: string;
-  conserved: string;
-  projects: string;
-  countries: string;
-  donations: string;
+  treeCount: number | null;
+  squareMeters: number | null;
+  conserved: number | null;
+  projects: number | null;
+  countries: number | null;
+  donations: number | null;
 }
 
 export interface GiftStatsQueryResult {
-  treeCount: string;
-  conserved: string;
+  treeCount: number | null;
+  conserved: number | null;
 }
 
 export interface StatsResult {
