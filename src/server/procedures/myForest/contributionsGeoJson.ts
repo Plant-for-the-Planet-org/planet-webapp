@@ -8,7 +8,10 @@ import { Position } from '@turf/turf';
 import { procedure } from '../../trpc';
 import { Purpose } from '../../../utils/constants/myForest';
 import prisma from '../../../../prisma/client';
-import { ContributionsGeoJsonQueryResult } from '../../../features/common/types/myForest';
+import {
+  ContributionsGeoJsonQueryResult,
+  GiftsGeoJsonQueryResult,
+} from '../../../features/common/types/myForest';
 
 /**
  *
@@ -73,28 +76,35 @@ export const contributionsGeoJson = procedure
     }
 
     const data = await prisma.$queryRaw<ContributionsGeoJsonQueryResult[]>`
-  SELECT COUNT(pp.guid) AS totalContribution, SUM(c.tree_count) AS treeCount, 
-    SUM(c.quantity) AS quantity,  c.purpose, MIN(c.plant_date) AS startDate,
-    MAX(c.plant_date) AS endDate, c.contribution_type, c.plant_date, pp.location, pp.country, 
-    pp.unit_type, pp.guid, pp.name, pp.image, pp.geo_latitude AS geoLatitude, 
-    pp.geo_longitude AS geoLongitude, c.geometry, tpo.name AS tpo, tpo.guid AS tpoGuid
-  FROM contribution c
-          ${join}
-          JOIN profile p ON p.id = c.profile_id
-          LEFT JOIN profile tpo ON pp.tpo_id = tpo.id
-  WHERE p.guid = ${profileId}
-    AND c.deleted_at IS null
-    AND (
-          (
-            c.contribution_type = 'donation'
-            AND c.payment_status = 'paid'
-            AND pp.purpose in (${Prisma.join(purposes)})
+      SELECT COUNT(pp.guid) AS totalContribution, SUM(c.tree_count) AS treeCount, 
+        SUM(c.quantity) AS quantity,  c.purpose, MIN(c.plant_date) AS startDate,
+        MAX(c.plant_date) AS endDate, c.contribution_type, c.plant_date, pp.location, pp.country, 
+        pp.unit_type, pp.guid, pp.name, pp.image, pp.geo_latitude AS geoLatitude, 
+        pp.geo_longitude AS geoLongitude, c.geometry, tpo.name AS tpo, tpo.guid AS tpoGuid
+      FROM contribution c
+              ${join}
+              JOIN profile p ON p.id = c.profile_id
+              LEFT JOIN profile tpo ON pp.tpo_id = tpo.id
+      WHERE p.guid = ${profileId}
+        AND c.deleted_at IS null
+        AND (
+              (
+                c.contribution_type = 'donation'
+                AND c.payment_status = 'paid'
+                AND pp.purpose in (${Prisma.join(purposes)})
+              )
+              ${registerTreesClause}
           )
-          ${registerTreesClause}
-      )
-  GROUP BY pp.guid, c.geometry`;
+      GROUP BY pp.guid, c.geometry`;
 
-    return data.map((contribution) => {
+    const giftData = await prisma.$queryRaw<GiftsGeoJsonQueryResult[]>`
+      SELECT g.type as type, g.purpose as purpose, (g.value)/100 as value, g.metadata as metadata
+      FROM gift g 
+      JOIN profile p ON g.recipient_id = p.id
+      WHERE p.guid = ${profileId}
+    `;
+
+    const contributions = data.map((contribution) => {
       return {
         type: 'Feature',
         properties: {
@@ -119,6 +129,7 @@ export const contributionsGeoJson = procedure
               name: contribution.name,
             },
           },
+          _type: 'contribution',
         },
         geometry: {
           type: 'Point',
@@ -126,4 +137,24 @@ export const contributionsGeoJson = procedure
         },
       };
     });
+
+    const gifts = giftData.map((gift) => {
+      return {
+        type: 'Feature',
+        properties: {
+          cluster: false,
+          purpose: gift.purpose,
+          quantity: gift.value,
+          giver: gift.metadata.giver,
+          project: gift.metadata.project,
+          _type: 'gift',
+        },
+        geometry: {
+          type: 'Point',
+          coordinates: gift.metadata.project.coordinates,
+        },
+      };
+    });
+
+    return [...contributions, ...gifts];
   });

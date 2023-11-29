@@ -126,6 +126,32 @@ export interface ContributionsGeoJsonQueryResult {
   totalContribution: number;
 }
 
+export interface GiftsGeoJsonQueryResult {
+  type: string;
+  purpose: string;
+  value: string;
+  metadata: {
+    giver: {
+      name: string;
+      slug: string;
+      avatar: string | null;
+    };
+    project: {
+      id: string;
+      name: string;
+      slug: string;
+      country: string;
+      location: string;
+      coordinates: number[];
+      organization: {
+        name: string;
+        slug: string;
+      };
+    };
+    notificationLocale: string | null;
+  };
+}
+
 export interface ContributionData {
   pageParams: [null, string] | [null];
   pages: Page[];
