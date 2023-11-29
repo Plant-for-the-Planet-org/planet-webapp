@@ -1,6 +1,10 @@
+import { CountryCode, CurrencyCode } from '@planet-sdk/common';
+
+type ExtendedCountryCode = CountryCode | 'auto';
+
 export interface CountryType {
-  code: string;
+  code: ExtendedCountryCode;
   label?: string;
   phone?: string;
-  currency?: string;
+  currency?: CurrencyCode;
 }

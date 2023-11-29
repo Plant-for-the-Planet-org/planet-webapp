@@ -19,6 +19,7 @@ import { allCountries } from '../../../../utils/constants/countries';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import StyledForm from '../../../common/Layout/StyledForm';
 import QRCode from 'qrcode';
+import { ExtendedCountryCode } from '../../../common/types/country';
 
 interface DonationLinkFormProps {
   projectsList: ProjectOption[] | null;
@@ -33,7 +34,7 @@ const DonationLinkForm = ({
   projectsList,
 }: DonationLinkFormProps): ReactElement | null => {
   const { user } = useUserProps();
-  const [country, setCountry] = useState('auto');
+  const [country, setCountry] = useState<ExtendedCountryCode | ''>('auto');
   const [Languages, setLanguage] = useState<LanguageType>({
     langCode: 'auto',
     languageName: 'Automatic Selection',
@@ -98,7 +99,7 @@ const DonationLinkForm = ({
       code: 'auto',
       label: `${t('country:auto')}`,
       phone: '',
-    };
+    } as const;
     if (!allCountries.find((obj2) => obj2.code === 'auto')) {
       allCountries.unshift(autoCountry);
     }

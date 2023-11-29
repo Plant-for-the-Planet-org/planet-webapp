@@ -4,10 +4,9 @@ import { TextField } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'next-i18next';
 import { MuiAutoComplete, StyledAutoCompleteOption } from './MuiAutoComplete';
-import { CountryType } from '../types/country';
+import { CountryType, ExtendedCountryCode } from '../types/country';
 import { allCountries } from '../../../utils/constants/countries';
 import { SetState } from '../types/common';
-import { CountryCode } from '@planet-sdk/common';
 
 // ISO 3166-1 alpha-2
 // ⚠️ No support for IE 11
@@ -25,7 +24,7 @@ interface CountrySelectProps {
   label: ReactNode;
   name: string | undefined;
   defaultValue: string | undefined; //This will be a country code e.g. DE, IN, US
-  onChange: SetState<CountryCode | ''>;
+  onChange: SetState<ExtendedCountryCode | ''>;
   countries?: CountryType[];
 }
 
@@ -61,7 +60,7 @@ export default function CountrySelect({
   // Set country everytime value changes
   useEffect(() => {
     if (selectedCountry) {
-      onChange(selectedCountry.code); 
+      onChange(selectedCountry.code);
     }
   }, [selectedCountry]);
 
