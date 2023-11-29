@@ -20,17 +20,20 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
       />
       <div className={myForestStyles.projectDetailContainer}>
         <ProjectInfoAndContributionDate
-          projectName={projectInfo?.plantProject?.name}
+          projectName={
+            projectInfo?.plantProject?.name ||
+            projectInfo?.metadata?.project?.name
+          }
           countryName={projectInfo?.plantProject?.country.toLowerCase()}
           tpoName={projectInfo?.plantProject?.tpo?.name}
-          giftSenderName={projectInfo?.gift[0]?.metadata?.giver?.name}
-          contributionDate={projectInfo?.plantDate}
+          giftSenderName={projectInfo?.metadata?.giver?.name}
+          contributionDate={projectInfo?.plantDate || projectInfo?.created}
         />
         <TreesOrUnitAreaAndDonateOption
           projectUnit={projectInfo?.plantProject?.unit}
           projectPurpose={projectInfo?.purpose}
           areaQuantity={projectInfo.quantity}
-          numberOfTreesPlanted={projectInfo?.treeCount}
+          numberOfTreesPlanted={projectInfo?.treeCount || projectInfo?.value}
           contributionType={projectInfo.contributionType}
           gift={projectInfo?.type === 'gift'}
           tenantId={projectInfo?.tenant?.guid}
