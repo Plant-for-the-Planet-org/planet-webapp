@@ -151,7 +151,7 @@ export const contributions = procedure
         recipient: true,
         metadata: true,
         purpose: true,
-        type : true
+        type: true,
       },
       where: {
         recipient: {
@@ -175,8 +175,9 @@ export const contributions = procedure
     function addTypeToGift(giftObjects: typeof giftData) {
       return giftObjects.map((giftObject) => {
         return {
+          ...giftObject,
           _type: 'gift',
-          ...giftObject
+          value: giftObject.value ? giftObject.value / 100 : 0,
         };
       });
     }
