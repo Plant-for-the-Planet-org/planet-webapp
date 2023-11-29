@@ -8,8 +8,7 @@ import { useContext } from 'react';
 interface TreesOrUnitAreaAndDonateOptionProps {
   projectUnit: string;
   projectPurpose: string | null;
-  areaQuantity: number | null;
-  numberOfTreesPlanted: number | null;
+  quantity: number | null;
   contributionType: string;
   gift: boolean;
   tenantId: string;
@@ -18,8 +17,7 @@ interface TreesOrUnitAreaAndDonateOptionProps {
 const TreesOrUnitAreaAndDonateOption = ({
   projectUnit,
   projectPurpose,
-  areaQuantity,
-  numberOfTreesPlanted,
+  quantity,
   contributionType,
   gift,
   tenantId,
@@ -39,11 +37,11 @@ const TreesOrUnitAreaAndDonateOption = ({
       <time className={myForestStyles.treeCount}>
         {projectUnit === 'm2'
           ? t('me:areaType', {
-              areaConserved: `${areaQuantity}`,
+              areaConserved: `${quantity}`,
               type: `${projectPurpose === 'trees' ? 'restored' : 'conserved'} `,
             })
           : t('me:plantedTrees', {
-              count: areaQuantity || parseInt(`${numberOfTreesPlanted}`) || 0,
+              count: parseInt(`${quantity}`) || 0,
             })}
       </time>
       {contributionType && contributionType !== 'planting' && (

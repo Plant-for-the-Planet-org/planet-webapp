@@ -1,669 +1,655 @@
 @import '../../../../../src//theme/theme';
 
-
 .mapMainContainer {
-    position: relative;
-    width: 100%;
-    padding-bottom: 120px;
+  position: relative;
+  width: 100%;
+  padding-bottom: 120px;
 }
 
 .areaRestoredContainerActive,
 .areaRestoredContainer,
 .plantedTreesContainer,
 .plantedTreesContainerActive {
-    border:  1px solid #FFFFFF;
-    display: flex;
-    flex-direction: column;
-    min-width: 183px;
-    cursor: pointer;
-    height: 104px;
+  border: 1px solid #ffffff;
+  display: flex;
+  flex-direction: column;
+  min-width: 183px;
+  cursor: pointer;
+  height: 104px;
 }
 
 .areaRestored,
 .countTrees {
-    font-weight: 700;
-    font-size: $fontXXLarge;
-    padding-left: 20px;   
+  font-weight: 700;
+  font-size: $fontXXLarge;
+  padding-left: 20px;
 }
 .countTrees {
-    padding-right: 20px;
+  padding-right: 20px;
 }
 
 .areaRestoredLabelContainer,
 .plantedTreesLabelContainer {
-    display: flex;
-    gap: 7px;
-    padding-left: 22px;
-    padding-top: 20px;
-    padding-right: 22px;
-    font-weight: bold;
-    width: max-content;
-    > .plantedTreesLabel {
-        font-size: $fontSixteen;
-    }
+  display: flex;
+  gap: 7px;
+  padding-left: 22px;
+  padding-top: 20px;
+  padding-right: 22px;
+  font-weight: bold;
+  width: max-content;
+  > .plantedTreesLabel {
+    font-size: $fontSixteen;
+  }
 }
-
 
 .plantedTreesContainer,
 .plantedTreesContainerActive {
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
 }
 
 .areaRestoredContainerActive,
-.areaRestoredContainer{
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
+.areaRestoredContainer {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 
 .areaRestoredContainerActive,
 .plantedTreesContainerActive {
-    background-color: #219653;
-    color: #FFFFFF;  
+  background-color: #219653;
+  color: #ffffff;
 }
 
 .areaRestoredContainer,
 .plantedTreesContainer {
-    background-color: #FFFFFF99;
-    .plantedTreesLabelContainer {
-        color: #333333;
-   }   
-   .restoredUnit,
-   .areaRestored,
-   .countTrees {
-       color: #219653;
-   }
+  background-color: #ffffff99;
+  .plantedTreesLabelContainer {
+    color: #333333;
+  }
+  .restoredUnit,
+  .areaRestored,
+  .countTrees {
+    color: #219653;
+  }
 }
 
 .valueContainer {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .restoredUnit {
-    font-size: $fontXLarge;
-    font-weight: 400;
-    margin-right: 30px;
-    margin-left: 8px;
-    margin-top: 5px;
+  font-size: $fontXLarge;
+  font-weight: 400;
+  margin-right: 30px;
+  margin-left: 8px;
+  margin-top: 5px;
 }
-
-
 
 .conservedAreaButtonContainerActive,
 .conservedAreaButtonContainer {
-    border:  2px solid #FFFFFF;
-    position: relative;
-    border-radius: 12px;
-    cursor: pointer;
-    max-width: fit-content;
-    min-width: fit-content;
-    height: 104px;
-     .labelContainer {
-        display: flex;
-        padding-left: 24px;
-        padding-top: 20px;
-        padding-right: 37px;
-         .conservedLabel {
-            margin-left: 9px;
-            font-weight: bold;
-            font-size: $fontSixteen;
-        }
+  border: 2px solid #ffffff;
+  position: relative;
+  border-radius: 12px;
+  cursor: pointer;
+  max-width: fit-content;
+  min-width: fit-content;
+  height: 104px;
+  .labelContainer {
+    display: flex;
+    padding-left: 24px;
+    padding-top: 20px;
+    padding-right: 37px;
+    .conservedLabel {
+      margin-left: 9px;
+      font-weight: bold;
+      font-size: $fontSixteen;
     }
-   .conservedAreaValue {
+  }
+  .conservedAreaValue {
     display: flex;
     padding-left: 20px;
     padding-right: 24px;
     align-items: center;
     .value {
-        font-size: $fontXXLarge;
-        font-weight: 700;
+      font-size: $fontXXLarge;
+      font-weight: 700;
     }
     .unit {
-        font-size: $fontXLarge;
-        font-weight: 400;
-        margin-right: 60px;
-        margin-top: 5px;
-        margin-left: 8px;
+      font-size: $fontXLarge;
+      font-weight: 400;
+      margin-right: 60px;
+      margin-top: 5px;
+      margin-left: 8px;
     }
   }
 }
 
 .conservedAreaButtonContainer {
-    background-color: #FFFFFF99;
-    color: #48AADD
+  background-color: #ffffff99;
+  color: #48aadd;
 }
 
 .conservedAreaButtonContainerActive {
-    background-color: #48AADD;
-    color: #FFFFFF; 
+  background-color: #48aadd;
+  color: #ffffff;
 }
 
 .InfoContainer {
-    border:  2px solid #FFFFFF;
+  border: 2px solid #ffffff;
+  display: flex;
+  flex-direction: column;
+  background-color: #2196531a;
+  border-radius: 12px;
+  width: max-content;
+  padding-left: 22px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  height: 104px;
+  > .labelContainer {
     display: flex;
-    flex-direction: column;
-    background-color: #2196531A;
-    border-radius: 12px;
-    width: max-content;
-    padding-left: 22px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    height: 104px;
-     > .labelContainer {
-     display: flex;
-     padding-right: 24px;
-     font-weight: 700;
-     font-size: $fontSixteen;
-     gap: 7px;
-     }
-     > .value {
-         font-size: $fontXXLarge;
-         font-weight: 700;
-         padding-right: 20px;
-     }
- }
- 
+    padding-right: 24px;
+    font-weight: 700;
+    font-size: $fontSixteen;
+    gap: 7px;
+  }
+  > .value {
+    font-size: $fontXXLarge;
+    font-weight: 700;
+    padding-right: 20px;
+  }
+}
 
 .restoredAreaContainer {
-    width: 183px;
-    height: 104px;
-    background-color: #219653;
-    border-bottom-right-radius: 12px;
-    border-top-right-radius: 12px;
-    font-size: $fontSixteen;
-    font-weight: bold;
-    color: #FFFFFF ;
-    > .restoredAreaLabel {
-        position: absolute;
-        left: 232px;
-        top: 20px
-    }
+  width: 183px;
+  height: 104px;
+  background-color: #219653;
+  border-bottom-right-radius: 12px;
+  border-top-right-radius: 12px;
+  font-size: $fontSixteen;
+  font-weight: bold;
+  color: #ffffff;
+  > .restoredAreaLabel {
+    position: absolute;
+    left: 232px;
+    top: 20px;
+  }
 }
-
 
 .donationDetailContainer {
-    display: flex;
-    gap: 12px;
-    @include lgLaptopView {
-        margin-left: 0px;
-    }
+  display: flex;
+  gap: 12px;
+  @include lgLaptopView {
+    margin-left: 0px;
+  }
 }
-
-
-
 
 .mainContainer {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
+  padding-left: 50px;
+  padding-right: 50px;
+  margin-top: 100px;
+  border-radius: 12px;
+  max-width: 1172px;
+  @include xsPhoneView {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  @include smTabletView {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  @include mdTabletView {
     padding-left: 50px;
     padding-right: 50px;
-    margin-top: 100px;
-    border-radius: 12px;
-    max-width: 1172px;
-    @include xsPhoneView {
-        padding-left: 14px;
-        padding-right: 14px;
-    }
-    @include smTabletView {
-        padding-left: 5px;
-        padding-right: 5px;
-    }
-    @include mdTabletView {
-        padding-left: 50px;
-        padding-right: 50px;
-    }
-    
-    > .treeCounterContainer {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background: #27AE601A;
-        border-top-left-radius: 12px;
-        border-top-right-radius: 12px;
-        height: 370px;
-        width: 100%;
-        > .treeCounter {
-            margin-top: 188px;
-        }
-    }
-}
+  }
 
+  > .treeCounterContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #27ae601a;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    height: 370px;
+    width: 100%;
+    > .treeCounter {
+      margin-top: 188px;
+    }
+  }
+}
 
 .donationListMainContainer {
-    background-color: #27AE601A;
-    background-image: url('../../../../../public/assets/images/treeCounterBackround.svg');
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    width: 100%;
-    position: relative;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-    .donationList {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-top: 115px;
-        gap: 45px
-    }
-    div>.text {
-        font-weight: bold;
-        font-size: $fontLarge;
-        @include xsPhoneView {
-            font-size: $fontSixteen
-        }
-        @include smTabletView  {
-            font-size: $fontSixteen
-        }
-        @include mdTabletView {
-            font-size: $fontLarge
-        }
-        > .hrLine {
-            width: 176px;
-            border: 1px  solid #6FCF97;
-            margin-left: 93px;
-            margin-top: 16px;
-            @include xsPhoneView {
-                margin-left: 45px;
-            }
-            @include smTabletView  {
-                margin-left: 45px;
-            }
-            @include mdTabletView {
-                margin-left: 93px;
-            }
-        }
-    }
-  }
-
-  .areaConservedContainer {
-    background-image: url('../../../../../public/assets/images/conservedAreaSvg.svg');
-    background-repeat: no-repeat;
-    background-color:#48AADD1A;
-    background-size: 100% 100%;
+  background-color: #27ae601a;
+  background-image: url('../../../../../public/assets/images/treeCounterBackround.svg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 100%;
+  position: relative;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  .donationList {
     display: flex;
-    justify-content: center;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-    padding-bottom: 15px;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 115px;
+    gap: 45px;
   }
-
-  .mapButtonMainContainer {
-    width: 100vw;
-    padding-left: 42px;
-    padding-right: 12px;
-    overflow: auto; /* This enables scrolling if content overflows */
-    scrollbar-width: none; /* Hide Firefox scrollbar */
-   -ms-overflow-style: none; /* Hide IE/Edge scrollbar */
-  }
-
-  .mapButtonMainContainer ::-webkit-scrollbar {
-    width: 0px;
-  }
-
-
-  .mapButtonContainer {
-    width: 100%;
-    scrollbar-width: none;
-    max-width: 100%;
-    position: absolute;
-    top: 510px;
-    display : flex;
-    gap: 12px;
-    overflow: auto;
-    left:auto;
-    overflow-y: hidden;
-    @include xsPhoneView {
-        overflow: scroll;
-        left: 2px
-    };
-    @include smTabletView  {
-        max-width: 89%;
-    }
-    @include mdTabletView {
-        left: 70px;
-    }
-    @media screen and (min-width: 1400px) {
-        overflow: hidden;
-    }
-   
-  }
-
-  .editButtonContainer {
-    font-size: $fontSmall;
+  div > .text {
     font-weight: bold;
+    font-size: $fontLarge;
     @include xsPhoneView {
-        left: 115px;
-    }
-    @include smTabletView  {
-        left: 225px;
-    }
-    @include mdTabletView {
-        left: 220px;
-    }
-    @include lgLaptopView {
-        left: 470px;
-    }
-  }
-
-  .donationlistContainer {
-    display: flex;
-    gap: 16px;
-    flex-direction: column;
-    padding-left: 100px;
-    padding-right: 100px;
-    padding-bottom: 35px;
-    @include xsPhoneView {
-        padding-left: 25px;
-        padding-right: 25px;
-    }
-    @include mdTabletView {
-        padding-left: 30px;
-        padding-right: 30px;
-
-    }
-    @include lgLaptopView {
-        padding-left: 100px ;
-        padding-right: 100px;
-    }
-    > .donationDetail {
-        display: flex;
-        height: 100%;
-        width: 100%;
-        border-radius: 12px;
-        background: #FFFFFF;
-        align-items: center;
-        min-height: 185px;
-        @include xsPhoneView {
-            height: max-content;
-            flex-direction: column-reverse;
-            padding-left: 10px;
-            padding-right: 10px;
-        }
-        @include smTabletView {
-            flex-direction: column-reverse;
-            padding-left: 25px;
-            padding-right: 25px;
-            gap:0px
-        }
-
-        @include  mdTabletView {
-            flex-direction: row;
-            padding-left: 0px;
-            padding-right: 0px;
-            gap: 20px;
-        }
-
-        @include lgLaptopView  {
-            padding-left: 0px;
-            padding-right: 0px;
-            gap: 20px;
-        }
-      
-        > .image {
-            width: 285px;
-            height: 220px;
-            margin-left: 20px;
-            border-radius: 12px;
-            padding-top: 25px;
-            padding-bottom: 25px;
-            display: flex;
-            align-items: center;
-            img {
-                border-radius: 12px;
-            };
-            @include smTabletView {
-                margin-left: 0px;
-                padding-bottom: 20px;
-            }
-            @include mdTabletView {
-                height: 200px;
-                margin-left:  20px;
-                padding-bottom: 20px;
-            }
-            @include xsPhoneView {
-                width: 274px;
-                height: 240px;
-                margin-left: 0px;
-            }
-        }
-        
-    }
-  }
-
-  .donateContainer {
-    width: auto;
-    min-width: fit-content;
-    border-radius: 12px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    flex-direction: column;
-    gap:100px;
-    margin-left: 0px;
-    @include xsPhoneView {
-        flex-direction: row;
-        gap: 85px;
-        justify-content: center;
+      font-size: $fontSixteen;
     }
     @include smTabletView {
-        flex-direction: row;
-        justify-content: center;;
+      font-size: $fontSixteen;
     }
-    @include  mdTabletView {
-        flex-direction: row;
-        gap: 67px;
-        padding-bottom: 20px;
-       justify-content: space-between; 
+    @include mdTabletView {
+      font-size: $fontLarge;
     }
+    > .hrLine {
+      width: 176px;
+      border: 1px solid #6fcf97;
+      margin-left: 93px;
+      margin-top: 16px;
+      @include xsPhoneView {
+        margin-left: 45px;
+      }
+      @include smTabletView {
+        margin-left: 45px;
+      }
+      @include mdTabletView {
+        margin-left: 93px;
+      }
+    }
+  }
 }
 
-  .donate {
-    font-size: $fontSixteen;
-    font-weight: bold;
-    text-decoration-line: underline;
-    color: #68B030;
-    cursor: pointer;
-    @include mdTabletView {
-        font-size: $fontSmall;
+.areaConservedContainer {
+  background-image: url('../../../../../public/assets/images/conservedAreaSvg.svg');
+  background-repeat: no-repeat;
+  background-color: #48aadd1a;
+  background-size: 100% 100%;
+  display: flex;
+  justify-content: center;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  padding-bottom: 15px;
+}
+
+.mapButtonMainContainer {
+  width: 100vw;
+  padding-left: 42px;
+  padding-right: 12px;
+  overflow: auto; /* This enables scrolling if content overflows */
+  scrollbar-width: none; /* Hide Firefox scrollbar */
+  -ms-overflow-style: none; /* Hide IE/Edge scrollbar */
+}
+
+.mapButtonMainContainer ::-webkit-scrollbar {
+  width: 0px;
+}
+
+.mapButtonContainer {
+  width: 100%;
+  scrollbar-width: none;
+  max-width: 100%;
+  position: absolute;
+  top: 510px;
+  display: flex;
+  gap: 12px;
+  overflow: auto;
+  left: auto;
+  overflow-y: hidden;
+  @include xsPhoneView {
+    overflow: scroll;
+    left: 2px;
+  }
+  @include smTabletView {
+    max-width: 89%;
+  }
+  @include mdTabletView {
+    left: 70px;
+  }
+  @media screen and (min-width: 1400px) {
+    overflow: hidden;
+  }
+}
+
+.editButtonContainer {
+  font-size: $fontSmall;
+  font-weight: bold;
+  @include xsPhoneView {
+    left: 115px;
+  }
+  @include smTabletView {
+    left: 225px;
+  }
+  @include mdTabletView {
+    left: 220px;
+  }
+  @include lgLaptopView {
+    left: 470px;
+  }
+}
+
+.donationlistContainer {
+  display: flex;
+  gap: 16px;
+  flex-direction: column;
+  padding-left: 100px;
+  padding-right: 100px;
+  padding-bottom: 35px;
+  @include xsPhoneView {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+  @include mdTabletView {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  @include lgLaptopView {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+  > .donationDetail {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    border-radius: 12px;
+    background: #ffffff;
+    align-items: center;
+    min-height: 185px;
+    @include xsPhoneView {
+      height: max-content;
+      flex-direction: column-reverse;
+      padding-left: 10px;
+      padding-right: 10px;
     }
+    @include smTabletView {
+      flex-direction: column-reverse;
+      padding-left: 25px;
+      padding-right: 25px;
+      gap: 0px;
+    }
+
+    @include mdTabletView {
+      flex-direction: row;
+      padding-left: 0px;
+      padding-right: 0px;
+      gap: 20px;
+    }
+
+    @include lgLaptopView {
+      padding-left: 0px;
+      padding-right: 0px;
+      gap: 20px;
+    }
+
+    > .image {
+      width: 285px;
+      height: 220px;
+      margin-left: 20px;
+      border-radius: 12px;
+      padding-top: 25px;
+      padding-bottom: 25px;
+      display: flex;
+      align-items: center;
+      img {
+        border-radius: 12px;
+      }
+      @include smTabletView {
+        margin-left: 0px;
+        padding-bottom: 20px;
+      }
+      @include mdTabletView {
+        height: 200px;
+        margin-left: 20px;
+        padding-bottom: 20px;
+      }
+      @include xsPhoneView {
+        width: 274px;
+        height: 240px;
+        margin-left: 0px;
+      }
+    }
+  }
+}
+
+.donateContainer {
+  width: auto;
+  min-width: fit-content;
+  border-radius: 12px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-direction: column;
+  gap: 100px;
+  margin-left: 0px;
+  @include xsPhoneView {
+    flex-direction: row;
+    gap: 85px;
+    justify-content: center;
+  }
+  @include smTabletView {
+    flex-direction: row;
+    justify-content: center;
+  }
+  @include mdTabletView {
+    flex-direction: row;
+    gap: 67px;
+    padding-bottom: 20px;
+    justify-content: space-between;
+  }
+}
+
+.donate {
+  font-size: $fontSixteen;
+  font-weight: bold;
+  text-decoration-line: underline;
+  color: #68b030;
+  cursor: pointer;
+  @include mdTabletView {
+    font-size: $fontSmall;
+  }
 }
 
 .projectDetailContainer {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    padding-top: 20px;
-    flex-direction: row;
-    @include xsPhoneView {
-        gap : 10px;
-        padding-top: 20px;
-        flex-direction: column;
-        align-items: baseline;
-    }
-    @include smTabletView {
-        flex-direction: column;
-        padding-top: 15px
-    }
-    @include  mdTabletView {
-        flex-direction: column;
-        padding-right: 25px;      
-    }
-}
-  .projectDetail {
-    width: 100%;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    @include xsPhoneView {
-        width: 275px;
-        flex-direction: column;
-        align-items: flex-start;
-        margin-left: 18px;
-        margin-top: 0px;
-    }
-    @include mdTabletView {
-      flex-direction: row
-    }
-  }
-
-  .projectDetailMain {
-    max-width: 288px;
-  }
-
-  .projectName {
-    font-size: $fontSixteen;
-    font-weight: bold;
-  }
-
-  .tpoName {
-    // font-size: $fontXSmall;
-    // margin-top: 6px;
-  }
-
-  .areaConservedMainContainer {
-    width: 100%;
-    max-width: 1165px;
-    height: 100%;
-    padding-left: 50px;
-    padding-right: 50px;
-    padding-bottom: 10px;
-    margin-top: 100px;
-    position: relative;
-    > .textContainer {
-        background-color: #48AADD1A ;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 200px;
-        border-top-left-radius: 12px;
-        border-top-right-radius: 12px;
-        }
-  }
-
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  padding-top: 20px;
+  flex-direction: row;
   @include xsPhoneView {
-    .areaConservedMainContainer {
-        padding-left: 25px;
-        padding-right: 25px;
-    }
-}
-  
-  .conservedAreaText {
-    display: flex;
-    font-weight: 700;
-    font-size: $fontXLarge;
-    padding-top: 45px;
-    justify-content: center;
-    align-items: center;
+    gap: 10px;
+    padding-top: 20px;
     flex-direction: column;
-    > .hrLine {
-        width: 176px;
-        border: 1px solid #48AADD;
-        margin-top: 16px;
-    }
+    align-items: baseline;
   }
+  @include smTabletView {
+    flex-direction: column;
+    padding-top: 15px;
+  }
+  @include mdTabletView {
+    flex-direction: column;
+    padding-right: 25px;
+  }
+}
+.projectDetail {
+  width: 100%;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 3px;
+  @include xsPhoneView {
+    width: 275px;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 18px;
+    margin-top: 0px;
+  }
+  @include mdTabletView {
+    flex-direction: row;
+  }
+}
+
+.projectDetailMain {
+  max-width: 288px;
+}
+
+.projectName {
+  font-size: $fontSixteen;
+  font-weight: bold;
+}
+
+.tpoName {
+  // font-size: $fontXSmall;
+  // margin-top: 6px;
+}
+
+.areaConservedMainContainer {
+  width: 100%;
+  max-width: 1165px;
+  height: 100%;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-bottom: 10px;
+  margin-top: 100px;
+  position: relative;
+  > .textContainer {
+    background-color: #48aadd1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 200px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+}
+
+@include xsPhoneView {
+  .areaConservedMainContainer {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+}
+
+.conservedAreaText {
+  display: flex;
+  font-weight: 700;
+  font-size: $fontXLarge;
+  padding-top: 45px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  > .hrLine {
+    width: 176px;
+    border: 1px solid #48aadd;
+    margin-top: 16px;
+  }
+}
 
 .plantingDate {
-    font-size: $fontSmall ;
-    font-weight: 700;
+  font-size: $fontSmall;
+  font-weight: 700;
 }
 
 .treeCount {
-    font-size: $fontMedium;
-    font-weight: 700;
-    margin-top: 10px;
-    @include xsPhoneView {
-        font-size: $fontSixteen;
-    }
+  font-size: $fontMedium;
+  font-weight: 700;
+  margin-top: 10px;
+  @include xsPhoneView {
+    font-size: $fontSixteen;
+  }
 }
 
 .loadProjectButtonContainer {
-    display: flex;
-    justify-content: center;
-    padding-bottom: 25px;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 25px;
 }
 
 .loadconservation,
 .loadTreePlantaion {
-    max-width: fit-content;
+  max-width: fit-content;
 }
 .loadconservation {
-    background-color: #48AADD !important;
+  background-color: #48aadd !important;
 }
 
 .swipeConatiner {
-    position: absolute;
-    top: 625px;
-    left: 320px;
-    @include xsPhoneView {
-     left: 200px;
-    }
-    @include smTabletView {
-        visibility: visible;
-    }
-    @include mdTabletView {
-        left: 315px;
-        visibility: visible;
-    }
-    @include lgLaptopView {
-        left: 400px;
-        visibility: visible;
-    }
-    @include xlDesktopView  {
-        left: 595px;
-        visibility: visible;
-    }
-    @media screen and (min-width: 1400px) {
-        visibility: hidden
-    }
+  position: absolute;
+  top: 625px;
+  left: 320px;
+  @include xsPhoneView {
+    left: 200px;
+  }
+  @include smTabletView {
+    visibility: visible;
+  }
+  @include mdTabletView {
+    left: 315px;
+    visibility: visible;
+  }
+  @include lgLaptopView {
+    left: 400px;
+    visibility: visible;
+  }
+  @include xlDesktopView {
+    left: 595px;
+    visibility: visible;
+  }
+  @media screen and (min-width: 1400px) {
+    visibility: hidden;
+  }
 }
 
 .circularProgressContainer {
-    padding-left: 70px;
-    padding-top: 30px;
+  padding-left: 70px;
+  padding-top: 30px;
 }
 
 .registerTreeIcon {
+  padding-left: 30px;
+  @include xsPhoneView {
+    padding-left: 90px;
+  }
+  @include smTabletView {
+    padding-left: 90px;
+  }
+  @include mdTabletView {
     padding-left: 30px;
-    @include xsPhoneView {
-        padding-left: 90px;
-    }
-    @include smTabletView {
-        padding-left: 90px;
-    }
-    @include mdTabletView {
-        padding-left: 30px;
-    }
+  }
 }
 
 .treePlantationButtonConatiner {
-    display: flex;
+  display: flex;
 }
 
-
 .sepratorContainer {
-    display: flex;
-    align-items: center;
-    // justify-content: center;
-    .dotSeprator{
-        margin-bottom: 5px;
-        margin-left: 4px;
-        margin-right: 4px;
-    }
+  display: flex;
+  align-items: center;
+  // justify-content: center;
+  .dotSeprator {
+    margin-bottom: 5px;
+    margin-left: 4px;
+    margin-right: 4px;
+  }
 }
 
 .myForestStyleContainer {
-    margin-top: 95px;
-    padding-left: 50px;
-    padding-right: 50px;
-    max-width: 1172px;
-    padding-bottom: 25px;
+  margin-top: 95px;
+  padding-left: 50px;
+  padding-right: 50px;
+  max-width: 1172px;
+  padding-bottom: 25px;
 }
 .myContributionLoader {
-    margin-top: 60px;
-    border-radius: 20px
+  margin-top: 60px;
+  border-radius: 20px;
 }

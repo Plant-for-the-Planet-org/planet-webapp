@@ -11,6 +11,7 @@ import TreesOrUnitAreaAndDonateOption from './TreesOrUnitAreaAndDonateOption';
 export interface ProjectProps {
   projectInfo: Contributions | BouquetContribution;
 }
+
 const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
   return (
     <div className={myForestStyles.donationDetail}>
@@ -32,12 +33,16 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
         <TreesOrUnitAreaAndDonateOption
           projectUnit={projectInfo?.plantProject?.unit}
           projectPurpose={projectInfo?.purpose}
-          areaQuantity={projectInfo.quantity}
-          numberOfTreesPlanted={projectInfo?.treeCount || projectInfo?.value}
-          contributionType={projectInfo.contributionType}
-          gift={projectInfo?.type === 'gift'}
+          quantity={projectInfo?.treeCount || projectInfo?.quantity}
+          contributionType={
+            projectInfo.contributionType || projectInfo?._type === 'gift'
+          }
+          gift={projectInfo?._type === 'gift'}
           tenantId={projectInfo?.tenant?.guid}
-          projectGUID={projectInfo?.plantProject?.guid}
+          projectGUID={
+            projectInfo?.plantProject?.guid ||
+            projectInfo?.metadata?.project?.id
+          }
         />
       </div>
     </div>
