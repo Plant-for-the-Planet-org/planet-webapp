@@ -23,30 +23,13 @@
   "cancel": "Annuler",
   "fieldLabels": {
     "profileType": "Je suis un",
-    "firstName": "Prénom",
-    "lastName": "Nom de famille",
     "name": "Nom de {{type}}",
-    "email": "Email",
-    "address": "Adresse",
-    "city": "Ville",
-    "zipCode": "Code postal/Zip",
-    "country": "Pays",
-    "bio": "Descriptif du profil",
     "website": "Site web",
     "privateAccount": "Compte privé",
     "subscribe": "S'abonner aux actualités par email"
   },
   "validationErrors": {
-    "firstNameRequired": "Le champ Prénom est  requis",
-    "lastNameRequired": "Le champ \"Nom\" est requis",
-    "emailRequired": "L'adresse électronique est requis",
     "nameRequired": "Saisir un nom",
-    "nameInvalid": "Name is invalid. Only these special characters are allowed: space . , ' & ( ) ! -",
-    "addressRequired": "L'adresse est requis",
-    "cityRequired": "La ville est requis",
-    "zipCodeInvalid": "Le code postal n'est pas valide",
-    "websiteInvalid": "Veuillez entrer une URL de site web valide",
-    "countryRequired": "Le pays est requis",
-    "companyRequired": "Le nom de la société est obligatoire"
+    "websiteInvalid": "Veuillez entrer une URL de site web valide"
   }
 }

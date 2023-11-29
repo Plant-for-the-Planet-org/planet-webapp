@@ -12,8 +12,6 @@
   "profileCreationError": "Error en la creación del perfil.",
   "edit": "Editar el perfil",
   "privateAccountTxt": "Tu perfil está oculto y sólo tu nombre aparece en la tabla de clasificación",
-  "descriptionRequired": "Por favor, introduce una descripción válida",
-  "websiteError": "URL inválido",
   "save": "Guardar",
   "profilePicUpdated": "La foto del perfil está siendo actualizada...",
   "profileSaved": "¡Guardado con éxito!",
@@ -25,29 +23,13 @@
   "cancel": "Cancelar",
   "fieldLabels": {
     "profileType": "Soy un",
-    "firstName": "Nombre",
-    "lastName": "Apellidos",
     "name": "Nombre de {{type}}",
-    "email": "Correo electrónico",
-    "address": "Dirección",
-    "city": "Ciudad",
-    "zipCode": "Código postal",
-    "country": "País",
-    "bio": "Descripción del perfil",
     "website": "Página web",
     "privateAccount": "Cuenta privada",
     "subscribe": "Suscríbete a las noticias por correo electrónico"
   },
   "validationErrors": {
-    "firstNameRequired": "El campo del nombre es obligatorio",
-    "lastNameRequired": "El campo de los apellidos es obligatorio",
-    "emailRequired": "El correo electrónico es necesario",
     "nameRequired": "Por favor, introduce un nombre",
-    "addressRequired": "La dirección es obligatoria",
-    "cityRequired": "La ciudad es obligatoria",
-    "zipCodeInvalid": "El código postal sólo debe contener letras y números",
-    "websiteInvalid": "Por favor, introduzca una URL válida",
-    "countryRequired": "El país es obligatorio",
-    "companyRequired": "El nombre de la empresa es obligatorio"
+    "websiteInvalid": "Por favor, introduzca una URL válida"
   }
 }
