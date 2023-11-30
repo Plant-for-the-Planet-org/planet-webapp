@@ -92,7 +92,7 @@
     "next-i18next": "^12.1.0",
     "next-useragent": "^2.7.0",
     "node-cache": "^5.1.2",
-    "npm": "^9.6.1",
+    "npm": "^10.2.2",
     "papaparse": "^5.3.1",
     "path-browserify": "^1.0.1",
     "prop-types": "^15.7.2",
