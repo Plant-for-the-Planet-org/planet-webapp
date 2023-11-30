@@ -30,9 +30,11 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
           >
             <div className={MyForestMapStyle.svgContainer}>
               {(geoJson.properties?.plantProject?.unitType === 'tree' ||
-                geoJson?.properties?.contributionType === 'planting') && (
-                <PlantedTreesSvg color={`${primaryDarkColorX}`} />
-              )}
+                geoJson?.properties?.contributionType === 'planting' ||
+                geoJson?.properties.purpose === 'trees') &&
+                geoJson.properties?.plantProject?.unitType !== 'm2' && (
+                  <PlantedTreesSvg color={`${primaryDarkColorX}`} />
+                )}
               {geoJson.properties?.plantProject?.unitType === 'm2' &&
                 geoJson.properties?.purpose === 'trees' && (
                   <RestoredSvg color={`${primaryDarkColorX}`} />
@@ -56,7 +58,8 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
               )}
               {t(
                 geoJson.properties?.plantProject?.unitType === 'tree' ||
-                  geoJson?.properties?.contributionType === 'planting'
+                  geoJson?.properties?.contributionType === 'planting' ||
+                  geoJson?.properties?._type === 'gift'
                   ? 'me:plantedTrees'
                   : '',
                 {
