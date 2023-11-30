@@ -40,6 +40,7 @@ export default function SampleTrees({
   const [uploadStatus, setUploadStatus] = React.useState<string[]>([]);
   const [sampleTrees, setSampleTrees] = React.useState<SampleTree[]>([]);
   const [parseError, setParseError] = useState<FileImportError | null>(null);
+  const [hasIgnoredColumns, setHasIgnoredColumns] = useState(false);
 
   const {
     handleSubmit,
@@ -87,6 +88,7 @@ export default function SampleTrees({
   const onDrop = React.useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: File) => {
       setParseError(null);
+      setHasIgnoredColumns(false);
       const reader = new FileReader();
       reader.readAsText(file);
       reader.onabort = () => console.log('file reading was aborted');
@@ -97,11 +99,13 @@ export default function SampleTrees({
         Papa.parse(csv, {
           header: true,
           complete: (results) => {
-            console.log(results);
             const parsedHeaders = results.meta.fields || [];
             const resultsData = results.data as SampleTree[];
             const headerValidity = checkHeaderValidity(parsedHeaders);
             if (headerValidity.isValid) {
+              parsedHeaders.length > 7
+                ? setHasIgnoredColumns(true)
+                : setHasIgnoredColumns(false);
               const sampleTrees = resultsData.map((sampleTree) => {
                 return {
                   ...sampleTree,
@@ -258,6 +262,11 @@ export default function SampleTrees({
         </label>
       </div>
       {parseError && <p style={{ color: '#e53935' }}>{parseError.message}</p>}
+      {hasIgnoredColumns && (
+        <p style={{ color: '#e53935' }}>
+          {t('treemapper:ignoredColumnsWarning')}
+        </p>
+      )}
       <div className={styles.sampleTreeContainer}>
         {fields &&
           fields.map((item, index) => {
