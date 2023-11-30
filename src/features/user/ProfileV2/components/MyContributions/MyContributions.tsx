@@ -57,6 +57,7 @@ export default function MyContributions({
     isConservedButtonActive,
     isTreePlantedButtonActive,
     refetchData,
+    setRefetchData,
   } = useUserProps();
 
   const _checkConditions = () => {
@@ -171,34 +172,35 @@ export default function MyContributions({
       _contributionData,
       setProjectsForAreaConservation
     );
-  }, [_contributionData.data, refetchData]);
+  }, [_contributionData.data]);
 
   useEffect(() => {
     _updateStateWithTrpcData<ContributionData | null>(
       _contributionDataForPlantedtrees,
       setProjectsForTreePlantation
     );
-  }, [_contributionDataForPlantedtrees.data, refetchData]);
+  }, [_contributionDataForPlantedtrees.data]);
 
   useEffect(() => {
     _updateStateWithTrpcData<PointFeature<TestPointProps>[]>(
       _conservationGeoJsonData,
       setConservationProjects
     );
-  }, [_conservationGeoJsonData.data, refetchData]);
+  }, [_conservationGeoJsonData.data]);
 
   useEffect(() => {
     _updateStateWithTrpcData<PointFeature<TestPointProps>[]>(
       _treePlantedGeoJsonData,
       setTreePlantedProjects
     );
-  }, [_treePlantedGeoJsonData.data, refetchData]);
+  }, [_treePlantedGeoJsonData.data]);
 
   useEffect(() => {
     _updateStateWithTrpcData<StatsQueryResult | undefined>(
       _detailInfo,
       setOthercontributionInfo
     );
+    setRefetchData(false);
   }, [_detailInfo.data, refetchData]);
 
   return ready && otherDonationInfo ? (
