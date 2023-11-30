@@ -130,6 +130,7 @@ export interface GiftsGeoJsonQueryResult {
   type: string;
   purpose: string;
   value: string;
+  created: Date;
   metadata: {
     giver: {
       name: string;

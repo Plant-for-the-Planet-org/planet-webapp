@@ -98,10 +98,11 @@ export const contributionsGeoJson = procedure
       GROUP BY pp.guid, c.geometry`;
 
     const giftData = await prisma.$queryRaw<GiftsGeoJsonQueryResult[]>`
-      SELECT g.type as type, g.purpose as purpose, (g.value)/100 as value, g.metadata as metadata
+      SELECT g.type as type, g.purpose as purpose, (g.value)/100 as value,
+        g.metadata as metadata, g.created as created
       FROM gift g 
       JOIN profile p ON g.recipient_id = p.id
-      WHERE p.guid = ${profileId}
+      WHERE p.guid = ${profileId} AND g.purpose IN (${Prisma.join(purposes)})
     `;
 
     const contributions = data.map((contribution) => {
@@ -147,6 +148,7 @@ export const contributionsGeoJson = procedure
           quantity: gift.value,
           giver: gift.metadata.giver,
           project: gift.metadata.project,
+          created: gift.created,
           _type: 'gift',
         },
         geometry: {
