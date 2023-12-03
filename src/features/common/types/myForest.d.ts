@@ -158,6 +158,7 @@ export interface ContributionData {
   pages: Page[];
 }
 export interface TreeContributedProjectListProps {
+  restoredAreaUnit: number | undefined;
   contribution: ContributionData | null;
   userProfile: User | PublicUser;
   handleFetchNextPage: () => void;

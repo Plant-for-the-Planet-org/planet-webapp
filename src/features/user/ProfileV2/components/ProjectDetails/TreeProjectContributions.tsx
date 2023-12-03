@@ -10,6 +10,7 @@ import { ReactElement } from 'react';
 import { TreeContributedProjectListProps } from '../../../../common/types/myForest';
 
 const TreeProjectContributions = ({
+  restoredAreaUnit,
   contribution,
   userProfile,
   handleFetchNextPage,
@@ -31,6 +32,7 @@ const TreeProjectContributions = ({
           {' '}
           {userProfile && (
             <TreeCounter
+              restoredAreaUnit={restoredAreaUnit}
               handleAddTargetModalOpen={() => {
                 setIsAddTargetModalOpen(true);
               }}

@@ -139,7 +139,7 @@ export default function TpoProfile(props: any) {
               <div>
                 {localizedAbbreviatedNumber(
                   i18n.language,
-                  Number(props.planted),
+                  Number(props.planted - props.restoredAreaUnit),
                   1
                 )}
               </div>

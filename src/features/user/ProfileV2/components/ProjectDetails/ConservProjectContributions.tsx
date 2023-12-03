@@ -6,7 +6,7 @@ import { TreeContributedProjectListProps } from '../../../../common/types/myFore
 
 type AreaConservedProjectListProps = Omit<
   TreeContributedProjectListProps,
-  'userProfile'
+  'userProfile' | 'restoredAreaUnit'
 >;
 
 const ConservProjectContributions = ({

@@ -166,7 +166,6 @@ export default function MyContributions({
       }
     }
   };
-
   useEffect(() => {
     _updateStateWithTrpcData<ContributionData | null>(
       _contributionData,
@@ -220,6 +219,7 @@ export default function MyContributions({
           <MyContributionLoader />
         ) : (
           <TreeProjectContributions
+            restoredAreaUnit={_detailInfo.data?.squareMeters}
             contribution={projectsForTreePlantation}
             userProfile={profile}
             handleFetchNextPage={handleFetchNextPageforPlantedTrees}
