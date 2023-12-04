@@ -2,10 +2,8 @@
   "loginTitle": "{{log}} - Ingresa en",
   "signUpText": "Inscripción completa",
   "profileTypes": "{{item.title}}",
-  "profileName": "Nombre de {{type}}",
   "createAccount": "Crear una cuenta",
   "individual": "Individuo",
-  "iamA": "Soy un",
   "tpo": "Organización de plantación",
   "education": "Escuela",
   "organization": "Empresa",
@@ -13,16 +11,8 @@
   "profileCreationFailed": "Error en la creación del perfil. Por favor, inténtalo de nuevo.",
   "profileCreationError": "Error en la creación del perfil.",
   "edit": "Editar el perfil",
-  "privateAccount": "Cuenta privada",
   "privateAccountTxt": "Tu perfil está oculto y sólo tu nombre aparece en la tabla de clasificación",
-  "subscribe": "Suscríbete a las noticias por correo electrónico",
-  "profileDescription": "Descripción del perfil",
-  "descriptionRequired": "Por favor, introduce una descripción válida",
-  "website": "Página web",
-  "websiteError": "URL inválido",
-  "websiteRequired": "Por favor, introduzca una URL válida",
   "save": "Guardar",
-  "nameValidation": "Por favor, introduce un nombre",
   "profilePicUpdated": "La foto del perfil está siendo actualizada...",
   "profileSaved": "¡Guardado con éxito!",
   "profileSaveFailed": "Error en la actualización del perfil.",
@@ -30,5 +20,16 @@
   "publicAccount": "Cuenta pública",
   "accountPrivacyChangeText": "Para crear un widget de perfil necesitas tener una cuenta pública. Al hacer clic en continuar, cambias tu configuración de privacidad a pública.",
   "continue": "Continúa",
-  "cancel": "Cancelar"
+  "cancel": "Cancelar",
+  "fieldLabels": {
+    "profileType": "Soy un",
+    "name": "Nombre de {{type}}",
+    "website": "Página web",
+    "privateAccount": "Cuenta privada",
+    "subscribe": "Suscríbete a las noticias por correo electrónico"
+  },
+  "validationErrors": {
+    "nameRequired": "Por favor, introduce un nombre",
+    "websiteInvalid": "Por favor, introduzca una URL válida"
+  }
 }

@@ -63,6 +63,7 @@ interface ConfigType {
   manifest?: string;
   home?: {
     image: string;
+    descriptionTitle?: string;
   };
 }
 
