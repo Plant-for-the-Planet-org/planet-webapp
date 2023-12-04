@@ -3,9 +3,7 @@ import { NextResponse } from 'next/server';
 import redisClient from '../../redis-client';
 
 const ONE_HOUR_IN_SEC = 60 * 60;
-const TWO_HOURS = ONE_HOUR_IN_SEC * 2;
-
-const caching_key = 'TENANT_CONFIG_LIST';
+const FIVE_HOURS = ONE_HOUR_IN_SEC * 5;
 
 /**
  * This is the default slug that will be used if no tenant is found.
@@ -19,24 +17,16 @@ const DEFAULT_TENANT_DOMAIN = 'https://www1.plant-for-the-planet.org';
  * @returns Tenant[]
  *
  */
-export const getTenantConfigList = async (): Promise<Tenant[]> => {
-  const cacheHit = await redisClient.get<Tenant[]>(caching_key);
-
-  if (cacheHit) {
-    return cacheHit;
+export const getTenantConfigList = async () => {
+  try {
+    const response = await fetch(
+      `https://${process.env.API_ENDPOINT}/app/tenants?_scope=deployment`
+    );
+    const tenants = (await response.json()) as Tenant[];
+    return tenants;
+  } catch (err) {
+    console.log('Error in getTenantConfigList', err);
   }
-
-  const response = await fetch(
-    `https://${process.env.API_ENDPOINT}/app/tenants?_scope=deployment`
-  );
-
-  const tenants = (await response.json()) as Tenant[];
-
-  await redisClient.set(caching_key, JSON.stringify(tenants), {
-    ex: TWO_HOURS,
-  });
-
-  return tenants;
 };
 
 /**
@@ -55,7 +45,7 @@ export async function getHostnameDataBySubdomain(subdomain: string) {
  * available hostname.
  */
 export async function getSubdomainPaths() {
-  const tenants = await getTenantConfigList();
+  const tenants = (await getTenantConfigList()) as Tenant[];
 
   // build paths for each of the sites
   return tenants.map((item) => {
@@ -83,17 +73,36 @@ function isSubdomain(domain: string) {
  * @param slug
  * @returns Tenant
  */
-
 export const getTenantConfig = async (slug: string) => {
-  const tenantConfList = await getTenantConfigList();
+  try {
+    const caching_key = `TENANT_CONFIG_${slug}`;
 
-  const tenantConf = tenantConfList.find((item) => item.config.slug === slug);
+    const tenant = await redisClient.get<Tenant>(caching_key);
 
-  const defaultTenantConfig = tenantConfList.find(
-    (item) => item.config.slug === DEFAULT_TENANT
-  );
+    if (tenant) {
+      return tenant;
+    }
 
-  return tenantConf ?? defaultTenantConfig;
+    const tenantConfList = (await getTenantConfigList()) as Tenant[];
+
+    const _tenantConf = tenantConfList.find(
+      (item) => item.config.slug === slug
+    );
+
+    const defaultTenantConfig = tenantConfList.find(
+      (item) => item.config.slug === DEFAULT_TENANT
+    );
+
+    const tenantConf = _tenantConf ?? defaultTenantConfig;
+
+    await redisClient.set(caching_key, JSON.stringify(tenantConf), {
+      ex: FIVE_HOURS,
+    });
+
+    return tenantConf;
+  } catch (err) {
+    console.log('Error in getTenantConfig', err);
+  }
 };
 
 /**

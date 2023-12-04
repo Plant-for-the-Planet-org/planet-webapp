@@ -7,7 +7,6 @@ import { getRequest } from '../../../src/utils/apiRequests/api';
 import { useProjectProps } from '../../../src/features/common/Layout/ProjectPropsContext';
 import Credits from '../../../src/features/projects/components/maps/Credits';
 import Filters from '../../../src/features/projects/components/projects/Filters';
-import { TENANT_ID } from '../../../src/utils/constants/environment';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import DirectGift, {
   DirectGiftI,
@@ -29,7 +28,7 @@ interface Props {
   currencyCode: string;
   setCurrencyCode: SetState<string>;
   pageProps: {
-    config: Tenant;
+    tenantConfig: Tenant;
   };
 }
 
@@ -65,7 +64,7 @@ export default function Donate({
 
   React.useEffect(() => {
     if (router.isReady) {
-      setTenantConfig(pageProps.config);
+      setTenantConfig(pageProps.tenantConfig);
     }
   }, [router.isReady]);
 
@@ -112,13 +111,17 @@ export default function Donate({
         setCurrencyCode(currency);
         setInternalLanguage(i18n.language);
         try {
-          const projects = await getRequest<MapProject[]>(`/app/projects`, {
-            _scope: 'map',
-            currency: currency,
-            tenant: TENANT_ID,
-            'filter[purpose]': 'trees,conservation',
-            locale: i18n.language,
-          });
+          const projects = await getRequest<MapProject[]>(
+            pageProps.tenantConfig.id,
+            `/app/projects`,
+            {
+              _scope: 'map',
+              currency: currency,
+              tenant: pageProps.tenantConfig.id,
+              'filter[purpose]': 'trees,conservation',
+              locale: i18n.language,
+            }
+          );
           setProjects(projects);
           setProject(null);
           setShowSingleProject(false);
@@ -140,7 +143,7 @@ export default function Donate({
     setCurrencyCode,
   };
 
-  return pageProps.config ? (
+  return pageProps.tenantConfig ? (
     <>
       {initialized ? (
         filteredProjects && initialized ? (
@@ -208,7 +211,7 @@ export async function getStaticProps(props: any) {
         null,
         ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
       )),
-      config: tenantConfig,
+      tenantConfig,
     },
   };
 }

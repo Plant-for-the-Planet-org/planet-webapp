@@ -1,29 +1,34 @@
-// DONE 
-
 import { useRouter } from 'next/router';
 import React from 'react';
-import SalesforceHome from '../src/tenants/salesforce/Home';
-import SternHome from '../src/tenants/stern/Home';
-import BasicHome from '../src/tenants/common/Home';
-import tenantConfig from '../tenant.config';
-import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
-import { getRequest } from '../src/utils/apiRequests/api';
-import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
+import SalesforceHome from '../../../src/tenants/salesforce/Home';
+import SternHome from '../../../src/tenants/stern/Home';
+import BasicHome from '../../../src/tenants/common/Home';
+import GetHomeMeta from '../../../src/utils/getMetaTags/GetHomeMeta';
+import { getRequest } from '../../../src/utils/apiRequests/api';
+import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { handleError, APIError } from '@planet-sdk/common';
-import { GetStaticPropsContext } from 'next';
 import {
   LeaderBoardList,
   TenantScore,
-} from '../src/features/common/types/leaderboard';
+} from '../../../src/features/common/types/leaderboard';
+import { useTenant } from '../../../src/features/common/Layout/TenantContext';
+import { Tenant } from '@planet-sdk/common/build/types/tenant';
+import {
+  getSubdomainPaths,
+  getTenantConfig,
+} from '../../../src/utils/multiTenancy/helpers';
 
 interface Props {
   initialized: Boolean;
+  pageProps: {
+    tenantConfig: Tenant;
+  };
 }
 
-export default function Home(initialized: Props) {
+export default function Home({ initialized, pageProps }: Props) {
   const router = useRouter();
-  const config = tenantConfig();
+
   const [leaderboard, setLeaderboard] = React.useState<LeaderBoardList | null>(
     null
   );
@@ -32,10 +37,19 @@ export default function Home(initialized: Props) {
   );
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
+  const { setTenantConfig } = useTenant();
+
+  React.useEffect(() => {
+    if (router.isReady) {
+      setTenantConfig(pageProps.tenantConfig);
+    }
+  }, [router.isReady]);
+
   React.useEffect(() => {
     async function loadTenantScore() {
       try {
         const newTenantScore = await getRequest<TenantScore>(
+          undefined,
           `/app/tenantScore`
         );
         setTenantScore(newTenantScore);
@@ -51,6 +65,7 @@ export default function Home(initialized: Props) {
     async function loadLeaderboard() {
       try {
         const newLeaderBoard = await getRequest<LeaderBoardList>(
+          undefined,
           `/app/leaderboard`
         );
         setLeaderboard(newLeaderBoard);
@@ -62,15 +77,16 @@ export default function Home(initialized: Props) {
     loadLeaderboard();
   }, []);
 
-  if (!config.header.items['home'].visible) {
+  if (!pageProps.tenantConfig.config.header.items['home'].visible) {
     if (typeof window !== 'undefined') {
       router.push('/');
     }
   }
 
   let HomePage;
+
   function getHomePage() {
-    switch (process.env.TENANT) {
+    switch (pageProps.tenantConfig.config.slug) {
       case 'salesforce':
         HomePage = SalesforceHome;
         return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
@@ -97,19 +113,30 @@ export default function Home(initialized: Props) {
     }
   }
 
-  return (
+  return pageProps.tenantConfig ? (
     <>
       <GetHomeMeta />
       {initialized ? getHomePage() : <></>}
     </>
+  ) : (
+    <></>
   );
 }
 
-export async function getStaticProps({ locale }: GetStaticPropsContext) {
+export async function getStaticPaths() {
+  return {
+    paths: await getSubdomainPaths(),
+    fallback: 'blocking',
+  };
+}
+
+export async function getStaticProps(props: any) {
+  const tenantConfig = await getTenantConfig(props.params.slug);
+
   return {
     props: {
       ...(await serverSideTranslations(
-        locale || 'en',
+        props.locale || 'en',
         [
           'bulkCodes',
           'common',
@@ -133,6 +160,7 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         null,
         ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
       )),
+      tenantConfig,
     },
   };
 }
