@@ -12,8 +12,8 @@ const CustomPopupMarker = ({ geoJson, showPopUp }: CustomPopupMarkerProps) => {
       {showPopUp && (isConservedButtonActive || isTreePlantedButtonActive) ? (
         <Popup
           className={MyForestMapStyle.mapboxglPopup}
-          latitude={Number(geoJson.geometry.coordinates[1])}
-          longitude={Number(geoJson?.geometry.coordinates[0])}
+          latitude={parseInt(`${geoJson.geometry.coordinates[1]}`)}
+          longitude={parseInt(`${geoJson.geometry.coordinates[0]}`)}
           offsetTop={-15}
           offsetLeft={20}
           anchor="bottom"

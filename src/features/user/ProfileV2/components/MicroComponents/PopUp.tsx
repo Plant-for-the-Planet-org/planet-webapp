@@ -1,6 +1,7 @@
 import { useTranslation } from 'next-i18next';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
+import { Cluster, ClusterMarker } from '../../../../common/types/map';
 
 interface PopUpLabelProps {
   isConservation: boolean;
@@ -28,8 +29,8 @@ export const PopUpLabel = ({
 };
 
 interface NumberOfContributionsProps {
-  isMoreThanOneContribution: boolean;
-  numberOfContributions: number;
+  isMoreThanOneContribution: boolean | number | undefined;
+  numberOfContributions: number | undefined;
 }
 
 export const NumberOfContributions = ({
@@ -51,9 +52,9 @@ export const NumberOfContributions = ({
 };
 
 interface DateInThePopUpProps {
-  isDate: boolean;
+  isDate: number;
   dateOfGift: Date | number;
-  dateOfDonation: Date | number;
+  dateOfDonation: undefined | number | Date;
 }
 export const DateInThePopUp = ({
   isDate,
@@ -72,7 +73,11 @@ export const DateInThePopUp = ({
   );
 };
 
-export const InfoInthePopUp = ({ geoJson }) => {
+interface InfoInthePopUpProps {
+  geoJson: ClusterMarker | Cluster;
+}
+
+export const InfoInthePopUp = ({ geoJson }: InfoInthePopUpProps) => {
   return (
     <div className={MyForestMapStyle.popUpContainer}>
       <div className={MyForestMapStyle.popUp}>

@@ -9,7 +9,7 @@ interface TreesOrUnitAreaAndDonateOptionProps {
   projectUnit: string;
   projectPurpose: string | null;
   quantity: number | null;
-  contributionType: string;
+  contributionType: string | boolean;
   gift: boolean;
   tenantId: string;
   projectGUID: string;

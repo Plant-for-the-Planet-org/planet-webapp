@@ -8,7 +8,7 @@ interface ProjectInfoAndContributionDateProps {
   countryName: string;
   tpoName: string;
   giftSenderName: string;
-  contributionDate: number | Date;
+  contributionDate: string | number | Date;
 }
 
 const ProjectInfoAndContributionDate = ({

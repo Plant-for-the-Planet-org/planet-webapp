@@ -35,15 +35,64 @@ interface PlantProject {
   geoLongitude: number | null;
   tpo: Tpo;
 }
+export interface GiftContributionProps {
+  created: string;
+  value: number;
+  guid: string;
+  recipient: Recipient;
+  metadata: Metadata;
+  purpose: string;
+  type: string;
+  _type: string;
+  quantity: number;
+}
+
+export interface Recipient {
+  id: number;
+  guid: string;
+  name: any;
+}
+
+export interface Metadata {
+  giver: Giver;
+  project: Project;
+}
+
+export interface Giver {
+  name: string;
+  slug: string;
+  avatar: any;
+}
+
+export interface Project {
+  id: string;
+  name: string;
+  slug: string;
+  country: string;
+  location: string;
+  coordinates: number[];
+  organization: Organization;
+}
+
+export interface Organization {
+  name: string;
+  slug: string;
+}
 
 export type BouquetContribution = Omit<Contributions, 'bouquetContributions'>;
+
+interface Tenant {
+  guid: string;
+  name: string;
+}
 
 export interface Contributions {
   // procedure returns Contributions
   purpose: string | null;
   treeCount: number | null;
   quantity: number | null;
-  plantDate: number | Date;
+  tenant: Tenant;
+  plantDate: number | Date | string;
   contributionType: string;
   bouquetContributions: BouquetContribution[] | undefined;
   plantProject: PlantProject;

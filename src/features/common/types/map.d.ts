@@ -6,11 +6,12 @@ import { PublicUser } from './user';
 
 export interface ClusterMarker {
   geometry: {
-    coordinates: [number, number]
-    type: "Point"
+    coordinates: [number, number];
+    type: 'Point';
   };
   id?: number;
   properties: {
+    created?: number | Date | undefined;
     cluster: boolean;
     contributionType?: string;
     endDate?: undefined | number | Date;
@@ -20,10 +21,10 @@ export interface ClusterMarker {
       image: string;
       location: string | null;
       name: string;
-      tpo : {
-        guid : string;
+      tpo: {
+        guid: string;
         name: string;
-      }
+      };
       unitType: string;
     };
     purpose?: string;
@@ -34,80 +35,78 @@ export interface ClusterMarker {
     point_count: number;
     point_count_abbreviated: number;
     totalTrees: number;
-    quantity?: number
+    quantity?: number;
+    _type: string;
   };
-  type: string
+  type: string;
 }
 export interface MarkerProps {
-   geoJson: Cluster | ClusterMarker
-  }
+  geoJson: Cluster | ClusterMarker;
+}
 
+export interface ClusterMarkerProps {
+  viewport: ViewportProps;
+  mapRef: MutableRefObject<null>;
+}
 
- export  interface ClusterMarkerProps {
-    viewport: ViewportProps;
-    mapRef: MutableRefObject<null>;
-  }
-
-export type Cluster  = (
-    | Supercluster.PointFeature<any>
-    | Supercluster.ClusterFeature<{
-        totalTrees: number;
-      }>
-  )
-
+export type Cluster =
+  | Supercluster.PointFeature<any>
+  | Supercluster.ClusterFeature<{
+      totalTrees: number;
+    }>;
 
 export interface SingleMarkerProps {
-    geoJson: Cluster | ClusterMarker;
-  }
+  geoJson: Cluster | ClusterMarker;
+}
 
-  export interface TestPointProps {
-    quantity: string;
-  }
+export interface TestPointProps {
+  quantity: string;
+}
 
 export interface TestClusterProps {
-    totalTrees: string;
-  }
-  
+  totalTrees: string;
+}
+
 export interface CustomPopupMarkerProps {
   geoJson: Cluster | ClusterMarker;
-  showPopUp: boolean
+  showPopUp: boolean;
 }
-export type Bound = [number, number, number, number]
+export type Bound = [number, number, number, number];
 
 export interface MyContributionsProps {
-    profile: User | PublicUser;
-    token?: string | null
-  }
-  export interface ViewState {
-    width: number;
-    height: number;
-    latitude: number;
-    longitude: number;
-    zoom: number;
-    bearing: number;
-    pitch: number;
-    altitude: number;
-    maxZoom: number;
-    minZoom: number;
-    maxPitch: number;
-    minPitch: number;
-    transitionDuration: number;
-    transitionInterpolator: {
-      propNames: ['longitude', 'latitude', 'zoom', 'bearing', 'pitch'];
-    };
-    transitionInterruption: number;
-  }
-  
-  export interface InteractionState {
-    isDragging: boolean;
-  }
-  
-  export interface ViewportProps {
-    width: string;
-    height: string;
-    latitude: number;
-    longitude: number;
-    zoom: number;
-    viewState?: ViewState | undefined;
-    interactionState?: InteractionState | undefined;
-  }
+  profile: User | PublicUser;
+  token?: string | null;
+}
+export interface ViewState {
+  width: number;
+  height: number;
+  latitude: number;
+  longitude: number;
+  zoom: number;
+  bearing: number;
+  pitch: number;
+  altitude: number;
+  maxZoom: number;
+  minZoom: number;
+  maxPitch: number;
+  minPitch: number;
+  transitionDuration: number;
+  transitionInterpolator: {
+    propNames: ['longitude', 'latitude', 'zoom', 'bearing', 'pitch'];
+  };
+  transitionInterruption: number;
+}
+
+export interface InteractionState {
+  isDragging: boolean;
+}
+
+export interface ViewportProps {
+  width: string;
+  height: string;
+  latitude: number;
+  longitude: number;
+  zoom: number;
+  viewState?: ViewState | undefined;
+  interactionState?: InteractionState | undefined;
+}

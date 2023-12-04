@@ -61,15 +61,17 @@ const ConservationButton = ({
             {conservedArea ? conservedArea : 0}
           </div>
           <div className={myForestStyles.unit}>{'m²'}</div>
-          {conservedArea !== null && conservedArea > 0 && (
-            <div className={myForestStyles.svgContainer}>
-              {isConservedButtonActive ? (
-                <DownWardArrowSvg color={`${light.light}`} />
-              ) : (
-                <ArrowSvg color={`${lightBlueColor}`} />
-              )}
-            </div>
-          )}
+          {conservedArea !== null &&
+            conservedArea !== undefined &&
+            conservedArea > 0 && (
+              <div className={myForestStyles.svgContainer}>
+                {isConservedButtonActive ? (
+                  <DownWardArrowSvg color={`${light.light}`} />
+                ) : (
+                  <ArrowSvg color={`${lightBlueColor}`} />
+                )}
+              </div>
+            )}
         </div>
       </>
     </div>
