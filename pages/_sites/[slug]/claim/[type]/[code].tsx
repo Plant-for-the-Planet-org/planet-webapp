@@ -1,27 +1,34 @@
-// Done
-
 import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
-import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
+import { postAuthenticatedRequest } from '../../../../../src/utils/apiRequests/api';
 import { useTranslation } from 'next-i18next';
-import { GetStaticPaths, GetStaticPropsContext } from 'next';
-import LandingSection from '../../../src/features/common/Layout/LandingSection';
-import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
-import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
+import LandingSection from '../../../../../src/features/common/Layout/LandingSection';
+import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
+import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
 import {
   RedeemFailed,
   SuccessfullyRedeemed,
-} from '../../../src/features/common/RedeemCode';
-import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
+} from '../../../../../src/features/common/RedeemCode';
+import { RedeemedCodeData } from '../../../../../src/features/common/types/redeem';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
-import { useTenant } from '../../../src/features/common/Layout/TenantContext';
+import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
+import {
+  getSubdomainPaths,
+  getTenantConfig,
+} from '../../../../../src/utils/multiTenancy/helpers';
+import { Tenant } from '@planet-sdk/common/build/types/tenant';
 
-function ClaimDonation(): ReactElement {
+interface Props {
+  pageProps: {
+    tenantConfig: Tenant;
+  };
+}
+
+function ClaimDonation({ pageProps }: Props): ReactElement {
   const { t, ready } = useTranslation(['redeem']);
-
   const router = useRouter();
-  const { tenantConfig } = useTenant();
+  const { setTenantConfig } = useTenant();
   const { user, contextLoaded, loginWithRedirect, token, logoutUser } =
     useUserProps();
 
@@ -30,6 +37,12 @@ function ClaimDonation(): ReactElement {
   const [redeemedCodeData, setRedeemedCodeData] = React.useState<
     RedeemedCodeData | undefined
   >(undefined);
+
+  React.useEffect(() => {
+    if (router.isReady) {
+      setTenantConfig(pageProps.tenantConfig);
+    }
+  }, [router.isReady]);
 
   React.useEffect(() => {
     if (
@@ -62,7 +75,7 @@ function ClaimDonation(): ReactElement {
     if (contextLoaded && user) {
       try {
         const res = await postAuthenticatedRequest<RedeemedCodeData>(
-          tenantConfig?.id,
+          undefined,
           `/app/redeem`,
           submitData,
           token,
@@ -133,7 +146,7 @@ function ClaimDonation(): ReactElement {
     }
   }, [user, contextLoaded, ready, router.query.type, router.query.code]);
 
-  return ready && user ? (
+  return pageProps.tenantConfig && ready && user ? (
     <LandingSection>
       <>
         {redeemedCodeData ? (
@@ -158,18 +171,20 @@ function ClaimDonation(): ReactElement {
   );
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export async function getStaticPaths() {
   return {
-    paths: [],
+    paths: await getSubdomainPaths(),
     fallback: 'blocking',
   };
-};
+}
 
-export async function getStaticProps({ locale }: GetStaticPropsContext) {
+export async function getStaticProps(props: any) {
+  const tenantConfig = await getTenantConfig(props.params.slug);
+
   return {
     props: {
       ...(await serverSideTranslations(
-        locale || 'en',
+        props.locale || 'en',
         [
           'bulkCodes',
           'common',
@@ -193,6 +208,7 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
         null,
         ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
       )),
+      tenantConfig,
     },
   };
 }
