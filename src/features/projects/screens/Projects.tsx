@@ -76,21 +76,6 @@ function ProjectsList({
       );
     } else if (type === 'all') {
       return projects;
-    } else if (type === 'donatable') {
-      return projects.filter(
-        (project) =>
-          project.properties.allowDonations === true &&
-          !(
-            project.properties.isApproved === true &&
-            project.properties.isTopProject === true
-          )
-      );
-    } else if (type === 'nonDonatable') {
-      return projects.filter(
-        (project) =>
-          !project.properties.allowDonations &&
-          !(project.properties.isTopProject && project.properties.isApproved)
-      );
     }
   }
 
@@ -152,12 +137,13 @@ function ProjectsList({
 
   const allProjects = React.useMemo(() => {
     if (isProjectListSorted) {
-      const sortedAllProjectArray = [];
-      return sortedAllProjectArray?.concat(
-        getProjects(projects, 'top'),
-        getProjects(projects, 'donatable'),
-        getProjects(projects, 'nonDonatable')
+      const donatableProjects = projects.filter(
+        (project) => project.properties.allowDonations === true
       );
+      const nonDonatableProjects = projects.filter(
+        (project) => project.properties.allowDonations === false
+      );
+      return [...donatableProjects, ...nonDonatableProjects];
     } else {
       return getProjects(projects, 'all');
     }
