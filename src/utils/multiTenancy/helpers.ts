@@ -20,7 +20,7 @@ const DEFAULT_TENANT_DOMAIN = 'https://www1.plant-for-the-planet.org';
 export const getTenantConfigList = async () => {
   try {
     const response = await fetch(
-      `https://${process.env.API_ENDPOINT}/app/tenants?_scope=deployment`
+      `${process.env.API_ENDPOINT}/app/tenants?_scope=deployment`
     );
     const tenants = (await response.json()) as Tenant[];
     return tenants;
