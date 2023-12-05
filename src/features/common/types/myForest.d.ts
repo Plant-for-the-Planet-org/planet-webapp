@@ -50,7 +50,7 @@ export interface GiftContributionProps {
 export interface Recipient {
   id: number;
   guid: string;
-  name: any;
+  name: string | null;
 }
 
 export interface Metadata {
@@ -96,6 +96,7 @@ export interface Contributions {
   contributionType: string;
   bouquetContributions: BouquetContribution[] | undefined;
   plantProject: PlantProject;
+  _type: 'contribution';
 }
 
 interface Properties {

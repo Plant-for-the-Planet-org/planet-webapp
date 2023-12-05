@@ -4,6 +4,44 @@ import { TRPCError } from '@trpc/server';
 import prisma from '../../../../prisma/client';
 import { Purpose } from '../../../utils/constants/myForest';
 import { procedure } from '../../trpc';
+import { Contributions } from '../../../features/common/types/myForest';
+
+function addTypeToGift(
+  giftObjects,
+  projectsWithImage: {
+    guid: string;
+    image: string | null;
+  }[]
+) {
+  return giftObjects.map((giftObject) => {
+    const projectId = giftObject.metadata?.project?.id;
+    const projectImage = projectsWithImage.find(
+      (project) => project.guid === projectId
+    )?.image;
+
+    return {
+      ...giftObject,
+      _type: 'gift',
+      quantity: giftObject.value ? giftObject.value / 100 : 0,
+      metadata: {
+        ...(giftObject?.metadata as object),
+        project: {
+          ...giftObject.metadata?.project,
+          image: giftObject.metadata?.project?.image ?? projectImage,
+        },
+      },
+    };
+  });
+}
+
+function addTypeToContribution(contributionResults) {
+  return contributionResults.map((contribution) => {
+    return {
+      ...contribution,
+      _type: 'contribution',
+    };
+  });
+}
 
 export const contributions = procedure
   .input(
@@ -16,223 +54,237 @@ export const contributions = procedure
     })
   )
   .query(async ({ input: { profileId, limit, cursor, skip, purpose } }) => {
-    const profile = await prisma.profile.findFirst({
-      where: {
-        guid: profileId,
-      },
-    });
+    let data;
+    let nextCursor;
 
-    if (!profile) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'Profile not found',
-      });
-    }
-
-    const _cursor = cursor ? cursor.split(',') : undefined;
-    const contributionsCursor =
-      _cursor?.[0] !== 'undefined' ? _cursor?.[0] : undefined;
-    const giftDataCursor =
-      _cursor?.[1] !== 'undefined' ? _cursor?.[1] : undefined;
-
-    const contributions = await prisma.contribution.findMany({
-      select: {
-        guid: true,
-        purpose: true,
-        treeCount: true,
-        quantity: true,
-        plantDate: true,
-        contributionType: true,
-        created: true,
-        tenant: {
-          select: {
-            guid: true,
-            name: true,
-          },
-        },
-        bouquetContributions: {
-          select: {
-            purpose: true,
-            treeCount: true,
-            quantity: true,
-            plantDate: true,
-            contributionType: true,
-            tenant: {
-              select: {
-                guid: true,
-                name: true,
-              },
-            },
-            plantProject: {
-              select: {
-                guid: true,
-                name: true,
-                image: true,
-                country: true,
-                unit: true,
-                location: true,
-                geoLatitude: true,
-                geoLongitude: true,
-                tpo: true,
-              },
-            },
-          },
-        },
-        plantProject: {
-          select: {
-            guid: true,
-            name: true,
-            image: true,
-            country: true,
-            unit: true,
-            location: true,
-            geoLatitude: true,
-            geoLongitude: true,
-            tpo: true,
-          },
-        },
-        giftTo: true,
-      },
-      where: {
-        profile: {
+    try {
+      const profile = await prisma.profile.findFirst({
+        where: {
           guid: profileId,
         },
-        deletedAt: null,
-        OR: [
-          {
-            contributionType: 'donation',
-            paymentStatus: 'paid',
-            plantProject: {
-              purpose: {
-                in: !purpose
-                  ? ['trees', 'conservation', 'bouquet']
-                  : purpose === Purpose.TREES
-                  ? ['trees', 'bouquet']
-                  : ['conservation', 'bouquet'],
+      });
+
+      if (!profile) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Profile not found',
+        });
+      }
+
+      const _cursor = cursor ? cursor.split(',') : undefined;
+      const contributionsCursor =
+        _cursor?.[0] !== 'undefined' ? _cursor?.[0] : undefined;
+      const giftDataCursor =
+        _cursor?.[1] !== 'undefined' ? _cursor?.[1] : undefined;
+
+      const contributions = await prisma.contribution.findMany({
+        select: {
+          guid: true,
+          purpose: true,
+          treeCount: true,
+          quantity: true,
+          plantDate: true,
+          contributionType: true,
+          created: true,
+          tenant: {
+            select: {
+              guid: true,
+              name: true,
+            },
+          },
+          bouquetContributions: {
+            select: {
+              purpose: true,
+              treeCount: true,
+              quantity: true,
+              plantDate: true,
+              contributionType: true,
+              tenant: {
+                select: {
+                  guid: true,
+                  name: true,
+                },
               },
-              ...(purpose
+              plantProject: {
+                select: {
+                  guid: true,
+                  name: true,
+                  image: true,
+                  country: true,
+                  unit: true,
+                  location: true,
+                  geoLatitude: true,
+                  geoLongitude: true,
+                  tpo: true,
+                },
+              },
+            },
+          },
+          plantProject: {
+            select: {
+              guid: true,
+              name: true,
+              image: true,
+              country: true,
+              unit: true,
+              location: true,
+              geoLatitude: true,
+              geoLongitude: true,
+              tpo: true,
+            },
+          },
+          giftTo: true,
+        },
+        where: {
+          profile: {
+            guid: profileId,
+          },
+          deletedAt: null,
+          OR: [
+            {
+              contributionType: 'donation',
+              paymentStatus: 'paid',
+              plantProject: {
+                purpose: {
+                  in: !purpose
+                    ? ['trees', 'conservation', 'bouquet']
+                    : purpose === Purpose.TREES
+                    ? ['trees', 'bouquet']
+                    : ['conservation', 'bouquet'],
+                },
+                ...(purpose
+                  ? {
+                      OR: [
+                        { bouquetPurpose: purpose },
+                        { bouquetPurpose: null },
+                      ],
+                    }
+                  : {}),
+              },
+              bouquetDonationId: {
+                equals: null,
+              },
+            },
+            {
+              ...(purpose === undefined || purpose === Purpose.TREES
                 ? {
-                    OR: [{ bouquetPurpose: purpose }, { bouquetPurpose: null }],
+                    contributionType: 'planting',
+                    isVerified: 1,
+                    bouquetDonationId: {
+                      equals: null,
+                    },
                   }
                 : {}),
             },
-            bouquetDonationId: {
-              equals: null,
-            },
+          ],
+          created: {
+            lte: contributionsCursor
+              ? new Date(contributionsCursor)
+              : new Date(),
           },
-          {
-            ...(purpose === undefined || purpose === Purpose.TREES
-              ? {
-                  contributionType: 'planting',
-                  isVerified: 1,
-                  bouquetDonationId: {
-                    equals: null,
-                  },
-                }
-              : {}),
-          },
-        ],
-        created: {
-          lte: contributionsCursor ? new Date(contributionsCursor) : new Date(),
         },
-      },
-      orderBy: {
-        created: 'desc',
-      },
-      skip: skip,
-      take: limit + 1,
-    });
-
-    const giftData = await prisma.gift.findMany({
-      select: {
-        created: true,
-        value: true,
-        guid: true,
-        recipient: true,
-        metadata: true,
-        purpose: true,
-        type: true,
-      },
-      where: {
-        recipient: {
-          guid: profileId,
+        orderBy: {
+          created: 'desc',
         },
-        purpose: {
-          equals:
-            purpose === Purpose.TREES ? Purpose.TREES : Purpose.CONSERVATION,
-        },
-        created: {
-          lte: giftDataCursor ? new Date(giftDataCursor) : new Date(),
-        },
-      },
-      orderBy: {
-        created: 'desc',
-      },
-      skip: skip,
-      take: limit + 1,
-    });
-
-    function addTypeToGift(giftObjects: typeof giftData) {
-      return giftObjects.map((giftObject) => {
-        return {
-          ...giftObject,
-          _type: 'gift',
-          quantity: giftObject.value ? giftObject.value / 100 : 0,
-        };
-      });
-    }
-
-    const addTypeToContribution = (contributionResults: typeof contributions) =>
-      contributionResults.map((contribution) => {
-        return {
-          ...contribution,
-          _type: 'contribution',
-        };
+        skip: skip,
+        take: limit + 1,
       });
 
-    const combinedData = [
-      ...addTypeToContribution(contributions),
-      ...addTypeToGift(giftData),
-    ];
+      const giftData = await prisma.gift.findMany({
+        select: {
+          created: true,
+          value: true,
+          guid: true,
+          recipient: true,
+          metadata: true,
+          purpose: true,
+          type: true,
+        },
+        where: {
+          recipient: {
+            guid: profileId,
+          },
+          purpose: {
+            equals:
+              purpose === Purpose.TREES ? Purpose.TREES : Purpose.CONSERVATION,
+          },
+          created: {
+            lte: giftDataCursor ? new Date(giftDataCursor) : new Date(),
+          },
+        },
+        orderBy: {
+          created: 'desc',
+        },
+        skip: skip,
+        take: limit + 1,
+      });
 
-    const sortedData = combinedData.sort(
-      (a, b) => b.created.getTime() - a.created.getTime()
-    );
+      const giftProjectsWithoutImage =
+        giftData.length > 0
+          ? giftData
+              .filter((gift) => !gift.metadata?.project?.image)
+              .map((gift) => gift.metadata?.project?.id)
+          : [];
 
-    const data = sortedData.slice(0, limit);
+      const projectsWithImage = await prisma.project.findMany({
+        select: {
+          guid: true,
+          image: true,
+        },
+        where: {
+          guid: {
+            in:
+              giftProjectsWithoutImage.length > 0
+                ? giftProjectsWithoutImage
+                : [],
+          },
+        },
+      });
 
-    let nextCursor: string | undefined;
+      const combinedData = [
+        ...addTypeToContribution(contributions),
+        ...addTypeToGift(giftData, projectsWithImage),
+      ];
 
-    if (sortedData.length > limit) {
-      const nextItem = sortedData[limit]; // Get the (limit + 1)-th item
-      let nextContributionCursor: Date | undefined;
-      let nextGiftDataCursor: Date | undefined;
+      const sortedData = combinedData.sort(
+        (a, b) => b.created.getTime() - a.created.getTime()
+      );
 
-      // Iterate over the remaining items to find the next cursors
-      for (const item of sortedData.slice(limit)) {
-        if (item._type === 'contribution' && !nextContributionCursor) {
-          nextContributionCursor = item.created;
-        } else if (item._type === 'gift' && !nextGiftDataCursor) {
-          nextGiftDataCursor = item.created;
+      data = sortedData.slice(0, limit);
+
+      if (sortedData.length > limit) {
+        const nextItem = sortedData[limit]; // Get the (limit + 1)-th item
+        let nextContributionCursor: Date | undefined;
+        let nextGiftDataCursor: Date | undefined;
+
+        // Iterate over the remaining items to find the next cursors
+        for (const item of sortedData.slice(limit)) {
+          if (item._type === 'contribution' && !nextContributionCursor) {
+            nextContributionCursor = item.created;
+          } else if (item._type === 'gift' && !nextGiftDataCursor) {
+            nextGiftDataCursor = item.created;
+          }
+
+          // Break if both cursors are found
+          if (nextContributionCursor && nextGiftDataCursor) {
+            break;
+          }
         }
 
-        // Break if both cursors are found
-        if (nextContributionCursor && nextGiftDataCursor) {
-          break;
+        // If only one type of data reached the limit, set the cursor for the other type
+        if (!nextContributionCursor) {
+          nextContributionCursor =
+            nextItem._type === 'contribution' ? nextItem.created : undefined;
         }
-      }
+        if (!nextGiftDataCursor) {
+          nextGiftDataCursor =
+            nextItem._type === 'gift' ? nextItem.created : undefined;
+        }
 
-      // If only one type of data reached the limit, set the cursor for the other type
-      if (!nextContributionCursor) {
-        nextContributionCursor =
-          nextItem._type === 'contribution' ? nextItem.created : undefined;
+        nextCursor = `${nextContributionCursor?.toISOString()},${nextGiftDataCursor?.toISOString()}`;
       }
-      if (!nextGiftDataCursor) {
-        nextGiftDataCursor =
-          nextItem._type === 'gift' ? nextItem.created : undefined;
-      }
-
-      nextCursor = `${nextContributionCursor?.toISOString()},${nextGiftDataCursor?.toISOString()}`;
+    } catch (err) {
+      console.log(err);
     }
 
     return {
