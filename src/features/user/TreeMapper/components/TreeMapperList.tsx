@@ -6,15 +6,19 @@ import { useTranslation } from 'next-i18next';
 import {
   SamplePlantLocation,
   PlantLocation as PlantLocationType,
+  PlantLocationSingle,
+  PlantLocationMulti,
 } from '../../../common/types/plantLocation';
 import { Links } from '../../../common/types/payments';
 import PlantLocation from './PlantLocation';
 import { SetState } from '../../../common/types/common';
 
 interface Props {
-  selectedLocation: PlantLocationType | SamplePlantLocation | null;
-  setselectedLocation: SetState<PlantLocationType | SamplePlantLocation | null>;
-  plantLocations: PlantLocationType[] | SamplePlantLocation[] | null;
+  selectedLocation: PlantLocation | SamplePlantLocation | null;
+  setselectedLocation: SetState<
+    PlantLocationSingle | PlantLocationMulti | null
+  >;
+  plantLocations: PlantLocationType[] | null;
   isDataLoading: boolean;
   location: PlantLocationType | SamplePlantLocation;
   fetchTreemapperData: Function;

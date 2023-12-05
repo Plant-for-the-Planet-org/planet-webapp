@@ -12,7 +12,7 @@ import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
 import {
   ExtendedScopePlantLocations,
-  PlantLocation,
+  PlantLocation as PlantLocationType,
   PlantLocationMulti,
   PlantLocationSingle,
   SamplePlantLocation,
@@ -29,9 +29,9 @@ function TreeMapper(): ReactElement {
   const { t } = useTranslation(['treemapper']);
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
-  const [plantLocations, setPlantLocations] = React.useState<PlantLocation[]>(
-    []
-  );
+  const [plantLocations, setPlantLocations] = React.useState<
+    PlantLocationType[]
+  >([]);
   const [selectedLocation, setselectedLocation] = React.useState<
     PlantLocationSingle | PlantLocationMulti | null
   >(null);
@@ -64,7 +64,8 @@ function TreeMapper(): ReactElement {
                   if (
                     Object.prototype.hasOwnProperty.call(newPlantLocations, key)
                   ) {
-                    const item = newPlantLocations[key];
+                    const item = newPlantLocations[key] as PlantLocationMulti &
+                      SamplePlantLocation;
                     if (item.type === 'sample') {
                       if (item.parent === location.id) {
                         location.sampleTrees.push(item);
@@ -75,7 +76,10 @@ function TreeMapper(): ReactElement {
               }
             }
           }
-          setPlantLocations([...plantLocations, ...newPlantLocations]);
+          setPlantLocations([
+            ...plantLocations,
+            ...newPlantLocations,
+          ] as PlantLocationType[]);
         }
       } catch (err) {
         setErrors(handleError(err as APIError));
@@ -96,7 +100,7 @@ function TreeMapper(): ReactElement {
         if (response?.items) {
           const plantLocations = response.items;
           if (plantLocations?.length === 0) {
-            setPlantLocations(null);
+            setPlantLocations([]);
           } else {
             for (const itr in plantLocations) {
               if (Object.prototype.hasOwnProperty.call(plantLocations, itr)) {
@@ -107,7 +111,8 @@ function TreeMapper(): ReactElement {
                     if (
                       Object.prototype.hasOwnProperty.call(plantLocations, key)
                     ) {
-                      const item = plantLocations[key];
+                      const item = plantLocations[key] as PlantLocationMulti &
+                        SamplePlantLocation;
                       if (item.type === 'sample') {
                         if (item.parent === location.id) {
                           location.sampleTrees.push(item);
@@ -118,7 +123,7 @@ function TreeMapper(): ReactElement {
                 }
               }
             }
-            setPlantLocations(plantLocations);
+            setPlantLocations(plantLocations as PlantLocationType[]);
             setLinks(response._links);
           }
         }

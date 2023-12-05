@@ -38,9 +38,8 @@ export interface PlantLocationBase {
   status: string | null; // currently always null. Should we do something here?
   statusReason: string | null; // currently always null. Should we do something here?
 }
-type Type = 'single' | 'multi' | 'sample';
 export interface PlantLocationSingle extends PlantLocationBase {
-  type: Type;
+  type: PlantLocationType;
   scientificName: string | null;
   scientificSpecies: string | null;
   tag: string | null;
@@ -51,7 +50,7 @@ export interface PlantLocationSingle extends PlantLocationBase {
 }
 
 export interface PlantLocationMulti extends PlantLocationBase {
-  type: Type;
+  type: PlantLocationType;
   nextMeasurementDate: DateString | null;
   plantDateStart: DateString | null;
   plantDateEnd: DateString | null;

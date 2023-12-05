@@ -127,7 +127,8 @@ export default function MyTreesMap({
   // };
 
   const zoomToLocation = (geometry: turf.AllGeoJSON) => {
-    if (viewport.width && viewport.height) {
+    console.log(geometry, '==');
+    if (viewport.width && viewport.height && geometry) {
       const bbox = turf.bbox(geometry);
       const { longitude, latitude, zoom } = new WebMercatorViewport(
         viewport
@@ -175,6 +176,7 @@ export default function MyTreesMap({
   }, []);
 
   React.useEffect(() => {
+    console.log(locations, '==');
     if (locations) {
       const features = [];
       const ids = [];
@@ -199,6 +201,7 @@ export default function MyTreesMap({
         features,
       });
       setPlIds(ids);
+      console.log(locations[0]?.geometry, '==1');
       zoomToLocation(locations[0]?.geometry);
     } else {
       setPlIds(null);
@@ -208,6 +211,7 @@ export default function MyTreesMap({
 
   React.useEffect(() => {
     if (selectedLocation) {
+      console.log(selectedLocation.geometry, '==2');
       zoomToLocation(selectedLocation.geometry);
     }
   }, [geoJson, selectedLocation]);
