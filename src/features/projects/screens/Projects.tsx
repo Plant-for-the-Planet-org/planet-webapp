@@ -17,6 +17,7 @@ import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
 import { TENANT_ID } from '../../../utils/constants/environment';
+import { Tenants } from '@planet-sdk/common';
 
 interface Props {
   projects: MapProject[];
@@ -76,6 +77,14 @@ function ProjectsList({
       );
     } else if (type === 'all') {
       return projects;
+    } else if (type === 'all_sorted') {
+      const donatableProjects = projects.filter(
+        (project) => project.properties.allowDonations === true
+      );
+      const nonDonatableProjects = projects.filter(
+        (project) => project.properties.allowDonations === false
+      );
+      return [...donatableProjects, ...nonDonatableProjects];
     }
   }
 
@@ -136,14 +145,8 @@ function ProjectsList({
   }
 
   const allProjects = React.useMemo(() => {
-    if (isProjectListSorted) {
-      const donatableProjects = projects.filter(
-        (project) => project.properties.allowDonations === true
-      );
-      const nonDonatableProjects = projects.filter(
-        (project) => project.properties.allowDonations === false
-      );
-      return [...donatableProjects, ...nonDonatableProjects];
+    if (!isProjectListSorted) {
+      return getProjects(projects, 'all_sorted');
     } else {
       return getProjects(projects, 'all');
     }
@@ -160,7 +163,7 @@ function ProjectsList({
   React.useEffect(() => {
     async function setListOrder() {
       try {
-        const res = await getRequest(`/app/tenants/${TENANT_ID}`);
+        const res = await getRequest<Tenants>(`/app/tenants/${TENANT_ID}`);
         setisProjectListSorted(res.topProjectsOnly);
       } catch (err) {
         setErrors(handleError(err as APIError));
