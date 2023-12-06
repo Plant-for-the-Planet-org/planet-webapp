@@ -282,7 +282,8 @@
   color: $primaryFontColor;
 }
 
-.issueButtonMobileContainer {
+// Tax receipt code - commented out. Add back while enabling feature.
+/* .issueButtonMobileContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -306,7 +307,7 @@
   &:hover {
     color: $primaryColor;
   }
-}
+} */
 
 .filterButton.selected {
   border: none;
@@ -729,9 +730,10 @@
     display: none;
   }
 
-  .issueButtonMobileContainer {
+  // Tax receipt code - commented out. Add back while enabling feature.
+  /* .issueButtonMobileContainer {
     display: none;
-  }
+  } */
 
   .modal {
     display: none;

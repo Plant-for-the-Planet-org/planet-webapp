@@ -1,17 +1,18 @@
-import React, { ReactElement, useContext, useEffect } from 'react';
-import { Trans, useTranslation } from 'next-i18next';
+import React, { ReactElement, useEffect } from 'react';
+import { useTranslation } from 'next-i18next';
 import TransactionListLoader from '../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../public/assets/images/icons/TransactionsNotFound';
 import AccountRecord from './components/AccountRecord';
 import styles from './AccountHistory.module.scss';
 import { useRouter } from 'next/router';
-import { postAuthenticatedRequest } from '../../../utils/apiRequests/api';
+// Comments Issue Tax Receipt code
+/* import { postAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { CircularProgress } from '@mui/material';
 import CustomSnackbar from '../../common/CustomSnackbar';
 import MuiButton from '../../common/InputTypes/MuiButton';
-import { APIError, handleError } from '@planet-sdk/common';
+import { APIError, handleError } from '@planet-sdk/common'; */
 import { useProjectProps } from '../../common/Layout/ProjectPropsContext';
 import { Filters, PaymentHistory } from '../../common/types/payments';
 import Grid from '@mui/material/Grid';
@@ -39,12 +40,14 @@ export default function History({
     null
   );
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const { token, logoutUser } = useUserProps();
-  const { setErrors } = useContext(ErrorHandlingContext);
+  // Comments Issue Tax Receipt code */
+  /* const { token, logoutUser } = useUserProps();
+  const { setErrors } = useContext(ErrorHandlingContext); */
   const { isMobile } = useProjectProps();
   const router = useRouter();
-  const [open, setOpen] = React.useState(false);
-  const [isLoading, setLoading] = React.useState(false);
+  // Comments Issue Tax Receipt code
+  /* const [open, setOpen] = React.useState(false);
+  const [isLoading, setLoading] = React.useState(false); */
 
   const handleRecordToggle = (index: number | undefined) => {
     if (selectedRecord === index || index === undefined) {
@@ -74,7 +77,10 @@ export default function History({
     }
   }, [paymentHistory]);
 
-  const handleIssueReceipts = async () => {
+  {
+    /* Comments Issue Tax Receipt code */
+  }
+  /* const handleIssueReceipts = async () => {
     setLoading(true);
     try {
       const res = await postAuthenticatedRequest<
@@ -114,7 +120,7 @@ export default function History({
     }
 
     setOpen(false);
-  };
+  };*/
 
   return (
     <div className={styles.pageContainer}>
@@ -135,7 +141,8 @@ export default function History({
               );
             })}
         </div>
-        <div className={`${styles.issueButtonMobileContainer}`}>
+        {/* Comments Issue Tax Receipt code */}
+        {/* <div className={`${styles.issueButtonMobileContainer}`}>
           <div>
             <p>
               <Trans i18nKey="me:taxReceiptsDescription">
@@ -161,7 +168,7 @@ export default function History({
               t('me:issueReceipts')
             )}
           </MuiButton>
-        </div>
+        </div> */}
       </Grid>
       <Grid item style={{ width: '100%' }}>
         <MembershipCta placement="top" />
@@ -232,7 +239,8 @@ export default function History({
                   })}
               </div>
             </div>
-            <div className={styles.issueButtonContainer}>
+            {/* Comments Issue Tax Receipt code */}
+            {/* <div className={styles.issueButtonContainer}>
               <div>
                 <p>
                   <Trans i18nKey="me:taxReceiptsDescription">
@@ -258,7 +266,7 @@ export default function History({
                   t('me:issueReceipts')
                 )}
               </MuiButton>
-            </div>
+            </div> */}
             <MembershipCta placement="right" />
           </div>
         </div>
@@ -273,11 +281,12 @@ export default function History({
             />
           )}
 
-        <CustomSnackbar
+        {/* Comments Issue Tax Receipt code */}
+        {/* <CustomSnackbar
           snackbarText={t('me:taxReceiptsSuccess')}
           isVisible={open}
           handleClose={handleClose}
-        />
+        /> */}
       </Grid>
     </div>
   );
