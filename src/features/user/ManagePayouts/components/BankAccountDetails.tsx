@@ -48,7 +48,7 @@ interface BankAccountDetailsProps {
 const BankAccountDetails = ({
   account,
 }: BankAccountDetailsProps): ReactElement => {
-  const { t, i18n } = useTranslation(['managePayouts', 'country']);
+  const { t, i18n } = useTranslation('managePayouts');
 
   const renderAccountTitle = () => {
     const { currency } = account;
@@ -92,12 +92,6 @@ const BankAccountDetails = ({
           <div className="detailInfo">{account.bankName}</div>
         </Grid>
         <Grid item component={SingleDetail} xs={12} md={6}>
-          <h3 className="detailTitle">{t('labels.bankCountry')}</h3>
-          <div className="detailInfo">
-            {t(`country:${account.bankCountry.toLowerCase()}`)}
-          </div>
-        </Grid>
-        <Grid item component={SingleDetail} xs={12}>
           <h3 className="detailTitle">{t('labels.bankAddress')}</h3>
           <div className="detailInfo">{account.bankAddress}</div>
         </Grid>

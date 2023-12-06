@@ -22,7 +22,6 @@
     "payoutMinAmount": "Minimum Payout Amount",
     "bankName": "Bank Name",
     "bankAddress": "Bank Address",
-    "bankCountry": "Bank Country",
     "holderName": "Name of Account Holder",
     "holderAddress": "Address of Account Holder",
     "remarks": "Additional Details",
