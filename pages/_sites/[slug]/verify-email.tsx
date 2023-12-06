@@ -4,7 +4,7 @@ import LandingSection from '../../../src/features/common/Layout/LandingSection';
 import VerifyEmailComponent from '../../../src/features/common/VerifyEmail/VerifyEmail';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import {
-  getSubdomainPaths,
+  constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../src/utils/multiTenancy/helpers';
 import { useRouter } from 'next/router';
@@ -41,7 +41,7 @@ export default function VerifyEmail({ pageProps }: Props): ReactElement {
 
 export async function getStaticPaths() {
   return {
-    paths: await getSubdomainPaths(),
+    paths: await constructPathsForTenantSlug(),
     fallback: 'blocking',
   };
 }

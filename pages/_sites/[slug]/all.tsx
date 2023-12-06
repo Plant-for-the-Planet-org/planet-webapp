@@ -13,7 +13,7 @@ import { useTenant } from '../../../src/features/common/Layout/TenantContext';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { useRouter } from 'next/router';
 import {
-  getSubdomainPaths,
+  constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../src/utils/multiTenancy/helpers';
 
@@ -110,7 +110,7 @@ export default function Home({ initialized, pageProps }: Props) {
 
 export async function getStaticPaths() {
   return {
-    paths: await getSubdomainPaths(),
+    paths: await constructPathsForTenantSlug(),
     fallback: 'blocking',
   };
 }

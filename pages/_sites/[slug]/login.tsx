@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import {
-  getSubdomainPaths,
+  constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../src/utils/multiTenancy/helpers';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
@@ -80,7 +80,7 @@ export default function Login({ pageProps }: Props): ReactElement {
 
 export async function getStaticPaths() {
   return {
-    paths: await getSubdomainPaths(),
+    paths: await constructPathsForTenantSlug(),
     fallback: 'blocking',
   };
 }

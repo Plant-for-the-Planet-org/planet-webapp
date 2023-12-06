@@ -22,7 +22,7 @@ import { SetState } from '../../../src/features/common/types/common';
 import { PlantLocation } from '../../../src/features/common/types/plantLocation';
 import { useTenant } from '../../../src/features/common/Layout/TenantContext';
 import {
-  getSubdomainPaths,
+  constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../src/utils/multiTenancy/helpers';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
@@ -205,8 +205,19 @@ export default function Donate({
 }
 
 export async function getStaticPaths() {
+  const subDomainPaths = await constructPathsForTenantSlug();
+
+  const paths = subDomainPaths.map((path) => {
+    return {
+      params: {
+        slug: path.params.slug,
+        p: '',
+      },
+    };
+  });
+
   return {
-    paths: await getSubdomainPaths(),
+    paths: paths,
     fallback: 'blocking',
   };
 }

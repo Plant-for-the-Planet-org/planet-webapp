@@ -14,7 +14,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import {
-  getSubdomainPaths,
+  constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
@@ -172,8 +172,20 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
 }
 
 export async function getStaticPaths() {
+  const subDomainPaths = await constructPathsForTenantSlug();
+
+  const paths = subDomainPaths.map((path) => {
+    return {
+      params: {
+        slug: path.params.slug,
+        type: '',
+        code: '',
+      },
+    };
+  });
+
   return {
-    paths: await getSubdomainPaths(),
+    paths: paths,
     fallback: 'blocking',
   };
 }

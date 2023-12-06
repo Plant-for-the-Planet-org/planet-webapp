@@ -44,12 +44,12 @@ export async function getHostnameDataBySubdomain(subdomain: string) {
  * Returns the paths for `getStaticPaths` based on the subdomain of every
  * available hostname.
  */
-export async function getSubdomainPaths() {
+export async function constructPathsForTenantSlug() {
   const tenants = (await getTenantConfigList()) as Tenant[];
 
   // build paths for each of the sites
   return tenants.map((item) => {
-    return { params: { site: item.config.slug } };
+    return { params: { slug: item.config.slug } };
   });
 }
 

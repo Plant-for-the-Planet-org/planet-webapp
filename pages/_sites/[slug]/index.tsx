@@ -17,7 +17,7 @@ import { handleError, APIError } from '@planet-sdk/common';
 import { SetState } from '../../../src/features/common/types/common';
 import { MapProject } from '../../../src/features/common/types/ProjectPropsContextInterface';
 import {
-  getSubdomainPaths,
+  constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../src/utils/multiTenancy/helpers';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
@@ -176,7 +176,7 @@ export default function Donate({
 
 export async function getStaticPaths() {
   return {
-    paths: await getSubdomainPaths(),
+    paths: await constructPathsForTenantSlug(),
     fallback: 'blocking',
   };
 }

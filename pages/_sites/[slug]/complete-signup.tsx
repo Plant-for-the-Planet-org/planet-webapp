@@ -3,7 +3,7 @@ import CompleteSignup from '../../../src/features/user/CompleteSignup';
 import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import {
-  getSubdomainPaths,
+  constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../src/utils/multiTenancy/helpers';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
@@ -17,15 +17,14 @@ interface Props {
 }
 
 export default function UserProfile({ pageProps }: Props) {
+  const router = useRouter();
+  const { setTenantConfig } = useTenant();
 
-    const router = useRouter();
-    const { setTenantConfig } = useTenant();
-
-    React.useEffect(() => {
-        if (router.isReady) {
-          setTenantConfig(pageProps.tenantConfig);
-        }
-      }, [router.isReady]);
+  React.useEffect(() => {
+    if (router.isReady) {
+      setTenantConfig(pageProps.tenantConfig);
+    }
+  }, [router.isReady]);
 
   return pageProps.tenantConfig ? (
     <>
@@ -41,7 +40,7 @@ export default function UserProfile({ pageProps }: Props) {
 
 export async function getStaticPaths() {
   return {
-    paths: await getSubdomainPaths(),
+    paths: await constructPathsForTenantSlug(),
     fallback: 'blocking',
   };
 }
