@@ -68,6 +68,7 @@ export interface Project {
   id: string;
   name: string;
   slug: string;
+  image: string;
   country: string;
   location: string;
   coordinates: number[];

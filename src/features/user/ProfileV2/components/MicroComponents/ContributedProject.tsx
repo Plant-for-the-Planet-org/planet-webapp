@@ -17,7 +17,10 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
   return (
     <div className={myForestStyles.donationDetail}>
       <ProjectImage
-        imageUniqueKey={(projectInfo as Contributions)?.plantProject?.image}
+        imageUniqueKey={
+          (projectInfo as Contributions)?.plantProject?.image ||
+          (projectInfo as GiftContributionProps)?.metadata?.project?.image
+        }
         numberOfTreesPlanted={(projectInfo as Contributions)?.treeCount}
       />
       <div className={myForestStyles.projectDetailContainer}>

@@ -10,7 +10,7 @@ import ConservProjectContributions from '../ProjectDetails/ConservProjectContrib
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { Purpose } from '../../../../../utils/constants/myForest';
 import { ContributionData } from '../../../../common/types/myForest';
-import { StatsQueryResult } from '../../../../common/types/myForest';
+import { StatsResult } from '../../../../common/types/myForest';
 import { MyContributionsProps } from '../../../../common/types/map';
 import MyContributionCustomButton from '../MicroComponents/CustomButton';
 import { SetState } from '../../../../common/types/common';
@@ -45,7 +45,7 @@ export default function MyContributions({
   const [projectsForAreaConservation, setProjectsForAreaConservation] =
     useState<ContributionData | null>(null);
   const [otherDonationInfo, setOthercontributionInfo] = useState<
-    StatsQueryResult | undefined
+    StatsResult | undefined
   >(undefined);
 
   const [page, setPage] = useState(0);
@@ -195,7 +195,7 @@ export default function MyContributions({
   }, [_treePlantedGeoJsonData.data]);
 
   useEffect(() => {
-    _updateStateWithTrpcData<StatsQueryResult | undefined>(
+    _updateStateWithTrpcData<StatsResult | undefined>(
       _detailInfo,
       setOthercontributionInfo
     );
