@@ -12,6 +12,7 @@ import {
   ContributionsGeoJsonQueryResult,
   GiftsGeoJsonQueryResult,
 } from '../../../features/common/types/myForest';
+import { Feature, Point } from 'geojson';
 
 /**
  *
@@ -42,6 +43,15 @@ enum ComparisonType {
   AFTER = 'after',
 }
 
+/**
+ * Compare two dates and return the date that is before or after the other date, depending on the comparisonType
+ *
+ * @param {Date} date1 - Date to compare
+ * @param {Date} date2 - Date to compare
+ * @param {ComparisonType} comparisonType - Comparison type to use for comparison (before or after)
+ *
+ * @returns {Date} - Date that is before or after the other date, depending on the comparisonType
+ */
 const compareDate = (
   date1: Date,
   date2: Date,
@@ -59,10 +69,17 @@ const compareDate = (
   return date1 || date2;
 };
 
-const mergeFeaturesWithSameCoordinates = (features: any) => {
+/**
+ *  Merge features with same coordinates
+ *
+ * @param {Feature[]} features - List of features to merge with same coordinates
+ *
+ * @returns {Feature[]} features - List of features with merged features with same coordinates
+ */
+const mergeFeaturesWithSameCoordinates = (features: Feature[]): Feature[] => {
   const mergedFeaturesMap = new Map();
-  features.forEach((feature: any) => {
-    const key = JSON.stringify(feature.geometry.coordinates);
+  features.forEach((feature: Feature) => {
+    const key = JSON.stringify((feature.geometry as Point).coordinates);
     if (!mergedFeaturesMap.has(key)) {
       mergedFeaturesMap.set(key, feature);
     } else {
@@ -73,15 +90,15 @@ const mergeFeaturesWithSameCoordinates = (features: any) => {
         ...feature.properties,
         quantity:
           (parseInt(existingFeature.properties.quantity) || 0) +
-          (parseInt(feature.properties.quantity) || 0),
+          (parseInt(feature.properties?.quantity) || 0),
         startDate: compareDate(
           existingFeature.properties.startDate,
-          feature.properties.created,
+          feature.properties?.created,
           ComparisonType.BEFORE
         ),
         endDate: compareDate(
           existingFeature.properties.endDate,
-          feature.properties.created,
+          feature.properties?.created,
           ComparisonType.AFTER
         ),
         _type: 'merged_contribution_and_gift',
@@ -194,7 +211,7 @@ export const contributionsGeoJson = procedure
           coordinates: getCoordinates(contribution),
         },
       };
-    });
+    }) as Feature[];
 
     const gifts = giftData.map((gift) => {
       return {
@@ -213,7 +230,7 @@ export const contributionsGeoJson = procedure
           coordinates: gift.metadata.project.coordinates,
         },
       };
-    });
+    }) as Feature[];
 
     const mergedFeatures = mergeFeaturesWithSameCoordinates([
       ...contributions,
