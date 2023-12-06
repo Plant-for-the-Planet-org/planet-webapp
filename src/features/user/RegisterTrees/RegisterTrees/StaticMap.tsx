@@ -5,6 +5,7 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import WebMercatorViewport from '@math.gl/web-mercator';
 import styles from '../RegisterModal.module.scss';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
+import { Polygon, Point } from 'geojson';
 
 const Map = ReactMapboxGl({
   interactive: false,
@@ -18,6 +19,7 @@ interface Props {
 }
 
 export default function StaticMap({ geoJson }: Props): ReactElement {
+  console.log(geoJson, '==');
   const defaultMapCenter: [number, number] = [-28.5, 36.96];
   const defaultZoom = 1.4;
   const [viewport, setViewPort] = React.useState({
@@ -41,7 +43,7 @@ export default function StaticMap({ geoJson }: Props): ReactElement {
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
-    promise.then((style: any) => {
+    promise.then((style) => {
       if (style) {
         setStyle(style);
       }

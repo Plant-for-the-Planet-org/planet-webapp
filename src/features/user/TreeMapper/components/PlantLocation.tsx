@@ -116,7 +116,7 @@ function PlantLocation({
         </div>
       </div>
 
-      {index !== (locations as PlantLocation[])?.length - 1 && (
+      {index !== (locations as PlantLocationType[])?.length - 1 && (
         <div className={styles.divider} />
       )}
     </div>

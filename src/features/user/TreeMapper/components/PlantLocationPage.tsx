@@ -57,7 +57,7 @@ export function LocationDetails({
     SampleTreeImageProps[]
   >([]);
 
-  const text = `${location?.deviceLocation?.coordinates.map((coord: any) => {
+  const text = `${location?.deviceLocation?.coordinates.map((coord) => {
     return getFormattedNumber(i18n.language, Number(coord));
   })}`;
 
@@ -212,7 +212,7 @@ export function LocationDetails({
             <div className={styles.value}>
               <span>
                 {(location as PlantLocationMulti)?.plantedSpecies?.map(
-                  (species: any) => {
+                  (species) => {
                     return (
                       <p key={species.id}>
                         {species.treeCount}{' '}

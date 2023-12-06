@@ -14,13 +14,13 @@ import PlantLocation from './PlantLocation';
 import { SetState } from '../../../common/types/common';
 
 interface Props {
-  selectedLocation: PlantLocation | SamplePlantLocation | null;
+  selectedLocation: PlantLocationSingle | PlantLocationMulti | null;
   setselectedLocation: SetState<
     PlantLocationSingle | PlantLocationMulti | null
   >;
-  plantLocations: PlantLocationType[] | null;
+  plantLocations: PlantLocationType[];
   isDataLoading: boolean;
-  location: PlantLocationType | SamplePlantLocation;
+  location: PlantLocationSingle | PlantLocationMulti | null;
   fetchTreemapperData: Function;
   links: Links | undefined;
 }
@@ -35,7 +35,7 @@ export default function TreeMapperList({
   links,
 }: Props): ReactElement {
   const { t } = useTranslation('treemapper');
-
+  console.log(location, '==');
   return (
     <div
       className={`${location ? styles.hideOnMobile : ''} ${
