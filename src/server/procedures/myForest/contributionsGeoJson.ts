@@ -37,6 +37,63 @@ const getCoordinates = (contribution: ContributionsGeoJsonQueryResult) => {
   } else return [contribution.geoLongitude, contribution.geoLatitude];
 };
 
+enum ComparisonType {
+  BEFORE = 'before',
+  AFTER = 'after',
+}
+
+const compareDate = (
+  date1: Date,
+  date2: Date,
+  comparisonType: ComparisonType
+) => {
+  if (date1 && date2) {
+    return comparisonType === ComparisonType.BEFORE
+      ? new Date(date1) < new Date(date2)
+        ? date1
+        : date2
+      : new Date(date1) > new Date(date2)
+      ? date1
+      : date2;
+  }
+  return date1 || date2;
+};
+
+const mergeFeaturesWithSameCoordinates = (features: any) => {
+  const mergedFeaturesMap = new Map();
+  features.forEach((feature: any) => {
+    const key = JSON.stringify(feature.geometry.coordinates);
+    if (!mergedFeaturesMap.has(key)) {
+      mergedFeaturesMap.set(key, feature);
+    } else {
+      // Merge properties, including quantity
+      const existingFeature = mergedFeaturesMap.get(key);
+      existingFeature.properties = {
+        ...existingFeature.properties,
+        ...feature.properties,
+        quantity:
+          (parseInt(existingFeature.properties.quantity) || 0) +
+          (parseInt(feature.properties.quantity) || 0),
+        startDate: compareDate(
+          existingFeature.properties.startDate,
+          feature.properties.created,
+          ComparisonType.BEFORE
+        ),
+        endDate: compareDate(
+          existingFeature.properties.endDate,
+          feature.properties.created,
+          ComparisonType.AFTER
+        ),
+        _type: 'merged_contribution_and_gift',
+      };
+
+      delete existingFeature.properties.created;
+    }
+  });
+
+  return Array.from(mergedFeaturesMap.values());
+};
+
 export const contributionsGeoJson = procedure
   .input(
     z.object({
@@ -158,5 +215,10 @@ export const contributionsGeoJson = procedure
       };
     });
 
-    return [...contributions, ...gifts];
+    const mergedFeatures = mergeFeaturesWithSameCoordinates([
+      ...contributions,
+      ...gifts,
+    ]);
+
+    return mergedFeatures;
   });
