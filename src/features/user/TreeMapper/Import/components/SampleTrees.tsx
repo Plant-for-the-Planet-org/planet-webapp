@@ -96,12 +96,12 @@ export default function SampleTrees({
       reader.onload = (event) => {
         const csv = event.target?.result;
         if (typeof csv !== 'string') return;
-        Papa.parse(csv, {
+        Papa.parse<SampleTree>(csv, {
           header: true,
           complete: (results) => {
             const parsedHeaders = results.meta.fields || [];
-            const resultsData = results.data as SampleTree[];
             const headerValidity = checkHeaderValidity(parsedHeaders);
+            const resultsData = results.data as SampleTree[];
             if (headerValidity.isValid) {
               parsedHeaders.length > 7
                 ? setHasIgnoredColumns(true)
