@@ -2,7 +2,6 @@ import { Popup } from 'react-map-gl';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { CustomPopupMarkerProps } from '../../../../common/types/map';
-import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { InfoInthePopUp } from '../MicroComponents/PopUp';
 
 const CustomPopupMarker = ({ geoJson, showPopUp }: CustomPopupMarkerProps) => {

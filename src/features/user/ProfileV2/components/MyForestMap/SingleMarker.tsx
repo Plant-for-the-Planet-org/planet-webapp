@@ -1,7 +1,6 @@
 import { Marker } from 'react-map-gl';
 import { useState, ReactElement } from 'react';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
-import { useTranslation } from 'next-i18next';
 import { SingleMarkerProps } from '../../../../common/types/map';
 import CustomPopupMarker from './CustomPopupMarker';
 import SingleMarkerSvg from '../MicroComponents/SingleMarkerSvg';
