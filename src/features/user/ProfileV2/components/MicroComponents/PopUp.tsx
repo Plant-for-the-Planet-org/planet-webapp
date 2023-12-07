@@ -55,20 +55,27 @@ interface DateInThePopUpProps {
   isDate: number;
   dateOfGift: Date | number;
   dateOfDonation: undefined | number | Date;
+  endDate: string;
+  isSingleContribution: boolean;
 }
 export const DateInThePopUp = ({
   isDate,
   dateOfGift,
   dateOfDonation,
+  endDate,
+  isSingleContribution,
 }: DateInThePopUpProps) => {
-  const { t } = useTranslation(['me']);
   return (
     <>
-      {isDate && (
-        <time className={MyForestMapStyle.popUpDate}>
-          {formatDate(dateOfDonation || dateOfGift)}
-        </time>
-      )}
+      {isDate &&
+        (isSingleContribution ? (
+          <time>{formatDate(dateOfDonation || dateOfGift)}</time>
+        ) : (
+          <time className={MyForestMapStyle.popUpDate}>
+            {formatDate(dateOfDonation || dateOfGift)} -{' '}
+            {formatDate(endDate as string)}
+          </time>
+        ))}
     </>
   );
 };
@@ -79,7 +86,13 @@ interface InfoInthePopUpProps {
 
 export const InfoInthePopUp = ({ geoJson }: InfoInthePopUpProps) => {
   return (
-    <div className={MyForestMapStyle.popUpContainer}>
+    <div
+      className={
+        geoJson.properties.totalContribution > 1
+          ? MyForestMapStyle.popUpContainerLarge
+          : MyForestMapStyle.popUpContainer
+      }
+    >
       <div className={MyForestMapStyle.popUp}>
         <PopUpLabel
           isConservation={geoJson.properties?.purpose === 'conservation'}
@@ -104,6 +117,15 @@ export const InfoInthePopUp = ({ geoJson }: InfoInthePopUpProps) => {
           }
           dateOfGift={geoJson?.properties?.created}
           dateOfDonation={geoJson?.properties?.startDate}
+          endDate={
+            geoJson?.properties?.endDate
+              ? geoJson?.properties?.endDate
+              : undefined
+          }
+          isSingleContribution={
+            geoJson?.properties?.totalContribution == 1 ||
+            geoJson?.properties?.totalContribution == 0
+          }
         />
       </div>
     </div>

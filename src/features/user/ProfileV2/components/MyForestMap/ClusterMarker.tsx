@@ -19,7 +19,7 @@ export const TreePlantedClusterMarker = ({
   const [showPopUp, setShowPopUp] = useState(false);
   return ready ? (
     <>
-      {geoJson.id === undefined && (
+      {geoJson?.properties?.totalContribution > 1 && (
         <CustomPopupMarker geoJson={geoJson} showPopUp={showPopUp} />
       )}
 
