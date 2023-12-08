@@ -140,8 +140,9 @@ const PlanetWeb = ({
   const [initialized, setInitialized] = React.useState(false);
 
   React.useEffect(() => {
+    console.log('tenantConfig', tenantConfig);
     storeConfig(tenantConfig);
-  }, []);
+  }, [tenantConfig]);
 
   React.useEffect(() => {
     if (i18n && i18n.isInitialized) {
