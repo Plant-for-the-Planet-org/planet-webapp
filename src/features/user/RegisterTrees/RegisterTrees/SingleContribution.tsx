@@ -45,7 +45,6 @@ export default function SingleContribution({
     contributionGUID,
     token,
   };
-  console.log(contribution, '==');
   const { t, ready } = useTranslation(['me', 'common']);
   return ready && contribution !== null ? (
     <div className="inputContainer">

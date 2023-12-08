@@ -5,7 +5,6 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import WebMercatorViewport from '@math.gl/web-mercator';
 import styles from '../RegisterModal.module.scss';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
-import { Polygon, Point } from 'geojson';
 
 const Map = ReactMapboxGl({
   interactive: false,

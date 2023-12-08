@@ -35,7 +35,6 @@ export default function TreeMapperList({
   links,
 }: Props): ReactElement {
   const { t } = useTranslation('treemapper');
-  console.log(location, '==');
   return (
     <div
       className={`${location ? styles.hideOnMobile : ''} ${
