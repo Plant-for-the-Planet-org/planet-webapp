@@ -18,6 +18,7 @@ import {
   getTenantConfig,
 } from '../../../../../src/utils/multiTenancy/helpers';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
+import { v4 } from 'uuid';
 
 interface Props {
   pageProps: {
@@ -178,8 +179,8 @@ export async function getStaticPaths() {
     return {
       params: {
         slug: path.params.slug,
-        type: '',
-        code: '',
+        type: v4(),
+        code: v4(),
       },
     };
   });

@@ -17,6 +17,7 @@ import { handleError, APIError } from '@planet-sdk/common';
 import { SetState } from '../../../src/features/common/types/common';
 import { MapProject } from '../../../src/features/common/types/ProjectPropsContextInterface';
 import {
+  DEFAULT_TENANT,
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../src/utils/multiTenancy/helpers';
@@ -182,7 +183,9 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(props: any) {
-  const tenantConfig = await getTenantConfig(props.params.slug);
+  const tenantConfig = await getTenantConfig(
+    props.params.slug ?? DEFAULT_TENANT
+  );
 
   return {
     props: {

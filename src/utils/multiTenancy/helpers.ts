@@ -8,7 +8,7 @@ const FIVE_HOURS = ONE_HOUR_IN_SEC * 5;
 /**
  * This is the default slug that will be used if no tenant is found.
  */
-const DEFAULT_TENANT = 'planet';
+export const DEFAULT_TENANT = 'planet';
 const DEFAULT_TENANT_DOMAIN = 'https://www1.plant-for-the-planet.org';
 
 /**
@@ -48,9 +48,11 @@ export async function constructPathsForTenantSlug() {
   const tenants = (await getTenantConfigList()) as Tenant[];
 
   // build paths for each of the sites
-  return tenants.map((item) => {
-    return { params: { slug: item.config.slug } };
-  });
+  return tenants
+    .filter((tenant) => tenant.config.slug)
+    .map((item) => {
+      return { params: { slug: item.config.slug } };
+    });
 }
 
 /**

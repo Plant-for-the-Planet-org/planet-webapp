@@ -19,7 +19,6 @@ import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
-import tenantConfig from '../tenant.config';
 import { browserNotCompatible } from '../src/utils/browsercheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
 import ProjectPropsProvider from '../src/features/common/Layout/ProjectPropsContext';
@@ -38,8 +37,14 @@ import nextI18NextConfig from '../next-i18next.config.js';
 import { trpc } from '../src/utils/trpc';
 import MapHolder from '../src/features/projects/components/maps/MapHolder';
 import { TenantProvider } from '../src/features/common/Layout/TenantContext';
+import {
+  DEFAULT_TENANT,
+  getTenantConfig,
+  getTenantSlug,
+} from '../src/utils/multiTenancy/helpers';
+import { Tenant } from '@planet-sdk/common/build/types/tenant';
 
-type AppOwnProps = { hostURL: string; _config: { auth0ClientId: string } };
+type AppOwnProps = { hostURL: string; tenantConfig: Tenant };
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -118,8 +123,7 @@ const PlanetWeb = ({
   const [currencyCode, setCurrencyCode] = React.useState('');
   const [browserCompatible, setBrowserCompatible] = React.useState(false);
 
-  // Can be handled through context
-  const config = tenantConfig();
+  const { tenantConfig } = pageProps;
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
@@ -136,10 +140,9 @@ const PlanetWeb = ({
   const [initialized, setInitialized] = React.useState(false);
 
   React.useEffect(() => {
-    console.log('==>', pageProps.hostURL, pageProps._config, pageProps);
-    console.log('==> _app', router.pathname);
-    storeConfig();
+    storeConfig(tenantConfig);
   }, []);
+
   React.useEffect(() => {
     if (i18n && i18n.isInitialized) {
       setInitialized(true);
@@ -221,7 +224,7 @@ const PlanetWeb = ({
   if (browserCompatible) {
     return <BrowserNotSupported />;
   } else {
-    return pageProps._config ? (
+    return tenantConfig ? (
       <CacheProvider value={emotionCache}>
         <ErrorHandlingProvider>
           <TenantProvider>
@@ -230,14 +233,14 @@ const PlanetWeb = ({
                 <div
                   style={
                     showVideo &&
-                    (config.tenantName === 'planet' ||
-                      config.tenantName === 'ttc')
+                    (tenantConfig.config.slug === 'planet' ||
+                      tenantConfig.config.slug === 'ttc')
                       ? {}
                       : { display: 'none' }
                   }
                 >
-                  {config.tenantName === 'planet' ||
-                  config.tenantName === 'ttc' ? (
+                  {tenantConfig.config.slug === 'planet' ||
+                  tenantConfig.config.slug === 'ttc' ? (
                     <VideoContainer setshowVideo={setshowVideo} />
                   ) : (
                     <></>
@@ -247,17 +250,17 @@ const PlanetWeb = ({
                 <div
                   style={
                     showVideo &&
-                    (config.tenantName === 'planet' ||
-                      config.tenantName === 'ttc')
+                    (tenantConfig.config.slug === 'planet' ||
+                      tenantConfig.config.slug === 'ttc')
                       ? { display: 'none' }
                       : {}
                   }
                 >
                   <Auth0Provider
-                    domain={process.env.AUTH0_CUSTOM_DOMAIN}
+                    domain={process.env.AUTH0_CUSTOM_DOMAIN!}
                     clientId={
-                      pageProps._config.auth0ClientId
-                        ? pageProps._config.auth0ClientId
+                      tenantConfig.config?.auth0ClientId
+                        ? tenantConfig.config.auth0ClientId
                         : process.env.AUTH0_CLIENT_ID
                     }
                     redirectUri={pageProps.hostURL}
@@ -309,12 +312,16 @@ PlanetWeb.getInitialProps = async (
 ): Promise<AppOwnProps & AppInitialProps> => {
   const ctx = await App.getInitialProps(context);
 
+  const _tenantSlug = await getTenantSlug(context.ctx.req?.headers.host);
+
+  const tenantSlug = _tenantSlug ?? DEFAULT_TENANT;
+
+  const tenantConfig = await getTenantConfig(tenantSlug);
+
   const pageProps = {
     ...ctx.pageProps,
     hostURL: `https://${context.ctx.req?.headers.host}`,
-    _config: {
-      auth0ClientId: 'abc', // Replace with the actual value
-    },
+    tenantConfig,
   };
 
   return { ...ctx, pageProps } as AppOwnProps & AppInitialProps;
