@@ -101,7 +101,7 @@ export default function SampleTrees({
           complete: (results) => {
             const parsedHeaders = results.meta.fields || [];
             const headerValidity = checkHeaderValidity(parsedHeaders);
-            const resultsData = results.data as SampleTree[];
+            const resultsData = results.data;
             if (headerValidity.isValid) {
               parsedHeaders.length > 7
                 ? setHasIgnoredColumns(true)
