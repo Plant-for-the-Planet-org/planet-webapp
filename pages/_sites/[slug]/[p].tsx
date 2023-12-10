@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import { useProjectProps } from '../../../src/features/common/Layout/ProjectPropsContext';
 import Credits from '../../../src/features/projects/components/maps/Credits';
@@ -61,6 +61,8 @@ export default function Donate({
     setPlantLocations,
     setPlantLocationsLoaded,
   } = useProjectProps();
+
+  console.log('[p]', pageProps.tenantConfig);
 
   const { setTenantConfig } = useTenant();
 
@@ -186,23 +188,27 @@ export default function Donate({
     }
   }, [router, router.query.ploc, plantLocations, setSelectedPl, project]);
 
-  return pageProps.tenantConfig ? (
-    <>
-      {project ? <GetProjectMeta project={project} /> : null}
-      {initialized ? (
-        project ? (
-          <>
-            <SingleProjectDetails />
-          </>
-        ) : (
-          <></>
-        )
-      ) : null}
-      <Credits setCurrencyCode={setCurrencyCode} />
-    </>
-  ) : (
-    <></>
-  );
+  const getContents = useCallback(() => {
+    return pageProps.tenantConfig ? (
+      <>
+        {project ? <GetProjectMeta project={project} /> : null}
+        {initialized ? (
+          project ? (
+            <>
+              <SingleProjectDetails />
+            </>
+          ) : (
+            <></>
+          )
+        ) : null}
+        <Credits setCurrencyCode={setCurrencyCode} />
+      </>
+    ) : (
+      <></>
+    );
+  }, [pageProps.tenantConfig, project, initialized, setCurrencyCode]);
+
+  return getContents();
 }
 
 export async function getStaticPaths() {
