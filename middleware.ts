@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getTenantSlug } from './src/utils/multiTenancy/helpers';
 
 export const config = {
-  matcher: ['/((?!api|_next|fonts|examples|[\\w-]+\\.\\w+).*)'],
+  matcher: [
+    '/((?!api|_next|fonts|examples|[\\w-]+\\.\\w+).*)',
+    '/',
+    '/_sites/:slug*',
+  ],
 };
 
 // export const config = {
