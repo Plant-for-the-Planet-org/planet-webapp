@@ -151,7 +151,7 @@ export default function Donate({
   React.useEffect(() => {
     if (geoJson && !router.query.site && !router.query.ploc && project) {
       router.push(
-        `/_sites/${pageProps.tenantConfig.config.slug}/${project.slug}?site=${geoJson.features[0].properties.id}`,
+        `/${project.slug}?site=${geoJson.features[0].properties.id}`,
         undefined,
         { shallow: true }
       );
@@ -166,7 +166,7 @@ export default function Donate({
       });
       if (siteIndex === -1) {
         router.push(
-          `/_sites/${pageProps.tenantConfig.config.slug}/${project.slug}`
+          `/${project.slug}`
         );
       } else {
         setSelectedSite(siteIndex);
@@ -184,7 +184,7 @@ export default function Donate({
 
       if (singlePlantLocation === undefined) {
         router.push(
-          `/_sites/${pageProps.tenantConfig.config.slug}/${project.slug}`
+          `/${project.slug}`
         );
       } else {
         setSelectedPl(singlePlantLocation);
