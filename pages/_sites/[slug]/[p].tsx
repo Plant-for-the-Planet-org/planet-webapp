@@ -165,9 +165,7 @@ export default function Donate({
         return router.query.site === singleSite?.properties.id;
       });
       if (siteIndex === -1) {
-        router.push(
-          `/${project.slug}`
-        );
+        router.push(`/${project.slug}`);
       } else {
         setSelectedSite(siteIndex);
       }
@@ -183,36 +181,30 @@ export default function Donate({
         });
 
       if (singlePlantLocation === undefined) {
-        router.push(
-          `/${project.slug}`
-        );
+        router.push(`/${project.slug}`);
       } else {
         setSelectedPl(singlePlantLocation);
       }
     }
   }, [router, router.query.ploc, plantLocations, setSelectedPl, project]);
 
-  const getContents = useCallback(() => {
-    return pageProps.tenantConfig ? (
-      <>
-        {project ? <GetProjectMeta project={project} /> : null}
-        {initialized ? (
-          project ? (
-            <>
-              <SingleProjectDetails />
-            </>
-          ) : (
-            <></>
-          )
-        ) : null}
-        <Credits setCurrencyCode={setCurrencyCode} />
-      </>
-    ) : (
-      <></>
-    );
-  }, [pageProps.tenantConfig, project, initialized, setCurrencyCode]);
-
-  return getContents();
+  return pageProps.tenantConfig ? (
+    <>
+      {project ? <GetProjectMeta project={project} /> : null}
+      {initialized ? (
+        project ? (
+          <>
+            <SingleProjectDetails />
+          </>
+        ) : (
+          <></>
+        )
+      ) : null}
+      <Credits setCurrencyCode={setCurrencyCode} />
+    </>
+  ) : (
+    <></>
+  );
 }
 
 export async function getStaticPaths() {
