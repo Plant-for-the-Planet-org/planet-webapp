@@ -62,7 +62,7 @@ export default function Donate({
     setPlantLocationsLoaded,
   } = useProjectProps();
 
-  console.log('[p]', pageProps.tenantConfig);
+  console.log('[p] =>', pageProps.tenantConfig);
 
   const { setTenantConfig } = useTenant();
 
@@ -94,7 +94,7 @@ export default function Donate({
         try {
           const { p } = router.query;
           const project = await getRequest<ProjectExtended>(
-            undefined,
+            pageProps.tenantConfig.id,
             encodeURI(`/app/projects/${p}`),
             {
               _scope: 'extended',
