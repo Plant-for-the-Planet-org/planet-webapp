@@ -76,7 +76,7 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
     if (contextLoaded && user) {
       try {
         const res = await postAuthenticatedRequest<RedeemedCodeData>(
-          undefined,
+          pageProps.tenantConfig.id,
           `/app/redeem`,
           submitData,
           token,

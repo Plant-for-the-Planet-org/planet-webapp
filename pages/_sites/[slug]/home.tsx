@@ -49,7 +49,7 @@ export default function Home({ initialized, pageProps }: Props) {
     async function loadTenantScore() {
       try {
         const newTenantScore = await getRequest<TenantScore>(
-          undefined,
+          pageProps.tenantConfig.id,
           `/app/tenantScore`
         );
         setTenantScore(newTenantScore);
@@ -65,7 +65,7 @@ export default function Home({ initialized, pageProps }: Props) {
     async function loadLeaderboard() {
       try {
         const newLeaderBoard = await getRequest<LeaderBoardList>(
-          undefined,
+          pageProps.tenantConfig.id,
           `/app/leaderboard`
         );
         setLeaderboard(newLeaderBoard);
