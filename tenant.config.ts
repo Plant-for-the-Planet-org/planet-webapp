@@ -1,4 +1,4 @@
-import { TenantConfig } from '@planet-sdk/common/build/types/tenant';
+import { Tenant, TenantConfig } from '@planet-sdk/common/build/types/tenant';
 
 import planetConfig from './public/tenants/planet/config';
 import planetConfigBeta from './public/tenants/planet/configBeta';
@@ -60,7 +60,7 @@ export default function tenantConfig(tenant: string): TenantConfig {
   }
 }
 
-export const defaultTenant = {
+export const defaultTenant: Tenant = {
   id: 'ten_NxJq55pm',
   config: {
     appDomain: 'https://www1.plant-for-the-planet.org',

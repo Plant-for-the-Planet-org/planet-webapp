@@ -1,6 +1,7 @@
 import { Tenant, Tenants } from '@planet-sdk/common/build/types/tenant';
 import { NextResponse } from 'next/server';
 import redisClient from '../../redis-client';
+import { defaultTenant } from '../../../tenant.config';
 
 const ONE_HOUR_IN_SEC = 60 * 60;
 const FIVE_HOURS = ONE_HOUR_IN_SEC * 5;
@@ -75,7 +76,7 @@ function isSubdomain(domain: string) {
  * @param slug
  * @returns Tenant
  */
-export const getTenantConfig = async (slug: string) => {
+export const getTenantConfig = async (slug: string): Promise<Tenant> => {
   try {
     const caching_key = `TENANT_CONFIG_${slug}`;
 
@@ -101,9 +102,10 @@ export const getTenantConfig = async (slug: string) => {
       ex: FIVE_HOURS,
     });
 
-    return tenantConf;
+    return tenantConf as Tenant; // Ensure that the returned value is of type Tenant
   } catch (err) {
     console.log('Error in getTenantConfig', err);
+    throw err; // Re-throw the error to propagate it
   }
 };
 
