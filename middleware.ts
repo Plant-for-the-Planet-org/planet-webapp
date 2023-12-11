@@ -6,6 +6,9 @@ export const config = {
     '/((?!api|_next|fonts|examples|[\\w-]+\\.\\w+).*)',
     '/',
     '/_sites/:slug*',
+    '/_sites/:slug*/profile/bulk-codes/',
+    '/_sites/:slug*/profile/bulk-codes/:method*/:id*',
+    '/_sites/:slug*/profile/bulk-codes/:method*/',
   ],
 };
 
