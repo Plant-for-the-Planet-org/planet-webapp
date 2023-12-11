@@ -38,6 +38,11 @@ export default function BulkCodeSelectProjectPage({
   const { bulkMethod, setBulkMethod } = useBulkCode();
   const { setTenantConfig } = useTenant();
 
+  console.log(
+    '/progile/bulk-codes/[method]/index.tsx: ',
+    pageProps.tenantConfig
+  );
+
   React.useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);
@@ -98,8 +103,8 @@ interface StaticProps {
 export const getStaticProps: GetStaticProps<StaticProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<StaticProps>> => {
-    
-  const tenantConfig = await getTenantConfig(context.params?.slug as string) ?? defaultTenant;
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {
