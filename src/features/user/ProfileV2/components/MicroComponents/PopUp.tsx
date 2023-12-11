@@ -65,6 +65,7 @@ export const DateInThePopUp = ({
   endDate,
   isSingleContribution,
 }: DateInThePopUpProps) => {
+  console.log(isSingleContribution, '==');
   return (
     <>
       {isDate &&
@@ -124,7 +125,7 @@ export const InfoInthePopUp = ({ geoJson }: InfoInthePopUpProps) => {
           isSingleContribution={
             geoJson?.properties?.totalContribution == 1 ||
             geoJson?.properties?.totalContribution == 0 ||
-            geoJson?.properties?._type
+            geoJson?.properties?._type === 'gift'
           }
         />
       </div>
