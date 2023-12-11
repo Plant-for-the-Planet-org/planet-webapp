@@ -17,12 +17,17 @@ import { handleError, APIError } from '@planet-sdk/common';
 import { SetState } from '../../../src/features/common/types/common';
 import { MapProject } from '../../../src/features/common/types/ProjectPropsContextInterface';
 import {
-  DEFAULT_TENANT,
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../src/utils/multiTenancy/helpers';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { useTenant } from '../../../src/features/common/Layout/TenantContext';
+import {
+  GetStaticProps,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+} from 'next';
+import { defaultTenant } from '../../../tenant.config';
 
 interface Props {
   initialized: Boolean;
@@ -184,15 +189,20 @@ export async function getStaticPaths() {
   };
 }
 
-export async function getStaticProps(props: any) {
-  const tenantConfig = await getTenantConfig(
-    props.params.slug ?? DEFAULT_TENANT
-  );
+interface StaticProps {
+  tenantConfig: Tenant;
+}
+
+export const getStaticProps: GetStaticProps<StaticProps> = async (
+  context: GetStaticPropsContext
+): Promise<GetStaticPropsResult<StaticProps>> => {
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {
       ...(await serverSideTranslations(
-        props.locale || 'en',
+        context.locale || 'en',
         [
           'bulkCodes',
           'common',
@@ -219,4 +229,4 @@ export async function getStaticProps(props: any) {
       tenantConfig,
     },
   };
-}
+};

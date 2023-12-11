@@ -21,6 +21,7 @@ import {
 import { v4 } from 'uuid';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
+import { defaultTenant } from '../../../../../../tenant.config';
 
 interface Props {
   pageProps: {
@@ -98,7 +99,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = async (
   context: GetStaticPropsContext
 ): Promise<GetStaticPropsResult<StaticProps>> => {
     
-  const tenantConfig = await getTenantConfig(context.params?.slug as string);
+  const tenantConfig = await getTenantConfig(context.params?.slug as string) ?? defaultTenant;
 
   return {
     props: {

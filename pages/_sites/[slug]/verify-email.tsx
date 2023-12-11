@@ -10,6 +10,12 @@ import {
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../src/features/common/Layout/TenantContext';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
+import {
+  GetStaticProps,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+} from 'next';
+import { defaultTenant } from '../../../tenant.config';
 
 interface Props {
   pageProps: {
@@ -46,13 +52,20 @@ export async function getStaticPaths() {
   };
 }
 
-export async function getStaticProps(props: any) {
-  const tenantConfig = await getTenantConfig(props.params.slug);
+interface StaticProps {
+  tenantConfig: Tenant;
+}
+
+export const getStaticProps: GetStaticProps<StaticProps> = async (
+  context: GetStaticPropsContext
+): Promise<GetStaticPropsResult<StaticProps>> => {
+  const tenantConfig =
+    (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
   return {
     props: {
       ...(await serverSideTranslations(
-        props.locale || 'en',
+        context.locale || 'en',
         [
           'bulkCodes',
           'common',
@@ -79,4 +92,4 @@ export async function getStaticProps(props: any) {
       tenantConfig,
     },
   };
-}
+};
