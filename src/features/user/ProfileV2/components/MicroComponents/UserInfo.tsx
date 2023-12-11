@@ -17,8 +17,11 @@ const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
   };
 
   const stringAvatar = (name: string) => {
+    const cleanedName = name.replace(/[^a-zA-Z ]/g, ' ');
     return {
-      children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+      children: `${cleanedName.split(' ')[0][0]}${
+        cleanedName.split(' ')[1][0]
+      }`,
     };
   };
 
