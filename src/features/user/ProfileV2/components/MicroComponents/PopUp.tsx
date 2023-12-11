@@ -54,7 +54,7 @@ export const NumberOfContributions = ({
 interface DateInThePopUpProps {
   isDate: number;
   dateOfGift: Date | number;
-  dateOfDonation: undefined | number | Date;
+  dateOfDonation: string | number | Date;
   endDate: string;
   isSingleContribution: boolean;
 }
@@ -72,8 +72,7 @@ export const DateInThePopUp = ({
           <time>{formatDate(dateOfDonation || dateOfGift)}</time>
         ) : (
           <time className={MyForestMapStyle.popUpDate}>
-            {formatDate(dateOfDonation || dateOfGift)} -{' '}
-            {formatDate(endDate as string)}
+            {formatDate(dateOfDonation)} - {formatDate(endDate as string)}
           </time>
         ))}
     </>
@@ -124,7 +123,8 @@ export const InfoInthePopUp = ({ geoJson }: InfoInthePopUpProps) => {
           }
           isSingleContribution={
             geoJson?.properties?.totalContribution == 1 ||
-            geoJson?.properties?.totalContribution == 0
+            geoJson?.properties?.totalContribution == 0 ||
+            geoJson?.properties?._type
           }
         />
       </div>

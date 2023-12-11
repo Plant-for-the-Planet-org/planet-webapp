@@ -33,6 +33,10 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
                 geoJson.properties?.purpose === 'trees'
               }
               isConservation={geoJson.properties?.purpose === 'conservation'}
+              isGiftContribution={
+                geoJson.properties?.purpose === 'trees' &&
+                geoJson.properties?._type === 'gift'
+              }
             />
             <SingleMarkerUnits
               isConservation={geoJson.properties?.purpose === 'conservation'}
