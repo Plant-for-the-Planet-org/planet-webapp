@@ -17,7 +17,7 @@ import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
 import { TENANT_ID } from '../../../utils/constants/environment';
-import { Tenants } from '@planet-sdk/common';
+import { Tenant } from '@planet-sdk/common';
 
 interface Props {
   projects: MapProject[];
@@ -51,7 +51,9 @@ function ProjectsList({
   const [searchProjectResults, setSearchProjectResults] = React.useState<
     MapProject[] | undefined
   >();
-  const [isProjectListSorted, setisProjectListSorted] = React.useState(false);
+  const [shouldSortProjectList, setShouldSortProjectList] = React.useState<
+    boolean | null
+  >(null);
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
   useDebouncedEffect(
@@ -145,12 +147,14 @@ function ProjectsList({
   }
 
   const allProjects = React.useMemo(() => {
-    if (!isProjectListSorted) {
-      return getProjects(projects, 'all_sorted');
-    } else {
-      return getProjects(projects, 'all');
+    if (shouldSortProjectList !== null) {
+      if (!shouldSortProjectList) {
+        return getProjects(projects, 'all_sorted');
+      } else {
+        return getProjects(projects, 'all');
+      }
     }
-  }, [projects, isProjectListSorted]);
+  }, [projects, shouldSortProjectList]);
 
   React.useEffect(() => {
     const _searchProjectResults = getSearchProjects(
@@ -163,8 +167,8 @@ function ProjectsList({
   React.useEffect(() => {
     async function setListOrder() {
       try {
-        const res = await getRequest<Tenants>(`/app/tenants/${TENANT_ID}`);
-        setisProjectListSorted(res.topProjectsOnly);
+        const res = await getRequest<Tenant>(`/app/tenants/${TENANT_ID}`);
+        setShouldSortProjectList(res.topProjectsOnly);
       } catch (err) {
         setErrors(handleError(err as APIError));
       }
