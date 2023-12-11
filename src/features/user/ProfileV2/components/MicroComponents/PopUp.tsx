@@ -65,7 +65,6 @@ export const DateInThePopUp = ({
   endDate,
   isSingleContribution,
 }: DateInThePopUpProps) => {
-  console.log(isSingleContribution, '==');
   return (
     <>
       {isDate &&
