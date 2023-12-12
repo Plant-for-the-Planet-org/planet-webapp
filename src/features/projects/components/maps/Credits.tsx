@@ -56,7 +56,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
             } • ${selectedCurrency}`}
           </div>
         )}
-        {(process.env.TENANT === 'ttc' || process.env.TENANT === 'planet') &&
+        {(tenantConfig.config.slug === 'ttc' || tenantConfig.config.slug === 'planet') &&
         !isEmbed ? (
           <a
             rel="noopener noreferrer"

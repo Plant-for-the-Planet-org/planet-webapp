@@ -179,8 +179,8 @@ export default function NavbarComponent() {
 
             if (link === 'about' && SingleLink.visible) {
               let aboutOnclick = `${SingleLink.onclick}${
-                (process.env.TENANT === 'planet' ||
-                  process.env.TENANT === 'ttc') &&
+                (tenantConfig.config.slug === 'planet' ||
+                tenantConfig.config.slug === 'ttc') &&
                 lang_path[i18n.language as keyof typeof lang_path]
                   ? lang_path[i18n.language as keyof typeof lang_path]
                   : ''
