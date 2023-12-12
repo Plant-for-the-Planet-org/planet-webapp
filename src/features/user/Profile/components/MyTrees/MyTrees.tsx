@@ -187,7 +187,7 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
             </div>
             <div className={styles.myTreesContainer}>
               <div className={styles.treesList}>
-                {contributions.map((contribution: any, index: any) => {
+                {contributions.map((contribution, index) => {
                   return <TreeList key={index} contribution={contribution} />;
                 })}
               </div>
