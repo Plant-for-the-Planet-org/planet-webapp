@@ -33,7 +33,7 @@ const ImageSliderSingle = dynamic(
 
 interface Props {
   setselectedLocation: SetState<
-    PlantLocationMulti | PlantLocationSingle | null
+    SamplePlantLocation | PlantLocationMulti | PlantLocationSingle | null
   >;
   location:
     | PlantLocationMulti
@@ -236,7 +236,7 @@ export function LocationDetails({
             {/* <div className={styles.value}> */}
             {(location as PlantLocationMulti).samplePlantLocations &&
               (location as PlantLocationMulti).samplePlantLocations.map(
-                (spl: any, index: number) => {
+                (spl, index: number) => {
                   return (
                     <div key={index} className={styles.value}>
                       {index + 1}.{' '}
@@ -279,9 +279,10 @@ export default function PlantLocationPage({
 
   const handleBackButton = () => {
     if (location?.type === 'sample') {
-      for (const i in plantLocations) {
+      for (const iKey in plantLocations) {
+        const i = iKey as keyof typeof plantLocations;
         if (Object.prototype.hasOwnProperty.call(plantLocations, i)) {
-          const pl = plantLocations[i as any];
+          const pl = plantLocations[i] as PlantLocation;
           if (pl.id === (location as SamplePlantLocation)?.parent) {
             setselectedLocation(pl);
             break;
