@@ -44,6 +44,7 @@ model project {
     id             Int            @id @default(autoincrement())
     guid           String         @db.VarChar(32)
     name           String?        @db.VarChar(255)
+    allowDonations Boolean        @map("accept_donations")
     description    String?        @db.LongText
     country        String?        @map("country") @db.VarChar(2)
     unit           String?        @map("unit_type") @db.VarChar(255)

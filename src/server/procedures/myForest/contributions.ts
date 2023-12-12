@@ -65,6 +65,7 @@ export const contributions = procedure
             },
             plantProject: {
               select: {
+                allowDonations: true,
                 guid: true,
                 name: true,
                 image: true,
@@ -80,6 +81,7 @@ export const contributions = procedure
         },
         plantProject: {
           select: {
+            allowDonations: true,
             guid: true,
             name: true,
             image: true,
@@ -152,6 +154,7 @@ export const contributions = procedure
         metadata: true,
         purpose: true,
         type: true,
+        
       },
       where: {
         recipient: {
