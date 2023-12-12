@@ -267,7 +267,7 @@ const PlanetWeb = ({
                         ? tenantConfig.config.auth0ClientId
                         : process.env.AUTH0_CLIENT_ID
                     }
-                    redirectUri={pageProps.hostURL}
+                    redirectUri={window.location.origin}
                     audience={'urn:plant-for-the-planet'}
                     cacheLocation={'localstorage'}
                     onRedirectCallback={onRedirectCallback}

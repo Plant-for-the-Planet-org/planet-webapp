@@ -541,7 +541,7 @@ const UserLayout: FC = ({ children }) => {
             //logout user
             onClick={() => {
               localStorage.removeItem('impersonationData');
-              logoutUser(`${process.env.NEXTAUTH_URL}/`);
+              logoutUser(`${window.location.origin}/`);
             }}
           >
             <LogoutIcon />

@@ -46,7 +46,7 @@ function Login(): ReactElement {
         // wait for context to redirect to complete signup
       } else {
         loginWithRedirect({
-          redirectUri: `${process.env.NEXTAUTH_URL}/login`,
+          redirectUri: `${window.location.origin}/login`,
           ui_locales: localStorage.getItem('language') || 'en',
         });
       }

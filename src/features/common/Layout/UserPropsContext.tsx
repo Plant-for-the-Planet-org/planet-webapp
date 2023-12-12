@@ -88,7 +88,7 @@ export const UserPropsProvider: FC = ({ children }) => {
   }, [isLoading, isAuthenticated]);
 
   const logoutUser = (
-    returnUrl: string | undefined = `${process.env.NEXTAUTH_URL}/`
+    returnUrl: string | undefined = `${window.location.origin}/`
   ) => {
     localStorage.removeItem('impersonationData');
     localStorage.removeItem('redirectLink');
@@ -115,7 +115,7 @@ export const UserPropsProvider: FC = ({ children }) => {
         setUser(null);
         setToken(null);
         loginWithRedirect({
-          redirectUri: `${process.env.NEXTAUTH_URL}/login`,
+          redirectUri: `${window.location.origin}/login`,
           ui_locales: localStorage.getItem('language') || 'en',
         });
       } else if (res.status === 403) {

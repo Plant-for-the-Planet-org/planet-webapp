@@ -81,7 +81,7 @@ export default function NavbarComponent() {
       //----------------- To do - redirect to slug -----------------
       // Currently we cannot do that because we don't know the slug of the user
       loginWithRedirect({
-        redirectUri: `${process.env.NEXTAUTH_URL}/login`,
+        redirectUri: `${window.location.origin}/login`,
         ui_locales: localStorage.getItem('language') || 'en',
       });
     }
@@ -100,7 +100,7 @@ export default function NavbarComponent() {
     if (auth0Error.message === '401') {
       if (typeof window !== 'undefined') {
         setUser(null);
-        logoutUser(`${process.env.NEXTAUTH_URL}/verify-email`);
+        logoutUser(`${window.location.origin}/verify-email`);
       }
     } else if (auth0Error.message === 'Invalid state') {
       setUser(null);
@@ -109,7 +109,7 @@ export default function NavbarComponent() {
         alert(auth0Error.message);
       }
       setUser(null);
-      logoutUser(`${process.env.NEXTAUTH_URL}/`);
+      logoutUser(`${window.location.origin}/`);
     }
   }
 

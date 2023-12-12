@@ -132,7 +132,7 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
       if (typeof window !== 'undefined') {
         localStorage.setItem('redirectLink', window.location.href);
         loginWithRedirect({
-          redirectUri: `${process.env.NEXTAUTH_URL}/login`,
+          redirectUri: `${window.location.origin}/login`,
           ui_locales: localStorage.getItem('language') || 'en',
         });
       }

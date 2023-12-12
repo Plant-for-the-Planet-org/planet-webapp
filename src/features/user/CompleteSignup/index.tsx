@@ -253,7 +253,7 @@ export default function CompleteSignup(): ReactElement | null {
             {/* header */}
             <div className={styles.header}>
               <div
-                onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)}
+                onClick={() => logoutUser(`${window.location.origin}/`)}
                 className={styles.headerBackIcon}
               >
                 <CancelIcon color={styles.primaryFontColor} />

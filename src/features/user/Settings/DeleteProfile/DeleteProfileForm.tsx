@@ -33,7 +33,7 @@ export default function DeleteProfileForm() {
         logoutUser
       );
       setIsUploadingData(false);
-      logoutUser(`${process.env.NEXTAUTH_URL}/`);
+      logoutUser(`${window.location.origin}/`);
     } catch (err) {
       setIsUploadingData(false);
       const serializedErrors = handleError(err as APIError);
