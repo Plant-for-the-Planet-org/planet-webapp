@@ -14,10 +14,12 @@ export default function RedeemPopup() {
   const { user, contextLoaded, loginWithRedirect } = useUserProps();
 
   const sendUserToLogin = () => {
-    loginWithRedirect({
-      redirectUri: `${window.location.origin}/login`,
-      ui_locales: localStorage.getItem('language') || 'en',
-    });
+    if (typeof window !== 'undefined') {
+      loginWithRedirect({
+        redirectUri: `${window.location.origin}/login`,
+        ui_locales: localStorage.getItem('language') || 'en',
+      });
+    }
   };
 
   useEffect(() => {

@@ -104,7 +104,7 @@ export default function NavbarComponent() {
       }
     } else if (auth0Error.message === 'Invalid state') {
       setUser(null);
-    } else {
+    } else if (typeof window !== 'undefined') {
       if (auth0Error.message) {
         alert(auth0Error.message);
       }
@@ -180,7 +180,7 @@ export default function NavbarComponent() {
             if (link === 'about' && SingleLink.visible) {
               let aboutOnclick = `${SingleLink.onclick}${
                 (tenantConfig.config.slug === 'planet' ||
-                tenantConfig.config.slug === 'ttc') &&
+                  tenantConfig.config.slug === 'ttc') &&
                 lang_path[i18n.language as keyof typeof lang_path]
                   ? lang_path[i18n.language as keyof typeof lang_path]
                   : ''
