@@ -38,13 +38,19 @@ const TreesOrUnitAreaAndDonateOption = ({
   return (
     <div className={myForestStyles.donateContainer}>
       <time className={myForestStyles.treeCount}>
-        {projectUnit === 'm2'
-          ? t('me:areaType', {
-              areaConserved: `${quantity}`,
-              type: `${projectPurpose === 'trees' ? 'restored' : 'conserved'} `,
-            })
+        {projectUnit
+          ? projectUnit === 'm2'
+            ? t('me:areaType', {
+                areaConserved: `${quantity}`,
+                type: `${
+                  projectPurpose === 'trees' ? 'restored' : 'conserved'
+                } `,
+              })
+            : t('me:plantedTrees', {
+                count: parseInt(`${quantity}`) || 0,
+              })
           : t('me:plantedTrees', {
-              count: parseInt(`${quantity}`) || 0,
+              count: quantity || 0,
             })}
       </time>
       {contributionType && contributionType !== 'planting' && isDonatable && (
