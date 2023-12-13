@@ -13,7 +13,9 @@ interface TreesOrUnitAreaAndDonateOptionProps {
   gift: boolean;
   tenantId: string;
   projectGUID: string;
+  isDonatable: boolean;
 }
+
 const TreesOrUnitAreaAndDonateOption = ({
   projectUnit,
   projectPurpose,
@@ -22,6 +24,7 @@ const TreesOrUnitAreaAndDonateOption = ({
   gift,
   tenantId,
   projectGUID,
+  isDonatable,
 }: TreesOrUnitAreaAndDonateOptionProps) => {
   const { t } = useTranslation(['me']);
   const { embed } = useContext(ParamsContext);
@@ -44,7 +47,7 @@ const TreesOrUnitAreaAndDonateOption = ({
               count: parseInt(`${quantity}`) || 0,
             })}
       </time>
-      {contributionType && contributionType !== 'planting' && (
+      {contributionType && contributionType !== 'planting' && isDonatable && (
         <div
           className={myForestStyles.donate}
           onClick={() => handleDonate(projectGUID, tenantId)}

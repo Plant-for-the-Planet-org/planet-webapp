@@ -110,6 +110,7 @@ interface Properties {
 }
 
 interface PlantProject {
+  allowDonations: boolean;
   guid: string;
   name: string | null;
   image: string;
