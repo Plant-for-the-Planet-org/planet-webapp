@@ -98,3 +98,15 @@ export interface PlantLocation {
   plantDate: string;
   deviceLocation: DeviceLocation;
 }
+
+export interface PlantingLocationFormData {
+  plantDate: string;
+  plantProject: string;
+  geometry: {};
+  plantedSpecies: SpeciesFormData[];
+}
+
+export interface SpeciesFormData {
+  otherSpecies: string;
+  treeCount: number;
+}
