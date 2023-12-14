@@ -7,24 +7,33 @@ interface PopUpLabelProps {
   isConservation: boolean;
   isNormalTreeDonation: boolean;
   isRegisteredTree: boolean;
+  isRestoration: boolean;
 }
 
 export const PopUpLabel = ({
   isConservation,
   isNormalTreeDonation,
   isRegisteredTree,
+  isRestoration,
 }: PopUpLabelProps) => {
   const { t } = useTranslation(['me']);
+  const _checkProjectType = () => {
+    let result = null;
+    switch (true) {
+      case isConservation:
+        return (result = t('me:conserved'));
+      case isNormalTreeDonation:
+        return (result = t('me:donated'));
+      case isRegisteredTree:
+        return (result = t('me:registered'));
+      case isRestoration:
+        return (result = t('me:restored'));
+      default:
+        return (result = null);
+    }
+  };
   return (
-    <div className={MyForestMapStyle.popUpLabel}>
-      {isConservation
-        ? t('me:conserved')
-        : isNormalTreeDonation
-        ? isRegisteredTree
-          ? t('me:registered')
-          : t('me:donated')
-        : null}
-    </div>
+    <div className={MyForestMapStyle.popUpLabel}>{_checkProjectType()}</div>
   );
 };
 
@@ -96,10 +105,15 @@ export const InfoInthePopUp = ({ geoJson }: InfoInthePopUpProps) => {
         <PopUpLabel
           isConservation={geoJson.properties?.purpose === 'conservation'}
           isNormalTreeDonation={
-            geoJson.properties?.purpose === 'trees' ||
+            (geoJson.properties?.purpose === 'trees' &&
+              geoJson.properties.plantProject.unitType !== 'm2') ||
             geoJson.properties?.purpose === null
           }
           isRegisteredTree={geoJson.properties.contributionType === 'planting'}
+          isRestoration={
+            geoJson.properties.plantProject.unitType === 'm2' &&
+            geoJson.properties.purpose === 'trees'
+          }
         />
         <NumberOfContributions
           isMoreThanOneContribution={

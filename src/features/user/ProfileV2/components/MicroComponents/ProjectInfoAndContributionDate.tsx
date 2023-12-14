@@ -29,7 +29,12 @@ const ProjectInfoAndContributionDate = ({
         {tpoName || countryName ? (
           <div className={myForestStyles.sepratorContainer}>
             <div>{t('country:' + countryName)}</div>
-            <div className={myForestStyles.dotSeprator}>.</div>
+            <div
+              className={myForestStyles.dotSeprator}
+              style={{ position: 'relative' }}
+            >
+              <div style={{ position: 'absolute' }}>.</div>
+            </div>
             <div className={myForestStyles.tpoName}>{tpoName}</div>
           </div>
         ) : (

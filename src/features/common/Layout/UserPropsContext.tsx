@@ -101,7 +101,6 @@ export const UserPropsProvider: FC = ({ children }) => {
     setContextLoaded(false);
     try {
       // TODO: Add error handling after figuring out the nature of getAccountInfo function call with impersonatedEmail
-
       const res = await getAccountInfo(token);
       if (res.status === 200) {
         const resJson = await res.json();
@@ -135,7 +134,7 @@ export const UserPropsProvider: FC = ({ children }) => {
     if (token) {
       loadUser();
     }
-  }, [token]);
+  }, [token, refetchData]);
 
   React.useEffect(() => {
     if (localStorage.getItem('impersonationData') !== null) {

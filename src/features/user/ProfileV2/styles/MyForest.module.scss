@@ -430,7 +430,7 @@
   margin-left: 0px;
   @include xsPhoneView {
     flex-direction: row;
-    gap: 85px;
+    gap: 30px;
     justify-content: center;
   }
   @include smTabletView {
@@ -445,15 +445,24 @@
   }
 }
 
-.donate {
+.donateBase {
   font-size: $fontSixteen;
   font-weight: bold;
   text-decoration-line: underline;
-  color: #68b030;
   cursor: pointer;
   @include mdTabletView {
     font-size: $fontSmall;
   }
+}
+
+.donate {
+  @extend .donateBase;
+  color: #68b030;
+}
+
+.donateConserv {
+  @extend .donateBase;
+  color: #48aadd;
 }
 
 .projectDetailContainer {
@@ -633,12 +642,12 @@
 
 .sepratorContainer {
   display: flex;
-  align-items: center;
-  // justify-content: center;
   .dotSeprator {
+    position: relative;
+    bottom: 4px;
     margin-bottom: 5px;
     margin-left: 4px;
-    margin-right: 4px;
+    margin-right: 8px;
   }
 }
 

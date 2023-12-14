@@ -4,6 +4,7 @@ import { getDonationUrl } from '../../../../../utils/getDonationUrl';
 import { ParamsContext } from '../../../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { useContext } from 'react';
+import { useRouter } from 'next/router';
 
 interface TreesOrUnitAreaAndDonateOptionProps {
   projectUnit: string;
@@ -29,6 +30,7 @@ const TreesOrUnitAreaAndDonateOption = ({
   const { t } = useTranslation(['me']);
   const { embed } = useContext(ParamsContext);
   const { token } = useUserProps();
+  const router = useRouter();
   const handleDonate = (id: string, tenant: string) => {
     const url = getDonationUrl(tenant, id, token);
     embed === 'true'
@@ -50,15 +52,21 @@ const TreesOrUnitAreaAndDonateOption = ({
                 count: parseInt(`${quantity}`) || 0,
               })
           : t('me:plantedTrees', {
-              count: quantity || 0,
+              count: parseInt(`${quantity}`) || 0,
             })}
       </time>
       {contributionType && contributionType !== 'planting' && isDonatable && (
         <div
-          className={myForestStyles.donate}
+          className={
+            projectPurpose === 'conservation'
+              ? myForestStyles.donateConserv
+              : myForestStyles.donate
+          }
           onClick={() => handleDonate(projectGUID, tenantId)}
         >
-          {gift ? t('me:donate') : t('me:donateAgain')}
+          {gift || router.pathname === '/t/[id]'
+            ? t('me:donate')
+            : t('me:donateAgain')}
         </div>
       )}
     </div>
