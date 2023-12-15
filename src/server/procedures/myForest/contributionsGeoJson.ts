@@ -89,8 +89,8 @@ const mergeFeaturesWithSameCoordinates = (features: Feature[]): Feature[] => {
         ...existingFeature.properties,
         ...feature.properties,
         quantity:
-          (parseInt(existingFeature.properties.quantity) || 0) +
-          (parseInt(feature.properties?.quantity) || 0),
+          (Number(existingFeature.properties.quantity) || 0) +
+          (Number(feature.properties?.quantity) || 0),
         startDate: compareDate(
           existingFeature.properties.startDate,
           feature.properties?.created,
