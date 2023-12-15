@@ -225,7 +225,6 @@
   background-color: #27ae601a;
   background-image: url('../../../../../public/assets/images/treeCounterBackround.svg');
   background-repeat: no-repeat;
-  background-size: 100% 100%;
   width: 100%;
   position: relative;
   border-bottom-left-radius: 12px;
@@ -271,7 +270,7 @@
   background-image: url('../../../../../public/assets/images/conservedAreaSvg.svg');
   background-repeat: no-repeat;
   background-color: #48aadd1a;
-  background-size: 100% 100%;
+  // background-size: 100% 100%;
   display: flex;
   justify-content: center;
   border-bottom-left-radius: 12px;
