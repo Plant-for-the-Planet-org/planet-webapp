@@ -33,7 +33,7 @@ const XCircularProgress = styled(MuiCircularProgress)({
 
 export function FacebookCircularProgress(props: CircularProgressProps) {
   return (
-    <div className={treeCounterStyles.circularProgreesContainer}>
+    <div className={treeCounterStyles.circularProgressContainer}>
       <CircularProgress
         variant="determinate"
         size={330}
@@ -45,7 +45,7 @@ export function FacebookCircularProgress(props: CircularProgressProps) {
 }
 export function TenantCircularProgress(props: CircularProgressProps) {
   return (
-    <div className={treeCounterStyles.circularProgreesContainer}>
+    <div className={treeCounterStyles.circularProgressContainer}>
       <XCircularProgress
         variant="determinate"
         size={322}

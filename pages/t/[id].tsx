@@ -21,7 +21,6 @@ function SingleUser(): ReactElement {
 
   // Internal states
   const [profile, setProfile] = React.useState<null | UserPublicProfile>(null);
-  const [authenticatedType, setAuthenticatedType] = React.useState('');
 
   // Loads the public user profile
   async function loadPublicProfile(id: string) {
