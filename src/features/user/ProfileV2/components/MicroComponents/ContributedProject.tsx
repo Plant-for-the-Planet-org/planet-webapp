@@ -58,7 +58,8 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
             (projectInfo as GiftContributionProps)?.metadata?.project?.id
           }
           isDonatable={
-            (projectInfo as Contributions)?.plantProject?.allowDonations
+            (projectInfo as Contributions)?.plantProject?.allowDonations ||
+            (projectInfo as GiftContributionProps)?.allowDonations
           }
         />
       </div>

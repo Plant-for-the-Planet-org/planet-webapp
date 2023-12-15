@@ -36,6 +36,7 @@ interface PlantProject {
   tpo: Tpo;
 }
 export interface GiftContributionProps {
+  allowDonations: boolean;
   created: string;
   value: number;
   guid: string;
