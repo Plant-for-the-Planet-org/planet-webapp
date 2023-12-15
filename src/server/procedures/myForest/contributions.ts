@@ -154,7 +154,6 @@ export const contributions = procedure
         metadata: true,
         purpose: true,
         type: true,
-        
       },
       where: {
         recipient: {
@@ -194,8 +193,26 @@ export const contributions = procedure
       },
       where: {
         guid: {
-          in:
-            giftProjectsWithoutImage.length > 0 ? giftProjectsWithoutImage : [],
+          in: giftProjectsWithoutImage,
+        },
+      },
+    });
+
+    const giftProjectIds =
+      giftData.length > 0
+        ? giftData.map(
+            (gift) => JSON.parse(JSON.stringify(gift.metadata))?.project?.id
+          )
+        : [];
+
+    const giftProjects = await prisma.project.findMany({
+      select: {
+        guid: true,
+        allowDonations: true,
+      },
+      where: {
+        guid: {
+          in: giftProjectIds,
         },
       },
     });
@@ -205,6 +222,10 @@ export const contributions = procedure
       projectsWithImage: {
         guid: string;
         image: string | null;
+      }[],
+      giftProjects: {
+        guid: string;
+        allowDonations: boolean;
       }[]
     ) {
       return giftObjects.map((giftObject) => {
@@ -213,6 +234,9 @@ export const contributions = procedure
         const projectImage = projectsWithImage.find(
           (project) => project.guid === projectId
         )?.image;
+        const projectAllowDonations = giftProjects.find(
+          (project) => project.guid === projectId
+        )?.allowDonations;
 
         return {
           ...giftObject,
@@ -227,6 +251,7 @@ export const contributions = procedure
                   ?.image ?? projectImage,
             },
           },
+          allowDonations: projectAllowDonations,
         };
       });
     }
@@ -242,7 +267,7 @@ export const contributions = procedure
 
     const combinedData = [
       ...addTypeToContribution(contributions),
-      ...addTypeToGift(giftData, projectsWithImage),
+      ...addTypeToGift(giftData, projectsWithImage, giftProjects),
     ];
 
     const sortedData = combinedData.sort(
