@@ -20,6 +20,7 @@ import {
   MyContributionLoader,
   MyForestMapLoader,
 } from '../../../../common/ContentLoaders/UserProfile/UserProfile';
+import { useRouter } from 'next/router';
 
 const A_DAY_IN_MS = 1000 * 60 * 60 * 24;
 
@@ -39,7 +40,7 @@ export default function MyContributions({
   profile,
 }: MyContributionsProps): ReactElement | null {
   const { ready } = useTranslation(['country', 'me']);
-
+  const router = useRouter();
   const [projectsForTreePlantation, setProjectsForTreePlantation] =
     useState<ContributionData | null>(null);
   const [projectsForAreaConservation, setProjectsForAreaConservation] =
@@ -185,14 +186,14 @@ export default function MyContributions({
       _conservationGeoJsonData,
       setConservationProjects
     );
-  }, [_conservationGeoJsonData.data]);
+  }, [_conservationGeoJsonData.data, refetchData]);
 
   useEffect(() => {
     _updateStateWithTrpcData<PointFeature<TestPointProps>[]>(
       _treePlantedGeoJsonData,
       setTreePlantedProjects
     );
-  }, [_treePlantedGeoJsonData.data]);
+  }, [_treePlantedGeoJsonData.data, refetchData]);
 
   useEffect(() => {
     _updateStateWithTrpcData<StatsResult | undefined>(

@@ -7,15 +7,14 @@ import { useTranslation } from 'next-i18next';
 import myProfilestyle from '../../styles/MyProfile.module.scss';
 import { ReactElement } from 'react';
 import { SetState } from '../../../../common/types/common';
-import { User } from '@planet-sdk/common';
-import { PublicUser } from '../../../../common/types/user';
+import { User, UserPublicProfile } from '@planet-sdk/common';
 import theme from '../../../../../theme/themeProperties';
 
 const config = tenantConfig();
 
 export interface SharePlatformsProps {
   setShowSocialButton: SetState<boolean>;
-  userProfile: User | PublicUser;
+  userProfile: User | UserPublicProfile;
 }
 
 const SharePlatforms = ({

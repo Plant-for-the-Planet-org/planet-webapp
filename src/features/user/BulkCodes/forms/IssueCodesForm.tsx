@@ -38,7 +38,7 @@ const IssueCodesForm = (): ReactElement | null => {
     bulkMethod,
     setBulkMethod,
   } = useBulkCode();
-  const { user, logoutUser } = useUserProps();
+  const { user, logoutUser, setRefetchData } = useUserProps();
   const { getAccessTokenSilently } = useAuth0();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [localRecipients, setLocalRecipients] = useState<LocalRecipient[]>([]);
@@ -137,6 +137,7 @@ const IssueCodesForm = (): ReactElement | null => {
         if (res?.uid) {
           resetBulkContext();
           setIsSubmitted(true);
+          setRefetchData(true);
           setTimeout(() => {
             router.push(`/profile/history?ref=${res.uid}`);
           }, 5000);
