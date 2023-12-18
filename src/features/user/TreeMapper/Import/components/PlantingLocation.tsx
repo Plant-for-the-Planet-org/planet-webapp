@@ -156,8 +156,7 @@ function PlantedSpecies({
 interface Props {
   handleNext: () => void;
   userLang: string;
-  // plantLocation: PlantLocation | null;
-  setPlantLocation: SetState<PlantLocation>;
+  setPlantLocation: SetState<PlantLocation | null>;
   geoJson: Geometry | null;
   setGeoJson: Function;
   activeMethod: string;
