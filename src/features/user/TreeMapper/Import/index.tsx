@@ -104,7 +104,6 @@ export default function ImportData(): ReactElement {
           <PlantingLocation
             handleNext={handleNext}
             userLang={userLang}
-            plantLocation={plantLocation}
             setPlantLocation={setPlantLocation}
             geoJson={geoJson}
             setGeoJson={setGeoJson}
@@ -139,7 +138,6 @@ export default function ImportData(): ReactElement {
           <PlantingLocation
             handleNext={handleNext}
             userLang={userLang}
-            plantLocation={plantLocation}
             setPlantLocation={setPlantLocation}
             geoJson={geoJson}
             setGeoJson={setGeoJson}

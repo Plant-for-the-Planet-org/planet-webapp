@@ -37,7 +37,9 @@ import {
   GeometryObject,
 } from 'geojson';
 import { Species } from '../../../../common/types/plantLocation';
-import { PlantLocation } from '../../Treemapper';
+import { PlantLocation, PlantingLocationFormData } from '../../Treemapper';
+import { DevTool } from '@hookform/devtools';
+import { SetState } from '../../../../common/types/common';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -60,9 +62,9 @@ interface SpeciesProps {
   index: number;
   t: Function;
   remove: Function;
-  errors: FieldErrors<PlantLocation>;
-  item: FieldArrayWithId<PlantLocation, 'plantedSpecies', 'id'>;
-  control: Control<PlantLocation>;
+  errors: FieldErrors<PlantingLocationFormData>;
+  item: FieldArrayWithId<PlantingLocationFormData, 'plantedSpecies', 'id'>;
+  control: Control<PlantingLocationFormData>;
 }
 
 function PlantedSpecies({
@@ -154,8 +156,7 @@ function PlantedSpecies({
 interface Props {
   handleNext: () => void;
   userLang: string;
-  plantLocation: PlantLocation | null;
-  setPlantLocation: Function;
+  setPlantLocation: SetState<PlantLocation | null>;
   geoJson: Geometry | null;
   setGeoJson: Function;
   activeMethod: string;
@@ -165,7 +166,6 @@ interface Props {
 export default function PlantingLocation({
   handleNext,
   userLang,
-  plantLocation,
   setPlantLocation,
   geoJson,
   setGeoJson,
@@ -197,9 +197,9 @@ export default function PlantingLocation({
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm({
+  } = useForm<PlantingLocationFormData>({
     mode: 'onBlur',
-    defaultValues: plantLocation ? plantLocation : defaultValues,
+    defaultValues: defaultValues,
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -321,7 +321,7 @@ export default function PlantingLocation({
     onFileDialogCancel: () => setIsUploadingData(false),
   });
 
-  const onSubmit = async (data: PlantLocation) => {
+  const onSubmit = async (data: PlantingLocationFormData) => {
     if (geoJson) {
       setIsUploadingData(true);
       const submitData = {
@@ -335,7 +335,7 @@ export default function PlantingLocation({
       };
 
       try {
-        const res = await postAuthenticatedRequest(
+        const res = await postAuthenticatedRequest<PlantLocation>(
           `/treemapper/plantLocations`,
           submitData,
           token,
@@ -514,12 +514,6 @@ export default function PlantingLocation({
           append({
             otherSpecies: '',
             treeCount: 0,
-            // Set to default or empty value for type match
-            scientificName: '',
-            created: '',
-            scientificSpecies: '',
-            id: '',
-            updated: '',
           });
         }}
         className={styles.addSpeciesButton}
@@ -541,6 +535,7 @@ export default function PlantingLocation({
           )}
         </Button>
       </div>
+      <DevTool control={control} />
     </>
   );
 }
