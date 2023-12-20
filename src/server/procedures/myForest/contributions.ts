@@ -31,9 +31,16 @@ export const contributions = procedure
 
     const _cursor = cursor ? cursor.split(',') : undefined;
     const contributionsCursor =
-      _cursor?.[0] !== 'undefined' ? _cursor?.[0] : undefined;
+      _cursor?.[0] !== 'undefined' && _cursor?.[0] !== 'null'
+        ? _cursor?.[0]
+        : undefined;
+
     const giftDataCursor =
-      _cursor?.[1] !== 'undefined' ? _cursor?.[1] : undefined;
+      _cursor?.[1] !== 'undefined' && _cursor?.[1] !== 'null'
+        ? _cursor?.[1]
+        : undefined;
+
+    // Fetch contributions and gifts
 
     const contributions = await prisma.contribution.findMany({
       select: {
@@ -43,7 +50,6 @@ export const contributions = procedure
         quantity: true,
         plantDate: true,
         contributionType: true,
-        created: true,
         tenant: {
           select: {
             guid: true,
@@ -77,6 +83,9 @@ export const contributions = procedure
                 tpo: true,
               },
             },
+          },
+          orderBy: {
+            plantDate: 'desc',
           },
         },
         plantProject: {
@@ -134,20 +143,20 @@ export const contributions = procedure
               : {}),
           },
         ],
-        created: {
+        plantDate: {
           lte: contributionsCursor ? new Date(contributionsCursor) : new Date(),
         },
       },
       orderBy: {
-        created: 'desc',
+        plantDate: 'desc',
       },
       skip: skip,
       take: limit + 1,
     });
 
-    const giftData = await prisma.gift.findMany({
+    const gifts = await prisma.gift.findMany({
       select: {
-        created: true,
+        plantDate: true,
         value: true,
         guid: true,
         recipient: true,
@@ -163,20 +172,25 @@ export const contributions = procedure
           equals:
             purpose === Purpose.TREES ? Purpose.TREES : Purpose.CONSERVATION,
         },
-        created: {
+        plantDate: {
           lte: giftDataCursor ? new Date(giftDataCursor) : new Date(),
         },
       },
       orderBy: {
-        created: 'desc',
+        plantDate: 'desc',
       },
       skip: skip,
       take: limit + 1,
     });
 
+    console.log('gifts', gifts);
+
+    // There are gifts in the database that don't have an image, so we need to fetch them separately here
+    // and fetch the images from the project table and prep them for the response
+
     const giftProjectsWithoutImage =
-      giftData.length > 0
-        ? giftData
+      gifts.length > 0
+        ? gifts
             .filter(
               (gift) =>
                 !JSON.parse(JSON.stringify(gift.metadata))?.project?.image
@@ -198,9 +212,12 @@ export const contributions = procedure
       },
     });
 
+    // There are gifts in the database that don't have an allowDonations field, so we need to fetch them separately here
+    // and fetch the allowDonations from the project table and prep them for the response
+
     const giftProjectIds =
-      giftData.length > 0
-        ? giftData.map(
+      gifts.length > 0
+        ? gifts.map(
             (gift) => JSON.parse(JSON.stringify(gift.metadata))?.project?.id
           )
         : [];
@@ -217,8 +234,10 @@ export const contributions = procedure
       },
     });
 
-    function addTypeToGift(
-      giftObjects: typeof giftData,
+    // Process the prepared data
+
+    function processGiftData(
+      giftObjects: typeof gifts,
       projectsWithImage: {
         guid: string;
         image: string | null;
@@ -256,7 +275,9 @@ export const contributions = procedure
       });
     }
 
-    function addTypeToContribution(contributionResults: typeof contributions) {
+    function processContributionData(
+      contributionResults: typeof contributions
+    ) {
       return contributionResults.map((contribution) => {
         return {
           ...contribution,
@@ -266,27 +287,30 @@ export const contributions = procedure
     }
 
     const combinedData = [
-      ...addTypeToContribution(contributions),
-      ...addTypeToGift(giftData, projectsWithImage, giftProjects),
+      ...processContributionData(contributions),
+      ...processGiftData(gifts, projectsWithImage, giftProjects),
     ];
 
-    const sortedData = combinedData.sort(
-      (a, b) => b.created.getTime() - a.created.getTime()
-    );
+    const sortedData = combinedData.sort((a, b) => {
+      // Move objects with null plantDate to the beginning
+      if (!a.plantDate) return 1;
+      if (!b.plantDate) return -1;
+      return b.plantDate.getTime() - a.plantDate.getTime();
+    });
 
     const data = sortedData.slice(0, limit);
     let nextCursor;
     if (sortedData.length > limit) {
       const nextItem = sortedData[limit]; // Get the (limit + 1)-th item
-      let nextContributionCursor: Date | undefined;
-      let nextGiftDataCursor: Date | undefined;
+      let nextContributionCursor: Date | undefined | null;
+      let nextGiftDataCursor: Date | undefined | null;
 
       // Iterate over the remaining items to find the next cursors
       for (const item of sortedData.slice(limit)) {
         if (item._type === 'contribution' && !nextContributionCursor) {
-          nextContributionCursor = item.created;
+          nextContributionCursor = item.plantDate;
         } else if (item._type === 'gift' && !nextGiftDataCursor) {
-          nextGiftDataCursor = item.created;
+          nextGiftDataCursor = item.plantDate;
         }
 
         // Break if both cursors are found
@@ -298,11 +322,11 @@ export const contributions = procedure
       // If only one type of data reached the limit, set the cursor for the other type
       if (!nextContributionCursor) {
         nextContributionCursor =
-          nextItem._type === 'contribution' ? nextItem.created : undefined;
+          nextItem._type === 'contribution' ? nextItem.plantDate : undefined;
       }
       if (!nextGiftDataCursor) {
         nextGiftDataCursor =
-          nextItem._type === 'gift' ? nextItem.created : undefined;
+          nextItem._type === 'gift' ? nextItem.plantDate : undefined;
       }
 
       nextCursor = `${nextContributionCursor?.toISOString()},${nextGiftDataCursor?.toISOString()}`;
