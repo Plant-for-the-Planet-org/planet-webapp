@@ -459,7 +459,7 @@ const UserLayout: FC = ({ children }) => {
       //checks whether user is login
       if (router.asPath) {
         if (router.query.slug) {
-          router.push(`${router.pathname}`);
+          router.push(`${router.pathname.replace('/_sites/[slug]', '')}`);
         } else {
           localStorage.setItem('redirectLink', router.asPath);
         }

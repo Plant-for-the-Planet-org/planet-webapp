@@ -68,7 +68,7 @@ export default function Donate({
 
   const { setTenantConfig } = useTenant();
 
-  console.log('index.tsx =>', pageProps.tenantConfig);
+  console.log('index.tsx ==>', pageProps.tenantConfig);
 
   React.useEffect(() => {
     if (router.isReady) {

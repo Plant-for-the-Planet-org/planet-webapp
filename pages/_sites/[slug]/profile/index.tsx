@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
 import Profile from '../../../../src/features/user/ProfileV2';
 import UserLayout from '../../../../src/features/common/Layout/UserLayout/UserLayout';
@@ -30,13 +30,15 @@ interface Props {
 function ProfilePage({ pageProps }: Props): ReactElement {
   const { t } = useTranslation('me');
 
+  console.log('_sites profile ==>', pageProps.tenantConfig);
+
   // External imports
   const router = useRouter();
   const { setTenantConfig } = useTenant();
   const { user, contextLoaded, token } = useUserProps();
 
   // Internal states
-  const [profile, setProfile] = React.useState<null | User>();
+  const [profile, setProfile] = useState<null | User>(null);
 
   React.useEffect(() => {
     if (router.isReady) {
