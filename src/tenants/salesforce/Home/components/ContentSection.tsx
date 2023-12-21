@@ -56,10 +56,11 @@ export default function ContentSection() {
             <h3>Business is a platform for change.</h3>
             <p>
               Salesforce is committed to doing all we can to limit global
-              warming to 1.5° Celsius. We are rapidly accelerating our
-              sustainability program and integrating climate action into the
-              core of our business to ultimately deliver on this shared,
-              planetary goal of a more sustainable and equitable future.
+              warming to 1.5° Celsius and halt and reverse nature loss. We are
+              rapidly accelerating our sustainability program and integrating
+              climate and nature action into the core of our business to
+              ultimately deliver on the shared, planetary goal of a more
+              sustainable and equitable future.
             </p>
             <p>
               In January 2020, as a founding partner of{' '}
@@ -70,9 +71,8 @@ export default function ContentSection() {
               >
                 1t.org
               </a>
-              , Salesforce announced our own goal to support and mobilize the
-              conservation, restoration, and growth of 100 million trees by the
-              end of 2030.
+              , Salesforce announced our own goal to help fund the conservation,
+              restoration, and growth of 100 million trees by the end of 2030.
             </p>
             <p>
               We know we’ll have to refine our programs and methodology over

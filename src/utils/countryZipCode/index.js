@@ -579,7 +579,7 @@ const COUNTRY_ADDRESS_POSTALS = [
   {
     abbrev: 'LB',
     name: 'Lebanon',
-    postal: /^[0-9]{4} ?[0-9]{4}$/,
+    postal: /^[0-9]{4} ?([0-9]{4})?$/,
   },
   {
     abbrev: 'LS',
