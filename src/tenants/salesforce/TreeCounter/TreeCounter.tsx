@@ -1,35 +1,29 @@
 import React from 'react';
 import treeCounterStyles from './TreeCounter.module.scss';
-import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 
-export default function TpoProfile(props: any) {
+interface Props {
+  planted: number;
+}
+
+export default function TpoProfile({ planted }: Props) {
+  const estMillionTreesPlanted = Math.floor(planted / 1000000);
+  const treeCounterValue = `${estMillionTreesPlanted} Million`;
+
   return (
     <div
       className={`${treeCounterStyles.treeCounter} ${
-        props.planted > 0 ? treeCounterStyles.treeCounterReady : ''
+        estMillionTreesPlanted > 0 ? treeCounterStyles.treeCounterReady : ''
       }`}
     >
       <div className={treeCounterStyles.treeCounterDataField}>
-        <span aria-label={props.planted} role="heading">
-          {String(getFormattedNumber('en', parseInt(props.planted)))
-            .padStart(11)
-            .split('')
-            .map(function (char, index) {
-              return (
-                <span
-                  aria-hidden="true"
-                  key={`planted-${index}`}
-                  className={
-                    char === ','
-                      ? treeCounterStyles.treeCounterComma
-                      : treeCounterStyles.treeCounterNumber
-                  }
-                >
-                  {char}
-                </span>
-              );
-            })}
-        </span>
+        <div
+          aria-label={treeCounterValue}
+          role="heading"
+          className={treeCounterStyles.treeCounterValue}
+        >
+          {treeCounterValue}
+          <sup>#</sup>
+        </div>
       </div>
     </div>
   );
