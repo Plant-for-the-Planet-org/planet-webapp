@@ -23,9 +23,9 @@ export default function Landing(tenantScore: Props) {
             <button>Help us get there</button>
           </Link>
           <p className={styles.footnote}>
-            <sup>#</sup> This estimate is based on the amount of funding we
-            provide, and progress reports we receive from our partner
-            organizations. The estimate is updated regularly
+            This estimate is based on the amount of funding we provide, and
+            progress reports we receive from our partner organizations. The
+            estimate is updated regularly.
           </p>
         </div>
       </div>
