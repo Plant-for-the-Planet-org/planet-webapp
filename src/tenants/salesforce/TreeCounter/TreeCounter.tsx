@@ -22,7 +22,6 @@ export default function TpoProfile({ planted }: Props) {
           className={treeCounterStyles.treeCounterValue}
         >
           {treeCounterValue}
-          <sup>#</sup>
         </div>
       </div>
     </div>

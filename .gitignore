@@ -51,3 +51,4 @@ build-storybook.log
 src/stories
 .vscode/settings.json
 .vscode/launch.json
+.env copy.local
