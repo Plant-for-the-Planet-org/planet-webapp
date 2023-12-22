@@ -3,14 +3,6 @@ import { getTenantSlug } from './src/utils/multiTenancy/helpers';
 
 export const config = {
   matcher: [
-    '/((?!api|_next|fonts|examples|[\\w-]+\\.\\w+).*)',
-    '/',
-    '/_sites/:slug*',
-  ],
-};
-
-// export const config = {
-//   matcher: [
 //     /*
 //      * Match all paths except for:
 //      * 1. /api routes
@@ -18,9 +10,11 @@ export const config = {
 //      * 3. /_static (inside /public)
 //      * 4. all root files inside /public (e.g. /favicon.ico)
 //      */
-//     '/((?!api/|_next/|_static/|_vercel|[\\w-]+\\.\\w+).*)',
-//   ],
-// };
+    '/((?!api|_next|fonts|examples|[\\w-]+\\.\\w+).*)',
+    '/',
+    '/_sites/:slug*',
+  ],
+};
 
 export default async function middleware(req: NextRequest) {
   const url = req.nextUrl;
@@ -30,10 +24,6 @@ export default async function middleware(req: NextRequest) {
 
   const slug = await getTenantSlug(host!);
 
-  // If it is a redirect object, return it immediately
-  // if(subdomainOrRedirectObject instanceof NextResponse) {
-  //   return subdomainOrRedirectObject;
-  // }
 
   // Prevent security issues – users should not be able to canonically access
   // the pages/sites folder and its respective contents.
