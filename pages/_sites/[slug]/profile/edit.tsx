@@ -1,20 +1,20 @@
 import Head from 'next/head';
 import React, { ReactElement } from 'react';
-import { useTranslation } from 'next-i18next';
+import UserLayout from '../../../../src/features/common/Layout/UserLayout/UserLayout';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import ApiKey from '../../../../src/features/user/Settings/ApiKey';
+import { useTranslation } from 'next-i18next';
+import EditProfile from '../../../../src/features/user/Settings/EditProfile';
 import {
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
-import UserLayout from '../../../../src/features/common/Layout/UserLayout/UserLayout';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../tenant.config';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
+import { defaultTenant } from '../../../../tenant.config';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
 
@@ -38,9 +38,9 @@ function EditProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
   return tenantConfig ? (
     <UserLayout>
       <Head>
-        <title>{t('apiKey')}</title>
+        <title>{t('editProfile')}</title>
       </Head>
-      <ApiKey />
+      <EditProfile />
     </UserLayout>
   ) : (
     <></>
@@ -71,26 +71,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = async (
     props: {
       ...(await serverSideTranslations(
         context.locale || 'en',
-        [
-          'bulkCodes',
-          'common',
-          'country',
-          'donate',
-          'donationLink',
-          'editProfile',
-          'giftfunds',
-          'leaderboard',
-          'managePayouts',
-          'manageProjects',
-          'maps',
-          'me',
-          'planet',
-          'planetcash',
-          'redeem',
-          'registerTrees',
-          'tenants',
-          'treemapper',
-        ],
+        ['editProfile', 'me', 'common', 'country'],
         null,
         ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
       )),
