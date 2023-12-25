@@ -26,7 +26,7 @@ const ProjectImage = ({
             {numberOfTreesPlanted && numberOfTreesPlanted > 1 ? (
               <TreesIcon />
             ) : (
-              <TreeIcon />
+              <TreeIcon width={'100px'} height={'100px'} />
             )}
           </div>
         )}

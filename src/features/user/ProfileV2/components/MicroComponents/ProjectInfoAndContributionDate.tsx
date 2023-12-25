@@ -54,7 +54,7 @@ const ProjectInfoAndContributionDate = ({
 
       {contributionDate ? (
         <div className={myForestStyles.plantingDate}>
-          {format(contributionDate, 'MMM dd, yyyy', {
+          {format(contributionDate, 'PP', {
             locale: localeMapForDate[localStorage.getItem('language') || 'en'],
           })}
         </div>
