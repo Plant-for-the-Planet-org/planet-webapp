@@ -211,7 +211,7 @@ export default function PlantingLocation({
   const loadProjects = async () => {
     try {
       const projects = await getAuthenticatedRequest<MapProject[]>(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         '/app/profile/projects',
         token,
         logoutUser
