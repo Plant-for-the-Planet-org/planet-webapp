@@ -2,9 +2,10 @@ import React from 'react';
 import styles from './LeaderBoard.module.scss';
 import { getFormattedNumber } from '../../../utils/getFormattedNumber';
 import { useTranslation } from 'next-i18next';
+import { LeaderBoardList } from '../../../features/common/types/leaderboard';
 
 interface Props {
-  leaderboard: any;
+  leaderboard: LeaderBoardList | null;
 }
 
 export default function LeaderBoardSection(leaderboard: Props) {
@@ -46,7 +47,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
           leaderboardData.mostDonated ? (
             selectedTab === 'recent' ? (
               <div className={styles.leaderBoardBody}>
-                {leaderboardData.mostRecent.map((leader: any, index: any) => (
+                {leaderboardData.mostRecent.map((leader, index) => (
                   <div key={index} className={styles.leaderBoardBodyRow}>
                     <p className={styles.leaderBoardDonorName}>
                       {leader.donorName}
@@ -66,7 +67,7 @@ export default function LeaderBoardSection(leaderboard: Props) {
               </div>
             ) : (
               <div className={styles.leaderBoardBody}>
-                {leaderboardData.mostDonated.map((leader: any, index: any) => (
+                {leaderboardData.mostDonated.map((leader, index) => (
                   <div key={index} className={styles.leaderBoardBodyRow}>
                     <p className={styles.leaderBoardDonorName}>
                       {leader.donorName}

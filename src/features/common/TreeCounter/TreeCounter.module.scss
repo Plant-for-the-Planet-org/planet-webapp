@@ -64,13 +64,17 @@
 }
 
 .backgroundCircle {
-  border: 20px solid $light;
+  border: 5px solid $light;
+}
+
+.backgroundCircle,
+.backgroundCircleForTenant {
+  border: 20px solid #6fcf97;
   border-radius: 50%;
   height: 320px;
   width: 320px;
   position: absolute;
   opacity: 0.7;
-  border-color: #6FCF97;
 }
 
 .addTargetButton {
@@ -89,7 +93,7 @@
   font-size: $fontMedium;
 }
 
-.circularProgreesContainer {
+.circularProgressContainer {
   position: relative;
   z-index: 2;
   span {
@@ -104,7 +108,21 @@
   align-items: center;
   gap: 10px;
   width: 198px;
-  color: #4F4F4F;
+  color: #4f4f4f;
   font-weight: bold;
   font-size: 2rem;
+}
+
+.tenateTreePlanted {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  font-size: $fontXXXLarge;
+  font-family: $primaryFontFamily;
+  color: #fff;
+  .label {
+    font-size: $fontSmall;
+  }
 }

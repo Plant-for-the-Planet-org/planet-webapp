@@ -1,7 +1,7 @@
 // Done
 
 import React, { ReactElement } from 'react';
-import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile/UserProfile';
+import { UserProfileLoader } from '../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { useRouter } from 'next/router';
 import { useUserProps } from '../src/features/common/Layout/UserPropsContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -32,7 +32,8 @@ function Login(): ReactElement {
             router.push(redirectLink);
           }
         } else {
-          router.push('/t/[id]', `/t/${user.slug}`, { shallow: true });
+          // router.push('/t/[id]', `/t/${user.slug}`, { shallow: true });
+          router.push('/profile');
         }
       }
     }

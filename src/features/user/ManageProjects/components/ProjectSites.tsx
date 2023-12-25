@@ -33,12 +33,11 @@ import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ProjectCreationTabs } from '..';
 import {
   SiteDetails,
-  Viewport,
   ProjectSitesProps,
   GeoLocation,
   EditSiteProps,
-  Project,
   Site,
+  SitesScopeProjects,
 } from '../../../common/types/project';
 import { FeatureCollection as GeoJson } from 'geojson';
 import { useTenant } from '../../../common/Layout/TenantContext';
@@ -64,19 +63,18 @@ function EditSite({
   projectGUID,
   setSiteList,
   token,
-  setFeatures,
   seteditMode,
   siteGUID,
   siteList,
 }: EditSiteProps) {
   const { theme } = React.useContext(ThemeContext);
-  const {tenantConfig} = useTenant()
+  const { tenantConfig } = useTenant();
   const { t } = useTranslation(['manageProjects']);
   const {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm();
+  } = useForm<ProjectSitesFormData>();
   const [geoJson, setGeoJson] = React.useState<GeoJson | null>(geoJsonProp);
   const [geoJsonError, setGeoJsonError] = React.useState<boolean>(false);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
@@ -95,7 +93,7 @@ function EditSite({
     },
   };
 
-  const editProjectSite = async (data: any) => {
+  const editProjectSite = async (data: ProjectSitesFormData) => {
     if (geoJson && geoJson.features && geoJson.features.length !== 0) {
       setIsUploadingData(true);
       const submitData = {
@@ -125,7 +123,6 @@ function EditSite({
         }
         setSiteList(temp);
         setGeoJson(null);
-        setFeatures([]);
         setIsUploadingData(false);
         seteditMode(false);
         setErrorMessage('');
@@ -254,21 +251,24 @@ function EditSite({
   );
 }
 
+interface ProjectSitesFormData {
+  name: string;
+  status: string;
+}
+
 export default function ProjectSites({
   handleBack,
   token,
   handleNext,
   projectGUID,
-  handleReset,
   projectDetails,
 }: ProjectSitesProps): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
-  const [features, setFeatures] = React.useState([]);
   const {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm();
+  } = useForm<ProjectSitesFormData>();
   const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
   const [geoJsonError, setGeoJsonError] = React.useState<boolean>(false);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
@@ -281,17 +281,17 @@ export default function ProjectSites({
   const [geoJson, setGeoJson] = React.useState<GeoJson | null>(null);
   const defaultMapCenter = [36.96, -28.5];
   const defaultZoom = 1.4;
-  const [viewport, setViewPort] = React.useState<Viewport>({
+  const viewport = {
     height: 320,
     width: 200,
     center: defaultMapCenter,
-    zoom: [defaultZoom],
-  });
-  const [style, setStyle] = React.useState({
+    zoom: defaultZoom,
+  };
+  const style = {
     version: 8,
     sources: {},
     layers: [],
-  });
+  };
   const defaultSiteDetails = {
     name: '',
     status: '',
@@ -332,17 +332,11 @@ export default function ProjectSites({
     geoLocation,
   };
 
-  React.useEffect(() => {
-    if (!projectGUID || projectGUID === '') {
-      handleReset(ready ? t('manageProjects:resetMessage') : '');
-    }
-  });
-
   const fetchProjSites = async () => {
     try {
       if (projectGUID) {
         // Fetch sites of the project
-        const result = await getAuthenticatedRequest<Project>(
+        const result = await getAuthenticatedRequest<SitesScopeProjects>(
           tenantConfig?.id,
           `/app/profile/projects/${projectGUID}?_scope=sites`,
           token,
@@ -368,7 +362,7 @@ export default function ProjectSites({
     fetchProjSites();
   }, [projectGUID]);
 
-  const uploadProjectSite = async (data: any) => {
+  const uploadProjectSite = async (data: ProjectSitesFormData) => {
     if (geoJson && geoJson.features.length !== 0) {
       if (!data.name) return;
 
@@ -397,7 +391,6 @@ export default function ProjectSites({
         temp.push(_submitData);
         setSiteList(temp);
         setGeoJson(null);
-        setFeatures([]);
         setIsUploadingData(false);
         setShowForm(false);
         setErrorMessage('');
@@ -410,12 +403,12 @@ export default function ProjectSites({
     }
   };
 
-  const uploadProjectSiteNext = (data: any) => {
+  const uploadProjectSiteNext = (data: ProjectSitesFormData) => {
     uploadProjectSite(data);
     handleNext(ProjectCreationTabs.PROJECT_SPENDING);
   };
 
-  const deleteProjectSite = async (id: any) => {
+  const deleteProjectSite = async (id: string) => {
     try {
       setIsUploadingData(true);
       await deleteAuthenticatedRequest(
@@ -470,7 +463,7 @@ export default function ProjectSites({
     },
   ];
 
-  const editSite = (site: any) => {
+  const editSite = (site: Site) => {
     const defaultSiteDetails = {
       name: site.name,
       status: site.status,
@@ -507,7 +500,6 @@ export default function ProjectSites({
     projectGUID,
     setSiteList,
     token,
-    setFeatures,
     seteditMode,
     siteGUID,
     siteList,
@@ -559,7 +551,7 @@ export default function ProjectSites({
                       size="small"
                       className={styles.uploadedMapDeleteButton}
                     >
-                      <TrashIcon color={'#000'} />
+                      <TrashIcon />
                     </IconButton>
                     <IconButton
                       id={'edit'}

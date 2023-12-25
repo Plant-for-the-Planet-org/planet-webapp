@@ -23,7 +23,7 @@ const TopProjectBadge = ({ displayPopup }: Props): ReactElement => {
     <>
       <div className={'topProjectBadge'} {...bindHover(topProjectPopupState)}>
         <div className={'badgeIcon'}>
-          <TopProjectIcon />
+          <TopProjectIcon color={'#6D4230'} />
         </div>
         <div>{t('common:topProject')}</div>
       </div>

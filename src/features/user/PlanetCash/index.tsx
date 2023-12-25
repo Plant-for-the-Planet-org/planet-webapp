@@ -19,6 +19,7 @@ import { usePlanetCash } from '../../common/Layout/PlanetCashContext';
 import { useRouter } from 'next/router';
 import { handleError, APIError } from '@planet-sdk/common';
 import { useTenant } from '../../common/Layout/TenantContext';
+import { PlanetCashAccount } from '../../common/types/planetcash';
 
 export enum PlanetCashTabs {
   ACCOUNTS = 'accounts',
@@ -45,8 +46,8 @@ export default function PlanetCash({
   const router = useRouter();
 
   const sortAccountsByActive = (
-    accounts: PlanetCash.Account[]
-  ): PlanetCash.Account[] => {
+    accounts: PlanetCashAccount[]
+  ): PlanetCashAccount[] => {
     return accounts.sort((accountA, accountB) => {
       if (accountA.isActive === accountB.isActive) {
         return 0;
@@ -84,8 +85,8 @@ export default function PlanetCash({
       try {
         setIsDataLoading(true);
         setProgress && setProgress(70);
-        const accounts = await getAuthenticatedRequest<PlanetCash.Account[]>(
-          tenantConfig?.tenantID,
+        const accounts = await getAuthenticatedRequest<PlanetCashAccount[]>(
+          tenantConfig?.id,
           `/app/planetCash`,
           token,
           logoutUser

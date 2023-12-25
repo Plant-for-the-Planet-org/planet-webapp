@@ -20,6 +20,12 @@ const themeProperties = {
   primaryColor: '#68B030',
   primaryDarkColor: '#007a49',
   primaryLightColor: '#79AE4633',
+  primaryDarkColorX: "#219653",
+  lightBlueColor: "#48AADD",
+  darkBlackColor: "#4F4F4F",
+  darkOliveGreen: "#688816",
+  topProjectBackgroundColor: '#F3BB44',
+  nonDonatableProjectBackgroundColor: '#828282',
   light: {
     primaryFontColor: '#2f3336',
     dividerColor: '#d5d5d5',

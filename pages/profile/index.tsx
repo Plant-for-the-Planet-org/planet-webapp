@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement, useEffect } from 'react';
 import { useUserProps } from '../../src/features/common/Layout/UserPropsContext';
-import Profile from '../../src/features/user/ProfileV2';
+import Profile from '../../src/features/user/ProfileV2/components/ProfileInfo';
 import UserLayout from '../../src/features/common/Layout/UserLayout/UserLayout';
-import MyContributions from '../../src/features/user/ProfileV2/components/MyTrees/MyContributions';
+import MyContributions from '../../src/features/user/ProfileV2/components/MyContributions/MyContributions';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';

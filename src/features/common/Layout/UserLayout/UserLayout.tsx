@@ -19,7 +19,7 @@ import PlanetCashIcon from '../../../../../public/assets/images/icons/Sidebar/Pl
 import SettingsIcon from '../../../../../public/assets/images/icons/Sidebar/SettingsIcon';
 import UserIcon from '../../../../../public/assets/images/icons/Sidebar/UserIcon';
 import WidgetIcon from '../../../../../public/assets/images/icons/Sidebar/Widget';
-import UserProfileLoader from '../../ContentLoaders/UserProfile/UserProfile';
+import { UserProfileLoader } from '../../ContentLoaders/UserProfile/UserProfile';
 import SelectLanguageAndCountry from '../Footer/SelectLanguageAndCountry';
 import { useUserProps } from '../UserPropsContext';
 import styles from './UserLayout.module.scss';
@@ -101,8 +101,6 @@ function LanguageSwitcher() {
       <SelectLanguageAndCountry
         openModal={openModal}
         handleModalClose={() => setOpenModal(false)}
-        language={i18n.language}
-        setLanguage={setLanguage}
         setSelectedCurrency={setSelectedCurrency}
         selectedCountry={selectedCountry}
         setSelectedCountry={setSelectedCountry}
@@ -330,7 +328,9 @@ const UserLayout: FC = ({ children }) => {
         {
           title: t('me:dataExplorer'),
           path: '/profile/treemapper/data-explorer',
-          hideItem: !(process.env.ENABLE_ANALYTICS && user?.type === 'tpo'),
+          hideItem: !(
+            process.env.ENABLE_ANALYTICS === 'true' && user?.type === 'tpo'
+          ),
         },
       ],
     },

@@ -10,6 +10,7 @@ import { ReactElement } from 'react';
 import { TreeContributedProjectListProps } from '../../../../common/types/myForest';
 
 const TreeProjectContributions = ({
+  restoredAreaUnit,
   contribution,
   userProfile,
   handleFetchNextPage,
@@ -20,7 +21,6 @@ const TreeProjectContributions = ({
   const handleAddTargetModalOpen = (): void => {
     setIsAddTargetModalOpen(true);
   };
-
   const handleAddTargetModalClose = (): void => {
     setIsAddTargetModalOpen(false);
   };
@@ -32,6 +32,7 @@ const TreeProjectContributions = ({
           {' '}
           {userProfile && (
             <TreeCounter
+              restoredAreaUnit={restoredAreaUnit}
               handleAddTargetModalOpen={() => {
                 setIsAddTargetModalOpen(true);
               }}
@@ -70,12 +71,10 @@ const TreeProjectContributions = ({
             {t('me:treesPlantedAndAreaRestored')}
             <p className={myForestStyles.hrLine} />
           </div>
-          <div>
-            <ContributedProjectList
-              contributionProjectList={contribution?.pages}
-              handleFetchNextPage={handleFetchNextPage}
-            />
-          </div>
+          <ContributedProjectList
+            contributionProjectList={contribution?.pages}
+            handleFetchNextPage={handleFetchNextPage}
+          />
         </div>
       </div>
     </div>

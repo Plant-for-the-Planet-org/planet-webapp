@@ -36,7 +36,7 @@ export default function NavbarComponent() {
     trillionTrees: 'trillion-trees',
     yucatan: 'yucatan',
     partners: 'partners',
-    changeChocolate: 'change-chocolate',
+    changeChocolate: 'chocolate',
     stopTalkingStartPlanting: 'stop-talking-start-planting',
   };
   const [menu, setMenu] = useState(false);

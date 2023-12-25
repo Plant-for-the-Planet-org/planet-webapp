@@ -99,7 +99,6 @@ export default function DetailedAnalysis({
   projectDetails,
   setProjectDetails,
   projectGUID,
-  handleReset,
   purpose,
 }: DetailedAnalysisProps): ReactElement {
   const { t, ready } = useTranslation(['manageProjects', 'common']);
@@ -237,12 +236,6 @@ export default function DetailedAnalysis({
 
   const router = useRouter();
 
-  React.useEffect(() => {
-    if (!projectGUID || projectGUID === '') {
-      handleReset(ready ? t('manageProjects:resetMessage') : '');
-    }
-  });
-
   // TODO - set up better types for Form Data
   const defaultFormData: TreeFormData | ConservationFormData =
     purpose === 'trees'
@@ -374,7 +367,7 @@ export default function DetailedAnalysis({
       const res = await putAuthenticatedRequest<
         ProfileProjectTrees | ProfileProjectConservation
       >(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         `/app/projects/${projectGUID}`,
         submitData,
         token,
@@ -634,8 +627,12 @@ export default function DetailedAnalysis({
                     onBlur={onBlur}
                     onChange={onChange}
                     value={value}
-                    error={errors.areaProtected !== undefined}
+                    error={
+                      'areaProtected' in errors &&
+                      errors.areaProtected !== undefined
+                    }
                     helperText={
+                      'areaProtected' in errors &&
                       errors.areaProtected !== undefined &&
                       errors.areaProtected.message
                     }
@@ -679,8 +676,12 @@ export default function DetailedAnalysis({
                         <TextField
                           required
                           {...props}
-                          error={errors.startingProtectionYear !== undefined}
+                          error={
+                            'startingProtectionYear' in errors &&
+                            errors.startingProtectionYear !== undefined
+                          }
                           helperText={
+                            'startingProtectionYear' in errors &&
                             errors.startingProtectionYear !== undefined &&
                             errors.startingProtectionYear.message
                           }
@@ -765,8 +766,12 @@ export default function DetailedAnalysis({
                       <TextField
                         required
                         {...props}
-                        error={errors.startingProtectionYear !== undefined}
+                        error={
+                          'startingProtectionYear' in errors &&
+                          errors.startingProtectionYear !== undefined
+                        }
                         helperText={
+                          'startingProtectionYear' in errors &&
                           errors.startingProtectionYear !== undefined &&
                           errors.startingProtectionYear.message
                         }
@@ -897,8 +902,12 @@ export default function DetailedAnalysis({
                       }}
                       value={value}
                       onBlur={onBlur}
-                      error={errors.plantingDensity !== undefined}
+                      error={
+                        'plantingDensity' in errors &&
+                        errors.plantingDensity !== undefined
+                      }
                       helperText={
+                        'plantingDensity' in errors &&
                         errors.plantingDensity !== undefined &&
                         errors.plantingDensity.message
                       }
@@ -911,7 +920,7 @@ export default function DetailedAnalysis({
                   control={control}
                   rules={{
                     min: {
-                      value: minDensity,
+                      value: minDensity || 0,
                       message: t('manageProjects:errorForMaxPlantingDensity'),
                     },
                   }}
@@ -932,8 +941,12 @@ export default function DetailedAnalysis({
                       }}
                       value={value}
                       onBlur={onBlur}
-                      error={errors.maxPlantingDensity !== undefined}
+                      error={
+                        'maxPlantingDensity' in errors &&
+                        errors.maxPlantingDensity !== undefined
+                      }
                       helperText={
+                        'maxPlantingDensity' in errors &&
                         errors.maxPlantingDensity !== undefined &&
                         errors.maxPlantingDensity.message
                       }
@@ -1016,9 +1029,14 @@ export default function DetailedAnalysis({
                     onChange={onChange}
                     value={value}
                     onBlur={onBlur}
-                    error={errors.degradationCause !== undefined}
+                    error={
+                      'degradationCause' in errors &&
+                      errors.degradationCause !== undefined
+                    }
                     helperText={
-                      errors.degradationCause && errors.degradationCause.message
+                      'degradationCause' in errors &&
+                      errors.degradationCause &&
+                      errors.degradationCause.message
                     }
                     InputProps={{
                       endAdornment: (
@@ -1053,8 +1071,12 @@ export default function DetailedAnalysis({
                   onChange={onChange}
                   value={value}
                   onBlur={onBlur}
-                  error={errors.degradationCause !== undefined}
+                  error={
+                    'degradationCause' in errors &&
+                    errors.degradationCause !== undefined
+                  }
                   helperText={
+                    'degradationCause' in errors &&
                     errors.degradationCause !== undefined &&
                     errors.degradationCause.message
                   }

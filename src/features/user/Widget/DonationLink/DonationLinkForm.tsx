@@ -19,6 +19,7 @@ import { allCountries } from '../../../../utils/constants/countries';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import StyledForm from '../../../common/Layout/StyledForm';
 import QRCode from 'qrcode';
+import { ExtendedCountryCode } from '../../../common/types/country';
 
 interface DonationLinkFormProps {
   projectsList: ProjectOption[] | null;
@@ -33,8 +34,8 @@ const DonationLinkForm = ({
   projectsList,
 }: DonationLinkFormProps): ReactElement | null => {
   const { user } = useUserProps();
+  const [country, setCountry] = useState<ExtendedCountryCode | ''>('auto');
   const { tenantConfig } = useTenant();
-  const [country, setCountry] = useState('auto');
   const [Languages, setLanguage] = useState<LanguageType>({
     langCode: 'auto',
     languageName: 'Automatic Selection',
@@ -42,7 +43,7 @@ const DonationLinkForm = ({
   const [donationUrl, setDonationUrl] = useState<string>('');
   const { t, ready } = useTranslation(['donationLink', 'country', 'me']);
   const [localProject, setLocalProject] = useState<ProjectOption | null>(null);
-  const [isSupport, setIsSupport] = useState<boolean>(!user.isPrivate);
+  const [isSupport, setIsSupport] = useState<boolean>(!user?.isPrivate);
   const [isTesting, setIsTesting] = useState<boolean>(false);
   const [isArrayUpdated, setIsArrayUpdated] = useState<boolean>(false);
   const [isLinkUpdated, setIsLinkUpdated] = useState<boolean>(false);
@@ -73,7 +74,7 @@ const DonationLinkForm = ({
 
     const url = `${link}?${selectedCountry}${selectedLanguage}${
       localProject == null ? '' : `to=${localProject.slug}&`
-    }tenant=${tenantConfig?.id}${isSupport ? `&s=${user.slug}` : ''}
+    }tenant=${tenantConfig?.id}${isSupport ? `&s=${user?.slug}` : ''}
     `;
     if (donationUrl.length > 0) setIsLinkUpdated(true);
     setDonationUrl(url);
@@ -99,7 +100,7 @@ const DonationLinkForm = ({
       code: 'auto',
       label: `${t('country:auto')}`,
       phone: '',
-    };
+    } as const;
     if (!allCountries.find((obj2) => obj2.code === 'auto')) {
       allCountries.unshift(autoCountry);
     }
@@ -120,7 +121,7 @@ const DonationLinkForm = ({
     }
   };
 
-  if (isArrayUpdated && ready) {
+  if (isArrayUpdated && ready && user) {
     return (
       <StyledForm>
         <div className="inputContainer">

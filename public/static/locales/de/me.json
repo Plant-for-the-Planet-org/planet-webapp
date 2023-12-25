@@ -67,6 +67,8 @@
   "registeredTrees": "Registrierte Bäume",
   "embedWidget": "Widget einbetten",
   "donationLink": "Spenden-Link erstellen",
+  "gift": "Geschenk",
+  "donation": "Spende",
   "tree-donation": "Baumspende",
   "tree-gift": "Baumgeschenk",
   "tree-cash": "TreeCash",
@@ -86,7 +88,7 @@
   "project": "Projektname",
   "planetCashPayment": "PlanetCash Zahlung",
   "method": "Zahlungsmethode",
-  "treeCost": "Kosten pro Baum",
+  "unitCost": "Kosten pro {{unitType}}",
   "treeCount": "Baumanzahl",
   "lastUpdate": "Letzte Aktualisierung",
   "donorCertificate": "Spenderzertifikat",
@@ -278,5 +280,7 @@
   "conserved": "Erhalten",
   "loadProjects": "weitere Spenden anzeigen",
   "numberOfContributions": "{{total}} Beiträge",
-  "donateAgain": "Nochmal spenden"
+  "donateAgain": "Nochmal spenden",
+  "membershipCtaButtonText": "Jetzt mitmachen",
+  "membershipCtaCopy": "Unterstütze uns und <2>WERDE MITGLIED</2>"
 }

@@ -165,7 +165,6 @@ video {
   margin: 0;
   padding: 0;
   border: 0;
-  font-size: 100%;
   font: inherit;
   vertical-align: baseline;
 }
@@ -526,10 +525,6 @@ input:-webkit-autofill {
   width: max-content;
 }
 
-.tab-flow {
-  display: flex;
-}
-
 @include xsPhoneView {
   .project-form-flow {
     flex-direction: column;
@@ -591,7 +586,6 @@ input:-webkit-autofill {
 .add-projects-button {
   background-color: $backgroundColor;
   border: 1px solid #f3f3f3;
-  border-radius: 7px;
   cursor: pointer;
   width: 300px;
   height: 140px;
@@ -677,6 +671,7 @@ input[type='number'] {
 }
 
 .tab-flow {
+  display: flex;
   text-transform: capitalize !important;
   text-align: left;
   align-items: flex-start;
@@ -750,5 +745,5 @@ input[type='number'] {
     margin-left: 24px;
     font-weight: bold;
     font-size: 30px;
-   }
+  }
 }

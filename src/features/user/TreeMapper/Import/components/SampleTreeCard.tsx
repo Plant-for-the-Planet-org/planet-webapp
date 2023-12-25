@@ -2,7 +2,12 @@ import React, { ReactElement } from 'react';
 import { useTranslation } from 'next-i18next';
 import styles from '../Import.module.scss';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
-import { Controller } from 'react-hook-form';
+import {
+  Control,
+  Controller,
+  FieldArrayWithId,
+  FieldErrors,
+} from 'react-hook-form';
 import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
 import { InputAdornment, MenuItem, SxProps, TextField } from '@mui/material';
 
@@ -10,6 +15,8 @@ import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDat
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../../../theme/themeProperties';
+import { PlantLocation, PlantedSpecies } from '../../Treemapper';
+import { SampleTree } from '../../../../common/types/plantLocation';
 
 const dialogSx: SxProps = {
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
@@ -28,15 +35,19 @@ const dialogSx: SxProps = {
   },
 };
 
+interface SampleTreeFormData {
+  sampleTrees: SampleTree[];
+}
+
 interface Props {
   index: number;
   remove: Function;
   getValues: Function;
-  control: any;
+  control: Control<SampleTreeFormData>;
   userLang: string;
-  item: any;
-  plantLocation: Treemapper.PlantLocation;
-  errors: any;
+  item: FieldArrayWithId<SampleTreeFormData, 'sampleTrees', 'id'>;
+  plantLocation: PlantLocation;
+  errors: FieldErrors<SampleTreeFormData>;
   key: string;
 }
 
@@ -51,7 +62,7 @@ export default function SampleTreeCard({
   errors,
 }: Props): ReactElement {
   const sampleTrees = getValues();
-  const { t, ready } = useTranslation(['treemapper', 'common']);
+  const { t } = useTranslation(['treemapper', 'common']);
   return (
     <div className={styles.sampleTreeFieldGroup}>
       <div className={styles.sampleTreeName}>
@@ -96,7 +107,7 @@ export default function SampleTreeCard({
               }
             >
               <Controller
-                name={`sampleTrees[${index}].plantingDate`}
+                name={`sampleTrees.${index}.plantingDate`}
                 control={control}
                 render={({ field: { onChange, value } }) => (
                   <MuiDatePicker
@@ -116,7 +127,7 @@ export default function SampleTreeCard({
           </div>
           <div className={styles.formFieldHalf}>
             <Controller
-              name={`sampleTrees[${index}].treeTag`}
+              name={`sampleTrees.${index}.treeTag`}
               control={control}
               render={({ field: { onChange, value, onBlur } }) => (
                 <TextField
@@ -133,7 +144,7 @@ export default function SampleTreeCard({
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
             <Controller
-              name={`sampleTrees[${index}].height`}
+              name={`sampleTrees.${index}.height`}
               control={control}
               rules={{
                 pattern: {
@@ -153,15 +164,15 @@ export default function SampleTreeCard({
                       <InputAdornment position="end">{t('m')}</InputAdornment>
                     ),
                   }}
-                  error={errors?.sampleTrees?.[index]?.height}
-                  helperText={errors?.sampleTrees?.[index]?.height?.message}
+                  error={errors.sampleTrees?.[index]?.height !== undefined}
+                  helperText={errors.sampleTrees?.[index]?.height?.message}
                 />
               )}
             />
           </div>
           <div className={styles.formFieldHalf}>
             <Controller
-              name={`sampleTrees[${index}].diameter`}
+              name={`sampleTrees.${index}.diameter`}
               control={control}
               rules={{
                 pattern: {
@@ -181,8 +192,8 @@ export default function SampleTreeCard({
                       <InputAdornment position="end">{t('cm')}</InputAdornment>
                     ),
                   }}
-                  error={errors?.sampleTrees?.[index]?.diameter}
-                  helperText={errors?.sampleTrees?.[index]?.diameter?.message}
+                  error={errors.sampleTrees?.[index]?.diameter !== undefined}
+                  helperText={errors.sampleTrees?.[index]?.diameter?.message}
                 />
               )}
             />
@@ -192,7 +203,7 @@ export default function SampleTreeCard({
         <div className={styles.formField}>
           <div className={styles.formFieldHalf}>
             <Controller
-              name={`sampleTrees[${index}].latitude`}
+              name={`sampleTrees.${index}.latitude`}
               control={control}
               rules={{
                 pattern: {
@@ -207,15 +218,15 @@ export default function SampleTreeCard({
                   onBlur={onBlur}
                   label={t('latitude')}
                   variant="outlined"
-                  error={errors?.sampleTrees?.[index]?.latitude}
-                  helperText={errors?.sampleTrees?.[index]?.latitude?.message}
+                  error={errors.sampleTrees?.[index]?.latitude !== undefined}
+                  helperText={errors.sampleTrees?.[index]?.latitude?.message}
                 />
               )}
             />
           </div>
           <div className={styles.formFieldHalf}>
             <Controller
-              name={`sampleTrees[${index}].longitude`}
+              name={`sampleTrees.${index}.longitude`}
               control={control}
               rules={{
                 pattern: {
@@ -230,8 +241,8 @@ export default function SampleTreeCard({
                   onBlur={onBlur}
                   label={t('longitude')}
                   variant="outlined"
-                  error={errors?.sampleTrees?.[index]?.longitude}
-                  helperText={errors?.sampleTrees?.[index]?.longitude?.message}
+                  error={errors.sampleTrees?.[index]?.longitude !== undefined}
+                  helperText={errors.sampleTrees?.[index]?.longitude?.message}
                 />
               )}
             />
@@ -239,7 +250,7 @@ export default function SampleTreeCard({
         </div>
         <div className={styles.formFieldLarge}>
           <Controller
-            name={`sampleTrees[${index}].otherSpecies`}
+            name={`sampleTrees.${index}.otherSpecies`}
             control={control}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
@@ -250,9 +261,10 @@ export default function SampleTreeCard({
                 value={value}
                 select
               >
-                {plantLocation.plantedSpecies.map(
-                  (species: Treemapper.PlantedSpecies, index: number) => {
-                    if (plantLocation.plantedSpecies.length === 1) {
+                {plantLocation?.plantedSpecies.map(
+                  (species: PlantedSpecies, index: number) => {
+                    if (!species.otherSpecies) return;
+                    if (plantLocation?.plantedSpecies.length === 1) {
                       return (
                         <MenuItem
                           key={index}

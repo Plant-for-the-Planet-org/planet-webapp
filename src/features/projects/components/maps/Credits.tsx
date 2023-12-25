@@ -14,7 +14,6 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
   const { tenantConfig } = useTenant();
   const { i18n, t } = useTranslation(['common', 'maps']);
   const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
-  const [_language, setLanguage] = React.useState(i18n.language);
   const [selectedCountry, setSelectedCountry] = React.useState('DE');
   const [openLanguageModal, setLanguageModalOpen] = React.useState(false);
 
@@ -157,8 +156,6 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
       <SelectLanguageAndCountry
         openModal={openLanguageModal}
         handleModalClose={handleLanguageModalClose}
-        language={i18n.language}
-        setLanguage={setLanguage}
         setSelectedCurrency={setSelectedCurrency}
         selectedCountry={selectedCountry}
         setSelectedCountry={setSelectedCountry}

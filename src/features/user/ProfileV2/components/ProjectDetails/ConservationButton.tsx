@@ -6,16 +6,17 @@ import {
 import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import { ReactElement } from 'react';
-import { CircularProgress } from '@mui/material';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import theme from '../../../../../theme/themeProperties';
 
 export interface ConservationButtonProps {
-  conservedArea: number | undefined;
+  conservedArea: number | null | undefined;
 }
 
 const ConservationButton = ({
   conservedArea,
 }: ConservationButtonProps): ReactElement => {
+  const { lightBlueColor, light } = theme;
   const {
     isConservedButtonActive,
     setIsConservedButtonActive,
@@ -42,37 +43,37 @@ const ConservationButton = ({
       }`}
       onClick={handleClick}
     >
-      {conservedArea === undefined ? (
-        <div className={myForestStyles.circularProgressContainer}>
-          <CircularProgress style={{ color: '#48AADD' }} />
+      <>
+        <div className={myForestStyles.labelContainer}>
+          <div className={myForestStyles.conservedSvg}>
+            <ConservationTreeSvg
+              color={
+                isConservedButtonActive ? `${light.light}` : `${lightBlueColor}`
+              }
+            />
+          </div>
+          <div className={myForestStyles.conservedLabel}>
+            {t('donate:conservation')}
+          </div>
         </div>
-      ) : (
-        <>
-          <div className={myForestStyles.labelContainer}>
-            <div className={myForestStyles.conservedSvg}>
-              <ConservationTreeSvg
-                color={isConservedButtonActive ? 'white' : '#48AADD'}
-              />
-            </div>
-            <div className={myForestStyles.conservedLabel}>
-              {t('donate:conservation')}
-            </div>
+        <div className={myForestStyles.conservedAreaValue}>
+          <div className={myForestStyles.value}>
+            {conservedArea ? conservedArea : 0}
           </div>
-          <div className={myForestStyles.conservedAreaValue}>
-            <div className={myForestStyles.value}>
-              {conservedArea ? conservedArea : 0}
-            </div>
-            <div className={myForestStyles.unit}>{'m²'}</div>
-            <div className={myForestStyles.svgContainer}>
-              {isConservedButtonActive ? (
-                <DownWardArrowSvg color={'#FFFFFF'} />
-              ) : (
-                <ArrowSvg color={'#48AADD'} />
-              )}
-            </div>
-          </div>
-        </>
-      )}
+          <div className={myForestStyles.unit}>{'m²'}</div>
+          {conservedArea !== null &&
+            conservedArea !== undefined &&
+            conservedArea > 0 && (
+              <div className={myForestStyles.svgContainer}>
+                {isConservedButtonActive ? (
+                  <DownWardArrowSvg color={`${light.light}`} />
+                ) : (
+                  <ArrowSvg color={`${lightBlueColor}`} />
+                )}
+              </div>
+            )}
+        </div>
+      </>
     </div>
   );
 };

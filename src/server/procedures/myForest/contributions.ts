@@ -29,7 +29,20 @@ export const contributions = procedure
       });
     }
 
-    const data = await prisma.contribution.findMany({
+    const _cursor = cursor ? cursor.split(',') : undefined;
+    const contributionsCursor =
+      _cursor?.[0] !== 'undefined' && _cursor?.[0] !== 'null'
+        ? _cursor?.[0]
+        : undefined;
+
+    const giftDataCursor =
+      _cursor?.[1] !== 'undefined' && _cursor?.[1] !== 'null'
+        ? _cursor?.[1]
+        : undefined;
+
+    // Fetch contributions and gifts
+
+    const contributions = await prisma.contribution.findMany({
       select: {
         guid: true,
         purpose: true,
@@ -37,6 +50,12 @@ export const contributions = procedure
         quantity: true,
         plantDate: true,
         contributionType: true,
+        tenant: {
+          select: {
+            guid: true,
+            name: true,
+          },
+        },
         bouquetContributions: {
           select: {
             purpose: true,
@@ -44,8 +63,15 @@ export const contributions = procedure
             quantity: true,
             plantDate: true,
             contributionType: true,
+            tenant: {
+              select: {
+                guid: true,
+                name: true,
+              },
+            },
             plantProject: {
               select: {
+                allowDonations: true,
                 guid: true,
                 name: true,
                 image: true,
@@ -58,9 +84,13 @@ export const contributions = procedure
               },
             },
           },
+          orderBy: {
+            plantDate: 'desc',
+          },
         },
         plantProject: {
           select: {
+            allowDonations: true,
             guid: true,
             name: true,
             image: true,
@@ -72,6 +102,7 @@ export const contributions = procedure
             tpo: true,
           },
         },
+        giftTo: true,
       },
       where: {
         profile: {
@@ -112,16 +143,193 @@ export const contributions = procedure
               : {}),
           },
         ],
+        plantDate: {
+          lte: contributionsCursor ? new Date(contributionsCursor) : new Date(),
+        },
+      },
+      orderBy: {
+        plantDate: 'desc',
       },
       skip: skip,
       take: limit + 1,
-      cursor: cursor ? { guid: cursor } : undefined,
     });
 
-    let nextCursor: typeof cursor | undefined = undefined;
-    if (data.length > limit) {
-      const nextItem = data.pop();
-      nextCursor = nextItem?.guid;
+    const gifts = await prisma.gift.findMany({
+      select: {
+        plantDate: true,
+        value: true,
+        guid: true,
+        recipient: true,
+        metadata: true,
+        purpose: true,
+        type: true,
+      },
+      where: {
+        recipient: {
+          guid: profileId,
+        },
+        purpose: {
+          equals:
+            purpose === Purpose.TREES ? Purpose.TREES : Purpose.CONSERVATION,
+        },
+        plantDate: {
+          lte: giftDataCursor ? new Date(giftDataCursor) : new Date(),
+        },
+      },
+      orderBy: {
+        plantDate: 'desc',
+      },
+      skip: skip,
+      take: limit + 1,
+    });
+
+    console.log('gifts', gifts);
+
+    // There are gifts in the database that don't have an image, so we need to fetch them separately here
+    // and fetch the images from the project table and prep them for the response
+
+    const giftProjectsWithoutImage =
+      gifts.length > 0
+        ? gifts
+            .filter(
+              (gift) =>
+                !JSON.parse(JSON.stringify(gift.metadata))?.project?.image
+            )
+            .map(
+              (gift) => JSON.parse(JSON.stringify(gift.metadata))?.project?.id
+            )
+        : [];
+
+    const projectsWithImage = await prisma.project.findMany({
+      select: {
+        guid: true,
+        image: true,
+      },
+      where: {
+        guid: {
+          in: giftProjectsWithoutImage,
+        },
+      },
+    });
+
+    // There are gifts in the database that don't have an allowDonations field, so we need to fetch them separately here
+    // and fetch the allowDonations from the project table and prep them for the response
+
+    const giftProjectIds =
+      gifts.length > 0
+        ? gifts.map(
+            (gift) => JSON.parse(JSON.stringify(gift.metadata))?.project?.id
+          )
+        : [];
+
+    const giftProjects = await prisma.project.findMany({
+      select: {
+        guid: true,
+        allowDonations: true,
+      },
+      where: {
+        guid: {
+          in: giftProjectIds,
+        },
+      },
+    });
+
+    // Process the prepared data
+
+    function processGiftData(
+      giftObjects: typeof gifts,
+      projectsWithImage: {
+        guid: string;
+        image: string | null;
+      }[],
+      giftProjects: {
+        guid: string;
+        allowDonations: boolean;
+      }[]
+    ) {
+      return giftObjects.map((giftObject) => {
+        const projectId = JSON.parse(JSON.stringify(giftObject.metadata))
+          ?.project?.id;
+        const projectImage = projectsWithImage.find(
+          (project) => project.guid === projectId
+        )?.image;
+        const projectAllowDonations = giftProjects.find(
+          (project) => project.guid === projectId
+        )?.allowDonations;
+
+        return {
+          ...giftObject,
+          _type: 'gift',
+          quantity: giftObject.value ? giftObject.value / 100 : 0,
+          metadata: {
+            ...(giftObject?.metadata as object),
+            project: {
+              ...JSON.parse(JSON.stringify(giftObject.metadata))?.project,
+              image:
+                JSON.parse(JSON.stringify(giftObject.metadata))?.project
+                  ?.image ?? projectImage,
+            },
+          },
+          allowDonations: projectAllowDonations,
+        };
+      });
+    }
+
+    function processContributionData(
+      contributionResults: typeof contributions
+    ) {
+      return contributionResults.map((contribution) => {
+        return {
+          ...contribution,
+          _type: 'contribution',
+        };
+      });
+    }
+
+    const combinedData = [
+      ...processContributionData(contributions),
+      ...processGiftData(gifts, projectsWithImage, giftProjects),
+    ];
+
+    const sortedData = combinedData.sort((a, b) => {
+      // Move objects with null plantDate to the beginning
+      if (!a.plantDate) return 1;
+      if (!b.plantDate) return -1;
+      return b.plantDate.getTime() - a.plantDate.getTime();
+    });
+
+    const data = sortedData.slice(0, limit);
+    let nextCursor;
+    if (sortedData.length > limit) {
+      const nextItem = sortedData[limit]; // Get the (limit + 1)-th item
+      let nextContributionCursor: Date | undefined | null;
+      let nextGiftDataCursor: Date | undefined | null;
+
+      // Iterate over the remaining items to find the next cursors
+      for (const item of sortedData.slice(limit)) {
+        if (item._type === 'contribution' && !nextContributionCursor) {
+          nextContributionCursor = item.plantDate;
+        } else if (item._type === 'gift' && !nextGiftDataCursor) {
+          nextGiftDataCursor = item.plantDate;
+        }
+
+        // Break if both cursors are found
+        if (nextContributionCursor && nextGiftDataCursor) {
+          break;
+        }
+      }
+
+      // If only one type of data reached the limit, set the cursor for the other type
+      if (!nextContributionCursor) {
+        nextContributionCursor =
+          nextItem._type === 'contribution' ? nextItem.plantDate : undefined;
+      }
+      if (!nextGiftDataCursor) {
+        nextGiftDataCursor =
+          nextItem._type === 'gift' ? nextItem.plantDate : undefined;
+      }
+
+      nextCursor = `${nextContributionCursor?.toISOString()},${nextGiftDataCursor?.toISOString()}`;
     }
 
     return {

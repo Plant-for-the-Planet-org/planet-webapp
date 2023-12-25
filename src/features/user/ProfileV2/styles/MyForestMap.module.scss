@@ -1,181 +1,230 @@
 @import '../../../../theme/theme';
 .singleMarkerContainer {
-    >.mapboxglPopup {
-        box-shadow: none;
-        border-radius: 0px;
-        overflow:auto;
-    }
+  > .mapboxglPopup {
+    box-shadow: none;
+    border-radius: 0px;
+    overflow: auto;
+  }
 }
 
 .popUpContainer {
-    height: 75px;
-    width: 150px;
+  height: 75px;
+  width: 150px;
+}
+
+.popUpContainerLarge {
+  height: 95px;
+  width: 200px;
 }
 .popUp {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 18px;
 }
 
 .popUpLabel {
-    font-weight: 700;
-    font-size: 14px;
+  font-weight: 700;
+  font-size: $fontSmall;
 }
 
 .popUpDate {
-    font-size: 8px
+  font-size: $fontXXSmall;
 }
 
 .markerContainer {
-    height: 26px;
-    width: 100%;
-    padding-right: 10px;
-    background-color: #B6C7A8D4;
-    border-radius: 40px;
+  height: 26px;
+  width: 100%;
+  padding-right: 10px;
+  background-color: #b6c7a8d4;
+  border-radius: 40px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  cursor: pointer;
+  > .svgContainer {
+    width: 22px;
+    height: 22px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    margin: 2px;
     display: flex;
-    gap: 5px;
+    justify-content: center;
     align-items: center;
-    >.svgContainer {
-        width: 22px;
-        height: 22px;
-        background-color:#FFFFFF ;
-        border-radius: 50%;
-        margin: 2px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding-top: 3px;
-        padding-bottom: 4px;
-    }
-    >.trees{
-         font-weight: 700;
-         font-size: 16px; 
-    }
+    padding-top: 3px;
+    padding-bottom: 4px;
+  }
+  > .trees {
+    font-weight: 700;
+    font-size: $fontSixteen;
+  }
 }
 
 .popUpMainContainer {
-    >.mapboxglPopup {
-        box-shadow: none;
-        border-radius: 0px;
-        overflow:auto;
-    }
+  > .mapboxglPopup {
+    box-shadow: none;
+    border-radius: 0px;
+    overflow: auto;
+  }
 }
 
 .donatePopUpContainer {
-    width: 208px;
-    height: 154px;
-    >.projectImageContainer {
-        height: 95px;
-        width: 100%;
-        position: relative;
-        >.projectName {
-            position: absolute;
-            top:75px;
-            left:10px;
-            font-size: 10px;
-            font-weight: 600;
-            color: #FFFFFF;
-        }
+  width: 208px;
+  height: 154px;
+  > .projectImageContainer {
+    height: 95px;
+    width: 100%;
+    position: relative;
+    > .projectName {
+      position: absolute;
+      top: 75px;
+      left: 10px;
+      font-size: $fontXXSmall;
+      font-weight: 600;
+      color: #ffffff;
     }
+  }
 }
 
 .projectInfoMainContainer {
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-    >.projectInfoContainer {
-        display: flex;
-        gap: 2px;
-        font-size: 8px;
-        position: relative;
-        >.area {
-            font-weight: 700;
-        }
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  > .projectInfoContainer {
+    display: flex;
+    gap: 2px;
+    font-size: $fontXXSmall;
+    position: relative;
+    > .area {
+      font-weight: 700;
     }
+  }
 }
 .tpo {
-    margin-top: 7px;
-    >.tpoName {
-        font-size: 8px;
-    }
-    >.date {
-        font-size: 7px;
-    }
+  margin-top: 7px;
+  > .tpoName {
+    font-size: $fontXXSmall;
+  }
+  > .date {
+    font-size: $fontXXSmall;
+  }
 }
 .clusterMarkerContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 4px;
-    width: 100%;
-    height: 25px;
-    border: 1px solid;
-    border-radius: 40px;
-    border-color:#FFFFFF ;
-    background-color:#219653;
-    padding-left: 1px;
-    padding-right: 8px;
-    >.svgContainer {
-        height: 22px;
-        width: 22px;
-        border-radius: 50%;
-        background-color: #FFFFFF;
-        padding-top: 3px;
-        padding-left: 3px;
-    }
-    >.totalTreeCount {
-        padding-bottom: 2px;
-        font-weight: 700;
-        font-size: 16px;
-        color: #FFFFFF;
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  height: 25px;
+  border: 1px solid;
+  border-radius: 40px;
+  border-color: #ffffff;
+  background-color: #219653;
+  padding-left: 1px;
+  padding-right: 8px;
+  > .svgContainer {
+    height: 22px;
+    width: 22px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    padding-top: 2px;
+    padding-left: 3px;
+  }
+  > .totalTreeCount {
+    padding-bottom: 2px;
+    font-weight: 700;
+    font-size: $fontSixteen;
+    color: #ffffff;
+  }
 }
 
 .conservationClusterMarkerContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-    width: 100%;
-    height: 25px;
-    border: 1px solid;
-    border-radius: 40px;
-    border-color:#FFFFFF ;
-    background-color:#48AADD;
-    padding-left: 1px;
-    padding-right: 8px;
-    >.svgContainer {
-        height: 22px;
-        width: 22px;
-        border-radius: 50%;
-        background-color: #FFFFFF;
-        padding-top: 3px;
-        padding-left: 3px;
-    }
-    >.totalTreeCount {
-        padding-bottom: 2px;
-        font-weight: 700;
-        font-size: 16px;
-        color: #FFFFFF;
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  height: 25px;
+  border: 1px solid;
+  border-radius: 40px;
+  border-color: #ffffff;
+  background-color: #48aadd;
+  padding-left: 1px;
+  padding-right: 8px;
+  > .svgContainer {
+    height: 22px;
+    width: 22px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    padding-top: 3px;
+    padding-left: 3px;
+  }
+  > .totalTreeCount {
+    padding-bottom: 2px;
+    font-weight: 700;
+    font-size: $fontSixteen;
+    color: #ffffff;
+  }
 }
 
 .mapContainer {
-    width: 100%;
-    max-width: 1172px;
-    height: 560px;
+  width: 100%;
+  max-width: 1172px;
+  height: 560px;
+  padding-left: 50px;
+  padding-right: 50px;
+  position: relative;
+  > div > div > div {
+    border-radius: 12px;
+  }
+
+  @include xsPhoneView {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  @include smTabletView {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  @include mdTabletView {
     padding-left: 50px;
     padding-right: 50px;
-    >div >div >div {
-         border-radius: 12px ;
-    };
+  }
 }
 
-@include xsPhoneView {
-    .mapContainer{
-        padding-left: 25px;
-        padding-right: 25px;
-    }   
+.mapCreditsContainer {
+  position: absolute;
+  background-color: #f2f2f2;
+  width: 100px;
+  left: 80px;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 3px solid #c9e1f4;
+  @include xsPhoneView {
+    left: 30px;
+  }
 }
 
+.mapCredit {
+  padding: 10px;
+  width: 330px;
+}
+
+.myForestMapSkeleton {
+  margin-top: 42px;
+  border-radius: 20px;
+}
+
+.myForestMapSkeletonContainer {
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-bottom: 25px;
+  max-width: 1172px;
+}
+.myForestMapSkeletonX {
+  border-radius: 20px;
+}

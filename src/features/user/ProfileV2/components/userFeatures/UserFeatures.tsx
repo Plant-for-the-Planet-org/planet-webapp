@@ -13,6 +13,8 @@ import {
   RedeemCodeSvg,
   RegisteredTreeSvg,
 } from '../../../../../../public/assets/images/ProfilePageIcons';
+import theme from '../../../../../theme/themeProperties';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 
 const UserFeatures = ({
   handleShare,
@@ -21,8 +23,10 @@ const UserFeatures = ({
   setShowSocialButton,
 }: UserFeaturesProps) => {
   const { tenantConfig } = useTenant();
+  const { light } = theme;
   const router = useRouter();
   const { t } = useTranslation(['me']);
+  const { setRefetchData } = useUserProps();
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
   const handleSupport = () => {
     router.push(`/s/${userProfile.slug}`);
@@ -37,6 +41,7 @@ const UserFeatures = ({
   };
 
   const handleRegisterTree = () => {
+    setRefetchData(false);
     router.push('profile/register-trees');
   };
 
@@ -50,17 +55,25 @@ const UserFeatures = ({
 
   return (
     <div className={myProfileStyle.buttonContainer}>
-      {userProfile?.type !== 'tpo' && router.pathname !== '/profile' && (
+      {userProfile?.type !== 'tpo' && router.pathname !== '/profile' ? (
         <Button
           variant="contained"
-          startIcon={<SupportSvg color={'#FFFFFF'} />}
+          startIcon={<SupportSvg color={`${light.light}`} />}
           onClick={handleSupport}
         >
           {t('me:support')}
         </Button>
+      ) : (
+        <Button
+          variant="contained"
+          startIcon={<RedeemCodeSvg color={`${light.light}`} />}
+          onClick={handleRedeemModalOPen}
+        >
+          {t('redeem:redeem')}
+        </Button>
       )}
 
-      {!userProfile.isPrivate && router.pathname !== '/profile' && (
+      {!userProfile.isPrivate && router.pathname !== '/profile' ? (
         <Button
           variant="contained"
           startIcon={<LinkedInIcon />}
@@ -68,25 +81,20 @@ const UserFeatures = ({
         >
           {t('me:linkedIn')}
         </Button>
+      ) : (
+        <Button
+          variant="contained"
+          startIcon={<RegisteredTreeSvg color={`${light.light}`} />}
+          onClick={handleRegisterTree}
+        >
+          {t('me:registerTrees')}
+        </Button>
       )}
-      <Button
-        variant="contained"
-        startIcon={<RedeemCodeSvg color={'#FFFFFF'} />}
-        onClick={handleRedeemModalOPen}
-      >
-        {t('redeem:redeem')}
-      </Button>
+
       <RedeemModal
         redeemModalOpen={isRedeemModalOpen}
         handleRedeemModalClose={handleRedeemModalClose}
       />
-      <Button
-        variant="contained"
-        startIcon={<RegisteredTreeSvg color={'#FFFFFF'} />}
-        onClick={handleRegisterTree}
-      >
-        {t('me:registerTrees')}
-      </Button>
 
       <Share
         handleShare={handleShare}

@@ -1,14 +1,15 @@
 import { PlantedTreesSvg } from '../../../../../../public/assets/images/ProfilePageIcons';
 import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
-import { CircularProgress } from '@mui/material';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import theme from '../../../../../theme/themeProperties';
 
 export interface PlantedTreesButtonProps {
   plantedTrees: number | null;
 }
 
 const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
+  const { light, primaryDarkColorX } = theme;
   const { isTreePlantedButtonActive } = useUserProps();
   const { t } = useTranslation(['donate']);
 
@@ -20,28 +21,24 @@ const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
           : myForestStyles.plantedTreesContainer
       }`}
     >
-      {plantedTrees === undefined ? (
-        <div className={myForestStyles.circularProgressContainer}>
-          <CircularProgress color="success" />
+      <div className={myForestStyles.plantedTreesLabelContainer}>
+        <div>
+          <PlantedTreesSvg
+            color={
+              isTreePlantedButtonActive
+                ? `${light.light}`
+                : `${primaryDarkColorX}`
+            }
+          />
         </div>
-      ) : (
-        <>
-          <div className={myForestStyles.plantedTreesLabelContainer}>
-            <div>
-              <PlantedTreesSvg
-                color={isTreePlantedButtonActive ? 'white' : '#219653'}
-              />
-            </div>
-            <div className={myForestStyles.plantedTreesLabel}>
-              {t('donate:plantedTrees')}
-            </div>
-          </div>
+        <div className={myForestStyles.plantedTreesLabel}>
+          {t('donate:plantedTrees')}
+        </div>
+      </div>
 
-          <div className={myForestStyles.countTrees}>
-            <div>{plantedTrees ? plantedTrees : 0}</div>
-          </div>
-        </>
-      )}
+      <div className={myForestStyles.countTrees}>
+        <div>{plantedTrees ? plantedTrees : 0}</div>
+      </div>
     </div>
   );
 };

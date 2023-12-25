@@ -35,7 +35,7 @@
     display: contents;
    }
     .userInfo {
-        font-size: 36px;
+        font-size: $fontXXLarge;
         font-weight: bold;
     }
 }
@@ -46,4 +46,28 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    .Xicon {
+        position: absolute;
+        top: -72px;
+        left: 192px;
+        margin-top: 90px;
+        cursor: pointer;
+        @include xsPhoneView {
+            top: -79px;
+        }
+    }
+}
+
+.skeletonContainer {
+    padding-left:200px;
+    padding-right: 50px;
+    padding-bottom: 20px;
+    max-width: 1172px;
+}
+
+.profileSkeleton {
+    margin-top: 132px;
+    height: 400px;
+    padding-right: 100px;
+    border-radius: 20px !important;
 }

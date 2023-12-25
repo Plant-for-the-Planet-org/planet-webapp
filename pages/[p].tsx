@@ -114,7 +114,7 @@ export default function Donate({
     ) {
       setPlantLocationsLoaded(false);
       const newPlantLocations = await getAllPlantLocations(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         project.id,
         setErrors,
         redirect

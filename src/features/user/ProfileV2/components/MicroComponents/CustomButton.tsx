@@ -5,6 +5,16 @@ import DonationInfo from '../ProjectDetails/DonationInfo';
 import myForestStyles from '../../styles/MyForest.module.scss';
 import SwipeLeftIcon from '@mui/icons-material/SwipeLeft';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import { ReactElement } from 'react';
+
+interface CustomButtonProps {
+  plantedTrees: number | null;
+  restoredArea: number | null;
+  conservedArea: number | null;
+  projects: number | null;
+  countries: number | null;
+  donations: number | null;
+}
 
 const MyContributionCustomButton = ({
   plantedTrees,
@@ -13,7 +23,7 @@ const MyContributionCustomButton = ({
   projects,
   countries,
   donations,
-}) => {
+}: CustomButtonProps): ReactElement => {
   const {
     setIsTreePlantedButtonActive,
     setIsConservedButtonActive,
@@ -25,7 +35,10 @@ const MyContributionCustomButton = ({
       setIsTreePlantedButtonActive(false);
     } else {
       if (plantedTrees || restoredArea) {
-        if (plantedTrees > 0 || restoredArea > 0) {
+        if (
+          (plantedTrees !== null && plantedTrees > 0) ||
+          (restoredArea !== null && restoredArea > 0)
+        ) {
           setIsTreePlantedButtonActive(true);
           setIsConservedButtonActive(false);
         }
@@ -41,7 +54,10 @@ const MyContributionCustomButton = ({
             onClick={handleClick}
           >
             <PlantedTreesButton plantedTrees={plantedTrees} />
-            <RestoredButton restoredArea={restoredArea} />
+            <RestoredButton
+              restoredArea={restoredArea}
+              plantedTrees={plantedTrees}
+            />
           </div>
           <ConservationButton conservedArea={conservedArea} />
           <DonationInfo

@@ -23,14 +23,28 @@ model contribution {
     profile              profile?       @relation(fields: [profile_id], references: [id])
     bouquet              contribution?  @relation("bouquet", fields: [bouquetDonationId], references: [id])
     bouquetContributions contribution[] @relation("bouquet")
-    plantDate            DateTime?      @map("plant_date") @db.DateTime(0)
+    plantDate            DateTime       @map("plant_date") @db.DateTime(0)
     profile_id           Int?
+    gift                 gift[]
+    giftTo               Json?          @map("gift_data")
+    giftMethod           String?        @map("gift_method") @db.VarChar(20)
+    tenant               tenant?        @relation(fields: [tenantId], references: [id]) // Add a one-to-one relation to the tenant model
+    tenantId             Int?           @map("tenant_id")
+    created              DateTime       @unique @db.DateTime(0)
+}
+
+model tenant {
+    id           Int            @id @default(autoincrement())
+    guid         String         @unique(map: "UNIQ_4E59C4622B6FCFB2") @db.VarChar(32)
+    name         String         @db.VarChar(255)
+    contribution contribution[]
 }
 
 model project {
     id             Int            @id @default(autoincrement())
     guid           String         @db.VarChar(32)
     name           String?        @db.VarChar(255)
+    allowDonations Boolean        @map("accept_donations")
     description    String?        @db.LongText
     country        String?        @map("country") @db.VarChar(2)
     unit           String?        @map("unit_type") @db.VarChar(255)
@@ -51,4 +65,20 @@ model profile {
     name         String?        @db.VarChar(255)
     contribution contribution[]
     plantProject project[]
+    gift         gift[]
+}
+
+model gift {
+    id           Int           @id @default(autoincrement())
+    donationId   Int?          @map("donation_id")
+    recipientId  Int?          @map("recipient_id")
+    guid         String        @unique(map: "UNIQ_A47C990D2B6FCFB2") @db.VarChar(32)
+    metadata     Json?
+    contribution contribution? @relation(fields: [donationId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FK_A47C990D4DC1279C")
+    recipient    profile?      @relation(fields: [recipientId], references: [id]) // Relation field to profile
+    created      DateTime      @db.DateTime(0)
+    value        Int?
+    purpose      String        @db.VarChar(32)
+    type         String        @db.VarChar(50)
+    plantDate    DateTime?     @map("payment_date") @db.DateTime(0)
 }

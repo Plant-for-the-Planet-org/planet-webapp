@@ -4,10 +4,14 @@ import LeaderBoard from '../../common/LeaderBoard';
 import TreeCounter from '../../../features/common/TreeCounter/TreeCounter';
 import Footer from '../../../features/common/Layout/Footer';
 import { useTenant } from '../../../features/common/Layout/TenantContext';
+import {
+  LeaderBoardList,
+  TenantScore,
+} from '../../../features/common/types/leaderboard';
 
 interface Props {
-  leaderboard: any;
-  tenantScore: any;
+  leaderboard: LeaderBoardList | null;
+  tenantScore: TenantScore | null;
 }
 
 export default function About({ leaderboard, tenantScore }: Props) {

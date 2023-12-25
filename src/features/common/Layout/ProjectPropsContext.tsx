@@ -25,7 +25,6 @@ import ProjectPropsContextInterface, {
 } from '../types/ProjectPropsContextInterface';
 import { MapRef } from 'react-map-gl/src/components/static-map';
 import { PlantLocation, SamplePlantLocation } from '../types/plantLocation';
-import { Contributions } from '../types/myForest';
 
 const ProjectPropsContext = createContext<ProjectPropsContextInterface | null>(
   null

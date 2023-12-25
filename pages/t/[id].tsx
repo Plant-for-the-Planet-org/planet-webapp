@@ -1,18 +1,17 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement, useEffect } from 'react';
-import UserProfileLoader from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
+import { UserProfileLoader } from '../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { useUserProps } from '../../src/features/common/Layout/UserPropsContext';
 import { getRequest } from '../../src/utils/apiRequests/api';
 import GetPublicUserProfileMeta from '../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import Footer from '../../src/features/common/Layout/Footer';
-import Profile from '../../src/features/user/ProfileV2';
-import ProjectsContainer from '../../src/features/user/Profile/ProjectsContainer';
+import Profile from '../../src/features/user/ProfileV2/components/ProfileInfo';
+import ProjectsContainer from '../../src/features/user/ProfileV2/components/ProjectDetails/ProjectsContainer';
 import { ErrorHandlingContext } from '../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths, GetStaticPropsContext } from 'next';
-import { handleError, APIError } from '@planet-sdk/common';
-import { PublicUser } from '../../src/features/common/types/user';
-import MyContributions from '../../src/features/user/ProfileV2/components/MyTrees/MyContributions';
+import { handleError, APIError, UserPublicProfile } from '@planet-sdk/common';
+import MyContributions from '../../src/features/user/ProfileV2/components/MyContributions/MyContributions';
 
 function SingleUser(): ReactElement {
   // External imports
@@ -21,12 +20,14 @@ function SingleUser(): ReactElement {
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
 
   // Internal states
-  const [profile, setProfile] = React.useState<null | PublicUser>();
+  const [profile, setProfile] = React.useState<null | UserPublicProfile>(null);
 
   // Loads the public user profile
   async function loadPublicProfile(id: string) {
     try {
-      const profileData = await getRequest<PublicUser>(`/app/profiles/${id}`);
+      const profileData = await getRequest<UserPublicProfile>(
+        `/app/profiles/${id}`
+      );
       setProfile(profileData);
     } catch (err) {
       setErrors(handleError(err as APIError));

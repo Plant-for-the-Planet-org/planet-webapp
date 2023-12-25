@@ -22,7 +22,7 @@ const Analytics = () => {
     try {
       // TODO - update project type, this does not match completely
       const res = await getAuthenticatedRequest<MapProject[]>(
-        tenantConfig?.tenantID,
+        tenantConfig?.id,
         '/app/profile/projects?scope=map',
         token,
         logoutUser

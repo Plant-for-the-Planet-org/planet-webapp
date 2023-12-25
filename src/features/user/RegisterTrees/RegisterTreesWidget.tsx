@@ -92,6 +92,8 @@ function RegisterTreesForm({
   const [projects, setProjects] = React.useState([]);
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const { tenantConfig } = useTenant();
+  const { setRefetchData, refetchData } = useUserProps();
+
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
     promise.then((style) => {
@@ -186,6 +188,7 @@ function RegisterTreesForm({
           setContributionDetails(res);
           setIsUploadingData(false);
           setRegistered(true);
+          setRefetchData(true);
         } catch (err) {
           setIsUploadingData(false);
           setErrors(handleError(err as APIError));
@@ -198,7 +201,6 @@ function RegisterTreesForm({
       setErrorMessage(ready ? t('me:wentWrong') : '');
     }
   };
-
   async function loadProjects() {
     try {
       const projects = await getAuthenticatedRequest(
@@ -437,7 +439,7 @@ export default function RegisterTreesWidget() {
     slug: user.slug,
   };
 
-  return ready ? (
+  return (
     <>
       {!registered ? (
         <RegisterTreesForm
@@ -449,5 +451,5 @@ export default function RegisterTreesWidget() {
         <SingleContribution {...ContributionProps} />
       )}
     </>
-  ) : null;
+  );
 }

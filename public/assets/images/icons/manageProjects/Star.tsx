@@ -1,11 +1,7 @@
 import React from 'react';
+import { IconProps } from '../../../../../src/features/common/types/common';
 
-interface Props {
-  color?: string;
-  className?: string;
-}
-
-function Icon({ color = '#2f3336', className }: Props) {
+function Icon({ color = '#2f3336', className }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -1,4 +1,11 @@
-import React, { ReactElement } from 'react';
+import React, {
+  ReactElement,
+  useCallback,
+  useEffect,
+  FocusEvent,
+  useContext,
+  useState,
+} from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import styles from '../StepForm.module.scss';
@@ -24,9 +31,12 @@ import { ProjectCreationTabs } from '..';
 import {
   ProjectMediaProps,
   UploadImage,
-  Project,
+  ProfileProjectTrees,
+  ProfileProjectConservation,
+  ImagesScopeProjects,
 } from '../../../common/types/project';
 import { useTenant } from '../../../common/Layout/TenantContext';
+
 export default function ProjectMedia({
   handleBack,
   token,
@@ -34,10 +44,9 @@ export default function ProjectMedia({
   projectDetails,
   setProjectDetails,
   projectGUID,
-  handleReset,
 }: ProjectMediaProps): ReactElement {
   const { t, ready } = useTranslation(['manageProjects']);
-  const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { redirect, setErrors } = useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
 
   const {
@@ -51,14 +60,14 @@ export default function ProjectMedia({
   const { tenantConfig } = useTenant();
   const [uploadedImages, setUploadedImages] = React.useState<UploadImage[]>([]);
 
-  const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = React.useState<string | null>('');
+  const [isUploadingData, setIsUploadingData] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>('');
 
   const fetchImages = async () => {
     try {
       // Fetch images of the project
       if (projectGUID && token) {
-        const result = await getAuthenticatedRequest<Project>(
+        const result = await getAuthenticatedRequest<ImagesScopeProjects>(
           tenantConfig?.id,
           `/app/profile/projects/${projectGUID}?_scope=images`,
           token,
@@ -72,11 +81,11 @@ export default function ProjectMedia({
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchImages();
   }, [projectGUID]);
 
-  const uploadPhotos = async (image: any) => {
+  const uploadPhotos = async (image: string) => {
     setIsUploadingData(true);
 
     const submitData = {
@@ -107,24 +116,17 @@ export default function ProjectMedia({
       setErrors(handleError(err as APIError));
     }
   };
-
-  React.useEffect(() => {
-    if (!projectGUID || projectGUID === '') {
-      handleReset(ready ? t('manageProjects:resetMessage') : '');
-    }
-  });
-
-  const [files, setFiles] = React.useState([]);
-
-  const onDrop = React.useCallback(
-    (acceptedFiles) => {
-      acceptedFiles.forEach((file: any) => {
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      acceptedFiles.forEach((file) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onabort = () => console.log('file reading was aborted');
         reader.onerror = () => console.log('file reading has failed');
         reader.onload = (event: ProgressEvent<FileReader>): void => {
-          uploadPhotos(event?.target?.result);
+          const result = event?.target?.result;
+          if (typeof result !== 'string') return;
+          uploadPhotos(result);
         };
       });
     },
@@ -148,15 +150,7 @@ export default function ProjectMedia({
     },
   });
 
-  React.useEffect(
-    () => () => {
-      // Make sure to revoke the data uris to avoid memory leaks
-      files.forEach((file) => URL.revokeObjectURL(file?.preview));
-    },
-    [files]
-  );
-
-  const deleteProjectCertificate = async (id: any) => {
+  const deleteProjectCertificate = async (id: string) => {
     try {
       await deleteAuthenticatedRequest(
         tenantConfig?.id,
@@ -172,7 +166,7 @@ export default function ProjectMedia({
   };
 
   // For uploading the Youtube field
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: { youtubeURL: string }) => {
     // Add isDirty test here
     setIsUploadingData(true);
     const submitData = {
@@ -180,7 +174,9 @@ export default function ProjectMedia({
     };
 
     try {
-      const res = await putAuthenticatedRequest<Project>(
+      const res = await putAuthenticatedRequest<
+        ProfileProjectTrees | ProfileProjectConservation
+      >(
         tenantConfig?.id,
         `/app/projects/${projectGUID}`,
         submitData,
@@ -197,7 +193,7 @@ export default function ProjectMedia({
     }
   };
 
-  const setDefaultImage = async (id: any, index: any) => {
+  const setDefaultImage = async (id: string, index: number) => {
     setIsUploadingData(true);
     const submitData = {
       isDefault: true,
@@ -225,7 +221,11 @@ export default function ProjectMedia({
     }
   };
 
-  const uploadCaption = async (id: any, index: any, e: any) => {
+  const uploadCaption = async (
+    id: string,
+    index: number,
+    e: FocusEvent<HTMLInputElement, Element>
+  ) => {
     setIsUploadingData(true);
     const submitData = {
       description: e.target.value,
@@ -298,7 +298,7 @@ export default function ProjectMedia({
                       onBlur={(e) => uploadCaption(image.id, index, e)}
                       type="text"
                       placeholder={t('manageProjects:addCaption')}
-                      defaultValue={image.description}
+                      defaultValue=""
                     />
 
                     <div className={styles.uploadedImageButtonContainer}>

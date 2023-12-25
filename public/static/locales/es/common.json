@@ -77,5 +77,6 @@
   "logout": "Cerrar Sesión",
   "featured": "Destacado",
   "treeMapper": "TreeMapper",
-  "underMaintenance": "En mantenimiento"
+  "underMaintenance": "En mantenimiento",
+  "reviewInfo": "El proyecto se inspeccionó en una revisión sobre el terreno de varios días al <2>mes</2> y cumple nuestras <5>normas.</5>"
 }

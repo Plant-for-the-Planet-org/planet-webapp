@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { putAuthenticatedRequest } from '../../../utils/apiRequests/api';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import GreenRadio from '../../common/InputTypes/GreenRadio';
-import Close from '../../../../public/assets/images/icons/headerIcons/close';
+import Close from '../../../../public/assets/images/icons/headerIcons/Close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import {
   CircularProgress,
@@ -25,7 +25,7 @@ import { handleError, APIError } from '@planet-sdk/common';
 import { Subscription } from '../../common/types/payments';
 import { useTenant } from '../../common/Layout/TenantContext';
 
-const MuiCalendarPicker = styled(CalendarPicker)({
+const MuiCalendarPicker = styled(CalendarPicker<Date>)({
   '& .MuiButtonBase-root.MuiPickersDay-root.Mui-selected': {
     backgroundColor: themeProperties.primaryColor,
     color: '#fff',
@@ -57,7 +57,7 @@ export const CancelModal = ({
   const { tenantConfig } = useTenant();
   const [option, setoption] = React.useState('cancelImmediately');
   const [showCalender, setshowCalender] = React.useState(false);
-  const [date, setdate] = React.useState(new Date());
+  const [date, setdate] = React.useState<Date | null>(new Date());
   const [disabled, setDisabled] = React.useState(false);
   const { t } = useTranslation(['me']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
@@ -77,7 +77,7 @@ export const CancelModal = ({
           : 'custom-date', // immediate|period-end|custom-date
       cancellationDate:
         option == 'cancelOnSelectedDate'
-          ? date.toISOString().split('T')[0]
+          ? date?.toISOString().split('T')[0]
           : null, // if custom-date is cancellationType
     };
 

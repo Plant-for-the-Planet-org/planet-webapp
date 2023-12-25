@@ -31,12 +31,20 @@
   }
 }
 
+.singleProject {
+  border: solid #FFF;
+  border-width: 3px;
+  border-radius: 10px;
+  box-shadow: 4px 8px 16px 0px rgba(0, 0, 0, 0.1);
+}
+
 .projectImage {
   height: 160px;
   width: 100%;
   background-color: $primaryColor;
   position: relative;
   transition: all 1s ease;
+  border-radius:7.2px 7.2px 0 0;
   > .projectImageBlock {
     transition: all 1s ease;
     left: 16px;
@@ -97,6 +105,7 @@
   position: relative;
   background-size: cover;
   background-repeat: no-repeat;
+  border-radius: 7.2px 7.2px 0 0;
 }
 
 .projectImageBlock {
@@ -112,6 +121,10 @@
   color: $light;
   font-weight: bold;
   text-transform: uppercase;
+}
+
+.projectType {
+  line-height: 0.9em;
 }
 
 .projectName {
@@ -136,14 +149,14 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  background-color: var(--primary-color);
+  background: var(--top-project-background-color);
   border-radius: 14px;
   padding: 2px 8px 2px 2px;
   font-weight: 700;
   font-size: 12px;
 
   * {
-    color: #fff;
+    color: #6D4230;
   }
 
   .badgeIcon {
@@ -169,7 +182,6 @@
 
 .progressBarHighlight {
   height: 4px;
-  background-color: $primaryColor;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -177,9 +189,11 @@
 .projectInfo {
   display: flex;
   flex-direction: row;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   margin-top: 10px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .targetLocation {
@@ -190,19 +204,25 @@
 
 .target {
   font-family: $primaryFontFamily;
-  font-size: $fontXSmall;
+  font-size: 13px;
   color: $primaryFontColor;
   font-weight: bold;
   margin-right: 4px;
 }
 
 .projectTPOName {
-  font-family: $primaryFontFamily;
-  font-size: $fontXSmall;
-  color: $primaryFontColor;
-  margin-top: 10px;
-  line-height: 14px;
   cursor: pointer;
+  position: relative;
+  text-align: center;
+  color: #4F4F4F;
+  height: 34px;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.5em;
+  margin-top: 10px;
+  padding: 9px 0;
+  border-bottom-left-radius: 7.2px;
+  border-bottom-right-radius: 7.2px;
 }
 
 .projectData {
@@ -216,20 +236,19 @@
 }
 
 .donateButton {
-  background-color: $primaryColor;
   min-width: 75px;
   max-width: 150px;
   padding: 0 4px;
   height: 22px;
   display: flex;
   justify-content: center;
-  align-items: center;
   border-radius: 11px;
   color: $light;
   font-family: $primaryFontFamily;
   font-size: $fontSmall;
   font-weight: 600;
   letter-spacing: 0.3px;
+  line-height: 1.52em;
 }
 
 .donateButton:hover {
@@ -243,7 +262,6 @@
   color: $primaryFontColor;
   margin-top: 6px;
   font-weight: 700;
-  text-align: right;
 }
 
 .perUnitCost > span {
@@ -258,4 +276,43 @@
 .topProjectPopupContainer {
   margin: 10px;
   width: 300px;
+}
+.projectTypeIcon {
+  display: inline-block;
+  width: 0.95em;
+  min-width: 0.95em;
+  margin-right: 4px;
+  font-size: var(--font-xx-extra-small);
+  line-height: 0.3em;
+}
+
+.topApproved {
+  background: var(--top-project-background-color);
+}
+
+.topUnapproved {
+  background-color: #219653;
+}
+
+.notDonatable {
+  background-color: var(--non-donatable-project-background-color);
+}
+.projectHoverIcon {
+  display: inline-flex;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--non-donatable-project-background-color);
+  align-items: center;
+ gap: 4px;
+ line-height: normal;
+}
+
+.projectInfoPopupContainer{
+  margin: 10px;
+  max-width: 250px;
+}
+
+.projectEcosystemOrTypeContainer {
+  display: flex;
+  align-items:center;
 }

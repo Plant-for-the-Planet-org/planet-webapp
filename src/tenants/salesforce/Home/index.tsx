@@ -9,10 +9,14 @@ import ClimateAction from './components/ClimateAction';
 import Social from './components/Social';
 import React from 'react';
 import { useTenant } from '../../../features/common/Layout/TenantContext';
+import {
+  LeaderBoardList,
+  TenantScore,
+} from '../../../features/common/types/leaderboard';
 
 interface Props {
-  leaderboard: any;
-  tenantScore: any;
+  leaderboard: LeaderBoardList | null;
+  tenantScore: TenantScore | null;
 }
 
 export default function About({ tenantScore, leaderboard }: Props) {

@@ -1,101 +1,69 @@
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import { ParamsContext } from '../../../../common/Layout/QueryParamsContext';
 import {
   Contributions,
   BouquetContribution,
+  GiftContributionProps,
 } from '../../../../common/types/myForest';
-import { useContext, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import myForestStyles from '../../styles/MyForest.module.scss';
-import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
-import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
-import getImageUrl from '../../../../../utils/getImageURL';
-import { useTranslation } from 'next-i18next';
-import { getDonationUrl } from '../../../../../utils/getDonationUrl';
-import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
+import ProjectImage from './ProjectImage';
+import ProjectInfoAndContributionDate from './ProjectInfoAndContributionDate';
+import TreesOrUnitAreaAndDonateOption from './TreesOrUnitAreaAndDonateOption';
 
 export interface ProjectProps {
-  projectInfo: Contributions | BouquetContribution;
+  projectInfo: Contributions | BouquetContribution | GiftContributionProps;
 }
 
 const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
-  const { token } = useUserProps();
-  const { embed } = useContext(ParamsContext);
-  const { t } = useTranslation(['me', 'country']);
-
-  const handleDonate = (slug: string) => {
-    const url = getDonationUrl(slug, token);
-    embed === 'true'
-      ? window.open(url, '_blank')
-      : (window.location.href = url);
-  };
-
-  return projectInfo ? (
+  return (
     <div className={myForestStyles.donationDetail}>
-      <div className={myForestStyles.image}>
-        {projectInfo?.plantProject !== null &&
-        projectInfo?.plantProject?.image !== null ? (
-          <img
-            src={getImageUrl(
-              'project',
-              'medium',
-              projectInfo.plantProject.image
-            )}
-            width="100%"
-            height="100%"
-          />
-        ) : (
-          <div className={myForestStyles.registerTreeIcon}>
-            {projectInfo?.treeCount && projectInfo?.treeCount > 1 ? (
-              <TreesIcon />
-            ) : (
-              <TreeIcon />
-            )}
-          </div>
-        )}
-      </div>
+      <ProjectImage
+        imageUniqueKey={
+          (projectInfo as Contributions)?.plantProject?.image ||
+          (projectInfo as GiftContributionProps)?.metadata?.project?.image
+        }
+        numberOfTreesPlanted={(projectInfo as Contributions)?.treeCount}
+      />
       <div className={myForestStyles.projectDetailContainer}>
-        <div className={myForestStyles.projectDetail}>
-          <div>
-            <div className={myForestStyles.projectName}>
-              {projectInfo?.plantProject !== null
-                ? projectInfo.plantProject.name
-                : t('me:registeredTree')}
-            </div>
-            {projectInfo?.plantProject !== null && (
-              <div>
-                {t('country:' + projectInfo.plantProject.country.toLowerCase())}
-                -{projectInfo.plantProject.tpo.name}
-              </div>
-            )}
-          </div>
-          <div className={myForestStyles.treeCount}>
-            {projectInfo?.plantProject?.unit === 'm2'
-              ? t('me:area', { areaConserved: `${projectInfo.quantity}` })
-              : t('me:plantedTrees', {
-                  count:
-                    projectInfo.quantity ||
-                    parseInt(`${projectInfo?.treeCount}`) ||
-                    0,
-                })}
-          </div>
-        </div>
-        <div className={myForestStyles.donateContainer}>
-          <div className={myForestStyles.plantingDate}>
-            {formatDate(projectInfo.plantDate)}
-          </div>
-          {projectInfo?.plantProject !== null && (
-            <div
-              className={myForestStyles.donate}
-              onClick={() => handleDonate(projectInfo.plantProject.guid)}
-            >
-              {t('me:donateAgain')}
-            </div>
-          )}
-        </div>
+        <ProjectInfoAndContributionDate
+          projectName={
+            (projectInfo as Contributions)?.plantProject?.name ||
+            (projectInfo as GiftContributionProps)?.metadata?.project?.name
+          }
+          countryName={(
+            projectInfo as Contributions
+          )?.plantProject?.country.toLowerCase()}
+          tpoName={(projectInfo as Contributions)?.plantProject?.tpo?.name}
+          giftSenderName={
+            (projectInfo as GiftContributionProps)?.metadata?.giver?.name
+          }
+          contributionDate={
+            (projectInfo as Contributions)?.plantDate ||
+            (projectInfo as GiftContributionProps)?.created
+          }
+        />
+        <TreesOrUnitAreaAndDonateOption
+          projectUnit={(projectInfo as Contributions)?.plantProject?.unit}
+          projectPurpose={projectInfo?.purpose}
+          quantity={
+            (projectInfo as Contributions)?.treeCount || projectInfo?.quantity
+          }
+          contributionType={
+            (projectInfo as Contributions).contributionType ||
+            (projectInfo as GiftContributionProps)?._type === 'gift'
+          }
+          gift={(projectInfo as GiftContributionProps)?._type === 'gift'}
+          tenantId={(projectInfo as Contributions)?.tenant?.guid}
+          projectGUID={
+            (projectInfo as Contributions)?.plantProject?.guid ||
+            (projectInfo as GiftContributionProps)?.metadata?.project?.id
+          }
+          isDonatable={
+            (projectInfo as Contributions)?.plantProject?.allowDonations ||
+            (projectInfo as GiftContributionProps)?.allowDonations
+          }
+        />
       </div>
     </div>
-  ) : (
-    <></>
   );
 };
 

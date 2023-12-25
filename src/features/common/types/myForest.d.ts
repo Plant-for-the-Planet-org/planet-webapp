@@ -2,8 +2,6 @@ import { Geometry } from '@turf/turf';
 import { User } from '@planet-sdk/common';
 import { PublicUser } from './user';
 
-
-
 export interface Page {
   data: Contributions[];
   nextCursor: string | undefined;
@@ -24,7 +22,7 @@ export interface Stats {
 interface Tpo {
   guid: string;
   name: string;
-  id: string
+  id: string;
 }
 interface PlantProject {
   guid: string;
@@ -35,20 +33,72 @@ interface PlantProject {
   location: string | null;
   geoLatitude: number | null;
   geoLongitude: number | null;
-  tpo:  Tpo;
+  tpo: Tpo;
+}
+export interface GiftContributionProps {
+  allowDonations: boolean;
+  created: string;
+  value: number;
+  guid: string;
+  recipient: Recipient;
+  metadata: Metadata;
+  purpose: string;
+  type: string;
+  _type: string;
+  quantity: number;
 }
 
-export type  BouquetContribution = Omit<Contributions , "bouquetContributions">
-  
+export interface Recipient {
+  id: number;
+  guid: string;
+  name: string | null;
+}
+
+export interface Metadata {
+  giver: Giver;
+  project: Project;
+}
+
+export interface Giver {
+  name: string;
+  slug: string;
+  avatar: any;
+}
+
+export interface Project {
+  id: string;
+  name: string;
+  slug: string;
+  image: string;
+  country: string;
+  location: string;
+  coordinates: number[];
+  organization: Organization;
+}
+
+export interface Organization {
+  name: string;
+  slug: string;
+}
+
+export type BouquetContribution = Omit<Contributions, 'bouquetContributions'>;
+
+interface Tenant {
+  guid: string;
+  name: string;
+}
+
 export interface Contributions {
   // procedure returns Contributions
   purpose: string | null;
   treeCount: number | null;
   quantity: number | null;
-  plantDate: number | Date;
+  tenant: Tenant;
+  plantDate: number | Date | string;
   contributionType: string;
   bouquetContributions: BouquetContribution[] | undefined;
   plantProject: PlantProject;
+  _type: 'contribution';
 }
 
 interface Properties {
@@ -61,6 +111,7 @@ interface Properties {
 }
 
 interface PlantProject {
+  allowDonations: boolean;
   guid: string;
   name: string | null;
   image: string;
@@ -78,16 +129,27 @@ interface Tpo {
   name: string | null;
 }
 
-
 export interface DonationInfoProps {
   projects: number | null;
   countries: number | null;
   donations: number | null;
 }
 
+export interface ContributionStatsQueryResult {
+  treeCount: number | null;
+  squareMeters: number | null;
+  conserved: number | null;
+  projects: number | null;
+  countries: number | null;
+  donations: number | null;
+}
 
+export interface GiftStatsQueryResult {
+  treeCount: number | null;
+  conserved: number | null;
+}
 
-export interface StatsQueryResult {
+export interface StatsResult {
   treeCount: number;
   squareMeters: number;
   conserved: number;
@@ -117,13 +179,40 @@ export interface ContributionsGeoJsonQueryResult {
   totalContribution: number;
 }
 
+export interface GiftsGeoJsonQueryResult {
+  type: string;
+  purpose: string;
+  value: string;
+  created: Date;
+  metadata: {
+    giver: {
+      name: string;
+      slug: string;
+      avatar: string | null;
+    };
+    project: {
+      id: string;
+      name: string;
+      slug: string;
+      country: string;
+      location: string;
+      coordinates: number[];
+      organization: {
+        name: string;
+        slug: string;
+      };
+    };
+    notificationLocale: string | null;
+  };
+}
 
 export interface ContributionData {
-    pageParams: [null, string] | [null];
-    pages: Page[];
+  pageParams: [null, string] | [null];
+  pages: Page[];
 }
 export interface TreeContributedProjectListProps {
-  contribution: ContributionData | null
+  restoredAreaUnit: number | undefined;
+  contribution: ContributionData | null;
   userProfile: User | PublicUser;
   handleFetchNextPage: () => void;
 }

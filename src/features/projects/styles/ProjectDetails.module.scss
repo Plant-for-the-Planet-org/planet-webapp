@@ -8,15 +8,15 @@
   z-index: 12;
 }
 
-.reports_container{
+.reports_container {
   display: flex;
   gap: 10px;
   width: 100%;
-  .reports_description{
+  .reports_description {
     display: flex;
     flex-direction: column;
     gap: 9px;
-    a{
+    a {
       color: $primaryColor;
       font-weight: bold;
     }
@@ -251,7 +251,7 @@
 }
 
 .projectVideoContainer {
-  padding: 20px 0px 10px 0px;
+  padding: 20px 0px 10px;
 }
 
 .projectImageSliderContainer {
@@ -333,15 +333,11 @@
     min-height: calc(100vh - 100px);
     background-color: transparent;
   }
-  .reports_container{
+  .reports_container {
     width: 328px;
   }
   .singleProjectDetails {
     margin-top: 20px;
-  }
-
-  .projectSnippetContainer {
-    padding-bottom: 20px;
   }
 }
 

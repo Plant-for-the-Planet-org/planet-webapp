@@ -25,7 +25,8 @@ export default function RedeemModal({
 }: RedeemModal): ReactElement | null {
   const { t, ready } = useTranslation(['me', 'common', 'donate', 'redeem']);
   const { tenantConfig } = useTenant();
-  const { user, contextLoaded, token, setUser, logoutUser } = useUserProps();
+  const { user, contextLoaded, token, setUser, logoutUser, setRefetchData } =
+    useUserProps();
   const { setErrors, errors: apiErrors } =
     React.useContext(ErrorHandlingContext);
   const [inputCode, setInputCode] = React.useState<string | undefined>('');
@@ -48,6 +49,7 @@ export default function RedeemModal({
           logoutUser
         );
         setRedeemedCodeData(res);
+        setRefetchData(true);
         setIsLoading(false);
         if (res.units > 0) {
           const cloneUser = { ...user };
@@ -77,7 +79,6 @@ export default function RedeemModal({
               break;
           }
         }
-
         setErrors(_serializedErrors);
         setIsLoading(false);
         setRedeemedCodeData(undefined);
@@ -100,6 +101,7 @@ export default function RedeemModal({
   const closeModal = () => {
     handleRedeemModalClose();
     setInputCode('');
+    setRedeemedCodeData(undefined);
   };
   const { theme } = React.useContext(ThemeContext);
 
@@ -111,9 +113,6 @@ export default function RedeemModal({
       closeAfterTransition
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
-      BackdropProps={{
-        timeout: 500,
-      }}
     >
       <Fade in={redeemModalOpen}>
         <div>

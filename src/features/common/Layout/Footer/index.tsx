@@ -15,7 +15,6 @@ export default function Footer(): ReactElement | null {
   const { t, i18n, ready } = useTranslation(['common']);
   const { tenantConfig } = useTenant();
   const [openModal, setOpenModal] = useState(false);
-  const [language, setLanguage] = useState(i18n.language);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
   const [selectedCountry, setSelectedCountry] = useState('DE');
   const handleModalOpen = () => {
@@ -88,10 +87,6 @@ export default function Footer(): ReactElement | null {
         const countryCode = localStorage.getItem('countryCode');
         if (countryCode) setSelectedCountry(countryCode);
       }
-      if (localStorage.getItem('language')) {
-        const langCode = localStorage.getItem('language');
-        if (langCode) setLanguage(langCode);
-      }
     }
   }, []);
 
@@ -108,7 +103,7 @@ export default function Footer(): ReactElement | null {
                 onClick={handleModalOpen}
                 className={styles.footer_button}
               >
-                <World color={styles.primaryFontColor} />
+                <World />
                 <p className={styles.selected_language}>
                   {`${getLanguageName(i18n.language)} · ${selectedCurrency}`}
                 </p>
@@ -458,8 +453,6 @@ export default function Footer(): ReactElement | null {
         <SelectLanguageAndCountry
           openModal={openModal}
           handleModalClose={handleModalClose}
-          language={language}
-          setLanguage={setLanguage}
           setSelectedCurrency={setSelectedCurrency}
           selectedCountry={selectedCountry}
           setSelectedCountry={setSelectedCountry}

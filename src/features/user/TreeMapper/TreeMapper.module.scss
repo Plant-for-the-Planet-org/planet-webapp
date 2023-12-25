@@ -19,7 +19,6 @@
 
 .listContainer {
   overflow: visible;
-  width: fit-content;
   max-width: 100%;
   width: 390px;
   z-index: 2;
@@ -51,6 +50,7 @@
   height: 85%;
   height: 100%;
   background-color: $backgroundColor;
+  margin-top: 20px;
   .singleLocation {
     :hover {
       background-color: $backgroundColorDark;
@@ -61,7 +61,7 @@
     align-items: center;
     width: 100%;
     > .locationHeader {
-      padding: 20px 20px;
+      padding: 20px;
       position: relative;
       display: flex;
       flex-direction: row;
@@ -113,7 +113,7 @@
   background-color: $backgroundColor;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  padding: 30px 20px;
+  padding: 40px 20px 30px;
   > .locationNav {
     display: flex;
     flex-direction: row;
@@ -164,7 +164,7 @@
   > img {
     height: 100px;
     width: auto;
-    margin: 10px 10px;
+    margin: 10px;
     border-radius: 10px;
   }
 }
@@ -309,7 +309,7 @@
 .markerSample {
   width: 12px;
   height: 12px;
-  border-radius: 50% 50% 50% 50%;
+  border-radius: 50%;
   background: #ff6200;
   position: absolute;
   // -webkit-transform: rotate(-45deg);
@@ -434,6 +434,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  .treeMapperTitle {
+    font-size: 2.25rem;
+    font-weight: 700;
+    width: 100%;
+    margin-bottom: 10px;
+    color: $primaryFontColor;
+  }
 }
 
 .threeDotMenuButton {
@@ -502,8 +509,8 @@
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
     box-shadow: none;
+    padding: 65px 40px 40px;
     > :first-child {
-      padding: 0 50px;
       text-align: left;
     }
   }

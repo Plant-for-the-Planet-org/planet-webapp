@@ -67,7 +67,7 @@ export default function ManagePayouts({
   }, []);
 
   useEffect(() => {
-    if (!payoutMinAmounts && user.type === 'tpo') fetchPayoutMinAmounts();
+    if (!payoutMinAmounts && user?.type === 'tpo') fetchPayoutMinAmounts();
   }, [step, user]);
 
   const fetchAccounts = useCallback(async () => {
@@ -94,7 +94,7 @@ export default function ManagePayouts({
   }, []);
 
   useEffect(() => {
-    if (user.type === 'tpo') {
+    if (user?.type === 'tpo') {
       if (contextLoaded && token) fetchAccounts();
     } else {
       router.push('/profile');
@@ -102,7 +102,7 @@ export default function ManagePayouts({
   }, [contextLoaded, token, user]);
 
   useEffect(() => {
-    if (ready && user.type === 'tpo') {
+    if (ready && user && user.type === 'tpo') {
       setTabConfig([
         {
           label: t('tabOverview'),

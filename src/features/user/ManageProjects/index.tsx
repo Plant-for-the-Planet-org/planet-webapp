@@ -45,13 +45,9 @@ export default function ManageProjects({
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   const { logoutUser } = useUserProps();
   const router = useRouter();
-  const [activeStep, setActiveStep] = React.useState<number>(0);
-  const [errorMessage, setErrorMessage] = React.useState<string | undefined>(
-    undefined
-  );
   const [tabSelected, setTabSelected] = React.useState<number>(0);
   const [isUploadingData, setIsUploadingData] = React.useState<boolean>(false);
-  const [projectGUID, setProjectGUID] = React.useState<string | unknown>(
+  const [projectGUID, setProjectGUID] = React.useState<string>(
     GUID ? GUID : ''
   );
   const [tablist, setTabList] = React.useState<TabItem[]>([]);
@@ -100,11 +96,6 @@ export default function ManageProjects({
     formRouteHandler(previousTab);
   };
 
-  const handleReset = (message: string): void => {
-    setErrorMessage(message);
-    setActiveStep(0);
-  };
-
   const submitForReview = async () => {
     setIsUploadingData(true);
     const submitData = {
@@ -112,15 +103,10 @@ export default function ManageProjects({
     };
 
     try {
-      const res = await putAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}`,
-        submitData,
-        token,
-        logoutUser
-      );
+      const res = await putAuthenticatedRequest<
+        ProfileProjectTrees | ProfileProjectConservation
+      >(tenantConfig?.id, `/app/projects/${projectGUID}`, submitData, token, logoutUser);
       setProjectDetails(res);
-      setErrorMessage(undefined);
       setIsUploadingData(false);
     } catch (err) {
       setIsUploadingData(false);
@@ -135,15 +121,10 @@ export default function ManageProjects({
     };
 
     try {
-      const res = await putAuthenticatedRequest(
-        tenantConfig?.id,
-        `/app/projects/${projectGUID}`,
-        submitData,
-        token,
-        logoutUser
-      );
+      const res = await putAuthenticatedRequest<
+        ProfileProjectTrees | ProfileProjectConservation
+      >(tenantConfig?.id,`/app/projects/${projectGUID}`, submitData, token, logoutUser);
       setProjectDetails(res);
-      setErrorMessage('');
       setIsUploadingData(false);
     } catch (err) {
       setIsUploadingData(false);
@@ -303,7 +284,6 @@ export default function ManageProjects({
             projectDetails={projectDetails}
             setProjectDetails={setProjectDetails}
             projectGUID={projectGUID}
-            handleReset={handleReset}
           />
         );
       case ProjectCreationTabs.DETAILED_ANALYSIS:
@@ -316,7 +296,6 @@ export default function ManageProjects({
             projectDetails={projectDetails}
             setProjectDetails={setProjectDetails}
             projectGUID={projectGUID}
-            handleReset={handleReset}
             purpose={
               project?.purpose ? project?.purpose : router.query?.purpose
             }
@@ -329,7 +308,6 @@ export default function ManageProjects({
             token={token}
             handleBack={handleBack}
             projectGUID={projectGUID}
-            handleReset={handleReset}
             projectDetails={projectDetails}
           />
         );
@@ -341,7 +319,6 @@ export default function ManageProjects({
             token={token}
             handleBack={handleBack}
             projectGUID={projectGUID}
-            handleReset={handleReset}
           />
         );
       case ProjectCreationTabs.REVIEW:
@@ -352,8 +329,6 @@ export default function ManageProjects({
               projectDetails={projectDetails}
               submitForReview={submitForReview}
               isUploadingData={isUploadingData}
-              projectGUID={projectGUID}
-              handleReset={handleReset}
               handlePublishChange={handlePublishChange}
             />
           );
@@ -365,7 +340,11 @@ export default function ManageProjects({
 
   return (
     <DashboardView
-      title={projectGUID ? project?.name : t('manageProjects:addNewProject')}
+      title={
+        project && projectGUID
+          ? project.name
+          : t('manageProjects:addNewProject')
+      }
       subtitle={
         projectGUID ? (
           t('manageProjects:onlyEnglish')

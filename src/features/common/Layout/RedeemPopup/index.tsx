@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './RedeemPopup.module.scss';
 import { useTranslation } from 'next-i18next';
@@ -28,7 +28,13 @@ export default function RedeemPopup() {
     }
   }, [contextLoaded && user]);
 
+  const isMountedRef = useRef(false);
+
   useEffect(() => {
+    // Check if the component has already mounted before updating state
+    if (isMountedRef.current) {
+      return;
+    }
     if (tenantConfig.config.showRedeemHint) {
       const prev = localStorage.getItem('redeemPopup');
       if (!prev) {
@@ -42,6 +48,11 @@ export default function RedeemPopup() {
   useEffect(() => {
     localStorage.setItem('redeemPopup', `${showRedeemPopup}`);
   }, [showRedeemPopup]);
+
+  // useEffect to update the isMountedRef after the initial mount
+  useEffect(() => {
+    isMountedRef.current = true;
+  }, []);
 
   return ready && showRedeemPopup ? (
     <div className={styles.cookieContainer}>

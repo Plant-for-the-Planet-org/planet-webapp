@@ -20,7 +20,12 @@ import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedC
 import { Recipient as LocalRecipient } from '../BulkCodesTypes';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import StyledFormContainer from '../../../common/Layout/StyledFormContainer';
-import { handleError, APIError, SerializedError } from '@planet-sdk/common';
+import {
+  handleError,
+  APIError,
+  SerializedError,
+  Donation,
+} from '@planet-sdk/common';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 const IssueCodesForm = (): ReactElement | null => {
@@ -34,8 +39,8 @@ const IssueCodesForm = (): ReactElement | null => {
     bulkMethod,
     setBulkMethod,
   } = useBulkCode();
+  const { user, logoutUser, setRefetchData } = useUserProps();
   const { tenantConfig } = useTenant();
-  const { user, logoutUser } = useUserProps();
   const { getAccessTokenSilently } = useAuth0();
   const { setErrors } = useContext(ErrorHandlingContext);
   const [localRecipients, setLocalRecipients] = useState<LocalRecipient[]>([]);
@@ -120,7 +125,7 @@ const IssueCodesForm = (): ReactElement | null => {
       const cleanedData = cleanObject(donationData);
 
       try {
-        const res = await postAuthenticatedRequest(
+        const res = await postAuthenticatedRequest<Donation>(
           tenantConfig?.id,
           `/app/donations`,
           cleanedData,
@@ -134,6 +139,7 @@ const IssueCodesForm = (): ReactElement | null => {
         if (res?.uid) {
           resetBulkContext();
           setIsSubmitted(true);
+          setRefetchData(true);
           setTimeout(() => {
             router.push(`/profile/history?ref=${res.uid}`);
           }, 5000);
@@ -271,7 +277,7 @@ const IssueCodesForm = (): ReactElement | null => {
                 className="formButton"
                 disabled={
                   !(
-                    user.planetCash &&
+                    user?.planetCash &&
                     !(
                       user.planetCash.balance + user.planetCash.creditLimit <=
                       0

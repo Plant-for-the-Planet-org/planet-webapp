@@ -7,19 +7,21 @@ import {
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import { ReactElement } from 'react';
 import { DonationInfoProps } from '../../../../common/types/myForest';
+import theme from '../../../../../theme/themeProperties';
 
 const DonationInfo = ({
   projects,
   countries,
   donations,
 }: DonationInfoProps): ReactElement => {
+  const { darkBlackColor } = theme;
   const { t } = useTranslation(['maps', 'me']);
   return (
     <div className={myForestStyles.donationDetailContainer}>
       <div className={myForestStyles.InfoContainer}>
         <div className={myForestStyles.labelContainer}>
           <div className={myForestStyles.svgContainer}>
-            <ProjectsSvg color={'#4F4F4F'} />
+            <ProjectsSvg color={`${darkBlackColor}`} />
           </div>
           <div className={myForestStyles.label}>{t('maps:projects')}</div>
         </div>
@@ -30,7 +32,7 @@ const DonationInfo = ({
       <div className={myForestStyles.InfoContainer}>
         <div className={myForestStyles.labelContainer}>
           <div className={myForestStyles.svgContainer}>
-            <CountriesSvg color={'#4F4F4F'} />
+            <CountriesSvg color={`${darkBlackColor}`} />
           </div>
           <div className={myForestStyles.label}>{t('maps:countries')}</div>
         </div>
@@ -41,7 +43,7 @@ const DonationInfo = ({
       <div className={myForestStyles.InfoContainer}>
         <div className={myForestStyles.labelContainer}>
           <div className={myForestStyles.svgContainer}>
-            <DonationsSvg color={'#4F4F4F'} />
+            <DonationsSvg color={`${darkBlackColor}`} />
           </div>
           <div className={myForestStyles.label}>{t('me:donations')}</div>
         </div>

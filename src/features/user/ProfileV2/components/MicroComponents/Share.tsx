@@ -3,6 +3,7 @@ import { Button } from '@mui/material';
 import { ShareSvg } from '../../../../../../public/assets/images/ProfilePageIcons';
 import { useTranslation } from 'next-i18next';
 import { UserFeaturesProps } from '../../../../common/types/profile';
+import theme from '../../../../../theme/themeProperties';
 
 const Share = ({
   showSocialButton,
@@ -10,6 +11,7 @@ const Share = ({
   userProfile,
   handleShare,
 }: UserFeaturesProps) => {
+  const { light } = theme;
   const { t } = useTranslation(['me']);
   return (
     <>
@@ -21,7 +23,7 @@ const Share = ({
       ) : (
         <Button
           variant="contained"
-          startIcon={<ShareSvg color={'#FFFFFF'} />}
+          startIcon={<ShareSvg color={`${light.light}`} />}
           onClick={handleShare}
         >
           {showSocialButton ? '' : t('me:share')}

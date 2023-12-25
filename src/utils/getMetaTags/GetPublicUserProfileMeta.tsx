@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
 import { useTenant } from '../../features/common/Layout/TenantContext';
 import Head from 'next/head';
-import { PublicUser } from '../../features/common/types/user';
+import { UserPublicProfile } from '@planet-sdk/common';
 
 interface Props {
-  userprofile: PublicUser | null;
+  userprofile: UserPublicProfile | null;
 }
 
 export default function GetPublicUserProfileMeta({

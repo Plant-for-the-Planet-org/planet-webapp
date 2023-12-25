@@ -16,14 +16,14 @@ import {
 import { localeMapForDate } from '../../../utils/language/getLanguageName';
 import { ThemeContext } from '../../../theme/themeContext';
 import getCurrencySymbolByCode from '../../../utils/countryCurrency/getCurrencySymbolByCode';
-import Close from '../../../../public/assets/images/icons/headerIcons/close';
+import Close from '../../../../public/assets/images/icons/headerIcons/Close';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { MobileDatePicker as MuiDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
-import { Subscription } from '../../common/types/payments';
+import { ModifyDonations, Subscription } from '../../common/types/payments';
 import { useTenant } from '../../common/Layout/TenantContext';
 
 // interface EditDonationProps {
@@ -93,9 +93,15 @@ export const EditModal = ({
     setDisabled(false);
   }, [editModalOpen]);
 
+  interface BodyToSendType {
+    nextBilling?: string | null;
+    centAmount?: number;
+    frequency?: string;
+  }
+
   const onSubmit = async (data: FormData) => {
     setDisabled(true);
-    const bodyToSend = {
+    const bodyToSend: BodyToSendType = {
       nextBilling:
         record.method !== 'paypal'
           ? new Date(data.currentPeriodEnd).toISOString().split('T')[0]
@@ -119,7 +125,7 @@ export const EditModal = ({
 
     if (Object.keys(bodyToSend).length !== 0) {
       try {
-        const res = await putAuthenticatedRequest(
+        const res = await putAuthenticatedRequest<ModifyDonations>(
           tenantConfig?.id,
           `/app/subscriptions/${record?.id}?scope=modify`,
           bodyToSend,
@@ -239,7 +245,6 @@ export const EditModal = ({
                       value={value}
                       onBlur={onBlur}
                       getOptionLabel={(option) => {
-                        console.log(option);
                         return t(`${option.toLowerCase()}`);
                       }}
                       renderInput={(params) => (
@@ -265,7 +270,7 @@ export const EditModal = ({
                 <div className={styles.formRowInput}>
                   <LocalizationProvider
                     dateAdapter={AdapterDateFns}
-                    locale={
+                    adapterLocale={
                       localeMapForDate[userLang]
                         ? localeMapForDate[userLang]
                         : localeMapForDate['en']

@@ -38,8 +38,6 @@ export default function LeaderBoardSection(leaderboard: Props) {
     }
   };
 
-  const imageErrorSrc =
-    'https://cdn.planetapp.workers.dev/development/logo/svg/planet.svg';
   return ready ? (
     <section className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>

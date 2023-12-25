@@ -9,15 +9,17 @@ import {
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import { MarkerProps } from '../../../../common/types/map';
 import CustomPopupMarker from './CustomPopupMarker';
+import theme from '../../../../../theme/themeProperties';
 
 export const TreePlantedClusterMarker = ({
   geoJson,
 }: MarkerProps): ReactElement => {
+  const { primaryDarkColorX } = theme;
   const { t, ready } = useTranslation(['me']);
   const [showPopUp, setShowPopUp] = useState(false);
   return ready ? (
     <>
-      {geoJson.id === undefined && (
+      {geoJson?.properties?.totalContribution > 1 && (
         <CustomPopupMarker geoJson={geoJson} showPopUp={showPopUp} />
       )}
 
@@ -32,18 +34,23 @@ export const TreePlantedClusterMarker = ({
         >
           <div className={MyForestMapStyle.svgContainer}>
             {geoJson?.properties?.plantProject?.unitType === 'm2' ? (
-              <RestoredSvg color={'#219653'} />
+              <RestoredSvg color={`${primaryDarkColorX}`} />
             ) : (
-              <PlantedTreesSvg color={'#219653'} />
+              <PlantedTreesSvg color={`${primaryDarkColorX}`} />
             )}
           </div>
           <div className={MyForestMapStyle.totalTreeCount}>
-            {t('me:plantedTrees', {
-              count:
-                geoJson.properties.totalTrees ||
-                parseInt(geoJson.properties.quantity) ||
-                0,
-            })}
+            {geoJson?.properties?.plantProject &&
+            geoJson?.properties?.plantProject?.unitType === 'm2'
+              ? t('me:area', {
+                  areaConserved: parseInt(geoJson.properties.quantity),
+                })
+              : t('me:plantedTrees', {
+                  count:
+                    geoJson.properties.totalTrees ||
+                    parseInt(geoJson.properties.quantity) ||
+                    0,
+                })}
           </div>
         </div>
       </Marker>
@@ -56,6 +63,7 @@ export const TreePlantedClusterMarker = ({
 export const ConservAreaClusterMarker = ({
   geoJson,
 }: MarkerProps): ReactElement => {
+  const { lightBlueColor } = theme;
   const { t, ready } = useTranslation(['me']);
   const [showPopUp, setShowPopUp] = useState(false);
   return ready ? (
@@ -70,7 +78,7 @@ export const ConservAreaClusterMarker = ({
       >
         <div
           className={MyForestMapStyle.conservationClusterMarkerContainer}
-          style={{ backgroundColor: '#48AADD' }}
+          style={{ backgroundColor: `${lightBlueColor}` }}
           onMouseOver={() => setShowPopUp(true)}
           onMouseLeave={() => setShowPopUp(false)}
         >
@@ -78,7 +86,7 @@ export const ConservAreaClusterMarker = ({
             className={MyForestMapStyle.svgContainer}
             style={{ paddingLeft: '4px' }}
           >
-            <ConservationTreeSvg color={'#48AADD'} />
+            <ConservationTreeSvg color={`${lightBlueColor}`} />
           </div>
           <div className={MyForestMapStyle.totalTreeCount}>
             {t('me:area', {
