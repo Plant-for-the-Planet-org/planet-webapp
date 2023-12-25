@@ -1,9 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
-import Profile from '../../../../src/features/user/ProfileV2';
 import UserLayout from '../../../../src/features/common/Layout/UserLayout/UserLayout';
-import MyContributions from '../../../../src/features/user/ProfileV2/components/MyTrees/MyContributions';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -20,6 +18,8 @@ import {
 import { defaultTenant } from '../../../../tenant.config';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
+import Profile from '../../../../src/features/user/ProfileV2/components/ProfileInfo';
+import MyContributions from '../../../../src/features/user/ProfileV2/components/MyContributions/MyContributions';
 
 interface Props {
   pageProps: {

@@ -31,7 +31,7 @@ export default function BulkCodePage({ pageProps }: Props): ReactElement {
   const router = useRouter();
   const { setTenantConfig } = useTenant();
 
-  console.log('/progile/bulk-codes/index.tsx: ', pageProps.tenantConfig);
+  console.log('[slug]/profile/bulk-codes/index.tsx: ', pageProps.tenantConfig);
 
   React.useEffect(() => {
     if (router.isReady) {
