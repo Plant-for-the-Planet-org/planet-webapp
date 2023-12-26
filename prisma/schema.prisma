@@ -80,4 +80,5 @@ model gift {
     value        Int?
     purpose      String        @db.VarChar(32)
     type         String        @db.VarChar(50)
+    plantDate    DateTime?     @map("payment_date") @db.DateTime(0)
 }
