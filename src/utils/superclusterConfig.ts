@@ -5,6 +5,8 @@ import {
   Bound,
 } from '../features/common/types/map';
 import Supercluster, { PointFeature } from 'supercluster';
+import { RefObject } from 'react';
+import { MapRef } from 'react-map-gl';
 
 const _clusterConfig = {
   radius: 40,
@@ -22,7 +24,7 @@ const _clusterConfig = {
 
 export const _getClusterGeojson = (
   viewState: ViewState,
-  mapRef: any,
+  mapRef: RefObject<MapRef>,
   geoJson: PointFeature<TestPointProps>[]
 ) => {
   const supercluster = new Supercluster(_clusterConfig);

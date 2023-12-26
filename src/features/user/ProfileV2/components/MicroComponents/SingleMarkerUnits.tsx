@@ -7,6 +7,7 @@ export interface SingleMarkerUnitsProps {
   isRestorationTreePlantation: boolean;
   isConservation: boolean;
   isGiftContribution: boolean;
+  isMergeContribution: boolean;
   units: number;
 }
 
@@ -17,6 +18,7 @@ const SingleMarkerUnits = ({
   isRegisteredTree,
   isNormalTreeDonation,
   isGiftContribution,
+  isMergeContribution,
 }: SingleMarkerUnitsProps) => {
   const { t, ready } = useTranslation(['me']);
   return ready ? (
@@ -25,7 +27,10 @@ const SingleMarkerUnits = ({
         areaConserved: units,
       })}
       {t(
-        isNormalTreeDonation || isRegisteredTree || isGiftContribution
+        isNormalTreeDonation ||
+          isRegisteredTree ||
+          isGiftContribution ||
+          isMergeContribution
           ? 'me:plantedTrees'
           : '',
         {

@@ -273,6 +273,8 @@
   "areaConserved": "Areas Conserved",
   "plantedTrees_one": "{{count}} Tree",
   "plantedTrees_other": "{{count}} Trees",
+  "registeredPlantedTrees_one": "{{count}} Tree Registered",
+  "registeredPlantedTrees_other": "{{count}} Trees Registered",
   "areaType": "{{areaConserved}} m² {{type}}",
   "area": "{{areaConserved}}  m²",
   "tpoName": "By {{tpo}}",

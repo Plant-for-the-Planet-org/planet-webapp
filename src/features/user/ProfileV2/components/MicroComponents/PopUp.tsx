@@ -96,7 +96,8 @@ export const InfoInthePopUp = ({ geoJson }: InfoInthePopUpProps) => {
   return (
     <div
       className={
-        geoJson.properties.totalContribution > 1
+        geoJson.properties.totalContribution > 1 ||
+        geoJson.properties._type === 'merged_contribution_and_gift'
           ? MyForestMapStyle.popUpContainerLarge
           : MyForestMapStyle.popUpContainer
       }
@@ -106,13 +107,13 @@ export const InfoInthePopUp = ({ geoJson }: InfoInthePopUpProps) => {
           isConservation={geoJson.properties?.purpose === 'conservation'}
           isNormalTreeDonation={
             (geoJson.properties?.purpose === 'trees' &&
-              geoJson.properties.plantProject.unitType !== 'm2') ||
+              geoJson.properties?.plantProject?.unitType !== 'm2') ||
             geoJson.properties?.purpose === null
           }
           isRegisteredTree={geoJson.properties.contributionType === 'planting'}
           isRestoration={
-            geoJson.properties.plantProject.unitType === 'm2' &&
-            geoJson.properties.purpose === 'trees'
+            geoJson.properties?.plantProject?.unitType === 'm2' &&
+            geoJson.properties?.purpose === 'trees'
           }
         />
         <NumberOfContributions

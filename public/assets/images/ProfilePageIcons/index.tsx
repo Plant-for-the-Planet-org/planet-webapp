@@ -1,4 +1,8 @@
-export const RegisteredTreeSvg = ({ color }) => {
+interface IconProps {
+  color: string;
+}
+
+export const RegisteredTreeSvg = ({ color }: IconProps) => {
   return (
     <svg
       width="14"
@@ -15,7 +19,7 @@ export const RegisteredTreeSvg = ({ color }) => {
   );
 };
 
-export const RedeemCodeSvg = ({ color }) => {
+export const RedeemCodeSvg = ({ color }: IconProps) => {
   return (
     <svg
       width="18"
@@ -52,7 +56,7 @@ export const RedeemCodeSvg = ({ color }) => {
   );
 };
 
-export const SupportSvg = ({ color }) => {
+export const SupportSvg = ({ color }: IconProps) => {
   return (
     <svg
       width="16"
@@ -85,7 +89,7 @@ export const SupportSvg = ({ color }) => {
   );
 };
 
-export const ShareSvg = ({ color }) => {
+export const ShareSvg = ({ color }: IconProps) => {
   return (
     <svg
       width="15"
@@ -102,7 +106,7 @@ export const ShareSvg = ({ color }) => {
   );
 };
 
-export const PlantedTreesSvg = ({ color }) => {
+export const PlantedTreesSvg = ({ color }: IconProps) => {
   return (
     <svg
       width="16"
@@ -119,7 +123,7 @@ export const PlantedTreesSvg = ({ color }) => {
   );
 };
 
-export const PlantedTressBlackSvg = ({ color }) => {
+export const PlantedTressBlackSvg = ({ color }: IconProps) => {
   return (
     <svg
       width="43"
@@ -136,7 +140,7 @@ export const PlantedTressBlackSvg = ({ color }) => {
   );
 };
 
-export const RestoredSvg = ({ color }) => {
+export const RestoredSvg = ({ color }: IconProps) => {
   return (
     <svg
       width="16"
@@ -157,7 +161,7 @@ export const RestoredSvg = ({ color }) => {
   );
 };
 
-export const ConservationTreeSvg = ({ color }) => {
+export const ConservationTreeSvg = ({ color }: IconProps) => {
   return (
     <svg
       width="12"
@@ -173,7 +177,7 @@ export const ConservationTreeSvg = ({ color }) => {
     </svg>
   );
 };
-export const ArrowSvg = ({ color }) => {
+export const ArrowSvg = ({ color }: IconProps) => {
   return (
     <svg
       width="10"
@@ -190,7 +194,7 @@ export const ArrowSvg = ({ color }) => {
   );
 };
 
-export const DownWardArrowSvg = ({ color }) => {
+export const DownWardArrowSvg = ({ color }: IconProps) => {
   return (
     <svg
       width="15"
@@ -207,7 +211,7 @@ export const DownWardArrowSvg = ({ color }) => {
   );
 };
 
-export const ProjectsSvg = ({ color }) => {
+export const ProjectsSvg = ({ color }: IconProps) => {
   return (
     <svg
       width="16"
@@ -244,7 +248,7 @@ export const ProjectsSvg = ({ color }) => {
   );
 };
 
-export const CountriesSvg = ({ color }) => {
+export const CountriesSvg = ({ color }: IconProps) => {
   return (
     <svg
       width="16"
@@ -261,7 +265,7 @@ export const CountriesSvg = ({ color }) => {
   );
 };
 
-export const DonationsSvg = ({ color }) => {
+export const DonationsSvg = ({ color }: IconProps) => {
   return (
     <svg
       width="16"
@@ -289,7 +293,7 @@ export const DonationsSvg = ({ color }) => {
   );
 };
 
-export const EditTargetSvg = ({ color }) => {
+export const EditTargetSvg = ({ color }: IconProps) => {
   return (
     <svg
       width="17"

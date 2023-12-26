@@ -37,6 +37,9 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
                 geoJson.properties?.purpose === 'trees' &&
                 geoJson.properties?._type === 'gift'
               }
+              isMergeContribution={
+                geoJson.properties._type === 'merged_contribution_and_gift'
+              }
             />
             <SingleMarkerUnits
               isConservation={geoJson.properties?.purpose === 'conservation'}
@@ -55,6 +58,9 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
                 geoJson.properties?.plantProject?.unitType === 'tree'
               }
               isGiftContribution={geoJson?.properties?._type === 'gift'}
+              isMergeContribution={
+                geoJson.properties._type === 'merged_contribution_and_gift'
+              }
             />
           </div>
         </Marker>

@@ -40,6 +40,13 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
             (projectInfo as Contributions)?.plantDate ||
             (projectInfo as GiftContributionProps)?.created
           }
+          contributionType={
+            (projectInfo as Contributions).contributionType ||
+            (projectInfo as GiftContributionProps)?._type === 'gift'
+          }
+          quantity={
+            (projectInfo as Contributions)?.treeCount || projectInfo?.quantity
+          }
         />
         <TreesOrUnitAreaAndDonateOption
           projectUnit={(projectInfo as Contributions)?.plantProject?.unit}
@@ -61,6 +68,10 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
             (projectInfo as Contributions)?.plantProject?.allowDonations ||
             (projectInfo as GiftContributionProps)?.allowDonations
           }
+          countryName={(
+            projectInfo as Contributions
+          )?.plantProject?.country.toLowerCase()}
+          tpoName={(projectInfo as Contributions)?.plantProject?.tpo?.name}
         />
       </div>
     </div>

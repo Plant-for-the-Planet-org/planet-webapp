@@ -15,11 +15,15 @@ const SingleMarkerSvg = ({
   isRestorationTreePlantation,
   isConservation,
   isGiftContribution,
+  isMergeContribution,
 }: SingleMarkerSvgProps) => {
   const { primaryDarkColorX, lightBlueColor } = theme;
   return (
     <div className={MyForestMapStyle.svgContainer}>
-      {(isNormalTreeDonation || isRegisteredTree || isGiftContribution) && (
+      {(isNormalTreeDonation ||
+        isRegisteredTree ||
+        isGiftContribution ||
+        isMergeContribution) && (
         <PlantedTreesSvg color={`${primaryDarkColorX}`} />
       )}
       {isRestorationTreePlantation && (

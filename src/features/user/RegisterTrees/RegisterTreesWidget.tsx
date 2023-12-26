@@ -61,7 +61,8 @@ function RegisterTreesForm({
   setContributionDetails,
   setRegistered,
 }: RegisterTreesFormProps) {
-  const { user, token, contextLoaded, logoutUser } = useUserProps();
+  const { user, token, contextLoaded, logoutUser, setRefetchData } =
+    useUserProps();
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {
     version: 8,
@@ -90,7 +91,6 @@ function RegisterTreesForm({
   const [userLocation, setUserLocation] = React.useState();
   const [projects, setProjects] = React.useState([]);
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
-  const { setRefetchData, refetchData } = useUserProps();
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
