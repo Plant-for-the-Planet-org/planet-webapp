@@ -7,7 +7,6 @@ import ManagePayouts, {
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import {
-  GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   GetStaticPropsResult,
