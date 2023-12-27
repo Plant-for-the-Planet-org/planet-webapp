@@ -46,7 +46,7 @@ const UserFeatures = ({
     router.push('profile/register-trees');
   };
 
-  const handleRedeemModalOPen = () => {
+  const handleRedeemModalOpen = () => {
     setIsRedeemModalOpen(true);
   };
 
@@ -68,7 +68,7 @@ const UserFeatures = ({
         <Button
           variant="contained"
           startIcon={<RedeemCodeSvg color={`${light.light}`} />}
-          onClick={handleRedeemModalOPen}
+          onClick={handleRedeemModalOpen}
         >
           {t('redeem:redeem')}
         </Button>

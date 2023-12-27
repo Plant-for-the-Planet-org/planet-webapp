@@ -20,7 +20,6 @@ import {
   MyContributionLoader,
   MyForestMapLoader,
 } from '../../../../common/ContentLoaders/UserProfile/UserProfile';
-import { useRouter } from 'next/router';
 
 const A_DAY_IN_MS = 1000 * 60 * 60 * 24;
 
@@ -40,7 +39,6 @@ export default function MyContributions({
   profile,
 }: MyContributionsProps): ReactElement | null {
   const { ready } = useTranslation(['country', 'me']);
-  const router = useRouter();
   const [projectsForTreePlantation, setProjectsForTreePlantation] =
     useState<ContributionData | null>(null);
   const [projectsForAreaConservation, setProjectsForAreaConservation] =

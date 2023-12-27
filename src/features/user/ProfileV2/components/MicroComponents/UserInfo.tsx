@@ -24,7 +24,6 @@ const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
       }`,
     };
   };
-
   return (
     <>
       <div
@@ -49,13 +48,13 @@ const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
             {userProfile?.displayName}
           </div>
           <div>
-            {t('editProfile:member', {
+            {t('editProfile:memberSince', {
               date: `${formatDate(userProfile?.created)}`,
             })}
           </div>
         </div>
       </div>
-      {!router.query.id && (
+      {userProfile && router.pathname === '/profile' && (
         <div
           className={myProfilestyle.iconContainer}
           onClick={handleEditProfile}

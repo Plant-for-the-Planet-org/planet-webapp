@@ -7,8 +7,9 @@ import { useTranslation } from 'next-i18next';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { styled } from '@mui/material/styles';
 import { PlantedTressBlackSvg } from '../../../../public/assets/images/ProfilePageIcons';
-import TreeCounterDataOfTenant from './temporaryFile/TreeCounterData';
+import HomeTreeCounter from './temporaryFile/TreeCounterData';
 import theme from '../../../theme/themeProperties';
+import { _tenants } from '../../../utils/constants/HomeTreeCounter';
 
 const { primaryDarkColorX, light } = theme;
 
@@ -31,7 +32,7 @@ const XCircularProgress = styled(MuiCircularProgress)({
   },
 });
 
-export function FacebookCircularProgress(props: CircularProgressProps) {
+export function ProfileCircularProgress(props: CircularProgressProps) {
   return (
     <div className={treeCounterStyles.circularProgressContainer}>
       <CircularProgress
@@ -43,7 +44,7 @@ export function FacebookCircularProgress(props: CircularProgressProps) {
     </div>
   );
 }
-export function TenantCircularProgress(props: CircularProgressProps) {
+export function HomeCircularProgress(props: CircularProgressProps) {
   return (
     <div className={treeCounterStyles.circularProgressContainer}>
       <XCircularProgress
@@ -58,7 +59,7 @@ export function TenantCircularProgress(props: CircularProgressProps) {
 
 export default function TpoProfile(props: any) {
   const [progress, setProgress] = useState(0);
-  const [isTenantActive, setIsTenantActive] = useState(false);
+  const [isHomeTreeCounter, setIsHomeTreeCounter] = useState(false);
   const { t, i18n, ready } = useTranslation(['me']);
   useEffect(() => {
     let percentage = 0;
@@ -86,49 +87,31 @@ export default function TpoProfile(props: any) {
     };
   }, [props]);
 
-  const _tenants = [
-    'nitrosb',
-    'energizer',
-    'senatDerWirtschaft',
-    'pampers',
-    'interactClub',
-    'culchacandela',
-    'xiting',
-    'lacoqueta',
-    'ulmpflanzt',
-    'sitex',
-    '3pleset',
-    'weareams',
-  ];
-
   useEffect(() => {
-    const _activeTenant = _tenants.some((tenant) => {
+    const _tenantHasHomeTreeCounter = _tenants.some((tenant) => {
       return process.env.TENANT === tenant;
     });
-    if (_activeTenant) setIsTenantActive(true);
-  }, [isTenantActive]);
+    if (_tenantHasHomeTreeCounter) setIsHomeTreeCounter(true);
+  }, [isHomeTreeCounter]);
 
   return ready ? (
     <div className={treeCounterStyles.treeCounter}>
-      {isTenantActive ? (
-        <FacebookCircularProgress value={progress} />
+      {isHomeTreeCounter ? (
+        <ProfileCircularProgress value={progress} />
       ) : (
-        <TenantCircularProgress value={progress} />
+        <HomeCircularProgress value={progress} />
       )}
 
       <div
         className={
-          isTenantActive
+          isHomeTreeCounter
             ? treeCounterStyles.backgroundCircle
             : treeCounterStyles.backgroundCircleForTenant
         }
       />
 
-      {isTenantActive ? (
-        <TreeCounterDataOfTenant
-          planted={props?.planted}
-          target={props.target}
-        />
+      {isHomeTreeCounter ? (
+        <HomeTreeCounter planted={props?.planted} target={props.target} />
       ) : (
         <div className={treeCounterStyles.treeCounterData}>
           <div>

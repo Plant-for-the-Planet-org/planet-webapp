@@ -3,7 +3,7 @@ import { useState, ReactElement } from 'react';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import { SingleMarkerProps } from '../../../../common/types/map';
 import CustomPopupMarker from './CustomPopupMarker';
-import SingleMarkerSvg from '../MicroComponents/SingleMarkerSvg';
+import SingleMarkerImageContainer from '../MicroComponents/SingleMarkerSvg';
 import SingleMarkerUnits from '../MicroComponents/SingleMarkerUnits';
 
 const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
@@ -21,7 +21,7 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
             onMouseOver={() => setShowPopUp(true)}
             onMouseLeave={() => setShowPopUp(false)}
           >
-            <SingleMarkerSvg
+            <SingleMarkerImageContainer
               isNormalTreeDonation={
                 geoJson.properties?.plantProject?.unitType === 'tree'
               }

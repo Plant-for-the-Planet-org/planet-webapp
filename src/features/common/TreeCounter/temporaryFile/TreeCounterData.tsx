@@ -2,7 +2,12 @@ import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber
 import { useTranslation } from 'next-i18next';
 import treeCounterStyles from '../TreeCounter.module.scss';
 
-const TreeCounterDataOfTenant = ({ planted, target }) => {
+interface HomeTreeCounterProps {
+  planted: string | null;
+  target: string | null;
+}
+
+const HomeTreeCounter = ({ planted, target }: HomeTreeCounterProps) => {
   const { i18n } = useTranslation(['me']);
   return (
     <>
@@ -20,4 +25,4 @@ const TreeCounterDataOfTenant = ({ planted, target }) => {
   );
 };
 
-export default TreeCounterDataOfTenant;
+export default HomeTreeCounter;
