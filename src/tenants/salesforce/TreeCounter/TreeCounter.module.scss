@@ -25,7 +25,6 @@
   font-size: 32px;
   line-height: 100%;
   text-align: center;
-  // letter-spacing: -0.03em;
   color: #032d60;
   @include lgLaptopView {
     font-size: 80px;
@@ -36,7 +35,6 @@
 .treeCounterNumber {
   display: inline-block;
   position: relative;
-  // width: 30px;
   height: 40px;
   font-family: $secondaryFontFamily;
   font-style: normal;
@@ -49,30 +47,15 @@
     font-size: 100px;
   }
   @include lgLaptopView {
-    // width: 73px;
     height: 170px;
     font-size: 170px;
-    // font-size: 80px;
     line-height: 170px;
   }
-
-  // &:after {
-  //   content: "";
-  //   position: absolute;
-  //   top: 0;
-  //   left: 0;
-  //   right: 0;
-  //   bottom: 0;
-  //   background: #FFFFFF;
-  //   mix-blend-mode: soft-light;
-  //   border-radius: 8px;
-  // }
 }
 
 .treeCounterValue {
-  display: inline-block;
+  display: block;
   position: relative;
-  // width: 30px;
   font-family: $secondaryFontFamily;
   font-style: normal;
   font-weight: 500;
@@ -85,10 +68,8 @@
     font-size: 100px;
   }
   @include lgLaptopView {
-    // width: 73px;
     height: 170px;
     font-size: 170px;
-    // font-size: 80px;
     line-height: 170px;
   }
 }
