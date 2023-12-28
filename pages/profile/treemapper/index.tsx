@@ -1,58 +1,9 @@
-import Head from 'next/head';
-import React, { ReactElement } from 'react';
-import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
-import TreeMapper from '../../../src/features/user/TreeMapper';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useTranslation } from 'next-i18next';
-import { GetStaticPropsContext } from 'next';
+// DONE
 
-function TreeMapperPage(): ReactElement {
-  // TODO - remove this
-  // if (typeof window !== 'undefined') {
-  //   router.push('/');
-  // }
-  const { t } = useTranslation('me');
-
+export default function Donate() {
   return (
-    <UserLayout>
-      <Head>
-        <title>{t('treemapper')}</title>
-      </Head>
-      <TreeMapper />
-    </UserLayout>
+    <div style={{ margin: '400px 200px 200px 800px' }}>
+      Hello from /profile/treemapper/index.tsx
+    </div>
   );
-}
-
-export default TreeMapperPage;
-
-export async function getStaticProps({ locale }: GetStaticPropsContext) {
-  return {
-    props: {
-      ...(await serverSideTranslations(
-        locale || 'en',
-        [
-          'bulkCodes',
-          'common',
-          'country',
-          'donate',
-          'donationLink',
-          'editProfile',
-          'giftfunds',
-          'leaderboard',
-          'managePayouts',
-          'manageProjects',
-          'maps',
-          'me',
-          'planet',
-          'planetcash',
-          'redeem',
-          'registerTrees',
-          'tenants',
-          'treemapper',
-        ],
-        null,
-        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
-      )),
-    },
-  };
 }
