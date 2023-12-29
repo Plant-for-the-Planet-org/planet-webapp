@@ -4,9 +4,7 @@ import dynamic from 'next/dynamic';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
-import PlantedTreesContributions from '../ProjectDetails/PlantedTreesContributions';
 import { trpc } from '../../../../../utils/trpc';
-import ConservationContributions from '../ProjectDetails/ConservationContributions';
 import { Purpose } from '../../../../../utils/constants/myForest';
 import { ContributionData } from '../../../../common/types/myForest';
 import { StatsResult } from '../../../../common/types/myForest';
@@ -15,12 +13,10 @@ import MyContributionCustomButton from '../MicroComponents/CustomButton';
 import { SetState } from '../../../../common/types/common';
 import { PointFeature } from 'supercluster';
 import { TestPointProps } from '../../../../common/types/map';
-import {
-  MyContributionLoader,
-  MyForestMapLoader,
-} from '../../../../common/ContentLoaders/UserProfile/UserProfile';
+import { MyForestMapLoader } from '../../../../common/ContentLoaders/UserProfile/UserProfile';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import MyContributionList from '../MicroComponents/MyContributionList';
 
 const A_DAY_IN_MS = 1000 * 60 * 60 * 24;
 
@@ -43,34 +39,13 @@ export default function MyContributions({
   const { setErrors } = useContext(ErrorHandlingContext);
   const { setRefetchData, refetchData } = useUserProps();
   const {
-    treePlantationContribution,
     setTreePlantationContribution,
-    conservationContribution,
     setConservationContribution,
     setTreePlantationProjectGeoJson,
     setconservationProjectGeoJson,
     additionalInfoRelatedToContributions,
     setAdditionalInfoRelatedToContributions,
-    isTreePlantedButtonActive,
-    isConservedButtonActive,
-    setIsProcessing,
   } = useMyForest();
-
-  const _checkConditions = () => {
-    if (treePlantationContribution) {
-      return false;
-    } else {
-      return true;
-    }
-  };
-
-  const _checkConditionsForConservation = () => {
-    if (conservationContribution) {
-      return false;
-    } else {
-      return true;
-    }
-  };
 
   const _detailInfo = trpc.myForest.stats.useQuery(
     {
@@ -117,7 +92,7 @@ export default function MyContributions({
       }
     );
 
-  const _conservationContributions =
+  const _conservationContribution =
     trpc.myForest.contributions.useInfiniteQuery(
       {
         profileId: `${profile.id}`,
@@ -130,16 +105,6 @@ export default function MyContributions({
         ...queryFetchOptions,
       }
     );
-
-  const handleFetchNextPage = (): void => {
-    _conservationContributions.fetchNextPage();
-  };
-  const handleFetchNextPageforPlantedTrees = (): void => {
-    _plantedTreesContribution.fetchNextPage();
-    if (_plantedTreesContribution.status === 'success') {
-      setIsProcessing(false);
-    }
-  };
 
   const _updateStateWithTrpcData = <T,>(
     trpcProcedure: any,
@@ -173,10 +138,10 @@ export default function MyContributions({
 
   useEffect(() => {
     _updateStateWithTrpcData<ContributionData | null>(
-      _conservationContributions,
+      _conservationContribution,
       setConservationContribution
     );
-  }, [_conservationContributions.data]);
+  }, [_conservationContribution.data]);
 
   useEffect(() => {
     _updateStateWithTrpcData<PointFeature<TestPointProps>[]>(
@@ -211,31 +176,11 @@ export default function MyContributions({
         countries={additionalInfoRelatedToContributions?.countries}
         donations={additionalInfoRelatedToContributions?.donations}
       />
-      {isTreePlantedButtonActive ? (
-        _checkConditions() ? (
-          <MyContributionLoader />
-        ) : (
-          <PlantedTreesContributions
-            userProfile={profile}
-            handleFetchNextPage={handleFetchNextPageforPlantedTrees}
-            hasNextPage={_plantedTreesContribution.hasNextPage}
-          />
-        )
-      ) : (
-        <></>
-      )}
-      {isConservedButtonActive ? (
-        _checkConditionsForConservation() ? (
-          <MyContributionLoader />
-        ) : (
-          <ConservationContributions
-            hasNextPage={_conservationContributions?.hasNextPage}
-            handleFetchNextPage={handleFetchNextPage}
-          />
-        )
-      ) : (
-        <></>
-      )}
+      <MyContributionList
+        conservationTrpcResponse={_conservationContribution}
+        plantedTreesTrpcResponse={_plantedTreesContribution}
+        profile={profile}
+      />
     </div>
   ) : (
     <MyForestMapLoader />
