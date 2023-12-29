@@ -3,38 +3,9 @@ import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { Cluster, ClusterMarker } from '../../../../common/types/map';
 
-interface PopUpLabelProps {
-  isConservation: boolean;
-  isNormalTreeDonation: boolean;
-  isRegisteredTree: boolean;
-  isRestoration: boolean;
-}
-
-export const PopUpLabel = ({
-  isConservation,
-  isNormalTreeDonation,
-  isRegisteredTree,
-  isRestoration,
-}: PopUpLabelProps) => {
+export const PopUpLabel = () => {
   const { t } = useTranslation(['me']);
-  const _checkProjectType = () => {
-    let result = null;
-    switch (true) {
-      case isConservation:
-        return (result = t('me:conserved'));
-      case isNormalTreeDonation:
-        return (result = t('me:donated'));
-      case isRegisteredTree:
-        return (result = t('me:registered'));
-      case isRestoration:
-        return (result = t('me:restored'));
-      default:
-        return (result = null);
-    }
-  };
-  return (
-    <div className={MyForestMapStyle.popUpLabel}>{_checkProjectType()}</div>
-  );
+  return <div className={MyForestMapStyle.popUpLabel}>{t('me:donated')}</div>;
 };
 
 interface NumberOfContributionsProps {
@@ -60,20 +31,20 @@ export const NumberOfContributions = ({
   );
 };
 
-interface DateInThePopUpProps {
+interface DateOnThePopUpProps {
   isDate: number;
   dateOfGift: Date | number;
   dateOfDonation: string | number | Date;
   endDate: string;
   isSingleContribution: boolean;
 }
-export const DateInThePopUp = ({
+export const DateOnThePopUp = ({
   isDate,
   dateOfGift,
   dateOfDonation,
   endDate,
   isSingleContribution,
-}: DateInThePopUpProps) => {
+}: DateOnThePopUpProps) => {
   return (
     <>
       {isDate &&
@@ -88,11 +59,11 @@ export const DateInThePopUp = ({
   );
 };
 
-interface InfoInthePopUpProps {
+interface InfoOnthePopUpProps {
   geoJson: ClusterMarker | Cluster;
 }
 
-export const InfoInthePopUp = ({ geoJson }: InfoInthePopUpProps) => {
+export const InfoOnthePopUp = ({ geoJson }: InfoOnthePopUpProps) => {
   return (
     <div
       className={
@@ -103,19 +74,7 @@ export const InfoInthePopUp = ({ geoJson }: InfoInthePopUpProps) => {
       }
     >
       <div className={MyForestMapStyle.popUp}>
-        <PopUpLabel
-          isConservation={geoJson.properties?.purpose === 'conservation'}
-          isNormalTreeDonation={
-            (geoJson.properties?.purpose === 'trees' &&
-              geoJson.properties?.plantProject?.unitType !== 'm2') ||
-            geoJson.properties?.purpose === null
-          }
-          isRegisteredTree={geoJson.properties.contributionType === 'planting'}
-          isRestoration={
-            geoJson.properties?.plantProject?.unitType === 'm2' &&
-            geoJson.properties?.purpose === 'trees'
-          }
-        />
+        <PopUpLabel />
         <NumberOfContributions
           isMoreThanOneContribution={
             geoJson.properties.totalContribution &&
@@ -123,7 +82,7 @@ export const InfoInthePopUp = ({ geoJson }: InfoInthePopUpProps) => {
           }
           numberOfContributions={geoJson.properties.totalContribution}
         />
-        <DateInThePopUp
+        <DateOnThePopUp
           isDate={
             geoJson.properties.totalContribution < 2 ||
             geoJson?.properties?.startDate ||

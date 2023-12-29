@@ -3,7 +3,7 @@ import { useState, ReactElement } from 'react';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import { SingleMarkerProps } from '../../../../common/types/map';
 import CustomPopupMarker from './CustomPopupMarker';
-import SingleMarkerImageContainer from '../MicroComponents/SingleMarkerSvg';
+import SingleMarkerImageContainer from '../MicroComponents/SingleMarkerImageContainer';
 import SingleMarkerUnits from '../MicroComponents/SingleMarkerUnits';
 
 const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {

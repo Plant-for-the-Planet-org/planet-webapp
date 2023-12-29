@@ -3,22 +3,26 @@ import SingleMarker from './SingleMarker';
 import { useEffect, useState, ReactElement } from 'react';
 import { ClusterMarkerProps, Cluster } from '../../../../common/types/map';
 import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import { useMyForest } from '../../../../common/Layout/MyForestContext';
 
 const ConservationMarker = ({
   viewport,
   mapRef,
 }: ClusterMarkerProps): ReactElement => {
-  const { conservationProjects } = useUserProps();
+  const { conservationProjectGeoJson } = useMyForest();
   const [clusters, setClusters] = useState<Cluster[] | undefined>(undefined);
   const { viewState } = viewport;
 
   useEffect(() => {
-    if (conservationProjects) {
-      const data = _getClusterGeojson(viewState, mapRef, conservationProjects);
+    if (conservationProjectGeoJson) {
+      const data = _getClusterGeojson(
+        viewState,
+        mapRef,
+        conservationProjectGeoJson
+      );
       setClusters(data);
     }
-  }, [viewport, conservationProjects]);
+  }, [viewport, conservationProjectGeoJson]);
 
   return (
     <>

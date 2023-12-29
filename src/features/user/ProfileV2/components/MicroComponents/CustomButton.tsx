@@ -4,7 +4,7 @@ import ConservationButton from '../ProjectDetails/ConservationButton';
 import DonationInfo from '../ProjectDetails/DonationInfo';
 import myForestStyles from '../../styles/MyForest.module.scss';
 import SwipeLeftIcon from '@mui/icons-material/SwipeLeft';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import { ReactElement } from 'react';
 
 interface CustomButtonProps {
@@ -28,7 +28,7 @@ const MyContributionCustomButton = ({
     setIsTreePlantedButtonActive,
     setIsConservedButtonActive,
     isTreePlantedButtonActive,
-  } = useUserProps();
+  } = useMyForest();
 
   const handleClick = () => {
     if (isTreePlantedButtonActive) {

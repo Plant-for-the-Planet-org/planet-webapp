@@ -3,17 +3,19 @@ import { useTranslation } from 'next-i18next';
 import ContributedProjectList from './ContributedProjectList';
 import { ReactElement } from 'react';
 import { TreeContributedProjectListProps } from '../../../../common/types/myForest';
+import { useMyForest } from '../../../../common/Layout/MyForestContext';
 
 type AreaConservedProjectListProps = Omit<
   TreeContributedProjectListProps,
   'userProfile' | 'restoredAreaUnit'
 >;
 
-const ConservProjectContributions = ({
-  contribution,
+const ConservationContributions = ({
+  hasNextPage,
   handleFetchNextPage,
 }: AreaConservedProjectListProps): ReactElement => {
   const { t, ready } = useTranslation(['me']);
+  const { conservationContribution } = useMyForest();
 
   return ready ? (
     <div className={myForestStyles.areaConservedMainContainer}>
@@ -25,7 +27,8 @@ const ConservProjectContributions = ({
       </div>
       <div className={myForestStyles.areaConservedContainer}>
         <ContributedProjectList
-          contributionProjectList={contribution?.pages}
+          hasNextPage={hasNextPage}
+          contributionProjectList={conservationContribution?.pages}
           handleFetchNextPage={handleFetchNextPage}
         />
       </div>
@@ -35,4 +38,4 @@ const ConservProjectContributions = ({
   );
 };
 
-export default ConservProjectContributions;
+export default ConservationContributions;

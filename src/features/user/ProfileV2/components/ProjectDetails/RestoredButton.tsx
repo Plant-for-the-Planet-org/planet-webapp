@@ -6,7 +6,7 @@ import {
 import { ReactElement } from 'react';
 import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import theme from '../../../../../theme/themeProperties';
 
 export interface RestoredButtonProps {
@@ -20,7 +20,7 @@ const RestoredButton = ({
 }: RestoredButtonProps): ReactElement => {
   const { primaryDarkColorX, light } = theme;
   const { t, ready } = useTranslation(['donate']);
-  const { isTreePlantedButtonActive } = useUserProps();
+  const { isTreePlantedButtonActive } = useMyForest();
 
   return ready ? (
     <div

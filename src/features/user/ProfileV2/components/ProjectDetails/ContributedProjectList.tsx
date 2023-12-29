@@ -5,24 +5,22 @@ import { Button } from '@mui/material';
 import ContributedProject from '../MicroComponents/ContributedProject';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { Page } from '../../../../common/types/myForest';
+import { useMyForest } from '../../../../common/Layout/MyForestContext';
 
 export interface ContributedProjectListProps {
+  hasNextPage: boolean | undefined;
   handleFetchNextPage: () => void;
   contributionProjectList: Page[] | undefined;
 }
 
 const ContributedProjectList = ({
+  hasNextPage,
   contributionProjectList,
   handleFetchNextPage,
 }: ContributedProjectListProps): ReactElement => {
-  const { isConservedButtonActive } = useUserProps();
+  const { isConservedButtonActive, isProcessing, setIsProcessing } =
+    useMyForest();
   const { t } = useTranslation(['me']);
-
-  const _isLoadButtonActive =
-    contributionProjectList &&
-    contributionProjectList.some((singlePage) => {
-      return singlePage?.nextCursor === undefined;
-    });
 
   return contributionProjectList ? (
     <div className={myForestStyles.donationlistContainer}>
@@ -52,7 +50,7 @@ const ContributedProjectList = ({
           }
         });
       })}
-      {!_isLoadButtonActive && (
+      {hasNextPage && (
         <div className={myForestStyles.loadProjectButtonContainer}>
           <Button
             className={
@@ -61,9 +59,15 @@ const ContributedProjectList = ({
                 : myForestStyles.loadTreePlantaion
             }
             variant="contained"
-            onClick={handleFetchNextPage}
+            disabled={isProcessing}
+            onClick={() => {
+              setIsProcessing(true);
+              handleFetchNextPage();
+            }}
           >
-            {t('me:loadProjects')}
+            {isProcessing
+              ? t('me:loadingContributions')
+              : t('me:loadContributions')}
           </Button>
         </div>
       )}

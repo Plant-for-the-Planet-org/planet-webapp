@@ -9,6 +9,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { User } from '@planet-sdk/common';
 import { GetStaticPropsContext } from 'next';
+import { MyForestProvider } from '../../src/features/common/Layout/MyForestContext';
 
 function ProfilePage(): ReactElement {
   const { t } = useTranslation('me');
@@ -34,8 +35,10 @@ function ProfilePage(): ReactElement {
       </Head>
       {profile && (
         <>
-          <Profile userProfile={profile} />
-          <MyContributions profile={profile} token={token} />
+          <MyForestProvider>
+            <Profile userProfile={profile} />
+            <MyContributions profile={profile} token={token} />
+          </MyForestProvider>
         </>
       )}
     </UserLayout>

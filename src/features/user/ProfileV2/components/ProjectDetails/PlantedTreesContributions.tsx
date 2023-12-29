@@ -8,23 +8,23 @@ import AddTargetModal from '../MicroComponents/AddTargetModal';
 import ContributedProjectList from './ContributedProjectList';
 import { ReactElement } from 'react';
 import { TreeContributedProjectListProps } from '../../../../common/types/myForest';
+import { useMyForest } from '../../../../common/Layout/MyForestContext';
 
-const TreeProjectContributions = ({
-  restoredAreaUnit,
-  contribution,
+const PlantedTreesContributions = ({
   userProfile,
   handleFetchNextPage,
+  hasNextPage,
 }: TreeContributedProjectListProps): ReactElement => {
   const { t } = useTranslation(['me']);
   const [isAddTargetModalOpen, setIsAddTargetModalOpen] = useState(false);
-
+  const { treePlantationContribution, additionalInfoRelatedToContributions } =
+    useMyForest();
   const handleAddTargetModalOpen = (): void => {
     setIsAddTargetModalOpen(true);
   };
   const handleAddTargetModalClose = (): void => {
     setIsAddTargetModalOpen(false);
   };
-
   return (
     <div className={myForestStyles.mainContainer}>
       <div className={myForestStyles.treeCounterContainer}>
@@ -32,7 +32,9 @@ const TreeProjectContributions = ({
           {' '}
           {userProfile && (
             <TreeCounter
-              restoredAreaUnit={restoredAreaUnit}
+              restoredAreaUnit={
+                additionalInfoRelatedToContributions?.squareMeters
+              }
               handleAddTargetModalOpen={() => {
                 setIsAddTargetModalOpen(true);
               }}
@@ -72,7 +74,8 @@ const TreeProjectContributions = ({
             <p className={myForestStyles.hrLine} />
           </div>
           <ContributedProjectList
-            contributionProjectList={contribution?.pages}
+            hasNextPage={hasNextPage}
+            contributionProjectList={treePlantationContribution?.pages}
             handleFetchNextPage={handleFetchNextPage}
           />
         </div>
@@ -81,4 +84,4 @@ const TreeProjectContributions = ({
   );
 };
 
-export default TreeProjectContributions;
+export default PlantedTreesContributions;

@@ -11,7 +11,7 @@ import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import TreesPlantedMarkers from './TreesPlantedMarkers';
 import ConservationMarkers from './ConservationMarkers';
 import { ViewportProps } from '../../../../common/types/map';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import MyForestMapCredit from '../MicroComponents/MyForestMapCredit';
 
 const MyForestMap = (): ReactElement => {
@@ -22,7 +22,7 @@ const MyForestMap = (): ReactElement => {
     sources: {},
     layers: [],
   };
-  const { isConservedButtonActive, isTreePlantedButtonActive } = useUserProps();
+  const { isConservedButtonActive, isTreePlantedButtonActive } = useMyForest();
   const [mapState, setMapState] = useState({
     mapStyle: EMPTY_STYLE,
     dragPan: true,
@@ -53,7 +53,7 @@ const MyForestMap = (): ReactElement => {
   const _handleViewport = (newViewport: ViewportProps) =>
     setViewport({ ...viewport, ...newViewport });
 
-  const _activeMarker = () => {
+  const _isBothButtonInActive = () => {
     if (
       isTreePlantedButtonActive === false &&
       isConservedButtonActive === false
@@ -70,11 +70,11 @@ const MyForestMap = (): ReactElement => {
         {...viewport}
         onViewStateChange={_handleViewport}
       >
-        {(_activeMarker() ||
+        {(_isBothButtonInActive() ||
           (isTreePlantedButtonActive && !isConservedButtonActive)) && (
           <TreesPlantedMarkers viewport={viewport} mapRef={mapRef} />
         )}
-        {(_activeMarker() ||
+        {(_isBothButtonInActive() ||
           (!isTreePlantedButtonActive && isConservedButtonActive)) && (
           <ConservationMarkers viewport={viewport} mapRef={mapRef} />
         )}

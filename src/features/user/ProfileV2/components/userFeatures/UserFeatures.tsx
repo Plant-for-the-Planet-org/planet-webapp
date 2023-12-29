@@ -15,7 +15,6 @@ import {
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import theme from '../../../../../theme/themeProperties';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-
 const config = tenantConfig();
 
 const UserFeatures = ({

@@ -34,7 +34,7 @@ const SingleMarkerImageContainer = ({
     }
   };
   //The condition for using the isMergeContribution scenario arises when a profile has two contributions,
-  //one categorized as a gift and the other as a regular tree donation.
+  //one categorized as a gift and the other as a regular tree donation with the same coordinates.
   //In such a scenario, to prevent the overlap of a single marker on the map, the contributions are merged.
   //This merging occurs when both contributions share the same projectId and are subsequently rendered using a cluster marker.
   return (

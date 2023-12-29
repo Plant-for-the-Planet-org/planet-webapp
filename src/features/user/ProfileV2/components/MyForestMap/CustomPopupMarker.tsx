@@ -1,14 +1,12 @@
 import { Popup } from 'react-map-gl';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { CustomPopupMarkerProps } from '../../../../common/types/map';
-import { InfoInthePopUp } from '../MicroComponents/PopUp';
+import { InfoOnthePopUp } from '../MicroComponents/PopUp';
 
 const CustomPopupMarker = ({ geoJson, showPopUp }: CustomPopupMarkerProps) => {
-  const { isConservedButtonActive, isTreePlantedButtonActive } = useUserProps();
   return (
     <div className={MyForestMapStyle.singleMarkerContainer}>
-      {showPopUp && (isConservedButtonActive || isTreePlantedButtonActive) ? (
+      {showPopUp ? (
         <Popup
           className={MyForestMapStyle.mapboxglPopup}
           latitude={parseInt(`${geoJson.geometry.coordinates[1]}`)}
@@ -18,7 +16,7 @@ const CustomPopupMarker = ({ geoJson, showPopUp }: CustomPopupMarkerProps) => {
           anchor="bottom"
           closeButton={false}
         >
-          <InfoInthePopUp geoJson={geoJson} />
+          <InfoOnthePopUp geoJson={geoJson} />
         </Popup>
       ) : (
         <></>
