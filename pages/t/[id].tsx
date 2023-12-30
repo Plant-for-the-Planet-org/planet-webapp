@@ -12,8 +12,9 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPaths, GetStaticPropsContext } from 'next';
 import { handleError, APIError, UserPublicProfile } from '@planet-sdk/common';
 import MyContributions from '../../src/features/user/ProfileV2/components/MyContributions/MyContributions';
+import { MyForestProvider } from '../../src/features/common/Layout/MyForestContext';
 
-function SingleUser(): ReactElement {
+function PublicProfile(): ReactElement {
   // External imports
   const router = useRouter();
   const { user, contextLoaded, token } = useUserProps();
@@ -50,7 +51,7 @@ function SingleUser(): ReactElement {
     }
   }, [contextLoaded, user, router]);
   return profile ? (
-    <>
+    <MyForestProvider>
       <GetPublicUserProfileMeta userprofile={profile} />
       <Profile userProfile={profile} />
       {profile && profile.type !== 'tpo' && (
@@ -60,7 +61,7 @@ function SingleUser(): ReactElement {
         <ProjectsContainer profile={profile} />
       )}
       <Footer />
-    </>
+    </MyForestProvider>
   ) : (
     <UserProfileLoader />
   );
@@ -105,4 +106,4 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
   };
 }
 
-export default SingleUser;
+export default PublicProfile;

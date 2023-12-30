@@ -2,7 +2,7 @@ import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import { ReactElement } from 'react';
 import { Button } from '@mui/material';
-import ContributedProject from '../MicroComponents/ContributedProject';
+import ContributedToProject from '../MicroComponents/ContributedToProject';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { Page } from '../../../../common/types/myForest';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
@@ -27,7 +27,9 @@ const ContributedProjectList = ({
       {contributionProjectList.map((singlePage) => {
         return singlePage?.data?.map((singleProject, key) => {
           if (singleProject.purpose !== 'bouquet') {
-            return <ContributedProject key={key} projectInfo={singleProject} />;
+            return (
+              <ContributedToProject key={key} projectInfo={singleProject} />
+            );
           }
         });
       })}
@@ -39,7 +41,7 @@ const ContributedProjectList = ({
               return singleProject.bouquetContributions.map(
                 (bouquetProject, key) => {
                   return (
-                    <ContributedProject
+                    <ContributedToProject
                       key={key}
                       projectInfo={bouquetProject}
                     />

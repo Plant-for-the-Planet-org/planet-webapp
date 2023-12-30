@@ -1,4 +1,4 @@
-import SharePlatforms from '../userFeatures/SharePlatforms';
+import SharePlatforms from './SharePlatforms';
 import { Button } from '@mui/material';
 import { ShareSvg } from '../../../../../../public/assets/images/ProfilePageIcons';
 import { useTranslation } from 'next-i18next';

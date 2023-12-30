@@ -4,7 +4,7 @@ import { SupportSvg } from '../../../../../../public/assets/images/ProfilePageIc
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import tenantConfig from '../../../../../../tenant.config';
 import { useRouter } from 'next/router';
-import Share from '../MicroComponents/Share';
+import Share from './Share';
 import { UserFeaturesProps } from '../../../../common/types/profile';
 import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
