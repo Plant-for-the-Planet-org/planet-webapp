@@ -82,10 +82,7 @@ export const ConservAreaClusterMarker = ({
           onMouseOver={() => setShowPopUp(true)}
           onMouseLeave={() => setShowPopUp(false)}
         >
-          <div
-            className={MyForestMapStyle.svgContainer}
-            style={{ paddingLeft: '4px' }}
-          >
+          <div className={MyForestMapStyle.svgContainer}>
             <ConservationTreeSvg color={`${lightBlueColor}`} />
           </div>
           <div className={MyForestMapStyle.totalTreeCount}>

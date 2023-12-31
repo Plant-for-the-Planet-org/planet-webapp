@@ -15,7 +15,7 @@ import {
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import theme from '../../../../../theme/themeProperties';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-const config = tenantConfig();
+import NormalUserPublicProfileFeature from '../MicroComponents/NormalUserPublicProfileFeature';
 
 const UserFeatures = ({
   handleShare,
@@ -28,17 +28,14 @@ const UserFeatures = ({
   const { t } = useTranslation(['me']);
   const { setRefetchData } = useUserProps();
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
-  const handleSupport = () => {
-    router.push(`/s/${userProfile.slug}`);
-  };
 
-  const handleShareOnLinkedIn = () => {
-    if (config && userProfile) {
-      const linkToShare = `${config.tenantURL}/t/${userProfile.slug}`;
-      const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?&url=${linkToShare}`;
-      window.open(shareUrl, '_blank');
-    }
-  };
+  // const handleShareOnLinkedIn = () => {
+  //   if (config && userProfile) {
+  //     const linkToShare = `${config.tenantURL}/t/${userProfile.slug}`;
+  //     const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?&url=${linkToShare}`;
+  //     window.open(shareUrl, '_blank');
+  //   }
+  // };
 
   const handleRegisterTree = () => {
     setRefetchData(false);
@@ -55,40 +52,36 @@ const UserFeatures = ({
 
   return (
     <div className={myProfileStyle.buttonContainer}>
-      {userProfile?.type !== 'tpo' && router.pathname !== '/profile' ? (
-        <Button
-          variant="contained"
-          startIcon={<SupportSvg color={`${light.light}`} />}
-          onClick={handleSupport}
-        >
-          {t('me:support')}
-        </Button>
-      ) : (
-        <Button
-          variant="contained"
-          startIcon={<RedeemCodeSvg color={`${light.light}`} />}
-          onClick={handleRedeemModalOpen}
-        >
-          {t('redeem:redeem')}
-        </Button>
-      )}
+      {/* normal user
+            public profile (Features)-> support , share
+            private profile (Features)-> redeem, registerTree, share
 
-      {!userProfile.isPrivate && router.pathname !== '/profile' ? (
-        <Button
-          variant="contained"
-          startIcon={<LinkedInIcon />}
-          onClick={handleShareOnLinkedIn}
-        >
-          {t('me:linkedIn')}
-        </Button>
-      ) : (
-        <Button
-          variant="contained"
-          startIcon={<RegisteredTreeSvg color={`${light.light}`} />}
-          onClick={handleRegisterTree}
-        >
-          {t('me:registerTrees')}
-        </Button>
+          Tpo user
+            public profile(Features) -> share
+            private profile(Features) -> redeem, registerTree, share */}
+      {router.pathname !== '/profile' &&
+        !userProfile.isPrivate &&
+        userProfile.type !== 'tpo' && (
+          <NormalUserPublicProfileFeature profile={userProfile} />
+        )}
+
+      {router.pathname === '/profile' && (
+        <>
+          <Button
+            variant="contained"
+            startIcon={<RedeemCodeSvg color={`${light.light}`} />}
+            onClick={handleRedeemModalOpen}
+          >
+            {t('redeem:redeem')}
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<RegisteredTreeSvg color={`${light.light}`} />}
+            onClick={handleRegisterTree}
+          >
+            {t('me:registerTrees')}
+          </Button>
+        </>
       )}
 
       <RedeemModal
