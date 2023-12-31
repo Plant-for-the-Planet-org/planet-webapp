@@ -51,7 +51,7 @@ export const DateOnThePopUp = ({
         (isSingleContribution ? (
           <time>{formatDate(dateOfDonation || dateOfGift)}</time>
         ) : (
-          <time className={MyForestMapStyle.popUpDate}>
+          <time>
             {formatDate(dateOfDonation)} - {formatDate(endDate as string)}
           </time>
         ))}

@@ -36,10 +36,7 @@ const TreesPlantedMarkers = ({
   return clusters ? (
     <>
       {clusters.map((singleCluster, key) => {
-        if (
-          singleCluster.id ||
-          singleCluster?.properties?.totalContribution > 1
-        ) {
+        if (singleCluster.id) {
           return <TreePlantedClusterMarker key={key} geoJson={singleCluster} />;
         } else {
           return <SingleMarker key={key} geoJson={singleCluster} />;

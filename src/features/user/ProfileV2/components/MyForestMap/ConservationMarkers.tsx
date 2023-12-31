@@ -28,10 +28,7 @@ const ConservationMarker = ({
     <>
       {clusters &&
         clusters.map((singleCluster, key) => {
-          if (
-            singleCluster.id ||
-            singleCluster?.properties?.totalContribution > 1
-          ) {
+          if (singleCluster.id) {
             return (
               <ConservAreaClusterMarker key={key} geoJson={singleCluster} />
             );

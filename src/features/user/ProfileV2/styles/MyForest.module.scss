@@ -146,6 +146,7 @@
   padding-top: 20px;
   padding-bottom: 20px;
   height: 104px;
+  backdrop-filter: blur(10px);
   > .labelContainer {
     display: flex;
     padding-right: 24px;
