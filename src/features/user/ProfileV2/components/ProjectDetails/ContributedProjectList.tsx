@@ -9,7 +9,7 @@ import { useMyForest } from '../../../../common/Layout/MyForestContext';
 
 export interface ContributedProjectListProps {
   hasNextPage: boolean | undefined;
-  handleFetchNextPage: () => void;
+  handleFetchNextPage: () => void | undefined;
   contributionProjectList: Page[] | undefined;
 }
 

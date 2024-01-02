@@ -13,6 +13,7 @@ import { GetStaticPaths, GetStaticPropsContext } from 'next';
 import { handleError, APIError, UserPublicProfile } from '@planet-sdk/common';
 import MyContributions from '../../src/features/user/ProfileV2/components/MyContributions/MyContributions';
 import { MyForestProvider } from '../../src/features/common/Layout/MyForestContext';
+import PlantedTreesContributions from '../../src/features/user/ProfileV2/components/ProjectDetails/PlantedTreesContributions';
 
 function PublicProfile(): ReactElement {
   // External imports
@@ -54,6 +55,10 @@ function PublicProfile(): ReactElement {
     <MyForestProvider>
       <GetPublicUserProfileMeta userprofile={profile} />
       <Profile userProfile={profile} />
+      {profile.type === 'tpo' && (
+        <PlantedTreesContributions userProfile={profile} />
+      )}
+
       {profile && profile.type !== 'tpo' && (
         <MyContributions profile={profile} token={token} />
       )}

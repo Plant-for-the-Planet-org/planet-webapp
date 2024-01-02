@@ -184,7 +184,7 @@
     margin-left: 0px;
   }
 }
-
+.mainContainerX,
 .mainContainer {
   width: 100%;
   height: 100%;
@@ -222,6 +222,19 @@
   }
 }
 
+.mainContainerX {
+  margin-top: 0px;
+  @include smTabletView {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+  @include xsPhoneView {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+.donationListMainContainerX,
 .donationListMainContainer {
   background-color: #27ae601a;
   background-image: url('../../../../../public/assets/images/treeCounterBackround.svg');
@@ -265,6 +278,10 @@
       }
     }
   }
+}
+
+.donationListMainContainerX {
+  height: 395px;
 }
 
 .areaConservedContainer {

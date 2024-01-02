@@ -212,6 +212,6 @@ export interface ContributionData {
 }
 export interface TreeContributedProjectListProps {
   userProfile: User | PublicUser;
-  handleFetchNextPage: () => void;
-  hasNextPage: boolean | undefined;
+  handleFetchNextPage?: () => void;
+  hasNextPage?: boolean | undefined;
 }
