@@ -25,11 +25,10 @@
 
 .projectsTitleText {
   font-family: $primaryFontFamily;
-  text-align: center;
+  text-align: left;
   width: 100%;
   font-weight: 700;
   margin-bottom: 20px;
-  margin-top: 60px;
   color: $primaryFontColor;
   font-size: $fontXXLarge;
 }
@@ -71,6 +70,7 @@
 @include smTabletView {
   .listProjects {
     padding: 0px;
+    justify-content: left;
   }
   .singleProject {
     margin-right: 24px;
@@ -83,6 +83,12 @@
   }
   .listProjects {
     justify-content: left;
+  }
+}
+
+@include smTabletView {
+  .listProjects {
+    text-align: left;
   }
 }
 
