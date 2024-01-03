@@ -87,7 +87,7 @@ const PlantedTreesContributions = ({
       >
         {_checkConditions() && (
           <div className={myForestStyles.donationList}>
-            {pathname === 'profile' ? (
+            {pathname === '/profile' ? (
               <div className={myForestStyles.editButtonContainer}>
                 <Button
                   variant="contained"
