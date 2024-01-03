@@ -41,10 +41,12 @@ function TreeMapperAnalytics({
   }, [isReady]);
 
   useEffect(() => {
-    if (!(process.env.ENABLE_ANALYTICS === 'true' && user?.type === 'tpo')) {
-      push('/profile');
+    if (user) {
+      if (!(process.env.ENABLE_ANALYTICS && user.type === 'tpo')) {
+        push('/profile');
+      }
     }
-  });
+  }, [user]);
 
   return tenantConfig ? (
     <>
