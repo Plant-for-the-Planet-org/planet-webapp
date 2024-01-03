@@ -287,5 +287,6 @@
   "numberOfContributions": "{{total}} Contributions",
   "donateAgain": "Donate Again",
   "membershipCtaButtonText": "JOIN NOW",
-  "membershipCtaCopy": "Support us <2>BY BECOMING A MEMBER</2>"
+  "membershipCtaCopy": "Support us <2>BY BECOMING A MEMBER</2>",
+  "shareUrl": "Share URL"
 }

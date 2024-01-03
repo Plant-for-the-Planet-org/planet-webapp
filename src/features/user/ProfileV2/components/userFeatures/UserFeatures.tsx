@@ -15,7 +15,7 @@ import {
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import theme from '../../../../../theme/themeProperties';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import NormalUserPublicProfileFeature from '../MicroComponents/NormalUserPublicProfileFeature';
+import { PublicProfileFeature } from '../MicroComponents/PublicProfileFeature';
 
 const UserFeatures = ({
   handleShare,
@@ -52,18 +52,9 @@ const UserFeatures = ({
 
   return (
     <div className={myProfileStyle.buttonContainer}>
-      {/* normal user
-            public profile (Features)-> support , share
-            private profile (Features)-> redeem, registerTree, share
-
-          Tpo user
-            public profile(Features) -> share
-            private profile(Features) -> redeem, registerTree, share */}
-      {router.pathname !== '/profile' &&
-        !userProfile.isPrivate &&
-        userProfile.type !== 'tpo' && (
-          <NormalUserPublicProfileFeature profile={userProfile} />
-        )}
+      {router.pathname !== '/profile' && !userProfile.isPrivate && (
+        <PublicProfileFeature profile={userProfile} />
+      )}
 
       {router.pathname === '/profile' && (
         <>
