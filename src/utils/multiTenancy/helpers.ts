@@ -1,7 +1,5 @@
-import { Tenant, Tenants } from '@planet-sdk/common/build/types/tenant';
-import { NextResponse } from 'next/server';
+import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import redisClient from '../../redis-client';
-import { defaultTenant } from '../../../tenant.config';
 
 const ONE_HOUR_IN_SEC = 60 * 60;
 const FIVE_HOURS = ONE_HOUR_IN_SEC * 5;
@@ -10,7 +8,6 @@ const FIVE_HOURS = ONE_HOUR_IN_SEC * 5;
  * This is the default slug that will be used if no tenant is found.
  */
 export const DEFAULT_TENANT = 'planet';
-const DEFAULT_TENANT_DOMAIN = 'https://www1.plant-for-the-planet.org';
 
 /**
  *
@@ -31,17 +28,6 @@ export const getTenantConfigList = async () => {
 };
 
 /**
- * Returns the data of the hostname based on its subdomain.
- *
- * This method is used by pages under middleware.ts
- */
-export async function getHostnameDataBySubdomain(subdomain: string) {
-  const tenants = await getTenantConfigList();
-
-  return tenants.find((item) => item.tenantName === subdomain);
-}
-
-/**
  * Returns the paths for `getStaticPaths` based on the subdomain of every
  * available hostname.
  */
@@ -54,19 +40,6 @@ export async function constructPathsForTenantSlug() {
     .map((item) => {
       return { params: { slug: item.config.slug } };
     });
-}
-
-/**
- * Determines if the domain is a subdomain or not.
- */
-function isSubdomain(domain: string) {
-  const domainParts = domain.split('.');
-
-  return process.env.NODE_ENV !== 'development'
-    ? !domain.startsWith('www') &&
-        !domain.startsWith('www1') &&
-        domainParts.length > 2
-    : domainParts.length > 1;
 }
 
 /**
@@ -109,45 +82,6 @@ export const getTenantConfig = async (slug: string): Promise<Tenant> => {
   }
 };
 
-/**
- * Returns the subdomain of the current hostname.
- */
-export async function getTenantSubdomainOrRedirectObject(host: string) {
-  // TODO - use cached api response
-  const response = await fetch(`${process.env.API_ENDPOINT}/app/tenants`);
-
-  const tenants = (await response.json()) as Tenants;
-
-  const rootDomain = host.includes(process.env.ROOT_DOMAIN!);
-
-  let subdomain;
-
-  if (!rootDomain) {
-    const tenant = tenants.find((tenant) =>
-      tenant.config.customDomain
-        ? tenant.config.customDomain.includes(host)
-        : tenant.config.appDomain.includes(host)
-    );
-
-    subdomain = tenant?.config.subDomain ?? DEFAULT_TENANT;
-  } else {
-    if (isSubdomain(host)) {
-      subdomain = host.replace(`.${process.env.ROOT_DOMAIN}`, '');
-
-      // Match it with the tenant Information
-      const tenant = await getTenantConfig(subdomain);
-      // TODO: Must be app domain not custom domain
-      return NextResponse.redirect(
-        tenant ? tenant.customDomain : DEFAULT_TENANT_DOMAIN,
-        301
-      );
-    } else {
-      subdomain = DEFAULT_TENANT;
-    }
-  }
-
-  return subdomain;
-}
 
 /**
  * Returns the subdomain of the current hostname.
