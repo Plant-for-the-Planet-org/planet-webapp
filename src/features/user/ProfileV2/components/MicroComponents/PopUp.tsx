@@ -3,9 +3,17 @@ import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { Cluster, ClusterMarker } from '../../../../common/types/map';
 
-export const PopUpLabel = () => {
+interface PopUpLabelProps {
+  isRegistered: boolean;
+}
+
+export const PopUpLabel = ({ isRegistered }: PopUpLabelProps) => {
   const { t } = useTranslation(['me']);
-  return <div className={MyForestMapStyle.popUpLabel}>{t('me:donated')}</div>;
+  return (
+    <div className={MyForestMapStyle.popUpLabel}>
+      {isRegistered ? t('me:registered') : t('me:donated')}
+    </div>
+  );
 };
 
 interface NumberOfContributionsProps {
@@ -74,7 +82,9 @@ export const InfoOnthePopUp = ({ geoJson }: InfoOnthePopUpProps) => {
       }
     >
       <div className={MyForestMapStyle.popUp}>
-        <PopUpLabel />
+        <PopUpLabel
+          isRegistered={geoJson.properties.contributionType === 'planting'}
+        />
         <NumberOfContributions
           isMoreThanOneContribution={
             geoJson.properties.totalContribution &&
