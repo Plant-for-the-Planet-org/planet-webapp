@@ -30,21 +30,23 @@ export const PublicProfileFeature = ({
   };
   return (
     <>
-      <Button
-        variant="contained"
-        startIcon={<SupportSvg color={`${light.light}`} />}
-        onClick={handleSupport}
-      >
-        {t('me:support')}
-      </Button>
+      {profile?.type !== 'tpo' && (
+        <Button
+          variant="contained"
+          startIcon={<SupportSvg color={`${light.light}`} />}
+          onClick={handleSupport}
+        >
+          {t('me:support')}
+        </Button>
+      )}
+
       {profile?.url && (
         <Button
           variant="contained"
           onClick={handleShareUrl}
           startIcon={<LinkIcon />}
         >
-          {' '}
-          {t('me:shareUrl')}
+          {t('me:link')}
         </Button>
       )}
     </>
