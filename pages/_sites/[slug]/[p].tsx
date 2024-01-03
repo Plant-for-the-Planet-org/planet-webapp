@@ -68,8 +68,6 @@ export default function Donate({
     setPlantLocationsLoaded,
   } = useProjectProps();
 
-  console.log('[p] =>', pageProps.tenantConfig);
-
   const { setTenantConfig } = useTenant();
 
   React.useEffect(() => {

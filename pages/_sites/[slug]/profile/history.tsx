@@ -51,8 +51,6 @@ function AccountHistory({ pageProps }: Props): ReactElement {
 
   const { tenantConfig } = pageProps;
 
-  console.log('[slug]/profile/history: ', tenantConfig);
-
   React.useEffect(() => {
     if (router.isReady) {
       setTenantConfig(tenantConfig);

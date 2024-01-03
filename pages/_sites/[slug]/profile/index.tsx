@@ -30,8 +30,6 @@ interface Props {
 function ProfilePage({ pageProps }: Props): ReactElement {
   const { t } = useTranslation('me');
 
-  console.log('_sites profile ==>', pageProps.tenantConfig);
-
   // External imports
   const router = useRouter();
   const { setTenantConfig } = useTenant();

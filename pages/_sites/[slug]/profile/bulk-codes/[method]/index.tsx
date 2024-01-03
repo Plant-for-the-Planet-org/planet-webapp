@@ -38,11 +38,6 @@ export default function BulkCodeSelectProjectPage({
   const { bulkMethod, setBulkMethod } = useBulkCode();
   const { setTenantConfig } = useTenant();
 
-  console.log(
-    '/progile/bulk-codes/[method]/index.tsx: ',
-    pageProps.tenantConfig
-  );
-
   React.useEffect(() => {
     if (router.isReady) {
       setTenantConfig(pageProps.tenantConfig);

@@ -45,11 +45,6 @@ export default function BulkCodeIssueCodesPage({
   const { project, setProject, bulkMethod, setBulkMethod, planetCashAccount } =
     useBulkCode();
 
-  console.log(
-    '/progile/bulk-codes/[method]/[id].tsx: ',
-    pageProps.tenantConfig
-  );
-
   // Checks context and sets project, bulk method if not already set within context
   const checkContext = useCallback(async () => {
     if (planetCashAccount) {

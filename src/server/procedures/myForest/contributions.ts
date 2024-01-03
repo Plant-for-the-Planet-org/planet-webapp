@@ -183,8 +183,6 @@ export const contributions = procedure
       take: limit + 1,
     });
 
-    console.log('gifts', gifts);
-
     // There are gifts in the database that don't have an image, so we need to fetch them separately here
     // and fetch the images from the project table and prep them for the response
 
