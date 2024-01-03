@@ -14,7 +14,7 @@ export default function Landing(tenantScore: Props) {
       <div className={styles.landingContent}>
         <div className={styles.landingContentTop}>
           <h3>Trees We Helped To Conserve, Restore, and Grow</h3>
-          <TreeCounter planted={tenantScoreData} />
+          <TreeCounter planted={tenantScoreData} shouldShowMillions={true} />
           <p>
             Salesforce is helping to fund the conservation, restoration & growth
             of 100,000,000 trees by 2030.
