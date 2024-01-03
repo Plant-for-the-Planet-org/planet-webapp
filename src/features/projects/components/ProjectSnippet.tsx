@@ -27,7 +27,7 @@ import {
   usePopupState,
 } from 'material-ui-popup-state/hooks';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
-import tenantConfig from '../../../../tenant.config';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 interface Props {
   project:
@@ -57,6 +57,7 @@ export default function ProjectSnippet({
     : '';
 
   const { selectedPl, hoveredPl } = useProjectProps();
+  const { tenantConfig } = useTenant();
 
   let progressPercentage = 0;
 
@@ -86,8 +87,6 @@ export default function ProjectSnippet({
     variant: 'popover',
     popupId: 'projectInfoPopover',
   });
-
-  const config = tenantConfig();
 
   const donateButtonBackgroundColor =
     project.isTopProject && project.isApproved
@@ -225,7 +224,7 @@ export default function ProjectSnippet({
                 }}
               >
                 <div className="projectInfoPopupContainer">
-                  {config.tenantName === 'salesforce'
+                  {tenantConfig.config.slug === 'salesforce'
                     ? `${t('common:salesforceDisabledDonateButtonText')}`
                     : `${t('common:disabledDonateButtonText')}`}
                 </div>

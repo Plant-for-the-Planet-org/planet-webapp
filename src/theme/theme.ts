@@ -1,7 +1,5 @@
 import css from 'styled-jsx/css';
-import tenantConfig from '../../tenant.config';
 import theme from './themeProperties';
-const config = tenantConfig();
 
 const {
   light,
@@ -14,13 +12,11 @@ const {
   topProjectBackgroundColor,
   nonDonatableProjectBackgroundColor,
 } = theme;
-
+// TODO: Find a way to add primary-font-family and secondary-font-family from tenant config
 const globalStyles = css.global`
   :root {
-    --primary-font-family: ${config.font.primaryFontFamily ||
-    defaultFontFamily};
-    --secondary-font-family: ${config.font.secondaryFontFamily ||
-    defaultFontFamily};
+    --primary-font-family: ${defaultFontFamily};
+    --secondary-font-family: ${defaultFontFamily};
     --font-xx-extra-small: ${fontSizes.fontXXSmall};
     --font-x-extra-small: ${fontSizes.fontXSmall};
     --font-small: ${fontSizes.fontSmall};
