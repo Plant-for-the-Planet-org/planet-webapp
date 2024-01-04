@@ -54,18 +54,20 @@ function PublicProfile(): ReactElement {
   return profile ? (
     <MyForestProvider>
       <GetPublicUserProfileMeta userprofile={profile} />
-      <Profile userProfile={profile} />
-      {profile.type === 'tpo' && (
-        <PlantedTreesContributions userProfile={profile} />
-      )}
+      <div>
+        <Profile userProfile={profile} />
+        {profile.type === 'tpo' && (
+          <PlantedTreesContributions userProfile={profile} />
+        )}
 
-      {profile && profile.type !== 'tpo' && (
-        <MyContributions profile={profile} token={token} />
-      )}
-      {profile && profile.type === 'tpo' && (
-        <ProjectsContainer profile={profile} />
-      )}
-      <Footer />
+        {profile && profile.type !== 'tpo' && (
+          <MyContributions profile={profile} token={token} />
+        )}
+        {profile && profile.type === 'tpo' && (
+          <ProjectsContainer profile={profile} />
+        )}
+        <Footer />
+      </div>
     </MyForestProvider>
   ) : (
     <UserProfileLoader />
