@@ -19,7 +19,6 @@ export const config = {
 export default async function middleware(req: NextRequest) {
   const url = req.nextUrl;
 
-  // Get hostname (e.g. vercel.com, test.vercel.app, etc.)
   const host = req.headers.get('host');
 
   const slug = await getTenantSlug(host!);
