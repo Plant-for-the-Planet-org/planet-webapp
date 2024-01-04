@@ -94,7 +94,7 @@ export async function getTenantSlug(host: string) {
       : tenant.config.appDomain.includes(host)
   );
 
-  console.log('tenant', tenant);
+  console.log('tenant', tenant, host);
 
   return tenant?.config.slug ?? DEFAULT_TENANT;
 }
