@@ -3,7 +3,12 @@ import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import { CustomPopupMarkerProps } from '../../../../common/types/map';
 import { InfoOnthePopUp } from '../MicroComponents/PopUp';
 
-const CustomPopupMarker = ({ geoJson, showPopUp }: CustomPopupMarkerProps) => {
+const CustomPopupMarker = ({
+  geoJson,
+  showPopUp,
+  totalNumberOfDonation,
+  numberOfProject,
+}: CustomPopupMarkerProps) => {
   return (
     <div className={MyForestMapStyle.singleMarkerContainer}>
       {showPopUp ? (
@@ -16,7 +21,11 @@ const CustomPopupMarker = ({ geoJson, showPopUp }: CustomPopupMarkerProps) => {
           anchor="bottom"
           closeButton={false}
         >
-          <InfoOnthePopUp geoJson={geoJson} />
+          <InfoOnthePopUp
+            geoJson={geoJson}
+            totalNumberOfDonation={totalNumberOfDonation}
+            numberOfProject={numberOfProject}
+          />
         </Popup>
       ) : (
         <></>

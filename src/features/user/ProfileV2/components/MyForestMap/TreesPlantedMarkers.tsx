@@ -27,7 +27,8 @@ const TreesPlantedMarkers = ({
       const data = _getClusterGeojson(
         viewState,
         mapRef,
-        treePlantationProjectGeoJson
+        treePlantationProjectGeoJson,
+        undefined
       );
       setClusters(data);
     }
@@ -37,7 +38,15 @@ const TreesPlantedMarkers = ({
     <>
       {clusters.map((singleCluster, key) => {
         if (singleCluster.id) {
-          return <TreePlantedClusterMarker key={key} geoJson={singleCluster} />;
+          return (
+            <TreePlantedClusterMarker
+              key={key}
+              geoJson={singleCluster}
+              treePlantationProjectGeoJson={treePlantationProjectGeoJson}
+              viewState={viewState}
+              mapRef={mapRef}
+            />
+          );
         } else {
           return <SingleMarker key={key} geoJson={singleCluster} />;
         }

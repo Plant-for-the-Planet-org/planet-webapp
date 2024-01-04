@@ -7,6 +7,21 @@ interface PopUpLabelProps {
   isRegistered: boolean;
 }
 
+const ClusterPopUpLabel = ({ totalNumberOfDonation, numberOfProject }) => {
+  const { t } = useTranslation(['me']);
+  return (
+    <>
+      <div>
+        {t('me:clusterLabel', {
+          numberOfDonation: totalNumberOfDonation,
+          clusterChildren: numberOfProject,
+        })}
+      </div>
+      <div>{t('me:zoomIn')}</div>
+    </>
+  );
+};
+
 export const PopUpLabel = ({ isRegistered }: PopUpLabelProps) => {
   const { t } = useTranslation(['me']);
   return (
@@ -71,46 +86,60 @@ interface InfoOnthePopUpProps {
   geoJson: ClusterMarker | Cluster;
 }
 
-export const InfoOnthePopUp = ({ geoJson }: InfoOnthePopUpProps) => {
+export const InfoOnthePopUp = ({
+  geoJson,
+  totalNumberOfDonation,
+  numberOfProject,
+}: InfoOnthePopUpProps) => {
   return (
     <div
       className={
-        geoJson.properties.totalContribution > 1 ||
+        geoJson.id ||
+        geoJson?.properties.totalContribution > 1 ||
         geoJson.properties._type === 'merged_contribution_and_gift'
           ? MyForestMapStyle.popUpContainerLarge
           : MyForestMapStyle.popUpContainer
       }
     >
       <div className={MyForestMapStyle.popUp}>
-        <PopUpLabel
-          isRegistered={geoJson.properties.contributionType === 'planting'}
-        />
-        <NumberOfContributions
-          isMoreThanOneContribution={
-            geoJson.properties.totalContribution &&
-            geoJson.properties.totalContribution > 1
-          }
-          numberOfContributions={geoJson.properties.totalContribution}
-        />
-        <DateOnThePopUp
-          isDate={
-            geoJson.properties.totalContribution < 2 ||
-            geoJson?.properties?.startDate ||
-            geoJson?.properties?.created
-          }
-          dateOfGift={geoJson?.properties?.created}
-          dateOfDonation={geoJson?.properties?.startDate}
-          endDate={
-            geoJson?.properties?.endDate
-              ? geoJson?.properties?.endDate
-              : undefined
-          }
-          isSingleContribution={
-            geoJson?.properties?.totalContribution == 1 ||
-            geoJson?.properties?.totalContribution == 0 ||
-            geoJson?.properties?._type === 'gift'
-          }
-        />
+        {geoJson.id ? (
+          <ClusterPopUpLabel
+            totalNumberOfDonation={totalNumberOfDonation}
+            numberOfProject={numberOfProject}
+          />
+        ) : (
+          <>
+            <PopUpLabel
+              isRegistered={geoJson.properties.contributionType === 'planting'}
+            />
+            <NumberOfContributions
+              isMoreThanOneContribution={
+                geoJson.properties.totalContribution &&
+                geoJson.properties.totalContribution > 1
+              }
+              numberOfContributions={geoJson.properties.totalContribution}
+            />
+            <DateOnThePopUp
+              isDate={
+                geoJson.properties.totalContribution < 2 ||
+                geoJson?.properties?.startDate ||
+                geoJson?.properties?.created
+              }
+              dateOfGift={geoJson?.properties?.created}
+              dateOfDonation={geoJson?.properties?.startDate}
+              endDate={
+                geoJson?.properties?.endDate
+                  ? geoJson?.properties?.endDate
+                  : undefined
+              }
+              isSingleContribution={
+                geoJson?.properties?.totalContribution == 1 ||
+                geoJson?.properties?.totalContribution == 0 ||
+                geoJson?.properties?._type === 'gift'
+              }
+            />
+          </>
+        )}
       </div>
     </div>
   );

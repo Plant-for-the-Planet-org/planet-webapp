@@ -18,7 +18,8 @@ const ConservationMarker = ({
       const data = _getClusterGeojson(
         viewState,
         mapRef,
-        conservationProjectGeoJson
+        conservationProjectGeoJson,
+        undefined
       );
       setClusters(data);
     }

@@ -10,18 +10,37 @@ import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import { MarkerProps } from '../../../../common/types/map';
 import CustomPopupMarker from './CustomPopupMarker';
 import theme from '../../../../../theme/themeProperties';
+import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
 
 export const TreePlantedClusterMarker = ({
   geoJson,
+  treePlantationProjectGeoJson,
+  viewState,
+  mapRef,
 }: MarkerProps): ReactElement => {
   const { primaryDarkColorX } = theme;
   const { t, ready } = useTranslation(['me']);
   const [showPopUp, setShowPopUp] = useState(false);
+  const _getAllChildren = _getClusterGeojson(
+    viewState,
+    mapRef,
+    treePlantationProjectGeoJson,
+    geoJson.id
+  );
+
+  const _countTotalDonationsOfCLuster = _getAllChildren?.reduce(
+    (sum, obj) => sum + Number(obj.properties?.totalContribution),
+    0
+  );
+
   return ready ? (
     <>
-      {geoJson?.properties?.totalContribution > 1 && (
-        <CustomPopupMarker geoJson={geoJson} showPopUp={showPopUp} />
-      )}
+      <CustomPopupMarker
+        geoJson={geoJson}
+        showPopUp={showPopUp}
+        totalNumberOfDonation={_countTotalDonationsOfCLuster}
+        numberOfProject={geoJson?.properties.point_count}
+      />
 
       <Marker
         latitude={Number(geoJson.geometry.coordinates[1])}
