@@ -35,7 +35,7 @@ const getGlobalStyles = async () => {
         return tenantConfig;
       }
     } catch (err) {
-      console.log('Error in fetchConfig', err);
+      console.log('Error in fetchConfig for getGlobalStyles', err);
     }
   };
 
