@@ -40,11 +40,15 @@ export default function MyContributions({
   const { setRefetchData, refetchData } = useUserProps();
   const {
     setTreePlantationContribution,
+    treePlantationContribution,
     setConservationContribution,
+    conservationContribution,
     setTreePlantationProjectGeoJson,
     setconservationProjectGeoJson,
     additionalInfoRelatedToContributions,
     setAdditionalInfoRelatedToContributions,
+    setIsTreePlantedButtonActive,
+    setIsConservedButtonActive,
   } = useMyForest();
 
   const _detailInfo = trpc.myForest.stats.useQuery(
@@ -164,6 +168,33 @@ export default function MyContributions({
     );
     setRefetchData(false);
   }, [_detailInfo.data, refetchData]);
+
+  useEffect(() => {
+    const _checkHigestNumberContribution = () => {
+      if (treePlantationContribution && conservationContribution) {
+        if (
+          treePlantationContribution?.pages[0].data.length >
+          conservationContribution?.pages[0].data.length
+        ) {
+          setIsTreePlantedButtonActive(true);
+        } else if (
+          conservationContribution?.pages[0].data.length >
+          treePlantationContribution?.pages[0].data.length
+        ) {
+          setIsConservedButtonActive(true);
+        } else if (
+          treePlantationContribution?.pages[0].data.length ==
+          conservationContribution?.pages[0].data.length
+        ) {
+          setIsTreePlantedButtonActive(true);
+        } else {
+          setIsConservedButtonActive(false);
+          setIsTreePlantedButtonActive(false);
+        }
+      }
+    };
+    _checkHigestNumberContribution();
+  }, [treePlantationContribution, conservationContribution]);
 
   return ready && additionalInfoRelatedToContributions ? (
     <div className={myForestStyles.mapMainContainer}>
