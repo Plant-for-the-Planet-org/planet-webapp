@@ -82,7 +82,6 @@ export const getTenantConfig = async (slug: string): Promise<Tenant> => {
   }
 };
 
-
 /**
  * Returns the subdomain of the current hostname.
  */
@@ -94,6 +93,8 @@ export async function getTenantSlug(host: string) {
       ? tenant.config.customDomain.includes(host)
       : tenant.config.appDomain.includes(host)
   );
+
+  console.log('tenant', tenant);
 
   return tenant?.config.slug ?? DEFAULT_TENANT;
 }
