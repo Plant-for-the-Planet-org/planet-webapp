@@ -62,7 +62,10 @@ const MyForestMap = (): ReactElement => {
   };
 
   return (
-    <div className={MyForestMapStyle.mapContainer}>
+    <div
+      className={MyForestMapStyle.mapContainer}
+      style={{ position: 'relative' }}
+    >
       <MyForestMapCredit />
       <MapGL
         ref={mapRef}
@@ -78,7 +81,9 @@ const MyForestMap = (): ReactElement => {
           (!isTreePlantedButtonActive && isConservedButtonActive)) && (
           <ConservationMarkers viewport={viewport} mapRef={mapRef} />
         )}
-        <NavigationControl showCompass={false} />
+        <div className={MyForestMapStyle.navigationControlConatiner}>
+          <NavigationControl showCompass={false} />
+        </div>
       </MapGL>
     </div>
   );

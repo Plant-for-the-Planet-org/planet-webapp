@@ -48,12 +48,12 @@ const TreesOrUnitAreaAndDonateOption = ({
           t('me:plantedTrees', {
             count: parseInt(`${quantity}`) || 0,
           })}
-        {projectPurpose === 'trees' && //for  tree plantation project
+        {projectPurpose === 'trees' && // tree plantation contribution
           projectUnit === 'tree' &&
           t('me:plantedTrees', {
             count: parseInt(`${quantity}`) || 0,
           })}
-        {(projectPurpose === 'trees' || projectPurpose === 'conservation') && //for restoration  &  conservation project
+        {(projectPurpose === 'trees' || projectPurpose === 'conservation') && //for restoration  &  conservationcontribution
           projectUnit === 'm2' &&
           t('me:areaType', {
             areaConserved: `${quantity}`,
@@ -61,7 +61,7 @@ const TreesOrUnitAreaAndDonateOption = ({
           })}
         {contributionType === 'planting' &&
           countryName &&
-          tpoName && //for register  tree
+          tpoName && //for register  tree contribution
           t('me:registeredPlantedTrees', {
             count: parseInt(`${quantity}`) || 0,
           })}

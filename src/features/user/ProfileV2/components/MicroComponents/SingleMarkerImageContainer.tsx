@@ -20,24 +20,24 @@ const SingleMarkerImageContainer = ({
 }: SingleMarkerImageContainerProps) => {
   const { primaryDarkColorX, lightBlueColor } = theme;
   const _renderTreeIcon = () => {
-    if (isRegisteredTree) {
-      return <PlantedTreesSvg color={`${primaryDarkColorX}`} />;
-    } else {
-      return <DonationsSvg color={primaryDarkColorX} />;
-    }
-    // switch (true) {
-    //   case isNormalTreeDonation ||
-    //     isRegisteredTree ||
-    //     isMergeContribution ||
-    //     isGiftContribution:
-    //     return <PlantedTreesSvg color={`${primaryDarkColorX}`} />;
-    //   case isRestorationTreePlantation:
-    //     return <RestoredSvg color={`${primaryDarkColorX}`} />;
-    //   case isConservation:
-    //     return <ConservationTreeSvg color={`${lightBlueColor}`} />;
-    //   default:
-    //     return <></>;
+    // if (isRegisteredTree) {
+    //   return <PlantedTreesSvg color={`${primaryDarkColorX}`} />;
+    // } else {
+    //   return <DonationsSvg color={primaryDarkColorX} />;
     // }
+    switch (true) {
+      case isNormalTreeDonation ||
+        isRegisteredTree ||
+        isMergeContribution ||
+        isGiftContribution:
+        return <PlantedTreesSvg color={`${primaryDarkColorX}`} />;
+      case isRestorationTreePlantation:
+        return <RestoredSvg color={`${primaryDarkColorX}`} />;
+      case isConservation:
+        return <ConservationTreeSvg color={`${lightBlueColor}`} />;
+      default:
+        return <></>;
+    }
   };
   //The condition for using the isMergeContribution scenario arises when a profile has two contributions,
   //one categorized as a gift and the other as a regular tree donation with the same coordinates.

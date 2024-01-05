@@ -187,19 +187,23 @@
 
 .mapCreditsContainer {
   position: absolute;
-  background-color: #f2f2f2;
-  width: 100px;
-  left: 80px;
+  right: 92px;
+  bottom: 1px;
   z-index: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
   cursor: pointer;
-  border: 3px solid #c9e1f4;
   @include xsPhoneView {
-    left: 30px;
+    bottom: 51px;
+    right: 40px;
   }
+  @include smTabletView {
+    bottom: 52px;
+  }
+  @include mdTabletView {
+    bottom: 0px;
+  }
+  // @include lgLaptopView {
+
+  // }
 }
 
 .mapCredit {
@@ -220,4 +224,21 @@
 }
 .myForestMapSkeletonX {
   border-radius: 20px;
+}
+
+.navigationControlConatiner {
+  position: absolute;
+  bottom: 65px;
+  right: 36px;
+  @include xsPhoneView {
+    bottom: 116px;
+    right: 35px;
+  }
+  @include smTabletView {
+    bottom: 119px;
+    right: 36px;
+  }
+  @include mdTabletView {
+    bottom: 66px;
+  }
 }
