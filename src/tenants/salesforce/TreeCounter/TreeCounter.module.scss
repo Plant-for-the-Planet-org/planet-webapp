@@ -113,6 +113,12 @@
   box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.1);
 }
 
+.treeCounterLight {
+  .treeCounterValue {
+    color: #fff;
+  }
+}
+
 @include smTabletView {
   .treeCounterData {
     height: 60%;
