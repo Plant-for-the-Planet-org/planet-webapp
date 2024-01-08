@@ -160,7 +160,7 @@ export default function Donate({
         { shallow: true }
       );
     }
-  }, [project, router, geoJson]);
+  }, [project, router]);
 
   React.useEffect(() => {
     //for selecting one of the site of project if user use link  to directly visit to site from home page
