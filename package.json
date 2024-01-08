@@ -145,7 +145,7 @@
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
-    "axios": "^0.21.1",
+    "axios": "^1.6.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "chromatic": "^6.5.4",
