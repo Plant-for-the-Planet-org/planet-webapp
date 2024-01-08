@@ -160,7 +160,6 @@ export default function Donate({
         { shallow: true }
       );
     }
-    console.log('test log');
   }, [project, router]);
 
   React.useEffect(() => {
