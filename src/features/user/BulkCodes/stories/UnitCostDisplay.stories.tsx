@@ -1,14 +1,14 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react';
 
 import UnitCostDisplay from '../components/UnitCostDisplay';
 
 export default {
-  title: `Components/UnitCostDisplay`,
+  title: 'Components/UnitCostDisplay',
   component: UnitCostDisplay,
-} as ComponentMeta<typeof UnitCostDisplay>;
+} as Meta<typeof UnitCostDisplay>;
 
-const Template: ComponentStory<typeof UnitCostDisplay> = (args) => (
+const Template: StoryFn<typeof UnitCostDisplay> = (args) => (
   <UnitCostDisplay {...args} />
 );
 

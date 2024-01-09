@@ -1,14 +1,14 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react';
 
 import ProjectSelectAutocomplete from '../components/ProjectSelectAutocomplete';
 
 export default {
-  title: `Components/ProjectSelectAutocomplete`,
+  title: 'Components/ProjectSelectAutocomplete',
   component: ProjectSelectAutocomplete,
-} as ComponentMeta<typeof ProjectSelectAutocomplete>;
+} as Meta<typeof ProjectSelectAutocomplete>;
 
-const Template: ComponentStory<typeof ProjectSelectAutocomplete> = (args) => (
+const Template: StoryFn<typeof ProjectSelectAutocomplete> = (args) => (
   <ProjectSelectAutocomplete {...args} />
 );
 
