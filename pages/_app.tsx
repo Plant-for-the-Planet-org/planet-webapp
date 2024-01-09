@@ -233,6 +233,10 @@ const PlanetWeb = ({
           <TenantProvider>
             <QueryParamsProvider>
               <div>
+                {console.log(
+                  'tenantConfig.config.slug',
+                  tenantConfig.config.slug
+                )}
                 <div
                   style={
                     showVideo &&
