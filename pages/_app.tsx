@@ -44,7 +44,7 @@ import {
 } from '../src/utils/multiTenancy/helpers';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
 
-type AppOwnProps = { hostURL: string; tenantConfig: Tenant };
+type AppOwnProps = { tenantConfig: Tenant };
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -329,7 +329,6 @@ PlanetWeb.getInitialProps = async (
 
   const pageProps = {
     ...ctx.pageProps,
-    hostURL: `https://${context.ctx.req?.headers.host}`,
     tenantConfig,
   };
 
