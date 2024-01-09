@@ -601,33 +601,6 @@
   background-color: #48aadd !important;
 }
 
-.swipeConatiner {
-  position: absolute;
-  top: 625px;
-  left: 320px;
-  @include xsPhoneView {
-    left: 200px;
-  }
-  @include smTabletView {
-    visibility: visible;
-  }
-  @include mdTabletView {
-    left: 315px;
-    visibility: visible;
-  }
-  @include lgLaptopView {
-    left: 400px;
-    visibility: visible;
-  }
-  @include xlDesktopView {
-    left: 595px;
-    visibility: visible;
-  }
-  @media screen and (min-width: 1400px) {
-    visibility: hidden;
-  }
-}
-
 .circularProgressContainer {
   padding-left: 70px;
   padding-top: 30px;

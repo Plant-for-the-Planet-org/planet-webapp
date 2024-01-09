@@ -67,9 +67,6 @@ const MyContributionCustomButton = ({
           />
         </div>
       </div>
-      <div className={myForestStyles.swipeConatiner}>
-        <SwipeLeftIcon />
-      </div>
     </>
   );
 };

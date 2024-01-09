@@ -180,7 +180,6 @@ export const TreePlantedClusterMarker = ({
   const { t, ready } = useTranslation(['me']);
   const [showPopUp, setShowPopUp] = useState(false);
   const [totalContribution, setTotalContribution] = useState(0);
-  console.log(geoJson, '==');
   useEffect(() => {
     if (geoJson?.id) {
       const _getAllChildren = _getClusterGeojson(
