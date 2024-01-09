@@ -24,6 +24,12 @@ interface MyForestContextInterface {
   setIsProcessing: SetState<boolean>;
   showPopUp: boolean;
   setShowPopUp: SetState<boolean>;
+  treePlantGeoJson: PointFeature<TestPointProps>[];
+  setTreePlantGeoJson: SetState<PointFeature<TestPointProps>[]>;
+  registeredTreeGeoJson: PointFeature<TestPointProps>[];
+  setRegisteredTreeGeoJson: SetState<PointFeature<TestPointProps>[]>;
+  restorationGeoJson: PointFeature<TestPointProps>[];
+  setRestorationGeoJson: SetState<PointFeature<TestPointProps>[]>;
 }
 
 const MyForestContext = createContext<MyForestContextInterface | null>(null);
@@ -45,9 +51,17 @@ export const MyForestProvider: FC = ({ children }) => {
   const [isConservedButtonActive, setIsConservedButtonActive] = useState(false);
   const [isTreePlantedButtonActive, setIsTreePlantedButtonActive] =
     useState(false);
-  const [page, setPage] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const [showPopUp, setShowPopUp] = useState(false);
+  const [treePlantGeoJson, setTreePlantGeoJson] = useState<
+    PointFeature<TestPointProps>[]
+  >([]);
+  const [registeredTreeGeoJson, setRegisteredTreeGeoJson] = useState<
+    PointFeature<TestPointProps>[]
+  >([]);
+  const [restorationGeoJson, setRestorationGeoJson] = useState<
+    PointFeature<TestPointProps>[]
+  >([]);
 
   const value = useMemo(
     () => ({
@@ -69,6 +83,12 @@ export const MyForestProvider: FC = ({ children }) => {
       setIsProcessing,
       showPopUp,
       setShowPopUp,
+      treePlantGeoJson,
+      setTreePlantGeoJson,
+      registeredTreeGeoJson,
+      setRegisteredTreeGeoJson,
+      restorationGeoJson,
+      setRestorationGeoJson,
     }),
     [
       conservationProjectGeoJson,
@@ -89,6 +109,12 @@ export const MyForestProvider: FC = ({ children }) => {
       setIsProcessing,
       showPopUp,
       setShowPopUp,
+      treePlantGeoJson,
+      setTreePlantGeoJson,
+      registeredTreeGeoJson,
+      setRegisteredTreeGeoJson,
+      restorationGeoJson,
+      setRestorationGeoJson,
     ]
   );
 

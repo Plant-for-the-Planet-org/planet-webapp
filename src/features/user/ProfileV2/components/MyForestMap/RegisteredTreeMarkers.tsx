@@ -1,4 +1,4 @@
-import { TreePlantedClusterMarker } from './ClusterMarker';
+import { RegisteredTreeClusterMarker } from './ClusterMarker';
 import SingleMarker from './SingleMarker';
 import { useState, useEffect, ReactElement } from 'react';
 import React from 'react';
@@ -11,11 +11,11 @@ import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import { ClusterFeature, PointFeature } from 'supercluster';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 
-const TreesPlantedMarkers = ({
+const RegisteredTreeMarker = ({
   viewport,
   mapRef,
 }: ClusterMarkerProps): ReactElement => {
-  const { treePlantationProjectGeoJson, treePlantGeoJson } = useMyForest();
+  const { registeredTreeGeoJson } = useMyForest();
   const [clusters, setClusters] = useState<
     | (ClusterFeature<TestClusterProps> | PointFeature<TestPointProps>)[]
     | undefined
@@ -23,32 +23,29 @@ const TreesPlantedMarkers = ({
   const { viewState } = viewport;
 
   useEffect(() => {
-    if (treePlantationProjectGeoJson) {
+    if (registeredTreeGeoJson) {
       const data = _getClusterGeojson(
         viewState,
         mapRef,
-        treePlantGeoJson,
+        registeredTreeGeoJson,
         undefined
       );
       setClusters(data);
     }
-  }, [viewport, treePlantGeoJson]);
+  }, [viewport, registeredTreeGeoJson]);
 
   return clusters ? (
     <>
       {clusters.map((singleCluster, key) => {
         if (
-          viewState?.zoom < 3.5 &&
-          (singleCluster.id ||
-            singleCluster.properties._type == 'contribution' ||
-            'gift' ||
-            'merged_contribution_and_gift')
+          viewState?.zoom < 3.1 &&
+          (singleCluster.id || singleCluster.properties._type == 'contribution')
         ) {
           return (
-            <TreePlantedClusterMarker
+            <RegisteredTreeClusterMarker
               key={key}
               geoJson={singleCluster}
-              treePlantationProjectGeoJson={treePlantGeoJson}
+              treePlantationProjectGeoJson={registeredTreeGeoJson}
               viewState={viewState}
               mapRef={mapRef}
             />
@@ -63,4 +60,4 @@ const TreesPlantedMarkers = ({
   );
 };
 
-export default TreesPlantedMarkers;
+export default RegisteredTreeMarker;

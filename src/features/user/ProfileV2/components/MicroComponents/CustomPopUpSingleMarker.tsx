@@ -1,13 +1,12 @@
 import { Popup } from 'react-map-gl';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import { CustomPopupMarkerProps } from '../../../../common/types/map';
-import { ClusterPopUpLabel } from '../MicroComponents/PopUp';
+import { InfoOnthePopUp } from '../MicroComponents/PopUp';
 
-const CustomPopupMarker = ({
+const CustomPopUpSingleMarker = ({
   geoJson,
   showPopUp,
   totalNumberOfDonation,
-  totalRegisteredDonation,
   numberOfProject,
 }: CustomPopupMarkerProps) => {
   return (
@@ -22,12 +21,10 @@ const CustomPopupMarker = ({
           anchor="bottom"
           closeButton={false}
         >
-          <ClusterPopUpLabel
-            totalRegisteredDonation={totalRegisteredDonation}
+          <InfoOnthePopUp
+            geoJson={geoJson}
             totalNumberOfDonation={totalNumberOfDonation}
             numberOfProject={numberOfProject}
-            singleContribution={geoJson.properties.cluster === false}
-            totalContribution={geoJson.properties.totalContribution}
           />
         </Popup>
       ) : (
@@ -37,4 +34,4 @@ const CustomPopupMarker = ({
   );
 };
 
-export default CustomPopupMarker;
+export default CustomPopUpSingleMarker;

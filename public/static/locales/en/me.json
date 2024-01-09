@@ -290,6 +290,8 @@
   "membershipCtaButtonText": "JOIN NOW",
   "membershipCtaCopy": "Support us <2>BY BECOMING A MEMBER</2>",
   "shareUrl": "Share URL",
-  "clusterLabel": "{{numberOfDonation}} Donations to {{clusterChildren}} Projects",
+  "clusterLabelx": "{{numberOfDonation}} Contribution to {{clusterChildren}} Project",
+  "clusterLabely": "{{numberOfDonation}} Contributions to {{clusterChildren}} Projects",
+  "registeredContribution": "{{totalContribution}} Contribution(Registered)",
   "zoomIn": "Zoom in for more details"
 }

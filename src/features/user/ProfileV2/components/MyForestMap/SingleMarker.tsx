@@ -2,15 +2,15 @@ import { Marker } from 'react-map-gl';
 import { useState, ReactElement } from 'react';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import { SingleMarkerProps } from '../../../../common/types/map';
-import CustomPopupMarker from './CustomPopupMarker';
 import SingleMarkerImageContainer from '../MicroComponents/SingleMarkerImageContainer';
 import SingleMarkerUnits from '../MicroComponents/SingleMarkerUnits';
+import CustomPopUpSingleMarker from '../MicroComponents/CustomPopUpSingleMarker';
 
 const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
   const [showPopUp, setShowPopUp] = useState(false);
   return (
     <>
-      <CustomPopupMarker geoJson={geoJson} showPopUp={showPopUp} />
+      <CustomPopUpSingleMarker geoJson={geoJson} showPopUp={showPopUp} />
       {geoJson?.geometry.coordinates[1] !== null && (
         <Marker
           latitude={Number(geoJson?.geometry.coordinates[1])}

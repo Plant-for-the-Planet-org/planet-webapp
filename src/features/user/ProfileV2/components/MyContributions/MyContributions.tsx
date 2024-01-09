@@ -49,6 +49,10 @@ export default function MyContributions({
     setAdditionalInfoRelatedToContributions,
     setIsTreePlantedButtonActive,
     setIsConservedButtonActive,
+    treePlantationProjectGeoJson,
+    setTreePlantGeoJson,
+    setRegisteredTreeGeoJson,
+    setRestorationGeoJson,
   } = useMyForest();
 
   const _detailInfo = trpc.myForest.stats.useQuery(
@@ -195,6 +199,38 @@ export default function MyContributions({
     };
     _checkHigestNumberContribution();
   }, [treePlantationContribution, conservationContribution]);
+
+  useEffect(() => {
+    if (_treePlantedGeoJsonData.data) {
+      const _onlyRegisteredDonation = _treePlantedGeoJsonData.data.filter(
+        (singleContribution) => {
+          if (singleContribution?.properties?.contributionType === 'planting')
+            return singleContribution;
+        }
+      );
+      const _onlyNormalDonation = _treePlantedGeoJsonData.data.filter(
+        (singleContribution) => {
+          if (singleContribution?.properties?.contributionType !== 'planting')
+            return singleContribution;
+        }
+      );
+      if (_onlyNormalDonation) setTreePlantGeoJson(_onlyNormalDonation);
+      if (_onlyRegisteredDonation)
+        setRegisteredTreeGeoJson(_onlyRegisteredDonation);
+      if (_onlyNormalDonation) {
+        const _onlyRestorationGeojson = _onlyNormalDonation.filter(
+          (singleGeojson) => {
+            return (
+              singleGeojson.properties?.purpose === 'trees' &&
+              singleGeojson.properties?.plantProject?.unitType === 'm2'
+            );
+          }
+        );
+        if (_onlyRestorationGeojson)
+          setRestorationGeoJson(_onlyRestorationGeojson);
+      }
+    }
+  }, [treePlantationProjectGeoJson]);
 
   return ready && additionalInfoRelatedToContributions ? (
     <div className={myForestStyles.mapMainContainer}>
