@@ -54,7 +54,7 @@ function PublicProfile(): ReactElement {
   return profile ? (
     <MyForestProvider>
       <GetPublicUserProfileMeta userprofile={profile} />
-      <div>
+      <div className="publicProfileMainContainer">
         <Profile userProfile={profile} />
         {profile.type === 'tpo' && (
           <PlantedTreesContributions userProfile={profile} />

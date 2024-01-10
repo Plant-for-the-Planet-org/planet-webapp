@@ -60,7 +60,6 @@
   padding-left: 200px;
   padding-right: 50px;
   padding-bottom: 20px;
-  max-width: 1172px;
 }
 
 .profileSkeleton {
@@ -101,4 +100,12 @@
 .linkButton {
   @extend .customButton;
   width: 77px;
+}
+
+.publicProfileMainContainer {
+  max-width: 1400px;
+  padding-left: 85px;
+  @include xsPhoneView {
+    padding-left: 0px;
+  }
 }
