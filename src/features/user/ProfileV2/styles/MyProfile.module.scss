@@ -10,8 +10,8 @@
   background-color: #c5f097;
   cursor: pointer;
   .icon {
-    margin-left: 6px;
-    margin-top: 6px;
+    margin-top: 10px;
+    margin-left: 9px;
   }
 }
 
@@ -80,7 +80,7 @@
 
 .profileRedeemButton {
   @extend .customButton;
-  width: 120px;
+  width: 105px;
 }
 
 .registeredTreeButton {
