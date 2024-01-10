@@ -1,4 +1,5 @@
 import { Button } from '@mui/material';
+import myProfileStyle from '../../styles/MyProfile.module.scss';
 import { SupportSvg } from '../../../../../../public/assets/images/ProfilePageIcons';
 import theme from '../../../../../theme/themeProperties';
 import { useRouter } from 'next/router';
@@ -32,6 +33,7 @@ export const PublicProfileFeature = ({
     <>
       {profile?.type !== 'tpo' && (
         <Button
+          className={myProfileStyle.supportButton}
           variant="contained"
           startIcon={<SupportSvg color={`${light.light}`} />}
           onClick={handleSupport}
@@ -42,6 +44,7 @@ export const PublicProfileFeature = ({
 
       {profile?.url && (
         <Button
+          className={myProfileStyle.linkButton}
           variant="contained"
           onClick={handleShareUrl}
           startIcon={<LinkIcon />}

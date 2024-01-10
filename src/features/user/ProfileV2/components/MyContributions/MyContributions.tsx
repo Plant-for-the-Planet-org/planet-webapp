@@ -231,7 +231,6 @@ export default function MyContributions({
       }
     }
   }, [treePlantationProjectGeoJson]);
-
   return ready && additionalInfoRelatedToContributions ? (
     <div className={myForestStyles.mapMainContainer}>
       <MyTreesMap />

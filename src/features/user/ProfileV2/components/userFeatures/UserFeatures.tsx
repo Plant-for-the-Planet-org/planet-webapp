@@ -59,6 +59,7 @@ const UserFeatures = ({
       {router.pathname === '/profile' && (
         <>
           <Button
+            className={myProfileStyle.profileRedeemButton}
             variant="contained"
             startIcon={<RedeemCodeSvg color={`${light.light}`} />}
             onClick={handleRedeemModalOpen}
@@ -66,6 +67,7 @@ const UserFeatures = ({
             {t('redeem:redeem')}
           </Button>
           <Button
+            className={myProfileStyle.registeredTreeButton}
             variant="contained"
             startIcon={<RegisteredTreeSvg color={`${light.light}`} />}
             onClick={handleRegisterTree}
