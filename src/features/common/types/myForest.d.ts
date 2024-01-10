@@ -176,7 +176,7 @@ export interface ContributionsGeoJsonQueryResult {
   tpo: string;
   startDate: string;
   endDate: string;
-  totalContribution: number;
+  totalContributions: number;
 }
 
 export interface GiftsGeoJsonQueryResult {

@@ -91,6 +91,9 @@ const mergeFeaturesWithSameCoordinates = (features: Feature[]): Feature[] => {
         quantity:
           (Number(existingFeature.properties.quantity) || 0) +
           (Number(feature.properties?.quantity) || 0),
+        totalContributions:
+          (Number(existingFeature.properties.totalContributions) || 0) +
+          (Number(feature.properties?.totalContributions) || 0),
         startDate: compareDate(
           existingFeature.properties.startDate,
           feature.properties?.created,
@@ -101,8 +104,13 @@ const mergeFeaturesWithSameCoordinates = (features: Feature[]): Feature[] => {
           feature.properties?.created,
           ComparisonType.AFTER
         ),
-        _type: 'merged_contribution_and_gift',
       };
+
+      // Keep track of original _type values
+      // Update _type only if they differ
+      if (existingFeature.properties._type !== feature.properties?._type) {
+        existingFeature.properties._type = 'merged_contribution_and_gift';
+      }
 
       delete existingFeature.properties.created;
     }
@@ -150,7 +158,7 @@ export const contributionsGeoJson = procedure
     }
 
     const data = await prisma.$queryRaw<ContributionsGeoJsonQueryResult[]>`
-      SELECT COUNT(pp.guid) AS totalContribution, SUM(c.tree_count) AS treeCount, 
+      SELECT COUNT(pp.guid) AS totalContributions, SUM(c.tree_count) AS treeCount, 
         SUM(c.quantity) AS quantity,  c.purpose, MIN(c.plant_date) AS startDate,
         MAX(c.plant_date) AS endDate, c.contribution_type, c.plant_date, pp.location, pp.country, 
         pp.unit_type, pp.guid, pp.name, pp.image, pp.geo_latitude AS geoLatitude, 
@@ -191,7 +199,7 @@ export const contributionsGeoJson = procedure
           startDate: contribution.startDate,
           endDate: contribution.endDate,
           contributionType: contribution.contribution_type,
-          totalContribution: contribution.totalContribution,
+          totalContributions: contribution.totalContributions,
           plantProject: {
             guid: contribution.guid,
             name: contribution.name,
@@ -223,6 +231,7 @@ export const contributionsGeoJson = procedure
           giver: gift.metadata.giver,
           project: gift.metadata.project,
           created: gift.created,
+          totalContributions: 1,
           _type: 'gift',
         },
         geometry: {
