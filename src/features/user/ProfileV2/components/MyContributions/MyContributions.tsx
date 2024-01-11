@@ -53,6 +53,7 @@ export default function MyContributions({
     setTreePlantGeoJson,
     setRegisteredTreeGeoJson,
     setRestorationGeoJson,
+    setIsProcessing,
   } = useMyForest();
 
   const _detailInfo = trpc.myForest.stats.useQuery(
@@ -134,6 +135,7 @@ export default function MyContributions({
         stateUpdaterFunction(trpcProcedure?.data);
       } else {
         stateUpdaterFunction(trpcProcedure?.data);
+        setIsProcessing(false);
       }
     }
   };
