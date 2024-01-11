@@ -1,10 +1,14 @@
 module.exports = {
   stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
-  addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-interactions'],
+  addons: [
+    '@storybook/addon-links',
+    '@storybook/addon-essentials',
+    '@storybook/addon-interactions',
+  ],
 
   framework: {
     name: '@storybook/nextjs',
-    options: {}
+    options: {},
   },
 
   webpackFinal: async (config, { configType }) => {
@@ -13,6 +17,7 @@ module.exports = {
       fallback: {
         ...(config.resolve || {}).fallback,
         fs: false,
+        path: require.resolve('path-browserify'),
       },
     };
 
@@ -27,6 +32,6 @@ module.exports = {
   staticDirs: ['../public'],
 
   docs: {
-    autodocs: true
-  }
+    autodocs: true,
+  },
 };
