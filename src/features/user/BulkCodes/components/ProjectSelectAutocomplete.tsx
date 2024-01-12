@@ -28,7 +28,7 @@ interface ProjectSelectAutocompleteProps {
 // TODO - move this to a common folder
 const ProjectSelectAutocomplete = ({
   projectList,
-  project,
+  project = null,
   handleProjectChange,
   active = true,
 }: ProjectSelectAutocompleteProps): ReactElement | null => {
