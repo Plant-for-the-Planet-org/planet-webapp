@@ -1,43 +1,46 @@
-import React from 'react';
-import { StoryFn, Meta } from '@storybook/react';
-
+import { Meta, StoryObj } from '@storybook/react';
 import UploadWidget from '../components/UploadWidget';
 
-export default {
+const meta: Meta<typeof UploadWidget> = {
   title: 'Components/UploadWidget',
   component: UploadWidget,
-} as Meta<typeof UploadWidget>;
-
-const Template: StoryFn<typeof UploadWidget> = (args) => (
-  <UploadWidget {...args} />
-);
-
-export const Empty = Template.bind({});
-Empty.args = {
-  status: 'empty',
 };
 
-export const Processing = Template.bind({});
-Processing.args = {
-  status: 'processing',
+export default meta;
+
+type Story = StoryObj<typeof UploadWidget>;
+
+export const Empty: Story = {
+  args: {
+    status: 'empty',
+  },
 };
 
-export const Success = Template.bind({});
-Success.args = {
-  status: 'success',
+export const Processing: Story = {
+  args: {
+    status: 'processing',
+  },
 };
 
-export const SuccessExtraColumns = Template.bind({});
-SuccessExtraColumns.args = {
-  status: 'success',
-  hasIgnoredColumns: true,
+export const Success: Story = {
+  args: {
+    status: 'success',
+  },
 };
 
-export const Error = Template.bind({});
-Error.args = {
-  status: 'error',
-  parseError: {
-    type: 'noRecipientData',
-    message: 'No recipient data found',
+export const SuccessExtraColumns: Story = {
+  args: {
+    status: 'success',
+    hasIgnoredColumns: true,
+  },
+};
+
+export const Error: Story = {
+  args: {
+    status: 'error',
+    parseError: {
+      type: 'noRecipientData',
+      message: 'No recipient data found',
+    },
   },
 };
