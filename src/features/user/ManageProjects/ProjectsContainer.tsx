@@ -13,7 +13,6 @@ import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
 import { Properties } from '../../common/types/project';
 import { Geometry } from '@turf/turf';
-import CenteredContainer from '../../common/Layout/CenteredContainer';
 import DashboardView from '../../common/Layout/DashboardView';
 import SingleColumnView from '../../common/Layout/SingleColumnView';
 
@@ -135,7 +134,6 @@ export default function ProjectsContainer() {
       }
     >
       <SingleColumnView>
-        <CenteredContainer>
 
           <div className={styles.headerCTAs}>
             <Link href="/profile/projects/new-project">
@@ -171,7 +169,6 @@ export default function ProjectsContainer() {
             )}
           </div>
 
-        </CenteredContainer>
       </SingleColumnView>
     </DashboardView>
   ) : null;
