@@ -25,8 +25,7 @@ const _clusterConfig = {
 export const _getClusterGeojson = (
   viewState: ViewState,
   mapRef: RefObject<MapRef>,
-  geoJson: PointFeature<TestPointProps>[],
-  clusterId
+  geoJson: PointFeature<TestPointProps>[]
 ) => {
   const supercluster = new Supercluster(_clusterConfig);
   supercluster.load(geoJson);
@@ -35,12 +34,12 @@ export const _getClusterGeojson = (
     const map = mapRef.current.getMap();
     const bounds = map.getBounds().toArray().flat();
     const bound: Bound = bounds && [bounds[0], bounds[1], bounds[2], bounds[3]];
-    if (zoom && !clusterId) {
+    if (zoom) {
       const _clusters = supercluster?.getClusters(bound, zoom);
       return _clusters;
     }
-    if (clusterId) {
-      return supercluster.getChildren(clusterId);
-    }
+    // if (clusterId) {
+    //   return supercluster.getChildren(clusterId);
+    // }
   }
 };

@@ -8,7 +8,6 @@ import React, { FC, useContext } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
 import { User } from '@planet-sdk/common/build/types/user';
 import { SetState } from '../types/common';
-import { useMyForest } from './MyForestContext';
 
 interface UserPropsContextInterface {
   contextLoaded: boolean;

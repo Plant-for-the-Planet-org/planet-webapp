@@ -121,7 +121,7 @@ export const InfoOnthePopUp = ({ geoJson }: InfoOnthePopUpProps) => {
   return (
     <div
       className={
-        geoJson?.properties.totalContribution > 1 ||
+        geoJson?.properties.totalContributions > 1 ||
         geoJson.properties._type === 'merged_contribution_and_gift'
           ? MyForestMapStyle.popUpContainerLarge
           : MyForestMapStyle.popUpContainer
@@ -133,14 +133,14 @@ export const InfoOnthePopUp = ({ geoJson }: InfoOnthePopUpProps) => {
         />
         <NumberOfContributions
           isMoreThanOneContribution={
-            geoJson.properties.totalContribution &&
-            geoJson.properties.totalContribution > 1
+            geoJson.properties.totalContributions &&
+            geoJson.properties.totalContributions > 1
           }
-          numberOfContributions={geoJson.properties.totalContribution}
+          numberOfContributions={geoJson.properties.totalContributions}
         />
         <DateOnThePopUp
           isDate={
-            geoJson.properties.totalContribution < 2 ||
+            geoJson.properties.totalContributions < 2 ||
             geoJson?.properties?.startDate ||
             geoJson?.properties?.created
           }
@@ -152,8 +152,8 @@ export const InfoOnthePopUp = ({ geoJson }: InfoOnthePopUpProps) => {
               : undefined
           }
           isSingleContribution={
-            geoJson?.properties?.totalContribution == 1 ||
-            geoJson?.properties?.totalContribution == 0 ||
+            geoJson?.properties?.totalContributions == 1 ||
+            geoJson?.properties?.totalContributions == 0 ||
             geoJson?.properties?._type === 'gift'
           }
         />

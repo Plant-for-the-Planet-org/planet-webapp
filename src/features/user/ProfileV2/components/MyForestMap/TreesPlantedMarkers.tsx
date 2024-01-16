@@ -27,8 +27,7 @@ const TreesPlantedMarkers = ({
       const data = _getClusterGeojson(
         viewState,
         mapRef,
-        treePlantGeoJson,
-        undefined
+        treePlantationProjectGeoJson
       );
       setClusters(data);
     }

@@ -79,8 +79,8 @@ const MyForestMap = (): ReactElement => {
           (isTreePlantedButtonActive && !isConservedButtonActive)) && (
           <>
             <TreesPlantedMarkers viewport={viewport} mapRef={mapRef} />
-            <RegisteredTreeMarker viewport={viewport} mapRef={mapRef} />
-            <RestoredMarker viewport={viewport} mapRef={mapRef} />
+            {/* <RegisteredTreeMarker viewport={viewport} mapRef={mapRef} />
+            <RestoredMarker viewport={viewport} mapRef={mapRef} /> */}
           </>
         )}
         {(_isBothButtonInActive() ||
