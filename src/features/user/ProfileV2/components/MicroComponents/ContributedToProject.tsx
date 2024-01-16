@@ -13,12 +13,12 @@ export interface ProjectProps {
   projectInfo: Contributions | BouquetContribution | GiftContributionProps;
 }
 
-const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
+const ContributedToProject = ({ projectInfo }: ProjectProps): ReactElement => {
   return (
     <div className={myForestStyles.donationDetail}>
       <ProjectImage
         imageUniqueKey={
-          (projectInfo as Contributions)?.plantProject?.image ||
+          (projectInfo as Contributions).plantProject?.image ||
           (projectInfo as GiftContributionProps)?.metadata?.project?.image
         }
         numberOfTreesPlanted={(projectInfo as Contributions)?.treeCount}
@@ -39,6 +39,13 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
           contributionDate={
             (projectInfo as Contributions)?.plantDate ||
             (projectInfo as GiftContributionProps)?.created
+          }
+          contributionType={
+            (projectInfo as Contributions).contributionType ||
+            (projectInfo as GiftContributionProps)?._type === 'gift'
+          }
+          quantity={
+            (projectInfo as Contributions)?.treeCount || projectInfo?.quantity
           }
         />
         <TreesOrUnitAreaAndDonateOption
@@ -61,10 +68,14 @@ const ContributedProject = ({ projectInfo }: ProjectProps): ReactElement => {
             (projectInfo as Contributions)?.plantProject?.allowDonations ||
             (projectInfo as GiftContributionProps)?.allowDonations
           }
+          countryName={(
+            projectInfo as Contributions
+          )?.plantProject?.country.toLowerCase()}
+          tpoName={(projectInfo as Contributions)?.plantProject?.tpo?.name}
         />
       </div>
     </div>
   );
 };
 
-export default ContributedProject;
+export default ContributedToProject;

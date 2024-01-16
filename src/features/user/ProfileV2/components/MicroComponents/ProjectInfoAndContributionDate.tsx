@@ -9,6 +9,8 @@ interface ProjectInfoAndContributionDateProps {
   tpoName: string;
   giftSenderName: string;
   contributionDate: string | number | Date;
+  contributionType: string | boolean;
+  quantity: number | null;
 }
 
 const ProjectInfoAndContributionDate = ({
@@ -17,14 +19,14 @@ const ProjectInfoAndContributionDate = ({
   tpoName,
   giftSenderName,
   contributionDate,
+  contributionType,
+  quantity,
 }: ProjectInfoAndContributionDateProps) => {
   const { t } = useTranslation(['me']);
   return (
     <div className={myForestStyles.projectDetail}>
       <div className={myForestStyles.projectDetailMain}>
-        <div className={myForestStyles.projectName}>
-          {projectName ? projectName : t('me:registeredTree')}
-        </div>
+        <div className={myForestStyles.projectName}>{projectName}</div>
 
         {tpoName || countryName ? (
           <div className={myForestStyles.sepratorContainer}>
@@ -38,7 +40,12 @@ const ProjectInfoAndContributionDate = ({
             <div className={myForestStyles.tpoName}>{tpoName}</div>
           </div>
         ) : (
-          <></>
+          <time className={myForestStyles.treeCount}>
+            {contributionType === 'planting' && //for register  tree
+              t('me:registeredPlantedTrees', {
+                count: parseInt(`${quantity}`) || 0,
+              })}
+          </time>
         )}
 
         {giftSenderName ? (
@@ -54,7 +61,7 @@ const ProjectInfoAndContributionDate = ({
 
       {contributionDate ? (
         <div className={myForestStyles.plantingDate}>
-          {format(contributionDate, 'MMM dd, yyyy', {
+          {format(contributionDate, 'PP', {
             locale: localeMapForDate[localStorage.getItem('language') || 'en'],
           })}
         </div>

@@ -1,7 +1,9 @@
 import { useRouter } from 'next/router';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
+import Profile from '../../../../src/features/user/ProfileV2/components/ProfileInfo';
 import UserLayout from '../../../../src/features/common/Layout/UserLayout/UserLayout';
+import MyContributions from '../../../../src/features/user/ProfileV2/components/MyContributions/MyContributions';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -11,15 +13,14 @@ import {
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next';
+import { MyForestProvider } from '../../../../src/features/common/Layout/MyForestContext';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
 } from '../../../../src/utils/multiTenancy/helpers';
-import { defaultTenant } from '../../../../tenant.config';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
+import { defaultTenant } from '../../../../tenant.config';
 import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
-import Profile from '../../../../src/features/user/ProfileV2/components/ProfileInfo';
-import MyContributions from '../../../../src/features/user/ProfileV2/components/MyContributions/MyContributions';
 
 interface Props {
   pageProps: {
@@ -27,20 +28,19 @@ interface Props {
   };
 }
 
-function ProfilePage({ pageProps }: Props): ReactElement {
+function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
   const { t } = useTranslation('me');
-
   // External imports
   const router = useRouter();
-  const { setTenantConfig } = useTenant();
   const { user, contextLoaded, token } = useUserProps();
+  const { setTenantConfig } = useTenant();
 
   // Internal states
-  const [profile, setProfile] = useState<null | User>(null);
+  const [profile, setProfile] = React.useState<null | User>();
 
   React.useEffect(() => {
     if (router.isReady) {
-      setTenantConfig(pageProps.tenantConfig);
+      setTenantConfig(tenantConfig);
     }
   }, [router.isReady]);
 
@@ -52,20 +52,20 @@ function ProfilePage({ pageProps }: Props): ReactElement {
     }
   }, [contextLoaded, user, router]);
 
-  return pageProps.tenantConfig ? (
+  return tenantConfig && (
     <UserLayout>
       <Head>
         <title>{t('profile')}</title>
       </Head>
       {profile && (
         <>
-          <Profile userProfile={profile} />
-          <MyContributions profile={profile} token={token} />
+          <MyForestProvider>
+            <Profile userProfile={profile} />
+            <MyContributions profile={profile} token={token} />
+          </MyForestProvider>
         </>
       )}
     </UserLayout>
-  ) : (
-    <></>
   );
 }
 

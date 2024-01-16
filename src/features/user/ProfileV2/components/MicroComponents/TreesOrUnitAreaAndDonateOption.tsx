@@ -15,6 +15,8 @@ interface TreesOrUnitAreaAndDonateOptionProps {
   tenantId: string;
   projectGUID: string;
   isDonatable: boolean;
+  countryName: string;
+  tpoName: string;
 }
 
 const TreesOrUnitAreaAndDonateOption = ({
@@ -26,6 +28,8 @@ const TreesOrUnitAreaAndDonateOption = ({
   tenantId,
   projectGUID,
   isDonatable,
+  countryName,
+  tpoName,
 }: TreesOrUnitAreaAndDonateOptionProps) => {
   const { t } = useTranslation(['me']);
   const { embed } = useContext(ParamsContext);
@@ -40,20 +44,27 @@ const TreesOrUnitAreaAndDonateOption = ({
   return (
     <div className={myForestStyles.donateContainer}>
       <time className={myForestStyles.treeCount}>
-        {projectUnit
-          ? projectUnit === 'm2'
-            ? t('me:areaType', {
-                areaConserved: `${quantity}`,
-                type: `${
-                  projectPurpose === 'trees' ? 'restored' : 'conserved'
-                } `,
-              })
-            : t('me:plantedTrees', {
-                count: parseInt(`${quantity}`) || 0,
-              })
-          : t('me:plantedTrees', {
-              count: parseInt(`${quantity}`) || 0,
-            })}
+        {gift && //for gift contribution
+          t('me:plantedTrees', {
+            count: parseInt(`${quantity}`) || 0,
+          })}
+        {projectPurpose === 'trees' && // tree plantation contribution
+          projectUnit === 'tree' &&
+          t('me:plantedTrees', {
+            count: parseInt(`${quantity}`) || 0,
+          })}
+        {(projectPurpose === 'trees' || projectPurpose === 'conservation') && //for restoration  &  conservationcontribution
+          projectUnit === 'm2' &&
+          t('me:areaType', {
+            areaConserved: `${quantity}`,
+            type: `${projectPurpose === 'trees' ? 'restored' : 'conserved'} `,
+          })}
+        {contributionType === 'planting' &&
+          countryName &&
+          tpoName && //for register  tree contribution
+          t('me:registeredPlantedTrees', {
+            count: parseInt(`${quantity}`) || 0,
+          })}
       </time>
       {contributionType && contributionType !== 'planting' && isDonatable && (
         <div

@@ -1,21 +1,19 @@
 import { styled } from '@mui/material';
 
-const ProfileMainContainer = styled('div')(({ theme }) => ({
+const ProfileMainContainer = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
   gap: 10,
   position: 'relative',
   height: 'max-content',
-  backgroundColor: theme.palette.background.default,
-  width: 'auto',
+  backgroundColor: 'rgba(255, 255, 255, 1)',
   borderRadius: 9,
-  boxShadow: theme.shadows[3],
+  boxShadow: '4px 6px 12px 0 rgba(102, 102, 102, 0.03)',
   marginLeft: 50,
   marginRight: 50,
   marginTop: 170,
   marginBottom: 40,
   padding: 30,
-  maxWidth: 1070,
   '.MuiButton-root': {
     marginTop: 15,
     '@media (max-width: 481px)': {

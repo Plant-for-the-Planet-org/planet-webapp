@@ -4,7 +4,7 @@ import { SupportSvg } from '../../../../../../public/assets/images/ProfilePageIc
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 import { useRouter } from 'next/router';
-import Share from '../MicroComponents/Share';
+import Share from './Share';
 import { UserFeaturesProps } from '../../../../common/types/profile';
 import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
@@ -15,6 +15,7 @@ import {
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import theme from '../../../../../theme/themeProperties';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import { PublicProfileFeature } from '../MicroComponents/PublicProfileFeature';
 
 const UserFeatures = ({
   handleShare,
@@ -28,24 +29,21 @@ const UserFeatures = ({
   const { t } = useTranslation(['me']);
   const { setRefetchData } = useUserProps();
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
-  const handleSupport = () => {
-    router.push(`/s/${userProfile.slug}`);
-  };
 
-  const handleShareOnLinkedIn = () => {
-    if (tenantConfig && userProfile) {
-      const linkToShare = `${tenantConfig.config.tenantURL}/t/${userProfile.slug}`;
-      const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?&url=${linkToShare}`;
-      window.open(shareUrl, '_blank');
-    }
-  };
+  // const handleShareOnLinkedIn = () => {
+  //   if (config && userProfile) {
+  //     const linkToShare = `${config.tenantURL}/t/${userProfile.slug}`;
+  //     const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?&url=${linkToShare}`;
+  //     window.open(shareUrl, '_blank');
+  //   }
+  // };
 
   const handleRegisterTree = () => {
     setRefetchData(false);
     router.push('profile/register-trees');
   };
 
-  const handleRedeemModalOPen = () => {
+  const handleRedeemModalOpen = () => {
     setIsRedeemModalOpen(true);
   };
 
@@ -55,40 +53,27 @@ const UserFeatures = ({
 
   return (
     <div className={myProfileStyle.buttonContainer}>
-      {userProfile?.type !== 'tpo' && router.pathname !== '/profile' ? (
-        <Button
-          variant="contained"
-          startIcon={<SupportSvg color={`${light.light}`} />}
-          onClick={handleSupport}
-        >
-          {t('me:support')}
-        </Button>
-      ) : (
-        <Button
-          variant="contained"
-          startIcon={<RedeemCodeSvg color={`${light.light}`} />}
-          onClick={handleRedeemModalOPen}
-        >
-          {t('redeem:redeem')}
-        </Button>
+      {router.pathname !== '/profile' && !userProfile.isPrivate && (
+        <PublicProfileFeature profile={userProfile} />
       )}
 
-      {!userProfile.isPrivate && router.pathname !== '/profile' ? (
-        <Button
-          variant="contained"
-          startIcon={<LinkedInIcon />}
-          onClick={handleShareOnLinkedIn}
-        >
-          {t('me:linkedIn')}
-        </Button>
-      ) : (
-        <Button
-          variant="contained"
-          startIcon={<RegisteredTreeSvg color={`${light.light}`} />}
-          onClick={handleRegisterTree}
-        >
-          {t('me:registerTrees')}
-        </Button>
+      {router.pathname === '/profile' && (
+        <>
+          <Button
+            variant="contained"
+            startIcon={<RedeemCodeSvg color={`${light.light}`} />}
+            onClick={handleRedeemModalOpen}
+          >
+            {t('redeem:redeem')}
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<RegisteredTreeSvg color={`${light.light}`} />}
+            onClick={handleRegisterTree}
+          >
+            {t('me:registerTrees')}
+          </Button>
+        </>
       )}
 
       <RedeemModal

@@ -176,7 +176,7 @@ export interface ContributionsGeoJsonQueryResult {
   tpo: string;
   startDate: string;
   endDate: string;
-  totalContribution: number;
+  totalContributions: number;
 }
 
 export interface GiftsGeoJsonQueryResult {
@@ -211,8 +211,7 @@ export interface ContributionData {
   pages: Page[];
 }
 export interface TreeContributedProjectListProps {
-  restoredAreaUnit: number | undefined;
-  contribution: ContributionData | null;
   userProfile: User | PublicUser;
-  handleFetchNextPage: () => void;
+  handleFetchNextPage?: () => void;
+  hasNextPage?: boolean | undefined;
 }

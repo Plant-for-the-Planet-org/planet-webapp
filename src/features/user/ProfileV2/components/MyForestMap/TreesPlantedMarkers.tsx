@@ -9,13 +9,13 @@ import {
 } from '../../../../common/types/map';
 import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import { ClusterFeature, PointFeature } from 'supercluster';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import { useMyForest } from '../../../../common/Layout/MyForestContext';
 
 const TreesPlantedMarkers = ({
   viewport,
   mapRef,
 }: ClusterMarkerProps): ReactElement => {
-  const { treePlantedProjects } = useUserProps();
+  const { treePlantationProjectGeoJson } = useMyForest();
   const [clusters, setClusters] = useState<
     | (ClusterFeature<TestClusterProps> | PointFeature<TestPointProps>)[]
     | undefined
@@ -23,20 +23,30 @@ const TreesPlantedMarkers = ({
   const { viewState } = viewport;
 
   useEffect(() => {
-    if (treePlantedProjects) {
-      const data = _getClusterGeojson(viewState, mapRef, treePlantedProjects);
+    if (treePlantationProjectGeoJson) {
+      const data = _getClusterGeojson(
+        viewState,
+        mapRef,
+        treePlantationProjectGeoJson,
+        undefined
+      );
       setClusters(data);
     }
-  }, [viewport, treePlantedProjects]);
+  }, [viewport, treePlantationProjectGeoJson]);
 
   return clusters ? (
     <>
       {clusters.map((singleCluster, key) => {
-        if (
-          singleCluster.id ||
-          singleCluster?.properties?.totalContribution > 1
-        ) {
-          return <TreePlantedClusterMarker key={key} geoJson={singleCluster} />;
+        if (singleCluster.id) {
+          return (
+            <TreePlantedClusterMarker
+              key={key}
+              geoJson={singleCluster}
+              treePlantationProjectGeoJson={treePlantationProjectGeoJson}
+              viewState={viewState}
+              mapRef={mapRef}
+            />
+          );
         } else {
           return <SingleMarker key={key} geoJson={singleCluster} />;
         }

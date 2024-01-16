@@ -5,6 +5,8 @@ import {
   Bound,
 } from '../features/common/types/map';
 import Supercluster, { PointFeature } from 'supercluster';
+import { RefObject } from 'react';
+import { MapRef } from 'react-map-gl';
 
 const _clusterConfig = {
   radius: 40,
@@ -22,8 +24,9 @@ const _clusterConfig = {
 
 export const _getClusterGeojson = (
   viewState: ViewState,
-  mapRef: any,
-  geoJson: PointFeature<TestPointProps>[]
+  mapRef: RefObject<MapRef>,
+  geoJson: PointFeature<TestPointProps>[],
+  clusterId
 ) => {
   const supercluster = new Supercluster(_clusterConfig);
   supercluster.load(geoJson);
@@ -32,9 +35,12 @@ export const _getClusterGeojson = (
     const map = mapRef.current.getMap();
     const bounds = map.getBounds().toArray().flat();
     const bound: Bound = bounds && [bounds[0], bounds[1], bounds[2], bounds[3]];
-    if (zoom) {
+    if (zoom && !clusterId) {
       const _clusters = supercluster?.getClusters(bound, zoom);
       return _clusters;
+    }
+    if (clusterId) {
+      return supercluster.getChildren(clusterId);
     }
   }
 };

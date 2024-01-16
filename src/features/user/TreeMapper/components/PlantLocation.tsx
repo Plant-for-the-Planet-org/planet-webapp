@@ -83,7 +83,7 @@ function PlantLocation({
         <div className={styles.right}>
           <div className={styles.status}>
             {location.type === 'multi' && treeCount ? `${treeCount}` : `1`}
-            <TreeIcon />
+            <TreeIcon width={'19px'} height={'19.25px'} />
           </div>
           <div className={styles.mode}>{t(location.captureStatus)}</div>
         </div>

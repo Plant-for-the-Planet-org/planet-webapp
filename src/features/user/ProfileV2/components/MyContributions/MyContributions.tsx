@@ -4,10 +4,7 @@ import dynamic from 'next/dynamic';
 import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
-import TreeProjectContributions from '../ProjectDetails/TreeProjectContributions';
 import { trpc } from '../../../../../utils/trpc';
-import ConservProjectContributions from '../ProjectDetails/ConservProjectContributions';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { Purpose } from '../../../../../utils/constants/myForest';
 import { ContributionData } from '../../../../common/types/myForest';
 import { StatsResult } from '../../../../common/types/myForest';
@@ -16,11 +13,10 @@ import MyContributionCustomButton from '../MicroComponents/CustomButton';
 import { SetState } from '../../../../common/types/common';
 import { PointFeature } from 'supercluster';
 import { TestPointProps } from '../../../../common/types/map';
-import {
-  MyContributionLoader,
-  MyForestMapLoader,
-} from '../../../../common/ContentLoaders/UserProfile/UserProfile';
-import { useRouter } from 'next/router';
+import { MyForestMapLoader } from '../../../../common/ContentLoaders/UserProfile/UserProfile';
+import { useMyForest } from '../../../../common/Layout/MyForestContext';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import MyContributionList from '../MicroComponents/MyContributionList';
 
 const A_DAY_IN_MS = 1000 * 60 * 60 * 24;
 
@@ -40,42 +36,20 @@ export default function MyContributions({
   profile,
 }: MyContributionsProps): ReactElement | null {
   const { ready } = useTranslation(['country', 'me']);
-  const router = useRouter();
-  const [projectsForTreePlantation, setProjectsForTreePlantation] =
-    useState<ContributionData | null>(null);
-  const [projectsForAreaConservation, setProjectsForAreaConservation] =
-    useState<ContributionData | null>(null);
-  const [otherDonationInfo, setOthercontributionInfo] = useState<
-    StatsResult | undefined
-  >(undefined);
-
-  const [page, setPage] = useState(0);
   const { setErrors } = useContext(ErrorHandlingContext);
-
+  const { setRefetchData, refetchData } = useUserProps();
   const {
-    setConservationProjects,
-    setTreePlantedProjects,
-    isConservedButtonActive,
-    isTreePlantedButtonActive,
-    refetchData,
-    setRefetchData,
-  } = useUserProps();
-
-  const _checkConditions = () => {
-    if (projectsForTreePlantation) {
-      return false;
-    } else {
-      return true;
-    }
-  };
-
-  const _checkConditionsForConservation = () => {
-    if (projectsForAreaConservation) {
-      return false;
-    } else {
-      return true;
-    }
-  };
+    setTreePlantationContribution,
+    treePlantationContribution,
+    setConservationContribution,
+    conservationContribution,
+    setTreePlantationProjectGeoJson,
+    setconservationProjectGeoJson,
+    additionalInfoRelatedToContributions,
+    setAdditionalInfoRelatedToContributions,
+    setIsTreePlantedButtonActive,
+    setIsConservedButtonActive,
+  } = useMyForest();
 
   const _detailInfo = trpc.myForest.stats.useQuery(
     {
@@ -86,7 +60,7 @@ export default function MyContributions({
       ...queryFetchOptions,
     }
   );
-  const _conservationGeoJsonData = trpc.myForest.contributionsGeoJson.useQuery(
+  const _conservedGeoJsonData = trpc.myForest.contributionsGeoJson.useQuery(
     {
       profileId: `${profile.id}`,
       purpose: Purpose.CONSERVATION,
@@ -108,7 +82,7 @@ export default function MyContributions({
     }
   );
 
-  const _contributionDataForPlantedtrees =
+  const _plantedTreesContribution =
     trpc.myForest.contributions.useInfiniteQuery(
       {
         profileId: `${profile.id}`,
@@ -122,27 +96,19 @@ export default function MyContributions({
       }
     );
 
-  const _contributionData = trpc.myForest.contributions.useInfiniteQuery(
-    {
-      profileId: `${profile.id}`,
-      limit: 15,
-      purpose: Purpose.CONSERVATION,
-    },
-    {
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
-      enabled: !!profile.id,
-      ...queryFetchOptions,
-    }
-  );
-
-  const handleFetchNextPage = (): void => {
-    _contributionData.fetchNextPage();
-    setPage((prev) => prev + 1);
-  };
-  const handleFetchNextPageforPlantedTrees = (): void => {
-    _contributionDataForPlantedtrees.fetchNextPage();
-    setPage((prev) => prev + 1);
-  };
+  const _conservationContribution =
+    trpc.myForest.contributions.useInfiniteQuery(
+      {
+        profileId: `${profile.id}`,
+        limit: 15,
+        purpose: Purpose.CONSERVATION,
+      },
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+        enabled: !!profile.id,
+        ...queryFetchOptions,
+      }
+    );
 
   const _updateStateWithTrpcData = <T,>(
     trpcProcedure: any,
@@ -169,79 +135,83 @@ export default function MyContributions({
   };
   useEffect(() => {
     _updateStateWithTrpcData<ContributionData | null>(
-      _contributionData,
-      setProjectsForAreaConservation
+      _plantedTreesContribution,
+      setTreePlantationContribution
     );
-  }, [_contributionData.data]);
+  }, [_plantedTreesContribution.data]);
 
   useEffect(() => {
     _updateStateWithTrpcData<ContributionData | null>(
-      _contributionDataForPlantedtrees,
-      setProjectsForTreePlantation
+      _conservationContribution,
+      setConservationContribution
     );
-  }, [_contributionDataForPlantedtrees.data]);
-
-  useEffect(() => {
-    _updateStateWithTrpcData<PointFeature<TestPointProps>[]>(
-      _conservationGeoJsonData,
-      setConservationProjects
-    );
-  }, [_conservationGeoJsonData.data, refetchData]);
+  }, [_conservationContribution.data]);
 
   useEffect(() => {
     _updateStateWithTrpcData<PointFeature<TestPointProps>[]>(
       _treePlantedGeoJsonData,
-      setTreePlantedProjects
+      setTreePlantationProjectGeoJson
     );
   }, [_treePlantedGeoJsonData.data, refetchData]);
 
   useEffect(() => {
+    _updateStateWithTrpcData<PointFeature<TestPointProps>[]>(
+      _conservedGeoJsonData,
+      setconservationProjectGeoJson
+    );
+  }, [_conservedGeoJsonData.data, refetchData]);
+
+  useEffect(() => {
     _updateStateWithTrpcData<StatsResult | undefined>(
       _detailInfo,
-      setOthercontributionInfo
+      setAdditionalInfoRelatedToContributions
     );
     setRefetchData(false);
   }, [_detailInfo.data, refetchData]);
 
-  return ready && otherDonationInfo ? (
+  useEffect(() => {
+    const _checkHigestNumberContribution = () => {
+      if (treePlantationContribution && conservationContribution) {
+        if (
+          treePlantationContribution?.pages[0].data.length >
+          conservationContribution?.pages[0].data.length
+        ) {
+          setIsTreePlantedButtonActive(true);
+        } else if (
+          conservationContribution?.pages[0].data.length >
+          treePlantationContribution?.pages[0].data.length
+        ) {
+          setIsConservedButtonActive(true);
+        } else if (
+          treePlantationContribution?.pages[0].data.length ==
+          conservationContribution?.pages[0].data.length
+        ) {
+          setIsTreePlantedButtonActive(true);
+        } else {
+          setIsConservedButtonActive(false);
+          setIsTreePlantedButtonActive(false);
+        }
+      }
+    };
+    _checkHigestNumberContribution();
+  }, [treePlantationContribution, conservationContribution]);
+
+  return ready && additionalInfoRelatedToContributions ? (
     <div className={myForestStyles.mapMainContainer}>
       <MyTreesMap />
       <MyContributionCustomButton
-        plantedTrees={otherDonationInfo?.treeCount}
-        restoredArea={otherDonationInfo?.squareMeters}
-        conservedArea={otherDonationInfo?.conserved}
-        projects={otherDonationInfo?.projects}
-        countries={otherDonationInfo?.countries}
-        donations={otherDonationInfo?.donations}
+        plantedTrees={additionalInfoRelatedToContributions?.treeCount}
+        restoredArea={additionalInfoRelatedToContributions?.squareMeters}
+        conservedArea={additionalInfoRelatedToContributions?.conserved}
+        projects={additionalInfoRelatedToContributions?.projects}
+        countries={additionalInfoRelatedToContributions?.countries}
+        donations={additionalInfoRelatedToContributions?.donations}
       />
-
-      {isTreePlantedButtonActive ? (
-        _checkConditions() ? (
-          <MyContributionLoader />
-        ) : (
-          <TreeProjectContributions
-            restoredAreaUnit={_detailInfo.data?.squareMeters}
-            contribution={projectsForTreePlantation}
-            userProfile={profile}
-            handleFetchNextPage={handleFetchNextPageforPlantedTrees}
-          />
-        )
-      ) : (
-        <></>
-      )}
-
-      {isConservedButtonActive ? (
-        _checkConditionsForConservation() ? (
-          <MyContributionLoader />
-        ) : (
-          <ConservProjectContributions
-            contribution={projectsForAreaConservation}
-            handleFetchNextPage={handleFetchNextPage}
-          />
-        )
-      ) : (
-        <></>
-      )}
+      <MyContributionList
+        conservationTrpcResponse={_conservationContribution}
+        plantedTreesTrpcResponse={_plantedTreesContribution}
+        profile={profile}
+      />
     </div>
   ) : (
     <MyForestMapLoader />

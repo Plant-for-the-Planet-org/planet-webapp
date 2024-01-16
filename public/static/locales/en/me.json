@@ -26,6 +26,7 @@
   "registerTrees": "Register Trees",
   "registeredTree": "Registered Tree",
   "linkedIn": "LinkedIn",
+  "link": "Link",
   "registerTreesDescription": "Register trees that you have planted yourself, e.g. in your garden.",
   "redeem": "Redeem",
   "myForest": "My Forest",
@@ -273,6 +274,8 @@
   "areaConserved": "Areas Conserved",
   "plantedTrees_one": "{{count}} Tree",
   "plantedTrees_other": "{{count}} Trees",
+  "registeredPlantedTrees_one": "{{count}} Tree Registered",
+  "registeredPlantedTrees_other": "{{count}} Trees Registered",
   "areaType": "{{areaConserved}} m² {{type}}",
   "area": "{{areaConserved}}  m²",
   "tpoName": "By {{tpo}}",
@@ -280,9 +283,13 @@
   "donated": "Donated",
   "conserved": "Conserved",
   "restored": "Restored",
-  "loadProjects": "Load More Donations",
+  "loadContributions": "Load More Contributions",
+  "loadingContributions": "Loading Contributions...",
   "numberOfContributions": "{{total}} Contributions",
   "donateAgain": "Donate Again",
   "membershipCtaButtonText": "JOIN NOW",
-  "membershipCtaCopy": "Support us <2>BY BECOMING A MEMBER</2>"
+  "membershipCtaCopy": "Support us <2>BY BECOMING A MEMBER</2>",
+  "shareUrl": "Share URL",
+  "clusterLabel": "{{numberOfDonation}} Donations to {{clusterChildren}} Projects",
+  "zoomIn": "Zoom in for more details"
 }

@@ -2,34 +2,34 @@ import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import { ReactElement } from 'react';
 import { Button } from '@mui/material';
-import ContributedProject from '../MicroComponents/ContributedProject';
+import ContributedToProject from '../MicroComponents/ContributedToProject';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { Page } from '../../../../common/types/myForest';
+import { useMyForest } from '../../../../common/Layout/MyForestContext';
 
 export interface ContributedProjectListProps {
-  handleFetchNextPage: () => void;
+  hasNextPage: boolean | undefined;
+  handleFetchNextPage: () => void | undefined;
   contributionProjectList: Page[] | undefined;
 }
 
 const ContributedProjectList = ({
+  hasNextPage,
   contributionProjectList,
   handleFetchNextPage,
 }: ContributedProjectListProps): ReactElement => {
-  const { isConservedButtonActive } = useUserProps();
+  const { isConservedButtonActive, isProcessing, setIsProcessing } =
+    useMyForest();
   const { t } = useTranslation(['me']);
-
-  const _isLoadButtonActive =
-    contributionProjectList &&
-    contributionProjectList.some((singlePage) => {
-      return singlePage?.nextCursor === undefined;
-    });
 
   return contributionProjectList ? (
     <div className={myForestStyles.donationlistContainer}>
       {contributionProjectList.map((singlePage) => {
         return singlePage?.data?.map((singleProject, key) => {
           if (singleProject.purpose !== 'bouquet') {
-            return <ContributedProject key={key} projectInfo={singleProject} />;
+            return (
+              <ContributedToProject key={key} projectInfo={singleProject} />
+            );
           }
         });
       })}
@@ -41,7 +41,7 @@ const ContributedProjectList = ({
               return singleProject.bouquetContributions.map(
                 (bouquetProject, key) => {
                   return (
-                    <ContributedProject
+                    <ContributedToProject
                       key={key}
                       projectInfo={bouquetProject}
                     />
@@ -52,7 +52,7 @@ const ContributedProjectList = ({
           }
         });
       })}
-      {!_isLoadButtonActive && (
+      {hasNextPage && (
         <div className={myForestStyles.loadProjectButtonContainer}>
           <Button
             className={
@@ -61,9 +61,15 @@ const ContributedProjectList = ({
                 : myForestStyles.loadTreePlantaion
             }
             variant="contained"
-            onClick={handleFetchNextPage}
+            disabled={isProcessing}
+            onClick={() => {
+              setIsProcessing(true);
+              handleFetchNextPage();
+            }}
           >
-            {t('me:loadProjects')}
+            {isProcessing
+              ? t('me:loadingContributions')
+              : t('me:loadContributions')}
           </Button>
         </div>
       )}

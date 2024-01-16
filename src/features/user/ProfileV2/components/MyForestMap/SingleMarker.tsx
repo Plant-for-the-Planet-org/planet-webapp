@@ -3,7 +3,7 @@ import { useState, ReactElement } from 'react';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import { SingleMarkerProps } from '../../../../common/types/map';
 import CustomPopupMarker from './CustomPopupMarker';
-import SingleMarkerSvg from '../MicroComponents/SingleMarkerSvg';
+import SingleMarkerImageContainer from '../MicroComponents/SingleMarkerImageContainer';
 import SingleMarkerUnits from '../MicroComponents/SingleMarkerUnits';
 
 const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
@@ -21,7 +21,7 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
             onMouseOver={() => setShowPopUp(true)}
             onMouseLeave={() => setShowPopUp(false)}
           >
-            <SingleMarkerSvg
+            <SingleMarkerImageContainer
               isNormalTreeDonation={
                 geoJson.properties?.plantProject?.unitType === 'tree'
               }
@@ -36,6 +36,9 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
               isGiftContribution={
                 geoJson.properties?.purpose === 'trees' &&
                 geoJson.properties?._type === 'gift'
+              }
+              isMergeContribution={
+                geoJson.properties._type === 'merged_contribution_and_gift'
               }
             />
             <SingleMarkerUnits
@@ -55,6 +58,9 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
                 geoJson.properties?.plantProject?.unitType === 'tree'
               }
               isGiftContribution={geoJson?.properties?._type === 'gift'}
+              isMergeContribution={
+                geoJson.properties._type === 'merged_contribution_and_gift'
+              }
             />
           </div>
         </Marker>

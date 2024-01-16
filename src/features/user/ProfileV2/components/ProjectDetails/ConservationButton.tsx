@@ -6,7 +6,7 @@ import {
 import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import { ReactElement } from 'react';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import theme from '../../../../../theme/themeProperties';
 
 export interface ConservationButtonProps {
@@ -21,7 +21,8 @@ const ConservationButton = ({
     isConservedButtonActive,
     setIsConservedButtonActive,
     setIsTreePlantedButtonActive,
-  } = useUserProps();
+  } = useMyForest();
+
   const { t } = useTranslation(['donate']);
 
   const handleClick = () => {
@@ -29,8 +30,8 @@ const ConservationButton = ({
       setIsConservedButtonActive(false);
     } else {
       if (conservedArea && conservedArea > 0) {
-        setIsTreePlantedButtonActive(false);
         setIsConservedButtonActive(true);
+        setIsTreePlantedButtonActive(false);
       }
     }
   };

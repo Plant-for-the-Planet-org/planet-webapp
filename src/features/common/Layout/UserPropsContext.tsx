@@ -8,8 +8,6 @@ import React, { FC, useContext } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
 import { User } from '@planet-sdk/common/build/types/user';
 import { SetState } from '../types/common';
-import { PointFeature } from 'supercluster';
-import { TestPointProps } from '../types/map';
 import { useTenant } from './TenantContext';
 
 interface UserPropsContextInterface {
@@ -29,14 +27,6 @@ interface UserPropsContextInterface {
   ) => Promise<void>;
   logoutUser: (returnUrl?: string | undefined) => void;
   loadUser: () => Promise<void>;
-  treePlantedProjects: PointFeature<TestPointProps>[];
-  setTreePlantedProjects: SetState<PointFeature<TestPointProps>[]>;
-  conservationProjects: PointFeature<TestPointProps>[];
-  setConservationProjects: SetState<PointFeature<TestPointProps>[]>;
-  isTreePlantedButtonActive: boolean;
-  setIsTreePlantedButtonActive: SetState<boolean>;
-  isConservedButtonActive: boolean;
-  setIsConservedButtonActive: SetState<boolean>;
   refetchData: boolean;
   setRefetchData: SetState<boolean>;
 }
@@ -62,17 +52,8 @@ export const UserPropsProvider: FC = ({ children }) => {
   const [userLang, setUserLang] = React.useState<string>('en');
   const [isImpersonationModeOn, setIsImpersonationModeOn] =
     React.useState(false);
-  const [treePlantedProjects, setTreePlantedProjects] = React.useState<
-    PointFeature<TestPointProps>[]
-  >([]);
-  const [conservationProjects, setConservationProjects] = React.useState<
-    PointFeature<TestPointProps>[]
-  >([]);
-  const [isTreePlantedButtonActive, setIsTreePlantedButtonActive] =
-    React.useState(false);
-  const [isConservedButtonActive, setIsConservedButtonActive] =
-    React.useState(false);
   const [refetchData, setRefetchData] = React.useState(false);
+
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
       const userLang = localStorage.getItem('language');
@@ -159,14 +140,6 @@ export const UserPropsProvider: FC = ({ children }) => {
     auth0User: user,
     auth0Error: error,
     loadUser,
-    treePlantedProjects,
-    setTreePlantedProjects,
-    conservationProjects,
-    setConservationProjects,
-    isTreePlantedButtonActive,
-    setIsTreePlantedButtonActive,
-    isConservedButtonActive,
-    setIsConservedButtonActive,
     refetchData,
     setRefetchData,
   };

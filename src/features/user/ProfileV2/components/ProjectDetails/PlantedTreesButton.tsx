@@ -1,7 +1,7 @@
 import { PlantedTreesSvg } from '../../../../../../public/assets/images/ProfilePageIcons';
 import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import theme from '../../../../../theme/themeProperties';
 
 export interface PlantedTreesButtonProps {
@@ -10,7 +10,7 @@ export interface PlantedTreesButtonProps {
 
 const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
   const { light, primaryDarkColorX } = theme;
-  const { isTreePlantedButtonActive } = useUserProps();
+  const { isTreePlantedButtonActive } = useMyForest();
   const { t } = useTranslation(['donate']);
 
   return (
