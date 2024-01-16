@@ -188,7 +188,7 @@ function ProjectCertificates({
   };
 
   React.useEffect(() => {
-    if (uploadedFiles && uploadedFiles.length > 0) {
+    if (uploadedFiles && uploadedFiles.length == 0) {
       setShowToggle(true);
       setShowForm(true);
       setisCertified(false);

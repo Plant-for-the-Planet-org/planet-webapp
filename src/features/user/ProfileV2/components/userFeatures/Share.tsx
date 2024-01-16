@@ -4,7 +4,7 @@ import { ShareSvg } from '../../../../../../public/assets/images/ProfilePageIcon
 import { useTranslation } from 'next-i18next';
 import { UserFeaturesProps } from '../../../../common/types/profile';
 import theme from '../../../../../theme/themeProperties';
-
+import myProfileStyle from '../../styles/MyProfile.module.scss';
 const Share = ({
   showSocialButton,
   setShowSocialButton,
@@ -25,6 +25,7 @@ const Share = ({
           variant="contained"
           startIcon={<ShareSvg color={`${light.light}`} />}
           onClick={handleShare}
+          className={myProfileStyle.shareButton}
         >
           {showSocialButton ? '' : t('me:share')}
         </Button>

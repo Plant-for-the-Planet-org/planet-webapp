@@ -20,7 +20,6 @@ const MyContributionList = ({
     conservationContribution,
     isTreePlantedButtonActive,
     isConservedButtonActive,
-    setIsProcessing,
   } = useMyForest();
 
   const _checkConditions = () => {
@@ -44,9 +43,6 @@ const MyContributionList = ({
   };
   const handleFetchNextPageforPlantedTrees = (): void => {
     plantedTreesTrpcResponse.fetchNextPage();
-    if (plantedTreesTrpcResponse.status === 'success') {
-      setIsProcessing(false);
-    }
   };
 
   return (

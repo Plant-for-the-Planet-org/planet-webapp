@@ -10,9 +10,11 @@ import getMapStyle from '../../../../../utils/maps/getMapStyle';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import TreesPlantedMarkers from './TreesPlantedMarkers';
 import ConservationMarkers from './ConservationMarkers';
+import RegisteredTreeMarker from './RegisteredTreeMarkers';
 import { ViewportProps } from '../../../../common/types/map';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import MyForestMapCredit from '../MicroComponents/MyForestMapCredit';
+import RestoredMarker from './RestorationMarkers';
 
 const MyForestMap = (): ReactElement => {
   const mapRef: MutableRefObject<null> = useRef(null);
@@ -75,7 +77,11 @@ const MyForestMap = (): ReactElement => {
       >
         {(_isBothButtonInActive() ||
           (isTreePlantedButtonActive && !isConservedButtonActive)) && (
-          <TreesPlantedMarkers viewport={viewport} mapRef={mapRef} />
+          <>
+            <TreesPlantedMarkers viewport={viewport} mapRef={mapRef} />
+            <RegisteredTreeMarker viewport={viewport} mapRef={mapRef} />
+            <RestoredMarker viewport={viewport} mapRef={mapRef} />
+          </>
         )}
         {(_isBothButtonInActive() ||
           (!isTreePlantedButtonActive && isConservedButtonActive)) && (

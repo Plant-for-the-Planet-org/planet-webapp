@@ -29,7 +29,11 @@ const ConservationMarker = ({
     <>
       {clusters &&
         clusters.map((singleCluster, key) => {
-          if (singleCluster.id) {
+          if (
+            viewState?.zoom > 3.5
+              ? singleCluster.id
+              : singleCluster.properties._type === 'contribution'
+          ) {
             return (
               <ConservAreaClusterMarker key={key} geoJson={singleCluster} />
             );

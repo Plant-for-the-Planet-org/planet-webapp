@@ -2,20 +2,16 @@ import myProfilestyle from '../../styles/MyProfile.module.scss';
 import getImageUrl from '../../../../../utils/getImageURL';
 import { useRouter } from 'next/router';
 import { Avatar } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
 import { useTranslation } from 'next-i18next';
 import { ProfileProps } from '../../../../common/types/profile';
 import { ReactElement } from 'react';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
+import Link from 'next/link';
+import { EditTargetSvg } from '../../../../../../public/assets/images/ProfilePageIcons';
 
 const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
   const { t } = useTranslation(['editProfile']);
   const router = useRouter();
-
-  const handleEditProfile = () => {
-    router.push('profile/edit');
-  };
-
   const stringAvatar = (name: string) => {
     const cleanedName = name.replace(/[^a-zA-Z ]/g, ' ');
     return {
@@ -37,10 +33,7 @@ const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
             sx={{ width: 65, height: 65 }}
           />
         ) : (
-          <Avatar
-            {...stringAvatar(`${userProfile?.displayName}`)}
-            // sx={{ paddingBottom: 1 }}
-          />
+          <Avatar {...stringAvatar(`${userProfile?.displayName}`)} />
         )}
 
         <div>
@@ -55,11 +48,12 @@ const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
         </div>
       </div>
       {userProfile && router.pathname === '/profile' && (
-        <div
-          className={myProfilestyle.iconContainer}
-          onClick={handleEditProfile}
-        >
-          <EditIcon className={myProfilestyle.icon} />
+        <div className={myProfilestyle.iconContainer}>
+          <Link href="profile/edit">
+            <div className={myProfilestyle.icon}>
+              <EditTargetSvg color="#007A49" />
+            </div>
+          </Link>
         </div>
       )}
 

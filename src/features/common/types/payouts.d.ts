@@ -3,6 +3,7 @@ export interface BankAccount {
   currency: string | null;
   payoutMinAmount: number | null;
   bankName: string;
+  bankCountry: string;
   bankAddress: string;
   routingNumber: string;
   bic: string;
