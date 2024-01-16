@@ -43,29 +43,31 @@ const TreesOrUnitAreaAndDonateOption = ({
   };
   return (
     <div className={myForestStyles.donateContainer}>
-      <time className={myForestStyles.treeCount}>
-        {gift && //for gift contribution
-          t('me:plantedTrees', {
-            count: parseInt(`${quantity}`) || 0,
-          })}
-        {projectPurpose === 'trees' && // tree plantation contribution
-          projectUnit === 'tree' &&
-          t('me:plantedTrees', {
-            count: parseInt(`${quantity}`) || 0,
-          })}
-        {(projectPurpose === 'trees' || projectPurpose === 'conservation') && //for restoration  &  conservationcontribution
-          projectUnit === 'm2' &&
-          t('me:areaType', {
-            areaConserved: `${quantity}`,
-            type: `${projectPurpose === 'trees' ? 'restored' : 'conserved'} `,
-          })}
-        {contributionType === 'planting' &&
-          countryName &&
-          tpoName && //for register  tree contribution
-          t('me:registeredPlantedTrees', {
-            count: parseInt(`${quantity}`) || 0,
-          })}
-      </time>
+      <div>
+        <time className={myForestStyles.treeCount}>
+          {gift && //for gift contribution
+            t('me:plantedTrees', {
+              count: parseInt(`${quantity}`) || 0,
+            })}
+          {projectPurpose === 'trees' && // tree plantation contribution
+            projectUnit === 'tree' &&
+            t('me:plantedTrees', {
+              count: parseInt(`${quantity}`) || 0,
+            })}
+          {(projectPurpose === 'trees' || projectPurpose === 'conservation') && //for restoration  &  conservationcontribution
+            projectUnit === 'm2' &&
+            t('me:areaType', {
+              areaConserved: `${quantity}`,
+              type: `${projectPurpose === 'trees' ? 'restored' : 'conserved'} `,
+            })}
+          {contributionType === 'planting' &&
+            countryName &&
+            tpoName && //for register  tree contribution
+            t('me:registeredPlantedTrees', {
+              count: parseInt(`${quantity}`) || 0,
+            })}
+        </time>
+      </div>
       {contributionType && contributionType !== 'planting' && isDonatable && (
         <div
           className={

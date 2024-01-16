@@ -377,14 +377,16 @@
     border-radius: 12px;
     background: #ffffff;
     align-items: center;
-    min-height: 185px;
     @include xsPhoneView {
       height: max-content;
       flex-direction: column-reverse;
-      padding-left: 10px;
-      padding-right: 10px;
+      width: 301px;
+      border-radius: 13.24px;
+      padding-bottom: 20px;
+      gap: 10px;
     }
     @include smTabletView {
+      width: 301px;
       flex-direction: column-reverse;
       padding-left: 25px;
       padding-right: 25px;
@@ -393,42 +395,70 @@
 
     @include mdTabletView {
       flex-direction: row;
+      height: 181px;
+      width: 100%;
       padding-left: 0px;
       padding-right: 0px;
+      padding-bottom: 0px;
+      padding-top: 0px;
       gap: 20px;
     }
 
     @include lgLaptopView {
       padding-left: 0px;
       padding-right: 0px;
+      width: 800px;
+      height: 181px;
       gap: 20px;
     }
 
     > .image {
-      width: 285px;
-      height: 220px;
+      width: 210px;
+      height: 141px;
       margin-left: 20px;
       border-radius: 12px;
       padding-top: 25px;
       padding-bottom: 25px;
       display: flex;
       align-items: center;
-      img {
+      max-width: 843px;
+      > img {
         border-radius: 12px;
-      }
-      @include smTabletView {
-        margin-left: 0px;
-        padding-bottom: 20px;
-      }
-      @include mdTabletView {
-        height: 200px;
-        margin-left: 20px;
-        padding-bottom: 20px;
+        width: 210px;
+        height: 141px;
       }
       @include xsPhoneView {
-        width: 274px;
-        height: 240px;
+        > img {
+          width: 265px;
+          height: 136px;
+        }
+        width: 265px;
+        height: 141px;
         margin-left: 0px;
+        padding-bottom: 18px;
+      }
+      @include smTabletView {
+        > img {
+          // width: 265px;
+          height: 136px;
+        }
+        margin-left: 0px;
+        padding-bottom: 20px;
+        width: 265px;
+        height: 183px;
+      }
+      @include mdTabletView {
+        height: 141px;
+        width: 210px;
+        margin-left: 20px;
+        padding-bottom: 0px;
+        padding-top: 0px;
+      }
+      @include lgLaptopView {
+        width: 210px;
+        height: 141px;
+        padding-top: 0px;
+        padding-bottom: 0px;
       }
     }
   }
@@ -447,11 +477,12 @@
   @include xsPhoneView {
     flex-direction: row;
     gap: 30px;
-    justify-content: center;
+    justify-content: space-between;
+    width: 100%;
   }
   @include smTabletView {
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
   }
   @include mdTabletView {
     flex-direction: row;
@@ -464,7 +495,7 @@
 .donateBase {
   font-size: $fontSixteen;
   font-weight: bold;
-  text-decoration-line: underline;
+  // text-decoration-line: underline;
   cursor: pointer;
   @include mdTabletView {
     font-size: $fontSmall;
@@ -473,7 +504,13 @@
 
 .donate {
   @extend .donateBase;
-  color: #68b030;
+  background: var(
+    --Linear-Gradient,
+    linear-gradient(135deg, #68b030 0%, #007a49 100%)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .donateConserv {
@@ -482,11 +519,10 @@
 }
 
 .projectDetailContainer {
-  width: 100%;
+  width: 265px;
   display: flex;
   justify-content: center;
   gap: 25px;
-  padding-top: 20px;
   flex-direction: row;
   @include xsPhoneView {
     gap: 10px;
@@ -497,10 +533,16 @@
   @include smTabletView {
     flex-direction: column;
     padding-top: 15px;
+    gap: 10px;
   }
   @include mdTabletView {
+    width: 100%;
     flex-direction: column;
     padding-right: 25px;
+  }
+  @include lgLaptopView {
+    gap: 25px;
+    width: 100%;
   }
 }
 .projectDetail {
@@ -514,8 +556,10 @@
     width: 275px;
     flex-direction: column;
     align-items: flex-start;
-    margin-left: 18px;
     margin-top: 0px;
+  }
+  @include smTabletView {
+    gap: 10px;
   }
   @include mdTabletView {
     flex-direction: row;

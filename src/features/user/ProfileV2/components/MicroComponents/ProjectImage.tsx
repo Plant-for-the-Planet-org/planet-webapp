@@ -16,11 +16,7 @@ const ProjectImage = ({
     <>
       <div className={myForestStyles.image}>
         {imageUniqueKey ? (
-          <img
-            src={getImageUrl('project', 'medium', imageUniqueKey)}
-            width="100%"
-            height="100%"
-          />
+          <img src={getImageUrl('project', 'medium', imageUniqueKey)} />
         ) : (
           <div className={myForestStyles.registerTreeIcon}>
             {numberOfTreesPlanted && numberOfTreesPlanted > 1 ? (
