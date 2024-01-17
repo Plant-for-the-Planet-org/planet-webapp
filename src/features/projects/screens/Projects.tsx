@@ -18,6 +18,7 @@ import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
 import { TENANT_ID } from '../../../utils/constants/environment';
 import { Tenant } from '@planet-sdk/common';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 interface Props {
   projects: MapProject[];
@@ -55,6 +56,7 @@ function ProjectsList({
     boolean | null
   >(null);
   const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { tenantConfig } = useTenant();
 
   useDebouncedEffect(
     () => {
@@ -167,7 +169,10 @@ function ProjectsList({
   React.useEffect(() => {
     async function setListOrder() {
       try {
-        const res = await getRequest<Tenant>(`/app/tenants/${TENANT_ID}`);
+        const res = await getRequest<Tenant>(
+          tenantConfig.id,
+          `/app/tenants/${tenantConfig.id}`
+        );
         setShouldSortProjectList(res.topProjectsOnly);
       } catch (err) {
         setErrors(handleError(err as APIError));
