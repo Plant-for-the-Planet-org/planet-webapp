@@ -25,13 +25,14 @@
 }
 
 .userDescription {
-  margin-top: 20px;
   @include xsPhoneView {
     padding-left: 15px;
     font-size: 12px;
+    margin-top: 20px;
   }
 }
 .userInfoMainContainer {
+  padding-bottom: 12px;
   @include xsPhoneView {
     display: flex;
     flex-direction: column;

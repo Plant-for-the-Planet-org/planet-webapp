@@ -32,6 +32,10 @@ const ProfileMainContainer = styled('div')(() => ({
     padding: 19,
     gap: 0,
   },
+  '@media (max-width: 768px)': {
+    marginLeft: 10,
+    marginRight: 10,
+  },
 }));
 
 export default ProfileMainContainer;
