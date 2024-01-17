@@ -9,7 +9,7 @@ import { ViewportProps } from '../../../common/types/map';
 
 interface Props {
   setGeometry: Function;
-  userLocation: number[] | null;
+  userLocation: [number, number] | null;
 }
 
 const Map = ReactMapboxGl({
@@ -22,8 +22,8 @@ export default function MapComponent({
   setGeometry,
   userLocation,
 }: Props): ReactElement {
-  const defaultMapCenter = [-28.5, 36.96];
-  const defaultZoom = 1.4;
+  const defaultMapCenter: [number, number] = [-28.5, 36.96];
+  const defaultZoom: [number] = [1.4];
   const [viewport, setViewPort] = React.useState<ViewportProps>({
     height: '100%',
     width: '100%',
