@@ -30,13 +30,16 @@ const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
           <Avatar
             alt="user Image"
             src={getImageUrl('profile', 'avatar', userProfile?.image)}
-            sx={{ width: 65, height: 65 }}
+            className={myProfilestyle.avatarRoot}
           />
         ) : (
-          <Avatar {...stringAvatar(`${userProfile?.displayName}`)} />
+          <Avatar
+            {...stringAvatar(`${userProfile?.displayName}`)}
+            className={myProfilestyle.avatarRoot}
+          />
         )}
 
-        <div>
+        <div className={myProfilestyle.userInfoMainContainer}>
           <div className={myProfilestyle.userInfo}>
             {userProfile?.displayName}
           </div>

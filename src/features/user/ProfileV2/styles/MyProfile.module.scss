@@ -3,8 +3,8 @@
 .iconContainer {
   border-radius: 50%;
   position: absolute;
-  top: 32px;
-  right: 32px;
+  top: 20px;
+  right: 20px;
   height: 37px;
   width: 37px;
   background-color: #c5f097;
@@ -19,16 +19,34 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+  @include xsPhoneView {
+    flex-wrap: nowrap;
+  }
 }
 
 .userDescription {
-  margin-top: 15px;
+  margin-top: 20px;
+  @include xsPhoneView {
+    padding-left: 15px;
+    font-size: 12px;
+  }
+}
+.userInfoMainContainer {
+  @include xsPhoneView {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .userInfoContainer {
   display: flex;
   gap: 15px;
   align-items: center;
+  > .avatarRoot {
+    width: 65px !important;
+    height: 65px !important;
+  }
   @include xsPhoneView {
     display: contents;
   }
