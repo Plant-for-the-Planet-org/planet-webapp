@@ -197,8 +197,16 @@
   }
   @include smTabletView {
     bottom: 52px;
+    right: 48px;
   }
   @include mdTabletView {
+    bottom: 47px;
+    right: 93px;
+  }
+  @include lgLaptopView {
+    bottom: 47px;
+  }
+  @include xlDesktopView {
     bottom: 0px;
   }
 }
@@ -235,6 +243,12 @@
     right: 36px;
   }
   @include mdTabletView {
+    bottom: 113px;
+  }
+  @include lgLaptopView {
+    bottom: 113px;
+  }
+  @include xlDesktopView {
     bottom: 66px;
   }
 }
