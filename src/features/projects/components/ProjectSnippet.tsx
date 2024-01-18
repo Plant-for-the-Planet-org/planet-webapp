@@ -74,7 +74,7 @@ export default function ProjectSnippet({
   const { token } = useUserProps();
   const handleOpen = () => {
     const url = getDonationUrl(
-      null,
+      tenantConfig.id,
       project.slug,
       token,
       embed || undefined,

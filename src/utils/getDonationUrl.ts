@@ -1,6 +1,6 @@
 // calling this function before window is loaded may cause an error
 export const getDonationUrl = (
-  tenant: string | null,
+  tenant: string,
   id: string,
   token: string | null,
   embed?: string | undefined | string[],
@@ -19,6 +19,6 @@ export const getDonationUrl = (
     callback_url !== undefined ? '&callback_url=' + callback_url : ''
   }&country=${country}&locale=${language}${
     token ? '&token=' + token : ''
-  }&tenant=${tenant ? tenant : process.env.TENANTID}${directGift ? '&s=' + directGift.id : ''}`;
+  }&tenant=${tenant}${directGift ? '&s=' + directGift.id : ''}`;
   return sourceUrl;
 };

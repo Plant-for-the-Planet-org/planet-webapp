@@ -16,7 +16,6 @@ import { MapProject } from '../../common/types/ProjectPropsContextInterface';
 import { getRequest } from '../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
-import { TENANT_ID } from '../../../utils/constants/environment';
 import { Tenant } from '@planet-sdk/common';
 import { useTenant } from '../../common/Layout/TenantContext';
 

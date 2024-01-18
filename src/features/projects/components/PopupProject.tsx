@@ -51,7 +51,7 @@ export default function PopupProject({
   }
 
   const handleDonationOpen = () => {
-    const url = getDonationUrl(null, project.slug, token);
+    const url = getDonationUrl(tenantConfig.id, project.slug, token);
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
 
