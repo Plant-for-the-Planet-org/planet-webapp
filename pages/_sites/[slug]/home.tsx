@@ -77,7 +77,6 @@ export default function Home({ initialized, pageProps }: Props) {
         setLeaderboard(newLeaderBoard);
       } catch (err) {
         setErrors(handleError(err as APIError));
-        redirect('/');
       }
     }
     loadLeaderboard();
