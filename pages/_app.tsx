@@ -165,9 +165,9 @@ const PlanetWeb = ({
       router.pathname === '/' ||
       router.pathname === '/[p]' ||
       router.pathname === '/[p]/[id]' ||
-      router.pathname === '/_sites/[slug]' ||
-      router.pathname === '/_sites/[slug]/[p]' ||
-      router.pathname === '/_sites/[slug]/[p]/[id]'
+      router.pathname === '/sites/[slug]' ||
+      router.pathname === '/sites/[slug]/[p]' ||
+      router.pathname === '/sites/[slug]/[p]/[id]'
     ) {
       setIsMap(true);
     } else {
