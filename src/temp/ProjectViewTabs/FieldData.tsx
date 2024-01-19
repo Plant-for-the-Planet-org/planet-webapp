@@ -1,7 +1,7 @@
 import { useTranslation } from 'next-i18next';
 import React from 'react';
 import SatelliteIcon from '../../../public/assets/images/icons/SatelliteIcon';
-import styles from './VegetationChange.module.scss';
+import styles from './ProjectViewTabs.module.scss';
 import FieldDataIcon from '../icons/FieldDataIcon';
 
 const FieldData = ({ color, background }) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import LocationIcon from '../../../public/assets/images/icons/LocationIcon';
 import { useTranslation } from 'next-i18next';
-import styles from './VegetationChange.module.scss';
+import styles from './ProjectViewTabs.module.scss';
 import SatelliteAnalysisIcon from '../icons/SatelliteAnalysisIcon';
 const SatelliteAnalysis = ({ color, background }) => {
   const { t } = useTranslation(['maps']);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './VegetationChange.module.scss';
+import styles from './ProjectViewTabs.module.scss';
 import TimeTravel from './TimeTravel';
 import SatelliteAnalysis from './SatelliteAnalysis';
 import FieldData from './FieldData';

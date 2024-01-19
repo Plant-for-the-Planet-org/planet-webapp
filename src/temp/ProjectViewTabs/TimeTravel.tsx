@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './VegetationChange.module.scss';
+import styles from './ProjectViewTabs.module.scss';
 import SatelliteIcon from '../../../public/assets/images/icons/SatelliteIcon';
 import { useTranslation } from 'next-i18next';
 

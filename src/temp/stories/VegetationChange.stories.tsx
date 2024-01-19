@@ -1,4 +1,4 @@
-import Tabs from '../VegetationChange/Tabs';
+import Tabs from '../ProjectViewTabs/Tabs';
 export default {
   component: Tabs,
   title: 'VegetationChangeTabs',
