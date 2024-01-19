@@ -188,7 +188,7 @@ function ProjectsList({
   );
 
   const showTopProjectsList =
-    tenantConfig.config.slug === 'salesforce' &&
+    tenantConfig.config.slug !== 'salesforce' &&
     topProjects !== undefined &&
     topProjects.length > 0;
 
