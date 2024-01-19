@@ -61,7 +61,6 @@ export default function Home({ initialized, pageProps }: Props) {
         setTenantScore(newTenantScore);
       } catch (err) {
         setErrors(handleError(err as APIError));
-        redirect('/');
       }
     }
     loadTenantScore();
