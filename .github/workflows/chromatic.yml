@@ -7,7 +7,8 @@ name: 'Chromatic'
 on:
   push:
     branches:
-      - feature/update-storybook-to-v7
+      - feature/storybook-update
+      - develop
 # List of jobs
 jobs:
   chromatic-deployment:
