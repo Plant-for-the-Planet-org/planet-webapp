@@ -18,7 +18,7 @@ const FieldData = ({ color, background }) => {
       }}
       className={`${styles.option} ${styles.compact}`}
     >
-      <FieldDataIcon color={color} /> <p>fieldData</p>
+      <FieldDataIcon color={color} /> <p>{t('maps:fieldData')}</p>
     </div>
   );
 };

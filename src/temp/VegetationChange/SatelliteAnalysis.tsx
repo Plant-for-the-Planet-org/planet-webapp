@@ -18,7 +18,8 @@ const SatelliteAnalysis = ({ color, background }) => {
         }}
         className={`${styles.option} ${styles.compact}`}
       >
-        <SatelliteAnalysisIcon color={color} /> <p>satellite</p>
+        <SatelliteAnalysisIcon color={color} />{' '}
+        <p>{t('maps:satelliteAnalysis')}</p>
       </div>
     </div>
   );
