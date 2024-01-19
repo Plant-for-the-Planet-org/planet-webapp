@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -13,16 +17,28 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "types": ["cypress", "cypress-plugin-stripe-elements"],
-    "incremental": true
+    "types": [
+      "cypress",
+      "cypress-plugin-stripe-elements"
+    ],
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "exclude": ["node_modules"],
+  "exclude": [
+    "node_modules"
+  ],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "./src/**/*",
     "tenant.config.ts",
-    "public/assets"
-, "folderCrawler.js"  ]
+    "public/assets",
+    "folderCrawler.js",
+    ".next/types/**/*.ts"
+  ]
 }
