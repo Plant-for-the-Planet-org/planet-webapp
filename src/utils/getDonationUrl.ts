@@ -4,7 +4,8 @@ export const getDonationUrl = (
   id: string,
   token: string | null,
   embed?: string | undefined | string[],
-  callbackUrl?: string | undefined | string[]
+  callbackUrl?: string | undefined | string[],
+  slug?: string
 ): string => {
   const country = localStorage.getItem('countryCode');
   const language = localStorage.getItem('language');
@@ -19,6 +20,8 @@ export const getDonationUrl = (
     callback_url !== undefined ? '&callback_url=' + callback_url : ''
   }&country=${country}&locale=${language}${
     token ? '&token=' + token : ''
-  }&tenant=${tenant ? tenant : process.env.TENANTID}${directGift ? '&s=' + directGift.id : ''}`;
+  }&tenant=${tenant ? tenant : process.env.TENANTID}${
+    directGift ? '&s=' + directGift.id : '&s=' + slug
+  }`;
   return sourceUrl;
 };

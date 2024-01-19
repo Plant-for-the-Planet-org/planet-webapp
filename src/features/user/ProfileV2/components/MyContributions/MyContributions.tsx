@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState, ReactElement } from 'react';
+import { useEffect, useContext, ReactElement } from 'react';
 import myForestStyles from '../../../ProfileV2/styles/MyForest.module.scss';
 import dynamic from 'next/dynamic';
 import { useTranslation } from 'next-i18next';
