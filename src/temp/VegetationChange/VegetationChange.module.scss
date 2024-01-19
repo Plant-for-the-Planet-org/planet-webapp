@@ -1,0 +1,37 @@
+@import '../../theme/theme';
+.tabsContainer {
+display: flex;
+width: 412px;
+height: 48px;
+border-radius: 12px;
+background: #FFF;
+border: 1px solid black;
+align-items: center;
+justify-content: center;
+padding: 0px 5px;
+}
+.option { 
+    height: 100%;
+    border: 1px solid $dividerColor;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    cursor: pointer;
+    width: 129px;
+    height: 40px;
+    border-radius: 8px;
+    flex: 1;
+  }
+  
+  .option svg {
+    height: 18px;
+    padding-right: 6px;
+  }
+  .option p {
+    font-size: 12px;
+    font-weight: 700;;
+  }
+  
+  
