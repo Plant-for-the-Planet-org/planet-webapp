@@ -1,4 +1,11 @@
-import { FC, createContext, useContext, useMemo, useState } from 'react';
+import {
+  FC,
+  createContext,
+  useContext,
+  useMemo,
+  useState,
+  useEffect,
+} from 'react';
 import { PointFeature } from 'supercluster';
 import { TestPointProps } from '../types/map';
 import { SetState } from '../types/common';
@@ -69,6 +76,16 @@ export const MyForestProvider: FC = ({ children }) => {
     longitude: defaultMapCenter[1],
     zoom: defaultZoom,
   });
+  useEffect(() => {
+    if (treePlantationProjectGeoJson.length === 1) {
+      setViewport({
+        ...viewport,
+        latitude: treePlantationProjectGeoJson[0]?.geometry.coordinates[1],
+        longitude: treePlantationProjectGeoJson[0]?.geometry.coordinates[0],
+        zoom: 4,
+      });
+    }
+  }, [treePlantationProjectGeoJson]);
 
   const value = useMemo(
     () => ({

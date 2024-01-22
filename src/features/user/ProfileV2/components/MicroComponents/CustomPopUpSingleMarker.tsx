@@ -14,8 +14,8 @@ const CustomPopUpSingleMarker = ({
           className={MyForestMapStyle.mapboxglPopup}
           latitude={parseInt(`${geoJson.geometry.coordinates[1]}`)}
           longitude={parseInt(`${geoJson.geometry.coordinates[0]}`)}
-          offsetTop={-15}
-          offsetLeft={10}
+          offsetTop={-30}
+          offsetLeft={20}
           anchor="bottom"
           closeButton={false}
         >
