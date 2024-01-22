@@ -1,5 +1,4 @@
 import React from 'react';
-import LocationIcon from '../../../public/assets/images/icons/LocationIcon';
 import { useTranslation } from 'next-i18next';
 import styles from './ProjectViewTabs.module.scss';
 import SatelliteAnalysisIcon from '../icons/SatelliteAnalysisIcon';
