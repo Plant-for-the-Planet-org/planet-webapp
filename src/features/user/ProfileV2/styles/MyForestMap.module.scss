@@ -252,3 +252,20 @@
     bottom: 66px;
   }
 }
+
+.clusterPopUpContainer {
+  width: 202px;
+  height: 93px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .clusterPopUpInfo {
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .zoomIn {
+    font-size: 8px;
+    font-weight: 600;
+  }
+}

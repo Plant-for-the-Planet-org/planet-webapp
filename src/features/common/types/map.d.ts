@@ -30,7 +30,7 @@ export interface ClusterMarker {
     purpose?: string;
     quantity?: string;
     startDate?: undefined | number | Date;
-    totalContribution?: number | undefined;
+    totalContributions?: number | undefined;
     cluster_id: number;
     point_count: number;
     point_count_abbreviated: number;
@@ -42,10 +42,10 @@ export interface ClusterMarker {
 }
 export interface MarkerProps {
   geoJson: Cluster | ClusterMarker;
+  mapRef: MutableRefObject<null>;
 }
 
 export interface ClusterMarkerProps {
-  viewport: ViewportProps;
   mapRef: MutableRefObject<null>;
 }
 
@@ -70,6 +70,7 @@ export interface TestClusterProps {
 export interface CustomPopupMarkerProps {
   geoJson: Cluster | ClusterMarker;
   showPopUp: boolean;
+  mapRef?: MutableRefObject<null>;
 }
 export type Bound = [number, number, number, number];
 

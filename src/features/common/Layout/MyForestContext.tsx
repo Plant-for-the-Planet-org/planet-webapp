@@ -4,6 +4,7 @@ import { TestPointProps } from '../types/map';
 import { SetState } from '../types/common';
 import { ContributionData } from '../types/myForest';
 import { StatsResult } from '../types/myForest';
+import { ViewportProps } from '../../common/types/map';
 
 interface MyForestContextInterface {
   conservationProjectGeoJson: PointFeature<TestPointProps>[];
@@ -24,12 +25,12 @@ interface MyForestContextInterface {
   setIsProcessing: SetState<boolean>;
   showPopUp: boolean;
   setShowPopUp: SetState<boolean>;
-  treePlantGeoJson: PointFeature<TestPointProps>[];
-  setTreePlantGeoJson: SetState<PointFeature<TestPointProps>[]>;
-  registeredTreeGeoJson: PointFeature<TestPointProps>[];
-  setRegisteredTreeGeoJson: SetState<PointFeature<TestPointProps>[]>;
-  restorationGeoJson: PointFeature<TestPointProps>[];
-  setRestorationGeoJson: SetState<PointFeature<TestPointProps>[]>;
+  totalProjects: number | undefined;
+  setTotalProjects: SetState<number | undefined>;
+  totalDonations: number | undefined;
+  setTotalDonations: SetState<number | undefined>;
+  viewport: ViewportProps;
+  setViewport: SetState<ViewportProps>;
 }
 
 const MyForestContext = createContext<MyForestContextInterface | null>(null);
@@ -53,15 +54,21 @@ export const MyForestProvider: FC = ({ children }) => {
     useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [showPopUp, setShowPopUp] = useState(false);
-  const [treePlantGeoJson, setTreePlantGeoJson] = useState<
-    PointFeature<TestPointProps>[]
-  >([]);
-  const [registeredTreeGeoJson, setRegisteredTreeGeoJson] = useState<
-    PointFeature<TestPointProps>[]
-  >([]);
-  const [restorationGeoJson, setRestorationGeoJson] = useState<
-    PointFeature<TestPointProps>[]
-  >([]);
+  const [totalProjects, setTotalProjects] = useState<number | undefined>(
+    undefined
+  );
+  const [totalDonations, setTotalDonations] = useState<number | undefined>(
+    undefined
+  );
+  const defaultMapCenter = [0, 0];
+  const defaultZoom = 1;
+  const [viewport, setViewport] = useState<ViewportProps>({
+    width: '100%',
+    height: '100%',
+    latitude: defaultMapCenter[0],
+    longitude: defaultMapCenter[1],
+    zoom: defaultZoom,
+  });
 
   const value = useMemo(
     () => ({
@@ -83,12 +90,12 @@ export const MyForestProvider: FC = ({ children }) => {
       setIsProcessing,
       showPopUp,
       setShowPopUp,
-      treePlantGeoJson,
-      setTreePlantGeoJson,
-      registeredTreeGeoJson,
-      setRegisteredTreeGeoJson,
-      restorationGeoJson,
-      setRestorationGeoJson,
+      totalDonations,
+      setTotalDonations,
+      totalProjects,
+      setTotalProjects,
+      viewport,
+      setViewport,
     }),
     [
       conservationProjectGeoJson,
@@ -109,12 +116,12 @@ export const MyForestProvider: FC = ({ children }) => {
       setIsProcessing,
       showPopUp,
       setShowPopUp,
-      treePlantGeoJson,
-      setTreePlantGeoJson,
-      registeredTreeGeoJson,
-      setRegisteredTreeGeoJson,
-      restorationGeoJson,
-      setRestorationGeoJson,
+      totalDonations,
+      setTotalDonations,
+      totalProjects,
+      setTotalProjects,
+      viewport,
+      setViewport,
     ]
   );
 
