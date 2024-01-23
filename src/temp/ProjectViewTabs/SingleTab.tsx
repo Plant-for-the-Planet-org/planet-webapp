@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './ProjectViewTabs.module.scss';
 
 const SingleTab = ({ icon, title, isSelected }) => {
