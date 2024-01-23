@@ -3,6 +3,7 @@ import SingleMarker from './SingleMarker';
 import { useState, useEffect, ReactElement } from 'react';
 import React from 'react';
 import {
+  Cluster,
   ClusterMarkerProps,
   TestClusterProps,
   TestPointProps,
@@ -11,36 +12,37 @@ import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import { ClusterFeature, PointFeature } from 'supercluster';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 
-const TreesPlantedMarkers = ({
-  viewport,
-  mapRef,
-}: ClusterMarkerProps): ReactElement => {
-  const { treePlantationProjectGeoJson, treePlantGeoJson } = useMyForest();
+const TreesPlantedMarkers = ({ mapRef }: ClusterMarkerProps): ReactElement => {
+  const { treePlantationProjectGeoJson, viewport } = useMyForest();
   const [clusters, setClusters] = useState<
-    | (ClusterFeature<TestClusterProps> | PointFeature<TestPointProps>)[]
+    | (
+        | ClusterFeature<TestClusterProps>
+        | PointFeature<TestPointProps>
+        | Cluster
+      )[]
     | undefined
   >(undefined);
   const { viewState } = viewport;
 
   useEffect(() => {
-    if (treePlantationProjectGeoJson) {
+    if (treePlantationProjectGeoJson && viewState) {
       const data = _getClusterGeojson(
         viewState,
         mapRef,
-        treePlantGeoJson,
+        treePlantationProjectGeoJson,
         undefined
       );
       setClusters(data);
     }
-  }, [viewport, treePlantGeoJson]);
+  }, [viewport]);
 
-  return clusters ? (
+  return clusters && viewState ? (
     <>
       {clusters.map((singleCluster, key) => {
         if (
-          viewState?.zoom < 3.5 &&
+          viewState?.zoom <= 4 &&
           (singleCluster.id ||
-            singleCluster.properties._type == 'contribution' ||
+            singleCluster.properties._type === 'contribution' ||
             'gift' ||
             'merged_contribution_and_gift')
         ) {
@@ -48,8 +50,6 @@ const TreesPlantedMarkers = ({
             <TreePlantedClusterMarker
               key={key}
               geoJson={singleCluster}
-              treePlantationProjectGeoJson={treePlantGeoJson}
-              viewState={viewState}
               mapRef={mapRef}
             />
           );

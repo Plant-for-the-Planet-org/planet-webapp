@@ -62,6 +62,7 @@ const MyContributionList = ({
           <MyContributionLoader />
         ) : (
           <ConservationContributions
+            userProfile={profile}
             hasNextPage={conservationTrpcResponse?.hasNextPage}
             handleFetchNextPage={handleFetchNextPage}
           />

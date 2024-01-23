@@ -7,19 +7,15 @@ import { ProfileProps } from '../../../../common/types/profile';
 import { ReactElement } from 'react';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import Link from 'next/link';
-import { EditTargetSvg } from '../../../../../../public/assets/images/ProfilePageIcons';
+import {
+  DefaultProfileImage,
+  EditTargetSvg,
+} from '../../../../../../public/assets/images/ProfilePageIcons';
 
 const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
   const { t } = useTranslation(['editProfile']);
   const router = useRouter();
-  const stringAvatar = (name: string) => {
-    const cleanedName = name.replace(/[^a-zA-Z ]/g, ' ');
-    return {
-      children: `${cleanedName.split(' ')[0][0]}${
-        cleanedName.split(' ')[1][0]
-      }`,
-    };
-  };
+
   return (
     <>
       <div
@@ -30,13 +26,13 @@ const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
           <Avatar
             alt="user Image"
             src={getImageUrl('profile', 'avatar', userProfile?.image)}
-            sx={{ width: 65, height: 65 }}
+            className={myProfilestyle.avatarRoot}
           />
         ) : (
-          <Avatar {...stringAvatar(`${userProfile?.displayName}`)} />
+          <DefaultProfileImage />
         )}
 
-        <div>
+        <div className={myProfilestyle.userInfoMainContainer}>
           <div className={myProfilestyle.userInfo}>
             {userProfile?.displayName}
           </div>

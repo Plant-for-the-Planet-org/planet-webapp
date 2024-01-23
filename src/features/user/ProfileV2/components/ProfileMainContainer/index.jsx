@@ -11,8 +11,8 @@ const ProfileMainContainer = styled('div')(() => ({
   boxShadow: '4px 6px 12px 0 rgba(102, 102, 102, 0.03)',
   marginLeft: 50,
   marginRight: 50,
-  marginTop: 170,
-  marginBottom: 40,
+  marginTop: 140,
+  marginBottom: 20,
   padding: 30,
   '.MuiButton-root': {
     marginTop: 15,
@@ -25,8 +25,16 @@ const ProfileMainContainer = styled('div')(() => ({
     },
   },
   '@media (max-width: 481px)': {
-    marginLeft: 25,
-    marginRight: 25,
+    marginLeft: 10,
+    marginRight: 10,
+    alignItems: 'center',
+    border: 1,
+    padding: 19,
+    gap: 0,
+  },
+  '@media (max-width: 768px)': {
+    marginLeft: 10,
+    marginRight: 10,
   },
 }));
 

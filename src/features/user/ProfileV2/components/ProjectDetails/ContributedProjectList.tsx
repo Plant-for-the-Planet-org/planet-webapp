@@ -14,6 +14,7 @@ export interface ContributedProjectListProps {
 }
 
 const ContributedProjectList = ({
+  profile,
   hasNextPage,
   contributionProjectList,
   handleFetchNextPage,
@@ -28,7 +29,11 @@ const ContributedProjectList = ({
         return singlePage?.data?.map((singleProject, key) => {
           if (singleProject.purpose !== 'bouquet') {
             return (
-              <ContributedToProject key={key} projectInfo={singleProject} />
+              <ContributedToProject
+                key={key}
+                projectInfo={singleProject}
+                profile={profile}
+              />
             );
           }
         });

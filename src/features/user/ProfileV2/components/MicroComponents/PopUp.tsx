@@ -2,51 +2,98 @@ import { useTranslation } from 'next-i18next';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { Cluster, ClusterMarker } from '../../../../common/types/map';
+import { useMyForest } from '../../../../common/Layout/MyForestContext';
+import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
+import { useEffect } from 'react';
+import { PopUpDonationIcon } from '../../../../../../public/assets/images/ProfilePageIcons';
+import { MutableRefObject } from 'react';
 
 interface PopUpLabelProps {
   isRegistered: boolean;
 }
 
-export const ClusterPopUpLabel = ({
-  totalRegisteredDonation,
-  totalNumberOfDonation,
-  numberOfProject,
-  singleContribution,
-  totalContribution,
-}) => {
-  const { t, ready } = useTranslation(['me']);
-  return ready ? (
-    <div
-      style={{
-        width: '225px',
-        height: '90px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      {totalRegisteredDonation ? (
-        <div>
-          {t('me:registeredContribution', {
-            totalContribution: totalRegisteredDonation,
-          })}
-        </div>
-      ) : (
-        <div>
-          {singleContribution
-            ? t('me:clusterLabelx', {
-                numberOfDonation: totalContribution,
-                clusterChildren: numberOfProject ? numberOfProject : 1,
-              })
-            : t('me:clusterLabely', {
-                numberOfDonation: totalNumberOfDonation,
-                clusterChildren: numberOfProject,
-              })}
-        </div>
-      )}
+interface ClusterPopUpLabelProps {
+  geoJson: ClusterMarker | Cluster;
+  mapRef: MutableRefObject<null>;
+}
 
-      <div>{t('me:zoomIn')}</div>
+export const ClusterPopUpLabel = ({
+  geoJson,
+  mapRef,
+}: ClusterPopUpLabelProps) => {
+  const { t, ready } = useTranslation(['me']);
+  const {
+    totalDonations,
+    setTotalDonations,
+    treePlantationProjectGeoJson,
+    totalProjects,
+    setTotalProjects,
+    viewport,
+  } = useMyForest();
+
+  const { viewState } = viewport;
+
+  useEffect(() => {
+    const processLeaves = (_getLeaves: ClusterMarker[]) => {
+      if (_getLeaves) {
+        const _totalDonationsOfCLuster = _getLeaves.reduce(
+          (sum, obj) => sum + Number(obj.properties?.totalContributions || 0),
+          0
+        );
+
+        const _excludeRegisterTreeLeaves = _getLeaves.filter(
+          (geoJson) => geoJson.properties.contributionType !== 'planting'
+        );
+
+        const _onlyRegisteredTreeLeaves = _getLeaves.filter(
+          (geoJson) => geoJson.properties.contributionType === 'planting'
+        );
+
+        if (_onlyRegisteredTreeLeaves.length !== 0) {
+          setTotalDonations(_onlyRegisteredTreeLeaves.length);
+          setTotalProjects(_onlyRegisteredTreeLeaves.length);
+        }
+
+        if (_excludeRegisterTreeLeaves.length !== 0) {
+          setTotalProjects(_excludeRegisterTreeLeaves.length);
+        }
+
+        if (_totalDonationsOfCLuster) {
+          setTotalDonations(_totalDonationsOfCLuster);
+        }
+      }
+    };
+
+    if (geoJson?.properties.cluster && viewState) {
+      const _getLeaves = _getClusterGeojson(
+        viewState,
+        mapRef,
+        treePlantationProjectGeoJson,
+        geoJson.id
+      );
+      processLeaves(_getLeaves);
+    } else {
+      const totalContributions = geoJson?.properties.totalContributions || 1;
+
+      setTotalDonations(totalContributions);
+      setTotalProjects(1);
+    }
+  }, [geoJson, viewState, mapRef]);
+
+  return ready ? (
+    <div className={MyForestMapStyle.clusterPopUpContainer}>
+      <div>
+        <PopUpDonationIcon width={'21px'} height={'21px'} />
+      </div>
+      <div className={MyForestMapStyle.clusterPopUpInfo}>
+        {t('me:totalDonation', {
+          count: Number(totalDonations),
+        })}
+        {t('me:totalProject', {
+          count: totalProjects,
+        })}
+      </div>
+      <div className={MyForestMapStyle.zoomIn}>{t('me:zoomIn')}</div>
     </div>
   ) : (
     <></>
@@ -121,7 +168,7 @@ export const InfoOnthePopUp = ({ geoJson }: InfoOnthePopUpProps) => {
   return (
     <div
       className={
-        geoJson?.properties.totalContribution > 1 ||
+        geoJson?.properties.totalContributions > 1 ||
         geoJson.properties._type === 'merged_contribution_and_gift'
           ? MyForestMapStyle.popUpContainerLarge
           : MyForestMapStyle.popUpContainer
@@ -133,14 +180,14 @@ export const InfoOnthePopUp = ({ geoJson }: InfoOnthePopUpProps) => {
         />
         <NumberOfContributions
           isMoreThanOneContribution={
-            geoJson.properties.totalContribution &&
-            geoJson.properties.totalContribution > 1
+            geoJson.properties.totalContributions &&
+            geoJson.properties.totalContributions > 1
           }
-          numberOfContributions={geoJson.properties.totalContribution}
+          numberOfContributions={geoJson.properties.totalContributions}
         />
         <DateOnThePopUp
           isDate={
-            geoJson.properties.totalContribution < 2 ||
+            geoJson.properties.totalContributions < 2 ||
             geoJson?.properties?.startDate ||
             geoJson?.properties?.created
           }
@@ -152,8 +199,8 @@ export const InfoOnthePopUp = ({ geoJson }: InfoOnthePopUpProps) => {
               : undefined
           }
           isSingleContribution={
-            geoJson?.properties?.totalContribution == 1 ||
-            geoJson?.properties?.totalContribution == 0 ||
+            geoJson?.properties?.totalContributions == 1 ||
+            geoJson?.properties?.totalContributions == 0 ||
             geoJson?.properties?._type === 'gift'
           }
         />

@@ -290,5 +290,9 @@
   "membershipCtaButtonText": "JOIN NOW",
   "membershipCtaCopy": "Support us <2>BY BECOMING A MEMBER</2>",
   "shareUrl": "Share URL",
-  "zoomIn": "Zoom in for more details"
+  "zoomIn": "zoom in for more details",
+  "totalDonation_one": "{{count}} donation ",
+  "totalDonation_other": "{{count}} donations ",
+  "totalProject_one": "to {{count}} project",
+  "totalProject_other": "to {{count}} projects"
 }

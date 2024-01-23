@@ -1,0 +1,37 @@
+{
+  "myProfile": {
+    "memberSince": "Member since {{date}}",
+    "userDescription": "{{bio}}",
+    "redeem": "Redeem",
+    "registerTree": "Register Tree",
+    "share": "Share"
+  },
+  "myPublicProfile": {
+    "support": "Support",
+    "link": "Link"
+  },
+  "myForestMap": {
+    "plantedTree_one": "{{count}} Tree",
+    "plantedTree_other": "{{count}} Trees",
+    "plantedTrees": "Planted Trees",
+    "projects": "projects",
+    "restored": "Restored",
+    "conservation": "Conservation",
+    "countries": "Countries",
+    "donations": "Donations",
+    "area": "{{areaConserved}}  m²"
+  },
+  "myTreeCounter": {
+    "treesPlanted": "Trees Planted",
+    "editTarget": "Edit Target"
+  },
+  "myContributions": {
+    "treesPlantedAndAreaRestored": "Trees Planted & Areas Restored",
+    "treeRegistered_one": "{{noOfTrees}} Tree Registered",
+    "treeRegistered_plural": "{{noOfTrees}} Trees Registered",
+    "receivedFrom": "Received from {{name}}",
+    "loadMoreContribution": "Load More Contribution",
+    "loadingContribution": "Loading Contribution....",
+    "donate": "Donate"
+  }
+}

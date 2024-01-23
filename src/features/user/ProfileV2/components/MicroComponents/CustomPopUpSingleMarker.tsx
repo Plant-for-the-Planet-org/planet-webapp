@@ -6,8 +6,6 @@ import { InfoOnthePopUp } from '../MicroComponents/PopUp';
 const CustomPopUpSingleMarker = ({
   geoJson,
   showPopUp,
-  totalNumberOfDonation,
-  numberOfProject,
 }: CustomPopupMarkerProps) => {
   return (
     <div className={MyForestMapStyle.singleMarkerContainer}>
@@ -16,16 +14,12 @@ const CustomPopUpSingleMarker = ({
           className={MyForestMapStyle.mapboxglPopup}
           latitude={parseInt(`${geoJson.geometry.coordinates[1]}`)}
           longitude={parseInt(`${geoJson.geometry.coordinates[0]}`)}
-          offsetTop={-15}
+          offsetTop={-30}
           offsetLeft={20}
           anchor="bottom"
           closeButton={false}
         >
-          <InfoOnthePopUp
-            geoJson={geoJson}
-            totalNumberOfDonation={totalNumberOfDonation}
-            numberOfProject={numberOfProject}
-          />
+          <InfoOnthePopUp geoJson={geoJson} />
         </Popup>
       ) : (
         <></>

@@ -6,9 +6,7 @@ import { ClusterPopUpLabel } from '../MicroComponents/PopUp';
 const CustomPopupMarker = ({
   geoJson,
   showPopUp,
-  totalNumberOfDonation,
-  totalRegisteredDonation,
-  numberOfProject,
+  mapRef,
 }: CustomPopupMarkerProps) => {
   return (
     <div className={MyForestMapStyle.singleMarkerContainer}>
@@ -22,13 +20,7 @@ const CustomPopupMarker = ({
           anchor="bottom"
           closeButton={false}
         >
-          <ClusterPopUpLabel
-            totalRegisteredDonation={totalRegisteredDonation}
-            totalNumberOfDonation={totalNumberOfDonation}
-            numberOfProject={numberOfProject}
-            singleContribution={geoJson.properties.cluster === false}
-            totalContribution={geoJson.properties.totalContribution}
-          />
+          <ClusterPopUpLabel geoJson={geoJson} mapRef={mapRef} />
         </Popup>
       ) : (
         <></>

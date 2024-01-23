@@ -1,7 +1,8 @@
 import { useState, MouseEvent } from 'react';
 import { Typography, Popover } from '@mui/material';
 import myForestMapStyle from '../../styles/MyForestMap.module.scss';
-import { GrStatusInfo } from 'react-icons/gr';
+import { InfoIcon } from '../../../../../../public/assets/images/ProfilePageIcons/index';
+
 const MyForestMapCredit = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const handlePopoverOpen = (event: MouseEvent<HTMLButtonElement>) => {
@@ -20,7 +21,7 @@ const MyForestMapCredit = () => {
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
       >
-        <GrStatusInfo size={30} />
+        <InfoIcon width={24} height={24} />
       </Typography>
       <Popover
         id="mouse-over-popover"
