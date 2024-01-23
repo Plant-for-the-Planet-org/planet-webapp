@@ -6,8 +6,8 @@ import { useTranslation } from 'next-i18next';
 import FieldDataIcon from '../icons/FieldDataIcon';
 import SatelliteIcon from '../../../public/assets/images/icons/SatelliteIcon';
 
-const Tabs = () => {
-  const [selectedMode, setSelectedMode] = useState('satellite');
+const Tabs = ({ selected }) => {
+  const [selectedMode, setSelectedMode] = useState(selected);
 
   const { t } = useTranslation(['maps']);
   return (
