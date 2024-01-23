@@ -259,6 +259,10 @@ const PlanetWeb = ({
                       : {}
                   }
                 >
+                  {console.log(
+                    'tenantConfig.config.auth0ClientId',
+                    tenantConfig.config.auth0ClientId
+                  )}
                   <Auth0Provider
                     domain={process.env.AUTH0_CUSTOM_DOMAIN!}
                     clientId={
