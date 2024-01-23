@@ -7,11 +7,14 @@ import { PayoutCurrency } from '../../../../utils/constants/payoutConstants';
 import { useTranslation } from 'next-i18next';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
 import { BankAccount } from '../../../common/types/payouts';
+import AutoCompleteCountry from '../../../common/InputTypes/AutoCompleteCountry';
+import { getStoredConfig } from '../../../../utils/storeConfig';
 
 export type FormData = {
   currency: string;
   payoutMinAmount?: string;
   bankName: string;
+  bankCountry: string;
   bankAddress: string;
   holderName: string;
   holderAddress: string;
@@ -34,6 +37,7 @@ const extractFormValues = (account?: BankAccount): FormData => {
     currency: account?.currency || PayoutCurrency.DEFAULT,
     payoutMinAmount: account?.payoutMinAmount?.toString() || '',
     bankName: account?.bankName || '',
+    bankCountry: account?.bankCountry || '',
     bankAddress: account?.bankAddress || '',
     holderName: account?.holderName || '',
     holderAddress: account?.holderAddress || '',
@@ -168,6 +172,25 @@ const BankDetailsForm = ({
                 helperText={
                   errors.bankName !== undefined && errors.bankName.message
                 }
+              />
+            )}
+          />
+          <Controller
+            name="bankCountry"
+            control={control}
+            render={({ field: { onChange, value, name } }) => (
+              <AutoCompleteCountry
+                label={t('labels.bankCountry')}
+                name={name}
+                defaultValue={
+                  value ||
+                  (getStoredConfig('loc').countryCode === 'T1' ||
+                  getStoredConfig('loc').countryCode === 'XX' ||
+                  getStoredConfig('loc').countryCode === ''
+                    ? ''
+                    : getStoredConfig('loc').countryCode)
+                }
+                onChange={onChange}
               />
             )}
           />

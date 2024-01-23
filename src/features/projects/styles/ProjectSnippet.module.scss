@@ -123,6 +123,10 @@
   text-transform: uppercase;
 }
 
+.projectType {
+  line-height: 0.9em;
+}
+
 .projectName {
   font-family: $primaryFontFamily;
   font-size: $fontMedium;
@@ -278,6 +282,8 @@
   width: 0.95em;
   min-width: 0.95em;
   margin-right: 4px;
+  font-size: var(--font-xx-extra-small);
+  line-height: 0.3em;
 }
 
 .topApproved {
@@ -304,4 +310,9 @@
 .projectInfoPopupContainer{
   margin: 10px;
   max-width: 250px;
+}
+
+.projectEcosystemOrTypeContainer {
+  display: flex;
+  align-items:center;
 }

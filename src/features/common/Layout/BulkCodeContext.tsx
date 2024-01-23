@@ -9,11 +9,12 @@ import {
 } from 'react';
 import { BulkCodeMethods } from '../../../utils/constants/bulkCodeConstants';
 import { ProjectOption } from '../types/project';
+import { CountryCode, CurrencyCode } from '@planet-sdk/common';
 
 export interface PlanetCashAccount {
   guid: string;
-  currency: string;
-  country: string;
+  currency: CurrencyCode;
+  country: CountryCode;
 }
 
 interface BulkGiftGenericData {

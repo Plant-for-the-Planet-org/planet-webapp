@@ -1,20 +1,19 @@
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-
+import { Meta, StoryObj } from '@storybook/react';
 import UnitCostDisplay from '../components/UnitCostDisplay';
 
-export default {
-  title: `Components/UnitCostDisplay`,
+const meta: Meta<typeof UnitCostDisplay> = {
+  title: 'Components/UnitCostDisplay',
   component: UnitCostDisplay,
-} as ComponentMeta<typeof UnitCostDisplay>;
+};
 
-const Template: ComponentStory<typeof UnitCostDisplay> = (args) => (
-  <UnitCostDisplay {...args} />
-);
+export default meta;
 
-export const Default = Template.bind({});
-Default.args = {
-  unitCost: 1.12,
-  currency: 'USD',
-  unit: 'tree',
+type Story = StoryObj<typeof UnitCostDisplay>;
+
+export const Default: Story = {
+  args: {
+    unitCost: 1.12,
+    currency: 'USD',
+    unit: 'tree',
+  },
 };

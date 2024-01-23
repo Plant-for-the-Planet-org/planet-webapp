@@ -25,29 +25,13 @@
   "termAndConditionError": "Por favor Aceite os Termos e Condições",
   "fieldLabels": {
     "profileType": "Eu sou um(a)",
-    "firstName": "Nome",
-    "lastName": "Sobrenome",
     "name": "Nome do {{type}}",
-    "email": "Email",
-    "address": "Endereço",
-    "city": "Cidade",
-    "zipCode": "CEP/Código Postal",
-    "country": "País",
-    "bio": "Descrição de Perfil",
     "website": "Website",
     "privateAccount": "Conta Privada",
     "subscribe": "Inscreva-se para receber notícias por e-mail"
   },
   "validationErrors": {
-    "firstNameRequired": "O campo Nome é obrigatório",
-    "lastNameRequired": "O campo Sobrenome é obrigatório",
-    "emailRequired": "O e-mail é obrigatório",
     "nameRequired": "Por favor, adicione um nome",
-    "addressRequired": "O endereço é obrigatório",
-    "cityRequired": "O nome da cidade é obrigatório",
-    "zipCodeInvalid": "Código postal inválido",
-    "websiteInvalid": "Por favor, digite o URL válido do site",
-    "countryRequired": "País é um campo obrigatório",
-    "companyRequired": "Nome da empresa é obrigatório"
+    "websiteInvalid": "Por favor, digite o URL válido do site"
   }
 }
