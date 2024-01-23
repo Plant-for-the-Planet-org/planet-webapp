@@ -130,7 +130,7 @@ export default function TpoProfile(props: any) {
             {props.target !== undefined && props.target !== 0 && (
               <div>{'of'}</div>
             )}
-            {props && props.target !== undefined && props.target !== 0 && (
+            {props?.target !== 0 && (
               <div>
                 {localizedAbbreviatedNumber(
                   i18n.language,
