@@ -9,6 +9,7 @@ on:
     branches:
       - feature/storybook-update
       - develop
+      - feature/redesign-explore-btn
 # List of jobs
 jobs:
   chromatic-deployment:
