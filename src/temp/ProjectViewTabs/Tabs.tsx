@@ -1,28 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './ProjectViewTabs.module.scss';
-import TimeTravel from './TimeTravel';
-import SatelliteAnalysis from './SatelliteAnalysis';
-import FieldData from './FieldData';
+import SingleTab from './SingleTab';
+import SatelliteAnalysisIcon from '../icons/SatelliteAnalysisIcon';
+import { useTranslation } from 'next-i18next';
+import FieldDataIcon from '../icons/FieldDataIcon';
+import SatelliteIcon from '../../../public/assets/images/icons/SatelliteIcon';
 
-const Tabs = ({ selectedMode = 'timeTravel' }) => {
-  //   const [selectedMode, setSelectedMode] = useState(null);
-  //   const changeSelectedMode = (mode) => {
-  //     setSelectedMode(mode);
-  //   };
+const Tabs = () => {
+  const [selectedMode, setSelectedMode] = useState('satellite');
+
+  const { t } = useTranslation(['maps']);
   return (
     <div className={styles.tabsContainer}>
-      <SatelliteAnalysis
-        color={selectedMode === 'satellite' ? '#fff' : '#000'}
-        background={selectedMode === 'satellite' ? '#219653' : '#fff'}
-      />
-      <TimeTravel
-        color={selectedMode === 'timeTravel' ? '#fff' : '#000'}
-        background={selectedMode === 'timeTravel' ? '#219653' : '#fff'}
-      />
-      <FieldData
-        color={selectedMode === 'field' ? '#fff' : '#000'}
-        background={selectedMode === 'field' ? '#219653' : '#fff'}
-      />
+      <div onClick={() => setSelectedMode('satellite')}>
+        <SingleTab
+          icon={
+            <SatelliteAnalysisIcon
+              color={selectedMode === 'satellite' ? '#fff' : '#000'}
+            />
+          }
+          title={t('maps:satelliteAnalysis')}
+          isSelected={selectedMode === 'satellite'}
+        />
+      </div>
+      <div onClick={() => setSelectedMode('field')}>
+        <SingleTab
+          icon={
+            <FieldDataIcon color={selectedMode === 'field' ? '#fff' : '#000'} />
+          }
+          title={t('maps:fieldData')}
+          isSelected={selectedMode === 'field'}
+        />
+      </div>
+      <div onClick={() => setSelectedMode('timeTravel')}>
+        <SingleTab
+          icon={
+            <SatelliteIcon
+              color={selectedMode === 'timeTravel' ? '#fff' : '#000'}
+            />
+          }
+          title={t('maps:timeTravel')}
+          isSelected={selectedMode === 'timeTravel'}
+        />
+      </div>
     </div>
   );
 };
