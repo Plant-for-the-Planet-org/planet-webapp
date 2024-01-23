@@ -5,11 +5,16 @@ width: fit-content;
 height: 48px;
 border-radius: 12px;
 background: $backgroundColor;
-border: 1px solid black; //to be removed
 align-items: center;
 justify-content: center;
 padding: 0px 5px;
 gap: 16px;
+position: fixed;
+left: 10px;
+right: auto;
+margin: 0 auto;
+top: 100px;;
+z-index: 10;
 }
 .option { 
     display: flex;
@@ -31,9 +36,35 @@ gap: 16px;
   .option p {
     display: none;
   }
+
+  @include smTabletView {
+    .tabsContainer {
+      top: 100px;
+    }
+   
+  }
+  
+  @include mdTabletView {
+    .tabsContainer {
+      left: 400px;
+      top: 110px;
+    }
+   
+  }
+  
+  @include lgLaptopView {
+    .tabsContainer {
+      // margin-left: auto;
+      right: auto;
+    }
+  }
   
 
   @include xlDesktopView {
+    .tabsContainer{
+      left: 400px;
+      top: 110px;
+    }
     .option {
       width: 200px;
      
