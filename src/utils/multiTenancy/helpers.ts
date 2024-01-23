@@ -18,7 +18,7 @@ export const DEFAULT_TENANT = 'planet';
 export const getTenantConfigList = async () => {
   try {
     const response = await fetch(
-      `${process.env.API_ENDPOINT}/app/tenants?_scope=deployment&status=active`
+      `${process.env.API_ENDPOINT}/app/tenants?_scope=deployment`
     );
     const tenants = (await response.json()) as Tenant[];
     return tenants;
