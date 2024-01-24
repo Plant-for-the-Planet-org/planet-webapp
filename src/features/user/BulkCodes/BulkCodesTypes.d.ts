@@ -1,10 +1,13 @@
+// TODO - review types and make more specific where possible
+import { CurrencyCode } from '@planet-sdk/common';
+
 export interface PaymentOptions {
-  currency: string;
+  currency: CurrencyCode;
   unitCost: number;
   purpose: string;
   id: string;
   name: string;
-  unit: string;
+  unit: 'tree' | 'm2' | 'ha';
 }
 
 export interface Recipient {

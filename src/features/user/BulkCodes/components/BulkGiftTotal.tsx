@@ -2,12 +2,13 @@ import { TextField } from '@mui/material';
 import { ReactElement } from 'react';
 import { useTranslation } from 'next-i18next';
 import getFormatedCurrency from '../../../../utils/countryCurrency/getFormattedCurrency';
+import { CurrencyCode } from '@planet-sdk/common';
 
 interface BulkGiftTotalProps {
   amount?: number;
-  currency?: string;
+  currency?: CurrencyCode;
   units?: number;
-  unit?: string;
+  unit?: 'tree' | 'm2' | 'ha';
   isImport?: boolean;
 }
 

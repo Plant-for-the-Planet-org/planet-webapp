@@ -2,11 +2,12 @@ import { ReactElement } from 'react';
 import { useTranslation } from 'next-i18next';
 import { TextField } from '@mui/material';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
+import { CurrencyCode } from '@planet-sdk/common';
 
 interface UnitCostDisplayProps {
   unitCost: number | '-';
-  currency: string;
-  unit: string;
+  currency: CurrencyCode | '';
+  unit: 'tree' | 'm2' | 'ha';
 }
 
 const UnitCostDisplay = ({
