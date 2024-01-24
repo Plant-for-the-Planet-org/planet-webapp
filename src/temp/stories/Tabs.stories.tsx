@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Tabs from '../ProjectViewTabs/Tabs';
+import Tabs from '../ProjectMapTabs/Tabs';
 
 const meta: Meta<typeof Tabs> = {
   component: Tabs,

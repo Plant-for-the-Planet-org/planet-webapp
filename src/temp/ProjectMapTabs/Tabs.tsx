@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './ProjectViewTabs.module.scss';
+import styles from './ProjectMapTabs.module.scss';
 import SingleTab from './SingleTab';
 import SatelliteAnalysisIcon from '../icons/SatelliteAnalysisIcon';
 import { useTranslation } from 'next-i18next';
