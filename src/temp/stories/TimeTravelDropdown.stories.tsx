@@ -11,7 +11,7 @@ type Story = StoryObj<typeof TimeTravelDropdown>;
 
 const yearList = ['2024', '2023', '2022', '2021', '2020', '2019', '2018'];
 
-export const TimeTravelDropdownOpen: Story = {
+export const Open: Story = {
   args: {
     labelYear: '2018',
     labelSource: 'Esri',
@@ -21,7 +21,7 @@ export const TimeTravelDropdownOpen: Story = {
   },
 };
 
-export const TimeTravelDropdownClose: Story = {
+export const Close: Story = {
   args: {
     labelYear: '2018',
     labelSource: 'Esri',
