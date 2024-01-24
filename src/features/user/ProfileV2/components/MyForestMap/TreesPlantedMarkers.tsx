@@ -12,7 +12,10 @@ import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import { ClusterFeature, PointFeature } from 'supercluster';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 
-const TreesPlantedMarkers = ({ mapRef }: ClusterMarkerProps): ReactElement => {
+const TreesPlantedMarkers = ({
+  mapRef,
+  profile,
+}: ClusterMarkerProps): ReactElement => {
   const { treePlantationProjectGeoJson, viewport } = useMyForest();
   const [clusters, setClusters] = useState<
     | (
@@ -54,7 +57,9 @@ const TreesPlantedMarkers = ({ mapRef }: ClusterMarkerProps): ReactElement => {
             />
           );
         } else {
-          return <SingleMarker key={key} geoJson={singleCluster} />;
+          return (
+            <SingleMarker key={key} geoJson={singleCluster} profile={profile} />
+          );
         }
       })}
     </>

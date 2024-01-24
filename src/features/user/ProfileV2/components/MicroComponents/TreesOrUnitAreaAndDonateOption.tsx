@@ -34,17 +34,16 @@ const TreesOrUnitAreaAndDonateOption = ({
 }: TreesOrUnitAreaAndDonateOptionProps) => {
   const { t } = useTranslation(['me']);
   const { embed } = useContext(ParamsContext);
-  const { token, user } = useUserProps();
+  const { token } = useUserProps();
   const router = useRouter();
   const handleDonate = (id: string, tenant: string) => {
-    console.log(publicProfileSlug, '==');
     const url = getDonationUrl(
       tenant,
       id,
       token,
       undefined,
       undefined,
-      publicProfileSlug ? publicProfileSlug : ''
+      publicProfileSlug ? publicProfileSlug : undefined
     );
     embed === 'true'
       ? window.open(url, '_blank')

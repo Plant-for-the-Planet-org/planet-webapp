@@ -4,10 +4,16 @@ import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
 import { Cluster, ClusterMarker } from '../../../../common/types/map';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { PopUpDonationIcon } from '../../../../../../public/assets/images/ProfilePageIcons';
 import { MutableRefObject } from 'react';
-
+import getImageUrl from '../../../../../utils/getImageURL';
+import { Button } from '@mui/material';
+import format from 'date-fns/format';
+import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
+import { getDonationUrl } from '../../../../../utils/getDonationUrl';
+import { ParamsContext } from '../../../../common/Layout/QueryParamsContext';
+import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 interface PopUpLabelProps {
   isRegistered: boolean;
 }
@@ -204,6 +210,132 @@ export const InfoOnthePopUp = ({ geoJson }: InfoOnthePopUpProps) => {
             geoJson?.properties?._type === 'gift'
           }
         />
+      </div>
+    </div>
+  );
+};
+
+export const DonationPopUp = ({ geoJson, setShowPopUp, profile }) => {
+  const { t } = useTranslation(['me']);
+  const { embed } = useContext(ParamsContext);
+  const { token } = useUserProps();
+  const handleDonation = (id: string, tenant: string) => {
+    const url = getDonationUrl(
+      tenant,
+      id,
+      token,
+      undefined,
+      undefined,
+      profile.slug
+    );
+    embed === 'true'
+      ? window.open(url, '_blank')
+      : (window.location.href = url);
+  };
+
+  return (
+    <div className={MyForestMapStyle.donationPopUpMainContainer}>
+      <div className={MyForestMapStyle.donationPopUpImageContainer}>
+        <img
+          className={MyForestMapStyle.image}
+          src={getImageUrl(
+            'project',
+            'medium',
+            geoJson?.properties?.plantProject?.image
+          )}
+        />
+      </div>
+      <div className={MyForestMapStyle.donationPopUpInfoContainer}>
+        <div
+          style={{
+            height: '15px',
+            display: 'flex',
+            gap: '18px',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              gap: '6px',
+              width: 'max-content',
+              position: 'relative',
+            }}
+          >
+            <div style={{ fontWeight: '700', fontSize: '8px' }}>
+              {t('me:plantedTrees', {
+                count: geoJson.properties.quantity,
+              })}
+            </div>
+            <div
+              style={{
+                fontWeight: '700',
+                fontSize: '8px',
+                position: 'absolute',
+                left: '39px',
+                bottom: '2px',
+              }}
+            >
+              .
+            </div>
+            <div style={{ fontSize: '8px' }}>
+              {geoJson?.properties?.plantProject?.location}
+            </div>
+          </div>
+          <Button
+            variant="contained"
+            style={{
+              width: '53px',
+              height: '18px',
+              fontSize: '10px',
+              boxShadow: 'none',
+              borderRadius: '24px',
+              fontWeight: '700',
+              padding: '2px 8px',
+            }}
+            onClick={() =>
+              handleDonation(geoJson?.properties?.plantProject?.guid, '')
+            }
+          >
+            {t('me:donate')}
+          </Button>
+        </div>
+        <div style={{ fontWeight: '400', fontSize: '8px', marginTop: '4px' }}>
+          {t('me:tpoName', {
+            tpo: geoJson?.properties?.plantProject?.tpo.name,
+          })}
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            fontWeight: '600',
+            fontSize: '6px',
+            color: 'rgba(130, 130, 130, 1)',
+            marginTop: '2px',
+          }}
+        >
+          {geoJson?.properties?.startDate && (
+            <time>
+              {format(geoJson?.properties?.startDate, 'PP', {
+                locale:
+                  localeMapForDate[localStorage.getItem('language') || 'en'],
+              })}
+            </time>
+          )}
+
+          {geoJson?.properties?.endDate && (
+            <>
+              <div style={{ marginLeft: '1px', marginRight: '1px' }}>-</div>
+              <time>
+                {format(geoJson?.properties?.endDate, 'PP', {
+                  locale:
+                    localeMapForDate[localStorage.getItem('language') || 'en'],
+                })}
+              </time>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
