@@ -4,7 +4,7 @@ display: flex;
 width: fit-content;
 height: 48px;
 border-radius: 12px;
-background: $backgroundColor;
+background: #fff;
 align-items: center;
 justify-content: center;
 padding: 0px 5px;
@@ -26,7 +26,6 @@ z-index: 10;
     width: 50px;
     height: 40px;
     border-radius: 8px;
-    flex: 1;
     gap:6px;
   }
   
@@ -35,6 +34,10 @@ z-index: 10;
   }
   .option p {
     display: none;
+  }
+
+  .selected {
+    width: 66px;
   }
 
   @include smTabletView {
@@ -51,31 +54,27 @@ z-index: 10;
     }
    
   }
-  
-  @include lgLaptopView {
-    .tabsContainer {
-      // margin-left: auto;
-      right: auto;
-    }
-  }
-  
-
   @include xlDesktopView {
     .tabsContainer{
       left: 400px;
       top: 110px;
     }
+   
+  }
+  
+  @include lgLaptopView {
+    .tabsContainer {
+      right: auto;
+    }
     .option {
-      width: 200px;
-     
+     width: 150px;
       p {
         display: block;
         font-size: 12px;
         font-weight: 700;
       }
     }
-    .compact {
-      width: 150px;
+    .selected {
+      width: 166px;
     }
   }
-  

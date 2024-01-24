@@ -16,7 +16,7 @@ const SingleTab = ({ icon, title, isSelected }: SingleTabProps) => {
           backgroundColor: isSelected ? '#219653' : '#fff',
           border: 'none',
         }}
-        className={`${styles.option} ${styles.compact}`}
+        className={`${styles.option} ${isSelected ? styles.selected : ''}`}
       >
         {icon}
         <p>{title}</p>
