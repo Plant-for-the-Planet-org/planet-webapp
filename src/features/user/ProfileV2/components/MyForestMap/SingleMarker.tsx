@@ -6,11 +6,19 @@ import SingleMarkerImageContainer from '../MicroComponents/SingleMarkerImageCont
 import SingleMarkerUnits from '../MicroComponents/SingleMarkerUnits';
 import CustomPopUpSingleMarker from '../MicroComponents/CustomPopUpSingleMarker';
 
-const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
+const SingleMarker = ({
+  geoJson,
+  profile,
+}: SingleMarkerProps): ReactElement => {
   const [showPopUp, setShowPopUp] = useState(false);
   return (
     <>
-      <CustomPopUpSingleMarker geoJson={geoJson} showPopUp={showPopUp} />
+      <CustomPopUpSingleMarker
+        geoJson={geoJson}
+        showPopUp={showPopUp}
+        setShowPopUp={setShowPopUp}
+        profile={profile}
+      />
       {geoJson?.geometry.coordinates[1] !== null && (
         <Marker
           latitude={Number(geoJson?.geometry.coordinates[1])}
@@ -19,7 +27,11 @@ const SingleMarker = ({ geoJson }: SingleMarkerProps): ReactElement => {
           <div
             className={MyForestMapStyle.markerContainer}
             onMouseOver={() => setShowPopUp(true)}
-            onMouseLeave={() => setShowPopUp(false)}
+            onMouseLeave={() =>
+              setTimeout(() => {
+                setShowPopUp(false);
+              }, 6000)
+            }
           >
             <SingleMarkerImageContainer
               isNormalTreeDonation={

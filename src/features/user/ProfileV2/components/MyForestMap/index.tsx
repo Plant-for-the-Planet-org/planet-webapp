@@ -14,7 +14,7 @@ import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import MyForestMapCredit from '../MicroComponents/MyForestMapCredit';
 import { ViewportProps } from '../../../../common/types/map';
 
-const MyForestMap = (): ReactElement => {
+const MyForestMap = ({ profile }): ReactElement => {
   const mapRef: MutableRefObject<null> = useRef(null);
 
   const EMPTY_STYLE = {
@@ -57,7 +57,6 @@ const MyForestMap = (): ReactElement => {
     )
       return true;
   };
-
   return (
     <div className={MyForestMapStyle.mapContainer}>
       <MyForestMapCredit />
@@ -69,7 +68,7 @@ const MyForestMap = (): ReactElement => {
       >
         {(_isBothButtonInActive() ||
           (isTreePlantedButtonActive && !isConservedButtonActive)) && (
-          <TreesPlantedMarkers mapRef={mapRef} />
+          <TreesPlantedMarkers mapRef={mapRef} profile={profile} />
         )}
         {(_isBothButtonInActive() ||
           (!isTreePlantedButtonActive && isConservedButtonActive)) && (

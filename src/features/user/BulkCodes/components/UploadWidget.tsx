@@ -9,20 +9,20 @@ import styles from '../BulkCodes.module.scss';
 import handleFileUpload from '../../../../utils/handleFileUpload';
 
 interface UploadWidgetInterface {
-  status: UploadStates;
+  status?: UploadStates;
   onFileUploaded: (fileContents: string) => void;
   onStatusChange: (newStatus: UploadStates) => void;
-  parseError: FileImportError | null;
-  hasIgnoredColumns: boolean;
-  shouldWarn: boolean;
+  parseError?: FileImportError | null;
+  hasIgnoredColumns?: boolean;
+  shouldWarn?: boolean;
 }
 
 const UploadWidget = ({
   status = 'empty',
   onStatusChange,
   onFileUploaded,
-  parseError,
-  hasIgnoredColumns,
+  parseError = null,
+  hasIgnoredColumns = false,
   shouldWarn = false,
 }: UploadWidgetInterface): ReactElement | null => {
   const { t, ready } = useTranslation(['bulkCodes']);

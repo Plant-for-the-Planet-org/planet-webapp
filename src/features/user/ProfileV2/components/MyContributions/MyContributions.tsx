@@ -200,7 +200,7 @@ export default function MyContributions({
 
   return ready && additionalInfoRelatedToContributions ? (
     <div className={myForestStyles.mapMainContainer}>
-      <MyTreesMap />
+      <MyTreesMap profile={profile} />
       <MyContributionCustomButton
         plantedTrees={additionalInfoRelatedToContributions?.treeCount}
         restoredArea={additionalInfoRelatedToContributions?.squareMeters}
