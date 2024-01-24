@@ -10,6 +10,6 @@ type Story = StoryObj<typeof Tabs>;
 
 export const TabsView: Story = {
   args: {
-    selected: 'satellite',
+    selected: 'satellite', //initially selected option
   },
 };

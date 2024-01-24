@@ -1,7 +1,13 @@
 import React from 'react';
 import styles from './ProjectMapTabs.module.scss';
 
-const SingleTab = ({ icon, title, isSelected }) => {
+interface SingleTabProps {
+  icon: React.JSX.Element;
+  title: string;
+  isSelected: boolean;
+}
+
+const SingleTab = ({ icon, title, isSelected }: SingleTabProps) => {
   return (
     <>
       <button
