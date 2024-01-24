@@ -1,0 +1,49 @@
+@import '../../theme/theme';
+
+.menuContainer {
+    font-size: 12px;
+}
+.menuButton {
+    border-radius: 8px;
+    width: fit-content;
+    background: #FFF;
+    backdrop-filter: blur(15.191919326782227px);
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 12px;
+    p {
+        margin: 0 12px 0 6px;
+    }
+    span {
+        font-weight: 700;
+    }
+
+}
+.menuItems {
+    display: flex;
+    width: fit-content;
+    margin-top: 16px;
+    border-radius: 8px;
+    color: #4F4F4F;
+}
+.yearMenuContainer {
+    border-radius: 8px 0 0 8px;
+    background-color: rgba(217, 217, 217, 0.5);
+    padding:16px;
+    li {
+        list-style: none;
+        opacity: 5;
+        margin-top: 6px;
+    }
+}
+.sourceMenuContainer {
+    background: #FFF;
+    padding: 16px;
+    border-radius: 0px 8px 8px 0;
+    li {
+        list-style: none;
+        margin-top: 6px;
+    }
+}
