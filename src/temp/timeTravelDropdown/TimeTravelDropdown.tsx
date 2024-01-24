@@ -3,13 +3,21 @@ import styles from './Dropdown.module.scss';
 import CalendarIcon from '../icons/CalendarIcon';
 import DropdownArrow from '../icons/DropdownArrow';
 
+interface TimeTravelDropdownProps {
+  labelYear: string;
+  labelSource: string;
+  yearList: string[];
+  sourceList: string[];
+  isOpen: boolean;
+}
+
 const TimeTravelDropdown = ({
   labelYear,
   labelSource,
   yearList,
   sourceList,
   isOpen,
-}) => {
+}: TimeTravelDropdownProps) => {
   const [selectedYear, setSelectedYear] = useState(labelYear);
   const [selectedSource, setSelectedSource] = useState(labelSource);
   const [isMenuOpen, setIsMenuOpen] = useState(isOpen);
@@ -21,12 +29,11 @@ const TimeTravelDropdown = ({
     setSelectedSource(source);
   };
 
-  const styleForSelectedOption = (selectedOption, labelValue) => {
-    const isEqual =
-      typeof labelValue === 'string'
-        ? selectedOption.toLowerCase() === labelValue.toLowerCase()
-        : selectedOption === labelValue;
-    if (isEqual) {
+  const styleForSelectedOption = (
+    selectedOption: string,
+    labelValue: string
+  ) => {
+    if (selectedOption.toLowerCase() === labelValue.toLowerCase()) {
       return {
         fontWeight: 700,
         color: '#333',
@@ -55,7 +62,7 @@ const TimeTravelDropdown = ({
               <li
                 key={index}
                 onClick={() => handleChangeYear(year)}
-                style={styleForSelectedOption(year, labelYear)}
+                style={styleForSelectedOption(year, selectedYear)}
               >
                 {year}
               </li>
