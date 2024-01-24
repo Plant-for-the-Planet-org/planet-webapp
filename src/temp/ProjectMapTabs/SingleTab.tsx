@@ -11,11 +11,6 @@ const SingleTab = ({ icon, title, isSelected }: SingleTabProps) => {
   return (
     <>
       <button
-        style={{
-          color: isSelected ? '#fff' : '#000',
-          backgroundColor: isSelected ? '#219653' : '#fff',
-          border: 'none',
-        }}
         className={`${styles.option} ${isSelected ? styles.selected : ''}`}
       >
         {icon}

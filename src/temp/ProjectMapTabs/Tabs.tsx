@@ -13,6 +13,16 @@ interface TabsProps {
 const Tabs = ({ selected }: TabsProps) => {
   const [selectedMode, setSelectedMode] = useState(selected);
 
+  const allTabsList = ['satellite', 'field', 'timeTravel'];
+  const setSeparatorVisibility = (
+    selectedMode: string,
+    separatorId: number
+  ) => {
+    const index = allTabsList.indexOf(selectedMode);
+    if (separatorId !== index - 1 && separatorId !== index) return true;
+    return false;
+  };
+
   const { t } = useTranslation(['maps']);
   return (
     <div className={styles.tabsContainer}>
@@ -26,6 +36,13 @@ const Tabs = ({ selected }: TabsProps) => {
           title={t('maps:satelliteAnalysis')}
           isSelected={selectedMode === 'satellite'}
         />
+        <div
+          className={
+            setSeparatorVisibility(selectedMode, 0)
+              ? styles.showSeparator1
+              : styles.hideSeparator
+          }
+        ></div>
       </div>
       <div onClick={() => setSelectedMode('field')}>
         <SingleTab
@@ -36,6 +53,13 @@ const Tabs = ({ selected }: TabsProps) => {
           isSelected={selectedMode === 'field'}
         />
       </div>
+      <div
+        className={
+          setSeparatorVisibility(selectedMode, 1)
+            ? styles.showSeparator2
+            : styles.hideSeparator
+        }
+      ></div>
       <div onClick={() => setSelectedMode('timeTravel')}>
         <SingleTab
           icon={

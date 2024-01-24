@@ -15,6 +15,7 @@ right: auto;
 margin: 0 auto;
 top: 100px;;
 z-index: 10;
+color: #000;
 }
 .option { 
     display: flex;
@@ -38,6 +39,29 @@ z-index: 10;
 
   .selected {
     width: 66px;
+    color: #fff;
+    background-color: #219653;
+  }
+
+  .showSeparator1, .showSeparator2 {
+    background: black;
+    width: 0.5px;
+    height: 30px;
+    position: absolute;
+    top: 20%;
+    background: rgba(0, 0, 0, 0.30);
+  }
+
+  .showSeparator1{
+    left: 63px;
+  }
+
+  .showSeparator2 {
+    left: 144px;
+  }
+
+  .hideSeparator {
+    display: none;
   }
 
   @include smTabletView {
@@ -76,5 +100,12 @@ z-index: 10;
     }
     .selected {
       width: 166px;
+    }
+    .showSeparator1{
+      left: 164px;
+    }
+  
+    .showSeparator2 {
+      left: 345px;
     }
   }
