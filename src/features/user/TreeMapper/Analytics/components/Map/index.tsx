@@ -113,6 +113,7 @@ export const MapContainer = () => {
     body: {
       projectId: project?.id,
       species: species,
+      // TODO: add search
     },
   });
 

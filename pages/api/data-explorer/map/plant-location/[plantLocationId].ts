@@ -44,6 +44,13 @@ handler.get(async (req, response) => {
                       ),
                         'tag', spl.tag,
                         'guid', spl.guid,
+                        'species', (
+                          SELECT ss.name 
+                          FROM plant_location pl_inner 
+                          JOIN scientific_species ss ON pl_inner.scientific_species_id = ss.id 
+                          WHERE pl_inner.guid = spl.guid
+                          LIMIT 1
+                      ),
                         'geometry', JSON_OBJECT(
                           'type', JSON_UNQUOTE(JSON_EXTRACT(spl.geometry, '$.type')),
                           'coordinates', JSON_EXTRACT(spl.geometry, '$.coordinates')
@@ -52,6 +59,7 @@ handler.get(async (req, response) => {
                 )
                 FROM plant_location pl
                 LEFT JOIN plant_location spl ON pl.id = spl.parent_id
+                LEFT JOIN scientific_species ss ON pl.scientific_species_id = ss.id
                 WHERE pl.guid = ?
                 GROUP BY pl.parent_id
             ),
