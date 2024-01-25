@@ -4,29 +4,22 @@ import { Button } from '@mui/material';
 import style from './Filter.module.scss';
 
 interface FilterProps {
+  active: boolean;
   projectList: string[];
 }
 
-const Filter = ({ projectList }: FilterProps) => {
-  const [isFilter, setIsFilter] = useState(false);
+const Filter = ({ active, projectList }: FilterProps) => {
   return (
     <div>
-      <Button
-        onClick={() => {
-          if (isFilter) {
-            setIsFilter(false);
-          } else {
-            setIsFilter(true);
-          }
-        }}
-      >
+      <Button>
         <FilterIcon width={'16px'} height={'16px'} />
       </Button>
 
-      {isFilter ? (
+      {active && projectList.length > 0 ? (
         <div className={style.projectListMainContainer}>
           <div className={style.container}>
             <h1>All Projects</h1>
+
             {projectList.map((projectType) => {
               return (
                 <>

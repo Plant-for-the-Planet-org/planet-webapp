@@ -8,8 +8,16 @@ const meta: Meta<typeof Filter> = {
 export default meta;
 type Story = StoryObj<typeof Filter>;
 
-export const Filteration: Story = {
+export const FilterInActive: Story = {
   args: {
+    active: false,
+    projectList: [],
+  },
+};
+
+export const FilterActive = {
+  args: {
+    active: true,
     projectList: [
       'Natural Regeneration',
       'Mangroves',
