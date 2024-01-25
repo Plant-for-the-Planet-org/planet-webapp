@@ -29,6 +29,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import StyledForm from '../../common/Layout/StyledForm';
 import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
+import { useTenant } from '../../common/Layout/TenantContext';
 import { ViewportProps } from '../../common/types/map';
 import {
   RegisterTreesFormProps,
@@ -98,6 +99,7 @@ function RegisterTreesForm({
   const [projects, setProjects] = React.useState<ProjectGeoJsonProps[]>([]);
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const [isStyleReady, setIsStyleReady] = React.useState(false);
+  const { tenantConfig } = useTenant();
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
@@ -187,7 +189,7 @@ function RegisterTreesForm({
           geometry: geometry,
         };
         try {
-          const res = await postAuthenticatedRequest<ContributionProperties>(
+          const res = await postAuthenticatedRequest<ContributionProperties>(tenantConfig?.id,
             `/app/contributions`,
             submitData,
             token,
@@ -213,7 +215,7 @@ function RegisterTreesForm({
   };
   async function loadProjects() {
     try {
-      const projects = await getAuthenticatedRequest<ProjectGeoJsonProps[]>(
+      const projects = await getAuthenticatedRequest<ProjectGeoJsonProps[]>(tenantConfig?.id,
         '/app/profile/projects',
         token,
         logoutUser

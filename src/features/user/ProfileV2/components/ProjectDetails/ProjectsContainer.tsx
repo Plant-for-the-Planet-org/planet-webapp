@@ -9,6 +9,7 @@ import { getRequest } from '../../../../../utils/apiRequests/api';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError ,UserPublicProfile } from '@planet-sdk/common';
 import { MapProject } from '../../../../common/types/ProjectPropsContextInterface';
+import { useTenant } from '../../../../common/Layout/TenantContext';
 
 const ProjectSnippet = dynamic(
   () => import('../../../../projects/components/ProjectSnippet'),
@@ -22,6 +23,7 @@ interface Props {
 }
 
 export default function ProjectsContainer({ profile }: Props) {
+  const { tenantConfig } = useTenant();
   const { t, ready, i18n } = useTranslation(['donate', 'manageProjects']);
   const [projects, setProjects] = React.useState<MapProject[]>([]);
   const { setErrors } = React.useContext(ErrorHandlingContext);
@@ -29,6 +31,7 @@ export default function ProjectsContainer({ profile }: Props) {
   async function loadProjects() {
     try {
       const projects = await getRequest<MapProject[]>(
+        `${tenantConfig?.id}`,
         `/app/profiles/${profile.id}/projects`,
         {
           locale: i18n.language,

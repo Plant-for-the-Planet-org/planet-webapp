@@ -13,7 +13,7 @@ import {
   SuccessfullyRedeemed,
   EnterRedeemCode,
 } from '../../../../common/RedeemCode';
-
+import { useTenant } from '../../../../common/Layout/TenantContext';
 interface RedeemModal {
   redeemModalOpen: boolean;
   handleRedeemModalClose: () => void;
@@ -24,6 +24,7 @@ export default function RedeemModal({
   handleRedeemModalClose,
 }: RedeemModal): ReactElement | null {
   const { t, ready } = useTranslation(['me', 'common', 'donate', 'redeem']);
+  const { tenantConfig } = useTenant();
   const { user, contextLoaded, token, setUser, logoutUser, setRefetchData } =
     useUserProps();
   const { setErrors, errors: apiErrors } =
@@ -33,7 +34,6 @@ export default function RedeemModal({
     RedeemedCodeData | undefined
   >(undefined);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-
   async function redeemingCode(data: string | undefined): Promise<void> {
     setIsLoading(true);
     const submitData = {
@@ -42,6 +42,7 @@ export default function RedeemModal({
     if (contextLoaded && user) {
       try {
         const res = await postAuthenticatedRequest<RedeemedCodeData>(
+          tenantConfig?.id,
           `/app/redeem`,
           submitData,
           token,

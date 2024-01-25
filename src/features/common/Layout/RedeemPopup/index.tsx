@@ -2,22 +2,24 @@ import React, { useEffect, useRef, useState } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './RedeemPopup.module.scss';
 import { useTranslation } from 'next-i18next';
-import tenantConfig from '../../../../../tenant.config';
+import { useTenant } from '../TenantContext';
 import { useUserProps } from '../UserPropsContext';
 
 export default function RedeemPopup() {
   const { t, ready } = useTranslation(['leaderboard']);
-  const config = tenantConfig();
+  const { tenantConfig } = useTenant();
 
   const [showRedeemPopup, setShowRedeemPopup] = useState(false);
 
   const { user, contextLoaded, loginWithRedirect } = useUserProps();
 
   const sendUserToLogin = () => {
-    loginWithRedirect({
-      redirectUri: `${process.env.NEXTAUTH_URL}/login`,
-      ui_locales: localStorage.getItem('language') || 'en',
-    });
+    if (typeof window !== 'undefined') {
+      loginWithRedirect({
+        redirectUri: `${window.location.origin}/login`,
+        ui_locales: localStorage.getItem('language') || 'en',
+      });
+    }
   };
 
   useEffect(() => {
@@ -33,7 +35,7 @@ export default function RedeemPopup() {
     if (isMountedRef.current) {
       return;
     }
-    if (config.showRedeemHint) {
+    if (tenantConfig.config.showRedeemHint) {
       const prev = localStorage.getItem('redeemPopup');
       if (!prev) {
         setShowRedeemPopup(true);
@@ -44,7 +46,7 @@ export default function RedeemPopup() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('redeemPopup', showRedeemPopup);
+    localStorage.setItem('redeemPopup', `${showRedeemPopup}`);
   }, [showRedeemPopup]);
 
   // useEffect to update the isMountedRef after the initial mount

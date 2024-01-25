@@ -31,6 +31,7 @@ import {
 } from '../../../common/types/geocoder';
 import { AlertColor } from '@mui/lab';
 import { APIError, handleError } from '@planet-sdk/common';
+import { useTenant } from '../../../common/Layout/TenantContext';
 import { ExtendedCountryCode } from '../../../common/types/country';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
@@ -62,7 +63,7 @@ export default function EditProfileForm() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const { user, setUser, token, contextLoaded, logoutUser } = useUserProps();
-
+  const { tenantConfig } = useTenant();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const { t, ready } = useTranslation('editProfile');
 
@@ -237,6 +238,7 @@ export default function EditProfileForm() {
 
             try {
               const res = await putAuthenticatedRequest<User>(
+                tenantConfig?.id,
                 `/app/profile`,
                 bodyToSend,
                 token,

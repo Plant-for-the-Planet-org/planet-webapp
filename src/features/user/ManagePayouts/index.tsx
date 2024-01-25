@@ -23,6 +23,7 @@ import AddBankAccount from './screens/AddBankAccount';
 import { useRouter } from 'next/router';
 import { handleError, APIError } from '@planet-sdk/common';
 import { BankAccount, PayoutMinAmounts } from '../../common/types/payouts';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 export enum ManagePayoutTabs {
   OVERVIEW = 'overview',
@@ -42,6 +43,7 @@ export default function ManagePayouts({
   isEdit,
 }: ManagePayoutsProps): ReactElement | null {
   const { t, ready, i18n } = useTranslation('managePayouts');
+  const { tenantConfig } = useTenant();
   const router = useRouter();
   const { setErrors } = useContext(ErrorHandlingContext);
   const { token, contextLoaded, user, logoutUser } = useUserProps();
@@ -53,7 +55,10 @@ export default function ManagePayouts({
   const fetchPayoutMinAmounts = useCallback(async () => {
     if (!payoutMinAmounts) {
       try {
-        const res = await getRequest<PayoutMinAmounts>('/app/payoutMinAmounts');
+        const res = await getRequest<PayoutMinAmounts>(
+          tenantConfig?.id,
+          '/app/payoutMinAmounts'
+        );
         setPayoutMinAmounts(res);
       } catch (err) {
         setErrors(handleError(err as APIError));
@@ -71,6 +76,7 @@ export default function ManagePayouts({
       setProgress && setProgress(70);
       try {
         const res = await getAuthenticatedRequest<BankAccount[]>(
+          tenantConfig?.id,
           `/app/accounts`,
           token,
           logoutUser

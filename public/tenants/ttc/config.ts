@@ -55,7 +55,7 @@ const config = {
     appTitle: 'Trillion Tree Campaign',
     description:
       "No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
-    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+    image: `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`,
     twitterHandle: '@trilliontrees',
     locale: 'en_US',
   },
