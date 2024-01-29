@@ -12,6 +12,9 @@ import WidgetIcon from '../../../../public/assets/images/icons/Sidebar/Widget';
 import SettingsIcon from '../../../../public/assets/images/icons/Sidebar/SettingsIcon';
 import TreeMapperIcon from '../../../../public/assets/images/icons/Sidebar/TreeMapperIcon';
 import styles from './DashboardLayout.module.scss';
+import LogoutButton from '../../../../src/app-src/dashboard/LogoutButton';
+import PlatformDocsLink from '../../../../src/app-src/dashboard/PlatformDocsLink';
+import SupportPin from '../../../../src/app-src/dashboard/SupportPin';
 
 const DashboardLayout: FC = ({ children }) => {
   const navMenu: NavMenuItemConfig[] = [
@@ -203,7 +206,12 @@ const DashboardLayout: FC = ({ children }) => {
             );
           })}
         </section>
-        <section className={styles.moreOptionsMenu}></section>
+        <section className={styles.moreOptionsMenu}>
+          {/* TODOO - Language Switcher */}
+          <SupportPin />
+          <PlatformDocsLink />
+          <LogoutButton />
+        </section>
       </nav>
       <main className={styles.dashboardPageWrapper}>{children}</main>
     </div>

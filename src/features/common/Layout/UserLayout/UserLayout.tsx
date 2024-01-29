@@ -50,7 +50,7 @@ interface NavLinkType {
   hasRelatedLinks?: boolean;
 }
 
-function LanguageSwitcher() {
+export function LanguageSwitcher() {
   const { i18n, ready } = useTranslation(['common', 'me']);
 
   const [language, setLanguage] = useState(i18n.language);
