@@ -1,0 +1,43 @@
+@import '../../theme/theme';
+.menuButton {
+    width: 150px;
+    background-color: #F2F2F2;
+    border-radius: 4px;
+    padding: 7px 9px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 10px;
+    font-weight: 700;
+    .label {
+        display: flex;
+        gap: 7px;
+        align-items: center;
+    }
+  
+}
+.dropdownIcon{
+    margin-right:8px;
+    display: flex;
+    align-items: center;
+}
+.itemsContainer {
+    margin-bottom: 8px;
+    padding:12px;
+    background-color: #fff;
+    width: 145px;
+    border-radius: 4px;
+    font-size: 10px;
+}
+.menuItem {
+    display: flex;
+    align-items: center;
+    padding: 6px 7px;
+    gap: 10px;
+}
+.selected {
+    border-radius: 4px;
+    background-color: #F2F2F2;
+    font-weight: 700;
+    padding: 6px 7px;
+}
