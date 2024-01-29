@@ -2,13 +2,7 @@ import React from 'react';
 
 function SettingsIcon() {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="22"
-      fill="none"
-      viewBox="0 0 20 22"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 22">
       <path
         fill="#130F26"
         d="M10.013 13.505c-1.69 0-3.055-1.316-3.055-2.968 0-1.653 1.366-2.98 3.055-2.98s3.023 1.327 3.023 2.98c0 1.652-1.334 2.968-3.023 2.968"

@@ -239,6 +239,9 @@
   display: flex;
   justify-content: center;
   color: $primaryFontColor;
+  > svg {
+    width: 20px;
+  }
   > svg > path {
     fill: $primaryFontColor;
   }
