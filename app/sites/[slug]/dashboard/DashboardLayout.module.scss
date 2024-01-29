@@ -1,0 +1,162 @@
+// To remove hardcoded colors, font colors, font family - replace with theme
+@import '../../../../src/theme/theme';
+
+.dashboardContainer {
+  display: flex;
+  background-color: $backgroundBase;
+  min-height: 100vh;
+}
+
+.dashboardSidebar {
+  position: fixed;
+  width: 300px;
+  top: 0;
+  left: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-x: hidden;
+  background-color: $backgroundColor;
+  box-shadow: rgba(150, 150, 150, $alpha: 0.2) 0px 0px 4px;
+  transition: width 0.3s ease-in-out;
+
+  a {
+    color: $primaryFontColor;
+  }
+
+  a,
+  button {
+    cursor: pointer;
+  }
+
+  @include smTabletView {
+    width: 109px;
+    &:hover {
+      width: 300px;
+      .navMenuText,
+      .optionsMenuText,
+      .navSubMenuItem {
+        display: flex;
+      }
+      .subMenuArrow,
+      .refreshPinButton {
+        display: block;
+      }
+    }
+  }
+}
+
+// TEMP
+.moreOptionsMenu {
+}
+
+// TEMP
+.dashboardPageWrapper {
+  margin-left: 250px;
+}
+
+.navMenuItem,
+.optionsMenuItemContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.navMenuItemHeader,
+.optionsMenuItem {
+  padding: 16px 20px;
+  text-align: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  color: $primaryFontColor;
+  font-family: $primaryFontFamily;
+  height: fit-content;
+
+  > svg {
+    width: 20px;
+  }
+
+  > svg > path,
+  > svg > g > path {
+    fill: $primaryFontColor;
+  }
+
+  &:hover {
+    color: $primaryColor;
+    > svg > path,
+    > svg > g > path {
+      fill: $primaryColor;
+    }
+  }
+}
+
+.navSubMenuItem {
+  padding: 16px 20px 16px 52px;
+
+  &:hover {
+    background-color: $backgroundColorDark;
+  }
+  @include smTabletView {
+    display: none;
+  }
+}
+
+.navMenuText,
+.navSubMenuText,
+.optionsMenuText {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: $fontSmall;
+  flex-grow: 1;
+  height: 20px;
+}
+
+.navMenuText,
+.optionsMenuText {
+  @include smTabletView {
+    display: none;
+  }
+}
+
+.navFlag {
+  background-color: $primaryColor;
+  color: $light;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.subMenuArrow {
+  svg {
+    g > path,
+    path {
+      fill: $primaryFontColor;
+    }
+  }
+  &.closed {
+    transform: rotate(-90deg);
+  }
+  &.open {
+    transform: rotate(-180deg);
+  }
+
+  @include smTabletView {
+    display: none;
+  }
+}
+
+.supportPin {
+  font-weight: bold;
+}
+
+.refreshPinButton {
+  &:hover {
+    color: $primaryColor;
+  }
+  @include smTabletView {
+    display: none;
+  }
+}
