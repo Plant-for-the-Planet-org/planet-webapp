@@ -10,6 +10,7 @@ import { PlantedTressBlackSvg } from '../../../../public/assets/images/ProfilePa
 import HomeTreeCounter from './temporaryFile/TreeCounterData';
 import theme from '../../../theme/themeProperties';
 import { _tenants } from '../../../utils/constants/HomeTreeCounter';
+import { useTenant } from '../Layout/TenantContext';
 
 const { primaryDarkColorX, light } = theme;
 
@@ -61,6 +62,7 @@ export default function TpoProfile(props: any) {
   const [progress, setProgress] = useState(0);
   const [isHomeTreeCounter, setIsHomeTreeCounter] = useState(false);
   const { t, i18n, ready } = useTranslation(['me']);
+  const { tenantConfig } = useTenant();
   useEffect(() => {
     let percentage = 0;
     if (props.target > 0) {
@@ -89,7 +91,7 @@ export default function TpoProfile(props: any) {
 
   useEffect(() => {
     const _tenantHasHomeTreeCounter = _tenants.some((tenant) => {
-      return process.env.TENANT === tenant;
+      return tenantConfig.config.slug === tenant;
     });
     if (_tenantHasHomeTreeCounter) setIsHomeTreeCounter(true);
   }, [isHomeTreeCounter]);
@@ -130,7 +132,7 @@ export default function TpoProfile(props: any) {
             {props.target !== undefined && props.target !== 0 && (
               <div>{'of'}</div>
             )}
-            {props && props.target !== undefined && props.target !== 0 && (
+            {props?.target !== 0 && (
               <div>
                 {localizedAbbreviatedNumber(
                   i18n.language,

@@ -14,6 +14,8 @@ import { handleError, APIError } from '@planet-sdk/common';
 import { Properties } from '../../common/types/project';
 import { Geometry } from '@turf/turf';
 import { useTenant } from '../../common/Layout/TenantContext';
+import DashboardView from '../../common/Layout/DashboardView';
+import SingleColumnView from '../../common/Layout/SingleColumnView';
 
 interface UserProjectsType {
   type: string;
@@ -126,50 +128,51 @@ export default function ProjectsContainer() {
   }, [contextLoaded, token]);
 
   return ready ? (
-    <div className="profilePage">
-      <div className="profilePageHeader">
+    <DashboardView
+      title={t('manageProjects:manageProject')}
+      subtitle={
         <div>
-          <div className={'profilePageTitle'}>
-            {t('manageProjects:manageProject')}
-          </div>
-          <div className={'profilePageSubTitle'}>
-            {t('manageProjects:descriptionForManageProjects')}
-          </div>
+          <p>{t('manageProjects:descriptionForManageProjects')}</p>
         </div>
-      </div>
-      <div className={styles.headerCTAs}>
-        <Link href="/profile/projects/new-project">
-          <button
-            // id={'addProjectBut'}
-            className="primaryButton"
-          >
-            {t('manageProjects:addProject')}
-          </button>
-        </Link>
-        <Link href="/profile/payouts">
-          <button className="primaryButton">
-            {t('manageProjects:managePayoutsButton')}
-          </button>
-        </Link>
-      </div>
+      }
+    >
+      <SingleColumnView>
 
-      <div className={styles.projectsContainer} id="projectsContainer">
-        {loader && <GlobeContentLoader />}
-        {projects?.length < 1 && !loader ? (
-          <div className={styles.projectNotFound}>
-            <LazyLoad>
-              <NotFound className={styles.projectNotFoundImage} />
-              <h5>{t('donate:noProjectsFound')}</h5>
-            </LazyLoad>
+          <div className={styles.headerCTAs}>
+            <Link href="/profile/projects/new-project">
+              <button
+                // id={'addProjectBut'}
+                className="primaryButton"
+              >
+                {t('manageProjects:addProject')}
+              </button>
+            </Link>
+            <Link href="/profile/payouts">
+              <button className="primaryButton">
+                {t('manageProjects:managePayoutsButton')}
+              </button>
+            </Link>
           </div>
-        ) : (
-          <div className={styles.listProjects}>
-            {projects.map((project, index) => {
-              return <SingleProject key={index} project={project.properties} />;
-            })}
+
+          <div className={styles.projectsContainer} id="projectsContainer">
+            {loader && <GlobeContentLoader />}
+            {projects?.length < 1 && !loader ? (
+              <div className={styles.projectNotFound}>
+                <LazyLoad>
+                  <NotFound className={styles.projectNotFoundImage} />
+                  <h5>{t('donate:noProjectsFound')}</h5>
+                </LazyLoad>
+              </div>
+            ) : (
+              <div className={styles.listProjects}>
+                {projects.map((project, index) => {
+                  return <SingleProject key={index} project={project.properties} />;
+                })}
+              </div>
+            )}
           </div>
-        )}
-      </div>
-    </div>
+
+      </SingleColumnView>
+    </DashboardView>
   ) : null;
 }

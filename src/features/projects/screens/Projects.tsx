@@ -188,7 +188,7 @@ function ProjectsList({
   );
 
   const showTopProjectsList =
-    process.env.NEXT_PUBLIC_SHOW_TOP_PROJECTS === 'true' &&
+    tenantConfig.config.slug !== 'salesforce' &&
     topProjects !== undefined &&
     topProjects.length > 0;
 

@@ -10,13 +10,11 @@ import getMapStyle from '../../../../../utils/maps/getMapStyle';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import TreesPlantedMarkers from './TreesPlantedMarkers';
 import ConservationMarkers from './ConservationMarkers';
-import RegisteredTreeMarker from './RegisteredTreeMarkers';
-import { ViewportProps } from '../../../../common/types/map';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import MyForestMapCredit from '../MicroComponents/MyForestMapCredit';
-import RestoredMarker from './RestorationMarkers';
+import { ViewportProps } from '../../../../common/types/map';
 
-const MyForestMap = (): ReactElement => {
+const MyForestMap = ({ profile }): ReactElement => {
   const mapRef: MutableRefObject<null> = useRef(null);
 
   const EMPTY_STYLE = {
@@ -24,7 +22,12 @@ const MyForestMap = (): ReactElement => {
     sources: {},
     layers: [],
   };
-  const { isConservedButtonActive, isTreePlantedButtonActive } = useMyForest();
+  const {
+    isConservedButtonActive,
+    isTreePlantedButtonActive,
+    setViewport,
+    viewport,
+  } = useMyForest();
   const [mapState, setMapState] = useState({
     mapStyle: EMPTY_STYLE,
     dragPan: true,
@@ -32,15 +35,7 @@ const MyForestMap = (): ReactElement => {
     minZoom: 1,
     maxZoom: 25,
   });
-  const defaultMapCenter = [0, 0];
-  const defaultZoom = 1;
-  const [viewport, setViewport] = useState<ViewportProps>({
-    width: '100%',
-    height: '100%',
-    latitude: defaultMapCenter[0],
-    longitude: defaultMapCenter[1],
-    zoom: defaultZoom,
-  });
+
   useEffect(() => {
     //loads the default mapstyle
     async function loadMapStyle() {
@@ -62,12 +57,8 @@ const MyForestMap = (): ReactElement => {
     )
       return true;
   };
-
   return (
-    <div
-      className={MyForestMapStyle.mapContainer}
-      style={{ position: 'relative' }}
-    >
+    <div className={MyForestMapStyle.mapContainer}>
       <MyForestMapCredit />
       <MapGL
         ref={mapRef}
@@ -77,15 +68,11 @@ const MyForestMap = (): ReactElement => {
       >
         {(_isBothButtonInActive() ||
           (isTreePlantedButtonActive && !isConservedButtonActive)) && (
-          <>
-            <TreesPlantedMarkers viewport={viewport} mapRef={mapRef} />
-            <RegisteredTreeMarker viewport={viewport} mapRef={mapRef} />
-            <RestoredMarker viewport={viewport} mapRef={mapRef} />
-          </>
+          <TreesPlantedMarkers mapRef={mapRef} profile={profile} />
         )}
         {(_isBothButtonInActive() ||
           (!isTreePlantedButtonActive && isConservedButtonActive)) && (
-          <ConservationMarkers viewport={viewport} mapRef={mapRef} />
+          <ConservationMarkers mapRef={mapRef} />
         )}
         <div className={MyForestMapStyle.navigationControlConatiner}>
           <NavigationControl showCompass={false} />

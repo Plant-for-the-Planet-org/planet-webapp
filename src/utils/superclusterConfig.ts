@@ -10,7 +10,7 @@ import { MapRef } from 'react-map-gl';
 
 const _clusterConfig = {
   radius: 40,
-  maxZoom: 4,
+  maxZoom: 3,
   map: (props: TestPointProps): TestClusterProps => ({
     totalTrees: props.quantity,
   }),
@@ -26,7 +26,7 @@ export const _getClusterGeojson = (
   viewState: ViewState,
   mapRef: RefObject<MapRef>,
   geoJson: PointFeature<TestPointProps>[],
-  clusterId
+  clusterId: string | number | undefined
 ) => {
   const supercluster = new Supercluster(_clusterConfig);
   supercluster.load(geoJson);
@@ -40,7 +40,7 @@ export const _getClusterGeojson = (
       return _clusters;
     }
     if (clusterId) {
-      return supercluster.getChildren(clusterId);
+      return supercluster.getLeaves(Number(clusterId));
     }
   }
 };

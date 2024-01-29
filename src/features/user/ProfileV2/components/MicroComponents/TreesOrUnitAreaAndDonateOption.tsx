@@ -20,6 +20,7 @@ interface TreesOrUnitAreaAndDonateOptionProps {
 }
 
 const TreesOrUnitAreaAndDonateOption = ({
+  publicProfileSlug,
   projectUnit,
   projectPurpose,
   quantity,
@@ -36,7 +37,14 @@ const TreesOrUnitAreaAndDonateOption = ({
   const { token } = useUserProps();
   const router = useRouter();
   const handleDonate = (id: string, tenant: string) => {
-    const url = getDonationUrl(tenant, id, token);
+    const url = getDonationUrl(
+      tenant,
+      id,
+      token,
+      undefined,
+      undefined,
+      publicProfileSlug ? publicProfileSlug : undefined
+    );
     embed === 'true'
       ? window.open(url, '_blank')
       : (window.location.href = url);

@@ -13,6 +13,11 @@ import { useTranslation } from 'next-i18next';
 import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { PopupData } from './maps/Markers';
 
+interface ShowDetailsProps {
+  coordinates: [number, number] | null;
+  show: boolean;
+}
+
 export default function ProjectsMap(): ReactElement {
   const {
     project,
@@ -63,8 +68,8 @@ export default function ProjectsMap(): ReactElement {
     loadMapStyle();
   }, []);
 
-  const [showDetails, setShowDetails] = React.useState<DetailsType>({
-    coordinates: [],
+  const [showDetails, setShowDetails] = React.useState<ShowDetailsProps>({
+    coordinates: null,
     show: false,
   });
 
@@ -186,8 +191,12 @@ export default function ProjectsMap(): ReactElement {
         </div>
         {showDetails.show && (
           <Popup
-            latitude={showDetails.coordinates[1]}
-            longitude={showDetails.coordinates[0]}
+            latitude={
+              showDetails?.coordinates ? showDetails?.coordinates[1] : 0
+            }
+            longitude={
+              showDetails?.coordinates ? showDetails?.coordinates[1] : 0
+            }
             closeButton={false}
             closeOnClick={false}
             onClose={() => setPopupData({ show: false })}

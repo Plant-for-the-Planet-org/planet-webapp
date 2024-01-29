@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState, ReactElement } from 'react';
+import { useEffect, useContext, ReactElement } from 'react';
 import myForestStyles from '../../../ProfileV2/styles/MyForest.module.scss';
 import dynamic from 'next/dynamic';
 import { useTranslation } from 'next-i18next';
@@ -49,13 +49,32 @@ export default function MyContributions({
     setAdditionalInfoRelatedToContributions,
     setIsTreePlantedButtonActive,
     setIsConservedButtonActive,
-    treePlantationProjectGeoJson,
-    setTreePlantGeoJson,
-    setRegisteredTreeGeoJson,
-    setRestorationGeoJson,
     setIsProcessing,
   } = useMyForest();
 
+  const _checkHigestNumberContribution = () => {
+    if (treePlantationContribution && conservationContribution) {
+      if (
+        treePlantationContribution?.pages[0].data.length >
+        conservationContribution?.pages[0].data.length
+      ) {
+        setIsTreePlantedButtonActive(true);
+      } else if (
+        conservationContribution?.pages[0].data.length >
+        treePlantationContribution?.pages[0].data.length
+      ) {
+        setIsConservedButtonActive(true);
+      } else if (
+        treePlantationContribution?.pages[0].data.length ==
+        conservationContribution?.pages[0].data.length
+      ) {
+        setIsTreePlantedButtonActive(true);
+      } else {
+        setIsConservedButtonActive(false);
+        setIsTreePlantedButtonActive(false);
+      }
+    }
+  };
   const _detailInfo = trpc.myForest.stats.useQuery(
     {
       profileId: `${profile.id}`,
@@ -176,66 +195,12 @@ export default function MyContributions({
   }, [_detailInfo.data, refetchData]);
 
   useEffect(() => {
-    const _checkHigestNumberContribution = () => {
-      if (treePlantationContribution && conservationContribution) {
-        if (
-          treePlantationContribution?.pages[0].data.length >
-          conservationContribution?.pages[0].data.length
-        ) {
-          setIsTreePlantedButtonActive(true);
-        } else if (
-          conservationContribution?.pages[0].data.length >
-          treePlantationContribution?.pages[0].data.length
-        ) {
-          setIsConservedButtonActive(true);
-        } else if (
-          treePlantationContribution?.pages[0].data.length ==
-          conservationContribution?.pages[0].data.length
-        ) {
-          setIsTreePlantedButtonActive(true);
-        } else {
-          setIsConservedButtonActive(false);
-          setIsTreePlantedButtonActive(false);
-        }
-      }
-    };
     _checkHigestNumberContribution();
   }, [treePlantationContribution, conservationContribution]);
 
-  useEffect(() => {
-    if (_treePlantedGeoJsonData.data) {
-      const _onlyRegisteredDonation = _treePlantedGeoJsonData.data.filter(
-        (singleContribution) => {
-          if (singleContribution?.properties?.contributionType === 'planting')
-            return singleContribution;
-        }
-      );
-      const _onlyNormalDonation = _treePlantedGeoJsonData.data.filter(
-        (singleContribution) => {
-          if (singleContribution?.properties?.contributionType !== 'planting')
-            return singleContribution;
-        }
-      );
-      if (_onlyNormalDonation) setTreePlantGeoJson(_onlyNormalDonation);
-      if (_onlyRegisteredDonation)
-        setRegisteredTreeGeoJson(_onlyRegisteredDonation);
-      if (_onlyNormalDonation) {
-        const _onlyRestorationGeojson = _onlyNormalDonation.filter(
-          (singleGeojson) => {
-            return (
-              singleGeojson.properties?.purpose === 'trees' &&
-              singleGeojson.properties?.plantProject?.unitType === 'm2'
-            );
-          }
-        );
-        if (_onlyRestorationGeojson)
-          setRestorationGeoJson(_onlyRestorationGeojson);
-      }
-    }
-  }, [treePlantationProjectGeoJson]);
   return ready && additionalInfoRelatedToContributions ? (
     <div className={myForestStyles.mapMainContainer}>
-      <MyTreesMap />
+      <MyTreesMap profile={profile} />
       <MyContributionCustomButton
         plantedTrees={additionalInfoRelatedToContributions?.treeCount}
         restoredArea={additionalInfoRelatedToContributions?.squareMeters}

@@ -13,7 +13,10 @@ export interface ProjectProps {
   projectInfo: Contributions | BouquetContribution | GiftContributionProps;
 }
 
-const ContributedToProject = ({ projectInfo }: ProjectProps): ReactElement => {
+const ContributedToProject = ({
+  projectInfo,
+  profile,
+}: ProjectProps): ReactElement => {
   return (
     <div className={myForestStyles.donationDetail}>
       <ProjectImage
@@ -49,6 +52,7 @@ const ContributedToProject = ({ projectInfo }: ProjectProps): ReactElement => {
           }
         />
         <TreesOrUnitAreaAndDonateOption
+          publicProfileSlug={profile?.slug}
           projectUnit={(projectInfo as Contributions)?.plantProject?.unit}
           projectPurpose={projectInfo?.purpose}
           quantity={
