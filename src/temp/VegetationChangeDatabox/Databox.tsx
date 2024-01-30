@@ -4,7 +4,11 @@ import Dropdown from './Dropdown';
 import BiomassChangeIcon from '../icons/BiomassChangeIcon';
 import VegetationSlider from './VegetationSlider';
 import NewInfoIcon from '../icons/NewInfoIcon';
-const Databox = ({ startYear }) => {
+
+interface Props {
+  startYear: number;
+}
+const Databox = ({ startYear }: Props) => {
   return (
     <div className={styles.databoxContainer}>
       <div className={styles.dropdownInfoContainer}>

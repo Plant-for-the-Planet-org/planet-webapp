@@ -8,7 +8,13 @@ import SpeciesDensityIcon from '../icons/SpeciesDensityIcon';
 import FloodingRiskIcon from '../icons/FloodingRiskIcon';
 import DropdownArrow from '../icons/DropdownArrow';
 
-const Dropdown = ({ labelIcon, labelTitle, isOpen }) => {
+interface Props {
+  labelIcon: React.JSX.Element;
+  labelTitle: string;
+  isOpen: boolean;
+}
+
+const Dropdown = ({ labelIcon, labelTitle, isOpen }: Props) => {
   const optionsList = [
     {
       icon: <BiomassChangeIcon />,
