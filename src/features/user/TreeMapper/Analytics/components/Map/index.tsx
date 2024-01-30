@@ -67,7 +67,7 @@ export const MapContainer = () => {
   const [plantLocations, setPlantLocations] = useState<PlantLocations | null>(
     null
   );
-  const [_plantLocation, setPlantLocation] = useState<PlantLocation | null>(
+  const [selectedLayer, setSelectedLayer] = useState<PlantLocation | null>(
     null
   );
   const [search, setSearch] = useState<string>('');
@@ -80,10 +80,6 @@ export const MapContainer = () => {
     minZoom: 1,
     maxZoom: 25,
   });
-
-  const [selectedLayer, setSelectedLayer] = useState<PlantLocation | null>(
-    null
-  );
 
   const [viewport, setViewport] = useState<ViewportProps>({
     width: '100%',
@@ -116,6 +112,10 @@ export const MapContainer = () => {
       // TODO: add search
     },
   });
+
+  useEffect(() => {
+    setSelectedLayer(null);
+  }, [project]);
 
   useEffect(() => {
     //loads the default mapstyle
@@ -181,7 +181,7 @@ export const MapContainer = () => {
             height: '500px',
           });
         }
-        setPlantLocation(res.data[0] ? res.data[0] : null);
+        setSelectedLayer(res.data[0] ? res.data[0] : null);
       }
     }
   };
@@ -212,8 +212,8 @@ export const MapContainer = () => {
     if (clickedFeatures.length > 0) {
       const clickedLayer = clickedFeatures[0];
       setSelectedLayer(clickedLayer);
+      console.log('clicked Layer', clickedLayer);
     }
-    // console.log('clickedFeatures', clickedFeatures[0]);
   };
 
   return ready ? (
@@ -269,7 +269,7 @@ export const MapContainer = () => {
       overrideBodyStyles={styles.body}
     >
       <div className={styles.mapContainer}>
-        {plantLocations && projectSites ? (
+        {plantLocations && projectSites && selectedLayer ? (
           <MapGL
             ref={mapRef}
             {...mapState}
@@ -312,6 +312,21 @@ export const MapContainer = () => {
             </Source>
             <div className={styles.navigationControlContainer}>
               <NavigationControl showCompass={false} />
+            </div>
+            <div className={styles.plantLocationDetailsContainer}>
+              <div className={styles.topContainer}>
+                <div className={styles.leftContainer}>
+                  <p className={styles.title}>Planted Trees</p>
+                  <p>3745 trees</p>
+                </div>
+                <div className={styles.rightContainer}>
+                  <p className={styles.title}>Planting Density</p>
+                  <p>7202.8 trees per ha</p>
+                </div>
+                <div></div>
+              </div>
+              <div className={styles.midContainer}></div>
+              <div className={styles.bottomContainer}></div>
             </div>
           </MapGL>
         ) : (
