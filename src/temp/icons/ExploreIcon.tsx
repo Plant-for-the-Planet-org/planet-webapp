@@ -1,4 +1,4 @@
-const ExploreIcon = () => {
+export const ExploreIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -21,5 +21,3 @@ const ExploreIcon = () => {
     </svg>
   );
 };
-
-export default ExploreIcon;
