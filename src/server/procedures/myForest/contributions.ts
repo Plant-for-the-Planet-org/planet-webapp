@@ -30,6 +30,7 @@ export const contributions = procedure
     }
 
     const _cursor = cursor ? cursor.split(',') : undefined;
+
     const contributionsCursor =
       _cursor?.[0] !== 'undefined' && _cursor?.[0] !== 'null'
         ? _cursor?.[0]
@@ -151,7 +152,7 @@ export const contributions = procedure
         plantDate: 'desc',
       },
       skip: skip,
-      take: limit + 1,
+      take: _cursor && _cursor[0] === 'undefined' ? 0 : limit + 1,
     });
 
     const gifts = await prisma.gift.findMany({
@@ -180,7 +181,7 @@ export const contributions = procedure
         plantDate: 'desc',
       },
       skip: skip,
-      take: limit + 1,
+      take: _cursor && _cursor[1] === 'undefined' ? 0 : limit + 1,
     });
 
     // There are gifts in the database that don't have an image, so we need to fetch them separately here
