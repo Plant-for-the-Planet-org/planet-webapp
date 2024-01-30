@@ -20,6 +20,7 @@ const StyledSlider = styled(Slider)(() => {
       marginTop: 8,
       background: '#fff',
       border: '1px solid #219653',
+      borderRadius: '30%',
       '&:hover, &.Mui-focusVisible': {
         boxShadow: 'none',
       },
