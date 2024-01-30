@@ -18,6 +18,8 @@ const StyledSlider = styled(Slider)(() => {
       width: 11.74,
       height: 11.74,
       marginTop: 8,
+      background: '#fff',
+      border: '1px solid #219653',
       '&:hover, &.Mui-focusVisible': {
         boxShadow: 'none',
       },
@@ -42,6 +44,9 @@ const StyledSlider = styled(Slider)(() => {
           color: '#4F4F4F',
         },
       },
+    },
+    '@media (pointer: coarse)': {
+      padding: 0, // Reset the styles for the @media (pointer: coarse)
     },
   };
 });
