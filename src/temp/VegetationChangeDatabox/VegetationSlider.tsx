@@ -48,6 +48,9 @@ const StyledSlider = styled(Slider)(() => {
     '@media (pointer: coarse)': {
       padding: 0, // Reset the styles for the @media (pointer: coarse)
     },
+    '@media screen and (max-width: 481px)': {
+      width: 154.3,
+    },
   };
 });
 
@@ -74,7 +77,6 @@ const VegetationSlider = ({ position }: Props) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          width: 184,
           fontSize: 8,
           color: '#4F4F4F',
           fontWeight: 600,

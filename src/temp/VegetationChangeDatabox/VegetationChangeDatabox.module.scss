@@ -82,3 +82,20 @@
     right: 6px;
     top: 1px;
 }
+@include xsPhoneView {
+    .menuButton {
+        width: 121.5px;
+        height: 21px;
+        font-size: 8px;
+        padding: 5px 8px;
+    }
+    .divider {
+        left: 159px;
+    }
+    .sliderInfoContainer {
+        padding: 6px 6px 7px 0px;
+    }
+    .itemsContainer {
+        bottom: 85px;
+    }
+}
