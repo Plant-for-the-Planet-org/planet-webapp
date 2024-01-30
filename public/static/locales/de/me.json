@@ -282,5 +282,11 @@
   "numberOfContributions": "{{total}} Beiträge",
   "donateAgain": "Nochmal spenden",
   "membershipCtaButtonText": "Jetzt mitmachen",
-  "membershipCtaCopy": "Unterstütze uns und <2>WERDE MITGLIED</2>"
+  "membershipCtaCopy": "Unterstütze uns und <2>WERDE MITGLIED</2>",
+  "shareUrl": "Teile URL",
+  "zoomIn": "Für weitere Details heranzoomen",
+  "totalDonation_one": "{{count}} Spende ",
+  "totalDonation_other": "{{count}} Spenden ",
+  "totalProject_one": "für {{count}} Projekt",
+  "totalProject_other": "für {{count}} Projekte"
 }
