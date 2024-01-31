@@ -3,7 +3,17 @@ import SiteIcon from '../icons/SiteIcon';
 import styles from './SiteDropdown.module.scss';
 import DropdownArrow from '../icons/DropdownArrow';
 
-const SiteDropdown = ({ selectedOption, siteList, isOpen }) => {
+interface SiteType {
+  name: string;
+  area: string;
+}
+interface Props {
+  siteList: SiteType[];
+  selectedOption: SiteType;
+  isOpen: boolean;
+}
+
+const SiteDropdown = ({ selectedOption, siteList, isOpen }: Props) => {
   const [selectedSite, setSelectedSite] = useState(selectedOption);
   const [isMenuOpen, setIsMenuOpen] = useState(isOpen);
 
