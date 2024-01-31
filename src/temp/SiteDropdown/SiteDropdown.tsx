@@ -5,7 +5,7 @@ import DropdownArrow from '../icons/DropdownArrow';
 
 interface SiteType {
   name: string;
-  area: string;
+  area: Number;
 }
 interface Props {
   siteList: SiteType[];
@@ -39,7 +39,7 @@ const SiteDropdown = ({ selectedOption, siteList, isOpen }: Props) => {
                 Site {getId(selectedSite.name)} of {siteList.length}
               </p>
               <span> • </span>
-              <p>{selectedSite.area}</p>
+              <p>{selectedSite.area} ha</p>
             </div>
             <p className={styles.siteName}>{selectedSite.name}</p>
           </div>
@@ -59,7 +59,7 @@ const SiteDropdown = ({ selectedOption, siteList, isOpen }: Props) => {
                 onClick={() => setSelectedSite(site)}
               >
                 <p>{site.name}</p>
-                <p>{site.area}</p>
+                <p>{site.area}ha</p>
               </div>
               <div
                 className={
