@@ -258,7 +258,12 @@ export const contributionsGeoJson = procedure
           purpose: gift.purpose,
           quantity: gift.value,
           giver: gift.metadata.giver,
-          project: { ...gift.metadata.project, image: image },
+          project: {
+            ...gift.metadata.project,
+            image: JSON.parse(JSON.stringify(gift.metadata)).project.image
+              ? JSON.parse(JSON.stringify(gift.metadata)).project.image
+              : image,
+          },
           created: gift.created,
           totalContributions: 1,
           _type: 'gift',
