@@ -15,12 +15,12 @@ const config = {
     title: 'Interact Club Wald',
     description:
       'Bäume pflanzen ist ein Generationenverbindendes, friedensstiftendes Projekt das uns Menschen und besonders jungen Menschen hoffnung gibt und auch Mut. ',
-    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+    image: `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`,
     twitterHandle: '',
     locale: 'de_DE',
   },
   home: {
-    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+    image: `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`,
   },
   header: {
     isSecondaryTenant: true,

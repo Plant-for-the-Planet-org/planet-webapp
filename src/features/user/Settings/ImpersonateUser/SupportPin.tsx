@@ -4,6 +4,7 @@ import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
 import { useContext } from 'react';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface SupportPin {
   supportPin: string;
@@ -12,13 +13,15 @@ interface SupportPin {
 const SupportPin = () => {
   const { token, user, setUser } = useContext(UserPropsContext);
   const { t } = useTranslation('me');
-
+  const { tenantConfig } = useTenant();
   const handleNewPin = async () => {
     try {
       const response = await putAuthenticatedRequest<SupportPin>(
+        tenantConfig?.id,
         '/app/profile/supportPin',
         undefined,
-        token
+        token,
+        undefined
       );
       if (response) {
         const updateUserData = { ...user };

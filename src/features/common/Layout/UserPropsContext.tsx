@@ -8,6 +8,7 @@ import React, { FC, useContext } from 'react';
 import { getAccountInfo } from '../../../utils/apiRequests/api';
 import { User } from '@planet-sdk/common/build/types/user';
 import { SetState } from '../types/common';
+import { useTenant } from './TenantContext';
 
 interface UserPropsContextInterface {
   contextLoaded: boolean;
@@ -44,7 +45,7 @@ export const UserPropsProvider: FC = ({ children }) => {
     user,
     error,
   } = useAuth0();
-
+  const { tenantConfig } = useTenant();
   const [contextLoaded, setContextLoaded] = React.useState(false);
   const [token, setToken] = React.useState<string | null>(null);
   const [profile, setUser] = React.useState<User | null>(null);
@@ -71,7 +72,7 @@ export const UserPropsProvider: FC = ({ children }) => {
   }, [isLoading, isAuthenticated]);
 
   const logoutUser = (
-    returnUrl: string | undefined = `${process.env.NEXTAUTH_URL}/`
+    returnUrl: string | undefined = `${window.location.origin}/`
   ) => {
     localStorage.removeItem('impersonationData');
     localStorage.removeItem('redirectLink');
@@ -82,7 +83,8 @@ export const UserPropsProvider: FC = ({ children }) => {
     setContextLoaded(false);
     try {
       // TODO: Add error handling after figuring out the nature of getAccountInfo function call with impersonatedEmail
-      const res = await getAccountInfo(token);
+
+      const res = await getAccountInfo(tenantConfig?.id, token);
       if (res.status === 200) {
         const resJson = await res.json();
         setUser(resJson as User);
@@ -97,7 +99,7 @@ export const UserPropsProvider: FC = ({ children }) => {
         setUser(null);
         setToken(null);
         loginWithRedirect({
-          redirectUri: `${process.env.NEXTAUTH_URL}/login`,
+          redirectUri: `${window.location.origin}/login`,
           ui_locales: localStorage.getItem('language') || 'en',
         });
       } else if (res.status === 403) {

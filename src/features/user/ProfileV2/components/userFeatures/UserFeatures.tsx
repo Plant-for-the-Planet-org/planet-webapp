@@ -2,7 +2,7 @@ import myProfileStyle from '../../styles/MyProfile.module.scss';
 import { Button } from '@mui/material';
 import { SupportSvg } from '../../../../../../public/assets/images/ProfilePageIcons';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import tenantConfig from '../../../../../../tenant.config';
+import { useTenant } from '../../../../common/Layout/TenantContext';
 import { useRouter } from 'next/router';
 import Share from './Share';
 import { UserFeaturesProps } from '../../../../common/types/profile';
@@ -23,6 +23,7 @@ const UserFeatures = ({
   showSocialButton,
   setShowSocialButton,
 }: UserFeaturesProps) => {
+  const { tenantConfig } = useTenant();
   const { light } = theme;
   const router = useRouter();
   const { t } = useTranslation(['me']);

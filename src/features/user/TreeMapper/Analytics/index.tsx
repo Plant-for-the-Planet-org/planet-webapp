@@ -9,17 +9,20 @@ import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { APIError, handleError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 const Analytics = () => {
   const { t, ready } = useTranslation('treemapperAnalytics');
   const { setProjectList, setProject } = useAnalytics();
   const { token, logoutUser } = useUserProps();
+  const { tenantConfig } = useTenant();
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
   const fetchProjects = async () => {
     try {
       // TODO - update project type, this does not match completely
       const res = await getAuthenticatedRequest<MapProject[]>(
+        tenantConfig?.id,
         '/app/profile/projects?scope=map',
         token,
         logoutUser

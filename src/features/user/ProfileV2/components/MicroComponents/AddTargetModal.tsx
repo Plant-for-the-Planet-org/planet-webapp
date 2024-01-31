@@ -10,6 +10,7 @@ import { ThemeContext } from '../../../../../theme/themeContext';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
+import { useTenant } from '../../../../common/Layout/TenantContext';
 import CancelIcon from '../../../../../../public/assets/images/icons/CancelIcon';
 import projectContainerStyle from '../../styles/ProjectsContainer.module.scss';
 
@@ -36,6 +37,7 @@ export default function AddTargetModal({
     mode: 'onBlur',
     defaultValues: { target: user?.score.target },
   });
+  const { tenantConfig } = useTenant();
   const { theme } = React.useContext(ThemeContext);
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
@@ -52,6 +54,7 @@ export default function AddTargetModal({
 
       try {
         const res = await putAuthenticatedRequest(
+          tenantConfig?.id,
           `/app/profile`,
           bodyToSend,
           token,

@@ -187,6 +187,30 @@ export const contributionsGeoJson = procedure
       WHERE p.guid = ${profileId} AND g.purpose IN (${Prisma.join(purposes)})
     `;
 
+    const giftProjectsWithoutImage =
+      giftData.length > 0
+        ? giftData
+            .filter(
+              (gift) =>
+                !JSON.parse(JSON.stringify(gift.metadata))?.project?.image
+            )
+            .map(
+              (gift) => JSON.parse(JSON.stringify(gift.metadata))?.project?.id
+            )
+        : [];
+
+    const projectsWithImage = await prisma.project.findMany({
+      select: {
+        guid: true,
+        image: true,
+      },
+      where: {
+        guid: {
+          in: giftProjectsWithoutImage,
+        },
+      },
+    });
+
     const contributions = data.map((contribution) => {
       return {
         type: 'Feature',
@@ -222,6 +246,11 @@ export const contributionsGeoJson = procedure
     }) as Feature[];
 
     const gifts = giftData.map((gift) => {
+      const image = projectsWithImage.find(
+        (project) =>
+          project.guid ===
+          JSON.parse(JSON.stringify(gift.metadata))?.project?.id
+      )?.image;
       return {
         type: 'Feature',
         properties: {
@@ -229,7 +258,7 @@ export const contributionsGeoJson = procedure
           purpose: gift.purpose,
           quantity: gift.value,
           giver: gift.metadata.giver,
-          project: gift.metadata.project,
+          project: { ...gift.metadata.project, image: image },
           created: gift.created,
           totalContributions: 1,
           _type: 'gift',

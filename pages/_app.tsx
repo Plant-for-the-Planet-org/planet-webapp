@@ -6,7 +6,7 @@ import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
 import React from 'react';
 import TagManager from 'react-gtm-module';
 import Router from 'next/router';
-import { AppProps } from 'next/app';
+import App, { AppProps, AppContext, AppInitialProps } from 'next/app';
 import { Auth0Provider } from '@auth0/auth0-react';
 import '../src/features/projects/styles/MapPopup.scss';
 import '../src/theme/global.scss';
@@ -19,7 +19,6 @@ import { RewriteFrames } from '@sentry/integrations';
 import getConfig from 'next/config';
 import { useRouter } from 'next/router';
 import { storeConfig } from '../src/utils/storeConfig';
-import tenantConfig from '../tenant.config';
 import { browserNotCompatible } from '../src/utils/browsercheck';
 import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
 import ProjectPropsProvider from '../src/features/common/Layout/ProjectPropsContext';
@@ -37,6 +36,15 @@ import { appWithTranslation } from 'next-i18next';
 import nextI18NextConfig from '../next-i18next.config.js';
 import { trpc } from '../src/utils/trpc';
 import MapHolder from '../src/features/projects/components/maps/MapHolder';
+import { TenantProvider } from '../src/features/common/Layout/TenantContext';
+import {
+  DEFAULT_TENANT,
+  getTenantConfig,
+  getTenantSlug,
+} from '../src/utils/multiTenancy/helpers';
+import { Tenant } from '@planet-sdk/common/build/types/tenant';
+
+type AppOwnProps = { tenantConfig: Tenant };
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -108,34 +116,33 @@ const PlanetWeb = ({
   Component,
   pageProps,
   emotionCache = clientSideEmotionCache,
-}: MyAppProps) => {
+}: MyAppProps & AppOwnProps) => {
   const { i18n } = useTranslation();
   const router = useRouter();
   const [isMap, setIsMap] = React.useState(false);
   const [currencyCode, setCurrencyCode] = React.useState('');
   const [browserCompatible, setBrowserCompatible] = React.useState(false);
 
-  const config = tenantConfig();
+  const { tenantConfig } = pageProps;
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
   };
 
-  if (
-    process.env.VERCEL_URL &&
-    process.env.VERCEL_URL !== 'localhost' &&
-    typeof window !== 'undefined'
-  ) {
-    if (process.env.VERCEL_URL !== window.location.hostname) {
-      router.replace(`https://${process.env.VERCEL_URL}`);
+  if (process.env.NODE_ENV !== 'production') {
+    if (process.env.VERCEL_URL && typeof window !== 'undefined') {
+      if (process.env.VERCEL_URL !== window.location.hostname) {
+        router.replace(`https://${process.env.VERCEL_URL}`);
+      }
     }
   }
 
   const [initialized, setInitialized] = React.useState(false);
 
   React.useEffect(() => {
-    storeConfig();
+    storeConfig(tenantConfig);
   }, []);
+
   React.useEffect(() => {
     if (i18n && i18n.isInitialized) {
       setInitialized(true);
@@ -157,7 +164,10 @@ const PlanetWeb = ({
     if (
       router.pathname === '/' ||
       router.pathname === '/[p]' ||
-      router.pathname === '/[p]/[id]'
+      router.pathname === '/[p]/[id]' ||
+      router.pathname === '/sites/[slug]' ||
+      router.pathname === '/sites/[slug]/[p]' ||
+      router.pathname === '/sites/[slug]/[p]/[id]'
     ) {
       setIsMap(true);
     } else {
@@ -217,76 +227,112 @@ const PlanetWeb = ({
   if (browserCompatible) {
     return <BrowserNotSupported />;
   } else {
-    return (
+    return tenantConfig ? (
       <CacheProvider value={emotionCache}>
         <ErrorHandlingProvider>
-          <QueryParamsProvider>
-            <div>
-              <div
-                style={
-                  showVideo &&
-                  (config.tenantName === 'planet' ||
-                    config.tenantName === 'ttc')
-                    ? {}
-                    : { display: 'none' }
-                }
-              >
-                {config.tenantName === 'planet' ||
-                config.tenantName === 'ttc' ? (
-                  <VideoContainer setshowVideo={setshowVideo} />
-                ) : (
-                  <></>
-                )}
-              </div>
-
-              <div
-                style={
-                  showVideo &&
-                  (config.tenantName === 'planet' ||
-                    config.tenantName === 'ttc')
-                    ? { display: 'none' }
-                    : {}
-                }
-              >
-                <Auth0Provider
-                  domain={process.env.AUTH0_CUSTOM_DOMAIN}
-                  clientId={process.env.AUTH0_CLIENT_ID}
-                  redirectUri={process.env.NEXTAUTH_URL}
-                  audience={'urn:plant-for-the-planet'}
-                  cacheLocation={'localstorage'}
-                  onRedirectCallback={onRedirectCallback}
-                  useRefreshTokens={true}
+          <TenantProvider>
+            <QueryParamsProvider>
+              <div>
+                <div
+                  style={
+                    showVideo &&
+                    (tenantConfig.config.slug === 'planet' ||
+                      tenantConfig.config.slug === 'ttc')
+                      ? {}
+                      : { display: 'none' }
+                  }
                 >
-                  <ThemeProvider>
-                    <MuiThemeProvider theme={materialTheme}>
-                      <CssBaseline />
-                      <UserPropsProvider>
-                        <PlanetCashProvider>
-                          <PayoutsProvider>
-                            <Layout>
-                              <ProjectPropsProvider>
-                                <BulkCodeProvider>
-                                  <AnalyticsProvider>
-                                    {isMap ? (
-                                      <MapHolder setshowVideo={setshowVideo} />
-                                    ) : null}
-                                    <Component {...ProjectProps} />
-                                  </AnalyticsProvider>
-                                </BulkCodeProvider>
-                              </ProjectPropsProvider>
-                            </Layout>
-                          </PayoutsProvider>
-                        </PlanetCashProvider>
-                      </UserPropsProvider>
-                    </MuiThemeProvider>
-                  </ThemeProvider>
-                </Auth0Provider>
+                  {tenantConfig.config.slug === 'planet' ||
+                  tenantConfig.config.slug === 'ttc' ? (
+                    <VideoContainer setshowVideo={setshowVideo} />
+                  ) : (
+                    <></>
+                  )}
+                </div>
+
+                <div
+                  style={
+                    showVideo &&
+                    (tenantConfig.config.slug === 'planet' ||
+                      tenantConfig.config.slug === 'ttc')
+                      ? { display: 'none' }
+                      : {}
+                  }
+                >
+                  <Auth0Provider
+                    domain={process.env.AUTH0_CUSTOM_DOMAIN!}
+                    clientId={
+                      tenantConfig.config?.auth0ClientId
+                        ? tenantConfig.config.auth0ClientId
+                        : process.env.AUTH0_CLIENT_ID
+                    }
+                    redirectUri={
+                      typeof window !== 'undefined'
+                        ? window.location.origin
+                        : ''
+                    }
+                    audience={'urn:plant-for-the-planet'}
+                    cacheLocation={'localstorage'}
+                    onRedirectCallback={onRedirectCallback}
+                    useRefreshTokens={true}
+                  >
+                    <ThemeProvider>
+                      <MuiThemeProvider theme={materialTheme}>
+                        <CssBaseline />
+                        <UserPropsProvider>
+                          <PlanetCashProvider>
+                            <PayoutsProvider>
+                              <Layout>
+                                <ProjectPropsProvider>
+                                  <BulkCodeProvider>
+                                    <AnalyticsProvider>
+                                      {isMap ? (
+                                        <MapHolder
+                                          setshowVideo={setshowVideo}
+                                        />
+                                      ) : null}
+                                      <Component {...ProjectProps} />
+                                    </AnalyticsProvider>
+                                  </BulkCodeProvider>
+                                </ProjectPropsProvider>
+                              </Layout>
+                            </PayoutsProvider>
+                          </PlanetCashProvider>
+                        </UserPropsProvider>
+                      </MuiThemeProvider>
+                    </ThemeProvider>
+                  </Auth0Provider>
+                </div>
               </div>
-            </div>
-          </QueryParamsProvider>
+            </QueryParamsProvider>
+          </TenantProvider>
         </ErrorHandlingProvider>
       </CacheProvider>
+    ) : (
+      <></>
     );
   }
 };
+
+PlanetWeb.getInitialProps = async (
+  context: AppContext
+): Promise<AppOwnProps & AppInitialProps> => {
+  const ctx = await App.getInitialProps(context);
+
+  const _tenantSlug = await getTenantSlug(
+    context.ctx.req?.headers.host as string
+  );
+
+  const tenantSlug = _tenantSlug ?? DEFAULT_TENANT;
+
+  const tenantConfig = await getTenantConfig(tenantSlug);
+
+  const pageProps = {
+    ...ctx.pageProps,
+    tenantConfig,
+  };
+
+  return { ...ctx, pageProps } as AppOwnProps & AppInitialProps;
+};
+
 export default trpc.withTRPC(appWithTranslation(PlanetWeb, nextI18NextConfig));

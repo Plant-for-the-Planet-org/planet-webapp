@@ -2,17 +2,16 @@ import React, { ReactElement } from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
 import { useTranslation } from 'next-i18next';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
-import tenantConfig from '../../../../../tenant.config';
 import DarkModeSwitch from '../../../common/Layout/DarkModeSwitch.tsx';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
-
-const config = tenantConfig();
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface Props {
   setCurrencyCode: Function;
 }
 
 export default function Credits({ setCurrencyCode }: Props): ReactElement {
+  const { tenantConfig } = useTenant();
   const { i18n, t } = useTranslation(['common', 'maps']);
   const [selectedCurrency, setSelectedCurrency] = React.useState('EUR');
   const [selectedCountry, setSelectedCountry] = React.useState('DE');
@@ -44,7 +43,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
   return (
     <>
       <div className={styles.lngSwitcher + ' mapboxgl-map'}>
-        {config.darkModeEnabled && <DarkModeSwitch />}
+        {tenantConfig.config.darkModeEnabled && <DarkModeSwitch />}
         {isEmbed ? null : (
           <div
             onClick={() => {
@@ -56,7 +55,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
             } • ${selectedCurrency}`}
           </div>
         )}
-        {(process.env.TENANT === 'ttc' || process.env.TENANT === 'planet') &&
+        {(tenantConfig.config.slug === 'ttc' || tenantConfig.config.slug === 'planet') &&
         !isEmbed ? (
           <a
             rel="noopener noreferrer"

@@ -21,7 +21,7 @@ import {
   usePopupState,
 } from 'material-ui-popup-state/hooks';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
-import tenantConfig from '../../../../tenant.config';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 interface Props {
   project: TreeProjectConcise | ConservationProjectConcise;
@@ -35,6 +35,7 @@ export default function PopupProject({
   const { t, i18n, ready } = useTranslation(['donate', 'common', 'country']);
   const { token } = useUserProps();
   const { embed } = React.useContext(ParamsContext);
+  const { tenantConfig } = useTenant();
 
   const ImageSource = project.image
     ? getImageUrl('project', 'medium', project.image)
@@ -50,7 +51,7 @@ export default function PopupProject({
   }
 
   const handleDonationOpen = () => {
-    const url = getDonationUrl(null, project.slug, token);
+    const url = getDonationUrl(tenantConfig.id, project.slug, token);
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
 
@@ -70,8 +71,6 @@ export default function PopupProject({
     variant: 'popover',
     popupId: 'popupProjectInfoPopover',
   });
-
-  const config = tenantConfig();
 
   return ready ? (
     <div className={'singleProject'}>
@@ -180,7 +179,7 @@ export default function PopupProject({
                 }}
               >
                 <div className="projectInfoPopupContainer">
-                  {config.tenantName === 'salesforce'
+                  {tenantConfig.config.slug === 'salesforce'
                     ? `${t('common:salesforceDisabledDonateButtonText')}`
                     : `${t('common:disabledDonateButtonText')}`}
                 </div>

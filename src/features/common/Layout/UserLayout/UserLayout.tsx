@@ -328,9 +328,7 @@ const UserLayout: FC = ({ children }) => {
         {
           title: t('me:dataExplorer'),
           path: '/profile/treemapper/data-explorer',
-          hideItem: !(
-            process.env.ENABLE_ANALYTICS === 'true' && user?.type === 'tpo'
-          ),
+          hideItem: !(process.env.ENABLE_ANALYTICS && user?.type === 'tpo'),
         },
       ],
     },
@@ -459,7 +457,7 @@ const UserLayout: FC = ({ children }) => {
       //checks whether user is login
       if (router.asPath) {
         if (router.query.slug) {
-          router.push(`${router.pathname}`);
+          // router.push(`${router.pathname.replace('/_sites/[slug]', '')}`);
         } else {
           localStorage.setItem('redirectLink', router.asPath);
         }
@@ -541,7 +539,7 @@ const UserLayout: FC = ({ children }) => {
             //logout user
             onClick={() => {
               localStorage.removeItem('impersonationData');
-              logoutUser(`${process.env.NEXTAUTH_URL}/`);
+              logoutUser(`${window.location.origin}/`);
             }}
           >
             <LogoutIcon />

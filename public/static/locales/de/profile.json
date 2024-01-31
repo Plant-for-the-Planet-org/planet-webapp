@@ -1,0 +1,37 @@
+{
+  "myProfile": {
+    "memberSince": "Mitglied seit {{date}}",
+    "userDescription": "{{bio}}",
+    "redeem": "Einlösen",
+    "registerTree": "Baum registrieren",
+    "share": "Teilen"
+  },
+  "myPublicProfile": {
+    "support": "Support",
+    "link": "Link"
+  },
+  "myForestMap": {
+    "plantedTree_one": "{{count}} Baum",
+    "plantedTree_other": "{{count}} Bäume",
+    "plantedTrees": "Gepflanzte Bäume",
+    "projects": "Projekte",
+    "restored": "Wiederhergestellt",
+    "conservation": "Naturschutz",
+    "countries": "Länder",
+    "donations": "Spenden",
+    "area": "{{areaConserved}}  m²"
+  },
+  "myTreeCounter": {
+    "treesPlanted": "Bäume gepflanzt",
+    "editTarget": "Ziel bearbeiten"
+  },
+  "myContributions": {
+    "treesPlantedAndAreaRestored": "Bäume gepflanzt & Gebiete wiederhergestellt",
+    "treeRegistered_one": "{{noOfTrees}} Baum registriert",
+    "treeRegistered_plural": "{{noOfTrees}} Bäume registriert",
+    "receivedFrom": "Empfangen von {{name}}",
+    "loadMoreContribution": "Lade weitere Beiträge",
+    "loadingContribution": "Lade Beiträge....",
+    "donate": "Spenden"
+  }
+}
