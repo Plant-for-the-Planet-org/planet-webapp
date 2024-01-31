@@ -30,6 +30,7 @@ import SitesSelectorAutocomplete from './components/SiteSelectorAutocomplete';
 import { MuiAutoComplete } from '../../../../../common/InputTypes/MuiAutoComplete';
 import styles from './index.module.scss';
 import getMapStyle from '../../../../../../utils/maps/getMapStyle';
+import InfoIconSvg from './components/InfoIconSvg';
 
 const EMPTY_STYLE = {
   version: 8,
@@ -67,9 +68,9 @@ export const MapContainer = () => {
   const [plantLocations, setPlantLocations] = useState<PlantLocations | null>(
     null
   );
-  const [selectedLayer, setSelectedLayer] = useState<PlantLocation | null>(
-    null
-  );
+  const [selectedLayer, setSelectedLayer] = useState<
+    PlantLocation['properties'] | null
+  >(null);
   const [search, setSearch] = useState<string>('');
 
   const mapRef: MutableRefObject<null> = useRef(null);
@@ -181,7 +182,7 @@ export const MapContainer = () => {
             height: '500px',
           });
         }
-        setSelectedLayer(res.data[0] ? res.data[0] : null);
+        setSelectedLayer(res.data[0] ? res.data[0].properties : null);
       }
     }
   };
@@ -211,7 +212,7 @@ export const MapContainer = () => {
     const clickedFeatures = event.features;
     if (clickedFeatures.length > 0) {
       const clickedLayer = clickedFeatures[0];
-      setSelectedLayer(clickedLayer);
+      setSelectedLayer(clickedLayer.properties);
       console.log('clicked Layer', clickedLayer);
     }
   };
@@ -292,7 +293,7 @@ export const MapContainer = () => {
                 paint={{
                   'line-color': [
                     'case',
-                    ['==', ['get', 'guid'], selectedLayer?.properties.guid],
+                    ['==', ['get', 'guid'], selectedLayer?.guid],
                     '#007A49',
                     'transparent',
                   ],
@@ -313,21 +314,51 @@ export const MapContainer = () => {
             <div className={styles.navigationControlContainer}>
               <NavigationControl showCompass={false} />
             </div>
-            <div className={styles.plantLocationDetailsContainer}>
-              <div className={styles.topContainer}>
-                <div className={styles.leftContainer}>
-                  <p className={styles.title}>Planted Trees</p>
-                  <p>3745 trees</p>
+            {selectedLayer && (
+              <div className={styles.plantLocationDetailsContainer}>
+                <div className={styles.content}>
+                  <div className={styles.topContainer}>
+                    <div className={styles.leftContainer}>
+                      <p className={styles.title}>Planted Trees</p>
+                      <p>{selectedLayer.treeCount} trees</p>
+                    </div>
+                    <div className={styles.rightContainer}>
+                      <div className={styles.title}>
+                        <p>Planting Density</p>{' '}
+                        <p className={styles.infoIcon}>
+                          <InfoIconSvg />
+                          {/* <div className={styles.infoTooltip}>
+                            Additional information goes here
+                          </div> */}
+                        </p>
+                      </div>
+                      <p>{selectedLayer.density.toFixed(4)} trees per ha</p>
+                    </div>
+                  </div>
+                  <div className={styles.midContainer}>
+                    <div className={styles.title}>Species Planted (7)</div>
+                    <div className={styles.speciesContainer}>
+                      <div className={styles.individualSpeciesContainer}>
+                        <div className={styles.speciesName}>
+                          Aeschynomene pararubrofarinacea
+                        </div>
+                        <div className={styles.count}>216</div>
+                        <div className={styles.totalPercentage}>50%</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={styles.bottomContainer}>
+                    <div className={styles.title}>Species Planted (7)</div>
+                    <div className={styles.sampleTreeContainer}>
+                      <p className={styles.title}>
+                        1. Aeschynomene pararubrofarinacea
+                      </p>
+                      <p>Tag #18091 • 0.8m high • 0.4cm wide</p>
+                    </div>
+                  </div>
                 </div>
-                <div className={styles.rightContainer}>
-                  <p className={styles.title}>Planting Density</p>
-                  <p>7202.8 trees per ha</p>
-                </div>
-                <div></div>
               </div>
-              <div className={styles.midContainer}></div>
-              <div className={styles.bottomContainer}></div>
-            </div>
+            )}
           </MapGL>
         ) : (
           <>Loading...</>

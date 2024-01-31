@@ -96,7 +96,7 @@ export interface PlantLocation {
   properties: {
     guid: string;
     treeCount: number;
-    density?: number;
+    density: number;
     opacity?: number;
   };
   type: 'Feature';
