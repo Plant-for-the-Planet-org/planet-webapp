@@ -1,0 +1,66 @@
+.dropdownButton {
+    display: flex;
+    border-radius: 12px;
+    background: #FFF;
+    width: fit-content;
+    align-items: center;
+    padding: 12px 0px 9px 12px;
+    width: 290px;
+    justify-content: space-between;
+}
+.siteIconAndTextContainer {
+    display: flex;
+    gap: 6px;
+}
+.labelTextContainer {
+    display: flex;
+    flex-direction: column;
+}
+.siteAndAreaContainer {
+    font-size: 8px;
+    color: #828282;
+    font-weight: 600;
+    p,span {
+        display: inline;
+    }
+}
+
+.siteId {
+    text-transform: uppercase;
+}
+.siteName {
+    text-transform: capitalize;
+    font-size: 12px;
+    font-weight: 700;
+    color: #333
+}
+.downArrow {
+    display: flex;
+    align-items: center;
+    margin-right: 13px;
+}
+.optionsContainer{
+    background-color: #FFF;
+    padding: 6px 16px;
+    border-radius: 12px;
+    margin-top: 12px;
+    width: 270px;
+    font-size: 12px;
+}
+.listItem {
+    display: flex;
+    justify-content: space-between;
+    gap:30px;
+    padding: 8px 0px; 
+}
+.hideDivider {
+    display: none;
+}
+.showDivider {
+    background-color: #BDBDBD;
+    height: 0.4px;
+}
+.selectedItem {
+    font-weight: 700;
+    color: #333;
+}
