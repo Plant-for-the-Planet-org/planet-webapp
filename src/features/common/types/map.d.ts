@@ -2,7 +2,7 @@ import { ViewportProps } from '../../user/ProfileV2/components/MyForestMap';
 import Supercluster from 'supercluster';
 import { User } from '@planet-sdk/common';
 import { MutableRefObject } from 'react';
-import { PublicUser } from './user';
+import { UserPublicProfile } from '@planet-sdk/common';
 import {
   TreeProjectClassification,
   CountryCode,
@@ -15,6 +15,7 @@ import {
 import { Nullable } from '@planet-sdk/common/build/types/util';
 import { ContributionProps } from '../../user/RegisterTrees/RegisterTrees/SingleContribution';
 import { FlyToInterpolator } from 'react-map-gl';
+import { SetState } from './common';
 
 export interface ClusterMarker {
   geometry: {
@@ -69,6 +70,7 @@ export type Cluster =
 
 export interface SingleMarkerProps {
   geoJson: Cluster | ClusterMarker;
+  profile: User | UserPublicProfile;
 }
 
 export interface TestPointProps {
@@ -83,11 +85,12 @@ export interface CustomPopupMarkerProps {
   geoJson: Cluster | ClusterMarker;
   showPopUp: boolean;
   mapRef?: MutableRefObject<null>;
+  profile?: User | UserPublicProfile;
 }
 export type Bound = [number, number, number, number];
 
 export interface MyContributionsProps {
-  profile: User | PublicUser;
+  profile: User | UserPublicProfile;
   token?: string | null;
 }
 export interface ViewState {

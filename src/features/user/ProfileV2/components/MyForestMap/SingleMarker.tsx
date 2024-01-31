@@ -16,7 +16,6 @@ const SingleMarker = ({
       <CustomPopUpSingleMarker
         geoJson={geoJson}
         showPopUp={showPopUp}
-        setShowPopUp={setShowPopUp}
         profile={profile}
       />
       {geoJson?.geometry.coordinates[1] !== null && (
@@ -61,6 +60,7 @@ const SingleMarker = ({
               units={
                 geoJson.properties.totalTrees ||
                 parseInt(geoJson.properties.quantity) ||
+                parseFloat(geoJson.properties.quantity.toFixed(10)) ||
                 0
               }
               isRegisteredTree={

@@ -20,6 +20,11 @@ export const TreePlantedClusterMarker = ({
   const { t, ready } = useTranslation(['me']);
   const [showPopUp, setShowPopUp] = useState(false);
 
+  const _totalTrees =
+    geoJson.properties.totalTrees ||
+    parseInt(geoJson.properties.quantity) ||
+    parseFloat(geoJson.properties.quantity.toFixed(10));
+
   return ready ? (
     <>
       <CustomPopupMarker
@@ -54,10 +59,7 @@ export const TreePlantedClusterMarker = ({
                   }`,
                 })
               : t('me:plantedTrees', {
-                  count:
-                    geoJson.properties.totalTrees ||
-                    parseInt(geoJson.properties.quantity) ||
-                    0,
+                  count: _totalTrees || 0,
                 })}
           </div>
         </div>

@@ -14,6 +14,7 @@ import { localeMapForDate } from '../../../../../utils/language/getLanguageName'
 import { getDonationUrl } from '../../../../../utils/getDonationUrl';
 import { ParamsContext } from '../../../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import { User, UserPublicProfile } from '@planet-sdk/common';
 interface PopUpLabelProps {
   isRegistered: boolean;
 }
@@ -21,6 +22,19 @@ interface PopUpLabelProps {
 interface ClusterPopUpLabelProps {
   geoJson: ClusterMarker | Cluster;
   mapRef: MutableRefObject<null>;
+}
+
+interface DonationPopUpProps {
+  startDate: number | Date;
+  endDate: number | Date;
+  country: string;
+  projectName: string;
+  projectImage: string;
+  numberOfTrees: number;
+  totalContribution: number;
+  projectId: string;
+  tpoName: string;
+  profile: User | UserPublicProfile;
 }
 
 export const ClusterPopUpLabel = ({
@@ -215,8 +229,19 @@ export const InfoOnthePopUp = ({ geoJson }: InfoOnthePopUpProps) => {
   );
 };
 
-export const DonationPopUp = ({ geoJson, setShowPopUp, profile }) => {
-  const { t } = useTranslation(['me']);
+export const DonationPopUp = ({
+  startDate,
+  endDate,
+  country,
+  projectName,
+  projectImage,
+  numberOfTrees,
+  totalContribution,
+  projectId,
+  tpoName,
+  profile,
+}: DonationPopUpProps) => {
+  const { t, ready } = useTranslation(['me', 'country']);
   const { embed } = useContext(ParamsContext);
   const { token } = useUserProps();
   const handleDonation = (id: string, tenant: string) => {
@@ -233,102 +258,58 @@ export const DonationPopUp = ({ geoJson, setShowPopUp, profile }) => {
       : (window.location.href = url);
   };
 
-  return (
+  return ready ? (
     <div className={MyForestMapStyle.donationPopUpMainContainer}>
       <div className={MyForestMapStyle.donationPopUpImageContainer}>
         <img
           className={MyForestMapStyle.image}
-          src={getImageUrl(
-            'project',
-            'medium',
-            geoJson?.properties?.plantProject?.image
-          )}
+          src={getImageUrl('project', 'medium', projectImage)}
         />
       </div>
-      <div className={MyForestMapStyle.donationPopUpInfoContainer}>
-        <div
-          style={{
-            height: '15px',
-            display: 'flex',
-            gap: '18px',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              gap: '6px',
-              width: 'max-content',
-              position: 'relative',
-            }}
-          >
-            <div style={{ fontWeight: '700', fontSize: '8px' }}>
+      <div className={MyForestMapStyle.projectName}>{projectName}</div>
+      <div className={MyForestMapStyle.donationPopUpInfoMainContainer}>
+        <div className={MyForestMapStyle.donationPopUpInfoContainer}>
+          <div className={MyForestMapStyle.countryAndTreeInfo}>
+            <div>
               {t('me:plantedTrees', {
-                count: geoJson.properties.quantity,
+                count: numberOfTrees,
               })}
             </div>
-            <div
-              style={{
-                fontWeight: '700',
-                fontSize: '8px',
-                position: 'absolute',
-                left: '39px',
-                bottom: '2px',
-              }}
-            >
-              .
+            <div className={MyForestMapStyle.separatorContainer}>
+              <div className={MyForestMapStyle.seprator}>.</div>
             </div>
-            <div style={{ fontSize: '8px' }}>
-              {geoJson?.properties?.plantProject?.location}
+            <div className={MyForestMapStyle.country}>
+              {t(`country:${country}`)}
             </div>
           </div>
           <Button
             variant="contained"
-            style={{
-              width: '53px',
-              height: '18px',
-              fontSize: '10px',
-              boxShadow: 'none',
-              borderRadius: '24px',
-              fontWeight: '700',
-              padding: '2px 8px',
-            }}
-            onClick={() =>
-              handleDonation(geoJson?.properties?.plantProject?.guid, '')
-            }
+            className={MyForestMapStyle.donateButton}
+            onClick={() => handleDonation(projectId, '')}
           >
             {t('me:donate')}
           </Button>
         </div>
-        <div style={{ fontWeight: '400', fontSize: '8px', marginTop: '4px' }}>
+        <div className={MyForestMapStyle.tpoName}>
           {t('me:tpoName', {
-            tpo: geoJson?.properties?.plantProject?.tpo.name,
+            tpo: tpoName,
           })}
         </div>
-        <div
-          style={{
-            display: 'flex',
-            fontWeight: '600',
-            fontSize: '6px',
-            color: 'rgba(130, 130, 130, 1)',
-            marginTop: '2px',
-          }}
-        >
-          {geoJson?.properties?.startDate && (
+        <div className={MyForestMapStyle.donationDate}>
+          {startDate && (
             <time>
-              {format(geoJson?.properties?.startDate, 'PP', {
+              {format(startDate, 'PP', {
                 locale:
                   localeMapForDate[localStorage.getItem('language') || 'en'],
               })}
             </time>
           )}
 
-          {geoJson?.properties?.endDate && (
+          {endDate && totalContribution > 1 && (
             <>
               <div style={{ marginLeft: '1px', marginRight: '1px' }}>-</div>
               <time>
-                {format(geoJson?.properties?.endDate, 'PP', {
+                {format(endDate, 'PP', {
                   locale:
                     localeMapForDate[localStorage.getItem('language') || 'en'],
                 })}
@@ -338,5 +319,7 @@ export const DonationPopUp = ({ geoJson, setShowPopUp, profile }) => {
         </div>
       </div>
     </div>
+  ) : (
+    <></>
   );
 };
