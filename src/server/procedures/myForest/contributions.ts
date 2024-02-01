@@ -173,9 +173,18 @@ export const contributions = procedure
           equals:
             purpose === Purpose.TREES ? Purpose.TREES : Purpose.CONSERVATION,
         },
-        plantDate: {
-          lte: giftDataCursor ? new Date(giftDataCursor) : new Date(),
-        },
+        OR: [
+          {
+            plantDate: {
+              lte: giftDataCursor ? new Date(giftDataCursor) : new Date(),
+            },
+          },
+          {
+            redemptionDate: {
+              lte: giftDataCursor ? new Date(giftDataCursor) : new Date(),
+            },
+          },
+        ],
       },
       orderBy: {
         plantDate: 'desc',
@@ -183,6 +192,8 @@ export const contributions = procedure
       skip: skip,
       take: _cursor && _cursor[1] === 'undefined' ? 0 : limit + 1,
     });
+
+    console.log('gifts', gifts);
 
     // There are gifts in the database that don't have an image, so we need to fetch them separately here
     // and fetch the images from the project table and prep them for the response
