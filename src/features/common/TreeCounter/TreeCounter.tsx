@@ -63,6 +63,14 @@ export default function TpoProfile(props: any) {
   const [isHomeTreeCounter, setIsHomeTreeCounter] = useState(false);
   const { t, i18n, ready } = useTranslation(['me']);
   const { tenantConfig } = useTenant();
+
+  const _isTreeTarget = () => {
+    if (props?.target !== 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   useEffect(() => {
     let percentage = 0;
     if (props.target > 0) {
@@ -120,7 +128,20 @@ export default function TpoProfile(props: any) {
             <PlantedTressBlackSvg color={'#4F4F4F'} />
           </div>
           <div className={treeCounterStyles.dataContainer}>
-            {props?.planted && (
+            {_isTreeTarget() ? (
+              t('me:treesOfTrees', {
+                count1: localizedAbbreviatedNumber(
+                  i18n.language,
+                  Number(props.planted - props.restoredAreaUnit),
+                  1
+                ),
+                count2: localizedAbbreviatedNumber(
+                  i18n.language,
+                  Number(props.target),
+                  1
+                ),
+              })
+            ) : (
               <div>
                 {localizedAbbreviatedNumber(
                   i18n.language,
@@ -129,20 +150,10 @@ export default function TpoProfile(props: any) {
                 )}
               </div>
             )}
-            {props.target !== undefined && props.target !== 0 && (
-              <div>{'of'}</div>
-            )}
-            {props?.target !== 0 && (
-              <div>
-                {localizedAbbreviatedNumber(
-                  i18n.language,
-                  Number(props.target),
-                  1
-                )}
-              </div>
-            )}
           </div>
-          <div style={{ fontSize: '24px' }}>{t('me:treesPlanted')}</div>
+          <div className={treeCounterStyles.treesPlanted}>
+            {t('me:treesPlanted')}
+          </div>
         </div>
       )}
     </div>

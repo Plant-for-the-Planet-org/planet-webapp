@@ -56,7 +56,9 @@ const ContributedToProject = ({
           projectUnit={(projectInfo as Contributions)?.plantProject?.unit}
           projectPurpose={projectInfo?.purpose}
           quantity={
-            (projectInfo as Contributions)?.treeCount || projectInfo?.quantity
+            (projectInfo as Contributions)?.treeCount ||
+            projectInfo?.quantity ||
+            projectInfo?.metadata?.quantity
           }
           contributionType={
             (projectInfo as Contributions).contributionType ||

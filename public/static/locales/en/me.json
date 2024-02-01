@@ -294,5 +294,6 @@
   "totalDonation_one": "{{count}} donation ",
   "totalDonation_other": "{{count}} donations ",
   "totalProject_one": "to {{count}} project",
-  "totalProject_other": "to {{count}} projects"
+  "totalProject_other": "to {{count}} projects",
+  "treesOfTrees": "{{count1}} of {{count2}}"
 }

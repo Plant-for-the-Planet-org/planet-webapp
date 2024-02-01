@@ -7,6 +7,7 @@ import { useContext } from 'react';
 import { useRouter } from 'next/router';
 
 interface TreesOrUnitAreaAndDonateOptionProps {
+  publicProfileSlug: string;
   projectUnit: string;
   projectPurpose: string | null;
   quantity: number | null;
@@ -55,7 +56,7 @@ const TreesOrUnitAreaAndDonateOption = ({
         <time className={myForestStyles.treeCount}>
           {gift && //for gift contribution
             t('me:plantedTrees', {
-              count: parseInt(`${quantity}`) || 0,
+              count: parseInt(`${quantity}`) || quantity || 0,
             })}
           {projectPurpose === 'trees' && // tree plantation contribution
             projectUnit === 'tree' &&
