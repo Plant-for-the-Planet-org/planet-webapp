@@ -172,8 +172,7 @@ export interface ContributionsGeoJsonQueryResult {
   geoLatitude: number;
   geoLongitude: number;
   geometry: Geometry | null;
-  tpoGuid: string;
-  tpo: string;
+  tpoName: string;
   startDate: string;
   endDate: string;
   totalContributions: number;
