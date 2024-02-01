@@ -85,7 +85,7 @@ const TreesOrUnitAreaAndDonateOption = ({
           }
           onClick={() => handleDonate(projectGUID, tenantId)}
         >
-          {gift || router.pathname === '/t/[id]'
+          {gift || router.asPath !== '/profile'
             ? t('me:donate')
             : t('me:donateAgain')}
         </div>

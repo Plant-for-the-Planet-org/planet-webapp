@@ -86,6 +86,8 @@ export interface CustomPopupMarkerProps {
   showPopUp: boolean;
   mapRef?: MutableRefObject<null>;
   profile?: User | UserPublicProfile;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
 }
 export type Bound = [number, number, number, number];
 

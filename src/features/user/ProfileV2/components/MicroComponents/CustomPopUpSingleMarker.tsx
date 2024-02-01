@@ -1,12 +1,14 @@
 import { Popup } from 'react-map-gl';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import { CustomPopupMarkerProps } from '../../../../common/types/map';
-import { DonationPopUp, InfoOnthePopUp } from '../MicroComponents/PopUp';
+import { DonationPopUp, RegisteredTreePopUp } from '../MicroComponents/PopUp';
 
 const CustomPopUpSingleMarker = ({
   geoJson,
   showPopUp,
   profile,
+  onMouseEnter,
+  onMouseLeave,
 }: CustomPopupMarkerProps) => {
   return (
     <div className={MyForestMapStyle.singleMarkerContainer}>
@@ -15,13 +17,14 @@ const CustomPopUpSingleMarker = ({
           className={MyForestMapStyle.mapboxglPopup}
           latitude={parseInt(`${geoJson.geometry.coordinates[1]}`)}
           longitude={parseInt(`${geoJson.geometry.coordinates[0]}`)}
-          offsetTop={-30}
-          offsetLeft={20}
           closeButton={false}
           tipSize={geoJson.properties.contributionType === 'planting' ? 10 : 0}
         >
           {geoJson.properties.contributionType === 'planting' ? (
-            <InfoOnthePopUp geoJson={geoJson} />
+            <RegisteredTreePopUp
+              geoJson={geoJson}
+              onMouseLeave={onMouseLeave}
+            />
           ) : (
             <DonationPopUp
               startDate={
@@ -54,6 +57,8 @@ const CustomPopUpSingleMarker = ({
                 geoJson?.properties?.project?.organization.name
               }
               profile={profile}
+              onMouseEnter={onMouseEnter}
+              onMouseLeave={onMouseLeave}
             />
           )}
         </Popup>

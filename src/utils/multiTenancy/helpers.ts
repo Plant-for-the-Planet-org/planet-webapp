@@ -88,7 +88,7 @@ export const getTenantConfig = async (slug: string): Promise<Tenant> => {
 export async function getTenantSlug(host: string) {
   const tenants = await getTenantConfigList();
 
-  const tenant = tenants.find((tenant) =>
+  const tenant = tenants?.find((tenant) =>
     tenant.config.customDomain
       ? tenant.config.customDomain.includes(host)
       : tenant.config.appDomain.includes(host)

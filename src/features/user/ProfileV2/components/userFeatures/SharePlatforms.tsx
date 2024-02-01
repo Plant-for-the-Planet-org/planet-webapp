@@ -52,7 +52,7 @@ const SharePlatforms = ({
         <img
           width="38px"
           height="38px"
-          src="/assets/images/x_icon_green_bg.svg"
+          src="X.svg"
           onClick={() =>
             handleShare(
               `https://twitter.com/intent/tweet?hashtags=StopTalkingStartPlanting,TrillionTrees&via=trilliontrees&url=${linkToShare}&text=${textToShare}`

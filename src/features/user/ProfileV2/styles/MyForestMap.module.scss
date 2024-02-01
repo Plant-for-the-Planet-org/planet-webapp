@@ -11,11 +11,6 @@
   height: 75px;
   width: 150px;
 }
-
-.popUpContainerLarge {
-  height: 100px;
-  width: 287px;
-}
 .popUp {
   display: flex;
   flex-direction: column;
@@ -350,6 +345,11 @@
   font-size: 6px;
   color: rgba(130, 130, 130, 1);
   margin-top: 2px;
+}
+
+.donationDateX {
+  margin-left: 1px;
+  margin-right: 1px;
 }
 
 .tpoName {

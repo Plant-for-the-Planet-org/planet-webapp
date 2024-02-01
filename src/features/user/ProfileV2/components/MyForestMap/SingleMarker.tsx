@@ -11,12 +11,23 @@ const SingleMarker = ({
   profile,
 }: SingleMarkerProps): ReactElement => {
   const [showPopUp, setShowPopUp] = useState(false);
+
+  const handleMarkerMouseOver = () => {
+    setShowPopUp(true);
+  };
+
+  const handleMarkerMouseLeave = () => {
+    setShowPopUp(false);
+  };
+
   return (
     <>
       <CustomPopUpSingleMarker
         geoJson={geoJson}
         showPopUp={showPopUp}
         profile={profile}
+        onMouseEnter={handleMarkerMouseOver}
+        onMouseLeave={handleMarkerMouseLeave}
       />
       {geoJson?.geometry.coordinates[1] !== null && (
         <Marker
@@ -25,11 +36,11 @@ const SingleMarker = ({
         >
           <div
             className={MyForestMapStyle.markerContainer}
-            onMouseOver={() => setShowPopUp(true)}
-            onMouseLeave={() =>
-              setTimeout(() => {
-                setShowPopUp(false);
-              }, 6000)
+            onMouseEnter={handleMarkerMouseOver}
+            onMouseLeave={
+              geoJson?.properties?.contributionType === 'planting'
+                ? handleMarkerMouseLeave
+                : undefined
             }
           >
             <SingleMarkerImageContainer

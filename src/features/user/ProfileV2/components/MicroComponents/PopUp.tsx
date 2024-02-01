@@ -15,9 +15,7 @@ import { getDonationUrl } from '../../../../../utils/getDonationUrl';
 import { ParamsContext } from '../../../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { User, UserPublicProfile } from '@planet-sdk/common';
-interface PopUpLabelProps {
-  isRegistered: boolean;
-}
+import { useTenant } from '../../../../common/Layout/TenantContext';
 
 interface ClusterPopUpLabelProps {
   geoJson: ClusterMarker | Cluster;
@@ -35,8 +33,47 @@ interface DonationPopUpProps {
   projectId: string;
   tpoName: string;
   profile: User | UserPublicProfile;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
 }
 
+interface DateOnThePopUpProps {
+  dateOfDonation: string | number | Date;
+}
+interface RegisteredTreePopUpProps {
+  geoJson: ClusterMarker | Cluster;
+  onMouseLeave: () => void;
+}
+
+export const PopUpLabel = () => {
+  const { t } = useTranslation(['me']);
+  return (
+    <div className={MyForestMapStyle.popUpLabel}>{t('me:registered')}</div>
+  );
+};
+
+export const DateOnThePopUp = ({ dateOfDonation }: DateOnThePopUpProps) => {
+  return <time>{formatDate(dateOfDonation)}</time>;
+};
+
+//this popup will be appear at the last zoom level for only registered tree contribution marker
+export const RegisteredTreePopUp = ({
+  geoJson,
+  onMouseLeave,
+}: RegisteredTreePopUpProps) => {
+  return (
+    <div
+      className={MyForestMapStyle.popUpContainer}
+      onMouseLeave={onMouseLeave}
+    >
+      <div className={MyForestMapStyle.popUp}>
+        <PopUpLabel />
+        <DateOnThePopUp dateOfDonation={geoJson?.properties?.startDate} />
+      </div>
+    </div>
+  );
+};
+//this popup will be appear at the first zoom level for all type of contributions
 export const ClusterPopUpLabel = ({
   geoJson,
   mapRef,
@@ -119,116 +156,7 @@ export const ClusterPopUpLabel = ({
     <></>
   );
 };
-
-export const PopUpLabel = ({ isRegistered }: PopUpLabelProps) => {
-  const { t } = useTranslation(['me']);
-  return (
-    <div className={MyForestMapStyle.popUpLabel}>
-      {isRegistered ? t('me:registered') : t('me:donated')}
-    </div>
-  );
-};
-
-interface NumberOfContributionsProps {
-  isMoreThanOneContribution: boolean | number | undefined;
-  numberOfContributions: number | undefined;
-}
-
-export const NumberOfContributions = ({
-  isMoreThanOneContribution,
-  numberOfContributions,
-}: NumberOfContributionsProps) => {
-  const { t } = useTranslation(['me']);
-  return (
-    <div className={MyForestMapStyle.popUpDate}>
-      {isMoreThanOneContribution ? (
-        t('me:numberOfContributions', {
-          total: `${numberOfContributions}`,
-        })
-      ) : (
-        <></>
-      )}
-    </div>
-  );
-};
-
-interface DateOnThePopUpProps {
-  isDate: number;
-  dateOfGift: Date | number;
-  dateOfDonation: string | number | Date;
-  endDate: string;
-  isSingleContribution: boolean;
-}
-export const DateOnThePopUp = ({
-  isDate,
-  dateOfGift,
-  dateOfDonation,
-  endDate,
-  isSingleContribution,
-}: DateOnThePopUpProps) => {
-  return (
-    <>
-      {isDate &&
-        (isSingleContribution ? (
-          <time>{formatDate(dateOfDonation || dateOfGift)}</time>
-        ) : (
-          <time>
-            {formatDate(dateOfDonation)} - {formatDate(endDate as string)}
-          </time>
-        ))}
-    </>
-  );
-};
-
-interface InfoOnthePopUpProps {
-  geoJson: ClusterMarker | Cluster;
-}
-
-export const InfoOnthePopUp = ({ geoJson }: InfoOnthePopUpProps) => {
-  return (
-    <div
-      className={
-        geoJson?.properties.totalContributions > 1 ||
-        geoJson.properties._type === 'merged_contribution_and_gift'
-          ? MyForestMapStyle.popUpContainerLarge
-          : MyForestMapStyle.popUpContainer
-      }
-    >
-      <div className={MyForestMapStyle.popUp}>
-        <PopUpLabel
-          isRegistered={geoJson.properties.contributionType === 'planting'}
-        />
-        <NumberOfContributions
-          isMoreThanOneContribution={
-            geoJson.properties.totalContributions &&
-            geoJson.properties.totalContributions > 1
-          }
-          numberOfContributions={geoJson.properties.totalContributions}
-        />
-        <DateOnThePopUp
-          isDate={
-            geoJson.properties.totalContributions < 2 ||
-            geoJson?.properties?.startDate ||
-            geoJson?.properties?.created
-          }
-          dateOfGift={geoJson?.properties?.created}
-          dateOfDonation={geoJson?.properties?.startDate}
-          endDate={
-            geoJson?.properties?.endDate
-              ? geoJson?.properties?.endDate
-              : undefined
-          }
-          isSingleContribution={
-            geoJson?.properties?.totalContributions == 1 ||
-            geoJson?.properties?.totalContributions == 0 ||
-            geoJson?.properties?._type === 'gift'
-          }
-        />
-      </div>
-    </div>
-  );
-};
-
+//this popup will be appear at last zoom level (except registered tree contribution marker)
 export const DonationPopUp = ({
   startDate,
   endDate,
@@ -240,10 +168,13 @@ export const DonationPopUp = ({
   projectId,
   tpoName,
   profile,
+  onMouseEnter,
+  onMouseLeave,
 }: DonationPopUpProps) => {
   const { t, ready } = useTranslation(['me', 'country']);
   const { embed } = useContext(ParamsContext);
   const { token } = useUserProps();
+  const { tenantConfig } = useTenant(); //default tenant
   const handleDonation = (id: string, tenant: string) => {
     const url = getDonationUrl(
       tenant,
@@ -259,7 +190,11 @@ export const DonationPopUp = ({
   };
 
   return ready ? (
-    <div className={MyForestMapStyle.donationPopUpMainContainer}>
+    <div
+      className={MyForestMapStyle.donationPopUpMainContainer}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       <div className={MyForestMapStyle.donationPopUpImageContainer}>
         <img
           className={MyForestMapStyle.image}
@@ -285,7 +220,7 @@ export const DonationPopUp = ({
           <Button
             variant="contained"
             className={MyForestMapStyle.donateButton}
-            onClick={() => handleDonation(projectId, '')}
+            onClick={() => handleDonation(projectId, tenantConfig.id)}
           >
             {t('me:donate')}
           </Button>
@@ -307,7 +242,7 @@ export const DonationPopUp = ({
 
           {endDate && totalContribution > 1 && (
             <>
-              <div style={{ marginLeft: '1px', marginRight: '1px' }}>-</div>
+              <div className={MyForestMapStyle.donationDateX}>-</div>
               <time>
                 {format(endDate, 'PP', {
                   locale:

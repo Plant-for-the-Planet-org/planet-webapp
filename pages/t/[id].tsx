@@ -28,6 +28,7 @@ function PublicProfile(): ReactElement {
   async function loadPublicProfile(id: string) {
     try {
       const profileData = await getRequest<UserPublicProfile>(
+        undefined,
         `/app/profiles/${id}`
       );
       setProfile(profileData);

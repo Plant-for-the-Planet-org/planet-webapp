@@ -16,7 +16,7 @@ const PlantedTreesContributions = ({
   handleFetchNextPage,
   hasNextPage,
 }: TreeContributedProjectListProps): ReactElement => {
-  const { pathname } = useRouter();
+  const { asPath } = useRouter();
   const { t } = useTranslation(['me']);
   const [isAddTargetModalOpen, setIsAddTargetModalOpen] = useState(false);
   const { treePlantationContribution, additionalInfoRelatedToContributions } =
@@ -30,13 +30,13 @@ const PlantedTreesContributions = ({
 
   const _checkConditions = () => {
     switch (true) {
-      case userProfile?.type === 'tpo' && pathname === '/profile': // tpo private profile
+      case userProfile?.type === 'tpo' && asPath === '/profile': // tpo private profile
         return true;
-      case userProfile?.type !== 'tpo' && pathname === '/profile': // normal user private profile
+      case userProfile?.type !== 'tpo' && asPath === '/profile': // normal user private profile
         return true;
-      case userProfile?.type === 'tpo' && pathname !== '/profile': // tpo public profile
+      case userProfile?.type === 'tpo' && asPath !== '/profile': // tpo public profile
         return false;
-      case userProfile?.type !== 'tpo' && pathname !== '/profile': //  normal user public profile
+      case userProfile?.type !== 'tpo' && asPath !== '/profile': //  normal user public profile
         return true;
       default:
         return null;
@@ -87,7 +87,7 @@ const PlantedTreesContributions = ({
       >
         {_checkConditions() && (
           <div className={myForestStyles.donationList}>
-            {pathname === '/profile' ? (
+            {asPath === '/profile' ? (
               <div className={myForestStyles.editButtonContainer}>
                 <Button
                   variant="contained"
