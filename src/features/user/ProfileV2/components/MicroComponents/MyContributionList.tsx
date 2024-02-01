@@ -2,12 +2,12 @@ import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import { MyContributionLoader } from '../../../../common/ContentLoaders/UserProfile/UserProfile';
 import PlantedTreesContributions from '../ProjectDetails/PlantedTreesContributions';
 import ConservationContributions from '../ProjectDetails/ConservationContributions';
-import { User } from '@planet-sdk/common';
+import { User, UserPublicProfile } from '@planet-sdk/common';
 
 interface MyContributionListProps {
   conservationTrpcResponse: any;
   plantedTreesTrpcResponse: any;
-  profile: User | null;
+  profile: User | UserPublicProfile;
 }
 
 const MyContributionList = ({

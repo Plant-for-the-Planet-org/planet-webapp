@@ -30,17 +30,9 @@ const UserFeatures = ({
   const { setRefetchData } = useUserProps();
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
 
-  // const handleShareOnLinkedIn = () => {
-  //   if (config && userProfile) {
-  //     const linkToShare = `${config.tenantURL}/t/${userProfile.slug}`;
-  //     const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?&url=${linkToShare}`;
-  //     window.open(shareUrl, '_blank');
-  //   }
-  // };
-
   const handleRegisterTree = () => {
     setRefetchData(false);
-    router.push('profile/register-trees');
+    router.push('/profile/register-trees');
   };
 
   const handleRedeemModalOpen = () => {
@@ -53,11 +45,11 @@ const UserFeatures = ({
 
   return (
     <div className={myProfileStyle.buttonContainer}>
-      {router.pathname !== '/profile' && !userProfile.isPrivate && (
+      {router.asPath !== '/profile' && !userProfile.isPrivate && (
         <PublicProfileFeature profile={userProfile} />
       )}
 
-      {router.pathname === '/profile' && (
+      {router.asPath === '/profile' && (
         <>
           <Button
             className={myProfileStyle.profileRedeemButton}

@@ -43,9 +43,9 @@ const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
           </div>
         </div>
       </div>
-      {userProfile && router.pathname === '/profile' && (
+      {userProfile && router.asPath === '/profile' && (
         <div className={myProfilestyle.iconContainer}>
-          <Link href="profile/edit">
+          <Link href="/profile/edit">
             <div className={myProfilestyle.icon}>
               <EditTargetSvg color="#007A49" />
             </div>
