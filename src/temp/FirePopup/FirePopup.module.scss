@@ -1,0 +1,67 @@
+@import '../../theme/theme';
+
+.arrow {
+    display: block;
+    height: 0px;
+    width: 0px;
+    border: 10px solid transparent;
+    border-top-color: #fff;
+    position: absolute;
+    bottom: -20px;
+    left: calc(50% - 10px);
+}
+    
+//fireIcon style : to be removed
+.fireIcon {
+    width:100%;
+   display: flex;
+   justify-content: center;
+   margin-top: 20%; 
+   padding-top:20px;
+}
+
+.popupContainer {
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+.popupTitle {
+    background: rgba(232, 111, 86, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 0 10px 14px;
+    font-weight: 700;
+    color: #333;
+}
+
+.popupText {
+    padding: 14px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #4F4F4F;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    span {
+        font-weight: 700;
+    }
+
+    .timeDuration {
+        font-size: 14px;
+        font-weight: 600;
+        color: #E86F56;
+    }
+    .setUpText {
+        span {
+            color: #E86F56;
+        }
+    }
+}
+
+//to be removed
+@include xsPhoneView {
+    .fireIcon {
+        margin-top: 60%;
+    }
+}
