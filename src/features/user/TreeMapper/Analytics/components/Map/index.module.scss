@@ -23,13 +23,13 @@
     position: absolute;
     top: 15px;
     left: 20px;
-    z-index: 1;
-    width: 300px;
+    z-index: 2;
+    width: 320px;
     box-shadow: 4px 8px 16px 0px #0000001A;
     border-radius: 16px;
     background-color: #fff;
-    overflow: scroll;
     font-size: 10px;
+    height : 450px;
 
     &:hover{
         cursor: auto;
@@ -37,14 +37,14 @@
 
     .content {
         display: flex;
-        justify-content: center;
         align-items: center;
         flex-direction: column;
         row-gap: 16px;
         padding: 10px;
-        overflow: scroll;
-        height: 100%;
         z-index: 2;
+        overflow-y: scroll;
+        scroll-behavior: smooth;
+        height : 450px;
 
         .topContainer{
 
@@ -141,7 +141,6 @@
             z-index: 2;
             padding: 24px;
             border-radius: 16px;
-            overflow: auto;
     
             .sampleTreeContainer{
     
