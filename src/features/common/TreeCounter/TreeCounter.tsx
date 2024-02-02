@@ -50,7 +50,7 @@ export function HomeCircularProgress(props: CircularProgressProps) {
     <div className={treeCounterStyles.circularProgressContainer}>
       <XCircularProgress
         variant="determinate"
-        size={322}
+        size={342}
         thickness={3}
         {...props}
       />
