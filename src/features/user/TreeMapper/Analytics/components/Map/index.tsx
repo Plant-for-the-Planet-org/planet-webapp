@@ -15,6 +15,7 @@ import MapGL, {
 import {
   DistinctSpecies,
   PlantLocation,
+  PlantLocationDetailsApiResponse,
   PlantLocations,
   Site,
   Sites,
@@ -30,7 +31,6 @@ import SitesSelectorAutocomplete from './components/SiteSelectorAutocomplete';
 import { MuiAutoComplete } from '../../../../../common/InputTypes/MuiAutoComplete';
 import styles from './index.module.scss';
 import getMapStyle from '../../../../../../utils/maps/getMapStyle';
-import InfoIconSvg from './components/InfoIconSvg';
 
 const EMPTY_STYLE = {
   version: 8,
@@ -68,6 +68,9 @@ export const MapContainer = () => {
   const [plantLocations, setPlantLocations] = useState<PlantLocations | null>(
     null
   );
+  const [plantLocationDetails, setPlantLocationDetails] = useState<
+    PlantLocationDetailsApiResponse['res'] | null
+  >(null);
   const [selectedLayer, setSelectedLayer] = useState<
     PlantLocation['properties'] | null
   >(null);
@@ -113,6 +116,24 @@ export const MapContainer = () => {
       // TODO: add search
     },
   });
+
+  const { makeRequest: makeReqToFetchPlantLocationDetails } =
+    useNextRequest<PlantLocationDetailsApiResponse>({
+      url: `/api/data-explorer/map/plant-location/${selectedLayer?.guid}`,
+      method: HTTP_METHOD.GET,
+    });
+
+  const fetchProjectLocationsDetails = async () => {
+    if (selectedLayer) {
+      const { res } =
+        (await makeReqToFetchPlantLocationDetails()) as PlantLocationDetailsApiResponse;
+      setPlantLocationDetails(res);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjectLocationsDetails();
+  }, [selectedLayer]);
 
   useEffect(() => {
     setSelectedLayer(null);
@@ -208,12 +229,13 @@ export const MapContainer = () => {
     setProjectSite(site);
   };
 
-  const handleMapClick = (event) => {
+  const handleMapClick = async (event) => {
     const clickedFeatures = event.features;
     if (clickedFeatures.length > 0) {
-      const clickedLayer = clickedFeatures[0];
-      setSelectedLayer(clickedLayer.properties);
-      console.log('clicked Layer', clickedLayer);
+      const clickedLayerProperties = clickedFeatures[0].properties;
+      if (Object.keys(clickedLayerProperties).length !== 0) {
+        setSelectedLayer(clickedLayerProperties);
+      }
     }
   };
 
@@ -270,7 +292,10 @@ export const MapContainer = () => {
       overrideBodyStyles={styles.body}
     >
       <div className={styles.mapContainer}>
-        {plantLocations && projectSites && selectedLayer ? (
+        {plantLocations &&
+        projectSites &&
+        selectedLayer &&
+        plantLocationDetails ? (
           <MapGL
             ref={mapRef}
             {...mapState}
@@ -319,42 +344,77 @@ export const MapContainer = () => {
                 <div className={styles.content}>
                   <div className={styles.topContainer}>
                     <div className={styles.leftContainer}>
-                      <p className={styles.title}>Planted Trees</p>
-                      <p>{selectedLayer.treeCount} trees</p>
+                      <p className={styles.title}>{t('speciesPlanted')}</p>
+                      <p>
+                        {selectedLayer.treeCount}&nbsp;{t('trees')}
+                      </p>
                     </div>
                     <div className={styles.rightContainer}>
                       <div className={styles.title}>
-                        <p>Planting Density</p>{' '}
-                        <p className={styles.infoIcon}>
-                          <InfoIconSvg />
-                          {/* <div className={styles.infoTooltip}>
-                            Additional information goes here
-                          </div> */}
-                        </p>
+                        <p>{t('plantingDensity')}</p>
                       </div>
-                      <p>{selectedLayer.density.toFixed(4)} trees per ha</p>
+                      <p>
+                        {selectedLayer?.density?.toFixed(4)}&nbsp;
+                        {t('treesPerHa')}
+                      </p>
                     </div>
                   </div>
                   <div className={styles.midContainer}>
-                    <div className={styles.title}>Species Planted (7)</div>
+                    <div className={styles.title}>
+                      {t('speciesPlanted')}&nbsp;(
+                      {plantLocationDetails.plantedSpecies.length})
+                    </div>
                     <div className={styles.speciesContainer}>
-                      <div className={styles.individualSpeciesContainer}>
-                        <div className={styles.speciesName}>
-                          Aeschynomene pararubrofarinacea
-                        </div>
-                        <div className={styles.count}>216</div>
-                        <div className={styles.totalPercentage}>50%</div>
-                      </div>
+                      {plantLocationDetails &&
+                        plantLocationDetails.plantedSpecies.map((species) => {
+                          return (
+                            <div
+                              key={species.scientificName}
+                              className={styles.individualSpeciesContainer}
+                            >
+                              <div className={styles.speciesName}>
+                                {species.scientificName}
+                              </div>
+                              <div className={styles.count}>
+                                {species.treeCount}
+                              </div>
+                              <div className={styles.totalPercentage}>
+                                {(
+                                  (species.treeCount /
+                                    plantLocationDetails.totalPlantedTrees) *
+                                  100
+                                ).toFixed(2)}
+                                %
+                              </div>
+                            </div>
+                          );
+                        })}
                     </div>
                   </div>
                   <div className={styles.bottomContainer}>
-                    <div className={styles.title}>Species Planted (7)</div>
-                    <div className={styles.sampleTreeContainer}>
-                      <p className={styles.title}>
-                        1. Aeschynomene pararubrofarinacea
-                      </p>
-                      <p>Tag #18091 • 0.8m high • 0.4cm wide</p>
+                    <div className={styles.title}>
+                      {t('sampleTrees')}&nbsp;(
+                      {plantLocationDetails?.totalSamplePlantLocations})
                     </div>
+                    {plantLocationDetails?.samplePlantLocations?.map(
+                      (samplePlantLocation, index) => {
+                        return (
+                          <div
+                            key={samplePlantLocation.guid}
+                            className={styles.sampleTreeContainer}
+                          >
+                            <p className={styles.title}>
+                              {index + 1}.&nbsp;{samplePlantLocation.species}
+                            </p>
+                            <p>
+                              {t('tag')} #{samplePlantLocation.tag} •{' '}
+                              {samplePlantLocation.measurements.height}m high •{' '}
+                              {samplePlantLocation.measurements.width}cm wide
+                            </p>
+                          </div>
+                        );
+                      }
+                    )}
                   </div>
                 </div>
               </div>

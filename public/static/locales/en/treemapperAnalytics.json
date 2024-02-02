@@ -59,5 +59,10 @@
   "thousand": "k",
   "plantLocationsWithPlantedSpecies": "Locations with planted species",
   "search": "Search by hid/date",
-  "groups": "Groups"
+  "groups": "Groups",
+  "treesPerHa": "trees per ha",
+  "trees": "trees",
+  "plantingDensity": "Planting Density",
+  "sampleTrees": "Sample Trees",
+  "tag": "Tag"
 }

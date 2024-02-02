@@ -28,7 +28,7 @@
     box-shadow: 4px 8px 16px 0px #0000001A;
     border-radius: 16px;
     background-color: #fff;
-    overflow: auto;
+    overflow: scroll;
     font-size: 10px;
 
     &:hover{
@@ -42,7 +42,9 @@
         flex-direction: column;
         row-gap: 16px;
         padding: 10px;
-        overflow: auto;
+        overflow: scroll;
+        height: 100%;
+        z-index: 2;
 
         .topContainer{
 
@@ -81,15 +83,6 @@
                     font-weight: 500;
                     display: flex;
                     align-items: center;
-
-                    .infoIcon{
-                        margin-left: 12px;
-                        display: flex;
-                        align-items: center;
-                        &:hover {
-                            cursor: pointer;
-                        }
-                    }
                 }
             }
         }
@@ -148,6 +141,7 @@
             z-index: 2;
             padding: 24px;
             border-radius: 16px;
+            overflow: auto;
     
             .sampleTreeContainer{
     

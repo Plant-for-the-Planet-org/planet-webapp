@@ -136,4 +136,28 @@ export interface PlantLocationDetails {
   totalSamplePlantLocations: number;
 }
 
-// ---
+// --- types for plantLocationDetailsApi ------
+
+export interface PlantLocationDetailsApiResponse {
+  res: {
+    plantedSpecies: {
+      treeCount: number;
+      scientificName: string;
+    }[];
+    totalPlantedTrees: number;
+    samplePlantLocations: {
+      tag: string;
+      guid: string;
+      species: string;
+      geometry: {
+        type: string;
+        coordinates: number[];
+      };
+      measurements: {
+        width: string;
+        height: string;
+      };
+    }[];
+    totalSamplePlantLocations: number;
+  };
+}
