@@ -164,6 +164,7 @@ export const contributions = procedure
         metadata: true,
         purpose: true,
         type: true,
+        redemptionDate: true,
       },
       where: {
         recipient: {
@@ -192,8 +193,6 @@ export const contributions = procedure
       skip: skip,
       take: _cursor && _cursor[1] === 'undefined' ? 0 : limit + 1,
     });
-
-    console.log('gifts', gifts);
 
     // There are gifts in the database that don't have an image, so we need to fetch them separately here
     // and fetch the images from the project table and prep them for the response
@@ -267,21 +266,28 @@ export const contributions = procedure
           (project) => project.guid === projectId
         )?.allowDonations;
 
-        return {
+        const giftMetadata = JSON.parse(JSON.stringify(giftObject.metadata));
+
+        const _gift = {
           ...giftObject,
           _type: 'gift',
           quantity: giftObject.value ? giftObject.value / 100 : 0,
           metadata: {
             ...(giftObject?.metadata as object),
             project: {
-              ...JSON.parse(JSON.stringify(giftObject.metadata))?.project,
-              image:
-                JSON.parse(JSON.stringify(giftObject.metadata))?.project
-                  ?.image ?? projectImage,
+              ...giftMetadata?.project,
+              image: giftMetadata?.project?.image ?? projectImage,
             },
           },
           allowDonations: projectAllowDonations,
+          plantDate: giftObject.plantDate
+            ? giftObject.plantDate
+            : giftObject.redemptionDate,
         };
+
+        delete _gift.redemptionDate;
+
+        return _gift;
       });
     }
 
