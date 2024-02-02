@@ -268,7 +268,7 @@ export const contributions = procedure
 
         const giftMetadata = JSON.parse(JSON.stringify(giftObject.metadata));
 
-        return {
+        const _gift = {
           ...giftObject,
           _type: 'gift',
           quantity: giftObject.value ? giftObject.value / 100 : 0,
@@ -284,6 +284,10 @@ export const contributions = procedure
             ? giftObject.plantDate
             : giftObject.redemptionDate,
         };
+
+        delete _gift.redemptionDate;
+
+        return _gift;
       });
     }
 
