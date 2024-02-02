@@ -71,7 +71,7 @@ const SingleMarker = ({
               units={
                 geoJson.properties.totalTrees ||
                 parseInt(geoJson.properties.quantity) ||
-                parseFloat(geoJson.properties.quantity.toFixed(10)) ||
+                parseFloat(geoJson.properties.quantity.toFixed(2)) ||
                 0
               }
               isRegisteredTree={

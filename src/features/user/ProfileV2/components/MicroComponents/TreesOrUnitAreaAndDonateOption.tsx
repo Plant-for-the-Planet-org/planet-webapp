@@ -77,7 +77,7 @@ const TreesOrUnitAreaAndDonateOption = ({
             countryName &&
             tpoName && //for register  tree contribution
             t('me:registeredPlantedTrees', {
-              count: parseInt(`${quantity}`) || 0,
+              count: Number(`${quantity?.toFixed(2)}`) || 0,
             })}
         </time>
       </div>

@@ -37,7 +37,7 @@ const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
       </div>
 
       <div className={myForestStyles.countTrees}>
-        <div>{plantedTrees ? Number(plantedTrees.toFixed(1)) : 0}</div>
+        <div>{plantedTrees ? Number(plantedTrees.toFixed(2)) : 0}</div>
       </div>
     </div>
   );

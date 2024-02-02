@@ -96,7 +96,6 @@ export default function TpoProfile(props: any) {
       clearInterval(timer);
     };
   }, [props]);
-
   useEffect(() => {
     const _tenantHasHomeTreeCounter = _tenants.some((tenant) => {
       return tenantConfig.config.slug === tenant;
@@ -133,7 +132,7 @@ export default function TpoProfile(props: any) {
                 count1: localizedAbbreviatedNumber(
                   i18n.language,
                   Number(props.planted - props.restoredAreaUnit),
-                  1
+                  2
                 ),
                 count2: localizedAbbreviatedNumber(
                   i18n.language,
@@ -146,7 +145,7 @@ export default function TpoProfile(props: any) {
                 {localizedAbbreviatedNumber(
                   i18n.language,
                   Number(props.planted - props.restoredAreaUnit),
-                  1
+                  2
                 )}
               </div>
             )}

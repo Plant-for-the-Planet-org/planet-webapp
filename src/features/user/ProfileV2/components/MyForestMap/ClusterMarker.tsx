@@ -23,7 +23,7 @@ export const TreePlantedClusterMarker = ({
   const _totalTrees =
     geoJson.properties.totalTrees ||
     parseInt(geoJson.properties.quantity) ||
-    parseFloat(geoJson.properties.quantity.toFixed(10));
+    parseFloat(geoJson.properties.quantity);
 
   return ready ? (
     <>
@@ -59,7 +59,7 @@ export const TreePlantedClusterMarker = ({
                   }`,
                 })
               : t('me:plantedTrees', {
-                  count: Number(_totalTrees.toFixed(1)) || 0,
+                  count: Number(_totalTrees.toFixed(2)) || 0,
                 })}
           </div>
         </div>

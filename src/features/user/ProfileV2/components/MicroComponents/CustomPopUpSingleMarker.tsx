@@ -45,7 +45,7 @@ const CustomPopUpSingleMarker = ({
               }
               numberOfTrees={
                 parseInt(`${geoJson.properties.quantity}`) ||
-                parseFloat(geoJson?.properties?.quantity?.toFixed(10))
+                Number(geoJson?.properties?.quantity?.toFixed(2))
               }
               totalContribution={Number(geoJson.properties.totalContributions)}
               projectId={

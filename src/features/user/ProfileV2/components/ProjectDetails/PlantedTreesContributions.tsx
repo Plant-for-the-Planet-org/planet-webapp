@@ -66,9 +66,7 @@ const PlantedTreesContributions = ({
               }}
               target={userProfile?.score?.target}
               planted={
-                userProfile?.type === 'tpo'
-                  ? userProfile?.score.personal
-                  : userProfile?.score.personal + userProfile?.score.received
+                userProfile?.score.personal + userProfile?.score.received
               }
             />
           )}
