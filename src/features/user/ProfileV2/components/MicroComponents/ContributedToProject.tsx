@@ -8,9 +8,11 @@ import myForestStyles from '../../styles/MyForest.module.scss';
 import ProjectImage from './ProjectImage';
 import ProjectInfoAndContributionDate from './ProjectInfoAndContributionDate';
 import TreesOrUnitAreaAndDonateOption from './TreesOrUnitAreaAndDonateOption';
+import { User, UserPublicProfile } from '@planet-sdk/common';
 
 export interface ProjectProps {
   projectInfo: Contributions | BouquetContribution | GiftContributionProps;
+  profile: User | UserPublicProfile;
 }
 
 const ContributedToProject = ({

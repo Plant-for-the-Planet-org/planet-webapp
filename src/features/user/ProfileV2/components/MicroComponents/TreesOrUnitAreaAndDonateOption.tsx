@@ -67,7 +67,11 @@ const TreesOrUnitAreaAndDonateOption = ({
             projectUnit === 'm2' &&
             t('me:areaType', {
               areaConserved: `${quantity}`,
-              type: `${projectPurpose === 'trees' ? 'restored' : 'conserved'} `,
+              type: `${
+                projectPurpose === 'trees'
+                  ? t('me:restoredSmall')
+                  : t('me:conservedSmall')
+              } `,
             })}
           {contributionType === 'planting' &&
             countryName &&

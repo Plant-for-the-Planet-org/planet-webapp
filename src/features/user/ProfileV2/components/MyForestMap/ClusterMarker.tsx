@@ -59,7 +59,7 @@ export const TreePlantedClusterMarker = ({
                   }`,
                 })
               : t('me:plantedTrees', {
-                  count: _totalTrees || 0,
+                  count: Number(_totalTrees.toFixed(1)) || 0,
                 })}
           </div>
         </div>

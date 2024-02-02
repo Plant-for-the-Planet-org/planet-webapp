@@ -52,10 +52,7 @@ const CustomPopUpSingleMarker = ({
                 geoJson?.properties?.plantProject?.guid ||
                 geoJson?.properties?.project?.id
               }
-              tpoName={
-                geoJson?.properties?.plantProject?.tpo.name ||
-                geoJson?.properties?.project?.organization.name
-              }
+              tpoName={geoJson?.properties?.project?.tpo.name}
               profile={profile}
               onMouseEnter={onMouseEnter}
               onMouseLeave={onMouseLeave}

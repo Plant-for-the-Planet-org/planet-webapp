@@ -15,6 +15,7 @@
   justify-content: center;
   align-items: center;
   height: 100%;
+  width: 100%;
 }
 
 .treeCounterDataField > h1 {
@@ -107,7 +108,7 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
-  width: 198px;
+  width: max-content;
   color: #4f4f4f;
   font-weight: bold;
   font-size: 2rem;
