@@ -60,7 +60,8 @@ const Dropdown = ({ labelIcon, labelTitle, isOpen }: Props) => {
                   option.title === selectedOption.title ? styles.selected : ''
                 }`}
               >
-                {option.icon} {option.title}
+                <div className={styles.optionIcon}>{option.icon}</div>
+                <p>{option.title}</p>
               </li>
             ))}
           </ul>
