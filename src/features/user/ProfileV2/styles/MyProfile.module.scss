@@ -123,7 +123,8 @@
 
 .publicProfileMainContainer {
   max-width: 1400px;
-  padding-left: 85px;
+  padding-top: 30px;
+  background-color: #fafaff;
   @include xsPhoneView {
     padding-left: 0px;
   }

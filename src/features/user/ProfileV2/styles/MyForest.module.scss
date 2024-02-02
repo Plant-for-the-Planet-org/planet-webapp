@@ -426,6 +426,7 @@
         border-radius: 12px;
         width: 210px;
         height: 141px;
+        object-fit: cover;
       }
       @include xsPhoneView {
         > img {
