@@ -31,27 +31,15 @@ const CustomPopUpSingleMarker = ({
                 geoJson?.properties?.created || geoJson?.properties?.startDate
               }
               endDate={geoJson?.properties?.endDate}
-              country={
-                geoJson?.properties?.plantProject?.country.toLowerCase() ||
-                geoJson?.properties?.project?.country.toLowerCase()
-              }
-              projectName={
-                geoJson?.properties?.plantProject?.name ||
-                geoJson?.properties?.project?.name
-              }
-              projectImage={
-                geoJson?.properties?.plantProject?.image ||
-                geoJson?.properties?.project?.image
-              }
+              country={geoJson?.properties?.project?.country.toLowerCase()}
+              projectName={geoJson?.properties?.project?.name}
+              projectImage={geoJson?.properties?.project?.image}
               numberOfTrees={
                 parseInt(`${geoJson.properties.quantity}`) ||
                 Number(geoJson?.properties?.quantity?.toFixed(2))
               }
               totalContribution={Number(geoJson.properties.totalContributions)}
-              projectId={
-                geoJson?.properties?.plantProject?.guid ||
-                geoJson?.properties?.project?.id
-              }
+              projectId={geoJson?.properties?.project?.guid}
               tpoName={geoJson?.properties?.project?.tpo.name}
               profile={profile}
               onMouseEnter={onMouseEnter}

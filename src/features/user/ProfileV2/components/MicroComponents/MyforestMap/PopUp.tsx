@@ -16,6 +16,7 @@ import { ParamsContext } from '../../../../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
 import { User, UserPublicProfile } from '@planet-sdk/common';
 import { useTenant } from '../../../../../common/Layout/TenantContext';
+import { useRouter } from 'next/router';
 
 interface ClusterPopUpLabelProps {
   geoJson: ClusterMarker | Cluster;
@@ -173,6 +174,8 @@ export const DonationPopUp = ({
   onMouseEnter,
   onMouseLeave,
 }: DonationPopUpProps) => {
+  const router = useRouter();
+  const { asPath } = router;
   const { t, ready } = useTranslation(['me', 'country']);
   const { embed } = useContext(ParamsContext);
   const { token } = useUserProps();
@@ -185,14 +188,13 @@ export const DonationPopUp = ({
         token,
         undefined,
         undefined,
-        profile.slug
+        asPath !== '/profile' ? profile.slug : undefined
       );
       embed === 'true'
         ? window.open(url, '_blank')
         : (window.location.href = url);
     }
   };
-
   return ready ? (
     <div
       className={MyForestMapStyle.donationPopUpMainContainer}

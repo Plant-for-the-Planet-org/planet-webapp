@@ -37,6 +37,7 @@ const TreesOrUnitAreaAndDonateOption = ({
   const { embed } = useContext(ParamsContext);
   const { token } = useUserProps();
   const router = useRouter();
+  const { asPath } = router;
   const handleDonate = (id: string, tenant: string) => {
     const url = getDonationUrl(
       tenant,
@@ -44,7 +45,7 @@ const TreesOrUnitAreaAndDonateOption = ({
       token,
       undefined,
       undefined,
-      publicProfileSlug ? publicProfileSlug : undefined
+      asPath !== '/profile' ? publicProfileSlug : undefined
     );
     embed === 'true'
       ? window.open(url, '_blank')
