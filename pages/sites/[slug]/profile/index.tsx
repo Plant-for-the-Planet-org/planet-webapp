@@ -21,6 +21,7 @@ import {
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { defaultTenant } from '../../../../tenant.config';
 import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
+import myProfileStyle from '../../../../src/features/user/ProfileV2/styles/MyProfile.module.scss';
 
 interface Props {
   pageProps: {
@@ -52,20 +53,24 @@ function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
     }
   }, [contextLoaded, user, router]);
 
-  return tenantConfig && (
-    <UserLayout>
-      <Head>
-        <title>{t('profile')}</title>
-      </Head>
-      {profile && (
-        <>
-          <MyForestProvider>
-            <Profile userProfile={profile} />
-            <MyContributions profile={profile} token={token} />
-          </MyForestProvider>
-        </>
-      )}
-    </UserLayout>
+  return (
+    tenantConfig && (
+      <UserLayout>
+        <Head>
+          <title>{t('profile')}</title>
+        </Head>
+        {profile && (
+          <>
+            <MyForestProvider>
+              <div className={myProfileStyle.profileContainer}>
+                <Profile userProfile={profile} />
+                <MyContributions profile={profile} token={token} />
+              </div>
+            </MyForestProvider>
+          </>
+        )}
+      </UserLayout>
+    )
   );
 }
 

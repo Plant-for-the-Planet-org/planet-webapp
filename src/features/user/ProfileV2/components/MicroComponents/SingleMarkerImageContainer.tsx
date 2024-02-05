@@ -20,11 +20,6 @@ const SingleMarkerImageContainer = ({
 }: SingleMarkerImageContainerProps) => {
   const { primaryDarkColorX, lightBlueColor } = theme;
   const _renderTreeIcon = () => {
-    // if (isRegisteredTree) {
-    //   return <PlantedTreesSvg color={`${primaryDarkColorX}`} />;
-    // } else {
-    //   return <DonationsSvg color={primaryDarkColorX} />;
-    // }
     switch (true) {
       case isNormalTreeDonation ||
         isRegisteredTree ||

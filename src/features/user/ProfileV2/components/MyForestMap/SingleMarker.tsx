@@ -15,11 +15,9 @@ const SingleMarker = ({
   const handleMarkerMouseOver = () => {
     setShowPopUp(true);
   };
-
   const handleMarkerMouseLeave = () => {
     setShowPopUp(false);
   };
-
   return (
     <>
       <CustomPopUpSingleMarker
@@ -45,13 +43,14 @@ const SingleMarker = ({
           >
             <SingleMarkerImageContainer
               isNormalTreeDonation={
-                geoJson.properties?.plantProject?.unitType === 'tree'
+                geoJson.properties?.contributionType === 'donation' &&
+                geoJson?.properties?._type === 'contribution'
               }
               isRegisteredTree={
                 geoJson?.properties?.contributionType === 'planting'
               }
               isRestorationTreePlantation={
-                geoJson.properties?.plantProject?.unitType === 'm2' &&
+                geoJson.properties?.project?.unitType === 'm2' &&
                 geoJson.properties?.purpose === 'trees'
               }
               isConservation={geoJson.properties?.purpose === 'conservation'}
@@ -66,7 +65,7 @@ const SingleMarker = ({
             <SingleMarkerUnits
               isConservation={geoJson.properties?.purpose === 'conservation'}
               isRestorationTreePlantation={
-                geoJson.properties?.plantProject?.unitType === 'm2'
+                geoJson.properties?.project?.unitType === 'm2'
               }
               units={
                 geoJson.properties.totalTrees ||
@@ -78,7 +77,7 @@ const SingleMarker = ({
                 geoJson?.properties?.contributionType === 'planting'
               }
               isNormalTreeDonation={
-                geoJson.properties?.plantProject?.unitType === 'tree'
+                geoJson.properties?.project?.unitType === 'tree'
               }
               isGiftContribution={geoJson?.properties?._type === 'gift'}
               isMergeContribution={
