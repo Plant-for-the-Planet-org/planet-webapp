@@ -7,10 +7,11 @@ import { useMyForest } from '../../../../common/Layout/MyForestContext';
 
 type AreaConservedProjectListProps = Omit<
   TreeContributedProjectListProps,
-  'userProfile' | 'restoredAreaUnit'
+  'restoredAreaUnit'
 >;
 
 const ConservationContributions = ({
+  userProfile,
   hasNextPage,
   handleFetchNextPage,
 }: AreaConservedProjectListProps): ReactElement => {
@@ -27,9 +28,10 @@ const ConservationContributions = ({
       </div>
       <div className={myForestStyles.areaConservedContainer}>
         <ContributedProjectList
+          userProfile={userProfile}
           hasNextPage={hasNextPage}
           contributionProjectList={conservationContribution?.pages}
-          handleFetchNextPage={handleFetchNextPage}
+          handleFetchNextPage={() => handleFetchNextPage}
         />
       </div>
     </div>

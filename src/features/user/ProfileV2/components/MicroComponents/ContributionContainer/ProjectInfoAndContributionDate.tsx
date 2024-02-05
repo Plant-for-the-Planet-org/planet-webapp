@@ -8,7 +8,7 @@ interface ProjectInfoAndContributionDateProps {
   countryName: string;
   tpoName: string;
   giftSenderName: string;
-  contributionDate: string | number | Date;
+  contributionDate: number | Date;
   contributionType: string | boolean;
   quantity: number | null;
 }

@@ -13,8 +13,13 @@ import ConservationMarkers from './ConservationMarkers';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import MyForestMapCredit from '../MicroComponents/MyforestMap/MyForestMapCredit';
 import { ViewportProps } from '../../../../common/types/map';
+import { UserPublicProfile, User } from '@planet-sdk/common';
 
-const MyForestMap = ({ profile }): ReactElement => {
+interface MyForestProps {
+  profile: User | UserPublicProfile;
+}
+
+const MyForestMap = ({ profile }: MyForestProps): ReactElement => {
   const mapRef: MutableRefObject<null> = useRef(null);
 
   const EMPTY_STYLE = {
@@ -72,7 +77,7 @@ const MyForestMap = ({ profile }): ReactElement => {
         )}
         {(_isBothButtonInActive() ||
           (!isTreePlantedButtonActive && isConservedButtonActive)) && (
-          <ConservationMarkers mapRef={mapRef} />
+          <ConservationMarkers mapRef={mapRef} profile={profile} />
         )}
         <div className={MyForestMapStyle.navigationControlConatiner}>
           <NavigationControl showCompass={false} />

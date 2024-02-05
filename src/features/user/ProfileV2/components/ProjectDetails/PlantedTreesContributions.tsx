@@ -110,10 +110,10 @@ const PlantedTreesContributions = ({
               <p className={myForestStyles.hrLine} />
             </div>
             <ContributedProjectList
-              profile={userProfile}
+              userProfile={userProfile}
               hasNextPage={hasNextPage}
               contributionProjectList={treePlantationContribution?.pages}
-              handleFetchNextPage={handleFetchNextPage}
+              handleFetchNextPage={() => handleFetchNextPage}
             />
           </div>
         )}

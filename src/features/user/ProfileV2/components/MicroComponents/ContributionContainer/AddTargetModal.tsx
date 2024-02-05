@@ -9,7 +9,7 @@ import { putAuthenticatedRequest } from '../../../../../../utils/apiRequests/api
 import { ThemeContext } from '../../../../../../theme/themeContext';
 import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
+import { handleError, APIError, User } from '@planet-sdk/common';
 import { useTenant } from '../../../../../common/Layout/TenantContext';
 import CancelIcon from '../../../../../../../public/assets/images/icons/CancelIcon';
 import projectContainerStyle from '../../../styles/ProjectsContainer.module.scss';
@@ -53,7 +53,7 @@ export default function AddTargetModal({
       };
 
       try {
-        const res = await putAuthenticatedRequest(
+        const res = await putAuthenticatedRequest<User>(
           tenantConfig?.id,
           `/app/profile`,
           bodyToSend,

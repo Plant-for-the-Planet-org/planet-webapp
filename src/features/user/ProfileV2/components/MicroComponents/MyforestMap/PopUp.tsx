@@ -32,7 +32,7 @@ interface DonationPopUpProps {
   totalContribution: number;
   projectId: string;
   tpoName: string;
-  profile: User | UserPublicProfile;
+  profile: User | UserPublicProfile | undefined;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
 }
@@ -128,7 +128,9 @@ export const ClusterPopUpLabel = ({
         treePlantationProjectGeoJson,
         geoJson.id
       );
-      processLeaves(_getLeaves);
+      if (_getLeaves) {
+        processLeaves(_getLeaves);
+      }
     } else {
       const totalContributions = geoJson?.properties.totalContributions || 1;
 
@@ -176,17 +178,19 @@ export const DonationPopUp = ({
   const { token } = useUserProps();
   const { tenantConfig } = useTenant(); //default tenant
   const handleDonation = (id: string, tenant: string) => {
-    const url = getDonationUrl(
-      tenant,
-      id,
-      token,
-      undefined,
-      undefined,
-      profile.slug
-    );
-    embed === 'true'
-      ? window.open(url, '_blank')
-      : (window.location.href = url);
+    if (profile) {
+      const url = getDonationUrl(
+        tenant,
+        id,
+        token,
+        undefined,
+        undefined,
+        profile.slug
+      );
+      embed === 'true'
+        ? window.open(url, '_blank')
+        : (window.location.href = url);
+    }
   };
 
   return ready ? (

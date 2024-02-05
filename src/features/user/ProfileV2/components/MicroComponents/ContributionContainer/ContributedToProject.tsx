@@ -2,6 +2,7 @@ import {
   Contributions,
   BouquetContribution,
   GiftContributionProps,
+  GiftsGeoJsonQueryResult,
 } from '../../../../../common/types/myForest';
 import { ReactElement } from 'react';
 import myForestStyles from '../../../styles/MyForest.module.scss';
@@ -42,8 +43,8 @@ const ContributedToProject = ({
             (projectInfo as GiftContributionProps)?.metadata?.giver?.name
           }
           contributionDate={
-            (projectInfo as Contributions)?.plantDate ||
-            (projectInfo as GiftContributionProps)?.created
+            Number((projectInfo as Contributions)?.plantDate) ||
+            Number((projectInfo as GiftContributionProps)?.created)
           }
           contributionType={
             (projectInfo as Contributions).contributionType ||
@@ -58,9 +59,7 @@ const ContributedToProject = ({
           projectUnit={(projectInfo as Contributions)?.plantProject?.unit}
           projectPurpose={projectInfo?.purpose}
           quantity={
-            (projectInfo as Contributions)?.treeCount ||
-            projectInfo?.quantity ||
-            projectInfo?.metadata?.quantity
+            (projectInfo as Contributions)?.treeCount || projectInfo?.quantity
           }
           contributionType={
             (projectInfo as Contributions).contributionType ||

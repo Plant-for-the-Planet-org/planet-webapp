@@ -44,7 +44,8 @@ const SingleMarker = ({
             <SingleMarkerImageContainer
               isNormalTreeDonation={
                 geoJson.properties?.contributionType === 'donation' &&
-                geoJson?.properties?._type === 'contribution'
+                geoJson?.properties?._type === 'contribution' &&
+                geoJson?.properties?.project?.unitType === 'tree'
               }
               isRegisteredTree={
                 geoJson?.properties?.contributionType === 'planting'

@@ -1,6 +1,6 @@
 import { ViewportProps } from '../../user/ProfileV2/components/MyForestMap';
 import Supercluster from 'supercluster';
-import { User } from '@planet-sdk/common';
+import { User, UserInfo } from '@planet-sdk/common';
 import { MutableRefObject } from 'react';
 import { UserPublicProfile } from '@planet-sdk/common';
 import {
@@ -60,6 +60,7 @@ export interface MarkerProps {
 
 export interface ClusterMarkerProps {
   mapRef: MutableRefObject<null>;
+  profile: User | UserPublicProfile;
 }
 
 export type Cluster =

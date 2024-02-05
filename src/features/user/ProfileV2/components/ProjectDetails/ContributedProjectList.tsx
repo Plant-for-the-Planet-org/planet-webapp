@@ -3,18 +3,19 @@ import { useTranslation } from 'next-i18next';
 import { ReactElement } from 'react';
 import { Button } from '@mui/material';
 import ContributedToProject from '../MicroComponents/ContributionContainer/ContributedToProject';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { Page } from '../../../../common/types/myForest';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
+import { User, UserPublicProfile } from '@planet-sdk/common';
 
 export interface ContributedProjectListProps {
+  userProfile: User | UserPublicProfile;
   hasNextPage: boolean | undefined;
-  handleFetchNextPage: () => void | undefined;
+  handleFetchNextPage: () => void;
   contributionProjectList: Page[] | undefined;
 }
 
 const ContributedProjectList = ({
-  profile,
+  userProfile,
   hasNextPage,
   contributionProjectList,
   handleFetchNextPage,
@@ -32,7 +33,7 @@ const ContributedProjectList = ({
               <ContributedToProject
                 key={key}
                 projectInfo={singleProject}
-                profile={profile}
+                profile={userProfile}
               />
             );
           }
@@ -49,6 +50,7 @@ const ContributedProjectList = ({
                     <ContributedToProject
                       key={key}
                       projectInfo={bouquetProject}
+                      profile={userProfile}
                     />
                   );
                 }
