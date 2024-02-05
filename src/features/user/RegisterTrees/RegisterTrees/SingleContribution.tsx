@@ -7,26 +7,12 @@ import UploadImages from './UploadImages';
 import { useTranslation } from 'next-i18next';
 import formatDate from '../../../../utils/countryCurrency/getFormattedDate';
 import { Button } from '@mui/material';
-import { Image } from '@planet-sdk/common';
-import { Point, Polygon } from 'geojson';
 
-export interface ContributionProperties {
-  contributionImages: Image[];
-  id: string;
-  plantDate: string;
-  plantProject: string | null;
-  treeClassification: string | null;
-  treeCount: number;
-  treeScientificName: string | null;
-  treeSpecies: string;
-  geometry?: Polygon | Point;
-}
-
-interface SingleContributionProps {
-  token: string | null;
-  contribution: ContributionProperties | null;
-  contributionGUID: string;
-  slug?: string | null;
+interface Props {
+  token: any;
+  contributionGUID: any;
+  contribution: any;
+  slug: any;
 }
 
 const StaticMap = dynamic(() => import('./StaticMap'), {
@@ -39,14 +25,15 @@ export default function SingleContribution({
   contribution,
   contributionGUID,
   slug,
-}: SingleContributionProps): ReactElement {
+}: Props): ReactElement {
   const router = useRouter();
   const UploadProps = {
     contributionGUID,
     token,
   };
   const { t, ready } = useTranslation(['me', 'common']);
-  return ready && contribution !== null ? (
+
+  return ready ? (
     <div className="inputContainer">
       <div className={styles.checkMark}>
         <CheckCircle width="36px" color={`${styles.primaryColor}`} />

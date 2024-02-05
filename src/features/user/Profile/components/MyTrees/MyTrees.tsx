@@ -148,7 +148,6 @@ export default function MyTrees({ profile, authenticatedType, token }: Props) {
 
   const MapProps = {
     contributions,
-    authenticatedType,
   };
 
   return contributions?.length > 0 && ready ? (

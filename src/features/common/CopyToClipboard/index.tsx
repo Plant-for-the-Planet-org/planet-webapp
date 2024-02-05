@@ -14,7 +14,7 @@ const Alert = styled(MuiAlert)(({ theme }) => {
 
 interface Props {
   text: string;
-  isButton?: boolean;
+  isButton: boolean;
 }
 
 export default function CopyToClipboard({

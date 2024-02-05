@@ -7,13 +7,12 @@ import { getFormattedNumber } from '../../../../utils/getFormattedNumber';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import CopyToClipboard from '../../../common/CopyToClipboard';
-import {
-  PlantLocation,
-  PlantLocationMulti,
-  PlantLocationSingle,
-  SamplePlantLocation,
-} from '../../../common/types/plantLocation';
-import { SetState } from '../../../common/types/common';
+
+interface Props {
+  setselectedLocation: Function;
+  location: Object;
+  plantLocations: any;
+}
 
 const ImageSlider = dynamic(
   () => import('../../../projects/components/PlantLocation/ImageSlider'),
@@ -31,73 +30,50 @@ const ImageSliderSingle = dynamic(
   }
 );
 
-interface Props {
-  setselectedLocation: SetState<
-    SamplePlantLocation | PlantLocationMulti | PlantLocationSingle | null
-  >;
-  location:
-    | PlantLocationMulti
-    | PlantLocationSingle
-    | SamplePlantLocation
-    | null;
-  plantLocations?: PlantLocation[];
-}
-
-interface SampleTreeImageProps {
-  image: string | undefined;
-  description: string | undefined;
-}
-
 export function LocationDetails({
   location,
   setselectedLocation,
-}: Props): ReactElement {
+}: DetailsProps): ReactElement {
   const { t, i18n, ready } = useTranslation(['treemapper', 'maps']);
-  const [sampleTreeImages, setSampleTreeImages] = React.useState<
-    SampleTreeImageProps[]
-  >([]);
+  const [sampleTreeImages, setSampleTreeImages] = React.useState([]);
 
-  const text = `${location?.deviceLocation?.coordinates.map((coord) => {
+  const text = `${location?.deviceLocation?.coordinates.map((coord: any) => {
     return getFormattedNumber(i18n.language, Number(coord));
   })}`;
 
   React.useEffect(() => {
-    if (location?.type === 'multi') {
-      if (
-        ready &&
-        location &&
-        (location as PlantLocationMulti).samplePlantLocations &&
-        (location as PlantLocationMulti).samplePlantLocations.length > 0
-      ) {
-        const images = [];
-        for (const key in (location as PlantLocationMulti)
-          .samplePlantLocations) {
-          if (
-            Object.prototype.hasOwnProperty.call(
-              (location as PlantLocationMulti).samplePlantLocations,
-              key
-            )
-          ) {
-            const element = (location as PlantLocationMulti)
-              .samplePlantLocations[key];
+    if (
+      ready &&
+      location &&
+      location.samplePlantLocations &&
+      location.samplePlantLocations.length > 0
+    ) {
+      const images = [];
+      for (const key in location.samplePlantLocations) {
+        if (
+          Object.prototype.hasOwnProperty.call(
+            location.samplePlantLocations,
+            key
+          )
+        ) {
+          const element = location.samplePlantLocations[key];
 
-            if (element.coordinates?.[0]) {
-              images.push({
-                image: element.coordinates[0].image,
-                description: `${t('maps:sampleTree')} ${
-                  element.tag ? '#' + element.tag : ''
-                }`,
-              });
-            }
+          if (element.coordinates?.[0]) {
+            images.push({
+              image: element.coordinates[0].image,
+              description: `${t('maps:sampleTree')} ${
+                element.tag ? '#' + element.tag : ''
+              }`,
+            });
           }
         }
-        setSampleTreeImages(images);
-      } else {
-        setSampleTreeImages([]);
       }
+      setSampleTreeImages(images);
+    } else {
+      setSampleTreeImages([]);
     }
   }, [location, ready]);
-  return location ? (
+  return (
     <>
       {location.type === 'multi' && sampleTreeImages.length > 0 && (
         <div className={styles.projectImageSliderContainer}>
@@ -156,7 +132,7 @@ export function LocationDetails({
             {formatDate(location.registrationDate)}
           </div>
         </div>
-        {(location as PlantLocationSingle).measurements && (
+        {location.measurements && (
           <>
             <div className={styles.measurements}>
               <div className={styles.singleDetail}>
@@ -191,7 +167,7 @@ export function LocationDetails({
             </div>
           </>
         )}
-        {(location as PlantLocationMulti | PlantLocation).plantProject && (
+        {location.plantProject && (
           <div className={styles.singleDetail}>
             <p className={styles.title}>{t('plantProject')}</p>
             <div className={styles.value}>
@@ -199,33 +175,31 @@ export function LocationDetails({
               // className={styles.link}
               // onClick={() => router.push(`/[p]`, `/${location.plantProject}`)}
               >
-                {(location as PlantLocationMulti | PlantLocation).plantProject}
+                {location.plantProject}
               </span>
             </div>
           </div>
         )}
       </div>
       <div className={styles.detailsFull}>
-        {(location as PlantLocationMulti)?.plantedSpecies && (
+        {location.plantedSpecies && (
           <div className={styles.singleDetail}>
             <p className={styles.title}>{t('species')}</p>
             <div className={styles.value}>
               <span>
-                {(location as PlantLocationMulti)?.plantedSpecies?.map(
-                  (species) => {
-                    return (
-                      <p key={species.id}>
-                        {species.treeCount}{' '}
-                        {species.scientificName
-                          ? species.scientificName
-                          : species.otherSpecies &&
-                            species.otherSpecies !== 'Unknown'
-                          ? species.otherSpecies
-                          : t('maps:unknown')}
-                      </p>
-                    );
-                  }
-                )}
+                {location?.plantedSpecies?.map((species: any) => {
+                  return (
+                    <p key={species.id}>
+                      {species.treeCount}{' '}
+                      {species.scientificName
+                        ? species.scientificName
+                        : species.otherSpecies &&
+                          species.otherSpecies !== 'Unknown'
+                        ? species.otherSpecies
+                        : t('maps:unknown')}
+                    </p>
+                  );
+                })}
               </span>
             </div>
           </div>
@@ -234,42 +208,37 @@ export function LocationDetails({
           <div className={styles.singleDetail}>
             <p className={styles.title}>{t('maps:sampleTree')}</p>
             {/* <div className={styles.value}> */}
-            {(location as PlantLocationMulti).samplePlantLocations &&
-              (location as PlantLocationMulti).samplePlantLocations.map(
-                (spl, index: number) => {
-                  return (
-                    <div key={index} className={styles.value}>
-                      {index + 1}.{' '}
-                      <span
-                        onClick={() => setselectedLocation(spl)}
-                        className={styles.link}
-                      >
-                        {spl.scientificName
-                          ? spl.scientificName
-                          : spl.scientificSpecies &&
-                            spl.scientificSpecies !== 'Unknown'
-                          ? spl.scientificSpecies
-                          : t('maps:unknown')}
-                      </span>
-                      <br />
-                      {spl.tag ? `${t('maps:tag')} #${spl.tag} • ` : null}
-                      {spl?.measurements?.height}
-                      {t('maps:meterHigh')} • {spl?.measurements?.width}
-                      {t('maps:cmWide')}
-                    </div>
-                  );
-                }
-              )}
+            {location.samplePlantLocations &&
+              location.samplePlantLocations.map((spl: any, index: number) => {
+                return (
+                  <div key={index} className={styles.value}>
+                    {index + 1}.{' '}
+                    <span
+                      onClick={() => setselectedLocation(spl)}
+                      className={styles.link}
+                    >
+                      {spl.scientificName
+                        ? spl.scientificName
+                        : spl.scientificSpecies &&
+                          spl.scientificSpecies !== 'Unknown'
+                        ? spl.scientificSpecies
+                        : t('maps:unknown')}
+                    </span>
+                    <br />
+                    {spl.tag ? `${t('maps:tag')} #${spl.tag} • ` : null}
+                    {spl?.measurements?.height}
+                    {t('maps:meterHigh')} • {spl?.measurements?.width}
+                    {t('maps:cmWide')}
+                  </div>
+                );
+              })}
             {/* </div> */}
           </div>
         )}
       </div>
     </>
-  ) : (
-    <></>
   );
 }
-
 export default function PlantLocationPage({
   location,
   setselectedLocation,
@@ -278,12 +247,11 @@ export default function PlantLocationPage({
   const router = useRouter();
 
   const handleBackButton = () => {
-    if (location?.type === 'sample') {
-      for (const iKey in plantLocations) {
-        const i = iKey as keyof typeof plantLocations;
+    if (location.type === 'sample') {
+      for (const i in plantLocations) {
         if (Object.prototype.hasOwnProperty.call(plantLocations, i)) {
-          const pl = plantLocations[i] as PlantLocation;
-          if (pl.id === (location as SamplePlantLocation)?.parent) {
+          const pl = plantLocations[i];
+          if (pl.id === location.parent) {
             setselectedLocation(pl);
             break;
           }
@@ -298,7 +266,6 @@ export default function PlantLocationPage({
     location,
     setselectedLocation,
   };
-
   return (
     <div className={styles.locationDetails}>
       <div className={styles.pullUpContainer}>
@@ -321,4 +288,9 @@ export default function PlantLocationPage({
       <LocationDetails {...DetailProps} />
     </div>
   );
+}
+
+interface DetailsProps {
+  setselectedLocation: Function;
+  location: Object;
 }

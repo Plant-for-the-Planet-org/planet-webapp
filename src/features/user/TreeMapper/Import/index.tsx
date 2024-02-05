@@ -173,7 +173,11 @@ export default function ImportData(): ReactElement {
           </div>
         </div>
         <div className={styles.mapContainer}>
-          <MapComponent geoJson={geoJson} />
+          <MapComponent
+            geoJson={geoJson}
+            setGeoJson={setGeoJson}
+            setActiveMethod={setActiveMethod}
+          />
         </div>
       </div>
     </div>
