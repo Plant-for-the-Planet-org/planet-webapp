@@ -160,6 +160,18 @@
                 margin-bottom: 12px;
             }
         }
+
+        .footer{
+
+            display: flex;
+            gap: 3px;
+            align-items: center;
+
+            .treemapper{
+                font-weight: 700;
+                color: $primaryColor;
+            }
+        }
     }
 
     

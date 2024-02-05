@@ -31,6 +31,7 @@ import SitesSelectorAutocomplete from './components/SiteSelectorAutocomplete';
 import { MuiAutoComplete } from '../../../../../common/InputTypes/MuiAutoComplete';
 import styles from './index.module.scss';
 import getMapStyle from '../../../../../../utils/maps/getMapStyle';
+import TreeMapperIcon from './components/TreeMapperIcon';
 
 const EMPTY_STYLE = {
   version: 8,
@@ -415,6 +416,13 @@ export const MapContainer = () => {
                         );
                       }
                     )}
+                  </div>
+                  <div className={styles.footer}>
+                    <p>Powered by </p>
+                    <span>
+                      <TreeMapperIcon />
+                    </span>
+                    <p className={styles.treemapper}>TreeMapper</p>
                   </div>
                 </div>
               </div>
