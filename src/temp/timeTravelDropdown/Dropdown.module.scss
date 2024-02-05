@@ -5,25 +5,28 @@
 }
 .menuButton {
     border-radius: 8px;
-    width: fit-content;
+    width: 150px;
     background: #FFF;
-    backdrop-filter: blur(15.191919326782227px);
     height: 36px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 0px 12px;
+    padding: 0 12px;
+    justify-content: space-between;
     p {
-        margin: 0 12px 0 6px;
+        margin: 0 0 0 6px;
     }
     span {
         font-weight: 700;
     }
 
 }
+.menuButtonTitle {
+    display: flex;
+    align-items: center;
+}
 .menuItems {
     display: flex;
-    width: fit-content;
+    width: 160px;
     margin-top: 16px;
     border-radius: 8px;
     color: #4F4F4F;
@@ -45,5 +48,6 @@
     li {
         list-style: none;
         margin-top: 6px;
+        width: 67px;    
     }
 }

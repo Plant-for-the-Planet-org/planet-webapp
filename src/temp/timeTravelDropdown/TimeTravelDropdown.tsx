@@ -49,10 +49,12 @@ const TimeTravelDropdown = ({
         className={styles.menuButton}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
       >
-        <CalendarIcon />
-        <p>
-          <span>{selectedYear} </span>via {selectedSource}
-        </p>
+        <div className={styles.menuButtonTitle}>
+          <CalendarIcon />
+          <p>
+            <span>{selectedYear} </span>via {selectedSource}
+          </p>
+        </div>
         <DropdownArrow />
       </div>
       {isMenuOpen && (
