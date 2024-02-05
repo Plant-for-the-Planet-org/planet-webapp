@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
-import myProfileStyle from '../../styles/MyProfile.module.scss';
-import { SupportSvg } from '../../../../../../public/assets/images/ProfilePageIcons';
-import theme from '../../../../../theme/themeProperties';
+import myProfileStyle from '../../../styles/MyProfile.module.scss';
+import { SupportSvg } from '../../../../../../../public/assets/images/ProfilePageIcons';
+import theme from '../../../../../../theme/themeProperties';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { User } from '@planet-sdk/common';
@@ -17,7 +17,7 @@ export const PublicProfileFeature = ({
   const router = useRouter();
   const { t } = useTranslation();
   const { light } = theme;
-  const handleSupport = () => {
+  const handleSupport = (): void => {
     router.push(`/s/${profile?.slug}`);
   };
 

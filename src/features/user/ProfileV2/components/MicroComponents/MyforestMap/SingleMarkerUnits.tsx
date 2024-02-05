@@ -1,4 +1,4 @@
-import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
+import MyForestMapStyle from '../../../styles/MyForestMap.module.scss';
 import { useTranslation } from 'next-i18next';
 
 export interface SingleMarkerUnitsProps {

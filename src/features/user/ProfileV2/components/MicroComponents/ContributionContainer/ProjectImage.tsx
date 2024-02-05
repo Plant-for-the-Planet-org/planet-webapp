@@ -1,7 +1,7 @@
-import getImageUrl from '../../../../../utils/getImageURL';
-import TreesIcon from '../../../../../../public/assets/images/icons/TreesIcon';
-import TreeIcon from '../../../../../../public/assets/images/icons/TreeIcon';
-import myForestStyles from '../../styles/MyForest.module.scss';
+import getImageUrl from '../../../../../../utils/getImageURL';
+import TreesIcon from '../../../../../../../public/assets/images/icons/TreesIcon';
+import TreeIcon from '../../../../../../../public/assets/images/icons/TreeIcon';
+import myForestStyles from '../../../styles/MyForest.module.scss';
 
 interface ProjectImageProps {
   imageUniqueKey: string | null;

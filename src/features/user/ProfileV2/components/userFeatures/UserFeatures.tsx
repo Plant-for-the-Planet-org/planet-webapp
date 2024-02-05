@@ -15,7 +15,7 @@ import {
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import theme from '../../../../../theme/themeProperties';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import { PublicProfileFeature } from '../MicroComponents/PublicProfileFeature';
+import { PublicProfileFeature } from '../MicroComponents/ProfileBox/PublicProfileFeature';
 
 const UserFeatures = ({
   handleShare,

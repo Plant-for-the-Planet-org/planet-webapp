@@ -2,9 +2,9 @@ import { Marker } from 'react-map-gl';
 import { useState, ReactElement } from 'react';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import { SingleMarkerProps } from '../../../../common/types/map';
-import SingleMarkerImageContainer from '../MicroComponents/SingleMarkerImageContainer';
-import SingleMarkerUnits from '../MicroComponents/SingleMarkerUnits';
-import CustomPopUpSingleMarker from '../MicroComponents/CustomPopUpSingleMarker';
+import SingleMarkerImageContainer from '../MicroComponents/MyforestMap/SingleMarkerImageContainer';
+import SingleMarkerUnits from '../MicroComponents/MyforestMap/SingleMarkerUnits';
+import CustomPopUpSingleMarker from '../MicroComponents/MyforestMap/CustomPopUpSingleMarker';
 
 const SingleMarker = ({
   geoJson,

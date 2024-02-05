@@ -1,21 +1,21 @@
 import { useTranslation } from 'next-i18next';
-import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
-import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
-import { Cluster, ClusterMarker } from '../../../../common/types/map';
-import { useMyForest } from '../../../../common/Layout/MyForestContext';
-import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
+import MyForestMapStyle from '../../../styles/MyForestMap.module.scss';
+import formatDate from '../../../../../../utils/countryCurrency/getFormattedDate';
+import { Cluster, ClusterMarker } from '../../../../../common/types/map';
+import { useMyForest } from '../../../../../common/Layout/MyForestContext';
+import { _getClusterGeojson } from '../../../../../../utils/superclusterConfig';
 import { useContext, useEffect } from 'react';
-import { PopUpDonationIcon } from '../../../../../../public/assets/images/ProfilePageIcons';
+import { PopUpDonationIcon } from '../../../../../../../public/assets/images/ProfilePageIcons';
 import { MutableRefObject } from 'react';
-import getImageUrl from '../../../../../utils/getImageURL';
+import getImageUrl from '../../../../../../utils/getImageURL';
 import { Button } from '@mui/material';
 import format from 'date-fns/format';
-import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
-import { getDonationUrl } from '../../../../../utils/getDonationUrl';
-import { ParamsContext } from '../../../../common/Layout/QueryParamsContext';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import { localeMapForDate } from '../../../../../../utils/language/getLanguageName';
+import { getDonationUrl } from '../../../../../../utils/getDonationUrl';
+import { ParamsContext } from '../../../../../common/Layout/QueryParamsContext';
+import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
 import { User, UserPublicProfile } from '@planet-sdk/common';
-import { useTenant } from '../../../../common/Layout/TenantContext';
+import { useTenant } from '../../../../../common/Layout/TenantContext';
 
 interface ClusterPopUpLabelProps {
   geoJson: ClusterMarker | Cluster;

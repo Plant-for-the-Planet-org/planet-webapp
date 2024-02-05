@@ -1,7 +1,7 @@
-import { useMyForest } from '../../../../common/Layout/MyForestContext';
-import { MyContributionLoader } from '../../../../common/ContentLoaders/UserProfile/UserProfile';
-import PlantedTreesContributions from '../ProjectDetails/PlantedTreesContributions';
-import ConservationContributions from '../ProjectDetails/ConservationContributions';
+import { useMyForest } from '../../../../../common/Layout/MyForestContext';
+import { MyContributionLoader } from '../../../../../common/ContentLoaders/UserProfile/UserProfile';
+import PlantedTreesContributions from '../../ProjectDetails/PlantedTreesContributions';
+import ConservationContributions from '../../ProjectDetails/ConservationContributions';
 import { User, UserPublicProfile } from '@planet-sdk/common';
 
 interface MyContributionListProps {

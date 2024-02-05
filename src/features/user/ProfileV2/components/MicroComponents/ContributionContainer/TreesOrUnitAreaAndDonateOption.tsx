@@ -1,8 +1,8 @@
-import myForestStyles from '../../styles/MyForest.module.scss';
+import myForestStyles from '../../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
-import { getDonationUrl } from '../../../../../utils/getDonationUrl';
-import { ParamsContext } from '../../../../common/Layout/QueryParamsContext';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
+import { getDonationUrl } from '../../../../../../utils/getDonationUrl';
+import { ParamsContext } from '../../../../../common/Layout/QueryParamsContext';
+import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
 

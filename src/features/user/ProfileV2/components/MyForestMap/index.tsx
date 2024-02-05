@@ -11,7 +11,7 @@ import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
 import TreesPlantedMarkers from './TreesPlantedMarkers';
 import ConservationMarkers from './ConservationMarkers';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
-import MyForestMapCredit from '../MicroComponents/MyForestMapCredit';
+import MyForestMapCredit from '../MicroComponents/MyforestMap/MyForestMapCredit';
 import { ViewportProps } from '../../../../common/types/map';
 
 const MyForestMap = ({ profile }): ReactElement => {

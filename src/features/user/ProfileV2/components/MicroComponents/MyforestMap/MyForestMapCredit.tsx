@@ -1,7 +1,7 @@
 import { useState, MouseEvent } from 'react';
 import { Typography, Popover } from '@mui/material';
-import myForestMapStyle from '../../styles/MyForestMap.module.scss';
-import { InfoIcon } from '../../../../../../public/assets/images/ProfilePageIcons/index';
+import myForestMapStyle from '../../../styles/MyForestMap.module.scss';
+import { InfoIcon } from '../../../../../../../public/assets/images/ProfilePageIcons/index';
 
 const MyForestMapCredit = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);

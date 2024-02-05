@@ -1,16 +1,16 @@
-import myProfilestyle from '../../styles/MyProfile.module.scss';
-import getImageUrl from '../../../../../utils/getImageURL';
+import myProfilestyle from '../../../styles/MyProfile.module.scss';
+import getImageUrl from '../../../../../../utils/getImageURL';
 import { useRouter } from 'next/router';
 import { Avatar } from '@mui/material';
 import { useTranslation } from 'next-i18next';
-import { ProfileProps } from '../../../../common/types/profile';
+import { ProfileProps } from '../../../../../common/types/profile';
 import { ReactElement } from 'react';
-import formatDate from '../../../../../utils/countryCurrency/getFormattedDate';
+import formatDate from '../../../../../../utils/countryCurrency/getFormattedDate';
 import Link from 'next/link';
 import {
   DefaultProfileImage,
   EditTargetSvg,
-} from '../../../../../../public/assets/images/ProfilePageIcons';
+} from '../../../../../../../public/assets/images/ProfilePageIcons';
 
 const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
   const { t } = useTranslation(['editProfile']);

@@ -1,7 +1,7 @@
-import myForestStyles from '../../styles/MyForest.module.scss';
+import myForestStyles from '../../../styles/MyForest.module.scss';
 import format from 'date-fns/format';
 import { useTranslation } from 'next-i18next';
-import { localeMapForDate } from '../../../../../utils/language/getLanguageName';
+import { localeMapForDate } from '../../../../../../utils/language/getLanguageName';
 
 interface ProjectInfoAndContributionDateProps {
   projectName: string | null;

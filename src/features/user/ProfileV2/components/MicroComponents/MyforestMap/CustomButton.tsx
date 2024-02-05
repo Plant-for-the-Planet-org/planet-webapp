@@ -1,10 +1,9 @@
-import PlantedTreesButton from '../ProjectDetails/PlantedTreesButton';
-import RestoredButton from '../ProjectDetails/RestoredButton';
-import ConservationButton from '../ProjectDetails/ConservationButton';
-import DonationInfo from '../ProjectDetails/DonationInfo';
-import myForestStyles from '../../styles/MyForest.module.scss';
-import SwipeLeftIcon from '@mui/icons-material/SwipeLeft';
-import { useMyForest } from '../../../../common/Layout/MyForestContext';
+import PlantedTreesButton from '../../ProjectDetails/PlantedTreesButton';
+import RestoredButton from '../../ProjectDetails/RestoredButton';
+import ConservationButton from '../../ProjectDetails/ConservationButton';
+import DonationInfo from '../../ProjectDetails/DonationInfo';
+import myForestStyles from '../../../styles/MyForest.module.scss';
+import { useMyForest } from '../../../../../common/Layout/MyForestContext';
 import { ReactElement } from 'react';
 
 interface CustomButtonProps {

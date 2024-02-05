@@ -1,7 +1,7 @@
 import { Popup } from 'react-map-gl';
-import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
-import { CustomPopupMarkerProps } from '../../../../common/types/map';
-import { DonationPopUp, RegisteredTreePopUp } from '../MicroComponents/PopUp';
+import MyForestMapStyle from '../../../styles/MyForestMap.module.scss';
+import { CustomPopupMarkerProps } from '../../../../../common/types/map';
+import { DonationPopUp, RegisteredTreePopUp } from './PopUp';
 
 const CustomPopUpSingleMarker = ({
   geoJson,

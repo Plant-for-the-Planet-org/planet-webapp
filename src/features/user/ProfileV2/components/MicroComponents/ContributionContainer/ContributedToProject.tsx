@@ -2,9 +2,9 @@ import {
   Contributions,
   BouquetContribution,
   GiftContributionProps,
-} from '../../../../common/types/myForest';
+} from '../../../../../common/types/myForest';
 import { ReactElement } from 'react';
-import myForestStyles from '../../styles/MyForest.module.scss';
+import myForestStyles from '../../../styles/MyForest.module.scss';
 import ProjectImage from './ProjectImage';
 import ProjectInfoAndContributionDate from './ProjectInfoAndContributionDate';
 import TreesOrUnitAreaAndDonateOption from './TreesOrUnitAreaAndDonateOption';

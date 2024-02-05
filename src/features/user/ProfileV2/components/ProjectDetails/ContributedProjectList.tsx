@@ -2,7 +2,7 @@ import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import { ReactElement } from 'react';
 import { Button } from '@mui/material';
-import ContributedToProject from '../MicroComponents/ContributedToProject';
+import ContributedToProject from '../MicroComponents/ContributionContainer/ContributedToProject';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
 import { Page } from '../../../../common/types/myForest';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';

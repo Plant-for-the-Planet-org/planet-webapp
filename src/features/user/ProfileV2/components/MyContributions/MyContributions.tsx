@@ -9,14 +9,14 @@ import { Purpose } from '../../../../../utils/constants/myForest';
 import { ContributionData } from '../../../../common/types/myForest';
 import { StatsResult } from '../../../../common/types/myForest';
 import { MyContributionsProps } from '../../../../common/types/map';
-import MyContributionCustomButton from '../MicroComponents/CustomButton';
+import MyContributionCustomButton from '../MicroComponents/MyforestMap/CustomButton';
 import { SetState } from '../../../../common/types/common';
 import { PointFeature } from 'supercluster';
 import { TestPointProps } from '../../../../common/types/map';
 import { MyForestMapLoader } from '../../../../common/ContentLoaders/UserProfile/UserProfile';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import MyContributionList from '../MicroComponents/MyContributionList';
+import MyContributionList from '../MicroComponents/ContributionContainer/MyContributionList';
 
 const A_DAY_IN_MS = 1000 * 60 * 60 * 24;
 
