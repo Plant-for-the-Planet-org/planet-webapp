@@ -11,7 +11,6 @@ const CustomPopUpSingleMarker = ({
   onMouseLeave,
 }: CustomPopupMarkerProps) => {
   if (!showPopUp) return null;
-
   const { geometry, properties } = geoJson;
   const _latitude = parseInt(`${geometry.coordinates[1]}`);
   const _longitude = parseInt(`${geometry.coordinates[0]}`);
@@ -41,6 +40,7 @@ const CustomPopUpSingleMarker = ({
             totalContribution={Number(properties.totalContributions)}
             projectId={properties.project.guid}
             tpoName={properties.project.tpo.name}
+            isDonatable={properties.project.allowDonations}
             profile={profile}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}

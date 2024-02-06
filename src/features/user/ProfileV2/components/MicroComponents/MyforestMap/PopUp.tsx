@@ -34,6 +34,7 @@ interface DonationPopUpProps {
   projectId: string;
   tpoName: string;
   profile: User | UserPublicProfile | undefined;
+  isDonatable: boolean;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
 }
@@ -171,6 +172,7 @@ export const DonationPopUp = ({
   projectId,
   tpoName,
   profile,
+  isDonatable,
   onMouseEnter,
   onMouseLeave,
 }: DonationPopUpProps) => {
@@ -228,6 +230,7 @@ export const DonationPopUp = ({
             variant="contained"
             className={MyForestMapStyle.donateButton}
             onClick={() => handleDonation(projectId, tenantConfig.id)}
+            disabled={!isDonatable}
           >
             {t('me:donate')}
           </Button>
