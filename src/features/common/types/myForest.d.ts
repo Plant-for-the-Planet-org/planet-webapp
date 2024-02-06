@@ -176,6 +176,7 @@ export interface ContributionsGeoJsonQueryResult {
   startDate: string;
   endDate: string;
   totalContributions: number;
+  allowDonations: boolean;
 }
 
 export interface GiftsGeoJsonQueryResult {
