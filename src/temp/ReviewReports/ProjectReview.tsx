@@ -7,7 +7,12 @@ import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { localeMapForDate } from '../../utils/language/getLanguageName';
 
-const ProjectReview = ({ issueMonth, pdf }) => {
+interface Props {
+  pdf: string;
+  issueMonth: string;
+}
+
+const ProjectReview = ({ issueMonth, pdf }: Props) => {
   const displayDate = (date: string) => {
     return format(parse(date, 'MM-yyyy', new Date()), 'LLLL yyyy', {
       locale: localeMapForDate[localStorage.getItem('language') || 'en'],
