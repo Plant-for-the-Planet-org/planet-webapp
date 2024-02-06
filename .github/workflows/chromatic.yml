@@ -10,6 +10,7 @@ on:
       - feature/storybook-update
       - develop
       - feature/redesign-explore-btn
+      - feature/redesign-review-project
 # List of jobs
 jobs:
   chromatic-deployment:
