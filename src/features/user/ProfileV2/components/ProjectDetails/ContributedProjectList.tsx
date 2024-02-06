@@ -10,7 +10,7 @@ import { User, UserPublicProfile } from '@planet-sdk/common';
 export interface ContributedProjectListProps {
   userProfile: User | UserPublicProfile;
   hasNextPage: boolean | undefined;
-  handleFetchNextPage: () => void;
+  handleFetchNextPage: (() => void) | undefined;
   contributionProjectList: Page[] | undefined;
 }
 
@@ -23,7 +23,6 @@ const ContributedProjectList = ({
   const { isConservedButtonActive, isProcessing, setIsProcessing } =
     useMyForest();
   const { t } = useTranslation(['me']);
-
   return contributionProjectList ? (
     <div className={myForestStyles.donationlistContainer}>
       {contributionProjectList.map((singlePage) => {

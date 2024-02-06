@@ -113,7 +113,7 @@ const PlantedTreesContributions = ({
               userProfile={userProfile}
               hasNextPage={hasNextPage}
               contributionProjectList={treePlantationContribution?.pages}
-              handleFetchNextPage={() => handleFetchNextPage}
+              handleFetchNextPage={handleFetchNextPage}
             />
           </div>
         )}

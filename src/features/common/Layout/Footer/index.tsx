@@ -9,14 +9,18 @@ import { useTenant } from '../TenantContext';
 import UNDecadeLogo from '../../../../../public/assets/images/footer/UNDecadeLogo';
 import PlanetCJLogo from '../../../../../public/assets/images/footer/PlanetCJLogo';
 import DarkModeSwitch from '../DarkModeSwitch.tsx';
+import { useRouter } from 'next/router';
 
 // let styles = require('./Footer.module.css');
 export default function Footer(): ReactElement | null {
   const { t, i18n, ready } = useTranslation(['common']);
+  const { pathname } = useRouter();
+
   const { tenantConfig } = useTenant();
   const [openModal, setOpenModal] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
   const [selectedCountry, setSelectedCountry] = useState('DE');
+  console.log(pathname === '/sites/[slug]/t/[id]', '==1');
   const handleModalOpen = () => {
     setOpenModal(true);
   };
@@ -92,7 +96,13 @@ export default function Footer(): ReactElement | null {
 
   return ready ? (
     <footer>
-      <div className={styles.footerMainContainer}>
+      <div
+        className={styles.footerMainContainer}
+        style={{
+          backgroundColor:
+            pathname === '/sites/[slug]/t/[id]' ? '#fafaff' : '#fff',
+        }}
+      >
         <div className={styles.hr} />
 
         <div className={styles.footer_container}>

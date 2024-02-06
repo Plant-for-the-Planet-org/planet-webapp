@@ -31,7 +31,7 @@ const ConservationContributions = ({
           userProfile={userProfile}
           hasNextPage={hasNextPage}
           contributionProjectList={conservationContribution?.pages}
-          handleFetchNextPage={() => handleFetchNextPage}
+          handleFetchNextPage={handleFetchNextPage}
         />
       </div>
     </div>

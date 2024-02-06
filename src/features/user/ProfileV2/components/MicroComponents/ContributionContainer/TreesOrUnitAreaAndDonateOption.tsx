@@ -51,6 +51,19 @@ const TreesOrUnitAreaAndDonateOption = ({
       ? window.open(url, '_blank')
       : (window.location.href = url);
   };
+
+  const _checkConditions = () => {
+    if (gift && asPath === '/profile') {
+      const _label = t('me:donate');
+      return _label;
+    } else if (asPath !== '/profile') {
+      const _label = t('me:donate');
+      return _label;
+    } else {
+      const _label = t('me:donateAgain');
+      return _label;
+    }
+  };
   return (
     <div className={myForestStyles.donateContainer}>
       <div>
@@ -91,9 +104,7 @@ const TreesOrUnitAreaAndDonateOption = ({
           }
           onClick={() => handleDonate(projectGUID, tenantId)}
         >
-          {gift || router.asPath !== '/profile'
-            ? t('me:donate')
-            : t('me:donateAgain')}
+          {_checkConditions()}
         </div>
       )}
     </div>
