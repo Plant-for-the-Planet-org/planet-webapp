@@ -10,46 +10,43 @@ const CustomPopUpSingleMarker = ({
   onMouseEnter,
   onMouseLeave,
 }: CustomPopupMarkerProps) => {
+  if (!showPopUp) return null;
+
+  const { geometry, properties } = geoJson;
+  const _latitude = parseInt(`${geometry.coordinates[1]}`);
+  const _longitude = parseInt(`${geometry.coordinates[0]}`);
+  const _contributionType = properties.contributionType;
+  const _quantity =
+    parseInt(properties.quantity) || Number(properties.quantity.toFixed(2));
+
   return (
     <div className={MyForestMapStyle.singleMarkerContainer}>
-      {showPopUp ? (
-        <Popup
-          className={MyForestMapStyle.mapboxglPopup}
-          latitude={parseInt(`${geoJson.geometry.coordinates[1]}`)}
-          longitude={parseInt(`${geoJson.geometry.coordinates[0]}`)}
-          closeButton={false}
-          tipSize={geoJson.properties.contributionType === 'planting' ? 10 : 0}
-        >
-          {geoJson.properties.contributionType === 'planting' ? (
-            <RegisteredTreePopUp
-              geoJson={geoJson}
-              onMouseLeave={onMouseLeave}
-            />
-          ) : (
-            <DonationPopUp
-              startDate={
-                geoJson?.properties?.created || geoJson?.properties?.startDate
-              }
-              endDate={geoJson?.properties?.endDate}
-              country={geoJson?.properties?.project?.country.toLowerCase()}
-              projectName={geoJson?.properties?.project?.name}
-              projectImage={geoJson?.properties?.project?.image}
-              numberOfTrees={
-                parseInt(`${geoJson.properties.quantity}`) ||
-                Number(geoJson?.properties?.quantity?.toFixed(2))
-              }
-              totalContribution={Number(geoJson.properties.totalContributions)}
-              projectId={geoJson?.properties?.project?.guid}
-              tpoName={geoJson?.properties?.project?.tpo.name}
-              profile={profile}
-              onMouseEnter={onMouseEnter}
-              onMouseLeave={onMouseLeave}
-            />
-          )}
-        </Popup>
-      ) : (
-        <></>
-      )}
+      <Popup
+        className={MyForestMapStyle.mapboxglPopup}
+        latitude={_latitude}
+        longitude={_longitude}
+        closeButton={false}
+        tipSize={_contributionType === 'planting' ? 10 : 0}
+      >
+        {_contributionType === 'planting' ? (
+          <RegisteredTreePopUp geoJson={geoJson} onMouseLeave={onMouseLeave} />
+        ) : (
+          <DonationPopUp
+            startDate={properties.created || properties.startDate}
+            endDate={properties.endDate}
+            country={properties.project.country.toLowerCase()}
+            projectName={properties.project.name}
+            projectImage={properties.project.image}
+            numberOfTrees={_quantity}
+            totalContribution={Number(properties.totalContributions)}
+            projectId={properties.project.guid}
+            tpoName={properties.project.tpo.name}
+            profile={profile}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+          />
+        )}
+      </Popup>
     </div>
   );
 };

@@ -205,6 +205,7 @@ export const DonationPopUp = ({
         <img
           className={MyForestMapStyle.image}
           src={getImageUrl('project', 'medium', projectImage)}
+          alt={projectName}
         />
       </div>
       <div className={MyForestMapStyle.projectName}>{projectName}</div>

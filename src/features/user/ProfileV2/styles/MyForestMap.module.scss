@@ -288,7 +288,7 @@
 .projectName {
   font-size: 10px;
   position: absolute;
-  bottom: 64px;
+  bottom: 58px;
   left: 10px;
   text-transform: capitalize;
   font-weight: 600;
@@ -357,4 +357,7 @@
   font-size: 8px;
   margin-top: 4px;
   width: 197px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
