@@ -170,7 +170,7 @@ export const contributionsGeoJson = procedure
         SUM(c.quantity) AS quantity,  c.purpose, MIN(c.plant_date) AS startDate,
         MAX(c.plant_date) AS endDate, c.contribution_type, c.plant_date, pp.country, 
         pp.unit_type, pp.guid, pp.name, pp.image, pp.geo_latitude AS geoLatitude, 
-        pp.geo_longitude AS geoLongitude, c.geometry, tpo.name AS tpoName
+        pp.geo_longitude AS geoLongitude, c.geometry, tpo.name AS tpoName, pp.accept_donations as allowDonations
       FROM contribution c
               ${join}
               JOIN profile p ON p.id = c.profile_id
@@ -219,6 +219,28 @@ export const contributionsGeoJson = procedure
       },
     });
 
+    // There are gifts in the database that don't have an allowDonations field, so we need to fetch them separately here
+    // and fetch the allowDonations from the project table and prep them for the response
+
+    const giftProjectIds =
+      giftData.length > 0
+        ? giftData.map(
+            (gift) => JSON.parse(JSON.stringify(gift.metadata))?.project?.id
+          )
+        : [];
+
+    const giftProjects = await prisma.project.findMany({
+      select: {
+        guid: true,
+        allowDonations: true,
+      },
+      where: {
+        guid: {
+          in: giftProjectIds,
+        },
+      },
+    });
+
     const contributions = data.map((contribution) => {
       return {
         type: 'Feature',
@@ -238,6 +260,7 @@ export const contributionsGeoJson = procedure
             image: contribution.image,
             country: contribution.country,
             unitType: contribution.unit_type,
+            allowDonations: contribution.allowDonations ? true : false,
             tpo: {
               name: contribution.tpoName,
             },
@@ -260,6 +283,10 @@ export const contributionsGeoJson = procedure
 
       const _giftProject = JSON.parse(JSON.stringify(gift.metadata));
 
+      const projectAllowDonations = giftProjects.find(
+        (project) => project.guid === _giftProject?.project?.id
+      )?.allowDonations;
+
       const _gift = {
         type: 'Feature',
         properties: {
@@ -273,6 +300,7 @@ export const contributionsGeoJson = procedure
               ? _giftProject.project.image
               : image,
             country: _giftProject.project.country,
+            allowDonations: projectAllowDonations,
             tpo: {
               name: _giftProject.project.organization.name,
             },
