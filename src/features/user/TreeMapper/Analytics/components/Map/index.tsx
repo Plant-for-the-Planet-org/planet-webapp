@@ -32,6 +32,8 @@ import { MuiAutoComplete } from '../../../../../common/InputTypes/MuiAutoComplet
 import styles from './index.module.scss';
 import getMapStyle from '../../../../../../utils/maps/getMapStyle';
 import TreeMapperIcon from './components/TreeMapperIcon';
+import { QueryType } from '../../constants';
+import { isValid, parseISO } from 'date-fns';
 
 const EMPTY_STYLE = {
   version: 8,
@@ -76,6 +78,7 @@ export const MapContainer = () => {
     PlantLocation['properties'] | null
   >(null);
   const [search, setSearch] = useState<string>('');
+  const [queryType, setQueryType] = useState<QueryType | null>(null);
 
   const mapRef: MutableRefObject<null> = useRef(null);
   const [mapState, setMapState] = useState({
@@ -114,7 +117,8 @@ export const MapContainer = () => {
     body: {
       projectId: project?.id,
       species: species,
-      // TODO: add search
+      queryType: queryType,
+      searchQuery: search,
     },
   });
 
@@ -220,7 +224,7 @@ export const MapContainer = () => {
     if (project && species) {
       fetchProjectLocations();
     }
-  }, [project, species]);
+  }, [project, species, queryType]);
 
   const handleProjectTypeChange = (projType: ProjectType | null) => {
     setProjectType(projType);
@@ -237,6 +241,37 @@ export const MapContainer = () => {
       if (Object.keys(clickedLayerProperties).length !== 0) {
         setSelectedLayer(clickedLayerProperties);
       }
+    }
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+    const value = event.target.value.trim();
+
+    // Regular expression for HID (6 letters, A-Z and 0-9)
+    const hidRegex = /^[A-Za-z0-9]{6}$/;
+
+    // Regular expression for Date (YYYY-MM-DD)
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+    if (value.length === 6) {
+      if (hidRegex.test(value)) {
+        console.log('Valid HID input:', value);
+        setQueryType(QueryType.HID);
+      } else {
+        console.log('Not a valid HID input:', value);
+        setQueryType(null);
+      }
+    } else if (dateRegex.test(value)) {
+      if (isValid(parseISO(value))) {
+        console.log('Valid Date input:', value);
+        setQueryType(QueryType.DATE);
+      } else {
+        console.log('Not a valid Date:', value);
+      }
+    } else {
+      console.log('Not a valid input:', value);
+      setQueryType(null);
     }
   };
 
@@ -270,24 +305,24 @@ export const MapContainer = () => {
               />
             )}
           />
-          <TextField
-            style={{ minWidth: '150px' }}
-            label={t('search')}
-            InputProps={{
-              startAdornment: <Search />,
-            }}
-            value={search}
-            placeholder={moment().format('YYYY-MM-DD')}
-            onChange={(e) => setSearch(e.target.value)}
+          <SitesSelectorAutocomplete
+            sitesList={projectSites?.features}
+            site={projectSite}
+            handleSiteChange={handleSiteChange}
+            styles={{ minWidth: '200px' }}
           />
         </LeftElements>
       }
       rightElement={
-        <SitesSelectorAutocomplete
-          sitesList={projectSites?.features}
-          site={projectSite}
-          handleSiteChange={handleSiteChange}
-          styles={{ minWidth: '200px' }}
+        <TextField
+          style={{ minWidth: '150px' }}
+          label={t('search')}
+          InputProps={{
+            startAdornment: <Search />,
+          }}
+          value={search}
+          placeholder={moment().format('YYYY-MM-DD')}
+          onChange={handleSearchChange}
         />
       }
       overrideBodyStyles={styles.body}

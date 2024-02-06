@@ -81,11 +81,6 @@ export interface UncleanDistinctSpecies {
 
 export type DistinctSpecies = string[];
 
-export enum QueryType {
-  DATE = 'date',
-  HID = 'hid',
-}
-
 export interface UncleanPlantLocations {
   geometry: string;
   guid: string;

@@ -3,13 +3,9 @@ import nc from 'next-connect';
 import db from '../../../../../src/utils/connectDB';
 import { Geometry } from '@turf/turf';
 import { PlantLocation } from '../../../../../src/features/common/types/dataExplorer';
+import { QueryType } from '../../../../../src/features/user/TreeMapper/Analytics/constants';
 
 const handler = nc<NextApiRequest, NextApiResponse>();
-
-enum QueryType {
-  DATE = 'date',
-  HID = 'hid',
-}
 
 interface UncleanPlantLocations {
   geometry: string;
