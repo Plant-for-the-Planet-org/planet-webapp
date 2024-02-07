@@ -1,0 +1,37 @@
+.projectDescription {
+    width: 306px;
+    background-color: rgba(39, 174, 96, 0.1);
+    color: #2F3336;
+    border-radius: 14px;   
+    font-size: 12px; 
+}
+.infoTitle {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 16px 16px 0 16px;
+}
+
+.infoText {
+    padding: 4px 16px 8px 16px;
+}
+
+.hideText {
+    display: none;
+}
+.showText {
+    display: inline;
+}
+.readMoreLessButton {
+    background-color: #219653;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 0 14px 14px;
+    height: 27px;
+    color: #FFF;
+    font-size: 8px;
+    gap: 3px;
+    text-transform: capitalize;
+    font-weight: 700;
+}
