@@ -26,7 +26,7 @@ handler.get(async (req, response) => {
 
   const key = `${KEY}_${projectId}`;
 
-  const cachedDistinctSpecies = (await redisClient.get(key)) as string;
+  const cachedDistinctSpecies = await redisClient.get(key);
 
   if (cachedDistinctSpecies) {
     return response.status(200).json({ data: cachedDistinctSpecies });

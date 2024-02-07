@@ -6,7 +6,6 @@ import {
   rateLimiter,
   speedLimiter,
 } from '../../../src/middlewares/rate-limiter';
-import NodeCache from 'node-cache';
 import { getCachedKey } from '../../../src/utils/getCachedKey';
 import {
   IDailyFrame,
@@ -14,11 +13,10 @@ import {
   IWeeklyFrame,
   IYearlyFrame,
 } from '../../../src/features/common/types/dataExplorer';
+import redisClient from '../../../src/redis-client';
 
 const ONE_HOUR_IN_SEC = 60 * 60;
-const ONE_DAY = ONE_HOUR_IN_SEC * 24;
-
-const cache = new NodeCache({ stdTTL: ONE_DAY, checkperiod: ONE_HOUR_IN_SEC });
+const TWO_HOURS = ONE_HOUR_IN_SEC * 2;
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
@@ -36,7 +34,7 @@ handler.post(async (req, response) => {
     timeFrame as string
   )}`;
 
-  const cacheHit = cache.get(CACHE_KEY);
+  const cacheHit = await redisClient.get(CACHE_KEY);
 
   if (cacheHit) {
     response.status(200).json({ data: cacheHit });
@@ -116,9 +114,9 @@ handler.post(async (req, response) => {
       IDailyFrame[] | IWeeklyFrame[] | IMonthlyFrame[] | IYearlyFrame[]
     >(query, [projectId, startDate, `${endDate} 23:59:59.999`]);
 
-    await db.end();
-
-    cache.set(CACHE_KEY, res);
+    await redisClient.set(CACHE_KEY, JSON.stringify(res), {
+      ex: TWO_HOURS,
+    });
 
     response.status(200).json({ data: res });
   } catch (err) {
