@@ -5,11 +5,32 @@ import {
   PlantLocationDetails,
   PlantLocationDetailsQueryRes,
 } from '../../../../../src/features/common/types/dataExplorer';
+import {
+  rateLimiter,
+  speedLimiter,
+} from '../../../../../src/middlewares/rate-limiter';
+import redisClient from '../../../../../src/redis-client';
+
+const ONE_HOUR_IN_SEC = 60 * 60;
+const TWO_HOURS = ONE_HOUR_IN_SEC * 2;
+
+const KEY = 'PLANT_LOCATION_DETAILS';
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
+handler.use(rateLimiter);
+handler.use(speedLimiter);
+
 handler.get(async (req, response) => {
   const { plantLocationId } = req.query;
+
+  const key = `${KEY}_${plantLocationId}`;
+
+  const cachedPlantLocationDetails = (await redisClient.get(key)) as string;
+
+  if (cachedPlantLocationDetails) {
+    return response.status(200).json({ data: cachedPlantLocationDetails });
+  }
 
   const query = `
     SELECT
@@ -82,6 +103,10 @@ handler.get(async (req, response) => {
   ]);
 
   const plantLocationDetails: PlantLocationDetails = JSON.parse(res[0].result);
+
+  await redisClient.set(key, JSON.stringify(plantLocationDetails), {
+    ex: TWO_HOURS,
+  });
 
   response.status(200).json({
     res: plantLocationDetails,

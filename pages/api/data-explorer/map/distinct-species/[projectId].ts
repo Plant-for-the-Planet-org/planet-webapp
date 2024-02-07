@@ -9,6 +9,12 @@ import {
   DistinctSpecies,
   UncleanDistinctSpecies,
 } from '../../../../../src/features/common/types/dataExplorer';
+import redisClient from '../../../../../src/redis-client';
+
+const ONE_HOUR_IN_SEC = 60 * 60;
+const TWO_HOURS = ONE_HOUR_IN_SEC * 2;
+
+const KEY = 'DISTINCT_SPECIES';
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
@@ -17,6 +23,14 @@ handler.use(speedLimiter);
 
 handler.get(async (req, response) => {
   const { projectId } = req.query;
+
+  const key = `${KEY}_${projectId}`;
+
+  const cachedDistinctSpecies = (await redisClient.get(key)) as string;
+
+  if (cachedDistinctSpecies) {
+    return response.status(200).json({ data: cachedDistinctSpecies });
+  }
 
   let disctinctSpecies: DistinctSpecies;
 
@@ -35,6 +49,10 @@ handler.get(async (req, response) => {
     disctinctSpecies = res.map((species) => species.name);
 
     disctinctSpecies.unshift('All');
+
+    await redisClient.set(key, JSON.stringify(disctinctSpecies), {
+      ex: TWO_HOURS,
+    });
 
     response.status(200).json({ data: disctinctSpecies });
   } catch (err) {

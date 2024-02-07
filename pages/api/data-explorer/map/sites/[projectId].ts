@@ -5,7 +5,16 @@ import {
   rateLimiter,
   speedLimiter,
 } from '../../../../../src/middlewares/rate-limiter';
-import {Site, UncleanSite } from '../../../../../src/features/common/types/dataExplorer';
+import {
+  Site,
+  UncleanSite,
+} from '../../../../../src/features/common/types/dataExplorer';
+import redisClient from '../../../../../src/redis-client';
+
+const ONE_HOUR_IN_SEC = 60 * 60;
+const TWO_HOURS = ONE_HOUR_IN_SEC * 2;
+
+const KEY = 'SITES';
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
@@ -14,6 +23,14 @@ handler.use(speedLimiter);
 
 handler.get(async (req, response) => {
   const { projectId } = req.query;
+
+  const key = `${KEY}_${projectId}`;
+
+  const cachedSites = (await redisClient.get(key)) as string;
+
+  if (cachedSites) {
+    return response.status(200).json({ data: cachedSites });
+  }
 
   try {
     const query =
@@ -41,6 +58,10 @@ handler.get(async (req, response) => {
       type: 'FeatureCollection',
       features: sites,
     };
+
+    await redisClient.set(key, JSON.stringify(featureCollection), {
+      ex: TWO_HOURS,
+    });
 
     response.status(200).json({ data: featureCollection });
   } catch (err) {
