@@ -15,7 +15,6 @@ import {
 import { Feature, Point } from 'geojson';
 
 /**
- *
  * Check different types of contribution's geometry and
  * returns appropriate coordinates
  *
