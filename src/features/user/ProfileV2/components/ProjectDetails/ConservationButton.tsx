@@ -23,7 +23,7 @@ const ConservationButton = ({
     setIsTreePlantedButtonActive,
   } = useMyForest();
 
-  const { t } = useTranslation(['donate']);
+  const { t } = useTranslation(['profile']);
 
   const handleClick = () => {
     if (isConservedButtonActive) {
@@ -54,7 +54,7 @@ const ConservationButton = ({
             />
           </div>
           <div className={myForestStyles.conservedLabel}>
-            {t('donate:conservation')}
+            {t('profile:myForestMap.conservation')}
           </div>
         </div>
         <div className={myForestStyles.conservedAreaValue}>

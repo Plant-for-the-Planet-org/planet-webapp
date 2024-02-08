@@ -13,15 +13,12 @@ import {
 } from '../../../../../../../public/assets/images/ProfilePageIcons';
 
 const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
-  const { t } = useTranslation(['editProfile']);
+  const { t, ready } = useTranslation(['profile']);
   const router = useRouter();
 
-  return (
+  return ready ? (
     <>
-      <div
-        className={myProfilestyle.userInfoContainer}
-        style={{ position: 'relative' }}
-      >
+      <div className={myProfilestyle.userInfoContainer}>
         {userProfile?.image ? (
           <Avatar
             alt="user Image"
@@ -37,7 +34,7 @@ const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
             {userProfile?.displayName}
           </div>
           <div>
-            {t('editProfile:memberSince', {
+            {t('profile:myProfile.memberSince', {
               date: `${formatDate(userProfile?.created)}`,
             })}
           </div>
@@ -54,9 +51,13 @@ const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
       )}
 
       <div className={myProfilestyle.userDescription}>
-        {userProfile?.bio && userProfile?.bio}
+        {t('profile:myProfile.userDescription', {
+          bio: userProfile?.bio,
+        })}
       </div>
     </>
+  ) : (
+    <></>
   );
 };
 

@@ -15,7 +15,7 @@ export const PublicProfileFeature = ({
   profile,
 }: NormalUserPublicProfileFeatureProps) => {
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t } = useTranslation(['profile']);
   const { light } = theme;
   const handleSupport = (): void => {
     router.push(`/s/${profile?.slug}`);
@@ -38,7 +38,7 @@ export const PublicProfileFeature = ({
           startIcon={<SupportSvg color={`${light.light}`} />}
           onClick={handleSupport}
         >
-          {t('me:support')}
+          {t('profile:myPublicProfile.support')}
         </Button>
       )}
 
@@ -49,7 +49,7 @@ export const PublicProfileFeature = ({
           onClick={handleShareUrl}
           startIcon={<LinkIcon />}
         >
-          {t('me:link')}
+          {t('profile:myPublicProfile.link')}
         </Button>
       )}
     </>

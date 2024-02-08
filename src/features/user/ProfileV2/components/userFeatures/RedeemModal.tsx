@@ -23,7 +23,7 @@ export default function RedeemModal({
   redeemModalOpen,
   handleRedeemModalClose,
 }: RedeemModal): ReactElement | null {
-  const { t, ready } = useTranslation(['me', 'common', 'donate', 'redeem']);
+  const { t, ready } = useTranslation(['redeem']);
   const { tenantConfig } = useTenant();
   const { user, contextLoaded, token, setUser, logoutUser, setRefetchData } =
     useUserProps();

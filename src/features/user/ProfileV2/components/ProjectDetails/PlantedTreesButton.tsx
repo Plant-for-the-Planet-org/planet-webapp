@@ -11,7 +11,7 @@ export interface PlantedTreesButtonProps {
 const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
   const { light, primaryDarkColorX } = theme;
   const { isTreePlantedButtonActive } = useMyForest();
-  const { t } = useTranslation(['donate']);
+  const { t } = useTranslation(['profile']);
 
   return (
     <div
@@ -32,7 +32,7 @@ const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
           />
         </div>
         <div className={myForestStyles.plantedTreesLabel}>
-          {t('donate:plantedTrees')}
+          {t('profile:myForestMap.treesPlanted')}
         </div>
       </div>
 

@@ -17,7 +17,7 @@ export const TreePlantedClusterMarker = ({
   mapRef,
 }: MarkerProps): ReactElement => {
   const { primaryDarkColorX } = theme;
-  const { t, ready } = useTranslation(['me']);
+  const { t, ready } = useTranslation(['profile']);
   const [showPopUp, setShowPopUp] = useState(false);
 
   const _totalTrees =
@@ -58,10 +58,10 @@ export const TreePlantedClusterMarker = ({
           </div>
           <div className={MyForestMapStyle.totalTreeCount}>
             {_isRestoredArea
-              ? t('me:area', {
+              ? t('profile:myForestMap.area', {
                   areaConserved: `${_unitArea}`,
                 })
-              : t('me:plantedTrees', {
+              : t('profile:myForestMap.plantedTree', {
                   count: Number(_totalTrees.toFixed(2)) || 0,
                 })}
           </div>
@@ -80,7 +80,7 @@ export const ConservAreaClusterMarker = ({
   const _unitArea =
     geoJson.properties.totalTrees || geoJson.properties.quantity;
   const { lightBlueColor } = theme;
-  const { t, ready } = useTranslation(['me']);
+  const { t, ready } = useTranslation(['profile']);
   const [showPopUp, setShowPopUp] = useState(false);
   return ready ? (
     <div>
@@ -104,7 +104,7 @@ export const ConservAreaClusterMarker = ({
             <ConservationTreeSvg color={`${lightBlueColor}`} />
           </div>
           <div className={MyForestMapStyle.totalTreeCount}>
-            {t('me:area', {
+            {t('profile:myForestMap.area', {
               areaConserved: `${_unitArea}`,
             })}
           </div>

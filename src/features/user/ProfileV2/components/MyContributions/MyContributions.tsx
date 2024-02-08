@@ -35,7 +35,6 @@ const MyTreesMap = dynamic(() => import('../MyForestMap'), {
 export default function MyContributions({
   profile,
 }: MyContributionsProps): ReactElement | null {
-  const { ready } = useTranslation(['country', 'me']);
   const { setErrors } = useContext(ErrorHandlingContext);
   const { setRefetchData, refetchData } = useUserProps();
   const {
@@ -198,7 +197,7 @@ export default function MyContributions({
     _checkHigestNumberContribution();
   }, [treePlantationContribution, conservationContribution]);
 
-  return ready && additionalInfoRelatedToContributions ? (
+  return additionalInfoRelatedToContributions ? (
     <div className={myForestStyles.mapMainContainer}>
       <MyTreesMap profile={profile} />
       <MyContributionCustomButton

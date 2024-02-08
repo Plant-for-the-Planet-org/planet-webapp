@@ -26,7 +26,7 @@ const UserFeatures = ({
   const { tenantConfig } = useTenant();
   const { light } = theme;
   const router = useRouter();
-  const { t } = useTranslation(['me']);
+  const { t } = useTranslation(['profile']);
   const { setRefetchData } = useUserProps();
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
 
@@ -57,7 +57,7 @@ const UserFeatures = ({
             startIcon={<RedeemCodeSvg color={`${light.light}`} />}
             onClick={handleRedeemModalOpen}
           >
-            {t('redeem:redeem')}
+            {t('profile:feature.redeem')}
           </Button>
           <Button
             className={myProfileStyle.registeredTreeButton}
@@ -65,7 +65,7 @@ const UserFeatures = ({
             startIcon={<RegisteredTreeSvg color={`${light.light}`} />}
             onClick={handleRegisterTree}
           >
-            {t('me:registerTrees')}
+            {t('profile:feature.registerTree')}
           </Button>
         </>
       )}

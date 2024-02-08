@@ -33,7 +33,7 @@ const TreesOrUnitAreaAndDonateOption = ({
   countryName,
   tpoName,
 }: TreesOrUnitAreaAndDonateOptionProps) => {
-  const { t } = useTranslation(['me']);
+  const { t } = useTranslation(['profile']);
   const { embed } = useContext(ParamsContext);
   const { token } = useUserProps();
   const router = useRouter();
@@ -54,13 +54,13 @@ const TreesOrUnitAreaAndDonateOption = ({
 
   const _checkConditions = () => {
     if (gift && asPath === '/profile') {
-      const _label = t('me:donate');
+      const _label = t('profile:myContributions.donate');
       return _label;
     } else if (asPath !== '/profile') {
-      const _label = t('me:donate');
+      const _label = t('profile:myContributions.donate');
       return _label;
     } else {
-      const _label = t('me:donateAgain');
+      const _label = t('profile:myContributions.donateAgain');
       return _label;
     }
   };
@@ -69,30 +69,30 @@ const TreesOrUnitAreaAndDonateOption = ({
       <div>
         <time className={myForestStyles.treeCount}>
           {gift && //for gift contribution
-            t('me:plantedTrees', {
+            t('profile:myForestMap.plantedTree', {
               count: parseInt(`${quantity}`) || quantity || 0,
             })}
           {projectPurpose === 'trees' && // tree plantation contribution
             projectUnit === 'tree' &&
-            t('me:plantedTrees', {
+            t('profile:myForestMap.plantedTree', {
               count: parseInt(`${quantity}`) || 0,
             })}
           {(projectPurpose === 'trees' || projectPurpose === 'conservation') && //for restoration  &  conservationcontribution
             projectUnit === 'm2' &&
-            t('me:areaType', {
+            t('profile:myContributions.areaType', {
               areaConserved: `${quantity}`,
               type: `${
                 projectPurpose === 'trees'
-                  ? t('me:restoredSmall')
-                  : t('me:conservedSmall')
+                  ? t('profile:myContributions.restoredSmall')
+                  : t('profile:myContributions.conservedSmall')
               } `,
             })}
-          {contributionType === 'planting' &&
+          {/* {contributionType === 'planting' &&
             countryName &&
             tpoName && //for register  tree contribution
-            t('me:registeredPlantedTrees', {
+            t('profile:myContributions.treeRegistered', {
               count: Number(`${quantity?.toFixed(2)}`) || 0,
-            })}
+            })} */}
         </time>
       </div>
       {contributionType && contributionType !== 'planting' && isDonatable && (

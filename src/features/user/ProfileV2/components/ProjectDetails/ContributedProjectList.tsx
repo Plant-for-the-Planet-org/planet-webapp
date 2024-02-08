@@ -22,7 +22,7 @@ const ContributedProjectList = ({
 }: ContributedProjectListProps): ReactElement => {
   const { isConservedButtonActive, isProcessing, setIsProcessing } =
     useMyForest();
-  const { t } = useTranslation(['me']);
+  const { t } = useTranslation(['profile']);
   return contributionProjectList ? (
     <div className={myForestStyles.donationlistContainer}>
       {contributionProjectList.map((singlePage) => {
@@ -70,12 +70,12 @@ const ContributedProjectList = ({
             disabled={isProcessing}
             onClick={() => {
               setIsProcessing(true);
-              handleFetchNextPage();
+              handleFetchNextPage && handleFetchNextPage();
             }}
           >
             {isProcessing
-              ? t('me:loadingContributions')
-              : t('me:loadContributions')}
+              ? t('profile:myContributions.loadingContribution')
+              : t('profile:myContributions.loadMoreContribution')}
           </Button>
         </div>
       )}

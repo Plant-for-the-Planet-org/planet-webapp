@@ -19,7 +19,7 @@ const RestoredButton = ({
   plantedTrees,
 }: RestoredButtonProps): ReactElement => {
   const { primaryDarkColorX, light } = theme;
-  const { t, ready } = useTranslation(['donate']);
+  const { t, ready } = useTranslation(['profile']);
   const { isTreePlantedButtonActive } = useMyForest();
 
   return ready ? (
@@ -41,7 +41,7 @@ const RestoredButton = ({
           />
         </div>
         <div className={myForestStyles.plantedTreesLabel}>
-          {t('donate:restored')}
+          {t('profile:myForestMap.restored')}
         </div>
       </div>
       <div className={myForestStyles.valueContainer}>

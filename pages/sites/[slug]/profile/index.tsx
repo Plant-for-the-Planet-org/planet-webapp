@@ -117,6 +117,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = async (
           'registerTrees',
           'tenants',
           'treemapper',
+          'profile',
         ],
         null,
         ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']

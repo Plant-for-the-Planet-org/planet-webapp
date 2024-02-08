@@ -22,8 +22,8 @@ const ProjectInfoAndContributionDate = ({
   contributionType,
   quantity,
 }: ProjectInfoAndContributionDateProps) => {
-  const { t } = useTranslation(['me']);
-  return (
+  const { t, ready } = useTranslation(['profile']);
+  return ready ? (
     <div className={myForestStyles.projectDetail}>
       <div className={myForestStyles.projectDetailMain}>
         <div className={myForestStyles.projectName}>{projectName}</div>
@@ -31,26 +31,24 @@ const ProjectInfoAndContributionDate = ({
         {tpoName || countryName ? (
           <div className={myForestStyles.sepratorContainer}>
             <div>{t('country:' + countryName)}</div>
-            <div
-              className={myForestStyles.dotSeprator}
-              style={{ position: 'relative' }}
-            >
-              <div style={{ position: 'absolute' }}>.</div>
+            <div className={myForestStyles.dotSeprator}>
+              <div className={myForestStyles.dot}>.</div>
             </div>
             <div className={myForestStyles.tpoName}>{tpoName}</div>
           </div>
         ) : (
           <time className={myForestStyles.treeCount}>
-            {contributionType === 'planting' && //for register  tree
-              t('me:registeredPlantedTrees', {
-                count: parseInt(`${quantity}`) || 0,
+            {contributionType === 'planting' &&
+              Number(quantity) && //for register  tree
+              t('profile:myContributions.treeRegistered', {
+                count: Number(quantity),
               })}
           </time>
         )}
 
         {giftSenderName ? (
           <div>
-            {t('me:receivedFrom', {
+            {t('profile:myContributions.receivedFrom', {
               name: `${giftSenderName}`,
             })}
           </div>
@@ -69,6 +67,8 @@ const ProjectInfoAndContributionDate = ({
         <></>
       )}
     </div>
+  ) : (
+    <></>
   );
 };
 

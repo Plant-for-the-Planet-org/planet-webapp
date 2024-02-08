@@ -20,18 +20,23 @@ const SingleMarkerUnits = ({
   isGiftContribution,
   isMergeContribution,
 }: SingleMarkerUnitsProps) => {
-  const { t, ready } = useTranslation(['me']);
+  const { t, ready } = useTranslation(['profile']);
   return ready ? (
     <div className={MyForestMapStyle.trees}>
-      {t(isConservation || isRestorationTreePlantation ? 'me:area' : '', {
-        areaConserved: units,
-      })}
+      {t(
+        isConservation || isRestorationTreePlantation
+          ? 'profile:myForestMap.area'
+          : '',
+        {
+          areaConserved: units,
+        }
+      )}
       {t(
         isNormalTreeDonation ||
           isRegisteredTree ||
           isGiftContribution ||
           isMergeContribution
-          ? 'me:plantedTrees'
+          ? 'profile:myForestMap.plantedTree'
           : '',
         {
           count: units,

@@ -17,7 +17,7 @@ const PlantedTreesContributions = ({
   hasNextPage,
 }: TreeContributedProjectListProps): ReactElement => {
   const { asPath } = useRouter();
-  const { t } = useTranslation(['me']);
+  const { t } = useTranslation(['profile']);
   const [isAddTargetModalOpen, setIsAddTargetModalOpen] = useState(false);
   const { treePlantationContribution, additionalInfoRelatedToContributions } =
     useMyForest();
@@ -98,7 +98,7 @@ const PlantedTreesContributions = ({
                     padding: '0px 0px',
                   }}
                 >
-                  {t('me:editTarget')}
+                  {t('profile:myTreeCounter.editTarget')}
                 </Button>
               </div>
             ) : (
@@ -106,7 +106,7 @@ const PlantedTreesContributions = ({
             )}
 
             <div className={myForestStyles.text}>
-              {t('me:treesPlantedAndAreaRestored')}
+              {t('profile:myContributions.treesPlantedAndAreaRestored')}
               <p className={myForestStyles.hrLine} />
             </div>
             <ContributedProjectList

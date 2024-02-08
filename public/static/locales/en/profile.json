@@ -1,7 +1,9 @@
 {
   "myProfile": {
     "memberSince": "Member since {{date}}",
-    "userDescription": "{{bio}}",
+    "userDescription": "{{bio}}"
+  },
+  "feature": {
     "redeem": "Redeem",
     "registerTree": "Register Tree",
     "share": "Share"
@@ -13,13 +15,20 @@
   "myForestMap": {
     "plantedTree_one": "{{count}} Tree",
     "plantedTree_other": "{{count}} Trees",
-    "plantedTrees": "Planted Trees",
-    "projects": "projects",
+    "treesPlanted": "Trees Planted",
     "restored": "Restored",
+    "registered": "Registered",
     "conservation": "Conservation",
+    "projects": "projects",
     "countries": "Countries",
     "donations": "Donations",
-    "area": "{{areaConserved}}  m²"
+    "area": "{{areaConserved}}  m²",
+    "zoomIn": "zoom in for more details",
+    "totalDonation_one": "{{count}} donation ",
+    "totalDonation_other": "{{count}} donations ",
+    "totalProject_one": "to {{count}} project",
+    "totalProject_other": "to {{count}} projects",
+    "tpoName": "By {{tpo}}"
   },
   "myTreeCounter": {
     "treesPlanted": "Trees Planted",
@@ -27,11 +36,16 @@
   },
   "myContributions": {
     "treesPlantedAndAreaRestored": "Trees Planted & Areas Restored",
-    "treeRegistered_one": "{{noOfTrees}} Tree Registered",
-    "treeRegistered_plural": "{{noOfTrees}} Trees Registered",
+    "treeRegistered_one": "{{count}} Tree Registered",
+    "treeRegistered_other": "{{count}} Trees Registered",
     "receivedFrom": "Received from {{name}}",
     "loadMoreContribution": "Load More Contribution",
     "loadingContribution": "Loading Contribution....",
-    "donate": "Donate"
+    "donate": "Donate",
+    "donateAgain": "Donate Again",
+    "conservedSmall": "conserved",
+    "restoredSmall": "restored",
+    "areaType": "{{areaConserved}} m² {{type}}",
+    "areaConserved": "Areas Conserved"
   }
 }
