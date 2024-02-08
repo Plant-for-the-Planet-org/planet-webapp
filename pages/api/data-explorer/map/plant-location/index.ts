@@ -59,6 +59,11 @@ handler.post(async (req, response) => {
 
     await db.end();
 
+    response.setHeader(
+      'Cache-Control',
+      's-maxage=7200, stale-while-revalidate'
+    );
+
     response.status(200).json({ data: plantLocations });
   } catch (err) {
     console.log(err);
