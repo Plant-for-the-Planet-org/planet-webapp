@@ -1,4 +1,4 @@
-.projectInfoContainer {
+.projectInfoContainer, .moreInfoContainer {
     display: flex;
     width: 258px;
     flex-wrap: wrap;
@@ -9,29 +9,61 @@
     color: #2F3336;
     font-size: 10px;
 }
+.moreInfoContainer {
+    background-color: rgba(81, 198, 205, 0.10);
+    gap: 16px;
+}
+
 .halfInfo {
     flex: 1;
-    .infoTitle {
+    .infoTitle, .siteOwnershipTitle {
         font-weight: 700;
         margin-bottom: 4px;
         text-transform: capitalize;
         display: flex;
         gap: 12px;
-    }
-    
+    }   
 }
+
+.infoDetail {
+    display: flex;
+    justify-content: space-between;
+    a {
+        color: #3AB6BD;
+        font-weight: 700;   
+    }
+}
+
+.ownershipLabel {
+    background-color: rgba(81, 198, 205, 0.20);
+}
+
 .singleInfo {
    display: flex;
    width: 100%;
    flex-direction: row;
 }
+
 .seperator {
     height: 0.5px;
     background: rgba(242, 153, 74, 0.20);
-    margin: 12px;
+    margin: 12px 0;
 }
+
 .infoIconPopupContainer {
     padding: 12px;
     font-size: 8px;
     max-width: 200px !important;
+}
+
+.siteOwnershipTitle {
+   justify-content: space-between;
+   align-items: center;
+   span {
+    padding: 4px 6px;
+    background-color: rgba(81, 198, 205, 0.20);
+    border-radius: 4px;
+    font-weight: 400;
+    font-size: 8px;
+   }
 }
