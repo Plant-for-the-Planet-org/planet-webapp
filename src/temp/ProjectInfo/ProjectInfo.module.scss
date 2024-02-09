@@ -1,4 +1,6 @@
-.projectInfoContainer, .moreInfoContainer {
+@import '../../theme/theme';
+
+.projectInfoContainer, .moreInfoContainer, .certificationContainer {
     display: flex;
     width: 258px;
     flex-wrap: wrap;
@@ -12,6 +14,11 @@
 .moreInfoContainer {
     background-color: rgba(81, 198, 205, 0.10);
     gap: 16px;
+}
+
+.certificationContainer {
+    background-color: rgba(108, 99, 255, 0.10);
+    gap: 12px;
 }
 
 .halfInfo {
@@ -66,4 +73,62 @@
     font-weight: 400;
     font-size: 8px;
    }
+}
+.certificationLabel {
+    padding: 2px 9px;
+    border-radius: 24px;
+    border: 0.4px solid rgba(108, 99, 255, 0.20);
+    background: rgba(108, 99, 255, 0.15);
+    color: #6C63FF;
+    font-weight: 700;
+    width: fit-content;
+}
+.spendingsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 5px
+}
+.spendingDetail {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    width: 50%;
+}
+.reportsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.downloadIcon {
+    display: none;
+}
+
+@include xsPhoneView {
+    .certificationLabel {
+        background-color: transparent;
+        border: 0px;
+        font-weight: 400;
+        color: inherit;
+        padding: 0;
+    }
+    .spendingDetail {
+        width: 100%;
+        gap:32px;
+    }
+    .downloadIcon {
+        display: inline;
+        margin-left: auto;
+        cursor: pointer;
+    }
+    .spendingsContainer {
+        gap: 2px;
+    }
+    .reportsContainer {
+        flex-direction: column;
+        gap:2px;
+        >div {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
 }
