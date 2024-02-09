@@ -88,13 +88,13 @@ export const getTenantConfig = async (slug: string): Promise<Tenant> => {
 export async function getTenantSlug(referer: string) {
   const tenants = await getTenantConfigList();
 
-  const tenant = tenants?.find((tenant) =>
-    tenant.config.customDomain
-      ? referer.includes(tenant.config.customDomain)
-      : referer.includes(tenant.config.appDomain)
-  );
+  const tenant =
+    referer &&
+    tenants?.find((tenant) =>
+      tenant.config.customDomain
+        ? referer.includes(tenant.config.customDomain)
+        : referer.includes(tenant.config.appDomain)
+    );
 
-  console.log('tenant', tenant, referer);
-
-  return tenant?.config.slug ?? DEFAULT_TENANT;
+  return tenant ? tenant.config.slug : DEFAULT_TENANT;
 }
