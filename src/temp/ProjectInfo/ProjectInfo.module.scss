@@ -1,6 +1,6 @@
 @import '../../theme/theme';
 
-.projectInfoContainer, .moreInfoContainer, .certificationContainer {
+.projectInfoContainer, .moreInfoContainer, .certificationContainer, .contactDetailsContainer {
     display: flex;
     width: 258px;
     flex-wrap: wrap;
@@ -19,6 +19,11 @@
 .certificationContainer {
     background-color: rgba(108, 99, 255, 0.10);
     gap: 12px;
+    height: auto;
+}
+
+.contactDetailsContainer {
+    background-color: rgba(232, 111, 86, 0.10);;
 }
 
 .halfInfo {
@@ -101,6 +106,40 @@
 }
 .downloadIcon {
     display: none;
+}
+
+.contactText {
+    margin-top: 12.87px;
+}
+
+.singleContact {
+    display: flex;
+    background-color: rgba(242, 153, 74, 0.12);
+    border-radius: 8px;
+    padding: 0 10.5px;
+    min-height: 41px;
+    margin-bottom: 8px;
+    align-items: center;
+    gap: 8.5px;
+
+    .icon {
+        width: 21px;
+        height: 21px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+        flex-shrink: 0;
+    }
+    .title {
+        font-size: 10px;
+        font-weight: 600;
+        color: #2F3336;
+    }
+    .rightArrow {
+        margin-left: auto;
+    }
 }
 
 @include xsPhoneView {
