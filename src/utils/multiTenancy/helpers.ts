@@ -85,16 +85,16 @@ export const getTenantConfig = async (slug: string): Promise<Tenant> => {
 /**
  * Returns the subdomain of the current hostname.
  */
-export async function getTenantSlug(host: string) {
+export async function getTenantSlug(referer: string) {
   const tenants = await getTenantConfigList();
 
   const tenant = tenants?.find((tenant) =>
     tenant.config.customDomain
-      ? tenant.config.customDomain.includes(host)
-      : tenant.config.appDomain.includes(host)
+      ? referer.includes(tenant.config.customDomain)
+      : referer.includes(tenant.config.appDomain)
   );
 
-  console.log('tenant', tenant, host);
+  console.log('tenant', tenant, referer);
 
   return tenant?.config.slug ?? DEFAULT_TENANT;
 }
