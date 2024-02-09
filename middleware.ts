@@ -19,9 +19,11 @@ export const config = {
 export default async function middleware(req: NextRequest) {
   const url = req.nextUrl;
 
-  const origin = req.headers.get('referer');
+  const referer = req.headers.get('referer');
 
-  const slug = await getTenantSlug(origin!);
+  console.log('referer', referer);
+
+  const slug = await getTenantSlug(referer!);
 
   console.log('slug', slug);
 
