@@ -13,8 +13,8 @@
     "link": "Link"
   },
   "myForestMap": {
-    "plantedTree_one": "{{count}} Tree",
-    "plantedTree_other": "{{count}} Trees",
+    "plantedTree_one": "{{count, number}} Tree",
+    "plantedTree_other": "{{count, number}} Trees",
     "treesPlanted": "Trees Planted",
     "restored": "Restored",
     "registered": "Registered",
@@ -24,10 +24,10 @@
     "donations": "Donations",
     "area": "{{areaConserved}}  m²",
     "zoomIn": "zoom in for more details",
-    "totalDonation_one": "{{count}} donation ",
-    "totalDonation_other": "{{count}} donations ",
-    "totalProject_one": "to {{count}} project",
-    "totalProject_other": "to {{count}} projects",
+    "totalDonation_one": "{{count, number}}} donation ",
+    "totalDonation_other": "{{count, number}}} donations ",
+    "totalProject_one": "to {{count, number}}} project",
+    "totalProject_other": "to {{count, number}}} projects",
     "tpoName": "By {{tpo}}"
   },
   "myTreeCounter": {
@@ -36,8 +36,8 @@
   },
   "myContributions": {
     "treesPlantedAndAreaRestored": "Trees Planted & Areas Restored",
-    "treeRegistered_one": "{{count}} Tree Registered",
-    "treeRegistered_other": "{{count}} Trees Registered",
+    "treeRegistered_one": "{{count, number}}} Tree Registered",
+    "treeRegistered_other": "{{count, number}}} Trees Registered",
     "receivedFrom": "Received from {{name}}",
     "loadMoreContribution": "Load More Contribution",
     "loadingContribution": "Loading Contribution....",

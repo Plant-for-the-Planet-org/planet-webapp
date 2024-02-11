@@ -8,6 +8,7 @@ import { useTranslation } from 'next-i18next';
 import { ReactElement } from 'react';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import theme from '../../../../../theme/themeProperties';
+import { getFormattedNumber } from '../../../../../utils/getFormattedNumber';
 
 export interface ConservationButtonProps {
   conservedArea: number | null | undefined;
@@ -23,7 +24,7 @@ const ConservationButton = ({
     setIsTreePlantedButtonActive,
   } = useMyForest();
 
-  const { t } = useTranslation(['profile']);
+  const { t, i18n } = useTranslation(['profile']);
 
   const handleClick = () => {
     if (isConservedButtonActive) {
@@ -59,7 +60,7 @@ const ConservationButton = ({
         </div>
         <div className={myForestStyles.conservedAreaValue}>
           <div className={myForestStyles.value}>
-            {conservedArea ? conservedArea : 0}
+            {conservedArea ? getFormattedNumber(i18n.language, conservedArea) : 0}
           </div>
           <div className={myForestStyles.unit}>{'m²'}</div>
           {conservedArea !== null &&

@@ -8,6 +8,7 @@ import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import theme from '../../../../../theme/themeProperties';
+import { getFormattedNumber } from '../../../../../utils/getFormattedNumber';
 
 export interface RestoredButtonProps {
   restoredArea: number | null;
@@ -19,7 +20,7 @@ const RestoredButton = ({
   plantedTrees,
 }: RestoredButtonProps): ReactElement => {
   const { primaryDarkColorX, light } = theme;
-  const { t, ready } = useTranslation(['profile']);
+  const { t, i18n, ready } = useTranslation(['profile']);
   const { isTreePlantedButtonActive } = useMyForest();
 
   return ready ? (
@@ -46,7 +47,7 @@ const RestoredButton = ({
       </div>
       <div className={myForestStyles.valueContainer}>
         <div className={myForestStyles.areaRestored}>
-          <div>{restoredArea ? restoredArea : 0}</div>
+          <div>{restoredArea ? getFormattedNumber(i18n.language, restoredArea) : 0}</div>
         </div>
         <div className={myForestStyles.restoredUnit}>{'m²'}</div>
         {restoredArea !== null &&
