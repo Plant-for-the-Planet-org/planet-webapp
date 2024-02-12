@@ -242,6 +242,12 @@ const PlanetWeb = ({
                       : { display: 'none' }
                   }
                 >
+                  {console.log(
+                    'Video Container loaded',
+                    showVideo &&
+                      (tenantConfig.config.slug === 'planet' ||
+                        tenantConfig.config.slug === 'ttc')
+                  )}
                   {tenantConfig.config.slug === 'planet' ||
                     (tenantConfig.config.slug === 'ttc' && (
                       <>
