@@ -26,7 +26,7 @@ const UserFeatures = ({
   const { tenantConfig } = useTenant();
   const { light } = theme;
   const router = useRouter();
-  const { t } = useTranslation(['profile', 'me']);
+  const { t } = useTranslation(['me']);
   const { setRefetchData } = useUserProps();
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
 
@@ -46,41 +46,45 @@ const UserFeatures = ({
   return (
     <div className={myProfileStyle.buttonContainer}>
       {router.asPath !== '/profile' && !userProfile.isPrivate && (
-        <PublicProfileFeature profile={userProfile} />
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <PublicProfileFeature profile={userProfile} />
+        </div>
       )}
-
-      {router.asPath === '/profile' && (
-        <>
-          <Button
-            className={myProfileStyle.profileRedeemButton}
-            variant="contained"
-            startIcon={<RedeemCodeSvg color={`${light.light}`} />}
-            onClick={handleRedeemModalOpen}
-          >
-            {t('profile:feature.redeem')}
-          </Button>
-          <Button
-            className={myProfileStyle.registeredTreeButton}
-            variant="contained"
-            startIcon={<RegisteredTreeSvg color={`${light.light}`} />}
-            onClick={handleRegisterTree}
-          >
-            {t('me:registerTree')}
-          </Button>
-        </>
-      )}
+      <div style={{ display: 'flex', gap: '12px' }}>
+        {router.asPath === '/profile' && (
+          <>
+            <Button
+              className={myProfileStyle.profileRedeemButton}
+              variant="contained"
+              startIcon={<RedeemCodeSvg color={`${light.light}`} />}
+              onClick={handleRedeemModalOpen}
+            >
+              {t('me:redeem')}
+            </Button>
+            <Button
+              className={myProfileStyle.registeredTreeButton}
+              variant="contained"
+              startIcon={<RegisteredTreeSvg color={`${light.light}`} />}
+              onClick={handleRegisterTree}
+            >
+              {t('me:registerTree')}
+            </Button>
+          </>
+        )}
+      </div>
 
       <RedeemModal
         redeemModalOpen={isRedeemModalOpen}
         handleRedeemModalClose={handleRedeemModalClose}
       />
-
-      <Share
-        handleShare={handleShare}
-        userProfile={userProfile}
-        showSocialButton={showSocialButton}
-        setShowSocialButton={setShowSocialButton}
-      />
+      <div className={myProfileStyle.shareButtonContainer}>
+        <Share
+          handleShare={handleShare}
+          userProfile={userProfile}
+          showSocialButton={showSocialButton}
+          setShowSocialButton={setShowSocialButton}
+        />
+      </div>
     </div>
   );
 };

@@ -20,7 +20,18 @@
   flex-wrap: wrap;
   gap: 12px;
   @include xsPhoneView {
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0px;
+  }
+}
+
+.shareButtonContainer {
+  display: flex;
+  width: max-content;
+  justify-content: center;
+  @include xsPhoneView {
+    width: 100%;
   }
 }
 
@@ -55,6 +66,9 @@
   .userInfo {
     font-size: $fontXXLarge;
     font-weight: bold;
+    @include xsPhoneView {
+      font-size: 20px;
+    }
   }
 }
 

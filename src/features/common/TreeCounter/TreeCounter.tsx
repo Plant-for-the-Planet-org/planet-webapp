@@ -61,6 +61,10 @@ export function HomeCircularProgress(props: CircularProgressProps) {
 export default function TpoProfile(props: any) {
   const [progress, setProgress] = useState(0);
   const [isHomeTreeCounter, setIsHomeTreeCounter] = useState(false);
+  const [screenSize, setScreenSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
   const { t, i18n, ready } = useTranslation(['me']);
   const { tenantConfig } = useTenant();
 
@@ -71,6 +75,22 @@ export default function TpoProfile(props: any) {
       return false;
     }
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const svgHeight = screenSize.width < 400 ? 15 : 33;
+  const svgWidth = screenSize.width < 400 ? 20 : 43;
+
   useEffect(() => {
     let percentage = 0;
     if (props.target > 0) {
@@ -102,7 +122,6 @@ export default function TpoProfile(props: any) {
     });
     if (_tenantHasHomeTreeCounter) setIsHomeTreeCounter(true);
   }, [isHomeTreeCounter]);
-
   return ready ? (
     <div className={treeCounterStyles.treeCounter}>
       {isHomeTreeCounter ? (
@@ -124,7 +143,11 @@ export default function TpoProfile(props: any) {
       ) : (
         <div className={treeCounterStyles.treeCounterData}>
           <div>
-            <PlantedTressBlackSvg color={'#4F4F4F'} />
+            <PlantedTressBlackSvg
+              color={'#4F4F4F'}
+              height={svgHeight}
+              width={svgWidth}
+            />
           </div>
           <div className={treeCounterStyles.dataContainer}>
             {_isTreeTarget() ? (

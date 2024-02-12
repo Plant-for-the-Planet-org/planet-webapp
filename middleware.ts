@@ -23,8 +23,6 @@ export default async function middleware(req: NextRequest) {
 
   const slug = await getTenantSlug(host!);
 
-  console.log('slug', slug);
-
   // Prevent security issues – users should not be able to canonically access
   // the pages/sites folder and its respective contents.
   if (url.pathname.startsWith(`/sites`)) {
