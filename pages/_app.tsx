@@ -202,7 +202,7 @@ const PlanetWeb = ({
   const [localShowVideo, setLocalShowVideo] = React.useState(false);
 
   React.useEffect(() => {
-    if (router.pathname === '/') {
+    if (router.pathname === '/' || router.pathname === '/sites/[slug]') {
       if (typeof window !== 'undefined') {
         if (localStorage.getItem('showVideo')) {
           if (localStorage.getItem('showVideo') === 'true') {
@@ -246,7 +246,11 @@ const PlanetWeb = ({
                     'Video Container loaded',
                     showVideo &&
                       (tenantConfig.config.slug === 'planet' ||
-                        tenantConfig.config.slug === 'ttc')
+                        tenantConfig.config.slug === 'ttc'),
+                    tenantConfig.config.slug === 'planet',
+                    tenantConfig.config.slug === 'ttc',
+                    showVideo,
+                    router.pathname
                   )}
                   {tenantConfig.config.slug === 'planet' ||
                     (tenantConfig.config.slug === 'ttc' && (
