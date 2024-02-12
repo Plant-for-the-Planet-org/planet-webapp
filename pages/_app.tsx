@@ -242,12 +242,7 @@ const PlanetWeb = ({
                       : { display: 'none' }
                   }
                 >
-                  {tenantConfig.config.slug === 'planet' ||
-                    (tenantConfig.config.slug === 'ttc' && (
-                      <>
-                        <VideoContainer setshowVideo={setshowVideo} />
-                      </>
-                    ))}
+                  <VideoContainer setshowVideo={setshowVideo} />
                 </div>
 
                 <div
