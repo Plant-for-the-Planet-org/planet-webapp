@@ -1,3 +1,12 @@
 {
-    "satelliteAnalysis": "Satellite Analysis"
+    "satelliteAnalysis": "Satellite Analysis",
+    "biomassChange": "Biomass Change",
+    "potentialBiomass": "Potential Biomass",
+    "treeCover": "Tree Cover",
+    "fireRisk": "Fire Risk",
+    "floodingRisk": "Flooding Risk",
+    "speciesDensity": "Species Density",
+    "projectBegin": "Since project begin",
+    "avg": "Average",
+    "tons": "tons"
 }

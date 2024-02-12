@@ -7,6 +7,7 @@ import styles from './VegetationChangeDatabox.module.scss';
 import SpeciesDensityIcon from '../icons/SpeciesDensityIcon';
 import FloodingRiskIcon from '../icons/FloodingRiskIcon';
 import DropdownArrow from '../icons/DropdownArrow';
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   labelIcon: React.JSX.Element;
@@ -15,30 +16,31 @@ interface Props {
 }
 
 const Dropdown = ({ labelIcon, labelTitle, isOpen }: Props) => {
+  const { t } = useTranslation('projectDetails');
   const optionsList = [
     {
       icon: <BiomassChangeIcon />,
-      title: 'Biomass Change',
+      title: t('biomassChange'),
     },
     {
       icon: <PotentialBiomassIcon />,
-      title: 'Potential Biomass',
+      title: t('potentialBiomass'),
     },
     {
       icon: <TreeCoverIcon />,
-      title: 'Tree Cover',
+      title: t('treeCover'),
     },
     {
       icon: <FireIcon />,
-      title: 'Fire Risk',
+      title: t('fireRisk'),
     },
     {
       icon: <FloodingRiskIcon />,
-      title: 'Flooding Risk',
+      title: t('floodingRisk'),
     },
     {
       icon: <SpeciesDensityIcon />,
-      title: 'Species Density',
+      title: t('speciesDensity'),
     },
   ];
   const [selectedOption, setSelectedOption] = useState({

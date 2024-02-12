@@ -1,6 +1,7 @@
 import { Box, Typography, styled } from '@mui/material';
 import Slider from '@mui/material/Slider';
 import React from 'react';
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   position: number;
@@ -56,10 +57,11 @@ const StyledSlider = styled(Slider)(() => {
 });
 
 const VegetationSlider = ({ position }: Props) => {
+  const { t } = useTranslation('projectDetails');
   function getLabelText(value: number) {
     return (
       <div className="labelText">
-        <span>Average</span> +{value} tons
+        <span>{t('avg')}</span> +{value} {t('tons')}
       </div>
     );
   }
@@ -83,8 +85,8 @@ const VegetationSlider = ({ position }: Props) => {
           fontWeight: 600,
         }}
       >
-        <Typography>-20 tons</Typography>
-        <Typography>20 tons</Typography>
+        <Typography>-20 {t('tons')}</Typography>
+        <Typography>20 {t('tons')}</Typography>
       </Box>
     </div>
   );
