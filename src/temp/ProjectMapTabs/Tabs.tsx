@@ -23,7 +23,7 @@ const Tabs = ({ selected }: TabsProps) => {
     return false;
   };
 
-  const { t } = useTranslation(['maps']);
+  const { t } = useTranslation(['maps', 'projectDetails']);
   return (
     <div className={styles.tabsContainer}>
       <div onClick={() => setSelectedMode('satellite')}>
@@ -33,7 +33,7 @@ const Tabs = ({ selected }: TabsProps) => {
               color={selectedMode === 'satellite' ? '#fff' : '#000'}
             />
           }
-          title={t('maps:satelliteAnalysis')}
+          title={t('projectDetails:satelliteAnalysis')}
           isSelected={selectedMode === 'satellite'}
         />
         <div
