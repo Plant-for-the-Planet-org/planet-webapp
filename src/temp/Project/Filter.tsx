@@ -4,18 +4,14 @@ import { Button } from '@mui/material';
 import style from './Filter.module.scss';
 
 interface FilterProps {
-  active: boolean;
+  activeFilter: boolean;
   projectList: string[];
 }
 
-const Filter = ({ active, projectList }: FilterProps) => {
+export const FilterDropDown = ({ activeFilter, projectList }: FilterProps) => {
   return (
-    <div>
-      <Button>
-        <FilterIcon width={'16px'} height={'16px'} />
-      </Button>
-
-      {active && projectList.length > 0 ? (
+    <>
+      {activeFilter && projectList.length > 0 ? (
         <div className={style.projectListMainContainer}>
           <div className={style.container}>
             <h1>All Projects</h1>
@@ -33,6 +29,18 @@ const Filter = ({ active, projectList }: FilterProps) => {
       ) : (
         <></>
       )}
+    </>
+  );
+};
+
+const Filter = ({ activeFilter, projectList }: FilterProps) => {
+  return (
+    <div>
+      <Button>
+        <FilterIcon width={'16px'} height={'16px'} />
+      </Button>
+
+      <FilterDropDown activeFilter={activeFilter} projectList={projectList} />
     </div>
   );
 };
