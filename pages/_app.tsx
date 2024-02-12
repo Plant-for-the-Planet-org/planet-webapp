@@ -242,21 +242,10 @@ const PlanetWeb = ({
                       : { display: 'none' }
                   }
                 >
-                  {console.log(
-                    'Video Container loaded',
-                    showVideo &&
-                      (tenantConfig.config.slug === 'planet' ||
-                        tenantConfig.config.slug === 'ttc'),
-                    tenantConfig.config.slug === 'planet',
-                    tenantConfig.config.slug === 'ttc',
-                    showVideo,
-                    router.pathname
-                  )}
                   {tenantConfig.config.slug === 'planet' ||
                     (tenantConfig.config.slug === 'ttc' && (
                       <>
                         <VideoContainer setshowVideo={setshowVideo} />
-                        {console.log('Video Container loaded')}
                       </>
                     ))}
                 </div>

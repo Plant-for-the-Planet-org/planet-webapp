@@ -97,7 +97,6 @@ function VideoContainer({ setshowVideo }: Props): ReactElement {
 
   return ready && isContextLoaded ? (
     <div className={styles.landingVideoSection}>
-      {console.log('Video Container loaded')}
       <div className={styles.landingVideoWrapper}>
         {videoURL &&
           (ReactPlayer.canPlay(videoURL) ? (
