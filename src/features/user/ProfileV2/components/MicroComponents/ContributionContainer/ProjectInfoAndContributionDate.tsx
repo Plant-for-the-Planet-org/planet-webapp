@@ -41,7 +41,7 @@ const ProjectInfoAndContributionDate = ({
             {contributionType === 'planting' &&
               Number(quantity) && //for register  tree
               t('profile:myContributions.treeRegistered', {
-                count: Number(quantity),
+                count: parseInt(`${quantity}`),
               })}
           </time>
         )}

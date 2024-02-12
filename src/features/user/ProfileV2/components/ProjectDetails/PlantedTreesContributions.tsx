@@ -91,12 +91,7 @@ const PlantedTreesContributions = ({
                   variant="contained"
                   startIcon={<EditTargetSvg color={'#FFFFFF'} />}
                   onClick={handleAddTargetModalOpen}
-                  sx={{
-                    width: '138px',
-                    height: '34px',
-                    backgroundColor: '#219653',
-                    padding: '0px 0px',
-                  }}
+                  className={myForestStyles.customEditButton}
                 >
                   {t('profile:myTreeCounter.editTarget')}
                 </Button>
