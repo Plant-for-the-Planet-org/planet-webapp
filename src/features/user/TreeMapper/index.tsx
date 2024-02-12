@@ -12,7 +12,9 @@ import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
 import {
   ExtendedScopePlantLocations,
-  PlantLocation,
+  PlantLocation as PlantLocationType,
+  PlantLocationMulti,
+  PlantLocationSingle,
   SamplePlantLocation,
 } from '../../common/types/plantLocation';
 import { Links } from '../../common/types/payments';
@@ -28,12 +30,13 @@ function TreeMapper(): ReactElement {
   const [progress, setProgress] = React.useState(0);
   const [isDataLoading, setIsDataLoading] = React.useState(false);
   const [plantLocations, setPlantLocations] = React.useState<
-    PlantLocation[] | SamplePlantLocation[] | null
+    PlantLocationType[]
+  >([]);
+  const [selectedLocation, setselectedLocation] = React.useState<
+    PlantLocationSingle | PlantLocationMulti | null
   >(null);
-  const [selectedLocation, setselectedLocation] = React.useState<string>('');
   const [links, setLinks] = React.useState<Links>();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-
   async function fetchTreemapperData(next = false) {
     setIsDataLoading(true);
     setProgress(70);
@@ -49,8 +52,8 @@ function TreeMapper(): ReactElement {
             undefined,
             '1.0.4'
           );
-        if (response.items) {
-          const newPlantLocations = response?.items;
+        if (response?.items) {
+          const newPlantLocations = response.items;
           for (const itr in newPlantLocations) {
             if (Object.prototype.hasOwnProperty.call(newPlantLocations, itr)) {
               const ind = Number(itr);
@@ -61,7 +64,8 @@ function TreeMapper(): ReactElement {
                   if (
                     Object.prototype.hasOwnProperty.call(newPlantLocations, key)
                   ) {
-                    const item = newPlantLocations[key];
+                    const item = newPlantLocations[key] as PlantLocationMulti &
+                      SamplePlantLocation;
                     if (item.type === 'sample') {
                       if (item.parent === location.id) {
                         location.sampleTrees.push(item);
@@ -72,7 +76,10 @@ function TreeMapper(): ReactElement {
               }
             }
           }
-          setPlantLocations([...plantLocations, ...newPlantLocations]);
+          setPlantLocations([
+            ...plantLocations,
+            ...newPlantLocations,
+          ] as PlantLocationType[]);
         }
       } catch (err) {
         setErrors(handleError(err as APIError));
@@ -90,24 +97,25 @@ function TreeMapper(): ReactElement {
             undefined,
             '1.0.4'
           );
-        if (response.items) {
-          const plantLocations = response?.items;
+        if (response?.items) {
+          const plantLocations = response.items;
           if (plantLocations?.length === 0) {
-            setPlantLocations(null);
+            setPlantLocations([]);
           } else {
             for (const itr in plantLocations) {
               if (Object.prototype.hasOwnProperty.call(plantLocations, itr)) {
                 const location = plantLocations[itr];
-                if (location.type === 'multi') {
+                if (location && location.type === 'multi') {
                   location.sampleTrees = [];
                   for (const key in plantLocations) {
                     if (
                       Object.prototype.hasOwnProperty.call(plantLocations, key)
                     ) {
-                      const item = plantLocations[key];
+                      const item = plantLocations[key] as PlantLocationMulti &
+                        SamplePlantLocation;
                       if (item.type === 'sample') {
                         if (item.parent === location.id) {
-                          plantLocations[itr].sampleTrees.push(item);
+                          location.sampleTrees.push(item);
                         }
                       }
                     }
@@ -115,7 +123,7 @@ function TreeMapper(): ReactElement {
                 }
               }
             }
-            setPlantLocations(plantLocations);
+            setPlantLocations(plantLocations as PlantLocationType[]);
             setLinks(response._links);
           }
         }
@@ -147,7 +155,7 @@ function TreeMapper(): ReactElement {
         }
       }
     } else {
-      setselectedLocation('');
+      setselectedLocation(null);
     }
   }, [router.query.l, plantLocations]);
 
@@ -160,7 +168,6 @@ function TreeMapper(): ReactElement {
     fetchTreemapperData,
     links,
   };
-
   return (
     <div className={styles.profilePage}>
       {progress > 0 && (
