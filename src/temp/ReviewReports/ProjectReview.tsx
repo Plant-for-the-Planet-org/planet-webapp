@@ -7,6 +7,7 @@ import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { localeMapForDate } from '../../utils/language/getLanguageName';
 import { Trans } from 'next-i18next';
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   pdf: string;
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const ProjectReview = ({ issueMonth, pdf }: Props) => {
+  const { t } = useTranslation(['common']);
   const displayDate = (date: string) => {
     return format(parse(date, 'MM-yyyy', new Date()), 'LLLL yyyy', {
       locale: localeMapForDate[localStorage.getItem('language') || 'en'],
