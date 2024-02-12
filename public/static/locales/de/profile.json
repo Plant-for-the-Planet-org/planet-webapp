@@ -1,7 +1,9 @@
 {
   "myProfile": {
     "memberSince": "Mitglied seit {{date}}",
-    "userDescription": "{{bio}}",
+    "userDescription": "{{bio}}"
+  },
+  "feature": {
     "redeem": "Einlösen",
     "registerTree": "Baum registrieren",
     "share": "Teilen"
@@ -11,15 +13,22 @@
     "link": "Link"
   },
   "myForestMap": {
-    "plantedTree_one": "{{count}} Baum",
-    "plantedTree_other": "{{count}} Bäume",
-    "plantedTrees": "Gepflanzte Bäume",
-    "projects": "Projekte",
+    "plantedTree_one": "{{count, number}} Baum",
+    "plantedTree_other": "{{count, number}} Bäume",
+    "treesPlanted": "Gepflanzte Bäume",
     "restored": "Wiederhergestellt",
+    "registered": "Registriert",
     "conservation": "Naturschutz",
+    "projects": "Projekte",
     "countries": "Länder",
     "donations": "Spenden",
-    "area": "{{areaConserved}}  m²"
+    "area": "{{areaConserved}}  m²",
+    "zoomIn": "Für weitere Details heranzoomen",
+    "totalDonation_one": "{{count, number}} Spende ",
+    "totalDonation_other": "{{count, number}} Spenden ",
+    "totalProject_one": "für {{count, number}} Projekt",
+    "totalProject_other": "für {{count, number}} Projekte",
+    "tpoName": "By {{tpo}}"
   },
   "myTreeCounter": {
     "treesPlanted": "Bäume gepflanzt",
@@ -27,11 +36,21 @@
   },
   "myContributions": {
     "treesPlantedAndAreaRestored": "Bäume gepflanzt & Gebiete wiederhergestellt",
+<<<<<<< HEAD
     "treeRegistered_one": "{{count}} Baum registriert",
     "treeRegistered_plural": "{{count}} Bäume registriert",
+=======
+    "treeRegistered_one": "{{count, number}} Baum registriert",
+    "treeRegistered_plural": "{{count, number}} Bäume registriert",
+>>>>>>> 1ec8c261307f672250d5cf416f95957193878216
     "receivedFrom": "Empfangen von {{name}}",
     "loadMoreContribution": "Lade weitere Beiträge",
     "loadingContribution": "Lade Beiträge....",
-    "donate": "Spenden"
+    "donate": "Spenden",
+    "donateAgain": "Erneut spenden",
+    "conservedSmall": "geschützt",
+    "restoredSmall": "wiederhergestellt",
+    "areaType": "{{areaConserved}} m² {{type}}",
+    "areaConserved": "Geschütze Fläche"
   }
 }

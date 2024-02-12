@@ -10,7 +10,7 @@ export const config = {
     //      * 3. /_static (inside /public)
     //      * 4. all root files inside /public (e.g. /favicon.ico)
     //      */
-    '/((?!api|_next|fonts|examples|[\\w-]+\\.\\w+).*)',
+    '/((?!api|static|.*\\..*|_next).*)',
     '/',
     '/sites/:slug*',
   ],

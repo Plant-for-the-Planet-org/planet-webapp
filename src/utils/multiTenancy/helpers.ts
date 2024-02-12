@@ -88,11 +88,15 @@ export const getTenantConfig = async (slug: string): Promise<Tenant> => {
 export async function getTenantSlug(host: string) {
   const tenants = await getTenantConfigList();
 
-  const tenant = tenants?.find((tenant) =>
-    tenant.config.customDomain
-      ? tenant.config.customDomain.includes(host)
-      : tenant.config.appDomain.includes(host)
-  );
+  const tenant = tenants?.find((tenant) => {
+    if (tenant.config.customDomain) {
+      const urlObj = new URL(tenant.config.customDomain);
+      return urlObj.host === host;
+    } else {
+      const urlObj = new URL(tenant.config.appDomain);
+      return urlObj.host === host;
+    }
+  });
 
   console.log('tenant', tenant, host);
 
