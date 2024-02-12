@@ -1,15 +1,29 @@
 import React, { useState } from 'react';
-import styles from './ProjectViewTabs.module.scss';
+import styles from './ProjectMapTabs.module.scss';
 import SingleTab from './SingleTab';
 import SatelliteAnalysisIcon from '../icons/SatelliteAnalysisIcon';
 import { useTranslation } from 'next-i18next';
 import FieldDataIcon from '../icons/FieldDataIcon';
 import SatelliteIcon from '../../../public/assets/images/icons/SatelliteIcon';
 
-const Tabs = () => {
-  const [selectedMode, setSelectedMode] = useState('satellite');
+interface TabsProps {
+  selected: string;
+}
 
-  const { t } = useTranslation(['maps']);
+const Tabs = ({ selected }: TabsProps) => {
+  const [selectedMode, setSelectedMode] = useState(selected);
+
+  const allTabsList = ['satellite', 'field', 'timeTravel'];
+  const setSeparatorVisibility = (
+    selectedMode: string,
+    separatorId: number
+  ) => {
+    const index = allTabsList.indexOf(selectedMode);
+    if (separatorId !== index - 1 && separatorId !== index) return true;
+    return false;
+  };
+
+  const { t } = useTranslation(['maps', 'projectDetails']);
   return (
     <div className={styles.tabsContainer}>
       <div onClick={() => setSelectedMode('satellite')}>
@@ -19,9 +33,16 @@ const Tabs = () => {
               color={selectedMode === 'satellite' ? '#fff' : '#000'}
             />
           }
-          title={t('maps:satelliteAnalysis')}
+          title={t('projectDetails:satelliteAnalysis')}
           isSelected={selectedMode === 'satellite'}
         />
+        <div
+          className={
+            setSeparatorVisibility(selectedMode, 0)
+              ? styles.showSeparator1
+              : styles.hideSeparator
+          }
+        ></div>
       </div>
       <div onClick={() => setSelectedMode('field')}>
         <SingleTab
@@ -32,6 +53,13 @@ const Tabs = () => {
           isSelected={selectedMode === 'field'}
         />
       </div>
+      <div
+        className={
+          setSeparatorVisibility(selectedMode, 1)
+            ? styles.showSeparator2
+            : styles.hideSeparator
+        }
+      ></div>
       <div onClick={() => setSelectedMode('timeTravel')}>
         <SingleTab
           icon={
