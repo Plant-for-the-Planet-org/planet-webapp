@@ -6,6 +6,7 @@ import { getPDFFile } from '../../utils/getImageURL';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import { localeMapForDate } from '../../utils/language/getLanguageName';
+import { Trans } from 'next-i18next';
 
 interface Props {
   pdf: string;
@@ -39,16 +40,17 @@ const ProjectReview = ({ issueMonth, pdf }: Props) => {
           <VerifiedIcon sx={{ color: '#42A5F5', width: 16, height: 16 }} />
         </div>
         <p>
-          The project was inspected in a multiday field review in{' '}
-          {displayDate(issueMonth)} and fullfills our{' '}
-          <a
-            target="_blank"
-            href="https://www.plant-for-the-planet.org/standards/"
-            rel="noreferrer"
-            style={{ fontWeight: 400 }}
-          >
-            standards.
-          </a>
+          <Trans i18nKey="common:reviewInfo">
+            The project was inspected in a multiday field review in{' '}
+            {displayDate(issueMonth)} and fullfills our{' '}
+            <a
+              target="_blank"
+              href="https://www.plant-for-the-planet.org/standards/"
+              rel="noreferrer"
+            >
+              standards.
+            </a>
+          </Trans>
         </p>
       </div>
     </div>
