@@ -4,6 +4,7 @@ import OffSiteReviewedIcon from '../icons/OffSiteReviewedIcon';
 import FieldReviewedIcon from '../icons/FieldReviewedIcon';
 import styles from './Badge.module.scss';
 import TopProjectIcon from '../icons/TopProjectIcon';
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   isApproved: boolean;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
+  const { t } = useTranslation(['common', 'projectDetails']);
   const getTitleAndIcon = (
     isApproved: boolean,
     isTopProject: boolean,
@@ -20,23 +22,23 @@ const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
     if (!allowDonations)
       return {
         icon: <NewInfoIcon width={10} height={10} color={'#fff'} />,
-        title: 'Not Donatable',
+        title: t('common:notDonatable'),
       };
 
     if (isTopProject && isApproved)
       return {
         icon: <TopProjectIcon color={'#fff'} height={10} width={10} />,
-        title: 'Top Project',
+        title: t('common:topProject'),
       };
     else if (isTopProject && !isApproved)
       return {
         icon: <FieldReviewedIcon />,
-        title: 'Field Reviewed',
+        title: t('projectDetails:fieldReviewed'),
       };
     else if (!isTopProject && !isApproved)
       return {
         icon: <OffSiteReviewedIcon />,
-        title: 'Off-Site reviewed',
+        title: t('projectDetails:offSiteReviewed'),
       };
   };
   return (
