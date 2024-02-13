@@ -1,5 +1,8 @@
 {
     "satelliteAnalysis": "Satellite Analysis",
     "firstTreePlanted": "First tree planted",
-    "plantingSeasons": "planting seasons"
+    "plantingSeasons": "planting seasons",
+    "privateProperty": "privateProperty",
+    "property": "property",
+    "public": "public"
 }

@@ -1,4 +1,5 @@
 import styles from './ProjectInfo.module.scss';
+import { useTranslation } from 'next-i18next';
 interface Props {
   mainChallengeText: string;
   siteOwnershipText: string;
@@ -20,20 +21,68 @@ const MoreInfoContainer = ({
   siteOwnershipType,
   acquiredSince,
 }: Props) => {
+  const { t, ready } = useTranslation(['manageProjects', 'common']);
+
+  const siteOwners = [
+    {
+      id: 1,
+      title: ready ? t('manageProjects:siteOwnerPrivate') : '',
+      value: 'private',
+    },
+    {
+      id: 2,
+      title: ready ? t('projectDetails:public') : '',
+      value: 'public-property',
+    },
+    {
+      id: 3,
+      title: ready ? t('manageProjects:siteOwnerSmallHolding') : '',
+      value: 'smallholding',
+    },
+    {
+      id: 4,
+      title: ready ? t('manageProjects:siteOwnerCommunal') : '',
+      value: 'communal-land',
+    },
+    {
+      id: 5,
+      title: ready ? t('manageProjects:siteOwnerOwned') : '',
+      value: 'owned-by-owner',
+    },
+    {
+      id: 6,
+      title: ready ? t('manageProjects:siteOwnerOther') : '',
+      value: 'other',
+    },
+  ];
+
+  const translatedSiteOwnership = () => {
+    let translation = '';
+    siteOwners.map((siteOwner) => {
+      if (siteOwner.value === siteOwnershipType) {
+        translation = siteOwner.title;
+      }
+    });
+    return translation;
+  };
+
   return (
     <div className={styles.moreInfoContainer}>
       <div className={styles.singleInfo}>
         <div className={styles.halfInfo}>
-          <div className={styles.infoTitle}>main challenge</div>
+          <div className={styles.infoTitle}>
+            {t('manageProjects:mainChallenge')}
+          </div>
           <div className={styles.infoDetail}>{mainChallengeText}</div>
         </div>
       </div>
       <div className={styles.singleInfo}>
         <div className={styles.halfInfo}>
           <div className={styles.siteOwnershipTitle}>
-            <div>site ownership</div>{' '}
+            <div> {t('manageProjects:siteOwnership')}</div>{' '}
             <span>
-              {siteOwnershipType} Property · since {acquiredSince}
+              {translatedSiteOwnership()} {t('projectDetails:property')} ·{' '}
+              {t('manageProjects:since')} {acquiredSince}
             </span>
           </div>
           <div className={styles.infoDetail}>{siteOwnershipText}</div>
@@ -41,29 +90,38 @@ const MoreInfoContainer = ({
       </div>
       <div className={styles.singleInfo}>
         <div className={styles.halfInfo}>
-          <div className={styles.infoTitle}>cause of degradation</div>
+          <div className={styles.infoTitle}>
+            {' '}
+            {t('manageProjects:causeOfDegradation')}
+          </div>
           <div className={styles.infoDetail}>{causeOfDegradationText}</div>
         </div>
       </div>
       <div className={styles.singleInfo}>
         <div className={styles.halfInfo}>
-          <div className={styles.infoTitle}>why this site?</div>
+          <div className={styles.infoTitle}>
+            {t('manageProjects:whyThisSite')}
+          </div>
           <div className={styles.infoDetail}>{whyThisSiteText}</div>
         </div>
       </div>
       <div className={styles.singleInfo}>
         <div className={styles.halfInfo}>
-          <div className={styles.infoTitle}>long term protection</div>
+          <div className={styles.infoTitle}>
+            {t('manageProjects:longTermProtection')}
+          </div>
           <div className={styles.infoDetail}>{longTermProtectionText}</div>
         </div>
       </div>
       <div className={styles.singleInfo}>
         <div className={styles.halfInfo}>
-          <div className={styles.infoTitle}>external certifications</div>
+          <div className={styles.infoTitle}>
+            {t('manageProjects:externalCertifications')}
+          </div>
           <div className={styles.infoDetail}>
             <div>{externalCertifications} </div>
             <a href="#" target="_blank" rel="noreferrer">
-              View
+              {t('common:view')}
             </a>
           </div>
         </div>

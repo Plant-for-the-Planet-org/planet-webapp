@@ -21,7 +21,7 @@ export const Preview: Story = {
     longTermProtectionText:
       'We anticipate that through the donations from here, the group shall be able to start more ecotourism ventures at different spots around Mida Creek to eleviate poverty and reduce the pressure on mangrove resources as we move along to meet our 2 million tree target.',
     externalCertifications: 'Consolata Machuko',
-    siteOwnershipType: 'public',
+    siteOwnershipType: 'public-property',
     acquiredSince: 2015,
   },
 };
