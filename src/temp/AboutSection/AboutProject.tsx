@@ -2,6 +2,7 @@ import styles from './AboutProject.module.scss';
 import DownArrow from '../icons/DownArrow';
 import { useState } from 'react';
 import UpArrow from '../icons/UpArrow';
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   description: string;
@@ -17,10 +18,11 @@ const AboutProject = ({ description, amountOfWords }: Props) => {
     ? splittedText.slice(0, amountOfWords - 1).join(' ')
     : description;
   const endText = splittedText.slice(amountOfWords - 1).join(' ');
+  const { t } = useTranslation(['projectDetails', 'donate']);
 
   return (
     <div className={styles.projectDescription}>
-      <div className={styles.infoTitle}>About Project</div>
+      <div className={styles.infoTitle}>{t('donate:aboutProject')}</div>
       <div className={styles.infoText}>
         {beginText}
         {itCanOverflow && (
@@ -38,12 +40,12 @@ const AboutProject = ({ description, amountOfWords }: Props) => {
         >
           {isExpanded ? (
             <>
-              <div>see less</div>
+              <div>{t('projectDetails:seeLess')}</div>
               <UpArrow />
             </>
           ) : (
             <>
-              <div>see more</div>
+              <div>{t('projectDetails:seeMore')}</div>
               <DownArrow />
             </>
           )}
