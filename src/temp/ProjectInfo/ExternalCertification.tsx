@@ -15,12 +15,15 @@ const ExternalCertification = ({
   spendings,
   progressReports,
 }: Props) => {
-  const { i18n } = useTranslation(['manageProjects', 'common']);
+  const { t, i18n } = useTranslation(['manageProjects', 'projectDetails']);
+
   return (
     <div className={styles.certificationContainer}>
       <div className={styles.singleInfo}>
         <div className={styles.halfInfo}>
-          <div className={styles.infoTitle}>external certification</div>
+          <div className={styles.infoTitle}>
+            {t('manageProjects:externalCertifications')}
+          </div>
           <div className={styles.infoDetail}>
             <div className={styles.certificationLabel}>{certification}</div>
             <div className={styles.downloadIcon}>
@@ -31,7 +34,9 @@ const ExternalCertification = ({
       </div>
       <div className={styles.singleInfo}>
         <div className={styles.halfInfo}>
-          <div className={styles.infoTitle}>project spending</div>
+          <div className={styles.infoTitle}>
+            {t('manageProjects:projectSpending')}
+          </div>
           <div className={styles.spendingsContainer}>
             {spendings.map((expense) => (
               <div className={styles.spendingDetail} key={expense.id}>
@@ -39,6 +44,7 @@ const ExternalCertification = ({
                 <div>
                   {getFormatedCurrency(i18n.language, 'EUR', expense.amount)}
                 </div>
+
                 <div className={styles.downloadIcon}>
                   <DownloadIcon />
                 </div>
@@ -49,7 +55,9 @@ const ExternalCertification = ({
       </div>
       <div className={styles.singleInfo}>
         <div className={styles.halfInfo}>
-          <div className={styles.infoTitle}>progress reports</div>
+          <div className={styles.infoTitle}>
+            {t('projectDetails:progressReports')}
+          </div>
           <div className={styles.reportsContainer}>
             {progressReports.map((report, index) => (
               <div key={index}>
