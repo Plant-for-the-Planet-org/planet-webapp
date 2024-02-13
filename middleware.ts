@@ -3,13 +3,7 @@ import { getTenantSlug } from './src/utils/multiTenancy/helpers';
 
 export const config = {
   matcher: [
-    //     /*
-    //      * Match all paths except for:
-    //      * 1. /api routes
-    //      * 2. /_next (Next.js internals)
-    //      * 3. /_static (inside /public)
-    //      * 4. all root files inside /public (e.g. /favicon.ico)
-    //      */
+    // This regular expression matches any string except those containing "api", "static", files with extensions, or "_next".
     '/((?!api|static|.*\\..*|_next).*)',
     '/',
     '/sites/:slug*',
