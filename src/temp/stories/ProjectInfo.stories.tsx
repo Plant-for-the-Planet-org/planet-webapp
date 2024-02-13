@@ -8,25 +8,12 @@ const meta: Meta<typeof InfoContainer> = {
 export default meta;
 type Story = StoryObj<typeof InfoContainer>;
 
-const seasons = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-  'July',
-];
+const seasons = [6, 7, 8, 9, 10, 11, 12, 3, 4];
 
 export const Preview: Story = {
   args: {
     abandonment: 2005,
-    firstTree: 'July 17, 2018',
+    firstTree: '2015-03-08 00:00:00',
     plantingDensity: 500,
     maxPlantingDensity: 10000,
     employees: 500,
