@@ -4,6 +4,7 @@ import RightArrowIcon from '../icons/RightArrowIcon';
 import { ViewProfileIcon } from '../icons/ViewProfileIcon';
 import WebsiteLinkIcon from '../icons/WebsiteLinkIcon';
 import styles from './ProjectInfo.module.scss';
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   websiteURL: string;
@@ -12,10 +13,12 @@ interface Props {
 }
 
 const ContactDetails = ({ websiteURL, location, email }: Props) => {
+  const { t } = useTranslation(['donate']);
+
   const contactDetails = [
     {
       icon: <ViewProfileIcon />,
-      title: 'View Profile',
+      title: t('donate:viewProfile'),
       link: '',
     },
     {
@@ -44,7 +47,7 @@ const ContactDetails = ({ websiteURL, location, email }: Props) => {
     <div className={styles.contactDetailsContainer}>
       <div className={styles.singleInfo}>
         <div className={styles.halfInfo}>
-          <div className={styles.infoTitle}>contact details</div>
+          <div className={styles.infoTitle}>{t('donate:contactDetails')}</div>
           <div className={styles.contactText}>
             {contactDetails.map((contact, index) => (
               <a
