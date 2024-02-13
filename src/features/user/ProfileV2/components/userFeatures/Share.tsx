@@ -12,7 +12,7 @@ const Share = ({
   handleShare,
 }: UserFeaturesProps) => {
   const { light } = theme;
-  const { t } = useTranslation(['me']);
+  const { t } = useTranslation(['profile']);
   return (
     <>
       {showSocialButton ? (
@@ -27,7 +27,7 @@ const Share = ({
           onClick={handleShare}
           className={myProfileStyle.shareButton}
         >
-          {showSocialButton ? '' : t('me:share')}
+          {showSocialButton ? '' : t('profile:feature.share')}
         </Button>
       )}
     </>
