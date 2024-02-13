@@ -36,13 +36,8 @@
   },
   "myContributions": {
     "treesPlantedAndAreaRestored": "Bäume gepflanzt & Gebiete wiederhergestellt",
-<<<<<<< HEAD
-    "treeRegistered_one": "{{count}} Baum registriert",
-    "treeRegistered_plural": "{{count}} Bäume registriert",
-=======
     "treeRegistered_one": "{{count, number}} Baum registriert",
     "treeRegistered_plural": "{{count, number}} Bäume registriert",
->>>>>>> 1ec8c261307f672250d5cf416f95957193878216
     "receivedFrom": "Empfangen von {{name}}",
     "loadMoreContribution": "Lade weitere Beiträge",
     "loadingContribution": "Lade Beiträge....",
