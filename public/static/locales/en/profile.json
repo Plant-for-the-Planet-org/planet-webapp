@@ -36,8 +36,8 @@
   },
   "myContributions": {
     "treesPlantedAndAreaRestored": "Trees Planted & Areas Restored",
-    "treeRegistered_one": "{{count, number}}} Tree Registered",
-    "treeRegistered_other": "{{count, number}}} Trees Registered",
+    "treeRegistered_one": "{{count, number}} Tree Registered",
+    "treeRegistered_other": "{{count, number}} Trees Registered",
     "receivedFrom": "Received from {{name}}",
     "loadMoreContribution": "Load More Contribution",
     "loadingContribution": "Loading Contribution....",
