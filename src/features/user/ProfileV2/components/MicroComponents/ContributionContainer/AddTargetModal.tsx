@@ -2,17 +2,17 @@ import React from 'react';
 import Modal from '@mui/material/Modal';
 import { useForm, Controller } from 'react-hook-form';
 import Fade from '@mui/material/Fade';
-import styles from '../../../../common/RedeemCode/style/RedeemModal.module.scss';
-import MaterialTextField from '../../../../common/InputTypes/MaterialTextField';
+import styles from '../../../../../common/RedeemCode/style/RedeemModal.module.scss';
+import MaterialTextField from '../../../../../common/InputTypes/MaterialTextField';
 import { useTranslation } from 'next-i18next';
-import { putAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
-import { ThemeContext } from '../../../../../theme/themeContext';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError } from '@planet-sdk/common';
-import { useTenant } from '../../../../common/Layout/TenantContext';
-import CancelIcon from '../../../../../../public/assets/images/icons/CancelIcon';
-import projectContainerStyle from '../../styles/ProjectsContainer.module.scss';
+import { putAuthenticatedRequest } from '../../../../../../utils/apiRequests/api';
+import { ThemeContext } from '../../../../../../theme/themeContext';
+import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
+import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
+import { handleError, APIError, User } from '@planet-sdk/common';
+import { useTenant } from '../../../../../common/Layout/TenantContext';
+import CancelIcon from '../../../../../../../public/assets/images/icons/CancelIcon';
+import projectContainerStyle from '../../../styles/ProjectsContainer.module.scss';
 
 type FormData = {
   target: number | undefined;
@@ -53,7 +53,7 @@ export default function AddTargetModal({
       };
 
       try {
-        const res = await putAuthenticatedRequest(
+        const res = await putAuthenticatedRequest<User>(
           tenantConfig?.id,
           `/app/profile`,
           bodyToSend,

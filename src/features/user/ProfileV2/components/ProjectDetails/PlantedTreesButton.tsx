@@ -3,6 +3,7 @@ import myForestStyles from '../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import theme from '../../../../../theme/themeProperties';
+import { getFormattedNumber } from '../../../../../utils/getFormattedNumber';
 
 export interface PlantedTreesButtonProps {
   plantedTrees: number | null;
@@ -11,7 +12,7 @@ export interface PlantedTreesButtonProps {
 const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
   const { light, primaryDarkColorX } = theme;
   const { isTreePlantedButtonActive } = useMyForest();
-  const { t } = useTranslation(['donate']);
+  const { t, i18n } = useTranslation(['profile']);
 
   return (
     <div
@@ -32,12 +33,12 @@ const PlantedTreesButton = ({ plantedTrees }: PlantedTreesButtonProps) => {
           />
         </div>
         <div className={myForestStyles.plantedTreesLabel}>
-          {t('donate:plantedTrees')}
+          {t('profile:myForestMap.treesPlanted')}
         </div>
       </div>
 
       <div className={myForestStyles.countTrees}>
-        <div>{plantedTrees ? plantedTrees : 0}</div>
+        <div>{plantedTrees ? getFormattedNumber(i18n.language, plantedTrees) : 0}</div>
       </div>
     </div>
   );

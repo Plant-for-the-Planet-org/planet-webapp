@@ -23,7 +23,6 @@
   "cancel": "Cancel",
   "termAndCondition": "I agree to the <0>Terms and Conditions</0> of the Plant-for-the-Planet platform.",
   "termAndConditionError": "Please Accept the Terms and Conditions",
-  "memberSince": "Member since {{date}}",
   "fieldLabels": {
     "profileType": "I am a",
     "firstName": "First Name",

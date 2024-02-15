@@ -242,13 +242,7 @@
   position: relative;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
-  .donationList {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 115px;
-    gap: 45px;
-  }
+
   div > .text {
     font-weight: bold;
     font-size: $fontLarge;
@@ -276,6 +270,17 @@
         margin-left: 93px;
       }
     }
+  }
+}
+
+.donationList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 155px;
+  gap: 45px;
+  @include xsPhoneView {
+    padding-top: 85px;
   }
 }
 
@@ -349,6 +354,13 @@
   @include lgLaptopView {
     left: 470px;
   }
+}
+
+.customEditButton {
+  width: 100% !important;
+  height: 34px !important;
+  background-color: #219653 !important;
+  padding: 6px 12px !important;
 }
 
 .donationlistContainer {
@@ -426,6 +438,7 @@
         border-radius: 12px;
         width: 210px;
         height: 141px;
+        object-fit: cover;
       }
       @include xsPhoneView {
         > img {
@@ -682,6 +695,9 @@
     margin-bottom: 5px;
     margin-left: 4px;
     margin-right: 8px;
+    .dot {
+      position: absolute;
+    }
   }
 }
 

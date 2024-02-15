@@ -2,15 +2,18 @@ import {
   Contributions,
   BouquetContribution,
   GiftContributionProps,
-} from '../../../../common/types/myForest';
+  GiftsGeoJsonQueryResult,
+} from '../../../../../common/types/myForest';
 import { ReactElement } from 'react';
-import myForestStyles from '../../styles/MyForest.module.scss';
+import myForestStyles from '../../../styles/MyForest.module.scss';
 import ProjectImage from './ProjectImage';
 import ProjectInfoAndContributionDate from './ProjectInfoAndContributionDate';
 import TreesOrUnitAreaAndDonateOption from './TreesOrUnitAreaAndDonateOption';
+import { User, UserPublicProfile } from '@planet-sdk/common';
 
 export interface ProjectProps {
   projectInfo: Contributions | BouquetContribution | GiftContributionProps;
+  profile: User | UserPublicProfile;
 }
 
 const ContributedToProject = ({
@@ -40,8 +43,8 @@ const ContributedToProject = ({
             (projectInfo as GiftContributionProps)?.metadata?.giver?.name
           }
           contributionDate={
-            (projectInfo as Contributions)?.plantDate ||
-            (projectInfo as GiftContributionProps)?.created
+            Number((projectInfo as Contributions)?.plantDate) ||
+            Number((projectInfo as GiftContributionProps)?.created)
           }
           contributionType={
             (projectInfo as Contributions).contributionType ||

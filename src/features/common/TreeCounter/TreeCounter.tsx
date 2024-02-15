@@ -50,7 +50,7 @@ export function HomeCircularProgress(props: CircularProgressProps) {
     <div className={treeCounterStyles.circularProgressContainer}>
       <XCircularProgress
         variant="determinate"
-        size={322}
+        size={342}
         thickness={3}
         {...props}
       />
@@ -61,8 +61,36 @@ export function HomeCircularProgress(props: CircularProgressProps) {
 export default function TpoProfile(props: any) {
   const [progress, setProgress] = useState(0);
   const [isHomeTreeCounter, setIsHomeTreeCounter] = useState(false);
+  const [screenSize, setScreenSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
   const { t, i18n, ready } = useTranslation(['me']);
   const { tenantConfig } = useTenant();
+
+  const _isTreeTarget = () => {
+    if (props?.target !== 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const svgHeight = screenSize.width < 400 ? 15 : 33;
+  const svgWidth = screenSize.width < 400 ? 20 : 43;
+
   useEffect(() => {
     let percentage = 0;
     if (props.target > 0) {
@@ -88,14 +116,12 @@ export default function TpoProfile(props: any) {
       clearInterval(timer);
     };
   }, [props]);
-
   useEffect(() => {
     const _tenantHasHomeTreeCounter = _tenants.some((tenant) => {
       return tenantConfig.config.slug === tenant;
     });
     if (_tenantHasHomeTreeCounter) setIsHomeTreeCounter(true);
   }, [isHomeTreeCounter]);
-
   return ready ? (
     <div className={treeCounterStyles.treeCounter}>
       {isHomeTreeCounter ? (
@@ -117,32 +143,39 @@ export default function TpoProfile(props: any) {
       ) : (
         <div className={treeCounterStyles.treeCounterData}>
           <div>
-            <PlantedTressBlackSvg color={'#4F4F4F'} />
+            <PlantedTressBlackSvg
+              color={'#4F4F4F'}
+              height={svgHeight}
+              width={svgWidth}
+            />
           </div>
           <div className={treeCounterStyles.dataContainer}>
-            {props?.planted && (
+            {_isTreeTarget() ? (
+              t('me:treesOfTrees', {
+                count1: localizedAbbreviatedNumber(
+                  i18n.language,
+                  Number(props.planted - props.restoredAreaUnit),
+                  2
+                ),
+                count2: localizedAbbreviatedNumber(
+                  i18n.language,
+                  Number(props.target),
+                  1
+                ),
+              })
+            ) : (
               <div>
                 {localizedAbbreviatedNumber(
                   i18n.language,
                   Number(props.planted - props.restoredAreaUnit),
-                  1
-                )}
-              </div>
-            )}
-            {props.target !== undefined && props.target !== 0 && (
-              <div>{'of'}</div>
-            )}
-            {props?.target !== 0 && (
-              <div>
-                {localizedAbbreviatedNumber(
-                  i18n.language,
-                  Number(props.target),
-                  1
+                  2
                 )}
               </div>
             )}
           </div>
-          <div style={{ fontSize: '24px' }}>{t('me:treesPlanted')}</div>
+          <div className={treeCounterStyles.treesPlanted}>
+            {t('me:treesPlanted')}
+          </div>
         </div>
       )}
     </div>

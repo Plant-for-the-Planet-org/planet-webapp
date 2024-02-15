@@ -15,7 +15,6 @@ import {
 import { Feature, Point } from 'geojson';
 
 /**
- *
  * Check different types of contribution's geometry and
  * returns appropriate coordinates
  *
@@ -104,6 +103,14 @@ const mergeFeaturesWithSameCoordinates = (features: Feature[]): Feature[] => {
           feature.properties?.created,
           ComparisonType.AFTER
         ),
+        project: {
+          guid: existingFeature.properties.project.guid,
+          name: existingFeature.properties.project.name,
+          image: existingFeature.properties.project.image,
+          unitType: existingFeature.properties.project.unitType,
+          tpo: existingFeature.properties.project.tpo,
+          country: existingFeature.properties.project.country,
+        },
       };
 
       // Keep track of original _type values
@@ -160,9 +167,9 @@ export const contributionsGeoJson = procedure
     const data = await prisma.$queryRaw<ContributionsGeoJsonQueryResult[]>`
       SELECT COUNT(pp.guid) AS totalContributions, SUM(c.tree_count) AS treeCount, 
         SUM(c.quantity) AS quantity,  c.purpose, MIN(c.plant_date) AS startDate,
-        MAX(c.plant_date) AS endDate, c.contribution_type, c.plant_date, pp.location, pp.country, 
+        MAX(c.plant_date) AS endDate, c.contribution_type, c.plant_date, pp.country, 
         pp.unit_type, pp.guid, pp.name, pp.image, pp.geo_latitude AS geoLatitude, 
-        pp.geo_longitude AS geoLongitude, c.geometry, tpo.name AS tpo, tpo.guid AS tpoGuid
+        pp.geo_longitude AS geoLongitude, c.geometry, tpo.name AS tpoName, pp.accept_donations as allowDonations
       FROM contribution c
               ${join}
               JOIN profile p ON p.id = c.profile_id
@@ -211,6 +218,28 @@ export const contributionsGeoJson = procedure
       },
     });
 
+    // There are gifts in the database that don't have an allowDonations field, so we need to fetch them separately here
+    // and fetch the allowDonations from the project table and prep them for the response
+
+    const giftProjectIds =
+      giftData.length > 0
+        ? giftData.map(
+            (gift) => JSON.parse(JSON.stringify(gift.metadata))?.project?.id
+          )
+        : [];
+
+    const giftProjects = await prisma.project.findMany({
+      select: {
+        guid: true,
+        allowDonations: true,
+      },
+      where: {
+        guid: {
+          in: giftProjectIds,
+        },
+      },
+    });
+
     const contributions = data.map((contribution) => {
       return {
         type: 'Feature',
@@ -224,16 +253,15 @@ export const contributionsGeoJson = procedure
           endDate: contribution.endDate,
           contributionType: contribution.contribution_type,
           totalContributions: contribution.totalContributions,
-          plantProject: {
+          project: {
             guid: contribution.guid,
             name: contribution.name,
             image: contribution.image,
             country: contribution.country,
             unitType: contribution.unit_type,
-            location: contribution.location,
+            allowDonations: contribution.allowDonations ? true : false,
             tpo: {
-              guid: contribution.tpoGuid,
-              name: contribution.name,
+              name: contribution.tpoName,
             },
           },
           _type: 'contribution',
@@ -251,14 +279,31 @@ export const contributionsGeoJson = procedure
           project.guid ===
           JSON.parse(JSON.stringify(gift.metadata))?.project?.id
       )?.image;
-      return {
+
+      const _giftProject = JSON.parse(JSON.stringify(gift.metadata));
+
+      const projectAllowDonations = giftProjects.find(
+        (project) => project.guid === _giftProject?.project?.id
+      )?.allowDonations;
+
+      const _gift = {
         type: 'Feature',
         properties: {
           cluster: false,
           purpose: gift.purpose,
           quantity: gift.value,
-          giver: gift.metadata.giver,
-          project: { ...gift.metadata.project, image: image },
+          project: {
+            guid: _giftProject.project.id,
+            name: _giftProject.project.name,
+            image: _giftProject.project.image
+              ? _giftProject.project.image
+              : image,
+            country: _giftProject.project.country,
+            allowDonations: projectAllowDonations,
+            tpo: {
+              name: _giftProject.project.organization.name,
+            },
+          },
           created: gift.created,
           totalContributions: 1,
           _type: 'gift',
@@ -268,6 +313,8 @@ export const contributionsGeoJson = procedure
           coordinates: gift.metadata.project.coordinates,
         },
       };
+
+      return _gift;
     }) as Feature[];
 
     const mergedFeatures = mergeFeaturesWithSameCoordinates([

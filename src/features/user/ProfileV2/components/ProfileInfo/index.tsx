@@ -1,7 +1,7 @@
 import { useState, ReactElement } from 'react';
 import ProfileMainContainer from '../ProfileMainContainer';
 import { useTranslation } from 'next-i18next';
-import UserInfo from '../MicroComponents/UserInfo';
+import UserInfo from '../MicroComponents/ProfileBox/UserInfo';
 import { ProfileProps } from '../../../../common/types/profile';
 import UserFeatures from '../userFeatures/UserFeatures';
 import { useTenant } from '../../../../common/Layout/TenantContext';

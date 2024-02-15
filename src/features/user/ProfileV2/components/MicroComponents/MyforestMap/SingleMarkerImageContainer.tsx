@@ -2,10 +2,9 @@ import {
   PlantedTreesSvg,
   RestoredSvg,
   ConservationTreeSvg,
-  DonationsSvg,
-} from '../../../../../../public/assets/images/ProfilePageIcons';
-import theme from '../../../../../theme/themeProperties';
-import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
+} from '../../../../../../../public/assets/images/ProfilePageIcons';
+import theme from '../../../../../../theme/themeProperties';
+import MyForestMapStyle from '../../../styles/MyForestMap.module.scss';
 import { SingleMarkerUnitsProps } from './SingleMarkerUnits';
 
 type SingleMarkerImageContainerProps = Omit<SingleMarkerUnitsProps, 'units'>;
@@ -20,11 +19,6 @@ const SingleMarkerImageContainer = ({
 }: SingleMarkerImageContainerProps) => {
   const { primaryDarkColorX, lightBlueColor } = theme;
   const _renderTreeIcon = () => {
-    // if (isRegisteredTree) {
-    //   return <PlantedTreesSvg color={`${primaryDarkColorX}`} />;
-    // } else {
-    //   return <DonationsSvg color={primaryDarkColorX} />;
-    // }
     switch (true) {
       case isNormalTreeDonation ||
         isRegisteredTree ||

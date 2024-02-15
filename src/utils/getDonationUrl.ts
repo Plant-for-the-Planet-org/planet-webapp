@@ -5,7 +5,7 @@ export const getDonationUrl = (
   token: string | null,
   embed?: string | undefined | string[],
   callbackUrl?: string | undefined | string[],
-  slug?: string
+  slug?: string | undefined
 ): string => {
   const country = localStorage.getItem('countryCode');
   const language = localStorage.getItem('language');

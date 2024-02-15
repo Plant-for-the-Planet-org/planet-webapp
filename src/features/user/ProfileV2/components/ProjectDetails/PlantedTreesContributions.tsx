@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import myForestStyles from '../../styles/MyForest.module.scss';
 import TreeCounter from '../../../../common/TreeCounter/TreeCounter';
 import { EditTargetSvg } from '../../../../../../public/assets/images/ProfilePageIcons';
-import AddTargetModal from '../MicroComponents/AddTargetModal';
+import AddTargetModal from '../MicroComponents/ContributionContainer/AddTargetModal';
 import ContributedProjectList from './ContributedProjectList';
 import { ReactElement } from 'react';
 import { TreeContributedProjectListProps } from '../../../../common/types/myForest';
@@ -16,8 +16,8 @@ const PlantedTreesContributions = ({
   handleFetchNextPage,
   hasNextPage,
 }: TreeContributedProjectListProps): ReactElement => {
-  const { pathname } = useRouter();
-  const { t } = useTranslation(['me']);
+  const { asPath } = useRouter();
+  const { t } = useTranslation(['profile']);
   const [isAddTargetModalOpen, setIsAddTargetModalOpen] = useState(false);
   const { treePlantationContribution, additionalInfoRelatedToContributions } =
     useMyForest();
@@ -30,13 +30,13 @@ const PlantedTreesContributions = ({
 
   const _checkConditions = () => {
     switch (true) {
-      case userProfile?.type === 'tpo' && pathname === '/profile': // tpo private profile
+      case userProfile?.type === 'tpo' && asPath === '/profile': // tpo private profile
         return true;
-      case userProfile?.type !== 'tpo' && pathname === '/profile': // normal user private profile
+      case userProfile?.type !== 'tpo' && asPath === '/profile': // normal user private profile
         return true;
-      case userProfile?.type === 'tpo' && pathname !== '/profile': // tpo public profile
+      case userProfile?.type === 'tpo' && asPath !== '/profile': // tpo public profile
         return false;
-      case userProfile?.type !== 'tpo' && pathname !== '/profile': //  normal user public profile
+      case userProfile?.type !== 'tpo' && asPath !== '/profile': //  normal user public profile
         return true;
       default:
         return null;
@@ -66,9 +66,7 @@ const PlantedTreesContributions = ({
               }}
               target={userProfile?.score?.target}
               planted={
-                userProfile?.type === 'tpo'
-                  ? userProfile?.score.personal
-                  : userProfile?.score.personal + userProfile?.score.received
+                userProfile?.score.personal + userProfile?.score.received
               }
             />
           )}
@@ -87,20 +85,15 @@ const PlantedTreesContributions = ({
       >
         {_checkConditions() && (
           <div className={myForestStyles.donationList}>
-            {pathname === '/profile' ? (
+            {asPath === '/profile' ? (
               <div className={myForestStyles.editButtonContainer}>
                 <Button
                   variant="contained"
                   startIcon={<EditTargetSvg color={'#FFFFFF'} />}
                   onClick={handleAddTargetModalOpen}
-                  sx={{
-                    width: '138px',
-                    height: '34px',
-                    backgroundColor: '#219653',
-                    padding: '0px 0px',
-                  }}
+                  className={myForestStyles.customEditButton}
                 >
-                  {t('me:editTarget')}
+                  {t('profile:myTreeCounter.editTarget')}
                 </Button>
               </div>
             ) : (
@@ -108,11 +101,11 @@ const PlantedTreesContributions = ({
             )}
 
             <div className={myForestStyles.text}>
-              {t('me:treesPlantedAndAreaRestored')}
+              {t('profile:myContributions.treesPlantedAndAreaRestored')}
               <p className={myForestStyles.hrLine} />
             </div>
             <ContributedProjectList
-              profile={userProfile}
+              userProfile={userProfile}
               hasNextPage={hasNextPage}
               contributionProjectList={treePlantationContribution?.pages}
               handleFetchNextPage={handleFetchNextPage}

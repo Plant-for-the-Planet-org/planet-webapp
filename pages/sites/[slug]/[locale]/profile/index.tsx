@@ -21,6 +21,7 @@ import {
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { defaultTenant } from '../../../../../tenant.config';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
+import myProfileStyle from '../../../../../src/features/user/ProfileV2/styles/MyProfile.module.scss';
 
 interface Props {
   pageProps: {
@@ -61,8 +62,10 @@ function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
         {profile && (
           <>
             <MyForestProvider>
-              <Profile userProfile={profile} />
-              <MyContributions profile={profile} token={token} />
+              <div className={myProfileStyle.profileContainer}>
+                <Profile userProfile={profile} />
+                <MyContributions profile={profile} token={token} />
+              </div>
             </MyForestProvider>
           </>
         )}
@@ -114,6 +117,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = async (
           'registerTrees',
           'tenants',
           'treemapper',
+          'profile',
         ],
         null,
         ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']

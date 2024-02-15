@@ -76,16 +76,25 @@ export const MyForestProvider: FC = ({ children }) => {
     longitude: defaultMapCenter[1],
     zoom: defaultZoom,
   });
+
   useEffect(() => {
-    if (treePlantationProjectGeoJson.length === 1) {
+    if (
+      treePlantationProjectGeoJson.length +
+        conservationProjectGeoJson.length ===
+      1
+    ) {
       setViewport({
         ...viewport,
-        latitude: treePlantationProjectGeoJson[0]?.geometry.coordinates[1],
-        longitude: treePlantationProjectGeoJson[0]?.geometry.coordinates[0],
+        latitude:
+          treePlantationProjectGeoJson[0]?.geometry.coordinates[1] ||
+          conservationProjectGeoJson[0]?.geometry.coordinates[1],
+        longitude:
+          treePlantationProjectGeoJson[0]?.geometry.coordinates[0] ||
+          conservationProjectGeoJson[0]?.geometry.coordinates[0],
         zoom: 4,
       });
     }
-  }, [treePlantationProjectGeoJson]);
+  }, [treePlantationProjectGeoJson, conservationProjectGeoJson]);
 
   const value = useMemo(
     () => ({

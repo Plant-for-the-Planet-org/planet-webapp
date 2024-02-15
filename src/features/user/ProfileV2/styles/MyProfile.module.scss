@@ -20,7 +20,18 @@
   flex-wrap: wrap;
   gap: 12px;
   @include xsPhoneView {
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0px;
+  }
+}
+
+.shareButtonContainer {
+  display: flex;
+  width: max-content;
+  justify-content: center;
+  @include xsPhoneView {
+    width: 100%;
   }
 }
 
@@ -44,6 +55,7 @@
   display: flex;
   gap: 15px;
   align-items: center;
+  position: relative;
   > .avatarRoot {
     width: 65px !important;
     height: 65px !important;
@@ -54,6 +66,9 @@
   .userInfo {
     font-size: $fontXXLarge;
     font-weight: bold;
+    @include xsPhoneView {
+      font-size: 20px;
+    }
   }
 }
 
@@ -103,7 +118,6 @@
 
 .registeredTreeButton {
   @extend .customButton;
-  width: 140px;
 }
 
 .shareButton {
@@ -123,8 +137,13 @@
 
 .publicProfileMainContainer {
   max-width: 1400px;
-  padding-left: 85px;
+  padding-top: 30px;
+  background-color: #fafaff;
   @include xsPhoneView {
     padding-left: 0px;
   }
+}
+
+.profileContainer {
+  margin-top: 140px;
 }

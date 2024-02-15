@@ -11,11 +11,6 @@
   height: 75px;
   width: 150px;
 }
-
-.popUpContainerLarge {
-  height: 100px;
-  width: 287px;
-}
 .popUp {
   display: flex;
   flex-direction: column;
@@ -144,7 +139,7 @@
   border-radius: 40px;
   border-color: #ffffff;
   background-color: #48aadd;
-  padding-left: 3px;
+  padding-left: 2px;
   padding-right: 8px;
   > .svgContainer {
     height: 23px;
@@ -271,10 +266,10 @@
 }
 
 .donationPopUpMainContainer {
-  width: 208px;
-  min-width: max-content;
-  height: 154px;
+  position: relative;
+  height: 100%;
   border: 3px;
+  min-width: 208px;
 }
 .donationPopUpImageContainer {
   width: '100%';
@@ -285,9 +280,84 @@
     border: 1px solid #fff;
     width: 100%;
     height: 95.33px;
+    object-fit: cover;
+    filter: brightness(110%);
   }
 }
+
+.projectName {
+  font-size: 10px;
+  position: absolute;
+  bottom: 58px;
+  left: 10px;
+  text-transform: capitalize;
+  font-weight: 600;
+  color: #fff;
+  padding-bottom: 12px;
+}
+.donationPopUpInfoMainContainer {
+  padding: 10px;
+}
+
 .donationPopUpInfoContainer {
-  padding: 11.67px;
-  height: 59px;
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.countryAndTreeInfo {
+  display: flex;
+  gap: 3px;
+  width: max-content;
+  font-weight: 700;
+  font-size: 8px;
+}
+
+.separatorContainer {
+  position: relative;
+}
+
+.seprator {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+}
+
+.country {
+  font-size: 8px;
+  font-weight: 400;
+}
+
+.donateButton {
+  width: 53px !important;
+  height: 18px !important;
+  font-size: 10px !important;
+  box-shadow: none !important;
+  border-radius: 24px !important;
+  font-weight: 700 !important;
+  padding: 2px 8px !important;
+}
+
+.donationDate {
+  display: flex;
+  font-weight: 600;
+  font-size: 6px;
+  color: rgba(130, 130, 130, 1);
+  margin-top: 2px;
+}
+
+.donationDateX {
+  margin-left: 1px;
+  margin-right: 1px;
+}
+
+.tpoName {
+  font-weight: 400;
+  font-size: 8px;
+  margin-top: 4px;
+  width: 197px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }

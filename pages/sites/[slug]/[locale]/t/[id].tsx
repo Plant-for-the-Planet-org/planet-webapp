@@ -26,7 +26,7 @@ import {
 import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../tenant.config';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
-
+import myProfileStyle from '../../../../../src/features/user/ProfileV2/styles/MyProfile.module.scss';
 interface Props {
   pageProps: {
     tenantConfig: Tenant;
@@ -80,7 +80,7 @@ function PublicProfile({ pageProps: { tenantConfig } }: Props): ReactElement {
   return tenantConfig && profile ? (
     <MyForestProvider>
       <GetPublicUserProfileMeta userprofile={profile} />
-      <div>
+      <div className={myProfileStyle.publicProfileMainContainer}>
         <Profile userProfile={profile} />
         {profile.type === 'tpo' && (
           <PlantedTreesContributions userProfile={profile} />
@@ -151,6 +151,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = async (
           'registerTrees',
           'tenants',
           'treemapper',
+          'profile',
         ],
         null,
         ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']

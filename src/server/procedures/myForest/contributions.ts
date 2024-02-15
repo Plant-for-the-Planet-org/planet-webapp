@@ -164,6 +164,7 @@ export const contributions = procedure
         metadata: true,
         purpose: true,
         type: true,
+        redemptionDate: true,
       },
       where: {
         recipient: {
@@ -173,9 +174,18 @@ export const contributions = procedure
           equals:
             purpose === Purpose.TREES ? Purpose.TREES : Purpose.CONSERVATION,
         },
-        plantDate: {
-          lte: giftDataCursor ? new Date(giftDataCursor) : new Date(),
-        },
+        OR: [
+          {
+            plantDate: {
+              lte: giftDataCursor ? new Date(giftDataCursor) : new Date(),
+            },
+          },
+          {
+            redemptionDate: {
+              lte: giftDataCursor ? new Date(giftDataCursor) : new Date(),
+            },
+          },
+        ],
       },
       orderBy: {
         plantDate: 'desc',
@@ -256,21 +266,28 @@ export const contributions = procedure
           (project) => project.guid === projectId
         )?.allowDonations;
 
-        return {
+        const giftMetadata = JSON.parse(JSON.stringify(giftObject.metadata));
+
+        const _gift = {
           ...giftObject,
           _type: 'gift',
           quantity: giftObject.value ? giftObject.value / 100 : 0,
           metadata: {
             ...(giftObject?.metadata as object),
             project: {
-              ...JSON.parse(JSON.stringify(giftObject.metadata))?.project,
-              image:
-                JSON.parse(JSON.stringify(giftObject.metadata))?.project
-                  ?.image ?? projectImage,
+              ...giftMetadata?.project,
+              image: giftMetadata?.project?.image ?? projectImage,
             },
           },
           allowDonations: projectAllowDonations,
+          plantDate: giftObject.plantDate
+            ? giftObject.plantDate
+            : giftObject.redemptionDate,
         };
+
+        delete _gift.redemptionDate;
+
+        return _gift;
       });
     }
 

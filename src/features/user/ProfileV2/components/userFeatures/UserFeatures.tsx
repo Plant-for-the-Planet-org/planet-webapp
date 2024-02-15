@@ -15,7 +15,7 @@ import {
 } from '../../../../../../public/assets/images/ProfilePageIcons';
 import theme from '../../../../../theme/themeProperties';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import { PublicProfileFeature } from '../MicroComponents/PublicProfileFeature';
+import { PublicProfileFeature } from '../MicroComponents/ProfileBox/PublicProfileFeature';
 
 const UserFeatures = ({
   handleShare,
@@ -26,21 +26,13 @@ const UserFeatures = ({
   const { tenantConfig } = useTenant();
   const { light } = theme;
   const router = useRouter();
-  const { t } = useTranslation(['me']);
+  const { t } = useTranslation(['profile']);
   const { setRefetchData } = useUserProps();
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
 
-  // const handleShareOnLinkedIn = () => {
-  //   if (config && userProfile) {
-  //     const linkToShare = `${config.tenantURL}/t/${userProfile.slug}`;
-  //     const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?&url=${linkToShare}`;
-  //     window.open(shareUrl, '_blank');
-  //   }
-  // };
-
   const handleRegisterTree = () => {
     setRefetchData(false);
-    router.push('profile/register-trees');
+    router.push('/profile/register-trees');
   };
 
   const handleRedeemModalOpen = () => {
@@ -53,42 +45,46 @@ const UserFeatures = ({
 
   return (
     <div className={myProfileStyle.buttonContainer}>
-      {router.pathname !== '/profile' && !userProfile.isPrivate && (
-        <PublicProfileFeature profile={userProfile} />
+      {router.asPath !== '/profile' && !userProfile.isPrivate && (
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <PublicProfileFeature profile={userProfile} />
+        </div>
       )}
-
-      {router.pathname === '/profile' && (
-        <>
-          <Button
-            className={myProfileStyle.profileRedeemButton}
-            variant="contained"
-            startIcon={<RedeemCodeSvg color={`${light.light}`} />}
-            onClick={handleRedeemModalOpen}
-          >
-            {t('redeem:redeem')}
-          </Button>
-          <Button
-            className={myProfileStyle.registeredTreeButton}
-            variant="contained"
-            startIcon={<RegisteredTreeSvg color={`${light.light}`} />}
-            onClick={handleRegisterTree}
-          >
-            {t('me:registerTrees')}
-          </Button>
-        </>
-      )}
+      <div style={{ display: 'flex', gap: '12px' }}>
+        {router.asPath === '/profile' && (
+          <>
+            <Button
+              className={myProfileStyle.profileRedeemButton}
+              variant="contained"
+              startIcon={<RedeemCodeSvg color={`${light.light}`} />}
+              onClick={handleRedeemModalOpen}
+            >
+              {t('profile:feature.redeem')}
+            </Button>
+            <Button
+              className={myProfileStyle.registeredTreeButton}
+              variant="contained"
+              startIcon={<RegisteredTreeSvg color={`${light.light}`} />}
+              onClick={handleRegisterTree}
+            >
+              {t('profile:feature.registerTree')}
+            </Button>
+          </>
+        )}
+      </div>
 
       <RedeemModal
         redeemModalOpen={isRedeemModalOpen}
         handleRedeemModalClose={handleRedeemModalClose}
       />
-
-      <Share
-        handleShare={handleShare}
-        userProfile={userProfile}
-        showSocialButton={showSocialButton}
-        setShowSocialButton={setShowSocialButton}
-      />
+      <div className={myProfileStyle.shareButtonContainer}>
+        <Share
+          handleShare={handleShare}
+          userProfile={userProfile}
+          showSocialButton={showSocialButton}
+          setShowSocialButton={setShowSocialButton}
+        />
+      </div>
     </div>
   );
 };

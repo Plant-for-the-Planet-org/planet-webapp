@@ -15,7 +15,7 @@ const DonationInfo = ({
   donations,
 }: DonationInfoProps): ReactElement => {
   const { darkBlackColor } = theme;
-  const { t } = useTranslation(['maps', 'me']);
+  const { t } = useTranslation(['profile']);
   return (
     <div className={myForestStyles.donationDetailContainer}>
       <div className={myForestStyles.InfoContainer}>
@@ -23,7 +23,9 @@ const DonationInfo = ({
           <div className={myForestStyles.svgContainer}>
             <ProjectsSvg color={`${darkBlackColor}`} />
           </div>
-          <div className={myForestStyles.label}>{t('maps:projects')}</div>
+          <div className={myForestStyles.label}>
+            {t('profile:myForestMap.projects')}
+          </div>
         </div>
         <div className={myForestStyles.value}>{`${
           projects ? projects : 0
@@ -34,7 +36,9 @@ const DonationInfo = ({
           <div className={myForestStyles.svgContainer}>
             <CountriesSvg color={`${darkBlackColor}`} />
           </div>
-          <div className={myForestStyles.label}>{t('maps:countries')}</div>
+          <div className={myForestStyles.label}>
+            {t('profile:myForestMap.countries')}
+          </div>
         </div>
         <div className={myForestStyles.value}>{`${
           countries ? countries : 0
@@ -45,7 +49,9 @@ const DonationInfo = ({
           <div className={myForestStyles.svgContainer}>
             <DonationsSvg color={`${darkBlackColor}`} />
           </div>
-          <div className={myForestStyles.label}>{t('me:donations')}</div>
+          <div className={myForestStyles.label}>
+            {t('profile:myForestMap.donations')}
+          </div>
         </div>
         <div className={myForestStyles.value}>{`${
           donations ? donations : 0

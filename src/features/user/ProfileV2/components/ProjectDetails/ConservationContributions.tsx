@@ -7,26 +7,28 @@ import { useMyForest } from '../../../../common/Layout/MyForestContext';
 
 type AreaConservedProjectListProps = Omit<
   TreeContributedProjectListProps,
-  'userProfile' | 'restoredAreaUnit'
+  'restoredAreaUnit'
 >;
 
 const ConservationContributions = ({
+  userProfile,
   hasNextPage,
   handleFetchNextPage,
 }: AreaConservedProjectListProps): ReactElement => {
-  const { t, ready } = useTranslation(['me']);
+  const { t, ready } = useTranslation(['profile']);
   const { conservationContribution } = useMyForest();
 
   return ready ? (
     <div className={myForestStyles.areaConservedMainContainer}>
       <div className={myForestStyles.textContainer}>
         <div className={myForestStyles.conservedAreaText}>
-          <div>{t('me:areaConserved')}</div>
+          <div>{t('profile:myContributions.areaConserved')}</div>
           <div className={myForestStyles.hrLine} />
         </div>
       </div>
       <div className={myForestStyles.areaConservedContainer}>
         <ContributedProjectList
+          userProfile={userProfile}
           hasNextPage={hasNextPage}
           contributionProjectList={conservationContribution?.pages}
           handleFetchNextPage={handleFetchNextPage}

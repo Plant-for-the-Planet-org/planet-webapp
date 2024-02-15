@@ -747,20 +747,3 @@ input[type='number'] {
     font-size: 30px;
   }
 }
-
-.publicProfileMainContainer {
-  max-width: 1400px;
-  padding-left: 85px;
-  @include xsPhoneView {
-    padding-left: 0px;
-  }
-  @include smTabletView {
-    padding-left: 0px;
-  }
-  @include mdTabletView {
-    padding-left: 0px;
-  }
-  @include lgLaptopView {
-    padding-left: 100px;
-  }
-}

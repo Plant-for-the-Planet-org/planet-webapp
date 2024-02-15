@@ -121,11 +121,11 @@ export const PlantedTreesSvg = ({ color }: IconProps) => {
   );
 };
 
-export const PlantedTressBlackSvg = ({ color }: IconProps) => {
+export const PlantedTressBlackSvg = ({ color, width, height }: IconProps) => {
   return (
     <svg
-      width="43"
-      height="33"
+      width={width}
+      height={height}
       viewBox="0 0 43 33"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

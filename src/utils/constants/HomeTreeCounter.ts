@@ -1,4 +1,6 @@
-//The array of tenants has a home treecounter with styling that differs from the profile treecounter.
+/**
+ * The array of tenants has a home treecounter with styling that differs from the profile treecounter.
+ */
 export const _tenants = [
   'nitrosb',
   'energizer',

@@ -5,7 +5,10 @@ import { ClusterMarkerProps, Cluster } from '../../../../common/types/map';
 import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 
-const ConservationMarker = ({ mapRef }: ClusterMarkerProps): ReactElement => {
+const ConservationMarker = ({
+  mapRef,
+  profile,
+}: ClusterMarkerProps): ReactElement => {
   const { conservationProjectGeoJson, viewport } = useMyForest();
   const [clusters, setClusters] = useState<Cluster[] | undefined>(undefined);
   const { viewState } = viewport;
@@ -39,7 +42,13 @@ const ConservationMarker = ({ mapRef }: ClusterMarkerProps): ReactElement => {
               />
             );
           } else {
-            return <SingleMarker key={key} geoJson={singleCluster} />;
+            return (
+              <SingleMarker
+                key={key}
+                geoJson={singleCluster}
+                profile={profile}
+              />
+            );
           }
         })}
     </>
