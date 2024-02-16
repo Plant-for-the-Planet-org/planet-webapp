@@ -383,11 +383,11 @@ export default function Footer(): ReactElement | null {
               </div>
             </div>
             <div className={styles.footer_links_container}>
-              {config.darkModeEnabled && (
-                <div className={styles.switch}>
-                  <DarkModeSwitch />
-                </div>
-              )}
+              {/* {config.darkModeEnabled && (
+              <div className={styles.switch}>
+                <DarkModeSwitch />
+              </div>
+              )} */}
 
               {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
               {config.footerLinks &&

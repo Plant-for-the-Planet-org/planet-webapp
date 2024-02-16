@@ -44,7 +44,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
   return (
     <>
       <div className={styles.lngSwitcher + ' mapboxgl-map'}>
-        {config.darkModeEnabled && <DarkModeSwitch />}
+        {/* {config.darkModeEnabled && <DarkModeSwitch />} */}
         {isEmbed ? null : (
           <div
             onClick={() => {
