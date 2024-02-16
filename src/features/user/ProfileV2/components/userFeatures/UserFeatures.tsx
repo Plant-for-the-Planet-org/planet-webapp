@@ -23,11 +23,11 @@ const UserFeatures = ({
   const { light } = theme;
   const router = useRouter();
   const { t } = useTranslation(['profile']);
-  const { setRefetchData } = useUserProps();
+  const { setRefetchUserData } = useUserProps();
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
 
   const handleRegisterTree = () => {
-    setRefetchData(false);
+    setRefetchUserData(false);
     router.push('/profile/register-trees');
   };
 

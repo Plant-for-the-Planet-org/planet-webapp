@@ -1,7 +1,6 @@
 import { useEffect, useContext, ReactElement } from 'react';
 import myForestStyles from '../../../ProfileV2/styles/MyForest.module.scss';
 import dynamic from 'next/dynamic';
-import { useTranslation } from 'next-i18next';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
 import { trpc } from '../../../../../utils/trpc';
@@ -36,7 +35,7 @@ export default function MyContributions({
   profile,
 }: MyContributionsProps): ReactElement | null {
   const { setErrors } = useContext(ErrorHandlingContext);
-  const { setRefetchData, refetchData } = useUserProps();
+  const { setRefetchUserData, refetchUserData } = useUserProps();
   const {
     setTreePlantationContribution,
     treePlantationContribution,
@@ -148,7 +147,7 @@ export default function MyContributions({
           )
         );
       }
-      if (trpcProcedure?.data && refetchData) {
+      if (trpcProcedure?.data && refetchUserData) {
         trpcProcedure?.refetch();
         stateUpdaterFunction(trpcProcedure?.data);
       } else {
@@ -176,22 +175,22 @@ export default function MyContributions({
       _treePlantedGeoJsonData,
       setTreePlantationProjectGeoJson
     );
-  }, [_treePlantedGeoJsonData.data, refetchData]);
+  }, [_treePlantedGeoJsonData.data, refetchUserData]);
 
   useEffect(() => {
     _updateStateWithTrpcData<PointFeature<TestPointProps>[]>(
       _conservedGeoJsonData,
       setconservationProjectGeoJson
     );
-  }, [_conservedGeoJsonData.data, refetchData]);
+  }, [_conservedGeoJsonData.data, refetchUserData]);
 
   useEffect(() => {
     _updateStateWithTrpcData<StatsResult | undefined>(
       _detailInfo,
       setAdditionalInfoRelatedToContributions
     );
-    setRefetchData(false);
-  }, [_detailInfo.data, refetchData]);
+    setRefetchUserData(false);
+  }, [_detailInfo.data, refetchUserData]);
 
   useEffect(() => {
     _checkHigestNumberContribution();

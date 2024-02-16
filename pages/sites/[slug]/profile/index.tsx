@@ -64,7 +64,7 @@ function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
             <MyForestProvider>
               <div className={myProfileStyle.profileContainer}>
                 <Profile userProfile={profile} />
-                <MyContributions profile={profile} token={token} />
+                <MyContributions profile={profile} />
               </div>
             </MyForestProvider>
           </>

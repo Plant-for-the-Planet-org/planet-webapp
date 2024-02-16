@@ -64,7 +64,7 @@ function RegisterTreesForm({
   setContributionDetails,
   setRegistered,
 }: RegisterTreesFormProps) {
-  const { user, token, contextLoaded, logoutUser, setRefetchData } =
+  const { user, token, contextLoaded, logoutUser, setRefetchUserData } =
     useUserProps();
   const { t, ready } = useTranslation(['me', 'common']);
   const EMPTY_STYLE = {
@@ -189,7 +189,8 @@ function RegisterTreesForm({
           geometry: geometry,
         };
         try {
-          const res = await postAuthenticatedRequest<ContributionProperties>(tenantConfig?.id,
+          const res = await postAuthenticatedRequest<ContributionProperties>(
+            tenantConfig?.id,
             `/app/contributions`,
             submitData,
             token,
@@ -200,7 +201,7 @@ function RegisterTreesForm({
           setContributionDetails(res);
           setIsUploadingData(false);
           setRegistered(true);
-          setRefetchData(true);
+          setRefetchUserData(true);
         } catch (err) {
           setIsUploadingData(false);
           setErrors(handleError(err as APIError));
@@ -215,7 +216,8 @@ function RegisterTreesForm({
   };
   async function loadProjects() {
     try {
-      const projects = await getAuthenticatedRequest<ProjectGeoJsonProps[]>(tenantConfig?.id,
+      const projects = await getAuthenticatedRequest<ProjectGeoJsonProps[]>(
+        tenantConfig?.id,
         '/app/profile/projects',
         token,
         logoutUser

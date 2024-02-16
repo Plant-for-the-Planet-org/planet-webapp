@@ -39,7 +39,7 @@ const IssueCodesForm = (): ReactElement | null => {
     bulkMethod,
     setBulkMethod,
   } = useBulkCode();
-  const { user, logoutUser, setRefetchData } = useUserProps();
+  const { user, logoutUser, setRefetchUserData } = useUserProps();
   const { tenantConfig } = useTenant();
   const { getAccessTokenSilently } = useAuth0();
   const { setErrors } = useContext(ErrorHandlingContext);
@@ -139,7 +139,7 @@ const IssueCodesForm = (): ReactElement | null => {
         if (res?.uid) {
           resetBulkContext();
           setIsSubmitted(true);
-          setRefetchData(true);
+          setRefetchUserData(true);
           setTimeout(() => {
             router.push(`/profile/history?ref=${res.uid}`);
           }, 5000);

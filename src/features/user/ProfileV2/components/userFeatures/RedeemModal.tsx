@@ -25,8 +25,14 @@ export default function RedeemModal({
 }: RedeemModal): ReactElement | null {
   const { t, ready } = useTranslation(['redeem']);
   const { tenantConfig } = useTenant();
-  const { user, contextLoaded, token, setUser, logoutUser, setRefetchData } =
-    useUserProps();
+  const {
+    user,
+    contextLoaded,
+    token,
+    setUser,
+    logoutUser,
+    setRefetchUserData,
+  } = useUserProps();
   const { setErrors, errors: apiErrors } =
     React.useContext(ErrorHandlingContext);
   const [inputCode, setInputCode] = React.useState<string | undefined>('');
@@ -49,7 +55,7 @@ export default function RedeemModal({
           logoutUser
         );
         setRedeemedCodeData(res);
-        setRefetchData(true);
+        setRefetchUserData(true);
         setIsLoading(false);
         if (res.units > 0) {
           const cloneUser = { ...user };

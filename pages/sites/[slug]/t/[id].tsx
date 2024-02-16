@@ -87,7 +87,7 @@ function PublicProfile({ pageProps: { tenantConfig } }: Props): ReactElement {
         )}
 
         {profile && profile.type !== 'tpo' && (
-          <MyContributions profile={profile} token={token} />
+          <MyContributions profile={profile} />
         )}
         {profile && profile.type === 'tpo' && (
           <ProjectsContainer profile={profile} />

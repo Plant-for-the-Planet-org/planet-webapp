@@ -7,7 +7,7 @@ import { useTranslation } from 'next-i18next';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { styled } from '@mui/material/styles';
 import { PlantedTressBlackSvg } from '../../../../public/assets/images/ProfilePageIcons';
-import HomeTreeCounter from './temporaryFile/TreeCounterData';
+import HomeTreeCounter from './legacy/TreeCounterData';
 import theme from '../../../theme/themeProperties';
 import { _tenants } from '../../../utils/constants/HomeTreeCounter';
 import { useTenant } from '../Layout/TenantContext';

@@ -1,5 +1,5 @@
 import { useState, ReactElement } from 'react';
-import ProfileMainContainer from '../ProfileMainContainer';
+import ProfileMainContainer from '../ProfileMainContainer/index';
 import { useTranslation } from 'next-i18next';
 import UserInfo from '../MicroComponents/ProfileBox/UserInfo';
 import { ProfileProps } from '../../../../common/types/profile';
