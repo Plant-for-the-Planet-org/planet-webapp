@@ -2,8 +2,7 @@
     "satelliteAnalysis": "Satellite Analysis",
     "firstTreePlanted": "First tree planted",
     "plantingSeasons": "planting seasons",
-    "privateProperty": "privateProperty",
-    "property": "property",
-    "public": "public",
+    "privateProperty": "private property",
+    "publicProperty": "public property",
     "progressReports": "progress reports"
 }

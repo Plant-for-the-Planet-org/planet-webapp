@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import styles from './ProjectInfo.module.scss';
 import { useTranslation } from 'next-i18next';
 interface Props {
@@ -7,7 +8,7 @@ interface Props {
   whyThisSiteText: string;
   longTermProtectionText: string;
   externalCertifications: string;
-  siteOwnershipType: string;
+  siteOwnershipType: string[];
   acquiredSince: number;
 }
 
@@ -21,17 +22,21 @@ const MoreInfoContainer = ({
   siteOwnershipType,
   acquiredSince,
 }: Props) => {
-  const { t, ready } = useTranslation(['manageProjects', 'common']);
+  const { t, ready } = useTranslation([
+    'manageProjects',
+    'common',
+    'projectDetails',
+  ]);
 
   const siteOwners = [
     {
       id: 1,
-      title: ready ? t('manageProjects:siteOwnerPrivate') : '',
+      title: ready ? t('projectDetails:privateProperty') : '',
       value: 'private',
     },
     {
       id: 2,
-      title: ready ? t('projectDetails:public') : '',
+      title: ready ? t('projectDetails:publicProperty') : '',
       value: 'public-property',
     },
     {
@@ -56,7 +61,7 @@ const MoreInfoContainer = ({
     },
   ];
 
-  const translatedSiteOwnership = () => {
+  const translatedSiteOwnership = (siteOwnershipType: string) => {
     let translation = '';
     siteOwners.map((siteOwner) => {
       if (siteOwner.value === siteOwnershipType) {
@@ -80,10 +85,14 @@ const MoreInfoContainer = ({
         <div className={styles.halfInfo}>
           <div className={styles.siteOwnershipTitle}>
             <div> {t('manageProjects:siteOwnership')}</div>{' '}
-            <span>
-              {translatedSiteOwnership()} {t('projectDetails:property')} ·{' '}
-              {t('manageProjects:since')} {acquiredSince}
-            </span>
+            <div className={styles.siteOwnershipLabelContainer}>
+              {siteOwnershipType.map((type) => (
+                <span key={type}>
+                  {translatedSiteOwnership(type)} · {t('manageProjects:since')}{' '}
+                  {acquiredSince}
+                </span>
+              ))}
+            </div>
           </div>
           <div className={styles.infoDetail}>{siteOwnershipText}</div>
         </div>

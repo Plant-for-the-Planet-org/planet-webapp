@@ -28,7 +28,7 @@
 
 .halfInfo {
     flex: 1;
-    .infoTitle, .siteOwnershipTitle {
+    .infoTitle {
         font-weight: 700;
         margin-bottom: 4px;
         text-transform: capitalize;
@@ -69,16 +69,36 @@
 }
 
 .siteOwnershipTitle {
-   justify-content: space-between;
-   align-items: center;
-   span {
-    padding: 4px 6px;
-    background-color: rgba(81, 198, 205, 0.20);
-    border-radius: 4px;
-    font-weight: 400;
-    font-size: 8px;
-   }
+   display: flex;
+   flex-direction: column;
+   font-weight: 700;
+   text-transform: capitalize;
+   gap: 3px;
 }
+
+.siteOwnershipLabelContainer {
+    display: flex;
+    gap:5px;
+    margin-bottom: 4px;
+    overflow-x: scroll;  
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+    width: 258px;
+    span {
+        padding: 2px 6px;
+        background-color: rgba(81, 198, 205, 0.20);
+        border-radius: 4px;
+        font-weight: 400;
+        font-size: 8px;
+        min-width: 105px;
+        white-space: nowrap;
+       }
+}
+
+.siteOwnershipLabelContainer::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
 .certificationLabel {
     padding: 2px 9px;
     border-radius: 24px;
