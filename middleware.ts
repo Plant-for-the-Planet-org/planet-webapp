@@ -1,5 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getTenantSlug } from './src/utils/multiTenancy/helpers';
+import { match as matchLocale } from '@formatjs/intl-localematcher';
+import Negotiator from 'negotiator';
+import { i18nConfig } from './i18n-config';
+// import createIntlMiddleware from 'next-intl/middleware';
+
+// TODO - update function to consider cookie
+function getLocale(request: NextRequest): string | undefined {
+  // Negotiator expects plain object so we need to transform headers
+  const negotiatorHeaders: Record<string, string> = {};
+  request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
+
+  const locales = i18nConfig.locales as unknown as string[];
+
+  // Use negotiator and intl-localematcher to get best locale
+  const languages = new Negotiator({ headers: negotiatorHeaders }).languages(
+    locales
+  );
+
+  const previouslySelectedLanguage = request.cookies.get('NEXT_LOCALE')?.value;
+  if (
+    previouslySelectedLanguage !== undefined &&
+    languages[0] !== previouslySelectedLanguage
+  ) {
+    languages.unshift(previouslySelectedLanguage);
+  }
+
+  const locale = matchLocale(languages, locales, i18nConfig.defaultLocale);
+
+  return locale;
+}
 
 export const config = {
   matcher: [
@@ -12,6 +42,20 @@ export const config = {
 
 export default async function middleware(req: NextRequest) {
   const url = req.nextUrl;
+  const pathname = url.pathname;
+
+  const isLocaleMissing = i18nConfig.locales.every(
+    (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
+  );
+
+  if (isLocaleMissing) {
+    const locale = getLocale(req);
+    const newUrl = new URL(
+      `/${locale}${pathname.startsWith('/') ? '' : '/'}${pathname}`,
+      req.url
+    );
+    return NextResponse.redirect(newUrl);
+  }
 
   const host = req.headers.get('host');
 
@@ -26,5 +70,17 @@ export default async function middleware(req: NextRequest) {
     url.pathname = `/sites/${slug}${url.pathname}`;
   }
 
-  return NextResponse.rewrite(url);
+  const res = NextResponse.rewrite(url);
+
+  // store NEXT_LOCALE cookie if available
+  const localeFromPath = pathname.split('/')[1];
+  const localeCookieValue = req.cookies.get('NEXT_LOCALE')?.value;
+  if (localeFromPath !== localeCookieValue) {
+    res.cookies.set('NEXT_LOCALE', localeFromPath, {
+      sameSite: 'strict',
+      maxAge: 31536000, // 1 year
+    });
+  }
+
+  return res;
 }

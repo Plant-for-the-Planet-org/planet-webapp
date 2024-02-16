@@ -181,8 +181,19 @@ export default function Donate({
 }
 
 export async function getStaticPaths() {
+  const subDomainPaths = await constructPathsForTenantSlug();
+
+  const paths = subDomainPaths.map((path) => {
+    return {
+      params: {
+        slug: path.params.slug,
+        locale: 'en',
+      },
+    };
+  });
+
   return {
-    paths: await constructPathsForTenantSlug(),
+    paths,
     fallback: 'blocking',
   };
 }
