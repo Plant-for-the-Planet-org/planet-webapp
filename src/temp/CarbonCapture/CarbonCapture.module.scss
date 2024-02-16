@@ -1,0 +1,163 @@
+.carbonCaptureMainContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.carbonCaptureInfoContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.carbonCaptureLabelMainContainer {
+  width: 306px;
+  height: 17.7px;
+  margin-left: 15.5px;
+  font-size: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.carbonCaptureLabelContainer {
+  display: flex;
+  > .carbonCapture {
+    font-weight: 700;
+  }
+  .unit {
+    margin-left: 1px;
+  }
+}
+
+.carbonCatureDetailContainer {
+  border: 1px solid rgba(111, 207, 151, 0.02);
+  background: linear-gradient(
+      0deg,
+      rgba(33, 150, 83, 0.1) 0%,
+      rgba(33, 150, 83, 0.1) 100%
+    ),
+    #fff;
+  width: 306px;
+  height: 93px;
+  margin-left: 15.5px;
+  border-radius: 12px;
+}
+
+.carbonCaptureIndicator {
+  width: 274px;
+  height: 21px;
+  margin-top: 13.87px;
+  margin-left: 16.5px;
+  display: flex;
+  border-radius: 3px;
+
+  .beforeIntervationIndicator {
+    width: 107px;
+    background: linear-gradient(
+        0deg,
+        rgba(33, 150, 83, 0.4) 0%,
+        rgba(33, 150, 83, 0.4) 100%
+      ),
+      #fff;
+    height: inherit;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+  .byProjectIndicator {
+    width: 51px;
+    background: linear-gradient(0deg, #219653 0%, #219653 100%), #fff;
+    height: inherit;
+  }
+  .projectPotential {
+    width: 116px;
+    background: #fff;
+    height: inherit;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+}
+
+.carbonCaptureDataContainer {
+  display: flex;
+  padding-left: 16px;
+  padding-top: 4px;
+  .beforeIntervationData {
+    color: rgba(33, 150, 83, 1);
+    font-size: 8px;
+    font-weight: 700;
+  }
+  .beforeIntervationLabel {
+    font-size: 8px;
+    font-weight: 600;
+  }
+  .beforeIntervationDate {
+    font-size: 6px;
+    color: #828282;
+  }
+  .byProjectMainConatiner {
+    margin-left: 40px;
+  }
+  .byProjectData {
+    color: rgba(33, 150, 83, 1);
+    font-size: 8px;
+    font-weight: 700;
+  }
+  .byProjectLabel {
+    font-size: 8px;
+    font-weight: 600;
+  }
+  .byProjectDate {
+    font-size: 6px;
+    color: #828282;
+  }
+  .sitePotentialDataContainer {
+    margin-left: 70px;
+    .sitePotentialData {
+      color: rgba(33, 150, 83, 1);
+      font-size: 8px;
+      font-weight: bold;
+    }
+    .sitePotentialLabel {
+      font-size: 8px;
+      font-weight: 600;
+    }
+  }
+}
+
+.carbonCaptureModal {
+  width: 338px;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.infoIconContainer {
+  cursor: pointer;
+}
+
+.seeMoreButton {
+  background: linear-gradient(0deg, #219653 0%, #219653 100%), #fff;
+  width: 100%;
+  height: 27px;
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.seeMoreLabel {
+  font-size: 8px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.downArrow {
+  margin-left: 5px;
+  margin-bottom: 5px;
+}
+
+.horizontalLine {
+  position: relative;
+  top: -8px;
+}
