@@ -1,8 +1,5 @@
 import myProfileStyle from '../../styles/MyProfile.module.scss';
 import { Button } from '@mui/material';
-import { SupportSvg } from '../../../../../../public/assets/images/ProfilePageIcons';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import { useTenant } from '../../../../common/Layout/TenantContext';
 import { useRouter } from 'next/router';
 import Share from './Share';
 import { UserFeaturesProps } from '../../../../common/types/profile';
@@ -23,7 +20,6 @@ const UserFeatures = ({
   showSocialButton,
   setShowSocialButton,
 }: UserFeaturesProps) => {
-  const { tenantConfig } = useTenant();
   const { light } = theme;
   const router = useRouter();
   const { t } = useTranslation(['profile']);
@@ -46,11 +42,11 @@ const UserFeatures = ({
   return (
     <div className={myProfileStyle.buttonContainer}>
       {router.asPath !== '/profile' && !userProfile.isPrivate && (
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div className={myProfileStyle.publicProfileContainer}>
           <PublicProfileFeature profile={userProfile} />
         </div>
       )}
-      <div style={{ display: 'flex', gap: '12px' }}>
+      <div className={myProfileStyle.privateFeatureContainer}>
         {router.asPath === '/profile' && (
           <>
             <Button
@@ -61,6 +57,10 @@ const UserFeatures = ({
             >
               {t('profile:feature.redeem')}
             </Button>
+            <RedeemModal
+              redeemModalOpen={isRedeemModalOpen}
+              handleRedeemModalClose={handleRedeemModalClose}
+            />
             <Button
               className={myProfileStyle.registeredTreeButton}
               variant="contained"
@@ -73,10 +73,6 @@ const UserFeatures = ({
         )}
       </div>
 
-      <RedeemModal
-        redeemModalOpen={isRedeemModalOpen}
-        handleRedeemModalClose={handleRedeemModalClose}
-      />
       <div className={myProfileStyle.shareButtonContainer}>
         <Share
           handleShare={handleShare}

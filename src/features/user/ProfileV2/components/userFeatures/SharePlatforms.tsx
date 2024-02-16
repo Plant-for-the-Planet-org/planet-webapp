@@ -9,6 +9,8 @@ import { ReactElement } from 'react';
 import { SetState } from '../../../../common/types/common';
 import { User, UserPublicProfile } from '@planet-sdk/common';
 import theme from '../../../../../theme/themeProperties';
+import XImage from '../../../../../../public/assets/images/X.svg';
+import { X } from '../../../../../../public/assets/images/ProfilePageIcons';
 
 export interface SharePlatformsProps {
   setShowSocialButton: SetState<boolean>;
@@ -46,19 +48,21 @@ const SharePlatforms = ({
         variant="outlined"
         startIcon={<CloseIcon sx={{ marginLeft: '12px' }} />}
         onClick={() => setShowSocialButton(false)}
+        sx={{
+          padding: '7px 30px',
+        }}
       />
 
       <div className={myProfilestyle.Xicon}>
-        <img
-          width="38px"
-          height="38px"
-          src="X.svg"
+        <button
           onClick={() =>
             handleShare(
               `https://twitter.com/intent/tweet?hashtags=StopTalkingStartPlanting,TrillionTrees&via=trilliontrees&url=${linkToShare}&text=${textToShare}`
             )
           }
-        />
+        >
+          <X height={'38px'} width={'38px'} />
+        </button>
       </div>
 
       <FacebookIcon

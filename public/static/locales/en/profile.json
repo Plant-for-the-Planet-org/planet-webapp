@@ -24,10 +24,10 @@
     "donations": "Donations",
     "area": "{{areaConserved}}  m²",
     "zoomIn": "zoom in for more details",
-    "totalDonation_one": "{{count, number}}} donation ",
-    "totalDonation_other": "{{count, number}}} donations ",
-    "totalProject_one": "to {{count, number}}} project",
-    "totalProject_other": "to {{count, number}}} projects",
+    "totalDonation_one": "{{count, number}} donation ",
+    "totalDonation_other": "{{count, number}} donations ",
+    "totalProject_one": "to {{count, number}} project",
+    "totalProject_other": "to {{count, number}} projects",
     "tpoName": "By {{tpo}}"
   },
   "myTreeCounter": {

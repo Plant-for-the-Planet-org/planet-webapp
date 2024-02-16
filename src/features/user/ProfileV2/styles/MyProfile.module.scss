@@ -19,6 +19,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+  height: 45px;
   @include xsPhoneView {
     flex-wrap: wrap;
     justify-content: center;
@@ -80,10 +81,12 @@
   position: relative;
   .Xicon {
     position: absolute;
-    top: -72px;
+    top: -78px;
     left: 192px;
     margin-top: 90px;
-    cursor: pointer;
+    > button {
+      cursor: pointer;
+    }
     @include xsPhoneView {
       top: -79px;
     }
@@ -143,7 +146,11 @@
     padding-left: 0px;
   }
 }
-
+.privateFeatureContainer,
+.publicProfileContainer {
+  display: flex;
+  gap: 12px;
+}
 .profileContainer {
   margin-top: 140px;
 }

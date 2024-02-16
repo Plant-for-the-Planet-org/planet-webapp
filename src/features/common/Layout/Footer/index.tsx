@@ -20,7 +20,6 @@ export default function Footer(): ReactElement | null {
   const [openModal, setOpenModal] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState('EUR');
   const [selectedCountry, setSelectedCountry] = useState('DE');
-  console.log(pathname === '/sites/[slug]/t/[id]', '==1');
   const handleModalOpen = () => {
     setOpenModal(true);
   };
@@ -393,11 +392,11 @@ export default function Footer(): ReactElement | null {
               </div>
             </div>
             <div className={styles.footer_links_container}>
-              {tenantConfig.config.darkModeEnabled && (
+              {/* {tenantConfig.config.darkModeEnabled && (
                 <div className={styles.switch}>
                   <DarkModeSwitch />
                 </div>
-              )}
+              )} */}
 
               {/* <p className={styles.footer_links}>© 2020 Plant-for-the-Planet</p> */}
               {tenantConfig.config.footerLinks &&

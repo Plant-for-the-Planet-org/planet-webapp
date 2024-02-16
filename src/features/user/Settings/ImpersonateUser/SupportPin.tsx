@@ -1,17 +1,16 @@
 import styles from '../../../common/Layout/UserLayout/UserLayout.module.scss';
 import { useTranslation } from 'next-i18next';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
-import { UserPropsContext } from '../../../common/Layout/UserPropsContext';
-import { useContext } from 'react';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { useTenant } from '../../../common/Layout/TenantContext';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
 
 interface SupportPin {
   supportPin: string;
 }
 
 const SupportPin = () => {
-  const { token, user, setUser } = useContext(UserPropsContext);
+  const { token, user, setUser, logoutUser } = useUserProps();
   const { t } = useTranslation('me');
   const { tenantConfig } = useTenant();
   const handleNewPin = async () => {
@@ -21,7 +20,7 @@ const SupportPin = () => {
         '/app/profile/supportPin',
         undefined,
         token,
-        undefined
+        logoutUser
       );
       if (response) {
         const updateUserData = { ...user };
