@@ -8,10 +8,10 @@ import {
 } from 'react';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
 import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
-import TreesPlantedMarkers from './TreesPlantedMarkers';
-import ConservationMarkers from './ConservationMarkers';
+import TreesPlantedMarkers from './microComponents/TreesPlantedMarkers';
+import ConservationMarkers from './microComponents/ConservationMarkers';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
-import MyForestMapCredit from '../MicroComponents/MyforestMap/MyForestMapCredit';
+import MyForestMapCredit from './microComponents/MyForestMapCredit';
 import { ViewportProps } from '../../../../common/types/map';
 import { UserPublicProfile, User } from '@planet-sdk/common';
 

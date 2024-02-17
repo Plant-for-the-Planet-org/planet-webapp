@@ -1,10 +1,10 @@
 import SharePlatforms from './SharePlatforms';
 import { Button } from '@mui/material';
-import { ShareSvg } from '../../../../../../public/assets/images/ProfilePageIcons';
+import { ShareSvg } from '../../../../../../../public/assets/images/ProfilePageIcons';
 import { useTranslation } from 'next-i18next';
-import { UserFeaturesProps } from '../../../../common/types/profile';
-import theme from '../../../../../theme/themeProperties';
-import myProfileStyle from '../../styles/MyProfile.module.scss';
+import { UserFeaturesProps } from '../../../../../common/types/profile';
+import theme from '../../../../../../theme/themeProperties';
+import myProfileStyle from '../../../styles/MyProfile.module.scss';
 const Share = ({
   showSocialButton,
   setShowSocialButton,

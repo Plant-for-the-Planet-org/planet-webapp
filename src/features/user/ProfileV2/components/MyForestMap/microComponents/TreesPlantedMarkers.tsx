@@ -7,10 +7,10 @@ import {
   ClusterMarkerProps,
   TestClusterProps,
   TestPointProps,
-} from '../../../../common/types/map';
-import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
+} from '../../../../../common/types/map';
+import { _getClusterGeojson } from '../../../../../../utils/superclusterConfig';
 import { ClusterFeature, PointFeature } from 'supercluster';
-import { useMyForest } from '../../../../common/Layout/MyForestContext';
+import { useMyForest } from '../../../../../common/Layout/MyForestContext';
 
 const TreesPlantedMarkers = ({
   mapRef,

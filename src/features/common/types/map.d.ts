@@ -1,4 +1,4 @@
-import { ViewportProps } from '../../user/ProfileV2/components/MyForestMap';
+import { ViewportProps } from '../../user/ProfileV2/components/myForestMap';
 import Supercluster from 'supercluster';
 import { User, UserInfo } from '@planet-sdk/common';
 import { MutableRefObject } from 'react';

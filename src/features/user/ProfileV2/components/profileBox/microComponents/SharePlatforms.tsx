@@ -2,15 +2,15 @@ import { Button } from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import CloseIcon from '@mui/icons-material/Close';
-import { useTenant } from '../../../../common/Layout/TenantContext';
+import { useTenant } from '../../../../../common/Layout/TenantContext';
 import { useTranslation } from 'next-i18next';
-import myProfilestyle from '../../styles/MyProfile.module.scss';
+import myProfilestyle from '../../../styles/MyProfile.module.scss';
 import { ReactElement } from 'react';
-import { SetState } from '../../../../common/types/common';
+import { SetState } from '../../../../../common/types/common';
 import { User, UserPublicProfile } from '@planet-sdk/common';
-import theme from '../../../../../theme/themeProperties';
+import theme from '../../../../../../theme/themeProperties';
 import XImage from '../../../../../../public/assets/images/X.svg';
-import { X } from '../../../../../../public/assets/images/ProfilePageIcons';
+import { X } from '../../../../../../../public/assets/images/ProfilePageIcons';
 
 export interface SharePlatformsProps {
   setShowSocialButton: SetState<boolean>;

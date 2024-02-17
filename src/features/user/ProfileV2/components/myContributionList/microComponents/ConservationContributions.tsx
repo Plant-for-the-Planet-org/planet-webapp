@@ -1,9 +1,9 @@
-import myForestStyles from '../../styles/MyForest.module.scss';
+import myForestStyles from '../../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import ContributedProjectList from './ContributedProjectList';
 import { ReactElement } from 'react';
-import { TreeContributedProjectListProps } from '../../../../common/types/myForest';
-import { useMyForest } from '../../../../common/Layout/MyForestContext';
+import { TreeContributedProjectListProps } from '../../../../../common/types/myForest';
+import { useMyForest } from '../../../../../common/Layout/MyForestContext';
 
 type AreaConservedProjectListProps = Omit<
   TreeContributedProjectListProps,

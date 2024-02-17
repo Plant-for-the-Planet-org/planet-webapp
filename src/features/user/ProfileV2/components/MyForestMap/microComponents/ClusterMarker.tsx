@@ -5,12 +5,12 @@ import {
   ConservationTreeSvg,
   PlantedTreesSvg,
   RestoredSvg,
-} from '../../../../../../public/assets/images/ProfilePageIcons';
-import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
-import { MarkerProps } from '../../../../common/types/map';
+} from '../../../../../../../public/assets/images/ProfilePageIcons';
+import MyForestMapStyle from '../../../styles/MyForestMap.module.scss';
+import { MarkerProps } from '../../../../../common/types/map';
 import CustomPopupMarker from './CustomPopupMarker';
-import theme from '../../../../../theme/themeProperties';
-import { _getClusterGeojson } from '../../../../../utils/superclusterConfig';
+import theme from '../../../../../../theme/themeProperties';
+import { _getClusterGeojson } from '../../../../../../utils/superclusterConfig';
 
 export const TreePlantedClusterMarker = ({
   geoJson,

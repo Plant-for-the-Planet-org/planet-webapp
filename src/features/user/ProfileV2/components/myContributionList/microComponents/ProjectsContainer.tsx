@@ -1,18 +1,18 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 import LazyLoad from 'react-lazyload';
-import NotFound from '../../../../../../public/assets/images/NotFound';
-import ProjectLoader from '../../../../common/ContentLoaders/Projects/ProjectLoader';
+import NotFound from '../../../../../../../public/assets/images/NotFound';
+import ProjectLoader from '../../../../../common/ContentLoaders/Projects/ProjectLoader';
 import { useTranslation } from 'next-i18next';
 import styles from '../../styles/ProjectsContainer.module.scss';
-import { getRequest } from '../../../../../utils/apiRequests/api';
-import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
-import { handleError, APIError ,UserPublicProfile } from '@planet-sdk/common';
-import { MapProject } from '../../../../common/types/ProjectPropsContextInterface';
-import { useTenant } from '../../../../common/Layout/TenantContext';
+import { getRequest } from '../../../../../../utils/apiRequests/api';
+import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
+import { handleError, APIError, UserPublicProfile } from '@planet-sdk/common';
+import { MapProject } from '../../../../../common/types/ProjectPropsContextInterface';
+import { useTenant } from '../../../../../common/Layout/TenantContext';
 
 const ProjectSnippet = dynamic(
-  () => import('../../../../projects/components/ProjectSnippet'),
+  () => import('../../../../../projects/components/ProjectSnippet'),
   {
     loading: () => <ProjectLoader />,
   }

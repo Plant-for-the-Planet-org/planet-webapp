@@ -8,14 +8,14 @@ import { Purpose } from '../../../../../utils/constants/myForest';
 import { ContributionData } from '../../../../common/types/myForest';
 import { StatsResult } from '../../../../common/types/myForest';
 import { MyContributionsProps } from '../../../../common/types/map';
-import MyContributionCustomButton from '../MicroComponents/MyforestMap/CustomButton';
+import MyContributionCustomButton from '../contributionStats/CustomButton';
 import { SetState } from '../../../../common/types/common';
 import { PointFeature } from 'supercluster';
 import { TestPointProps } from '../../../../common/types/map';
 import { MyForestMapLoader } from '../../../../common/ContentLoaders/UserProfile/UserProfile';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import MyContributionList from '../MicroComponents/ContributionContainer/MyContributionList';
+import MyContributionList from './microComponents/MyContributionList';
 
 const A_DAY_IN_MS = 1000 * 60 * 60 * 24;
 
@@ -27,7 +27,7 @@ const queryFetchOptions = {
   refetchOnReconnect: false,
 };
 
-const MyTreesMap = dynamic(() => import('../MyForestMap'), {
+const MyTreesMap = dynamic(() => import('../myForestMap'), {
   loading: () => <p>loading</p>,
 });
 

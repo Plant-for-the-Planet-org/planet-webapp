@@ -1,7 +1,7 @@
 import { Popup } from 'react-map-gl';
-import MyForestMapStyle from '../../styles/MyForestMap.module.scss';
-import { CustomPopupMarkerProps } from '../../../../common/types/map';
-import { ClusterPopUpLabel } from '../MicroComponents/MyforestMap/PopUp';
+import MyForestMapStyle from '../../../styles/MyForestMap.module.scss';
+import { CustomPopupMarkerProps } from '../../../../../common/types/map';
+import { ClusterPopUpLabel } from './PopUp';
 
 type ClusterPopUpProps = Omit<
   CustomPopupMarkerProps,

@@ -1,9 +1,9 @@
 import { useState, ReactElement } from 'react';
-import ProfileMainContainer from '../ProfileMainContainer/index';
+import ProfileMainContainer from './microComponents/ProfileMainContainer';
 import { useTranslation } from 'next-i18next';
-import UserInfo from '../MicroComponents/ProfileBox/UserInfo';
+import UserInfo from './microComponents/UserInfo';
 import { ProfileProps } from '../../../../common/types/profile';
-import UserFeatures from '../userFeatures/UserFeatures';
+import UserFeatures from './microComponents/UserFeatures';
 import { useTenant } from '../../../../common/Layout/TenantContext';
 
 const Profile = ({ userProfile }: ProfileProps): ReactElement => {

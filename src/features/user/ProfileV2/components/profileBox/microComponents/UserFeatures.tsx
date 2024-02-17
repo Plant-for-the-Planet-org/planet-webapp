@@ -1,18 +1,18 @@
-import myProfileStyle from '../../styles/MyProfile.module.scss';
+import myProfileStyle from '../../../styles/MyProfile.module.scss';
 import { Button } from '@mui/material';
 import { useRouter } from 'next/router';
 import Share from './Share';
-import { UserFeaturesProps } from '../../../../common/types/profile';
+import { UserFeaturesProps } from '../../../../../common/types/profile';
 import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
 import RedeemModal from './RedeemModal';
 import {
   RedeemCodeSvg,
   RegisteredTreeSvg,
-} from '../../../../../../public/assets/images/ProfilePageIcons';
-import theme from '../../../../../theme/themeProperties';
-import { useUserProps } from '../../../../common/Layout/UserPropsContext';
-import { PublicProfileFeature } from '../MicroComponents/ProfileBox/PublicProfileFeature';
+} from '../../../../../../../public/assets/images/ProfilePageIcons';
+import theme from '../../../../../../theme/themeProperties';
+import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
+import { PublicProfileFeature } from './PublicProfileFeature';
 
 const UserFeatures = ({
   handleShare,

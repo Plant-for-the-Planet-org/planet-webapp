@@ -1,10 +1,10 @@
-import myForestStyles from '../../styles/MyForest.module.scss';
+import myForestStyles from '../../../styles/MyForest.module.scss';
 import { useTranslation } from 'next-i18next';
 import { ReactElement } from 'react';
 import { Button } from '@mui/material';
-import ContributedToProject from '../MicroComponents/ContributionContainer/ContributedToProject';
-import { Page } from '../../../../common/types/myForest';
-import { useMyForest } from '../../../../common/Layout/MyForestContext';
+import ContributedToProject from './ContributedToProject';
+import { Page } from '../../../../../common/types/myForest';
+import { useMyForest } from '../../../../../common/Layout/MyForestContext';
 import { User, UserPublicProfile } from '@planet-sdk/common';
 
 export interface ContributedProjectListProps {
