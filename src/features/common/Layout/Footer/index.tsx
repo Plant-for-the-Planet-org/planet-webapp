@@ -8,7 +8,6 @@ import { useTranslation } from 'next-i18next';
 import { useTenant } from '../TenantContext';
 import UNDecadeLogo from '../../../../../public/assets/images/footer/UNDecadeLogo';
 import PlanetCJLogo from '../../../../../public/assets/images/footer/PlanetCJLogo';
-import DarkModeSwitch from '../DarkModeSwitch.tsx';
 import { useRouter } from 'next/router';
 
 // let styles = require('./Footer.module.css');

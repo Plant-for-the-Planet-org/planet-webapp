@@ -19,7 +19,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  height: 45px;
   @include xsPhoneView {
     flex-wrap: wrap;
     justify-content: center;
