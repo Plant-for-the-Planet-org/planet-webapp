@@ -19,7 +19,7 @@ interface MyForestProps {
   profile: User | UserPublicProfile;
 }
 
-const MyForestMap = ({ profile }: MyForestProps): ReactElement => {
+const ForestMap = ({ profile }: MyForestProps): ReactElement => {
   const mapRef: MutableRefObject<null> = useRef(null);
 
   const EMPTY_STYLE = {
@@ -87,4 +87,4 @@ const MyForestMap = ({ profile }: MyForestProps): ReactElement => {
   );
 };
 
-export default MyForestMap;
+export default ForestMap;
