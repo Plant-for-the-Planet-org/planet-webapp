@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
 import { useTranslation } from 'next-i18next';
 import { handleError, APIError } from '@planet-sdk/common';
+import { useTenant } from '../../common/Layout/TenantContext';
 import {
   ExtendedScopePlantLocations,
   PlantLocation as PlantLocationType,
@@ -36,6 +37,7 @@ function TreeMapper(): ReactElement {
     PlantLocationSingle | PlantLocationMulti | null
   >(null);
   const [links, setLinks] = React.useState<Links>();
+  const { tenantConfig } = useTenant();
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
   async function fetchTreemapperData(next = false) {
     setIsDataLoading(true);
@@ -45,6 +47,7 @@ function TreeMapper(): ReactElement {
       try {
         const response =
           await getAuthenticatedRequest<ExtendedScopePlantLocations>(
+            tenantConfig?.id,
             links.next,
             token,
             logoutUser,
@@ -89,6 +92,7 @@ function TreeMapper(): ReactElement {
       try {
         const response =
           await getAuthenticatedRequest<ExtendedScopePlantLocations>(
+            tenantConfig?.id,
             '/treemapper/plantLocations?_scope=extended&limit=15',
             token,
             logoutUser,

@@ -24,6 +24,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import themeProperties from '../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ModifyDonations, Subscription } from '../../common/types/payments';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 // interface EditDonationProps {
 //   editModalOpen
@@ -69,6 +70,7 @@ export const EditModal = ({
   fetchRecurrentDonations,
 }: EditModalProps) => {
   const { theme } = React.useContext(ThemeContext);
+  const { tenantConfig } = useTenant();
   const [userLang, setUserLang] = React.useState('en');
   const [disabled, setDisabled] = React.useState(false);
   const { t, i18n } = useTranslation(['me']);
@@ -124,6 +126,7 @@ export const EditModal = ({
     if (Object.keys(bodyToSend).length !== 0) {
       try {
         const res = await putAuthenticatedRequest<ModifyDonations>(
+          tenantConfig?.id,
           `/app/subscriptions/${record?.id}?scope=modify`,
           bodyToSend,
           token,

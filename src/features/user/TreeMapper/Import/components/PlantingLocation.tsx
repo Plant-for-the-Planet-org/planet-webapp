@@ -30,6 +30,7 @@ import themeProperties from '../../../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { MapProject } from '../../../../common/types/ProjectPropsContextInterface';
+import { useTenant } from '../../../../common/Layout/TenantContext';
 import {
   FeatureCollection,
   GeoJsonProperties,
@@ -173,7 +174,7 @@ export default function PlantingLocation({
   setActiveMethod,
 }: Props): ReactElement {
   const { user, token, contextLoaded, logoutUser } = useUserProps();
-
+  const { tenantConfig } = useTenant();
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [projects, setProjects] = React.useState<MapProject[]>([]);
   const importMethods = ['import', 'editor'];
@@ -210,6 +211,7 @@ export default function PlantingLocation({
   const loadProjects = async () => {
     try {
       const projects = await getAuthenticatedRequest<MapProject[]>(
+        tenantConfig?.id,
         '/app/profile/projects',
         token,
         logoutUser
@@ -223,6 +225,7 @@ export default function PlantingLocation({
   const loadMySpecies = async () => {
     try {
       const species = await getAuthenticatedRequest<Species[]>(
+        tenantConfig?.id,
         '/treemapper/species',
         token,
         logoutUser
@@ -335,7 +338,7 @@ export default function PlantingLocation({
       };
 
       try {
-        const res = await postAuthenticatedRequest<PlantLocation>(
+        const res = await postAuthenticatedRequest<PlantLocation>(tenantConfig?.id,
           `/treemapper/plantLocations`,
           submitData,
           token,

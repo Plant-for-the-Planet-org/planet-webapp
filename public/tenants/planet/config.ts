@@ -1,7 +1,5 @@
  const config = {
-  // name of tenant
   tenantName: 'planet',
-  // url of tenant home page
   tenantURL: 'www.plant-for-the-planet.org',
   tenantGoal: null,
   showUNEPLogo: true,
@@ -9,7 +7,6 @@
   showRedeemHint: true,
   enableGuestSepa: false,
   darkModeEnabled: false,
-  // font family and it's property particular to tenant
   font: {
     primaryFontFamily:
       '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
@@ -19,7 +16,7 @@
   languages: ['en', 'de', 'es', 'fr', 'it', 'pt-BR','cs'],
   header: {
     isSecondaryTenant: false,
-    tenantLogoURL: `${process.env.CDN_URL}/logo/svg/planet.svg`,
+    tenantLogoURL: `https://cdn.plant-for-the-planet.org/logo/svg/planet.svg`,
     tenantLogoLink: '/',
     items: {
       home: {
@@ -27,11 +24,6 @@
         onclick: '/',
         visible: true,
       },
-      // donate: {
-      //   title: 'home',
-      //   onclick: '/',
-      //   visible: true,
-      // },
       about: {
         title: 'aboutUs',
         onclick: 'https://a.plant-for-the-planet.org/',
@@ -98,7 +90,7 @@
     appTitle: 'Plant for the Planet',
     description:
       "We are children and youth on a mission: bring back a trillion trees! No matter where you are, it's never been easier to plant trees and become part of the fight against climate crisis.",
-    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+    image: `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`,
     twitterHandle: '@trilliontrees',
     locale: 'en_US',
   },

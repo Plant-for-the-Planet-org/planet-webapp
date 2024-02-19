@@ -4,6 +4,7 @@ import styles from '../AccountHistory.module.scss';
 import { useTranslation, Trans } from 'next-i18next';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface Props {
   placement: 'top' | 'right';
@@ -12,6 +13,7 @@ interface Props {
 const MembershipCta = ({ placement }: Props) => {
   const { t } = useTranslation('me');
   const { token } = useUserProps();
+  const { tenantConfig } = useTenant();
 
   return (
     <a
@@ -20,7 +22,11 @@ const MembershipCta = ({ placement }: Props) => {
           ? styles.membershipCtaTop
           : styles.membershipCtaRight
       }`}
-      href={getDonationUrl('proj_LOxkf5GYI054Fi0HcEUF3dKu', token)}
+      href={getDonationUrl(
+        tenantConfig.id,
+        'proj_LOxkf5GYI054Fi0HcEUF3dKu',
+        token
+      )}
     >
       <PlanetLogo className={styles.logo} />
       <div className={styles.membershipCtaContent}>
