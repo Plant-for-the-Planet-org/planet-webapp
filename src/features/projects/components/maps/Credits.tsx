@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react';
 import styles from '../../styles/ProjectsMap.module.scss';
 import { useTranslation } from 'next-i18next';
 import SelectLanguageAndCountry from '../../../common/Layout/Footer/SelectLanguageAndCountry';
-import DarkModeSwitch from '../../../common/Layout/DarkModeSwitch.tsx';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
