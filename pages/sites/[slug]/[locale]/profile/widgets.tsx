@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import EmbedModal from '../../../../../src/features/user/Widget/EmbedModal';
-import styles from './../../../../src/features/common/Layout/UserLayout/UserLayout.module.scss';
+import styles from '../../../../../src/features/common/Layout/UserLayout/UserLayout.module.scss';
 import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
