@@ -39,7 +39,7 @@ function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
   // Internal states
   const [profile, setProfile] = React.useState<null | User>();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(tenantConfig);
     }

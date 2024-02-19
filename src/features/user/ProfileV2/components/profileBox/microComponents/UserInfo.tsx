@@ -28,7 +28,6 @@ const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
         ) : (
           <DefaultProfileImage />
         )}
-
         <div className={myProfilestyle.userInfoMainContainer}>
           <div className={myProfilestyle.userInfo}>
             {userProfile?.displayName}
@@ -40,7 +39,7 @@ const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
           </div>
         </div>
       </div>
-      {userProfile && router.asPath === '/profile' && (
+      {userProfile?.supportPin && router.asPath === '/profile' && (
         <div className={myProfilestyle.iconContainer}>
           <Link href="/profile/edit">
             <div className={myProfilestyle.icon}>

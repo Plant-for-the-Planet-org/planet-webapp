@@ -38,7 +38,6 @@ const UserFeatures = ({
   const handleRedeemModalClose = () => {
     setIsRedeemModalOpen(false);
   };
-
   return (
     <div className={myProfileStyle.buttonContainer}>
       {router.asPath !== '/profile' && !userProfile.isPrivate && (
@@ -47,7 +46,7 @@ const UserFeatures = ({
         </div>
       )}
       <div className={myProfileStyle.privateFeatureContainer}>
-        {router.asPath === '/profile' && (
+        {router.asPath === '/profile' && userProfile?.supportPin && (
           <>
             <Button
               className={myProfileStyle.profileRedeemButton}

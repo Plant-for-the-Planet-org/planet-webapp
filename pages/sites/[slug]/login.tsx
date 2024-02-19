@@ -54,7 +54,7 @@ export default function Login({ pageProps }: Props): ReactElement {
             router.push(redirectLink);
           }
         } else {
-          router.push('/t/[id]', `/t/${user.slug}`, { shallow: true });
+          router.push('/profile');
         }
       }
     }
