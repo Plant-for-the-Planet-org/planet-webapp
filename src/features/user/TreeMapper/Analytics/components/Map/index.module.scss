@@ -24,7 +24,7 @@
     top: 15px;
     left: 20px;
     z-index: 2;
-    width: 320px;
+    width: 300px;
     box-shadow: 4px 8px 16px 0px #0000001A;
     border-radius: 16px;
     background-color: #fff;
@@ -40,7 +40,7 @@
         align-items: center;
         flex-direction: column;
         row-gap: 16px;
-        padding: 10px;
+        padding: 10px 0PX;
         z-index: 2;
         overflow-y: scroll;
         scroll-behavior: smooth;
@@ -101,7 +101,7 @@
         
                     .speciesName {
                         border-right: 1px solid #68B03066;
-                        width: 140px;
+                        width: 120px;
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;
