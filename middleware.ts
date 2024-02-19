@@ -31,6 +31,25 @@ function getLocale(request: NextRequest): string | undefined {
   return locale;
 }
 
+/** Identifies locale in relative url and removes it */
+function removeLocaleFromUrl(pathname: string): string {
+  let newPathname = '';
+  const localeRegex = /^[a-z]{2}$/i;
+
+  const splitPathname = pathname.split('/');
+  if (splitPathname.length < 2) return pathname;
+
+  const firstSegment = splitPathname[1];
+  const splitFirstSegment = firstSegment.split('-');
+
+  if (localeRegex.test(splitFirstSegment[0])) {
+    newPathname = splitPathname.slice(2).join('/');
+    return newPathname;
+  }
+
+  return pathname;
+}
+
 export const config = {
   matcher: [
     // This regular expression matches any string except those containing "api", "static", files with extensions, or "_next".
@@ -50,8 +69,9 @@ export default async function middleware(req: NextRequest) {
 
   if (isLocaleMissing) {
     const locale = getLocale(req);
+    const cleanPathname = removeLocaleFromUrl(pathname);
     const newUrl = new URL(
-      `/${locale}${pathname.startsWith('/') ? '' : '/'}${pathname}`,
+      `/${locale}${cleanPathname.startsWith('/') ? '' : '/'}${cleanPathname}`,
       req.url
     );
     return NextResponse.redirect(newUrl);
