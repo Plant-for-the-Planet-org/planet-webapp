@@ -180,7 +180,7 @@ export default function Donate({
   );
 }
 
-export async function getStaticPaths() {
+export const getStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
   const paths = subDomainPaths.map((path) => {
@@ -196,7 +196,7 @@ export async function getStaticPaths() {
     paths,
     fallback: 'blocking',
   };
-}
+};
 
 interface StaticProps {
   tenantConfig: Tenant;

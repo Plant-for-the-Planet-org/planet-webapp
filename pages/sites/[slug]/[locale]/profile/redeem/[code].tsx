@@ -190,7 +190,7 @@ const ReedemCode = ({ pageProps: { tenantConfig } }: Props) => {
   );
 };
 
-export async function getStaticPaths() {
+export const getStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
   const paths = subDomainPaths.map((path) => {
@@ -198,6 +198,7 @@ export async function getStaticPaths() {
       params: {
         slug: path.params.slug,
         code: v4(),
+        locale: 'en',
       },
     };
   });
@@ -206,7 +207,7 @@ export async function getStaticPaths() {
     paths: paths,
     fallback: 'blocking',
   };
-}
+};
 
 interface StaticProps {
   tenantConfig: Tenant;

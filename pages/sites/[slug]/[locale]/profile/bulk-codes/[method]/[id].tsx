@@ -128,6 +128,7 @@ export const getStaticPaths = async () => {
         slug: path.params.slug,
         method: v4(),
         id: v4(),
+        locale: 'en',
       },
     };
   });

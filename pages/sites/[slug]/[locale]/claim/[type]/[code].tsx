@@ -178,7 +178,7 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
   );
 }
 
-export async function getStaticPaths() {
+export const getStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
   const paths = subDomainPaths.map((path) => {
@@ -187,6 +187,7 @@ export async function getStaticPaths() {
         slug: path.params.slug,
         type: v4(),
         code: v4(),
+        locale: 'en',
       },
     };
   });
@@ -195,7 +196,7 @@ export async function getStaticPaths() {
     paths: paths,
     fallback: 'blocking',
   };
-}
+};
 
 interface StaticProps {
   tenantConfig: Tenant;

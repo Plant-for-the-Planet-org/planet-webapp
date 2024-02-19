@@ -70,13 +70,23 @@ export default function OverviewPage({
   );
 }
 
-export async function getStaticPaths() {
-  const paths = await constructPathsForTenantSlug();
+export const getStaticPaths = async () => {
+  const subDomainPaths = await constructPathsForTenantSlug();
+
+  const paths = subDomainPaths.map((path) => {
+    return {
+      params: {
+        slug: path.params.slug,
+        locale: 'en',
+      },
+    };
+  });
+
   return {
-    paths: paths,
+    paths,
     fallback: 'blocking',
   };
-}
+};
 
 interface StaticProps {
   tenantConfig: Tenant;

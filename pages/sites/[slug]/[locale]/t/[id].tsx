@@ -100,7 +100,7 @@ function PublicProfile({ pageProps: { tenantConfig } }: Props): ReactElement {
   );
 }
 
-export async function getStaticPaths() {
+export const getStaticPaths = async () => {
   const subDomainPaths = await constructPathsForTenantSlug();
 
   const paths = subDomainPaths.map((path) => {
@@ -108,6 +108,7 @@ export async function getStaticPaths() {
       params: {
         slug: path.params.slug,
         id: v4(),
+        locale: 'en',
       },
     };
   });
@@ -116,7 +117,7 @@ export async function getStaticPaths() {
     paths: paths,
     fallback: 'blocking',
   };
-}
+};
 
 interface StaticProps {
   tenantConfig: Tenant;
