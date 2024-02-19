@@ -6,7 +6,7 @@ import myForestStyles from '../../styles/MyForest.module.scss';
 import { useMyForest } from '../../../../common/Layout/MyForestContext';
 import { ReactElement } from 'react';
 
-interface CustomButtonProps {
+interface ContributionStatsProps {
   plantedTrees: number | null;
   restoredArea: number | null;
   conservedArea: number | null;
@@ -15,14 +15,14 @@ interface CustomButtonProps {
   donations: number | null;
 }
 
-const MyContributionCustomButton = ({
+const ContributionStats = ({
   plantedTrees,
   restoredArea,
   conservedArea,
   projects,
   countries,
   donations,
-}: CustomButtonProps): ReactElement => {
+}: ContributionStatsProps): ReactElement => {
   const {
     setIsTreePlantedButtonActive,
     setIsConservedButtonActive,
@@ -70,4 +70,4 @@ const MyContributionCustomButton = ({
   );
 };
 
-export default MyContributionCustomButton;
+export default ContributionStats;

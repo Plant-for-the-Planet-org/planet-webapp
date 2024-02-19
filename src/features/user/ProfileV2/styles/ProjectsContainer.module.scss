@@ -2,7 +2,7 @@
 
 .tpoProjectsContainer {
   // max-width: 1000px;
-  background-color: #fafaff;
+  background-color: $backgroundBase;
   margin-bottom: 80px;
   padding: 20px;
   display: flex;
@@ -90,21 +90,4 @@
   .listProjects {
     text-align: left;
   }
-}
-
-.CancelIconContainer {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-
-.CancelButton {
-  cursor: pointer;
-  position: absolute;
-  width: 15px;
-  top: -18px;
-  left: 262px;
 }

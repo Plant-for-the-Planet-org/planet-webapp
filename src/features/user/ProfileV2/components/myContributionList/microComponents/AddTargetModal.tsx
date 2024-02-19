@@ -12,7 +12,6 @@ import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandling
 import { handleError, APIError, User } from '@planet-sdk/common';
 import { useTenant } from '../../../../../common/Layout/TenantContext';
 import CancelIcon from '../../../../../../../public/assets/images/icons/CancelIcon';
-import projectContainerStyle from '../../../styles/ProjectsContainer.module.scss';
 
 type FormData = {
   target: number | undefined;
@@ -87,9 +86,9 @@ export default function AddTargetModal({
     >
       <Fade in={addTargetModalOpen}>
         <form onSubmit={handleSubmit(changeTarget)} className={styles.modal}>
-          <div className={projectContainerStyle.CancelIconContainer}>
+          <div className={styles.CancelIconContainer}>
             <button
-              className={projectContainerStyle.CancelButton}
+              className={styles.CancelButton}
               onClick={() => handleAddTargetModalClose()}
             >
               <CancelIcon />

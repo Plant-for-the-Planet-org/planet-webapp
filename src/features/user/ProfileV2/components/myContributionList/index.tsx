@@ -8,7 +8,7 @@ import { Purpose } from '../../../../../utils/constants/myForest';
 import { ContributionData } from '../../../../common/types/myForest';
 import { StatsResult } from '../../../../common/types/myForest';
 import { MyContributionsProps } from '../../../../common/types/map';
-import MyContributionCustomButton from '../contributionStats/CustomButton';
+import ContributionStats from '../contributionStats';
 import { SetState } from '../../../../common/types/common';
 import { PointFeature } from 'supercluster';
 import { TestPointProps } from '../../../../common/types/map';
@@ -199,7 +199,7 @@ export default function MyContributions({
   return additionalInfoRelatedToContributions ? (
     <div className={myForestStyles.mapMainContainer}>
       <MyTreesMap profile={profile} />
-      <MyContributionCustomButton
+      <ContributionStats
         plantedTrees={additionalInfoRelatedToContributions?.treeCount}
         restoredArea={additionalInfoRelatedToContributions?.squareMeters}
         conservedArea={additionalInfoRelatedToContributions?.conserved}

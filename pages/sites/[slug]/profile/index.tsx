@@ -33,7 +33,7 @@ function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
   const { t } = useTranslation('me');
   // External imports
   const router = useRouter();
-  const { user, contextLoaded, token } = useUserProps();
+  const { user, contextLoaded } = useUserProps();
   const { setTenantConfig } = useTenant();
 
   // Internal states

@@ -3,8 +3,8 @@ import { useTranslation } from 'next-i18next';
 import treeCounterStyles from '../TreeCounter.module.scss';
 
 interface HomeTreeCounterProps {
-  planted: string | null;
-  target: string | null;
+  planted: number | string | null;
+  target: number | string | null;
 }
 
 const HomeTreeCounter = ({ planted, target }: HomeTreeCounterProps) => {
