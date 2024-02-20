@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import Me from '../../../../../public/assets/images/navigation/Me';
 import MeSelected from '../../../../../public/assets/images/navigation/MeSelected';
 import { ThemeContext } from '../../../../theme/themeContext';
@@ -28,7 +28,8 @@ const useWidth = () => {
 };
 
 export default function NavbarComponent() {
-  const { t, ready, i18n } = useTranslation(['common']);
+  const t = useTranslations('Common');
+  const locale = useLocale();
   const router = useRouter();
   const subMenuPath = {
     overview: '',
@@ -170,8 +171,8 @@ export default function NavbarComponent() {
                     }
                   >
                     {user && SingleLink.loggedInTitle
-                      ? t('common:' + SingleLink.loggedInTitle)
-                      : t('common:' + SingleLink.title)}
+                      ? t(SingleLink.loggedInTitle)
+                      : t(SingleLink.title)}
                   </p>
                 </button>
               );
@@ -181,8 +182,8 @@ export default function NavbarComponent() {
               let aboutOnclick = `${SingleLink.onclick}${
                 (tenantConfig.config.slug === 'planet' ||
                   tenantConfig.config.slug === 'ttc') &&
-                lang_path[i18n.language as keyof typeof lang_path]
-                  ? lang_path[i18n.language as keyof typeof lang_path]
+                lang_path[locale as keyof typeof lang_path]
+                  ? lang_path[locale as keyof typeof lang_path]
                   : ''
               }`;
 
@@ -226,7 +227,7 @@ export default function NavbarComponent() {
                             : ''
                         }
                       >
-                        {t('common:' + SingleLink.title)}
+                        {t(SingleLink.title)}
                       </p>
                     ) : (
                       <p
@@ -236,7 +237,7 @@ export default function NavbarComponent() {
                             : ''
                         }
                       >
-                        {t('common:' + SingleLink.title)}
+                        {t(SingleLink.title)}
                       </p>
                     )}
                   </div>
@@ -250,10 +251,8 @@ export default function NavbarComponent() {
                           key={submenu.title}
                           className={'menuRow'}
                           href={`https://a.plant-for-the-planet.org/${
-                            lang_path[i18n.language as keyof typeof lang_path]
-                              ? lang_path[
-                                  i18n.language as keyof typeof lang_path
-                                ]
+                            lang_path[locale as keyof typeof lang_path]
+                              ? lang_path[locale as keyof typeof lang_path]
                               : 'en'
                           }/${
                             subMenuPath[
@@ -269,9 +268,7 @@ export default function NavbarComponent() {
                             }}
                           >
                             <GetSubMenu title={submenu.title} />
-                            <div className={'menuText'}>
-                              {t('common:' + submenu.title)}
-                            </div>
+                            <div className={'menuText'}>{t(submenu.title)}</div>
                           </div>
                         </a>
                       );
@@ -338,7 +335,7 @@ export default function NavbarComponent() {
                 <img
                   className={'tenantLogo'}
                   src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                  alt={t('common:about_pftp')}
+                  alt={t('about_pftp')}
                 />
               </a>
             ) : (
@@ -346,12 +343,12 @@ export default function NavbarComponent() {
                 <img
                   className={'tenantLogo'}
                   src={`/assets/images/PlanetDarkLogo.svg`}
-                  alt={t('common:about_pftp')}
+                  alt={t('about_pftp')}
                 />
               </a>
             )}
           </div>
-          {ready && <MenuItems />}
+          <MenuItems />
         </div>
       </div>
     </>

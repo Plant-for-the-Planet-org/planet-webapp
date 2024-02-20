@@ -11,8 +11,7 @@ import { ErrorHandlingContext } from '../../../../src/features/common/Layout/Err
 import DirectGift, {
   DirectGiftI,
 } from '../../../../src/features/donations/components/DirectGift';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useTranslation } from 'next-i18next';
+import { useLocale } from 'next-intl';
 import { handleError, APIError } from '@planet-sdk/common';
 import { SetState } from '../../../../src/features/common/types/common';
 import { MapProject } from '../../../../src/features/common/types/ProjectPropsContextInterface';
@@ -28,9 +27,10 @@ import {
   GetStaticPropsResult,
 } from 'next';
 import { defaultTenant } from '../../../../tenant.config';
+import { AbstractIntlMessages } from 'next-intl';
+import deepmerge from 'deepmerge';
 
 interface Props {
-  initialized: Boolean;
   currencyCode: string;
   setCurrencyCode: SetState<string>;
   pageProps: {
@@ -39,7 +39,6 @@ interface Props {
 }
 
 export default function Donate({
-  initialized,
   currencyCode,
   setCurrencyCode,
   pageProps,
@@ -59,7 +58,7 @@ export default function Donate({
   // set local storage
 
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
-  const { i18n } = useTranslation();
+  const locale = useLocale();
   const router = useRouter();
   const [internalCurrencyCode, setInternalCurrencyCode] = React.useState('');
   const [directGift, setDirectGift] = React.useState<DirectGiftI | null>(null);
@@ -110,12 +109,12 @@ export default function Donate({
       if (
         !internalCurrencyCode ||
         currencyCode !== internalCurrencyCode ||
-        internalLanguage !== i18n.language
+        internalLanguage !== locale
       ) {
         const currency = getStoredCurrency();
         setInternalCurrencyCode(currency);
         setCurrencyCode(currency);
-        setInternalLanguage(i18n.language);
+        setInternalLanguage(locale);
         try {
           const projects = await getRequest<MapProject[]>(
             pageProps.tenantConfig.id,
@@ -125,7 +124,7 @@ export default function Donate({
               currency: currency,
               tenant: pageProps.tenantConfig.id,
               'filter[purpose]': 'trees,conservation',
-              locale: i18n.language,
+              locale: locale,
             }
           );
           setProjects(projects);
@@ -139,7 +138,7 @@ export default function Donate({
       }
     }
     loadProjects();
-  }, [currencyCode, i18n.language]);
+  }, [currencyCode, locale]);
 
   const OtherProjectListProps = {
     showProjects,
@@ -151,28 +150,26 @@ export default function Donate({
 
   return pageProps.tenantConfig ? (
     <>
-      {initialized ? (
-        filteredProjects && initialized ? (
-          <>
-            <GetAllProjectsMeta />
-            <ProjectsList
-              projects={filteredProjects}
-              {...OtherProjectListProps}
-            />
-            {directGift ? (
-              showDirectGift ? (
-                <DirectGift
-                  directGift={directGift}
-                  setShowDirectGift={setShowDirectGift}
-                />
-              ) : null
-            ) : null}
-            <Credits setCurrencyCode={setCurrencyCode} />
-          </>
-        ) : (
-          <></>
-        )
-      ) : null}
+      {filteredProjects !== null ? (
+        <>
+          <GetAllProjectsMeta />
+          <ProjectsList
+            projects={filteredProjects}
+            {...OtherProjectListProps}
+          />
+          {directGift ? (
+            showDirectGift ? (
+              <DirectGift
+                directGift={directGift}
+                setShowDirectGift={setShowDirectGift}
+              />
+            ) : null
+          ) : null}
+          <Credits setCurrencyCode={setCurrencyCode} />
+        </>
+      ) : (
+        <></>
+      )}
       {showProjects && <Filters />}
     </>
   ) : (
@@ -198,43 +195,66 @@ export const getStaticPaths = async () => {
   };
 };
 
-interface StaticProps {
+interface PageProps {
+  messages: AbstractIntlMessages;
   tenantConfig: Tenant;
 }
 
-export const getStaticProps: GetStaticProps<StaticProps> = async (
+export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
-): Promise<GetStaticPropsResult<StaticProps>> => {
+): Promise<GetStaticPropsResult<PageProps>> => {
   const tenantConfig =
     (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
+  const userMessages = {
+    ...(
+      await import(
+        `../../../../public/static/locales/${context.params?.locale}/common.json`
+      )
+    ).default,
+    ...(
+      await import(
+        `../../../../public/static/locales/${context.params?.locale}/maps.json`
+      )
+    ).default,
+    ...(
+      await import(
+        `../../../../public/static/locales/${context.params?.locale}/donate.json`
+      )
+    ).default,
+    ...(
+      await import(
+        `../../../../public/static/locales/${context.params?.locale}/country.json`
+      )
+    ).default,
+    ...(
+      await import(
+        `../../../../public/static/locales/${context.params?.locale}/manageProjects.json`
+      )
+    ).default,
+  };
+
+  const defaultMessages = {
+    ...(await import('../../../../public/static/locales/en/common.json'))
+      .default,
+    ...(await import('../../../../public/static/locales/en/maps.json')).default,
+    ...(await import('../../../../public/static/locales/en/donate.json'))
+      .default,
+    ...(await import('../../../../public/static/locales/en/country.json'))
+      .default,
+    ...(
+      await import('../../../../public/static/locales/en/manageProjects.json')
+    ).default,
+  };
+
+  const messages: AbstractIntlMessages = deepmerge(
+    defaultMessages,
+    userMessages
+  );
+
   return {
     props: {
-      ...(await serverSideTranslations(
-        context.locale || 'en',
-        [
-          'bulkCodes',
-          'common',
-          'country',
-          'donate',
-          'donationLink',
-          'editProfile',
-          'giftfunds',
-          'leaderboard',
-          'managePayouts',
-          'manageProjects',
-          'maps',
-          'me',
-          'planet',
-          'planetcash',
-          'redeem',
-          'registerTrees',
-          'tenants',
-          'treemapper',
-        ],
-        null,
-        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
-      )),
+      messages,
       tenantConfig,
     },
   };

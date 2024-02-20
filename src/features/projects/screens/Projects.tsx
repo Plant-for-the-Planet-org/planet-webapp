@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import dynamic from 'next/dynamic';
 import MuiButton from '../../common/InputTypes/MuiButton';
 import ProjectLoader from '../../common/ContentLoaders/Projects/ProjectLoader';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import LazyLoad from 'react-lazyload';
 import NotFound from '../../../../public/assets/images/NotFound';
 import Header from '../components/projects/Header';
@@ -43,7 +43,9 @@ function ProjectsList({
   const isEmbed = embed === 'true';
   const [scrollY, setScrollY] = React.useState(0);
   const [hideSidebar, setHideSidebar] = React.useState(isEmbed);
-  const { t, ready } = useTranslation(['donate', 'country', 'maps']);
+  const tDonate = useTranslations('Donate');
+  const tCountry = useTranslations('Country');
+  const tMaps = useTranslations('Maps');
   const [selectedTab, setSelectedTab] = React.useState<'all' | 'top'>('all');
   const [searchMode, setSearchMode] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState('');
@@ -122,7 +124,7 @@ function ProjectsList({
                 .toLowerCase()
             : '';
           const projectCountry = project.properties.country
-            ? t('country:' + project.properties.country.toLowerCase())
+            ? tCountry(project.properties.country.toLowerCase())
                 .normalize('NFD')
                 .replace(/[\u0300-\u036f]/g, '')
                 .toLowerCase()
@@ -177,10 +179,8 @@ function ProjectsList({
         setErrors(handleError(err as APIError));
       }
     }
-    if (ready) {
-      setListOrder();
-    }
-  }, [ready]);
+    setListOrder();
+  }, []);
 
   const topProjects = React.useMemo(
     () => getProjects(projects, 'top'),
@@ -197,23 +197,23 @@ function ProjectsList({
   }, []);
 
   const NoProjectFound = () => {
-    return ready ? (
+    return (
       <div className={'projectNotFound'}>
         <LazyLoad>
           <NotFound className={'projectNotFoundImage'} />
           <h5 style={{ color: 'var(--primary-font-color' }}>
-            {t('donate:noProjectsFound')}
+            {tDonate('noProjectsFound')}
           </h5>
         </LazyLoad>
       </div>
-    ) : null;
+    );
   };
 
   const toggleSidebar = () => {
     setHideSidebar(!hideSidebar);
   };
 
-  return ready ? (
+  return (
     <>
       <Explore />
       {isEmbed && isMobile && showProjectList === undefined && (
@@ -222,7 +222,7 @@ function ProjectsList({
           variant={hideSidebar ? 'outlined' : 'contained'}
           className="toggleButton"
         >
-          {hideSidebar ? t('maps:showProjectList') : t('maps:hideProjectList')}
+          {hideSidebar ? tMaps('showProjectList') : tMaps('hideProjectList')}
         </MuiButton>
       )}
       {showProjects ? (
@@ -314,8 +314,6 @@ function ProjectsList({
         </div>
       ) : null}
     </>
-  ) : (
-    <></>
   );
 }
 
