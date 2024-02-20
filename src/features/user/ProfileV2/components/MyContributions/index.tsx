@@ -27,7 +27,7 @@ const queryFetchOptions = {
   refetchOnReconnect: false,
 };
 
-const MyTreesMap = dynamic(() => import('../MyForestMap/ForestMap'), {
+const MyTreesMap = dynamic(() => import('../MyForestMap'), {
   loading: () => <p>loading</p>,
 });
 
