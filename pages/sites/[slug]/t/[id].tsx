@@ -80,19 +80,21 @@ function PublicProfile({ pageProps: { tenantConfig } }: Props): ReactElement {
   return tenantConfig && profile ? (
     <MyForestProvider>
       <GetPublicUserProfileMeta userprofile={profile} />
-      <div className={myProfileStyle.publicProfileMainContainer}>
-        <Profile userProfile={profile} />
-        {profile.type === 'tpo' && (
-          <PlantedTreesContributions userProfile={profile} />
-        )}
+      <div className={myProfileStyle.publicProfile}>
+        <div className={myProfileStyle.publicProfileMainContainer}>
+          <Profile userProfile={profile} />
+          {profile.type === 'tpo' && (
+            <PlantedTreesContributions userProfile={profile} />
+          )}
 
-        {profile && profile.type !== 'tpo' && (
-          <MyContributions profile={profile} />
-        )}
-        {profile && profile.type === 'tpo' && (
-          <ProjectsContainer profile={profile} />
-        )}
-        <Footer />
+          {profile && profile.type !== 'tpo' && (
+            <MyContributions profile={profile} />
+          )}
+          {profile && profile.type === 'tpo' && (
+            <ProjectsContainer profile={profile} />
+          )}
+          <Footer />
+        </div>
       </div>
     </MyForestProvider>
   ) : (
