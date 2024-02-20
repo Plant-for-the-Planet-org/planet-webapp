@@ -5,7 +5,19 @@ import { useTranslation } from 'next-i18next';
 import ReactDOMServer from 'react-dom/server';
 import NewInfoIcon from '../icons/NewInfoIcon';
 
-export const Tooltip = ({ headerTitle, subTitle, yoyValue, date }) => {
+interface TooltipProps {
+  headerTitle: string;
+  subTitle: string;
+  yoyValue: string;
+  date: string;
+}
+
+export const Tooltip = ({
+  headerTitle,
+  subTitle,
+  yoyValue,
+  date,
+}: TooltipProps) => {
   const {
     i18n: { language },
   } = useTranslation();
@@ -27,6 +39,19 @@ export const Tooltip = ({ headerTitle, subTitle, yoyValue, date }) => {
   );
 };
 
+interface graphProps {
+  title: string;
+  subtitle: string;
+  years: number[];
+  series1Values: number[];
+  series2Values: number[];
+  tooltip: {
+    heading: string;
+    unit: string;
+    subheading: string;
+  };
+}
+
 const Graph = ({
   title,
   subtitle,
@@ -34,7 +59,7 @@ const Graph = ({
   series1Values,
   series2Values,
   tooltip,
-}) => {
+}: graphProps) => {
   const xaxisOptions = years.map((year, index) => {
     if (index === 1) {
       return [2020, ' Project Launch'];
@@ -59,13 +84,19 @@ const Graph = ({
       },
     ],
     options: {
+      chart: {
+        type: 'area',
+        width: 300,
+        toolbar: {
+          show: false,
+        },
+      },
       tooltip: {
         custom: function ({ dataPointIndex, w }) {
           const getToolTip = () => {
-            const year =
-              xaxisOptions[dataPointIndex] > 0
-                ? xaxisOptions[dataPointIndex]
-                : xaxisOptions[dataPointIndex][0];
+            const year = Array.isArray(xaxisOptions[dataPointIndex])
+              ? xaxisOptions[dataPointIndex][0]
+              : xaxisOptions[dataPointIndex];
             return (
               <Tooltip
                 headerTitle={`${w.globals.series[0][dataPointIndex]}${tooltip.unit} ${tooltip.heading}`}
@@ -93,13 +124,7 @@ const Graph = ({
           size: 6,
         },
       },
-      chart: {
-        type: 'area',
-        width: 300,
-        toolbar: {
-          show: false,
-        },
-      },
+
       dataLabels: {
         enabled: false,
       },
