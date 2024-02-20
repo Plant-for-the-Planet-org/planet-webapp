@@ -3,6 +3,7 @@ import ReactApexChart from 'react-apexcharts';
 import styles from './Graph.module.scss';
 import { useTranslation } from 'next-i18next';
 import ReactDOMServer from 'react-dom/server';
+import NewInfoIcon from '../icons/NewInfoIcon';
 
 export const Tooltip = ({ headerTitle, subTitle, yoyValue, date }) => {
   const {
@@ -26,7 +27,7 @@ export const Tooltip = ({ headerTitle, subTitle, yoyValue, date }) => {
   );
 };
 
-const Graph = ({ years }) => {
+const Graph = ({ title, subtitle, years }) => {
   const xaxisOptions = years.map((year, index) => {
     if (index === 1) {
       return [2020, ' Project Launch'];
@@ -145,7 +146,14 @@ const Graph = ({ years }) => {
     },
   };
   return (
-    <div>
+    <div className={styles.container}>
+      <div className={styles.titleContainer}>
+        <h5 className={styles.graphHeading}>
+          {title}
+          <NewInfoIcon height={17.6} width={17.6} color={'#BDBDBD'} />
+        </h5>
+        <p className={styles.graphSubheading}>{subtitle}</p>
+      </div>
       <div id="chart">
         <ReactApexChart
           options={graphValues.options}
@@ -153,6 +161,7 @@ const Graph = ({ years }) => {
           type="area"
           height={153}
           width={299}
+          style={{ display: 'flex', justifyContent: 'center' }}
         />
       </div>
       <div id="html-dist"></div>

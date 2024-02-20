@@ -14,5 +14,7 @@ const years = [2019, 2020, 2021, 2022, 2023];
 export const Preview: Story = {
   args: {
     years: years,
+    title: 'CO2 Captured (per ha.)',
+    subtitle: 'Compared to regional average',
   },
 };
