@@ -27,6 +27,14 @@ export const Tooltip = ({ headerTitle, subTitle, yoyValue, date }) => {
 };
 
 const Graph = ({ years }) => {
+  const xaxisOptions = years.map((year, index) => {
+    if (index === 1) {
+      return [2020, ' Project Launch'];
+    } else {
+      return year;
+    }
+  });
+
   const graphValues = {
     series: [
       {
@@ -44,14 +52,18 @@ const Graph = ({ years }) => {
     ],
     options: {
       tooltip: {
-        custom: function () {
+        custom: function ({ dataPointIndex, w }) {
           const getToolTip = () => {
+            const year =
+              xaxisOptions[dataPointIndex] > 0
+                ? xaxisOptions[dataPointIndex]
+                : xaxisOptions[dataPointIndex][0];
             return (
               <Tooltip
-                headerTitle={'6.9t CO2 removed'}
-                subTitle={'3.8t Biomass'}
+                headerTitle={`${w.globals.series[0][dataPointIndex]}t CO2 removed`}
+                subTitle={`${w.globals.series[1][dataPointIndex]}t Biomass`}
                 yoyValue={'+4%'}
-                date={'Aug 2020'}
+                date={year}
               />
             );
           };
@@ -70,7 +82,6 @@ const Graph = ({ years }) => {
         },
       },
       chart: {
-        // height: 153.752,
         type: 'area',
         width: 300,
         toolbar: {
@@ -89,9 +100,9 @@ const Graph = ({ years }) => {
         labels: {
           formatter: function (index: number) {
             if (index === 2) {
-              return [years[1], 'Project Launch'];
-            } else if (index == years.length) {
-              return years[index - 1];
+              return xaxisOptions[1];
+            } else if (index == xaxisOptions.length) {
+              return xaxisOptions[index - 1];
             } else {
               return '';
             }
@@ -101,11 +112,7 @@ const Graph = ({ years }) => {
             colors: '#4F4F4F',
             fontSize: 10,
           },
-          padding: {
-            top: 8, // Increase top padding to provide more space for the second line
-          },
         },
-        categories: [],
         show: false,
         axisTicks: {
           show: false,
@@ -129,7 +136,7 @@ const Graph = ({ years }) => {
       annotations: {
         xaxis: [
           {
-            x: [years[1], 'Project Launch'],
+            x: years[1],
             strokeDashArray: 1,
             borderColor: '#4F4F4F',
           },
