@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Graph, { Tooltip } from '../CarbonCapture/Graph';
-import ReactDOMServer from 'react-dom/server';
+import Graph from '../CarbonCapture/Graph';
 
 const meta: Meta<typeof Graph> = {
   component: Graph,
