@@ -1,0 +1,37 @@
+.tooltipContainer {
+ 
+    .header {
+        padding: 10px 10px 8px 10px;
+        .title {
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            font-size: 8px;
+            font-weight: 400;
+        }
+    }
+    .body {
+        background-color: rgba(33, 150, 83, 0.10);
+        padding: 4px 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .yoyValue {
+            color: #377E36;
+            font-weight: 700;
+            font-size: 9px;
+        }
+        .date {
+            font-size: 6px;
+            font-weight: 500;
+            color: #000;
+            opacity: 0.5;
+        }
+    }
+}
+.apexcharts-xaxis-texts-g {
+    background-color: red;
+}
