@@ -16,5 +16,12 @@ export const Preview: Story = {
     years: years,
     title: 'CO2 Captured (per ha.)',
     subtitle: 'Compared to regional average',
+    series1Values: [21.4, 21.27, 20.78, 21.7, 21.78],
+    series2Values: [22.54, 22.65, 21.8, 21.85, 22.03],
+    tooltip: {
+      heading: 'CO2 removed',
+      unit: 't',
+      subheading: 'Biomass',
+    },
   },
 };

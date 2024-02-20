@@ -27,7 +27,14 @@ export const Tooltip = ({ headerTitle, subTitle, yoyValue, date }) => {
   );
 };
 
-const Graph = ({ title, subtitle, years }) => {
+const Graph = ({
+  title,
+  subtitle,
+  years,
+  series1Values,
+  series2Values,
+  tooltip,
+}) => {
   const xaxisOptions = years.map((year, index) => {
     if (index === 1) {
       return [2020, ' Project Launch'];
@@ -40,13 +47,13 @@ const Graph = ({ title, subtitle, years }) => {
     series: [
       {
         name: 'series1',
-        data: [21.4, 21.27, 20.78, 21.7, 21.78],
+        data: series1Values,
         color: '#219653',
         zIndex: 2,
       },
       {
         name: 'series2',
-        data: [22.54, 22.65, 21.8, 21.85, 22.03],
+        data: series2Values,
         color: '#BDBDBD',
         zIndex: 1,
       },
@@ -61,8 +68,12 @@ const Graph = ({ title, subtitle, years }) => {
                 : xaxisOptions[dataPointIndex][0];
             return (
               <Tooltip
-                headerTitle={`${w.globals.series[0][dataPointIndex]}t CO2 removed`}
-                subTitle={`${w.globals.series[1][dataPointIndex]}t Biomass`}
+                headerTitle={`${w.globals.series[0][dataPointIndex]}${tooltip.unit} ${tooltip.heading}`}
+                subTitle={
+                  tooltip.subheading
+                    ? `${w.globals.series[1][dataPointIndex]}${tooltip.unit} ${tooltip.subheading}`
+                    : ''
+                }
                 yoyValue={'+4%'}
                 date={year}
               />
