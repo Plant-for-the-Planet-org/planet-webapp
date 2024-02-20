@@ -1,5 +1,5 @@
 import { useEffect, useContext, ReactElement } from 'react';
-import myForestStyles from '../../../ProfileV2/styles/MyForest.module.scss';
+import myForestStyles from '../../../Profile/styles/MyForest.module.scss';
 import dynamic from 'next/dynamic';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';

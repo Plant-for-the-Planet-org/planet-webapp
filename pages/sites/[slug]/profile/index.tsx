@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement, useEffect } from 'react';
 import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
-import Profile from '../../../../src/features/user/ProfileV2/components/ProfileBox';
+import Profile from '../../../../src/features/user/Profile/components/ProfileBox';
 import UserLayout from '../../../../src/features/common/Layout/UserLayout/UserLayout';
-import MyContributions from '../../../../src/features/user/ProfileV2/components/MyContributions';
+import MyContributions from '../../../../src/features/user/Profile/components/MyContributions';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -21,7 +21,7 @@ import {
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { defaultTenant } from '../../../../tenant.config';
 import { useTenant } from '../../../../src/features/common/Layout/TenantContext';
-import myProfileStyle from '../../../../src/features/user/ProfileV2/styles/MyProfile.module.scss';
+import myProfileStyle from '../../../../src/features/user/Profile/styles/MyProfile.module.scss';
 
 interface Props {
   pageProps: {
