@@ -1,5 +1,9 @@
 import * as React from 'react';
-const ListIcon = ({ color }) => (
+import { IconProps } from './StarIcon';
+
+type ListIconProps = Omit<IconProps, 'height' | 'width'>;
+
+const ListIcon = ({ color }: ListIconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={14}

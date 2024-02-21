@@ -1,9 +1,8 @@
-interface IconProps {
-  width: string;
-  height: string;
-}
+import { IconProps } from './StarIcon';
 
-const FilterIcon = ({ width, height }: IconProps) => {
+type FilterIconProps = Omit<IconProps, 'color'>;
+
+const FilterIcon = ({ width, height }: FilterIconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

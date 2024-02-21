@@ -10,12 +10,6 @@ type Story = StoryObj<typeof SearchTabForMobile>;
 
 export const SearchInActive: Story = {
   args: {
-    active: false,
-  },
-};
-
-export const SearchActive: Story = {
-  args: {
-    active: false,
+    active: true,
   },
 };

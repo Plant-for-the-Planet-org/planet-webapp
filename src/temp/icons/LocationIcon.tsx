@@ -1,6 +1,9 @@
 import * as React from 'react';
+import { IconProps } from './StarIcon';
 
-const LocationIcon = ({ color }) => (
+type LocationIconProps = Omit<IconProps, 'height' | 'width'>;
+
+const LocationIcon = ({ color }: LocationIconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={9}

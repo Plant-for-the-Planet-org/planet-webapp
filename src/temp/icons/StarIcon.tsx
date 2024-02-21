@@ -1,4 +1,10 @@
-const StarIcon = ({ width, height, color }) => {
+export interface IconProps {
+  width: string;
+  height: string;
+  color: string;
+}
+
+const StarIcon = ({ width, height, color }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
