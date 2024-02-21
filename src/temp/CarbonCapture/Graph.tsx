@@ -106,6 +106,7 @@ const Graph = ({
 
         return ReactDOMServer.renderToString(getToolTip());
       },
+      followCursor: true,
     },
     markers: {
       size: 0,
