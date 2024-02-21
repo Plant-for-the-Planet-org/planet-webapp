@@ -1,8 +1,8 @@
 {
   "EditProfile": {
-    "loginTitle": "{{log}} - Anmeldung",
+    "loginTitle": "{log} - Anmeldung",
     "signUpText": "Registrierung vervollständigen",
-    "profileTypes": "{{item.title}}",
+    "profileTypes": "{item.title}",
     "createAccount": "Konto erstellen",
     "individual": "Person",
     "tpo": "Renaturierungsorganisation",
@@ -28,7 +28,7 @@
       "profileType": "Ich bin ein",
       "firstName": "Vorname",
       "lastName": "Nachname",
-      "name": "Name der {{type}}",
+      "name": "Name der {type}",
       "email": "Email",
       "address": "Adresse",
       "city": "Stadt",
@@ -40,7 +40,7 @@
       "subscribe": "Nachrichten per E-Mail abonnieren"
     },
     "validationErrors": {
-      "maxChars": "Sollte {{max}} oder weniger Buchstaben haben",
+      "maxChars": "Sollte {max} oder weniger Buchstaben haben",
       "firstNameRequired": "Vorname ist ein Pflichtfeld",
       "firstNameInvalid": "Vorname ist ungültig. Er kann nicht mit einem Sonderzeichen beginnen, und nur diese Sonderzeichen sind erlaubt: Leerzeichen ' . -",
       "lastNameRequired": "Nachname ist ein Pflichtfeld",

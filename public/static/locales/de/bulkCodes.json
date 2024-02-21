@@ -72,7 +72,7 @@
       "unitsNotProvided": "Einheiten fehlen oder sind ungültig bei einigen Empfängern.",
       "notifyNotPossible": "E-Mail und Name fehlen bei einigen Empfängern, die benachrichtigt werden sollen.",
       "instructionRowError": "In der 1. Zeile ist ein Fehler aufgetreten. Bitte prüfe, ob du die Anweisungen gelöscht hast oder ob zusätzliche Daten vorhanden sind.",
-      "invalidEmails": "recipient_email enthält falsche/ungültige E-Mails in den folgenden Zeilen: {{rowList}}. Bitte entferne ungültige Emails oder füge gültige Emails hinzu.",
+      "invalidEmails": "recipient_email enthält falsche/ungültige E-Mails in den folgenden Zeilen: {rowList}. Bitte entferne ungültige Emails oder füge gültige Emails hinzu.",
       "generalError": "Es ist ein Fehler aufgetreten. Bitte versuche es nach einer Weile erneut."
     },
     "errorAddRecipient": {
@@ -100,9 +100,9 @@
     },
     "donationSuccess": "Deine Spende war erfolgreich. Du wirst in Kürze zur Anzeige der Spendendetails weitergeleitet...",
     "donationError": {
-      "planet_cash_insufficient_credit": "Verfügbares Guthaben = {{availableBalance}}. Bitte lade Guthaben auf dein PlanetCash-Konto auf, um diese Spende zu tätigen.",
+      "planet_cash_insufficient_credit": "Verfügbares Guthaben = {availableBalance}. Bitte lade Guthaben auf dein PlanetCash-Konto auf, um diese Spende zu tätigen.",
       "default": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es nach einer Weile erneut.",
-      "planet_cash_payment_failure": "Die Transaktion ist fehlgeschlagen. {{reason}}",
+      "planet_cash_payment_failure": "Die Transaktion ist fehlgeschlagen. {reason}",
       "planet_cash_invalid_project": "Du kannst für das ausgewählte Projekt nicht spenden."
     },
     "titleAddRecipientButton": "Empfänger zur Tabelle hinzufügen",

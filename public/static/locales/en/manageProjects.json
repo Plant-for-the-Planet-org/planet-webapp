@@ -227,7 +227,7 @@
     "mainChallengeInfo": "The biggest challenge this project is facing.",
     "motivationInfo": "The motivation behind protecting this specific ecosystem.",
     "hectar": "hectar",
-    "validation": "{{fieldName}} is Invalid",
+    "validation": "{fieldName} is Invalid",
     "date": "Date",
     "plantingDensityValidation": "Please enter Planting Density",
     "maxPlantingDensityValidation": "please enter Maximum Planting Density",

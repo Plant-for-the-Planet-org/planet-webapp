@@ -24,7 +24,7 @@
     "m": "m",
     "plantingLocation": "Standort der Pflanzung",
     "reviewAndSubmit": "Überprüfen und Einreichen",
-    "sampleTree": "Musterbaum #{{number}}",
+    "sampleTree": "Musterbaum #{number}",
     "import": "Importieren",
     "editor": "Editor",
     "draw": "Zeichnen",

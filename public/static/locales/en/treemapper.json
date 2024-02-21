@@ -24,7 +24,7 @@
     "m": "m",
     "plantingLocation": "Planting Location",
     "reviewAndSubmit": "Review and Submit",
-    "sampleTree": "Sample Tree #{{number}}",
+    "sampleTree": "Sample Tree #{number}",
     "import": "Import",
     "editor": "Editor",
     "draw": "Draw",

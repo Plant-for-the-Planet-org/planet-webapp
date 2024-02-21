@@ -35,7 +35,7 @@
     "errors": {
       "scheduleFrequencyRequired": "Zahlungsfrequenz ist erforderlich",
       "payoutMinAmountRequired": "Mindestauszahlungsbetrag ist erforderlich",
-      "payoutMinAmountTooLow": "Der Mindestauszahlungsbetrag sollte mindestens {{currency}} {{minAmount}} betragen",
+      "payoutMinAmountTooLow": "Der Mindestauszahlungsbetrag sollte mindestens {currency} {minAmount} betragen",
       "bankNameRequired": "Der Name der Bank ist erforderlich.",
       "bankAddressRequired": "Die Bankadresse ist erforderlich.",
       "holderNameRequired": "Der Name des Inhabers ist erforderlich.",
@@ -45,7 +45,7 @@
       "noAccountFound": "Es wurde kein Konto abgefragt"
     },
     "placeholders": {
-      "payoutMinAmount": "Sollte mindestens {{currency}} {{minAmount}} sein",
+      "payoutMinAmount": "Sollte mindestens {currency} {minAmount} sein",
       "bankName": "z.B. Century Bank LLC",
       "bankAddress": "z. B. 1 West St, Hamington Way, MA, 10311, USA",
       "holderName": "z.B. John Doe",
@@ -58,19 +58,19 @@
     },
     "saveButton": "Speichern",
     "accountError": {
-      "min_amount_range": "Der Mindestauszahlungsbetrag muss mindestens {{currency}} {{min}} betragen.",
+      "min_amount_range": "Der Mindestauszahlungsbetrag muss mindestens {currency} {min} betragen.",
       "min_amount_forbidden": "Du kannst für das Standardkonto keinen Mindestbetrag für die Auszahlung festlegen.",
-      "account_duplicate": "Es gibt bereits ein {{currency}}-Konto.",
+      "account_duplicate": "Es gibt bereits ein {currency}-Konto.",
       "default": "Beim Erstellen des Kontos ist ein Fehler aufgetreten. Bitte versuche es nach einer Weile erneut."
     },
     "accountCreationSuccess": "Deine Kontodaten wurden erfolgreich gespeichert.",
     "accountUpdationSuccess": "Dein Kontodaten wurden erfolgreich aktualisiert.",
     "scheduleSaveSuccess": "Dein Auszahlungsplan wurde erfolgreich gespeichert.",
     "editAccountButton": "Konto bearbeiten",
-    "accountTitleText": "Überweisung in {{currency}}",
+    "accountTitleText": "Überweisung in {currency}",
     "addBankDetailsButton": "Bankverbindung hinzufügen",
     "noBankAccountText": "Du hast noch keine Bankverbindung angegeben.",
     "editBankAccountTitle": "Konto bearbeiten",
-    "minPayoutText": "Min. Auszahlung: {{amount}}"
+    "minPayoutText": "Min. Auszahlung: {amount}"
   }
 }

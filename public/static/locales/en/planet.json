@@ -1,7 +1,7 @@
 {
   "Planet": {
     "treesDonated": "Trees donated since  launch of the platform (2019)",
-    "plantedByTPO": "Planted by the {{projects}}+ participating projects",
+    "plantedByTPO": "Planted by the {projects}+ participating projects",
     "plantedGlobally": "Trees reported to us since 2006",
     "forestLoss": "Net tree loss per year",
     "estimateOf": "Estimate of annual tree loss by",

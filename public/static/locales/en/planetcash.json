@@ -8,7 +8,7 @@
     "tabAccounts": "Accounts",
     "tabCreateAccount": "Create Account",
     "tabTransactions": "Transactions",
-    "accountTitleText": "{{currency}} PlanetCash Account ({{country}})",
+    "accountTitleText": "{currency} PlanetCash Account ({country})",
     "createAccountTitleText": "Signup for PlanetCash",
     "addBalanceButton": "Add Balance",
     "labelAccountHolder": "Account Holder",
@@ -27,7 +27,7 @@
     "planetCashTerms3": "Donations to PlanetCash Account for personal reasons are generally tax-deductible in the country selected at this step. Commercial use of PlanetCash may not be eligible for tax-deductions. If you have questions please contact support@plant-for-the-planet.org or contact your Tax Advisor.",
     "accountError": {
       "active_account_exists": "An active account already exists. Deactivate that account before activating another account.",
-      "duplicate_account": "You have already created an account for {{country}}",
+      "duplicate_account": "You have already created an account for {country}",
       "default": "Something went wrong while creating an account. Please try after a while."
     }
   }

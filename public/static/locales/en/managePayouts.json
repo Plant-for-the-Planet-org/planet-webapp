@@ -35,7 +35,7 @@
     "errors": {
       "scheduleFrequencyRequired": "Payment frequency is required",
       "payoutMinAmountRequired": "Minimum payout amount is required",
-      "payoutMinAmountTooLow": "Minimum payout amount should be at least {{currency}} {{minAmount}}",
+      "payoutMinAmountTooLow": "Minimum payout amount should be at least {currency} {minAmount}",
       "bankNameRequired": "Bank name is required.",
       "bankAddressRequired": "Bank address is required.",
       "holderNameRequired": "Holder name is required.",
@@ -45,7 +45,7 @@
       "noAccountFound": "No account was retrieved"
     },
     "placeholders": {
-      "payoutMinAmount": "Should be at least {{currency}} {{minAmount}}",
+      "payoutMinAmount": "Should be at least {currency} {minAmount}",
       "bankName": "e.g. Century Bank LLC",
       "bankAddress": "e.g. 1 West St, Hamington Way, MA, 10311, USA",
       "holderName": "e.g. John Doe",
@@ -58,19 +58,19 @@
     },
     "saveButton": "Save",
     "accountError": {
-      "min_amount_range": "The minimum payout amount must be at least {{currency}} {{min}}.",
+      "min_amount_range": "The minimum payout amount must be at least {currency} {min}.",
       "min_amount_forbidden": "You may not specify a payout minimum amount for the default account.",
-      "account_duplicate": "There is already a {{currency}} account.",
+      "account_duplicate": "There is already a {currency} account.",
       "default": "Something went wrong while creating an account. Please try after a while."
     },
     "accountCreationSuccess": "Your account details were successfully saved.",
     "accountUpdationSuccess": "Your account details were successfully updated.",
     "scheduleSaveSuccess": "Your payout schedule was successfully saved.",
     "editAccountButton": "Edit Account",
-    "accountTitleText": "Transfer for {{currency}}",
+    "accountTitleText": "Transfer for {currency}",
     "addBankDetailsButton": "Add Bank Details",
     "noBankAccountText": "You haven't added any bank details yet.",
     "editBankAccountTitle": "Edit Account",
-    "minPayoutText": "Min. Payout: {{amount}}"
+    "minPayoutText": "Min. Payout: {amount}"
   }
 }

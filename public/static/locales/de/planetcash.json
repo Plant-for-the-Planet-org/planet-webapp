@@ -8,7 +8,7 @@
     "tabAccounts": "Konten",
     "tabCreateAccount": "Konto erstellen",
     "tabTransactions": "Transaktionen",
-    "accountTitleText": "{{currency}} PlanetCash Konto ({{country}})",
+    "accountTitleText": "{currency} PlanetCash Konto ({country})",
     "createAccountTitleText": "Anmeldung für PlanetCash",
     "addBalanceButton": "Guthaben hinzufügen",
     "labelAccountHolder": "Kontoinhaber",
@@ -27,7 +27,7 @@
     "planetCashTerms3": "Spenden auf das PlanetCash-Konto aus persönlichen Gründen sind in dem Land, das du in diesem Schritt auswählst, in der Regel steuerlich absetzbar. Die kommerzielle Nutzung von PlanetCash ist möglicherweise nicht steuerlich absetzbar. Wenn du Fragen hast, wende dich bitte an support@plant-for-the-planet.org oder an deinen Steuerberater.",
     "accountError": {
       "active_account_exists": "Es existiert bereits ein aktives Konto. Deaktiviere dieses Konto, bevor du ein anderes Konto aktivierst.",
-      "duplicate_account": "Du hast bereits ein Konto für {{country}} erstellt",
+      "duplicate_account": "Du hast bereits ein Konto für {country} erstellt",
       "default": "Beim Erstellen des Kontos ist ein Fehler aufgetreten. Bitte versuche es nach einer Weile erneut."
     }
   }

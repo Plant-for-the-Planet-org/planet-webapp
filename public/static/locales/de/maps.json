@@ -38,7 +38,7 @@
     "plantationDensityFormula": "Pflanzdichte = Anzahl der Bäume / Bepflanzungsfläche",
     "unknown": "Unbekannt",
     "showWholeArea": "Gesamten Fläche anzeigen",
-    "daysAgo": "vor {{days}} Tagen",
+    "daysAgo": "vor {days} Tagen",
     "today": "Heute",
     "yesterday": "Gestern",
     "clickForDetails": "Klicke für Details",
