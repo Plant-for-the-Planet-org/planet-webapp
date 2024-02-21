@@ -70,6 +70,14 @@ const Graph = ({
   });
 
   const options = {
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shadeIntensity: 1,
+        opacityFrom: 0.58,
+        opacityTo: 0,
+      },
+    },
     chart: {
       type: 'area',
       width: 300,
