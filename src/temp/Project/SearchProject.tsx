@@ -105,7 +105,7 @@ const SearchProject = ({
           <div className={style.searchBarContainer}>
             <div className={style.allProjectLabelMainContainer}>
               <div>
-                <StarIcon />
+                <StarIcon width={'16px'} height={'17px'} color={'#219653'} />
               </div>
               <div className={style.topProjectLabelContainer}>
                 <div className={style.label}>Top Projects</div>

@@ -81,3 +81,134 @@
   margin-top: 5px;
   margin-left: 205px;
 }
+
+.searchTabForMobile {
+  width: max-content;
+  height: 26px;
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+}
+
+.projectCateogary {
+  display: flex;
+  width: 147px;
+  border: none;
+}
+
+.activeTopProjectButton,
+.topProjectButton {
+  width: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+  border: 2px solid #219653;
+  > .starIconConatiner {
+    margin-top: 4px;
+  }
+}
+
+.activeTopProjectButton {
+  background: #219653;
+  color: #fff;
+}
+
+.topProjectButton {
+  background: #fff;
+}
+
+.activeTopProjectLabelConatiner,
+.topProjectLabelConatiner {
+  display: flex;
+  > .topProjectLable {
+    font-size: 8px;
+    font-weight: 700;
+  }
+  .noOfProject {
+    font-size: 8px;
+    font-weight: 400;
+    margin-left: 2px;
+  }
+}
+.activeAllProjectButton,
+.allProjectButton {
+  width: 51px;
+  height: inherit;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #219653;
+  > .allProjectLabel {
+    font-weight: 700;
+    font-size: 8px;
+  }
+  .noOfProject {
+    font-weight: 400;
+    font-size: 8px;
+    margin-left: 1px;
+  }
+}
+
+.activeAllProjectButton {
+  background: #219653;
+  color: #fff;
+}
+
+.allProjectButton {
+  background: #fff;
+}
+
+.projectFeaturesMobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  width: 50px;
+}
+
+.listAndLocationContainer {
+  width: 102px;
+  border-radius: 5px;
+  border: 2px solid #219653;
+  display: flex;
+}
+.activeListButton,
+.listButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3.25px;
+  width: 51px;
+  > .listLable {
+    font-weight: 800;
+    font-size: 8px;
+  }
+}
+.activeListButton {
+  background: #219653;
+  color: #fff;
+}
+
+.activeLocationButton,
+.locationButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2px;
+  gap: 7px;
+  width: 51px;
+  > .mapLable {
+    font-size: 8px;
+    font-weight: 700;
+  }
+}
+
+.activeLocationButton {
+  background: #219653;
+  color: #fff;
+}
