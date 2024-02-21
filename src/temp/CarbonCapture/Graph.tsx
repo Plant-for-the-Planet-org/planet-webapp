@@ -4,6 +4,7 @@ import styles from './Graph.module.scss';
 import ReactDOMServer from 'react-dom/server';
 import NewInfoIcon from '../icons/NewInfoIcon';
 import { ApexOptions } from 'apexcharts';
+import { useTranslation } from 'next-i18next';
 
 interface TooltipProps {
   headerTitle: string;
@@ -18,6 +19,7 @@ export const Tooltip = ({
   yoyValue,
   date,
 }: TooltipProps) => {
+  const { t } = useTranslation('projectDetails');
   return (
     <div className={styles.tooltipContainer}>
       <div className={styles.header}>
@@ -26,8 +28,7 @@ export const Tooltip = ({
       </div>
       <div className={styles.body}>
         <p className={styles.yoyValue}>
-          {yoyValue}
-          {'  YoY'}
+          {yoyValue} {t('yoy')}
         </p>
         <p className={styles.date}>{date}</p>
       </div>
@@ -61,9 +62,10 @@ const Graph = ({
   series2Values,
   tooltip,
 }: GraphProps) => {
+  const { t } = useTranslation('projectDetails');
   const xaxisOptions = years.map((year, index) => {
     if (index === 1) {
-      return [2020, ' Project Launch'];
+      return [2020, ` ${t('projectLaunch')}`];
     } else {
       return year;
     }
@@ -92,10 +94,14 @@ const Graph = ({
           const year = Array.isArray(dataPoint) ? dataPoint[0] : dataPoint;
           return (
             <Tooltip
-              headerTitle={`${w.globals.series[0][dataPointIndex]}${tooltip.unit} ${tooltip.heading}`}
+              headerTitle={`${w.globals.series[0][dataPointIndex]}${
+                tooltip.unit
+              } ${t(`${tooltip.heading}`)}`}
               subTitle={
                 tooltip.subheading
-                  ? `${w.globals.series[1][dataPointIndex]}${tooltip.unit} ${tooltip.subheading}`
+                  ? `${w.globals.series[1][dataPointIndex]}${tooltip.unit} ${t(
+                      `${tooltip.subheading}`
+                    )}`
                   : ''
               }
               yoyValue={'+4%'}
@@ -192,10 +198,10 @@ const Graph = ({
     <div className={styles.container}>
       <div className={styles.titleContainer}>
         <h5 className={styles.graphHeading}>
-          {title}
+          {t(`${title}`)}
           <NewInfoIcon height={17.6} width={17.6} color={'#BDBDBD'} />
         </h5>
-        <p className={styles.graphSubheading}>{subtitle}</p>
+        <p className={styles.graphSubheading}> {t(`${subtitle}`)}</p>
       </div>
       <div id="chart">
         <ReactApexChart

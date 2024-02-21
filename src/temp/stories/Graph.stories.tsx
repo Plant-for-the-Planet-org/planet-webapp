@@ -13,14 +13,14 @@ const years = [2019, 2020, 2021, 2022, 2023];
 export const Preview: Story = {
   args: {
     years: years,
-    title: 'CO2 Captured (per ha.)',
-    subtitle: 'Compared to regional average',
+    title: 'co2CapturePerHa',
+    subtitle: 'comparedToRegionalAverage',
     series1Values: [21.4, 21.27, 20.78, 21.7, 21.78],
     series2Values: [22.54, 22.65, 21.8, 21.85, 22.03],
     tooltip: {
-      heading: 'CO2 removed',
+      heading: 'co2Removed',
       unit: 't',
-      subheading: 'Biomass',
+      subheading: 'biomass',
     },
   },
 };
