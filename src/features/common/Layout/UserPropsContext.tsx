@@ -27,8 +27,8 @@ interface UserPropsContextInterface {
   ) => Promise<void>;
   logoutUser: (returnUrl?: string | undefined) => void;
   loadUser: () => Promise<void>;
-  refetchData: boolean;
-  setRefetchData: SetState<boolean>;
+  refetchUserData: boolean;
+  setRefetchUserData: SetState<boolean>;
 }
 
 export const UserPropsContext =
@@ -52,7 +52,7 @@ export const UserPropsProvider: FC = ({ children }) => {
   const [userLang, setUserLang] = React.useState<string>('en');
   const [isImpersonationModeOn, setIsImpersonationModeOn] =
     React.useState(false);
-  const [refetchData, setRefetchData] = React.useState(false);
+  const [refetchUserData, setRefetchUserData] = React.useState(false);
 
   React.useEffect(() => {
     if (localStorage.getItem('language')) {
@@ -117,7 +117,7 @@ export const UserPropsProvider: FC = ({ children }) => {
     if (token) {
       loadUser();
     }
-  }, [token, refetchData]);
+  }, [token, refetchUserData]);
 
   React.useEffect(() => {
     if (localStorage.getItem('impersonationData') !== null) {
@@ -140,8 +140,8 @@ export const UserPropsProvider: FC = ({ children }) => {
     auth0User: user,
     auth0Error: error,
     loadUser,
-    refetchData,
-    setRefetchData,
+    refetchUserData,
+    setRefetchUserData,
   };
   return (
     <UserPropsContext.Provider value={value}>

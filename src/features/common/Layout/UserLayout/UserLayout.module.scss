@@ -7,7 +7,7 @@
   display: flex;
   padding-left: 60px;
   font-family: $primaryFontFamily;
-  background-color: #fafaff;
+  background-color: $backgroundBase;
   & .hamburgerIcon {
     display: none;
   }

@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement, useEffect } from 'react';
 import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
-import Profile from '../../../../../src/features/user/ProfileV2/components/ProfileInfo';
+import Profile from '../../../../../src/features/user/Profile/components/ProfileBox';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import MyContributions from '../../../../../src/features/user/ProfileV2/components/MyContributions/MyContributions';
+import MyContributions from '../../../../../src/features/user/Profile/components/MyContributions';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -21,7 +21,7 @@ import {
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { defaultTenant } from '../../../../../tenant.config';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
-import myProfileStyle from '../../../../../src/features/user/ProfileV2/styles/MyProfile.module.scss';
+import myProfileStyle from '../../../../../src/features/user/Profile/styles/MyProfile.module.scss';
 
 interface Props {
   pageProps: {
@@ -33,13 +33,13 @@ function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
   const { t } = useTranslation('me');
   // External imports
   const router = useRouter();
-  const { user, contextLoaded, token } = useUserProps();
+  const { user, contextLoaded } = useUserProps();
   const { setTenantConfig } = useTenant();
 
   // Internal states
   const [profile, setProfile] = React.useState<null | User>();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (router.isReady) {
       setTenantConfig(tenantConfig);
     }
@@ -64,7 +64,7 @@ function ProfilePage({ pageProps: { tenantConfig } }: Props): ReactElement {
             <MyForestProvider>
               <div className={myProfileStyle.profileContainer}>
                 <Profile userProfile={profile} />
-                <MyContributions profile={profile} token={token} />
+                <MyContributions profile={profile} />
               </div>
             </MyForestProvider>
           </>

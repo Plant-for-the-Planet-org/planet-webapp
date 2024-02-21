@@ -5,8 +5,8 @@ import { useUserProps } from '../../../../../src/features/common/Layout/UserProp
 import { getRequest } from '../../../../../src/utils/apiRequests/api';
 import GetPublicUserProfileMeta from '../../../../../src/utils/getMetaTags/GetPublicUserProfileMeta';
 import Footer from '../../../../../src/features/common/Layout/Footer';
-import Profile from '../../../../../src/features/user/ProfileV2/components/ProfileInfo';
-import ProjectsContainer from '../../../../../src/features/user/ProfileV2/components/ProjectDetails/ProjectsContainer';
+import Profile from '../../../../../src/features/user/Profile/components/ProfileBox';
+import ProjectsContainer from '../../../../../src/features/user/Profile/components/MyContributions/microComponents/ProjectsContainer';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import {
@@ -15,9 +15,9 @@ import {
   GetStaticPropsResult,
 } from 'next';
 import { handleError, APIError, UserPublicProfile } from '@planet-sdk/common';
-import MyContributions from '../../../../../src/features/user/ProfileV2/components/MyContributions/MyContributions';
+import MyContributions from '../../../../../src/features/user/Profile/components/MyContributions';
 import { MyForestProvider } from '../../../../../src/features/common/Layout/MyForestContext';
-import PlantedTreesContributions from '../../../../../src/features/user/ProfileV2/components/ProjectDetails/PlantedTreesContributions';
+import PlantedTreesContributions from '../../../../../src/features/user/Profile/components/MyContributions/microComponents/PlantedTreesContributions';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import {
   constructPathsForTenantSlug,
@@ -26,7 +26,7 @@ import {
 import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../tenant.config';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
-import myProfileStyle from '../../../../../src/features/user/ProfileV2/styles/MyProfile.module.scss';
+import myProfileStyle from '../../../../../src/features/user/Profile/styles/MyProfile.module.scss';
 interface Props {
   pageProps: {
     tenantConfig: Tenant;
@@ -80,19 +80,21 @@ function PublicProfile({ pageProps: { tenantConfig } }: Props): ReactElement {
   return tenantConfig && profile ? (
     <MyForestProvider>
       <GetPublicUserProfileMeta userprofile={profile} />
-      <div className={myProfileStyle.publicProfileMainContainer}>
-        <Profile userProfile={profile} />
-        {profile.type === 'tpo' && (
-          <PlantedTreesContributions userProfile={profile} />
-        )}
+      <div className={myProfileStyle.publicProfile}>
+        <div className={myProfileStyle.publicProfileMainContainer}>
+          <Profile userProfile={profile} />
+          {profile.type === 'tpo' && (
+            <PlantedTreesContributions userProfile={profile} />
+          )}
 
-        {profile && profile.type !== 'tpo' && (
-          <MyContributions profile={profile} token={token} />
-        )}
-        {profile && profile.type === 'tpo' && (
-          <ProjectsContainer profile={profile} />
-        )}
-        <Footer />
+          {profile && profile.type !== 'tpo' && (
+            <MyContributions profile={profile} />
+          )}
+          {profile && profile.type === 'tpo' && (
+            <ProjectsContainer profile={profile} />
+          )}
+          <Footer />
+        </div>
       </div>
     </MyForestProvider>
   ) : (

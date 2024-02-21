@@ -7,7 +7,7 @@ import { useTranslation } from 'next-i18next';
 import { localizedAbbreviatedNumber } from '../../../utils/getFormattedNumber';
 import { styled } from '@mui/material/styles';
 import { PlantedTressBlackSvg } from '../../../../public/assets/images/ProfilePageIcons';
-import HomeTreeCounter from './temporaryFile/TreeCounterData';
+import HomeTreeCounter from './legacy/TreeCounterData';
 import theme from '../../../theme/themeProperties';
 import { _tenants } from '../../../utils/constants/HomeTreeCounter';
 import { useTenant } from '../Layout/TenantContext';
@@ -58,7 +58,14 @@ export function HomeCircularProgress(props: CircularProgressProps) {
   );
 }
 
-export default function TpoProfile(props: any) {
+interface TpoProfileInterface {
+  handleAddTargetModalOpen: () => void;
+  planted: number;
+  restoredAreaUnit: number;
+  target: number;
+}
+
+export default function TpoProfile(props: TpoProfileInterface) {
   const [progress, setProgress] = useState(0);
   const [isHomeTreeCounter, setIsHomeTreeCounter] = useState(false);
   const [screenSize, setScreenSize] = useState({
@@ -96,7 +103,8 @@ export default function TpoProfile(props: any) {
     if (props.target > 0) {
       percentage = (props.planted / props.target) * 100;
     } else {
-      if (props.planted === '0.00' || props.planted === 0.0) percentage = 0.1;
+      if (String(props.planted) === '0.00' || props.planted === 0.0)
+        percentage = 0.1;
       else percentage = 100;
     }
     if (percentage > 100) {
