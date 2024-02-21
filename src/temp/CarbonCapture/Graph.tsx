@@ -168,8 +168,8 @@ const Graph = ({
       xaxis: [
         {
           x: xaxisOptions[1],
-          strokeDashArray: 1,
-          borderColor: '#4F4F4F',
+          strokeDashArray: 0,
+          borderColor: '#219653',
         },
       ],
     },
