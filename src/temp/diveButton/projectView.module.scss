@@ -1,0 +1,26 @@
+.projectViewMainContainer {
+  width: 306px;
+  height: 341px;
+  background: grey;
+  border-radius: 13.401px;
+  position: relative;
+}
+
+.diveIntoProjectButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  position: absolute;
+  width: 274px;
+  height: 40px;
+  background: #219653;
+  border-radius: 8px;
+  top: 285px;
+  left: 16px;
+  .label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+  }
+}
