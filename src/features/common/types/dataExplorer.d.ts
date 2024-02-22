@@ -57,7 +57,7 @@ export interface TotalSpeciesPlanted {
   totalSpeciesPlanted: number;
 }
 
-export interface Site {
+export interface Feature {
   geometry: Geometry;
   properties: {
     name: string;
@@ -65,9 +65,9 @@ export interface Site {
   type: 'Feature';
 }
 
-export type Sites = {
+export type FeatureCollection = {
   type: 'FeatureCollection';
-  features: Site[];
+  features: Feature[];
 };
 
 export interface UncleanSite {

@@ -17,8 +17,8 @@ import {
   PlantLocation,
   PlantLocationDetailsApiResponse,
   PlantLocations,
-  Site,
-  Sites,
+  Feature,
+  FeatureCollection,
 } from '../../../../../common/types/dataExplorer';
 import { Container } from '../Container';
 import ProjectTypeSelector, { ProjectType } from '../ProjectTypeSelector';
@@ -67,8 +67,10 @@ export const MapContainer = () => {
   const [distinctSpeciesList, setDistinctSpeciesList] =
     useState<DistinctSpecies>([]);
   const [species, setSpecies] = useState<string | null>(null);
-  const [projectSites, setProjectSites] = useState<Sites | null>(null);
-  const [projectSite, setProjectSite] = useState<Site | null>(null);
+  const [projectSites, setProjectSites] = useState<FeatureCollection | null>(
+    null
+  );
+  const [projectSite, setProjectSite] = useState<Feature | null>(null);
   const [plantLocations, setPlantLocations] = useState<PlantLocations | null>(
     null
   );
@@ -104,7 +106,7 @@ export const MapContainer = () => {
   });
 
   const { makeRequest: makeReqToFetchProjectSites } = useNextRequest<{
-    data: Sites;
+    data: FeatureCollection;
   }>({
     url: `/api/data-explorer/map/sites/${project?.id}`,
     method: HTTP_METHOD.GET,
@@ -175,6 +177,20 @@ export const MapContainer = () => {
     }
   };
 
+  const _setViewport = (feature: Feature, zoom = 16) => {
+    const centeroid = turf.center(feature);
+    if (centeroid?.geometry) {
+      const [longitude, latitude] = centeroid.geometry.coordinates;
+      setViewport({
+        latitude,
+        longitude,
+        zoom,
+        width: '100%',
+        height: '500px',
+      });
+    }
+  };
+
   const fetchProjectLocations = async () => {
     const res = await makeReqToFetchPlantLocation();
     if (res) {
@@ -201,18 +217,7 @@ export const MapContainer = () => {
       setPlantLocations(_featureCollection as PlantLocations);
       if (_plantLocations.length > 0) {
         const defaultFeature = _plantLocations[0];
-        const centeroid = turf.center(defaultFeature);
-        if (centeroid?.geometry) {
-          const [longitude, latitude] = centeroid.geometry.coordinates;
-          const zoom = 16;
-          setViewport({
-            latitude,
-            longitude,
-            zoom,
-            width: '100%',
-            height: '500px',
-          });
-        }
+        _setViewport(defaultFeature);
         setSelectedLayer(res.data[0] ? res.data[0].properties : null);
       }
     }
@@ -235,8 +240,11 @@ export const MapContainer = () => {
     setProjectType(projType);
   };
 
-  const handleSiteChange = (site: Site | null) => {
+  const handleSiteChange = (site: Feature | null) => {
     setProjectSite(site);
+    if (site) {
+      _setViewport(site, 13.5);
+    }
   };
 
   const handleMapClick = async (event) => {
