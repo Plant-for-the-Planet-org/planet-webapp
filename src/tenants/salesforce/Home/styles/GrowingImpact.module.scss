@@ -13,18 +13,18 @@
   z-index: 99;
   margin-top: -200px;
   @include mdTabletView {
-    height: 1808px;
-    background-size: 1440px 1808px;
+    height: 2258px;
+    background-size: 1440px 2258px;
   }
   @include lgLaptopView {
-    height: 1328px;
-    background-size: 1440px 1328px;
+    height: 1778px;
+    background-size: 1440px 1778px;
   }
   @include xsPhoneView {
     padding-top: 150px;
     margin-top: -180px;
-    height: 2774px;
-    background-size: 2374px auto;
+    height: 3224px;
+    background-size: 2824px auto;
   }
   h3 {
     font-family: $secondaryFontFamily;
@@ -85,6 +85,11 @@
     height: 230px;
     padding-left: 15px;
     padding-right: 15px;
+
+    a {
+      text-align: center;
+      color: #ffffff;
+    }
   }
   .foliageWrapper {
     border-bottom-left-radius: 16px;

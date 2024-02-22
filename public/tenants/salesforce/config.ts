@@ -21,6 +21,11 @@ const config = {
         onclick: '/home',
         visible: true,
       },
+      campaign: {
+        title: 'mangroveChallenge',
+        onclick: '/mangrove-challenge',
+        visible: true,
+      },
       donate: {
         title: 'donate_gift',
         onclick: '/',

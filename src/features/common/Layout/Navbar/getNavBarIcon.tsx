@@ -11,6 +11,7 @@ import HomeLogoSelected from '../../../../../public/assets/images/navigation/Hom
 import HomeLogo from '../../../../../public/assets/images/navigation/HomoLogo';
 import DonateSelected from '../../../../../public/assets/images/navigation/DonateSelected';
 import Donate from '../../../../../public/assets/images/navigation/Donate';
+import OceanforceChallengeIcon from '../../../../../public/assets/images/navigation/OceanforceChallengeIcon';
 import { NextRouter } from 'next/router';
 
 interface Props {
@@ -125,6 +126,25 @@ function GetNavBarIcon({
       </button>
     );
   };
+  const CampaignLink = () => {
+    return (
+      <button
+        id={'campaignIcon'}
+        className={`link_icon ${
+          router.pathname === item.onclick ? 'active_icon' : ''
+        }`}
+      >
+        {router.pathname === item.onclick ? (
+          <OceanforceChallengeIcon color={themeProperties.primaryColor} />
+        ) : (
+          <OceanforceChallengeIcon
+            color={themeProperties.light.primaryFontColor}
+          />
+        )}
+      </button>
+    );
+  };
+
   switch (mainKey) {
     case 'home':
       return <HomeLink />;
@@ -136,6 +156,8 @@ function GetNavBarIcon({
       return <LeadersLink />;
     case 'shop':
       return <ShopLink />;
+    case 'campaign':
+      return <CampaignLink />;
     default:
       return <></>;
   }

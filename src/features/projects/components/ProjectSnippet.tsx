@@ -37,14 +37,19 @@ interface Props {
     | ConservationProjectExtended;
   editMode: boolean;
   displayPopup: boolean;
+  utmCampaign?: string;
+  disableDonations?: boolean;
 }
 
 export default function ProjectSnippet({
   project,
   editMode,
   displayPopup,
+  utmCampaign,
+  disableDonations = false,
 }: Props): ReactElement {
   const router = useRouter();
+  const storedCampaign = sessionStorage.getItem('campaign');
   const { t, i18n, ready } = useTranslation([
     'donate',
     'common',
@@ -76,7 +81,8 @@ export default function ProjectSnippet({
       project.slug,
       token,
       embed || undefined,
-      callbackUrl || undefined
+      callbackUrl || undefined,
+      utmCampaign || storedCampaign || undefined
     );
     embed === 'true' ? window.open(url, '_top') : (window.location.href = url);
   };
@@ -111,6 +117,7 @@ export default function ProjectSnippet({
       ) : null}
       <div
         onClick={() => {
+          if (utmCampaign) sessionStorage.setItem('campaign', utmCampaign);
           router.push(
             `/${project.slug}/${
               embed === 'true'
@@ -248,7 +255,7 @@ export default function ProjectSnippet({
         </div>
 
         <div className={'projectCost'}>
-          {project.allowDonations && (
+          {project.allowDonations && !disableDonations && (
             <button
               id={`ProjSnippetDonate_${project.id}`}
               onClick={handleOpen}

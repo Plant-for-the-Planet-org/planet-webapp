@@ -1,0 +1,280 @@
+@import '../../../../theme/theme';
+
+.participationSectionContainer {
+  background-image: url('/tenants/salesforce/images/rectangle-35.png');
+  background-size: auto 1062px;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  position: relative;
+  z-index: 998;
+  height: 600px;
+  padding-top: 234px;
+  margin-top: -150px;
+  @include xsPhoneView {
+    background-size: auto 962px;
+    height: 962px;
+  }
+  button {
+    background: #0176d3;
+    border-radius: 4px;
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: normal;
+    font-size: $fontSmall;
+    line-height: 130%;
+    text-transform: uppercase;
+    color: #ffffff;
+    padding: 13px 24px;
+    cursor: pointer;
+    margin-bottom: 50px;
+  }
+  hr {
+    border: none;
+    background-color: #0b827c;
+    height: 1px;
+    margin-bottom: 30px;
+  }
+  .participationSection {
+    padding-bottom: 150px;
+
+    .participationInfo {
+      h2 {
+        font-family: $secondaryFontFamily;
+        font-style: normal;
+        font-weight: 500;
+        font-size: $fontXXLarge;
+        line-height: 40px;
+        text-align: center;
+        letter-spacing: -0.004em;
+        // color: #ffffff;
+        color: #032d60;
+        margin-bottom: 10px;
+        @include lgLaptopView {
+          font-size: 52px;
+          line-height: 100%;
+          letter-spacing: -0.006em;
+        }
+      }
+      h3 {
+        font-family: $secondaryFontFamily;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 24px;
+        line-height: 28px;
+        letter-spacing: -0.004em;
+        // color: #ffffff;
+        color: #032d60;
+        margin-bottom: 10px;
+        @include lgLaptopView {
+          font-size: $fontXXLarge;
+          line-height: 100%;
+          margin-bottom: 15px;
+        }
+      }
+      h4 {
+        font-family: $secondaryFontFamily;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 15px;
+        line-height: 24px;
+        letter-spacing: -0.004em;
+        // color: #ffffff;
+        color: #032d60;
+        margin-bottom: 10px;
+        @include lgLaptopView {
+          font-size: $fontLarge;
+          line-height: 100%;
+          margin-bottom: 15px;
+        }
+      }
+      p,
+      ul {
+        font-family: $primaryFontFamily;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 15px;
+        line-height: 24px;
+        // color: #ffffff;
+        color: #032d60;
+        margin-bottom: 30px;
+        a {
+          text-decoration: underline;
+          color: #0b5cab;
+        }
+      }
+      li {
+        margin-bottom: 10px;
+        margin-left: 15px;
+      }
+    }
+    img {
+      margin: 0 auto 30px;
+      display: block;
+      width: 100%;
+      @include lgLaptopView {
+        margin: 0;
+      }
+    }
+    .justifyContentCenter {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .projectItem {
+      background-color: #ffffff;
+      padding: 10px;
+      width: 320px;
+      max-width: 100%;
+    }
+  }
+
+  p.contentSectionSubhead {
+    font-family: $primaryFontFamily;
+    font-style: normal;
+    font-weight: 300;
+    font-size: $fontMedium;
+    line-height: 25px;
+    text-align: center;
+    letter-spacing: -0.002em;
+    // color: #ffffff;
+    color: #032d60;
+    @include lgLaptopView {
+      font-size: 20px;
+      line-height: 30px;
+    }
+  }
+
+  .treeCounterSectionRow {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .treeCounterSectionText {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 40px 0;
+  }
+
+  .treeCounterSectionTextHeader {
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 32px;
+    letter-spacing: -0.4px;
+    color: #080707;
+    text-align: center;
+    font-family: $secondaryFontFamily;
+  }
+
+  .treeCounterSectionTextPara {
+    font-family: $primaryFontFamily;
+    color: $primaryFontColor;
+    font-size: $fontSixteen;
+    line-height: 20px;
+    text-align: center;
+  }
+
+  .treeCounterSectionTextLink {
+    font-family: $primaryFontFamily;
+    color: $primaryColor;
+    font-size: $fontMedium;
+    font-weight: bold;
+  }
+
+  .treeCounterSection {
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    // align-items: center;
+    width: 100%;
+    max-width: 100vw;
+    overflow: hidden;
+    // height: 70vh;
+    // align-self: center;
+    // margin: 30px auto;
+  }
+
+  .treeCounterContainer {
+    height: 50vh;
+    // max-height: 500px;
+  }
+
+  .treeCounter {
+    position: absolute;
+    top: 0px;
+    right: -50px;
+    z-index: 1;
+    width: 320px;
+    height: 320px;
+  }
+
+  .treeCounterImage {
+    height: auto;
+    width: 50%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+  @include smTabletView {
+    .treeCounterSection {
+      height: 60vh;
+      padding-top: 10vh;
+      margin: 40px 0;
+      max-height: 420px;
+    }
+
+    .treeCounterContainer {
+      height: 55vh;
+    }
+
+    .treeCounterSectionRow {
+      flex-direction: row;
+    }
+
+    .treeCounter {
+      // right: -40px;
+      width: 330px;
+      height: 330px;
+    }
+
+    .treeCounterImage {
+      left: 40px;
+    }
+
+    .treeCounterSectionTextHeader {
+      font-size: $fontXXLarge;
+      line-height: 40px;
+      text-align: left;
+    }
+
+    .treeCounterSectionTextPara {
+      font-size: $fontSixteen;
+      line-height: 24px;
+      text-align: left;
+    }
+  }
+
+  @include mdTabletView {
+    .treeCounterSection {
+      overflow: visible;
+    }
+  }
+
+  @include lgLaptopView {
+    .treeCounterSectionRow {
+      padding-bottom: 0px;
+    }
+
+    .treeCounterSectionText {
+      padding-top: 10vh;
+      justify-content: flex-start;
+    }
+    .treeCounter {
+      right: -40px;
+      width: 400px;
+      height: 400px;
+    }
+  }
+}

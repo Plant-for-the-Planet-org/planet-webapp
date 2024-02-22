@@ -40,8 +40,10 @@ export default function NavbarComponent() {
     changeChocolate: 'chocolate',
     stopTalkingStartPlanting: 'stop-talking-start-planting',
   };
+
   const [menu, setMenu] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isConstrained, setIsConstrained] = useState(false);
   const [mobileWidth, setMobileWidth] = useState(false);
   const { embed } = useContext(ParamsContext);
   useEffect(() => {
@@ -59,6 +61,10 @@ export default function NavbarComponent() {
   useEffect(() => {
     setIsMobile(width < 768);
   }, [width]);
+
+  React.useEffect(() => {
+    setIsConstrained(config.tenantName === 'salesforce' && isMobile);
+  }, [isMobile]);
 
   const {
     user,
@@ -141,7 +147,7 @@ export default function NavbarComponent() {
     const links = Object.keys(config.header.items);
     const tenantName = config?.tenantName;
     return links ? (
-      <div className={'menuItems'}>
+      <div className={`menuItems ${isConstrained ? 'constrained' : ''}`}>
         {links.map((link) => {
           const linkKey = link as keyof typeof config.header.items;
           let SingleLink = config.header.items[linkKey];
@@ -154,7 +160,9 @@ export default function NavbarComponent() {
                   id={'navbarActiveIcon'}
                   key={link}
                   onClick={() => gotoUserPage()}
-                  className={`linkContainer`}
+                  className={`linkContainer ${
+                    isConstrained ? 'constrained' : ''
+                  }`}
                 >
                   <div className={'link_icon'}>
                     <UserIcon />
@@ -207,7 +215,11 @@ export default function NavbarComponent() {
                 key={link}
               >
                 <Link href={isMobile && hasSubMenu ? '' : SingleLink.onclick}>
-                  <div className={`linkContainer`}>
+                  <div
+                    className={`linkContainer ${
+                      isConstrained ? 'constrained' : ''
+                    }`}
+                  >
                     <GetNavBarIcon
                       mainKey={link}
                       router={router}
@@ -298,7 +310,7 @@ export default function NavbarComponent() {
         style={{ top: isImpersonationModeOn ? 49 : 0 }}
       >
         <div className={'top_nav'}>
-          <div className={'brandLogos'}>
+          <div className={`brandLogos ${isConstrained ? 'constrained' : ''}`}>
             {config.header?.isSecondaryTenant && (
               <div
                 className={
@@ -324,7 +336,11 @@ export default function NavbarComponent() {
                     />
                   )}
                 </a>
-                <div className={'logo_divider'} />
+                <div
+                  className={`logo_divider ${
+                    isConstrained ? 'constrained' : ''
+                  }`}
+                />
               </div>
             )}
 
