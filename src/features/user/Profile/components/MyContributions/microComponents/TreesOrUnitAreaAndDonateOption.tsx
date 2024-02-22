@@ -47,9 +47,11 @@ const TreesOrUnitAreaAndDonateOption = ({
       undefined,
       asPath !== '/profile' ? publicProfileSlug : undefined
     );
-    embed === 'true'
-      ? window.open(url, '_blank')
-      : (window.location.href = url);
+    if (embed === 'true') {
+      window.open(url, '_blank');
+    } else {
+      window.location.href = url;
+    }
   };
 
   const _checkConditions = () => {
