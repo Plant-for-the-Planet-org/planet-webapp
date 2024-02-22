@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import styles from './Graph.module.scss';
 import ReactDOMServer from 'react-dom/server';
@@ -63,13 +63,20 @@ const Graph = ({
   tooltip,
 }: GraphProps) => {
   const { t } = useTranslation('projectDetails');
-  const xaxisOptions = years.map((year, index) => {
-    if (index === 1) {
-      return [2020, ` ${t('projectLaunch')}`];
-    } else {
-      return year;
-    }
-  });
+  const [xaxisOptions, setXaxisOptions] = useState<
+    (number | (string | number)[])[]
+  >([]);
+
+  useEffect(() => {
+    const newOptions = years.map((year, index) => {
+      if (index === 1) {
+        return [2020, ` ${t('projectLaunch')}`];
+      } else {
+        return year;
+      }
+    });
+    setXaxisOptions(newOptions);
+  }, []);
 
   const options = {
     fill: {
