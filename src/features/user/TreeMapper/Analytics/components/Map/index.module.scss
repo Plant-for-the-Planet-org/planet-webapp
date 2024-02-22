@@ -39,6 +39,7 @@
         display: flex;
         align-items: center;
         flex-direction: column;
+        justify-content: space-between;
         row-gap: 16px;
         padding: 10px 0PX;
         z-index: 2;
@@ -167,8 +168,6 @@
                 }
             }
         }
-
-        
 
         .footer{
 

@@ -34,6 +34,7 @@ import getMapStyle from '../../../../../../utils/maps/getMapStyle';
 import TreeMapperIcon from './components/TreeMapperIcon';
 import { QueryType } from '../../constants';
 import { isValid, parseISO } from 'date-fns';
+import PlantLocationDetailsZeroState from './components/PlantLocationDetailsZeroState';
 
 const EMPTY_STYLE = {
   version: 8,
@@ -338,6 +339,7 @@ export const MapContainer = () => {
             {...mapState}
             {...viewport}
             onViewStateChange={_handleViewport}
+            onViewportChange={(viewport) => setViewport(viewport)}
             onClick={handleMapClick}
           >
             <Source type="geojson" data={plantLocations}>
@@ -464,7 +466,12 @@ export const MapContainer = () => {
                       </div>
                     </div>
                   ) : (
-                    <div>Empty state</div>
+                    <>
+                      <div></div>
+                      <div className={styles.zeroStateScreen}>
+                        <PlantLocationDetailsZeroState />
+                      </div>
+                    </>
                   )}
                   <div className={styles.footer}>
                     <p>Powered by </p>
