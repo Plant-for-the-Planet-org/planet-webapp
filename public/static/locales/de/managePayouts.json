@@ -8,7 +8,7 @@
     "payoutInformation1": "Die Auszahlung erfolgt automatisch jedes Jahr oder wenn eine Organisation 30.000 EUR oder den Gegenwert in einer anderen Währung gesammelt hat.",
     "payoutInformation2": "Die Auszahlungen werden von der Plant-for-the-Planet Foundation und ihren Schwesterorganisationen vorgenommen, z.B. Plant-for-the-Planet US, Plant-for-the-Planet Switzerland usw.",
     "payoutInformation3": "Du kannst den Auszahlungszeitplan anpassen und erhältst häufige Auszahlungen, solange du das Kriterium des Mindestbetrags von 1.500 EUR erfüllen.",
-    "supportInformation": "Wenn du einen Ausnahmefall hast, wenden dich bitte an<1></1><2>support@plant-for-the-planet.org.</2>",
+    "supportInformation": "Wenn du einen Ausnahmefall hast, wenden dich bitte an <supportLink>support@plant-for-the-planet.org.</supportLink>",
     "scheduleFrequencies": {
       "monthly": "Monatlich",
       "quarterly": "Vierteljährlich",

@@ -1,7 +1,7 @@
 {
   "PlanetCash": {
     "title": "PlanetCash",
-    "partnerSignupInfo": "Unsere Funktion Planet Cash / Bulk-Codes ist eine neue Funktion speziell für Partner von Plant-for-the-Planet. Melden Sie sich gerne bei Interesse bei <2>partner@plant-for-the-planet.org</2>.",
+    "partnerSignupInfo": "Unsere Funktion Planet Cash / Bulk-Codes ist eine neue Funktion speziell für Partner von Plant-for-the-Planet. Melden Sie sich gerne bei Interesse bei <partnerEmailLink>partner@plant-for-the-planet.org</partnerEmailLink>.",
     "description": "PlanetCash ist ein entwicklerfreundliches Tool, das die Plant-for-the-Planet Plattform mit APIs und eingebauten Tools erweitert. Das PlanetCash-Guthaben ist ein Beitrag zu Plant-for-the-Planet, der vom Spender für verschiedene Projekte auf der Plattform verwendet werden kann.",
     "termsText": "Bedingungen & Konditionen anzeigen.",
     "learnMoreText": "Erfahre mehr über PlanetCash.",

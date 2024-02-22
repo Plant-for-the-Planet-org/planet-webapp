@@ -1,5 +1,5 @@
 import React, { FormEvent, ReactElement, useContext, useState } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import { Button, TextField } from '@mui/material';
 import styles from '../../../../../src/features/user/BulkCodes/BulkCodes.module.scss';
 import { useRouter } from 'next/router';
@@ -29,7 +29,8 @@ import {
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 const IssueCodesForm = (): ReactElement | null => {
-  const { t, ready, i18n } = useTranslation(['common', 'bulkCodes']);
+  const t = useTranslations('BulkCodes');
+  const locale = useLocale();
   const router = useRouter();
   const {
     project,
@@ -89,7 +90,7 @@ const IssueCodesForm = (): ReactElement | null => {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     if (isAddingRecipient || isEditingRecipient) {
-      const shouldSubmit = confirm(t('bulkCodes:unsavedDataWarning'));
+      const shouldSubmit = confirm(t('unsavedDataWarning'));
       if (!shouldSubmit) return;
     }
 
@@ -153,35 +154,27 @@ const IssueCodesForm = (): ReactElement | null => {
           switch (error.message) {
             case 'planet_cash_invalid_project':
               _serializedErrors.push({
-                message: t(
-                  'bulkCodes:donationError.planet_cash_invalid_project'
-                ),
+                message: t('donationError.planet_cash_invalid_project'),
               });
               break;
 
             case 'planet_cash_insufficient_credit':
               _serializedErrors.push({
-                message: t(
-                  'bulkCodes:donationError.planet_cash_insufficient_credit',
-                  {
-                    availableBalance: getFormatedCurrency(
-                      i18n.language,
-                      planetCashAccount?.currency as string,
-                      error.parameters && error.parameters['available_credit']
-                    ),
-                  }
-                ),
+                message: t('donationError.planet_cash_insufficient_credit', {
+                  availableBalance: getFormatedCurrency(
+                    locale,
+                    planetCashAccount?.currency as string,
+                    error.parameters && error.parameters['available_credit']
+                  ),
+                }),
               });
               break;
 
             case 'planet_cash_payment_failure':
               _serializedErrors.push({
-                message: t(
-                  'bulkCodes:donationError.planet_cash_payment_failure',
-                  {
-                    reason: error.parameters && error.parameters['reason'],
-                  }
-                ),
+                message: t('donationError.planet_cash_payment_failure', {
+                  reason: error.parameters && error.parameters['reason'],
+                }),
               });
               break;
 
@@ -195,7 +188,7 @@ const IssueCodesForm = (): ReactElement | null => {
       }
     } else {
       setIsProcessing(false);
-      setErrors([{ message: t('bulkCodes:projectRequired') }]);
+      setErrors([{ message: t('projectRequired') }]);
     }
   };
 
@@ -220,93 +213,84 @@ const IssueCodesForm = (): ReactElement | null => {
     }
   };
 
-  if (ready) {
-    if (!isSubmitted) {
-      return (
-        <CenteredContainer>
-          <StyledFormContainer className="IssueCodesForm" component={'section'}>
-            <div className="inputContainer">
-              <ProjectSelector
-                projectList={projectList || []}
-                project={project}
-                active={false}
-                planetCashAccount={planetCashAccount}
+  if (!isSubmitted) {
+    return (
+      <CenteredContainer>
+        <StyledFormContainer className="IssueCodesForm" component={'section'}>
+          <div className="inputContainer">
+            <ProjectSelector
+              projectList={projectList || []}
+              project={project}
+              active={false}
+              planetCashAccount={planetCashAccount}
+            />
+            <TextField
+              onChange={(e) => setComment(e.target.value)}
+              value={comment}
+              label={t('labelComment')}
+            />
+            <TextField
+              onChange={(e) => setOccasion(e.target.value)}
+              value={occasion}
+              label={t('occasion')}
+            />
+            {bulkMethod === 'generic' && (
+              <GenericCodesPartial
+                codeQuantity={codeQuantity}
+                unitsPerCode={unitsPerCode}
+                setCodeQuantity={setCodeQuantity}
+                setUnitsPerCode={setUnitsPerCode}
               />
-              <TextField
-                onChange={(e) => setComment(e.target.value)}
-                value={comment}
-                label={t('bulkCodes:labelComment')}
+            )}
+            {bulkMethod === 'import' && (
+              <RecipientsUploadForm
+                setLocalRecipients={setLocalRecipients}
+                localRecipients={localRecipients}
+                setIsAddingRecipient={setIsAddingRecipient}
+                setIsEditingRecipient={setIsEditingRecipient}
               />
-              <TextField
-                onChange={(e) => setOccasion(e.target.value)}
-                value={occasion}
-                label={t('bulkCodes:occasion')}
-              />
-              {bulkMethod === 'generic' && (
-                <GenericCodesPartial
-                  codeQuantity={codeQuantity}
-                  unitsPerCode={unitsPerCode}
-                  setCodeQuantity={setCodeQuantity}
-                  setUnitsPerCode={setUnitsPerCode}
-                />
-              )}
-              {bulkMethod === 'import' && (
-                <RecipientsUploadForm
-                  setLocalRecipients={setLocalRecipients}
-                  localRecipients={localRecipients}
-                  setIsAddingRecipient={setIsAddingRecipient}
-                  setIsEditingRecipient={setIsEditingRecipient}
-                />
-              )}
-              <BulkGiftTotal
-                amount={getTotalAmount()}
-                currency={planetCashAccount?.currency}
-                units={getTotalUnits()}
-                unit={project?.unit}
-                isImport={bulkMethod === 'import'}
-              />
-            </div>
+            )}
+            <BulkGiftTotal
+              amount={getTotalAmount()}
+              currency={planetCashAccount?.currency}
+              units={getTotalUnits()}
+              unit={project?.unit}
+              isImport={bulkMethod === 'import'}
+            />
+          </div>
 
-            <BulkCodesError />
+          <BulkCodesError />
 
-            <form onSubmit={handleSubmit}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                className="formButton"
-                disabled={
-                  !(
-                    user?.planetCash &&
-                    !(
-                      user.planetCash.balance + user.planetCash.creditLimit <=
-                      0
-                    )
-                  ) ||
-                  isProcessing ||
-                  (localRecipients.length === 0 &&
-                    (Number(codeQuantity) <= 0 || Number(unitsPerCode) <= 0))
-                }
-              >
-                {isProcessing
-                  ? t('bulkCodes:issuingCodes')
-                  : t('bulkCodes:issueCodes')}
-              </Button>
-            </form>
-          </StyledFormContainer>
-        </CenteredContainer>
-      );
-    } else {
-      return (
-        <div className={styles.successMessage}>
-          {t('bulkCodes:donationSuccess')}
-          <span className={styles.spinner}></span>
-        </div>
-      );
-    }
+          <form onSubmit={handleSubmit}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className="formButton"
+              disabled={
+                !(
+                  user?.planetCash &&
+                  !(user.planetCash.balance + user.planetCash.creditLimit <= 0)
+                ) ||
+                isProcessing ||
+                (localRecipients.length === 0 &&
+                  (Number(codeQuantity) <= 0 || Number(unitsPerCode) <= 0))
+              }
+            >
+              {isProcessing ? t('issuingCodes') : t('issueCodes')}
+            </Button>
+          </form>
+        </StyledFormContainer>
+      </CenteredContainer>
+    );
+  } else {
+    return (
+      <div className={styles.successMessage}>
+        {t('donationSuccess')}
+        <span className={styles.spinner}></span>
+      </div>
+    );
   }
-
-  return null;
 };
 
 export default IssueCodesForm;

@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, FormControlLabel, Switch, Tooltip } from '@mui/material';
-import { useTranslation } from 'next-i18next';
+import { useLocale, useTranslations } from 'next-intl';
 import styles from './../StepForm.module.scss';
 import MapGL, {
   Marker,
@@ -79,7 +79,8 @@ export default function BasicDetails({
   projectGUID,
   purpose,
 }: BasicDetailsProps): ReactElement {
-  const { t, i18n, ready } = useTranslation(['manageProjects']);
+  const t = useTranslations('ManageProjects');
+  const locale = useLocale();
   const EMPTY_STYLE = {
     version: 8,
     sources: {},
@@ -145,27 +146,27 @@ export default function BasicDetails({
 
   const classifications = [
     {
-      label: ready ? t('manageProjects:largeScalePlanting') : '',
+      label: t('largeScalePlanting'),
       value: 'large-scale-planting',
     },
     {
-      label: ready ? t('manageProjects:agroforestry') : '',
+      label: t('agroforestry'),
       value: 'agroforestry',
     },
     {
-      label: ready ? t('manageProjects:naturalRegeneration') : '',
+      label: t('naturalRegeneration'),
       value: 'natural-regeneration',
     },
     {
-      label: ready ? t('manageProjects:managedRegeneration') : '',
+      label: t('managedRegeneration'),
       value: 'managed-regeneration',
     },
     {
-      label: ready ? t('manageProjects:urbanPlanting') : '',
+      label: t('urbanPlanting'),
       value: 'urban-planting',
     },
     {
-      label: ready ? t('manageProjects:otherPlanting') : '',
+      label: t('otherPlanting'),
       value: 'other-planting',
     },
   ];
@@ -257,7 +258,7 @@ export default function BasicDetails({
               acceptDonations: projectDetails.acceptDonations,
               unitType: projectDetails.unitType,
               unitCost: getFormattedNumber(
-                i18n.language,
+                locale,
                 projectDetails.unitCost || 0
               ),
               latitude: projectDetails.geoLatitude.toString(),
@@ -277,7 +278,7 @@ export default function BasicDetails({
               description: projectDetails.description,
               acceptDonations: projectDetails.acceptDonations,
               unitCost: getFormattedNumber(
-                i18n.language,
+                locale,
                 projectDetails.unitCost || 0
               ),
               latitude: projectDetails.geoLatitude.toString(),
@@ -318,7 +319,7 @@ export default function BasicDetails({
             description: data.description,
             acceptDonations: data.acceptDonations,
             unitCost: data.unitCost
-              ? parseNumber(i18n.language, Number(data.unitCost))
+              ? parseNumber(locale, Number(data.unitCost))
               : undefined,
             unitType: (data as TreeFormData).unitType,
             currency: 'EUR',
@@ -344,7 +345,7 @@ export default function BasicDetails({
             description: data.description,
             acceptDonations: data.acceptDonations,
             unitCost: data.unitCost
-              ? parseNumber(i18n.language, Number(data.unitCost))
+              ? parseNumber(locale, Number(data.unitCost))
               : undefined,
             currency: 'EUR',
             metadata: {
@@ -383,13 +384,7 @@ export default function BasicDetails({
       try {
         const res = await postAuthenticatedRequest<
           ProfileProjectTrees | ProfileProjectConservation
-        >(
-          tenantConfig?.id,
-          `/app/projects`,
-          submitData,
-          token,
-          logoutUser
-        );
+        >(tenantConfig?.id, `/app/projects`, submitData, token, logoutUser);
         setProjectGUID(res.id);
         setProjectDetails(res);
         router.push(`/profile/projects/${res.id}?type=media`);
@@ -410,17 +405,17 @@ export default function BasicDetails({
       : {}
   );
 
-  return ready ? (
+  return (
     <CenteredContainer>
       <StyledForm>
         <div className="inputContainer">
           <Controller
             name="name"
             control={control}
-            rules={{ required: t('manageProjects:nameValidation') }}
+            rules={{ required: t('nameValidation') }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextField
-                label={t('manageProjects:name')}
+                label={t('name')}
                 variant="outlined"
                 onChange={onChange}
                 value={value}
@@ -434,12 +429,12 @@ export default function BasicDetails({
             <Controller
               name="metadata.ecosystem"
               rules={{
-                required: t('manageProjects:ecosystemType'),
+                required: t('ecosystemType'),
               }}
               control={control}
               render={({ field: { onChange, value, onBlur } }) => (
                 <TextField
-                  label={t('manageProjects:ecosystem')}
+                  label={t('ecosystem')}
                   variant="outlined"
                   select
                   onChange={onChange}
@@ -453,7 +448,7 @@ export default function BasicDetails({
                 >
                   {ecosystemTypes.map((ecosystem) => (
                     <MenuItem key={ecosystem} value={ecosystem}>
-                      {t(`manageProjects:ecosystemTypes.${ecosystem}`)}
+                      {t(`ecosystemTypes.${ecosystem}`)}
                     </MenuItem>
                   ))}
                 </TextField>
@@ -463,12 +458,12 @@ export default function BasicDetails({
               <Controller
                 name="classification"
                 rules={{
-                  required: t('manageProjects:classificationValidation'),
+                  required: t('classificationValidation'),
                 }}
                 control={control}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
-                    label={t('manageProjects:classification')}
+                    label={t('classification')}
                     variant="outlined"
                     select
                     onChange={onChange}
@@ -499,12 +494,12 @@ export default function BasicDetails({
               <Controller
                 name="unitType"
                 rules={{
-                  required: t('manageProjects:unitTypeRequired'),
+                  required: t('unitTypeRequired'),
                 }}
                 control={control}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
-                    label={t('manageProjects:unitType')}
+                    label={t('unitType')}
                     variant="outlined"
                     select
                     onChange={onChange}
@@ -521,7 +516,7 @@ export default function BasicDetails({
                   >
                     {unitTypeOptions.map((unitType) => (
                       <MenuItem key={unitType} value={unitType}>
-                        {t(`manageProjects:unitTypes.${unitType}`)}
+                        {t(`unitTypes.${unitType}`)}
                       </MenuItem>
                     ))}
                   </TextField>
@@ -531,12 +526,12 @@ export default function BasicDetails({
                 name="countTarget"
                 control={control}
                 rules={{
-                  required: t('manageProjects:countTargetValidation'),
+                  required: t('countTargetValidation'),
                   validate: (value) => parseInt(value, 10) > 1,
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextField
-                    label={t('manageProjects:countTarget')}
+                    label={t('countTarget')}
                     variant="outlined"
                     placeholder={'0'}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -553,7 +548,7 @@ export default function BasicDetails({
                       'countTarget' in errors &&
                       errors.countTarget !== undefined &&
                       (errors.countTarget.message ||
-                        t('manageProjects:countTargetValidation2'))
+                        t('countTargetValidation2'))
                     }
                   />
                 )}
@@ -564,10 +559,10 @@ export default function BasicDetails({
             <Controller
               name="slug"
               control={control}
-              rules={{ required: t('manageProjects:slugValidation') }}
+              rules={{ required: t('slugValidation') }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextField
-                  label={t('manageProjects:slug')}
+                  label={t('slug')}
                   variant="outlined"
                   InputProps={{
                     startAdornment: (
@@ -586,17 +581,17 @@ export default function BasicDetails({
               name="website"
               control={control}
               rules={{
-                required: t('manageProjects:websiteValidationRequired'),
+                required: t('websiteValidationRequired'),
                 pattern: {
                   //value: /^(?:http(s)?:\/\/)?[\w\.\-]+(?:\.[\w\.\-]+)+[\w\.\-_~:/?#[\]@!\$&'\(\)\*\+,;=#%]+$/,
                   value:
                     /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=*]*)$/,
-                  message: t('manageProjects:websiteValidationInvalid'),
+                  message: t('websiteValidationInvalid'),
                 },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextField
-                  label={t('manageProjects:website')}
+                  label={t('website')}
                   variant="outlined"
                   onChange={onChange}
                   value={value}
@@ -613,11 +608,11 @@ export default function BasicDetails({
             name="description"
             control={control}
             rules={{
-              required: t('manageProjects:aboutProjectValidation'),
+              required: t('aboutProjectValidation'),
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextField
-                label={t('manageProjects:aboutProject')}
+                label={t('aboutProject')}
                 variant="outlined"
                 multiline
                 minRows={2}
@@ -640,11 +635,8 @@ export default function BasicDetails({
                 <FormControlLabel
                   label={
                     <div>
-                      {t('manageProjects:receiveDonations')}
-                      <Tooltip
-                        title={t('manageProjects:receiveDonationsInfo')}
-                        arrow
-                      >
+                      {t('receiveDonations')}
+                      <Tooltip title={t('receiveDonationsInfo')} arrow>
                         <span className={styles.tooltipIcon}>
                           <InfoIcon />
                         </span>
@@ -672,15 +664,15 @@ export default function BasicDetails({
                 rules={{
                   required: {
                     value: acceptDonations,
-                    message: t('manageProjects:unitCostRequired'),
+                    message: t('unitCostRequired'),
                   },
                   validate: (value) =>
-                    parseNumber(i18n.language, Number(value)) > 0 &&
-                    parseNumber(i18n.language, Number(value)) <= 100,
+                    parseNumber(locale, Number(value)) > 0 &&
+                    parseNumber(locale, Number(value)) <= 100,
                 }}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
-                    label={t('manageProjects:unitCost')}
+                    label={t('unitCost')}
                     variant="outlined"
                     type="number"
                     placeholder={'0'}
@@ -698,8 +690,7 @@ export default function BasicDetails({
                     error={errors.unitCost !== undefined}
                     helperText={
                       errors.unitCost !== undefined &&
-                      (errors.unitCost.message ||
-                        t('manageProjects:invalidUnitCost'))
+                      (errors.unitCost.message || t('invalidUnitCost'))
                     }
                   />
                 )}
@@ -718,7 +709,7 @@ export default function BasicDetails({
                     : themeProperties.dark.dark,
               }}
             >
-              {t('manageProjects:projectLocation')}
+              {t('projectLocation')}
             </p>
             <MapGL
               {...viewport}
@@ -796,7 +787,7 @@ export default function BasicDetails({
                   }}
                   render={({ field: { onChange, value, onBlur } }) => (
                     <TextField
-                      label={t('manageProjects:latitude')}
+                      label={t('latitude')}
                       variant="filled"
                       className={styles.latLongInput}
                       onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -813,8 +804,8 @@ export default function BasicDetails({
                       helperText={
                         errors.latitude !== undefined &&
                         (wrongCoordinatesMessage
-                          ? t('manageProjects:wrongCoordinates')
-                          : t('manageProjects:latitudeRequired'))
+                          ? t('wrongCoordinates')
+                          : t('latitudeRequired'))
                       }
                     />
                   )}
@@ -834,7 +825,7 @@ export default function BasicDetails({
                   }}
                   render={({ field: { onChange, value, onBlur } }) => (
                     <TextField
-                      label={t('manageProjects:longitude')}
+                      label={t('longitude')}
                       variant="filled"
                       className={styles.latLongInput}
                       onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -851,8 +842,8 @@ export default function BasicDetails({
                       helperText={
                         errors.longitude !== undefined &&
                         (wrongCoordinatesMessage
-                          ? t('manageProjects:wrongCoordinates')
-                          : t('manageProjects:longitudeRequired'))
+                          ? t('wrongCoordinates')
+                          : t('longitudeRequired'))
                       }
                     />
                   )}
@@ -866,7 +857,7 @@ export default function BasicDetails({
             control={control}
             render={({ field: { onChange, value } }) => (
               <FormControlLabel
-                label={t('manageProjects:visitorAssistanceLabel')}
+                label={t('visitorAssistanceLabel')}
                 labelPlacement="end"
                 control={
                   <Switch
@@ -890,7 +881,7 @@ export default function BasicDetails({
             {isUploadingData ? (
               <div className={styles.spinner}></div>
             ) : (
-              t('manageProjects:saveAndContinue')
+              t('saveAndContinue')
             )}
           </Button>
 
@@ -900,7 +891,7 @@ export default function BasicDetails({
               variant="contained"
               onClick={() => handleNext(ProjectCreationTabs.PROJECT_MEDIA)}
             >
-              {t('manageProjects:skip')}
+              {t('skip')}
             </Button>
           ) : (
             ''
@@ -908,7 +899,5 @@ export default function BasicDetails({
         </div>
       </StyledForm>
     </CenteredContainer>
-  ) : (
-    <></>
   );
 }

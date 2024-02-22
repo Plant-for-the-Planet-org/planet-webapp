@@ -2,7 +2,7 @@ import React, { ReactElement, useContext } from 'react';
 import { useRouter } from 'next/router';
 import PlayIcon from '../../../../public/assets/images/icons/PlayIcon';
 import styles from './styles.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { useUserProps } from '../Layout/UserPropsContext';
 import { ParamsContext } from '../Layout/QueryParamsContext';
 
@@ -15,7 +15,7 @@ export default function PlayButton({
 }: Props): ReactElement | null {
   const { isImpersonationModeOn } = useUserProps();
   const { embed, enableIntro, isContextLoaded } = useContext(ParamsContext);
-  const { t } = useTranslation(['common']);
+  const t = useTranslations('Common');
   const { pathname } = useRouter();
 
   const playButtonClasses = `${

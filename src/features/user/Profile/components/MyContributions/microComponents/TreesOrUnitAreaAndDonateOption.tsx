@@ -1,5 +1,5 @@
 import myForestStyles from '../../../styles/MyForest.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { getDonationUrl } from '../../../../../../utils/getDonationUrl';
 import { ParamsContext } from '../../../../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
@@ -33,7 +33,7 @@ const TreesOrUnitAreaAndDonateOption = ({
   countryName,
   tpoName,
 }: TreesOrUnitAreaAndDonateOptionProps) => {
-  const { t } = useTranslation(['profile']);
+  const t = useTranslations('Profile');
   const { embed } = useContext(ParamsContext);
   const { token } = useUserProps();
   const router = useRouter();
@@ -54,13 +54,13 @@ const TreesOrUnitAreaAndDonateOption = ({
 
   const _checkConditions = () => {
     if (gift && asPath === '/profile') {
-      const _label = t('profile:myContributions.donate');
+      const _label = t('myContributions.donate');
       return _label;
     } else if (asPath !== '/profile') {
-      const _label = t('profile:myContributions.donate');
+      const _label = t('myContributions.donate');
       return _label;
     } else {
-      const _label = t('profile:myContributions.donateAgain');
+      const _label = t('myContributions.donateAgain');
       return _label;
     }
   };
@@ -69,28 +69,28 @@ const TreesOrUnitAreaAndDonateOption = ({
       <div>
         <time className={myForestStyles.treeCount}>
           {gift && //for gift contribution
-            t('profile:myForestMap.plantedTree', {
+            t('myForestMap.plantedTree', {
               count: parseInt(`${quantity}`) || quantity || 0,
             })}
           {projectPurpose === 'trees' && // tree plantation contribution
             projectUnit === 'tree' &&
-            t('profile:myForestMap.plantedTree', {
+            t('myForestMap.plantedTree', {
               count: parseInt(`${quantity}`) || 0,
             })}
           {(projectPurpose === 'trees' || projectPurpose === 'conservation') && //for restoration  &  conservationcontribution
             projectUnit === 'm2' &&
-            t('profile:myContributions.areaType', {
+            t('myContributions.areaType', {
               areaConserved: `${quantity}`,
               type: `${
                 projectPurpose === 'trees'
-                  ? t('profile:myContributions.restoredSmall')
-                  : t('profile:myContributions.conservedSmall')
+                  ? t('myContributions.restoredSmall')
+                  : t('myContributions.conservedSmall')
               } `,
             })}
           {/* {contributionType === 'planting' &&
             countryName &&
             tpoName && //for register  tree contribution
-            t('profile:myContributions.treeRegistered', {
+            t('myContributions.treeRegistered', {
               count: Number(`${quantity?.toFixed(2)}`) || 0,
             })} */}
         </time>

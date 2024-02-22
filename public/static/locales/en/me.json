@@ -83,6 +83,7 @@
     "donorNameRequired": "Donor Name Required",
     "donationAmountRequired": "Donation Amount Required",
     "frequencyRequired": "Frequency Required",
+    "dateRequired": "Date Required",
     "project": "Project Name",
     "planetCashPayment": "PlanetCash Payment",
     "method": "Payment Method",
@@ -272,8 +273,9 @@
     "conserved": "Conserved",
     "restored": "Restored",
     "membershipCtaButtonText": "JOIN NOW",
-    "membershipCtaCopy": "Support us <2>BY BECOMING A MEMBER</2>",
+    "membershipCtaCopy": "Support us <highlight>BY BECOMING A MEMBER</highlight>",
     "shareUrl": "Share URL",
-    "treesOfTrees": "{count1} of {count2}"
+    "treesOfTrees": "{count1} of {count2}",
+    "document": "Platform Documentation (EN)"
   }
 }

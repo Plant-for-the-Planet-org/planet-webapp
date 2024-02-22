@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import DashboardView from '../../../common/Layout/DashboardView';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import ProjectFilter from './components/ProjectFilter';
 import { Project, useAnalytics } from '../../../common/Layout/AnalyticsContext';
 import { DataExplorerGridContainer } from './components/DataExplorerGridContainer';
@@ -12,7 +12,7 @@ import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 import { useTenant } from '../../../common/Layout/TenantContext';
 
 const Analytics = () => {
-  const { t, ready } = useTranslation('treemapperAnalytics');
+  const t = useTranslations('TreemapperAnalytics');
   const { setProjectList, setProject } = useAnalytics();
   const { token, logoutUser } = useUserProps();
   const { tenantConfig } = useTenant();
@@ -46,12 +46,12 @@ const Analytics = () => {
     fetchProjects();
   }, []);
 
-  return ready ? (
-    <DashboardView title={t('treemapperAnalytics:title')} subtitle={null}>
+  return (
+    <DashboardView title={t('title')} subtitle={null}>
       <ProjectFilter />
       <DataExplorerGridContainer />
     </DashboardView>
-  ) : null;
+  );
 };
 
 export default Analytics;

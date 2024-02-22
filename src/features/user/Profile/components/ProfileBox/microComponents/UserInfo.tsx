@@ -2,7 +2,7 @@ import myProfilestyle from '../../../styles/MyProfile.module.scss';
 import getImageUrl from '../../../../../../utils/getImageURL';
 import { useRouter } from 'next/router';
 import { Avatar } from '@mui/material';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { ProfileProps } from '../../../../../common/types/profile';
 import { ReactElement } from 'react';
 import formatDate from '../../../../../../utils/countryCurrency/getFormattedDate';
@@ -13,10 +13,10 @@ import {
 } from '../../../../../../../public/assets/images/ProfilePageIcons';
 
 const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
-  const { t, ready } = useTranslation(['profile']);
+  const t = useTranslations('Profile');
   const router = useRouter();
 
-  return ready ? (
+  return (
     <>
       <div className={myProfilestyle.userInfoContainer}>
         {userProfile?.image ? (
@@ -33,7 +33,7 @@ const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
             {userProfile?.displayName}
           </div>
           <div>
-            {t('profile:myProfile.memberSince', {
+            {t('myProfile.memberSince', {
               date: `${formatDate(userProfile?.created)}`,
             })}
           </div>
@@ -50,13 +50,11 @@ const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
       )}
 
       <div className={myProfilestyle.userDescription}>
-        {t('profile:myProfile.userDescription', {
+        {t('myProfile.userDescription', {
           bio: userProfile?.bio,
         })}
       </div>
     </>
-  ) : (
-    <></>
   );
 };
 

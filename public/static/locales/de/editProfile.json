@@ -22,7 +22,7 @@
     "accountPrivacyChangeText": "Um ein Profil-Widget erstellen zu können, musst Du ein öffentliches Konto haben. Wenn Du auf \"Weiter\" klickst, änderst Du Deine Datenschutzeinstellungen auf \"öffentlich\".",
     "continue": "Weiter",
     "cancel": "Abbrechen",
-    "termAndCondition": "Ich stimme den <0>Nutzungsbedingungen</0> der Plant-for-the-Planet Plattform zu.",
+    "termAndCondition": "Ich stimme den <termsLink>Nutzungsbedingungen</termsLink> der Plant-for-the-Planet Plattform zu.",
     "termAndConditionError": "Bitte stimme den Nutzungsbedingungen zu",
     "fieldLabels": {
       "profileType": "Ich bin ein",

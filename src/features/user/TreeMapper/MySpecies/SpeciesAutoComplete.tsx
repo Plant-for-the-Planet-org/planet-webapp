@@ -4,7 +4,7 @@ import { postRequest } from '../../../../utils/apiRequests/api';
 import { Controller, Control, FieldValues, FieldPath } from 'react-hook-form';
 import { Autocomplete, TextField } from '@mui/material';
 
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { SpeciesSuggestionType } from '../../../common/types/plantLocation';
@@ -40,7 +40,7 @@ export default function SpeciesSelect<
   >([]);
   const [query, setQuery] = React.useState('');
   const { tenantConfig } = useTenant();
-  const { t } = useTranslation(['treemapper']);
+  const t = useTranslations('Treemapper');
   const { setErrors } = React.useContext(ErrorHandlingContext);
 
   // Code below can be removed if no longer needed, along with the `mySpecies` prop
@@ -103,7 +103,7 @@ export default function SpeciesSelect<
       name={name}
       control={control}
       rules={{
-        required: t('treemapper:speciesValidation'),
+        required: t('speciesValidation'),
       }}
       render={({ field: { onChange, ...fieldProps } }) => (
         <Autocomplete

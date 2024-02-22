@@ -1,4 +1,4 @@
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import Button from '@mui/material/Button';
 import myForestStyles from '../../../styles/MyForest.module.scss';
@@ -17,7 +17,7 @@ const PlantedTreesContributions = ({
   hasNextPage,
 }: TreeContributedProjectListProps): ReactElement => {
   const { asPath } = useRouter();
-  const { t } = useTranslation(['profile']);
+  const t = useTranslations('Profile');
   const [isAddTargetModalOpen, setIsAddTargetModalOpen] = useState(false);
   const { treePlantationContribution, additionalInfoRelatedToContributions } =
     useMyForest();
@@ -93,7 +93,7 @@ const PlantedTreesContributions = ({
                   onClick={handleAddTargetModalOpen}
                   className={myForestStyles.customEditButton}
                 >
-                  {t('profile:myTreeCounter.editTarget')}
+                  {t('myTreeCounter.editTarget')}
                 </Button>
               </div>
             ) : (
@@ -101,7 +101,7 @@ const PlantedTreesContributions = ({
             )}
 
             <div className={myForestStyles.text}>
-              {t('profile:myContributions.treesPlantedAndAreaRestored')}
+              {t('myContributions.treesPlantedAndAreaRestored')}
               <p className={myForestStyles.hrLine} />
             </div>
             <ContributedProjectList

@@ -1,6 +1,6 @@
 import { TextField } from '@mui/material';
 import { ReactElement, useState, FocusEvent } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { SetState } from '../../../common/Layout/BulkCodeContext';
 import { BulkCodeLimits } from '../../../../utils/constants/bulkCodeConstants';
 import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDisplayGroup';
@@ -18,7 +18,7 @@ const GenericCodesPartial = ({
   setCodeQuantity,
   setUnitsPerCode,
 }: GenericCodesProps): ReactElement | null => {
-  const { t, ready } = useTranslation(['common', 'bulkCodes']);
+  const { t, ready } = useTranslations(['common', 'bulkCodes']);
   const [errors, setErrors] = useState({
     unitsPerCode: { status: false, errorType: '' },
     codeQuantity: { status: false, errorType: '' },

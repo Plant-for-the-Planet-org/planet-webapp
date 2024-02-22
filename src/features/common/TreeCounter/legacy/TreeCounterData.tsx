@@ -1,5 +1,5 @@
 import { localizedAbbreviatedNumber } from '../../../../utils/getFormattedNumber';
-import { useTranslation } from 'next-i18next';
+import { useLocale } from 'next-intl';
 import treeCounterStyles from '../TreeCounter.module.scss';
 
 interface HomeTreeCounterProps {
@@ -8,17 +8,13 @@ interface HomeTreeCounterProps {
 }
 
 const HomeTreeCounter = ({ planted, target }: HomeTreeCounterProps) => {
-  const { i18n } = useTranslation(['me']);
+  const locale = useLocale();
   return (
     <>
       <div className={treeCounterStyles.tenateTreePlanted}>
-        <div>
-          {localizedAbbreviatedNumber(i18n.language, Number(planted), 1)}
-        </div>
+        <div>{localizedAbbreviatedNumber(locale, Number(planted), 1)}</div>
         <div className={treeCounterStyles.label}>Trees Planted</div>
-        <div>
-          {localizedAbbreviatedNumber(i18n.language, Number(target), 1)}
-        </div>
+        <div>{localizedAbbreviatedNumber(locale, Number(target), 1)}</div>
         <div className={treeCounterStyles.label}>Target</div>
       </div>
     </>

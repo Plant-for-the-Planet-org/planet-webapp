@@ -21,7 +21,7 @@
   "accountPrivacyChangeText": "Para criar um widget de perfil, você precisa ter uma conta pública. Ao clicar em continuar, você muda suas configurações de privacidade para público.",
   "continue": "Continuar",
   "cancel": "Cancelar",
-  "termAndCondition": "Concordo com os <0>Termos e Condições</0> da plataforma Plant-for-the-Planet.",
+  "termAndCondition": "Concordo com os <termsLink>Termos e Condições</termsLink> da plataforma Plant-for-the-Planet.",
   "termAndConditionError": "Por favor Aceite os Termos e Condições",
   "fieldLabels": {
     "profileType": "Eu sou um(a)",

@@ -1,7 +1,7 @@
 import MuiButton from '../../../common/InputTypes/MuiButton';
 import PlanetLogo from '../../../../../public/assets/images/PlanetLogo';
 import styles from '../AccountHistory.module.scss';
-import { useTranslation, Trans } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { getDonationUrl } from '../../../../utils/getDonationUrl';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { useTenant } from '../../../common/Layout/TenantContext';
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const MembershipCta = ({ placement }: Props) => {
-  const { t } = useTranslation('me');
+  const t = useTranslations('Me');
   const { token } = useUserProps();
   const { tenantConfig } = useTenant();
 
@@ -31,13 +31,14 @@ const MembershipCta = ({ placement }: Props) => {
       <PlanetLogo className={styles.logo} />
       <div className={styles.membershipCtaContent}>
         <p className={styles.membershipCtaCopy}>
-          <Trans i18nKey="me:membershipCtaCopy">
-            Support us{' '}
-            <span className={styles.highlighted}>by becoming a member</span>
-          </Trans>
+          {t.rich('membershipCtaCopy', {
+            highlight: (chunks) => (
+              <span className={styles.highlighted}>{chunks}</span>
+            ),
+          })}
         </p>
         <MuiButton variant="contained" component="div">
-          {t('me:membershipCtaButtonText')}
+          {t('membershipCtaButtonText')}
         </MuiButton>
       </div>
     </a>

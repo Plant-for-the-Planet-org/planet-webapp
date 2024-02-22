@@ -7,7 +7,7 @@
   "payoutInformation1": "Výplaty jsou zpracovávány automaticky každý rok, nebo když organizace sbírá 30 000 EUR nebo ekvivalent v jiné měně.",
   "payoutInformation2": "Výplaty vydává Nadace Plant-for-the-Planet Foundation a její sesterské organizace, např.: Plant-for-the-Planet USA, Plant-for-the-Planet Švýcarsko atd.",
   "payoutInformation3": "Pokud splňujete kritéria minimální částky 1 500 EUR, můžete upravit výplatní plán a přijímat časté výplaty.",
-  "supportInformation": "Pokud máte výjimečný případ, kontaktujte prosím<1></1> <2>support@plant-for-the-planet.org</2>.",
+  "supportInformation": "Pokud máte výjimečný případ, kontaktujte prosím <supportLink>support@plant-for-the-planet.org</supportLink>.",
   "scheduleFrequencies": {
     "monthly": "Měsíčně",
     "quarterly": "Čtvrtletně",

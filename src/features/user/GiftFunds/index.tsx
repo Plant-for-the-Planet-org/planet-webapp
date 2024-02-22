@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import DashboardView from '../../common/Layout/DashboardView';
 import GiftFundDetails from './GiftFundDetails';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { useUserProps } from '../../common/Layout/UserPropsContext';
 import { useRouter } from 'next/router';
 import SingleColumnView from '../../common/Layout/SingleColumnView';
 import { GiftFund } from '@planet-sdk/common/build/types/user';
 
 const GiftFunds = () => {
-  const { t, ready } = useTranslation('giftfunds');
+  const t = useTranslations('Giftfunds');
   const router = useRouter();
   const { user } = useUserProps();
 
@@ -33,7 +33,7 @@ const GiftFunds = () => {
     );
   }, [user]);
 
-  return ready ? (
+  return (
     <DashboardView
       title={t('title')}
       subtitle={
@@ -50,8 +50,6 @@ const GiftFunds = () => {
         ))}
       </SingleColumnView>
     </DashboardView>
-  ) : (
-    <></>
   );
 };
 

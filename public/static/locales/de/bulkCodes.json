@@ -1,7 +1,7 @@
 {
   "BulkCodes": {
     "bulkCodesTitle": "Baumurkunden & Codes erzeugen",
-    "partnerSignupInfo": "Unsere Funktion Planet Cash / Bulk-Codes ist eine neue Funktion speziell für Partner von Plant-for-the-Planet. Melden Sie sich gerne bei Interesse bei <2>partner@plant-for-the-planet.org</2>.",
+    "partnerSignupInfo": "Unsere Funktion Planet Cash / Bulk-Codes ist eine neue Funktion speziell für Partner von Plant-for-the-Planet. Melden Sie sich gerne bei Interesse bei <partnerEmailLink>partner@plant-for-the-planet.org</partnerEmailLink>.",
     "bulkCodesDescription1": "Mit PlanetCash kannst du Tausende von Codes auf einmal erzeugen. Das Erzeugen von Urkunden und Codes wird deine Baumzahl steigen lassen.",
     "bulkCodesDescription2": "Mit dieser Funktion kannst du Codes für benutzerdefinierte Zertifikate, Geschenkkarten, Spenden im Namen von Nutzern und einlösbare Codes erstellen, die du mit deinen Produkten verknüpfen kannst.",
     "tabCreationMethod": "Herstellungsmethode",
@@ -83,7 +83,7 @@
     "successUploadCSV": {
       "ignoredColumns": "Zusätzliche Spalten wurden ignoriert"
     },
-    "importInstructions": "Bitte lesen Sie die <2>Dokumentation hier</2>, lade die <5>Excel-Vorlage hier</5> und die <8>CSV-Vorlage hier</8> herunter.",
+    "importInstructions": "Bitte lesen Sie die <docsLink>Dokumentation hier</docsLink>, lade die <excelLink>Excel-Vorlage hier</excelLink> und die <csvLink>CSV-Vorlage hier</csvLink> herunter.",
     "tableHeaders": {
       "recipient_name": "Empfängername",
       "recipient_email": "Empfängeremail",

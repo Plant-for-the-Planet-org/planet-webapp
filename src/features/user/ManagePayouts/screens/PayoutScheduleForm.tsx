@@ -4,7 +4,7 @@ import { Button, MenuItem, CircularProgress } from '@mui/material';
 import ReactHookFormSelect from '../../../common/InputTypes/ReactHookFormSelect';
 import StyledForm from '../../../common/Layout/StyledForm';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
-import { useTranslation, Trans } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { putAuthenticatedRequest } from '../../../../utils/apiRequests/api';
@@ -26,7 +26,7 @@ type FormData = {
 };
 
 const PayoutScheduleForm = (): ReactElement | null => {
-  const { t, ready } = useTranslation('managePayouts');
+  const t = useTranslations('ManagePayouts');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const { token, user, setUser, logoutUser } = useUserProps();
@@ -74,7 +74,7 @@ const PayoutScheduleForm = (): ReactElement | null => {
     setIsSaved(false);
   };
 
-  if (ready && user?.type === 'tpo') {
+  if (user?.type === 'tpo') {
     return (
       <CenteredContainer>
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
@@ -82,16 +82,16 @@ const PayoutScheduleForm = (): ReactElement | null => {
           <p>{t('payoutInformation2')}</p>
           <p>{t('payoutInformation3')}</p>
           <p>
-            <Trans i18nKey="managePayouts:supportInformation">
-              If you have an exceptional case, please contact{' '}
-              <a
-                className="planet-links"
-                href="mailto:support@plant-for-the-planet.org"
-              >
-                support@plant-for-the-planet.org
-              </a>
-              .
-            </Trans>
+            {t.rich('supportInformation', {
+              supportLink: (chunks) => (
+                <a
+                  className="planet-links"
+                  href="mailto:support@plant-for-the-planet.org"
+                >
+                  {chunks}
+                </a>
+              ),
+            })}
           </p>
           <div className="inputContainer">
             <ReactHookFormSelect

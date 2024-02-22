@@ -260,5 +260,6 @@
   "invalidEmail": "Zadejte prosím platné e-mailové ID",
   "wrongEntered": "Emailové ID nebo PIN podpory je nesprávné !!",
   "donatedTrees": "Darované stromy",
-  "resetPin": "Obnovit PIN"
+  "resetPin": "Obnovit PIN",
+  "document": "Dokumentace platformy (CZ)"
 }

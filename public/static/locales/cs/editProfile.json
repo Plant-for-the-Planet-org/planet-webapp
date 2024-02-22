@@ -21,7 +21,7 @@
   "accountPrivacyChangeText": "Abyste mohli vytvořit widget profilu, musíte mít veřejný účet. Kliknutím na tlačítko pokračovat změníte nastavení soukromí na veřejné.",
   "continue": "Pokračovat",
   "cancel": "Zrušit",
-  "termAndCondition": "Souhlasím s <0>podmínkami</0> platformy Plant-for-the-Planet.",
+  "termAndCondition": "Souhlasím s <termsLink>podmínkami</termsLink> platformy Plant-for-the-Planet.",
   "termAndConditionError": "Přijměte prosím Smluvní podmínky",
   "fieldLabels": {
     "profileType": "Já jsem",

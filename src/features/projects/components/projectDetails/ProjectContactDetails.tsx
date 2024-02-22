@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import styles from './../../styles/ProjectDetails.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import BlackTree from '../../../../../public/assets/images/icons/project/BlackTree';
 import Email from '../../../../../public/assets/images/icons/project/Email';
 import Location from '../../../../../public/assets/images/icons/project/Location';
@@ -17,7 +17,8 @@ interface Props {
 }
 
 function ProjectContactDetails({ project }: Props): ReactElement | null {
-  const { t, ready } = useTranslation(['donate']);
+  const t = useTranslations('Donate');
+  const tCountry = useTranslations('Country');
   const { embed } = React.useContext(ParamsContext);
   const contactAddress =
     project.tpo && project.tpo.address
@@ -27,27 +28,19 @@ function ProjectContactDetails({ project }: Props): ReactElement | null {
         (project.tpo.address.city ? project.tpo.address.city + ', ' : '') +
         (project.tpo.address.zipCode ? project.tpo.address.zipCode + ' ' : '') +
         (project.tpo.address.country
-          ? ready
-            ? t('country:' + project.tpo.address.country.toLowerCase())
-            : ''
+          ? tCountry(project.tpo.address.country.toLowerCase())
           : '')
-      : ready
-      ? t('donate:unavailable')
-      : '';
-
+      : t('unavailable');
   const projectWebsiteLink = project.website
     ? project.website.includes('http') || project.website.includes('https')
       ? project.website
       : `http://${project.website}`
-    : ready
-    ? t('donate:unavailable')
-    : '';
-
+    : t('unavailable');
   const contactDetails = [
     {
       id: 1,
       icon: <BlackTree color={styles.highlightBackground} />,
-      text: ready ? t('donate:viewProfile') : '',
+      text: t('viewProfile'),
       link: project.tpo.slug,
     },
     {
@@ -58,9 +51,7 @@ function ProjectContactDetails({ project }: Props): ReactElement | null {
             .replace('http://', '')
             .replace('https://', '')
             .split(/[/?#]/)[0]
-        : ready
-        ? t('donate:unavailable')
-        : '',
+        : t('unavailable'),
       link: projectWebsiteLink,
     },
     {
@@ -75,19 +66,15 @@ function ProjectContactDetails({ project }: Props): ReactElement | null {
       id: 4,
       icon: <Email color={styles.highlightBackground} />,
       text:
-        project.tpo && project.tpo.email
-          ? project.tpo.email
-          : ready
-          ? t('donate:unavailable')
-          : '',
+        project.tpo && project.tpo.email ? project.tpo.email : t('unavailable'),
       link:
         project.tpo && project.tpo.email ? `mailto:${project.tpo.email}` : null,
     },
   ];
-  return ready ? (
+  return (
     <div className={styles.projectContactDetails}>
       <div className={styles.projectMoreInfo}>
-        <div className={styles.infoTitle}>{t('donate:contactDetails')}</div>
+        <div className={styles.infoTitle}>{t('contactDetails')}</div>
         <Link
           prefetch={false}
           href="/t/[id]"
@@ -119,7 +106,7 @@ function ProjectContactDetails({ project }: Props): ReactElement | null {
         })}
       </div>
     </div>
-  ) : null;
+  );
 }
 
 export default ProjectContactDetails;

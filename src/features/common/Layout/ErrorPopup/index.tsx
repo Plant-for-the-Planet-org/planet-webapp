@@ -1,11 +1,11 @@
 import React, { ReactElement, useContext, useEffect } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './ErrorPopup.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { ErrorHandlingContext } from '../ErrorHandlingContext';
 
 export default function ErrorPopup(): ReactElement {
-  const { t, ready } = useTranslation(['common']);
+  const t = useTranslations('Common');
   const { errors, setErrors } = useContext(ErrorHandlingContext);
 
   useEffect(() => {
@@ -33,8 +33,7 @@ export default function ErrorPopup(): ReactElement {
 
   return (
     <>
-      {ready &&
-        errors &&
+      {errors &&
         errors.length > 0 &&
         errors.map((err, index) => {
           return (

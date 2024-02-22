@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import styles from '../Import.module.scss';
 import DeleteIcon from '../../../../../../public/assets/images/icons/manageProjects/Delete';
 import {
@@ -62,7 +62,7 @@ export default function SampleTreeCard({
   errors,
 }: Props): ReactElement {
   const sampleTrees = getValues();
-  const { t } = useTranslation(['treemapper', 'common']);
+  const t = useTranslations('Treemapper');
   return (
     <div className={styles.sampleTreeFieldGroup}>
       <div className={styles.sampleTreeName}>

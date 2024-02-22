@@ -2,12 +2,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import CloseIcon from '../../../../../public/assets/images/icons/CloseIcon';
 import styles from './RedeemPopup.module.scss';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { useTenant } from '../TenantContext';
 import { useUserProps } from '../UserPropsContext';
 
 export default function RedeemPopup() {
-  const { t, ready } = useTranslation(['leaderboard']);
+  const t = useTranslations('Common');
   const { tenantConfig } = useTenant();
 
   const [showRedeemPopup, setShowRedeemPopup] = useState(false);
@@ -55,7 +55,7 @@ export default function RedeemPopup() {
     isMountedRef.current = true;
   }, []);
 
-  return ready && showRedeemPopup ? (
+  return showRedeemPopup ? (
     <div className={styles.cookieContainer}>
       <button
         id={'redeemCloseButton'}
@@ -65,8 +65,7 @@ export default function RedeemPopup() {
         <CloseIcon color={styles.primaryColor} />
       </button>
       <div className={styles.cookieContent}>
-        {t('common:redeemPopup')}{' '}
-        <a onClick={sendUserToLogin}>{t('common:login')}</a>
+        {t('redeemPopup')} <a onClick={sendUserToLogin}>{t('login')}</a>
       </div>
     </div>
   ) : null;

@@ -1,6 +1,6 @@
 {
   "bulkCodesTitle": "Vydání hromadných kódů",
-  "partnerSignupInfo": "Použití této funkce společnostmi podléhá partnerství se společností Plant-for-the-Planet. Kontaktujte prosím <2>partner@plant-for-the-planet.org</2> pro podrobnosti.",
+  "partnerSignupInfo": "Použití této funkce společnostmi podléhá partnerství se společností Plant-for-the-Planet. Kontaktujte prosím <partnerEmailLink>partner@plant-for-the-planet.org</partnerEmailLink> pro podrobnosti.",
   "bulkCodesDescription1": "Pomocí PlanetCash můžete generovat tisíce kódů v jedné operaci.",
   "bulkCodesDescription2": "Tuto funkci můžete použít k vytvoření kódů pro vlastní certifikáty, dárkové karty, dary jménem uživatelů a uplatnitelné kódy, které můžete přiřadit k vašim produktům.",
   "tabCreationMethod": "Metoda tvorby",
@@ -11,12 +11,20 @@
   "importMethodText": {
     "title": "Importovat soubor",
     "subtitle": "Tuto metodu použijte, pokud jedno z následujících kritérií odpovídá vašemu případu použití:",
-    "details": ["Chci uvést jméno příjemce nebo e-mail pro každý kód.", "Chci, aby Plant-for-the-Planet po vygenerování automaticky odeslal příjemcům e-mail (volitelné).", "Chci vydat kódy pro různé počty stromů."]
+    "details": [
+      "Chci uvést jméno příjemce nebo e-mail pro každý kód.",
+      "Chci, aby Plant-for-the-Planet po vygenerování automaticky odeslal příjemcům e-mail (volitelné).",
+      "Chci vydat kódy pro různé počty stromů."
+    ]
   },
   "genericMethodText": {
     "title": "Vytvoření obecných kódů",
     "subtitle": "Tuto metodu použijte, pokud následující kritéria odpovídají vašemu případu použití:",
-    "details": ["Všechny kódy budou mít stejnou hodnotu.", "Chci vygenerovat řadu kódů pro libovolné příjemce.", "Jména a e-maily nelze s kódem asociovat."]
+    "details": [
+      "Všechny kódy budou mít stejnou hodnotu.",
+      "Chci vygenerovat řadu kódů pro libovolné příjemce.",
+      "Jména a e-maily nelze s kódem asociovat."
+    ]
   },
   "projectName": "Název projektu",
   "costPerUnit": "Cena za jednotku",
@@ -69,7 +77,7 @@
   "successUploadCSV": {
     "ignoredColumns": "Další sloupce byly ignorovány"
   },
-  "importInstructions": "Přečtěte si <2>dokumentaci zde</2>, stáhněte si <5>šablonu aplikace Excel zde</5>, a <8>šablonu CSV zde</8>.",
+  "importInstructions": "Přečtěte si <docsLink>dokumentaci zde</docsLink>, stáhněte si <excelLink>šablonu aplikace Excel zde</excelLink>, a <csvLink>šablonu CSV zde</csvLink>.",
   "donationSuccess": "Váš dar byl úspěšný. Přesměrování na zobrazení podrobností o darování brzy...",
   "donationError": {
     "planet_cash_insufficient_credit": "Dostupný kredit = {{availableBalance}}. Chcete-li provést tento dar, nahrajte zůstatek na svém účtu PlanetCash.",

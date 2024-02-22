@@ -1,17 +1,17 @@
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { ReactElement } from 'react';
 import CenteredContainer from '../../../common/Layout/CenteredContainer';
 import DashboardView from '../../../common/Layout/DashboardView';
 import EditProfileForm from './EditProfileForm';
 
 export default function (): ReactElement | null {
-  const { t, ready } = useTranslation('me');
+  const t = useTranslations('Me');
 
-  return ready ? (
+  return (
     <DashboardView title={t('editProfile')} subtitle={null} variant="compact">
       <CenteredContainer>
         <EditProfileForm />
       </CenteredContainer>
     </DashboardView>
-  ) : null;
+  );
 }
