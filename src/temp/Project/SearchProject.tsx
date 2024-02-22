@@ -12,6 +12,7 @@ import {
 } from '@mui/material/styles';
 import { FilterDropDown } from './Filter';
 import style from './Search.module.scss';
+import { useTranslation, Trans } from 'next-i18next';
 
 const customTheme = (outerTheme: Theme) =>
   createTheme({
@@ -65,6 +66,7 @@ const SearchProject = ({
 }: SearchProjectInterface) => {
   const [input, setInput] = useState('');
   const [activeSearch, setSearchActive] = useState(searchActive);
+  const { t } = useTranslation(['projectDetails']);
   const outerTheme = useTheme();
 
   return (
@@ -80,9 +82,15 @@ const SearchProject = ({
             </div>
             <ThemeProvider theme={customTheme(outerTheme)}>
               <TextField
+                sx={{
+                  '.MuiInput-input': {
+                    marginTop: '4px',
+                    marginLeft: '10px',
+                  },
+                }}
                 id="standard-search"
                 variant="standard"
-                placeholder="Search Project"
+                placeholder={t('projectDetails:searchProject')}
                 value={input}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                   setInput(event.target.value);
@@ -108,13 +116,19 @@ const SearchProject = ({
                 <StarIcon width={'16px'} height={'17px'} color={'#219653'} />
               </div>
               <div className={style.topProjectLabelContainer}>
-                <div className={style.label}>Top Projects</div>
-                <div className={style.countProject}>(56)</div>
+                <div style={{ fontSize: '14px', fontWeight: 'bold' }}>
+                  {t('projectDetails:topProjects', {
+                    noOfProjects: 56,
+                  })}
+                </div>
               </div>
             </div>
             <div className={style.allProjectLabelContainer}>
-              <div className={style.label}>All</div>
-              <div className={style.countProject}>(155)</div>
+              <div style={{ fontSize: '14px', fontWeight: 'bold' }}>
+                {t('projectDetails:all', {
+                  noOfProjects: 56,
+                })}
+              </div>
             </div>
             <div className={style.projectFeatureContainer}>
               <div

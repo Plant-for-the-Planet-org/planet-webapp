@@ -1,3 +1,9 @@
 {
-    "satelliteAnalysis": "Satellite Analysis"
+  "satelliteAnalysis": "Satellite Analysis",
+  "allProjects": "All Projects",
+  "searchProject": "Search Project",
+  "topProjects": "Top Projects({{noOfProjects}})",
+  "all": "All({{noOfProjects}})",
+  "list": "List",
+  "map": "Map"
 }

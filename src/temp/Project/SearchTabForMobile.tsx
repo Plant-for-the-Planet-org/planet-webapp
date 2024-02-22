@@ -5,12 +5,14 @@ import FilterIcon from '../icons/FilterIcon';
 import ListIcon from '../icons/ListIcon';
 import LocationIcon from '../icons/LocationIcon';
 import style from '../Project/Search.module.scss';
+import { useTranslation } from 'next-i18next';
 
 interface SearchTabForMobileProps {
   active: boolean;
 }
 
 export const SearchTabForMobile = ({ active }: SearchTabForMobileProps) => {
+  const { t } = useTranslation(['projectDetails']);
   const [isAllProject, setIsAllProject] = useState(false);
   const [isTopProject, setIsTopProject] = useState(true);
   const [isList, setIsList] = useState(true);
@@ -59,8 +61,11 @@ export const SearchTabForMobile = ({ active }: SearchTabForMobileProps) => {
                 : style.topProjectLabelConatiner
             }
           >
-            <div className={style.topProjectLable}>Top Projects</div>
-            <div className={style.noOfProject}>(56)</div>
+            <div className={style.topProjectLable}>
+              {t('projectDetails:topProjects', {
+                noOfProjects: 56,
+              })}
+            </div>
           </div>
         </button>
         <button
@@ -69,8 +74,11 @@ export const SearchTabForMobile = ({ active }: SearchTabForMobileProps) => {
           }
           onClick={_handleClick1}
         >
-          <div className={style.allProjectLabel}>All</div>
-          <div className={style.noOfProject}>(23)</div>
+          <div className={style.allProjectLabel}>
+            {t('projectDetails:all', {
+              noOfProjects: 56,
+            })}
+          </div>
         </button>
       </div>
       <div className={style.projectFeaturesMobile}>
@@ -89,7 +97,7 @@ export const SearchTabForMobile = ({ active }: SearchTabForMobileProps) => {
           <div>
             <ListIcon color={isList ? '#fff' : '#333333'} />
           </div>
-          <div className={style.listLable}>List</div>
+          <div className={style.listLable}>{t('projectDetails:list')}</div>
         </button>
         <button
           className={
@@ -100,7 +108,7 @@ export const SearchTabForMobile = ({ active }: SearchTabForMobileProps) => {
           <div>
             <LocationIcon color={isLocation ? '#fff' : '#333333'} />
           </div>
-          <div className={style.mapLable}>Map</div>
+          <div className={style.mapLable}>{t('projectDetails:map')}</div>
         </button>
       </div>
     </div>
