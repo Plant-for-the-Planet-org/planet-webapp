@@ -22,10 +22,8 @@ const MembershipCta = ({ placement }: Props) => {
           ? styles.membershipCtaTop
           : styles.membershipCtaRight
       }`}
-      href={getDonationUrl(
-        tenantConfig.id,
-        'proj_LOxkf5GYI054Fi0HcEUF3dKu',
-        token
+      href={encodeURI(
+        getDonationUrl(tenantConfig.id, 'proj_LOxkf5GYI054Fi0HcEUF3dKu', token)
       )}
     >
       <PlanetLogo className={styles.logo} />
