@@ -270,7 +270,7 @@ export interface ProjectOption {
   name: string;
   unitCost: number;
   currency: string;
-  unit?: string;
+  unit?: 'tree' | 'm2' | 'ha';
   purpose: string;
   allowDonations: boolean;
 }
