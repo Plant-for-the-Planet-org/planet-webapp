@@ -1,5 +1,5 @@
 import { useEffect, useContext, ReactElement } from 'react';
-import myForestStyles from '../../../ProfileV2/styles/MyForest.module.scss';
+import myForestStyles from '../../../Profile/styles/MyForest.module.scss';
 import dynamic from 'next/dynamic';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
@@ -8,7 +8,7 @@ import { Purpose } from '../../../../../utils/constants/myForest';
 import { ContributionData } from '../../../../common/types/myForest';
 import { StatsResult } from '../../../../common/types/myForest';
 import { MyContributionsProps } from '../../../../common/types/map';
-import ContributionStats from '../contributionStats';
+import ContributionStats from '../ContributionStats';
 import { SetState } from '../../../../common/types/common';
 import { PointFeature } from 'supercluster';
 import { TestPointProps } from '../../../../common/types/map';
@@ -27,7 +27,7 @@ const queryFetchOptions = {
   refetchOnReconnect: false,
 };
 
-const MyTreesMap = dynamic(() => import('../myForestMap'), {
+const MyTreesMap = dynamic(() => import('../MyForestMap'), {
   loading: () => <p>loading</p>,
 });
 

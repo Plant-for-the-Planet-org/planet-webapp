@@ -197,8 +197,8 @@ export const DonationPopUp = ({
         asPath !== '/profile' ? profile.slug : undefined
       );
       embed === 'true'
-        ? window.open(url, '_blank')
-        : (window.location.href = url);
+        ? window.open(encodeURI(url), '_blank')
+        : (window.location.href = encodeURI(url));
     }
   };
   return ready ? (

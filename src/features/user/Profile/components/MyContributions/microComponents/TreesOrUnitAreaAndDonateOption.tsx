@@ -48,8 +48,8 @@ const TreesOrUnitAreaAndDonateOption = ({
       asPath !== '/profile' ? publicProfileSlug : undefined
     );
     embed === 'true'
-      ? window.open(url, '_blank')
-      : (window.location.href = url);
+      ? window.open(encodeURI(url), '_blank')
+      : (window.location.href = encodeURI(url));
   };
 
   const _checkConditions = () => {

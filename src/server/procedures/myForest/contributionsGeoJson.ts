@@ -204,6 +204,7 @@ export const contributionsGeoJson = procedure
             .map(
               (gift) => JSON.parse(JSON.stringify(gift.metadata))?.project?.id
             )
+            .filter((id) => id !== null && id !== undefined)
         : [];
 
     const projectsWithImage = await prisma.project.findMany({
@@ -223,9 +224,11 @@ export const contributionsGeoJson = procedure
 
     const giftProjectIds =
       giftData.length > 0
-        ? giftData.map(
-            (gift) => JSON.parse(JSON.stringify(gift.metadata))?.project?.id
-          )
+        ? giftData
+            .map(
+              (gift) => JSON.parse(JSON.stringify(gift.metadata))?.project?.id
+            )
+            .filter((id) => id !== null && id !== undefined)
         : [];
 
     const giftProjects = await prisma.project.findMany({
@@ -273,49 +276,55 @@ export const contributionsGeoJson = procedure
       };
     }) as Feature[];
 
-    const gifts = giftData.map((gift) => {
-      const image = projectsWithImage.find(
-        (project) =>
-          project.guid ===
-          JSON.parse(JSON.stringify(gift.metadata))?.project?.id
-      )?.image;
+    const gifts = giftData
+      .map((gift) => {
+        const image = projectsWithImage.find(
+          (project) =>
+            project.guid ===
+            JSON.parse(JSON.stringify(gift.metadata))?.project?.id
+        )?.image;
 
-      const _giftProject = JSON.parse(JSON.stringify(gift.metadata));
+        const _giftProject = JSON.parse(JSON.stringify(gift.metadata));
 
-      const projectAllowDonations = giftProjects.find(
-        (project) => project.guid === _giftProject?.project?.id
-      )?.allowDonations;
+        const projectAllowDonations = giftProjects.find(
+          (project) => project.guid === _giftProject?.project?.id
+        )?.allowDonations;
 
-      const _gift = {
-        type: 'Feature',
-        properties: {
-          cluster: false,
-          purpose: gift.purpose,
-          quantity: gift.value,
-          project: {
-            guid: _giftProject.project.id,
-            name: _giftProject.project.name,
-            image: _giftProject.project.image
-              ? _giftProject.project.image
-              : image,
-            country: _giftProject.project.country,
-            allowDonations: projectAllowDonations,
-            tpo: {
-              name: _giftProject.project.organization.name,
+        const _gift = {
+          type: 'Feature',
+          properties: {
+            cluster: false,
+            purpose: gift.purpose,
+            quantity: gift.value,
+            project: {
+              guid: _giftProject?.project?.id,
+              name: _giftProject?.project?.name,
+              image: _giftProject?.project?.image
+                ? _giftProject?.project?.image
+                : image,
+              country: _giftProject?.project?.country,
+              allowDonations: projectAllowDonations,
+              tpo: {
+                name: _giftProject?.project?.organization?.name,
+              },
             },
+            created: gift.created,
+            totalContributions: 1,
+            _type: 'gift',
           },
-          created: gift.created,
-          totalContributions: 1,
-          _type: 'gift',
-        },
-        geometry: {
-          type: 'Point',
-          coordinates: gift.metadata.project.coordinates,
-        },
-      };
+          geometry: {
+            type: 'Point',
+            coordinates: gift?.metadata?.project?.coordinates,
+          },
+        };
 
-      return _gift;
-    }) as Feature[];
+        return _gift;
+      })
+      .filter(
+        (gift) =>
+          gift.geometry.coordinates !== null &&
+          gift.geometry.coordinates !== undefined
+      ) as Feature[];
 
     const mergedFeatures = mergeFeaturesWithSameCoordinates([
       ...contributions,

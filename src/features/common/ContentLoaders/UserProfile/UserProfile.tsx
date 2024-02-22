@@ -1,9 +1,9 @@
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import React from 'react';
-import myProfileStyle from '../../../user/ProfileV2/styles/MyProfile.module.scss';
-import myForestMapStyle from '../../../user/ProfileV2/styles/MyForestMap.module.scss';
-import myForestStyle from '../../../user/ProfileV2/styles/MyForest.module.scss';
+import myProfileStyle from '../../../user/Profile/styles/MyProfile.module.scss';
+import myForestMapStyle from '../../../user/Profile/styles/MyForestMap.module.scss';
+import myForestStyle from '../../../user/Profile/styles/MyForest.module.scss';
 
 export const UserProfileLoader = () => {
   return (
