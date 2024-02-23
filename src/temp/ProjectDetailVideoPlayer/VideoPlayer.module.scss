@@ -1,0 +1,34 @@
+
+.videoContainer {
+    position: relative;
+}
+  
+  .videoContainer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.30);
+    border-radius: 13px;
+    width: 306px;
+    height: 153px;
+  }
+
+
+.playButtonBackdrop {
+    background-color: rgba(255, 255, 255, 0.20);
+    border-radius: 50%;
+    backdrop-filter: blur(4.902973175048828px);
+    height: 41px;
+    width: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+        height: 19px;
+        width: 15px;
+    }
+}
