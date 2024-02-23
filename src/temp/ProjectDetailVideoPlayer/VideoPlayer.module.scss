@@ -16,6 +16,10 @@
     height: 153px;
   }
 
+  .video > div,.videoContainer> div > div > iframe  {
+    border-radius: 13px;
+
+}
 
 .playButtonBackdrop {
     background-color: rgba(255, 255, 255, 0.20);
