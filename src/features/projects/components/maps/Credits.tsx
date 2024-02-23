@@ -43,7 +43,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
   return (
     <>
       <div className={styles.lngSwitcher + ' mapboxgl-map'}>
-        {tenantConfig.config.darkModeEnabled && <DarkModeSwitch />}
+        {/* {tenantConfig.config.darkModeEnabled && <DarkModeSwitch />} */}
         {isEmbed ? null : (
           <div
             onClick={() => {
@@ -55,7 +55,8 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
             } • ${selectedCurrency}`}
           </div>
         )}
-        {(tenantConfig.config.slug === 'ttc' || tenantConfig.config.slug === 'planet') &&
+        {(tenantConfig.config.slug === 'ttc' ||
+          tenantConfig.config.slug === 'planet') &&
         !isEmbed ? (
           <a
             rel="noopener noreferrer"
