@@ -8,8 +8,7 @@ import { getRequest } from '../../../../src/utils/apiRequests/api';
 import getStoredCurrency from '../../../../src/utils/countryCurrency/getStoredCurrency';
 import GetProjectMeta from '../../../../src/utils/getMetaTags/GetProjectMeta';
 import { getAllPlantLocations } from '../../../../src/utils/maps/plantLocations';
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { AbstractIntlMessages, useLocale } from 'next-intl';
 import {
   handleError,
   APIError,
@@ -33,18 +32,15 @@ import {
   GetStaticPropsResult,
 } from 'next';
 import { defaultTenant } from '../../../../tenant.config';
+import deepmerge from 'deepmerge';
 
 interface Props {
-  initialized: boolean;
   currencyCode: string | null | undefined;
   setCurrencyCode: SetState<string | null | undefined>;
-  pageProps: {
-    tenantConfig: Tenant;
-  };
+  pageProps: PageProps;
 }
 
 export default function Donate({
-  initialized,
   currencyCode,
   setCurrencyCode,
   pageProps,
@@ -54,7 +50,7 @@ export default function Donate({
     string | undefined | null
   >(undefined);
   const [internalLanguage, setInternalLanguage] = React.useState('');
-  const { i18n } = useTranslation();
+  const locale = useLocale();
   const {
     geoJson,
     project,
@@ -87,13 +83,13 @@ export default function Donate({
       if (
         !internalCurrencyCode ||
         currencyCode !== internalCurrencyCode ||
-        internalLanguage !== i18n.language
+        internalLanguage !== locale
       ) {
         const currency = getStoredCurrency(
           pageProps.tenantConfig.config.fallbackCurrency!
         );
         setInternalCurrencyCode(currency);
-        setInternalLanguage(i18n.language);
+        setInternalLanguage(locale);
         setCurrencyCode(currency);
         try {
           const { p } = router.query;
@@ -103,7 +99,7 @@ export default function Donate({
             {
               _scope: 'extended',
               currency: currency || '',
-              locale: i18n.language,
+              locale: locale,
             }
           );
           if (
@@ -128,7 +124,7 @@ export default function Donate({
     if (router.query.p) {
       loadProject();
     }
-  }, [router.query.p, currencyCode, i18n.language]);
+  }, [router.query.p, currencyCode, locale]);
 
   React.useEffect(() => {
     async function loadPl(
@@ -195,15 +191,13 @@ export default function Donate({
   return pageProps.tenantConfig ? (
     <>
       {project ? <GetProjectMeta project={project} /> : null}
-      {initialized ? (
-        project ? (
-          <>
-            <SingleProjectDetails />
-          </>
-        ) : (
-          <></>
-        )
-      ) : null}
+      {project ? (
+        <>
+          <SingleProjectDetails />
+        </>
+      ) : (
+        <></>
+      )}
       <Credits setCurrencyCode={setCurrencyCode} />
     </>
   ) : (
@@ -230,43 +224,66 @@ export const getStaticPaths = async () => {
   };
 };
 
-interface StaticProps {
+interface PageProps {
+  messages: AbstractIntlMessages;
   tenantConfig: Tenant;
 }
 
-export const getStaticProps: GetStaticProps<StaticProps> = async (
+export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
-): Promise<GetStaticPropsResult<StaticProps>> => {
+): Promise<GetStaticPropsResult<PageProps>> => {
   const tenantConfig =
     (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
+  const userMessages = {
+    ...(
+      await import(
+        `../../../../public/static/locales/${context.params?.locale}/common.json`
+      )
+    ).default,
+    ...(
+      await import(
+        `../../../../public/static/locales/${context.params?.locale}/maps.json`
+      )
+    ).default,
+    ...(
+      await import(
+        `../../../../public/static/locales/${context.params?.locale}/donate.json`
+      )
+    ).default,
+    ...(
+      await import(
+        `../../../../public/static/locales/${context.params?.locale}/country.json`
+      )
+    ).default,
+    ...(
+      await import(
+        `../../../../public/static/locales/${context.params?.locale}/manageProjects.json`
+      )
+    ).default,
+  };
+
+  const defaultMessages = {
+    ...(await import('../../../../public/static/locales/en/common.json'))
+      .default,
+    ...(await import('../../../../public/static/locales/en/maps.json')).default,
+    ...(await import('../../../../public/static/locales/en/donate.json'))
+      .default,
+    ...(await import('../../../../public/static/locales/en/country.json'))
+      .default,
+    ...(
+      await import('../../../../public/static/locales/en/manageProjects.json')
+    ).default,
+  };
+
+  const messages: AbstractIntlMessages = deepmerge(
+    defaultMessages,
+    userMessages
+  );
+
   return {
     props: {
-      ...(await serverSideTranslations(
-        context.locale || 'en',
-        [
-          'bulkCodes',
-          'common',
-          'country',
-          'donate',
-          'donationLink',
-          'editProfile',
-          'giftfunds',
-          'leaderboard',
-          'managePayouts',
-          'manageProjects',
-          'maps',
-          'me',
-          'planet',
-          'planetcash',
-          'redeem',
-          'registerTrees',
-          'tenants',
-          'treemapper',
-        ],
-        null,
-        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
-      )),
+      messages,
       tenantConfig,
     },
   };

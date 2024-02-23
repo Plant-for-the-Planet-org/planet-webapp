@@ -33,9 +33,7 @@ import deepmerge from 'deepmerge';
 interface Props {
   currencyCode: string;
   setCurrencyCode: SetState<string>;
-  pageProps: {
-    tenantConfig: Tenant;
-  };
+  pageProps: PageProps;
 }
 
 export default function Donate({
