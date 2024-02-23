@@ -60,7 +60,7 @@ const ImagesSlider = ({ images, height, imageSize, type }: Props) => {
           height: 3.35,
           background: 'rgba(255, 255, 255, 0.50)',
         }}
-        storyContainerStyles={{ borderRadius: 26 }}
+        storyContainerStyles={{ borderRadius: 13 }}
       />
     );
   }, [images]);
