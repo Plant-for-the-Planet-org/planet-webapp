@@ -257,9 +257,10 @@ export const MapContainer = () => {
     }
   };
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
-    const value = event.target.value.trim();
+  const handleSearchChange = (event: any) => {
+    let value = event.target.value || event.clipboardData?.getData('Text');
+    value = value ? value.trim() : '';
+    setSearch(value);
 
     // Regular expression for HID (6 letters, A-Z and 0-9)
     const hidRegex = /^[A-Za-z0-9]{6}$/;
@@ -336,6 +337,7 @@ export const MapContainer = () => {
           value={search}
           placeholder={moment().format('YYYY-MM-DD')}
           onChange={handleSearchChange}
+          onPaste={handleSearchChange}
         />
       }
       overrideBodyStyles={styles.body}
