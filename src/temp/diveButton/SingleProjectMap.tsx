@@ -1,17 +1,17 @@
 import DiveIcon from '../icons/DiveIcon';
-import style from './projectView.module.scss';
+import style from './SingleProjectMap.module.scss';
 import { useTranslation } from 'next-i18next';
 
-interface projectViewProps {
+interface ProjectViewProps {
   active: boolean;
 }
 
-const ProjectView = ({ active }: projectViewProps) => {
+const ProjectView = ({ active }: ProjectViewProps) => {
   const { t } = useTranslation(['projectDetails']);
   return (
     <div className={style.projectViewMainContainer}>
       <button className={style.diveIntoProjectButton}>
-        <div>
+        <div style={{ marginTop: '1px' }}>
           <DiveIcon />
         </div>
         <div className={style.label}>

@@ -1,7 +1,7 @@
 .projectViewMainContainer {
   width: 306px;
   height: 341px;
-  background: grey;
+  background: grey; //need to be removed
   border-radius: 13.401px;
   position: relative;
 }
@@ -16,7 +16,7 @@
   height: 40px;
   background: #219653;
   border-radius: 8px;
-  top: 285px;
+  bottom: 16px;
   left: 16px;
   .label {
     font-size: 12px;
