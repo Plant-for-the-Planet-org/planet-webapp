@@ -9,10 +9,10 @@ interface Props {
   height: number;
   width: number;
   color: string;
-  text: string;
+  children: React.ReactNode;
 }
 
-const InfoIconPopup = ({ height, width, color, text }: Props) => {
+const InfoIconPopup = ({ height, width, color, children }: Props) => {
   const abandonmentInfoPopupState = usePopupState({
     variant: 'popover',
     popupId: 'abandonmentInfoPopover',
@@ -34,7 +34,7 @@ const InfoIconPopup = ({ height, width, color, text }: Props) => {
           e.stopPropagation();
         }}
       >
-        <div className={styles.infoIconPopupContainer}>{text}</div>
+        {children}
       </HoverPopover>
     </div>
   );

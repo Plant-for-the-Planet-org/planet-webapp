@@ -64,12 +64,11 @@ const InfoContainer = ({
         <div className={styles.halfInfo}>
           <div className={styles.infoTitle}>
             {t('manageProjects:abandonment')}
-            <InfoIconPopup
-              height={10}
-              width={10}
-              color={'#F2994A'}
-              text={t('manageProjects:yearAbandonedInfo')}
-            />
+            <InfoIconPopup height={10} width={10} color={'#F2994A'}>
+              <div className={styles.infoIconPopupContainer}>
+                {t('manageProjects:yearAbandonedInfo')}
+              </div>
+            </InfoIconPopup>
           </div>
           <div className={styles.infoDetail}>
             {' '}
