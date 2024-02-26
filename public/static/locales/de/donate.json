@@ -112,5 +112,7 @@
   "conservation": "Schutz",
   "restoration": "Renaturierung",
   "filters": "Filter",
-  "perM2": "pro m²"
+  "perM2": "pro m²",
+  "plantedTrees": "Gepflanzte Bäume",
+  "restored": "Wiederhergestellt"
 }

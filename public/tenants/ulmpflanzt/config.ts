@@ -14,12 +14,12 @@ const config = {
     title: 'Ulm pflanzt Bäume',
     description:
       '124.781 Bäume – für jede/n Ulmer Bürger/in einen. Das ist das Ziel von „Ulm pflanzt Bäume“ – der Klima-Initiative von Plant-for-the-Planet , dem unw (Ulmer Initiativkreis nachhaltige Wirtschaftsentwicklung e. V.), den Ulmer Unternehmen pervormance international, Trivis und der Volksbank Ulm sowie der Stadt Ulm und der lokalen agenda ulm 21.',
-    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+    image: `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`,
     twitterHandle: '',
     locale: 'de_DE',
   },
   home: {
-    image: `${process.env.CDN_URL}/media/images/app/bg_layer.jpg`,
+    image: `https://cdn.plant-for-the-planet.org/media/images/app/bg_layer.jpg`,
   },
   header: {
     isSecondaryTenant: true,

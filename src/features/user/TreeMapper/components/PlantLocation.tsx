@@ -108,7 +108,7 @@ function PlantLocation({
             {(location as PlantLocationMulti).type === 'multi' && treeCount
               ? `${treeCount}`
               : `1`}
-            <TreeIcon />
+            <TreeIcon  width={'19px'} height={'19.25px'} />
           </div>
           <div className={styles.mode}>
             {t((location as PlantLocationBase).captureStatus)}
