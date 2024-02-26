@@ -23,7 +23,7 @@ const UserFeatures = ({
   const { light } = theme;
   const router = useRouter();
   const { t } = useTranslation(['profile']);
-  const { setRefetchUserData } = useUserProps();
+  const { setRefetchUserData, user: verifiedUser } = useUserProps();
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
 
   const handleRegisterTree = () => {
@@ -46,30 +46,31 @@ const UserFeatures = ({
         </div>
       )}
       <div className={myProfileStyle.privateFeatureContainer}>
-        {router.asPath === '/profile' && userProfile?.supportPin && (
-          <>
-            <Button
-              className={myProfileStyle.profileRedeemButton}
-              variant="contained"
-              startIcon={<RedeemCodeSvg color={`${light.light}`} />}
-              onClick={handleRedeemModalOpen}
-            >
-              {t('profile:feature.redeem')}
-            </Button>
-            <RedeemModal
-              redeemModalOpen={isRedeemModalOpen}
-              handleRedeemModalClose={handleRedeemModalClose}
-            />
-            <Button
-              className={myProfileStyle.registeredTreeButton}
-              variant="contained"
-              startIcon={<RegisteredTreeSvg color={`${light.light}`} />}
-              onClick={handleRegisterTree}
-            >
-              {t('profile:feature.registerTree')}
-            </Button>
-          </>
-        )}
+        {router.asPath === '/profile' &&
+          userProfile?.id === verifiedUser?.id && (
+            <>
+              <Button
+                className={myProfileStyle.profileRedeemButton}
+                variant="contained"
+                startIcon={<RedeemCodeSvg color={`${light.light}`} />}
+                onClick={handleRedeemModalOpen}
+              >
+                {t('profile:feature.redeem')}
+              </Button>
+              <RedeemModal
+                redeemModalOpen={isRedeemModalOpen}
+                handleRedeemModalClose={handleRedeemModalClose}
+              />
+              <Button
+                className={myProfileStyle.registeredTreeButton}
+                variant="contained"
+                startIcon={<RegisteredTreeSvg color={`${light.light}`} />}
+                onClick={handleRegisterTree}
+              >
+                {t('profile:feature.registerTree')}
+              </Button>
+            </>
+          )}
       </div>
 
       <div className={myProfileStyle.shareButtonContainer}>
