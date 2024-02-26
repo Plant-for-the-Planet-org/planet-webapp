@@ -64,5 +64,6 @@
   "trees": "trees",
   "plantingDensity": "Planting Density",
   "sampleTrees": "Sample Trees",
-  "tag": "Tag"
+  "tag": "Tag",
+  "searchDateError": "Search date is not between the selected date range."
 }

@@ -1,4 +1,10 @@
-import { MutableRefObject, useEffect, useRef, useState } from 'react';
+import {
+  MutableRefObject,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Search } from '@mui/icons-material';
@@ -33,8 +39,17 @@ import styles from './index.module.scss';
 import getMapStyle from '../../../../../../utils/maps/getMapStyle';
 import TreeMapperIcon from './components/TreeMapperIcon';
 import { QueryType } from '../../constants';
-import { isValid, parseISO } from 'date-fns';
+import {
+  format,
+  isAfter,
+  isBefore,
+  isEqual,
+  isValid,
+  parse,
+  parseISO,
+} from 'date-fns';
 import PlantLocationDetailsZeroState from './components/PlantLocationDetailsZeroState';
+import { ErrorHandlingContext } from '../../../../../common/Layout/ErrorHandlingContext';
 
 const EMPTY_STYLE = {
   version: 8,
@@ -59,8 +74,29 @@ const getPolygonOpacity = (density: number) => {
   }
 };
 
+function isDateBetween(
+  searchDateStr: string,
+  fromDateStr: Date,
+  toDateStr: Date
+) {
+  const searchDate = parse(searchDateStr, 'yyyy-MM-dd', new Date());
+  const fromDate = new Date(fromDateStr);
+  const toDate = new Date(toDateStr);
+
+  // Check if searchDate is equal to or after fromDate
+  const isAfterOrEqualFrom =
+    isAfter(searchDate, fromDate) || isEqual(searchDate, fromDate);
+
+  // Check if searchDate is equal to or before toDate
+  const isBeforeOrEqualTo =
+    isBefore(searchDate, toDate) || isEqual(searchDate, toDate);
+
+  return isAfterOrEqualFrom && isBeforeOrEqualTo;
+}
+
 export const MapContainer = () => {
-  const { project } = useAnalytics();
+  const { project, fromDate, toDate } = useAnalytics();
+  const { setErrors } = useContext(ErrorHandlingContext);
   const { t, ready } = useTranslation(['treemapperAnalytics']);
 
   const [_projectType, setProjectType] = useState<ProjectType | null>(null);
@@ -122,6 +158,8 @@ export const MapContainer = () => {
       species: species,
       queryType: queryType,
       searchQuery: search,
+      fromDate: format(new Date(fromDate), 'yyyy-MM-dd'),
+      toDate: format(new Date(toDate), 'yyyy-MM-dd'),
     },
   });
 
@@ -232,9 +270,15 @@ export const MapContainer = () => {
 
   useEffect(() => {
     if (project && species) {
+      if (queryType === QueryType.DATE) {
+        if (!isDateBetween(search, fromDate, toDate)) {
+          setErrors([{ message: t('searchDateError') }]);
+          return;
+        }
+      }
       fetchProjectLocations();
     }
-  }, [project, species, queryType]);
+  }, [project, species, queryType, fromDate, toDate]);
 
   const handleProjectTypeChange = (projType: ProjectType | null) => {
     setProjectType(projType);

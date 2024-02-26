@@ -14,7 +14,8 @@ interface UncleanPlantLocations {
 }
 
 handler.post(async (req, response) => {
-  const { projectId, queryType, searchQuery, species } = req.body;
+  const { projectId, queryType, searchQuery, species, fromDate, toDate } =
+    req.body;
 
   try {
     let query =
@@ -26,6 +27,11 @@ handler.post(async (req, response) => {
         WHERE pp.guid = ?';
 
     const values = [projectId];
+
+    if (queryType !== QueryType.DATE) {
+      query += ' AND DATE(pl.plant_date) BETWEEN ? AND ?';
+      values.push(fromDate, toDate);
+    }
 
     if (queryType) {
       if (queryType === QueryType.DATE) {
