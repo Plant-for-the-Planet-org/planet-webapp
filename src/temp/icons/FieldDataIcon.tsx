@@ -1,5 +1,5 @@
-import { IconProps } from '@mui/material';
 import React from 'react';
+import { IconProps } from '../../features/common/types/common';
 
 const FieldDataIcon = ({ color }: IconProps) => {
   return (
