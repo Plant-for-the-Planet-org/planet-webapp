@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ProjectView from '../diveButton/DiveIntoMap';
+import DiveIntoMap from '../diveButton/DiveIntoMap';
 
-const meta: Meta<typeof ProjectView> = {
-  component: ProjectView,
+const meta: Meta<typeof DiveIntoMap> = {
+  component: DiveIntoMap,
 };
 
 export default meta;
-type Story = StoryObj<typeof ProjectView>;
+type Story = StoryObj<typeof DiveIntoMap>;
 
 export const Preview: Story = {
   args: {

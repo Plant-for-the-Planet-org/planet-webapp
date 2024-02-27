@@ -1,17 +1,17 @@
 import DiveIcon from '../icons/DiveIcon';
-import style from './SingleProjectMap.module.scss';
+import style from './DiveIntoMap.module.scss';
 import { useTranslation } from 'next-i18next';
 
-interface ProjectViewProps {
+interface DiveIntoMapProps {
   active: boolean;
 }
 
-const ProjectView = ({ active }: ProjectViewProps) => {
+const DiveIntoMap = ({ active }: DiveIntoMapProps) => {
   const { t } = useTranslation(['projectDetails']);
   return (
-    <div className={style.projectViewMainContainer}>
+    <div className={style.diveIntoMapMainContainer}>
       <button className={style.diveIntoProjectButton}>
-        <div style={{ marginTop: '1px' }}>
+        <div className={style.diveIconContainer}>
           <DiveIcon />
         </div>
         <div className={style.label}>
@@ -22,4 +22,4 @@ const ProjectView = ({ active }: ProjectViewProps) => {
   );
 };
 
-export default ProjectView;
+export default DiveIntoMap;
