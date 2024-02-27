@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import ReactMapboxGl, { ZoomControl } from 'react-mapbox-gl';
 import DrawControl from 'react-mapbox-gl-draw';
-import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+import 'maplibre-gl-draw/dist/maplibre-gl-draw.css';
 import styles from '../RegisterModal.module.scss';
 import { useTranslation } from 'next-i18next';
 import getMapStyle from '../../../../utils/maps/getMapStyle';

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
-import mapboxgl, { Map } from 'mapbox-gl';
-import MapboxCompare from 'mapbox-gl-compare';
+// import maplibregl, { Map } from 'mapbox-gl';
+import maplibregl, { Map, Compare } from 'maplibre-gl';
 import ImageDropdown from './ImageDropdown';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import ZoomButtons from './ZoomButtons';
@@ -24,12 +24,12 @@ export default function TimeTravel(): ReactElement {
     sources: {},
     layers: [],
   };
-
+  console.log();
   React.useEffect(() => {
     if (typeof window !== 'undefined' && mapRef.current) {
       const center = mapRef.current.getMap().getCenter();
       const zoom = mapRef.current.getMap().getZoom();
-      const before = new mapboxgl.Map({
+      const before = new Map({
         container: 'before', // Container ID
         style: EMPTY_STYLE,
         center: center,
@@ -42,7 +42,7 @@ export default function TimeTravel(): ReactElement {
         setBefore(before);
       });
 
-      const after = new mapboxgl.Map({
+      const after = new Map({
         container: 'after', // Container ID
         style: EMPTY_STYLE,
         center: center,
@@ -54,24 +54,23 @@ export default function TimeTravel(): ReactElement {
       after.on('load', () => {
         setAfter(after);
       });
-
       // Add zoom and rotation controls to the map.
       // before.addControl(
-      //   new mapboxgl.NavigationControl({ showCompass: false }),
+      //   new maplibregl.NavigationControl({ showCompass: false }),
       //   'bottom-right'
       // );
       // after.addControl(
-      //   new mapboxgl.NavigationControl({ showCompass: false }),
+      //   new maplibregl.NavigationControl({ showCompass: false }),
       //   'bottom-right'
       // );
 
       // A selector or reference to HTML element
       const container = '#comparison-container';
 
-      const _compare = new MapboxCompare(before, after, container, {
-        mousemove: false, // Optional. Set to true to enable swiping during cursor movement.
-        orientation: 'vertical', // Optional. Sets the orientation of swiper to horizontal or vertical, defaults to vertical
-      });
+      // const _compare = new Compare(before, after, container, {
+      //   mousemove: false, // Optional. Set to true to enable swiping during cursor movement.
+      //   orientation: 'vertical', // Optional. Sets the orientation of swiper to horizontal or vertical, defaults to vertical
+      // })();
 
       // syncMove(before, mapRef?.current?.getMap());
     }
@@ -83,7 +82,7 @@ export default function TimeTravel(): ReactElement {
       before.setZoom(siteViewPort.zoom);
     }
   }, [selectedMode, geoJson]);
-
+  console.log(rasterData, '=');
   React.useEffect(() => {
     function loadLayers() {
       // Planet Labs

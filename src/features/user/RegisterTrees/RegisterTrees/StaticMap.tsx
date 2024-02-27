@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import * as turf from '@turf/turf';
 import ReactMapboxGl, { GeoJSONLayer, Marker } from 'react-mapbox-gl';
-import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+import 'maplibre-gl-draw/dist/maplibre-gl-draw.css';
 import WebMercatorViewport from '@math.gl/web-mercator';
 import styles from '../RegisterModal.module.scss';
 import getMapStyle from '../../../../utils/maps/getMapStyle';
@@ -107,7 +107,9 @@ export default function StaticMap({ geoJson }: Props): ReactElement {
             'line-width': 2,
           }}
         />
-      ) : null}
+      ) : (
+        <></>
+      )}
     </Map>
   );
 }
