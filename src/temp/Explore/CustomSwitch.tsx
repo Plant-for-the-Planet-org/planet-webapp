@@ -18,14 +18,16 @@ const baseSwitchStyle = {
     padding: '3px',
   },
   '.MuiSwitch-switchBase.Mui-checked': {
-    transform: 'translateX(11px) !important',
+    transform: 'translateX(11px)',
   },
 };
 
-export const SmallSwitchDarkGreen = styled(Switch)(({}) => ({
+const SmallSwitch = styled(Switch)(({}) => ({
   ...baseSwitchStyle,
+}));
+
+export const CurrentForestSwitch = styled(SmallSwitch)(({}) => ({
   '.MuiSwitch-switchBase.Mui-checked': {
-    ...baseSwitchStyle['.MuiSwitch-switchBase.Mui-checked'],
     color: 'rgba(33, 150, 83, 1)',
   },
   '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
@@ -33,10 +35,8 @@ export const SmallSwitchDarkGreen = styled(Switch)(({}) => ({
   },
 }));
 
-export const SmallSwitchBlue = styled(Switch)(({}) => ({
-  ...baseSwitchStyle,
+export const RestorationSwitch = styled(SmallSwitch)(({}) => ({
   '.MuiSwitch-switchBase.Mui-checked': {
-    ...baseSwitchStyle['.MuiSwitch-switchBase.Mui-checked'],
     color: 'rgba(47, 128, 237, 1)',
   },
   '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
@@ -44,19 +44,15 @@ export const SmallSwitchBlue = styled(Switch)(({}) => ({
   },
 }));
 
-export const SmallSwitchRed = styled(Switch)(({}) => ({
-  ...baseSwitchStyle,
+export const DeforestrationSwitch = styled(SmallSwitch)(({}) => ({
   '.MuiSwitch-track': {
-    ...baseSwitchStyle['.MuiSwitch-track'],
     color: 'black',
   },
   '.MuiSwitch-switchBase.Mui-checked': {
-    ...baseSwitchStyle['.MuiSwitch-switchBase.Mui-checked'],
     color: 'rgba(235, 87, 87, 1)',
   },
   '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
     backgroundColor: '#FAD7D7',
   },
 }));
-
-export const SmallSwitch = styled(Switch)(baseSwitchStyle);
+export const ProjectSwitch = styled(Switch)(baseSwitchStyle);

@@ -4,13 +4,14 @@ import { ExploreIcon } from '../icons/ExploreIcon';
 import style from './Explore.module.scss';
 import InfoIcon from '../icons/InfoIcon';
 import {
-  SmallSwitch,
-  SmallSwitchBlue,
-  SmallSwitchDarkGreen,
-  SmallSwitchRed,
+  CurrentForestSwitch,
+  RestorationSwitch,
+  DeforestrationSwitch,
+  ProjectSwitch,
 } from './CustomSwitch';
 import { SmallSlider } from './CustomSlider';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PlayIcon from '../icons/PlayIcon';
+import { useTranslation } from 'next-i18next';
 
 interface ExploreButtonProps {
   label: string | string[];
@@ -29,6 +30,20 @@ interface YearRangeSliderProps {
   startYear: number;
   endYear: number;
 }
+
+// const ExploreCustomButton = styled(Button)(() => ({
+//   '.MuiButton-root': {
+//     width: '182px',
+//     height: '47px',
+//     borderRadius: '12px',
+//     backgroundColor: 'rgba(255, 255, 255, 1)',
+//     color: 'black',
+//     justifyContent: 'start',
+//     paddingLeft: '18px',
+//     marginLeft: '5px',
+//     fontSize: '12px',
+//   },
+// }));
 
 export const EcosystemOption = ({
   infoIcon,
@@ -79,16 +94,7 @@ export const YearRangeSlider = ({
     <div className={style.rangeMainContainer}>
       <div className={style.rangeContainer}>
         <div className={style.playIconContainer}>
-          <PlayArrowIcon
-            fontSize="medium"
-            sx={{
-              position: 'absolute',
-              top: '-8px',
-              left: '-6px',
-              width: '16px',
-              height: '1em',
-            }}
-          />
+          <PlayIcon />
         </div>
         <div className={style.sliderContainer}>
           <SmallSlider
@@ -112,43 +118,57 @@ const ExploreButton = ({
   startYear,
   endYear,
 }: ExploreButtonProps) => {
+  const { t } = useTranslation(['allProjects']);
+
+  const customButtonStyle = {
+    width: '182px',
+    height: '47px',
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    borderRadius: '12px',
+    color: 'black',
+    justifyContent: 'start',
+    paddingLeft: '18px',
+    marginLeft: '5px',
+    fontSize: '12px',
+  };
   return (
     <>
-      <Button startIcon={<ExploreIcon />} className={style.customButton}>
+      <Button startIcon={<ExploreIcon />} sx={customButtonStyle}>
+        {' '}
         {label}
       </Button>
+
       {isOpen ? (
         <div className={style.exploreMainContainer}>
           <div className={style.exploreContainer}>
             <div>
               <EcosystemOption
                 infoIcon={<InfoIcon />}
-                label={'Current Forest'}
-                switchComponent={<SmallSwitchDarkGreen />}
+                label={t('allProjects:currentForests')}
+                switchComponent={<CurrentForestSwitch />}
               />
-              <hr />
+              <div className={style.hrLine} />
               <EcosystemOption
                 infoIcon={<InfoIcon />}
-                label={'Restoration Potential'}
-                switchComponent={<SmallSwitchBlue />}
+                label={t('allProjects:restorationPotential')}
+                switchComponent={<RestorationSwitch />}
               />
-              <hr />
+              <div className={style.hrLine} />
               <EcosystemOption
                 infoIcon={<InfoIcon />}
-                label={'Deforestation'}
-                switchComponent={<SmallSwitchRed />}
+                label={t('allProjects:deforestation')}
+                switchComponent={<DeforestrationSwitch />}
               />
               <YearRangeSlider startYear={startYear} endYear={endYear} />
-              <hr />
+              <div className={style.hrLine} />
               <EcosystemOption
                 infoIcon={undefined}
-                label={'Projects'}
-                switchComponent={<SmallSwitch />}
+                label={t('allProjects:projects')}
+                switchComponent={<ProjectSwitch />}
               />
             </div>
             <div className={style.exploreDescription}>
-              The world has about 3 trillion trees today (“Forests”). And space
-              for up to a trillion more (“Reforestation Potential”).
+              {t('allProjects:exploreDescription')}
             </div>
           </div>
         </div>
