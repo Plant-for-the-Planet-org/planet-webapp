@@ -301,9 +301,17 @@ export const MapContainer = () => {
     }
   };
 
-  const handleSearchChange = (event: any) => {
-    let value = event.target.value || event.clipboardData?.getData('Text');
-    value = value ? value.trim() : '';
+  const handleSearchChange = (
+    event: React.ChangeEvent<HTMLInputElement> | React.ClipboardEvent
+  ) => {
+    let value = '';
+
+    if ('target' in event && event.target instanceof HTMLInputElement) {
+      value = event.target.value;
+    } else if ('clipboardData' in event && event.clipboardData) {
+      value = event.clipboardData.getData('text/plain') || '';
+    }
+    value = value.trim();
     setSearch(value);
 
     // Regular expression for HID (6 letters, A-Z and 0-9)
