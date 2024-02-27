@@ -2,7 +2,8 @@
 
 .projectInfoContainer, .moreInfoContainer, .certificationContainer, .contactDetailsContainer {
     display: flex;
-    width: 258px;
+    width: 100%;
+    max-width: 258px;
     flex-wrap: wrap;
     padding: 24px;
     background: rgba(242, 201, 76, 0.10);
@@ -83,7 +84,8 @@
     overflow-x: scroll;  
     -ms-overflow-style: none;  /* Internet Explorer 10+ */
     scrollbar-width: none;  /* Firefox */
-    width: 258px;
+    width: 100%;
+    max-width: 258px;
     span {
         padding: 2px 6px;
         background-color: rgba(81, 198, 205, 0.20);
@@ -141,6 +143,7 @@
     margin-bottom: 8px;
     align-items: center;
     gap: 8.5px;
+    max-width: 258px;
 
     .icon {
         width: 21px;
