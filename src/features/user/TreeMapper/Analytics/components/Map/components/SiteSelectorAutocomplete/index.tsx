@@ -1,7 +1,10 @@
 import React, { ReactElement, useState, useEffect, CSSProperties } from 'react';
 import { Autocomplete, TextField, styled } from '@mui/material';
 import { useTranslation } from 'next-i18next';
-import { Site } from '../../../../../../../common/types/dataExplorer';
+import {
+  Feature,
+  FeatureCollection,
+} from '../../../../../../../common/types/dataExplorer';
 
 const MuiAutocomplete = styled(Autocomplete)(() => {
   return {
@@ -15,8 +18,8 @@ const MuiAutocomplete = styled(Autocomplete)(() => {
 });
 
 interface SitesSelectorAutocompleteProps {
-  sitesList: Site[];
-  site: Site | null;
+  sitesList: FeatureCollection['features'];
+  site: Feature | null;
   handleSiteChange?: (site: Site | null) => void; // eslint-disable-line no-unused-vars
   styles?: CSSProperties | null;
 }
