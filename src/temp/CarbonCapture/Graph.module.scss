@@ -34,7 +34,8 @@
 }
 
 .container {
-    width: 338px;
+    width: 100%;
+    max-width: 338px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -61,11 +62,12 @@
 }
 
 .titleContainer {
-    width: 299px;
+    width: 100%;
+    max-width: 300px;
 }
 .newInfoIcon {
     margin-left: auto;
-    margin-right: 8px;
+    margin-right: 6px;
     display: flex;
     align-items: center;
     cursor: pointer;

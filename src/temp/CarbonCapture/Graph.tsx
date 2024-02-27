@@ -224,7 +224,7 @@ const Graph = ({
           series={series}
           type="area"
           height={153}
-          width={299}
+          width={'100%'}
           style={{ display: 'flex', justifyContent: 'center' }}
         />
       </div>
