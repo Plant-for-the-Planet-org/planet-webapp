@@ -4,29 +4,26 @@ import { Marker, Popup } from 'react-map-gl';
 import PopupProject from '../PopupProject';
 import styles from '../../styles/ProjectsMap.module.scss';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
+import ProjectTypeIcon from '../ProjectTypeIcon';
 import { SetState } from '../../../common/types/common';
 import { MapProject } from '../../../common/types/ProjectPropsContextInterface';
 
 type PopupClosedData = {
   show: false;
 };
-
 type PopupOpenData = {
   show: true;
   lat: number;
   long: number;
   project: MapProject;
 };
-
 export type PopupData = PopupClosedData | PopupOpenData;
-
 interface Props {
   searchedProject: MapProject[];
   setPopupData: SetState<PopupData>;
   popupData: PopupData;
   isMobile: boolean;
 }
-
 export default function Markers({
   searchedProject,
   setPopupData,
@@ -35,19 +32,19 @@ export default function Markers({
 }: Props): ReactElement {
   let timer: NodeJS.Timeout;
   const router = useRouter();
-
   const [open, setOpen] = React.useState(false);
-  const buttonRef = React.useRef(null);
-  const popupRef = React.useRef(null);
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
   const { embed, callbackUrl } = React.useContext(ParamsContext);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
   const handleClose = () => {
     setOpen(false);
   };
-
+  const markerBackgroundColor = (project) => {
+    return project.isTopProject && project.isApproved
+      ? 'topApproved'
+      : project.allowDonations
+      ? 'topUnapproved'
+      : 'notDonatable';
+  };
   return (
     <>
       {searchedProject.map((projectMarker, index) => (
@@ -58,63 +55,72 @@ export default function Markers({
           offsetLeft={5}
           offsetTop={-16}
         >
-          <div
-            className={`${styles.marker} ${
-              projectMarker.properties.purpose === 'conservation'
-                ? styles.conservationMarker
-                : ''
-            }`}
-            onClick={() => {
-              router.push(
-                `/${projectMarker.properties.slug}/${
-                  embed === 'true'
-                    ? `${
-                        callbackUrl != undefined
-                          ? `?embed=true&callback=${callbackUrl}`
-                          : '?embed=true'
-                      }`
-                    : ''
-                }`,
-                undefined,
-                {
-                  shallow: true,
+          <div className={styles.markerContainer}>
+            <div
+              className={`${styles.marker} ${
+                styles[markerBackgroundColor(projectMarker.properties)]
+              }`}
+              onClick={() => {
+                router.push(
+                  `/${projectMarker.properties.slug}/${
+                    embed === 'true'
+                      ? `${
+                          callbackUrl != undefined
+                            ? `?embed=true&callback=${callbackUrl}`
+                            : '?embed=true'
+                        }`
+                      : ''
+                  }`,
+                  undefined,
+                  {
+                    shallow: true,
+                  }
+                );
+              }}
+              onKeyDown={() => {
+                router.push(
+                  `/${projectMarker.properties.slug}/${
+                    embed === 'true'
+                      ? `${
+                          callbackUrl != undefined
+                            ? `?embed=true&callback=${callbackUrl}`
+                            : '?embed=true'
+                        }`
+                      : ''
+                  }`,
+                  undefined,
+                  {
+                    shallow: true,
+                  }
+                );
+              }}
+              role="button"
+              tabIndex={0}
+              onMouseOver={() => {
+                timer = setTimeout(() => {
+                  setPopupData({
+                    show: true,
+                    lat: projectMarker.geometry.coordinates[1],
+                    long: projectMarker.geometry.coordinates[0],
+                    project: projectMarker,
+                  });
+                }, 300);
+              }}
+              onMouseLeave={() => {
+                clearTimeout(timer);
+              }}
+              onFocus={() => {}}
+            />
+            <div className={styles.projectTypeIcon}>
+              <ProjectTypeIcon
+                projectType={
+                  projectMarker.properties.purpose === 'conservation'
+                    ? 'conservation'
+                    : projectMarker.properties.classification
                 }
-              );
-            }}
-            onKeyPress={() => {
-              router.push(
-                `/${projectMarker.properties.slug}/${
-                  embed === 'true'
-                    ? `${
-                        callbackUrl != undefined
-                          ? `?embed=true&callback=${callbackUrl}`
-                          : '?embed=true'
-                      }`
-                    : ''
-                }`,
-                undefined,
-                {
-                  shallow: true,
-                }
-              );
-            }}
-            role="button"
-            tabIndex={0}
-            onMouseOver={() => {
-              timer = setTimeout(() => {
-                setPopupData({
-                  show: true,
-                  lat: projectMarker.geometry.coordinates[1],
-                  long: projectMarker.geometry.coordinates[0],
-                  project: projectMarker,
-                });
-              }, 300);
-            }}
-            onMouseLeave={() => {
-              clearTimeout(timer);
-            }}
-            onFocus={() => {}}
-          />
+              />
+            </div>
+          </div>
         </Marker>
       ))}
       {popupData.show && !isMobile && (
@@ -133,42 +139,24 @@ export default function Markers({
             className={styles.popupProject}
             onClick={(event) => {
               if (event.target !== buttonRef.current) {
-                if (!popupRef.current) {
-                  router.push(
-                    `/${popupData.project.properties.slug}/${
-                      embed === 'true'
-                        ? `${
-                            callbackUrl != undefined
-                              ? `?embed=true&callback=${callbackUrl}`
-                              : '?embed=true'
-                          }`
-                        : ''
-                    }`,
-                    undefined,
-                    {
-                      shallow: true,
-                    }
-                  );
-                } else if (!popupRef.current.contains(event.target)) {
-                  router.push(
-                    `/${popupData.project.properties.slug}/${
-                      embed === 'true'
-                        ? `${
-                            callbackUrl != undefined
-                              ? `?embed=true&callback=${callbackUrl}`
-                              : '?embed=true'
-                          }`
-                        : ''
-                    }`,
-                    undefined,
-                    {
-                      shallow: true,
-                    }
-                  );
-                }
+                router.push(
+                  `/${popupData.project.properties.slug}/${
+                    embed === 'true'
+                      ? `${
+                          callbackUrl != undefined
+                            ? `?embed=true&callback=${callbackUrl}`
+                            : '?embed=true'
+                        }`
+                      : ''
+                  }`,
+                  undefined,
+                  {
+                    shallow: true,
+                  }
+                );
               }
             }}
-            onKeyPress={() => {
+            onKeyDown={() => {
               router.push(
                 `/${popupData.project.properties.slug}/${
                   embed === 'true'
@@ -197,13 +185,8 @@ export default function Markers({
             }}
           >
             <PopupProject
-              key={popupData.project.properties.id}
               project={popupData.project.properties}
               buttonRef={buttonRef}
-              popupRef={popupRef}
-              open={open}
-              handleOpen={handleOpen}
-              handleClose={handleClose}
             />
           </div>
         </Popup>

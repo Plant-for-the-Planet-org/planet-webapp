@@ -13,6 +13,11 @@ import { ParamsContext } from '../../common/Layout/QueryParamsContext';
 import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
 import { SetState } from '../../common/types/common';
 import { MapProject } from '../../common/types/ProjectPropsContextInterface';
+import { getRequest } from '../../../utils/apiRequests/api';
+import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
+import { handleError, APIError } from '@planet-sdk/common';
+import { Tenant } from '@planet-sdk/common';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 interface Props {
   projects: MapProject[];
@@ -46,6 +51,11 @@ function ProjectsList({
   const [searchProjectResults, setSearchProjectResults] = React.useState<
     MapProject[] | undefined
   >();
+  const [shouldSortProjectList, setShouldSortProjectList] = React.useState<
+    boolean | null
+  >(null);
+  const { setErrors } = React.useContext(ErrorHandlingContext);
+  const { tenantConfig } = useTenant();
 
   useDebouncedEffect(
     () => {
@@ -70,6 +80,14 @@ function ProjectsList({
       );
     } else if (type === 'all') {
       return projects;
+    } else if (type === 'all_sorted') {
+      const donatableProjects = projects.filter(
+        (project) => project.properties.allowDonations === true
+      );
+      const nonDonatableProjects = projects.filter(
+        (project) => project.properties.allowDonations === false
+      );
+      return [...donatableProjects, ...nonDonatableProjects];
     }
   }
 
@@ -129,10 +147,15 @@ function ProjectsList({
     }
   }
 
-  const allProjects = React.useMemo(
-    () => getProjects(projects, 'all'),
-    [projects]
-  );
+  const allProjects = React.useMemo(() => {
+    if (shouldSortProjectList !== null) {
+      if (!shouldSortProjectList) {
+        return getProjects(projects, 'all_sorted');
+      } else {
+        return getProjects(projects, 'all');
+      }
+    }
+  }, [projects, shouldSortProjectList]);
 
   React.useEffect(() => {
     const _searchProjectResults = getSearchProjects(
@@ -142,13 +165,30 @@ function ProjectsList({
     setSearchProjectResults(_searchProjectResults);
   }, [trottledSearchValue, projects]);
 
+  React.useEffect(() => {
+    async function setListOrder() {
+      try {
+        const res = await getRequest<Tenant>(
+          tenantConfig.id,
+          `/app/tenants/${tenantConfig.id}`
+        );
+        setShouldSortProjectList(res.topProjectsOnly);
+      } catch (err) {
+        setErrors(handleError(err as APIError));
+      }
+    }
+    if (ready) {
+      setListOrder();
+    }
+  }, [ready]);
+
   const topProjects = React.useMemo(
     () => getProjects(projects, 'top'),
     [projects]
   );
 
   const showTopProjectsList =
-    process.env.NEXT_PUBLIC_SHOW_TOP_PROJECTS === 'true' &&
+    tenantConfig.config.slug !== 'salesforce' &&
     topProjects !== undefined &&
     topProjects.length > 0;
 

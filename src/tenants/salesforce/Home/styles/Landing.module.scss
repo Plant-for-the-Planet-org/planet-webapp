@@ -108,6 +108,20 @@
     padding: 13px 24px;
     cursor: pointer;
   }
+
+  .footnote {
+    font-size: 12px;
+    font-weight: 500;
+    color: #ffffff;
+    padding-top: 20px;
+    max-width: 800px;
+    @include smTabletView {
+      padding-top: 40px;
+    }
+    @include mdTabletView {
+      padding-top: 70px;
+    }
+  }
 }
 
 .landingContentTop {

@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import styles from '../Import.module.scss';
 import { useDropzone } from 'react-dropzone';
 import { postAuthenticatedRequest } from '../../../../../utils/apiRequests/api';
@@ -10,12 +10,14 @@ import Papa from 'papaparse';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../../common/Layout/ErrorHandlingContext';
 import { Button } from '@mui/material';
+import { useTenant } from '../../../../common/Layout/TenantContext';
 import {
   Measurements,
   SampleTree,
 } from '../../../../common/types/plantLocation';
 import { Geometry } from '@turf/turf';
 import { PlantLocation } from '../../Treemapper';
+import { FileImportError } from '../../../BulkCodes/BulkCodesTypes';
 
 interface Props {
   handleNext: Function;
@@ -33,11 +35,14 @@ export default function SampleTrees({
   plantLocation,
   userLang,
 }: Props): ReactElement {
-  const { t } = useTranslation(['treemapper', 'common']);
+  const { t, ready } = useTranslation(['treemapper', 'common', 'bulkCodes']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const [isUploadingData, setIsUploadingData] = React.useState(false);
   const [uploadStatus, setUploadStatus] = React.useState<string[]>([]);
   const [sampleTrees, setSampleTrees] = React.useState<SampleTree[]>([]);
+  const { tenantConfig } = useTenant();
+  const [parseError, setParseError] = useState<FileImportError | null>(null);
+  const [hasIgnoredColumns, setHasIgnoredColumns] = useState(false);
 
   const {
     handleSubmit,
@@ -55,8 +60,37 @@ export default function SampleTrees({
     append(sampleTrees);
   };
 
+  const acceptedHeaders = [
+    'plantingDate',
+    'treeTag',
+    'height',
+    'diameter',
+    'otherSpecies',
+    'latitude',
+    'longitude',
+  ];
+
+  const checkHeaderValidity = (
+    headers: string[]
+  ): { isValid: boolean; missingColumns: string[] } => {
+    let isValid = true;
+    const missingColumns = [];
+    for (const acceptedHeader of acceptedHeaders) {
+      if (!headers.includes(acceptedHeader)) {
+        isValid = false;
+        missingColumns.push(acceptedHeader);
+      }
+    }
+    return {
+      isValid,
+      missingColumns,
+    };
+  };
+
   const onDrop = React.useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file: File) => {
+      setParseError(null);
+      setHasIgnoredColumns(false);
       const reader = new FileReader();
       reader.readAsText(file);
       reader.onabort = () => console.log('file reading was aborted');
@@ -64,18 +98,33 @@ export default function SampleTrees({
       reader.onload = (event) => {
         const csv = event.target?.result;
         if (typeof csv !== 'string') return;
-        Papa.parse(csv, {
+        Papa.parse<SampleTree>(csv, {
           header: true,
           complete: (results) => {
-            //validation for csv file needs to be added
-            const resultsData: SampleTree[] = results.data;
-            const sampleTrees: SampleTree[] = resultsData.map((sampleTree) => {
-              return {
-                ...sampleTree,
-                otherSpecies: sampleTree.otherSpecies,
-              };
-            });
-            addSampleTrees(sampleTrees);
+            const parsedHeaders = results.meta.fields || [];
+            const headerValidity = checkHeaderValidity(parsedHeaders);
+            const resultsData = results.data;
+            if (headerValidity.isValid) {
+              parsedHeaders.length > 7
+                ? setHasIgnoredColumns(true)
+                : setHasIgnoredColumns(false);
+              const sampleTrees = resultsData.map((sampleTree) => {
+                return {
+                  ...sampleTree,
+                  otherSpecies: sampleTree.otherSpecies,
+                };
+              });
+              addSampleTrees(sampleTrees);
+            } else {
+              setParseError({
+                type: 'missingColumns',
+                message: ready
+                  ? `${t(
+                      'bulkCodes:errorUploadCSV.missingColumns'
+                    )} ${headerValidity.missingColumns.join(', ')}`
+                  : '',
+              });
+            }
           },
         });
       };
@@ -94,6 +143,7 @@ export default function SampleTrees({
 
     try {
       const res: SampleTree = await postAuthenticatedRequest(
+        tenantConfig?.id,
         `/treemapper/plantLocations`,
         sampleTree,
         token,
@@ -214,6 +264,12 @@ export default function SampleTrees({
           <p style={{ marginTop: '18px' }}>{t('treemapper:fileFormatCSV')}</p>
         </label>
       </div>
+      {parseError && <p style={{ color: '#e53935' }}>{parseError.message}</p>}
+      {hasIgnoredColumns && (
+        <p style={{ color: '#e53935' }}>
+          {t('treemapper:ignoredColumnsWarning')}
+        </p>
+      )}
       <div className={styles.sampleTreeContainer}>
         {fields &&
           fields.map((item, index) => {

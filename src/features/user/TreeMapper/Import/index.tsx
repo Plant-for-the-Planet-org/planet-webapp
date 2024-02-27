@@ -17,6 +17,7 @@ import dynamic from 'next/dynamic';
 import theme from '../../../../theme/themeProperties';
 import { handleError, APIError } from '@planet-sdk/common';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import { useTenant } from '../../../common/Layout/TenantContext';
 import { PlantLocation } from '../Treemapper';
 
 const Stepper = styled(MuiStepper)({
@@ -42,6 +43,7 @@ const MapComponent = dynamic(() => import('./components/MapComponent'), {
 
 export default function ImportData(): ReactElement {
   const router = useRouter();
+  const { tenantConfig } = useTenant();
   const { t, ready } = useTranslation(['treemapper']);
   const { token, logoutUser } = useUserProps();
   const { setErrors } = React.useContext(ErrorHandlingContext);
@@ -64,6 +66,7 @@ export default function ImportData(): ReactElement {
   const fetchPlantLocation = async (id: string) => {
     try {
       const result = await getAuthenticatedRequest<PlantLocation>(
+        tenantConfig?.id,
         `/treemapper/plantLocations/${id}?_scope=extended`,
         token,
         logoutUser
@@ -104,7 +107,6 @@ export default function ImportData(): ReactElement {
           <PlantingLocation
             handleNext={handleNext}
             userLang={userLang}
-            plantLocation={plantLocation}
             setPlantLocation={setPlantLocation}
             geoJson={geoJson}
             setGeoJson={setGeoJson}
@@ -139,7 +141,6 @@ export default function ImportData(): ReactElement {
           <PlantingLocation
             handleNext={handleNext}
             userLang={userLang}
-            plantLocation={plantLocation}
             setPlantLocation={setPlantLocation}
             geoJson={geoJson}
             setGeoJson={setGeoJson}
@@ -175,11 +176,7 @@ export default function ImportData(): ReactElement {
           </div>
         </div>
         <div className={styles.mapContainer}>
-          <MapComponent
-            geoJson={geoJson}
-            setGeoJson={setGeoJson}
-            setActiveMethod={setActiveMethod}
-          />
+          <MapComponent geoJson={geoJson} />
         </div>
       </div>
     </div>

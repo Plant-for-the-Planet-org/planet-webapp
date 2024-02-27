@@ -5,16 +5,14 @@ import { FormControlLabel, FormGroup } from '@mui/material';
 import Switch from '../../../common/InputTypes/ToggleSwitch';
 import { useProjectProps } from '../../../common/Layout/ProjectPropsContext';
 import { TreeProjectClassification } from '@planet-sdk/common/build/types/project/common';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 export default function Filters(): ReactElement {
   const { t, ready } = useTranslation(['donate']);
+  const { tenantConfig } = useTenant();
+
   const { projects, setFilteredProjects, filtersOpen, setFilterOpen } =
     useProjectProps();
-
-  const [purpose, setPurpose] = React.useState({
-    restoration: true,
-    conservation: true,
-  });
 
   const [type, setType] = React.useState<Record<string, boolean>>({
     'natural-regeneration': true,
@@ -46,13 +44,13 @@ export default function Filters(): ReactElement {
       setFilteredProjects(filteredProjects);
     }
     if (projects) {
-      if (process.env.TENANT === 'salesforce') {
+      if (tenantConfig?.tenantName === 'salesforce') {
         filterProjects();
       } else {
         setFilteredProjects(projects);
       }
     }
-  }, [projects, purpose, type]);
+  }, [projects, type]);
 
   React.useEffect(() => {
     function getFilters() {
@@ -74,21 +72,17 @@ export default function Filters(): ReactElement {
       const uniqueFilters = [...new Set(filters)];
       return uniqueFilters;
     }
-    if (projects && process.env.TENANT === 'salesforce') {
+    if (projects && tenantConfig?.tenantName === 'salesforce') {
       const filters = getFilters().filter((filter) => filter);
       setFilters(filters);
     }
   }, [projects]);
 
-  const handlePurposeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPurpose({ ...purpose, [event.target.name]: event.target.checked });
-  };
-
   const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setType({ ...type, [event.target.name]: event.target.checked });
   };
 
-  return process.env.TENANT === 'salesforce' && ready ? (
+  return tenantConfig?.tenantName === 'salesforce' && ready ? (
     <div className={styles.filtersContainer}>
       <div className={styles.filterButtonContainer}>
         <div

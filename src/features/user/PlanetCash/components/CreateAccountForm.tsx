@@ -9,9 +9,13 @@ import { postAuthenticatedRequest } from '../../../../utils/apiRequests/api';
 import { useUserProps } from '../../../common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
 import { usePlanetCash } from '../../../common/Layout/PlanetCashContext';
-import { CountryType } from '../../../common/types/country';
+import {
+  CountryType,
+  ExtendedCountryCode,
+} from '../../../common/types/country';
 import { useRouter } from 'next/router';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
+import { useTenant } from '../../../common/Layout/TenantContext';
 
 interface Props {
   isPlanetCashActive: boolean;
@@ -24,12 +28,13 @@ const CreateAccountForm = ({
 }: Props): ReactElement | null => {
   const { t, ready } = useTranslation(['planetcash', 'country']);
   const { setAccounts } = usePlanetCash();
-  const [country, setCountry] = useState<string | undefined>(undefined);
+  const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAccountCreated, setIsAccountCreated] = useState(false);
   const { token, logoutUser } = useUserProps();
   const { setErrors } = useContext(ErrorHandlingContext);
   const router = useRouter();
+  const { tenantConfig } = useTenant();
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -38,6 +43,7 @@ const CreateAccountForm = ({
 
     try {
       const res = await postAuthenticatedRequest(
+        tenantConfig?.id,
         '/app/planetCash',
         data,
         token,

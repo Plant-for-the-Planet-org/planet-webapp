@@ -13,6 +13,7 @@ import getRandomImage from '../../../../utils/getRandomImage';
 import { ErrorHandlingContext } from '../../../../features/common/Layout/ErrorHandlingContext';
 import { handleError, APIError } from '@planet-sdk/common';
 import { MuiAutoComplete } from '../../../../features/common/InputTypes/MuiAutoComplete';
+import { useTenant } from '../../../../features/common/Layout/TenantContext';
 
 interface Props {
   leaderboard: any;
@@ -24,10 +25,12 @@ export default function LeaderBoardSection(leaderboard: Props) {
   const { t, i18n, ready } = useTranslation(['leaderboard', 'common']);
   const { setErrors } = React.useContext(ErrorHandlingContext);
   const [users, setUsers] = React.useState([]);
-
+  const { tenantConfig } = useTenant();
   const fetchUsers = async (query: any) => {
     try {
-      const res = await postRequest('/suggest.php', { q: query });
+      const res = await postRequest(tenantConfig?.id, '/suggest.php', {
+        q: query,
+      });
       const result = res.filter((item) => item.type !== 'competition');
       setUsers(result);
     } catch (err) {
@@ -35,8 +38,6 @@ export default function LeaderBoardSection(leaderboard: Props) {
     }
   };
 
-  const imageErrorSrc =
-    'https://cdn.planetapp.workers.dev/development/logo/svg/planet.svg';
   return ready ? (
     <section className={styles.leaderBoardSection}>
       <div className={styles.leaderBoard}>

@@ -6,7 +6,7 @@ import { useTranslation } from 'next-i18next';
 
 export default function CookiePolicy() {
   const [showCookieNotice, setShowCookieNotice] = useState(false);
-  const { t, ready } = useTranslation(['leaderboard']);
+  const { i18n, t, ready } = useTranslation(['leaderboard']);
   const { user, contextLoaded } = useUserProps();
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function CookiePolicy() {
       </button>
       <div className={styles.cookieContent}>
         {t('common:privacyPolicyNotice')}{' '}
-        <a href="https://www.plant-for-the-planet.org/en/footermenu/privacy-policy">
+        <a href={`https://pp.eco/legal/${i18n.language}/privacy`}>
           {t('common:privacyPolicy')}
         </a>
       </div>

@@ -62,5 +62,6 @@
   "speciesValidation": "Please enter a species",
   "external": "External",
   "date": "Date",
-  "measurements": "Measurements"
+  "measurements": "Measurements",
+  "ignoredColumnsWarning": "The extra columns have been ignored"
 }

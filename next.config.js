@@ -122,6 +122,8 @@ const nextConfig = {
     WIDGET_URL: process.env.WIDGET_URL,
     CONFIG_URL: process.env.CONFIG_URL,
     ENABLE_ANALYTICS: DB_CONN_URL ? true : false,
+    REDIS_URL: process.env.REDIS_URL,
+    REDIS_TOKEN: process.env.REDIS_TOKEN,
   },
   trailingSlash: false,
   reactStrictMode: true,

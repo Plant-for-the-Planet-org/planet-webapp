@@ -8,11 +8,10 @@ export type SetState<T> = Dispatch<SetStateAction<T>>;
  * i.e. ISO 8601 extended format */
 export type DateString = string;
 
-
 export interface IconProps {
-    color?: string;
-    width?: string | number | undefined;
-    height?: string | number | undefined
-    className?: string | undefined
-    // solid?: boolean
-  }
+  color?: string;
+  width?: string | number | undefined;
+  height?: string | number | undefined;
+  className?: string | undefined;
+  solid?: boolean;
+}

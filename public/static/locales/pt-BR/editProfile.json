@@ -2,10 +2,8 @@
   "loginTitle": "{{log}} - Login",
   "signUpText": "Inscrição completa",
   "profileTypes": "{{item.title}}",
-  "profileName": "Nome do {{type}}",
   "createAccount": "Criar Conta",
   "individual": "Pessoa",
-  "iamA": "Eu sou um(a)",
   "tpo": "Organização de restauração",
   "education": "Escola",
   "organization": "Empresa",
@@ -13,16 +11,8 @@
   "profileCreationFailed": "Erro na criação do perfil. Por favor, tente novamente.",
   "profileCreationError": "Erro na criação do perfil.",
   "edit": "Editar Perfil",
-  "privateAccount": "Conta Privada",
   "privateAccountTxt": "O seu perfil está escondido e apenas o seu primeiro nome aparece no quadro de liderança",
-  "subscribe": "Inscreva-se para receber notícias por e-mail",
-  "profileDescription": "Descrição de Perfil",
-  "descriptionRequired": "Você excedeu o limite máximo",
-  "website": "Website",
-  "websiteError": "URL do site inválido",
-  "websiteRequired": "Por favor, digite o URL válido do site",
   "save": "Salvar",
-  "nameValidation": "Por favor, adicione um nome",
   "profilePicUpdated": "A foto do perfil está sendo atualizada",
   "profileSaved": "Salvo com sucesso!",
   "profileSaveFailed": "Erro na atualização do perfil.",
@@ -32,5 +22,16 @@
   "continue": "Continuar",
   "cancel": "Cancelar",
   "termAndCondition": "Concordo com os <0>Termos e Condições</0> da plataforma Plant-for-the-Planet.",
-  "termAndConditionError": "Por favor Aceite os Termos e Condições"
+  "termAndConditionError": "Por favor Aceite os Termos e Condições",
+  "fieldLabels": {
+    "profileType": "Eu sou um(a)",
+    "name": "Nome do {{type}}",
+    "website": "Website",
+    "privateAccount": "Conta Privada",
+    "subscribe": "Inscreva-se para receber notícias por e-mail"
+  },
+  "validationErrors": {
+    "nameRequired": "Por favor, adicione um nome",
+    "websiteInvalid": "Por favor, digite o URL válido do site"
+  }
 }

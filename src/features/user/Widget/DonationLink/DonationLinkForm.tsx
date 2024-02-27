@@ -7,7 +7,7 @@ import InlineFormDisplayGroup from '../../../common/Layout/Forms/InlineFormDispl
 import supportedLanguages from '../../../../utils/language/supportedLanguages.json';
 import React from 'react';
 import ProjectSelectAutocomplete from '../../BulkCodes/components/ProjectSelectAutocomplete';
-import { TENANT_ID } from '../../../../utils/constants/environment';
+import { useTenant } from '../../../common/Layout/TenantContext';
 import styles from '../../../../../src/features/user/Widget/DonationLink/DonationLinkForm.module.scss';
 import CopyToClipboard from '../../../common/CopyToClipboard';
 import {
@@ -19,6 +19,7 @@ import { allCountries } from '../../../../utils/constants/countries';
 import CustomSnackbar from '../../../common/CustomSnackbar';
 import StyledForm from '../../../common/Layout/StyledForm';
 import QRCode from 'qrcode';
+import { ExtendedCountryCode } from '../../../common/types/country';
 
 interface DonationLinkFormProps {
   projectsList: ProjectOption[] | null;
@@ -33,7 +34,8 @@ const DonationLinkForm = ({
   projectsList,
 }: DonationLinkFormProps): ReactElement | null => {
   const { user } = useUserProps();
-  const [country, setCountry] = useState('auto');
+  const [country, setCountry] = useState<ExtendedCountryCode | ''>('auto');
+  const { tenantConfig } = useTenant();
   const [Languages, setLanguage] = useState<LanguageType>({
     langCode: 'auto',
     languageName: 'Automatic Selection',
@@ -72,7 +74,7 @@ const DonationLinkForm = ({
 
     const url = `${link}?${selectedCountry}${selectedLanguage}${
       localProject == null ? '' : `to=${localProject.slug}&`
-    }tenant=${TENANT_ID}${isSupport ? `&s=${user?.slug}` : ''}
+    }tenant=${tenantConfig?.id}${isSupport ? `&s=${user?.slug}` : ''}
     `;
     if (donationUrl.length > 0) setIsLinkUpdated(true);
     setDonationUrl(url);
@@ -98,7 +100,7 @@ const DonationLinkForm = ({
       code: 'auto',
       label: `${t('country:auto')}`,
       phone: '',
-    };
+    } as const;
     if (!allCountries.find((obj2) => obj2.code === 'auto')) {
       allCountries.unshift(autoCountry);
     }

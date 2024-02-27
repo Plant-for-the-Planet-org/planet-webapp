@@ -3,10 +3,14 @@ import Footer from '../../../features/common/Layout/Footer';
 import Score from './components/Score';
 import Stats from './components/Stats';
 import Stories from './components/Stories';
+import {
+  LeaderBoardList,
+  TenantScore,
+} from '../../../features/common/types/leaderboard';
 
 interface Props {
-  leaderboard: any;
-  tenantScore: any;
+  leaderboard: LeaderBoardList | null;
+  tenantScore: TenantScore | null;
 }
 
 export default function index({

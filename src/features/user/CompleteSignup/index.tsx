@@ -36,6 +36,8 @@ import {
   AddressSuggestionsType,
   AddressType,
 } from '../../common/types/geocoder';
+import { ExtendedCountryCode } from '../../common/types/country';
+import { useTenant } from '../../common/Layout/TenantContext';
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -56,13 +58,14 @@ type FormData = Omit<
 
 export default function CompleteSignup(): ReactElement | null {
   const router = useRouter();
-  const { i18n, t, ready } = useTranslation(['editProfile', 'donate']);
+  const { i18n, t, ready } = useTranslation('editProfile');
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const [addressSugggestions, setaddressSugggestions] = React.useState<
     AddressSuggestionsType[]
   >([]);
   const [isProcessing, setIsProcessing] = React.useState<boolean>(false);
-  const [country, setCountry] = useState<CountryCode | ''>('');
+  const [country, setCountry] = useState<ExtendedCountryCode | ''>('');
+  const { tenantConfig } = useTenant();
 
   const geocoder = new GeocoderArcGIS(
     process.env.ESRI_CLIENT_SECRET
@@ -157,7 +160,7 @@ export default function CompleteSignup(): ReactElement | null {
   const [severity, setSeverity] = useState<AlertColor>('info');
   const [requestSent, setRequestSent] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState<boolean | null>(null);
-
+  
   const [postalRegex, setPostalRegex] = React.useState(
     COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal
   );
@@ -172,11 +175,11 @@ export default function CompleteSignup(): ReactElement | null {
     setRequestSent(true);
     setIsProcessing(true);
     try {
-      const res = await postRequest<User>(`/app/profile`, bodyToSend);
+      const res = await postRequest<User>(tenantConfig?.id, `/app/profile`, bodyToSend);
       setRequestSent(false);
       // successful signup -> goto me page
       setUser(res);
-      setSnackbarMessage(ready ? t('editProfile:profileCreated') : '');
+      setSnackbarMessage(ready ? t('profileCreated') : '');
       setSeverity('success');
       handleSnackbarOpen();
 
@@ -199,18 +202,18 @@ export default function CompleteSignup(): ReactElement | null {
   const profileTypes = [
     {
       id: 1,
-      title: ready ? t('editProfile:individual') : '',
+      title: ready ? t('individual') : '',
       value: 'individual',
     },
     {
       id: 2,
-      title: ready ? t('editProfile:organization') : '',
+      title: ready ? t('organization') : '',
       value: 'organization',
     },
-    { id: 3, title: ready ? t('editProfile:tpo') : '', value: 'tpo' },
+    { id: 3, title: ready ? t('tpo') : '', value: 'tpo' },
     {
       id: 4,
-      title: ready ? t('editProfile:education') : '',
+      title: ready ? t('education') : '',
       value: 'education',
     },
   ] as const;
@@ -230,7 +233,7 @@ export default function CompleteSignup(): ReactElement | null {
       if (contextLoaded && token) {
         const submitData = {
           ...data,
-          country,
+          country: country as CountryCode,
           type,
           oAuthAccessToken: token,
         };
@@ -271,19 +274,17 @@ export default function CompleteSignup(): ReactElement | null {
             {/* header */}
             <div className={styles.header}>
               <div
-                onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)}
+                onClick={() => logoutUser(`${window.location.origin}/`)}
                 className={styles.headerBackIcon}
               >
                 <CancelIcon color={styles.primaryFontColor} />
               </div>
-              <div className={styles.headerTitle}>
-                {t('editProfile:signUpText')}
-              </div>
+              <div className={styles.headerTitle}>{t('signUpText')}</div>
             </div>
 
             {/* type of account buttons */}
             <MuiTextField
-              label={t('editProfile:iamA')}
+              label={t('fieldLabels.profileType')}
               select
               defaultValue={profileTypes[0].value}
             >
@@ -302,15 +303,24 @@ export default function CompleteSignup(): ReactElement | null {
               <Controller
                 name="firstname"
                 control={control}
-                rules={{ required: true }}
+                rules={{
+                  required: t('validationErrors.firstNameRequired'),
+                  maxLength: {
+                    value: 50,
+                    message: t('validationErrors.maxChars', { max: 50 }),
+                  },
+                  pattern: {
+                    value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß.'-]*$/u,
+                    message: t('validationErrors.firstNameInvalid'),
+                  },
+                }}
                 defaultValue={auth0User?.given_name || ''}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <MuiTextField
-                    label={t('donate:firstName')}
+                    label={t('fieldLabels.firstName')}
                     error={errors.firstname !== undefined}
                     helperText={
-                      errors.firstname !== undefined &&
-                      t('donate:firstNameRequired')
+                      errors.firstname !== undefined && errors.firstname.message
                     }
                     onChange={onChange}
                     value={value}
@@ -321,15 +331,24 @@ export default function CompleteSignup(): ReactElement | null {
               <Controller
                 name="lastname"
                 control={control}
-                rules={{ required: true }}
+                rules={{
+                  required: t('validationErrors.lastNameRequired'),
+                  maxLength: {
+                    value: 50,
+                    message: t('validationErrors.maxChars', { max: 50 }),
+                  },
+                  pattern: {
+                    value: /^[\p{L}\p{N}ß][\p{L}\p{N}\sß'-]*$/u,
+                    message: t('validationErrors.lastNameInvalid'),
+                  },
+                }}
                 defaultValue={auth0User?.family_name || ''}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <MuiTextField
-                    label={t('donate:lastName')}
+                    label={t('fieldLabels.lastName')}
                     error={errors.lastname !== undefined}
                     helperText={
-                      errors.lastname !== undefined &&
-                      t('donate:lastNameRequired')
+                      errors.lastname !== undefined && errors.lastname.message
                     }
                     onChange={onChange}
                     value={value}
@@ -343,16 +362,21 @@ export default function CompleteSignup(): ReactElement | null {
               <Controller
                 name="name"
                 control={control}
-                rules={{ required: true }}
+                rules={{
+                  required: t('validationErrors.nameRequired'),
+                  pattern: {
+                    value: /^[\p{L}\p{N}\sß.,'&()!-]+$/u,
+                    message: t('validationErrors.nameInvalid'),
+                  },
+                }}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <MuiTextField
-                    label={t('editProfile:profileName', {
+                    label={t('fieldLabels.name', {
                       type: selectUserType(type, t),
                     })}
                     error={errors.name !== undefined}
                     helperText={
-                      errors.name !== undefined &&
-                      t('editProfile:nameValidation')
+                      errors.name !== undefined && errors.name.message
                     }
                     onChange={onChange}
                     value={value}
@@ -364,7 +388,7 @@ export default function CompleteSignup(): ReactElement | null {
 
             <MuiTextField
               defaultValue={auth0User?.email}
-              label={t('donate:email')}
+              label={t('fieldLabels.email')}
               disabled
             />
 
@@ -373,14 +397,19 @@ export default function CompleteSignup(): ReactElement | null {
                 <Controller
                   name="address"
                   control={control}
-                  rules={{ required: true }}
+                  rules={{
+                    required: t('validationErrors.addressRequired'),
+                    pattern: {
+                      value: /^[\p{L}\p{N}\sß.,#/-]+$/u,
+                      message: t('validationErrors.addressInvalid'),
+                    },
+                  }}
                   render={({ field: { onChange, value, onBlur } }) => (
                     <MuiTextField
-                      label={t('donate:address')}
+                      label={t('fieldLabels.address')}
                       error={errors.address !== undefined}
                       helperText={
-                        errors.address !== undefined &&
-                        t('donate:addressRequired')
+                        errors.address !== undefined && errors.address.message
                       }
                       onChange={(event) => {
                         suggestAddress(event.target.value);
@@ -418,7 +447,13 @@ export default function CompleteSignup(): ReactElement | null {
                   <Controller
                     name="city"
                     control={control}
-                    rules={{ required: true }}
+                    rules={{
+                      required: t('validationErrors.cityRequired'),
+                      pattern: {
+                        value: /^[\p{L}\sß.,()-]+$/u,
+                        message: t('validationErrors.cityInvalid'),
+                      },
+                    }}
                     defaultValue={
                       getStoredConfig('loc').city === 'T1' ||
                       getStoredConfig('loc').city === 'XX' ||
@@ -428,10 +463,10 @@ export default function CompleteSignup(): ReactElement | null {
                     }
                     render={({ field: { onChange, value, onBlur } }) => (
                       <MuiTextField
-                        label={t('donate:city')}
+                        label={t('fieldLabels.city')}
                         error={errors.city !== undefined}
                         helperText={
-                          errors.city !== undefined && t('donate:cityRequired')
+                          errors.city !== undefined && errors.city.message
                         }
                         onChange={onChange}
                         value={value}
@@ -442,7 +477,13 @@ export default function CompleteSignup(): ReactElement | null {
                   <Controller
                     name="zipCode"
                     control={control}
-                    rules={{ required: true, pattern: postalRegex }}
+                    rules={{
+                      required: t('validationErrors.zipCodeRequired'),
+                      pattern: {
+                        value: postalRegex as RegExp,
+                        message: t('validationErrors.zipCodeInvalid'),
+                      },
+                    }}
                     defaultValue={
                       getStoredConfig('loc').postalCode === 'T1' ||
                       getStoredConfig('loc').postalCode === 'XX' ||
@@ -452,11 +493,10 @@ export default function CompleteSignup(): ReactElement | null {
                     }
                     render={({ field: { onChange, value, onBlur } }) => (
                       <MuiTextField
-                        label={t('donate:zipCode')}
+                        label={t('fieldLabels.zipCode')}
                         error={errors.zipCode !== undefined}
                         helperText={
-                          errors.zipCode !== undefined &&
-                          t('donate:zipCodeAlphaNumValidation')
+                          errors.zipCode !== undefined && errors.zipCode.message
                         }
                         onChange={onChange}
                         value={value}
@@ -468,7 +508,7 @@ export default function CompleteSignup(): ReactElement | null {
               </>
             ) : null}
             <AutoCompleteCountry
-              label={t('donate:country')}
+              label={t('fieldLabels.country')}
               name="country"
               onChange={setCountry}
               defaultValue={
@@ -486,12 +526,12 @@ export default function CompleteSignup(): ReactElement | null {
                   className={styles.mainText}
                   style={{ cursor: 'pointer' }}
                 >
-                  {t('editProfile:privateAccount')}
+                  {t('fieldLabels.privateAccount')}
                 </label>{' '}
                 <br />
                 {isPrivate && (
                   <label className={styles.isPrivateAccountText}>
-                    {t('editProfile:privateAccountTxt')}
+                    {t('privateAccountTxt')}
                   </label>
                 )}
               </div>
@@ -513,7 +553,7 @@ export default function CompleteSignup(): ReactElement | null {
             <div className={styles.inlineToggleGroup}>
               <div className={styles.mainText}>
                 <label htmlFor={'getNews'} style={{ cursor: 'pointer' }}>
-                  {t('editProfile:subscribe')}
+                  {t('fieldLabels.subscribe')}
                 </label>
               </div>
               <Controller
@@ -537,7 +577,7 @@ export default function CompleteSignup(): ReactElement | null {
               <div className={styles.inlineToggleGroup}>
                 <div className={styles.mainText}>
                   <label htmlFor={'terms'} style={{ cursor: 'pointer' }}>
-                    <Trans i18nKey="editProfile:termAndCondition">
+                    <Trans i18nKey="termAndCondition">
                       <a
                         className={styles.termsLink}
                         rel="noopener noreferrer"
@@ -561,7 +601,7 @@ export default function CompleteSignup(): ReactElement | null {
               </div>
               {!acceptTerms && typeof acceptTerms !== 'object' && (
                 <div className={styles.termsError}>
-                  {t('editProfile:termAndConditionError')}
+                  {t('termAndConditionError')}
                 </div>
               )}
             </div>
@@ -576,7 +616,7 @@ export default function CompleteSignup(): ReactElement | null {
               {submit ? (
                 <div className={styles.spinner}></div>
               ) : (
-                t('editProfile:createAccount')
+                t('createAccount')
               )}
             </button>
           </div>

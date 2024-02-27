@@ -282,6 +282,33 @@
   color: $primaryFontColor;
 }
 
+// Tax receipt code - commented out. Add back while enabling feature.
+/* .issueButtonMobileContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  margin: 0px 0px 15px;
+}
+
+.issueButtonContainer {
+  margin: 25px 0px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.link {
+  display: inline-block;
+  color: $primaryFontColor;
+  margin: 0;
+  padding: 0;
+  &:hover {
+    color: $primaryColor;
+  }
+} */
+
 .filterButton.selected {
   border: none;
   padding: 9px 13px;
@@ -523,19 +550,41 @@
   min-width: 250px;
   margin-left: 20px;
 }
-.topAdSpace {
-  margin-top: 20px;
-  width: 250px;
-  height: 250px;
+
+.membershipCta {
+  width: 100%;
+  height: 200px;
   border-radius: 10px;
+  background-image: url('/assets/images/membership-background-landscape.png');
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 20px;
+  .membershipCtaContent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  &.membershipCtaRight {
+    display: none;
+  }
 }
 
-.rightAdSpace {
-  margin-top: 20px;
-  display: none;
-  width: 250px;
-  height: 250px;
-  border-radius: 10px;
+.membershipCtaCopy {
+  color: $light;
+  font-weight: 400;
+  font-size: $fontMedium;
+  > .highlighted {
+    text-transform: uppercase;
+    display: block;
+    font-weight: 700;
+    font-size: $fontLarge;
+  }
 }
 
 @include smTabletView {
@@ -547,10 +596,6 @@
   }
 }
 @include mdTabletView {
-  .rightAdSpace {
-    display: block;
-  }
-
   .recordModal,
   .modalContainer {
     display: none;
@@ -668,10 +713,8 @@
 @include lgLaptopView {
   .filterContent {
     display: flex;
-  }
-
-  .topAdSpace {
-    display: none;
+    flex-direction: column;
+    gap: 1rem;
   }
 
   .accountHistory {
@@ -686,6 +729,11 @@
   .filterRow {
     display: none;
   }
+
+  // Tax receipt code - commented out. Add back while enabling feature.
+  /* .issueButtonMobileContainer {
+    display: none;
+  } */
 
   .modal {
     display: none;
@@ -720,6 +768,20 @@
     grid-template-columns: repeat(3, 1fr);
     & .singleDetail.fullWidth {
       grid-column: span 3;
+    }
+  }
+
+  .membershipCta {
+    height: 250px;
+    background-image: url('/assets/images/membership-background-portrait.png');
+    .logo {
+      align-self: flex-end;
+    }
+    &.membershipCtaTop {
+      display: none;
+    }
+    &.membershipCtaRight {
+      display: flex;
     }
   }
 }

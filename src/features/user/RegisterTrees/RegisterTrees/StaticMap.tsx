@@ -10,6 +10,7 @@ const Map = ReactMapboxGl({
   interactive: false,
   customAttribution:
     '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
+  accessToken: '',
 });
 
 interface Props {
@@ -17,7 +18,7 @@ interface Props {
 }
 
 export default function StaticMap({ geoJson }: Props): ReactElement {
-  const defaultMapCenter = [-28.5, 36.96];
+  const defaultMapCenter: [number, number] = [-28.5, 36.96];
   const defaultZoom = 1.4;
   const [viewport, setViewPort] = React.useState({
     height: '100%',
@@ -25,12 +26,12 @@ export default function StaticMap({ geoJson }: Props): ReactElement {
     center: defaultMapCenter,
     zoom: [defaultZoom],
   });
-  const [viewport2, setViewPort2] = React.useState({
+  const viewport2 = {
     height: 200,
     width: 350,
     center: defaultMapCenter,
     zoom: defaultZoom,
-  });
+  };
   const [isPoint, setIsPoint] = React.useState(false);
   const [style, setStyle] = React.useState({
     version: 8,
@@ -40,7 +41,7 @@ export default function StaticMap({ geoJson }: Props): ReactElement {
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
-    promise.then((style: any) => {
+    promise.then((style) => {
       if (style) {
         setStyle(style);
       }
@@ -75,8 +76,8 @@ export default function StaticMap({ geoJson }: Props): ReactElement {
         ]);
         const newViewport = {
           ...viewport,
-          center: [longitude, latitude],
-          zoom: [zoom - 0.5],
+          center: [longitude, latitude] as [number, number],
+          zoom: [zoom - 0.5] as [number],
         };
         setViewPort(newViewport);
       }
@@ -85,6 +86,7 @@ export default function StaticMap({ geoJson }: Props): ReactElement {
   return (
     <Map
       {...viewport}
+      zoom={[viewport.zoom[0]]}
       style={style}
       containerStyle={{
         height: '100%',
@@ -107,7 +109,9 @@ export default function StaticMap({ geoJson }: Props): ReactElement {
             'line-width': 2,
           }}
         />
-      ) : null}
+      ) : (
+        <></>
+      )}
     </Map>
   );
 }
