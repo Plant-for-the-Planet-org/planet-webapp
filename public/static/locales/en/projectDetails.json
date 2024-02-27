@@ -1,6 +1,6 @@
 {
     "satelliteAnalysis": "Satellite Analysis",
-    "co2CapturePerHa": "CO2 Captured (per ha.)",
+    "co2CapturePerHa": "CO2 Captured <p>(per ha.)</p>",
     "comparedToRegionalAverage": "Compared to regional average",
     "co2Removed": "CO2 removed",
     "biomass": "Biomass",

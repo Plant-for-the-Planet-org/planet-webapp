@@ -39,15 +39,18 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-  
     .graphHeading {
         font-size: 10px;
         color: #2F3336;
-        font-weight: 700;
         display: flex;
         align-items: center;
-        justify-content: space-between;
         padding:0 15px;
+        gap: 2px;
+        font-weight: 700;
+        p {
+            font-weight: 400;
+        }
+       
     }
     .graphSubheading {
         color: #BDBDBD;
@@ -59,4 +62,11 @@
 
 .titleContainer {
     width: 299px;
+}
+.newInfoIcon {
+    margin-left: auto;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 }

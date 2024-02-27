@@ -4,7 +4,7 @@ import styles from './Graph.module.scss';
 import ReactDOMServer from 'react-dom/server';
 import NewInfoIcon from '../icons/NewInfoIcon';
 import { ApexOptions } from 'apexcharts';
-import { useTranslation } from 'next-i18next';
+import { Trans, useTranslation } from 'next-i18next';
 
 interface TooltipProps {
   headerTitle: string;
@@ -205,8 +205,16 @@ const Graph = ({
     <div className={styles.container}>
       <div className={styles.titleContainer}>
         <h5 className={styles.graphHeading}>
-          {t(`${title}`)}
-          <NewInfoIcon height={17.6} width={17.6} color={'#BDBDBD'} />
+          {title === 'co2CapturePerHa' ? (
+            <Trans i18nKey="co2CapturePerHa">
+              CO2 Captured<p>(per ha.)</p>
+            </Trans>
+          ) : (
+            t(`${title}`)
+          )}
+          <div className={styles.newInfoIcon}>
+            <NewInfoIcon height={17} width={17} color={'#BDBDBD'} />
+          </div>
         </h5>
         <p className={styles.graphSubheading}> {t(`${subtitle}`)}</p>
       </div>
