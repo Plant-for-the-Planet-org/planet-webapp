@@ -1,4 +1,3 @@
-import { Fragment } from 'react';
 import styles from './ProjectInfo.module.scss';
 import { useTranslation } from 'next-i18next';
 interface Props {
@@ -61,14 +60,14 @@ const MoreInfoContainer = ({
     },
   ];
 
-  const translatedSiteOwnership = (siteOwnershipType: string) => {
-    let translation = '';
+  const renderSiteOwnershipType = (siteOwnershipType: string) => {
+    let translatedTitle = '';
     siteOwners.map((siteOwner) => {
       if (siteOwner.value === siteOwnershipType) {
-        translation = siteOwner.title;
+        translatedTitle = siteOwner.title;
       }
     });
-    return translation;
+    return `${translatedTitle} · ${t('manageProjects:since')} ${acquiredSince}`;
   };
 
   return (
@@ -87,10 +86,7 @@ const MoreInfoContainer = ({
             <div> {t('manageProjects:siteOwnership')}</div>{' '}
             <div className={styles.siteOwnershipLabelContainer}>
               {siteOwnershipType.map((type) => (
-                <span key={type}>
-                  {translatedSiteOwnership(type)} · {t('manageProjects:since')}{' '}
-                  {acquiredSince}
-                </span>
+                <span key={type}>{renderSiteOwnershipType(type)}</span>
               ))}
             </div>
           </div>

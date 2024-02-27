@@ -3,7 +3,6 @@ import NewInfoIcon from '../icons/NewInfoIcon';
 import { bindHover, bindPopover } from 'material-ui-popup-state';
 import HoverPopover from 'material-ui-popup-state/HoverPopover';
 import { usePopupState } from 'material-ui-popup-state/hooks';
-import styles from './ProjectInfo.module.scss';
 
 interface Props {
   height: number;
@@ -18,7 +17,10 @@ const InfoIconPopup = ({ height, width, color, children }: Props) => {
     popupId: 'abandonmentInfoPopover',
   });
   return (
-    <div {...bindHover(abandonmentInfoPopupState)}>
+    <div
+      {...bindHover(abandonmentInfoPopupState)}
+      style={{ cursor: 'pointer' }}
+    >
       <NewInfoIcon height={height} width={width} color={color} />
       <HoverPopover
         {...bindPopover(abandonmentInfoPopupState)}

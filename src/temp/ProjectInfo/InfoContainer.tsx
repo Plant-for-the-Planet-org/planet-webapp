@@ -79,14 +79,14 @@ const InfoContainer = ({
           <div className={styles.infoTitle}>
             {t('projectDetails:firstTreePlanted')}
           </div>
-          <div className={styles.infoDetail}>
+          <time className={styles.infoDetail}>
             {formatDate(
               firstTree.split('-')[1].length === 1 ||
                 firstTree.split('-')[2].length === 1
                 ? addZeroToDate(firstTree)
                 : firstTree
             )}
-          </div>
+          </time>
         </div>
       </div>
       <div className={styles.seperator}></div>

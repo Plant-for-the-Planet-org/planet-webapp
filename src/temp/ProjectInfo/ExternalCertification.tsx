@@ -40,7 +40,9 @@ const ExternalCertification = ({
           <div className={styles.spendingsContainer}>
             {spendings.map((expense) => (
               <div className={styles.spendingDetail} key={expense.id}>
-                <div className={styles.certificationLabel}>{expense.year}</div>
+                <time className={styles.certificationLabel}>
+                  {expense.year}
+                </time>
                 <div>
                   {getFormatedCurrency(i18n.language, 'EUR', expense.amount)}
                 </div>
