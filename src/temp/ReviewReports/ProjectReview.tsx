@@ -15,7 +15,7 @@ interface Props {
 }
 
 const ProjectReview = ({ issueMonth, pdf }: Props) => {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation(['common', 'manageProjects', 'projectDetails']);
   const displayDate = (date: string) => {
     return format(parse(date, 'MM-yyyy', new Date()), 'LLLL yyyy', {
       locale: localeMapForDate[localStorage.getItem('language') || 'en'],
@@ -24,16 +24,16 @@ const ProjectReview = ({ issueMonth, pdf }: Props) => {
   return (
     <div className={styles.reviewReportsContainer}>
       <div className={styles.titleContainer}>
-        <h6>Review</h6>
+        <h6>{t('manageProjects:review')}</h6>
         <div className={styles.downloadReportContainer}>
           {' '}
-          <p>Report</p>
+          <p>{t('projectDetails:report')}</p>
           <a
             target="_blank"
             rel="noopener noreferrer"
             href={getPDFFile('projectReview', pdf)}
           >
-            <DownloadReportIcon />
+            <DownloadReportIcon width={10} color={'#2D9CDB'} />
           </a>
         </div>
       </div>
