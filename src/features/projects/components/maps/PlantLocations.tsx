@@ -30,7 +30,6 @@ export default function PlantLocations(): ReactElement {
   const { i18n, t } = useTranslation(['maps', 'common']);
 
   const openPl = (pl: PlantLocationSingle | SamplePlantLocation) => {
-    console.log(pl, '==');
     switch (pl.type) {
       case 'sample':
         setSamplePlantLocation(pl);
@@ -232,10 +231,7 @@ export default function PlantLocations(): ReactElement {
                   {viewport.zoom > 14 && (
                     <div
                       key={`${pl.id}-marker`}
-                      onClick={() => {
-                        console.log('I ran');
-                        openPl(pl);
-                      }}
+                      onClick={() => openPl(pl)}
                       onMouseEnter={() => onHover(pl)}
                       onMouseLeave={onHoverEnd}
                       className={`${styles.single} ${

@@ -1,26 +1,21 @@
 import React, { ReactElement } from 'react';
 import TransactionListLoader from '../../../../../public/assets/images/icons/TransactionListLoader';
 import TransactionsNotFound from '../../../../../public/assets/images/icons/TransactionsNotFound';
+import PlantLocation from './PlantLocation';
 import styles from '../TreeMapper.module.scss';
 import { useTranslation } from 'next-i18next';
 import {
   SamplePlantLocation,
   PlantLocation as PlantLocationType,
-  PlantLocationSingle,
-  PlantLocationMulti,
 } from '../../../common/types/plantLocation';
 import { Links } from '../../../common/types/payments';
-import PlantLocation from './PlantLocation';
-import { SetState } from '../../../common/types/common';
 
 interface Props {
-  selectedLocation: PlantLocationSingle | PlantLocationMulti | null;
-  setselectedLocation: SetState<
-    PlantLocationSingle | PlantLocationMulti | null
-  >;
-  plantLocations: PlantLocationType[];
+  selectedLocation: string;
+  setselectedLocation: Function;
+  plantLocations: PlantLocationType[] | SamplePlantLocation[] | null;
   isDataLoading: boolean;
-  location: PlantLocationSingle | PlantLocationMulti | null;
+  location: string;
   fetchTreemapperData: Function;
   links: Links | undefined;
 }
@@ -35,6 +30,7 @@ export default function TreeMapperList({
   links,
 }: Props): ReactElement {
   const { t } = useTranslation('treemapper');
+
   return (
     <div
       className={`${location ? styles.hideOnMobile : ''} ${

@@ -10,7 +10,6 @@ const Map = ReactMapboxGl({
   interactive: false,
   customAttribution:
     '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
-  accessToken: '',
 });
 
 interface Props {
@@ -18,8 +17,7 @@ interface Props {
 }
 
 export default function StaticMap({ geoJson }: Props): ReactElement {
-  console.log(geoJson, '==');
-  const defaultMapCenter: [number, number] = [-28.5, 36.96];
+  const defaultMapCenter = [-28.5, 36.96];
   const defaultZoom = 1.4;
   const [viewport, setViewPort] = React.useState({
     height: '100%',
@@ -42,7 +40,7 @@ export default function StaticMap({ geoJson }: Props): ReactElement {
 
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
-    promise.then((style) => {
+    promise.then((style: any) => {
       if (style) {
         setStyle(style);
       }
@@ -77,8 +75,8 @@ export default function StaticMap({ geoJson }: Props): ReactElement {
         ]);
         const newViewport = {
           ...viewport,
-          center: [longitude, latitude] as [number, number],
-          zoom: [zoom - 0.5] as [number],
+          center: [longitude, latitude],
+          zoom: [zoom - 0.5],
         };
         setViewPort(newViewport);
       }
@@ -87,7 +85,6 @@ export default function StaticMap({ geoJson }: Props): ReactElement {
   return (
     <Map
       {...viewport}
-      zoom={[viewport.zoom[0]]}
       style={style}
       containerStyle={{
         height: '100%',
@@ -110,9 +107,7 @@ export default function StaticMap({ geoJson }: Props): ReactElement {
             'line-width': 2,
           }}
         />
-      ) : (
-        <></>
-      )}
+      ) : null}
     </Map>
   );
 }

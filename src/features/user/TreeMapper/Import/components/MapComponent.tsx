@@ -4,48 +4,52 @@ import ReactMapboxGl, { ZoomControl, GeoJSONLayer } from 'react-mapbox-gl';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import WebMercatorViewport from '@math.gl/web-mercator';
 import getMapStyle from '../../../../../utils/maps/getMapStyle';
-import { GeoJSON } from 'geojson';
-import { RequiredMapStyle } from '../../../../common/types/map';
 
 interface Props {
-  geoJson: GeoJSON | null;
+  geoJson: any;
+  setGeoJson: Function;
+  setActiveMethod: Function;
 }
 
-interface viewportProps {
-  height: string;
-  width: string;
-  center: [number, number];
-  zoom: [number];
-}
+const Map = ReactMapboxGl({ maxZoom: 15 });
 
-const Map = ReactMapboxGl({ maxZoom: 15, accessToken: '' });
-
-export default function MapComponent({ geoJson }: Props): ReactElement {
-  const defaultMapCenter: [number, number] = [0, 0];
+export default function MapComponent({
+  geoJson,
+  setGeoJson,
+}: Props): ReactElement {
+  const defaultMapCenter = [0, 0];
   const defaultZoom = 1.4;
 
-  const [viewport, setViewPort] = React.useState<viewportProps>({
+  const [viewport, setViewPort] = React.useState({
     height: '100%',
     width: '100%',
     center: defaultMapCenter,
     zoom: [defaultZoom],
   });
-
-  const _viewport2 = {
+  const [viewport2, setViewPort2] = React.useState({
     height: 1000,
     width: 500,
     center: defaultMapCenter,
     zoom: defaultZoom,
-  };
-
+  });
   const [style, setStyle] = React.useState({
     version: 8,
     sources: {},
     layers: [],
   });
+  // const [satellite, setSatellite] = React.useState(false);
+
+  // const RASTER_SOURCE_OPTIONS = {
+  //   type: 'raster',
+  //   tiles: [
+  //     'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+  //   ],
+  //   tileSize: 128,
+  // };
+
   React.useEffect(() => {
     const promise = getMapStyle('openStreetMap');
-    promise.then((style: RequiredMapStyle) => {
+    promise.then((style: any) => {
       if (style) {
         setStyle(style);
       }
@@ -59,16 +63,27 @@ export default function MapComponent({ geoJson }: Props): ReactElement {
       ]);
       const bbox = turf.bbox(geo);
       const { longitude, latitude, zoom } = new WebMercatorViewport(
-        _viewport2
+        viewport2
       ).fitBounds([
         [bbox[0], bbox[1]],
         [bbox[2], bbox[3]],
       ]);
-      const newViewport: viewportProps = {
+      const newViewport = {
         ...viewport,
         center: [longitude, latitude],
         zoom: [zoom],
       };
+      // setTimeout(() => {
+      //   if (drawControlRef.current) {
+      //     try {
+      //       drawControlRef.current.draw.add(geo);
+      //     } catch (e) {
+      //       // setGeoJsonError(true);
+      //       // setGeoJson(null);
+      //       console.log('We only support feature collection for now', e);
+      //     }
+      //   }
+      // }, 1000);
       setViewPort(newViewport);
     } else {
       setViewPort({
@@ -90,22 +105,65 @@ export default function MapComponent({ geoJson }: Props): ReactElement {
         }}
         // onClick={() => setActiveMethod('draw')}
       >
-        <>
-          {geoJson ? (
-            <GeoJSONLayer
-              data={geoJson}
-              fillPaint={{
-                'fill-color': '#fff',
-                'fill-opacity': 0.2,
-              }}
-              linePaint={{
-                'line-color': '#68B030',
-                'line-width': 2,
-              }}
+        {/* {satellite && (
+          <>
+            <Source
+              id="satellite_source"
+              tileJsonSource={RASTER_SOURCE_OPTIONS}
             />
-          ) : null}
-          <ZoomControl position="bottom-right" />
-        </>
+            <Layer
+              type="raster"
+              id="satellite_layer"
+              sourceId="satellite_source"
+            />
+          </>
+        )} */}
+        {/* <DrawControl
+          ref={drawControlRef}
+          onDrawCreate={onDrawCreate}
+          onDrawUpdate={onDrawUpdate}
+          controls={{
+            point: false,
+            line_string: false,
+            polygon: geoJson ? false : true,
+            trash: true,
+            combine_features: false,
+            uncombine_features: false,
+          }}
+          position="top-right"
+        /> */}
+        {/* <div className={styles.layerSwitcher}>
+          <div
+            onClick={() => setSatellite(false)}
+            className={`${styles.layerOption} ${
+              satellite ? '' : styles.active
+            }`}
+          >
+            Map
+          </div>
+          <div
+            onClick={() => setSatellite(true)}
+            className={`${styles.layerOption} ${
+              satellite ? styles.active : ''
+            }`}
+          >
+            Satellite
+          </div>
+        </div> */}
+        {geoJson ? (
+          <GeoJSONLayer
+            data={geoJson}
+            fillPaint={{
+              'fill-color': '#fff',
+              'fill-opacity': 0.2,
+            }}
+            linePaint={{
+              'line-color': '#68B030',
+              'line-width': 2,
+            }}
+          />
+        ) : null}
+        <ZoomControl position="bottom-right" />
       </Map>
     </>
   );

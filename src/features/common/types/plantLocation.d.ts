@@ -1,21 +1,6 @@
 import { DateString } from './common';
-import { Links } from './payments';
 import { Polygon, Point } from 'geojson';
-
-export interface Geometry {
-  coordinates: number[][][];
-  type: string;
-  properties: Properties;
-}
-export interface GeometryOfSinglePlant {
-  coordinates: number[];
-  type: string;
-  properties: Properties;
-}
-
-export interface Properties {
-  id: string;
-}
+import { Links } from './payments';
 
 export interface PlantLocationBase {
   hid: string;
@@ -38,19 +23,19 @@ export interface PlantLocationBase {
   status: string | null; // currently always null. Should we do something here?
   statusReason: string | null; // currently always null. Should we do something here?
 }
+
 export interface PlantLocationSingle extends PlantLocationBase {
-  type: PlantLocationType;
+  type: 'single';
   scientificName: string | null;
   scientificSpecies: string | null;
   tag: string | null;
   measurements: Measurements;
   originalGeometry: Point;
-  geometry: GeometryOfSinglePlant;
-  sampleTrees: SamplePlantLocation[];
+  geometry: Point;
 }
 
 export interface PlantLocationMulti extends PlantLocationBase {
-  type: PlantLocationType;
+  type: 'multi';
   nextMeasurementDate: DateString | null;
   plantDateStart: DateString | null;
   plantDateEnd: DateString | null;
@@ -58,15 +43,14 @@ export interface PlantLocationMulti extends PlantLocationBase {
   samplePlantLocations: SamplePlantLocation[];
   plantedSpecies: PlantedSpecies[];
   originalGeometry: Polygon;
-  geometry: Geometry;
-  sampleTrees: SamplePlantLocation[];
+  geometry: Polygon;
 }
 
 export type PlantLocation = PlantLocationSingle | PlantLocationMulti;
 
 export interface SamplePlantLocation
   extends Omit<PlantLocationBase, 'plantProject'> {
-  type: Type;
+  type: 'sample';
   /** parent plant location */
   parent: string;
   /** tpo profile id */
@@ -79,7 +63,6 @@ export interface SamplePlantLocation
   measurements: Measurements;
   originalGeometry: Point;
   geometry: Point;
-  sampleTrees?: PlantLocation[];
 }
 
 export interface Metadata {
