@@ -1,11 +1,10 @@
 import React from 'react';
 import { IconProps } from '../../features/common/types/common';
 
-const FieldReviewedIcon = ({ color }: IconProps) => {
+const FieldReviewedIcon = ({ color, width }: IconProps) => {
   return (
     <svg
-      width="10"
-      height="10"
+      width={width}
       viewBox="0 0 10 10"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

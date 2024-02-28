@@ -27,17 +27,17 @@ const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
 
     if (isTopProject && isApproved)
       return {
-        icon: <TopProjectIcon color={'#fff'} height={10} width={10} />,
+        icon: <TopProjectIcon color={'#fff'} width={11} />,
         title: t('common:topProject'),
       };
     else if (isTopProject && !isApproved)
       return {
-        icon: <FieldReviewedIcon />,
+        icon: <FieldReviewedIcon width={10} />,
         title: t('projectDetails:fieldReviewed'),
       };
     else if (!isTopProject && !isApproved)
       return {
-        icon: <OffSiteReviewedIcon />,
+        icon: <OffSiteReviewedIcon width={10} />,
         title: t('projectDetails:offSiteReviewed'),
       };
   };
