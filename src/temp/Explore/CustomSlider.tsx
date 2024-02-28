@@ -18,4 +18,7 @@ export const SmallSlider = styled(Slider)(() => ({
     height: '2.5px',
     color: 'rgba(235, 87, 87, 1)',
   },
+  '.MuiSlider-thumb.Mui-focusVisible, .MuiSlider-thumb:hover': {
+    boxShadow: 'none',
+  },
 }));

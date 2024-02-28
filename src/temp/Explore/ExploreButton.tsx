@@ -1,17 +1,12 @@
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
 import { ExploreIcon } from '../icons/ExploreIcon';
 import style from './Explore.module.scss';
 import InfoIcon from '../icons/InfoIcon';
-import {
-  CurrentForestSwitch,
-  RestorationSwitch,
-  DeforestrationSwitch,
-  ProjectSwitch,
-} from './CustomSwitch';
+import { StyledSwitch } from './CustomSwitch';
 import { SmallSlider } from './CustomSlider';
 import PlayIcon from '../icons/PlayIcon';
 import { useTranslation } from 'next-i18next';
+import CustomButton from './CustomButton';
 
 interface ExploreButtonProps {
   label: string | string[];
@@ -30,20 +25,6 @@ interface YearRangeSliderProps {
   startYear: number;
   endYear: number;
 }
-
-// const ExploreCustomButton = styled(Button)(() => ({
-//   '.MuiButton-root': {
-//     width: '182px',
-//     height: '47px',
-//     borderRadius: '12px',
-//     backgroundColor: 'rgba(255, 255, 255, 1)',
-//     color: 'black',
-//     justifyContent: 'start',
-//     paddingLeft: '18px',
-//     marginLeft: '5px',
-//     fontSize: '12px',
-//   },
-// }));
 
 export const EcosystemOption = ({
   infoIcon,
@@ -120,23 +101,9 @@ const ExploreButton = ({
 }: ExploreButtonProps) => {
   const { t } = useTranslation(['allProjects']);
 
-  const customButtonStyle = {
-    width: '182px',
-    height: '47px',
-    backgroundColor: 'rgba(255, 255, 255, 1)',
-    borderRadius: '12px',
-    color: 'black',
-    justifyContent: 'start',
-    paddingLeft: '18px',
-    marginLeft: '5px',
-    fontSize: '12px',
-  };
   return (
     <>
-      <Button startIcon={<ExploreIcon />} sx={customButtonStyle}>
-        {' '}
-        {label}
-      </Button>
+      <CustomButton startIcon={<ExploreIcon />}>{label}</CustomButton>
 
       {isOpen ? (
         <div className={style.exploreMainContainer}>
@@ -145,26 +112,26 @@ const ExploreButton = ({
               <EcosystemOption
                 infoIcon={<InfoIcon />}
                 label={t('allProjects:currentForests')}
-                switchComponent={<CurrentForestSwitch />}
+                switchComponent={<StyledSwitch currentForestSwitch />}
               />
               <div className={style.hrLine} />
               <EcosystemOption
                 infoIcon={<InfoIcon />}
                 label={t('allProjects:restorationPotential')}
-                switchComponent={<RestorationSwitch />}
+                switchComponent={<StyledSwitch restorationSwitch />}
               />
               <div className={style.hrLine} />
               <EcosystemOption
                 infoIcon={<InfoIcon />}
                 label={t('allProjects:deforestation')}
-                switchComponent={<DeforestrationSwitch />}
+                switchComponent={<StyledSwitch deforestrationSwitch />}
               />
               <YearRangeSlider startYear={startYear} endYear={endYear} />
               <div className={style.hrLine} />
               <EcosystemOption
                 infoIcon={undefined}
                 label={t('allProjects:projects')}
-                switchComponent={<ProjectSwitch />}
+                switchComponent={<StyledSwitch />}
               />
             </div>
             <div className={style.exploreDescription}>

@@ -1,5 +1,11 @@
 import { Switch, styled } from '@mui/material';
 
+interface SwitchProps {
+  currentForestSwitch?: boolean;
+  restorationSwitch?: boolean;
+  deforestrationSwitch?: boolean;
+}
+
 const baseSwitchStyle = {
   '.MuiSwitch-track': {
     height: '7px',
@@ -26,33 +32,19 @@ const SmallSwitch = styled(Switch)(({}) => ({
   ...baseSwitchStyle,
 }));
 
-export const CurrentForestSwitch = styled(SmallSwitch)(({}) => ({
-  '.MuiSwitch-switchBase.Mui-checked': {
-    color: 'rgba(33, 150, 83, 1)',
-  },
-  '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
-    backgroundColor: '#CAE6D6',
-  },
-}));
-
-export const RestorationSwitch = styled(SmallSwitch)(({}) => ({
-  '.MuiSwitch-switchBase.Mui-checked': {
-    color: 'rgba(47, 128, 237, 1)',
-  },
-  '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
-    backgroundColor: '#CDE1FB',
-  },
-}));
-
-export const DeforestrationSwitch = styled(SmallSwitch)(({}) => ({
-  '.MuiSwitch-track': {
-    color: 'black',
-  },
-  '.MuiSwitch-switchBase.Mui-checked': {
-    color: 'rgba(235, 87, 87, 1)',
-  },
-  '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
-    backgroundColor: '#FAD7D7',
-  },
-}));
-export const ProjectSwitch = styled(Switch)(baseSwitchStyle);
+export const StyledSwitch = styled(SmallSwitch)<SwitchProps>(
+  ({ currentForestSwitch, restorationSwitch, deforestrationSwitch }) => ({
+    '.MuiSwitch-switchBase.Mui-checked': {
+      color:
+        (currentForestSwitch && 'rgba(33, 150, 83, 1)') ||
+        (restorationSwitch && 'rgba(47, 128, 237, 1)') ||
+        (deforestrationSwitch && 'rgba(235, 87, 87, 1)'),
+    },
+    '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
+      backgroundColor:
+        (currentForestSwitch && 'rgb(202, 230, 214)') ||
+        (restorationSwitch && 'rgb(205, 225, 251)') ||
+        (deforestrationSwitch && 'rgb(250, 215, 215)'),
+    },
+  })
+);
