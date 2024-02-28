@@ -6,7 +6,7 @@ import PlayButtonIcon from '../icons/PlayButtonIcon';
 const PlayButton = () => {
   return (
     <div className={styles.playButtonBackdrop}>
-      <PlayButtonIcon width={19} />
+      <PlayButtonIcon width={15} />
     </div>
   );
 };

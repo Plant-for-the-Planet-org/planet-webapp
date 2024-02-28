@@ -4,18 +4,16 @@
 }
 
 .playButtonBackdrop {
-    background-color: rgba(255, 255, 255, 0.20);
+    background-color: #FFFFFF33;
     border-radius: 50%;
     backdrop-filter: blur(4.902973175048828px);
     height: 41px;
     width: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     svg {
-        height: 19px;
-        width: 15px;
-        position: absolute;
-        left: 14.7px;
-        top: 10.8px;
-        
+        margin-left: 3px;        
     }
 }
