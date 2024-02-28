@@ -6,12 +6,16 @@ import PlayButtonIcon from '../icons/PlayButtonIcon';
 const PlayButton = () => {
   return (
     <div className={styles.playButtonBackdrop}>
-      <PlayButtonIcon />
+      <PlayButtonIcon width={19} />
     </div>
   );
 };
 
-const VideoPlayer = ({ videoUrl }) => {
+interface Props {
+  videoUrl: string;
+}
+
+const VideoPlayer = ({ videoUrl }: Props) => {
   return ReactPlayer.canPlay(videoUrl) ? (
     <ReactPlayer
       className={styles.video}

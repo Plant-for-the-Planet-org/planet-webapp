@@ -1,11 +1,11 @@
 import React from 'react';
+import { IconProps } from '../../features/common/types/common';
 
-const PlayButtonIcon = () => {
+const PlayButtonIcon = ({ width }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="15"
-      height="19"
+      width={width}
       viewBox="0 0 15 19"
       fill="none"
     >
