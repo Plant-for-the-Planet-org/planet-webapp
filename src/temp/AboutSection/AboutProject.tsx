@@ -41,12 +41,12 @@ const AboutProject = ({ description, amountOfWords }: Props) => {
           {isExpanded ? (
             <>
               <div>{t('projectDetails:seeLess')}</div>
-              <UpArrow />
+              <UpArrow width={7} />
             </>
           ) : (
             <>
               <div>{t('projectDetails:seeMore')}</div>
-              <DownArrow />
+              <DownArrow width={7} />
             </>
           )}
         </button>
