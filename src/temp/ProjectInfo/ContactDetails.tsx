@@ -17,12 +17,12 @@ const ContactDetails = ({ websiteURL, location, email }: Props) => {
 
   const contactDetails = [
     {
-      icon: <ViewProfileIcon />,
+      icon: <ViewProfileIcon width={10.5} color={'#2F3336'} />,
       title: t('donate:viewProfile'),
       link: '',
     },
     {
-      icon: <WebsiteLinkIcon />,
+      icon: <WebsiteLinkIcon width={10.5} color={'#2F3336'} />,
       title: websiteURL
         .replace('https://www.', '')
         .replace('http://', '')
@@ -32,12 +32,12 @@ const ContactDetails = ({ websiteURL, location, email }: Props) => {
       link: websiteURL,
     },
     {
-      icon: <LocationIcon />,
+      icon: <LocationIcon width={9.5} color={'#2F3336'} />,
       title: location,
       link: '',
     },
     {
-      icon: <MailIcon />,
+      icon: <MailIcon width={10.5} color={'#2F3336'} />,
       title: email,
       link: `mailto:${email}`,
     },
@@ -60,7 +60,7 @@ const ContactDetails = ({ websiteURL, location, email }: Props) => {
                 <div className={styles.icon}>{contact.icon}</div>
                 <div className={styles.title}>{contact.title}</div>
                 <div className={styles.rightArrow}>
-                  <RightArrowIcon />
+                  <RightArrowIcon width={5} color={'#2F3336'} />
                 </div>
               </a>
             ))}
