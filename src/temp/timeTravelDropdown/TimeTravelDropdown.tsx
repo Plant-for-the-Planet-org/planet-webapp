@@ -50,12 +50,12 @@ const TimeTravelDropdown = ({
         onClick={() => setIsMenuOpen(!isMenuOpen)}
       >
         <div className={styles.menuButtonTitle}>
-          <CalendarIcon />
+          <CalendarIcon width={14} color={'#2F3336'} />
           <p>
             <span>{selectedYear} </span>via {selectedSource}
           </p>
         </div>
-        <DropdownArrow />
+        <DropdownArrow width={8} color={'#2F3336'} />
       </div>
       {isMenuOpen && (
         <div className={styles.menuItems}>
