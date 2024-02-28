@@ -1,0 +1,52 @@
+.menuContainer {
+    font-size: 12px;
+}
+.menuButton {
+    border-radius: 8px;
+    width: 150px;
+    background: #FFF;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    justify-content: space-between;
+    p {
+        margin: 0 0 0 6px;
+    }
+    span {
+        font-weight: 700;
+    }
+
+}
+.menuButtonTitle {
+    display: flex;
+    align-items: center;
+}
+.menuItems {
+    display: flex;
+    width: 160px;
+    margin-top: 16px;
+    border-radius: 8px;
+    color: #4F4F4F;
+}
+.yearMenuContainer {
+    border-radius: 8px 0 0 8px;
+    background-color: rgba(217, 217, 217, 0.5);
+    padding:16px;
+    display: flex;
+    flex-direction: column;
+    time {
+        opacity: 5;
+        margin-top: 6px;
+    }
+}
+.sourceMenuContainer {
+    background: #FFF;
+    padding: 16px;
+    border-radius: 0px 8px 8px 0;
+    li {
+        list-style: none;
+        margin-top: 6px;
+        width: 67px;    
+    }
+}
