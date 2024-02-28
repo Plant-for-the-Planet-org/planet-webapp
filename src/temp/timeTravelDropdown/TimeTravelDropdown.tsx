@@ -61,13 +61,13 @@ const TimeTravelDropdown = ({
         <div className={styles.menuItems}>
           <ul className={styles.yearMenuContainer}>
             {yearList?.map((year, index) => (
-              <li
+              <time
                 key={index}
                 onClick={() => handleChangeYear(year)}
                 style={styleForSelectedOption(year, selectedYear)}
               >
                 {year}
-              </li>
+              </time>
             ))}
           </ul>
           <ul className={styles.sourceMenuContainer}>
