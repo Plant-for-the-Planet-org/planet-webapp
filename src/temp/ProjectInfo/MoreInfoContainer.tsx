@@ -1,5 +1,6 @@
 import styles from './ProjectInfo.module.scss';
 import { useTranslation } from 'next-i18next';
+import SingleProjectInfoItem from './SingleProjectInfoItem';
 interface Props {
   mainChallengeText: string;
   siteOwnershipText: string;
@@ -70,67 +71,62 @@ const MoreInfoContainer = ({
     return `${translatedTitle} · ${t('manageProjects:since')} ${acquiredSince}`;
   };
 
-  return (
-    <div className={styles.moreInfoContainer}>
-      <div className={styles.singleInfo}>
-        <div className={styles.halfInfo}>
-          <div className={styles.infoTitle}>
-            {t('manageProjects:mainChallenge')}
-          </div>
-          <div className={styles.infoDetail}>{mainChallengeText}</div>
-        </div>
-      </div>
-      <div className={styles.singleInfo}>
-        <div className={styles.halfInfo}>
-          <div className={styles.siteOwnershipTitle}>
-            <div> {t('manageProjects:siteOwnership')}</div>{' '}
-            <div className={styles.siteOwnershipLabelContainer}>
-              {siteOwnershipType.map((type) => (
-                <span key={type}>{renderSiteOwnershipType(type)}</span>
-              ))}
-            </div>
+  const moreInfoContent = [
+    {
+      title: `${t('manageProjects:mainChallenge')}`,
+      content: <div className={styles.infoDetail}>{mainChallengeText}</div>,
+    },
+    {
+      title: `${t('manageProjects:siteOwnership')}`,
+      content: (
+        <>
+          <div className={styles.siteOwnershipLabelContainer}>
+            {siteOwnershipType.map((type) => (
+              <span key={type}>{renderSiteOwnershipType(type)}</span>
+            ))}
           </div>
           <div className={styles.infoDetail}>{siteOwnershipText}</div>
+        </>
+      ),
+    },
+    {
+      title: `${t('manageProjects:causeOfDegradation')}`,
+      content: (
+        <div className={styles.infoDetail}>{causeOfDegradationText}</div>
+      ),
+    },
+    {
+      title: `${t('manageProjects:whyThisSite')}`,
+      content: <div className={styles.infoDetail}>{whyThisSiteText}</div>,
+    },
+    {
+      title: `${t('manageProjects:longTermProtection')}`,
+      content: (
+        <div className={styles.infoDetail}>{longTermProtectionText}</div>
+      ),
+    },
+    {
+      title: `${t('manageProjects:externalCertifications')}`,
+      content: (
+        <div className={styles.infoDetail}>
+          <div>{externalCertifications} </div>
+          <a href="#" target="_blank" rel="noreferrer">
+            {t('common:view')}
+          </a>
         </div>
-      </div>
-      <div className={styles.singleInfo}>
-        <div className={styles.halfInfo}>
-          <div className={styles.infoTitle}>
-            {' '}
-            {t('manageProjects:causeOfDegradation')}
-          </div>
-          <div className={styles.infoDetail}>{causeOfDegradationText}</div>
-        </div>
-      </div>
-      <div className={styles.singleInfo}>
-        <div className={styles.halfInfo}>
-          <div className={styles.infoTitle}>
-            {t('manageProjects:whyThisSite')}
-          </div>
-          <div className={styles.infoDetail}>{whyThisSiteText}</div>
-        </div>
-      </div>
-      <div className={styles.singleInfo}>
-        <div className={styles.halfInfo}>
-          <div className={styles.infoTitle}>
-            {t('manageProjects:longTermProtection')}
-          </div>
-          <div className={styles.infoDetail}>{longTermProtectionText}</div>
-        </div>
-      </div>
-      <div className={styles.singleInfo}>
-        <div className={styles.halfInfo}>
-          <div className={styles.infoTitle}>
-            {t('manageProjects:externalCertifications')}
-          </div>
-          <div className={styles.infoDetail}>
-            <div>{externalCertifications} </div>
-            <a href="#" target="_blank" rel="noreferrer">
-              {t('common:view')}
-            </a>
-          </div>
-        </div>
-      </div>
+      ),
+    },
+  ];
+
+  return (
+    <div className={styles.moreInfoContainer}>
+      {moreInfoContent.map((item) => (
+        <SingleProjectInfoItem
+          key={item.title}
+          title={item.title}
+          itemContent={item.content}
+        />
+      ))}
     </div>
   );
 };

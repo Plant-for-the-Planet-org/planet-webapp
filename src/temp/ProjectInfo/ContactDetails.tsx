@@ -5,6 +5,7 @@ import { ViewProfileIcon } from '../icons/ViewProfileIcon';
 import WebsiteLinkIcon from '../icons/WebsiteLinkIcon';
 import styles from './ProjectInfo.module.scss';
 import { useTranslation } from 'next-i18next';
+import SingleProjectInfoItem from './SingleProjectInfoItem';
 
 interface Props {
   websiteURL: string;
@@ -45,9 +46,9 @@ const ContactDetails = ({ websiteURL, location, email }: Props) => {
 
   return (
     <div className={styles.contactDetailsContainer}>
-      <div className={styles.singleInfo}>
-        <div className={styles.halfInfo}>
-          <div className={styles.infoTitle}>{t('donate:contactDetails')}</div>
+      <SingleProjectInfoItem
+        title={t('donate:contactDetails')}
+        itemContent={
           <div className={styles.contactText}>
             {contactDetails.map((contact, index) => (
               <a
@@ -65,8 +66,8 @@ const ContactDetails = ({ websiteURL, location, email }: Props) => {
               </a>
             ))}
           </div>
-        </div>
-      </div>
+        }
+      />
     </div>
   );
 };
