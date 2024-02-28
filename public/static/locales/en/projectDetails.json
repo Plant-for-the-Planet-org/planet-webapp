@@ -1,12 +1,9 @@
 {
   "satelliteAnalysis": "Satellite Analysis",
-  "totalCO₂Captured": "Total CO₂ Captured",
   "beforeIntervention": "Before intervention",
-  "before": "Before {{date}}",
+  "before": "before {{date}}",
   "byProject": "By Project",
-  "since": "Since {{date}}",
+  "since": "since {{date}}",
   "sitePotential": "Site Potential",
-  "seeMore": "See More",
-  "site": "Site({{area}})",
-  "entireProject": "Entire Project({{area}})"
+  "seeMore": "See More"
 }

@@ -4,7 +4,7 @@ import React from 'react';
 import style from './CarbonCapture.module.scss';
 import InfoIcon from '../icons/InfoIcon';
 import DownArrow from '../icons/DownArrow';
-import { useTranslation } from 'next-i18next';
+import { Trans, useTranslation } from 'next-i18next';
 
 interface TabPanelProps {
   index: number;
@@ -41,9 +41,10 @@ function CustomTabPanel(props: TabPanelProps) {
             <div className={style.carbonCaptureLabelMainContainer}>
               <div className={style.carbonCaptureLabelContainer}>
                 <div className={style.carbonCapture}>
-                  {t('projectDetails:totalCO₂Captured')}
+                  <Trans i18nKey="totalCO₂Captured">
+                    Total CO₂ Captured <p>(tons)</p>
+                  </Trans>
                 </div>
-                <div className={style.unit}>(tons)</div>
               </div>
               <div className={style.infoIconContainer}>
                 <InfoIcon />
@@ -122,10 +123,14 @@ const customStyle = {
   },
   '.MuiTab-root.Mui-selected': {
     color: '#007A49',
+    display: 'flex',
+    flexDirection: 'row',
   },
   '.MuiTab-root': {
     minHeight: '0px',
     padding: '0px 0px',
+    display: 'flex',
+    flexDirection: 'row',
   },
 };
 
@@ -155,16 +160,20 @@ const CarbonCapture = ({
         sx={customStyle}
       >
         <Tab
-          label={t('projectDetails:site', {
-            area: `12ha`,
-          })}
+          label={
+            <Trans i18nKey="site">
+              Site <p>({{ area: '12hpa' }})</p>
+            </Trans>
+          }
           {...a11yProps(0)}
           className="tab"
         />
         <Tab
-          label={t('projectDetails:entireProject', {
-            area: `623ha`,
-          })}
+          label={
+            <Trans i18nKey="entireProject">
+              Entire Project <p>({{ area: '625hpa' }})</p>
+            </Trans>
+          }
           {...a11yProps(1)}
           className="tab"
         />
