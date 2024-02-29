@@ -10,6 +10,7 @@ import { TENANT_ID } from '../../../../utils/constants/environment';
 import { handleError } from '@planet-sdk/common/build/utils/handleError';
 import { APIError } from '@planet-sdk/common/build/types/errors';
 
+// To be uncommented and updated when projects are live and finalized
 /* const MANGROVE_PROJECTS = [
   'proj_StWEs2TGZFPf1WgfT6IJQoLC',
   'proj_YPXJ9e9iiy4Ras0zknJkxyH6',
@@ -24,6 +25,7 @@ import { APIError } from '@planet-sdk/common/build/types/errors';
 
 export default function ProjectGrid() {
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [projects, setProjects] = useState<MapProject[] | null>(null);
 
   useEffect(() => {
@@ -37,7 +39,9 @@ export default function ProjectGrid() {
           'filter[purpose]': 'trees,conservation',
         });
         setProjects(projects);
+        setIsLoaded(true);
       } catch (err) {
+        console.error('Failed to load projects:', err);
         setErrors(handleError(err as APIError));
         redirect('/');
       }
@@ -48,7 +52,7 @@ export default function ProjectGrid() {
   const renderAllowedProjects = (projects: MapProject[]) => {
     const allowedProjects = projects
       .filter((project) => project.properties.allowDonations === true)
-      // .filter((project) => MANGROVE_PROJECTS.includes(project.properties.id))
+      // .filter((project) => MANGROVE_PROJECTS.includes(project.properties.id)) // To be uncommented and updated when projects are live and finalized
       .map((allowedProject) => {
         return (
           <div
@@ -84,7 +88,11 @@ export default function ProjectGrid() {
         <div
           className={`${gridStyles.gridRow} ${gridStyles.justifyContentCenter} ${styles.projectList}`}
         >
-          {projects ? renderAllowedProjects(projects) : <></>}
+          {projects ? (
+            renderAllowedProjects(projects)
+          ) : (
+            <>{!isLoaded ? <p>Loading projects...</p> : ''}</>
+          )}
         </div>
       </div>
     </div>

@@ -5,7 +5,7 @@ interface Props {
   tenantScore?: { total: number };
 }
 export default function Landing({ tenantScore }: Props) {
-  const tenantScoreData = tenantScore ? tenantScore.total : '';
+  const tenantScoreData = tenantScore ? tenantScore.total : 0;
   return (
     <section className={styles.landingSection}>
       <div className={styles.landingOverlay}></div>
