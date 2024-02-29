@@ -10,6 +10,18 @@ import { TENANT_ID } from '../../../../utils/constants/environment';
 import { handleError } from '@planet-sdk/common/build/utils/handleError';
 import { APIError } from '@planet-sdk/common/build/types/errors';
 
+/* const MANGROVE_PROJECTS = [
+  'proj_StWEs2TGZFPf1WgfT6IJQoLC',
+  'proj_YPXJ9e9iiy4Ras0zknJkxyH6',
+  'proj_cVpKWdkq5nM31NfQ5Yn9pXMY',
+  'proj_FEvW3WIB0Vcq2far1ppJvgLs',
+  'proj_AzYMCCfmCnrwfS8nilKFng8z',
+  'proj_mgtS4XFpiL6RCieGK403qDG5',
+  'proj_70kDfWL50GRS79MHDaCXMwY1',
+  'proj_4urzfQ47Xwv5SlNOurnXn2hU',
+  'proj_7gmlF7Q8aL65V7j7AG9NW8Yy',
+]; */
+
 export default function ProjectGrid() {
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const [projects, setProjects] = useState<MapProject[] | null>(null);
@@ -18,13 +30,13 @@ export default function ProjectGrid() {
     async function loadProjects() {
       const currencyCode = getStoredCurrency();
       try {
-        const projects = await getRequest(`/app/projects`, {
+        const projects = await getRequest<MapProject[]>(`/app/projects`, {
           _scope: 'map',
           currency: currencyCode,
           tenant: TENANT_ID,
           'filter[purpose]': 'trees,conservation',
         });
-        setProjects(projects as MapProject[]);
+        setProjects(projects);
       } catch (err) {
         setErrors(handleError(err as APIError));
         redirect('/');
@@ -36,6 +48,7 @@ export default function ProjectGrid() {
   const renderAllowedProjects = (projects: MapProject[]) => {
     const allowedProjects = projects
       .filter((project) => project.properties.allowDonations === true)
+      // .filter((project) => MANGROVE_PROJECTS.includes(project.properties.id))
       .map((allowedProject) => {
         return (
           <div
