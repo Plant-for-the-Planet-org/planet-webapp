@@ -32,7 +32,7 @@ const SiteDropdown = ({ selectedOption, siteList, isOpen }: Props) => {
         onClick={() => setIsMenuOpen(!isMenuOpen)}
       >
         <div className={styles.siteIconAndTextContainer}>
-          <SiteIcon />
+          <SiteIcon width={27} color={'#333333'} />
           <div className={styles.labelTextContainer}>
             <div className={styles.siteAndAreaContainer}>
               <p className={styles.siteId}>
@@ -59,7 +59,7 @@ const SiteDropdown = ({ selectedOption, siteList, isOpen }: Props) => {
                 onClick={() => setSelectedSite(site)}
               >
                 <p>{site.name}</p>
-                <p>{site.area}ha</p>
+                <p className={styles.siteArea}>{site.area}ha</p>
               </div>
               <div
                 className={

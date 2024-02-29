@@ -1,11 +1,12 @@
+@import '../../theme/theme';
+
 .dropdownButton {
     display: flex;
     border-radius: 12px;
     background: #FFF;
-    width: fit-content;
     align-items: center;
     padding: 12px 0px 9px 12px;
-    width: 290px;
+    max-width: 290px;
     justify-content: space-between;
 }
 .siteIconAndTextContainer {
@@ -44,7 +45,7 @@
     padding: 6px 16px;
     border-radius: 12px;
     margin-top: 12px;
-    width: 270px;
+    max-width: 270px;
     font-size: 12px;
 }
 .listItem {
@@ -63,4 +64,46 @@
 .selectedItem {
     font-weight: 700;
     color: #333;
+}
+
+@include xsPhoneView {
+    .siteIconAndTextContainer {
+        >svg {
+            width: 16px;
+        }
+    }
+    .dropdownButton {
+        max-width: 93px;
+        padding: 7px;
+    }
+    .labelTextContainer {
+        justify-content: center;
+        .siteAndAreaContainer {
+            display: flex;
+            flex-direction: column;
+            .siteId {
+                text-transform: none;
+            }
+            span {
+                display: none;
+            }
+        }
+        .siteName {
+            display: none;
+        }
+    }
+    .optionsContainer{
+        max-width: 140px;
+        padding: 8px 12px;
+        .listItem {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            font-size: 8px;
+            padding: 4px 0;
+            .siteArea {
+                font-size: 10px;
+            }
+        }
+    }
 }
