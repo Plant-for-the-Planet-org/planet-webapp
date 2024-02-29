@@ -1,9 +1,8 @@
-const InfoIcon = () => {
+const InfoIcon = ({ width }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="10px"
-      height="10px"
+      width={width}
       viewBox="0 0 11 11"
       fill="none"
     >

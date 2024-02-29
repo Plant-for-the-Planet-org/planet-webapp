@@ -1,9 +1,8 @@
-export const ExploreIcon = () => {
+export const ExploreIcon = ({ width }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="19"
-      height="16"
+      width={width}
       viewBox="0 0 19 16"
       fill="none"
     >

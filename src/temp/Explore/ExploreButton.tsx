@@ -75,7 +75,7 @@ export const YearRangeSlider = ({
     <div className={style.rangeMainContainer}>
       <div className={style.rangeContainer}>
         <div className={style.playIconContainer}>
-          <PlayIcon />
+          <PlayIcon width={'8px'} />
         </div>
         <div className={style.sliderContainer}>
           <SmallSlider
@@ -99,30 +99,32 @@ const ExploreButton = ({
   startYear,
   endYear,
 }: ExploreButtonProps) => {
-  const { t } = useTranslation(['allProjects']);
+  const { t } = useTranslation(['allProjects', 'maps']);
 
   return (
     <>
-      <CustomButton startIcon={<ExploreIcon />}>{label}</CustomButton>
+      <CustomButton startIcon={<ExploreIcon width={'19px'} />}>
+        {label}
+      </CustomButton>
 
       {isOpen ? (
         <div className={style.exploreMainContainer}>
           <div className={style.exploreContainer}>
             <div>
               <EcosystemOption
-                infoIcon={<InfoIcon />}
+                infoIcon={<InfoIcon width={'10px'} />}
                 label={t('allProjects:currentForests')}
                 switchComponent={<StyledSwitch currentForestSwitch />}
               />
               <div className={style.hrLine} />
               <EcosystemOption
-                infoIcon={<InfoIcon />}
+                infoIcon={<InfoIcon width={'10px'} />}
                 label={t('allProjects:restorationPotential')}
                 switchComponent={<StyledSwitch restorationSwitch />}
               />
               <div className={style.hrLine} />
               <EcosystemOption
-                infoIcon={<InfoIcon />}
+                infoIcon={<InfoIcon width={'10px'} />}
                 label={t('allProjects:deforestation')}
                 switchComponent={<StyledSwitch deforestrationSwitch />}
               />
@@ -135,7 +137,7 @@ const ExploreButton = ({
               />
             </div>
             <div className={style.exploreDescription}>
-              {t('allProjects:exploreDescription')}
+              {t('maps:3trilliontrees')}
             </div>
           </div>
         </div>
