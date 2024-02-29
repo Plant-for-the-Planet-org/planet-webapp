@@ -11,9 +11,13 @@ import {
   DefaultProfileImage,
   EditTargetSvg,
 } from '../../../../../../../public/assets/images/ProfilePageIcons';
+import { useUserProps } from '../../../../../common/Layout/UserPropsContext';
 
 const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
   const t = useTranslations('Profile');
+
+  // User represents the logged in user, or the impersonated user in impersonation mode
+  const { user: verifiedUser } = useUserProps();
   const router = useRouter();
 
   return (
@@ -39,7 +43,7 @@ const UserInfo = ({ userProfile }: ProfileProps): ReactElement => {
           </div>
         </div>
       </div>
-      {userProfile?.supportPin && router.asPath === '/profile' && (
+      {userProfile?.id === verifiedUser?.id && router.asPath === '/profile' && (
         <div className={myProfilestyle.iconContainer}>
           <Link href="/profile/edit">
             <div className={myProfilestyle.icon}>
