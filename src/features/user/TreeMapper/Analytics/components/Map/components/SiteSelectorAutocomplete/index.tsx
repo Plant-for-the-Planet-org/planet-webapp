@@ -20,7 +20,7 @@ const MuiAutocomplete = styled(Autocomplete)(() => {
 interface SitesSelectorAutocompleteProps {
   sitesList: FeatureCollection['features'];
   site: Feature | null;
-  handleSiteChange?: (site: Site | null) => void; // eslint-disable-line no-unused-vars
+  handleSiteChange?: (site: Feature | null) => void; // eslint-disable-line no-unused-vars
   styles?: CSSProperties | null;
 }
 
@@ -30,7 +30,7 @@ const SitesSelectorAutocomplete = ({
   handleSiteChange,
   styles = null,
 }: SitesSelectorAutocompleteProps): ReactElement | null => {
-  const [localSite, setLocalSite] = useState<Site | null>(site);
+  const [localSite, setLocalSite] = useState<Feature | null>(site);
   const { t, ready } = useTranslation(['treemapperAnalytics']);
 
   useEffect(() => {
@@ -48,15 +48,15 @@ const SitesSelectorAutocomplete = ({
       <MuiAutocomplete
         style={styles ? styles : {}}
         options={sitesList}
-        getOptionLabel={(option) => (option as Site).properties.name}
+        getOptionLabel={(option) => (option as Feature).properties.name}
         isOptionEqualToValue={(option, value) =>
-          (option as Site).properties.name === (value as Site).properties.name
+          (option as Feature).properties.name === (value as Feature).properties.name
         }
         value={localSite}
-        onChange={(_event, newValue) => setLocalSite(newValue as Site | null)}
+        onChange={(_event, newValue) => setLocalSite(newValue as Feature | null)}
         renderOption={(props, option) => (
-          <span {...props} key={(option as Site).properties.name}>
-            {(option as Site).properties.name}
+          <span {...props} key={(option as Feature).properties.name}>
+            {(option as Feature).properties.name}
           </span>
         )}
         renderInput={(params) => (
