@@ -6,7 +6,7 @@ import {
   speedLimiter,
 } from '../../../../../src/middlewares/rate-limiter';
 import {
-  Site,
+  FeatureCollection,
   UncleanSite,
 } from '../../../../../src/features/common/types/dataExplorer';
 import redisClient from '../../../../../src/redis-client';
@@ -40,7 +40,7 @@ handler.get(async (req, response) => {
 
     const res = await db.query<UncleanSite[]>(query, [projectId]);
 
-    const sites: Site[] = [];
+    const sites: FeatureCollection['features'] = [];
 
     for (const site of res) {
       sites.push({
