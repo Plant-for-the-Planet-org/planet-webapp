@@ -5,79 +5,67 @@ import FilterIcon from '../icons/FilterIcon';
 import ListIcon from '../icons/ListIcon';
 import LocationIcon from '../icons/LocationIcon';
 import style from '../Project/Search.module.scss';
-import { useTranslation } from 'next-i18next';
+import { Trans, useTranslation } from 'next-i18next';
 
 interface SearchTabForMobileProps {
-  active: boolean;
+  numberOfProject: number;
 }
 
-export const SearchTabForMobile = ({ active }: SearchTabForMobileProps) => {
+export const SearchTabForMobile = ({
+  numberOfProject,
+}: SearchTabForMobileProps) => {
   const { t } = useTranslation(['projectDetails']);
-  const [isAllProject, setIsAllProject] = useState(false);
-  const [isTopProject, setIsTopProject] = useState(true);
-  const [isList, setIsList] = useState(true);
-  const [isLocation, setIsLocation] = useState(false);
-
-  const _handleClick1 = () => {
-    setIsTopProject(false);
-    setIsAllProject(true);
-  };
-
-  const _handleClick2 = () => {
-    setIsAllProject(false);
-    setIsTopProject(true);
-  };
-
-  const _handleClick3 = () => {
-    setIsLocation(false);
-    setIsList(true);
-  };
-
-  const _handleClick4 = () => {
-    setIsList(false);
-    setIsLocation(true);
-  };
+  const [tabSelected, setTabSelected] = useState<'topProjects' | 'allProjects'>(
+    'topProjects'
+  );
+  const [secondTabSelected, setSecondTabSelected] = useState<'list' | 'map'>(
+    'list'
+  );
 
   return (
     <div className={style.searchTabForMobile}>
-      <div className={style.projectCateogary}>
+      <div className={style.projectListTabs}>
         <button
           className={
-            isTopProject ? style.activeTopProjectButton : style.topProjectButton
+            tabSelected === 'topProjects'
+              ? style.activeTopProjectButton
+              : style.topProjectButton
           }
-          onClick={_handleClick2}
+          onClick={() => setTabSelected('topProjects')}
         >
           <div className={style.starIconConatiner}>
             <StarIcon
               height={'12px'}
               width={'12px'}
-              color={isTopProject ? '#FFF' : '#219653'}
+              color={tabSelected === 'topProjects' ? '#FFF' : '#219653'}
             />
           </div>
           <div
             className={
-              isTopProject
+              tabSelected === 'topProjects'
                 ? style.activeTopProjectLabelConatiner
                 : style.topProjectLabelConatiner
             }
           >
             <div className={style.topProjectLable}>
-              {t('projectDetails:topProjects', {
-                noOfProjects: 56,
-              })}
+              <Trans i18nKey="topProjects">
+                Top Projects<p>({{ noOfProjects: `${numberOfProject}` }})</p>
+              </Trans>
             </div>
           </div>
         </button>
         <button
           className={
-            isAllProject ? style.activeAllProjectButton : style.allProjectButton
+            tabSelected === 'allProjects'
+              ? style.activeAllProjectButton
+              : style.allProjectButton
           }
-          onClick={_handleClick1}
+          onClick={() => setTabSelected('allProjects')}
         >
           <div className={style.allProjectLabel}>
-            {t('projectDetails:all', {
-              noOfProjects: 56,
-            })}
+            <Trans i18nKey="all">
+              All<p>({{ noOfProjects: `${numberOfProject}` }})</p>
+            </Trans>
           </div>
         </button>
       </div>
@@ -91,22 +79,32 @@ export const SearchTabForMobile = ({ active }: SearchTabForMobileProps) => {
       </div>
       <div className={style.listAndLocationContainer}>
         <button
-          className={isList ? style.activeListButton : style.listButton}
-          onClick={_handleClick3}
+          className={
+            secondTabSelected === 'list'
+              ? style.activeListButton
+              : style.listButton
+          }
+          onClick={() => setSecondTabSelected('list')}
         >
-          <div>
-            <ListIcon color={isList ? '#fff' : '#333333'} />
+          <div style={{ marginTop: '3px' }}>
+            <ListIcon
+              color={secondTabSelected === 'list' ? '#fff' : '#333333'}
+            />
           </div>
           <div className={style.listLable}>{t('projectDetails:list')}</div>
         </button>
         <button
           className={
-            isLocation ? style.activeLocationButton : style.locationButton
+            secondTabSelected === 'map'
+              ? style.activeLocationButton
+              : style.locationButton
           }
-          onClick={_handleClick4}
+          onClick={() => setSecondTabSelected('map')}
         >
           <div>
-            <LocationIcon color={isLocation ? '#fff' : '#333333'} />
+            <LocationIcon
+              color={secondTabSelected === 'map' ? '#fff' : '#333333'}
+            />
           </div>
           <div className={style.mapLable}>{t('projectDetails:map')}</div>
         </button>

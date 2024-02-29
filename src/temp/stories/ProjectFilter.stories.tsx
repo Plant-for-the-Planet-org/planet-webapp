@@ -8,14 +8,14 @@ const meta: Meta<typeof Filter> = {
 export default meta;
 type Story = StoryObj<typeof Filter>;
 
-export const FilterInActive: Story = {
+export const inActive: Story = {
   args: {
     activeFilter: false,
     projectList: [],
   },
 };
 
-export const FilterActive = {
+export const active = {
   args: {
     activeFilter: true,
     projectList: [

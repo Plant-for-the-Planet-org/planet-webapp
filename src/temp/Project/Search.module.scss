@@ -79,7 +79,7 @@
   justify-content: center;
 }
 
-.projectCateogary {
+.projectListTabs {
   display: flex;
   width: 147px;
   border: none;
@@ -115,6 +115,11 @@
   > .topProjectLable {
     font-size: 8px;
     font-weight: 700;
+    display: flex;
+    p {
+      font-weight: 400;
+      margin-left: 2px;
+    }
   }
   .noOfProject {
     font-size: 8px;
@@ -135,6 +140,11 @@
   > .allProjectLabel {
     font-weight: 700;
     font-size: 8px;
+    display: flex;
+    p {
+      font-weight: 400;
+      margin-left: 2px;
+    }
   }
   .noOfProject {
     font-weight: 400;
