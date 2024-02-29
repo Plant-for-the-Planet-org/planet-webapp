@@ -1,10 +1,11 @@
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import React from 'react';
+import React, { useState } from 'react';
 import style from './CarbonCapture.module.scss';
 import InfoIcon from '../icons/InfoIcon';
 import DownArrow from '../icons/DownArrow';
 import { Trans, useTranslation } from 'next-i18next';
+import UpArrow from '../icons/UpArrow';
 
 interface TabPanelProps {
   index: number;
@@ -25,7 +26,9 @@ function CustomTabPanel(props: TabPanelProps) {
     sitePotential,
     ...other
   } = props;
+
   const { t } = useTranslation(['projectDetails']);
+  const [isExtend, setIsExtend] = useState(false);
   return (
     <div
       role="tabpanel"
@@ -36,7 +39,7 @@ function CustomTabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div className={style.carbonCaptureInfoContainer}>
             <div className={style.carbonCaptureLabelMainContainer}>
               <div className={style.carbonCaptureLabelContainer}>
@@ -90,15 +93,20 @@ function CustomTabPanel(props: TabPanelProps) {
               </div>
             </div>
           </div>
-          <button className={style.seeMoreButton}>
+          <button
+            className={style.seeMoreButton}
+            onClick={() => setIsExtend(!isExtend)}
+          >
             <div className={style.seeMoreLabel}>
-              {t('projectDetails:seeMore')}
+              {isExtend
+                ? t('projectDetails:seeLess')
+                : t('projectDetails:seeMore')}
             </div>
             <div className={style.downArrow}>
-              <DownArrow />
+              {isExtend ? <UpArrow /> : <DownArrow />}
             </div>
           </button>
-        </>
+        </div>
       )}
     </div>
   );
