@@ -185,10 +185,6 @@ export const MapContainer = () => {
   }, [selectedLayer]);
 
   useEffect(() => {
-    setSelectedLayer(null);
-  }, [project]);
-
-  useEffect(() => {
     //loads the default mapstyle
     async function loadMapStyle() {
       const result = await getMapStyle('default');
@@ -271,6 +267,7 @@ export const MapContainer = () => {
       fetchDistinctSpecies();
       fetchProjectSites();
     }
+    setSelectedLayer(null);
   }, [project]);
 
   useEffect(() => {
