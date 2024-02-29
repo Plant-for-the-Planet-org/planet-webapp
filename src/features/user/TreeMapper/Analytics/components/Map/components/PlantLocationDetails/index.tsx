@@ -10,18 +10,25 @@ import TreeMapperIcon from '../TreeMapperIcon';
 interface Props {
   plantLocationDetails: PlantLocationDetailsApiResponse['res'] | null;
   selectedLayer: PlantLocation['properties'];
+  loading: boolean;
 }
 
 const PlantLocationDetails = ({
   plantLocationDetails,
   selectedLayer,
+  loading,
 }: Props) => {
   const { t } = useTranslation(['treemapperAnalytics']);
 
   return (
     <div className={styles.plantLocationDetailsContainer}>
       <div className={styles.content}>
-        {plantLocationDetails ? (
+        {loading ? (
+          <>
+            <div></div>
+            <div className={styles.spinner}></div>
+          </>
+        ) : plantLocationDetails ? (
           <div className={styles.contentTop}>
             <div className={styles.topContainer}>
               <div className={styles.leftContainer}>

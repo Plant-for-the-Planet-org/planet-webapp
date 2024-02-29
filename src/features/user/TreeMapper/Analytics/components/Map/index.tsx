@@ -135,6 +135,8 @@ export const MapContainer = () => {
     zoom: defaultZoom,
   });
 
+  const [loading, setLoading] = useState(false);
+
   const { makeRequest } = useNextRequest<{ data: DistinctSpecies }>({
     url: `/api/data-explorer/map/distinct-species/${project?.id}`,
     method: HTTP_METHOD.GET,
@@ -170,9 +172,11 @@ export const MapContainer = () => {
 
   const fetchProjectLocationsDetails = async () => {
     if (selectedLayer) {
+      setLoading(true);
       const { res } =
         (await makeReqToFetchPlantLocationDetails()) as PlantLocationDetailsApiResponse;
       setPlantLocationDetails(res);
+      setLoading(false);
     }
   };
 
@@ -229,6 +233,7 @@ export const MapContainer = () => {
   };
 
   const fetchProjectLocations = async () => {
+    setLoading(true);
     const res = await makeReqToFetchPlantLocation();
     if (res) {
       if (res.data.length === 0) {
@@ -258,6 +263,7 @@ export const MapContainer = () => {
         setSelectedLayer(res.data[0] ? res.data[0].properties : null);
       }
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -443,11 +449,12 @@ export const MapContainer = () => {
               <PlantLocationDetails
                 selectedLayer={selectedLayer}
                 plantLocationDetails={plantLocationDetails}
+                loading={loading}
               />
             )}
           </MapGL>
         ) : (
-          <>Loading...</>
+          <div className={styles.spinner}></div>
         )}
       </div>
     </Container>
