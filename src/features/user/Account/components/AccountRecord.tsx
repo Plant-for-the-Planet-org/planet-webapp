@@ -30,13 +30,16 @@ export function RecordHeader({
   const getRecordTitle = (): ReactElement => {
     let title: string;
     const BULLET_SEPARATOR = '\u2022';
+    let displayedUnit: string;
     switch (record.purpose) {
       case 'trees':
       case 'conservation':
+        displayedUnit =
+          record.unitType || record.purpose === 'trees' ? 'tree' : 'm2';
         // Sample title 1 => 5 Tree Gift . Yucatan,
         // Sample title 2 => 2 m² Donation . Sumatra
         title = `${getFormattedNumber(i18n.language, record.quantity)} ${t(
-          `common:${record.unitType}`,
+          `common:${displayedUnit}`,
           { count: 1 }
         )} ${
           record.details.giftRecipient ? t('me:gift') : t('me:donation')
