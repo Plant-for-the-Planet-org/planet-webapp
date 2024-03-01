@@ -54,11 +54,10 @@ export function RecordHeader({
         title = t(`me:${record.type}`);
         break;
     }
-    const displayedTitle =
-      title.length > 42 ? `${title.substring(0, 42)}...` : title;
+
     return (
-      <p title={title} className={styles.top}>
-        {displayedTitle}
+      <p title={title} className={`${styles.top} ${styles.recordTitle}`}>
+        {title}
       </p>
     );
   };
