@@ -6,6 +6,8 @@ import { ThemeProvider } from '@storybook/theming';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 import { useEffect } from 'react';
+import globalStyles from '../src/theme/theme';
+import { useTheme } from '../src/theme/themeContext';
 
 // import { ThemeProvider } from 'emotion-theming';
 
@@ -17,6 +19,7 @@ import { useEffect } from 'react';
 export const decorators = [
   (Story, context) => {
     const { locale } = context.globals;
+    const { theme: themeType } = useTheme();
 
     useEffect(() => {
       i18n.changeLanguage(locale);
@@ -24,11 +27,14 @@ export const decorators = [
 
     return (
       <I18nextProvider i18n={i18n}>
-        <MUIThemeProvider theme={materialTheme}>
-          <ThemeProvider theme={materialTheme}>
-            <Story />
-          </ThemeProvider>
-        </MUIThemeProvider>
+        <style>{globalStyles}</style>
+        <div className={`${themeType}`}>
+          <MUIThemeProvider theme={materialTheme}>
+            <ThemeProvider theme={materialTheme}>
+              <Story />
+            </ThemeProvider>
+          </MUIThemeProvider>
+        </div>
       </I18nextProvider>
     );
   },
