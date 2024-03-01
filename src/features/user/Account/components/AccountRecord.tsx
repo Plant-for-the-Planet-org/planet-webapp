@@ -35,7 +35,7 @@ export function RecordHeader({
       case 'trees':
       case 'conservation':
         displayedUnit =
-          record.unitType || record.purpose === 'trees' ? 'tree' : 'm2';
+          record.unitType || (record.purpose === 'trees' ? 'tree' : 'm2');
         // Sample title 1 => 5 Tree Gift . Yucatan,
         // Sample title 2 => 2 m² Donation . Sumatra
         title = `${getFormattedNumber(i18n.language, record.quantity)} ${t(
