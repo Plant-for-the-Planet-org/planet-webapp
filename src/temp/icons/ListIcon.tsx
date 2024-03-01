@@ -1,13 +1,10 @@
 import * as React from 'react';
-import { IconProps } from './StarIcon';
+import { IconProps } from '../../features/common/types/common';
 
-type ListIconProps = Omit<IconProps, 'height' | 'width'>;
-
-const ListIcon = ({ color }: ListIconProps) => (
+const ListIcon = ({ color, width }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={14}
-    height={14}
+    width={width}
     viewBox="0 0 14 14"
     fill="none"
   >

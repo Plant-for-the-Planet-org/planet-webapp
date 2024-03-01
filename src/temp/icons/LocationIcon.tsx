@@ -1,13 +1,11 @@
 import * as React from 'react';
-import { IconProps } from './StarIcon';
+import { IconProps } from '../../features/common/types/common';
 
-type LocationIconProps = Omit<IconProps, 'height' | 'width'>;
-
-const LocationIcon = ({ color }: LocationIconProps) => (
+const LocationIcon = ({ color, width, height }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={9}
-    height={13}
+    width={width}
+    height={height}
     viewBox="0 0 9 13"
     fill="none"
   >
@@ -24,7 +22,7 @@ const LocationIcon = ({ color }: LocationIconProps) => (
     </g>
     <defs>
       <clipPath id="clip0_829_1120">
-        <rect width={9} height={13} fill="white" />
+        <rect width={width} height={height} fill="white" />
       </clipPath>
     </defs>
   </svg>

@@ -35,7 +35,6 @@ export const SearchTabForMobile = ({
         >
           <div className={style.starIconConatiner}>
             <StarIcon
-              height={'12px'}
               width={'12px'}
               color={tabSelected === 'topProjects' ? '#FFF' : '#219653'}
             />
@@ -74,7 +73,7 @@ export const SearchTabForMobile = ({
           <SearchIcon />
         </button>
         <button>
-          <FilterIcon height={'16px'} width={'16px'} />
+          <FilterIcon width={'16px'} />
         </button>
       </div>
       <div className={style.listAndLocationContainer}>
@@ -88,6 +87,7 @@ export const SearchTabForMobile = ({
         >
           <div style={{ marginTop: '3px' }}>
             <ListIcon
+              width={'14px'}
               color={secondTabSelected === 'list' ? '#fff' : '#333333'}
             />
           </div>
@@ -104,6 +104,8 @@ export const SearchTabForMobile = ({
           <div>
             <LocationIcon
               color={secondTabSelected === 'map' ? '#fff' : '#333333'}
+              width={'9px'}
+              height={'13px'}
             />
           </div>
           <div className={style.mapLable}>{t('projectDetails:map')}</div>

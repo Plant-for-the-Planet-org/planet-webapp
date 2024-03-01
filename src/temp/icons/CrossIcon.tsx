@@ -1,9 +1,10 @@
-const CrossIcon = () => {
+import { IconProps } from '../../features/common/types/common';
+
+const CrossIcon = ({ width }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
+      width={width}
       viewBox="0 0 18 18"
       fill="none"
     >

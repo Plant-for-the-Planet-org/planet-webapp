@@ -30,6 +30,7 @@ const Tabs = ({ selected }: TabsProps) => {
         <SingleTab
           icon={
             <SatelliteAnalysisIcon
+              width={'16px'}
               color={selectedMode === 'satellite' ? '#fff' : '#000'}
             />
           }
@@ -47,7 +48,11 @@ const Tabs = ({ selected }: TabsProps) => {
       <div onClick={() => setSelectedMode('field')}>
         <SingleTab
           icon={
-            <FieldDataIcon color={selectedMode === 'field' ? '#fff' : '#000'} />
+            <FieldDataIcon
+              height={'11px'}
+              width={'16px'}
+              color={selectedMode === 'field' ? '#fff' : '#000'}
+            />
           }
           title={t('maps:fieldData')}
           isSelected={selectedMode === 'field'}

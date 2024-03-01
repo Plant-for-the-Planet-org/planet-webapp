@@ -113,7 +113,7 @@ const SearchProject = ({
               }}
               className={style.crossIcon}
             >
-              <CrossIcon />
+              <CrossIcon width={'18px'} />
             </button>
           </>
         ) : (
