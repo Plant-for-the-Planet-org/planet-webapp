@@ -21,23 +21,23 @@ const ProjectBadge = ({ isApproved, isTopProject, allowDonations }: Props) => {
   ) => {
     if (!allowDonations)
       return {
-        icon: <NewInfoIcon width={10} height={10} color={'#fff'} />,
+        icon: <NewInfoIcon width={10} height={10} color={'var(--light)'} />,
         title: t('common:notDonatable'),
       };
 
     if (isTopProject && isApproved)
       return {
-        icon: <TopProjectIcon color={'#fff'} width={11} />,
+        icon: <TopProjectIcon color={'var(--light)'} width={11} />,
         title: t('common:topProject'),
       };
     else if (isTopProject && !isApproved)
       return {
-        icon: <FieldReviewedIcon width={10} />,
+        icon: <FieldReviewedIcon width={10} color={'var(--light)'} />,
         title: t('projectDetails:fieldReviewed'),
       };
     else if (!isTopProject && !isApproved)
       return {
-        icon: <OffSiteReviewedIcon width={10} />,
+        icon: <OffSiteReviewedIcon width={10} color={'var(--light)'} />,
         title: t('projectDetails:offSiteReviewed'),
       };
   };
