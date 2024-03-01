@@ -2,12 +2,11 @@ import { IconProps } from './StarIcon';
 
 type FilterIconProps = Omit<IconProps, 'color'>;
 
-const FilterIcon = ({ width, height }: FilterIconProps) => {
+const FilterIcon = ({ width }: FilterIconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={width}
-      height={height}
       viewBox="0 0 16 16"
       fill="none"
     >

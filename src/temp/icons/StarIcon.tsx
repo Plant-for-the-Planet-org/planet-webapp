@@ -1,15 +1,13 @@
 export interface IconProps {
   width: string;
-  height: string;
   color: string;
 }
 
-const StarIcon = ({ width, height, color }: IconProps) => {
+const StarIcon = ({ width, color }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={width}
-      height={height}
       viewBox="0 0 16 17"
       fill="none"
     >

@@ -4,6 +4,7 @@ import FilterIcon from '../icons/FilterIcon';
 import SearchIcon from '../icons/SearchIcon';
 import StarIcon from '../icons/StarIcon';
 import TextField from '@mui/material/TextField';
+import Tabs from '@mui/material/Tabs';
 import {
   createTheme,
   ThemeProvider,
@@ -13,6 +14,7 @@ import {
 import { FilterDropDown } from './Filter';
 import style from './Search.module.scss';
 import { useTranslation, Trans } from 'next-i18next';
+import CustomTab from './CustomTab';
 
 const customTheme = (outerTheme: Theme) =>
   createTheme({
@@ -67,6 +69,11 @@ const SearchProject = ({
   const [input, setInput] = useState('');
   const [activeSearch, setSearchActive] = useState(searchActive);
   const { t } = useTranslation(['projectDetails']);
+  const [value, setValue] = useState('1');
+
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue);
+  };
   const outerTheme = useTheme();
 
   return (
@@ -111,34 +118,48 @@ const SearchProject = ({
           </>
         ) : (
           <div className={style.searchBarContainer}>
-            <div className={style.allProjectLabelMainContainer}>
-              <div>
-                <StarIcon width={'16px'} height={'17px'} color={'#219653'} />
-              </div>
-              <div className={style.topProjectLabelContainer}>
-                <div style={{ fontSize: '14px', fontWeight: 'bold' }}>
-                  {t('projectDetails:topProjects', {
-                    noOfProjects: 56,
-                  })}
-                </div>
-              </div>
-            </div>
-            <div className={style.allProjectLabelContainer}>
-              <div style={{ fontSize: '14px', fontWeight: 'bold' }}>
-                {t('projectDetails:all', {
-                  noOfProjects: 56,
-                })}
-              </div>
-            </div>
-            <div className={style.projectFeatureContainer}>
-              <div
-                className={style.selector}
-                onClick={() => setSearchActive(true)}
-              >
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="icon position tabs example"
+              TabIndicatorProps={{
+                sx: { backgroundColor: '#219653' },
+              }}
+            >
+              <CustomTab
+                icon={<StarIcon width={'16px'} color={'#219653'} />}
+                label={
+                  <Trans i18nKey={'topProject'}>
+                    <div className={style.projectLabel}>
+                      Top Projects
+                      <p className={style.noOfProjects}>
+                        ({{ noOfProjects: '34' }})
+                      </p>
+                    </div>
+                  </Trans>
+                }
+                sx={{ fontWeight: '700' }}
+              />
+              <CustomTab
+                sx={{ fontWeight: '700' }}
+                label={
+                  <Trans i18nKey={'all'}>
+                    <div className={style.projectLabel}>
+                      All
+                      <p className={style.noOfProjects}>
+                        ({{ noOfProjects: '556' }})
+                      </p>
+                    </div>
+                  </Trans>
+                }
+              />
+            </Tabs>
+            <div className={style.iconsContainer}>
+              <div className={style.icon}>
                 <SearchIcon />
               </div>
-              <div className={style.selector}>
-                <FilterIcon width={'16px'} height={'16px'} />
+              <div className={style.icon}>
+                <FilterIcon width={'16px'} />
               </div>
             </div>
           </div>

@@ -1,56 +1,27 @@
 .searchBarMainConatiner {
   background-color: #fff;
-  width: 338px;
+  width: 100%;
   height: 47px;
   border-radius: 12px;
   display: flex;
   align-items: center;
+  max-width: 350px;
+  justify-content: space-between;
 }
 
 .searchBarContainer {
   width: 100%;
-  height: 19px;
   background-color: #fff;
   display: flex;
-  padding-left: 19px;
+  border-radius: 12px;
+  font-weight: 700;
+  color: #219653;
+  p {
+    font-size: 14px;
+    font-weight: 400;
+  }
 }
 
-.allProjectLabelMainContainer {
-  cursor: pointer;
-  height: 100%;
-  width: 137px;
-  display: flex;
-  gap: 7px;
-}
-
-.topProjectLabelContainer {
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  padding-bottom: 1px;
-}
-
-.allProjectLabelContainer {
-  height: 100%;
-  width: 55px;
-  margin-left: 27px;
-  display: flex;
-  font-size: 14px;
-  align-items: center;
-  cursor: pointer;
-}
-
-.projectFeatureContainer {
-  height: 100%;
-  width: 52px;
-  margin-left: 32px;
-  display: flex;
-  gap: 20px;
-}
-
-.selector {
-  cursor: pointer;
-}
 .activeSearchIcon {
   margin-left: 24px;
   margin-top: 4px;
@@ -64,6 +35,7 @@
   margin-left: 9px;
   margin-top: 5px;
   cursor: pointer;
+  padding-right: 15px;
 }
 
 .filterContainer {
@@ -210,4 +182,23 @@
 .activeLocationButton {
   background: #219653;
   color: #fff;
+}
+
+.iconsContainer {
+  width: max-content;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-left: 20px;
+  padding-right: 19px;
+  .icon {
+    cursor: pointer;
+  }
+}
+.projectLabel {
+  display: flex;
+  margin-left: 7px;
+  .noOfProjects {
+    margin-left: 2px;
+  }
 }
