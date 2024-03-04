@@ -54,6 +54,7 @@ const globalStyles = css.global`
     --mapbox-icon: ${light.mapboxIcon};
     --background-base: ${light.backgroundBase};
     --disabled-font-color: ${light.disabledFontColor};
+    --divider-color-new: ${light.dividerColorNew};
   }
   .theme-dark {
     --primary-font-color: ${dark.primaryFontColor};

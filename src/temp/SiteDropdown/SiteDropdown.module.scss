@@ -3,7 +3,7 @@
 .dropdownButton {
     display: flex;
     border-radius: 12px;
-    background: #FFF;
+    background: $backgroundColor;
     align-items: center;
     padding: 12px 0px 9px 12px;
     max-width: 290px;
@@ -18,8 +18,8 @@
     flex-direction: column;
 }
 .siteAndAreaContainer {
-    font-size: 8px;
-    color: #828282;
+    font-size: $fontXXXSmallNew;
+    color: $nonDonatableProjectBackgroundColor;
     font-weight: 600;
     p,span {
         display: inline;
@@ -31,9 +31,9 @@
 }
 .siteName {
     text-transform: capitalize;
-    font-size: 12px;
+    font-size: $fontXSmall;
     font-weight: 700;
-    color: #333
+    color: #333 //to be replaced
 }
 .downArrow {
     display: flex;
@@ -41,12 +41,12 @@
     margin-right: 13px;
 }
 .optionsContainer{
-    background-color: #FFF;
+    background-color: $backgroundColor;
     padding: 6px 16px;
     border-radius: 12px;
     margin-top: 12px;
     max-width: 270px;
-    font-size: 12px;
+    font-size: $fontXSmall;
 }
 .listItem {
     display: flex;
@@ -58,12 +58,12 @@
     display: none;
 }
 .showDivider {
-    background-color: #BDBDBD;
+    background-color: $dividerColorNew;
     height: 0.4px;
 }
 .selectedItem {
     font-weight: 700;
-    color: #333;
+    color: #333; //to be replaced
 }
 
 @include xsPhoneView {
@@ -99,10 +99,10 @@
             display: flex;
             flex-direction: column;
             gap: 0;
-            font-size: 8px;
+            font-size: $fontXXXSmallNew;
             padding: 4px 0;
             .siteArea {
-                font-size: 10px;
+                font-size: $fontXXSmall;
             }
         }
     }

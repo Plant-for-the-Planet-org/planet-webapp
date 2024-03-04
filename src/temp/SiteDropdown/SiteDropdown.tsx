@@ -32,7 +32,8 @@ const SiteDropdown = ({ selectedOption, siteList, isOpen }: Props) => {
         onClick={() => setIsMenuOpen(!isMenuOpen)}
       >
         <div className={styles.siteIconAndTextContainer}>
-          <SiteIcon width={27} color={'#333333'} />
+          {/* to be replaced */}
+          <SiteIcon width={27} color={'#333'} />
           <div className={styles.labelTextContainer}>
             <div className={styles.siteAndAreaContainer}>
               <p className={styles.siteId}>
