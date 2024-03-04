@@ -346,40 +346,18 @@ export const MapContainer = () => {
   return ready ? (
     <Container
       leftElement={
-        <LeftElements>
-          <ProjectTypeSelector
-            handleProjectTypeChange={handleProjectTypeChange}
-            styles={{ minWidth: '200px' }}
-          />
-          <MuiAutoComplete
-            style={{ minWidth: '200px' }}
-            options={distinctSpeciesList}
-            getOptionLabel={(option) => option as string}
-            isOptionEqualToValue={(option, value) => option === value}
-            value={species}
-            onChange={(_event, newValue) =>
-              setSpecies(newValue as string | null)
-            }
-            renderOption={(props, option) => (
-              <span {...props} key={option as string}>
-                {option}
-              </span>
-            )}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label={t('plantLocationsWithPlantedSpecies')}
-                color="primary"
-              />
-            )}
-          />
-          <SitesSelectorAutocomplete
-            sitesList={projectSites ? projectSites.features : []}
-            site={projectSite}
-            handleSiteChange={handleSiteChange}
-            styles={{ minWidth: '200px' }}
-          />
-        </LeftElements>
+        <LeftElements
+          {...{
+            handleProjectTypeChange,
+            distinctSpeciesList,
+            species,
+            setSpecies,
+            projectSites,
+            projectSite,
+            handleSiteChange,
+            t,
+          }}
+        />
       }
       rightElement={
         <TextField
