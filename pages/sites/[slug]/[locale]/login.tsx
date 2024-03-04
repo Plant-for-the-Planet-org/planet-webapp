@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react';
 import { UserProfileLoader } from '../../../../src/features/common/ContentLoaders/UserProfile/UserProfile';
 import { useRouter } from 'next/router';
 import { useUserProps } from '../../../../src/features/common/Layout/UserPropsContext';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -15,11 +14,11 @@ import {
   GetStaticPropsResult,
 } from 'next';
 import { defaultTenant } from '../../../../tenant.config';
+import { AbstractIntlMessages } from 'next-intl';
+import deepmerge from 'deepmerge';
 
 interface Props {
-  pageProps: {
-    tenantConfig: Tenant;
-  };
+  pageProps: PageProps;
 }
 
 export default function Login({ pageProps }: Props): ReactElement {
@@ -102,43 +101,38 @@ export const getStaticPaths = async () => {
   };
 };
 
-interface StaticProps {
+interface PageProps {
+  messages: AbstractIntlMessages;
   tenantConfig: Tenant;
 }
 
-export const getStaticProps: GetStaticProps<StaticProps> = async (
+export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
-): Promise<GetStaticPropsResult<StaticProps>> => {
+): Promise<GetStaticPropsResult<PageProps>> => {
   const tenantConfig =
     (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
+  const userMessages = {
+    ...(
+      await import(
+        `../../../../public/static/locales/${context.params?.locale}/common.json`
+      )
+    ).default,
+  };
+
+  const defaultMessages = {
+    ...(await import('../../../../public/static/locales/en/common.json'))
+      .default,
+  };
+
+  const messages: AbstractIntlMessages = deepmerge(
+    defaultMessages,
+    userMessages
+  );
+
   return {
     props: {
-      ...(await serverSideTranslations(
-        context.locale || 'en',
-        [
-          'bulkCodes',
-          'common',
-          'country',
-          'donate',
-          'donationLink',
-          'editProfile',
-          'giftfunds',
-          'leaderboard',
-          'managePayouts',
-          'manageProjects',
-          'maps',
-          'me',
-          'planet',
-          'planetcash',
-          'redeem',
-          'registerTrees',
-          'tenants',
-          'treemapper',
-        ],
-        null,
-        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
-      )),
+      messages,
       tenantConfig,
     },
   };

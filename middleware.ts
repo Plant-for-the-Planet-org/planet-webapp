@@ -70,8 +70,11 @@ export default async function middleware(req: NextRequest) {
   if (isLocaleMissing) {
     const locale = getLocale(req);
     const cleanPathname = removeLocaleFromUrl(pathname);
+    const searchParams = req.nextUrl.search;
     const newUrl = new URL(
-      `/${locale}${cleanPathname.startsWith('/') ? '' : '/'}${cleanPathname}`,
+      `/${locale}${
+        cleanPathname.startsWith('/') ? '' : '/'
+      }${cleanPathname}${searchParams}`,
       req.url
     );
     return NextResponse.redirect(newUrl);
