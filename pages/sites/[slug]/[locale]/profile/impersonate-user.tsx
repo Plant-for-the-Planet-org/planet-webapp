@@ -1,7 +1,7 @@
 import Head from 'next/head';
-import { useTranslation } from 'next-i18next';
+import { AbstractIntlMessages, useTranslations } from 'next-intl';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import deepmerge from 'deepmerge';
 import ImpersonateUser from '../../../../../src/features/user/Settings/ImpersonateUser';
 import { useUserProps } from '../../../../../src/features/common/Layout/UserPropsContext';
 import { ReactElement, useEffect } from 'react';
@@ -30,7 +30,7 @@ const ImpersonateUserPage = ({
   pageProps: { tenantConfig },
 }: Props): ReactElement => {
   const { user, isImpersonationModeOn } = useUserProps();
-  const { t } = useTranslation('me');
+  const t = useTranslations('Me');
   const router = useRouter();
   const { setTenantConfig } = useTenant();
 
@@ -43,7 +43,7 @@ const ImpersonateUserPage = ({
   return tenantConfig ? (
     <UserLayout>
       <Head>
-        <title>{t('me:switchUser')}</title>
+        <title>{t('switchUser')}</title>
       </Head>
       {user?.allowedToSwitch && !isImpersonationModeOn ? (
         <ImpersonateUser />
@@ -76,24 +76,52 @@ export const getStaticPaths = async () => {
   };
 };
 
-interface StaticProps {
+interface PageProps {
+  messages: AbstractIntlMessages;
   tenantConfig: Tenant;
 }
 
-export const getStaticProps: GetStaticProps<StaticProps> = async (
+export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
-): Promise<GetStaticPropsResult<StaticProps>> => {
+): Promise<GetStaticPropsResult<PageProps>> => {
   const tenantConfig =
     (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
+  const userMessages = {
+    ...(
+      await import(
+        `../../../../../public/static/locales/${context.params?.locale}/common.json`
+      )
+    ).default,
+    ...(
+      await import(
+        `../../../../../public/static/locales/${context.params?.locale}/me.json`
+      )
+    ).default,
+    ...(
+      await import(
+        `../../../../../public/static/locales/${context.params?.locale}/country.json`
+      )
+    ).default,
+  };
+
+  const defaultMessages = {
+    ...(await import('../../../../../public/static/locales/en/common.json'))
+      .default,
+    ...(await import('../../../../../public/static/locales/en/me.json'))
+      .default,
+    ...(await import('../../../../../public/static/locales/en/country.json'))
+      .default,
+  };
+
+  const messages: AbstractIntlMessages = deepmerge(
+    defaultMessages,
+    userMessages
+  );
+
   return {
     props: {
-      ...(await serverSideTranslations(
-        context.locale || 'en',
-        ['me', 'common'],
-        null,
-        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
-      )),
+      messages,
       tenantConfig,
     },
   };

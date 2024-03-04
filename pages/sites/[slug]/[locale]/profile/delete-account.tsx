@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import React, { ReactElement } from 'react';
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { AbstractIntlMessages, useTranslations } from 'next-intl';
+import deepmerge from 'deepmerge';
 import DeleteProfile from '../../../../../src/features/user/Settings/DeleteProfile';
 import {
   GetStaticProps,
@@ -27,7 +27,7 @@ interface Props {
 function DeleteProfilePage({
   pageProps: { tenantConfig },
 }: Props): ReactElement {
-  const { t } = useTranslation('me');
+  const t = useTranslations('Me');
   const router = useRouter();
   const { setTenantConfig } = useTenant();
 
@@ -69,43 +69,60 @@ export const getStaticPaths = async () => {
   };
 };
 
-interface StaticProps {
+interface PageProps {
+  messages: AbstractIntlMessages;
   tenantConfig: Tenant;
 }
 
-export const getStaticProps: GetStaticProps<StaticProps> = async (
+export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
-): Promise<GetStaticPropsResult<StaticProps>> => {
+): Promise<GetStaticPropsResult<PageProps>> => {
   const tenantConfig =
     (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
+  const userMessages = {
+    ...(
+      await import(
+        `../../../../../public/static/locales/${context.params?.locale}/common.json`
+      )
+    ).default,
+    ...(
+      await import(
+        `../../../../../public/static/locales/${context.params?.locale}/me.json`
+      )
+    ).default,
+    ...(
+      await import(
+        `../../../../../public/static/locales/${context.params?.locale}/country.json`
+      )
+    ).default,
+    ...(
+      await import(
+        `../../../../../public/static/locales/${context.params?.locale}/editProfile.json`
+      )
+    ).default,
+  };
+
+  const defaultMessages = {
+    ...(await import('../../../../../public/static/locales/en/common.json'))
+      .default,
+    ...(await import('../../../../../public/static/locales/en/me.json'))
+      .default,
+    ...(await import('../../../../../public/static/locales/en/country.json'))
+      .default,
+    ...(
+      await import('../../../../../public/static/locales/en/editProfile.json')
+    ).default,
+  };
+
+  const messages: AbstractIntlMessages = deepmerge(
+    defaultMessages,
+    userMessages
+  );
+
   return {
     props: {
-      ...(await serverSideTranslations(
-        context.locale || 'en',
-        [
-          'bulkCodes',
-          'common',
-          'country',
-          'donate',
-          'donationLink',
-          'editProfile',
-          'giftfunds',
-          'leaderboard',
-          'managePayouts',
-          'manageProjects',
-          'maps',
-          'me',
-          'planet',
-          'planetcash',
-          'redeem',
-          'registerTrees',
-          'tenants',
-          'treemapper',
-        ],
-        null,
-        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
-      )),
+      messages,
       tenantConfig,
     },
   };
