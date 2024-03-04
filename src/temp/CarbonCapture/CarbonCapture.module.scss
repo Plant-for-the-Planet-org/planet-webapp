@@ -34,7 +34,10 @@
   }
 }
 
-.carbonCatureDetailContainer {
+.carbonCaptureDetailContainer {
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 16px;
   border: 1px solid rgba(111, 207, 151, 0.02);
   background: linear-gradient(
       0deg,
@@ -43,20 +46,17 @@
     ),
     #fff;
 
-  height: 93px;
+  height: 70px;
   border-radius: 12px;
 }
 
 .carbonCaptureIndicator {
   width: 274px;
-  height: 21px;
-  margin-top: 13.87px;
-  margin-left: 16.5px;
+  height: 60px;
   display: flex;
   border-radius: 3px;
 
   .beforeIntervationIndicator {
-    width: 107px;
     background: linear-gradient(
         0deg,
         rgba(33, 150, 83, 0.4) 0%,
@@ -73,7 +73,6 @@
     height: inherit;
   }
   .projectPotential {
-    width: 116px;
     background: #fff;
     height: inherit;
     border-top-right-radius: 3px;
@@ -86,46 +85,45 @@
   padding-left: 16px;
   padding-top: 4px;
   padding-right: 16px;
-  .beforeIntervationData {
+}
+.beforeIntervationData {
+  color: rgba(33, 150, 83, 1);
+  font-size: 8px;
+  font-weight: 700;
+}
+.beforeIntervationLabel {
+  font-size: 8px;
+  font-weight: 600;
+}
+.beforeIntervationDate {
+  font-size: 6px;
+  color: #828282;
+}
+.byProjectData {
+  color: rgba(33, 150, 83, 1);
+  font-size: 8px;
+  font-weight: 700;
+}
+.byProjectLabel {
+  font-size: 8px;
+  font-weight: 600;
+}
+.byProjectDate {
+  font-size: 6px;
+  color: #828282;
+}
+.sitePotentialDataContainer {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  .sitePotentialData {
     color: rgba(33, 150, 83, 1);
     font-size: 8px;
-    font-weight: 700;
+    font-weight: bold;
   }
-  .beforeIntervationLabel {
+  .sitePotentialLabel {
     font-size: 8px;
     font-weight: 600;
-  }
-  .beforeIntervationDate {
-    font-size: 6px;
-    color: #828282;
-  }
-  .byProjectMainConatiner {
-    margin-left: 40px;
-  }
-  .byProjectData {
-    color: rgba(33, 150, 83, 1);
-    font-size: 8px;
-    font-weight: 700;
-  }
-  .byProjectLabel {
-    font-size: 8px;
-    font-weight: 600;
-  }
-  .byProjectDate {
-    font-size: 6px;
-    color: #828282;
-  }
-  .sitePotentialDataContainer {
-    margin-left: 70px;
-    .sitePotentialData {
-      color: rgba(33, 150, 83, 1);
-      font-size: 8px;
-      font-weight: bold;
-    }
-    .sitePotentialLabel {
-      font-size: 8px;
-      font-weight: 600;
-    }
   }
 }
 
@@ -134,10 +132,6 @@
   border-radius: 16px;
   overflow: hidden;
   background-color: #fff;
-  p {
-    font-weight: 400;
-    margin-left: 2px;
-  }
 }
 
 .infoIconContainer {

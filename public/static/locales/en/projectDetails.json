@@ -1,8 +1,10 @@
 {
   "satelliteAnalysis": "Satellite Analysis",
   "beforeIntervention": "Before intervention",
+  "cO₂Quantity": "~{{quantity}}t",
   "before": "before {{date}}",
   "byProject": "By Project",
+  "byProjectCO₂Quantity": "v{{quantity}}t",
   "since": "since {{date}}",
   "sitePotential": "Site Potential",
   "seeMore": "See More",
