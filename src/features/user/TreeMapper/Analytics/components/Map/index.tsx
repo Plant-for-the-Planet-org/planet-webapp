@@ -96,6 +96,34 @@ export const MapContainer = () => {
   const { setErrors } = useContext(ErrorHandlingContext);
   const { t, ready } = useTranslation(['treemapperAnalytics']);
 
+  const mapRef: MutableRefObject<null> = useRef(null);
+  const [mapState, setMapState] = useState({
+    mapStyle: EMPTY_STYLE,
+    dragPan: true,
+    scrollZoom: false,
+    minZoom: 1,
+    maxZoom: 25,
+  });
+
+  useEffect(() => {
+    //loads the default mapstyle
+    async function loadMapStyle() {
+      const result = await getMapStyle('default');
+      if (result) {
+        setMapState({ ...mapState, mapStyle: result });
+      }
+    }
+    loadMapStyle();
+  }, []);
+
+  const [viewport, setViewport] = useState<ViewportProps>({
+    width: '100%',
+    height: '500px',
+    latitude: defaultMapCenter[0],
+    longitude: defaultMapCenter[1],
+    zoom: defaultZoom,
+  });
+
   const [_projectType, setProjectType] = useState<ProjectType | null>(null);
   const [distinctSpeciesList, setDistinctSpeciesList] =
     useState<DistinctSpecies>([]);
@@ -116,30 +144,15 @@ export const MapContainer = () => {
   const [search, setSearch] = useState<string>('');
   const [queryType, setQueryType] = useState<QueryType | null>(null);
 
-  const mapRef: MutableRefObject<null> = useRef(null);
-  const [mapState, setMapState] = useState({
-    mapStyle: EMPTY_STYLE,
-    dragPan: true,
-    scrollZoom: false,
-    minZoom: 1,
-    maxZoom: 25,
-  });
-
-  const [viewport, setViewport] = useState<ViewportProps>({
-    width: '100%',
-    height: '500px',
-    latitude: defaultMapCenter[0],
-    longitude: defaultMapCenter[1],
-    zoom: defaultZoom,
-  });
-
   const [loading, setLoading] = useState(false);
 
+  // Custom hook for making requests to fetch distinct species
   const { makeRequest } = useNextRequest<{ data: DistinctSpecies }>({
     url: `/api/data-explorer/map/distinct-species/${project?.id}`,
     method: HTTP_METHOD.GET,
   });
 
+  // Custom hook for making requests to fetch project sites
   const { makeRequest: makeReqToFetchProjectSites } = useNextRequest<{
     data: FeatureCollection;
   }>({
@@ -147,6 +160,7 @@ export const MapContainer = () => {
     method: HTTP_METHOD.GET,
   });
 
+  // Custom hook for making requests to fetch plant locations
   const { makeRequest: makeReqToFetchPlantLocation } = useNextRequest<{
     data: PlantLocation[];
   }>({
@@ -162,6 +176,7 @@ export const MapContainer = () => {
     },
   });
 
+  // Custom hook for making requests to fetch plant location details
   const { makeRequest: makeReqToFetchPlantLocationDetails } =
     useNextRequest<PlantLocationDetailsApiResponse>({
       url: `/api/data-explorer/map/plant-location/${selectedLayer?.guid}`,
@@ -182,20 +197,8 @@ export const MapContainer = () => {
     fetchProjectLocationsDetails();
   }, [selectedLayer]);
 
-  useEffect(() => {
-    //loads the default mapstyle
-    async function loadMapStyle() {
-      const result = await getMapStyle('default');
-      if (result) {
-        setMapState({ ...mapState, mapStyle: result });
-      }
-    }
-    loadMapStyle();
-  }, []);
-
-  const _handleViewport = (newViewport: ViewportProps) =>
-    setViewport({ ...viewport, ...newViewport });
-
+  // Fetch and Set Distinct Species and Project Sites.
+  // This data will be consumed by the dropdowns in the left controls
   const fetchDistinctSpecies = async () => {
     const res = await makeRequest();
     if (res) {
@@ -212,6 +215,15 @@ export const MapContainer = () => {
     }
   };
 
+  useEffect(() => {
+    if (project) {
+      fetchDistinctSpecies();
+      fetchProjectSites();
+    }
+    setSelectedLayer(null);
+  }, [project]);
+
+  // Progamatically navigate to another location on the map
   const _setViewport = (feature: Feature, zoom = 16) => {
     const centeroid = turf.center(feature);
     if (centeroid?.geometry) {
@@ -226,6 +238,8 @@ export const MapContainer = () => {
     }
   };
 
+  // Fetch and Set Plant Locations
+  // This data will be used to render the plant locations on the map
   const fetchProjectLocations = async () => {
     setLoading(true);
     const res = await makeReqToFetchPlantLocation();
@@ -261,14 +275,6 @@ export const MapContainer = () => {
   };
 
   useEffect(() => {
-    if (project) {
-      fetchDistinctSpecies();
-      fetchProjectSites();
-    }
-    setSelectedLayer(null);
-  }, [project]);
-
-  useEffect(() => {
     if (project && species) {
       if (queryType === QueryType.DATE) {
         if (!isDateBetween(search, fromDate, toDate)) {
@@ -280,10 +286,14 @@ export const MapContainer = () => {
     }
   }, [project, species, queryType, fromDate, toDate]);
 
+  // Set the map style to the default style
+  // Currently this only shows Intervention
   const handleProjectTypeChange = (projType: ProjectType | null) => {
     setProjectType(projType);
   };
 
+  // Set the selected site on the map
+  // Navigate to the selected site on the map
   const handleSiteChange = (site: Feature | null) => {
     setProjectSite(site);
     if (site) {
@@ -291,6 +301,8 @@ export const MapContainer = () => {
     }
   };
 
+  // Handle map click event
+  // This will be used to select a plant location on the map
   const handleMapClick = async (event) => {
     const clickedFeatures = event.features;
     if (clickedFeatures.length > 0) {
@@ -301,6 +313,11 @@ export const MapContainer = () => {
     }
   };
 
+  // Handle search input change
+  // This will be used to filter the plant locations on the map based on the search input
+  // The search input can be either a HID or a Date
+  // If the input is a HID, the plant location with the matching HID will be selected
+  // If the input is a Date, the plant locations with the matching Date will be selected
   const handleSearchChange = (
     event: React.ChangeEvent<HTMLInputElement> | React.ClipboardEvent
   ) => {
@@ -340,6 +357,13 @@ export const MapContainer = () => {
       setQueryType(null);
     }
   };
+
+  // Handle viewport change
+  // This will be used to update the viewport state
+  // If not presnet then it will casue a weird behavior of map where will not
+  // move to the updated selected location --(happens when data changes based on filter)--
+  const _handleViewport = (newViewport: ViewportProps) =>
+    setViewport({ ...viewport, ...newViewport });
 
   return ready ? (
     <Container
