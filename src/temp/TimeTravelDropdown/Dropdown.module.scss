@@ -1,10 +1,11 @@
+@import '../../theme/theme';
 .menuContainer {
-    font-size: 12px;
+    font-size: $fontXSmall;
 }
 .menuButton {
     border-radius: 8px;
-    width: 150px;
-    background: #FFF;
+    max-width: 150px;
+    background: $light;
     height: 36px;
     display: flex;
     align-items: center;
@@ -27,11 +28,11 @@
     width: 160px;
     margin-top: 16px;
     border-radius: 8px;
-    color: #4F4F4F;
+    color: $grayFontColorNew;
 }
 .yearMenuContainer {
     border-radius: 8px 0 0 8px;
-    background-color: rgba(217, 217, 217, 0.5);
+    background-color: $lightGrayBackgroundColorNew;
     padding:16px;
     display: flex;
     flex-direction: column;
@@ -41,7 +42,7 @@
     }
 }
 .sourceMenuContainer {
-    background: #FFF;
+    background: $light;
     padding: 16px;
     border-radius: 0px 8px 8px 0;
     li {

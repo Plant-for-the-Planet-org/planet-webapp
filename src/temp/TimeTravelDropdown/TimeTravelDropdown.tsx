@@ -36,7 +36,7 @@ const TimeTravelDropdown = ({
     if (selectedOption.toLowerCase() === labelValue.toLowerCase()) {
       return {
         fontWeight: 700,
-        color: '#333',
+        color: `${'var(--selected-menu-item-color-new)'}`,
       };
     } else {
       return undefined;
@@ -50,12 +50,12 @@ const TimeTravelDropdown = ({
         onClick={() => setIsMenuOpen(!isMenuOpen)}
       >
         <div className={styles.menuButtonTitle}>
-          <CalendarIcon width={14} color={'#2F3336'} />
+          <CalendarIcon width={14} color={`${'var(--bold-font-color-new)'}`} />
           <p>
             <span>{selectedYear} </span>via {selectedSource}
           </p>
         </div>
-        <DropdownArrow width={8} color={'#2F3336'} />
+        <DropdownArrow width={8} color={`${'var(--bold-font-color-new)'}`} />
       </div>
       {isMenuOpen && (
         <div className={styles.menuItems}>
