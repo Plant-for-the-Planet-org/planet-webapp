@@ -1,8 +1,7 @@
 import styles from './AboutProject.module.scss';
-import DownArrow from '../icons/DownArrow';
 import { useState } from 'react';
-import UpArrow from '../icons/UpArrow';
 import { useTranslation } from 'next-i18next';
+import SeeMoreLessButton from './SeeMoreLessButton';
 
 interface Props {
   description: string;
@@ -34,22 +33,10 @@ const AboutProject = ({ description, amountOfWords }: Props) => {
         )}
       </div>
       {itCanOverflow && (
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className={styles.readMoreLessButton}
-        >
-          {isExpanded ? (
-            <>
-              <div>{t('projectDetails:seeLess')}</div>
-              <UpArrow width={7} />
-            </>
-          ) : (
-            <>
-              <div>{t('projectDetails:seeMore')}</div>
-              <DownArrow width={7} />
-            </>
-          )}
-        </button>
+        <SeeMoreLessButton
+          isContainerExpanded={isExpanded}
+          onClickFunction={() => setIsExpanded(!isExpanded)}
+        />
       )}
     </div>
   );
