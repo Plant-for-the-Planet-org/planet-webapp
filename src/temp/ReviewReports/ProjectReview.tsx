@@ -33,13 +33,22 @@ const ProjectReview = ({ issueMonth, pdf }: Props) => {
             rel="noopener noreferrer"
             href={getPDFFile('projectReview', pdf)}
           >
-            <DownloadReportIcon width={10} color={'#2D9CDB'} />
+            <DownloadReportIcon
+              width={10}
+              color={`${'var(--review-font-color-new)'}`}
+            />
           </a>
         </div>
       </div>
       <div className={styles.reviewInfoContainer}>
         <div className={styles.verifiedIcon}>
-          <VerifiedIcon sx={{ color: '#42A5F5', width: 16, height: 16 }} />
+          <VerifiedIcon
+            sx={{
+              color: `${'var(--review-link-color-new)'}`,
+              width: 16,
+              height: 16,
+            }}
+          />
         </div>
         <p>
           <Trans i18nKey="common:reviewInfo">

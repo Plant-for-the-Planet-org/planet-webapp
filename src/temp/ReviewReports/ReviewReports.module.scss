@@ -1,17 +1,19 @@
+@import '../../theme/theme';
+
 .reviewReportsContainer {
     padding: 16px;
     width: 100%;
     max-width: 274px;
     border-radius: 14px;
-    background-color: rgba(47, 128, 237, 0.1);
+    background-color: $reviewBackgroundColorNew;
 }
 .titleContainer {
     display: flex;
     justify-content: space-between; 
     align-items: center;
     h6 {
-        color: #2F3336;
-        font-size: 10px;
+        color: #2F3336; //to be replaced
+        font-size: $fontXXSmall;
         font-weight: 700;
     }
    
@@ -22,8 +24,8 @@
     align-items: center;
     gap: 6px;
     p {
-        font-size: 8px;
-        color: #2D9CDB;
+        font-size: $fontXXXSmallNew;
+        color: $reviewFontColorNew;
         font-weight: 700;
 
     }
@@ -37,12 +39,12 @@
 .reviewInfoContainer {
     display: flex;
     gap: 7px;
-    color: #2F3336;
-    font-size: 10px;
+    color: #2F3336; //to be replaced
+    font-size: $fontXXSmall;
     margin-top: 4px;
     
     a {
-        color: #0098FF;
+        color: $reviewLinkColorNew;
         text-decoration: underline;
         font-weight: 700;
 
