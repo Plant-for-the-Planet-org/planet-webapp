@@ -39,6 +39,9 @@
     background-color: #fff;
     font-size: 10px;
     height : 450px;
+    ::-webkit-scrollbar {
+        display: none;
+      }
 
     &:hover{
         cursor: auto;
@@ -55,6 +58,9 @@
         overflow-y: scroll;
         scroll-behavior: smooth;
         height : 450px;
+        ::-webkit-scrollbar {
+            display: none;
+          }
 
         .contentTop{
             display: flex;
@@ -106,11 +112,12 @@
             .midContainer{
                 background-color: #27AE601A;
                 z-index: 2;
-                padding: 24px;
+                padding: 16px;
                 border-radius: 16px;
                 flex-grow: 1;
         
                 .speciesContainer{
+                    padding: 0 8px;
         
                     .individualSpeciesContainer{
                         display: flex;
@@ -149,13 +156,14 @@
         
                 .title {
                     font-weight: 500;
+                    margin-bottom: 8px;
                 }
             }
         
             .bottomContainer {
                 background-color: #E86F561A;
                 z-index: 2;
-                padding: 24px;
+                padding: 16px;
                 border-radius: 16px;
         
                 .sampleTreeContainer{
