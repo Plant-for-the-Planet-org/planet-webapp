@@ -191,7 +191,8 @@ export function DetailsComponent({ record }: DetailProps): ReactElement {
           </p>
         </div>
       )}
-      {record.details?.unitCost ? (
+      {(record.unitType === 'tree' || record.unitType === 'm2') &&
+      record.details?.unitCost ? (
         <div className={styles.singleDetail}>
           <p className={styles.title}>
             {tMe('unitCost', {

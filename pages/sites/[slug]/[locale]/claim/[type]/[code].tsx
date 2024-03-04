@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import { postAuthenticatedRequest } from '../../../../../../src/utils/apiRequests/api';
-import { useTranslation } from 'next-i18next';
+import { AbstractIntlMessages, useTranslations } from 'next-intl';
 import LandingSection from '../../../../../../src/features/common/Layout/LandingSection';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../../../../src/features/common/Layout/ErrorHandlingContext';
@@ -10,7 +10,6 @@ import {
   SuccessfullyRedeemed,
 } from '../../../../../../src/features/common/RedeemCode';
 import { RedeemedCodeData } from '../../../../../../src/features/common/types/redeem';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
 import {
@@ -25,6 +24,7 @@ import {
   GetStaticPropsResult,
 } from 'next';
 import { defaultTenant } from '../../../../../../tenant.config';
+import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
   pageProps: {
@@ -33,7 +33,7 @@ interface Props {
 }
 
 function ClaimDonation({ pageProps }: Props): ReactElement {
-  const { t, ready } = useTranslation(['redeem']);
+  const t = useTranslations('Redeem');
   const router = useRouter();
   const { setTenantConfig } = useTenant();
   const { user, contextLoaded, loginWithRedirect, token, logoutUser } =
@@ -62,7 +62,7 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
         setCode(router.query.code);
       }
     }
-  }, [router, router.query.type, ready]);
+  }, [router, router.query.type]);
 
   const redeemAnotherCode = () => {
     router.push(`/profile/redeem/${code}?inputCode=${true}`);
@@ -96,13 +96,13 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
           switch (error.message) {
             case 'already_redeemed':
               _serializedErrors.push({
-                message: t('redeem:alreadyRedeemed'),
+                message: t('alreadyRedeemed'),
               });
               break;
 
             case 'invalid_code':
               _serializedErrors.push({
-                message: t('redeem:invalidCode'),
+                message: t('invalidCode'),
               });
               break;
 
@@ -143,7 +143,6 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
     //redeem code using route
     if (user && contextLoaded) {
       if (
-        ready &&
         router.query.type &&
         router.query.code &&
         !Array.isArray(router.query.code)
@@ -151,9 +150,9 @@ function ClaimDonation({ pageProps }: Props): ReactElement {
         redeemingCode(router.query.code);
       }
     }
-  }, [user, contextLoaded, ready, router.query.type, router.query.code]);
+  }, [user, contextLoaded, router.query.type, router.query.code]);
 
-  return pageProps.tenantConfig && ready && user ? (
+  return pageProps.tenantConfig && user ? (
     <LandingSection>
       <>
         {redeemedCodeData ? (
@@ -198,43 +197,25 @@ export const getStaticPaths = async () => {
   };
 };
 
-interface StaticProps {
+interface PageProps {
+  messages: AbstractIntlMessages;
   tenantConfig: Tenant;
 }
 
-export const getStaticProps: GetStaticProps<StaticProps> = async (
+export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
-): Promise<GetStaticPropsResult<StaticProps>> => {
+): Promise<GetStaticPropsResult<PageProps>> => {
   const tenantConfig =
     (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
+  const messages = await getMessagesForPage({
+    locale: context.params?.locale as string,
+    filenames: ['redeem', 'common'],
+  });
+
   return {
     props: {
-      ...(await serverSideTranslations(
-        context.locale || 'en',
-        [
-          'bulkCodes',
-          'common',
-          'country',
-          'donate',
-          'donationLink',
-          'editProfile',
-          'giftfunds',
-          'leaderboard',
-          'managePayouts',
-          'manageProjects',
-          'maps',
-          'me',
-          'planet',
-          'planetcash',
-          'redeem',
-          'registerTrees',
-          'tenants',
-          'treemapper',
-        ],
-        null,
-        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
-      )),
+      messages,
       tenantConfig,
     },
   };

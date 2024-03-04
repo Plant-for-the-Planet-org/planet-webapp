@@ -10,8 +10,7 @@ import { useBulkCode } from '../../../../../../../src/features/common/Layout/Bul
 import { ErrorHandlingContext } from '../../../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { getRequest } from '../../../../../../../src/utils/apiRequests/api';
 import { useRouter } from 'next/router';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useTranslation } from 'next-i18next';
+import { AbstractIntlMessages, useTranslations } from 'next-intl';
 import { handleError, APIError } from '@planet-sdk/common';
 import {
   constructPathsForTenantSlug,
@@ -26,6 +25,7 @@ import {
   GetStaticPropsResult,
 } from 'next';
 import { defaultTenant } from '../../../../../../../tenant.config';
+import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
   pageProps: {
@@ -38,7 +38,7 @@ export default function BulkCodeIssueCodesPage({
 }: Props): ReactElement {
   const router = useRouter();
   const { isReady, query } = useRouter();
-  const { t, ready } = useTranslation('me');
+  const t = useTranslations('Me');
   const { setTenantConfig } = useTenant();
   const { redirect, setErrors } = useContext(ErrorHandlingContext);
 
@@ -110,7 +110,7 @@ export default function BulkCodeIssueCodesPage({
   return pageProps.tenantConfig ? (
     <UserLayout>
       <Head>
-        <title>{ready ? t('bulkCodesTitleStep3') : ''}</title>
+        <title>{t('bulkCodesTitleStep3')}</title>
       </Head>
       <BulkCodes step={BulkCodeSteps.ISSUE_CODES} />
     </UserLayout>
@@ -139,43 +139,25 @@ export const getStaticPaths = async () => {
   };
 };
 
-interface StaticProps {
+interface PageProps {
+  messages: AbstractIntlMessages;
   tenantConfig: Tenant;
 }
 
-export const getStaticProps: GetStaticProps<StaticProps> = async (
+export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
-): Promise<GetStaticPropsResult<StaticProps>> => {
+): Promise<GetStaticPropsResult<PageProps>> => {
   const tenantConfig =
     (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
+  const messages = await getMessagesForPage({
+    locale: context.params?.locale as string,
+    filenames: ['common', 'me', 'country', 'bulkCodes'],
+  });
+
   return {
     props: {
-      ...(await serverSideTranslations(
-        context.locale || 'en',
-        [
-          'bulkCodes',
-          'common',
-          'country',
-          'donate',
-          'donationLink',
-          'editProfile',
-          'giftfunds',
-          'leaderboard',
-          'managePayouts',
-          'manageProjects',
-          'maps',
-          'me',
-          'planet',
-          'planetcash',
-          'redeem',
-          'registerTrees',
-          'tenants',
-          'treemapper',
-        ],
-        null,
-        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
-      )),
+      messages,
       tenantConfig,
     },
   };

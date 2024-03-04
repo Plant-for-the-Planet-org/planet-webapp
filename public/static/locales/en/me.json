@@ -211,6 +211,7 @@
     "sepa_debit": "SEPA (Stripe)",
     "offline": "Offline",
     "offline-offline": "Offline",
+    "offline-transfer": "Offline",
     "profile": "Profile",
     "projects": "Projects",
     "settings": "Settings",

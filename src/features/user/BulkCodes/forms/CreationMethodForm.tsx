@@ -32,13 +32,21 @@ const CreationMethodForm = (): ReactElement | null => {
       method: BulkCodeMethods.IMPORT,
       title: tBulkCodes('importMethodText.title'),
       subtitle: tBulkCodes('importMethodText.subtitle'),
-      details: tBulkCodes('importMethodText.details'),
+      details: [
+        tBulkCodes('importMethodText.details.line1'),
+        tBulkCodes('importMethodText.details.line2'),
+        tBulkCodes('importMethodText.details.line3'),
+      ],
     },
     {
       method: BulkCodeMethods.GENERIC,
       title: tBulkCodes('genericMethodText.title'),
       subtitle: tBulkCodes('genericMethodText.subtitle'),
-      details: tBulkCodes('genericMethodText.details'),
+      details: [
+        tBulkCodes('genericMethodText.details.line1'),
+        tBulkCodes('genericMethodText.details.line2'),
+        tBulkCodes('genericMethodText.details.line3'),
+      ],
     },
   ];
 

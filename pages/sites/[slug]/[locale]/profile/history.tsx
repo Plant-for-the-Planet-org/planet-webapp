@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { useTranslation } from 'next-i18next';
+import { AbstractIntlMessages, useTranslations } from 'next-intl';
 import { getAuthenticatedRequest } from '../../../../../src/utils/apiRequests/api';
 import TopProgressBar from '../../../../../src/features/common/ContentLoaders/TopProgressBar';
 import History from '../../../../../src/features/user/Account/History';
@@ -7,7 +7,6 @@ import { useUserProps } from '../../../../../src/features/common/Layout/UserProp
 import UserLayout from '../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Head from 'next/head';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { handleError, APIError } from '@planet-sdk/common';
 import {
   Filters,
@@ -27,6 +26,7 @@ import { defaultTenant } from '../../../../../tenant.config';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
+import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
   pageProps: {
@@ -35,7 +35,7 @@ interface Props {
 }
 
 function AccountHistory({ pageProps }: Props): ReactElement {
-  const { t } = useTranslation(['me']);
+  const t = useTranslations('Me');
   const { token, contextLoaded, logoutUser } = useUserProps();
   const router = useRouter();
   const { setTenantConfig } = useTenant();
@@ -158,8 +158,8 @@ function AccountHistory({ pageProps }: Props): ReactElement {
           <title>{t('history')}</title>
         </Head>
         <DashboardView
-          title={t('me:payments')}
-          subtitle={t('me:donationsSubTitle')}
+          title={t('payments')}
+          subtitle={t('donationsSubTitle')}
           multiColumn={true}
         >
           <History {...HistoryProps} />
@@ -193,43 +193,25 @@ export const getStaticPaths = async () => {
   };
 };
 
-interface StaticProps {
+interface PageProps {
+  messages: AbstractIntlMessages;
   tenantConfig: Tenant;
 }
 
-export const getStaticProps: GetStaticProps<StaticProps> = async (
+export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
-): Promise<GetStaticPropsResult<StaticProps>> => {
+): Promise<GetStaticPropsResult<PageProps>> => {
   const tenantConfig =
     (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
+  const messages = await getMessagesForPage({
+    locale: context.params?.locale as string,
+    filenames: ['common', 'me', 'country'],
+  });
+
   return {
     props: {
-      ...(await serverSideTranslations(
-        context.locale || 'en',
-        [
-          'bulkCodes',
-          'common',
-          'country',
-          'donate',
-          'donationLink',
-          'editProfile',
-          'giftfunds',
-          'leaderboard',
-          'managePayouts',
-          'manageProjects',
-          'maps',
-          'me',
-          'planet',
-          'planetcash',
-          'redeem',
-          'registerTrees',
-          'tenants',
-          'treemapper',
-        ],
-        null,
-        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
-      )),
+      messages,
       tenantConfig,
     },
   };
