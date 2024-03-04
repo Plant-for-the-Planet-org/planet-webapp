@@ -15,7 +15,7 @@ import {
 } from 'next';
 import { defaultTenant } from '../../../../tenant.config';
 import { AbstractIntlMessages } from 'next-intl';
-import deepmerge from 'deepmerge';
+import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
   pageProps: PageProps;
@@ -112,23 +112,10 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   const tenantConfig =
     (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
-  const userMessages = {
-    ...(
-      await import(
-        `../../../../public/static/locales/${context.params?.locale}/common.json`
-      )
-    ).default,
-  };
-
-  const defaultMessages = {
-    ...(await import('../../../../public/static/locales/en/common.json'))
-      .default,
-  };
-
-  const messages: AbstractIntlMessages = deepmerge(
-    defaultMessages,
-    userMessages
-  );
+  const messages = await getMessagesForPage({
+    locale: context.params?.locale as string,
+    filenames: ['common'],
+  });
 
   return {
     props: {

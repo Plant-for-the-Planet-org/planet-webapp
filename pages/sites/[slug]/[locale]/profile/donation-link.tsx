@@ -3,7 +3,6 @@ import UserLayout from '../../../../../src/features/common/Layout/UserLayout/Use
 import DonationLink from '../../../../../src/features/user/Widget/DonationLink';
 import Head from 'next/head';
 import { AbstractIntlMessages, useTranslations } from 'next-intl';
-import deepmerge from 'deepmerge';
 import {
   GetStaticProps,
   GetStaticPropsContext,
@@ -17,6 +16,7 @@ import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { defaultTenant } from '../../../../../tenant.config';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
+import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
   pageProps: {
@@ -78,52 +78,10 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   const tenantConfig =
     (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
-  const userMessages = {
-    ...(
-      await import(
-        `../../../../../public/static/locales/${context.params?.locale}/common.json`
-      )
-    ).default,
-    ...(
-      await import(
-        `../../../../../public/static/locales/${context.params?.locale}/me.json`
-      )
-    ).default,
-    ...(
-      await import(
-        `../../../../../public/static/locales/${context.params?.locale}/country.json`
-      )
-    ).default,
-    ...(
-      await import(
-        `../../../../../public/static/locales/${context.params?.locale}/donationLink.json`
-      )
-    ).default,
-    ...(
-      await import(
-        `../../../../../public/static/locales/${context.params?.locale}/bulkCodes.json`
-      )
-    ).default,
-  };
-
-  const defaultMessages = {
-    ...(await import('../../../../../public/static/locales/en/common.json'))
-      .default,
-    ...(await import('../../../../../public/static/locales/en/me.json'))
-      .default,
-    ...(await import('../../../../../public/static/locales/en/country.json'))
-      .default,
-    ...(
-      await import('../../../../../public/static/locales/en/donationLink.json')
-    ).default,
-    ...(await import('../../../../../public/static/locales/en/bulkCodes.json'))
-      .default,
-  };
-
-  const messages: AbstractIntlMessages = deepmerge(
-    defaultMessages,
-    userMessages
-  );
+  const messages = await getMessagesForPage({
+    locale: context.params?.locale as string,
+    filenames: ['common', 'me', 'country', 'donationLink', 'bulkCodes'],
+  });
 
   return {
     props: {

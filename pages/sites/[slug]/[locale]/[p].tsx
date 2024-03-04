@@ -32,7 +32,7 @@ import {
   GetStaticPropsResult,
 } from 'next';
 import { defaultTenant } from '../../../../tenant.config';
-import deepmerge from 'deepmerge';
+import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
   currencyCode: string | null | undefined;
@@ -235,51 +235,10 @@ export const getStaticProps: GetStaticProps<PageProps> = async (
   const tenantConfig =
     (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
-  const userMessages = {
-    ...(
-      await import(
-        `../../../../public/static/locales/${context.params?.locale}/common.json`
-      )
-    ).default,
-    ...(
-      await import(
-        `../../../../public/static/locales/${context.params?.locale}/maps.json`
-      )
-    ).default,
-    ...(
-      await import(
-        `../../../../public/static/locales/${context.params?.locale}/donate.json`
-      )
-    ).default,
-    ...(
-      await import(
-        `../../../../public/static/locales/${context.params?.locale}/country.json`
-      )
-    ).default,
-    ...(
-      await import(
-        `../../../../public/static/locales/${context.params?.locale}/manageProjects.json`
-      )
-    ).default,
-  };
-
-  const defaultMessages = {
-    ...(await import('../../../../public/static/locales/en/common.json'))
-      .default,
-    ...(await import('../../../../public/static/locales/en/maps.json')).default,
-    ...(await import('../../../../public/static/locales/en/donate.json'))
-      .default,
-    ...(await import('../../../../public/static/locales/en/country.json'))
-      .default,
-    ...(
-      await import('../../../../public/static/locales/en/manageProjects.json')
-    ).default,
-  };
-
-  const messages: AbstractIntlMessages = deepmerge(
-    defaultMessages,
-    userMessages
-  );
+  const messages = await getMessagesForPage({
+    locale: context.params?.locale as string,
+    filenames: ['common', 'maps', 'donate', 'country', 'manageProjects'],
+  });
 
   return {
     props: {
