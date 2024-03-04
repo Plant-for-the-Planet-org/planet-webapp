@@ -1,13 +1,15 @@
+@import '../../theme/theme';
+
 .projectDescription {
     width: 100%;
     max-width: 306px;
-    background-color: rgba(39, 174, 96, 0.1);
-    color: #2F3336;
+    background-color: $aboutProjectBackgroundColorNew;
+    color: #2F3336; //to be removed
     border-radius: 14px;   
-    font-size: 12px; 
+    font-size: $fontXSmall; 
 }
 .infoTitle {
-    font-size: 10px;
+    font-size: $fontXXSmall;
     font-weight: 700;
     padding: 16px 16px 0 16px;
 }
@@ -21,18 +23,4 @@
 }
 .showText {
     display: inline;
-}
-.readMoreLessButton {
-    background-color: #219653;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 0 0 14px 14px;
-    height: 27px;
-    color: #FFF;
-    font-size: 8px;
-    gap: 3px;
-    text-transform: capitalize;
-    font-weight: 700;
 }
