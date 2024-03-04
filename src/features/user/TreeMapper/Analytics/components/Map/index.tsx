@@ -27,14 +27,12 @@ import {
   FeatureCollection,
 } from '../../../../../common/types/dataExplorer';
 import { Container } from '../Container';
-import ProjectTypeSelector, { ProjectType } from '../ProjectTypeSelector';
+import { ProjectType } from '../ProjectTypeSelector';
 import useNextRequest, {
   HTTP_METHOD,
 } from '../../../../../../hooks/use-next-request';
 import { useAnalytics } from '../../../../../common/Layout/AnalyticsContext';
-import LeftElements from './components/LeftElements';
-import SitesSelectorAutocomplete from './components/SiteSelectorAutocomplete';
-import { MuiAutoComplete } from '../../../../../common/InputTypes/MuiAutoComplete';
+import LeftControls from './components/LeftControls';
 import styles from './index.module.scss';
 import getMapStyle from '../../../../../../utils/maps/getMapStyle';
 import { QueryType } from '../../constants';
@@ -346,7 +344,7 @@ export const MapContainer = () => {
   return ready ? (
     <Container
       leftElement={
-        <LeftElements
+        <LeftControls
           {...{
             handleProjectTypeChange,
             distinctSpeciesList,
