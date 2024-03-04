@@ -6,13 +6,14 @@ import InfoIcon from '../icons/InfoIcon';
 import DownArrow from '../icons/DownArrow';
 import { Trans, useTranslation } from 'next-i18next';
 import UpArrow from '../icons/UpArrow';
+import CO2BarGraph from './BarGraph';
 
 interface TabPanelProps {
   index: number;
   value: number;
-  beforeIntervation: string;
-  byProject: string;
-  sitePotential: string;
+  beforeIntervation: number;
+  byProject: number;
+  sitePotential: number;
 }
 
 type carbonCapture = Omit<TabPanelProps, 'index' | 'value'>;
@@ -30,16 +31,6 @@ function CustomTabPanel(props: TabPanelProps) {
   const { t } = useTranslation(['projectDetails']);
   const [isExtend, setIsExtend] = useState(false);
 
-  const width1 = (beforeIntervation, sitePotential) => {
-    const beforeIntervationPercenatage =
-      (beforeIntervation / sitePotential) * 100;
-
-    return beforeIntervationPercenatage;
-  };
-  const width2 = (byProject, sitePotential) => {
-    const _byProject = (byProject / sitePotential) * 100;
-    return _byProject;
-  };
   return (
     <div
       role="tabpanel"
@@ -65,102 +56,11 @@ function CustomTabPanel(props: TabPanelProps) {
               </div>
             </div>
             <div className={style.carbonCaptureDetailContainer}>
-              <div className={style.carbonCaptureIndicator}>
-                <div
-                  style={{
-                    width: `${width1(beforeIntervation, sitePotential)}%`,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '6px',
-                  }}
-                >
-                  <div
-                    className={style.beforeIntervationIndicator}
-                    style={{
-                      width: '100%',
-                      height: '21px',
-                    }}
-                  />
-                  <div>
-                    <p className={style.beforeIntervationData}>
-                      {t('projectDetails:cO₂Quantity', {
-                        quantity: `${beforeIntervation}`,
-                      })}
-                    </p>
-                    <p className={style.beforeIntervationLabel}>
-                      {t('projectDetails:beforeIntervention')}
-                    </p>
-                    <p className={style.beforeIntervationDate}>
-                      {t('projectDetails:before', {
-                        date: 2018,
-                      })}
-                    </p>
-                  </div>
-                </div>
-                <div
-                  style={{
-                    width: `${width2(byProject, sitePotential)}%`,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '6px',
-                  }}
-                >
-                  <div
-                    className={style.byProjectIndicator}
-                    style={{
-                      width: '100%',
-                      height: '21px',
-                    }}
-                  />
-                  <div>
-                    <p className={style.byProjectData}>
-                      {t('projectDetails:byProjectCO₂Quantity', {
-                        quantity: `${byProject}`,
-                      })}
-                    </p>
-                    <p className={style.byProjectLabel}>
-                      {t('projectDetails:byProject')}
-                    </p>
-                    <p className={style.byProjectDate}>
-                      {t('projectDetails:since', {
-                        date: 2018,
-                      })}
-                    </p>
-                  </div>
-                </div>
-                <div
-                  style={{
-                    width: `${
-                      100 -
-                      (width1(beforeIntervation, sitePotential) +
-                        width2(byProject, sitePotential))
-                    }%`,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '6px',
-                    alignItems: 'flex-end',
-                  }}
-                >
-                  <div
-                    className={style.projectPotential}
-                    style={{
-                      width: '100%',
-                      height: '21px',
-                    }}
-                  />
-                  <div className={style.sitePotentialDataContainer}>
-                    <p className={style.sitePotentialData}>
-                      {t('projectDetails:cO₂Quantity', {
-                        quantity: `${sitePotential}`,
-                      })}
-                    </p>
-                    <p className={style.sitePotentialLabel}>
-                      {t('projectDetails:sitePotential')}
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <CO2BarGraph
+                beforeIntervation={beforeIntervation}
+                byProject={byProject}
+                sitePotential={sitePotential}
+              />
             </div>
           </div>
           <button

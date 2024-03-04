@@ -11,16 +11,16 @@ type Story = StoryObj<typeof CarbonCapture>;
 
 export const siteSelected: Story = {
   args: {
-    beforeIntervation: `${262626262}`,
-    byProject: `${262626262}`,
-    sitePotential: `${262626262}`,
+    beforeIntervation: 25,
+    byProject: 25,
+    sitePotential: 100,
   },
 };
 
 export const entireProjectSelected: Story = {
   args: {
-    beforeIntervation: `${4563563565}`,
-    byProject: `${562626262}`,
-    sitePotential: `${6446262}`,
+    beforeIntervation: 20,
+    byProject: 40,
+    sitePotential: 100,
   },
 };
