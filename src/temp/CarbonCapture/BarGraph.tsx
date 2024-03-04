@@ -57,6 +57,7 @@ const CO2BarGraph = ({
       <div
         style={{
           width: `${byProjectIndicator(byProject, sitePotential)}%`,
+          alignItems: 'center',
         }}
         className={style.indicatorMainContainer}
       >
