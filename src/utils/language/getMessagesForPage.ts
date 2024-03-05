@@ -53,18 +53,21 @@ const getMessagesForPage = async ({
   for (const filename of filenames) {
     userMessages = {
       ...userMessages,
-      ...(await import(
-        `../../../public/static/locales/${locale}/${filename}.json`
-      )),
+      ...(
+        await import(
+          `../../../public/static/locales/${locale}/${filename}.json`
+        )
+      ).default,
     };
     defaultMessages = {
       ...defaultMessages,
-      ...(await import(
-        `../../../public/static/locales/${DEFAULT_LOCALE}/${filename}.json`
-      )),
+      ...(
+        await import(
+          `../../../public/static/locales/${DEFAULT_LOCALE}/${filename}.json`
+        )
+      ).default,
     };
   }
-
   return deepmerge(defaultMessages, userMessages);
 };
 
