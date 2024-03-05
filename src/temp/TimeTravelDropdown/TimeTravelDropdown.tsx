@@ -45,7 +45,7 @@ const TimeTravelDropdown = ({
 
   return (
     <div className={styles.menuContainer}>
-      <div
+      <button
         className={styles.menuButton}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
       >
@@ -56,7 +56,7 @@ const TimeTravelDropdown = ({
           </p>
         </div>
         <DropdownArrow width={8} color={`${'var(--bold-font-color-new)'}`} />
-      </div>
+      </button>
       {isMenuOpen && (
         <div className={styles.menuItems}>
           <ul className={styles.yearMenuContainer}>

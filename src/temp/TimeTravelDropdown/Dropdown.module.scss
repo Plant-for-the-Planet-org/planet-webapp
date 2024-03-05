@@ -4,13 +4,15 @@
 }
 .menuButton {
     border-radius: 8px;
-    max-width: 150px;
+    width: 150px;
     background: $light;
     height: 36px;
     display: flex;
     align-items: center;
-    padding: 0 12px;
+    padding: 0 10px;
     justify-content: space-between;
+    font-size: $fontXXSmall;
+    cursor: pointer;
     p {
         margin: 0 0 0 6px;
     }
@@ -39,6 +41,7 @@
     time {
         opacity: 5;
         margin-top: 6px;
+        cursor: pointer;
     }
 }
 .sourceMenuContainer {
@@ -49,5 +52,6 @@
         list-style: none;
         margin-top: 6px;
         width: 67px;    
+        cursor: pointer;
     }
 }
