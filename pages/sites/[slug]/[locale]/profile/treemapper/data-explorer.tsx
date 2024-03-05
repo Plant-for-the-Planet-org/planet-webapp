@@ -2,8 +2,7 @@ import Head from 'next/head';
 import React, { ReactElement, useEffect } from 'react';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import Analytics from '../../../../../../src/features/user/TreeMapper/Analytics';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useTranslation } from 'next-i18next';
+import { AbstractIntlMessages, useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import {
@@ -18,6 +17,7 @@ import {
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { defaultTenant } from '../../../../../../tenant.config';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
+import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
   pageProps: {
@@ -28,7 +28,7 @@ interface Props {
 function TreeMapperAnalytics({
   pageProps: { tenantConfig },
 }: Props): ReactElement {
-  const { t, ready } = useTranslation('treemapperAnalytics');
+  const t = useTranslations('TreemapperAnalytics');
 
   const { user } = useUserProps();
   const { push, isReady } = useRouter();
@@ -52,7 +52,7 @@ function TreeMapperAnalytics({
     <>
       <UserLayout>
         <Head>
-          <title> {ready ? t('treemapperAnalytics:title') : ''} </title>
+          <title> {t('title')} </title>
         </Head>
         <Analytics />
       </UserLayout>
@@ -82,24 +82,25 @@ export const getStaticPaths = async () => {
   };
 };
 
-interface StaticProps {
+interface PageProps {
+  messages: AbstractIntlMessages;
   tenantConfig: Tenant;
 }
 
-export const getStaticProps: GetStaticProps<StaticProps> = async (
+export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
-): Promise<GetStaticPropsResult<StaticProps>> => {
+): Promise<GetStaticPropsResult<PageProps>> => {
   const tenantConfig =
     (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
+  const messages = await getMessagesForPage({
+    locale: context.params?.locale as string,
+    filenames: ['common', 'me', 'country', 'treemapperAnalytics'],
+  });
+
   return {
     props: {
-      ...(await serverSideTranslations(
-        context.locale || 'en',
-        ['common', 'me', 'country', 'treemapperAnalytics'],
-        null,
-        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
-      )),
+      messages,
       tenantConfig,
     },
   };

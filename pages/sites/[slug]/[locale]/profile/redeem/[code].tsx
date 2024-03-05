@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect, useContext, FC } from 'react';
 import LandingSection from '../../../../../../src/features/common/Layout/LandingSection';
-import { useTranslation } from 'next-i18next';
+import { AbstractIntlMessages, useTranslations } from 'next-intl';
 import { useUserProps } from '../../../../../../src/features/common/Layout/UserPropsContext';
 import { ErrorHandlingContext } from '../../../../../../src/features/common/Layout/ErrorHandlingContext';
 import { postAuthenticatedRequest } from '../../../../../../src/utils/apiRequests/api';
@@ -11,7 +11,6 @@ import {
   SuccessfullyRedeemed,
   EnterRedeemCode,
 } from '../../../../../../src/features/common/RedeemCode';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import {
   GetStaticProps,
   GetStaticPropsContext,
@@ -26,6 +25,7 @@ import {
 import { v4 } from 'uuid';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { defaultTenant } from '../../../../../../tenant.config';
+import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
   pageProps: {
@@ -34,7 +34,7 @@ interface Props {
 }
 
 const ReedemCode = ({ pageProps: { tenantConfig } }: Props) => {
-  const { t, ready } = useTranslation(['redeem']);
+  const t = useTranslations('Redeem');
   const { user, contextLoaded, token, logoutUser } = useUserProps();
   const { setErrors, errors } = useContext(ErrorHandlingContext);
   const { setTenantConfig } = useTenant();
@@ -94,13 +94,13 @@ const ReedemCode = ({ pageProps: { tenantConfig } }: Props) => {
           switch (error.message) {
             case 'already_redeemed':
               _serializedErrors.push({
-                message: t('redeem:alreadyRedeemed'),
+                message: t('alreadyRedeemed'),
               });
               break;
 
             case 'invalid_code':
               _serializedErrors.push({
-                message: t('redeem:invalidCode'),
+                message: t('invalidCode'),
               });
               break;
 
@@ -150,7 +150,7 @@ const ReedemCode = ({ pageProps: { tenantConfig } }: Props) => {
     }
   };
 
-  return tenantConfig && ready && user ? (
+  return tenantConfig && user ? (
     !errors && !redeemedCodeData ? (
       // to input  redeem code
       <LandingSection>
@@ -209,43 +209,25 @@ export const getStaticPaths = async () => {
   };
 };
 
-interface StaticProps {
+interface PageProps {
+  messages: AbstractIntlMessages;
   tenantConfig: Tenant;
 }
 
-export const getStaticProps: GetStaticProps<StaticProps> = async (
+export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
-): Promise<GetStaticPropsResult<StaticProps>> => {
+): Promise<GetStaticPropsResult<PageProps>> => {
   const tenantConfig =
     (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
+  const messages = await getMessagesForPage({
+    locale: context.params?.locale as string,
+    filenames: ['common', 'me', 'country', 'redeem'],
+  });
+
   return {
     props: {
-      ...(await serverSideTranslations(
-        context.locale || 'en',
-        [
-          'bulkCodes',
-          'common',
-          'country',
-          'donate',
-          'donationLink',
-          'editProfile',
-          'giftfunds',
-          'leaderboard',
-          'managePayouts',
-          'manageProjects',
-          'maps',
-          'me',
-          'planet',
-          'planetcash',
-          'redeem',
-          'registerTrees',
-          'tenants',
-          'treemapper',
-        ],
-        null,
-        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
-      )),
+      messages,
       tenantConfig,
     },
   };

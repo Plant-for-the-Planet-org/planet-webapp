@@ -31,6 +31,17 @@ export default function ErrorPopup(): ReactElement {
     }
   };
 
+  const processErrorMessage = (errorMessage: string) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    const translatedError = t(errorMessage);
+    if (translatedError.startsWith('Common.')) {
+      return errorMessage;
+    } else {
+      return translatedError;
+    }
+  };
+
   return (
     <>
       {errors &&
@@ -45,7 +56,9 @@ export default function ErrorPopup(): ReactElement {
               >
                 <CloseIcon color={'#f44336'} width={'10'} height={'10'} />
               </button>
-              <div className={styles.errorContent}>{t(err.message)}</div>
+              <div className={styles.errorContent}>
+                {processErrorMessage(err.message)}
+              </div>
             </div>
           );
         })}

@@ -1,7 +1,6 @@
 import React from 'react';
 import CompleteSignup from '../../../../src/features/user/CompleteSignup';
 import Head from 'next/head';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import {
   constructPathsForTenantSlug,
   getTenantConfig,
@@ -15,6 +14,8 @@ import {
   GetStaticPropsResult,
 } from 'next';
 import { defaultTenant } from '../../../../tenant.config';
+import { AbstractIntlMessages } from 'next-intl';
+import getMessagesForPage from '../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
   pageProps: {
@@ -62,43 +63,25 @@ export const getStaticPaths = async () => {
   };
 };
 
-interface StaticProps {
+interface PageProps {
+  messages: AbstractIntlMessages;
   tenantConfig: Tenant;
 }
 
-export const getStaticProps: GetStaticProps<StaticProps> = async (
+export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
-): Promise<GetStaticPropsResult<StaticProps>> => {
+): Promise<GetStaticPropsResult<PageProps>> => {
   const tenantConfig =
     (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
+  const messages = await getMessagesForPage({
+    locale: context.params?.locale as string,
+    filenames: ['common', 'me', 'country', 'editProfile'],
+  });
+
   return {
     props: {
-      ...(await serverSideTranslations(
-        context.locale || 'en',
-        [
-          'bulkCodes',
-          'common',
-          'country',
-          'donate',
-          'donationLink',
-          'editProfile',
-          'giftfunds',
-          'leaderboard',
-          'managePayouts',
-          'manageProjects',
-          'maps',
-          'me',
-          'planet',
-          'planetcash',
-          'redeem',
-          'registerTrees',
-          'tenants',
-          'treemapper',
-        ],
-        null,
-        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
-      )),
+      messages,
       tenantConfig,
     },
   };

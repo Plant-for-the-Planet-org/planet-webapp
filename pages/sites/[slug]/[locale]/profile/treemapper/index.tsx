@@ -2,8 +2,7 @@ import Head from 'next/head';
 import React, { ReactElement } from 'react';
 import UserLayout from '../../../../../../src/features/common/Layout/UserLayout/UserLayout';
 import TreeMapper from '../../../../../../src/features/user/TreeMapper';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useTranslation } from 'next-i18next';
+import { AbstractIntlMessages, useTranslations } from 'next-intl';
 import {
   GetStaticProps,
   GetStaticPropsContext,
@@ -17,6 +16,7 @@ import { defaultTenant } from '../../../../../../tenant.config';
 import { Tenant } from '@planet-sdk/common/build/types/tenant';
 import { useRouter } from 'next/router';
 import { useTenant } from '../../../../../../src/features/common/Layout/TenantContext';
+import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
   pageProps: {
@@ -29,7 +29,7 @@ function TreeMapperPage({ pageProps: { tenantConfig } }: Props): ReactElement {
   // if (typeof window !== 'undefined') {
   //   router.push('/');
   // }
-  const { t } = useTranslation('me');
+  const t = useTranslations('Me');
   const router = useRouter();
   const { setTenantConfig } = useTenant();
 
@@ -71,43 +71,25 @@ export const getStaticPaths = async () => {
   };
 };
 
-interface StaticProps {
+interface PageProps {
+  messages: AbstractIntlMessages;
   tenantConfig: Tenant;
 }
 
-export const getStaticProps: GetStaticProps<StaticProps> = async (
+export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
-): Promise<GetStaticPropsResult<StaticProps>> => {
+): Promise<GetStaticPropsResult<PageProps>> => {
   const tenantConfig =
     (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
+  const messages = await getMessagesForPage({
+    locale: context.params?.locale as string,
+    filenames: ['common', 'me', 'country', 'treemapper', 'maps'],
+  });
+
   return {
     props: {
-      ...(await serverSideTranslations(
-        context.locale || 'en',
-        [
-          'bulkCodes',
-          'common',
-          'country',
-          'donate',
-          'donationLink',
-          'editProfile',
-          'giftfunds',
-          'leaderboard',
-          'managePayouts',
-          'manageProjects',
-          'maps',
-          'me',
-          'planet',
-          'planetcash',
-          'redeem',
-          'registerTrees',
-          'tenants',
-          'treemapper',
-        ],
-        null,
-        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
-      )),
+      messages,
       tenantConfig,
     },
   };

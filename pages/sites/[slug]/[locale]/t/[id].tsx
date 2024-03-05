@@ -8,7 +8,6 @@ import Footer from '../../../../../src/features/common/Layout/Footer';
 import Profile from '../../../../../src/features/user/Profile/components/ProfileBox';
 import ProjectsContainer from '../../../../../src/features/user/Profile/components/MyContributions/microComponents/ProjectsContainer';
 import { ErrorHandlingContext } from '../../../../../src/features/common/Layout/ErrorHandlingContext';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import {
   GetStaticProps,
   GetStaticPropsContext,
@@ -27,6 +26,8 @@ import { v4 } from 'uuid';
 import { defaultTenant } from '../../../../../tenant.config';
 import { useTenant } from '../../../../../src/features/common/Layout/TenantContext';
 import myProfileStyle from '../../../../../src/features/user/Profile/styles/MyProfile.module.scss';
+import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
+import { AbstractIntlMessages } from 'next-intl';
 interface Props {
   pageProps: {
     tenantConfig: Tenant;
@@ -121,44 +122,32 @@ export const getStaticPaths = async () => {
   };
 };
 
-interface StaticProps {
+interface PageProps {
+  messages: AbstractIntlMessages;
   tenantConfig: Tenant;
 }
 
-export const getStaticProps: GetStaticProps<StaticProps> = async (
+export const getStaticProps: GetStaticProps<PageProps> = async (
   context: GetStaticPropsContext
-): Promise<GetStaticPropsResult<StaticProps>> => {
+): Promise<GetStaticPropsResult<PageProps>> => {
   const tenantConfig =
     (await getTenantConfig(context.params?.slug as string)) ?? defaultTenant;
 
+  const messages = await getMessagesForPage({
+    locale: context.params?.locale as string,
+    filenames: [
+      'common',
+      'me',
+      'country',
+      'manageProjects',
+      'donate',
+      'profile',
+    ],
+  });
+
   return {
     props: {
-      ...(await serverSideTranslations(
-        context.locale || 'en',
-        [
-          'bulkCodes',
-          'common',
-          'country',
-          'donate',
-          'donationLink',
-          'editProfile',
-          'giftfunds',
-          'leaderboard',
-          'managePayouts',
-          'manageProjects',
-          'maps',
-          'me',
-          'planet',
-          'planetcash',
-          'redeem',
-          'registerTrees',
-          'tenants',
-          'treemapper',
-          'profile',
-        ],
-        null,
-        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
-      )),
+      messages,
       tenantConfig,
     },
   };
