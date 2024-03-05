@@ -250,7 +250,7 @@ export const SpeciesPlanted = () => {
 
   return (
     <Container
-      leftElement={<p className={styles.title}>{t('speciesPlanted')}</p>}
+      leftElement={<h3 className={styles.title}>{t('speciesPlanted')}</h3>}
     >
       <ReactApexChart options={options} series={series} type="bar" />
     </Container>

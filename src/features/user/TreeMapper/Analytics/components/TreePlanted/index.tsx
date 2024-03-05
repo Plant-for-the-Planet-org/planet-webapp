@@ -542,7 +542,7 @@ export const TreePlanted = () => {
 
   return (
     <Container
-      leftElement={<p className={styles.title}>{t('treesPlanted')}</p>}
+      leftElement={<h3 className={styles.title}>{t('treesPlanted')}</h3>}
       rightElement={
         <TimeFrameSelector
           handleTimeFrameChange={handleTimeFrameChange}
