@@ -25,7 +25,10 @@ const ExternalCertification = ({
         <div className={styles.infoDetail}>
           <div className={styles.certificationLabel}>{certification}</div>
           <div className={styles.downloadIcon}>
-            <DownloadIcon width={10} color={'#6C63FF'} />
+            <DownloadIcon
+              width={10}
+              color={`${'rgba(var(--certification-background-color-new))'}`}
+            />
           </div>
         </div>
       ),
@@ -42,7 +45,10 @@ const ExternalCertification = ({
               </div>
 
               <div className={styles.downloadIcon}>
-                <DownloadIcon width={10} color={'#6C63FF'} />
+                <DownloadIcon
+                  width={10}
+                  color={`${'rgba(var(--certification-background-color-new))'}`}
+                />
               </div>
             </div>
           ))}
@@ -57,7 +63,10 @@ const ExternalCertification = ({
             <div key={index}>
               <div className={styles.certificationLabel}>{report}</div>
               <div className={styles.downloadIcon}>
-                <DownloadIcon width={10} color={'#6C63FF'} />
+                <DownloadIcon
+                  width={10}
+                  color={`${'rgba(var(--certification-background-color-new))'}`}
+                />
               </div>
             </div>
           ))}

@@ -18,12 +18,22 @@ const ContactDetails = ({ websiteURL, location, email }: Props) => {
 
   const contactDetails = [
     {
-      icon: <ViewProfileIcon width={10.5} color={'#2F3336'} />,
+      icon: (
+        <ViewProfileIcon
+          width={10.5}
+          color={`${'var(--primary-font-color)'}`}
+        />
+      ),
       title: t('donate:viewProfile'),
       link: '',
     },
     {
-      icon: <WebsiteLinkIcon width={10.5} color={'#2F3336'} />,
+      icon: (
+        <WebsiteLinkIcon
+          width={10.5}
+          color={`${'var(--primary-font-color)'}`}
+        />
+      ),
       title: websiteURL
         .replace('https://www.', '')
         .replace('http://', '')
@@ -33,12 +43,14 @@ const ContactDetails = ({ websiteURL, location, email }: Props) => {
       link: websiteURL,
     },
     {
-      icon: <LocationIcon width={9.5} color={'#2F3336'} />,
+      icon: (
+        <LocationIcon width={9.5} color={`${'var(--primary-font-color)'}`} />
+      ),
       title: location,
       link: '',
     },
     {
-      icon: <MailIcon width={10.5} color={'#2F3336'} />,
+      icon: <MailIcon width={10.5} color={`${'var(--primary-font-color)'}`} />,
       title: email,
       link: `mailto:${email}`,
     },
@@ -61,7 +73,10 @@ const ContactDetails = ({ websiteURL, location, email }: Props) => {
                 <div className={styles.icon}>{contact.icon}</div>
                 <div className={styles.title}>{contact.title}</div>
                 <div className={styles.rightArrow}>
-                  <RightArrowIcon width={5} color={'#2F3336'} />
+                  <RightArrowIcon
+                    width={5}
+                    color={`${'var(--primary-font-color)'}`}
+                  />
                 </div>
               </a>
             ))}
