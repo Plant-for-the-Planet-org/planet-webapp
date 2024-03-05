@@ -24,9 +24,7 @@ import { defaultTenant } from '../../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
-  pageProps: {
-    tenantConfig: Tenant;
-  };
+  pageProps: PageProps;
 }
 
 export default function BulkCodeSelectProjectPage({

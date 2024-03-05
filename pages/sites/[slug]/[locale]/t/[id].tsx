@@ -29,9 +29,7 @@ import myProfileStyle from '../../../../../src/features/user/Profile/styles/MyPr
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 import { AbstractIntlMessages } from 'next-intl';
 interface Props {
-  pageProps: {
-    tenantConfig: Tenant;
-  };
+  pageProps: PageProps;
 }
 
 function PublicProfile({ pageProps: { tenantConfig } }: Props): ReactElement {

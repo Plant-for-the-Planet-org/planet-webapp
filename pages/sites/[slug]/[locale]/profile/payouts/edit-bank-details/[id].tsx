@@ -22,9 +22,7 @@ import { useTenant } from '../../../../../../../src/features/common/Layout/Tenan
 import getMessagesForPage from '../../../../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
-  pageProps: {
-    tenantConfig: Tenant;
-  };
+  pageProps: PageProps;
 }
 
 export default function EditBankDetailsPage({

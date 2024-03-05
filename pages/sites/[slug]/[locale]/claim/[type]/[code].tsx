@@ -27,9 +27,7 @@ import { defaultTenant } from '../../../../../../tenant.config';
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
-  pageProps: {
-    tenantConfig: Tenant;
-  };
+  pageProps: PageProps;
 }
 
 function ClaimDonation({ pageProps }: Props): ReactElement {

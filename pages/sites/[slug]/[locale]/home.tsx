@@ -28,9 +28,7 @@ import getMessagesForPage from '../../../../src/utils/language/getMessagesForPag
 
 interface Props {
   initialized: Boolean;
-  pageProps: {
-    tenantConfig: Tenant;
-  };
+  pageProps: PageProps;
 }
 
 export default function Home({ initialized, pageProps }: Props) {

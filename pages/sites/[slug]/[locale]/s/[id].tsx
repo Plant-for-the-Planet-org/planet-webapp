@@ -20,9 +20,7 @@ import { AbstractIntlMessages } from 'next-intl';
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
-  pageProps: {
-    tenantConfig: Tenant;
-  };
+  pageProps: PageProps;
 }
 
 export default function DirectGift({

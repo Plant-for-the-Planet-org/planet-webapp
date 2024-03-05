@@ -25,9 +25,7 @@ import { useTenant } from '../../../../../src/features/common/Layout/TenantConte
 import getMessagesForPage from '../../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
-  pageProps: {
-    tenantConfig: Tenant;
-  };
+  pageProps: PageProps;
 }
 
 function RecurrentDonations({

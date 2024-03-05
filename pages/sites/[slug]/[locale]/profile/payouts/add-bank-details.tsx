@@ -23,9 +23,7 @@ import { useTenant } from '../../../../../../src/features/common/Layout/TenantCo
 import getMessagesForPage from '../../../../../../src/utils/language/getMessagesForPage';
 
 interface Props {
-  pageProps: {
-    tenantConfig: Tenant;
-  };
+  pageProps: PageProps;
 }
 
 export default function AddBankDetailsPage({
