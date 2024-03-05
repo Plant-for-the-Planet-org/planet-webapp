@@ -1,4 +1,5 @@
 import {
+  ChangeEvent,
   MutableRefObject,
   useContext,
   useEffect,
@@ -390,7 +391,7 @@ export const MapContainer = () => {
           }}
           value={search}
           placeholder={moment().format('YYYY-MM-DD')}
-          onChange={handleSearchChange}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => handleSearchChange(e)}
           onPaste={handleSearchChange}
         />
       }
